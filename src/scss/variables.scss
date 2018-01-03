@@ -1,0 +1,51 @@
+//
+// Variables
+// --------------------------------------------------
+
+// init
+$blue: #5cb8e6;
+$red: #e67373;
+$green: #52cc8f;
+$yellow: #fad464;
+$orange: #f19e59;
+$purple: #6626af;
+$grey: #cccccc;
+
+$id-color: #127db3;
+$link-color: #6c2db5;
+$title-color: #2f0d56;
+$text-color: #333333;
+$second-text-color: #666666;
+$placeholder-color: #c1c1c1;
+
+$background-color: #f6f6f8;
+$background-color-lighter: #ffffff;
+
+$family-sans-serif: "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", 微软雅黑,
+STHeitiSC-Light, simsun, 宋体, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
+$family-monospace: Inconsolata,Consolas,Monaco,monospace;
+$body-size: 14px;
+
+// Override
+$primary: $purple;
+$info: $blue;
+$danger: $red;
+$warning: $yellow;
+$success: $green;
+
+$family-primary: $family-sans-serif;
+$body-background-color: $background-color;
+
+$size-medium: 16px; // 中号字体
+$size-large: 28px;
+
+$border-lighter: #e7e7e7;
+$border: $border-lighter;
+
+// Animation
+$transition-speed: .3s;
+
+
+$content-width: 1128px;
+$header-height: 48px;
+$footer-height: 70px;

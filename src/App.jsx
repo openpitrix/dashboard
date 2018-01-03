@@ -1,0 +1,41 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
+import { Provider } from 'mobx-react';
+
+import routes from './routes';
+import Header from './components/Header';
+import Banner from './components/Banner';
+import Footer from './components/Footer';
+
+import './scss/main.scss';
+
+class App extends Component {
+  static propTypes = {
+    rootStore: PropTypes.object,
+  };
+
+  render() {
+    const { location, rootStore } = this.props;
+
+    const isHome = location.pathname === '/';
+
+    return (
+      <Provider rootStore={rootStore}>
+        <div className="container">
+          <Header className={`${isHome ? 'home-header' : ''}`}/>
+          {isHome && <Banner />}
+          <div className="main">
+            <Switch>
+              {routes.map((route, i) => <Route key={i} {...route}/>)}
+            </Switch>
+          </div>
+          <Footer />
+        </div>
+      </Provider>
+    );
+  }
+}
+
+export default withRouter(App);

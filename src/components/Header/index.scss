@@ -1,0 +1,33 @@
+@import "../../scss/variables";
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: $header-height;
+  background-image: linear-gradient(to left, #794db3, #854fb9 32%, #484999);
+  .header-wrapper {
+    width: $content-width;
+    height: 100%;
+    margin: 0 auto;
+  }
+  
+  .header-logo {
+    display: inline-block;
+    margin-top: $header-height / 2;
+    transform: translateY(-50%);
+  }
+  
+  .header-menus {
+    float: right;
+    line-height: $header-height;
+    a {
+      margin-left: 20px;
+      color: #fff;
+      line-height: 16px;
+      transition: opacity .2s ease-in-out;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}
