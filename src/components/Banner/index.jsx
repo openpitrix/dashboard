@@ -7,7 +7,7 @@ export default class Footer extends PureComponent {
     return (
       <div className="banner">
         <div className="banner-wrapper">
-          <div>
+          <div className="banner-title">
             Application Management Platform on Multi-Cloud Environment.
           </div>
         </div>

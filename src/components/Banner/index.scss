@@ -1,13 +1,20 @@
-@import "../../scss/variables";
+@import "~scss/variables";
 
 .banner {
-  height: 352px;
+  height: 400px;
   background-color: $grey;
   border-top: 1px solid $border;
-  padding-top: $header-height;
-  box-sizing: border-box;
   .banner-wrapper {
     width: $content-width;
     margin: 0 auto;
+  }
+  .banner-title {
+    margin-top: 130px;
+    width: 470px;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.43;
+    text-align: left;
+    color: $title-color;
   }
 }
