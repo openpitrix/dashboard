@@ -11,6 +11,10 @@ const indexHTML = fs.readFileSync(resolve(__dirname, '../../src/index.html'), 'u
 
 // Server-side render
 export default async (ctx, next) => {
+  if (process.env.NODE_ENV !== 'production') {
+    global.webpackIsomorphicTools.refresh();
+  }
+
   const branches = matchRoutes(routes, ctx.url);
   const promises = branches.map(({ route, match }) => (route.component.onEnter
     ? route.component.onEnter(ctx.store, match.params)

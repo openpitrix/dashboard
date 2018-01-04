@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 
 import Nav from 'components/Nav';
-
-import './index.scss';
+import styles from './index.scss';
 
 @inject('rootStore')
 @observer
@@ -12,7 +11,7 @@ export default class Home extends Component {
     const { config } = this.props.rootStore;
 
     return (
-      <div className="home">
+      <div className={styles.home}>
         <Nav navs={config.navs}/>
       </div>
     );

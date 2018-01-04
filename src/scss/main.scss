@@ -11,7 +11,7 @@ body {
   background-color: $body-background-color;
 }
 
-a {
+a, a:hover, a:focus, a:active, a:visited {
   text-decoration: none;
 }
 
@@ -21,7 +21,7 @@ a {
     min-height: calc(100vh - #{$footer-height});
     margin: 0 auto;
   }
-  .home-header {
+  .header {
     background-image: none;
   }
 }

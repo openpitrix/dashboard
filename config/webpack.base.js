@@ -1,9 +1,7 @@
 const path = require('path');
 const ExtractCSS = require('extract-text-webpack-plugin');
-const postCssOptions = require('./postcss.options');
 
 const root = (dir) => path.resolve(__dirname, '..', dir);
-const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: {},
@@ -32,27 +30,6 @@ module.exports = {
           root('src/assets'),
           root('src/components'),
         ],
-      },
-      {
-        test: /\.s[ac]ss$/,
-        loader: ExtractCSS.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: isProd,
-                importLoaders: 1,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: postCssOptions,
-            },
-            { loader: 'sass-loader' },
-          ],
-        }),
-        include: [root('src')],
       },
     ],
   },

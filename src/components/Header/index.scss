@@ -6,19 +6,19 @@
   width: 100%;
   height: $header-height;
   background-image: linear-gradient(to left, #794db3, #854fb9 32%, #484999);
-  .header-wrapper {
+  .wrapper {
     width: $content-width;
     height: 100%;
     margin: 0 auto;
   }
   
-  .header-logo {
+  .logo {
     display: inline-block;
     margin-top: $header-height / 2;
     transform: translateY(-50%);
   }
   
-  .header-menus {
+  .menus {
     float: right;
     line-height: $header-height;
     a {
