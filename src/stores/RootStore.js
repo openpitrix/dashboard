@@ -1,10 +1,10 @@
-import { observable, extendObservable } from 'mobx';
-import request from '../../core/request';
+import { extendObservable } from 'mobx';
+import request from 'core/request';
 
 import AppStore from './AppStore';
 
 export default class RootStore {
-  @observable title = 'OpenPitrix Dashboard';
+  config = {}
 
   constructor(initialState) {
     this.request = request;

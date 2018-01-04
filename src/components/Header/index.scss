@@ -1,7 +1,8 @@
-@import "../../scss/variables";
+@import "~scss/variables";
 
 .header {
   position: fixed;
+  top: 0;
   width: 100%;
   height: $header-height;
   background-image: linear-gradient(to left, #794db3, #854fb9 32%, #484999);

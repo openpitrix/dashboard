@@ -30,6 +30,7 @@ module.exports = {
       'webpack': {
         'config': 'config/webpack.base.js',
       },
+      "babel-module": {}
     },
   },
   // add your custom rules here

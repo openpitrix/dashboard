@@ -20,7 +20,7 @@ export default async (ctx, next) => {
   const context = {};
   const components = renderToString(
     <StaticRouter location={ctx.url} context={context}>
-      <App rootStore={ctx.store} />
+      <App rootStore={ctx.store}/>
     </StaticRouter>,
   );
 
@@ -39,7 +39,7 @@ export default async (ctx, next) => {
 
   ctx.body = indexHTML
     .replace(/{bundleURL}/g, bundleURL)
-    .replace('{title}', ctx.store.title)
+    .replace('{title}', ctx.store.config.name)
     .replace('{state}', JSON.stringify(ctx.store, null, 2))
     .replace('{children}', components);
 };

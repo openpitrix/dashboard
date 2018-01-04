@@ -4,10 +4,10 @@ import { withRouter } from 'react-router';
 import { Switch, Route } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
+import Header from 'components/Header';
+import Banner from 'components/Banner';
+import Footer from 'components/Footer';
 import routes from './routes';
-import Header from './components/Header';
-import Banner from './components/Banner';
-import Footer from './components/Footer';
 
 import './scss/main.scss';
 
@@ -28,7 +28,7 @@ class App extends Component {
           {isHome && <Banner />}
           <div className="main">
             <Switch>
-              {routes.map((route, i) => <Route key={i} {...route}/>)}
+              {routes.map((route, i) => <Route key={i} exact {...route}/>)}
             </Switch>
           </div>
           <Footer />

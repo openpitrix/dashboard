@@ -1,0 +1,25 @@
+@import "~scss/variables";
+
+.nav {
+  .nav-sub {
+    margin-top: 24px;
+    p {
+      line-height: 19px;
+      font-size: $size-medium;
+      font-weight: bold;
+      color: $purple;
+    }
+    li {
+      margin: 16px 0;
+      line-height: 16px;
+      list-style: none;
+      a {
+        color: $text-color;
+        transition: color .2s ease-in;
+        &:hover {
+          color: $purple;
+        }
+      }
+    } 
+  }
+}

@@ -68,7 +68,7 @@ module.exports = {
       '.jsx',
     ],
     alias: {
-      core: root('core'),
+      scss: root('src/scss'),
     },
   },
 
