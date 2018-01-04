@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import styles from './index.scss';
 
 export default class Nav extends PureComponent {
   static propTypes = {
@@ -16,9 +16,9 @@ export default class Nav extends PureComponent {
     const { className, navs } = this.props;
 
     return (
-      <div className={`nav ${className}`}>
+      <div className={`${styles.nav} ${className}`}>
         {navs.map(item => (
-          <ul key={item.title} className="nav-sub">
+          <ul key={item.title} className={styles.subNav}>
             <p>{item.title.toUpperCase()}</p>
             {item.value.map(subItem => (
               <li key={subItem.value}>

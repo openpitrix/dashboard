@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import './index.scss';
+import styles from './index.scss';
 
 export default class InstalledApps extends Component {
   render() {
     return (
-      <div className="apps">
+      <div className={styles.apps}>
         Nav
       </div>
     );

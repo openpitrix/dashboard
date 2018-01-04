@@ -2,6 +2,13 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.base.js');
+const postCssOptions = require('./postcss.options');
+
+const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+
+const webpackIsomorphicToolsPlugin =
+  new WebpackIsomorphicToolsPlugin(require('./isomorphic-config'))
+    .development();
 
 const root = (dir) => path.resolve(__dirname, '..', dir);
 
@@ -25,6 +32,28 @@ Object.assign(config, {
   },
 });
 
+config.module.loaders.push({
+  test: /\.s[ac]ss$/,
+  use: [
+    'style-loader',
+    {
+      loader: 'css-loader',
+      options: {
+        minimize: false,
+        importLoaders: 1,
+        localIdentName: '[folder]__[local]___[hash:base64:5]',
+        modules: true,
+      },
+    },
+    {
+      loader: 'postcss-loader',
+      options: postCssOptions,
+    },
+    { loader: 'sass-loader' },
+  ],
+  include: [root('src')],
+});
+
 config.plugins.push(
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
@@ -39,6 +68,7 @@ config.plugins.push(
     'process.env.BROWSER': true,
     'process.env.NODE_ENV': JSON.stringify('development'),
   }),
+  webpackIsomorphicToolsPlugin,
 );
 
 const compiler = webpack(config);
