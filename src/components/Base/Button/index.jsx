@@ -6,32 +6,25 @@ import { Button } from 'reactstrap';
 import styles from './index.scss';
 
 export default class PiButton extends PureComponent {
-  static defaultProps = {
-    type: 'default'
-  };
-
   static propTypes = {
     active: PropTypes.bool,
     block: PropTypes.bool,
     color: PropTypes.string,
     disabled: PropTypes.bool,
     tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    onClick: PropTypes.func,
-    size: PropTypes.string,
-    type: PropTypes.string,        
+    onClick: PropTypes.func,    
   };
 
-  render() {
-    const { type, children } = this.props;
+  static defaultProps = {
+    color: 'secondary'
+  };  
 
-    let cx = classNames.bind(styles);
-    let classes = cx('btn', {
-      [`btn-${type}`]: type
-    });
+  render() {
+    const { color, children } = this.props;
 
     return (
       <Button
-        className={classes}
+        className={classNames(styles.btn, styles[color])}
         {...this.props}
       >
         {children}

@@ -1,6 +1,6 @@
 @import "~scss/variables";
 
-.btn {
+.button {
 	font-family: Roboto;
   font-size: $body-size;
 	font-weight: 500;
@@ -8,14 +8,36 @@
   line-height: 1.15;
   padding: 7px 13px 7px 14px;
   border-radius: 3px;
+  cursor: pointer;
 
-  &-primary {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.btn {
+  &.primary {
+    @extend .button;
     border: 1px solid $primary;
     background-color: $primary;
+
+    &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
+      background-color: $primary;
+      border-color: $primary;  
+      box-shadow: none;
+    }
   }
 
-  &-default {
+  &.secondary {
+    @extend .button;
+    color: $primary;
     border: 1px solid $grey;
     background-color: #fff;
+
+    &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
+      background-color: #fff;
+      border-color: $grey; 
+      box-shadow: none;           
+    }    
   }
 }

@@ -9,6 +9,7 @@ import Banner from 'components/Banner';
 import Footer from 'components/Footer';
 import routes from './routes';
 
+import 'bootstrap/dist/css/bootstrap.css';
 import './scss/main.scss';
 
 class App extends Component {

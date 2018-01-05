@@ -15,7 +15,8 @@ export default class InstalledApps extends Component {
 
         <div className={styles.container}>
           <div className={styles.toolbar}>
-            <Button type="primary">All types</Button>
+            <Button color="primary">All types</Button>
+            
           </div>
           
         </div>
