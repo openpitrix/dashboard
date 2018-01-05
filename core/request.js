@@ -5,17 +5,15 @@ import fetch from 'isomorphic-fetch';
  * @param state
  * @returns {Function}
  */
-export default function () {
-  return {
-    get(url, params) {
-      return buildRequest('GET', url, omitNil(params));
-    },
+export default {
+  get(url, params) {
+    return buildRequest('GET', url, omitNil(params));
+  },
 
-    post(url, data, isMultiForm = false) {
-      return buildRequest('POST', url, data, isMultiForm);
-    },
-  };
-}
+  post(url, data, isMultiForm = false) {
+    return buildRequest('POST', url, data, isMultiForm);
+  },
+};
 
 /**
  * Build and execute remote request

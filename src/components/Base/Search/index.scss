@@ -1,0 +1,46 @@
+@import '~scss/variables';
+
+.search {
+	position: relative;
+  width: 360px;
+	height: 32px;
+	padding-left: 44px;
+	border-radius: 3px;
+	background-color: #ffffff;
+	box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.08);
+	border: solid 1px #c9bed6;
+	:global {
+		.fa {
+			opacity: 0.9;
+			color: $third-text-color;
+		}
+		.fa-search {
+			position: absolute;
+			left: 15px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		.fa-times {
+			position: absolute;
+			right: 15px;
+			top: 50%;
+			transform: translateY(-50%);
+			cursor: pointer;
+		}
+	}
+	input {
+		border: none;
+		outline: none;
+		height: 100%;
+		width: 100%;
+		font-weight: 500;
+		background-color: transparent;
+		color: $third-text-color;
+		opacity: 0.7;
+		&::placeholder {
+			color: $third-text-color;
+			opacity: 0.7;
+			font-weight: 500;
+		}
+	}
+}

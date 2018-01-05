@@ -6,6 +6,7 @@
   width: 100%;
   height: $header-height;
   background-image: linear-gradient(to left, #794db3, #854fb9 32%, #484999);
+  z-index: 999;
   .wrapper {
     width: $content-width;
     height: 100%;
@@ -16,6 +17,32 @@
     display: inline-block;
     margin-top: $header-height / 2;
     transform: translateY(-50%);
+  }
+
+  .search {
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 144px;
+    vertical-align: top;
+    background-color: #ffffff10;
+    box-shadow: none;
+    border: none;
+    :global {
+      .fa {
+        opacity: 0.45;
+			  color: #ffffff;
+      }
+    }
+    input {
+      color: #ffffff;
+      opacity: 0.7;
+      font-weight: 500;
+      &::placeholder {
+        color: #ffffff;
+        opacity: 0.7;
+        font-weight: 500;
+      } 
+    }
   }
   
   .menus {
