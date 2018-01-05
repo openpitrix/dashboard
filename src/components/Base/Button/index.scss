@@ -1,0 +1,21 @@
+@import "~scss/variables";
+
+.btn {
+	font-family: Roboto;
+  font-size: $body-size;
+	font-weight: 500;
+	color: #ffffff;
+  line-height: 1.15;
+  padding: 7px 13px 7px 14px;
+  border-radius: 3px;
+
+  &-primary {
+    border: 1px solid $primary;
+    background-color: $primary;
+  }
+
+  &-default {
+    border: 1px solid $grey;
+    background-color: #fff;
+  }
+}

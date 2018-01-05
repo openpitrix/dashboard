@@ -11,6 +11,10 @@ export default class Clusters extends Component {
     return (
       <div className={styles.apps}>
         <ManageTabs />
+
+        <div className="">
+          haha
+        </div>        
       </div>
     );
   }
