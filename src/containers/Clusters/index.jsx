@@ -6,7 +6,7 @@ import styles from './index.scss';
 
 @inject('rootStore')
 @observer
-export default class InstalledApps extends Component {
+export default class Clusters extends Component {
   render() {
     return (
       <div className={styles.apps}>

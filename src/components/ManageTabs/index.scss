@@ -1,0 +1,36 @@
+@import "~scss/variables";
+
+.tabs {
+  margin: 0 calc((100vw - #{$content-width})/(-2));
+  height: 52px;
+	background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+
+  &-list {
+    width: $content-width;
+    margin: 0 auto;
+    padding-top: 12px;
+    overflow: hidden;
+
+    li {
+      float: left;
+      margin: 0 25px 0 0;
+
+      a {
+        display: block;
+        width: 90px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: $body-size;
+        color: $title-color;
+        border-bottom: 2px solid transparent;
+
+        &.active {
+          border-bottom-color: $primary;
+          color: $primary;
+        }
+      }
+    }
+  }
+}
