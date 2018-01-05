@@ -17,11 +17,12 @@ a, a:hover, a:focus, a:active, a:visited {
 
 :global {
   .main {
-    width: $content-width;
+    width: 100%;
+    min-width: $content-width;
     min-height: calc(100vh - #{$footer-height});
     margin: 0 auto;
   }
   .header {
-    background-image: none;
+    background-image: none !important;
   }
 }

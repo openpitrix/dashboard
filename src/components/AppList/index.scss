@@ -1,0 +1,10 @@
+.appList {
+  padding-left: 77px;
+  a {
+    &:nth-child(3n+3) {
+      &>div {
+        margin-right: 0;
+      }
+    }
+  }
+}

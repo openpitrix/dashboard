@@ -1,0 +1,70 @@
+@import '~scss/variables';
+
+.card {
+  display: inline-block;
+  width: 264px;
+  padding: 16px 24px 24px;
+  margin: 24px 24px 0 0;
+  border-radius: 3px;
+	background-color: #ffffff;
+  box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04);
+  transition: all .3s ease-in-out;
+  text-align: center;
+  p {
+    margin-bottom: 0;
+  }
+  .icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+  }
+  .line {
+    height: 1px;
+    border-radius: 3px;
+    background-color: $grey-light;
+  }
+  .name{
+    line-height: 16px;
+    margin-top: 24px;
+    font-weight: bold;
+    color: $title-color;
+    margin-bottom: 10px;
+  }
+  .desc{
+    height: 54px;
+    line-height: 20px;
+    color: lighten($title-color, 2%);
+    overflow: hidden;
+  }
+  &:hover {
+    transform: translate3d(0, -10px, 0);
+    box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+  }
+}
+.foldCard {
+  padding: 12px 15px 12px;
+  text-align: left;
+  position: relative;
+  .icon {
+    margin: 0 14px 0 0;
+    float: left;
+  }
+  .line {
+    display: none;
+  }
+  .name {
+    margin: 0;
+    margin-left: 62px;
+  }
+  .desc {
+    height: auto;
+    margin-left: 62px;
+    margin-top: 11px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: $text-color;
+  }
+}

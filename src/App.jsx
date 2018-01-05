@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { withRouter } from 'react-router';
 import { Switch, Route } from 'react-router-dom';
 import { Provider } from 'mobx-react';
@@ -25,7 +24,7 @@ class App extends Component {
     return (
       <Provider rootStore={rootStore}>
         <div>
-          <Header className={classnames({ header: isHome })}/>
+          <Header isHome={isHome}/>
           {isHome && <Banner />}
           <div className="main">
             <Switch>

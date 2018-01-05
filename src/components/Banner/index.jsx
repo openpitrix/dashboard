@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 
+import Search from '../Base/Search';
 import styles from './index.scss';
 
 export default class Footer extends PureComponent {
@@ -10,6 +11,7 @@ export default class Footer extends PureComponent {
           <div className={styles.title}>
             Application Management Platform on Multi-Cloud Environment.
           </div>
+          <Search className={styles.search} placeholder="Search apps in Pitrix"/>
         </div>
       </div>
     );
