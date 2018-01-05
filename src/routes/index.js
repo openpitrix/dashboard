@@ -2,8 +2,8 @@ import Home from 'containers/Home';
 import BrowseApps from 'containers/BrowseApps';
 import AppDetail from 'containers/Home';
 import AppDeploy from 'containers/Home';
-import InstalledApps from 'containers/Home';
-import Clusters from 'containers/Home';
+import InstalledApps from 'containers/InstalledApps';
+import Clusters from 'containers/Clusters';
 import ClusterDetail from 'containers/Home';
 
 const routes = [

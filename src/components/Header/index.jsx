@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Logo from '../Logo';
-import Search from '../Base/Search';
+import { Search } from '../Base/Input';
 import styles from './index.scss';
 
 export default class Header extends PureComponent {

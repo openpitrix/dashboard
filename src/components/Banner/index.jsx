@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import Search from '../Base/Search';
+import { Search } from '../Base/Input';
 import styles from './index.scss';
 
 export default class Footer extends PureComponent {

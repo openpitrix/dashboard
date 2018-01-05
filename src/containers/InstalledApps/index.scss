@@ -1,0 +1,17 @@
+@import '~scss/variables';
+
+.apps {
+  padding-top: $header-height;
+}
+
+.container {
+  width: $content-width;
+  margin: 0 auto 25px;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.toolbar {
+  padding: 24px;
+}
