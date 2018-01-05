@@ -1,0 +1,21 @@
+@import "~scss/variables";
+
+.home{
+  display: table;
+  width: 100%;
+  height: calc(100vh - #{$footer-height});
+  .nav {
+    display: table-cell;
+    width: 210px;
+    padding-left: calc(50vw - #{$content-width}/2);
+    border-right: 1px solid $border;
+    background: #ffffff;
+    box-sizing: content-box;
+    vertical-align: top;
+  }
+  .apps {
+    display: table-cell;
+    vertical-align: top;
+    padding-right: calc(50vw - #{$content-width}/2);
+  }
+}

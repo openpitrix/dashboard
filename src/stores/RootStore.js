@@ -12,7 +12,7 @@ export default class RootStore {
     if (initialState) {
       extendObservable(this, initialState);
     } else {
-      this.appStore = new AppStore(this);
+      this.appStore = new AppStore();
     }
   }
 }
