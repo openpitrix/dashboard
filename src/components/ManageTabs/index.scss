@@ -1,7 +1,7 @@
 @import "~scss/variables";
 
 .tabs {
-  margin: 0 calc((100vw - #{$content-width})/(-2));
+  margin: 0 calc((100vw - #{$content-width})/(-2)) 27px;
   height: 52px;
 	background-color: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.04);
