@@ -8,7 +8,7 @@ export default class ManageTabs extends PureComponent {
   render() {
     return (
       <div className={styles.tabs}>
-        <ul className={styles["tabs-list"]}>
+        <ul className={styles.tabsList}>
           <li><NavLink to="/manage/apps" activeClassName={styles.active}>Apps</NavLink></li>
           <li><NavLink to="/manage/clusters" activeClassName={styles.active}>Clusters</NavLink></li>
         </ul>

@@ -6,7 +6,7 @@
 	background-color: #ffffff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.04);
 
-  &-list {
+  .tabsList {
     width: $content-width;
     margin: 0 auto;
     padding-top: 12px;
@@ -24,10 +24,9 @@
         text-align: center;
         font-size: $body-size;
         color: $title-color;
-        border-bottom: 2px solid transparent;
 
         &.active {
-          border-bottom-color: $primary;
+          border-bottom: 2px solid $primary;
           color: $primary;
         }
       }
