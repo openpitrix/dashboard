@@ -18,6 +18,7 @@ export default class Button extends PureComponent {
 
   static defaultProps = {
     type: 'default',
+    htmlType: 'button',
   };
 
   handleClick = (e) => {
@@ -37,7 +38,7 @@ export default class Button extends PureComponent {
           [styles.loading]: loading,
           [className]: className,
         })}
-        type={others.href ? undefined : (htmlType || 'button')}
+        type={htmlType}
         onClick={this.handleClick}
         {...others}
       >

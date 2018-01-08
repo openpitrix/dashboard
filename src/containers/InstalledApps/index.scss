@@ -41,16 +41,16 @@
 
 .list {
   padding: 0 24px;
+  position: relative;
 
   .listItem {
     display: table;
-    table-layout: fixed;
     width: 100%;
     padding: 7px 0;
     border-top: 1px solid $border-lighter;
 
     .icon {
-      display: table-cell;
+      float: left;
       width: 48px;
       height: 48px;
       border-radius: 3px;
@@ -58,12 +58,25 @@
 
     .name {
       display: table-cell;
-      width: 50%;
+      width: 100%;
+      padding: 0 200px 0 24px;
+      line-height: 1.15;
+      vertical-align: middle;
+      word-break: break-word;
     }
 
     .handle {
-      display: table-cell;
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      width: 167px;
       padding: 0 16px;
+      transform: translate(0, -50%);
+      text-align: right;
+
+      button:first-child {
+        margin-right: 16px;
+      }
     }
   }
 }
