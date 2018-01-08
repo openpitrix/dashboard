@@ -38,3 +38,32 @@
     color: $placeholder-color;    
   }
 }
+
+.list {
+  padding: 0 24px;
+
+  .listItem {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    padding: 7px 0;
+    border-top: 1px solid $border-lighter;
+
+    .icon {
+      display: table-cell;
+      width: 48px;
+      height: 48px;
+      border-radius: 3px;
+    }
+
+    .name {
+      display: table-cell;
+      width: 50%;
+    }
+
+    .handle {
+      display: table-cell;
+      padding: 0 16px;
+    }
+  }
+}
