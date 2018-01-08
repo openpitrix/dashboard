@@ -8,30 +8,28 @@ import styles from './index.scss';
 export default class Button extends PureComponent {
   static propTypes = {
     type: PropTypes.string,
+    htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
     className: PropTypes.string,
     style: PropTypes.object,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
     onClick: PropTypes.func,
-    isSubmit: PropTypes.bool,        
   };
 
   static defaultProps = {
     type: 'default',
-  };  
+  };
 
   handleClick = (e) => {
-    let isDisabled = this.props.disabled;
+    const isDisabled = this.props.disabled;
 
     if (!isDisabled && isFunction(this.props.onClick)) {
-      this.props.onClick(e);     
+      this.props.onClick(e);
     }
   }
 
   render() {
-    const { children, type, className, style, loading, disabled, onClick, isSubmit } = this.props;
-    
-    const buttonType = isSubmit ? 'submit' : 'button';
+    const { children, type, htmlType, className, loading, isSubmit, ...others } = this.props;
 
     return (
       <button
@@ -39,10 +37,9 @@ export default class Button extends PureComponent {
           [styles.loading]: loading,
           [className]: className,
         })}
-        style={style}
-        type={buttonType}
-        disabled={disabled}
+        type={others.href ? undefined : (htmlType || 'button')}
         onClick={this.handleClick}
+        {...others}
       >
         {loading && <i class="fa fa-spinner"></i>}
         {children}
