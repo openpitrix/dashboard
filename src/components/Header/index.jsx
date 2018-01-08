@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Logo from '../Logo';
-import { Search } from '../Base/Input';
+import Input from '../Base/Input';
 import styles from './index.scss';
 
 export default class Header extends PureComponent {
@@ -19,7 +19,7 @@ export default class Header extends PureComponent {
       <div className={classnames(styles.header, { header: isHome })}>
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url='../../assets/logo.svg' />
-          {!isHome && <Search className={styles.search} placeholder="Search apps in Pitrix"/>}
+          {!isHome && <Input.Search className={styles.search} placeholder="Search apps in Pitrix"/>}
           <div className={styles.menus}>
             <Link to="/apps">Browse</Link>
             <Link to="/apps">Manage</Link>

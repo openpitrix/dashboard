@@ -1,5 +1,22 @@
 @import '~scss/variables';
 
+.input {
+  padding: 8px 10px;
+	border-radius: 2px;
+	background-color: #ffffff;
+  border: solid 1px #e7e7e7;
+  color: #333333;
+  caret-color: #979797;
+  line-height: 16px;
+  box-sizing: border-box;
+  transition: all .3s ease-in-out;
+  &:focus {
+    outline: none;
+    border: solid 1px #7749ac;
+    box-shadow: 0 1px 2px 0 rgba(102, 38, 175, 0.1);
+  }
+}
+
 .search {
   position: relative;
   width: 360px;

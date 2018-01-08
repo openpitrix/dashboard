@@ -8,5 +8,9 @@
   .wrapper {
     width: $content-width;
     margin: 0 auto;
+    .logo {
+      color: #666;
+      font-size: 20px;
+    }
   }
 }

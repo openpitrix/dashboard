@@ -11,6 +11,10 @@ export default class Search extends React.Component {
     onSearch: PropTypes.func,
   }
 
+  static defaultProps = {
+    className: '',
+  }
+
   state = {
     value: '',
   }
