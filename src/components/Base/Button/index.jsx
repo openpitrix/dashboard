@@ -1,34 +1,50 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import isFunction from 'lodash/isFunction';
 
-import { Button } from 'reactstrap';
 import styles from './index.scss';
 
-export default class PiButton extends PureComponent {
+export default class Button extends PureComponent {
   static propTypes = {
-    active: PropTypes.bool,
-    block: PropTypes.bool,
-    color: PropTypes.string,
+    type: PropTypes.string,
+    htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
+    className: PropTypes.string,
+    style: PropTypes.object,
+    loading: PropTypes.bool,
     disabled: PropTypes.bool,
-    tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    onClick: PropTypes.func,    
+    onClick: PropTypes.func,
   };
 
   static defaultProps = {
-    color: 'secondary'
-  };  
+    type: 'default',
+    htmlType: 'button',
+  };
+
+  handleClick = (e) => {
+    const isDisabled = this.props.disabled;
+
+    if (!isDisabled && isFunction(this.props.onClick)) {
+      this.props.onClick(e);
+    }
+  }
 
   render() {
-    const { color, children } = this.props;
+    const { children, type, htmlType, className, loading, ...others } = this.props;
 
     return (
-      <Button
-        className={classNames(styles.btn, styles[color])}
-        {...this.props}
+      <button
+        className={classNames(styles.button, styles[type], {
+          [styles.loading]: loading,
+          [className]: className,
+        })}
+        type={htmlType}
+        onClick={this.handleClick}
+        {...others}
       >
+        {loading && <i class="fa fa-spinner"></i>}
         {children}
-      </Button>
+      </button>
     );
   }
 }
