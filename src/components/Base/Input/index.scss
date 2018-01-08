@@ -1,5 +1,22 @@
 @import '~scss/variables';
 
+.input {
+  padding: 8px 10px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px $border;
+  color: $text-color;
+  caret-color: #979797;
+  line-height: 16px;
+  box-sizing: border-box;
+  transition: all .3s ease-in-out;
+  &:focus {
+    outline: none;
+    border: solid 1px $third-text-color;
+    box-shadow: 0 1px 2px 0 rgba(102, 38, 175, 0.1);
+  }
+}
+
 .search {
   position: relative;
   width: 360px;
@@ -8,7 +25,7 @@
   border-radius: 3px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.08);
-  border: solid 1px #c9bed6;
+  border: solid 1px $border-light;
   :global {
     .fa {
       opacity: 0.9;
@@ -19,7 +36,7 @@
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
-		}
+    }
     .fa-times {
       position: absolute;
       right: 15px;

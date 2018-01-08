@@ -1,5 +1,6 @@
-import Search from './Search';
+import Input from './input';
+import Search from './search';
 
-export {
-  Search
-}
+Input.Search = Search;
+
+export default Input;
