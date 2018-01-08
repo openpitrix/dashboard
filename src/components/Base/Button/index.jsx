@@ -29,7 +29,7 @@ export default class Button extends PureComponent {
   }
 
   render() {
-    const { children, type, htmlType, className, loading, isSubmit, ...others } = this.props;
+    const { children, type, htmlType, className, loading, ...others } = this.props;
 
     return (
       <button
