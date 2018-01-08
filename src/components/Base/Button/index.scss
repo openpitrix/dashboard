@@ -12,32 +12,43 @@
 
   &:focus {
     box-shadow: none;
+    outline: none;
   }
-}
 
-.btn {
+  &.loading {
+    color: transparent !important;
+    pointer-events: none;
+    position: relative;
+
+    i {
+      position: absolute;
+      color: $primary;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);      
+    }
+  }
+  
   &.primary {
-    @extend .button;
     border: 1px solid $primary;
     background-color: $primary;
 
     &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
       background-color: $primary;
-      border-color: $primary;  
+      border-color: $primary;
       box-shadow: none;
     }
   }
 
-  &.secondary {
-    @extend .button;
+  &.default {
     color: $primary;
     border: 1px solid $grey;
     background-color: #fff;
 
     &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
       background-color: #fff;
-      border-color: $grey; 
-      box-shadow: none;           
+      border-color: $grey;
+      box-shadow: none;
     }    
   }
 }

@@ -15,3 +15,26 @@
 .toolbar {
   padding: 24px;
 }
+
+.dropdown {
+  border-color: $border-lighter !important;
+}
+
+.search {
+  display: inline-block;
+  width: 337px;
+  margin-left: 16px;
+  border-color: $border-lighter;
+  box-shadow: none;
+
+  :global {
+    .fa {
+      color: $placeholder-color;
+    }
+  }
+
+  input::placeholder {
+    font-weight: 400;
+    color: $placeholder-color;    
+  }
+}
