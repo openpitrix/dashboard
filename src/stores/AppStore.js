@@ -4,6 +4,7 @@ import request from 'core/request';
 export default class AppStore {
   @observable apps = [];
   @observable app = {};
+  @observable installedApps = [];
   @observable isLoading = false;
 
   @action async fetchApps() {
@@ -17,6 +18,13 @@ export default class AppStore {
     this.isLoading = true;
     const result = await request.get(`api/app/${appId}`);
     this.app = result;
+    this.isLoading = false;
+  }
+
+  @action async fetchInstalledApps() {
+    this.isLoading = true;
+    const result = await request.get('api/installedApps');
+    this.installedApps = result.items;
     this.isLoading = false;
   }
 }

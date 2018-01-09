@@ -16,15 +16,15 @@
   }
 
   &.loading {
+    position: relative;    
     color: transparent !important;
     pointer-events: none;
-    position: relative;
 
     i {
       position: absolute;
-      color: $primary;
       left: 50%;
       top: 50%;
+      color: $primary;
       transform: translate(-50%, -50%);      
     }
   }
