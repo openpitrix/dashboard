@@ -34,7 +34,7 @@ module.exports = {
     },
   },
   // add your custom rules here
-  'rules': {
+  rules: {
     // allow paren-less arrow functions
     'arrow-parens': 0,
     'import/no-extraneous-dependencies': [2, { devDependencies: true }],

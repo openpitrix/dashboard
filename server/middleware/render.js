@@ -1,17 +1,15 @@
-import fs from 'fs';
-import { resolve } from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
-import App from '../../src/App';
-import routes from '../../src/routes';
+import App from 'src/App';
+import routes from 'src/routes';
 
-const indexHTML = fs.readFileSync(resolve(__dirname, '../../src/index.html'), 'utf8');
+const isDev = process.env.NODE_ENV === 'development';
 
 // Server-side render
 export default async (ctx, next) => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDev) {
     global.webpackIsomorphicTools.refresh();
   }
 
@@ -39,11 +37,10 @@ export default async (ctx, next) => {
     return await next();
   }
 
-  const bundleURL = process.env.NODE_ENV === 'development' ? '//localhost:3002' : '';
-
-  ctx.body = indexHTML
-    .replace(/{bundleURL}/g, bundleURL)
-    .replace('{title}', ctx.store.config.name)
-    .replace('{state}', JSON.stringify(ctx.store, null, 2))
-    .replace('{children}', components);
+  await ctx.render('index.pug', {
+    isDev,
+    title: ctx.store.config.name,
+    children: components,
+    state: JSON.stringify(ctx.store),
+  });
 };

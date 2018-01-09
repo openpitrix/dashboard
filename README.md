@@ -14,12 +14,12 @@ A dashboard for [OpenPitrix](https://github.com/openpitrix/openpitrix)
 ```shell
 git clone https://github.com/openpitrix/dashboard.git
 cd dashboard/
-yarn install
-npm run dev
+yarn
+yarn run dev
 ```
 
 ### Building
 
 ```shell
-npm run build
+yarn run build
 ```
