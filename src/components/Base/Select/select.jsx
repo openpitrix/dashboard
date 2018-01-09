@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import isFunction from 'lodash/isFunction';
 
 import styles from './index.scss';
 
@@ -32,7 +33,7 @@ export default class Select extends React.Component {
 
   handleOptionClick = (e) => {
     const value = e.currentTarget.getAttribute('value');
-    this.props.onChange(value);
+    isFunction(this.props.onChange) && this.props.onChange(value);
     this.setState({ isOpen: false });
   }
 
