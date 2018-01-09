@@ -12,6 +12,10 @@ a, a:hover, a:focus, a:active, a:visited {
   text-decoration: none;
 }
 
+div {
+  box-sizing: border-box;
+}
+
 :global {
   .main {
     width: 100%;
