@@ -1,15 +1,12 @@
 @import "~scss/variables";
 
 .button {
-  font-family: Roboto;
-  font-size: $body-size;
-  font-weight: 500;
-  color: #ffffff;
-  line-height: 1.15;
-  padding: 7px 13px 7px 14px;
+  padding: 7px 14px;
+  border: none;
   border-radius: 3px;
+  font-size: $body-size;
   cursor: pointer;
-
+  transition: all .3s ease-in-out;
   &:focus {
     box-shadow: none;
     outline: none;
@@ -23,32 +20,41 @@
     i {
       position: absolute;
       color: $primary;
-      left: 50%;
+      left: 80%;
       top: 50%;
       transform: translate(-50%, -50%);      
     }
   }
   
   &.primary {
+    color: #fff;
     border: 1px solid $primary;
     background-color: $primary;
 
-    &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
-      background-color: $primary;
-      border-color: $primary;
-      box-shadow: none;
+    &:hover, &:disabled {
+      background-color: darken($primary, 8%);
+      border-color: darken($primary, 8%);
+    }
+
+    &:active {
+      background-color: darken($primary, 16%);
+      border-color: darken($primary, 16%);
     }
   }
 
   &.default {
-    color: $primary;
+    color: $title-color;
     border: 1px solid $grey;
     background-color: #fff;
 
-    &:hover, &:not([disabled]):not(.disabled):active, &:disabled {
-      background-color: #fff;
-      border-color: $grey;
-      box-shadow: none;
-    }    
+    &:hover, &:disabled {
+      background-color: darken(#fff, 8%);
+      border-color: darken(#fff, 8%);
+    }
+
+    &:active {
+      background-color: darken(#fff, 16%);
+      border-color: darken(#fff, 16%);
+    }
   }
 }

@@ -1,7 +1,7 @@
 @import "~scss/variables";
 
 .footer {
-  line-height: $footer-height;
+  height: $footer-height;
   background-color: $background-color;
   border-top: 1px solid $border;
   box-sizing: border-box;
@@ -11,6 +11,7 @@
     .logo {
       color: #666;
       font-size: 20px;
+      line-height: $footer-height - 1;
     }
   }
 }
