@@ -9,12 +9,13 @@
   .tabsList {
     width: $content-width;
     margin: 0 auto;
-    padding-top: 12px;
+    padding: 12px 0 0 0;
     overflow: hidden;
 
     li {
       float: left;
       margin: 0 25px 0 0;
+      list-style: none;
 
       a {
         display: block;
@@ -24,6 +25,7 @@
         text-align: center;
         font-size: $body-size;
         color: $title-color;
+        box-sizing: border-box;
 
         &.active {
           border-bottom: 2px solid $primary;
