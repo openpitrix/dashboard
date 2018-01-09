@@ -14,8 +14,8 @@
 
 .control {
   position: relative;
-  padding: 8px 10px;
-  border-radius: 2px;
+  padding: 7px 10px;
+  border-radius: 3px;
   background-color: #ffffff;
   border: solid 1px $border;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
@@ -33,11 +33,13 @@
 .options {
   display: none;
   position: absolute;
+  z-index: 11;
   width: 100%;
   max-height: 200px;
   margin-top: 2px;
-  border-radius: 2px;
+  border-radius: 3px;
   border: solid 1px $border;
+  background-color: $background-color-lighter;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
   .option {
     position: relative;
