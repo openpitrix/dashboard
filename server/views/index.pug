@@ -1,0 +1,20 @@
+- var bundleUrl = isDev ? '//localhost:3002' : ''
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title= title
+
+    link(rel="shortcut icon" href="/assets/favicon.ico")
+    link(href= bundleUrl + '/build/bundle.css' rel="stylesheet" media="all")
+
+  body
+    noscript You need to enable JavaScript to run this app.
+
+    #root.
+      !{children}
+    script.
+      window.__INITIAL_STATE__ = !{state || '{}'}
+    script(src= bundleUrl + '/build/bundle.js' async).

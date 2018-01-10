@@ -16,7 +16,7 @@ const port = 3002;
 
 Object.assign(config, {
   cache: true,
-  devtool: 'source-map',
+  // devtool: 'eval-source-map',
   entry: {
     bundle: [
       'react-hot-loader/patch',
@@ -109,7 +109,7 @@ new WebpackDevServer(compiler, {
     children: false,
     chunkModules: false,
   },
-}).listen(port, '0.0.0.0', (err) => {
+}).listen(port, '127.0.0.1', (err) => {
   if (err) return console.error(err);
 
   console.info(`Running on port ${port}`);
