@@ -1,6 +1,17 @@
 require('./core/logger');
+const fs = require('fs');
+const semver = require('semver');
 const { fork } = require('child_process');
 const { debounce } = require('lodash');
+
+if (semver.lt(process.version, '7.6.0')) {
+  console.error('Node Version should be greater than 7.6.0');
+  return;
+}
+
+['webpack-assets.json', 'webpack-stats.json'].forEach((path) => {
+  fs.existsSync(path) && fs.unlinkSync(path);
+});
 
 const dirs = ['./server/**/*.js'];
 const args = process.argv.slice(2);

@@ -54,6 +54,20 @@ config.module.loaders.push({
   include: [root('src')],
 });
 
+config.module.loaders.push({
+  test: /\.css$/,
+  use: [
+    'style-loader',
+    {
+      loader: 'css-loader',
+      options: {
+        minimize: false,
+        importLoaders: 1,
+      },
+    },
+  ],
+});
+
 config.plugins.push(
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),

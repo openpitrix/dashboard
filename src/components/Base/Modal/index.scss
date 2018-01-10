@@ -1,0 +1,52 @@
+@import '~scss/variables';
+
+.modal {
+  position: relative;
+  width: 744px;
+  margin: 0 auto;
+  margin-top: 100px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  outline: none;
+  overflow: auto;
+}
+
+.header {
+  position: relative;
+  padding: 20px 27px;
+  border-radius: 4px 4px 0 0;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.65);
+  border-bottom: 1px solid $border-lighter;
+  .title {
+    line-height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #2f0d56;
+  }
+  i {
+    position: absolute;
+    top: 0;
+    right: 27px;
+    font-size: 16px;
+    margin-top: 24px;
+    cursor: pointer;
+    color: #2f0d56;
+  }
+}
+
+.body {
+  padding: 20px 30px;
+}
+
+.footer {
+  padding: 16px 27px;
+  border-top: 1px solid $border-lighter;
+  button {
+    margin-left: 10px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+}

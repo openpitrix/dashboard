@@ -1,0 +1,90 @@
+@import '~scss/variables';
+
+.apps {
+  padding-top: $header-height;
+}
+
+.container {
+  width: $content-width;
+  margin: 0 auto 25px;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.toolbar {
+  padding: 24px;
+
+  .select {
+    width: 176px;
+
+    div {
+      box-shadow: none !important;
+    }    
+  }  
+}
+
+.search {
+  display: inline-block;
+  width: 337px;
+  margin-left: 16px;
+  border-color: $border-lighter;
+  box-shadow: none;
+
+  :global {
+    .fa {
+      color: $placeholder-color;
+    }
+  }
+
+  input::placeholder {
+    font-weight: 400;
+    color: $placeholder-color;    
+  }
+}
+
+.list { 
+  padding: 0 24px;
+
+  .listItem {
+    position: relative;    
+    display: table;
+    width: 100%;
+    padding: 7px 0;
+    border-top: 1px solid $border-lighter;
+
+    .icon {
+      float: left;
+      width: 48px;
+      height: 48px;
+      border-radius: 3px;
+    }
+
+    .name {
+      display: table-cell;
+      width: 100%;
+      padding: 0 200px 0 24px;
+      line-height: 1.15;
+      vertical-align: middle;
+      word-break: break-word;
+
+      a {
+        color: $title-color;
+      }
+    }
+
+    .handle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 167px;
+      padding: 0 16px;
+      transform: translate(0, -50%);
+      text-align: right;
+
+      button:first-child {
+        margin-right: 16px;
+      }
+    }
+  }
+}

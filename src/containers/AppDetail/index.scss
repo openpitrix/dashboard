@@ -1,0 +1,73 @@
+@import "~scss/variables";
+
+.app{
+  height: calc(100vh - #{$footer-height});
+  padding-top: $header-height;
+  background-color: #fff;
+}
+
+.wrapper {
+  width: $content-width;
+  margin: 0 auto;
+}
+
+.header {
+  margin: 24px 0;
+  a {
+    line-height: 20px;
+    font-weight: 500;
+    color: $title-color;
+    transition: color .3s ease-in-out;
+    &:hover {
+      color: lighten($title-color, 20%);
+    }
+  }
+}
+
+.detail {
+  display: table;
+  width: 100%;
+  .intro {
+    display: table-cell;
+    width: 840px;
+  }
+  .meta {
+    display: table-cell;
+    padding-left: 40px;
+    .deployBtn {
+      width: 100%;
+      box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
+    }
+    .section {
+      margin-bottom: 20px;
+      &:first-of-type {
+        margin-top: 30px;
+      }
+      .sectionTitle {
+        line-height: 22px;
+        font-size: 16px;
+        font-weight: 600;
+        color: $title-color;
+      }
+      .sectionContent {
+        margin-top: 15px;
+        line-height: 20px;
+        font-size: 14px;
+        text-align: left;
+        color: $text-color;
+        a {
+          display: block;
+          margin-bottom: 12px;
+          color: $link-color;
+          transition: color .3s ease-in-out;
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+          &:hover {
+            color: darken($link-color, 20%);
+          }
+        }
+      }
+    }
+  }
+}

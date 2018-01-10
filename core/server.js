@@ -7,6 +7,7 @@ require('./polyfills');
 
 // Ignore files on server render
 require.extensions['.scss'] = function () {};
+require.extensions['.css'] = function () {};
 
 const WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 const projectBasePath = require('path').resolve(__dirname, '..');

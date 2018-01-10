@@ -1,0 +1,30 @@
+@import '~scss/variables';
+
+.group {
+  display: inline-block;
+  .radio {
+    margin-right: 23px;
+  }
+}
+
+.radio {
+  .circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border: solid 1px $border-lighter;
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+  .text {
+    margin-left: 6px;
+    line-height: 16px;
+    color: $text-color;
+  }
+  &.checked {
+    .circle {
+      border: solid 4px $third-text-color;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@import '~scss/variables';
+
+.slider {
+  position: relative;
+  display: inline-block;
+  width: 276px;
+  height: 14px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px $border-lighter;
+  cursor: pointer;
+  .bar {
+    height: 100%;
+    background-color: #d7c9e6;
+  }
+  
+  .block {
+    position: absolute;
+    top: -50%;
+    width: 14px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.18);
+  }
+}

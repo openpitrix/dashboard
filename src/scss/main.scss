@@ -1,10 +1,7 @@
 @charset "utf-8";
-@import "~bootstrap/scss/bootstrap";
 @import "variables";
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: $family-primary;
   font-size: $body-size;
   color: $text-color;
@@ -15,13 +12,18 @@ a, a:hover, a:focus, a:active, a:visited {
   text-decoration: none;
 }
 
+div {
+  box-sizing: border-box;
+}
+
 :global {
   .main {
-    width: $content-width;
+    width: 100%;
+    min-width: $content-width;
     min-height: calc(100vh - #{$footer-height});
     margin: 0 auto;
   }
   .header {
-    background-image: none;
+    background-image: none !important;
   }
 }

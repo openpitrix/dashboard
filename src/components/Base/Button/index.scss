@@ -1,0 +1,60 @@
+@import "~scss/variables";
+
+.button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 3px;
+  font-size: $body-size;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  &.loading {
+    position: relative;    
+    color: transparent !important;
+    pointer-events: none;
+
+    i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      color: $primary;
+      transform: translate(-50%, -50%);      
+    }
+  }
+  
+  &.primary {
+    color: #fff;
+    border: 1px solid $primary;
+    background-color: $primary;
+
+    &:hover, &:disabled {
+      background-color: darken($primary, 8%);
+      border-color: darken($primary, 8%);
+    }
+
+    &:active {
+      background-color: darken($primary, 16%);
+      border-color: darken($primary, 16%);
+    }
+  }
+
+  &.default {
+    color: $title-color;
+    border: 1px solid $grey;
+    background-color: #fff;
+
+    &:hover, &:disabled {
+      background-color: darken(#fff, 8%);
+      border-color: darken(#fff, 8%);
+    }
+
+    &:active {
+      background-color: darken(#fff, 16%);
+      border-color: darken(#fff, 16%);
+    }
+  }
+}
