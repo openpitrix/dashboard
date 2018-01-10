@@ -20,10 +20,13 @@ div {
   .main {
     width: 100%;
     min-width: $content-width;
-    min-height: calc(100vh - #{$footer-height});
+    min-height: $main-height;
     margin: 0 auto;
   }
   .header {
     background-image: none !important;
+  }
+  .id {
+    font-family: 'PT Mono',Monaco,Menlo,Consolas,"Courier New",monospace;
   }
 }

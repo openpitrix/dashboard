@@ -50,7 +50,10 @@ $transition-speed: .3s;
 
 
 $content-width: 1128px;
+$nav-width: 210px;
 $header-height: 48px;
 $banner-height: 400px;
 $footer-height: 70px;
 $base-margin: 24px;
+
+$main-height: calc(100vh - #{$footer-height});

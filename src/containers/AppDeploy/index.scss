@@ -1,0 +1,25 @@
+@import "~scss/variables";
+
+.deploy{
+  min-height: $main-height;
+  padding-top: $header-height;
+  background-color: #fff;
+}
+
+.wrapper {
+  width: $content-width;
+  margin: 0 auto;
+}
+
+.header {
+  margin: 24px 0;
+  a {
+    line-height: 20px;
+    font-weight: 500;
+    color: $title-color;
+    transition: color .3s ease-in-out;
+    &:hover {
+      color: lighten($title-color, 20%);
+    }
+  }
+}
