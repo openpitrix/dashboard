@@ -1,7 +1,9 @@
+import { resolve } from 'path';
 import Koa from 'koa';
 import bodyParser from 'koa-better-body';
 import favicon from 'koa-favicon';
 import convert from 'koa-convert';
+import views from 'koa-views';
 import config from './config';
 import store from './middleware/store';
 import render from './middleware/render';
@@ -27,6 +29,10 @@ app.use(convert(bodyParser({
   bufferLimit: '4mb',
 })));
 app.use(store);
+
+app.use(views(resolve(__dirname, './views'), {
+  extension: 'pug',
+}));
 
 // Routes
 app.use(routes.routes());

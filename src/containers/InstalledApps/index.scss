@@ -17,10 +17,11 @@
 
   .select {
     width: 176px;
+    vertical-align: top;
 
     div {
       box-shadow: none !important;
-    }    
+    }
   }  
 }
 
@@ -39,15 +40,16 @@
 
   input::placeholder {
     font-weight: 400;
-    color: $placeholder-color;    
+    color: $placeholder-color;
   }
 }
 
-.list { 
+.list {
   padding: 0 24px;
+  margin: 0;
 
   .listItem {
-    position: relative;    
+    position: relative;
     display: table;
     width: 100%;
     padding: 7px 0;
