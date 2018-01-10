@@ -20,16 +20,6 @@ export default class FormItem extends React.Component {
     className: '',
   }
 
-  constructor(props) {
-    super(props);
-    const { formData, children } = this.props;
-    const { name } = children.props;
-
-    if (name) {
-      formData[name] = formData[name] || '';
-    }
-  }
-
   handleValueChange = (e) => {
     const { formData, children } = this.props;
     const { name, onChange } = children.props;

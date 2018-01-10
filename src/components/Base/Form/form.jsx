@@ -8,6 +8,7 @@ export default class Form extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     onSubmit: PropTypes.func,
+    data: PropTypes.object,
   }
 
   static defaultProps = {
