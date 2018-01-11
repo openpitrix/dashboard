@@ -24,7 +24,6 @@ fs.emptyDirSync(root('build'));
 
 console.info('Environment: Production');
 
-config.output.path = root('build');
 config.module.loaders.push({
   test: /\.s[ac]ss$/,
   loader: ExtractCSS.extract({
@@ -97,14 +96,3 @@ compiler.run((err, stats) => {
   }
   console.info('Finished compiling');
 });
-
-/**
- * Writes a stats.json for the webpack bundle visualizer
- * URL: https://chrisbateman.github.io/webpack-visualizer/
- * @param stats
- */
-function writeWebpackStats(stats) {
-  const location = path.resolve(config.output.path, 'stats.json');
-  require('fs').writeFileSync(location, JSON.stringify(stats.toJson()));
-  console.debug(`Wrote stats.json to ${location}`);
-}
