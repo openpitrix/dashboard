@@ -15,6 +15,7 @@
   
   .logo {
     display: inline-block;
+    width: $nav-width;
     margin-top: $header-height / 2;
     transform: translateY(-50%);
   }
@@ -22,7 +23,7 @@
   .search {
     display: inline-block;
     margin-top: 8px;
-    margin-left: 144px;
+    margin-left: 78px;
     vertical-align: top;
     background-color: #ffffff10;
     box-shadow: none;

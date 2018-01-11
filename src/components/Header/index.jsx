@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import Logo from '../Logo';
 import Input from '../Base/Input';
@@ -15,16 +15,18 @@ export default class Header extends PureComponent {
   render() {
     const { isHome } = this.props;
 
+    const logoUrl = isHome ? '../../assets/logo.svg' : '../../assets/logo2.svg';
+
     return (
       <div className={classnames(styles.header, { header: isHome })}>
         <div className={styles.wrapper}>
-          <Logo className={styles.logo} url='../../assets/logo.svg' />
+          <Logo className={styles.logo} url={logoUrl}/>
           {!isHome && <Input.Search className={styles.search} placeholder="Search apps in Pitrix"/>}
           <div className={styles.menus}>
-            <Link to="/apps">Browse</Link>
-            <Link to="/apps">Manage</Link>
-            <Link to="/apps">Develop</Link>
-            <Link to="/apps">Sign In</Link>
+            <NavLink to="/apps">Browse</NavLink>
+            <NavLink to="/manage/apps">Manage</NavLink>
+            <NavLink to="/develop">Develop</NavLink>
+            <NavLink to="/login">Sign In</NavLink>
           </div>
         </div>
       </div>

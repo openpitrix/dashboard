@@ -1,0 +1,37 @@
+@import '~scss/variables';
+
+.item {
+  margin-bottom: $base-margin + 18;
+  .label{
+    width: 150px;
+    line-height: 16px;
+    font-weight: bold;
+    text-align: right;
+    color: $title-color;
+  }
+  .wrapper {
+    display: inline-block;
+    position: relative;
+    width: 276px;
+    margin-left: $base-margin;
+  }
+  .help {
+    position: absolute;
+    left: 0;
+    bottom: -18px;
+    font-size: 12px;
+    color: $second-text-color;
+  }
+}
+
+.section {
+  margin: $base-margin;
+}
+
+.sectionTitle {
+  margin-bottom: 32px;
+  line-height: 19px;
+  font-size: 16px;
+  font-weight: bold;
+  color: $title-color;
+}

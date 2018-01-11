@@ -1,7 +1,7 @@
 @import "~scss/variables";
 
 .app{
-  height: calc(100vh - #{$footer-height});
+  min-height: $main-height;
   padding-top: $header-height;
   background-color: #fff;
 }
@@ -27,13 +27,55 @@
 .detail {
   display: table;
   width: 100%;
+  vertical-align: top;
   .intro {
     display: table-cell;
     width: 840px;
+    .title {
+      height: 48px;
+      background-color: #dfdfdf;
+    }
+    .carousel {
+      width: 100%;
+      height: 398px;
+      margin-top: $base-margin;
+      background-color: #dfdfdf;
+    }
+    .desc {
+      height: 84px;
+      margin-top: $base-margin + 2;
+      line-height: 1.5;
+	    color: #333333;
+    }
+    .versions {
+      margin-top: 44px;
+      p {
+        line-height: 19px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #2f0d56;
+      }
+      ul {
+        padding: 24px;
+        margin-top: 16px;
+        list-style: none;
+        border-radius: 3px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: solid 1px #c9bed7;
+        li {
+          display: block;
+          border-bottom: 1px solid #c9bed6;
+          &:last-of-type {
+            border-bottom: none;
+          }
+        }
+      }
+    }
   }
   .meta {
     display: table-cell;
     padding-left: 40px;
+    vertical-align: top;
     .deployBtn {
       width: 100%;
       box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
