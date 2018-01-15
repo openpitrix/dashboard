@@ -4,20 +4,13 @@ if (process.env.BROWSER) {
 } else {
   const { inspect } = require('util');
   const logger = function (color, name) {
-    return function () {
+    return function (...args) {
       // Get arguments without deoptimizing v8
-      const args = [];
-      for (let i = 0; i < arguments.length; i++) {
-        if (typeof arguments[i] === 'object') {
-          args.push(inspect(arguments[i], {
-            colors: true,
-            depth: 4,
-            breakLength: Infinity,
-          }));
-        } else {
-          args.push(arguments[i]);
-        }
-      }
+      args = args.map(arg => (typeof arg === 'object' ? inspect(arg, {
+        colors: true,
+        depth: 4,
+        breakLength: Infinity,
+      }) : arg));
       console.log(`\u001b[3${color};1m${name}\u001b[0m`, ...args);
     };
   };

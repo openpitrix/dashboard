@@ -27,7 +27,7 @@ export default async (ctx, next) => {
   );
 
   /**
-   * Disable ssr 
+   * Disable ssr
    * const components = null;
    */
 
