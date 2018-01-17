@@ -7,6 +7,7 @@ import { Provider } from 'mobx-react';
 import Header from 'components/Header';
 import Banner from 'components/Banner';
 import Footer from 'components/Footer';
+import RouteWrapper from './routes/wrapper';
 import routes from './routes';
 
 import './scss/main.scss';
@@ -28,7 +29,16 @@ class App extends Component {
           {isHome && <Banner />}
           <div className="main">
             <Switch>
-              {routes.map((route, i) => <Route key={i} {...route}/>)}
+              {routes.map((route, i) =>
+                <Route
+                  key={i}
+                  exact={route.exact}
+                  path={route.path}
+                  render={({ match }) =>
+                    <RouteWrapper component={route.component} match={match} rootStore={rootStore} />
+                  }
+                />,
+              )}
             </Switch>
           </div>
           <Footer />
