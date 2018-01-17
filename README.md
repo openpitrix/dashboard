@@ -2,6 +2,7 @@
 
 # OpenPitrix Dashboard
 
+[![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
 A dashboard for [OpenPitrix](https://github.com/openpitrix/openpitrix)
@@ -22,4 +23,9 @@ yarn run dev
 
 ```shell
 yarn run build
+```
+
+### Testing
+```shell
+yarn test
 ```
