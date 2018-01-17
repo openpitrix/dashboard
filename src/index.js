@@ -3,7 +3,7 @@ import 'core/logger';
 import 'core/polyfills';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 
@@ -12,7 +12,7 @@ import RootStore from './stores/RootStore';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 
-ReactDOM.render(
+render(
   <AppContainer>
     <BrowserRouter>
       <App rootStore={store} />

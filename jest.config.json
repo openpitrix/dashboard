@@ -1,0 +1,9 @@
+{
+  "bail": true,
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
+  },
+  "moduleNameMapper": {
+    "\\.(css|scss|png|svg)$": "<rootDir>/config/assetsTransformer.js"
+  }
+}

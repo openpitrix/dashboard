@@ -6,12 +6,9 @@
     "transform-decorators-legacy",
     "transform-class-properties",
     ["module-resolver", {
-      "root": ["./"],
+      "root": ["./", "./src/**"],
       "alias": {
-        "core": "./core",
-        "components": "./src/components",
-        "containers": "./src/containers",
-        "utils": "./src/utils"
+        "pages": "./src/containers"
       }
     }]
   ],
