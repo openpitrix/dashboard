@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, extendObservable } from 'mobx';
 import request from 'core/request';
 
 export default class AppStore {
@@ -8,6 +8,12 @@ export default class AppStore {
   @observable clusters = {};
   @observable clusterNodes = {};
   @observable isLoading = false;
+
+  constructor(initialState) {
+    if (initialState) {
+      extendObservable(this, initialState.appStore);
+    }
+  }
 
   @action async fetchApps() {
     this.isLoading = true;

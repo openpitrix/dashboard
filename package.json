@@ -35,7 +35,7 @@
     "webpack-isomorphic-tools": "^3.0.5"
   },
   "scripts": {
-    "dev": "DEBUG=koa* node index.js --dev",
+    "dev": "DEBUG=koa-router node index.js --dev",
     "prod": "node index.js --prod",
     "build": "node config/webpack.prod.js",
     "lint": "eslint ."

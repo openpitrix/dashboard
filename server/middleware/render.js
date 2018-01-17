@@ -42,5 +42,6 @@ export default async (ctx, next) => {
     title: ctx.store.config.name,
     children: components,
     state: JSON.stringify(ctx.store),
+    isSSR: true,
   });
 };
