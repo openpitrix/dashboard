@@ -6,5 +6,7 @@ const router = new Router();
 router.get('/api/apps', apps.getApps);
 router.get('/api/app/:id', apps.getApp);
 router.get('/api/installedApps', apps.getInstalledApps);
+router.get('/api/clusters', apps.getClusters);
+router.get('/api/clusterNodes/:id', apps.getClusterNodes);
 
 export default router;
