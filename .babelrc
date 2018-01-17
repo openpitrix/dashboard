@@ -8,7 +8,7 @@
     ["module-resolver", {
       "root": ["./", "./src/**"],
       "alias": {
-        "pages": "./src/containers"
+
       }
     }]
   ],

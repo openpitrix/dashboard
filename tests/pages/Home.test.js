@@ -1,7 +1,6 @@
 import React from 'react';
 import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-// import renderer from 'react-test-renderer';
 
 import { observable, useStrict } from 'mobx';
 
@@ -11,7 +10,7 @@ import AppList from 'components/AppList';
 
 configure({ adapter: new Adapter() });
 
-describe('Home', ()=>{
+describe('Home', ()=> {
   let rootStore;
 
   beforeEach(()=> {
@@ -28,7 +27,7 @@ describe('Home', ()=>{
     rootStore = null;
   });
 
-  it('render without crash', ()=>{
+  it('render without crash', ()=> {
     const wrapper = shallow(<Home rootStore={rootStore} />);
   });
 
@@ -43,9 +42,4 @@ describe('Home', ()=>{
   it('call onEnter', ()=> {
     // todo
   });
-
-  // xit('snapshot', ()=> {
-  //   const tree=renderer.create(<Home rootStore={rootStore} />).toJSON();
-  //   expect(tree).toMatchSnapshot();
-  // });
 });
