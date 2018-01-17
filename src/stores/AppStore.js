@@ -5,6 +5,8 @@ export default class AppStore {
   @observable apps = [];
   @observable app = {};
   @observable installedApps = [];
+  @observable clusters = {};
+  @observable clusterNodes = {};
   @observable isLoading = false;
 
   @action async fetchApps() {
@@ -25,6 +27,20 @@ export default class AppStore {
     this.isLoading = true;
     const result = await request.get('api/installedApps');
     this.installedApps = result.items;
+    this.isLoading = false;
+  }
+
+  @action async fetchClusters() {
+    this.isLoading = true;
+    const result = await request.get('api/clusters');
+    this.clusters = result;
+    this.isLoading = false;
+  }
+
+  @action async fetchClusterNodes(clusterId) {
+    this.isLoading = true;
+    const result = await request.get(`api/clusterNodes/${clusterId}`);
+    this.clusterNodes = result;
     this.isLoading = false;
   }
 }

@@ -1,0 +1,81 @@
+@import '~scss/variables';
+
+.table {
+  &-body {
+    transition: opacity $transition-speed;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+}
+
+:global {
+  .pi-table {
+    &-thead > tr > th {
+      position: relative;
+      padding: 12px 24px;
+      font-weight: 500;
+      color: $title-color;
+      background: $th-background-color;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -1px;
+        top: 8px;
+        bottom: 8px;
+        width: 0;
+        border-right: 1px solid $border-light;
+      }
+    }
+
+    &-tbody > tr{
+      transition: all $transition-speed;
+
+      &:hover {
+        background-color: #fafafa;
+        
+        td {
+          &:first-child {
+            border-left-color: #fafafa;
+          }
+          &:last-child {
+            border-right-color: #fafafa;
+          }
+        }
+      }
+    }
+
+    &-tbody > tr > td {
+      padding: 12px 0 12px 24px;
+      line-height: 16px;
+      border-bottom: 1px solid $border-lighter;
+      transition: all $transition-speed;
+      word-wrap:break-word;
+
+      &:first-child {
+        padding-left: 0;
+        border-left: 48px solid #fff;
+      }
+
+      &:last-child {
+        border-right: 48px solid #fff;
+      }
+    }
+
+    &-placeholder {
+      padding: 12px 0;
+      text-align: center;
+    }
+  }
+}
+
+.selectionCheck {
+  padding-left: 14px;
+}

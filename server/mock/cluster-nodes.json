@@ -1,0 +1,62 @@
+[
+  {
+    "node_id": "cln-z1gqc9cx",
+    "name": "EsgynDB-Node1",
+    "role": "Client",
+    "node_status": "pending",
+    "service_status": "pending",
+    "configuration": "1-Core 2GB 0GB",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "node_id": "cln-vgzrvrvs",
+    "name": "EsgynDB-Node2",
+    "role": "Node",
+    "node_status": "deleted",
+    "service_status": "stopped",
+    "configuration": "2-Core 4GB 20GB",
+    "created": "2017-10-12T09:50:53.499Z",
+    "last_modified": "2017-10-12T09:50:53.499Z"
+  },
+  {
+    "node_id": "cln-91gssdxk",
+    "name": "EsgynDB-Node3",
+    "role": "Node",
+    "node_status": "deleted",
+    "service_status": "stopped",
+    "configuration": "2-Core 4GB 20GB",
+    "created": "2017-10-12T09:50:53.499Z",
+    "last_modified": "2017-10-12T09:50:53.499Z"
+  },
+  {
+    "node_id": "cln-z1gqc9cx",
+    "name": "EsgynDB-Node1",
+    "role": "Client",
+    "node_status": "pending",
+    "service_status": "pending",
+    "configuration": "1-Core 2GB 0GB",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "node_id": "cln-vgzrvrvs",
+    "name": "EsgynDB-Node2",
+    "role": "Node",
+    "node_status": "deleted",
+    "service_status": "stopped",
+    "configuration": "2-Core 4GB 20GB",
+    "created": "2017-10-12T09:50:53.499Z",
+    "last_modified": "2017-10-12T09:50:53.499Z"
+  },
+  {
+    "node_id": "cln-91gssdxk",
+    "name": "EsgynDB-Node3",
+    "role": "Node",
+    "node_status": "deleted",
+    "service_status": "active",
+    "configuration": "2-Core 4GB 20GB",
+    "created": "2017-10-12T09:50:53.499Z",
+    "last_modified": "2017-10-12T09:50:53.499Z"
+  }
+]

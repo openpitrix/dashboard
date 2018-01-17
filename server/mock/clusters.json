@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cl-eaazvhea",
+    "cluster_name": "EsgynDB",
+    "app_name": "EsgynDB",
+    "app_version": "Trial 1.0",
+    "status": "pending",
+    "node_count": 2,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "id": "cl-bvnke9dj",
+    "cluster_name": "NextCloud",
+    "app_name": "NextCloud",
+    "app_version": "NextCloud 1.0 EC",
+    "status": "deleted",
+    "node_count": 5,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "id": "cl-tug31u1q",
+    "cluster_name": "HarshData",
+    "app_name": "HarshData",
+    "app_version": "HarshData Ne 3.4.9",
+    "status": "stopped",
+    "node_count": 12,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "id": "cl-eaazvhee",
+    "cluster_name": "EsgynDB",
+    "app_name": "EsgynDB",
+    "app_version": "Trial 1.0",
+    "status": "ceased",
+    "node_count": 2,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2018-01-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "id": "cl-bvnke9dd",
+    "cluster_name": "NextCloud",
+    "app_name": "NextCloud",
+    "app_version": "NextCloud 1.0 EC",
+    "status": "suspended",
+    "node_count": 5,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2017-12-22T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  },
+  {
+    "id": "cl-tug31u11",
+    "cluster_name": "HarshData",
+    "app_name": "HarshData",
+    "app_version": "HarshData Ne 3.4.9",
+    "status": "active",
+    "node_count": 12,
+    "description": "金融级强一致性、主从秒级切换、双引擎支持的 MySQL 集群",
+    "repo_id": "y1",
+    "created": "2017-11-02T09:50:53.499Z",
+    "last_modified": "2018-01-02T09:50:53.499Z"
+  }  
+]
