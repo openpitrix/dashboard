@@ -11,11 +11,13 @@ import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject(({ roootStore }) => ({
+  clusterStore: roootStore.clusterStore,
+}))
 @observer
 export default class ClusterDetail extends Component {
-  static async onEnter({ appStore }, { clusterId }) {
-    await appStore.fetchClusterNodes(clusterId);
+  static async onEnter({ clusterStore }, { clusterId }) {
+    await clusterStore.fetchClusterNodes(clusterId);
   }
 
   state = {
@@ -34,10 +36,10 @@ export default class ClusterDetail extends Component {
   }
 
   render() {
-    const { appStore } = this.props.rootStore;
+    const { clusterStore } = this.props;
     const { selectedRowKeys } = this.state;
 
-    const data = appStore.clusterNodes.items && [...appStore.clusterNodes.items] || [];
+    const data = clusterStore.clusterNodes.items && [...clusterStore.clusterNodes.items] || [];
     const columns = [
       {
         title: 'Node ID', dataIndex: 'node_id', key: 'node_id', width: '13%', render: text => <Link className={classNames(styles.idLink, 'id')} to="/">{text}</Link>,

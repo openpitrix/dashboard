@@ -5,7 +5,10 @@ import Nav from 'components/Nav';
 import AppList from 'components/AppList';
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  appStore: rootStore.appStore,
+  config: rootStore.config,
+}))
 @observer
 export default class BrowseApps extends Component {
   static async onEnter({ appStore }) {
@@ -13,7 +16,7 @@ export default class BrowseApps extends Component {
   }
 
   render() {
-    const { config, appStore } = this.props.rootStore;
+    const { config, appStore } = this.props;
 
     return (
       <div className={styles.browse}>

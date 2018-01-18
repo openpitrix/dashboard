@@ -13,17 +13,19 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  clusterStore: rootStore.clusterStore,
+}))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchClusters();
+  static async onEnter({ clusterStore }) {
+    await clusterStore.fetchClusters();
   }
 
   render() {
-    const { appStore } = this.props.rootStore;
+    const { clusterStore } = this.props;
 
-    const data = appStore.clusters.items && [...appStore.clusters.items] || [];
+    const data = clusterStore.clusters.items && [...clusterStore.clusters.items] || [];
     const columns = [
       {
         title: 'Cluster ID', dataIndex: 'id', key: 'id', width: '13%', render: text => <Link className={classNames(styles.idLink, 'id')} to={`/manage/cluster/${text}`}>{text}</Link>,
@@ -38,7 +40,7 @@ export default class Clusters extends Component {
         title: 'App Version', dataIndex: 'app_version', key: 'app_version', width: '20%',
       },
       {
-        title: 'Status', dataIndex: 'status', key: 'status', width: '12%', render: text =>  <Status status={text} name={text} />,
+        title: 'Status', dataIndex: 'status', key: 'status', width: '12%', render: text => <Status status={text} name={text} />,
       },
       {
         title: 'Node Count', dataIndex: 'node_count', key: 'node_count', width: '12%',

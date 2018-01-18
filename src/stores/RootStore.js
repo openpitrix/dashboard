@@ -1,6 +1,7 @@
 import { extendObservable } from 'mobx';
 
 import AppStore from './AppStore';
+import ClusterStore from './ClusterStore';
 
 export default class RootStore {
   config = {}
@@ -11,5 +12,6 @@ export default class RootStore {
     }
 
     this.appStore = new AppStore(initialState);
+    this.clusterStore = new ClusterStore(initialState);
   }
 }

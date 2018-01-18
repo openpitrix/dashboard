@@ -1,12 +1,12 @@
 import Router from 'koa-router';
-import * as apps from './routes/apps';
+import request from 'core/request';
+import config from './config';
 
 const router = new Router();
 
-router.get('/api/apps', apps.getApps);
-router.get('/api/app/:id', apps.getApp);
-router.get('/api/installedApps', apps.getInstalledApps);
-router.get('/api/clusters', apps.getClusters);
-router.get('/api/clusterNodes/:id', apps.getClusterNodes);
+router.get('/api/*', async (ctx) => {
+  const resp = await request.get(config.serverUrl + ctx.url, ctx.query);
+  ctx.body = resp;
+});
 
 export default router;
