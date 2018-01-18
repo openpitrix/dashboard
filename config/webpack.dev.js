@@ -1,4 +1,5 @@
 const path = require('path');
+const mergeWith = require('lodash/mergeWith');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.base.js');
@@ -14,7 +15,7 @@ const root = (dir) => path.resolve(__dirname, '..', dir);
 
 const port = 3002;
 
-Object.assign(config, {
+mergeWith(config, {
   cache: true,
   // devtool: 'eval-source-map',
   entry: {
@@ -30,60 +31,65 @@ Object.assign(config, {
     libraryTarget: 'var',
     pathinfo: true,
   },
-});
-
-config.module.loaders.push({
-  test: /\.s[ac]ss$/,
-  use: [
-    'style-loader',
-    {
-      loader: 'css-loader',
-      options: {
-        minimize: false,
-        importLoaders: 1,
-        localIdentName: '[folder]__[local]___[hash:base64:5]',
-        modules: true,
+  module: {
+    loaders: [
+      {
+        test: /\.s[ac]ss$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: false,
+              importLoaders: 1,
+              localIdentName: '[folder]__[local]___[hash:base64:5]',
+              modules: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: postCssOptions,
+          },
+          { loader: 'sass-loader' },
+        ],
+        include: [root('src')],
       },
-    },
-    {
-      loader: 'postcss-loader',
-      options: postCssOptions,
-    },
-    { loader: 'sass-loader' },
-  ],
-  include: [root('src')],
-});
-
-config.module.loaders.push({
-  test: /\.css$/,
-  use: [
-    'style-loader',
-    {
-      loader: 'css-loader',
-      options: {
-        minimize: false,
-        importLoaders: 1,
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: false,
+              importLoaders: 1,
+            },
+          },
+        ],
       },
-    },
+    ],
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.WatchIgnorePlugin([
+      root('core'),
+      root('config'),
+      root('build'),
+    ]),
+    new webpack.DefinePlugin({
+      'process.env.DEV': true,
+      'process.env.BROWSER': true,
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
+    webpackIsomorphicToolsPlugin,
   ],
+}, (objValue, srcValue) => {
+  if (Array.isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
 });
-
-config.plugins.push(
-  new webpack.HotModuleReplacementPlugin(),
-  new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.NamedModulesPlugin(),
-  new webpack.WatchIgnorePlugin([
-    root('core'),
-    root('config'),
-    root('build'),
-  ]),
-  new webpack.DefinePlugin({
-    'process.env.DEV': true,
-    'process.env.BROWSER': true,
-    'process.env.NODE_ENV': JSON.stringify('development'),
-  }),
-  webpackIsomorphicToolsPlugin,
-);
 
 const compiler = webpack(config);
 
