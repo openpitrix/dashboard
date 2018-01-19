@@ -5,8 +5,9 @@ const root = (dir) => path.resolve(__dirname, '..', dir);
 
 let localConfig = {};
 
-if (fs.existsSync(root('server/config.local.js'))) {
-  localConfig = require('./config.local');
+const localConfigPath = root('server/config.local.js');
+if (fs.existsSync(localConfigPath)) {
+  localConfig = require(localConfigPath);
 }
 
 // We need these globals to fetch data on server-side
@@ -23,7 +24,7 @@ const config = {
       '/build': root('build'),
     },
   },
-  serverUrl: '',
+  serverUrl: 'http://139.198.11.221:7300/mock/5a5f69abd139150db4ca48cf',
   app: {
     name: 'OpenPitrix Dashboard',
     navs: [

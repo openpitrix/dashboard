@@ -38,6 +38,7 @@ module.exports = {
     // allow paren-less arrow functions
     'arrow-parens': 0,
     'import/no-extraneous-dependencies': [2, { devDependencies: true }],
+    'import/no-dynamic-require': 0,
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development

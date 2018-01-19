@@ -11,8 +11,8 @@ import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import styles from './index.scss';
 
-@inject(({ roootStore }) => ({
-  clusterStore: roootStore.clusterStore,
+@inject(({ rootStore }) => ({
+  clusterStore: rootStore.clusterStore,
 }))
 @observer
 export default class ClusterDetail extends Component {
