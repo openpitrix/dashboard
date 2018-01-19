@@ -8,7 +8,9 @@ import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  appStore: rootStore.appStore,
+}))
 @observer
 export default class InstalledApps extends Component {
   static async onEnter({ appStore }) {
@@ -16,7 +18,7 @@ export default class InstalledApps extends Component {
   }
 
   render() {
-    const { appStore } = this.props.rootStore;
+    const { appStore } = this.props;
 
     return (
       <div className={styles.apps}>

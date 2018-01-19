@@ -1,12 +1,20 @@
+import fs from 'fs';
 import path from 'path';
 
 const root = (dir) => path.resolve(__dirname, '..', dir);
+
+let localConfig = {};
+
+const localConfigPath = root('server/config.local.js');
+if (fs.existsSync(localConfigPath)) {
+  localConfig = require(localConfigPath);
+}
 
 // We need these globals to fetch data on server-side
 global.HOSTNAME = 'localhost';
 global.PORT = 3000;
 
-export default {
+const config = {
   http: {
     port: global.PORT,
     hostname: global.HOSTNAME,
@@ -16,6 +24,7 @@ export default {
       '/build': root('build'),
     },
   },
+  serverUrl: 'http://139.198.11.221:7300/mock/5a5f69abd139150db4ca48cf',
   app: {
     name: 'OpenPitrix Dashboard',
     navs: [
@@ -51,3 +60,7 @@ export default {
     ],
   },
 };
+
+const mergedConfig = Object.assign({}, config, localConfig);
+
+export default mergedConfig;
