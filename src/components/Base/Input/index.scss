@@ -29,21 +29,21 @@
   box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.08);
   box-sizing: border-box;
   :global {
-    .fa {
+    .icon {
       opacity: 0.9;
       color: $third-text-color;
     }
-    .fa-search {
+    .icon-search {
       position: absolute;
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
     }
-    .fa-times {
+    .icon-close {
       position: absolute;
       right: 15px;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%) scale(0.6);
       cursor: pointer;
     }
   }
