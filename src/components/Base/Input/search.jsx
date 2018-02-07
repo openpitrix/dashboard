@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Icon from '../Icon';
 import styles from './index.scss';
 
 export default class Search extends React.Component {
@@ -38,7 +39,7 @@ export default class Search extends React.Component {
     const { value } = this.state;
     return (
       <div className={classnames(styles.search, className)}>
-        <i className="fa fa-search"/>
+        <Icon name="search" />
         <input
           type="text"
           placeholder={placeholder}
@@ -46,7 +47,7 @@ export default class Search extends React.Component {
           onChange={this.handleInputChange}
           onKeyDown={this.handleOnKeyDown}
         />
-        {value && <i className="fa fa-times" onClick={this.handleClear}/>}
+        {value && <Icon name="close" onClick={this.handleClear} />}
       </div>
     );
   }
