@@ -24,7 +24,7 @@ const config = {
       '/build': root('build'),
     },
   },
-  serverUrl: 'http://139.198.11.221:7300/mock/5a5f69abd139150db4ca48cf',
+  serverUrl: 'http://139.198.11.221:7300/mock/5a7acd265fbf5132a58d61e4',
   app: {
     name: 'OpenPitrix Dashboard',
     navs: [
