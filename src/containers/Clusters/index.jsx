@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -25,7 +26,7 @@ export default class Clusters extends Component {
   render() {
     const { clusterStore } = this.props;
 
-    const data = clusterStore.clusters.items && [...clusterStore.clusters.items] || [];
+    const data = toJS(clusterStore.clusters.items) || [];
     const columns = [
       {
         title: 'Cluster ID', dataIndex: 'id', key: 'id', width: '13%', render: text => <Link className={classNames(styles.idLink, 'id')} to={`/manage/cluster/${text}`}>{text}</Link>,
