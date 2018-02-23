@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 
+import Icon from '../Icon';
 import styles from './index.scss';
 
 export default class Button extends PureComponent {
@@ -42,7 +43,7 @@ export default class Button extends PureComponent {
         onClick={this.handleClick}
         {...others}
       >
-        {loading && <i class="fa fa-spinner"></i>}
+        {loading && <Icon name="spinner" />}
         {children}
       </button>
     );

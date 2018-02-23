@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { getParseDate } from 'utils';
 
+import Icon from 'components/Base/Icon';
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
 import Select from 'components/Base/Select';
@@ -89,8 +90,8 @@ export default class ClusterDetail extends Component {
                 </p>
               </div>
               <div className={styles.baseHandle}>
-                <Button><i className="fa fa-wrench"></i>Modify Attributes</Button>
-                <Button><i className="fa fa-history"></i>View History</Button>
+                <Button><Icon name="modify" />Modify Attributes</Button>
+                <Button><Icon name="history" />View History</Button>
                 <Select className={styles.handleSelect} value="More">
                   <Select.Option value="1">one</Select.Option>
                   <Select.Option value="2">two</Select.Option>
@@ -121,7 +122,7 @@ export default class ClusterDetail extends Component {
             <div className={styles.nodesTitle}>Nodes</div>
             <div className={styles.nodesContent}>
               <div className={styles.toolbar}>
-                <Button className={styles.refresh} onClick={this.refreshTable}><i className="fa fa-refresh"></i></Button>
+                <Button className={styles.refresh} onClick={this.refreshTable}><Icon name="refresh" /></Button>
                 <Select className={styles.select} value="All Status">
                   <Select.Option value="1">Types1</Select.Option>
                   <Select.Option value="2">Types2</Select.Option>
@@ -129,7 +130,7 @@ export default class ClusterDetail extends Component {
                 <Input.Search className={styles.search} placeholder="Search Node ID or App Name"/>
 
                 <div className={styles.nodesHandle}>
-                  <Button><i className="fa fa-history"></i>Create Node</Button>
+                  <Button><Icon name="create" />Create Node</Button>
                   <Select className={styles.handleSelect} value="More">
                     <Select.Option value="1">one</Select.Option>
                     <Select.Option value="2">two</Select.Option>

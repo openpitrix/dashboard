@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { getParseDate } from 'utils';
 
 import ManageTabs from 'components/ManageTabs';
+import Icon from 'components/Base/Icon';
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
 import Select from 'components/Base/Select';
@@ -58,7 +59,7 @@ export default class Clusters extends Component {
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
-              <Button className={styles.refresh}><i className="fa fa-refresh"></i></Button>
+              <Button className={styles.refresh}><Icon name="refresh" /></Button>
               <Select className={styles.select} value="All Types">
                 <Select.Option value="1">Types1</Select.Option>
                 <Select.Option value="2">Types2</Select.Option>

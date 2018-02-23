@@ -7,6 +7,13 @@
   font-size: $body-size;
   cursor: pointer;
   transition: all .3s ease-in-out;
+
+  :global {
+    .icon {
+      vertical-align: baseline;
+    }
+  }
+
   &:focus {
     box-shadow: none;
     outline: none;
@@ -22,7 +29,7 @@
       left: 50%;
       top: 50%;
       color: $primary;
-      transform: translate(-50%, -50%);      
+      transform: translate(-50%, -50%);
     }
   }
   
@@ -32,13 +39,13 @@
     background-color: $primary;
 
     &:hover, &:disabled {
-      background-color: darken($primary, 8%);
-      border-color: darken($primary, 8%);
+      background-color: $purple-light;
+      border-color: $purple-light;
     }
 
     &:active {
-      background-color: darken($primary, 16%);
-      border-color: darken($primary, 16%);
+      background-color: $purple-dark;
+      border-color: $purple-dark;
     }
   }
 
@@ -48,13 +55,14 @@
     background-color: #fff;
 
     &:hover, &:disabled {
-      background-color: darken(#fff, 8%);
-      border-color: darken(#fff, 8%);
+      background-color: #fff;
+      border-color: $third-text-color !important;
+      color: $third-text-color;
     }
 
     &:active {
-      background-color: darken(#fff, 16%);
-      border-color: darken(#fff, 16%);
+      background-color: #fff;
+      border-color: $purple-dark;
     }
   }
 }

@@ -213,9 +213,8 @@ export default class Table extends React.Component {
       if (rowSelection.type === 'radio') {
         selectionColumn.title = '';
       } else {
-        const allChecked = data.every(
-          (item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i)) !== -1,
-        );
+        const allChecked = data.length ?
+          data.every((item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i)) !== -1) : false;
         selectionColumn.title = (
           <Checkbox
             className={styles.selectionCheck}
