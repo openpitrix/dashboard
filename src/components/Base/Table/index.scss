@@ -39,15 +39,21 @@
       transition: all $transition-speed;
 
       &:hover {
-        background-color: #fafafa;
+        background-color: #f2f2f5;
         
         td {
           &:first-child {
-            border-left-color: #fafafa;
+            border-left-color: #f2f2f5;
           }
           &:last-child {
-            border-right-color: #fafafa;
+            border-right-color: #f2f2f5;
           }
+        }
+      }
+
+      &:last-child {
+        td {
+          border-bottom: none;
         }
       }
     }

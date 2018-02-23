@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react';
 
 import { Link } from 'react-router-dom';
 import ManageTabs from 'components/ManageTabs';
+import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
@@ -46,7 +47,7 @@ export default class InstalledApps extends Component {
                       <Link to={`/app/${item.id}/deploy`}>
                         <Button type="primary">Deploy</Button>
                       </Link>
-                      <Button>...</Button>
+                      <Button><Icon name="more" /></Button>
                     </div>
                   </li>,
                 )
