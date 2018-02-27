@@ -1,0 +1,45 @@
+@import '~scss/variables';
+
+.timeline {
+  position: relative;
+  padding: 24px 0;
+  margin: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-image: linear-gradient(to bottom, #ffffff, #dfe0e2 14%, #dadcde);
+  }
+
+  .item {
+    position: relative;
+    margin: 0 0 24px 0;
+    padding: 0 0 0 55px;
+    line-height: 20px;
+
+    .line {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      z-index: 1;
+      width: 20px;
+      height: 1px;
+      background-color: #dadcde;
+
+      :global {
+        .icon {
+          position: absolute;
+          left: 19px;
+          top: 0;
+          z-index: 2;
+          transform: translate(0, -50%);
+        }
+      }      
+    }
+  }
+}

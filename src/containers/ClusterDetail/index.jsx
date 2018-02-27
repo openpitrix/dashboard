@@ -11,6 +11,8 @@ import Button from 'components/Base/Button';
 import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
+import Modal from 'components/Base/Modal';
+import Timeline from 'components/Base/Timeline';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -35,6 +37,22 @@ export default class ClusterDetail extends Component {
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
     console.log('changed: ', selectedRowKeys, selectedRows);
+  }
+
+  renderHistoryModal = () => {
+    return (
+      <Modal
+        title="History"
+        visible
+        hideFooter
+      >
+        <Timeline className={styles.history}>
+          <Timeline.Item>123</Timeline.Item>
+          <Timeline.Item>234</Timeline.Item>
+          <Timeline.Item>356</Timeline.Item>
+        </Timeline>
+      </Modal>
+    );
   }
 
   render() {
@@ -145,6 +163,8 @@ export default class ClusterDetail extends Component {
               />
             </div>
           </div>
+
+          {this.renderHistoryModal()}
         </div>
       </div>
     );
