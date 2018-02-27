@@ -209,6 +209,32 @@
   }
 }
 
-.idLink {
-  color: $id-color;
+.historyLine {
+  margin: -20px 0;
+
+  .historyItem {
+    display: flex;
+    justify-content: space-between;
+    line-height: 19px;
+    padding: 0 0 24px 0;
+    border-bottom: 1px solid $border;
+
+    strong {
+      display: block;
+      font-size: $size-medium;
+      color: $title-color;
+      margin: 0 0 6px 0;
+    }
+    p {
+      margin: 0;
+    }
+
+    .resource {
+      flex-basis: 45%;
+    }
+
+    .jobStatus {
+      flex: 1 0 auto;
+    }
+  }
 }

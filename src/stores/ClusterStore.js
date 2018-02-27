@@ -19,6 +19,13 @@ export default class ClusterStore {
     this.isLoading = false;
   }
 
+  @action async fetchClusterDetails(clusterId) {
+    this.isLoading = true;
+    const result = await request.get(`api/v1/clusters/${clusterId}`);
+    this.clusterDetails = result;
+    this.isLoading = false;
+  }
+
   @action async fetchClusterNodes(clusterId) {
     this.isLoading = true;
     const result = await request.get(`api/v1/cluster_nodes/${clusterId}`);

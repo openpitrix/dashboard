@@ -58,6 +58,7 @@ export default class Modal extends React.Component {
         style={style}
         isOpen={visible}
         onRequestClose={onCancel}
+        ariaHideApp={false}
       >
         {
           !hideHeader &&

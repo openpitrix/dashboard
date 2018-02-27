@@ -29,6 +29,10 @@ div {
     background-image: none !important;
   }
   .id {
-    font-family: 'PT Mono',Monaco,Menlo,Consolas,"Courier New",monospace;
+    font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
+  }
+  .id-link {
+    font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
+    color: $id-color;
   }
 }

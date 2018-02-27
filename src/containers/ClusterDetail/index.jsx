@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { getParseDate } from 'utils';
 
 import Icon from 'components/Base/Icon';
@@ -21,13 +20,21 @@ import styles from './index.scss';
 @observer
 export default class ClusterDetail extends Component {
   static async onEnter({ clusterStore }, { clusterId }) {
+    await clusterStore.fetchClusterDetails(clusterId);
     await clusterStore.fetchClusterNodes(clusterId);
   }
 
-  state = {
-    selectedRowKeys: [],
-    loading: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      selectedRowKeys: [],
+      showHistory: false,
+    };
+
+    this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
+  }
 
   refreshTable = () => {
     this.setState({
@@ -39,30 +46,13 @@ export default class ClusterDetail extends Component {
     console.log('changed: ', selectedRowKeys, selectedRows);
   }
 
-  renderHistoryModal = () => {
-    return (
-      <Modal
-        title="History"
-        visible
-        hideFooter
-      >
-        <Timeline className={styles.history}>
-          <Timeline.Item>123</Timeline.Item>
-          <Timeline.Item>234</Timeline.Item>
-          <Timeline.Item>356</Timeline.Item>
-        </Timeline>
-      </Modal>
-    );
-  }
-
-  render() {
-    const { clusterStore } = this.props;
+  renderNodesTable = () => {
     const { selectedRowKeys } = this.state;
 
-    const data = toJS(clusterStore.clusterNodes.items) || [];
+    const data = this.clusterNodes;
     const columns = [
       {
-        title: 'Node ID', dataIndex: 'node_id', key: 'node_id', width: '13%', render: text => <Link className={classNames(styles.idLink, 'id')} to="/">{text}</Link>,
+        title: 'Node ID', dataIndex: 'node_id', key: 'node_id', width: '13%', render: text => <Link className="id-link" to="/">{text}</Link>,
       },
       {
         title: 'Name', dataIndex: 'name', key: 'name', width: '13%',
@@ -92,6 +82,56 @@ export default class ClusterDetail extends Component {
     };
 
     return (
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+      />
+    );
+  }
+
+  renderHistoryModal = () => (
+    <Modal
+      width={744}
+      title="History"
+      visible={this.state.showHistory}
+      hideFooter
+    >
+      <Timeline className={styles.historyLine}>
+        <Timeline.Item>
+          <div className={styles.historyItem}>
+            <div className={styles.resource}>
+              <strong>Stop Resources</strong>
+              <p>2017/10/16 15:54:27</p>
+            </div>
+            <div className={styles.jobStatus}>
+              <strong>Job Status</strong>
+              <p>Successful</p>
+            </div>
+          </div>
+        </Timeline.Item>
+        <Timeline.Item>
+          <div className={styles.historyItem}>
+            <div className={styles.resource}>
+              <strong>Create Resource</strong>
+              <p>2017/09/13 14:48:47</p>
+            </div>
+            <div className={styles.jobStatus}>
+              <strong>Job Status</strong>
+              <p>Successful</p>
+            </div>
+            <div className={styles.vxnet}>
+              <strong>VxNet</strong>
+              <Link className="id-link" to="/">appcenter-vxnet</Link>
+            </div>
+          </div>
+        </Timeline.Item>
+      </Timeline>
+    </Modal>
+  )
+
+  render() {
+    return (
       <div className={styles.cluster}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
@@ -109,7 +149,7 @@ export default class ClusterDetail extends Component {
               </div>
               <div className={styles.baseHandle}>
                 <Button><Icon name="modify" />Modify Attributes</Button>
-                <Button><Icon name="history" />View History</Button>
+                <Button onClick={() => { this.setState({ showHistory: true }); }}><Icon name="history" />View History</Button>
                 <Select className={styles.handleSelect} value="More">
                   <Select.Option value="1">one</Select.Option>
                   <Select.Option value="2">two</Select.Option>
@@ -156,16 +196,12 @@ export default class ClusterDetail extends Component {
                 </div>
               </div>
 
-              <Table
-                rowSelection={rowSelection}
-                columns={columns}
-                dataSource={data}
-              />
+              {this.renderNodesTable()}
             </div>
           </div>
-
-          {this.renderHistoryModal()}
         </div>
+
+        {this.renderHistoryModal()}
       </div>
     );
   }
