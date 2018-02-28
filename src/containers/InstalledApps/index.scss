@@ -53,7 +53,6 @@
   margin: 0;
 
   .listItem {
-    position: relative;
     display: table;
     width: 100%;
     padding: 7px 0;
@@ -80,16 +79,32 @@
     }
 
     .handle {
-      position: absolute;
-      right: 0;
-      top: 50%;
+      float: right;
       width: 167px;
       padding: 0 16px;
-      transform: translate(0, -50%);
       text-align: right;
+      margin: 0 0 8px 0;
 
-      button:first-child {
-        margin-right: 16px;
+      .handlePop {
+        display: inline-block;
+        margin-left: 16px;
+      }
+
+      .handleMenu {
+        margin: 0 -5px;
+
+        span {
+          display: block;
+          line-height: 24px;
+          padding: 8px 12px 8px 11px;
+          text-align: left;
+          cursor: pointer;
+          transition: all $transition-speed;
+
+          &:hover {
+            background-color: #efe9f7;
+          }
+        }
       }
     }
   }
