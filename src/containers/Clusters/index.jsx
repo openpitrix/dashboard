@@ -42,7 +42,7 @@ export default class Clusters extends Component {
         title: 'App Version', dataIndex: 'app_version', key: 'app_version', width: '20%',
       },
       {
-        title: 'Status', dataIndex: 'status', key: 'status', width: '12%', render: text => <Status status={text} name={text} />,
+        title: 'Status', dataIndex: 'status', key: 'status', width: '12%', render: text => <Status type={text} name={text} />,
       },
       {
         title: 'Node Count', dataIndex: 'node_count', key: 'node_count', width: '12%',

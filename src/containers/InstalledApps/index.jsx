@@ -20,7 +20,7 @@ export default class InstalledApps extends Component {
   }
 
   renderHandleMenu = (id) => (
-    <div id={id} className={styles.handleMenu}>
+    <div id={id} className="operate-menu">
       <span>View app cluster</span>
       <span>Delete app</span>
     </div>

@@ -24,6 +24,21 @@
   }
 }
 
+.viewNodeModal {
+  background-color: $background-color;
+
+  .statistics {
+    margin: 24px -30px 4px;
+    padding: 0 24px;
+
+    &RadioGroup {
+      margin-right: 16px;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
 .detail {
   padding: 0 24px;
   margin: 0 0 24px 0;
@@ -31,19 +46,22 @@
   background-color: #fff;
   box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
 
-  .base {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+  &.nodeDetail {
+    margin: -20px -30px 0;    
+  }
+
+  .detailBase {
+    position: relative;
+    display: flex;
+    align-items: center;
 
     &Info {
-      display: table-cell;
       width: 50%;
       padding: 24px 0;
 
-      .name {
+      strong {
+        display: block;
         font-size: 20px;
-        font-weight: 500;
         line-height: 24px;
         color: $title-color;
         margin: 0 0 8px 0;
@@ -57,6 +75,7 @@
         span {
           position: relative;
           display: inline-block;
+          vertical-align: top;
           color: $second-text-color;
           margin: 0 10px;
 
@@ -80,9 +99,9 @@
     }
 
     &Handle {
-      display: table-cell;
+      position: relative;
       width: 50%;
-      vertical-align: middle;
+      min-height: 32px;
       text-align: right;
 
       button {
@@ -95,6 +114,48 @@
         }
       }
     }
+
+    :global {
+      .icon-close {
+        position: absolute;
+        right: 0;
+        top: 24px;
+        cursor: pointer;
+      }
+    }    
+  }
+
+  .detailExpand {
+    display: flex;
+    padding: 10px 0;
+    margin: 0;
+    border-top: 1px solid $border-lighter;
+    overflow: hidden;
+    list-style: none;
+
+    li {
+      flex: 1;
+      padding: 16px 10px;
+      text-align: center;
+      border-left: 1px solid $border-lighter;
+      box-sizing: border-box;
+  
+      &:first-child {
+        border-left: none;
+      }
+    }
+  
+    &Value {
+      font-size: $size-medium;
+      font-weight: 500;
+      color: $title-color;
+      line-height: 19px;
+      margin: 0 0 8px 0;
+    }
+  
+    &Name {
+      color: $second-text-color;
+    }
   }
 }
 
@@ -104,39 +165,6 @@
 
   div {
     box-shadow: none;  
-  }
-}
-
-.expand {
-  padding: 10px 0;
-  margin: 0;
-  border-top: 1px solid $border-lighter;
-  overflow: hidden;
-  list-style: none;
-
-  li {
-    float: left;
-    width: 25%;
-    padding: 16px 10px;
-    text-align: center;
-    border-left: 1px solid $border-lighter;
-    box-sizing: border-box;
-
-    &:first-child {
-      border-left: none;
-    }
-  }
-
-  &Value {
-    font-size: $size-medium;
-    font-weight: 500;
-    color: $title-color;
-    line-height: 19px;
-    margin: 0 0 8px 0;
-  }
-
-  &Name {
-    color: $second-text-color;
   }
 }
 

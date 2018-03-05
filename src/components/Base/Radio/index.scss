@@ -5,6 +5,10 @@
   .radio {
     margin-right: 23px;
   }
+
+  .radioButton {
+    margin: 0;
+  }
 }
 
 .radio {
@@ -30,5 +34,26 @@
 }
 
 .radioButton {
+  .circle {
+    display: none;
+  }
 
+  .text {
+    display: inline-block;
+    color: $title-color;
+    padding: 9px 10px;
+    border: 1px solid #fff;
+    background-color: #fff;
+    margin-left: 0;
+    cursor: pointer;
+  }
+
+  &.checked {
+    .text {
+      color: $grey-light;
+      border-color: $border;
+      box-shadow: none;
+      background-color: $background-color;
+    }
+  }  
 }

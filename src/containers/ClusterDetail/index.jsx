@@ -3,15 +3,18 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
+import classNames from 'classnames';
 
 import Icon from 'components/Base/Icon';
 import Input from 'components/Base/Input';
+import Radio from 'components/Base/Radio';
 import Button from 'components/Base/Button';
 import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Modal from 'components/Base/Modal';
 import Timeline from 'components/Base/Timeline';
+import Popover from 'components/Base/Popover';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -30,10 +33,42 @@ export default class ClusterDetail extends Component {
     this.state = {
       loading: false,
       selectedRowKeys: [],
-      showHistory: false,
+      showHistoryModal: false,
+      showViewNodeModal: false,
     };
 
     this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
+  }
+
+  openViewNodeModal = (node) => {
+    this.setState({
+      viewNode: node,
+      showViewNodeModal: true,
+    });
+  }
+
+  closeViewNodeModal = () => {
+    this.setState({
+      showViewNodeModal: false,
+    });
+  }
+
+  openHistoryModal = () => {
+    this.setState({
+      showHistoryModal: true,
+    });
+  }
+
+  closeHistoryModal = () => {
+    this.setState({
+      showHistoryModal: false,
+    });
+  }
+
+  nodeTypeChange = () => {
+  }
+
+  nodeTimeChange = () => {
   }
 
   refreshTable = () => {
@@ -48,11 +83,17 @@ export default class ClusterDetail extends Component {
 
   renderNodesTable = () => {
     const { selectedRowKeys } = this.state;
+    const renderTableOperation = (node) => (
+      <div id={node.id} className="operate-menu">
+        <span onClick={() => { this.openViewNodeModal(node); }}>View Node</span>
+        <span>Delete Node</span>
+      </div>
+    );
 
     const data = this.clusterNodes;
     const columns = [
       {
-        title: 'Node ID', dataIndex: 'node_id', key: 'node_id', width: '13%', render: text => <Link className="id-link" to="/">{text}</Link>,
+        title: 'Node ID', dataIndex: 'id', key: 'node_id', width: '13%', render: text => <Link className="id-link" to="/">{text}</Link>,
       },
       {
         title: 'Name', dataIndex: 'name', key: 'name', width: '13%',
@@ -61,10 +102,10 @@ export default class ClusterDetail extends Component {
         title: 'Role', dataIndex: 'role', key: 'role', width: '7%',
       },
       {
-        title: 'Node Status', dataIndex: 'node_status', key: 'node_status', width: '13%', render: text => <Status status={text} name={text} />,
+        title: 'Node Status', dataIndex: 'node_status', key: 'node_status', width: '13%', render: text => <Status type={text} name={text} />,
       },
       {
-        title: 'Service Status', dataIndex: 'service_status', key: 'service_status', width: '14%', render: text => <Status status={text} name={text} />,
+        title: 'Service Status', dataIndex: 'service_status', key: 'service_status', width: '14%', render: text => <Status type={text} name={text} />,
       },
       {
         title: 'Configuration', dataIndex: 'configuration', key: 'configuration', width: '16%',
@@ -73,7 +114,7 @@ export default class ClusterDetail extends Component {
         title: 'Date Created', dataIndex: 'created', key: 'created', width: '13%', render: getParseDate,
       },
       {
-        title: 'Operation', dataIndex: 'operation', key: 'operation', width: '6%', render: () => '...',
+        title: 'Operation', dataIndex: 'operation', key: 'operation', width: '6%', render: (text, node) => <Popover content={renderTableOperation(node)}>...</Popover>,
       },
     ];
     const rowSelection = {
@@ -90,15 +131,79 @@ export default class ClusterDetail extends Component {
     );
   }
 
+  renderViewNodeModal = () => {
+    const { showViewNodeModal, viewNode } = this.state;
+
+    if (showViewNodeModal) {
+      return (
+        <Modal
+          className={styles.viewNodeModal}
+          width={1128}
+          visible={showViewNodeModal}
+          hideHeader
+          hideFooter
+          onCancel={this.closeViewNodeModal}
+        >
+          <div className={classNames(styles.detail, styles.nodeDetail)}>
+            <div className={styles.detailBase}>
+              <div className={styles.detailBaseInfo}>
+                <strong>{viewNode.name}</strong>
+                <p>
+                  <span className="id">{viewNode.id}</span>
+                  <Status type="active" name="Active" />
+                </p>
+              </div>
+              <i className="icon icon-close" onClick={this.closeViewNodeModal}/>
+            </div>
+            <ul className={styles.detailExpand}>
+              <li>
+                <div className={styles.detailExpandValue}>Node</div>
+                <div className={styles.detailExpandName}>Role</div>
+              </li>
+              <li>
+                <div className={styles.detailExpandValue}>Super high performance</div>
+                <div className={styles.detailExpandName}>Type</div>
+              </li>
+              <li>
+                <div className={styles.detailExpandValue}>2-Core 4GB 20GB</div>
+                <div className={styles.detailExpandName}>Configuration</div>
+              </li>
+              <li>
+                <div className={styles.detailExpandValue}>192.168.0.4</div>
+                <div className={styles.detailExpandName}>Private IP</div>
+              </li>
+            </ul>
+          </div>
+
+          <div className={styles.statistics}>
+            <Radio.Group className={styles.statisticsRadioGroup} value="2" onChange={this.nodeTypeChange}>
+              <Radio.Button value="1">Service</Radio.Button>
+              <Radio.Button value="2">Resource</Radio.Button>
+            </Radio.Group>
+            <Radio.Group className={styles.statisticsRadioGroup} value="3" onChange={this.nodeTimeChange}>
+              <Radio.Button value="1">Last 6 Hours</Radio.Button>
+              <Radio.Button value="2">Last Day</Radio.Button>
+              <Radio.Button value="3">Last 2 Weeks</Radio.Button>
+              <Radio.Button value="4">Last Months</Radio.Button>
+              <Radio.Button value="5">Last 6 Months</Radio.Button>
+            </Radio.Group>
+          </div>
+        </Modal>
+      );
+    }
+    return null;
+  }
+
   renderHistoryModal = () => (
     <Modal
       width={744}
       title="History"
-      visible={this.state.showHistory}
+      visible={this.state.showHistoryModal}
       hideFooter
+      onCancel={this.closeHistoryModal}
     >
       <Timeline className={styles.historyLine}>
-        <Timeline.Item>
+        <Timeline.Item dot={<Icon name="stop" />}>
           <div className={styles.historyItem}>
             <div className={styles.resource}>
               <strong>Stop Resources</strong>
@@ -110,7 +215,7 @@ export default class ClusterDetail extends Component {
             </div>
           </div>
         </Timeline.Item>
-        <Timeline.Item>
+        <Timeline.Item dot={<Icon name="establish" />}>
           <div className={styles.historyItem}>
             <div className={styles.resource}>
               <strong>Create Resource</strong>
@@ -139,39 +244,39 @@ export default class ClusterDetail extends Component {
           </div>
 
           <div className={styles.detail}>
-            <div className={styles.base}>
-              <div className={styles.baseInfo}>
-                <div className={styles.name}>EsgynDB-Cluster1</div>
+            <div className={styles.detailBase}>
+              <div className={styles.detailBaseInfo}>
+                <strong>EsgynDB-Cluster1</strong>
                 <p>
                   <span className="id">cl-eaazvhea</span>
-                  <Status status="active" name="Active" />
+                  <Status type="active" name="Active" />
                 </p>
               </div>
-              <div className={styles.baseHandle}>
+              <div className={styles.detailBaseHandle}>
                 <Button><Icon name="modify" />Modify Attributes</Button>
-                <Button onClick={() => { this.setState({ showHistory: true }); }}><Icon name="history" />View History</Button>
+                <Button onClick={() => { this.openHistoryModal(); }}><Icon name="history" />View History</Button>
                 <Select className={styles.handleSelect} value="More">
                   <Select.Option value="1">one</Select.Option>
                   <Select.Option value="2">two</Select.Option>
                 </Select>
               </div>
             </div>
-            <ul className={styles.expand}>
+            <ul className={styles.detailExpand}>
               <li>
-                <div className={styles.expandValue}>EsgynDB</div>
-                <div className={styles.expandName}>App</div>
+                <div className={styles.detailExpandValue}>EsgynDB</div>
+                <div className={styles.detailExpandName}>App</div>
               </li>
               <li>
-                <div className={styles.expandValue}>1.1.2</div>
-                <div className={styles.expandName}>Version</div>
+                <div className={styles.detailExpandValue}>1.1.2</div>
+                <div className={styles.detailExpandName}>Version</div>
               </li>
               <li>
-                <div className={styles.expandValue}>3</div>
-                <div className={styles.expandName}>Node Count</div>
+                <div className={styles.detailExpandValue}>3</div>
+                <div className={styles.detailExpandName}>Node Count</div>
               </li>
               <li>
-                <div className={styles.expandValue}>vxnet-f1wa5ox</div>
-                <div className={styles.expandName}>Network</div>
+                <div className={styles.detailExpandValue}>vxnet-f1wa5ox</div>
+                <div className={styles.detailExpandName}>Network</div>
               </li>
             </ul>
           </div>
@@ -197,6 +302,7 @@ export default class ClusterDetail extends Component {
               </div>
 
               {this.renderNodesTable()}
+              {this.renderViewNodeModal()}
             </div>
           </div>
         </div>

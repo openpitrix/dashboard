@@ -22,7 +22,6 @@
     line-height: 20px;
 
     .line {
-      content: "";
       position: absolute;
       left: 0;
       top: 9px;
@@ -31,13 +30,55 @@
       height: 1px;
       background-color: #dadcde;
 
-      :global {
-        .icon {
-          position: absolute;
-          left: 19px;
-          top: 0;
-          z-index: 2;
-          transform: translate(0, -50%);
+      &.dotCustom {
+        &::before {
+          display: none;
+        }
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: 0;
+        z-index: 2;
+        width: 10px;
+        height: 10px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        transform: translate(0, -50%);
+      }
+
+      &.purple {
+        &::before {
+          border-color: $purple;
+        }
+      }
+      &.green {
+        &::before {
+          border-color: $green;
+        }
+      }
+      &.red {
+        &::before {
+          border-color: $red;
+        }
+      }      
+      
+      span {
+        position: absolute;
+        left: 21px;
+        top: 0;
+        z-index: 2;
+        width: 30px;
+        transform: translate(0, -50%);
+        overflow: hidden;
+
+        :global {
+          .icon {
+            display: block;
+            font-size: 20px;
+          }
         }
       }      
     }

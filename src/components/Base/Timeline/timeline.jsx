@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import styles from './index.scss';
 
@@ -13,7 +13,7 @@ export default class Timeline extends React.Component {
     const { className } = this.props;
 
     return (
-      <div className={classNames(styles.timeline, className)}>
+      <div className={classnames(styles.timeline, className)}>
         {this.props.children}
       </div>
     );

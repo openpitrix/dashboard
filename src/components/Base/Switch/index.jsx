@@ -9,13 +9,14 @@ export default class Switch extends PureComponent {
     type: PropTypes.string,
     onText: PropTypes.string,
     offText: PropTypes.string,
-    onChange: PropTypes.func,
     disabled: PropTypes.bool,
     checked: PropTypes.bool,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     type: 'primary',
+    checked: false,
     onChange: () => {},
   };
 
@@ -30,6 +31,12 @@ export default class Switch extends PureComponent {
   toggleSwitch = () => {
     const on = !this.state.on;
     this.setState({ on }, this.props.onChange(on));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.checked !== this.state.on) {
+      this.setState({ on: nextProps.checked });
+    }
   }
 
   render() {

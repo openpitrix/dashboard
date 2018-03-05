@@ -1,26 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import styles from './index.scss';
 
 export default class Item extends React.Component {
   static propTypes = {
-    type: PropTypes.string,
-    icon: PropTypes.string,
+    dot: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.element,
+    ]),
+    color: PropTypes.string,
   };
 
   static defaultProps = {
-    icon: 'refresh',
+    color: 'purple',
   }
 
   render() {
-    const { icon, children } = this.props;
+    const { color, dot, children } = this.props;
 
     return (
       <div className={styles.item}>
-        <span className={styles.line}>
-          <i className={`icon icon-${icon}`}></i>
-        </span>
+        <div className={classnames(styles.line, styles[color], {
+          [styles.dotCustom]: dot,
+        })}>
+          <span>{dot}</span>
+        </div>
         {children}
       </div>
     );
