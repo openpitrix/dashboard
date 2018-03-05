@@ -17,7 +17,7 @@ export default class Group extends React.Component {
   }
 
   render() {
-    const { className, value, children, onChange } = this.props;
+    const { className, value, children, onChange, ...others } = this.props;
     const classNames = classnames(styles.group, className);
 
     const childNodes = React.Children.map(children, (child) => React.cloneElement(child, {
@@ -27,7 +27,10 @@ export default class Group extends React.Component {
     }));
 
     return (
-      <div className={classNames}>
+      <div
+        {...others}
+        className={classNames}
+      >
         {childNodes}
       </div>
     );

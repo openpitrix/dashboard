@@ -89,23 +89,6 @@
         display: inline-block;
         margin-left: 16px;
       }
-
-      .handleMenu {
-        margin: 0 -5px;
-
-        span {
-          display: block;
-          line-height: 24px;
-          padding: 8px 12px 8px 11px;
-          text-align: left;
-          cursor: pointer;
-          transition: all $transition-speed;
-
-          &:hover {
-            background-color: #efe9f7;
-          }
-        }
-      }
     }
   }
 }

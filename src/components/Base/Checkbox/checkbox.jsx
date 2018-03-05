@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Icon from '../Icon';
 import styles from './index.scss';
 
 export default class Checkbox extends Component {
@@ -55,6 +56,7 @@ export default class Checkbox extends Component {
         })}
         style={style}
       >
+        {isChecked && <Icon name="check" />}
         <input
           type="checkbox"
           disabled={disabled}

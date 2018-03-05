@@ -117,6 +117,7 @@ export default class Tooltip extends React.Component {
         className={classNames(styles.tooltip, className)}
       >
         <Target
+          className={styles.target}
           innerRef={c => { this.target = c; }}
         >
           {children}

@@ -21,6 +21,19 @@
     outline: none;
   }
   
+  :global {
+    .icon {
+      display: none;
+      position: absolute;
+      left: 1px;
+      top: 50%;
+      font-size: $size-small;
+      color: #fff;
+      transform: translate(0 ,-50%) scale(0.7);
+      cursor: pointer;
+    }
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -39,29 +52,16 @@
     cursor: pointer;
   }
 
-  &::after {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 5px;
-    height: 9px;
-    border: 2px solid $background-color-lighter;
-    border-top: 0;
-    border-left: 0;
-    box-sizing: border-box;
-    transform: rotate(45deg) scale(0);
-    cursor: pointer;
-  }
-
   &.checked {
     &::before {
       background-color: $third-text-color;
       border-color: $third-text-color; 
     }
-    &::after {
-      z-index: 3;
-      transform: rotate(45deg) scale(1);
+    :global {
+      .icon {
+        display: block;
+        z-index: 3;
+      }
     }
   }
 
