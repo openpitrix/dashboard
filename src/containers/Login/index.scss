@@ -1,0 +1,112 @@
+@import '~scss/variables';
+
+.login {
+  min-height: 100vh;
+  padding-top: 127px;
+  padding-bottom: 50px;
+  background-image: $login-bg;
+}
+
+.loginTitle {
+  display: block;
+  text-align: center;
+}
+
+.loginForm {
+  width: 460px;
+  margin: 125px auto 0;
+  padding: 44px 50px 8px 50px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: $login-form-bg;
+  box-shadow: $login-form-shadow;
+  h1 {
+    margin-bottom: 44px;
+    color: $title-color;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .formItem {
+    text-align: left;
+    &:nth-of-type(1) {
+      margin-bottom: 28px;
+    }
+    &:nth-of-type(2) {
+      margin-bottom: 18px;
+    }
+    &:nth-of-type(3) {
+      margin-bottom: 26px;
+    }
+  }
+  .formInput {
+    i {
+      font-size: 18px;
+      left: 28px;
+      color: $login-placeholder;
+    }
+    input {
+      width: 360px;
+      height: 48px;
+      padding: 15px 15px 15px 56px;
+      border: solid 1px $border;
+      border: 1px solid $border-lighter;
+      border-radius: 24px;
+      box-shadow: none;
+      font-size: $size-medium;
+      opacity: 1;
+      color: $title-color;
+      transition: all .3s ease-in-out;
+      &::placeholder {
+        color: $login-placeholder;
+        opacity: 1;
+        font-weight: normal;
+        font-size: $size-medium;
+      }
+    }
+    &:hover {
+      i {
+        color: $title-color;
+      }
+      input {
+        box-shadow: 0 2px 2px 0 rgba(48,14,86,0.06), 0 4px 8px 0 rgba(48,14,86,0.10);
+        border: 1px solid $border-dark;
+      }
+    }
+  }
+  .checkbox {
+    color: $login-placeholder;
+  }
+}
+
+.submitBtn {
+  width: 360px;
+  padding: 14px 0;
+  border-radius: 24px;
+  border: none !important;
+  color: #fff !important;
+  font-size: 18px;
+  font-weight: 500;
+  background-image: $login-submit-bg;
+  &:hover {
+    background-image: $login-submit-hover-bg;
+  }
+  &:active {
+    background-image: $login-submit-active-bg;
+  }
+}
+
+.tip {
+  margin-top: 24px;
+  text-align: center;
+  span {
+    color: #fff;
+    opacity: 0.6;
+    font-size: 16px;
+  }
+  a {
+    margin-left: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
