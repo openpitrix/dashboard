@@ -1,0 +1,132 @@
+@import '~scss/variables';
+
+.popover {
+  :global {
+    .pi-popover-popper {
+      padding: 7px 5px;
+      font-size: $body-size;
+      color: $title-color;
+      border: 1px solid $border;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.06), 0 1px 2px 0 rgba(48, 14, 86, 0.04);
+
+      .pi-popover-popper_arrow {
+        width: 16px;
+        height: 16px;
+  
+        &::before, &::after {
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-style: solid;
+          box-sizing: border-box;
+        }
+      }
+      
+      &[data-placement^="top"] {
+        margin-bottom: 8px;
+    
+        .pi-popover-popper_arrow {
+          bottom: -15px;
+    
+          &::before {
+            left: 0;
+            top: 2px;
+            border-width: 8px;
+            border-color: $border transparent transparent transparent;
+            z-index: 1;
+          }
+          &::after {
+            left: 1px;
+            top: 1px;
+            border-width: 7px;
+            border-color: #fff transparent transparent transparent;
+            z-index: 2;
+          }
+        }
+      }
+      &[data-placement^="bottom"] {
+        margin-top: 8px;
+    
+        .pi-popover-popper_arrow {
+          top: -15px;
+    
+          &::before {
+            left: 0;
+            bottom: 2px;
+            border-width: 8px;
+            border-color: transparent transparent $border transparent;
+            z-index: 1;
+          }
+          &::after {
+            left: 1px;
+            bottom: 1px;
+            border-width: 7px;
+            border-color: transparent transparent #fff transparent;
+            z-index: 2;
+          }
+        }
+      }
+      &[data-placement^="left"] {
+        margin-right: 8px;
+    
+        .pi-popover-popper_arrow {
+          right: -15px;
+    
+          &::before {
+            left: 2px;
+            border-width: 8px;
+            border-color: transparent transparent transparent $border;
+            z-index: 1;
+          }
+          &::after {
+            left: 1px;
+            top: 1px;
+            border-width: 7px;
+            border-color: transparent transparent transparent #fff;
+            z-index: 2;
+          }      
+        }
+      }
+      &[data-placement^="right"] {
+        margin-left: 8px;
+    
+        .pi-popover-popper_arrow {
+          left: -15px;
+    
+          &::before {
+            right: 2px;
+            border-width: 8px;
+            border-color: transparent $border transparent transparent;
+            z-index: 1;
+          }
+          &::after {
+            right: 1px;
+            top: 1px;
+            border-width: 7px;
+            border-color: transparent #fff transparent transparent;
+            z-index: 2;
+          }      
+        }    
+      }      
+    }
+
+    .operate-menu {
+      margin: 0 -5px;
+
+      span {
+        display: block;
+        line-height: 24px;
+        padding: 8px 12px 8px 11px;
+        text-align: left;
+        cursor: pointer;
+        transition: all $transition-speed;
+
+        &:hover {
+          background-color: $purple-lighter;
+        }
+      }
+    }
+  }
+}

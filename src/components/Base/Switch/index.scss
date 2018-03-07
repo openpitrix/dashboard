@@ -1,0 +1,49 @@
+@import '~scss/variables';
+
+.switch {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 14px;
+  line-height: 14px;
+  border-radius: 7px;
+  background-color: #cbd2d8;
+  user-select: none;
+  cursor: pointer;
+  transition: all $transition-speed;
+
+  .inner {
+    display: block;
+    font-size: 12px;
+    color: #fff;
+    text-align: right;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(33, 42, 51, 0.04), 0 1px 1px 0 rgba(33, 42, 51, 0.04);
+    transition: all $transition-speed cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  }
+
+  &.on {
+    background-color: $orange;
+
+    &::after {
+      left: 100%;
+      margin-left: -12px;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+}

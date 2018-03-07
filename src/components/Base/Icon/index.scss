@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: 'PiFont';
-  src:  url('/assets/fonts/pifont/PiFont.eot?myj5nf');
-  src:  url('/assets/fonts/pifont/PiFont.eot?myj5nf#iefix') format('embedded-opentype'),
-    url('/assets/fonts/pifont/PiFont.ttf?myj5nf') format('truetype'),
-    url('/assets/fonts/pifont/PiFont.woff?myj5nf') format('woff'),
-    url('/assets/fonts/pifont/PiFont.svg?myj5nf#PiFont') format('svg');
+  src:  url('/assets/fonts/pifont/PiFont.eot?9g0pk3');
+  src:  url('/assets/fonts/pifont/PiFont.eot?9g0pk3#iefix') format('embedded-opentype'),
+    url('/assets/fonts/pifont/PiFont.ttf?9g0pk3') format('truetype'),
+    url('/assets/fonts/pifont/PiFont.woff?9g0pk3') format('woff'),
+    url('/assets/fonts/pifont/PiFont.svg?9g0pk3#PiFont') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -56,5 +56,16 @@
   }
   .icon-more:before {
     content: "\e908";
+  }
+  .icon-check:before {
+    content: "\e909";
+  }
+  .icon-establish:before {
+    content: "\e910";
+    color: #24b36b;
+  }
+  .icon-stop:before {
+    content: "\e911";
+    color: #cc5252;
   }
 }

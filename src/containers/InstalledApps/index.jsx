@@ -7,6 +7,7 @@ import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
+import Popover from 'components/Base/Popover';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -17,6 +18,13 @@ export default class InstalledApps extends Component {
   static async onEnter({ appStore }) {
     await appStore.fetchInstalledApps();
   }
+
+  renderHandleMenu = (id) => (
+    <div id={id} className="operate-menu">
+      <span>View app cluster</span>
+      <span>Delete app</span>
+    </div>
+  );
 
   render() {
     const { appStore } = this.props;
@@ -47,7 +55,12 @@ export default class InstalledApps extends Component {
                       <Link to={`/app/${item.id}/deploy`}>
                         <Button type="primary">Deploy</Button>
                       </Link>
-                      <Button><Icon name="more" /></Button>
+                      <Popover
+                        className={styles.handlePop}
+                        content={this.renderHandleMenu(item.id)}
+                      >
+                        <Button><Icon name="more" /></Button>
+                      </Popover>
                     </div>
                   </li>,
                 )

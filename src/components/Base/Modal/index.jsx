@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import Icon from '../Icon';
 import Button from '../Button';
 import styles from './index.scss';
 
@@ -58,12 +59,13 @@ export default class Modal extends React.Component {
         style={style}
         isOpen={visible}
         onRequestClose={onCancel}
+        ariaHideApp={false}
       >
         {
           !hideHeader &&
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
-            {closable && <i className="fa fa-times" onClick={onCancel}/>}
+            {closable && <Icon name="close" onClick={onCancel} />}
           </div>
         }
         <div className={styles.body}>

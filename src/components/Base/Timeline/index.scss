@@ -1,0 +1,86 @@
+@import '~scss/variables';
+
+.timeline {
+  position: relative;
+  padding: 24px 0;
+  margin: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-image: linear-gradient(to bottom, #ffffff, #dfe0e2 14%, #dadcde);
+  }
+
+  .item {
+    position: relative;
+    margin: 0 0 24px 0;
+    padding: 0 0 0 55px;
+    line-height: 20px;
+
+    .line {
+      position: absolute;
+      left: 0;
+      top: 9px;
+      z-index: 1;
+      width: 20px;
+      height: 1px;
+      background-color: #dadcde;
+
+      &.dotCustom {
+        &::before {
+          display: none;
+        }
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: 0;
+        z-index: 2;
+        width: 10px;
+        height: 10px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        transform: translate(0, -50%);
+      }
+
+      &.purple {
+        &::before {
+          border-color: $purple;
+        }
+      }
+      &.green {
+        &::before {
+          border-color: $green;
+        }
+      }
+      &.red {
+        &::before {
+          border-color: $red;
+        }
+      }      
+      
+      span {
+        position: absolute;
+        left: 21px;
+        top: 0;
+        z-index: 2;
+        width: 30px;
+        transform: translate(0, -50%);
+        overflow: hidden;
+
+        :global {
+          .icon {
+            display: block;
+            font-size: 20px;
+          }
+        }
+      }      
+    }
+  }
+}

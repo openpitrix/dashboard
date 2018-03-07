@@ -9,7 +9,7 @@ export default class Status extends PureComponent {
     style: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
-    status: PropTypes.oneOf([
+    type: PropTypes.oneOf([
       'active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted',
     ]),
   };
@@ -19,11 +19,11 @@ export default class Status extends PureComponent {
   };
 
   render() {
-    const { style, className, name, status } = this.props;
+    const { style, className, name, type } = this.props;
 
     return (
       <span className={classNames(styles.status, className)} style={style}>
-        <i className={classNames(styles.icon, styles[status])}></i>
+        <i className={classNames(styles.icon, styles[type])}></i>
         {name}
       </span>
     );

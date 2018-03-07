@@ -1,0 +1,103 @@
+@import '~scss/variables';
+
+$bgcolor: $text-color;
+
+.tooltip {
+}
+
+.target {
+  cursor: pointer;
+}
+
+.popper {
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: $size-small;
+  line-height: 1.5;
+  color: #fff;
+  background-color: $bgcolor;
+  transition: opacity $transition-speed ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .arrow {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      box-sizing: border-box;
+    }
+  }
+
+  &[data-placement^="top"] {
+    margin-bottom: 10px;
+
+    .arrow {
+      bottom: -12px;
+
+      &::before {
+        left: 0;
+        top: 0;
+        border-width: 6px;
+        border-color: $bgcolor transparent transparent transparent;
+        z-index: 1;
+      }
+    }
+  }
+  &[data-placement^="bottom"] {
+    margin-top: 10px;
+
+    .arrow {
+      top: -12px;
+
+      &::before {
+        left: 0;
+        bottom: 0;
+        border-width: 6px;
+        border-color: transparent transparent $bgcolor transparent;
+        z-index: 1;
+      }
+    }
+  }
+  &[data-placement^="left"] {
+    margin-right: 10px;
+
+    .arrow {
+      right: -12px;
+
+      &::before {
+        left: 0;
+        border-width: 6px;
+        border-color: transparent transparent transparent $bgcolor;
+        z-index: 1;
+      }      
+    }
+  }
+  &[data-placement^="right"] {
+    margin-left: 10px;
+
+    .arrow {
+      left: -12px;
+
+      &::before {
+        right: 0;
+        border-width: 6px;
+        border-color: transparent $bgcolor transparent transparent;
+        z-index: 1;
+      }    
+    }    
+  }
+}
