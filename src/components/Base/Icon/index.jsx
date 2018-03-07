@@ -12,7 +12,7 @@ export default class Icon extends PureComponent {
 
   render() {
     const { name, ...rest } = this.props;
-    const className = classnames('icon', `icon-${name}`, className);
+    const className = classnames('icon', `icon-${name}`, this.props.className);
 
     return (
       <i className={className} {...rest} />

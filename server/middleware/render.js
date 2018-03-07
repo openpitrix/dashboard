@@ -1,7 +1,14 @@
+/*
+ enable babel server env plugin transform
+ should be placed on top-level before importing any js, jsx
+ */
+process.env.BABEL_ENV = 'server';
+
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
+
 import App from 'src/App';
 import routes from 'src/routes';
 
@@ -9,10 +16,6 @@ const isDev = process.env.NODE_ENV === 'development';
 
 // Server-side render
 export default async (ctx, next) => {
-  if (isDev) {
-    global.webpackIsomorphicTools.refresh();
-  }
-
   const branches = matchRoutes(routes, ctx.url);
   const promises = branches.map(({ route, match }) => (route.component.onEnter
     ? route.component.onEnter(ctx.store, match.params)
@@ -20,10 +23,10 @@ export default async (ctx, next) => {
   await Promise.all(promises);
 
   const context = {};
-  const components = renderToString(
+  const components = isDev ? null : renderToString(
     <StaticRouter location={ctx.url} context={context}>
       <App rootStore={ctx.store}/>
-    </StaticRouter>,
+    </StaticRouter>
   );
 
   /**

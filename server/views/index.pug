@@ -1,4 +1,4 @@
-- var bundleUrl = isDev ? '//localhost:3002' : ''
+- var bundlePrefix = isDev ? '' : '/dist'
 
 doctype html
 html(lang="en")
@@ -10,7 +10,7 @@ html(lang="en")
     link(rel="shortcut icon" href="/assets/favicon.ico")
     link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet")
     if !isDev
-      link(href= '/build/bundle.css' rel="stylesheet" media="all")
+      link(href= bundlePrefix + '/bundle.css' rel="stylesheet" media="all")
 
   body
     noscript You need to enable JavaScript to run this app.
@@ -20,4 +20,4 @@ html(lang="en")
     script.
       window.__INITIAL_STATE__ = !{state || '{}'}
       window.__SSR__ = !{isSSR}
-    script(src= bundleUrl + '/build/bundle.js' async).
+    script(src= bundlePrefix + '/bundle.js').

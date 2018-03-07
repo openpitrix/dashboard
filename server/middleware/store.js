@@ -1,7 +1,7 @@
 import { useStaticRendering } from 'mobx-react';
 import { toJS } from 'mobx';
-import config from '../config';
-import RootStore from '../../src/stores/RootStore';
+import RootStore from 'stores/RootStore';
+import { getServerConfig } from 'lib/utils';
 
 useStaticRendering(true);
 
@@ -15,7 +15,7 @@ const rootStore = toJS(new RootStore());
 export default async (ctx, next) => {
   // Create state for SSR
   ctx.store = rootStore;
-  ctx.store.config = config.app;
+  ctx.store.config = getServerConfig().app;
 
   await next();
 };
