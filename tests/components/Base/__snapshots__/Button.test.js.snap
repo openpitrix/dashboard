@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Button basic render 1`] = `
+<button
+  class="button default loading test"
+  type="submit"
+>
+  <i
+    class="icon icon-spinner"
+  />
+  test button
+</button>
+`;

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Tooltip basic render 1`] = `
+<div
+  class="tooltip popover test"
+>
+  <div
+    class="target"
+  >
+    hover me
+  </div>
+  <div
+    class="popper pi-popover-popper"
+    style="position:absolute;pointer-events:none;opacity:0"
+  >
+    <div>
+      <div
+        class="pi-popover-content"
+      >
+        test
+      </div>
+    </div>
+    <span
+      class="arrow pi-popover-popper_arrow"
+    />
+  </div>
+</div>
+`;

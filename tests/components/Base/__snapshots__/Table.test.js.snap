@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Table basic render 1`] = `
+<div
+  class="table"
+>
+  <div
+    class="pi-table pi-table-scroll-position-left"
+  >
+    <div
+      class="pi-table-content"
+    >
+      <div
+        class="pi-table-body"
+      >
+        <table
+          class=""
+        >
+          <colgroup>
+            <col
+              style="width:50%;min-width:50%"
+            />
+            <col
+              style="width:50%;min-width:50%"
+            />
+          </colgroup>
+          <thead
+            class="pi-table-thead"
+          >
+            <tr>
+              <th
+                class=""
+              >
+                Name
+              </th>
+              <th
+                class=""
+              >
+                Age
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="pi-table-tbody"
+          >
+            <tr
+              class="pi-table-row  pi-table-row-level-0"
+            >
+              <td
+                class=""
+              >
+                <span
+                  class="pi-table-row-indent indent-level-0"
+                  style="padding-left:0px"
+                />
+                zhangsan
+              </td>
+              <td
+                class=""
+              >
+                20
+              </td>
+            </tr>
+            <tr
+              class="pi-table-row  pi-table-row-level-0"
+            >
+              <td
+                class=""
+              >
+                <span
+                  class="pi-table-row-indent indent-level-0"
+                  style="padding-left:0px"
+                />
+                lisi
+              </td>
+              <td
+                class=""
+              >
+                22
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home basic render 1`] = `
+<Provider
+  rootStore={
+    Object {
+      "appStore": Object {},
+      "config": Object {},
+    }
+  }
+>
+  <inject-Home-with-rootStore>
+    <Home
+      rootStore={
+        Object {
+          "appStore": Object {},
+          "config": Object {},
+        }
+      }
+    >
+      <div
+        className="home"
+      >
+        <Banner>
+          <div
+            className="banner banner"
+          >
+            <div
+              className="wrapper"
+            >
+              <img
+                alt=""
+                className="banner-img-1"
+                src="../../assets/1-1.svg"
+              />
+              <img
+                alt=""
+                className="banner-img-2"
+                src="../../assets/1-2.svg"
+              />
+              <img
+                alt=""
+                className="banner-img-3"
+                src="../../assets/1-3.svg"
+              />
+              <div
+                className="title"
+              >
+                Application Management Platform on Multi-Cloud Environment.
+              </div>
+              <Search
+                className="search"
+                placeholder="Search apps in Pitrix..."
+              >
+                <div
+                  className="inputGroup search"
+                >
+                  <Icon
+                    name="search"
+                  >
+                    <i
+                      className="icon icon-search"
+                    />
+                  </Icon>
+                  <input
+                    className="input"
+                    onChange={[Function]}
+                    onKeyDown={[Function]}
+                    placeholder="Search apps in Pitrix..."
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </Search>
+            </div>
+          </div>
+        </Banner>
+        <div
+          className="content"
+        >
+          <Nav
+            className="nav"
+          >
+            <div
+              className="nav nav"
+            />
+          </Nav>
+          <AppList
+            className="apps"
+          >
+            <div
+              className="appList apps"
+            />
+          </AppList>
+        </div>
+      </div>
+    </Home>
+  </inject-Home-with-rootStore>
+</Provider>
+`;

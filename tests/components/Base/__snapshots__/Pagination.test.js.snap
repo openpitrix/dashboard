@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Pagination basic render 1`] = `
+<ul
+  class="pi-pagination pagination test"
+  unselectable="unselectable"
+>
+  <li
+    class="pi-pagination-total-text"
+  >
+    100 items in total
+  </li>
+  <li
+    aria-disabled="false"
+    class=" pi-pagination-prev"
+    tabindex="0"
+    title="Previous Page"
+  >
+    <span>
+      Last
+    </span>
+  </li>
+  <li
+    class="pi-pagination-item pi-pagination-item-1"
+    tabindex="0"
+    title="1"
+  >
+    <a>
+      1
+    </a>
+  </li>
+  <li
+    class="pi-pagination-item pi-pagination-item-2 pi-pagination-item-active"
+    tabindex="0"
+    title="2"
+  >
+    <a>
+      2
+    </a>
+  </li>
+  <li
+    class="pi-pagination-item pi-pagination-item-3"
+    tabindex="0"
+    title="3"
+  >
+    <a>
+      3
+    </a>
+  </li>
+  <li
+    class="pi-pagination-item pi-pagination-item-4"
+    tabindex="0"
+    title="4"
+  >
+    <a>
+      4
+    </a>
+  </li>
+  <li
+    class="pi-pagination-item pi-pagination-item-5"
+    tabindex="0"
+    title="5"
+  >
+    <a>
+      5
+    </a>
+  </li>
+  <li
+    aria-disabled="false"
+    class=" pi-pagination-next"
+    tabindex="0"
+    title="Next Page"
+  >
+    <span>
+      Next
+    </span>
+  </li>
+</ul>
+`;

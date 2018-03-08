@@ -1,50 +1,37 @@
 import React from 'react';
-import { configure, shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render, mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 import Checkbox from 'components/Base/Checkbox';
 
-configure({ adapter: new Adapter() });
-
-const setup = (props = {}, children, type) => {
-  const wrapper = type === 'mount' ? mount(<Checkbox {...props}>{children}</Checkbox>) : 
-    shallow(<Checkbox {...props}>{children}</Checkbox>);
-
-  return {
-    wrapper,
-    props: wrapper.instance().props,
-  };
-};
-
 describe('Base/Checkbox', () => {
-  it('render without crash', () => {
-    const { wrapper } = setup();
+  it('basic render', () => {
+    const wrapper = render(
+      <Checkbox className="test" name="test" disabled>
+        option1
+      </Checkbox>
+    );
+
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('custom className', () => {
-    const { wrapper } = setup({ className: 'test' });
-    expect(wrapper.hasClass('test')).toBeTruthy();
-  });
+  it('group render', () => {
+    const wrapper = render(
+      <Checkbox.Group name="test" values={["1", "3"]}>
+        <Checkbox value="1">option1</Checkbox>
+        <Checkbox value="2">option2</Checkbox>
+        <Checkbox value="3">option3</Checkbox>
+      </Checkbox.Group>
+    );
 
-  it('custom name', () => {
-    const { props } = setup({ name: 'test' });
-    expect(props.name).toEqual('test');
-  });
-
-  it('custom text', () => {
-    const { wrapper } = setup({}, 'option-1');
-    expect(wrapper.text()).toEqual('option-1');
-  });
-
-  it('disabled', () => {
-    const { wrapper, props } = setup({ disabled: true });
-    expect(props.disabled).toBeTruthy();
-    expect(wrapper.hasClass('disabled')).toBeTruthy();
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('call onChange', () => {
     const mockChange = jest.fn();
-    const { wrapper } = setup({ checked: true, onChange: mockChange }, null, 'mount');
+    const wrapper = mount(
+      <Checkbox onChange={mockChange} checked></Checkbox>
+    );
     wrapper.find('input').simulate('change');
 
     const isChecked = wrapper.state().isChecked;

@@ -1,8 +1,11 @@
 {
+  "setupFiles": [
+    "./tests/setup.js"
+  ],
   "bail": true,
   "transform": {
     "^.+\\.jsx?$": "babel-jest"
-  },
+  }, 
   "moduleNameMapper": {
     "\\.(png|svg)$": "<rootDir>/config/assetsTransformer.js",    
     "\\.(css|scss)$": "identity-obj-proxy"
