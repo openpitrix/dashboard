@@ -3,7 +3,7 @@
 .banner {
   height: $banner-height;
   padding-top: 130px;
-  background-color: $grey;
+  background-image: linear-gradient(-145deg, #F7F7F9 2%, #EDECF0 100%);
   border-bottom: 1px solid $border;
   .wrapper {
     width: $content-width;
@@ -18,6 +18,46 @@
     color: $title-color;
   }
   .search {
+    width: 360px;
     margin-top: $base-margin;
+    i {
+      font-size: $size-medium;
+      color: $third-text-color;
+    }
+    input {
+      border-color: transparent;
+      border-radius: 16px;
+      background: rgba($border-light, 0.2);
+      transition: all .3s ease-in-out;
+      &::placeholder {
+        color: rgba($third-text-color, 0.5);
+      }
+      &:focus {
+        border: solid 1px $border-dark;
+      }
+    }
+  }
+  :global {
+    .banner-img-1 {
+      position: absolute;
+      top: 138px;
+      left: 50vw;
+      z-index: 1;
+      width: 150px;
+    }
+    .banner-img-2 {
+      position: absolute;
+      top: -46px;
+      left: calc(50vw + 212px);
+      z-index: 1;
+      width: 155px;
+    }
+    .banner-img-3 {
+      position: absolute;
+      top: 250px;
+      left: calc(50vw + 279px);
+      z-index: 1;
+      width: 115px;
+    }
   }
 }

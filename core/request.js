@@ -70,9 +70,9 @@ function createURL(path) {
  * @private
  */
 function handleResponse(response) {
-  const redirect = response.headers.get('Location');
+  const redirect = response.redirected;
   if (redirect) {
-    window.location.replace(redirect);
+    window.location.replace(response.url);
     return Promise.reject();
   }
 

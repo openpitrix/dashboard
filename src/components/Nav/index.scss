@@ -13,19 +13,22 @@
       line-height: 19px;
       font-size: $size-medium;
       font-weight: bold;
-      color: $purple;
+      color: $title-color;
     }
     li {
       margin: 16px 0;
       line-height: 16px;
       list-style: none;
+      &.current {
+        box-shadow: 1px 0 0 0 $third-text-color;
+      }
       a {
-        color: $text-color;
-        transition: color .2s ease-in;
+        color: $second-text-color;
+        transition: color .3s ease-in;
         &:hover {
-          color: $purple;
+          color: $third-text-color;
         }
       }
-    } 
+    }
   }
 }
