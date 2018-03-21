@@ -8,7 +8,7 @@
     "isomorphic-fetch": "^2.2.1",
     "js-yaml": "^3.10.0",
     "koa": "^2.4.1",
-    "koa-better-body": "^3.0.4",
+    "koa-bodyparser": "^4.2.0",
     "koa-convert": "^1.2.0",
     "koa-favicon": "^2.0.0",
     "koa-mount": "^3.0.0",

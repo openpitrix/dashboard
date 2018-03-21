@@ -5,7 +5,6 @@ import { Switch, Route } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
 import Header from 'components/Header';
-import Banner from 'components/Banner';
 import Footer from 'components/Footer';
 import RouteWrapper from './routes/wrapper';
 import routes from './routes';
@@ -20,13 +19,13 @@ class App extends Component {
   render() {
     const { location, rootStore } = this.props;
 
-    const isHome = location.pathname === '/';
+    const isHome = /^\/($|apps)/.test(location.pathname);
+    const isLogin = location.pathname === '/login';
 
     return (
       <Provider rootStore={rootStore}>
         <div>
-          <Header isHome={isHome}/>
-          {isHome && <Banner />}
+          {!isLogin && <Header isHome={isHome} />}
           <div className="main">
             <Switch>
               {routes.map((route, i) =>
@@ -41,7 +40,7 @@ class App extends Component {
               )}
             </Switch>
           </div>
-          <Footer />
+          {!isLogin && <Footer />}
         </div>
       </Provider>
     );

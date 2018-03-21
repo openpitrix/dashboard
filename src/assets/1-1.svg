@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="282px" height="450px" viewBox="0 0 282 450" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-22.6%" y="-250.0%" width="145.1%" height="600.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-20.2%" y="-225.0%" width="140.4%" height="550.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="6" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="58.7239167%" y1="95.2579495%" x2="34.6986392%" y2="6.07289374%" id="linearGradient-3">
+            <stop stop-color="#C8C8C8" offset="0%"></stop>
+            <stop stop-color="#C8C8C8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="47.6384248%" y1="99.0419872%" x2="39.6447033%" y2="11.3606827%" id="linearGradient-4">
+            <stop stop-color="#D4D4D7" offset="0%"></stop>
+            <stop stop-color="#E8E8E8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="12.0010338%" y1="4.12053281%" x2="89.218167%" y2="91.9484944%" id="linearGradient-5">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FDFCFD" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="8.43363294%" x2="91.562725%" y2="70.6492996%" id="linearGradient-6">
+            <stop stop-color="#D0D0D0" offset="0%"></stop>
+            <stop stop-color="#C8C8C8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1" transform="translate(17.000000, 0.000000)">
+            <g id="Group-7" transform="translate(2.000000, 406.000000)" fill="#D8D8D8" opacity="0.200000003">
+                <ellipse id="Oval-2" filter="url(#filter-1)" cx="66.5918641" cy="12.954045" rx="66.5" ry="6"></ellipse>
+                <ellipse id="Oval-2" filter="url(#filter-2)" cx="51.3897631" cy="4.85514603" rx="44.5" ry="4"></ellipse>
+            </g>
+            <g id="Group-3">
+                <polygon id="Rectangle-4" fill="url(#linearGradient-3)" points="64.7511312 98.5064935 119.39098 119.657812 127.035928 345.616789 79.0721274 369.296111"></polygon>
+                <polygon id="Rectangle" fill="url(#linearGradient-4)" points="0 7.20779221 218.000439 101.20009 219.199534 178.115182 66.6065776 107.837206 79.1402715 368.798701 18.190307 321.410184"></polygon>
+                <polygon id="Rectangle-3" fill="url(#linearGradient-5)" points="54.3997053 0.600649351 264.543356 88.7527716 217.306067 101.370784 0 7.18688376"></polygon>
+                <polygon id="Rectangle-2" fill="url(#linearGradient-6)" points="217.52817 101.357686 264.450349 88.8961039 264.450349 163.529521 219.193451 178.148707"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

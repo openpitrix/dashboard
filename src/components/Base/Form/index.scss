@@ -12,8 +12,7 @@
   .wrapper {
     display: inline-block;
     position: relative;
-    width: 276px;
-    margin-left: $base-margin;
+    min-width: 276px;
   }
   .help {
     position: absolute;

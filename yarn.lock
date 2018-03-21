@@ -305,7 +305,7 @@ arrify@^1.0.0, arrify@^1.0.1:
 
 asap@~2.0.3:
   version "2.0.6"
-  resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
+  resolved "http://registry.npm.taobao.org/asap/download/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
 asn1.js@^4.0.0:
   version "4.9.2"
@@ -1916,6 +1916,15 @@ clone@^1.0.2:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/clone/download/clone-1.0.3.tgz#298d7e2231660f40c003c2ed3140decf3f53085f"
 
+co-body@^5.1.0:
+  version "5.1.1"
+  resolved "http://registry.npm.taobao.org/co-body/download/co-body-5.1.1.tgz#d97781d1e3344ba4a820fd1806bddf8341505236"
+  dependencies:
+    inflation "^2.0.0"
+    qs "^6.4.0"
+    raw-body "^2.2.0"
+    type-is "^1.6.14"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "http://registry.npm.taobao.org/co/download/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2111,9 +2120,13 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "http://registry.npm.taobao.org/copy-descriptor/download/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
 
+copy-to@^2.0.1:
+  version "2.0.1"
+  resolved "http://registry.npm.taobao.org/copy-to/download/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
+
 core-js@^1.0.0:
   version "1.2.7"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
+  resolved "http://registry.npm.taobao.org/core-js/download/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.3"
@@ -2618,7 +2631,7 @@ emojis-list@^2.0.0:
 
 encoding@^0.1.11:
   version "0.1.12"
-  resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
+  resolved "http://registry.npm.taobao.org/encoding/download/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
   dependencies:
     iconv-lite "~0.4.13"
 
@@ -3053,7 +3066,7 @@ execa@^0.7.0:
 
 exenv@^1.2.0:
   version "1.2.2"
-  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+  resolved "http://registry.npm.taobao.org/exenv/download/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
 
 expand-brackets@^0.1.4:
   version "0.1.5"
@@ -3175,7 +3188,7 @@ fb-watchman@^2.0.0:
 
 fbjs@^0.8.16:
   version "0.8.16"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
+  resolved "http://registry.npm.taobao.org/fbjs/download/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -3331,10 +3344,6 @@ form-data@~2.3.1:
     asynckit "^0.4.0"
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
-
-formidable@^1.0.17:
-  version "1.1.1"
-  resolved "http://registry.npm.taobao.org/formidable/download/formidable-1.1.1.tgz#96b8886f7c3c3508b932d6bd70c4d3a88f35f1a9"
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -3832,7 +3841,7 @@ https-browserify@^1.0.0:
 
 iconv-lite@0.4.19, iconv-lite@^0.4.17, iconv-lite@~0.4.13:
   version "0.4.19"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
+  resolved "http://registry.npm.taobao.org/iconv-lite/download/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
 icss-replace-symbols@^1.0.2, icss-replace-symbols@^1.1.0:
   version "1.1.0"
@@ -3893,6 +3902,10 @@ indexes-of@^1.0.1:
 indexof@0.0.1:
   version "0.0.1"
   resolved "http://registry.npm.taobao.org/indexof/download/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
+
+inflation@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/inflation/download/inflation-2.0.0.tgz#8b417e47c28f925a45133d914ca1fd389107f30f"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -4237,7 +4250,7 @@ is-retry-allowed@^1.0.0:
 
 is-stream@^1.0.0, is-stream@^1.0.1, is-stream@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
+  resolved "http://registry.npm.taobao.org/is-stream/download/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
 
 is-string@^1.0.4:
   version "1.0.4"
@@ -4640,7 +4653,7 @@ js-stringify@^1.0.1:
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
+  resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
 js-yaml@^3.10.0, js-yaml@^3.4.3, js-yaml@^3.7.0, js-yaml@^3.9.1:
   version "3.10.0"
@@ -4793,19 +4806,12 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "http://registry.npm.taobao.org/kind-of/download/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-koa-better-body@^3.0.4:
-  version "3.0.4"
-  resolved "http://registry.npm.taobao.org/koa-better-body/download/koa-better-body-3.0.4.tgz#de49f544e4d6e1d9858f6c4880aedf2b8ac88759"
+koa-bodyparser@^4.2.0:
+  version "4.2.0"
+  resolved "http://registry.npm.taobao.org/koa-bodyparser/download/koa-bodyparser-4.2.0.tgz#bce6e08bc65f8709b6d1faa9411c7f0d8938aa54"
   dependencies:
-    extend-shallow "^2.0.1"
-    formidable "^1.0.17"
-    koa-body-parsers "git+https://github.com/tunnckoCore/body-parsers.git"
-
-"koa-body-parsers@git+https://github.com/tunnckoCore/body-parsers.git":
-  version "3.0.0"
-  resolved "git+https://github.com/tunnckoCore/body-parsers.git#b515504ef0bfe3e04aa3dd13502d3d90c2d60956"
-  dependencies:
-    raw-body "^2.1.0"
+    co-body "^5.1.0"
+    copy-to "^2.0.1"
 
 koa-compose@^3.0.0, koa-compose@^3.2.1:
   version "3.2.1"
@@ -5138,7 +5144,7 @@ longest@^1.0.1:
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
   version "1.3.1"
-  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
+  resolved "http://registry.npm.taobao.org/loose-envify/download/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
     js-tokens "^3.0.0"
 
@@ -5314,11 +5320,21 @@ mime-db@~1.30.0:
   version "1.30.0"
   resolved "http://registry.npm.taobao.org/mime-db/download/mime-db-1.30.0.tgz#74c643da2dd9d6a45399963465b26d5ca7d71f01"
 
+mime-db@~1.33.0:
+  version "1.33.0"
+  resolved "http://registry.npm.taobao.org/mime-db/download/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
+
 mime-types@^2.0.7, mime-types@^2.1.12, mime-types@~2.1.15, mime-types@~2.1.16, mime-types@~2.1.17, mime-types@~2.1.7:
   version "2.1.17"
   resolved "http://registry.npm.taobao.org/mime-types/download/mime-types-2.1.17.tgz#09d7a393f03e995a79f8af857b70a9e0ab16557a"
   dependencies:
     mime-db "~1.30.0"
+
+mime-types@~2.1.18:
+  version "2.1.18"
+  resolved "http://registry.npm.taobao.org/mime-types/download/mime-types-2.1.18.tgz#6f323f60a83d11146f831ff11fd66e2fe5503bb8"
+  dependencies:
+    mime-db "~1.33.0"
 
 mime@1.3.x:
   version "1.3.6"
@@ -5460,7 +5476,7 @@ neo-async@^2.5.0:
 
 node-fetch@^1.0.1:
   version "1.7.3"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
+  resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
@@ -6059,9 +6075,13 @@ pn@^1.0.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/pn/download/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
 
-popper.js@^1.12.5, popper.js@^1.12.9:
+popper.js@^1.12.5:
   version "1.12.9"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.9.tgz#0dfbc2dff96c451bb332edcfcfaaf566d331d5b3"
+
+popper.js@^1.12.9:
+  version "1.14.1"
+  resolved "http://registry.npm.taobao.org/popper.js/download/popper.js-1.14.1.tgz#b8815e5cda6f62fc2042e47618649f75866e6753"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -6416,19 +6436,11 @@ promise-polyfill@^7.0.0:
 
 promise@^7.0.1, promise@^7.1.1:
   version "7.3.1"
-  resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
+  resolved "http://registry.npm.taobao.org/promise/download/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
-prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.0"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -6579,6 +6591,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
+qs@^6.4.0, qs@~6.5.1:
+  version "6.5.1"
+  resolved "http://registry.npm.taobao.org/qs/download/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
+
 qs@~6.3.0:
   version "6.3.2"
   resolved "http://registry.npm.taobao.org/qs/download/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
@@ -6586,10 +6602,6 @@ qs@~6.3.0:
 qs@~6.4.0:
   version "6.4.0"
   resolved "http://registry.npm.taobao.org/qs/download/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
-
-qs@~6.5.1:
-  version "6.5.1"
-  resolved "http://registry.npm.taobao.org/qs/download/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
 
 query-string@^4.1.0:
   version "4.3.4"
@@ -6647,7 +6659,7 @@ range-parser@^1.0.3:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/range-parser/download/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
-raw-body@^2.1.0:
+raw-body@^2.2.0:
   version "2.3.2"
   resolved "http://registry.npm.taobao.org/raw-body/download/raw-body-2.3.2.tgz#bcd60c77d3eb93cde0050295c3f379389bc88f89"
   dependencies:
@@ -6728,8 +6740,8 @@ react-hot-loader@^3.1.3:
     source-map "^0.6.1"
 
 react-modal@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.3.1.tgz#7355db196482da0c7fa1cbecccf2bdd9bc366b14"
+  version "3.3.2"
+  resolved "http://registry.npm.taobao.org/react-modal/download/react-modal-3.3.2.tgz#b13da9490653a7c76bc0e9600323eb1079c620e7"
   dependencies:
     exenv "^1.2.0"
     prop-types "^15.5.10"
@@ -6743,8 +6755,8 @@ react-popper@^0.7.2:
     prop-types "^15.5.10"
 
 react-popper@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.8.2.tgz#092095ff13933211d3856d9f325511ec3a42f12c"
+  version "0.8.3"
+  resolved "http://registry.npm.taobao.org/react-popper/download/react-popper-0.8.3.tgz#0f73333137c9fb0af6ec4074d2d0585a0a0461e1"
   dependencies:
     popper.js "^1.12.9"
     prop-types "^15.6.0"
@@ -7337,7 +7349,7 @@ set-value@^2.0.0:
 
 setimmediate@^1.0.4, setimmediate@^1.0.5:
   version "1.0.5"
-  resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
+  resolved "http://registry.npm.taobao.org/setimmediate/download/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
 
 setprototypeof@1.0.2:
   version "1.0.2"
@@ -7941,13 +7953,20 @@ type-is@^1.5.5:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+type-is@^1.6.14:
+  version "1.6.16"
+  resolved "http://registry.npm.taobao.org/type-is/download/type-is-1.6.16.tgz#f89ce341541c672b25ee7ae3c73dee3b2be50194"
+  dependencies:
+    media-typer "0.3.0"
+    mime-types "~2.1.18"
+
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
+  resolved "http://registry.npm.taobao.org/ua-parser-js/download/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
 uglify-js@^2.6, uglify-js@^2.6.1, uglify-js@^2.8.29:
   version "2.8.29"
@@ -8170,7 +8189,7 @@ walker@~1.0.5:
 
 warning@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  resolved "http://registry.npm.taobao.org/warning/download/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
   dependencies:
     loose-envify "^1.0.0"
 
@@ -8266,7 +8285,7 @@ whatwg-encoding@^1.0.1:
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"
-  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
+  resolved "http://registry.npm.taobao.org/whatwg-fetch/download/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
 
 whatwg-url@^6.3.0:
   version "6.4.0"

@@ -1,8 +1,10 @@
 @import "~scss/variables";
 
 .footer {
+  position: absolute;
+  width: 100%;
   height: $footer-height;
-  background-color: $background-color;
+  background-color: $background-color-lighter;
   border-top: 1px solid $border;
   box-sizing: border-box;
   .wrapper {

@@ -1,21 +1,33 @@
 @import "~scss/variables";
 
-.home{
-  display: table;
-  width: 100%;
+.home {
+
+}
+
+.content{
+  position: relative;
+  width: $content-width;
   height: $main-height;
+  margin: 0 auto;
   .nav {
-    display: table-cell;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: $nav-width;
-    padding-left: calc(50vw - #{$content-width}/2);
+    height: 100%;
     border-right: 1px solid $border;
-    background: #ffffff;
-    box-sizing: content-box;
-    vertical-align: top;
   }
   .apps {
-    display: table-cell;
-    vertical-align: top;
-    padding-right: calc(50vw - #{$content-width}/2);
+    margin-left: 288px;
+    padding-bottom: 95px;
+  }
+  &.fixNav {
+    height: auto;
+    .nav {
+      position: fixed;
+      top: $header-height;
+      left: calc(50vw - #{$content-width}/2);
+      height: 100%;
+    }
   }
 }

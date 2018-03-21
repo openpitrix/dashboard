@@ -3,7 +3,7 @@ require('lib/logger');
 import { resolve } from 'path';
 import semver from 'semver';
 import Koa from 'koa';
-import bodyParser from 'koa-better-body';
+import bodyParser from 'koa-bodyparser';
 import favicon from 'koa-favicon';
 import convert from 'koa-convert';
 import views from 'koa-views';

@@ -38,9 +38,10 @@ export default class Search extends React.Component {
     const { className, placeholder } = this.props;
     const { value } = this.state;
     return (
-      <div className={classnames(styles.search, className)}>
+      <div className={classnames(styles.inputGroup, className)}>
         <Icon name="search" />
         <input
+          className={styles.input}
           type="text"
           placeholder={placeholder}
           value={value}
