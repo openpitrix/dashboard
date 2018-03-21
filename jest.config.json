@@ -4,7 +4,7 @@
     "^.+\\.jsx?$": "babel-jest"
   },
   "moduleNameMapper": {
-    "\\.(png|svg)$": "<rootDir>/assetsTransformer.js",
+    "\\.(png|svg)$": "<rootDir>/assets.transformer.js",
     "\\.(css|scss)$": "identity-obj-proxy"
   }
 }

@@ -1,7 +1,4 @@
-/*
- enable babel server env plugin transform
- should be placed on top-level before importing any js, jsx
- */
+/* eslint-disable import/first */
 process.env.BABEL_ENV = 'server';
 
 import React from 'react';
@@ -26,7 +23,7 @@ export default async (ctx, next) => {
   const components = isDev ? null : renderToString(
     <StaticRouter location={ctx.url} context={context}>
       <App rootStore={ctx.store}/>
-    </StaticRouter>
+    </StaticRouter>,
   );
 
   /**

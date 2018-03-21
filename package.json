@@ -18,6 +18,7 @@
     "lodash": "^4.17.4",
     "mobx": "^3.4.1",
     "mobx-react": "^4.3.5",
+    "node-cache": "^4.1.1",
     "normalize.css": "^7.0.0",
     "promise-polyfill": "^7.0.0",
     "prop-types": "^15.6.0",
@@ -39,7 +40,7 @@
   "scripts": {
     "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development nodemon -w ./lib -w ./server --exec babel-node server/server.js",
     "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json",
     "pack:dev": "NODE_ENV=development webpack --config webpack.dev.js --progress",
     "pack:prod": "NODE_ENV=production webpack -p --config webpack.prod.js --progress",

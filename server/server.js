@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 require('lib/logger');
 
 import { resolve } from 'path';
@@ -9,18 +10,19 @@ import convert from 'koa-convert';
 import views from 'koa-views';
 import mount from 'koa-mount';
 import serve from 'koa-static';
-
 import store from './middleware/store';
 import render from './middleware/render';
 import routes from './routes';
-import utils from '../lib/utils';
+import utils, { root, getServerConfig } from '../lib/utils';
 
 if (semver.lt(process.version, '7.6.0')) {
   console.error('Node Version should be greater than 7.6.0');
   process.exit(-1);
 }
 
-const config = utils.getServerConfig();
+const config = getServerConfig();
+
+utils.watchServerConfig();
 
 global.HOSTNAME = config.http.hostname || 'localhost';
 global.PORT = config.http.port || 8000;
@@ -28,9 +30,9 @@ global.PORT = config.http.port || 8000;
 const app = new Koa();
 
 // serve static files
-const serveFiles = function(env){
+const serveFiles = function (env = process.env.NODE_ENV) {
   for (const [k, v] of Object.entries(config.http.static[env])) {
-    app.use(mount(k, serve(utils.root(v), { index: false })));
+    app.use(mount(k, serve(root(v), { index: false })));
   }
 };
 
@@ -65,16 +67,11 @@ if (process.env.NODE_ENV === 'development') {
       },
     },
   }));
-
-  serveFiles('development');
 }
 
+serveFiles();
 
-if (process.env.NODE_ENV === 'production') {
-  serveFiles('production');
-}
-
-app.use(favicon(utils.root(config.http.favicon)));
+app.use(favicon(root(config.http.favicon)));
 
 app.use(convert(bodyParser({
   formLimit: '200kb',
