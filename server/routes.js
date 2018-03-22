@@ -1,12 +1,12 @@
 import Router from 'koa-router';
-import request from 'core/request';
-import config from './config';
+import request from 'lib/request';
+import { getServerConfig } from 'lib/utils';
 
 const router = new Router();
+const config = getServerConfig();
 
 router.get('/api/*', async (ctx) => {
-  const resp = await request.get(config.serverUrl + ctx.url, ctx.query);
-  ctx.body = resp;
+  ctx.body = await request.get(config.serverUrl + ctx.url, ctx.query);
 });
 
 router.post('/login', async (ctx) => {

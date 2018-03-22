@@ -1,26 +1,53 @@
 {
-  "presets": ["env", "stage-0", "react"],
-  "comments": false,
+  "presets": [
+    "env",
+    "stage-0",
+    "react"
+  ],
   "plugins": [
     "transform-runtime",
     "transform-decorators-legacy",
     "transform-class-properties",
-    ["module-resolver", {
-      "root": ["./", "./src/**"],
-      "alias": {
-
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./",
+          "./src/**"
+        ],
+        "alias": {
+        }
       }
-    }]
+    ]
   ],
   "env": {
     "production": {
-      "plugins": [[
-        "transform-react-remove-prop-types",
-        {
-          "removeImport": true,
-          "ignoreFilenames": ["node_modules", "transition"]
-        }
-      ]]
+      "plugins": [
+        [
+          "transform-react-remove-prop-types",
+          {
+            "removeImport": true,
+            "ignoreFilenames": [
+              "node_modules",
+              "transition"
+            ]
+          }
+        ]
+      ]
+    },
+    "server": {
+      "plugins": [
+        [
+          "css-modules-transform",
+          {
+            "generateScopedName": "[folder]__[local]--[hash:base64:5]",
+            "extensions": [
+              ".css",
+              ".scss"
+            ]
+          }
+        ]
+      ]
     },
     "development": {
       "plugins": [

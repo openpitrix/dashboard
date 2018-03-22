@@ -1,6 +1,6 @@
 import { action, extendObservable } from 'mobx';
 
-import request from 'core/request';
+import request from 'lib/request';
 import AppStore from './AppStore';
 import ClusterStore from './ClusterStore';
 

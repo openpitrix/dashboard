@@ -1,5 +1,5 @@
 import { observable, action, extendObservable } from 'mobx';
-import request from 'core/request';
+import request from 'lib/request';
 
 export default class AppStore {
   @observable apps = [];

@@ -6,8 +6,11 @@
 # testing
 /coverage
 
-# production
+# development
 /build
+
+# production
+/dist
 
 # misc
 .DS_Store
@@ -15,11 +18,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-webpack-assets.json
-webpack-stats.json
 
 .idea/
 package-lock.json
 
 # local config
-/server/config.local.js
+/server/local_config.yml
