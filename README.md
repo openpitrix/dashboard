@@ -13,7 +13,7 @@
 ### Setting up with git
 If you choose this way, we recommend you to install some requisites
 - git
-- node.js (`npm` is already bundled with node)
+- node.js
 - yarn (or npm, `we recommend yarn`)
 
 **For more installation details, see: [installation doc](./docs/install.md)**
@@ -36,26 +36,48 @@ yarn run dev
 
 ### Setting up with docker
 
-> The easiest way is to use one-off command: `docker-compose`
-
-```shell
-docker-compose up
-```
-
-> Using `docker` to build and run
-
-Since we already provide a **Makefile**, to build docker image is simple:
+**Attention:** If this is your first time to run the app, you should build a docker image
 
 ```shell
 make build
 ```
 
-Or you can build from scratch:
+_Since we wrap the build detail in Makefile, in fact you can also build your own docker image like this:_
 
 ```shell
-docker build -t sunnyw/node-app -f docker/Dockerfile .
+docker build -t openpitrix/node-app .
+```
 
-docker run -d --name openpitrix-dash -p 8000:8000 -v .:/home/web/app/ sunnyw/node-app
+**Attension:** You only have to build docker image once
+
+To check your built images
+```shell
+docker images
+```
+
+Then you can start this app using `docker-compose`
+
+```shell
+docker-compose up
+```
+
+Since we already provide a **Makefile**, you can use one-off command:
+
+```shell
+make build && make dev
+```
+
+> If you like using `docker` to build and run from scratch
+
+```shell
+docker build -t openpitrix/node-app --force-rm --no-cache .
+
+docker run -d --name openpitrix-web -p 8000:8000 -v $(pwd):/home/web/app openpitrix/node-app
+
+# then you can shell into the running container
+docker exec -it openpitrix-web bash
+
+$ cd /home/web/app && yarn run dev
 ```
 
 ## 2. Application architecture
@@ -83,6 +105,6 @@ For bug reporting, see [issue list](https://github.com/openpitrix/dashboard/issu
 
 Wanna send us a pull request? You can fork this repo, making your improvement.
 
-We are happy to see you :)
+We are happy to see you :smiley:
 
 
