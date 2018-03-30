@@ -1,12 +1,12 @@
-version: "3"
+version: '3'
 
 services:
-  web:
-    image: sunnyw/node-app
-    build: ./docker
-    container_name: pitrix-dash
+  openpitrix-web:
+#    build: .
+    image: openpitrix/node-app
+    command: yarn run dev
+    container_name: openpitrix-web
     ports:
       - "8000:8000"
     volumes:
       - .:/home/web/app
-      - /home/web/app/node_modules

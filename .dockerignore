@@ -1,7 +1,6 @@
+.git/
+.idea/
 node_modules/
-dist/
-build/
-docs/
 
 yarn-error.log
 yarn-debug.log
