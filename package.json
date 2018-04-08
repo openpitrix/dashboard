@@ -48,7 +48,8 @@
     "dist:lib": "BABEL_ENV=server NODE_ENV=production babel lib -d dist/lib --copy-files",
     "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
     "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
-    "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js"
+    "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
+    "postinstall": "npm rebuild node-sass"
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
