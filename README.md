@@ -1,4 +1,4 @@
-<p align="center"><img src="./src/assets/logo.svg" alt="OpenPitrix Dashboard"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/openpitrix/openpitrix/master/docs/images/logo.png" alt="OpenPitrix Dashboard"></p>
 
 # OpenPitrix Dashboard
 > A dashboard for [OpenPitrix](https://github.com/openpitrix/openpitrix)
