@@ -11,11 +11,11 @@ ENV HOME=/home/web
 
 RUN mkdir -p $HOME/app
 
-# todo: production way to install yarn
+# case: production way to install yarn
 #RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 #ENV PATH "$PATH:$HOME/.yarn/bin"
 
-# todo: local dev way to install yarn
+# case: local dev way to install yarn
 ADD docker/yarn.tar.gz $HOME
 ENV PATH "$PATH:$HOME/yarn-v1.5.1/bin"
 
@@ -24,22 +24,15 @@ COPY package.json yarn.lock .npmrc /tmp/
 
 RUN cd /tmp && yarn install --verbose \
     && cd $HOME/app \
-    && ln -s /tmp/node_modules
+    && ln -s /tmp/node_modules \
+    && chown -R web:web $HOME
 
 WORKDIR $HOME/app
-
-# todo: use docker-compose volume mount as rw
-#COPY . .
-
-RUN chown -R web:web .
 
 USER web
 
 # for yarn cache
 #ADD .yarn-cache.tgz /
 #RUN echo 'cache=/tmp/.yarn-cache' >> /tmp/.npmrc
-
-
-#EXPOSE 8000
 
 CMD ["yarn", "--version"]

@@ -1,4 +1,5 @@
 npm_cache := $(shell npm config get cache)
+cwd := $(shell pwd)
 
 build: Dockerfile
 	@echo 'building image..'
@@ -17,3 +18,9 @@ sh:
 
 dev: docker-compose.yml
 	docker-compose up
+
+rm:
+	docker-compose rm
+
+run:
+	docker run --rm -it --name openpitrix-web -p 8000:8000 -v "$(cwd)":/home/web/app openpitrix/node-app bash
