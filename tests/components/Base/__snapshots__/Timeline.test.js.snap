@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Timeline basic render 1`] = `
+<div
+  class="timeline test"
+>
+  <div
+    class="item"
+  >
+    <div
+      class="line purple dotCustom"
+    >
+      <span>
+        <i
+          class="icon icon-stop"
+        />
+      </span>
+    </div>
+    123
+  </div>
+  <div
+    class="item"
+  >
+    <div
+      class="line purple dotCustom"
+    >
+      <span>
+        <i
+          class="icon icon-refresh"
+        />
+      </span>
+    </div>
+    456
+  </div>
+  <div
+    class="item"
+  >
+    <div
+      class="line blue"
+    >
+      <span />
+    </div>
+    789
+  </div>
+</div>
+`;

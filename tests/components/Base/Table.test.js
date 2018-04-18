@@ -1,19 +1,10 @@
 import React from 'react';
-import { configure, shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render, mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
 import Table from 'components/Base/Table';
 
-configure({ adapter: new Adapter() });
-
-const setup = (props = {}, type) => {
-  const wrapper = type === 'mount' ? mount(<Table {...props}/>) : shallow(<Table {...props}/>);
-
-  return {
-    wrapper,
-    props: wrapper.instance().props,
-  };
-};
+const setup = (type, props = {}) => (type === 'render' ? render(<Table {...props} />) : mount(<Table {...props} />));
 
 describe('Base/Table', () => {
   const columns = [
@@ -37,21 +28,16 @@ describe('Base/Table', () => {
     onChange: jest.fn(),
     onSelect: jest.fn(),
     onSelectAll: jest.fn(),
-  };  
+  };
 
-  it('render without crash', () => {
-    const { wrapper } = setup();
+  it('basic render', () => {
+    const wrapper = setup('render', { columns, dataSource });
+
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('custom columns & data', () => {
-    const { wrapper } = setup({ columns, dataSource }, 'mount');
-    
-    expect(wrapper.find('thead th').length).toEqual(columns.length);
-    expect(wrapper.find('tbody tr').length).toEqual(dataSource.length);
-  });
-
-  it('call change', () => {
-    const { wrapper } = setup({ columns, dataSource, rowSelection }, 'mount');
+  it('call onChange', () => {
+    const wrapper = setup('mount', { columns, dataSource, rowSelection });
     const checkbox = wrapper.find('tbody tr').first().find('td').at(0).find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 
@@ -61,8 +47,8 @@ describe('Base/Table', () => {
     expect(mockChange.mock.calls[0][0]).toEqual(['1']);
   });
 
-  it('call select one', () => {
-    const { wrapper } = setup({ columns, dataSource, rowSelection }, 'mount');
+  it('call onSelect', () => {
+    const wrapper = setup('mount', { columns, dataSource, rowSelection });
     const checkbox = wrapper.find('tbody tr').first().find('td').at(0).find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 
@@ -72,8 +58,8 @@ describe('Base/Table', () => {
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
   });
 
-  it('call select all', () => {
-    const { wrapper } = setup({ columns, dataSource, rowSelection }, 'mount');
+  it('call onSelectAll', () => {
+    const wrapper = setup('mount', { columns, dataSource, rowSelection });
     const checkbox = wrapper.find('thead th').at(0).find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 

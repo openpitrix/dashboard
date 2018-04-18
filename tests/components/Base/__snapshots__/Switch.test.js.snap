@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Switch basic render 1`] = `
+<label
+  class="switch primary disabled"
+>
+  <span
+    class="inner"
+  >
+    off
+  </span>
+</label>
+`;

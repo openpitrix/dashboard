@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Checkbox basic render 1`] = `
+<label
+  class="checkbox test disabled"
+>
+  <input
+    disabled=""
+    name="test"
+    type="checkbox"
+  />
+  option1
+</label>
+`;
+
+exports[`Base/Checkbox group render 1`] = `
+<div
+  class="group"
+>
+  <label
+    class="checkbox checked"
+  >
+    <i
+      class="icon icon-check"
+    />
+    <input
+      checked=""
+      name="test"
+      type="checkbox"
+      value="1"
+    />
+    option1
+  </label>
+  <label
+    class="checkbox"
+  >
+    <input
+      name="test"
+      type="checkbox"
+      value="2"
+    />
+    option2
+  </label>
+  <label
+    class="checkbox checked"
+  >
+    <i
+      class="icon icon-check"
+    />
+    <input
+      checked=""
+      name="test"
+      type="checkbox"
+      value="3"
+    />
+    option3
+  </label>
+</div>
+`;
