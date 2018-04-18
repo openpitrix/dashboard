@@ -5,7 +5,7 @@ import AppStore from './AppStore';
 import ClusterStore from './ClusterStore';
 
 export default class RootStore {
-  config = {}
+  config = {};
 
   constructor(initialState) {
     if (initialState) {
@@ -17,11 +17,13 @@ export default class RootStore {
     this.clusterStore = new ClusterStore(initialState);
   }
 
-  @action setNavFix(fixNav) {
+  @action
+  setNavFix(fixNav) {
     this.fixNav = fixNav;
   }
 
-  @action async login(params) {
+  @action
+  async login(params) {
     await request.post('login', params);
   }
 }

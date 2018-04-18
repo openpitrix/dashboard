@@ -16,16 +16,16 @@ const store = new RootStore(window.__INITIAL_STATE__);
 const render = component => {
   ReactDOM.render(
     <AppContainer>
-      <BrowserRouter>
-        {component}
-      </BrowserRouter>
-    </AppContainer>
-    , document.getElementById('root'));
+      <BrowserRouter>{component}</BrowserRouter>
+    </AppContainer>,
+    document.getElementById('root')
+  );
 };
 
 render(<App rootStore={store} />);
 
-module.hot && module.hot.accept('./App', () => {
-  const NextApp = require('./App').default;
-  render(<NextApp rootStore={store} />);
-});
+module.hot &&
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default;
+    render(<NextApp rootStore={store} />);
+  });

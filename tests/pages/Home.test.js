@@ -7,20 +7,20 @@ import { Provider } from 'mobx-react';
 
 import Home from 'containers/Home';
 
-describe('Home', ()=> {
+describe('Home', () => {
   let rootStore;
 
-  beforeEach(()=> {
+  beforeEach(() => {
     // turn off strict mode when testing with mock store
     useStrict(false);
 
     rootStore = observable({
       config: {},
-      appStore: {},
+      appStore: {}
     });
   });
 
-  afterEach(()=> {
+  afterEach(() => {
     rootStore = null;
   });
 
@@ -34,7 +34,7 @@ describe('Home', ()=> {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('call onEnter', ()=> {
+  it('call onEnter', () => {
     // todo
   });
 });

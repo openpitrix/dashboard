@@ -6,18 +6,14 @@ import Pagination from 'components/Base/Pagination';
 
 describe('Base/Pagination', () => {
   it('basic render', () => {
-    const wrapper = render(
-      <Pagination className="test" defaultCurrent={2} pageSize={20} />
-    );
+    const wrapper = render(<Pagination className="test" defaultCurrent={2} pageSize={20} />);
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   it('call onChange', () => {
     const mockChange = jest.fn();
-    const wrapper = mount(
-      <Pagination defaultCurrent={2} onChange={mockChange} />
-    );
+    const wrapper = mount(<Pagination defaultCurrent={2} onChange={mockChange} />);
     wrapper.find('.pi-pagination-next').simulate('click');
 
     expect(mockChange).toHaveBeenCalled();

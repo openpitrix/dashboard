@@ -10,7 +10,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'dist/'),
-    publicPath: '/dist',
+    publicPath: '/dist'
   },
   module: {
     rules: [
@@ -26,16 +26,16 @@ module.exports = {
                 minimize: true,
                 importLoaders: 1,
                 localIdentName: '[folder]__[local]--[hash:base64:5]',
-                modules: true,
-              },
+                modules: true
+              }
             },
             {
               loader: 'postcss-loader',
-              options: postCssOptions,
+              options: postCssOptions
             },
-            { loader: 'sass-loader' },
-          ],
-        }),
+            { loader: 'sass-loader' }
+          ]
+        })
       },
       {
         test: /\.css$/,
@@ -48,19 +48,19 @@ module.exports = {
                 minimize: true,
                 importLoaders: 2,
                 localIdentName: '[folder]__[local]--[hash:base64:5]',
-                modules: true,
-              },
-            },
-          ],
-        }),
-      },
-    ],
+                modules: true
+              }
+            }
+          ]
+        })
+      }
+    ]
   },
   resolve: baseConfig.resolve,
   plugins: [
     new ExtractTextPlugin({
       filename: 'bundle.css',
-      allChunks: true,
+      allChunks: true
     }),
     // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.optimize.UglifyJsPlugin({
@@ -76,14 +76,17 @@ module.exports = {
     //     },
     //   },
     // }),
-    new MinifyPlugin({ evaluate: false, mangle: false }, {
-      comments: false,
-      exclude: /node_modules/,
-    }),
+    new MinifyPlugin(
+      { evaluate: false, mangle: false },
+      {
+        comments: false,
+        exclude: /node_modules/
+      }
+    ),
     new webpack.DefinePlugin({
       'process.env.DEV': false,
       'process.env.BROWSER': true,
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-  ],
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ]
 };

@@ -9,30 +9,31 @@ export default class Search extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     placeholder: PropTypes.string,
-    onSearch: PropTypes.func,
-  }
+    onSearch: PropTypes.func
+  };
 
   static defaultProps = {
     className: '',
-  }
+    onSearch: val => {}
+  };
 
   state = {
-    value: '',
-  }
+    value: ''
+  };
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     this.setState({ value: e.target.value });
-  }
+  };
 
-  handleOnKeyDown = (e) => {
+  handleOnKeyDown = e => {
     if (e.key === 'Enter') {
       this.props.onSearch(this.state.value);
     }
-  }
+  };
 
   handleClear = () => {
     this.setState({ value: '' });
-  }
+  };
 
   render() {
     const { className, placeholder } = this.props;

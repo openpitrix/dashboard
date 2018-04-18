@@ -49,7 +49,13 @@
     "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
     "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
     "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
-    "postinstall": "npm rebuild node-sass"
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
@@ -77,31 +83,37 @@
     "enzyme-to-json": "^3.3.1",
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-friendly-formatter": "^2.0.7",
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.6.3",
     "eslint-plugin-babel": "^4.0.1",
     "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-promise": "^3.4.2",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^2.0.1",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "^1.1.6",
+    "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.0.6",
     "koa-webpack": "^2.0.3",
+    "lint-staged": "^7.0.4",
     "node-sass": "^4.5.3",
     "nodemon": "^1.15.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
+    "prettier": "^1.12.1",
     "react-test-renderer": "^16.2.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
     "url-loader": "0.5.9",
-    "webpack": "^3"
+    "webpack": "^3",
+    "webpack-cli": "^2.0.14"
   },
   "engines": {
     "node": ">= 7.6.0"

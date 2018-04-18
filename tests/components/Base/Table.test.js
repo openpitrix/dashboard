@@ -4,30 +4,41 @@ import toJson from 'enzyme-to-json';
 
 import Table from 'components/Base/Table';
 
-const setup = (type, props = {}) => (type === 'render' ? render(<Table {...props} />) : mount(<Table {...props} />));
+const setup = (type, props = {}) =>
+  type === 'render' ? render(<Table {...props} />) : mount(<Table {...props} />);
 
 describe('Base/Table', () => {
   const columns = [
     {
-      title: 'Name', dataIndex: 'name', key: 'name', width: '50%',
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      width: '50%'
     },
     {
-      title: 'Age', dataIndex: 'age', key: 'age', width: '50%',
-    },
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+      width: '50%'
+    }
   ];
   const dataSource = [
     {
-      name: 'zhangsan', age: 20, key: '1',
+      name: 'zhangsan',
+      age: 20,
+      key: '1'
     },
     {
-      name: 'lisi', age: 22, key: '2',
-    },    
+      name: 'lisi',
+      age: 22,
+      key: '2'
+    }
   ];
   const rowSelection = {
     selectedRowKeys: [],
     onChange: jest.fn(),
     onSelect: jest.fn(),
-    onSelectAll: jest.fn(),
+    onSelectAll: jest.fn()
   };
 
   it('basic render', () => {
@@ -38,7 +49,12 @@ describe('Base/Table', () => {
 
   it('call onChange', () => {
     const wrapper = setup('mount', { columns, dataSource, rowSelection });
-    const checkbox = wrapper.find('tbody tr').first().find('td').at(0).find('input[type="checkbox"]');
+    const checkbox = wrapper
+      .find('tbody tr')
+      .first()
+      .find('td')
+      .at(0)
+      .find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockChange = rowSelection.onChange;
@@ -49,7 +65,12 @@ describe('Base/Table', () => {
 
   it('call onSelect', () => {
     const wrapper = setup('mount', { columns, dataSource, rowSelection });
-    const checkbox = wrapper.find('tbody tr').first().find('td').at(0).find('input[type="checkbox"]');
+    const checkbox = wrapper
+      .find('tbody tr')
+      .first()
+      .find('td')
+      .at(0)
+      .find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockSelect = rowSelection.onSelect;
@@ -60,7 +81,10 @@ describe('Base/Table', () => {
 
   it('call onSelectAll', () => {
     const wrapper = setup('mount', { columns, dataSource, rowSelection });
-    const checkbox = wrapper.find('thead th').at(0).find('input[type="checkbox"]');
+    const checkbox = wrapper
+      .find('thead th')
+      .at(0)
+      .find('input[type="checkbox"]');
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockSelectAll = rowSelection.onSelectAll;

@@ -50,6 +50,7 @@ exports[`Home basic render 1`] = `
               </div>
               <Search
                 className="search"
+                onSearch={[Function]}
                 placeholder="Search apps in Pitrix..."
               >
                 <div

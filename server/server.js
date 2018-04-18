@@ -30,7 +30,7 @@ global.PORT = config.http.port || 8000;
 const app = new Koa();
 
 // serve static files
-const serveFiles = function (env = process.env.NODE_ENV) {
+const serveFiles = function(env = process.env.NODE_ENV) {
   for (const [k, v] of Object.entries(config.http.static[env])) {
     app.use(mount(k, serve(root(v), { index: false })));
   }
@@ -44,46 +44,54 @@ if (process.env.NODE_ENV === 'development') {
   const webpackMiddleware = require('koa-webpack');
   const webpackConfig = require('../webpack.dev');
 
-  app.use(webpackMiddleware({
-    compiler: webpack(webpackConfig),
-    dev: {
-      publicPath: webpackConfig.output.publicPath,
-      noInfo: false,
-      quiet: false,
-      watchOptions: {
-        aggregateTimeout: 300,
-        poll: false,
-        ignored: /node_modules/,
-      },
-      stats: {
-        colors: true,
-        // hash: false,
-        // timings: false,
-        // version: false,
-        // chunks: false,
-        modules: true,
-        // children: false,
-        chunkModules: true,
-      },
-    },
-  }));
+  app.use(
+    webpackMiddleware({
+      compiler: webpack(webpackConfig),
+      dev: {
+        publicPath: webpackConfig.output.publicPath,
+        noInfo: false,
+        quiet: false,
+        watchOptions: {
+          aggregateTimeout: 300,
+          poll: true,
+          ignored: /node_modules/
+        },
+        stats: {
+          colors: true,
+          hash: true,
+          timings: true,
+          // version: false,
+          chunks: true,
+          modules: true,
+          // children: false,
+          chunkModules: true
+        }
+      }
+    })
+  );
 }
 
 serveFiles();
 
 app.use(favicon(root(config.http.favicon)));
 
-app.use(convert(bodyParser({
-  formLimit: '200kb',
-  jsonLimit: '200kb',
-  bufferLimit: '4mb',
-})));
+app.use(
+  convert(
+    bodyParser({
+      formLimit: '200kb',
+      jsonLimit: '200kb',
+      bufferLimit: '4mb'
+    })
+  )
+);
 
 app.use(store);
 
-app.use(views(resolve(__dirname, './views'), {
-  extension: 'pug',
-}));
+app.use(
+  views(resolve(__dirname, './views'), {
+    extension: 'pug'
+  })
+);
 
 // Routes
 app.use(routes.routes());
@@ -91,7 +99,7 @@ app.use(routes.routes());
 // Rendering
 app.use(render);
 
-app.listen(config.http.port, (err) => {
+app.listen(config.http.port, err => {
   if (err) {
     return console.error(err);
   }
