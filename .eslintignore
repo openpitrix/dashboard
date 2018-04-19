@@ -3,3 +3,4 @@ dist/
 docker/
 docs/
 node_modules/
+reports/
