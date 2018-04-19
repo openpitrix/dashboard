@@ -17,15 +17,7 @@ module.exports = {
     jest: true
   },
   extends: ['airbnb-base', 'plugin:prettier/recommended'],
-  // https://github.com/yannickcr/eslint-plugin-react
-  plugins: ['react', 'babel', 'promise'],
-  // check if imports actually resolve
-  settings: {
-    'import/resolver': {
-      webpack: {},
-      'babel-module': {}
-    }
-  },
+  plugins: ['react'],
   // add your custom rules here
   rules: {
     // allow paren-less arrow functions
@@ -62,7 +54,7 @@ module.exports = {
           "^(\\s*[a-zA-Z_]+: '[^']+'[,;]*)|(.*gettext.*)|(.*interpolate.*)|(.*require.*)|(.*_\\.template.*)$"
       }
     ],
-    'import/prefer-default-export': 0,
+    'import/prefer-default-export': 1,
     'no-eval': 0,
     'no-plusplus': 0,
     'func-names': 0,
@@ -72,6 +64,6 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-use-before-define': 0,
     'comma-dangle': 0,
-    'no-unused-vars': 0
+    'no-unused-vars': 1
   }
 };

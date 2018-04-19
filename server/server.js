@@ -13,30 +13,30 @@ import serve from 'koa-static';
 import store from './middleware/store';
 import render from './middleware/render';
 import routes from './routes';
-import utils, { root, getServerConfig } from '../lib/utils';
+import { root, getServerConfig, watchServerConfig } from '../lib/utils';
 
 if (semver.lt(process.version, '7.6.0')) {
-  console.error('Node Version should be greater than 7.6.0');
+  console.error('Node version should be greater than 7.6.0');
   process.exit(-1);
 }
 
 const config = getServerConfig();
-
-utils.watchServerConfig();
+watchServerConfig();
 
 global.HOSTNAME = config.http.hostname || 'localhost';
 global.PORT = config.http.port || 8000;
 
+const env = process.env.NODE_ENV || 'development';
 const app = new Koa();
 
 // serve static files
-const serveFiles = function(env = process.env.NODE_ENV) {
+const serveFiles = function() {
   for (const [k, v] of Object.entries(config.http.static[env])) {
     app.use(mount(k, serve(root(v), { index: false })));
   }
 };
 
-if (process.env.NODE_ENV === 'development') {
+if (env === 'development') {
   // disable babel server env plugins transform
   process.env.BABEL_ENV = '';
 
@@ -44,6 +44,7 @@ if (process.env.NODE_ENV === 'development') {
   const webpackMiddleware = require('koa-webpack');
   const webpackConfig = require('../webpack.dev');
 
+  // todo: bundle client assets
   app.use(
     webpackMiddleware({
       compiler: webpack(webpackConfig),
@@ -99,9 +100,9 @@ app.use(routes.routes());
 // Rendering
 app.use(render);
 
-app.listen(config.http.port, err => {
+app.listen(PORT, err => {
   if (err) {
     return console.error(err);
   }
-  console.log(`Dashboard app running at port ${config.http.port}`);
+  console.log(`Dashboard app running at port ${config.http.port}\n`);
 });
