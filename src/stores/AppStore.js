@@ -13,21 +13,24 @@ export default class AppStore {
     }
   }
 
-  @action async fetchApps() {
+  @action
+  async fetchApps() {
     this.isLoading = true;
     const result = await request.get('api/v1/apps');
     this.apps = result.items;
     this.isLoading = false;
   }
 
-  @action async fetchApp(appId) {
+  @action
+  async fetchApp(appId) {
     this.isLoading = true;
     const result = await request.get(`api/v1/apps/${appId}`);
     this.app = result;
     this.isLoading = false;
   }
 
-  @action async fetchInstalledApps() {
+  @action
+  async fetchInstalledApps() {
     this.isLoading = true;
     const result = await request.get('api/v1/apps/installed');
     this.installedApps = result.items;

@@ -23,6 +23,7 @@ ENV PATH "$PATH:$HOME/yarn-v1.5.1/bin"
 COPY package.json yarn.lock .npmrc /tmp/
 
 RUN cd /tmp && yarn install --verbose \
+    && npm rebuild node-sass \
     && cd $HOME/app \
     && ln -s /tmp/node_modules \
     && chown -R web:web $HOME

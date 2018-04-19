@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 
 import Button from 'components/Base/Button';
 
-describe('Base/Button', ()=> {
+describe('Base/Button', () => {
   it('basic render', () => {
     const wrapper = render(
       <Button className="test" htmlType="submit" loading>
@@ -15,7 +15,7 @@ describe('Base/Button', ()=> {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('call onClick', ()=> {
+  it('call onClick', () => {
     const mockClick = jest.fn();
     const wrapper = mount(
       <Button name="test" onClick={mockClick}>

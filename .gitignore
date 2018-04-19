@@ -24,3 +24,5 @@ package-lock.json
 
 # local config
 /server/local_config.yml
+
+reports/

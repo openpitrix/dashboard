@@ -13,30 +13,30 @@ import serve from 'koa-static';
 import store from './middleware/store';
 import render from './middleware/render';
 import routes from './routes';
-import utils, { root, getServerConfig } from '../lib/utils';
+import { root, getServerConfig, watchServerConfig } from '../lib/utils';
 
 if (semver.lt(process.version, '7.6.0')) {
-  console.error('Node Version should be greater than 7.6.0');
+  console.error('Node version should be greater than 7.6.0');
   process.exit(-1);
 }
 
 const config = getServerConfig();
-
-utils.watchServerConfig();
+watchServerConfig();
 
 global.HOSTNAME = config.http.hostname || 'localhost';
 global.PORT = config.http.port || 8000;
 
+const env = process.env.NODE_ENV || 'development';
 const app = new Koa();
 
 // serve static files
-const serveFiles = function (env = process.env.NODE_ENV) {
+const serveFiles = function() {
   for (const [k, v] of Object.entries(config.http.static[env])) {
     app.use(mount(k, serve(root(v), { index: false })));
   }
 };
 
-if (process.env.NODE_ENV === 'development') {
+if (env === 'development') {
   // disable babel server env plugins transform
   process.env.BABEL_ENV = '';
 
@@ -44,46 +44,55 @@ if (process.env.NODE_ENV === 'development') {
   const webpackMiddleware = require('koa-webpack');
   const webpackConfig = require('../webpack.dev');
 
-  app.use(webpackMiddleware({
-    compiler: webpack(webpackConfig),
-    dev: {
-      publicPath: webpackConfig.output.publicPath,
-      noInfo: false,
-      quiet: false,
-      watchOptions: {
-        aggregateTimeout: 300,
-        poll: false,
-        ignored: /node_modules/,
-      },
-      stats: {
-        colors: true,
-        // hash: false,
-        // timings: false,
-        // version: false,
-        // chunks: false,
-        modules: true,
-        // children: false,
-        chunkModules: true,
-      },
-    },
-  }));
+  // todo: bundle client assets
+  app.use(
+    webpackMiddleware({
+      compiler: webpack(webpackConfig),
+      dev: {
+        publicPath: webpackConfig.output.publicPath,
+        noInfo: false,
+        quiet: false,
+        watchOptions: {
+          aggregateTimeout: 300,
+          poll: true,
+          ignored: /node_modules/
+        },
+        stats: {
+          colors: true,
+          hash: true,
+          timings: true,
+          // version: false,
+          chunks: true,
+          modules: true,
+          // children: false,
+          chunkModules: true
+        }
+      }
+    })
+  );
 }
 
 serveFiles();
 
 app.use(favicon(root(config.http.favicon)));
 
-app.use(convert(bodyParser({
-  formLimit: '200kb',
-  jsonLimit: '200kb',
-  bufferLimit: '4mb',
-})));
+app.use(
+  convert(
+    bodyParser({
+      formLimit: '200kb',
+      jsonLimit: '200kb',
+      bufferLimit: '4mb'
+    })
+  )
+);
 
 app.use(store);
 
-app.use(views(resolve(__dirname, './views'), {
-  extension: 'pug',
-}));
+app.use(
+  views(resolve(__dirname, './views'), {
+    extension: 'pug'
+  })
+);
 
 // Routes
 app.use(routes.routes());
@@ -91,9 +100,9 @@ app.use(routes.routes());
 // Rendering
 app.use(render);
 
-app.listen(config.http.port, (err) => {
+app.listen(PORT, err => {
   if (err) {
     return console.error(err);
   }
-  console.log(`Dashboard app running at port ${config.http.port}`);
+  console.log(`Dashboard app running at port ${config.http.port}\n`);
 });

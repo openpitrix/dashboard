@@ -14,17 +14,22 @@ const isDev = process.env.NODE_ENV === 'development';
 // Server-side render
 export default async (ctx, next) => {
   const branches = matchRoutes(routes, ctx.url);
-  const promises = branches.map(({ route, match }) => (route.component.onEnter
-    ? route.component.onEnter(ctx.store, match.params)
-    : Promise.resolve(null)));
+  const promises = branches.map(
+    ({ route, match }) =>
+      route.component.onEnter
+        ? route.component.onEnter(ctx.store, match.params)
+        : Promise.resolve(null)
+  );
   await Promise.all(promises);
 
   const context = {};
-  const components = isDev ? null : renderToString(
-    <StaticRouter location={ctx.url} context={context}>
-      <App rootStore={ctx.store}/>
-    </StaticRouter>,
-  );
+  const components = isDev
+    ? null
+    : renderToString(
+        <StaticRouter location={ctx.url} context={context}>
+          <App rootStore={ctx.store} />
+        </StaticRouter>
+      );
 
   /**
    * Disable ssr
@@ -42,6 +47,6 @@ export default async (ctx, next) => {
     title: ctx.store.config.name,
     children: components,
     state: JSON.stringify(ctx.store),
-    isSSR: true,
+    isSSR: true
   });
 };

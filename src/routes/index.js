@@ -15,7 +15,7 @@ const routes = [
   { path: '/app/:appId/deploy', exact: true, component: AppDeploy },
   { path: '/manage/apps', exact: true, component: InstalledApps },
   { path: '/manage/clusters', exact: true, component: Clusters },
-  { path: '/manage/cluster/:clusterId', exact: true, component: ClusterDetail },
+  { path: '/manage/cluster/:clusterId', exact: true, component: ClusterDetail }
 ];
 
 export default routes;

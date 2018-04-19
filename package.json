@@ -15,7 +15,7 @@
     "koa-router": "^7.3.0",
     "koa-static": "^4.0.2",
     "koa-views": "^6.1.3",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "mobx": "^3.4.1",
     "mobx-react": "^4.3.5",
     "node-cache": "^4.1.1",
@@ -38,7 +38,7 @@
     "serve-favicon": "^2.4.5"
   },
   "scripts": {
-    "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development nodemon -w ./lib -w ./server --exec babel-node server/server.js",
+    "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development BABEL_CACHE_PATH=./build/babel-cache.json nodemon -w './lib/**/*.js' -w './server/**/*.js' --exec babel-node server/server.js",
     "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
     "lint": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json",
@@ -49,7 +49,14 @@
     "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
     "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
     "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
-    "postinstall": "npm rebuild node-sass"
+    "precommit": "lint-staged",
+    "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json"
+  },
+  "lint-staged": {
+    "*.{js,jsx,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
@@ -60,14 +67,13 @@
     "babel-loader": "7.1.1",
     "babel-minify-webpack-plugin": "^0.3.0",
     "babel-plugin-css-modules-transform": "^1.5.0",
+    "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.0.0",
-    "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-react-app": "^3.0.2",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-register": "6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "babel-runtime": "6.23.0",
     "chalk": "1.1.3",
     "chokidar": "^2.0.0",
@@ -77,31 +83,31 @@
     "enzyme-to-json": "^3.3.1",
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^11.3.1",
-    "eslint-friendly-formatter": "^2.0.7",
-    "eslint-import-resolver-babel-module": "^4.0.0",
-    "eslint-import-resolver-webpack": "^0.8.1",
-    "eslint-loader": "^1.6.3",
-    "eslint-plugin-babel": "^4.0.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-promise": "^3.4.2",
+    "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.1.0",
-    "eslint-plugin-standard": "^2.0.1",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "^1.1.6",
+    "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.0.6",
     "koa-webpack": "^2.0.3",
+    "lint-staged": "^7.0.4",
     "node-sass": "^4.5.3",
     "nodemon": "^1.15.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
+    "prettier": "^1.12.1",
     "react-test-renderer": "^16.2.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
     "url-loader": "0.5.9",
-    "webpack": "^3"
+    "webpack": "^3",
+    "webpack-bundle-analyzer": "^2.11.1",
+    "webpack-cli": "^2.0.14"
   },
   "engines": {
     "node": ">= 7.6.0"

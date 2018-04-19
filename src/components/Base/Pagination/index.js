@@ -18,7 +18,7 @@ export default class Pagination extends React.Component {
     showQuickJumper: PropTypes.bool,
     onChange: PropTypes.func,
     onShowSizeChange: PropTypes.func,
-    itemRender: PropTypes.func,
+    itemRender: PropTypes.func
   };
 
   static defaultProps = {
@@ -38,7 +38,7 @@ export default class Pagination extends React.Component {
         return <span>Next</span>;
       }
       return originalElement;
-    },
+    }
   };
 
   render() {
