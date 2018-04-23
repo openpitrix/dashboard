@@ -107,7 +107,8 @@
     "url-loader": "0.5.9",
     "webpack": "^3",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.14"
+    "webpack-cli": "^2.0.14",
+    "webpack-notifier": "^1.6.0"
   },
   "engines": {
     "node": ">= 7.6.0"

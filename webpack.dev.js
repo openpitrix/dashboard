@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const baseConfig = require('./webpack.base');
 const postCssOptions = require('./postcss.options');
+const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -56,6 +57,10 @@ module.exports = {
   },
   resolve: baseConfig.resolve,
   plugins: [
+    new WebpackNotifierPlugin({
+      title: 'dashboard build done',
+      alwaysNotify: true
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.WatchIgnorePlugin([
