@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       ...baseConfig.moduleRules,
       {
-        test: /\.s[ac]ss$/,
+        test: /\.scss$/,
         use: [
           'style-loader',
           {

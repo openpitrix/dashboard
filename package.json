@@ -38,7 +38,7 @@
     "serve-favicon": "^2.4.5"
   },
   "scripts": {
-    "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development BABEL_CACHE_PATH=./build/babel-cache.json nodemon -w './lib/**/*.js' -w './server/**/*.js' --exec babel-node server/server.js",
+    "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development nodemon -w './lib/**/*.js' -w './server/**/*.js' --exec babel-node server/server.js",
     "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
     "lint": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json",

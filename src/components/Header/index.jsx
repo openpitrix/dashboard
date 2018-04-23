@@ -12,19 +12,24 @@ import styles from './index.scss';
 @observer
 export default class Header extends Component {
   state = {
-    isHome: PropTypes.bool,
-  }
+    isHome: PropTypes.bool
+  };
 
   render() {
-    const { isHome, rootStore: { fixNav } } = this.props;
+    const {
+      isHome,
+      rootStore: { fixNav }
+    } = this.props;
     const isDark = !isHome || fixNav;
-    const logoUrl = isDark ? '../../assets/logo2.svg' : '../../assets/logo.svg';
+    const logoUrl = isDark ? '/assets/logo2.svg' : '/assets/logo.svg';
 
     return (
       <div className={classnames('header', styles.header, { [styles.darkHeader]: !isDark })}>
         <div className={styles.wrapper}>
-          <Logo className={styles.logo} url={logoUrl}/>
-          {isDark && <Input.Search className={styles.search} placeholder="Search apps in Pitrix..."/>}
+          <Logo className={styles.logo} url={logoUrl} />
+          {isDark && (
+            <Input.Search className={styles.search} placeholder="Search apps in Pitrix..." />
+          )}
           <div className={styles.menus}>
             <NavLink to="/apps">Browse</NavLink>
             <NavLink to="/manage/apps">Manage</NavLink>
