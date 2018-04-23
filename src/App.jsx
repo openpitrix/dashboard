@@ -13,14 +13,15 @@ import './scss/main.scss';
 
 class App extends Component {
   static propTypes = {
-    rootStore: PropTypes.object,
+    rootStore: PropTypes.object
   };
 
   render() {
     const { location, rootStore } = this.props;
+    const pathname = location.pathname;
 
-    const isHome = /^\/($|apps)/.test(location.pathname);
-    const isLogin = location.pathname === '/login';
+    const isHome = pathname === '/' || pathname === '/apps';
+    const isLogin = pathname === '/login';
 
     return (
       <Provider rootStore={rootStore}>
@@ -28,16 +29,16 @@ class App extends Component {
           {!isLogin && <Header isHome={isHome} />}
           <div className="main">
             <Switch>
-              {routes.map((route, i) =>
+              {routes.map((route, i) => (
                 <Route
                   key={i}
                   exact={route.exact}
                   path={route.path}
-                  render={({ match }) =>
+                  render={({ match }) => (
                     <RouteWrapper component={route.component} match={match} rootStore={rootStore} />
-                  }
-                />,
-              )}
+                  )}
+                />
+              ))}
             </Switch>
           </div>
           {!isLogin && <Footer />}

@@ -1,24 +1,22 @@
 @charset "utf-8";
-@import "normalize.css";
 @import "variables";
-@import "../assets/fonts/roboto/roboto.css";
-
-body {
-  font-family: $family-primary;
-  font-size: $body-size;
-  color: $text-color;
-  background-color: $body-background-color;
-}
-
-a, a:hover, a:focus, a:active, a:visited {
-  text-decoration: none;
-}
-
-div {
-  box-sizing: border-box;
-}
 
 :global {
+  body {
+    font-family: $family-primary;
+    font-size: $body-size;
+    color: $text-color;
+    background-color: $body-background-color;
+  }
+
+  a, a:hover, a:focus, a:active, a:visited {
+    text-decoration: none;
+  }
+
+  div {
+    box-sizing: border-box;
+  }
+
   .main {
     width: 100%;
     min-width: $content-width;
