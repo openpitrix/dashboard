@@ -6,6 +6,7 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
+  cache: true,
   entry: ['react-hot-loader/patch', './src/index.js'],
   output: {
     filename: 'bundle.js',

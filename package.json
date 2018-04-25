@@ -38,7 +38,7 @@
     "serve-favicon": "^2.4.5"
   },
   "scripts": {
-    "dev": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development nodemon -w './lib/**/*.js' -w './server/**/*.js' --exec babel-node server/server.js",
+    "dev": "BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server --exec DEBUG=koa-router node server/server.js",
     "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
     "lint": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json",
@@ -49,7 +49,7 @@
     "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
     "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
     "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
-    "precommit": "lint-staged",
+    "precommit": "yarn test -u && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json"
   },
   "lint-staged": {
@@ -74,6 +74,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
     "babel-runtime": "6.23.0",
     "chalk": "1.1.3",
     "chokidar": "^2.0.0",

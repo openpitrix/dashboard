@@ -1,6 +1,6 @@
-import Router from 'koa-router';
-import request from 'lib/request';
-import { getServerConfig } from 'lib/utils';
+const Router = require('koa-router');
+const request = require('lib/request').default;
+const { getServerConfig } = require('lib/utils');
 
 const router = new Router();
 const config = getServerConfig();
@@ -18,4 +18,4 @@ router.post('/login', async ctx => {
   }
 });
 
-export default router;
+module.exports = router;
