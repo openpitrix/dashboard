@@ -9,13 +9,12 @@ import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import styles from './index.scss';
 
+import preload from 'hoc/preload';
+
 @inject('rootStore')
 @observer
+@preload()
 export default class Home extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchApps();
-  }
-
   componentDidMount() {
     window.onscroll = this.handleScoll;
     this.setState({ threshold: this.getThreshold() });
@@ -48,7 +47,7 @@ export default class Home extends Component {
       fixNav = false;
       rootStore.setNavFix(fixNav);
     }
-  }
+  };
 
   render() {
     const { config, appStore, fixNav } = this.props.rootStore;
@@ -58,7 +57,7 @@ export default class Home extends Component {
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
-          <AppList className={styles.apps} apps={appStore.apps}/>
+          <AppList className={styles.apps} apps={appStore.apps} />
         </div>
       </div>
     );

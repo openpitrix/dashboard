@@ -87,8 +87,6 @@ app.use(
   )
 );
 
-app.use(store);
-
 app.use(
   views(root('server/views'), {
     extension: 'pug'
@@ -97,6 +95,8 @@ app.use(
 
 // Routes
 app.use(routes.routes());
+
+app.use(store);
 
 // Rendering
 app.use(render);
