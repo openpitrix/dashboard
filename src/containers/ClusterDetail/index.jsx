@@ -15,18 +15,16 @@ import Table from 'components/Base/Table';
 import Modal from 'components/Base/Modal';
 import Timeline from 'components/Base/Timeline';
 import Popover from 'components/Base/Popover';
+import preload from 'hoc/preload';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore,
+  clusterStore: rootStore.clusterStore
 }))
 @observer
+@preload(['fetchClusterDetails', 'fetchClusterNodes'])
 export default class ClusterDetail extends Component {
-  static async onEnter({ clusterStore }, { clusterId }) {
-    await clusterStore.fetchClusterDetails(clusterId);
-    await clusterStore.fetchClusterNodes(clusterId);
-  }
-
   constructor(props) {
     super(props);
 
@@ -34,58 +32,62 @@ export default class ClusterDetail extends Component {
       loading: false,
       selectedRowKeys: [],
       showHistoryModal: false,
-      showViewNodeModal: false,
+      showViewNodeModal: false
     };
 
     this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
   }
 
-  openViewNodeModal = (node) => {
+  openViewNodeModal = node => {
     this.setState({
       viewNode: node,
-      showViewNodeModal: true,
+      showViewNodeModal: true
     });
-  }
+  };
 
   closeViewNodeModal = () => {
     this.setState({
-      showViewNodeModal: false,
+      showViewNodeModal: false
     });
-  }
+  };
 
   openHistoryModal = () => {
     this.setState({
-      showHistoryModal: true,
+      showHistoryModal: true
     });
-  }
+  };
 
   closeHistoryModal = () => {
     this.setState({
-      showHistoryModal: false,
+      showHistoryModal: false
     });
-  }
+  };
 
-  nodeTypeChange = () => {
-  }
+  nodeTypeChange = () => {};
 
-  nodeTimeChange = () => {
-  }
+  nodeTimeChange = () => {};
 
   refreshTable = () => {
     this.setState({
-      selectedRowKeys: [],
+      selectedRowKeys: []
     });
-  }
+  };
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
     console.log('changed: ', selectedRowKeys, selectedRows);
-  }
+  };
 
   renderNodesTable = () => {
     const { selectedRowKeys } = this.state;
-    const renderTableOperation = (node) => (
+    const renderTableOperation = node => (
       <div id={node.id} className="operate-menu">
-        <span onClick={() => { this.openViewNodeModal(node); }}>View Node</span>
+        <span
+          onClick={() => {
+            this.openViewNodeModal(node);
+          }}
+        >
+          View Node
+        </span>
         <span>Delete Node</span>
       </div>
     );
@@ -93,43 +95,70 @@ export default class ClusterDetail extends Component {
     const data = this.clusterNodes;
     const columns = [
       {
-        title: 'Node ID', dataIndex: 'id', key: 'node_id', width: '13%', render: text => <Link className="id-link" to="/">{text}</Link>,
+        title: 'Node ID',
+        dataIndex: 'id',
+        key: 'node_id',
+        width: '13%',
+        render: text => (
+          <Link className="id-link" to="/">
+            {text}
+          </Link>
+        )
       },
       {
-        title: 'Name', dataIndex: 'name', key: 'name', width: '13%',
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '13%'
       },
       {
-        title: 'Role', dataIndex: 'role', key: 'role', width: '7%',
+        title: 'Role',
+        dataIndex: 'role',
+        key: 'role',
+        width: '7%'
       },
       {
-        title: 'Node Status', dataIndex: 'node_status', key: 'node_status', width: '13%', render: text => <Status type={text} name={text} />,
+        title: 'Node Status',
+        dataIndex: 'node_status',
+        key: 'node_status',
+        width: '13%',
+        render: text => <Status type={text} name={text} />
       },
       {
-        title: 'Service Status', dataIndex: 'service_status', key: 'service_status', width: '14%', render: text => <Status type={text} name={text} />,
+        title: 'Service Status',
+        dataIndex: 'service_status',
+        key: 'service_status',
+        width: '14%',
+        render: text => <Status type={text} name={text} />
       },
       {
-        title: 'Configuration', dataIndex: 'configuration', key: 'configuration', width: '16%',
+        title: 'Configuration',
+        dataIndex: 'configuration',
+        key: 'configuration',
+        width: '16%'
       },
       {
-        title: 'Date Created', dataIndex: 'created', key: 'created', width: '13%', render: getParseDate,
+        title: 'Date Created',
+        dataIndex: 'created',
+        key: 'created',
+        width: '13%',
+        render: getParseDate
       },
       {
-        title: 'Operation', dataIndex: 'operation', key: 'operation', width: '6%', render: (text, node) => <Popover content={renderTableOperation(node)}>...</Popover>,
-      },
+        title: 'Operation',
+        dataIndex: 'operation',
+        key: 'operation',
+        width: '6%',
+        render: (text, node) => <Popover content={renderTableOperation(node)}>...</Popover>
+      }
     ];
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange,
+      onChange: this.onSelectChange
     };
 
-    return (
-      <Table
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-      />
-    );
-  }
+    return <Table rowSelection={rowSelection} columns={columns} dataSource={data} />;
+  };
 
   renderViewNodeModal = () => {
     const { showViewNodeModal, viewNode } = this.state;
@@ -153,7 +182,7 @@ export default class ClusterDetail extends Component {
                   <Status type="active" name="Active" />
                 </p>
               </div>
-              <i className="icon icon-close" onClick={this.closeViewNodeModal}/>
+              <i className="icon icon-close" onClick={this.closeViewNodeModal} />
             </div>
             <ul className={styles.detailExpand}>
               <li>
@@ -176,11 +205,19 @@ export default class ClusterDetail extends Component {
           </div>
 
           <div className={styles.statistics}>
-            <Radio.Group className={styles.statisticsRadioGroup} value="2" onChange={this.nodeTypeChange}>
+            <Radio.Group
+              className={styles.statisticsRadioGroup}
+              value="2"
+              onChange={this.nodeTypeChange}
+            >
               <Radio.Button value="1">Service</Radio.Button>
               <Radio.Button value="2">Resource</Radio.Button>
             </Radio.Group>
-            <Radio.Group className={styles.statisticsRadioGroup} value="3" onChange={this.nodeTimeChange}>
+            <Radio.Group
+              className={styles.statisticsRadioGroup}
+              value="3"
+              onChange={this.nodeTimeChange}
+            >
               <Radio.Button value="1">Last 6 Hours</Radio.Button>
               <Radio.Button value="2">Last Day</Radio.Button>
               <Radio.Button value="3">Last 2 Weeks</Radio.Button>
@@ -192,7 +229,7 @@ export default class ClusterDetail extends Component {
       );
     }
     return null;
-  }
+  };
 
   renderHistoryModal = () => (
     <Modal
@@ -227,20 +264,24 @@ export default class ClusterDetail extends Component {
             </div>
             <div className={styles.vxnet}>
               <strong>VxNet</strong>
-              <Link className="id-link" to="/">appcenter-vxnet</Link>
+              <Link className="id-link" to="/">
+                appcenter-vxnet
+              </Link>
             </div>
           </div>
         </Timeline.Item>
       </Timeline>
     </Modal>
-  )
+  );
 
   render() {
     return (
       <div className={styles.cluster}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <Link to="/manage/clusters"><i className="fa fa-long-arrow-left"/> Back to Clusters</Link>
+            <Link to="/manage/clusters">
+              <i className="fa fa-long-arrow-left" /> Back to Clusters
+            </Link>
           </div>
 
           <div className={styles.detail}>
@@ -253,8 +294,16 @@ export default class ClusterDetail extends Component {
                 </p>
               </div>
               <div className={styles.detailBaseHandle}>
-                <Button><Icon name="modify" />Modify Attributes</Button>
-                <Button onClick={() => { this.openHistoryModal(); }}><Icon name="history" />View History</Button>
+                <Button>
+                  <Icon name="modify" />Modify Attributes
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.openHistoryModal();
+                  }}
+                >
+                  <Icon name="history" />View History
+                </Button>
                 <Select className={styles.handleSelect} value="More">
                   <Select.Option value="1">one</Select.Option>
                   <Select.Option value="2">two</Select.Option>
@@ -285,15 +334,19 @@ export default class ClusterDetail extends Component {
             <div className={styles.nodesTitle}>Nodes</div>
             <div className={styles.nodesContent}>
               <div className={styles.toolbar}>
-                <Button className={styles.refresh} onClick={this.refreshTable}><Icon name="refresh" /></Button>
+                <Button className={styles.refresh} onClick={this.refreshTable}>
+                  <Icon name="refresh" />
+                </Button>
                 <Select className={styles.select} value="All Status">
                   <Select.Option value="1">Types1</Select.Option>
                   <Select.Option value="2">Types2</Select.Option>
                 </Select>
-                <Input.Search className={styles.search} placeholder="Search Node ID or App Name"/>
+                <Input.Search className={styles.search} placeholder="Search Node ID or App Name" />
 
                 <div className={styles.nodesHandle}>
-                  <Button><Icon name="create" />Create Node</Button>
+                  <Button>
+                    <Icon name="create" />Create Node
+                  </Button>
                   <Select className={styles.handleSelect} value="More">
                     <Select.Option value="1">one</Select.Option>
                     <Select.Option value="2">two</Select.Option>

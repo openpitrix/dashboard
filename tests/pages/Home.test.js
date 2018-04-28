@@ -33,8 +33,4 @@ describe('Home', () => {
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
-
-  it('call onEnter', () => {
-    // todo
-  });
 });

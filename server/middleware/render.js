@@ -31,11 +31,6 @@ module.exports = async (ctx, next) => {
         </StaticRouter>
       );
 
-  /**
-   * Disable ssr
-   * const components = null;
-   */
-
   if (context.url) {
     ctx.redirect(context.url);
     ctx.body = '<!DOCTYPE html>redirecting';
@@ -46,7 +41,6 @@ module.exports = async (ctx, next) => {
     isDev,
     title: ctx.store.config.name,
     children: components,
-    state: JSON.stringify(ctx.store),
-    isSSR: true
+    state: JSON.stringify(ctx.store)
   });
 };
