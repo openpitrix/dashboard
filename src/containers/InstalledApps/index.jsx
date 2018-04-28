@@ -10,16 +10,15 @@ import Select from 'components/Base/Select';
 import Popover from 'components/Base/Popover';
 import styles from './index.scss';
 
+import preload from 'hoc/preload';
+
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
+  appStore: rootStore.appStore
 }))
 @observer
+@preload('fetchInstalledApps')
 export default class InstalledApps extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchInstalledApps();
-  }
-
-  renderHandleMenu = (id) => (
+  renderHandleMenu = id => (
     <div id={id} className="operate-menu">
       <span>View app cluster</span>
       <span>Delete app</span>
@@ -40,14 +39,17 @@ export default class InstalledApps extends Component {
                 <Select.Option value="1">Types1</Select.Option>
                 <Select.Option value="2">Types2</Select.Option>
               </Select>
-              <Input.Search className={styles.search} placeholder="Search App Name"/>
+              <Input.Search className={styles.search} placeholder="Search App Name" />
             </div>
 
             <ul className={styles.list}>
-              {
-                appStore.installedApps && appStore.installedApps.map(item =>
+              {appStore.installedApps &&
+                appStore.installedApps.map(item => (
                   <li key={item.id} className={styles.listItem}>
-                    <img className={styles.icon} src={item.icon || 'http://via.placeholder.com/96x96'}/>
+                    <img
+                      className={styles.icon}
+                      src={item.icon || 'http://via.placeholder.com/96x96'}
+                    />
                     <div className={styles.name}>
                       <Link to={`/app/${item.id}`}>{item.name}</Link>
                     </div>
@@ -59,12 +61,13 @@ export default class InstalledApps extends Component {
                         className={styles.handlePop}
                         content={this.renderHandleMenu(item.id)}
                       >
-                        <Button><Icon name="more" /></Button>
+                        <Button>
+                          <Icon name="more" />
+                        </Button>
                       </Popover>
                     </div>
-                  </li>,
-                )
-              }
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
