@@ -3,6 +3,7 @@ import request from 'lib/request';
 
 export default class ClusterStore {
   @observable clusters = {};
+  @observable clusterDetails = {};
   @observable clusterNodes = {};
   @observable isLoading = false;
 

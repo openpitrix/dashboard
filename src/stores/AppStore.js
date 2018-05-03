@@ -32,8 +32,9 @@ export default class AppStore {
   @action
   async fetchInstalledApps() {
     this.isLoading = true;
-    const result = await request.get('api/v1/apps/installed');
-    this.installedApps = result.items;
+    //const result = await request.get('api/v1/apps/installed');
+    const result = await request.get('api/v1/applist');
+    this.installedApps = result;
     this.isLoading = false;
   }
 }
