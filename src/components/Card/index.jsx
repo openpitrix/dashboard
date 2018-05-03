@@ -9,17 +9,24 @@ export default class Card extends PureComponent {
     icon: PropTypes.string,
     name: PropTypes.string,
     desc: PropTypes.string,
-    fold: PropTypes.bool,
-  }
+    fold: PropTypes.bool
+  };
 
   render() {
     const { icon, name, desc, fold } = this.props;
     return (
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
-        <img src={icon || 'http://via.placeholder.com/96x96'} className={styles.icon} alt="Icon"/>
-        <div className={styles.line}></div>
-        <p className={styles.name}>{name}</p>
-        <p className={styles.desc}>{desc}</p>
+        <div className={styles.title}>
+          <img
+            src={icon || 'http://via.placeholder.com/96x96'}
+            className={styles.icon}
+            alt="Icon"
+          />
+          <p className={styles.name}>{name}</p>
+          <p className={classnames(styles.desc, { [styles.hide]: !fold })}>{desc}</p>
+        </div>
+        <div className={classnames(styles.line, { [styles.hide]: fold })} />
+        <p className={classnames(styles.desc, { [styles.hide]: fold })}>{desc}</p>
       </div>
     );
   }

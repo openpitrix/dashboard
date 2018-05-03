@@ -1,0 +1,50 @@
+@import "~scss/variables";
+
+.yellowStyle{
+  display: inline-block;
+  margin-right: 15px;
+  .inner{
+    display: inline-block;
+    height: 22px;
+    border-radius: 1px;
+    border: 1px solid #f5c414;
+    background: #fff;
+    color: #8a6700;
+    font-size: 12px;
+  }
+  .name{
+    display: inline-block;
+    padding: 4px;
+    overflow: auto;
+  }
+  .content{
+    display: inline-block;
+    padding: 4px;
+    background: #f2d054;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.purpleStyle{
+  display: block;
+  margin-right: 0;
+  .inner{
+    border: 1px solid #e2d0f2;
+    color: #7749ac;
+    margin-bottom: 15px;
+  }
+  .content{
+    background: #e2d0f2;
+  }
+}
+.purple2Style{
+  .inner{
+    border: 1px solid #e2d0f2;
+    color: #7749ac;
+  }
+  .content{
+    background: #e2d0f2;
+  }
+}

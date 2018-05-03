@@ -1,0 +1,70 @@
+@import "~scss/variables";
+
+.statistics{
+  .warper{
+    margin: 0 auto 24px;
+    width: $content-width;
+    height: 120px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+
+  }
+  .module{
+    float: left;
+    display: inline-block;
+    position: relative;
+    padding: 0 32px;
+    margin: 24px -1px;
+    height: 60px;
+    &:nth-child(1){
+      width: 320px;
+    }
+    &:nth-child(2){
+      width: 440px;
+    }
+    &:nth-child(3){
+      width: 370px;
+    }
+    .line{
+      position: absolute;
+      right: 0;
+      top: 6px;
+      height: 48px;
+      width: 1px;
+      background:#d1d1d2;
+    }
+  }
+
+  .apps{
+    .icon{
+      float: left;
+      display: inline-block;
+      margin-right: 15px;
+    }
+    display: inline-block;
+    padding-top: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #300e56
+  }
+  .word{
+    display: inline-block;
+    .name{
+      font-size: 12px;
+      line-height: 2.0;
+      text-align: left;
+      color: #a6a1ab;
+    }
+    .number{
+      display: inline-block;
+      font-size: 36px;
+      font-weight: 500;
+      text-align: left;
+      color: #300e56;
+    }
+  }
+  .fl{
+    float: right;
+  }
+}

@@ -1,0 +1,22 @@
+@import "~scss/variables";
+
+.tagNav {
+  padding: 0 24px;
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #e2d0f2;
+
+  a{
+    display: inline-block;
+    padding: 16px 0;
+    margin-right: 24px;
+    line-height: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-color;
+  }
+  .current {
+    color: $third-text-color;
+    border-bottom: 2px solid $third-text-color;
+  }
+}

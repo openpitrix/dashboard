@@ -1,0 +1,33 @@
+@import '~scss/variables';
+
+.progress{
+  display: inline-block;
+  position: relative;
+  bottom: 3px;
+  width: 320px;
+  height: 7px;
+  background-color: #e2d0f2;
+  .inner{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: 7px;
+    &:nth-child(1){
+      background-color: #300e56;
+    }
+    &:nth-child(2){
+      background-color: #9a5cd1;
+    }
+    &:nth-child(3){
+      background-color: #ba95da;
+    }
+    &:nth-child(4){
+      background-color: #e2d0f2;
+    }
+    &:nth-child(5){
+      background-color: #300e56;
+    }
+  }
+
+}
