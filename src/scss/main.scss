@@ -15,6 +15,17 @@
     background-color: $body-background-color;
   }
 
+  li {
+    list-style: none;
+  }
+  div, form, img, ul, ol, li, dl, dt, dd, option, td, th, video, h1, h2, h3, h4, h5, h6, p, blockquote, input, select, textarea {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    list-style: none outside none;
+  }
+
+
   a, a:hover, a:focus, a:active, a:visited {
     text-decoration: none;
   }
