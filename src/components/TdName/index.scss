@@ -1,0 +1,37 @@
+@import "~scss/variables";
+
+.tdName {
+  display: inline-block;
+  .image{
+    display: inline-block;
+    margin: 3px 12px 3px 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+  }
+  .info{
+    display: inline-block;
+    .name{
+      display: block;
+      line-height: 16px;
+      font-weight: 500;
+      text-align: left;
+      color: $text-color;
+      max-width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .description{
+      display: inline-block;
+      line-height: 14px;
+      font-size: $size-small;
+      color: #a6a1ab;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+
