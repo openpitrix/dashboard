@@ -33,7 +33,7 @@ export default class AppStore extends Store {
   @action
   async fetchInstalledApps() {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/apps/installed');
+    const result = await request.get('api/v1/apps/installed');
     this.installedApps = result.items;
     this.isLoading = false;
   }
