@@ -22,13 +22,7 @@ export default class AppList extends PureComponent {
         <CardTitle title={title} more={moreFlag} />
         {apps &&
           apps.map(app => (
-            <Link className="style.linkCard" key={app.id} to={`/app/${app.id}`}>
-              <Card icon={app.icon} name={app.name} desc={app.description} fold={fold} />
-            </Link>
-          ))}
-        {apps &&
-          apps.map(app => (
-            <Link key={app.id} to={`/app/${app.app_id}`}>
+            <Link key={app.app_id} to={`/app/${app.app_id}`}>
               <Card icon={app.icon} name={app.name} desc={app.description} fold={fold} />
             </Link>
           ))}
