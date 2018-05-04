@@ -15,7 +15,8 @@ const rootStore = toJS(new RootStore());
 module.exports = async (ctx, next) => {
   // Create state for SSR
   ctx.store = rootStore;
-  ctx.store.config = getServerConfig().app;
+  ctx.store.config = getServerConfig('app');
+  ctx.store.serverUrl = getServerConfig('serverUrl');
 
   await next();
 };
