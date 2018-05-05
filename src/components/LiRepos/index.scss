@@ -1,0 +1,40 @@
+@import '~scss/variables';
+
+.reposList{
+  li{
+    box-sizing: border-box;
+    margin-bottom: 2px;
+    padding: 14px 20px 14px 16px;
+    height: 58px;
+    border-radius: 3px;
+    border: 1px solid $border-gray-li;
+    .icon{
+      float: left;
+      margin-right: 4px;
+    }
+    .name{
+      line-height: 26px;
+      font-size: 14px;
+      color: #300e56;
+    }
+    .total{
+      display: inline-block;
+      float: right;
+      line-height: 26px;
+      font-size: 12px;
+      color: $grey-word;
+      .number{
+        float: left;
+        margin-right: 4px;
+        font-size: 24px;
+        font-weight: 500;
+        color: $title-color;
+      }
+    }
+  }
+}
+.reposBg{
+  li {
+    background-color: $li-bg;
+  }
+}

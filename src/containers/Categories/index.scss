@@ -1,0 +1,41 @@
+@import '~scss/variables';
+
+.roles {
+  padding-top: $header-height;
+  background: $background-color;
+  .pageTitle{
+    height: 24px;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+    color: $title-color;
+  }
+  .container {
+    width: $content-width;
+    margin: 0 auto;
+  }
+
+}
+.categories{
+  text-align: center;
+  padding: 12px 24px;
+  .line{
+    display: inline-block;
+    width: 330px;
+    height: 1px;
+    border-bottom: 1px solid #e2d0f2;
+  }
+  .word{
+    display: inline-block;
+    position: relative;
+    bottom: 11px;
+    padding: 0 7px;
+    line-height: 24px;
+    font-size: 12px;
+    color: $third-text-color;
+    background: $background-color;
+  }
+}
+
+
+

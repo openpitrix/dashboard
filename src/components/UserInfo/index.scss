@@ -1,0 +1,45 @@
+@import "~scss/variables";
+
+.userInfo {
+  display: inline-block;
+  float: left;
+  box-sizing: border-box;
+  margin: 0 24px 24px 0;
+  padding: 24px 16px 14px;
+  width: 360px;
+  height: 120px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  .userImg {
+    display: inline-block;
+    float: left;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+  .user {
+    margin: 2px 0 0 45px;
+    .name {
+      line-height: 16px;
+      font-size: 14px;
+      color: $border-dark;
+    }
+    .role {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.0;
+      color: $grey-word;
+    }
+  }
+  .loginInfo {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.0;
+    color: $grey-word;
+    border-top: 1px solid $border-gray;
+  }
+}
+
+
