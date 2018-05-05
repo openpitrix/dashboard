@@ -48,17 +48,19 @@ export default class Home extends Component {
       fixNav = false;
       rootStore.setNavFix(fixNav);
     }
-  }
+  };
 
   render() {
     const { config, appStore, fixNav } = this.props.rootStore;
+    const fold = fixNav;
+    const isAdmin = true && fixNav;
 
     return (
       <div className={styles.home}>
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
-          <AppList className={styles.apps} apps={appStore.apps}/>
+          <AppList className={styles.apps} apps={appStore.apps} fold={fold} />
         </div>
       </div>
     );

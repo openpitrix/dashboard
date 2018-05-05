@@ -24,10 +24,12 @@ $second-text-color: #666666;
 $third-text-color: #7749ac;
 $placeholder-color: #c1c1c1;
 $grey-word: #a6a1ab;
+$purple-name: #9d80bf;
 
 $background-color: #f6f6f8;
 $background-color-lighter: #ffffff;
 $th-background-color: #f1edf6;
+$li-bg:#f5f7fa;
 
 $family-sans-serif: "Roboto", "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", 微软雅黑, STHeitiSC-Light, simsun, 宋体, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
 $family-monospace: Inconsolata,Consolas,Monaco,monospace;
@@ -51,6 +53,8 @@ $border-lighter: #e7e7e7;
 $border-light: #c9bed6;
 $border: $border-lighter;
 $border-dark: #7749AC;
+$border-gray: #e4ebf1;
+$border-gray-li: #e6ecf2;
 
 // Animation
 $transition-speed: .3s;

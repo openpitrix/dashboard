@@ -32,7 +32,7 @@ export default class Header extends Component {
           )}
           <div className={styles.menus}>
             <NavLink to="/apps">Catalog</NavLink>
-            <NavLink to="/manage/apps">Deployment</NavLink>
+            <NavLink to="/manage/overview">Deployment</NavLink>
             <NavLink to="/develop">Development</NavLink>
             <NavLink to="/login">Sign In</NavLink>
           </div>

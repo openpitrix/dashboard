@@ -3,7 +3,6 @@
 .home {
 
 }
-
 .content{
   position: relative;
   width: $content-width;
@@ -15,7 +14,7 @@
     left: 0;
     width: $nav-width;
     height: 100%;
-    border-right: 1px solid $border;
+    border-right: 2px solid $border;
   }
   .apps {
     margin-left: 288px;
