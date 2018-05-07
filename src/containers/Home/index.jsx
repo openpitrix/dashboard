@@ -9,13 +9,12 @@ import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import styles from './index.scss';
 
+import preload from 'hoc/preload';
+
 @inject('rootStore')
 @observer
+@preload()
 export default class Home extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchApps();
-  }
-
   componentDidMount() {
     window.onscroll = this.handleScoll;
     this.setState({ threshold: this.getThreshold() });

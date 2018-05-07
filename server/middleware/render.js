@@ -1,18 +1,18 @@
 /* eslint-disable import/first */
 process.env.BABEL_ENV = 'server';
 
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+const { StaticRouter } = require('react-router-dom');
+const { matchRoutes } = require('react-router-config');
 
-import App from 'src/App';
-import routes from 'src/routes';
+const App = require('src/App').default;
+const routes = require('src/routes').default;
 
 const isDev = process.env.NODE_ENV === 'development';
 
 // Server-side render
-export default async (ctx, next) => {
+module.exports = async (ctx, next) => {
   const branches = matchRoutes(routes, ctx.url);
   const promises = branches.map(
     ({ route, match }) =>
@@ -31,11 +31,6 @@ export default async (ctx, next) => {
         </StaticRouter>
       );
 
-  /**
-   * Disable ssr
-   * const components = null;
-   */
-
   if (context.url) {
     ctx.redirect(context.url);
     ctx.body = '<!DOCTYPE html>redirecting';
@@ -46,7 +41,6 @@ export default async (ctx, next) => {
     isDev,
     title: ctx.store.config.name,
     children: components,
-    state: JSON.stringify(ctx.store),
-    isSSR: true
+    state: JSON.stringify(ctx.store)
   });
 };

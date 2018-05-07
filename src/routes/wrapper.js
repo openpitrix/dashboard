@@ -3,10 +3,16 @@ import React from 'react';
 export default class RouteWrapper extends React.Component {
   componentDidMount() {
     const { component, rootStore, match } = this.props;
-    if (window.__SSR__) {
-      window.__SSR__ = false;
+
+    // first render on ssr
+    if (window.__preload === undefined) {
+      window.__preload = true;
+    }
+
+    if (window.__preload) {
+      window.__preload = false;
     } else {
-      component.onEnter && component.onEnter(rootStore, match);
+      component.onEnter && component.onEnter(rootStore, match.params);
     }
   }
 

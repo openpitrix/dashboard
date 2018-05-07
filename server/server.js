@@ -1,19 +1,22 @@
-/* eslint-disable import/first */
-require('lib/logger');
+require('babel-register')({
+  cache: true
+});
 
-import { resolve } from 'path';
-import semver from 'semver';
-import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
-import favicon from 'koa-favicon';
-import convert from 'koa-convert';
-import views from 'koa-views';
-import mount from 'koa-mount';
-import serve from 'koa-static';
-import store from './middleware/store';
-import render from './middleware/render';
-import routes from './routes';
-import { root, getServerConfig, watchServerConfig } from '../lib/utils';
+const semver = require('semver');
+const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
+const favicon = require('koa-favicon');
+const convert = require('koa-convert');
+const views = require('koa-views');
+const mount = require('koa-mount');
+const serve = require('koa-static');
+
+const store = require('./middleware/store');
+const render = require('./middleware/render');
+const routes = require('./routes');
+const auth = require('./middleware/auth');
+
+const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
 if (semver.lt(process.version, '7.6.0')) {
   console.error('Node version should be greater than 7.6.0');
@@ -29,12 +32,13 @@ global.PORT = config.http.port || 8000;
 const env = process.env.NODE_ENV || 'development';
 const app = new Koa();
 
+app.use(auth);
+
 // serve static files
-const serveFiles = function() {
-  for (const [k, v] of Object.entries(config.http.static[env])) {
-    app.use(mount(k, serve(root(v), { index: false })));
-  }
-};
+const staticMount = config.http.static;
+for (const [k, v] of Object.entries(staticMount[env] || staticMount['development'])) {
+  app.use(mount(k, serve(root(v), { index: false })));
+}
 
 if (env === 'development') {
   // disable babel server env plugins transform
@@ -49,7 +53,6 @@ if (env === 'development') {
     webpackMiddleware({
       compiler: webpack(webpackConfig),
       dev: {
-        publicPath: webpackConfig.output.publicPath,
         noInfo: false,
         quiet: false,
         watchOptions: {
@@ -72,8 +75,6 @@ if (env === 'development') {
   );
 }
 
-serveFiles();
-
 app.use(favicon(root(config.http.favicon)));
 
 app.use(
@@ -86,16 +87,16 @@ app.use(
   )
 );
 
-app.use(store);
-
 app.use(
-  views(resolve(__dirname, './views'), {
+  views(root('server/views'), {
     extension: 'pug'
   })
 );
 
 // Routes
 app.use(routes.routes());
+
+app.use(store);
 
 // Rendering
 app.use(render);

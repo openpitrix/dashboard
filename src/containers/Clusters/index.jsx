@@ -14,17 +14,16 @@ import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
+import preload from 'hoc/preload';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore
 }))
 @observer
+@preload('fetchClusters')
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore }) {
-    await clusterStore.fetchClusters();
-  }
-
   render() {
     const { clusterStore } = this.props;
     const { image, name, total1, centerName, total2, progress, total3, histogram } = {

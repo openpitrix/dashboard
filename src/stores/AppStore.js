@@ -14,7 +14,7 @@ export default class AppStore {
   }
 
   @action
-  async fetchApps() {
+  async fetchAll() {
     this.isLoading = true;
     const result = await request.get('api/v1/apps');
     this.apps = result.items;
@@ -22,10 +22,9 @@ export default class AppStore {
   }
 
   @action
-  async fetchApp(appId) {
+  async fetchApp({ appId }) {
     this.isLoading = true;
-    const result = await request.get(`api/v1/apps/${appId}`);
-    this.app = result;
+    this.app = await request.get(`api/v1/apps/${appId}`);
     this.isLoading = false;
   }
 
