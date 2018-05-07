@@ -22,6 +22,7 @@
   .refresh {
     border-color: $border-lighter;
     vertical-align: top;
+    float: right;
   }
 
   .select {
@@ -37,7 +38,6 @@
   .search {
     display: inline-block;
     width: 337px;
-    margin-left: 16px;
     border-color: $border-lighter;
     box-shadow: none;
   

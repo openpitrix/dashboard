@@ -19,7 +19,7 @@
   .pi-table {
     &-thead > tr > th {
       position: relative;
-      padding: 12px 24px;
+      padding: 12px 12px;
       font-weight: 500;
       color: $title-color;
       background: $th-background-color;
@@ -31,7 +31,7 @@
         top: 8px;
         bottom: 8px;
         width: 0;
-        border-right: 1px solid $border-light;
+        /*border-right: 1px solid $border-light;*/
       }
     }
 
@@ -59,7 +59,7 @@
     }
 
     &-tbody > tr > td {
-      padding: 12px 0 12px 24px;
+      padding: 12px 0 12px 12px;
       line-height: 16px;
       border-bottom: 1px solid $border-lighter;
       transition: all $transition-speed;

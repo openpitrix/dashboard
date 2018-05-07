@@ -1,0 +1,61 @@
+@import '~scss/variables';
+
+.versionList {
+  width: 360px;
+  padding: 24px 16px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  .title{
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    color: #300e56;
+    .all{
+      float: right;
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+  .list{
+    li{
+      height: 36px;
+      padding: 14px 8px;
+      color: #1c062f;
+      border-bottom: 1px solid #e7e7e7;
+      font-size: 14px;
+    }
+    .column{
+      display: inline-block;
+      width:120px;
+      text-align: left;
+      &:last-child{
+        width: 70px;
+      }
+      .version{
+        line-height: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #1c062f;
+      }
+      .number{
+        line-height: 16px;
+        font-size: 14px;
+        color: #1c062f;
+      }
+      .word{
+        font-size: 12px;
+        line-height: 1.0;
+        text-align: left;
+        color: #a6a1ab;
+      }
+      .download .icon{
+        font-size: 30px;
+        font-weight: normal;
+        color: #1c062f;
+      }
+    }
+
+  }
+}
