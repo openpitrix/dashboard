@@ -34,6 +34,10 @@
     box-sizing: border-box;
   }
 
+  .container {
+     margin: 0 $layout-margin;
+  }
+
   .main {
     width: 100%;
     min-width: $content-width;

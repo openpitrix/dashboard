@@ -91,7 +91,24 @@ exports[`Home basic render 1`] = `
           >
             <div
               className="appList apps"
-            />
+            >
+              <CardTitle
+                more={true}
+                title="Catalog Title"
+              >
+                <div
+                  className="title"
+                >
+                  Catalog Title
+                   
+                  <span
+                    className="more show"
+                  >
+                    more...
+                  </span>
+                </div>
+              </CardTitle>
+            </div>
           </AppList>
         </div>
       </div>

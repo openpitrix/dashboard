@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 
@@ -51,16 +51,15 @@ export default class Home extends Component {
   render() {
     const { config, appStore, fixNav } = this.props.rootStore;
     const fold = fixNav;
-    const isAdmin = true && fixNav;
 
     return (
-      <div className={styles.home}>
+      <Fragment>
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
           <AppList className={styles.apps} apps={appStore.apps} fold={fold} />
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

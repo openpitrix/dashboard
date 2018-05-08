@@ -35,6 +35,9 @@ $family-sans-serif: "Roboto", "PingFang SC", "Lantinghei SC", "Helvetica Neue", 
 $family-monospace: Inconsolata,Consolas,Monaco,monospace;
 $body-size: 14px;
 
+// home
+$layout-margin: 156px;
+
 // Override
 $primary: $purple;
 $info: $blue;
@@ -43,9 +46,10 @@ $warning: $yellow;
 $success: $green;
 
 $family-primary: $family-sans-serif;
-$body-background-color: $background-color;
+$body-background-color: $background-color-lighter;
 
 $size-small: 12px;
+$size-normal: 14px;
 $size-medium: 16px; // 中号字体
 $size-large: 28px;
 
@@ -64,7 +68,7 @@ $content-width: 1128px;
 $nav-width: 192px;
 $header-height: 48px;
 $banner-height: 400px;
-$footer-height: 70px;
+$footer-height: 64px;
 $base-margin: 24px;
 
 $main-height: calc(100vh - #{$footer-height});

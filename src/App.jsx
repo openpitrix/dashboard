@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -27,7 +27,7 @@ class App extends Component {
 
     return (
       <Provider rootStore={rootStore}>
-        <div>
+        <Fragment>
           {!isLogin && <Header isHome={isHome} />}
           <div className="main">
             <Switch>
@@ -52,7 +52,7 @@ class App extends Component {
             </Switch>
           </div>
           {!isLogin && <Footer />}
-        </div>
+        </Fragment>
       </Provider>
     );
   }
