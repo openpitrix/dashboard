@@ -18,99 +18,95 @@ exports[`Home basic render 1`] = `
         }
       }
     >
-      <div
-        className="home"
-      >
-        <Banner>
+      <Banner>
+        <div
+          className="banner banner"
+        >
           <div
-            className="banner banner"
+            className="wrapper"
           >
+            <img
+              alt=""
+              className="banner-img-1"
+              src="/assets/1-1.svg"
+            />
+            <img
+              alt=""
+              className="banner-img-2"
+              src="/assets/1-2.svg"
+            />
+            <img
+              alt=""
+              className="banner-img-3"
+              src="/assets/1-3.svg"
+            />
             <div
-              className="wrapper"
+              className="title"
             >
-              <img
-                alt=""
-                className="banner-img-1"
-                src="/assets/1-1.svg"
-              />
-              <img
-                alt=""
-                className="banner-img-2"
-                src="/assets/1-2.svg"
-              />
-              <img
-                alt=""
-                className="banner-img-3"
-                src="/assets/1-3.svg"
-              />
+              Application Management Platform on Multi-Cloud Environment.
+            </div>
+            <Search
+              className="search"
+              onSearch={[Function]}
+              placeholder="Search apps in Pitrix..."
+            >
+              <div
+                className="inputGroup search"
+              >
+                <Icon
+                  name="search"
+                >
+                  <i
+                    className="icon icon-search"
+                  />
+                </Icon>
+                <input
+                  className="input"
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search apps in Pitrix..."
+                  type="text"
+                  value=""
+                />
+              </div>
+            </Search>
+          </div>
+        </div>
+      </Banner>
+      <div
+        className="content"
+      >
+        <Nav
+          className="nav"
+        >
+          <div
+            className="nav nav"
+          />
+        </Nav>
+        <AppList
+          className="apps"
+        >
+          <div
+            className="appList apps"
+          >
+            <CardTitle
+              more={true}
+              title="Catalog Title"
+            >
               <div
                 className="title"
               >
-                Application Management Platform on Multi-Cloud Environment.
+                Catalog Title
+                 
+                <span
+                  className="more show"
+                >
+                  more...
+                </span>
               </div>
-              <Search
-                className="search"
-                onSearch={[Function]}
-                placeholder="Search apps in Pitrix..."
-              >
-                <div
-                  className="inputGroup search"
-                >
-                  <Icon
-                    name="search"
-                  >
-                    <i
-                      className="icon icon-search"
-                    />
-                  </Icon>
-                  <input
-                    className="input"
-                    onChange={[Function]}
-                    onKeyDown={[Function]}
-                    placeholder="Search apps in Pitrix..."
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </Search>
-            </div>
+            </CardTitle>
           </div>
-        </Banner>
-        <div
-          className="content"
-        >
-          <Nav
-            className="nav"
-          >
-            <div
-              className="nav nav"
-            />
-          </Nav>
-          <AppList
-            className="apps"
-          >
-            <div
-              className="appList apps"
-            >
-              <CardTitle
-                more={true}
-                title="Catalog Title"
-              >
-                <div
-                  className="title"
-                >
-                  Catalog Title
-                   
-                  <span
-                    className="more show"
-                  >
-                    more...
-                  </span>
-                </div>
-              </CardTitle>
-            </div>
-          </AppList>
-        </div>
+        </AppList>
       </div>
     </Home>
   </inject-Home-with-rootStore>

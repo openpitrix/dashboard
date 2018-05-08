@@ -55,7 +55,7 @@
     "report-cov": "cat ./coverage/lcov.info | codecov"
   },
   "lint-staged": {
-    "*.{js,jsx,md}": [
+    "*.{js,jsx,md,test.js.snap}": [
       "prettier --write",
       "git add"
     ]
