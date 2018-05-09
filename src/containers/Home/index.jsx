@@ -50,14 +50,13 @@ export default class Home extends Component {
 
   render() {
     const { config, appStore, fixNav } = this.props.rootStore;
-    const fold = fixNav;
 
     return (
       <Fragment>
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
-          <AppList className={styles.apps} apps={appStore.apps} fold={fold} />
+          <AppList className={styles.apps} apps={appStore.apps} fold={fixNav} />
         </div>
       </Fragment>
     );
