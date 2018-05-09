@@ -12,13 +12,11 @@ import Input from 'components/Base/Input';
 import Popover from 'components/Base/Popover';
 import RepoCard from 'components/RepoCard';
 import styles from './index.scss';
-//import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore
 }))
 @observer
-//@preload('fetchRepos')
 export default class Repos extends Component {
   static async onEnter({ repoStore }) {
     await repoStore.fetchRepos();
@@ -41,7 +39,7 @@ export default class Repos extends Component {
         <div className={styles.container}>
           <div className={styles.pageTitle}>Repos</div>
           <div className={styles.toolbar}>
-            <Input.Search className={styles.search} placeholder="Search App Name" />
+            <Input.Search className={styles.search} placeholder="Search Repo Name" />
             <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
               Create
             </Button>
@@ -55,17 +53,17 @@ export default class Repos extends Component {
             </div>
           </div>
           {repoList.map(repo => (
-            <div className={styles.repoContent} key={repo.id}>
+            <div className={styles.repoContent} key={repo.repo_id}>
               <RepoCard
                 name={repo.name}
                 description={repo.description}
                 provider={repo.provider}
                 imgArray={repo.imgArray}
-                tags={repo.tags}
+                tags={repo.labels}
               />
               <div className={styles.handlePop}>
                 <div>
-                  <Popover content={this.renderHandleMenu(repo.id)}>
+                  <Popover content={this.renderHandleMenu(repo.repo_id)}>
                     <Icon name="more" />
                   </Popover>
                 </div>

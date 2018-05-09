@@ -23,11 +23,20 @@
       font-weight: 500;
       color: $text-color;
     }
-    .id{
+    .id,.caId{
       margin: 8px 0 10px;
       line-height: 14px;
       font-size: 12px;
-      color: #a6a1ab;
+      color: $grey-word;
+    }
+    .caId{
+      margin-bottom: 0;
+    }
+    .description{
+      margin: 8px 0 -2px;
+      line-height: 17px;
+      font-size: 12px;
+      color: $grey-word;
     }
     .preview{
       line-height: 17px;
@@ -38,29 +47,30 @@
       }
     }
   }
+  .noImg{
+    padding-left: 0;
+  }
   .detail{
     margin-top: 17px;
     li{
-      color: #1c062f;
-      font-size: 14px;
-      line-height: 16px;
+      color: $purple-word;
       padding: 7px 0;
+      min-height: 16px;
+      line-height: 16px;
+      font-size: 14px;
       list-style: none;
     }
     .name{
       display: inline-block;
-      width: 100px;
+      width: 110px;
       margin-right: 24px;
       color: #666666;
       text-align: right;
     }
+    .labels{
+      float: left;
+      margin-top: -18px;
+      margin-left: 134px;
+    }
   }
-}
-
-.rectangle-6-copy {
-  width: 360px;
-  height: 340px;
-  border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
 }

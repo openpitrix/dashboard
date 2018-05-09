@@ -11,11 +11,12 @@ export default class Card extends PureComponent {
     idNo: PropTypes.string,
     description: PropTypes.string,
     imgArray: PropTypes.array,
+    appTotal: PropTypes.number,
     id: PropTypes.string
   };
 
   render() {
-    const { title, idNo, description, imgArray, id } = this.props;
+    const { title, idNo, description, imgArray, id, appTotal } = this.props;
     return (
       <div className={styles.rectangle}>
         <div className={styles.title}>
@@ -23,7 +24,7 @@ export default class Card extends PureComponent {
         </div>
         <div className={styles.idNo}>{idNo}</div>
         <div className={styles.description}>{description}</div>
-        <AppImgs imgArray={imgArray} />
+        <AppImgs imgArray={imgArray} appTotal={appTotal} />
       </div>
     );
   }

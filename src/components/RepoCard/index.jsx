@@ -25,10 +25,7 @@ export default class RepoCard extends PureComponent {
           </div>
           <div className={styles.column}>
             <div className={styles.title}>Runtime Provider</div>
-            <img
-              className={styles.providerImg}
-              src={provider || 'http://via.placeholder.com/88x22'}
-            />
+            <div className={styles.providerImg}>{provider}</div>
           </div>
           <div className={styles.column}>
             <AppImgs imgArray={imgArray} />

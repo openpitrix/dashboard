@@ -6,7 +6,7 @@ import Status from 'components/Status';
 import { getParseDate } from 'utils';
 import styles from './index.scss';
 
-export default class DetailCard extends PureComponent {
+export default class CategorieCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object
   };

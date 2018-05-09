@@ -13,8 +13,8 @@ export default class TagShow extends Component {
     return tags.map((tag, index) => (
       <div className={classnames(styles.yellowStyle, styles[tagStyle])} key={index}>
         <div className={styles.inner}>
-          <span className={styles.name}>{tag.name}</span>
-          <span className={styles.content}>{tag.content}</span>
+          <span className={styles.name}>{tag.label_key}</span>
+          <span className={styles.content}>{tag.label_value}</span>
         </div>
       </div>
     ));

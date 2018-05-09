@@ -32,8 +32,8 @@ export default class Categories extends Component {
           <div>
             {categorieList.map(data => (
               <Rectangle
-                key={data.id}
-                id={data.id}
+                key={data.categorie_id}
+                id={data.categorie_id}
                 title={data.name}
                 idNo={data.idNo}
                 description={data.description}

@@ -36,7 +36,7 @@ export default class Clusters extends Component {
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
 
-    const data = clusterStore.clusters && (toJS(clusterStore.clusters.cluster_set) || []);
+    const data = toJS(clusterStore.clusters) || [];
     const columns = [
       {
         title: 'Cluster ID',

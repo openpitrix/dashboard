@@ -23,18 +23,17 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  static async onEnter({ clusterStore }, { runtimeId }) {
+  static async onEnter({ runtimeStore, clusterStore }, { runtimeId }) {
     await runtimeStore.fetchRuntimeDetail(runtimeId);
     await clusterStore.fetchClusters();
   }
-
   render() {
     const { runtimeStore, clusterStore } = this.props;
-    const data = (clusterStore.clusters && toJS(clusterStore.clusters.cluster_set)) || [];
-    console.log(runtimeStore.runtimeDetail);
+    const data = toJS(clusterStore.clusters) || [];
+    const runtimeDetail = toJS(runtimeStore.runtimeDetail) || {};
     const columns = [
       {
-        title: 'Cluster Name222',
+        title: 'Cluster Name',
         dataIndex: 'name',
         key: 'name',
         render: (name, obj) => <TdName name={name} description={obj.description} />
@@ -72,7 +71,8 @@ export default class RuntimeDetail extends Component {
         render: getParseDate
       }
     ];
-    const tags = [{ id: 1, name: 'Clusters', link: '/manage/apps/22', current: true }];
+    const tags = [{ id: 1, name: 'Clusters' }];
+    const curTag = 'Clusters';
     return (
       <div className={styles.appDetail}>
         <ManageTabs />
@@ -81,13 +81,13 @@ export default class RuntimeDetail extends Component {
         </div>
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <RuntimeCard />
+            <RuntimeCard detail={runtimeDetail} />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} />
+              <TagNav tags={tags} curTag={curTag} />
               <div className={styles.toolbar}>
-                <Input.Search className={styles.search} placeholder="Search App Name" />
+                <Input.Search className={styles.search} placeholder="Search Clusters Name" />
                 <Button className={styles.buttonRight}>
                   <Icon name="refresh" />
                 </Button>

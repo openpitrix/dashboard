@@ -5,16 +5,17 @@ import styles from './index.scss';
 
 export default class AppImgs extends Component {
   static propTypes = {
-    imgArray: PropTypes.array
+    imgArray: PropTypes.array,
+    appToatal: PropTypes.number
   };
   render() {
-    const { imgArray } = this.props;
+    const { imgArray, appTotal } = this.props;
     return (
       <div className={styles.appImgs}>
         <div className={styles.name}>Apps</div>
         <div className={styles.imgList}>
-          {imgArray.map((img, index) => <img key={index} src={img} />)}
-          <span className={styles.totalNum}>{imgArray.length}</span>
+          {imgArray && imgArray.map((img, index) => <img key={index} src={img} />)}
+          <span className={styles.totalNum}>{appTotal}</span>
         </div>
       </div>
     );

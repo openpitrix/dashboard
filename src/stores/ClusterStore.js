@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from './Store';
+import { get } from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = {};
@@ -14,7 +15,8 @@ export default class ClusterStore extends Store {
   @action
   async fetchClusters() {
     this.isLoading = true;
-    this.clusters = await this.request.get('api/v1/clusters');
+    const result = await this.request.get('api/v1/clusters');
+    this.clusters = get(result, 'cluster_set', []);
     this.isLoading = false;
   }
 

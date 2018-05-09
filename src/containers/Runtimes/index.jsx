@@ -45,7 +45,7 @@ export default class Runtimes extends Component {
       total3: 40,
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = runtimeStore.runtimes && (toJS(runtimeStore.runtimes.runtime_set) || []);
+    const data = toJS(runtimeStore.runtimes) || [];
     const columns = [
       {
         title: 'Runtime Name',
@@ -92,7 +92,7 @@ export default class Runtimes extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.id)}>
+            <Popover content={this.renderHandleMenu(item.runtime_id)}>
               <Icon name="more" />
             </Popover>
           </div>
