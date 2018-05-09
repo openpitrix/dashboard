@@ -62,13 +62,13 @@ if (env === 'development') {
         },
         stats: {
           colors: true,
-          hash: true,
-          timings: true,
+          // hash: true,
+          timings: true
           // version: false,
-          chunks: true,
-          modules: true,
+          // chunks: true,
+          // modules: true,
           // children: false,
-          chunkModules: true
+          // chunkModules: true
         }
       }
     })

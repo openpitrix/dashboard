@@ -56,7 +56,7 @@ export default class Home extends Component {
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
-          <AppList className={styles.apps} apps={appStore.apps} />
+          <AppList className={styles.apps} apps={appStore.apps} fold={fixNav} />
         </div>
       </div>
     );

@@ -17,6 +17,7 @@ module.exports = async (ctx, next) => {
   ctx.store = rootStore;
   ctx.store.config = getServerConfig('app');
   ctx.store.serverUrl = getServerConfig('serverUrl');
+  ctx.store.apiVersion = getServerConfig('apiVersion');
 
   await next();
 };
