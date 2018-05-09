@@ -5,18 +5,18 @@
   height: 48px;
   background: #fff;
   border-bottom: 1px solid #e2d0f2;
-
-  a{
+  .tag{
     display: inline-block;
-    padding: 16px 0;
+    padding: 15px 0;
     margin-right: 24px;
     line-height: 16px;
     font-size: 14px;
     font-weight: 500;
     color: $text-color;
-  }
-  .current {
-    color: $third-text-color;
-    border-bottom: 2px solid $third-text-color;
+    cursor: pointer;
+    &.active {
+      color: $third-text-color;
+      border-bottom: 2px solid $third-text-color;
+    }
   }
 }

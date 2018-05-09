@@ -37,7 +37,7 @@ export default class Users extends Component {
       total3: 40,
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = toJS(userStore.users.items) || [];
+    const data = userStore.users && (toJS(userStore.users.user_set) || []);
     const columns = [
       {
         title: 'UserName',

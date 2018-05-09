@@ -18,7 +18,6 @@
 
 .toolbar {
   padding: 24px;
-
   .refresh {
     border-color: $border-lighter;
     vertical-align: top;
@@ -32,7 +31,7 @@
 
     div {
       box-shadow: none !important;
-    }    
+    }
   }
 
   .search {
@@ -40,20 +39,22 @@
     width: 337px;
     border-color: $border-lighter;
     box-shadow: none;
-  
+
     :global {
       .fa {
         color: $placeholder-color;
       }
     }
-  
+
     input::placeholder {
       font-weight: 400;
-      color: $placeholder-color;    
+      color: $placeholder-color;
     }
-  }  
+  }
 }
-
+.tableOuter{
+  margin: 0 12px;
+}
 .idLink {
   color: $id-color;
 }

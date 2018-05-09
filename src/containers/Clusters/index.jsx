@@ -10,7 +10,6 @@ import Statistics from 'components/Statistics';
 import Icon from 'components/Base/Icon';
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
-import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
@@ -37,13 +36,12 @@ export default class Clusters extends Component {
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
 
-    const data = toJS(clusterStore.clusters.items) || [];
+    const data = clusterStore.clusters && (toJS(clusterStore.clusters.cluster_set) || []);
     const columns = [
       {
         title: 'Cluster ID',
         dataIndex: 'id',
         key: 'id',
-        width: '13%',
         render: text => (
           <Link className={classNames(styles.idLink, 'id')} to={`/manage/cluster/${text}`}>
             {text}
@@ -53,33 +51,28 @@ export default class Clusters extends Component {
       {
         title: 'Cluster Name',
         dataIndex: 'cluster_name',
-        key: 'cluster_name',
-        width: '15%'
+        key: 'cluster_name'
       },
       {
         title: 'App Name',
         dataIndex: 'app_name',
-        key: 'app_name',
-        width: '15%'
+        key: 'app_name'
       },
       {
         title: 'App Version',
         dataIndex: 'app_version',
-        key: 'app_version',
-        width: '20%'
+        key: 'app_version'
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        width: '12%',
         render: text => <Status type={text} name={text} />
       },
       {
         title: 'Node Count',
         dataIndex: 'node_count',
-        key: 'node_count',
-        width: '12%'
+        key: 'node_count'
       },
       {
         title: 'Date Created',
@@ -112,7 +105,7 @@ export default class Clusters extends Component {
               </Button>
             </div>
 
-            <Table columns={columns} dataSource={data} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
 
           <Pagination />

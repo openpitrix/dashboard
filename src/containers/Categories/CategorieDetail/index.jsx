@@ -6,7 +6,7 @@ import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
-import AppCard from 'components/DetailCard/AppCard';
+import DetailCard from 'components/DetailCard';
 import VersionList from 'components/VersionList';
 import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
@@ -17,25 +17,30 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
-  clusterStore: rootStore.clusterStore
+  appStore: rootStore.appStore
 }))
 @observer
-@preload(['fetchApp', 'fetchAppClusters'])
-export default class AppDetail extends Component {
+export default class CategorieDetail extends Component {
+  static async onEnter({ appStore }) {
+    await appStore.fetchClusters();
+  }
+
   render() {
     const { appStore } = this.props;
-    const appDetail = appStore.app;
-    const data = toJS(appStore.appClusters) || [];
+    const data = (appStore.apps && toJS(appStore.apps.app_set)) || [];
     const columns = [
       {
-        title: 'Cluster Name',
+        title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
+      },
+      {
+        title: 'Latest Version',
+        dataIndex: 'latest_version',
+        key: 'latest_version'
       },
       {
         title: 'Status',
@@ -44,47 +49,27 @@ export default class AppDetail extends Component {
         render: text => <Status type={text} name={text} />
       },
       {
-        title: 'App Version',
-        dataIndex: 'latest_version',
-        key: 'latest_version'
+        title: 'Developer',
+        dataIndex: 'owner',
+        key: 'owner'
       },
       {
-        title: 'Node Count',
-        dataIndex: 'node_count',
-        key: 'id'
-      },
-      {
-        title: 'Runtime',
-        dataIndex: 'runtime',
-        key: 'runtime'
-      },
-      {
-        title: 'User',
-        dataIndex: 'user',
-        key: 'user'
-      },
-      {
-        title: 'Date Created',
-        dataIndex: 'created',
-        key: 'created',
-        render: getParseDate
+        title: 'Visibility',
+        dataIndex: 'visibility',
+        key: 'visibility'
       }
     ];
-    const tags = [{ id: 1, name: 'Clusters' }];
-    const curTag = 'Clusters';
-
+    const tags = [{ id: 1, name: 'Apps', link: '#' }];
+    const curTag = 'Apps';
     return (
       <div className={styles.appDetail}>
         <ManageTabs />
         <div className={styles.backTo}>
-          <Link to="/manage/apps">← Back to Apps</Link>
+          <Link to="/manage/categories">← Back to Categories</Link>
         </div>
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <div className={styles.mb24}>
-              <AppCard appDetail={appDetail} />
-            </div>
-            <VersionList />
+            <DetailCard />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>

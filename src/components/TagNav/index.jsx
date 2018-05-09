@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
 
 import styles from './index.scss';
 
 export default class SubHeader extends Component {
   static propTypes = {
-    curTag: PropTypes.string
+    tags: PropTypes.array,
+    curTag: PropTypes.string,
+    changeCurTag: PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.changeCurTag = this.changeCurTag.bind(this);
+  }
+
+  changeCurTag(name) {
+    this.props.changeCurTag && this.props.changeCurTag(name);
+  }
 
   render() {
     const { tags, curTag } = this.props;
@@ -16,13 +26,15 @@ export default class SubHeader extends Component {
     return (
       <div className={styles.tagNav}>
         {tags.map(tag => (
-          <Link
-            className={classnames({ [styles.current]: tag.current })}
+          <div
+            className={classnames(styles.tag, { [styles.active]: tag.name === curTag })}
             key={tag.id}
-            to={`${tag.link}`}
+            onClick={() => {
+              this.changeCurTag(tag.name);
+            }}
           >
             {tag.name}
-          </Link>
+          </div>
         ))}
       </div>
     );

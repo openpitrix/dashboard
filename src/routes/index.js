@@ -8,10 +8,13 @@ import AppDetail from 'containers/Apps/AppDetail';
 import Clusters from 'containers/Clusters';
 import ClusterDetail from 'containers/ClusterDetail';
 import Runtimes from 'containers/Runtimes';
+import RuntimeDetail from 'containers/Runtimes/RuntimeDetail';
 import Repos from 'containers/Repos';
+import RepoDetail from 'containers/Repos/RepoDetail';
 import Users from 'containers/Users';
 import Roles from 'containers/Roles';
 import Categories from 'containers/Categories';
+import CategorieDetail from 'containers/Categories/CategorieDetail';
 
 const routes = [
   { path: '/', exact: true, component: Home },
@@ -25,10 +28,13 @@ const routes = [
   { path: '/manage/clusters', exact: true, component: Clusters },
   { path: '/manage/cluster/:clusterId', exact: true, component: ClusterDetail },
   { path: '/manage/runtimes', exact: true, component: Runtimes },
+  { path: '/manage/runtimes/:runtimeId', exact: true, component: RuntimeDetail },
   { path: '/manage/repos', exact: true, component: Repos },
+  { path: '/manage/repos/:repoId', exact: true, component: RepoDetail },
   { path: '/manage/users', exact: true, component: Users },
   { path: '/manage/roles', exact: true, component: Roles },
-  { path: '/manage/categories', exact: true, component: Categories }
+  { path: '/manage/categories', exact: true, component: Categories },
+  { path: '/manage/categories/:categorieId', exact: true, component: CategorieDetail }
 ];
 
 export default routes.map(route => {

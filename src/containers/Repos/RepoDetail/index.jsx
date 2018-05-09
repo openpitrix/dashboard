@@ -6,8 +6,7 @@ import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
-import AppCard from 'components/DetailCard/AppCard';
-import VersionList from 'components/VersionList';
+import DetailCard from 'components/DetailCard';
 import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
@@ -17,78 +16,97 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
-  clusterStore: rootStore.clusterStore
+  repoStore: rootStore.repoStore
 }))
 @observer
-@preload(['fetchApp', 'fetchAppClusters'])
-export default class AppDetail extends Component {
+export default class RepoDetail extends Component {
+  static async onEnter({ repoStore }, { repoId }) {
+    //await repoStore.fetchRepoDetail(repoId);
+    await repoStore.fetchRepoApps(repoId);
+    //await repoStore.fetchRepoRunTimes(repoId);
+    //await repoStore.fetchRepoTasks(v);
+  }
+  constructor(props) {
+    super(props);
+    this.changeCurTag = this.changeCurTag.bind(this);
+    this.state = { curTag: 'Apps' };
+    this.appsData = (this.props.repoStore.apps && toJS(this.props.repoStore.apps.app_set)) || [];
+  }
+  changeCurTag = name => {
+    this.setState({
+      curTag: name
+    });
+  };
+
   render() {
-    const { appStore } = this.props;
-    const appDetail = appStore.app;
-    const data = toJS(appStore.appClusters) || [];
+    const appsData = this.appsData;
     const columns = [
       {
-        title: 'Cluster Name',
+        title: 'App Name',
         dataIndex: 'name',
         key: 'name',
+        width: '130px',
         render: (name, obj) => <TdName name={name} description={obj.description} />
+      },
+      {
+        title: 'Latest Version',
+        dataIndex: 'latest_version',
+        key: 'latest_version'
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        width: '100px',
         render: text => <Status type={text} name={text} />
       },
       {
-        title: 'App Version',
-        dataIndex: 'latest_version',
-        key: 'latest_version'
+        title: 'Categories',
+        dataIndex: 'categories',
+        key: 'categories'
       },
       {
-        title: 'Node Count',
-        dataIndex: 'node_count',
-        key: 'id'
+        title: 'Visibility',
+        dataIndex: 'visibility',
+        key: 'visibility'
       },
       {
-        title: 'Runtime',
-        dataIndex: 'runtime',
-        key: 'runtime'
+        title: 'Repo',
+        dataIndex: 'repo_id',
+        key: 'repo_id'
       },
       {
-        title: 'User',
-        dataIndex: 'user',
-        key: 'user'
+        title: 'Developer',
+        dataIndex: 'developer',
+        key: 'developer'
       },
       {
-        title: 'Date Created',
-        dataIndex: 'created',
-        key: 'created',
+        title: 'Updated At',
+        dataIndex: 'update_time',
+        key: 'update_time',
         render: getParseDate
       }
     ];
-    const tags = [{ id: 1, name: 'Clusters' }];
-    const curTag = 'Clusters';
+    const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Tasks' }];
+    const curTag = this.state.curTag;
+
+    const data = curTag === 'Apps' ? appsData : [];
 
     return (
-      <div className={styles.appDetail}>
+      <div className={styles.repoDetail}>
         <ManageTabs />
         <div className={styles.backTo}>
-          <Link to="/manage/apps">← Back to Apps</Link>
+          <Link to="/manage/repos">← Back to Repos</Link>
         </div>
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <div className={styles.mb24}>
-              <AppCard appDetail={appDetail} />
-            </div>
-            <VersionList />
+            <DetailCard />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={tags} curTag={curTag} changeCurTag={this.changeCurTag} />
               <div className={styles.toolbar}>
                 <Input.Search className={styles.search} placeholder="Search App Name" />
                 <Button className={styles.buttonRight}>

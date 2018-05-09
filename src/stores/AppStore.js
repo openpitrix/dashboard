@@ -5,6 +5,7 @@ import { get } from 'lodash';
 export default class AppStore extends Store {
   @observable apps = [];
   @observable app = {};
+  @observable appClusters = [];
   @observable installedApps = [];
   @observable isLoading = false;
 

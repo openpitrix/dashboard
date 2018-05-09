@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
@@ -9,26 +10,23 @@ import Statistics from 'components/Statistics';
 import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
-
-import styles from './index.scss';
+import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
+import styles from './index.scss';
+import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore
 }))
 @observer
+@preload('fetchAll')
 export default class Apps extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchInstalledApps();
-  }
-
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
-      <span>View app cluster</span>
+      <Link to={`/manage/apps/${id}`}>View app detail</Link>
       <span>Delete app</span>
     </div>
   );
@@ -45,64 +43,62 @@ export default class Apps extends Component {
       total3: 40,
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = toJS(appStore.installedApps.items) || [];
+    const data = toJS(appStore.apps) || [];
     const columns = [
       {
-        title: 'App Name1',
+        title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        width: '10%',
-        render: text => <TdName name={text} description={text} />
+        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
       },
       {
         title: 'Latest Version',
         dataIndex: 'latest_version',
-        key: 'latest_version',
-        width: '12%'
+        key: 'latest_version'
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        width: '10%',
         render: text => <Status type={text} name={text} />
       },
       {
         title: 'Categories',
         dataIndex: 'categories',
-        key: 'categories',
-        width: '8%'
+        key: 'categories'
       },
       {
         title: 'Visibility',
         dataIndex: 'visibility',
-        key: 'visibility',
-        width: '6%'
+        key: 'visibility'
       },
       {
         title: 'Repo',
         dataIndex: 'repo_id',
-        key: 'repo_id',
-        width: '12%'
+        key: 'repo_id'
       },
       {
         title: 'Developer',
         dataIndex: 'developer',
-        key: 'developer',
-        width: '8%'
+        key: 'developer'
       },
       {
         title: 'Updated At',
-        dataIndex: 'last_modified',
-        key: 'last_modified',
-        width: '10%',
+        dataIndex: 'update_time',
+        key: 'update_time',
         render: getParseDate
       },
       {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
-        width: '3%'
+        render: (text, item) => (
+          <div className={styles.handlePop}>
+            <Popover content={this.renderHandleMenu(item.app_id)}>
+              <Icon name="more" />
+            </Popover>
+          </div>
+        )
       }
     ];
 
@@ -123,10 +119,6 @@ export default class Apps extends Component {
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
-              <Select className={styles.select} value="All Types">
-                <Select.Option value="1">Types1</Select.Option>
-                <Select.Option value="2">Types2</Select.Option>
-              </Select>
               <Input.Search className={styles.search} placeholder="Search App Name" />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create

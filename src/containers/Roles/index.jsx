@@ -19,7 +19,7 @@ export default class Roles extends Component {
 
   render() {
     const { roleStore } = this.props;
-    const roleList = toJS(roleStore.roles.items) || [];
+    const roleList = toJS(roleStore.roles) || [];
 
     return (
       <div className={styles.roles}>
@@ -28,7 +28,7 @@ export default class Roles extends Component {
           <div className={styles.pageTitle}>Roles</div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Default (3)</div>
+              <div className={styles.word}>Default ({roleList.length})</div>
             </div>
           </div>
           <div>

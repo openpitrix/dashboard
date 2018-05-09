@@ -12,14 +12,11 @@ export default class TdName extends PureComponent {
 
   render() {
     const { image, name, description } = this.props;
-
     return (
       <span className={styles.tdName}>
-        <img
-          src={image || 'http://via.placeholder.com/24x24'}
-          className={styles.image}
-          alt="image"
-        />
+        {image && (
+          <img src={image || 'http://via.placeholder.com/24x24'} className={styles.image} />
+        )}
         <span className={styles.info}>
           <span className={styles.name}>{name}</span>
           <span className={styles.description}>{description}</span>

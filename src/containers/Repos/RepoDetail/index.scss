@@ -1,6 +1,6 @@
 @import '~scss/variables';
 
-.appDetail {
+.repoDetail {
   padding-top: $header-height;
   .leftInfo{
     float: left;
@@ -8,9 +8,6 @@
   }
   .rightInfo{
     margin-left: 384px;
-  }
-  .mb24{
-    margin-bottom: 24px;
   }
 }
 .backTo{

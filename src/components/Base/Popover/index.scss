@@ -114,15 +114,16 @@
 
     .operate-menu {
       margin: 0 -5px;
-
-      span {
+      a {
+        color: $title-color;
+      }
+      a,span {
         display: block;
         line-height: 24px;
         padding: 8px 12px 8px 11px;
         text-align: left;
         cursor: pointer;
         transition: all $transition-speed;
-
         &:hover {
           background-color: $purple-lighter;
         }

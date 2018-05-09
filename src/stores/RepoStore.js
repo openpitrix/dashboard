@@ -1,30 +1,28 @@
-import { observable, action, extendObservable } from 'mobx';
-import request from 'lib/request';
+import { observable, action } from 'mobx';
+import Store from './Store';
 
-export default class RepoStore {
-  @observable repos = {};
+export default class RepoStore extends Store {
+  @observable repos = [];
   @observable repoDetail = {};
   @observable isLoading = false;
 
   constructor(initialState) {
-    if (initialState) {
-      extendObservable(this, initialState.repoStore);
-    }
+    super(initialState, 'repoStore');
   }
 
   @action
   async fetchRepos() {
     this.isLoading = true;
-    const result = await request.get('api/v1/repos');
-    this.repos = result;
+    const result = await this.request.get('api/v1/repos');
+    this.repos = result.repo_set;
     this.isLoading = false;
   }
 
   @action
   async fetchRepoDetail(repoId) {
     this.isLoading = true;
-    const result = await request.get(`api/v1/repos/${repoId}`);
-    this.repoDetail = result;
+    const result = await this.request.get(`api/v1/repos/${repoId}`);
+    this.repoDetail = result.repo_set.length ? result.repo_set[0] : {};
     this.isLoading = false;
   }
 }

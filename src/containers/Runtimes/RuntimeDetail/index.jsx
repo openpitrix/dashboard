@@ -6,8 +6,7 @@ import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
-import AppCard from 'components/DetailCard/AppCard';
-import VersionList from 'components/VersionList';
+import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
@@ -17,22 +16,25 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
+  runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore
 }))
 @observer
-@preload(['fetchApp', 'fetchAppClusters'])
-export default class AppDetail extends Component {
+export default class RuntimeDetail extends Component {
+  static async onEnter({ clusterStore }, { runtimeId }) {
+    await runtimeStore.fetchRuntimeDetail(runtimeId);
+    await clusterStore.fetchClusters();
+  }
+
   render() {
-    const { appStore } = this.props;
-    const appDetail = appStore.app;
-    const data = toJS(appStore.appClusters) || [];
+    const { runtimeStore, clusterStore } = this.props;
+    const data = (clusterStore.clusters && toJS(clusterStore.clusters.cluster_set)) || [];
+    console.log(runtimeStore.runtimeDetail);
     const columns = [
       {
-        title: 'Cluster Name',
+        title: 'Cluster Name222',
         dataIndex: 'name',
         key: 'name',
         render: (name, obj) => <TdName name={name} description={obj.description} />
@@ -70,25 +72,20 @@ export default class AppDetail extends Component {
         render: getParseDate
       }
     ];
-    const tags = [{ id: 1, name: 'Clusters' }];
-    const curTag = 'Clusters';
-
+    const tags = [{ id: 1, name: 'Clusters', link: '/manage/apps/22', current: true }];
     return (
       <div className={styles.appDetail}>
         <ManageTabs />
         <div className={styles.backTo}>
-          <Link to="/manage/apps">← Back to Apps</Link>
+          <Link to="/manage/runtimes">← Back to Runtimes</Link>
         </div>
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <div className={styles.mb24}>
-              <AppCard appDetail={appDetail} />
-            </div>
-            <VersionList />
+            <RuntimeCard />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={tags} />
               <div className={styles.toolbar}>
                 <Input.Search className={styles.search} placeholder="Search App Name" />
                 <Button className={styles.buttonRight}>

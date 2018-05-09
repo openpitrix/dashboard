@@ -13,16 +13,16 @@ import LiRepos from 'components/LiRepos';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  overviewStore: rootStore.overviewStore
+  appStore: rootStore.appStore
 }))
 @observer
 export default class Overview extends Component {
-  static async onEnter({ overviewStore }) {
-    await overviewStore.fetchOverview();
+  static async onEnter({ appStore }) {
+    await appStore.fetchAll();
   }
 
   render() {
-    const { overviewStore } = this.props;
+    const { appStore } = this.props;
     const { userImg, name, role, loginInfo } = {
       userImg: 'http://via.placeholder.com/36x36',
       name: 'Wayne',
