@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const request = require('lib/request').default;
 const { getServerConfig } = require('lib/utils');
-// const auth=require('../middleware/auth');
 
 const apiServer = getServerConfig('serverUrl');
 

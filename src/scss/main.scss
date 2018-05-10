@@ -1,6 +1,12 @@
 @charset "utf-8";
 @import "variables";
 
+%active-dropdown-btn {
+  color: $third-text-color !important;
+  border-color: $border-dark !important;
+  background: #fff !important;
+}
+
 :global {
   body {
     font-family: $family-primary;
@@ -29,5 +35,30 @@
   .id-link {
     font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
     color: $id-color;
+  }
+
+
+  .dropdown-item {
+    &.active, &:active {
+      background: none;
+    }
+    a{
+      color: rgba(48, 14, 86, 0.8) !important;
+    }
+  }
+
+  .btn-secondary {
+    &.active, &:active {
+     @extend %active-dropdown-btn
+    }
+    &:hover {
+      background: rgba(#fff, 0.5);
+      border-color: rgba($border-dark, 0.5);
+      color: rgba($third-text-color, 0.5);
+    }
+  }
+
+  .show>.btn-secondary.dropdown-toggle {
+    @extend %active-dropdown-btn;
   }
 }
