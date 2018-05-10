@@ -85,6 +85,7 @@ exports[`Home basic render 1`] = `
         </Nav>
         <AppList
           className="apps"
+          fold={false}
         >
           <div
             className="appList apps"

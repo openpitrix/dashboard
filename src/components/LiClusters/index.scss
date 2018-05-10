@@ -33,9 +33,11 @@
   }
   .description{
     float: left;
-    width: 130px;
+    width: 120px;
+    margin-right: 10px;
     overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .nodes{
     font-weight: 500;

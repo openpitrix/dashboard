@@ -11,6 +11,7 @@ import Runtimes from 'containers/Runtimes';
 import RuntimeDetail from 'containers/Runtimes/RuntimeDetail';
 import Repos from 'containers/Repos';
 import RepoDetail from 'containers/Repos/RepoDetail';
+import RepoAdd from 'containers/Repos/RepoAdd';
 import Users from 'containers/Users';
 import Roles from 'containers/Roles';
 import Categories from 'containers/Categories';
@@ -31,6 +32,7 @@ const routes = [
   { path: '/manage/runtimes/:runtimeId', exact: true, component: RuntimeDetail },
   { path: '/manage/repos', exact: true, component: Repos },
   { path: '/manage/repos/:repoId', exact: true, component: RepoDetail },
+  { path: '/manage/addrepo', exact: true, component: RepoAdd },
   { path: '/manage/users', exact: true, component: Users },
   { path: '/manage/roles', exact: true, component: Roles },
   { path: '/manage/categories', exact: true, component: Categories },

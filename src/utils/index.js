@@ -16,3 +16,10 @@ export function getCookie(name) {
   let value = re.exec(document.cookie);
   return value !== null ? unescape(value[1]) : null;
 }
+
+export function getPastTime(time) {
+  const now = new Date();
+  const date = new Date(time);
+  const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
+  return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
+}

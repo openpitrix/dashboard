@@ -22,7 +22,7 @@ export default class LiApps extends PureComponent {
               description={data.description}
             />
             <span className={styles.total}>
-              <span className={styles.number}>{data.total}</span> Clusters
+              <span className={styles.number}>{data.total || 0}</span> Clusters
             </span>
           </li>
         ))}

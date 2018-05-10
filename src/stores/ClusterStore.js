@@ -3,7 +3,7 @@ import Store from './Store';
 import { get } from 'lodash';
 
 export default class ClusterStore extends Store {
-  @observable clusters = {};
+  @observable clusters = [];
   @observable clusterDetails = {};
   @observable clusterNodes = {};
   @observable isLoading = false;

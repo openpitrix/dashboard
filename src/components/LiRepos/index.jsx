@@ -17,9 +17,9 @@ export default class LiRepos extends PureComponent {
         {reposData.map((data, index) => (
           <li key={index}>
             <img className={styles.icon} src={data.icon || 'http://via.placeholder.com/24x24'} />
-            <span className={styles.name}>{data.name}</span>
+            <span className={styles.name}>{data.provider}</span>
             <span className={styles.total}>
-              <span className={styles.number}>{data.total}</span>
+              <span className={styles.number}>{data.total || 0}</span>
               Clusters
             </span>
           </li>

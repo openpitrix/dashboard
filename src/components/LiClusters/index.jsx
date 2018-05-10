@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import { getPastTime } from 'utils';
 import styles from './index.scss';
 
 export default class LiClusters extends PureComponent {
@@ -14,13 +15,15 @@ export default class LiClusters extends PureComponent {
       <ul className={styles.liApps}>
         {clustersData.map((data, index) => (
           <li key={index}>
-            <img className={styles.icon} src={data.icon || 'http://via.placeholder.com/16x1'} />
+            <img className={styles.icon} src={data.icon || 'http://via.placeholder.com/16x16'} />
             <div className={styles.word}>
               <div className={styles.name}>{data.name}</div>
               <div className={styles.detail}>
-                <span className={styles.description}>{data.description}</span>
-                <span className={styles.nodes}>{data.nodes} Nodes</span>
-                <span className={styles.time}>{data.time}</span>
+                <span className={styles.description} title={data.description}>
+                  {data.description}
+                </span>
+                <span className={styles.nodes}>{data.node_count} Nodes</span>
+                <span className={styles.time}>{getPastTime(data.last_modified)}</span>
               </div>
             </div>
           </li>

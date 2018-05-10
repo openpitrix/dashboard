@@ -13,22 +13,39 @@ import LiRepos from 'components/LiRepos';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  clusterStore: rootStore.clusterStore,
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class Overview extends Component {
-  static async onEnter({ appStore }) {
+  static async onEnter({ appStore, clusterStore, repoStore }) {
     await appStore.fetchAll();
+    await clusterStore.fetchClusters();
+    await repoStore.fetchRepos();
   }
 
   render() {
-    const { appStore } = this.props;
     const { userImg, name, role, loginInfo } = {
       userImg: 'http://via.placeholder.com/36x36',
       name: 'Wayne',
       role: 'Administrator',
       loginInfo: 'Dec 29 at 10:17am'
     };
+    const { appStore, clusterStore, repoStore } = this.props;
+    const appsArray = appStore.apps.slice(0, 5);
+    const clustersArray = clusterStore.clusters.slice(0, 5);
+    const reposArray = repoStore.repos;
+    let reposArray1 = [],
+      reposArray2 = [];
+    for (let i = 0; i < reposArray.length; i++) {
+      if (reposArray[i].visibility === 'Public') {
+        reposArray1.push(reposArray[i]);
+      } else {
+        reposArray2.push(reposArray[i]);
+      }
+    }
+
     const totalArray = [
       {
         icon: 'http://via.placeholder.com/24x24',
@@ -49,108 +66,6 @@ export default class Overview extends Component {
         icon: 'http://via.placeholder.com/24x24',
         name: 'Users',
         total: 84
-      }
-    ];
-    const reposArray = [
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'QingCloud Private Repo',
-        total: 40
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Kubernetes Public Repo',
-        total: 4
-      }
-    ];
-    const reposArray2 = [
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Kube Stack Pek3a',
-        total: 10
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Private Repo Beijing',
-        total: 3
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Private Repo Beijing',
-        total: 0
-      }
-    ];
-    const appsArray = [
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Kube Stack Pek3a',
-        description:
-          'MariaDB, the open source drop-in replacement for MySQL now available on Heroku',
-        total: 435
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Redis Cloud',
-        description:
-          'MariaDB, the open source drop-in replacement for MySQL now available on Heroku',
-        total: 321
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Storj',
-        description:
-          'MariaDB, the open source drop-in replacement for MySQL now available on Heroku',
-        total: 233
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Heroku Redis',
-        description:
-          'MariaDB, the open source drop-in replacement for MySQL now available on Heroku',
-        total: 99
-      },
-      {
-        icon: 'http://via.placeholder.com/24x24',
-        name: 'Redis To Go',
-        description: '#1 Redis Provider with over 50,000 Redis instances.',
-        total: 88
-      }
-    ];
-    const clustersArray = [
-      {
-        icon: 'http://via.placeholder.com/16x16',
-        name: 'Heroku Postgres',
-        description: 'qingcloud alpha zw1',
-        nodes: 2,
-        time: '2 hours ago'
-      },
-      {
-        icon: 'http://via.placeholder.com/16x16',
-        name: 'Redis To Go',
-        description: 'qingcloud alpha zw1',
-        nodes: 6,
-        time: '6 hours ago'
-      },
-      {
-        icon: 'http://via.placeholder.com/16x16',
-        name: 'ObjectRocket for MongoDB',
-        description: 'qingcloud alpha zw1',
-        nodes: 5,
-        time: '10 hours ago'
-      },
-      {
-        icon: 'http://via.placeholder.com/16x16',
-        name: 'Heroku Postgres',
-        description: 'qingcloud alpha zw1',
-        nodes: 3,
-        time: '18 hours ago'
-      },
-      {
-        icon: 'http://via.placeholder.com/16x16',
-        name: 'CloudKarafka',
-        description: 'qingcloud alpha zw1',
-        nodes: 2,
-        time: '1 days ago'
       }
     ];
 
@@ -175,9 +90,9 @@ export default class Overview extends Component {
                 </Link>
               </div>
               <div className={styles.type}>Public</div>
-              <LiRepos reposData={reposArray} reposType={'Public'} />
+              <LiRepos reposData={reposArray1.slice(0, 2)} reposType={'Public'} />
               <div className={styles.type}>Private</div>
-              <LiRepos reposData={reposArray2} reposType={'Private'} />
+              <LiRepos reposData={reposArray2.splice(0, 3)} reposType={'Private'} />
             </div>
             <div className={styles.cardList}>
               <div className={styles.title}>

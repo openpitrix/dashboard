@@ -40,9 +40,11 @@ export default class Repos extends Component {
           <div className={styles.pageTitle}>Repos</div>
           <div className={styles.toolbar}>
             <Input.Search className={styles.search} placeholder="Search Repo Name" />
-            <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-              Create
-            </Button>
+            <Link to="/manage/addrepo">
+              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+                Create
+              </Button>
+            </Link>
             <Button className={styles.buttonRight}>
               <Icon name="refresh" />
             </Button>
