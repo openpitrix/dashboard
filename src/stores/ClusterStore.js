@@ -1,16 +1,15 @@
-import { observable, action, extendObservable } from 'mobx';
+import { observable, action } from 'mobx';
 import request from 'lib/request';
+import Store from './Store';
 
-export default class ClusterStore {
+export default class ClusterStore extends Store {
   @observable clusters = {};
   @observable clusterDetails = {};
   @observable clusterNodes = {};
   @observable isLoading = false;
 
   constructor(initialState) {
-    if (initialState) {
-      extendObservable(this, initialState.clusterStore);
-    }
+    super(initialState, 'clusterStore');
   }
 
   @action
