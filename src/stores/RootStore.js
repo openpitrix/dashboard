@@ -1,9 +1,9 @@
-import { action, extendObservable } from 'mobx';
+import { action } from 'mobx';
 
-import request from 'lib/request';
 import Store from './Store';
 import AppStore from './AppStore';
 import ClusterStore from './ClusterStore';
+import LoginStore from './LoginStore';
 
 export default class RootStore extends Store {
   fixNav = false;
@@ -13,15 +13,11 @@ export default class RootStore extends Store {
 
     this.appStore = new AppStore(initialState);
     this.clusterStore = new ClusterStore(initialState);
+    this.loginStore = new LoginStore();
   }
 
   @action
   setNavFix(fixNav) {
     this.fixNav = fixNav;
-  }
-
-  @action
-  async login(params) {
-    await request.post('login', params);
   }
 }

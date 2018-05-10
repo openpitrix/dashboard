@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
+import Button from 'components/Base/Button';
+import { getCookie } from 'src/utils';
 
 import Logo from '../Logo';
 import Input from '../Base/Input';
@@ -23,6 +25,8 @@ export default class Header extends Component {
     const isDark = !isHome || fixNav;
     const logoUrl = isDark ? '/assets/logo2.svg' : '/assets/logo.svg';
 
+    const loginUser = getCookie('user');
+
     return (
       <div className={classnames('header', styles.header, { [styles.darkHeader]: !isDark })}>
         <div className={styles.wrapper}>
@@ -34,7 +38,7 @@ export default class Header extends Component {
             <NavLink to="/apps">Catalog</NavLink>
             <NavLink to="/manage/apps">Deployment</NavLink>
             <NavLink to="/develop">Development</NavLink>
-            <NavLink to="/login">Sign In</NavLink>
+            {loginUser ? <Button>{loginUser}</Button> : <NavLink to="/login">Sign In</NavLink>}
           </div>
         </div>
       </div>
