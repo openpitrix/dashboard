@@ -1,5 +1,5 @@
 import React from 'react';
-import { findKey, isArray } from 'lodash';
+import { findKey, isArray, pick } from 'lodash';
 
 const compStoreMap = {
   appStore: ['Home', 'AppDeploy', 'AppDetail', 'InstalledApps'],
@@ -24,9 +24,12 @@ function getStoreName(comp) {
 // preload data, used on server & client
 export default function preload(methods) {
   return function(comp) {
-    comp.onEnter = async (rootStore, params) => {
+    comp.onEnter = async (rootStore, params, flag) => {
       let store = rootStore[getStoreName(comp)];
 
+      if (flag === 'from_server') {
+        rootStore.setConfig(pick(rootStore, ['config', 'serverUrl', 'apiVersion']));
+      }
       if (!methods || typeof methods === 'string') {
         methods = methods || 'fetchAll';
         await store[methods](params);

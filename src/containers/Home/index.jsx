@@ -17,7 +17,7 @@ import preload from 'hoc/preload';
 export default class Home extends Component {
   componentDidMount() {
     window.onscroll = this.handleScoll;
-    this.setState({ threshold: this.getThreshold() });
+    this.threshold = this.getThreshold();
   }
 
   getThreshold() {
@@ -32,18 +32,17 @@ export default class Home extends Component {
   }
 
   handleScoll = () => {
-    const { threshold } = this.state;
     const { rootStore } = this.props;
 
-    if (threshold <= 0) {
+    if (this.threshold <= 0) {
       return;
     }
 
     let fixNav = rootStore.fixNav;
-    if (!fixNav && getScrollTop() > threshold) {
+    if (!fixNav && getScrollTop() > this.threshold) {
       fixNav = true;
       rootStore.setNavFix(fixNav);
-    } else if (fixNav && getScrollTop() <= threshold) {
+    } else if (fixNav && getScrollTop() <= this.threshold) {
       fixNav = false;
       rootStore.setNavFix(fixNav);
     }
@@ -57,7 +56,7 @@ export default class Home extends Component {
         <Banner />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={config.navs} />
-          <AppList className={styles.apps} apps={appStore.apps} />
+          <AppList className={styles.apps} apps={appStore.apps} fold={fixNav} />
         </div>
       </div>
     );
