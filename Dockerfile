@@ -1,13 +1,18 @@
-FROM node:carbon
+FROM mhart/alpine-node:8
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
-COPY docker/source.list /etc/apt/sources.list
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends vim
+# alpine-node doesn't have apt, bash
+#COPY docker/source.list /etc/apt/sources.list
+#RUN apt-get update \
+#    && apt-get install -y --no-install-recommends vim
 
-RUN useradd --create-home --user-group --shell /bin/bash web
+RUN addgroup web && \
+    adduser -D -G web -s /bin/sh web
 
 ENV HOME=/home/web
+
+# install node-sass binding from local, in case of download failed
+ENV SASS_BINARY_PATH=/tmp/linux_musl-x64-57_binding.node
 
 RUN mkdir -p $HOME/app
 
@@ -20,7 +25,7 @@ ADD docker/yarn.tar.gz $HOME
 ENV PATH "$PATH:$HOME/yarn-v1.5.1/bin"
 
 # install deps firstly will re-use cache layer of docker
-COPY package.json yarn.lock .npmrc /tmp/
+COPY package.json yarn.lock .npmrc docker/linux_musl-x64-57_binding.node /tmp/
 
 RUN cd /tmp && yarn install --verbose \
     && npm rebuild node-sass \
