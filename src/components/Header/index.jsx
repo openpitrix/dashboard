@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
+import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
+import { getCookie } from 'src/utils';
 
 import Logo from '../Logo';
 import Input from '../Base/Input';
@@ -12,8 +14,36 @@ import styles from './index.scss';
 @observer
 export default class Header extends Component {
   state = {
-    isHome: PropTypes.bool
+    isHome: PropTypes.bool,
+    dropdownOpen: false
   };
+
+  toggleDropdown = () => {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  };
+
+  renderLoginButton() {
+    const cookieUser = getCookie('user');
+
+    if (!cookieUser) {
+      return <NavLink to="/login">Sign In</NavLink>;
+    }
+
+    return (
+      <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
+        <DropdownToggle caret className={styles.toggleBtn}>
+          {cookieUser}
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem style={{ padding: 0 }}>
+            <a href="/logout">Logout</a>
+          </DropdownItem>
+        </DropdownMenu>
+      </ButtonDropdown>
+    );
+  }
 
   render() {
     const {
@@ -34,7 +64,7 @@ export default class Header extends Component {
             <NavLink to="/apps">Catalog</NavLink>
             <NavLink to="/manage/apps">Deployment</NavLink>
             <NavLink to="/develop">Development</NavLink>
-            <NavLink to="/login">Sign In</NavLink>
+            {this.renderLoginButton()}
           </div>
         </div>
       </div>

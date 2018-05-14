@@ -1,0 +1,47 @@
+//@import "~scss/variables";
+
+$bg-info: lighten(blue, 30%);
+$bg-success: green;
+$bg-warning: yellow;
+$bg-error: red;
+
+.notification {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width:220px;
+  min-height:60px;
+  padding: 3px 10px;
+  font-size:14px;
+  line-height:20px;
+  color: #fff;
+  box-sizing: border-box;
+  border-radius: 6px;
+  //opacity: .8;
+  animation-duration: 2s;
+  animation-name: slidein;
+
+  .title {
+    display: inline-block;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .message {
+    text-indent:1em;
+    padding-bottom:10px;
+  }
+
+  &-info {
+    background: $bg-info;
+  }
+  &-success {
+    background: $bg-success;
+  }
+  &-warning {
+    background: $bg-warning;
+  }
+  &-error {
+    background: $bg-error;
+  }
+}
