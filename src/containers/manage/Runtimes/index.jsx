@@ -23,8 +23,16 @@ import styles from './index.scss';
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore }) {
-    await runtimeStore.fetchRuntimes();
+    await runtimeStore.fetchRuntimes({ page: 1 });
   }
+
+  onSearch = async name => {
+    await this.props.runtimeStore.fetchQueryRuntimes(name);
+  };
+
+  onRefresh = async () => {
+    await this.onSearch();
+  };
 
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
@@ -35,6 +43,7 @@ export default class Runtimes extends Component {
 
   render() {
     const { runtimeStore } = this.props;
+    const data = toJS(runtimeStore.runtimes);
     const { image, name, total1, centerName, total2, progress, total3, histogram } = {
       image: 'http://via.placeholder.com/30x24',
       name: 'Runtimes',
@@ -45,7 +54,6 @@ export default class Runtimes extends Component {
       total3: 40,
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = toJS(runtimeStore.runtimes) || [];
     const columns = [
       {
         title: 'Runtime Name',
@@ -119,18 +127,22 @@ export default class Runtimes extends Component {
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
-              <Input.Search className={styles.search} placeholder="Search Runtimes Name" />
+              <Input.Search
+                className={styles.search}
+                placeholder="Search Runtimes Name"
+                onSearch={this.onSearch}
+              />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
-              <Button className={styles.buttonRight}>
+              <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          <Pagination />
+          <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
         </div>
       </div>
     );

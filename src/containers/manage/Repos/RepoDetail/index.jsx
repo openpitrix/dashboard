@@ -29,13 +29,11 @@ export default class RepoDetail extends Component {
     await appStore.fetchAll();
     await runtimeStore.fetchRuntimes();
   }
+  componentDidMount() {}
   constructor(props) {
     super(props);
     this.changeCurTag = this.changeCurTag.bind(this);
     this.state = { curTag: 'Apps' };
-    this.repoDetail = toJS(this.props.repoStore.repoDetail) || {};
-    this.appsData = toJS(this.props.appStore.apps) || [];
-    this.runtimesData = toJS(this.props.runtimeStore.runtimes) || [];
   }
   changeCurTag = name => {
     this.setState({
@@ -44,9 +42,10 @@ export default class RepoDetail extends Component {
   };
 
   render() {
-    const repoDetail = this.repoDetail;
-    const appsData = this.appsData;
-    const runtimesData = this.runtimesData;
+    const { repoStore, appStore, runtimeStore } = this.props;
+    const repoDetail = toJS(repoStore.repoDetail);
+    const appsData = toJS(appStore.apps);
+    const runtimesData = toJS(runtimeStore.runtimes);
     const appsColumns = [
       {
         title: 'App Name',

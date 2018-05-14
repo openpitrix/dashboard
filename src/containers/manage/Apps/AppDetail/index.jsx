@@ -24,12 +24,12 @@ import preload from 'hoc/preload';
   clusterStore: rootStore.clusterStore
 }))
 @observer
-@preload(['fetchApp', 'fetchAppClusters'])
+@preload('fetchApp')
 export default class AppDetail extends Component {
   render() {
     const { appStore } = this.props;
     const appDetail = appStore.app;
-    const data = toJS(appStore.appClusters) || [];
+    const data = [];
     const columns = [
       {
         title: 'Cluster Name',

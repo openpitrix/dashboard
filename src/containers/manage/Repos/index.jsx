@@ -22,6 +22,14 @@ export default class Repos extends Component {
     await repoStore.fetchRepos();
   }
 
+  onSearch = async name => {
+    await this.props.repoStore.fetchQueryRepos(name);
+  };
+
+  onRefresh = async () => {
+    await this.onSearch();
+  };
+
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
       <Link to={`/manage/Repos/${id}`}>View repo detail</Link>
@@ -31,7 +39,7 @@ export default class Repos extends Component {
 
   render() {
     const { repoStore } = this.props;
-    const repoList = toJS(repoStore.repos) || [];
+    const repoList = toJS(repoStore.repos);
 
     return (
       <div className={styles.repos}>
@@ -39,13 +47,17 @@ export default class Repos extends Component {
         <div className={styles.container}>
           <div className={styles.pageTitle}>Repos</div>
           <div className={styles.toolbar}>
-            <Input.Search className={styles.search} placeholder="Search Repo Name" />
+            <Input.Search
+              className={styles.search}
+              placeholder="Search Repo Name"
+              onSearch={this.onSearch}
+            />
             <Link to="/manage/addrepo">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
             </Link>
-            <Button className={styles.buttonRight}>
+            <Button className={styles.buttonRight} onClick={this.onRefresh}>
               <Icon name="refresh" />
             </Button>
           </div>

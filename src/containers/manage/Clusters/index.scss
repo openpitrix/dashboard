@@ -51,9 +51,18 @@
       color: $placeholder-color;
     }
   }
+  .buttonRight{
+    float: right;
+  }
+  .ml12{
+    margin-left: 12px;
+  }
 }
 .tableOuter{
   margin: 0 12px;
+  .handlePop{
+    margin-left: 10px;
+  }
 }
 .idLink {
   color: $id-color;

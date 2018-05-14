@@ -13,7 +13,7 @@ export default class RoleStoreStore extends Store {
   @action
   async fetchRoles() {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/roles');
+    const result = await this.request.get('roles');
     this.roles = result.role_set;
     this.isLoading = false;
   }
@@ -21,7 +21,7 @@ export default class RoleStoreStore extends Store {
   @action
   async fetchRoleDetail(repoId) {
     this.isLoading = true;
-    const result = await this.request.get(`api/v1/roles/${repoId}`);
+    const result = await this.request.get(`roles/${repoId}`);
     this.roleDetail = result;
     this.isLoading = false;
   }

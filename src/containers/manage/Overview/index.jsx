@@ -20,8 +20,8 @@ import styles from './index.scss';
 @observer
 export default class Overview extends Component {
   static async onEnter({ appStore, clusterStore, repoStore }) {
-    await appStore.fetchAll();
-    await clusterStore.fetchClusters();
+    await appStore.fetchAll({ page: 1 });
+    await clusterStore.fetchClusters({ page: 1 });
     await repoStore.fetchRepos();
   }
 

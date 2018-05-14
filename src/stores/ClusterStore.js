@@ -4,7 +4,8 @@ import { get } from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
-  @observable clusterDetails = {};
+  @observable totalCount = 0;
+  @observable clusterDetail = {};
   @observable clusterNodes = {};
   @observable isLoading = false;
 
@@ -13,24 +14,36 @@ export default class ClusterStore extends Store {
   }
 
   @action
-  async fetchClusters() {
+  async fetchClusters({ page }) {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/clusters');
+    page = page ? page : 1;
+    const result = await this.request.get('clusters', { _page: page });
     this.clusters = get(result, 'cluster_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
 
   @action
-  async fetchClusterDetails({ clusterId }) {
+  async fetchQueryClusters(query) {
     this.isLoading = true;
-    this.clusterDetails = await this.request.get(`api/v1/clusters/${clusterId}`);
+    const result = await this.request.get(`clusters`, { q: query });
+    this.clusters = get(result, 'cluster_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchClusterDetail(clusterId) {
+    this.isLoading = true;
+    const result = await this.request.get(`clusters`, { cluster_id: clusterId });
+    this.clusterDetail = get(result, 'cluster_set[0]', {});
     this.isLoading = false;
   }
 
   @action
   async fetchClusterNodes({ clusterId }) {
     this.isLoading = true;
-    this.clusterNodes = await this.request.get(`api/v1/cluster_nodes/${clusterId}`);
+    this.clusterNodes = await this.request.get(`cluster_nodes/${clusterId}`);
     this.isLoading = false;
   }
 }

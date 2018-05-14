@@ -23,7 +23,7 @@ export default class LiClusters extends PureComponent {
                   {data.description}
                 </span>
                 <span className={styles.nodes}>{data.node_count} Nodes</span>
-                <span className={styles.time}>{getPastTime(data.last_modified)}</span>
+                <span className={styles.time}>{getPastTime(data.status_time)}</span>
               </div>
             </div>
           </li>

@@ -42,7 +42,7 @@
       line-height: 17px;
       font-size: 14px;
       color: $title-color;
-      a:active{
+      a,a:active{
         color: $title-color;
       }
     }

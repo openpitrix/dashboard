@@ -13,9 +13,8 @@ import Select from 'components/Base/Select';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
-
-import styles from './index.scss';
 import TdName from 'components/TdName';
+import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore

@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
+  @observable totalCount = 0;
   @observable app = {};
   @observable appClusters = [];
   @observable installedApps = [];
@@ -14,10 +15,21 @@ export default class AppStore extends Store {
   }
 
   @action
-  async fetchAll() {
+  async fetchAll({ page }) {
     this.isLoading = true;
-    const result = await this.request.get('apps');
+    page = page ? page : 1;
+    const result = await this.request.get('apps', { _page: page });
     this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchQueryApps(query) {
+    this.isLoading = true;
+    const result = await this.request.get(`apps`, { q: query });
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
 

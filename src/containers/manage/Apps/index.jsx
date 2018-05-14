@@ -24,6 +24,14 @@ import preload from 'hoc/preload';
 @observer
 @preload('fetchAll')
 export default class Apps extends Component {
+  onSearch = async name => {
+    await this.props.appStore.fetchQueryApps(name);
+  };
+
+  onRefresh = async () => {
+    await this.onSearch();
+  };
+
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
       <Link to={`/manage/apps/${id}`}>View app detail</Link>
@@ -33,6 +41,8 @@ export default class Apps extends Component {
 
   render() {
     const { appStore } = this.props;
+    const appsData = toJS(appStore.apps);
+    const totalCount = toJS(appStore.totalCount);
     const { image, name, total1, centerName, total2, progress, total3, histogram } = {
       image: 'http://via.placeholder.com/24x24',
       name: 'Apps',
@@ -43,7 +53,6 @@ export default class Apps extends Component {
       total3: 40,
       histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = toJS(appStore.apps) || [];
     const columns = [
       {
         title: 'App Name',
@@ -119,18 +128,22 @@ export default class Apps extends Component {
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
-              <Input.Search className={styles.search} placeholder="Search App Name" />
+              <Input.Search
+                className={styles.search}
+                placeholder="Search App Name"
+                onSearch={this.onSearch}
+              />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
-              <Button className={styles.buttonRight}>
+              <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
           </div>
-          <Pagination />
+          <Pagination onChange={appStore.fetchAll} total={totalCount} />
         </div>
       </div>
     );

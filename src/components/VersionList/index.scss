@@ -10,8 +10,7 @@
     line-height: 36px;
     font-size: 16px;
     font-weight: bold;
-    text-align: left;
-    color: #300e56;
+    color: $title-color;
     .all{
       float: right;
       font-size: 14px;
@@ -20,9 +19,10 @@
   }
   .list{
     li{
-      height: 36px;
+      box-sizing: border-box;
+      height: 64px;
       padding: 14px 8px;
-      color: #1c062f;
+      color: $purple-word;
       border-bottom: 1px solid #e7e7e7;
       font-size: 14px;
     }

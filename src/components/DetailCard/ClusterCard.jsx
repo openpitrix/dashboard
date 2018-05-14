@@ -6,7 +6,7 @@ import Status from 'components/Status';
 import { getParseDate } from 'utils';
 import styles from './index.scss';
 
-export default class DetailCard extends PureComponent {
+export default class ClusterCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object
   };
@@ -17,7 +17,7 @@ export default class DetailCard extends PureComponent {
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
           <div className={styles.name}>{detail.name}</div>
-          <div className={styles.caId}>id:{detail.categorie_id}</div>
+          <div className={styles.caId}>id:{detail.cluster_id}</div>
         </div>
         <ul className={styles.detail}>
           <li>
@@ -25,16 +25,24 @@ export default class DetailCard extends PureComponent {
             <Status name={detail.status} type={detail.status} />
           </li>
           <li>
-            <span className={styles.name}>Creater</span>
+            <span className={styles.name}>Runtime</span>
+            {detail.runtime_id}
+          </li>
+          <li>
+            <span className={styles.name}>App</span>
+            {detail.app_id}
+          </li>
+          <li>
+            <span className={styles.name}>User</span>
             {detail.owner}
           </li>
           <li>
-            <span className={styles.name}>App Count</span>
+            <span className={styles.name}>Node Count</span>
             {detail.count}
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.update_time)}
+            {getParseDate(detail.upgrade_time)}
           </li>
         </ul>
       </div>

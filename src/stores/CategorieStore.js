@@ -3,7 +3,7 @@ import Store from './Store';
 import { get } from 'lodash';
 
 export default class CategorieStore extends Store {
-  @observable categories = {};
+  @observable categories = [];
   @observable categorie = {};
   @observable isLoading = false;
 
@@ -14,7 +14,7 @@ export default class CategorieStore extends Store {
   @action
   async fetchCategories() {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/categories');
+    const result = await this.request.get('categories');
     this.categories = get(result, 'categorie_set', []);
     this.isLoading = false;
   }
@@ -22,8 +22,8 @@ export default class CategorieStore extends Store {
   @action
   async fetchCategorieDetail(categorieId) {
     this.isLoading = true;
-    const result = await this.request.get(`api/v1/categories`, { categorie_id: categorieId });
-    this.categorie = result.categorie_set.length ? result.categorie_set[0] : {};
+    const result = await this.request.get(`categories`, { categorie_id: categorieId });
+    this.categorie = get(result, 'categorie_set[0]', {});
     this.isLoading = false;
   }
 }

@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 export default class RuntimeStoreStore extends Store {
   @observable runtimes = [];
+  @observable totalCount = 0;
   @observable runtimeDetail = {};
   @observable isLoading = false;
 
@@ -12,18 +13,29 @@ export default class RuntimeStoreStore extends Store {
   }
 
   @action
-  async fetchRuntimes() {
+  async fetchRuntimes({ page }) {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/runtimes');
+    page = page ? page : 1;
+    const result = await this.request.get('runtimes', { _page: page });
     this.runtimes = get(result, 'runtime_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchQueryRuntimes(query) {
+    this.isLoading = true;
+    const result = await this.request.get('runtimes', { q: query });
+    this.runtimes = get(result, 'runtime_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
 
   @action
   async fetchRuntimeDetail(runtimeId) {
     this.isLoading = true;
-    const result = await this.request.get(`api/v1/runtimes`, { runtime_id: runtimeId });
-    this.runtimeDetail = result.runtime_set.length ? result.runtime_set[0] : {};
+    const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
+    this.runtimeDetail = get(result, 'result.runtime_set[0]', {});
     this.isLoading = false;
   }
 }

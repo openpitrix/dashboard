@@ -14,7 +14,15 @@ export default class RepoStore extends Store {
   @action
   async fetchRepos() {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/repos');
+    const result = await this.request.get('repos');
+    this.repos = get(result, 'repo_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchQueryRepos(query) {
+    this.isLoading = true;
+    const result = await this.request.get('repos', { q: query });
     this.repos = get(result, 'repo_set', []);
     this.isLoading = false;
   }
@@ -22,8 +30,8 @@ export default class RepoStore extends Store {
   @action
   async fetchRepoDetail(repoId) {
     this.isLoading = true;
-    const result = await this.request.get(`api/v1/repos`, { repo_id: repoId });
-    this.repoDetail = result.repo_set.length ? result.repo_set[0] : {};
+    const result = await this.request.get(`repos`, { repo_id: repoId });
+    this.repoDetail = get(result, 'repo_set[0]', {});
     this.isLoading = false;
   }
 }
