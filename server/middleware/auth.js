@@ -1,5 +1,5 @@
 module.exports = async (ctx, next) => {
-  if (ctx.session.isNew) {
+  if (!ctx.cookies.get('user')) {
     // not login
     ctx.redirect('/login');
   }
