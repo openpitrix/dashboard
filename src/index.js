@@ -1,5 +1,5 @@
 import 'isomorphic-fetch';
-import 'lib/logger';
+// import 'lib/logger';
 import 'lib/polyfills';
 
 import React from 'react';
