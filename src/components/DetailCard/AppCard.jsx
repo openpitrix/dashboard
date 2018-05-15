@@ -4,22 +4,19 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Status from 'components/Status';
+import { getParseDate } from 'utils';
 import styles from './index.scss';
 
 export default class AppCard extends PureComponent {
   static propTypes = {
-    appDetail: PropTypes.object
+    appDetail: PropTypes.object.isRequired
   };
 
   render() {
     const { appDetail } = this.props;
     return (
       <div className={styles.detailCard}>
-        <img
-          src={appDetail.icon || 'http://via.placeholder.com/24x24'}
-          className={styles.icon}
-          alt="Icon"
-        />
+        <img src={appDetail.icon} className={styles.icon} alt="Icon" />
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
           <div className={styles.id}>id:{appDetail.app_id}</div>
@@ -50,7 +47,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {appDetail.update_time}
+            {getParseDate(appDetail.update_time)}
           </li>
         </ul>
       </div>

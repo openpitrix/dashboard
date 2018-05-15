@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import AppImgs from '../Rectangle/AppImgs';
+import AppImages from '../Rectangle/AppImages';
 import TagShow from '../TagShow';
 import styles from './index.scss';
 
@@ -10,12 +10,12 @@ export default class RepoCard extends PureComponent {
     name: PropTypes.string,
     description: PropTypes.string,
     provider: PropTypes.string,
-    imgArray: PropTypes.array,
+    images: PropTypes.array,
     tags: PropTypes.array
   };
 
   render() {
-    const { name, description, provider, imgArray, tags } = this.props;
+    const { name, description, provider, images, tags } = this.props;
     return (
       <div className={styles.repoCard}>
         <div className={styles.inner}>
@@ -28,7 +28,7 @@ export default class RepoCard extends PureComponent {
             <div className={styles.providerImg}>{provider}</div>
           </div>
           <div className={styles.column}>
-            <AppImgs imgArray={imgArray} />
+            <AppImages images={images} />
           </div>
         </div>
         <TagShow tags={tags} tagStyle="purple2Style" />

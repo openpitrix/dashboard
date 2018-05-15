@@ -46,10 +46,7 @@ export default class InstalledApps extends Component {
               {appStore.installedApps &&
                 appStore.installedApps.map(item => (
                   <li key={item.id} className={styles.listItem}>
-                    <img
-                      className={styles.icon}
-                      src={item.icon || 'http://via.placeholder.com/96x96'}
-                    />
+                    <img className={styles.icon} src={item.icon} />
                     <div className={styles.name}>
                       <Link to={`/app/${item.id}`}>{item.name}</Link>
                     </div>

@@ -44,15 +44,15 @@ export default class Runtimes extends Component {
   render() {
     const { runtimeStore } = this.props;
     const data = toJS(runtimeStore.runtimes);
-    const { image, name, total1, centerName, total2, progress, total3, histogram } = {
+    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
       image: 'http://via.placeholder.com/30x24',
       name: 'Runtimes',
-      total1: 192,
+      total: 198,
       centerName: 'Provider',
-      total2: 5,
+      progressTotal: 5,
       progress: [10, 20, 30, 40],
-      total3: 40,
-      histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      lastedTotal: 66,
+      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
     const columns = [
       {
@@ -111,19 +111,16 @@ export default class Runtimes extends Component {
     return (
       <div className={styles.apps}>
         <ManageTabs />
-        <div className={styles.stat}>
-          <Statistics
-            className={styles.stat}
-            image={image}
-            name={name}
-            total1={total1}
-            centerName={centerName}
-            total2={total2}
-            progress={progress}
-            total3={total3}
-            histogram={histogram}
-          />
-        </div>
+        <Statistics
+          image={image}
+          name={name}
+          total={total}
+          centerName={centerName}
+          progressTotal={progressTotal}
+          progress={progress}
+          lastedTotal={lastedTotal}
+          histograms={histograms}
+        />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
@@ -142,7 +139,9 @@ export default class Runtimes extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
+          {runtimeStore.totalCount > 0 && (
+            <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
+          )}
         </div>
       </div>
     );

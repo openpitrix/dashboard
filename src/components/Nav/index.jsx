@@ -9,9 +9,21 @@ export default class Nav extends PureComponent {
     className: PropTypes.string
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      curValue: 'top'
+    };
+  }
+  changeValue = value => {
+    console.log(value);
+    this.setState({
+      curValue: value
+    });
+  };
+
   render() {
     const { className, navs } = this.props;
-    let curValue = navs[0] && navs[0].value[0] && navs[0].value[0].value;
     return (
       <div className={classnames(styles.nav, className)}>
         {navs &&
@@ -21,9 +33,18 @@ export default class Nav extends PureComponent {
               {item.value.map(subItem => (
                 <li
                   key={subItem.value}
-                  className={classnames({ [styles.current]: subItem.value === curValue })}
+                  className={classnames({
+                    [styles.current]: subItem.value === this.state.curValue
+                  })}
                 >
-                  <a href={`#${subItem.value}`}>{subItem.title}</a>
+                  <a
+                    href={`#${subItem.value}`}
+                    onClick={() => {
+                      this.changeValue(subItem.value);
+                    }}
+                  >
+                    {subItem.title}
+                  </a>
                 </li>
               ))}
             </ul>

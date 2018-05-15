@@ -7,13 +7,11 @@ import styles from './index.scss';
 
 export default class VersionList extends PureComponent {
   static propTypes = {
-    icon: PropTypes.string,
-    name: PropTypes.string,
-    desc: PropTypes.string,
-    fold: PropTypes.bool
+    versions: PropTypes.array
   };
 
   render() {
+    const { versions } = this.props;
     return (
       <div className={styles.versionList}>
         <div className={styles.title}>
@@ -21,45 +19,21 @@ export default class VersionList extends PureComponent {
           <div className={styles.all}>All Versions →</div>
         </div>
         <ul className={styles.list}>
-          <li>
-            <div className={styles.column}>
-              <div className={styles.version}>4.1</div>
-              <div className={styles.word}>d549a285</div>
-            </div>
-            <div className={styles.column}>
-              <div className={styles.number}>4</div>
-              <div className={styles.word}>Cluster Count</div>
-            </div>
-            <div className={classnames(styles.column, styles.download)}>
-              <Icon name="refresh" />
-            </div>
-          </li>
-          <li>
-            <div className={styles.column}>
-              <div className={styles.version}>4.1</div>
-              <div className={styles.word}>d549a285</div>
-            </div>
-            <div className={styles.column}>
-              <div className={styles.number}>4</div>
-              <div className={styles.word}>d549a285</div>
-            </div>
-            <div className={styles.column}>
-              <Icon name="refresh" />
-            </div>
-          </li>
-          <li>
-            <div className={styles.column}>
-              <div className={styles.version}>4.1</div>
-              <div className={styles.word}>d549a285</div>
-            </div>
-            <div className={styles.column}>
-              <div className={styles.number}>4</div>
-              <div className={styles.word}>d549a285</div>
-            </div>
-            <div className={styles.column}>
-              <Icon name="refresh" />
-            </div>
-          </li>
+          {versions.map(data => (
+            <li key={data.version_id}>
+              <div className={styles.column}>
+                <div className={styles.version}>{data.name}</div>
+                <div className={styles.word}>{data.description}</div>
+              </div>
+              <div className={styles.column}>
+                <div className={styles.number}>{data.sequence}</div>
+                <div className={styles.word}>Cluster Count</div>
+              </div>
+              <div className={classnames(styles.column, styles.download)}>
+                <Icon name="refresh" />
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     );

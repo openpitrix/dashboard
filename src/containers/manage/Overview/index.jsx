@@ -7,22 +7,27 @@ import { getParseDate } from 'utils';
 import ManageTabs from 'components/ManageTabs';
 import UserInfo from 'components/UserInfo';
 import TotalCard from 'components/UserInfo/TotalCard';
-import LiApps from 'components/LiApps';
-import LiClusters from 'components/LiClusters';
-import LiRepos from 'components/LiRepos';
+import AppList from './AppList';
+import ClusterList from './ClusterList';
+import RepoList from './RepoList';
 import styles from './index.scss';
+import CategoryStore from '../../../stores/CategoryStore';
 
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
-  repoStore: rootStore.repoStore
+  repoStore: rootStore.repoStore,
+  categoryStore: rootStore.categoryStore,
+  userStore: rootStore.userStore
 }))
 @observer
 export default class Overview extends Component {
-  static async onEnter({ appStore, clusterStore, repoStore }) {
+  static async onEnter({ appStore, clusterStore, repoStore, categoryStore, userStore }) {
     await appStore.fetchAll({ page: 1 });
     await clusterStore.fetchClusters({ page: 1 });
     await repoStore.fetchRepos();
+    await categoryStore.fetchCategories();
+    await userStore.fetchUsers({ page: 1 });
   }
 
   render() {
@@ -32,17 +37,17 @@ export default class Overview extends Component {
       role: 'Administrator',
       loginInfo: 'Dec 29 at 10:17am'
     };
-    const { appStore, clusterStore, repoStore } = this.props;
-    const appsArray = appStore.apps.slice(0, 5);
-    const clustersArray = clusterStore.clusters.slice(0, 5);
-    const reposArray = repoStore.repos;
-    let reposArray1 = [],
-      reposArray2 = [];
-    for (let i = 0; i < reposArray.length; i++) {
-      if (reposArray[i].visibility === 'Public') {
-        reposArray1.push(reposArray[i]);
+    const { appStore, clusterStore, repoStore, categoryStore, userStore } = this.props;
+    const appList = appStore.apps.slice(0, 5);
+    const clusterList = clusterStore.clusters.slice(0, 5);
+    const repoList = repoStore.repos;
+    let reposPublic = [],
+      reposPrivate = [];
+    for (let i = 0; i < repoList.length; i++) {
+      if (repoList[i].visibility === 'Public') {
+        reposPublic.push(repoList[i]);
       } else {
-        reposArray2.push(reposArray[i]);
+        reposPrivate.push(repoList[i]);
       }
     }
 
@@ -50,22 +55,22 @@ export default class Overview extends Component {
       {
         icon: 'http://via.placeholder.com/24x24',
         name: 'apps',
-        total: 192
+        total: appStore.totalCount
       },
       {
         icon: 'http://via.placeholder.com/24x24',
         name: 'Clusters',
-        total: 342
+        total: clusterStore.totalCount
       },
       {
         icon: 'http://via.placeholder.com/24x24',
         name: 'Categories',
-        total: 7
+        total: categoryStore.categories.length
       },
       {
         icon: 'http://via.placeholder.com/24x24',
         name: 'Users',
-        total: 84
+        total: userStore.totalCount
       }
     ];
 
@@ -90,9 +95,9 @@ export default class Overview extends Component {
                 </Link>
               </div>
               <div className={styles.type}>Public</div>
-              <LiRepos reposData={reposArray1.slice(0, 2)} reposType={'Public'} />
+              <RepoList repos={reposPublic.slice(0, 2)} type={`Public`} />
               <div className={styles.type}>Private</div>
-              <LiRepos reposData={reposArray2.splice(0, 3)} reposType={'Private'} />
+              <RepoList repos={reposPrivate.splice(0, 3)} type={`Private`} />
             </div>
             <div className={styles.cardList}>
               <div className={styles.title}>
@@ -101,7 +106,7 @@ export default class Overview extends Component {
                   more...
                 </Link>
               </div>
-              <LiApps appsData={appsArray} />
+              <AppList apps={appList} />
             </div>
             <div className={styles.cardList}>
               <div className={styles.title}>
@@ -110,7 +115,7 @@ export default class Overview extends Component {
                   more...
                 </Link>
               </div>
-              <LiClusters clustersData={clustersArray} />
+              <ClusterList clusters={clusterList} />
             </div>
           </div>
         </div>

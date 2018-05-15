@@ -4,13 +4,14 @@ import { get } from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
-  @observable totalCount = 0;
   @observable clusterDetail = {};
-  @observable clusterNodes = {};
+  @observable clusterNodes = [];
+  @observable clusterActivities = [];
   @observable isLoading = false;
 
   constructor(initialState) {
     super(initialState, 'clusterStore');
+    this.totalCount = 0;
   }
 
   @action
@@ -43,7 +44,17 @@ export default class ClusterStore extends Store {
   @action
   async fetchClusterNodes({ clusterId }) {
     this.isLoading = true;
-    this.clusterNodes = await this.request.get(`cluster_nodes/${clusterId}`);
+    const result = await this.request.get(`cluster_nodes`, { cluster_id: clusterId });
+    this.clusterNodes = get(result, 'cluster_node_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchClusterActivities({ clusterId }) {
+    this.isLoading = true;
+    //const result = await this.request.get(`cluster_activities`, { cluster_id: clusterId });
+    const result = await this.request.get(`cluster_activities`);
+    this.clusterActivities = get(result, 'cluster_activity_set', []);
     this.isLoading = false;
   }
 }

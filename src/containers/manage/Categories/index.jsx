@@ -10,14 +10,14 @@ import styles from './index.scss';
 import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  categorieStore: rootStore.categorieStore
+  categoryStore: rootStore.categoryStore
 }))
 @observer
 @preload('fetchCategories')
 export default class Categories extends Component {
   render() {
-    const { categorieStore } = this.props;
-    const categorieList = toJS(categorieStore.categories) || [];
+    const { categoryStore } = this.props;
+    const categoryList = toJS(categoryStore.categories) || [];
 
     return (
       <div className={styles.roles}>
@@ -26,18 +26,18 @@ export default class Categories extends Component {
           <div className={styles.pageTitle}>Categories</div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Default ({categorieList.length})</div>
+              <div className={styles.word}>Default ({categoryList.length})</div>
             </div>
           </div>
           <div>
-            {categorieList.map(data => (
+            {categoryList.map(data => (
               <Rectangle
-                key={data.categorie_id}
-                id={data.categorie_id}
+                key={data.category_id}
+                id={data.category_id}
                 title={data.name}
                 idNo={data.idNo}
                 description={data.description}
-                imgArray={data.imgArray}
+                images={data.images}
               />
             ))}
           </div>

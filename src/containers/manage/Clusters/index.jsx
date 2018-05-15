@@ -44,15 +44,15 @@ export default class Clusters extends Component {
   render() {
     const { clusterStore } = this.props;
     const data = toJS(clusterStore.clusters);
-    const { image, name, total1, centerName, total2, progress, total3, histogram } = {
+    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
       image: 'http://via.placeholder.com/24x24',
       name: 'Clusters',
-      total1: 430,
+      total: 430,
       centerName: 'Runtimes',
-      total2: 4,
+      progressTotal: 4,
       progress: [10, 20, 70],
-      total3: 32,
-      histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      lastedTotal: 32,
+      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
     const columns = [
       {
@@ -111,15 +111,14 @@ export default class Clusters extends Component {
       <div className={styles.apps}>
         <ManageTabs />
         <Statistics
-          className={styles.stat}
           image={image}
           name={name}
-          total1={total1}
+          total={total}
           centerName={centerName}
-          total2={total2}
+          progressTotal={progressTotal}
           progress={progress}
-          total3={total3}
-          histogram={histogram}
+          lastedTotal={lastedTotal}
+          histograms={histograms}
         />
         <div className={styles.container}>
           <div className={styles.wrapper}>
@@ -139,7 +138,9 @@ export default class Clusters extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
+          {clusterStore.totalCount > 0 && (
+            <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
+          )}
         </div>
       </div>
     );

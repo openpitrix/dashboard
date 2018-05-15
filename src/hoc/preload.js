@@ -4,7 +4,7 @@ import { findKey, isArray, pick } from 'lodash';
 const compStoreMap = {
   appStore: ['Home', 'Apps', 'AppDeploy', 'AppDetail', 'InstalledApps'],
   clusterStore: ['Clusters', 'ClusterDetail'],
-  categorieStore: ['Categories', 'CategorieDetail'],
+  categoryStore: ['Categories', 'CategoryDetail'],
   repoStore: ['Repos', 'RepoDetail']
 };
 

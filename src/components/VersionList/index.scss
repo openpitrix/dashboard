@@ -4,7 +4,7 @@
   width: 360px;
   padding: 24px 16px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: $background-color-lighter;
   box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   .title{
     line-height: 36px;
@@ -23,7 +23,7 @@
       height: 64px;
       padding: 14px 8px;
       color: $purple-word;
-      border-bottom: 1px solid #e7e7e7;
+      border-bottom: 1px solid $border-lighter;
       font-size: 14px;
     }
     .column{
@@ -37,23 +37,27 @@
         line-height: 20px;
         font-size: 16px;
         font-weight: 500;
-        color: #1c062f;
+        color: $purple-word;
       }
       .number{
         line-height: 16px;
         font-size: 14px;
-        color: #1c062f;
+        color: $purple-word;
       }
       .word{
+        width: 115px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         font-size: 12px;
         line-height: 1.0;
         text-align: left;
-        color: #a6a1ab;
+        color: $grey-word;
       }
       .download .icon{
         font-size: 30px;
         font-weight: normal;
-        color: #1c062f;
+        color: $purple-word;
       }
     }
 

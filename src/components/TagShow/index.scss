@@ -1,6 +1,6 @@
 @import "~scss/variables";
 
-.yellowStyle{
+.tagShow{
   display: inline-block;
   margin-right: 15px;
   .inner{
@@ -28,7 +28,7 @@
     white-space: nowrap;
   }
 }
-.purpleStyle{
+.purple{
   display: block;
   margin-right: 0;
   .inner{
@@ -40,7 +40,7 @@
     background: #e2d0f2;
   }
 }
-.purple2Style{
+.purple2{
   .inner{
     border: 1px solid #e2d0f2;
     color: #7749ac;

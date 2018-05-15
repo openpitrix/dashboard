@@ -4,29 +4,28 @@ import PropTypes from 'prop-types';
 import styles from './index.scss';
 import classnames from 'classnames';
 
-export default class Histogram extends PureComponent {
+export default class Progress extends PureComponent {
   static propTypes = {
     className: PropTypes.string
   };
+  calLeft = (index, progress) => {
+    let sum = 0;
+    for (let i = 0; i < index; i++) {
+      sum += progress[i];
+    }
+    return sum;
+  };
 
   render() {
-    const { progressArray } = this.props;
-
-    function calLeft(index) {
-      let sum = 0;
-      for (let i = 0; i < index; i++) {
-        sum += progressArray[i];
-      }
-      return sum;
-    }
+    const { progress } = this.props;
 
     return (
       <div className={styles.progress}>
-        {progressArray.map((data, index) => (
+        {progress.map((data, index) => (
           <div
             className={styles.inner}
             key={index}
-            style={{ width: data + '%', left: calLeft(index) + '%' }}
+            style={{ width: data + '%', left: this.calLeft(index, progress) + '%' }}
           />
         ))}
       </div>

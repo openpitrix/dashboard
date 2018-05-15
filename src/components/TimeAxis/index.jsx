@@ -6,7 +6,7 @@ import styles from './index.scss';
 
 export default class TimeAxis extends PureComponent {
   static propTypes = {
-    timeList: PropTypes.object
+    timeList: PropTypes.array
   };
 
   render() {

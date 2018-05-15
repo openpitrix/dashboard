@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
@@ -16,20 +15,37 @@ import TagNav from 'components/TagNav';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
+import { getParseDate } from 'utils';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore
 }))
 @observer
-@preload('fetchApp')
 export default class AppDetail extends Component {
+  static async onEnter({ appStore, clusterStore }, { appId }) {
+    await appStore.fetchApp(appId);
+    await appStore.fetchAppVersions(appId);
+    await clusterStore.fetchClusters({ page: 1 });
+  }
+
+  onSearch = async name => {
+    await this.props.clusterStore.fetchQueryClusters(name);
+  };
+
+  onRefresh = async () => {
+    await this.onSearch();
+  };
+
   render() {
-    const { appStore } = this.props;
-    const appDetail = appStore.app;
-    const data = [];
+    const { appStore, clusterStore } = this.props;
+    const appDetail = toJS(appStore.app);
+    const versions = toJS(appStore.versions);
+    const fetchClusters = async current => {
+      await clusterStore.fetchClusters({ page: current });
+    };
+    const data = toJS(clusterStore.clusters);
     const columns = [
       {
         title: 'Cluster Name',
@@ -65,8 +81,8 @@ export default class AppDetail extends Component {
       },
       {
         title: 'Date Created',
-        dataIndex: 'created',
-        key: 'created',
+        dataIndex: 'create_time',
+        key: 'create_time',
         render: getParseDate
       }
     ];
@@ -84,20 +100,26 @@ export default class AppDetail extends Component {
             <div className={styles.mb24}>
               <AppCard appDetail={appDetail} />
             </div>
-            <VersionList />
+            <VersionList versions={versions.slice(0, 4)} />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
               <TagNav tags={tags} curTag={curTag} />
               <div className={styles.toolbar}>
-                <Input.Search className={styles.search} placeholder="Search App Name" />
-                <Button className={styles.buttonRight}>
+                <Input.Search
+                  className={styles.search}
+                  placeholder="Search & Filter"
+                  onSearch={this.onSearch}
+                />
+                <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
               <Table columns={columns} dataSource={data} />
             </div>
-            <Pagination />
+            {clusterStore.totalCount > 0 && (
+              <Pagination onChange={fetchClusters} total={clusterStore.totalCount} />
+            )}
           </div>
         </div>
       </div>

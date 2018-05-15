@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 
 import ManageTabs from 'components/ManageTabs';
-import CategorieCard from 'components/DetailCard/CategorieCard';
+import CategoryCard from 'components/DetailCard/CategoryCard';
 import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
@@ -17,19 +17,19 @@ import TdName from 'components/TdName';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  categorieStore: rootStore.categorieStore,
+  categoryStore: rootStore.categoryStore,
   appStore: rootStore.appStore
 }))
 @observer
-export default class CategorieDetail extends Component {
-  static async onEnter({ categorieStore, appStore }, { categorieId }) {
-    await categorieStore.fetchCategorieDetail(categorieId);
-    await appStore.fetchAll();
+export default class CategoryDetail extends Component {
+  static async onEnter({ categoryStore, appStore }, { categoryId }) {
+    await categoryStore.fetchCategoryDetail(categoryId);
+    await appStore.fetchAll({ page: 1 });
   }
 
   render() {
-    const { categorieStore, appStore } = this.props;
-    const detail = categorieStore.categorie;
+    const { categoryStore, appStore } = this.props;
+    const detail = categoryStore.category;
     const data = toJS(appStore.apps) || [];
     const columns = [
       {
@@ -63,14 +63,14 @@ export default class CategorieDetail extends Component {
     const tags = [{ id: 1, name: 'Apps', link: '#' }];
     const curTag = 'Apps';
     return (
-      <div className={styles.appDetail}>
+      <div className={styles.categoryDetail}>
         <ManageTabs />
         <div className={styles.backTo}>
           <Link to="/manage/categories">← Back to Categories</Link>
         </div>
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <CategorieCard detail={detail} />
+            <CategoryCard detail={detail} />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>

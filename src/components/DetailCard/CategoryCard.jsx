@@ -6,9 +6,9 @@ import Status from 'components/Status';
 import { getParseDate } from 'utils';
 import styles from './index.scss';
 
-export default class CategorieCard extends PureComponent {
+export default class CategoryCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object
+    detail: PropTypes.object.isRequired
   };
 
   render() {
@@ -17,7 +17,7 @@ export default class CategorieCard extends PureComponent {
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
           <div className={styles.name}>{detail.name}</div>
-          <div className={styles.caId}>id:{detail.categorie_id}</div>
+          <div className={styles.caId}>id:{detail.category_id}</div>
         </div>
         <ul className={styles.detail}>
           <li>
@@ -25,7 +25,7 @@ export default class CategorieCard extends PureComponent {
             <Status name={detail.status} type={detail.status} />
           </li>
           <li>
-            <span className={styles.name}>Creater</span>
+            <span className={styles.name}>Creator</span>
             {detail.owner}
           </li>
           <li>

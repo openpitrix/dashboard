@@ -15,7 +15,7 @@ import RepoAdd from 'containers/manage/Repos/RepoAdd';
 import Users from 'containers/manage/Users';
 import Roles from 'containers/manage/Roles';
 import Categories from 'containers/manage/Categories';
-import CategorieDetail from 'containers/manage/Categories/CategorieDetail';
+import CategoryDetail from 'containers/manage/Categories/CategoryDetail';
 
 const routes = [
   { path: '/', exact: true, component: Home },
@@ -37,7 +37,7 @@ const routes = [
   { path: '/manage/users', exact: true, component: Users },
   { path: '/manage/roles', exact: true, component: Roles },
   { path: '/manage/categories', exact: true, component: Categories },
-  { path: '/manage/categories/:categorieId', exact: true, component: CategorieDetail }
+  { path: '/manage/categories/:categoryId', exact: true, component: CategoryDetail }
 ];
 
 export default routes.map(route => {

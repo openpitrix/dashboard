@@ -4,19 +4,19 @@ import classNames from 'classnames';
 
 import styles from './index.scss';
 
-export default class LiRepos extends PureComponent {
+export default class RepoList extends PureComponent {
   static propTypes = {
-    reposData: PropTypes.array,
-    reposType: PropTypes.oneOf(['Public', 'Private'])
+    repos: PropTypes.array,
+    type: PropTypes.oneOf(['Public', 'Private'])
   };
 
   render() {
-    const { reposData, reposType } = this.props;
+    const { repos, type } = this.props;
     return (
-      <ul className={classNames(styles.reposList, { [styles.reposBg]: reposType === 'Public' })}>
-        {reposData.map((data, index) => (
-          <li key={index}>
-            <img className={styles.icon} src={data.icon || 'http://via.placeholder.com/24x24'} />
+      <ul className={classNames(styles.reposList, { [styles.reposBg]: type == 'Public' })}>
+        {repos.map(data => (
+          <li key={data.repo_id}>
+            <img className={styles.icon} src={data.icon} />
             <span className={styles.name}>{data.provider}</span>
             <span className={styles.total}>
               <span className={styles.number}>{data.total || 0}</span>

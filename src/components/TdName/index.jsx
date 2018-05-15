@@ -14,9 +14,7 @@ export default class TdName extends PureComponent {
     const { image, name, description } = this.props;
     return (
       <span className={styles.tdName}>
-        {image && (
-          <img src={image || 'http://via.placeholder.com/24x24'} className={styles.image} />
-        )}
+        {image && <img src={image} className={styles.image} />}
         <span className={styles.info}>
           <span className={styles.name}>{name}</span>
           <span className={styles.description}>{description}</span>

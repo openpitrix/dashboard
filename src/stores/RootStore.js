@@ -10,7 +10,7 @@ import RuntimeStore from './RuntimeStore';
 import RepoStore from './RepoStore';
 import UserStore from './UserStore';
 import RoleStore from './RoleStore';
-import CategorieStore from './CategorieStore';
+import CategoryStore from './CategoryStore';
 
 export default class RootStore extends Store {
   fixNav = false;
@@ -25,7 +25,8 @@ export default class RootStore extends Store {
     this.repoStore = new RepoStore(initialState);
     this.userStore = new UserStore(initialState);
     this.roleStore = new RoleStore(initialState);
-    this.categorieStore = new CategorieStore(initialState);
+    this.categoryStore = new CategoryStore(initialState);
+    this.loginStore = new LoginStore();
   }
 
   @action

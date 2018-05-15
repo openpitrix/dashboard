@@ -2,29 +2,28 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import AppImgs from '../Rectangle/AppImgs';
+import AppImages from './AppImages';
 import styles from './index.scss';
 
-export default class Card extends PureComponent {
+export default class Rectangle extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
-    idNo: PropTypes.string,
     description: PropTypes.string,
-    imgArray: PropTypes.array,
+    images: PropTypes.array,
     appTotal: PropTypes.number,
     id: PropTypes.string
   };
 
   render() {
-    const { title, idNo, description, imgArray, id, appTotal } = this.props;
+    const { title, description, images, id, appTotal } = this.props;
     return (
       <div className={styles.rectangle}>
         <div className={styles.title}>
           <Link to={`/manage/categories/${id}`}>{title}</Link>
         </div>
-        <div className={styles.idNo}>{idNo}</div>
+        <div className={styles.idShow}>{id}</div>
         <div className={styles.description}>{description}</div>
-        <AppImgs imgArray={imgArray} appTotal={appTotal} />
+        <AppImages images={images} appTotal={appTotal} />
       </div>
     );
   }

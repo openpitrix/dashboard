@@ -42,16 +42,18 @@ export default class Apps extends Component {
   render() {
     const { appStore } = this.props;
     const appsData = toJS(appStore.apps);
-    const totalCount = toJS(appStore.totalCount);
-    const { image, name, total1, centerName, total2, progress, total3, histogram } = {
+    const fetchAll = async current => {
+      await appStore.fetchAll({ page: current });
+    };
+    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
       image: 'http://via.placeholder.com/24x24',
       name: 'Apps',
-      total1: 192,
+      total: 192,
       centerName: 'Repos',
-      total2: 5,
+      progressTotal: 5,
       progress: [10, 20, 60, 10],
-      total3: 40,
-      histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      lastedTotal: 40,
+      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
     const columns = [
       {
@@ -73,8 +75,8 @@ export default class Apps extends Component {
       },
       {
         title: 'Categories',
-        dataIndex: 'categories',
-        key: 'categories'
+        dataIndex: 'category',
+        key: 'category'
       },
       {
         title: 'Visibility',
@@ -115,22 +117,21 @@ export default class Apps extends Component {
       <div className={styles.apps}>
         <ManageTabs />
         <Statistics
-          className={styles.stat}
           image={image}
           name={name}
-          total1={total1}
+          total={total}
           centerName={centerName}
-          total2={total2}
+          progressTotal={progressTotal}
           progress={progress}
-          total3={total3}
-          histogram={histogram}
+          lastedTotal={lastedTotal}
+          histograms={histograms}
         />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
-                placeholder="Search App Name"
+                placeholder="Search App Name or Keywords"
                 onSearch={this.onSearch}
               />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -143,7 +144,9 @@ export default class Apps extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
           </div>
-          <Pagination onChange={appStore.fetchAll} total={totalCount} />
+          {appStore.totalCount > 0 && (
+            <Pagination onChange={fetchAll} total={appStore.totalCount} />
+          )}
         </div>
       </div>
     );

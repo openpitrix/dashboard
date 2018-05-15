@@ -16,7 +16,7 @@ export default class TotalCard extends PureComponent {
     return (
       <div className={styles.totalCard}>
         <div className={styles.name}>
-          <img src={icon || 'http://via.placeholder.com/24x24'} />
+          <img src={icon} />
           {name}
         </div>
         <div className={styles.number}>{total}</div>

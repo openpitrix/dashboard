@@ -9,7 +9,7 @@ import styles from './index.scss';
 
 export default class RuntimeCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object
+    detail: PropTypes.object.isRequired
   };
 
   render() {
@@ -35,7 +35,7 @@ export default class RuntimeCard extends PureComponent {
             {detail.visibility}
           </li>
           <li>
-            <span className={styles.name}>Creater</span>
+            <span className={styles.name}>Creator</span>
             {detail.owner}
           </li>
           <li>

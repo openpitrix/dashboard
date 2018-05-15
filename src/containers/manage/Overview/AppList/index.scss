@@ -1,6 +1,6 @@
 @import '~scss/variables';
 
-.liApps{
+.appList{
   li{
     box-sizing: border-box;
     margin-bottom: 12px;
@@ -24,7 +24,7 @@
     margin-top: 10px;
     font-size: 12px;
     text-align: left;
-    color: #a6a1ab;
+    color: $grey-word;
     .number{
       display: inline-block;
       margin-right: 4px;

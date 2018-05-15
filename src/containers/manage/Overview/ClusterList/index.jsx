@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import { getPastTime } from 'utils';
 import styles from './index.scss';
 
-export default class LiClusters extends PureComponent {
+export default class ClusterList extends PureComponent {
   static propTypes = {
-    clustersData: PropTypes.array
+    clusters: PropTypes.array
   };
 
   render() {
-    const { clustersData } = this.props;
+    const { clusters } = this.props;
     return (
-      <ul className={styles.liApps}>
-        {clustersData.map((data, index) => (
-          <li key={index}>
-            <img className={styles.icon} src={data.icon || 'http://via.placeholder.com/16x16'} />
+      <ul className={styles.clusterList}>
+        {clusters.map(data => (
+          <li key={data.cluster_id}>
+            <img className={styles.icon} src={data.icon} />
             <div className={styles.word}>
               <div className={styles.name}>{data.name}</div>
               <div className={styles.detail}>

@@ -29,7 +29,7 @@
     .line{
       position: absolute;
       right: 0;
-      top: 6px;
+      top: 10px;
       height: 48px;
       width: 1px;
       background:#d1d1d2;
@@ -58,6 +58,8 @@
     }
     .number{
       display: inline-block;
+      margin-top: 4px;
+      line-height: 42px;
       font-size: 36px;
       font-weight: 500;
       text-align: left;

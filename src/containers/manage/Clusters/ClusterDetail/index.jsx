@@ -26,6 +26,7 @@ import styles from './index.scss';
 export default class ClusterDetail extends Component {
   static async onEnter({ clusterStore }, { clusterId }) {
     await clusterStore.fetchClusterDetail(clusterId);
+    await clusterStore.fetchClusterActivities(clusterId);
   }
 
   constructor(props) {
@@ -37,13 +38,6 @@ export default class ClusterDetail extends Component {
       showViewNodeModal: false
     };
     this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
-
-    this.ativities = [
-      { name: 'Stop Cluster', time: '2017/10/16 15:54:27' },
-      { name: 'Create Cluster', time: '2017/09/13 14:48:47' },
-      { name: 'Create Cluster', time: '2017/09/13 14:48:47' },
-      { name: 'Stop Resources', time: '2017/09/13 14:48:47' }
-    ];
   }
 
   openHistoryModal = () => {
@@ -88,15 +82,86 @@ export default class ClusterDetail extends Component {
       title="Parameters"
       visible={this.state.showViewNodeModal}
       hideFooter
-      onCancel={this.renderViewNodeModal}
+      onCancel={this.closeViewNodeModal}
     >
-      <div>development...</div>
+      <ul className={styles.modelContent}>
+        <li>
+          <div className={styles.name}>Port</div>
+          <div className={styles.info}>
+            <p className={styles.value}>3306</p>
+            <p className={styles.explain}>
+              Range: 3306－65535, The Esgyn will restart if modified.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Character_set_server</div>
+          <div className={styles.info}>
+            <p className={styles.value}>utf8</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Intractive_timeout</div>
+          <div className={styles.info}>
+            <p className={styles.value}>3600</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Back_log</div>
+          <div className={styles.info}>
+            <p className={styles.value}>3600</p>
+            <p className={styles.explain}>Range: 50－4096, The EsgynDB will restart if modified.</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Expire_logs_days</div>
+          <div className={styles.info}>
+            <p className={styles.value}>1</p>
+            <p className={styles.explain}>Range: 0－14</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>FT_min_word_len</div>
+          <div className={styles.info}>
+            <p className={styles.value}>4</p>
+            <p className={styles.explain}>Range: 0－14, The EsgynDB will restart if modified.</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Key_buffer_size</div>
+          <div className={styles.info}>
+            <p className={styles.value}>33554432</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Log_bin_function_trust_creators</div>
+          <div className={styles.info}>
+            <p className={styles.value}>1</p>
+            <p className={styles.explain}>Range: 0－1</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Long_query_time</div>
+          <div className={styles.info}>
+            <p className={styles.value}>3</p>
+            <p className={styles.explain}>Range: 0－300</p>
+          </div>
+        </li>
+        <li>
+          <div className={styles.name}>Lower_case_table_names</div>
+          <div className={styles.info}>
+            <p className={styles.value}>1</p>
+            <p className={styles.explain}>Range: 0－1, The EsgynDB will restart if modified.</p>
+          </div>
+        </li>
+      </ul>
     </Modal>
   );
 
   render() {
     const { clusterStore } = this.props;
-    const detail = toJS(clusterStore.clusterDetail) || {};
+    const detail = toJS(clusterStore.clusterDetail);
+    const ativities = clusterStore.clusterActivities;
     const data = [];
     const columns = [
       {
@@ -162,13 +227,13 @@ export default class ClusterDetail extends Component {
                 <div
                   className={styles.more}
                   onClick={() => {
-                    this.openHistoryModal();
+                    this.openViewNodeModal();
                   }}
                 >
                   More →
                 </div>
               </div>
-              <TimeAxis timeList={this.ativities} />
+              <TimeAxis timeList={ativities} />
             </div>
           </div>
           <div className={styles.rightInfo}>

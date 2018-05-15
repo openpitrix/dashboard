@@ -17,7 +17,7 @@ export default class SubHeader extends Component {
   }
 
   changeCurTag(name) {
-    this.props.changeCurTag && this.props.changeCurTag(name);
+    this.props.changeCurTag(name);
   }
 
   render() {

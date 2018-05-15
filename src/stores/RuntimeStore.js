@@ -4,12 +4,12 @@ import { get } from 'lodash';
 
 export default class RuntimeStoreStore extends Store {
   @observable runtimes = [];
-  @observable totalCount = 0;
   @observable runtimeDetail = {};
   @observable isLoading = false;
 
   constructor(initialState) {
     super(initialState, 'runtimeStore');
+    this.totalCount = 0;
   }
 
   @action
@@ -35,7 +35,7 @@ export default class RuntimeStoreStore extends Store {
   async fetchRuntimeDetail(runtimeId) {
     this.isLoading = true;
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
-    this.runtimeDetail = get(result, 'result.runtime_set[0]', {});
+    this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isLoading = false;
   }
 }

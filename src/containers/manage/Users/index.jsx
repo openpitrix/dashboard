@@ -22,21 +22,21 @@ import styles from './index.scss';
 @observer
 export default class Users extends Component {
   static async onEnter({ userStore }) {
-    await userStore.fetchUsers();
+    await userStore.fetchUsers({ page: 1 });
   }
   render() {
     const { userStore } = this.props;
-    const { image, name, total1, centerName, total2, progress, total3, histogram } = {
+    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
       image: 'http://via.placeholder.com/24x24',
       name: 'Users',
-      total1: 88,
+      total: 192,
       centerName: 'Roles',
-      total2: 4,
-      progress: [20, 20, 50, 10],
-      total3: 40,
-      histogram: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      progressTotal: 5,
+      progress: [10, 20, 60, 10],
+      lastedTotal: 40,
+      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
     };
-    const data = userStore.users && (toJS(userStore.users.user_set) || []);
+    const data = toJS(userStore.users);
     const columns = [
       {
         title: 'UserName',
@@ -82,23 +82,18 @@ export default class Users extends Component {
       <div className={styles.users}>
         <ManageTabs />
         <Statistics
-          className={styles.stat}
           image={image}
           name={name}
-          total1={total1}
+          total={total}
           centerName={centerName}
-          total2={total2}
+          progressTotal={progressTotal}
           progress={progress}
-          total3={total3}
-          histogram={histogram}
+          lastedTotal={lastedTotal}
+          histograms={histograms}
         />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
-              <Select className={styles.select} value="All Types">
-                <Select.Option value="1">Types1</Select.Option>
-                <Select.Option value="2">Types2</Select.Option>
-              </Select>
               <Input.Search className={styles.search} placeholder="Search App Name" />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create

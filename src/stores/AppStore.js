@@ -4,14 +4,15 @@ import { get } from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
-  @observable totalCount = 0;
   @observable app = {};
   @observable appClusters = [];
   @observable installedApps = [];
+  @observable versions = [];
   @observable isLoading = false;
 
   constructor(initialState) {
     super(initialState, 'appStore');
+    this.totalCount = 0;
   }
 
   @action
@@ -46,8 +47,17 @@ export default class AppStore extends Store {
   @action
   async fetchInstalledApps() {
     this.isLoading = true;
-    const result = await this.request.get('api/v1/apps/installed');
+    const result = await this.request.get('apps/installed');
     this.installedApps = result.items;
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchAppVersions(appId) {
+    this.isLoading = true;
+    //const result = await this.request.get('app_versions', { app_id: appId });
+    const result = await this.request.get('app_versions');
+    this.versions = get(result, 'app_version_set', []);
     this.isLoading = false;
   }
 }

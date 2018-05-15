@@ -26,8 +26,8 @@ import styles from './index.scss';
 export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await appStore.fetchAll();
-    await runtimeStore.fetchRuntimes();
+    await appStore.fetchAll({ page: 1 });
+    await runtimeStore.fetchRuntimes({ page: 1 });
   }
   componentDidMount() {}
   constructor(props) {

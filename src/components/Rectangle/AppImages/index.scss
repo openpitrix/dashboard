@@ -1,12 +1,12 @@
 @import "~scss/variables";
 
-.appImgs {
+.appImages {
   .name{
     font-size: 12px;
     line-height: 2.0;
     color: $grey-word;
   }
-  .imgList{
+  .images{
     img{
       display: inline-block;
       float: left;
@@ -28,5 +28,4 @@
     }
 
   }
-
 }

@@ -1,6 +1,6 @@
 @import '~scss/variables';
 
-.liApps{
+.clusterList{
   li{
     box-sizing: border-box;
     margin-bottom: 12px;
@@ -44,6 +44,6 @@
   }
   .time{
     float: right;
-    color: #9b9b9b;
+    color: $grey-time;
   }
 }

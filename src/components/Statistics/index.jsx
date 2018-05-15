@@ -2,45 +2,61 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Histogram from '../Statistics/Histogram';
-import Progress from '../Statistics/Progress';
+import Histogram from './Histogram';
+import Progress from './Progress';
 import styles from './index.scss';
 
 export default class Statistics extends PureComponent {
   static propTypes = {
-    className: PropTypes.string
+    image: PropTypes.string,
+    name: PropTypes.string,
+    total: PropTypes.number,
+    centerName: PropTypes.string,
+    progressTotal: PropTypes.number,
+    progress: PropTypes.array,
+    lastedTotal: PropTypes.number,
+    histograms: PropTypes.array
   };
 
   render() {
-    const { image, name, total1, centerName, total2, progress, total3, histogram } = this.props;
+    const {
+      image,
+      name,
+      total,
+      centerName,
+      progressTotal,
+      progress,
+      lastedTotal,
+      histograms
+    } = this.props;
     return (
       <div className={styles.statistics}>
         <div className={styles.warper}>
           <div className={styles.module}>
             <div className={styles.apps}>
-              <img src={image || 'http://via.placeholder.com/30x24'} className={styles.icon} />
+              <img src={image} className={styles.icon} />
               {name}
             </div>
             <div className={classnames(styles.word, styles.fl)}>
               <div className={styles.name}>Total</div>
-              <div className={styles.number}>{total1}</div>
+              <div className={styles.number}>{total}</div>
             </div>
             <div className={classnames(styles.line)} />
           </div>
           <div className={styles.module}>
             <div className={styles.word}>
               <div className={styles.name}>{centerName}</div>
-              <div className={styles.number}>{total2}</div>
+              <div className={styles.number}>{progressTotal}</div>
             </div>
-            <Progress progressArray={progress} />
+            <Progress progress={progress} />
             <div className={classnames(styles.line)} />
           </div>
           <div className={styles.module}>
             <div className={styles.word}>
               <div className={styles.name}>Lasted 2 Weeks</div>
-              <div className={styles.number}>{total3}</div>
+              <div className={styles.number}>{lastedTotal}</div>
             </div>
-            <Histogram dataArray={histogram} />
+            <Histogram histograms={histograms} />
           </div>
         </div>
       </div>

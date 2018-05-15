@@ -52,7 +52,7 @@ export default class RepoAdd extends Component {
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.title}>Create Repo</div>
-            <from>
+            <form>
               <div>
                 <label className={styles.name}>Name</label>
                 <Input className={styles.input} />
@@ -105,7 +105,7 @@ export default class RepoAdd extends Component {
                 <Input className={styles.inputSmall} placeholder="Value" />
                 <Button className={styles.add}>Add</Button>
               </div>
-            </from>
+            </form>
             <div className={styles.submit}>
               <Button type={`primary`} className={`primary`} disabled="true">
                 Confirm

@@ -40,6 +40,15 @@ export default class Repos extends Component {
   render() {
     const { repoStore } = this.props;
     const repoList = toJS(repoStore.repos);
+    let reposPublic = [],
+      reposPrivate = [];
+    for (let i = 0; i < repoList.length; i++) {
+      if (repoList[i].visibility === 'Public') {
+        reposPublic.push(repoList[i]);
+      } else {
+        reposPrivate.push(repoList[i]);
+      }
+    }
 
     return (
       <div className={styles.repos}>
@@ -63,16 +72,16 @@ export default class Repos extends Component {
           </div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Public Repos ({repoList.length})</div>
+              <div className={styles.word}>Public Repos ({reposPublic.length})</div>
             </div>
           </div>
-          {repoList.map(repo => (
+          {reposPublic.map(repo => (
             <div className={styles.repoContent} key={repo.repo_id}>
               <RepoCard
                 name={repo.name}
                 description={repo.description}
                 provider={repo.provider}
-                imgArray={repo.imgArray}
+                images={repo.images}
                 tags={repo.labels}
               />
               <div className={styles.handlePop}>
@@ -84,6 +93,29 @@ export default class Repos extends Component {
               </div>
             </div>
           ))}
+          <div className={styles.categories}>
+            <div className={styles.line}>
+              <div className={styles.word}>Public Repos ({reposPrivate.length})</div>
+            </div>
+            {reposPrivate.map(repo => (
+              <div className={styles.repoContent} key={repo.repo_id}>
+                <RepoCard
+                  name={repo.name}
+                  description={repo.description}
+                  provider={repo.provider}
+                  images={repo.images}
+                  tags={repo.labels}
+                />
+                <div className={styles.handlePop}>
+                  <div>
+                    <Popover content={this.renderHandleMenu(repo.repo_id)}>
+                      <Icon name="more" />
+                    </Popover>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

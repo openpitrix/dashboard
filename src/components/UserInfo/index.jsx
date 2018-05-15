@@ -17,7 +17,7 @@ export default class UserInfo extends PureComponent {
     return (
       <div className={styles.userInfo}>
         <div>
-          <img className={styles.userImg} src={userImg || 'http://via.placeholder.com/36x36'} />
+          <img className={styles.userImg} src={userImg} />
           <div className={styles.user}>
             <div className={styles.name}>Hi,{name}</div>
             <div className={styles.role}>{role}</div>

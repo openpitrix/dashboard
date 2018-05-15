@@ -8,7 +8,7 @@ import styles from './index.scss';
 
 export default class ClusterCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object
+    detail: PropTypes.object.isRequired
   };
 
   render() {
