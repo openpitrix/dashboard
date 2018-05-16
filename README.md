@@ -3,6 +3,7 @@
 # OpenPitrix Dashboard
 
 [![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)
+[![codecov](https://codecov.io/gh/openpitrix/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
 ## 1. Installation
