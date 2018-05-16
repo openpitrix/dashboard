@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
@@ -11,21 +11,24 @@ import Icon from 'components/Base/Icon';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Status from 'components/Status';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
+import Table from 'components/Base/Table';
+import Pagination from 'components/Base/Pagination';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
-@preload('fetchAll')
-export default class Apps extends Component {
+export default class Runtimes extends Component {
+  static async onEnter({ runtimeStore }) {
+    await runtimeStore.fetchRuntimes({ page: 1 });
+    await runtimeStore.fetchStatistics();
+  }
+
   onSearch = async name => {
-    await this.props.appStore.fetchQueryApps(name);
+    await this.props.runtimeStore.fetchQueryRuntimes(name);
   };
 
   onRefresh = async () => {
@@ -34,38 +37,30 @@ export default class Apps extends Component {
 
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
-      <Link to={`/manage/apps/${id}`}>View app detail</Link>
-      <span>Delete app</span>
+      <Link to={`/manage/runtimes/${id}`}>View runtime detail</Link>
+      <span>Delete runtime</span>
     </div>
   );
 
   render() {
-    const { appStore } = this.props;
-    const appsData = toJS(appStore.apps);
-    const fetchAll = async current => {
-      await appStore.fetchAll({ page: current });
-    };
-    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
-      image: 'http://via.placeholder.com/24x24',
-      name: 'Apps',
-      total: 192,
-      centerName: 'Repos',
-      progressTotal: 5,
-      progress: [10, 20, 60, 10],
-      lastedTotal: 40,
-      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
-    };
+    const { runtimeStore } = this.props;
+    const data = toJS(runtimeStore.runtimes);
+    const {
+      image,
+      name,
+      total,
+      centerName,
+      progressTotal,
+      progress,
+      lastedTotal,
+      histograms
+    } = toJS(runtimeStore.statistics);
     const columns = [
       {
-        title: 'App Name',
+        title: 'Runtime Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
-      },
-      {
-        title: 'Latest Version',
-        dataIndex: 'latest_version',
-        key: 'latest_version'
+        render: (name, obj) => <TdName name={name} description={obj.description} />
       },
       {
         title: 'Status',
@@ -74,29 +69,30 @@ export default class Apps extends Component {
         render: text => <Status type={text} name={text} />
       },
       {
-        title: 'Categories',
-        dataIndex: 'category',
-        key: 'category'
+        title: 'Provider',
+        dataIndex: 'provider',
+        key: 'provider'
       },
       {
-        title: 'Visibility',
-        dataIndex: 'visibility',
-        key: 'visibility'
+        title: 'Zone/Namspace',
+        dataIndex: 'zone',
+        key: 'zone'
       },
       {
-        title: 'Repo',
-        dataIndex: 'repo_id',
-        key: 'repo_id'
+        title: 'Cluster Count',
+        dataIndex: 'node_count',
+        key: 'node_count'
       },
       {
-        title: 'Developer',
-        dataIndex: 'developer',
-        key: 'developer'
+        title: 'User',
+        dataIndex: 'owner',
+        key: 'owner'
       },
       {
         title: 'Updated At',
-        dataIndex: 'update_time',
-        key: 'update_time',
+        dataIndex: 'status_time',
+        key: 'status_time',
+        width: '10%',
         render: getParseDate
       },
       {
@@ -105,7 +101,7 @@ export default class Apps extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.app_id)}>
+            <Popover content={this.renderHandleMenu(item.runtime_id)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -131,21 +127,23 @@ export default class Apps extends Component {
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
-                placeholder="Search App Name or Keywords"
+                placeholder="Search Runtimes Name"
                 onSearch={this.onSearch}
               />
-              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-                Create
-              </Button>
+              <Link to={`/manage/addruntime`}>
+                <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+                  Create
+                </Button>
+              </Link>
               <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          {appStore.totalCount > 0 && (
-            <Pagination onChange={fetchAll} total={appStore.totalCount} />
+          {runtimeStore.totalCount > 0 && (
+            <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
           )}
         </div>
       </div>

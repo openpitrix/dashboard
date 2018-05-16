@@ -1,21 +1,22 @@
 import Home from 'containers/Home';
 import Login from 'containers/Login';
-import Overview from 'containers/manage/Overview';
 import AppDeploy from 'containers/AppDeploy';
 import InstalledApps from 'containers/InstalledApps';
-import Apps from 'containers/manage/Apps';
-import AppDetail from 'containers/manage/Apps/AppDetail';
-import Clusters from 'containers/manage/Clusters';
 import ClusterDetail from 'containers/ClusterDetail';
-import Runtimes from 'containers/manage/Runtimes';
-import RuntimeDetail from 'containers/manage/Runtimes/RuntimeDetail';
-import Repos from 'containers/manage/Repos';
-import RepoDetail from 'containers/manage/Repos/RepoDetail';
-import RepoAdd from 'containers/manage/Repos/RepoAdd';
-import Users from 'containers/manage/Users';
-import Roles from 'containers/manage/Roles';
-import Categories from 'containers/manage/Categories';
-import CategoryDetail from 'containers/manage/Categories/CategoryDetail';
+import Overview from 'containers/Manage/Overview';
+import Apps from 'containers/Manage/Apps';
+import AppDetail from 'containers/Manage/Apps/Detail';
+import Clusters from 'containers/Manage/Clusters';
+import Runtimes from 'containers/Manage/Runtimes';
+import RuntimeDetail from 'containers/Manage/Runtimes/Detail';
+import RuntimeAdd from 'containers/Manage/Runtimes/Add';
+import Repos from 'containers/Manage/Repos';
+import RepoDetail from 'containers/Manage/Repos/Detail';
+import RepoAdd from 'containers/Manage/Repos/Add';
+import Users from 'containers/Manage/Users';
+import Roles from 'containers/Manage/Roles';
+import Categories from 'containers/Manage/Categories';
+import CategoryDetail from 'containers/Manage/Categories/Detail';
 
 const routes = [
   { path: '/', exact: true, component: Home },
@@ -31,6 +32,7 @@ const routes = [
   { path: '/manage/clusters/:clusterId', exact: true, component: Clusters.Detail },
   { path: '/manage/runtimes', exact: true, component: Runtimes },
   { path: '/manage/runtimes/:runtimeId', exact: true, component: RuntimeDetail },
+  { path: '/manage/addruntime', exact: true, component: RuntimeAdd },
   { path: '/manage/repos', exact: true, component: Repos },
   { path: '/manage/repos/:repoId', exact: true, component: RepoDetail },
   { path: '/manage/addrepo', exact: true, component: RepoAdd },

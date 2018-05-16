@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { getParseDate } from 'utils';
 import styles from './index.scss';
 
 export default class TimeAxis extends PureComponent {
@@ -17,7 +18,7 @@ export default class TimeAxis extends PureComponent {
           {timeList.map((time, index) => (
             <li key={index}>
               <div className={styles.word}>{time.name}</div>
-              <div className={styles.time}>{time.time}</div>
+              <div className={styles.time}>{getParseDate(time.create_time)}</div>
               <span className={styles.dot} />
             </li>
           ))}

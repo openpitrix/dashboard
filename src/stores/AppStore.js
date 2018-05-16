@@ -8,6 +8,7 @@ export default class AppStore extends Store {
   @observable appClusters = [];
   @observable installedApps = [];
   @observable versions = [];
+  @observable statistics = {};
   @observable isLoading = false;
 
   constructor(initialState) {
@@ -58,6 +59,14 @@ export default class AppStore extends Store {
     //const result = await this.request.get('app_versions', { app_id: appId });
     const result = await this.request.get('app_versions');
     this.versions = get(result, 'app_version_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchStatistics() {
+    this.isLoading = true;
+    const result = await this.request.get('statistics');
+    this.statistics = get(result, 'statistics_set.apps', {});
     this.isLoading = false;
   }
 }

@@ -95,7 +95,7 @@ export default class Repos extends Component {
           ))}
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Public Repos ({reposPrivate.length})</div>
+              <div className={styles.word}>Private Repos ({reposPrivate.length})</div>
             </div>
             {reposPrivate.map(repo => (
               <div className={styles.repoContent} key={repo.repo_id}>

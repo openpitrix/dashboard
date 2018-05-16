@@ -35,9 +35,14 @@ export default class ClusterDetail extends Component {
       loading: false,
       selectedRowKeys: [],
       showHistoryModal: false,
-      showViewNodeModal: false
+      showViewNodeModal: false,
+      activities: []
     };
-    this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
+  }
+  componentDidMount() {
+    this.setState({
+      activities: toJS(this.props.clusterStore.clusterActivities)
+    });
   }
 
   openHistoryModal = () => {
@@ -72,7 +77,7 @@ export default class ClusterDetail extends Component {
       hideFooter
       onCancel={this.closeHistoryModal}
     >
-      <TimeAxis timeList={this.ativities} />
+      <TimeAxis timeList={this.state.activities} />
     </Modal>
   );
 
@@ -161,7 +166,6 @@ export default class ClusterDetail extends Component {
   render() {
     const { clusterStore } = this.props;
     const detail = toJS(clusterStore.clusterDetail);
-    const ativities = clusterStore.clusterActivities;
     const data = [];
     const columns = [
       {
@@ -227,13 +231,13 @@ export default class ClusterDetail extends Component {
                 <div
                   className={styles.more}
                   onClick={() => {
-                    this.openViewNodeModal();
+                    this.openHistoryModal();
                   }}
                 >
                   More →
                 </div>
               </div>
-              <TimeAxis timeList={ativities} />
+              <TimeAxis timeList={this.state.activities.splice(0, 4)} />
             </div>
           </div>
           <div className={styles.rightInfo}>

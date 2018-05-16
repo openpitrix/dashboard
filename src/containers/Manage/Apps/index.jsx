@@ -2,32 +2,30 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
 import Statistics from 'components/Statistics';
 import Icon from 'components/Base/Icon';
-import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
+import Input from 'components/Base/Input';
 import Status from 'components/Status';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
-import TdName from 'components/TdName';
 import Popover from 'components/Base/Popover';
-
-import { getParseDate } from 'utils';
-import preload from 'hoc/preload';
+import TdName from 'components/TdName';
 import styles from './index.scss';
-import ClusterDetail from './ClusterDetail/index';
+import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore
+  appStore: rootStore.appStore
 }))
 @observer
-@preload('fetchClusters')
-export default class Clusters extends Component {
+@preload(['fetchAll', 'fetchStatistics'])
+export default class Apps extends Component {
   onSearch = async name => {
-    await this.props.clusterStore.fetchQueryClusters(name);
+    await this.props.appStore.fetchQueryApps(name);
   };
 
   onRefresh = async () => {
@@ -36,30 +34,38 @@ export default class Clusters extends Component {
 
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
-      <Link to={`/manage/clusters/${id}`}>View cluster detail</Link>
-      <span>Delete cluster</span>
+      <Link to={`/manage/apps/${id}`}>View app detail</Link>
+      <span>Delete app</span>
     </div>
   );
 
   render() {
-    const { clusterStore } = this.props;
-    const data = toJS(clusterStore.clusters);
-    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
-      image: 'http://via.placeholder.com/24x24',
-      name: 'Clusters',
-      total: 430,
-      centerName: 'Runtimes',
-      progressTotal: 4,
-      progress: [10, 20, 70],
-      lastedTotal: 32,
-      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+    const { appStore } = this.props;
+    const appsData = toJS(appStore.apps);
+    const {
+      image,
+      name,
+      total,
+      centerName,
+      progressTotal,
+      progress,
+      lastedTotal,
+      histograms
+    } = toJS(appStore.statistics);
+    const fetchAll = async current => {
+      await appStore.fetchAll({ page: current });
     };
     const columns = [
       {
-        title: 'Cluster Name',
+        title: 'App Name',
         dataIndex: 'name',
-        key: 'id',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        key: 'name',
+        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
+      },
+      {
+        title: 'Latest Version',
+        dataIndex: 'latest_version',
+        key: 'latest_version'
       },
       {
         title: 'Status',
@@ -68,29 +74,29 @@ export default class Clusters extends Component {
         render: text => <Status type={text} name={text} />
       },
       {
-        title: 'App',
-        dataIndex: 'app_id',
-        key: 'app_id'
+        title: 'Categories',
+        dataIndex: 'category',
+        key: 'category'
       },
       {
-        title: 'Runtime',
-        dataIndex: 'runtime_id',
-        key: 'runtime_id'
+        title: 'Visibility',
+        dataIndex: 'visibility',
+        key: 'visibility'
       },
       {
-        title: 'Node Count',
-        dataIndex: 'node_count',
-        key: 'node_count'
+        title: 'Repo',
+        dataIndex: 'repo_id',
+        key: 'repo_id'
       },
       {
-        title: 'User',
-        dataIndex: 'owner',
-        key: 'owner'
+        title: 'Developer',
+        dataIndex: 'developer',
+        key: 'developer'
       },
       {
         title: 'Updated At',
-        dataIndex: 'upgrade_time',
-        key: 'upgrade_time',
+        dataIndex: 'update_time',
+        key: 'update_time',
         render: getParseDate
       },
       {
@@ -99,7 +105,7 @@ export default class Clusters extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.cluster_id)}>
+            <Popover content={this.renderHandleMenu(item.app_id)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -125,7 +131,7 @@ export default class Clusters extends Component {
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
-                placeholder="Search Cluster Name or App"
+                placeholder="Search App Name or Keywords"
                 onSearch={this.onSearch}
               />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -136,14 +142,13 @@ export default class Clusters extends Component {
               </Button>
             </div>
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
           </div>
-          {clusterStore.totalCount > 0 && (
-            <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
+          {appStore.totalCount > 0 && (
+            <Pagination onChange={fetchAll} total={appStore.totalCount} />
           )}
         </div>
       </div>
     );
   }
 }
-Clusters.Detail = ClusterDetail;

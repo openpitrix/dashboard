@@ -31,7 +31,7 @@ export default class Statistics extends PureComponent {
     } = this.props;
     return (
       <div className={styles.statistics}>
-        <div className={styles.warper}>
+        <div className={styles.wrap}>
           <div className={styles.module}>
             <div className={styles.apps}>
               <img src={image} className={styles.icon} />
@@ -48,7 +48,7 @@ export default class Statistics extends PureComponent {
               <div className={styles.name}>{centerName}</div>
               <div className={styles.number}>{progressTotal}</div>
             </div>
-            <Progress progress={progress} />
+            {progress && <Progress progress={progress} />}
             <div className={classnames(styles.line)} />
           </div>
           <div className={styles.module}>
@@ -56,7 +56,7 @@ export default class Statistics extends PureComponent {
               <div className={styles.name}>Lasted 2 Weeks</div>
               <div className={styles.number}>{lastedTotal}</div>
             </div>
-            <Histogram histograms={histograms} />
+            {histograms && <Histogram histograms={histograms} />}
           </div>
         </div>
       </div>

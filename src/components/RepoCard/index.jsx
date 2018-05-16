@@ -31,7 +31,7 @@ export default class RepoCard extends PureComponent {
             <AppImages images={images} />
           </div>
         </div>
-        <TagShow tags={tags} tagStyle="purple2Style" />
+        <TagShow tags={tags} tagStyle="purple2" />
       </div>
     );
   }

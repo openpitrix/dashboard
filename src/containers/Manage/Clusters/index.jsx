@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { getParseDate } from 'utils';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import ManageTabs from 'components/ManageTabs';
 import Statistics from 'components/Statistics';
 import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
+import Button from 'components/Base/Button';
 import Status from 'components/Status';
-import Popover from 'components/Base/Popover';
-import TdName from 'components/TdName';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
+import TdName from 'components/TdName';
+import Popover from 'components/Base/Popover';
+
+import { getParseDate } from 'utils';
+import preload from 'hoc/preload';
 import styles from './index.scss';
+import ClusterDetail from './Detail/index';
 
 @inject(({ rootStore }) => ({
-  runtimeStore: rootStore.runtimeStore
+  clusterStore: rootStore.clusterStore
 }))
 @observer
-export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore }) {
-    await runtimeStore.fetchRuntimes({ page: 1 });
-  }
-
+@preload(['fetchClusters', 'fetchStatistics'])
+export default class Clusters extends Component {
   onSearch = async name => {
-    await this.props.runtimeStore.fetchQueryRuntimes(name);
+    await this.props.clusterStore.fetchQueryClusters(name);
   };
 
   onRefresh = async () => {
@@ -36,29 +36,29 @@ export default class Runtimes extends Component {
 
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
-      <Link to={`/manage/runtimes/${id}`}>View runtime detail</Link>
-      <span>Delete runtime</span>
+      <Link to={`/manage/clusters/${id}`}>View cluster detail</Link>
+      <span>Delete cluster</span>
     </div>
   );
 
   render() {
-    const { runtimeStore } = this.props;
-    const data = toJS(runtimeStore.runtimes);
-    const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
-      image: 'http://via.placeholder.com/30x24',
-      name: 'Runtimes',
-      total: 198,
-      centerName: 'Provider',
-      progressTotal: 5,
-      progress: [10, 20, 30, 40],
-      lastedTotal: 66,
-      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
-    };
+    const { clusterStore } = this.props;
+    const data = toJS(clusterStore.clusters);
+    const {
+      image,
+      name,
+      total,
+      centerName,
+      progressTotal,
+      progress,
+      lastedTotal,
+      histograms
+    } = toJS(clusterStore.statistics);
     const columns = [
       {
-        title: 'Runtime Name',
+        title: 'Cluster Name',
         dataIndex: 'name',
-        key: 'name',
+        key: 'id',
         render: (name, obj) => <TdName name={name} description={obj.description} />
       },
       {
@@ -68,17 +68,17 @@ export default class Runtimes extends Component {
         render: text => <Status type={text} name={text} />
       },
       {
-        title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider'
+        title: 'App',
+        dataIndex: 'app_id',
+        key: 'app_id'
       },
       {
-        title: 'Zone/Namspace',
-        dataIndex: 'zone',
-        key: 'zone'
+        title: 'Runtime',
+        dataIndex: 'runtime_id',
+        key: 'runtime_id'
       },
       {
-        title: 'Cluster Count',
+        title: 'Node Count',
         dataIndex: 'node_count',
         key: 'node_count'
       },
@@ -89,9 +89,8 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
-        key: 'status_time',
-        width: '10%',
+        dataIndex: 'upgrade_time',
+        key: 'upgrade_time',
         render: getParseDate
       },
       {
@@ -100,7 +99,7 @@ export default class Runtimes extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.runtime_id)}>
+            <Popover content={this.renderHandleMenu(item.cluster_id)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -126,7 +125,7 @@ export default class Runtimes extends Component {
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
-                placeholder="Search Runtimes Name"
+                placeholder="Search Cluster Name or App"
                 onSearch={this.onSearch}
               />
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -139,11 +138,12 @@ export default class Runtimes extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          {runtimeStore.totalCount > 0 && (
-            <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
+          {clusterStore.totalCount > 0 && (
+            <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
           )}
         </div>
       </div>
     );
   }
 }
+Clusters.Detail = ClusterDetail;

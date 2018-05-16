@@ -1,7 +1,5 @@
 import { action } from 'mobx';
 
-import request from 'lib/request';
-import OverviewStore from './OverviewStore';
 import Store from './Store';
 import AppStore from './AppStore';
 import ClusterStore from './ClusterStore';

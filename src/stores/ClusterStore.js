@@ -7,6 +7,7 @@ export default class ClusterStore extends Store {
   @observable clusterDetail = {};
   @observable clusterNodes = [];
   @observable clusterActivities = [];
+  @observable statistics = {};
   @observable isLoading = false;
 
   constructor(initialState) {
@@ -55,6 +56,14 @@ export default class ClusterStore extends Store {
     //const result = await this.request.get(`cluster_activities`, { cluster_id: clusterId });
     const result = await this.request.get(`cluster_activities`);
     this.clusterActivities = get(result, 'cluster_activity_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchStatistics() {
+    this.isLoading = true;
+    const result = await this.request.get('statistics');
+    this.statistics = get(result, 'statistics_set.clusters', {});
     this.isLoading = false;
   }
 }

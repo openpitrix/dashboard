@@ -27,10 +27,21 @@ export default class CategoryDetail extends Component {
     await appStore.fetchAll({ page: 1 });
   }
 
+  onSearch = async name => {
+    await this.props.appStore.fetchQueryApps(name);
+  };
+
+  onRefresh = async () => {
+    await this.onSearch();
+  };
+
   render() {
     const { categoryStore, appStore } = this.props;
     const detail = categoryStore.category;
-    const data = toJS(appStore.apps) || [];
+    const data = toJS(appStore.apps);
+    const fetchAll = async current => {
+      await appStore.fetchAll({ page: current });
+    };
     const columns = [
       {
         title: 'App Name',
@@ -76,14 +87,20 @@ export default class CategoryDetail extends Component {
             <div className={styles.wrapper2}>
               <TagNav tags={tags} curTag={curTag} />
               <div className={styles.toolbar}>
-                <Input.Search className={styles.search} placeholder="Search App Name" />
-                <Button className={styles.buttonRight}>
+                <Input.Search
+                  className={styles.search}
+                  placeholder="Search & Filter"
+                  onSearch={this.onSearch}
+                />
+                <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
               <Table columns={columns} dataSource={data} />
             </div>
-            <Pagination />
+            {appStore.totalCount > 0 && (
+              <Pagination onChange={fetchAll} total={appStore.totalCount} />
+            )}
           </div>
         </div>
       </div>

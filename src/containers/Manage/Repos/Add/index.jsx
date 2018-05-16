@@ -15,33 +15,17 @@ import Select from 'components/Base/Select';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  repoStore: rootStore.repoStore,
-  appStore: rootStore.appStore,
-  runtimeStore: rootStore.runtimeStore
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class RepoAdd extends Component {
-  static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
+  static async onEnter({ repoStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await appStore.fetchAll();
-    await runtimeStore.fetchRuntimes();
   }
-  constructor(props) {
-    super(props);
-    this.changeCurTag = this.changeCurTag.bind(this);
-    this.state = { curTag: 'Apps' };
-    this.repoDetail = toJS(this.props.repoStore.repoDetail) || {};
-    this.appsData = toJS(this.props.appStore.apps) || [];
-    this.runtimesData = toJS(this.props.runtimeStore.runtimes) || [];
-  }
-  changeCurTag = name => {
-    this.setState({
-      curTag: name
-    });
-  };
 
   render() {
-    const repoDetail = this.repoDetail;
+    const { repoStore } = this.props;
+    const repoDetail = repoStore.repoDetail;
 
     return (
       <div className={styles.repoAdd}>

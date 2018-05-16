@@ -16,7 +16,6 @@ export default class Nav extends PureComponent {
     };
   }
   changeValue = value => {
-    console.log(value);
     this.setState({
       curValue: value
     });
