@@ -4,9 +4,11 @@ dist: trusty
 node_js:
   - "8"
   - "7"
+cache: yarn
 
 install:
   - yarn
-
 script:
   - yarn test
+after_success:
+  - yarn run report-cov
