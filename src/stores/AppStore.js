@@ -35,6 +35,8 @@ export default class AppStore extends Store {
     this.isLoading = false;
   }
 
+  // todo: fetch user's installed apps
+  // api: /user_apps?uid=xxx
   @action
   async fetchApp({ appId }) {
     this.isLoading = true;

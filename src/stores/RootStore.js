@@ -9,6 +9,7 @@ import RepoStore from './RepoStore';
 import UserStore from './UserStore';
 import RoleStore from './RoleStore';
 import CategoryStore from './CategoryStore';
+import LoginStore from './LoginStore';
 
 export default class RootStore extends Store {
   fixNav = false;
@@ -24,6 +25,7 @@ export default class RootStore extends Store {
     this.userStore = new UserStore(initialState);
     this.roleStore = new RoleStore(initialState);
     this.categoryStore = new CategoryStore(initialState);
+    this.loginStore = new LoginStore();
     this.loginStore = new LoginStore();
   }
 

@@ -23,3 +23,4 @@ export function getPastTime(time) {
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
   return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
 }
+
