@@ -3,7 +3,6 @@ import { action } from 'mobx';
 import Store from './Store';
 import AppStore from './AppStore';
 import ClusterStore from './ClusterStore';
-import LoginStore from './LoginStore';
 import RuntimeStore from './RuntimeStore';
 import RepoStore from './RepoStore';
 import UserStore from './UserStore';
@@ -19,13 +18,11 @@ export default class RootStore extends Store {
 
     this.appStore = new AppStore(initialState);
     this.clusterStore = new ClusterStore(initialState);
-    this.loginStore = new LoginStore();
     this.runtimeStore = new RuntimeStore(initialState);
     this.repoStore = new RepoStore(initialState);
     this.userStore = new UserStore(initialState);
     this.roleStore = new RoleStore(initialState);
     this.categoryStore = new CategoryStore(initialState);
-    this.loginStore = new LoginStore();
     this.loginStore = new LoginStore();
   }
 
