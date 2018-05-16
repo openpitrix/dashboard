@@ -13,9 +13,17 @@ const routes = [
   { path: '/apps/:category', exact: true, component: Home },
   { path: '/app/:appId', exact: true, component: AppDetail },
   { path: '/app/:appId/deploy', exact: true, component: AppDeploy },
-  { path: '/manage/apps', exact: true, component: InstalledApps },
+  { path: '/manage/overview', exact: true, component: Overview },
+  { path: '/manage/apps', exact: true, component: Apps },
+  { path: '/manage/apps/:appId', exact: true, component: AppDetail },
   { path: '/manage/clusters', exact: true, component: Clusters },
   { path: '/manage/cluster/:clusterId', exact: true, component: ClusterDetail }
 ];
 
-export default routes;
+export default routes.map(route => {
+  // add needAuth flag for /manage admin page
+  if (route.path.indexOf('/manage/') === 0) {
+    return { ...route, needAuth: true };
+  }
+  return route;
+});
