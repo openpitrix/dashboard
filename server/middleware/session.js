@@ -8,8 +8,8 @@ module.exports = app => {
   app.use(session(sessConfig, app));
 
   return async (ctx, next) => {
-    // let pv = ctx.session.views || 0;
-    // ctx.session.views = ++pv;
+    let pv = ctx.session.pv || 0;
+    ctx.session.pv = ++pv;
 
     await next();
   };

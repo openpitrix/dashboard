@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import RouteWrapper from './routes/wrapper';
 import routes from './routes';
+import { getCookie } from './utils';
 
 import './scss/main.scss';
 
@@ -22,6 +23,7 @@ class App extends Component {
 
     const isHome = pathname === '/' || pathname === '/apps';
     const isLogin = pathname === '/login';
+    const hasLoggedIn = !!getCookie('user');
 
     return (
       <Provider rootStore={rootStore}>
@@ -34,9 +36,17 @@ class App extends Component {
                   key={i}
                   exact={route.exact}
                   path={route.path}
-                  render={({ match }) => (
-                    <RouteWrapper component={route.component} match={match} rootStore={rootStore} />
-                  )}
+                  render={({ match }) =>
+                    route.needAuth && !hasLoggedIn ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <RouteWrapper
+                        component={route.component}
+                        match={match}
+                        rootStore={rootStore}
+                      />
+                    )
+                  }
                 />
               ))}
             </Switch>
