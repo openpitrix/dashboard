@@ -3,11 +3,18 @@
     "./tests/setup.js"
   ],
   "bail": true,
+  "verbose": true,
   "transform": {
     "^.+\\.jsx?$": "babel-jest"
   }, 
   "moduleNameMapper": {
     "\\.(png|svg)$": "<rootDir>/assets.transformer.js",
     "\\.(css|scss)$": "identity-obj-proxy"
-  }
+  },
+  "coverageDirectory": "./coverage/",
+  "collectCoverageFrom": [
+    "src/{components,containers}/**/*.{js,jsx}",
+    "src/utils/*.js",
+    "!**/node_modules/**"
+  ]
 }

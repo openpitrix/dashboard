@@ -39,10 +39,10 @@
     "serve-favicon": "^2.4.5"
   },
   "scripts": {
-    "dev": "BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server --exec DEBUG=koa-router node server/server.js",
+    "dev": "DEBUG=koa*,-koa-views BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server --exec node server/server.js",
     "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
     "lint": "eslint . --fix",
-    "test": "NODE_ENV=testing jest --config jest.config.json",
+    "test": "NODE_ENV=testing jest --config jest.config.json --updateSnapshot --coverage",
     "pack:dev": "NODE_ENV=development webpack --config webpack.dev.js --progress",
     "pack:prod": "NODE_ENV=production webpack -p --config webpack.prod.js --progress",
     "dist:server": "BABEL_ENV=server NODE_ENV=production babel server -d dist/server --copy-files",
@@ -50,8 +50,9 @@
     "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
     "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
     "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
-    "precommit": "yarn test -u && lint-staged",
-    "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json"
+    "precommit": "yarn test && lint-staged",
+    "bundle:analyse": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
+    "report-cov": "cat ./coverage/lcov.info | codecov"
   },
   "lint-staged": {
     "*.{js,jsx,md}": [
@@ -79,6 +80,7 @@
     "babel-runtime": "6.23.0",
     "chalk": "1.1.3",
     "chokidar": "^2.0.0",
+    "codecov": "^3.0.2",
     "css-loader": "0.28.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
