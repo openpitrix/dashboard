@@ -1,0 +1,22 @@
+@import '~scss/variables';
+
+.histogram{
+  display: inline-block;
+  margin-left: 38px;
+  .column{
+    position: relative;
+    display: inline-block;
+    height: 60px;
+    width: 4px;
+    margin-right: 9px;
+    background: $background-color;
+    .inner{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 4px;
+      height: 30%;
+      background: #9a5cd1;
+    }
+  }
+}

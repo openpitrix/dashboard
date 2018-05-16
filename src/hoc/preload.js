@@ -2,8 +2,10 @@ import React from 'react';
 import { findKey, isArray, pick } from 'lodash';
 
 const compStoreMap = {
-  appStore: ['Home', 'AppDeploy', 'AppDetail', 'InstalledApps'],
-  clusterStore: ['Clusters', 'ClusterDetail']
+  appStore: ['Home', 'Apps', 'AppDeploy', 'AppDetail', 'InstalledApps'],
+  clusterStore: ['Clusters', 'ClusterDetail'],
+  categoryStore: ['Categories', 'CategoryDetail'],
+  repoStore: ['Repos', 'RepoDetail']
 };
 
 function getStoreName(comp) {
@@ -43,3 +45,4 @@ export default function preload(methods) {
     return comp;
   };
 }
+

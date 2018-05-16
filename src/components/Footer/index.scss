@@ -1,19 +1,45 @@
 @import "~scss/variables";
 
+$line-height: $footer-height - 1;
+$fg-color: #a8a0b1;
+
 .footer {
   position: absolute;
   width: 100%;
   height: $footer-height;
-  background-color: $background-color-lighter;
+  background-color: $background-color;
   border-top: 1px solid $border;
   box-sizing: border-box;
+
   .wrapper {
-    width: $content-width;
-    margin: 0 auto;
+    margin: 0 $layout-margin;
+    color: $fg-color;
+
     .logo {
-      color: #666;
-      font-size: 20px;
-      line-height: $footer-height - 1;
+      display: inline-block;
+      float: left;
+      font-size: $size-medium;
+      line-height: $line-height;
+      text-transform: uppercase;
+    }
+    .terms {
+      display:inline-block;
+      float: right;
+      line-height: $line-height;
+      & > li{
+        list-style-type: none;
+        float: left;
+        text-align: right;
+        margin-left: 10px;
+
+        &.copyright {
+          margin-left: 20px;
+        }
+
+        a {
+          color: $fg-color;
+        }
+      }
     }
   }
 }

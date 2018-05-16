@@ -15,6 +15,7 @@ $purple-dark: #5f3a8a;
 $grey: #cccccc;
 $grey-light: #d6cfde;
 
+$sub-nav-color: #160029;
 $id-color: #127db3;
 $link-color: #6c2db5;
 $title-color: #300E56;
@@ -22,14 +23,22 @@ $text-color: #333333;
 $second-text-color: #666666;
 $third-text-color: #7749ac;
 $placeholder-color: #c1c1c1;
+$grey-word: #a6a1ab;
+$grey-time: #9b9b9b;
+$purple-name: #9d80bf;
+$purple-word: #1c062f;
 
 $background-color: #f6f6f8;
 $background-color-lighter: #ffffff;
 $th-background-color: #f1edf6;
+$li-bg:#f5f7fa;
 
 $family-sans-serif: "Roboto", "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", 微软雅黑, STHeitiSC-Light, simsun, 宋体, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
 $family-monospace: Inconsolata,Consolas,Monaco,monospace;
 $body-size: 14px;
+
+// home
+$layout-margin: 156px;
 
 // Override
 $primary: $purple;
@@ -39,9 +48,10 @@ $warning: $yellow;
 $success: $green;
 
 $family-primary: $family-sans-serif;
-$body-background-color: $background-color-lighter;
+$body-background-color: $background-color;
 
 $size-small: 12px;
+$size-normal: 14px;
 $size-medium: 16px; // 中号字体
 $size-large: 28px;
 
@@ -49,6 +59,8 @@ $border-lighter: #e7e7e7;
 $border-light: #c9bed6;
 $border: $border-lighter;
 $border-dark: #7749AC;
+$border-gray: #e4ebf1;
+$border-gray-li: #e6ecf2;
 
 // Animation
 $transition-speed: .3s;
@@ -58,8 +70,9 @@ $content-width: 1128px;
 $nav-width: 192px;
 $header-height: 48px;
 $banner-height: 400px;
-$footer-height: 70px;
+$footer-height: 64px;
 $base-margin: 24px;
+$card-width: 264px;
 
 $main-height: calc(100vh - #{$footer-height});
 

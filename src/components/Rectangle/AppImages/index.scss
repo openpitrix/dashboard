@@ -1,0 +1,31 @@
+@import "~scss/variables";
+
+.appImages {
+  .name{
+    font-size: 12px;
+    line-height: 2.0;
+    color: $grey-word;
+  }
+  .images{
+    img{
+      display: inline-block;
+      float: left;
+      margin-left: -10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      &:nth-child(1){
+        margin-left: 0;
+      }
+    }
+    .totalNum{
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+      color: $title-color;
+    }
+
+  }
+}

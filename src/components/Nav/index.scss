@@ -5,6 +5,7 @@
   .subNav {
     padding: 0;
     margin-top: $base-margin;
+    margin-right: -2px;
     &:first-of-type {
       margin-top: 0;
     }
@@ -20,7 +21,8 @@
       line-height: 16px;
       list-style: none;
       &.current {
-        box-shadow: 1px 0 0 0 $third-text-color;
+        /*box-shadow: 1px 0 0 0 $third-text-color;*/
+        border-right: 2px solid $border-dark;
       }
       a {
         color: $second-text-color;

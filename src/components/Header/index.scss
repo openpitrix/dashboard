@@ -7,10 +7,9 @@
   height: $header-height;
   background-image: linear-gradient(to left, #794db3, #854fb9 32%, #484999);
   z-index: 999;
+
   .wrapper {
-    width: $content-width;
-    height: 100%;
-    margin: 0 auto;
+    margin: 0 $layout-margin;
   }
   
   .logo {
@@ -33,7 +32,8 @@
     }
     input {
       color: rgba(#ffffff, 0.7);
-      font-weight: 500;
+      font-weight: 400;
+      font-size: $size-normal;
       border: none;
       border-radius: 16px;
       background-color: rgba(#ffffff, 0.1);
@@ -47,16 +47,18 @@
   .menus {
     float: right;
     line-height: $header-height;
+    margin-right: -10px;
+
     a {
-      padding: 6px 12px;
-      margin-left: 8px;
-      border-radius: 14px;
-      color: #ffffff;
-      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 400;
+      font-style: normal;
       line-height: 16px;
       transition: all .3s ease-in-out;
       &:hover {
-        background-color: rgba(#ffffff, 0.1);
+        background-color: rgba(#fff, 0.1);
       }
     }
   }

@@ -6,6 +6,7 @@ let sharedConfig = {};
 
 export default class Store {
   constructor(initialState, branch) {
+    this.pageSize = 10;
     if (initialState) {
       extendObservable(this, branch ? initialState[branch] : initialState);
     }
@@ -44,3 +45,4 @@ Store.prototype = {
     }
   })
 };
+

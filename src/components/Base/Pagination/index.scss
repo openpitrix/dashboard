@@ -50,7 +50,7 @@
         background-color: $primary;
 
         a {
-          color: #fff;
+          color: #fff !important;
         }
 
         &:focus, &:hover {

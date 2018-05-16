@@ -1,0 +1,39 @@
+@import '~scss/variables';
+
+.timeAxis {
+  margin-left: 10px;
+  .axis{
+    li{
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 25px;
+      border-left: 2px solid #e2d0f2;
+      &:first-child .dot, &:last-child .dot{
+        background-color: #cc5252;
+      }
+    }
+    .word{
+      margin-bottom: 6px;
+      line-height: 19px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #300e56;
+    }
+    .time{
+      line-height: 16px;
+      font-size: 14px;
+      color: #333333;
+    }
+    .dot{
+      display: inline-block;
+      position: absolute;
+      left: -7px;
+      top: -1px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #24b36b;
+      border: 2px solid #ffffff;
+    }
+  }
+}

@@ -1,0 +1,134 @@
+@import '~scss/variables';
+
+.addPage {
+  padding-top: $header-height;
+  .wrapper{
+    margin: 0 auto 24px;
+    width: $content-width;
+  }
+  .leftInfo{
+    display: inline-block;
+    width: 744px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+    .title{
+      padding: 15px 24px 18px;
+      line-height: 24px;
+      font-size: 20px;
+      color: $title-color;
+      border-bottom: 1px solid #dadcde;
+    }
+    form{
+      display: block;
+      padding: 24px 0 0 24px;
+      &>div{
+        margin-bottom: 24px;
+      }
+      .name{
+        display: inline-block;
+        //float: left;
+        margin-right: 16px;
+        width: 120px;
+        line-height: 16px;
+        font-size: 14px;
+        font-weight: bold;
+        color: $title-color;
+        text-align: right;
+      }
+      .input{
+        width: 280px;
+      }
+      .inputUrl{
+        width: 376px;
+      }
+      .inputSmall{
+        width: 138px;
+        margin-right: 10px;
+      }
+      .inputTitle{
+        display: inline-block;
+        margin: 8px 10px 3px 0;
+        width: 183px;
+        font-size: 12px;
+      }
+      .inputMiddle{
+        width: 183px;
+        margin-right: 10px;
+      }
+      .radio,.checkbox{
+        margin-right: 30px;
+       }
+      .add{
+        display: inline-block;
+        font-weight: bold;
+      }
+      .select{
+        width: 86px;
+        margin-right: 10px;
+      }
+      .textarea{
+        padding: 7px 10px;
+        width: 442px;
+        height: 88px;
+        border-radius: 2px;
+        border: 1px solid #e7e7e7;
+        outline: none;
+        resize: none;
+        &:focus{
+          border: 1px solid $border-dark;
+        }
+      }
+      .textareaName{
+        position: relative;
+        bottom: 70px;
+      }
+    }
+    .rightShow{
+      margin-top: 7px;
+      margin-left: 136px;
+      .note{
+        font-size: 12px;
+        color: #626466;
+      }
+    }
+    .submit{
+      padding: 24px 0 24px 160px;
+      border-top: 1px solid #dadcde;
+      button{
+        margin-right: 12px;
+      }
+
+    }
+  }
+  .rightInfo{
+    float: right;
+    width: 312px;
+    margin-right: 24px;
+    .title{
+      margin-bottom: 20px;
+      line-height: 24px;
+      font-family: Roboto;
+      font-weight: 500;
+      color: #300e56;
+    }
+    .content{
+      font-size: 14px;
+      line-height: 1.43;
+      text-align: left;
+      color: #4c4752;
+      p{
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+.backTo{
+  width: $content-width;
+  margin: 24px auto 12px;
+  line-height: 20px;
+  font-size: 14px;
+  a{
+    color: $title-color;
+  }
+}
