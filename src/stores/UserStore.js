@@ -6,10 +6,10 @@ export default class UserStore extends Store {
   @observable users = [];
   @observable userDetail = {};
   @observable isLoading = false;
+  @observable totalCount = 0;
 
   constructor(initialState) {
     super(initialState, 'userStore');
-    this.totalCount = 0;
   }
 
   @action

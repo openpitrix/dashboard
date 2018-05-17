@@ -16,14 +16,17 @@ import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import styles from './index.scss';
-import preload from 'hoc/preload';
 
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore
 }))
 @observer
-@preload(['fetchAll', 'fetchStatistics'])
 export default class Apps extends Component {
+  static async onEnter({ appStore }) {
+    await appStore.fetchAll({ page: 1 });
+    await appStore.fetchStatistics();
+  }
+
   onSearch = async name => {
     await this.props.appStore.fetchQueryApps(name);
   };

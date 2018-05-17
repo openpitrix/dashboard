@@ -41,7 +41,7 @@ export default class AppDetail extends Component {
               </div>
             </div>
             <div className={styles.meta}>
-              <Link to={`/app/${appStore.app.id}/deploy`}>
+              <Link to={`/app/${appStore.app.app_id}/deploy`}>
                 <Button className={styles.deployBtn} type="primary">
                   Deploy
                 </Button>

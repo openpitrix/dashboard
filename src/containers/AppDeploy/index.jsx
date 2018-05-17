@@ -16,7 +16,7 @@ export default class AppDetail extends Component {
       <div className={styles.deploy}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <Link to={`/app/${appStore.app.id}`}>
+            <Link to={`/app/${appStore.app.app_id}`}>
               <i className="fa fa-long-arrow-left" /> 返回到目录
             </Link>
           </div>

@@ -9,7 +9,8 @@
   z-index: 999;
 
   .wrapper {
-    margin: 0 $layout-margin;
+    width: $content-width;
+    margin: 0 auto;
   }
   
   .logo {
@@ -47,8 +48,6 @@
   .menus {
     float: right;
     line-height: $header-height;
-    margin-right: -10px;
-
     a {
       padding: 5px 10px;
       border-radius: 12px;
@@ -78,4 +77,7 @@
   color: $third-text-color;
   background: #fff;
   border-color: $border-dark
+}
+.loginButton button{
+  line-height: 16px;
 }
