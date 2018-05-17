@@ -10,10 +10,10 @@ export default class AppStore extends Store {
   @observable versions = [];
   @observable statistics = {};
   @observable isLoading = false;
+  @observable totalCount = 0;
 
   constructor(initialState) {
     super(initialState, 'appStore');
-    this.totalCount = 0;
   }
 
   @action

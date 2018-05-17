@@ -7,10 +7,10 @@ export default class RuntimeStoreStore extends Store {
   @observable runtimeDetail = {};
   @observable statistics = {};
   @observable isLoading = false;
+  @observable totalCount = 0;
 
   constructor(initialState) {
     super(initialState, 'runtimeStore');
-    this.totalCount = 0;
   }
 
   @action

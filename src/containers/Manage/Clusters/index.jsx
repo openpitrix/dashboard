@@ -16,15 +16,18 @@ import TdName from 'components/TdName';
 import Popover from 'components/Base/Popover';
 
 import { getParseDate } from 'utils';
-import preload from 'hoc/preload';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore
 }))
 @observer
-@preload(['fetchClusters', 'fetchStatistics'])
 export default class Clusters extends Component {
+  static async onEnter({ clusterStore }) {
+    await clusterStore.fetchClusters({ page: 1 });
+    await clusterStore.fetchStatistics();
+  }
+
   onSearch = async name => {
     await this.props.clusterStore.fetchQueryClusters(name);
   };

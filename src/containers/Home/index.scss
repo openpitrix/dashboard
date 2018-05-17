@@ -1,11 +1,13 @@
 @import "~scss/variables";
 
+.contentOuter{
+  background-color: $background-color-lighter;
+}
 .content{
   position: relative;
   height: $main-height;
-  margin: 0 $layout-margin;
+  margin: 0 auto;
   width: $content-width;
-
   .nav {
     position: absolute;
     top: 0;
@@ -15,7 +17,7 @@
     border-right: 2px solid $border;
   }
   .apps {
-    margin-left: 252px;
+    margin-left: 288px;
     padding-bottom: 95px;
   }
   &.fixNav {
@@ -23,7 +25,7 @@
     .nav {
       position: fixed;
       top: $header-height;
-      left: $layout-margin;
+      left: auto;
       height: 100%;
     }
   }

@@ -33,7 +33,11 @@ export default class Header extends Component {
     }
 
     return (
-      <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
+      <ButtonDropdown
+        className={styles.loginButton}
+        isOpen={this.state.dropdownOpen}
+        toggle={this.toggleDropdown}
+      >
         <DropdownToggle caret className={styles.toggleBtn}>
           {loggedInUser}
         </DropdownToggle>

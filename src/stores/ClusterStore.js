@@ -9,10 +9,10 @@ export default class ClusterStore extends Store {
   @observable clusterActivities = [];
   @observable statistics = {};
   @observable isLoading = false;
+  @observable totalCount = 0;
 
   constructor(initialState) {
     super(initialState, 'clusterStore');
-    this.totalCount = 0;
   }
 
   @action
