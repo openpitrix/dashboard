@@ -18,7 +18,6 @@ import Popover from 'components/Base/Popover';
 import { getParseDate } from 'utils';
 import preload from 'hoc/preload';
 import styles from './index.scss';
-import ClusterDetail from './Detail/index';
 
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore
@@ -146,4 +145,3 @@ export default class Clusters extends Component {
     );
   }
 }
-Clusters.Detail = ClusterDetail;

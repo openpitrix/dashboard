@@ -15,7 +15,8 @@ import styles from './index.scss';
 export default class Header extends Component {
   state = {
     isHome: PropTypes.bool,
-    dropdownOpen: false
+    dropdownOpen: false,
+    loggedInUser: getCookie('user')
   };
 
   toggleDropdown = () => {
@@ -25,16 +26,16 @@ export default class Header extends Component {
   };
 
   renderLoginButton() {
-    const cookieUser = getCookie('user');
+    const { loggedInUser } = this.state;
 
-    if (!cookieUser) {
+    if (!loggedInUser) {
       return <NavLink to="/login">Sign In</NavLink>;
     }
 
     return (
       <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
         <DropdownToggle caret className={styles.toggleBtn}>
-          {cookieUser}
+          {loggedInUser}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem style={{ padding: 0 }}>
@@ -62,8 +63,8 @@ export default class Header extends Component {
           )}
           <div className={styles.menus}>
             <NavLink to="/apps">Catalog</NavLink>
-            <NavLink to="/manage/overview">Deployment</NavLink>
-            <NavLink to="/develop">Development</NavLink>
+            <NavLink to="/deployment">Deployment</NavLink>
+            <NavLink to="/manage">{this.state.loggedInUser ? 'Manage' : 'Development'}</NavLink>
             {this.renderLoginButton()}
           </div>
         </div>
