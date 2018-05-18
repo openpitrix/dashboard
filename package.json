@@ -40,17 +40,13 @@
     "serve-favicon": "^2.4.5"
   },
   "scripts": {
-    "dev": "DEBUG=koa*,-koa-views BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server --exec node server/server.js",
-    "prod": "rimraf dist && npm run pack:prod && npm run dist && npm run serve",
+    "dev": "DEBUG=koa*,-koa-views BABEL_ENV=server COMPILE_CLIENT=true NODE_ENV=development nodemon -w lib -w server --exec node server/server.js",
+    "prod": "rimraf dist && npm run pack:prod && npm run serve:dist",
     "lint": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json --updateSnapshot --coverage",
-    "pack:dev": "NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "pack:dev": "NODE_ENV=development webpack --config webpack.dev.js --progress -w",
     "pack:prod": "NODE_ENV=production webpack -p --config webpack.prod.js --progress",
-    "dist:server": "BABEL_ENV=server NODE_ENV=production babel server -d dist/server --copy-files",
-    "dist:lib": "BABEL_ENV=server NODE_ENV=production babel lib -d dist/lib --copy-files",
-    "dist:src": "BABEL_ENV=server NODE_ENV=production babel src -d dist/src --copy-files",
-    "dist": "npm run dist:server && npm run dist:lib && npm run dist:src",
-    "serve": "DEBUG=koa-router NODE_ENV=production node dist/server/server.js",
+    "serve:dist": "DEBUG=koa*,-koa-views node dist/server.js",
     "precommit": "yarn test && lint-staged",
     "bundle:analyse": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov"
@@ -77,6 +73,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.26.0",
     "babel-runtime": "6.23.0",
     "chalk": "1.1.3",
@@ -112,7 +109,8 @@
     "url-loader": "0.5.9",
     "webpack": "^3",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.14",
+    "webpack-cli": "^2.1.3",
+    "webpack-node-externals": "^1.7.2",
     "webpack-notifier": "^1.6.0"
   },
   "engines": {

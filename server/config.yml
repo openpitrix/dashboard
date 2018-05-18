@@ -6,8 +6,8 @@ http:
   port: 8000
   favicon: src/assets/favicon.ico
   static:
+    /assets: src/assets
     development:
-      /assets: src/assets
       /build: build
     production:
       /dist: dist

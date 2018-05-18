@@ -1,12 +1,12 @@
-const webpack = require('webpack');
-const webpackMiddleware = require('koa-webpack');
-const webpackConfig = require('../webpack.dev');
-
-module.exports = (app, needCompile) => {
+module.exports = (app, needCompile = true) => {
   if (!needCompile || process.env.NODE_ENV !== 'development') return;
 
   // disable babel server env plugins transform
   process.env.BABEL_ENV = '';
+
+  const webpack = require('webpack');
+  const webpackMiddleware = require('koa-webpack');
+  const webpackConfig = require('../webpack.dev');
 
   app.use(
     webpackMiddleware({
@@ -22,12 +22,12 @@ module.exports = (app, needCompile) => {
         stats: {
           colors: true,
           // hash: true,
-          timings: true
+          timings: true,
           // version: false,
-          // chunks: true,
-          // modules: true,
+          chunks: true,
+          modules: true,
           // children: false,
-          // chunkModules: true
+          chunkModules: true
         }
       }
     })

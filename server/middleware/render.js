@@ -1,12 +1,17 @@
 /* eslint-disable import/first */
-process.env.BABEL_ENV = 'server';
+if (process.env.COMPILE_CLIENT) {
+  process.env.BABEL_ENV = 'server';
+}
 
 const React = require('react');
 const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
-const { matchRoutes } = require('react-router-config');
+const { matchRoutes, renderRoutes } = require('react-router-config');
+const { Provider, useStaticRendering } = require('mobx-react');
 
-const App = require('src/App').default;
+useStaticRendering(true);
+
+// const App = require('src/App').default;
 const routes = require('src/routes').default;
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -23,12 +28,16 @@ module.exports = async (ctx, next) => {
   await Promise.all(promises);
 
   const context = {};
+
+  // when in dev mode, disable ssr
   const components = isDev
     ? null
     : renderToString(
-        <StaticRouter location={ctx.url} context={context}>
-          <App rootStore={ctx.store} />
-        </StaticRouter>
+        <Provider rootStore={ctx.store}>
+          <StaticRouter location={ctx.url} context={context}>
+            {renderRoutes(routes)}
+          </StaticRouter>
+        </Provider>
       );
 
   if (context.url) {
@@ -39,6 +48,7 @@ module.exports = async (ctx, next) => {
 
   await ctx.render('index.pug', {
     isDev,
+    isLogin: ctx.url === '/login',
     title: ctx.store.config.name,
     children: components,
     state: JSON.stringify(ctx.store)

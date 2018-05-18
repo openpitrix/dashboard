@@ -17,13 +17,16 @@ class App extends Component {
     rootStore: PropTypes.object
   };
 
+  hasLoggedIn = () => {
+    return !!getCookie('user');
+  };
+
   render() {
     const { location, rootStore } = this.props;
     const pathname = location.pathname;
 
     const isHome = pathname === '/' || pathname === '/apps';
     const isLogin = pathname === '/login';
-    const hasLoggedIn = !!getCookie('user');
 
     return (
       <Provider rootStore={rootStore}>
@@ -37,7 +40,7 @@ class App extends Component {
                   exact={route.exact}
                   path={route.path}
                   render={({ match }) =>
-                    route.needAuth && !hasLoggedIn ? (
+                    route.needAuth && !this.hasLoggedIn() ? (
                       <Redirect to="/login" />
                     ) : (
                       <RouteWrapper

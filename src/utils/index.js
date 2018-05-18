@@ -13,7 +13,7 @@ export function getScrollTop() {
 
 export function getCookie(name) {
   let re = new RegExp(name + '=([^;]+)');
-  let value = re.exec(document.cookie);
+  let value = re.exec(document.cookie); // watch out document not defined in nodejs
   return value !== null ? unescape(value[1]) : null;
 }
 
@@ -24,3 +24,6 @@ export function getPastTime(time) {
   return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
 }
 
+export function getLoginUser() {
+  return getCookie('user');
+}

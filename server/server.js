@@ -4,9 +4,14 @@ if (semver.lt(process.version, '7.6.0')) {
   process.exit(-1);
 }
 
-require('babel-register')({
-  cache: true
-});
+const env = process.env.NODE_ENV || 'development';
+const isDevMode = env === 'development';
+
+if (isDevMode) {
+  require('babel-register')({
+    cache: true
+  });
+}
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
@@ -22,27 +27,28 @@ const render = require('./middleware/render');
 const loginRoute = require('./routes/login');
 const apiRoute = require('./routes/api');
 const pageRoute = require('./routes/page');
-const packClient = require('./pack-client');
 
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
-const env = process.env.NODE_ENV || 'development';
 const app = new Koa();
 const config = getServerConfig();
 
 global.HOSTNAME = config.http.hostname || 'localhost';
 global.PORT = config.http.port || 8000;
 
-// in favor of debug on server, bypass client webpack
-const shouldPackClient = true;
-
 watchServerConfig();
 
 // serve static files
-const staticMount = config.http.static;
-for (const [k, v] of Object.entries(staticMount[env] || staticMount['development'])) {
-  app.use(mount(k, serve(root(v), { index: false })));
-}
+const serveStatic = (mount_points = {}) => {
+  for (let [k, v] of Object.entries(mount_points)) {
+    if (typeof v === 'string') {
+      app.use(mount(k, serve(root(v), { index: false })));
+    } else if (typeof v === 'object' && k === env) {
+      serveStatic(v);
+    }
+  }
+};
+serveStatic(config.http.static);
 
 app.use(favicon(root(config.http.favicon)));
 
@@ -65,7 +71,10 @@ app.use(apiRoute.routes());
 app.use(pageRoute.routes());
 
 // pack client side assets
-packClient(app, shouldPackClient);
+if (isDevMode) {
+  const packClient = require('./pack-client');
+  packClient(app, process.env.COMPILE_CLIENT);
+}
 
 app.use(
   views(root('server/views'), {
