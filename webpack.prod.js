@@ -107,7 +107,6 @@ const serverConfig = {
       {
         test: /\.jsx?$/,
         use: 'babel-loader',
-        // include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')],
         exclude: /(node_modules)/
       },
       {
@@ -145,6 +144,6 @@ const serverConfig = {
 };
 
 module.exports = [
-  // clientConfig,
+  clientConfig,
   serverConfig
 ];
