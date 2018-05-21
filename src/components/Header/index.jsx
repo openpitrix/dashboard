@@ -25,9 +25,9 @@ export default class Header extends Component {
   };
 
   renderLoginButton() {
-    const loggeInUser = getLoginUser();
+    const loggedInUser = getLoginUser();
 
-    if (!loggeInUser) {
+    if (!loggedInUser) {
       return <NavLink to="/login">Sign In</NavLink>;
     }
 
@@ -38,7 +38,7 @@ export default class Header extends Component {
         toggle={this.toggleDropdown}
       >
         <DropdownToggle caret className={styles.toggleBtn}>
-          {loggeInUser}
+          {loggedInUser}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem style={{ padding: 0 }}>

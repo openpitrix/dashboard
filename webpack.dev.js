@@ -7,28 +7,30 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 module.exports = {
   devtool: 'eval',
   cache: true,
-  entry: ['./src/index.js'],
+  entry: [
+    // 'webpack-hot-middleware/client',
+    './src/index.js'
+  ],
   output: {
     filename: 'bundle.js',
     path: resolve(__dirname, 'build/'),
     publicPath: '/build',
     pathinfo: true
   },
-  profile: true,
+  // profile: true,
   stats: {
     hash: true,
-    version: true,
+    // version: true,
     timings: true,
     // assets: true,
     chunks: true,
-    modules: true,
-    reasons: true,
-    children: true,
+    // modules: true,
+    // reasons: true,
+    // children: true,
     source: false,
     errors: true,
     errorDetails: true,
     warnings: true
-    // publicPath: true
   },
   module: {
     rules: [
@@ -78,6 +80,7 @@ module.exports = {
       title: 'dashboard build done',
       alwaysNotify: true
     }),
+    // new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.WatchIgnorePlugin([

@@ -11,6 +11,7 @@ module.exports = (app, needCompile = true) => {
   app.use(
     webpackMiddleware({
       compiler: webpack(webpackConfig),
+      // hot: false,
       dev: {
         noInfo: false,
         quiet: false,

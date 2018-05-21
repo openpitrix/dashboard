@@ -7,11 +7,10 @@ if (semver.lt(process.version, '7.6.0')) {
 const env = process.env.NODE_ENV || 'development';
 const isDevMode = env === 'development';
 
-if (isDevMode) {
+isDevMode &&
   require('babel-register')({
     cache: true
   });
-}
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');

@@ -13,7 +13,7 @@ export function getScrollTop() {
 
 export function getCookie(name) {
   let re = new RegExp(name + '=([^;]+)');
-  let value = re.exec(document.cookie); // watch out document not defined in nodejs
+  let value = re.exec(document.cookie);
   return value !== null ? unescape(value[1]) : null;
 }
 

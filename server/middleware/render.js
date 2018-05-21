@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 if (process.env.COMPILE_CLIENT) {
   process.env.BABEL_ENV = 'server';
 }
@@ -7,13 +6,9 @@ const React = require('react');
 const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
 const { matchRoutes, renderRoutes } = require('react-router-config');
-const { Provider, useStaticRendering } = require('mobx-react');
+const { Provider } = require('mobx-react');
 
-useStaticRendering(true);
-
-// const App = require('src/App').default;
 const routes = require('src/routes').default;
-
 const isDev = process.env.NODE_ENV === 'development';
 
 // Server-side render
