@@ -5,8 +5,8 @@ module.exports = {
     {
       test: /\.jsx?$/,
       use: 'babel-loader',
-      include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')],
-      exclude: /node_modules/
+      // include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')],
+      exclude: /(node_modules)/
     },
     {
       test: /\.(jpg|png|svg)(\?.+)?$/,
@@ -24,6 +24,6 @@ module.exports = {
     alias: {
       scss: resolve(__dirname, 'src/scss')
     },
-    modules: [resolve(__dirname, 'src'), 'node_modules']
+    modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
   }
 };

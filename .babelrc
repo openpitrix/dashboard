@@ -33,8 +33,7 @@
           {
             "removeImport": true,
             "ignoreFilenames": [
-              "node_modules",
-              "transition"
+              "node_modules"
             ]
           }
         ]
@@ -46,17 +45,9 @@
           "css-modules-transform",
           {
             "generateScopedName": "[folder]__[local]--[hash:base64:5]",
-            "extensions": [
-              ".css",
-              ".scss"
-            ]
+            "extensions": [".css", ".scss"]
           }
         ]
-      ]
-    },
-    "development": {
-      "plugins": [
-        "react-hot-loader/babel"
       ]
     }
   }

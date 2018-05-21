@@ -1,4 +1,4 @@
-- var bundlePrefix = isDev ? '' : '/dist'
+- var bundlePrefix = isDev ? '/build' : '/dist'
 
 doctype html
 html(lang="en")
@@ -11,7 +11,9 @@ html(lang="en")
     link(rel="stylesheet" href="/assets/css/normalize.min.css")
     link(rel="stylesheet" href="/assets/fonts/roboto/roboto.css")
     link(href='https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet")
-    link(href='https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css' rel="stylesheet")
+
+    if !isLogin
+      link(href='https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css' rel="stylesheet")
 
     if !isDev
       link(href= bundlePrefix + '/bundle.css' rel="stylesheet" media="all")
@@ -23,4 +25,6 @@ html(lang="en")
       !{children}
     script.
       window.__INITIAL_STATE__ = !{state || '{}'}
+
+    //script(src= bundlePrefix + '/vendor.js').
     script(src= bundlePrefix + '/bundle.js').
