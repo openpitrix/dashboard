@@ -24,3 +24,6 @@ export function getPastTime(time) {
   return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
 }
 
+export function getLoginUser() {
+  return getCookie('user');
+}

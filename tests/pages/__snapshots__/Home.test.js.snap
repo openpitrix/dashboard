@@ -74,40 +74,44 @@ exports[`Home basic render 1`] = `
         </div>
       </Banner>
       <div
-        className="content"
+        className="contentOuter"
       >
-        <Nav
-          className="nav"
+        <div
+          className="content"
         >
-          <div
-            className="nav nav"
-          />
-        </Nav>
-        <AppList
-          className="apps"
-          fold={false}
-        >
-          <div
-            className="appList apps"
+          <Nav
+            className="nav"
           >
-            <CardTitle
-              more={true}
-              title="Catalog Title"
+            <div
+              className="nav nav"
+            />
+          </Nav>
+          <AppList
+            className="apps"
+            fold={false}
+          >
+            <div
+              className="appList apps"
             >
-              <div
-                className="title"
+              <CardTitle
+                more={true}
+                title="Catalog Title"
               >
-                Catalog Title
-                 
-                <span
-                  className="more show"
+                <div
+                  className="title"
                 >
-                  more...
-                </span>
-              </div>
-            </CardTitle>
-          </div>
-        </AppList>
+                  Catalog Title
+                   
+                  <span
+                    className="more show"
+                  >
+                    more...
+                  </span>
+                </div>
+              </CardTitle>
+            </div>
+          </AppList>
+        </div>
       </div>
     </Home>
   </inject-Home-with-rootStore>
