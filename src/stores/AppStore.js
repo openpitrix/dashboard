@@ -71,4 +71,19 @@ export default class AppStore extends Store {
     this.statistics = get(result, 'statistics_set.apps', {});
     this.isLoading = false;
   }
+
+  @action
+  async fetchDeleteApp(appId) {
+    this.isLoading = true;
+    const result = await this.request.delete('apps', { app_id: appId });
+    console.log(result);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchAddApp(params) {
+    this.isLoading = true;
+    await this.request.post('apps', { data: params });
+    this.isLoading = false;
+  }
 }

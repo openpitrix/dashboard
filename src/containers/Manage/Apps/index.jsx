@@ -15,6 +15,7 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
+import Modal from 'components/Base/Modal';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -27,6 +28,14 @@ export default class Apps extends Component {
     await appStore.fetchStatistics();
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      appId: '',
+      showDeleteModal: false
+    };
+  }
+
   onSearch = async name => {
     await this.props.appStore.fetchQueryApps(name);
   };
@@ -35,10 +44,56 @@ export default class Apps extends Component {
     await this.onSearch();
   };
 
+  deleteApp = async () => {
+    await this.props.appStore.fetchDeleteApp(this.state.appId);
+    this.deleteAppClose();
+    await this.onRefresh();
+  };
+
+  deleteAppShow = id => {
+    this.setState({
+      appId: id,
+      showDeleteModal: true
+    });
+  };
+  deleteAppClose = () => {
+    this.setState({
+      showDeleteModal: false
+    });
+  };
+
+  renderDeleteModal = () => (
+    <Modal
+      width={500}
+      title="Delete APP"
+      visible={this.state.showDeleteModal}
+      hideFooter
+      onCancel={this.deleteAppClose}
+    >
+      <div className={styles.modalContent}>
+        <div className={styles.noteWord}>Are you sure delete this App?</div>
+        <div className={styles.operation}>
+          <Button type="default" onClick={this.deleteAppClose}>
+            Cancel
+          </Button>
+          <Button type="primary" onClick={this.deleteApp}>
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
+
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
       <Link to={`/manage/apps/${id}`}>View app detail</Link>
-      <span>Delete app</span>
+      <span
+        onClick={() => {
+          this.deleteAppShow(id);
+        }}
+      >
+        Delete app
+      </span>
     </div>
   );
 
@@ -63,7 +118,7 @@ export default class Apps extends Component {
         title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
+        render: (text, obj) => <TdName name={text} description={obj.description} image={obj.icon} />
       },
       {
         title: 'Latest Version',
@@ -137,9 +192,11 @@ export default class Apps extends Component {
                 placeholder="Search App Name or Keywords"
                 onSearch={this.onSearch}
               />
-              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-                Create
-              </Button>
+              <Link to={'/manage/addapp'}>
+                <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+                  Create
+                </Button>
+              </Link>
               <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
@@ -151,6 +208,7 @@ export default class Apps extends Component {
             <Pagination onChange={fetchAll} total={appStore.totalCount} />
           )}
         </div>
+        {this.renderDeleteModal()}
       </div>
     );
   }
