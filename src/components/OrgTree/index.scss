@@ -1,0 +1,32 @@
+@import '~scss/variables';
+
+.orgTree{
+  margin-left: -18px;
+  .hide{
+    display: none;
+  }
+  li{
+    padding-left: 18px;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    .name{
+      padding-left:18px;
+      line-height: 32px;
+      font-weight: bold;
+    }
+    .lastName{
+      padding-left:18px;
+      line-height: 32px;
+    }
+  }
+  :global {
+    i.fa {
+      margin-left: -18px;
+      width: 18px;
+      text-align: center;
+      font-weight: normal;
+      color: #e2d0f2;
+    }
+  }
+}

@@ -7,6 +7,10 @@ export default class UserStore extends Store {
   @observable userDetail = {};
   @observable isLoading = false;
   @observable totalCount = 0;
+  @observable organizations = [];
+  @observable groups = [];
+  @observable roles = [];
+  @observable authorities = [];
 
   constructor(initialState) {
     super(initialState, 'userStore');
@@ -27,6 +31,38 @@ export default class UserStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`users`, { user_id: userId });
     this.userDetail = get(result, 'app_set[0]', {});
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchOrganizations() {
+    this.isLoading = true;
+    const result = await this.request.get('organizations');
+    this.organizations = get(result, 'organization_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchGroups() {
+    this.isLoading = true;
+    const result = await this.request.get('groups');
+    this.groups = get(result, 'group_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchRoles() {
+    this.isLoading = true;
+    const result = await this.request.get('roles');
+    this.roles = get(result, 'role_set', []);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchAuthorities() {
+    this.isLoading = true;
+    const result = await this.request.get('authorities');
+    this.authorities = get(result, 'authority_set', []);
     this.isLoading = false;
   }
 }
