@@ -27,3 +27,15 @@ export function getPastTime(time) {
 export function getLoginUser() {
   return getCookie('user');
 }
+
+export function toQueryString(params) {
+  return `${Object.keys(params)
+    .map(k => {
+      const name = encodeURIComponent(k);
+      if (Array.isArray(params[k])) {
+        return params[k].map(val => `${name}[]=${encodeURIComponent(val)}`).join('&');
+      }
+      return `${name}=${encodeURIComponent(params[k])}`;
+    })
+    .join('&')}`;
+}

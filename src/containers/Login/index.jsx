@@ -70,10 +70,10 @@ export default class Login extends Component {
             </Form.Item>
           </Form>
         </div>
-        <p className={styles.tip}>
-          <span>No openpiotrix account?</span>
-          <Link to="/signup">Sign up</Link>
-        </p>
+        {/*<p className={styles.tip}>*/}
+        {/*<span>No openpiotrix account?</span>*/}
+        {/*<Link to="/signup">Sign up</Link>*/}
+        {/*</p>*/}
 
         {this.renderErrMsg()}
       </div>

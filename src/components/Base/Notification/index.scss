@@ -1,14 +1,15 @@
 
-$bg-info: lighten(blue, 30%);
+$bg-info: lighten(black, 30%);
 $bg-success: green;
 $bg-warning: yellow;
 $bg-error: red;
 
 .notification {
-  position: absolute;
-  top: 20px;
+  position: fixed;
+  bottom: 70px;
   right: 20px;
-  width:220px;
+  min-width:240px;
+  max-width: 400px;
   min-height:60px;
   padding: 3px 10px;
   font-size:14px;

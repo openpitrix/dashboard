@@ -192,11 +192,11 @@ export default class Apps extends Component {
                 placeholder="Search App Name or Keywords"
                 onSearch={this.onSearch}
               />
-              <Link to={'/manage/addapp'}>
-                <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-                  Create
-                </Button>
-              </Link>
+              {/*<Link to={'/manage/addapp'}>*/}
+              {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
+              {/*Create*/}
+              {/*</Button>*/}
+              {/*</Link>*/}
               <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>

@@ -12,6 +12,8 @@ import { getCookie } from './utils';
 
 import './scss/main.scss';
 
+const bypassUrl = ['/deployment'];
+
 class App extends Component {
   static propTypes = {
     rootStore: PropTypes.object
@@ -42,6 +44,8 @@ class App extends Component {
                   render={({ match }) =>
                     route.needAuth && !this.hasLoggedIn() ? (
                       <Redirect to="/login" />
+                    ) : route.noMatch && bypassUrl.indexOf(match.url) < 0 ? (
+                      <Redirect to="/" />
                     ) : (
                       <RouteWrapper
                         component={route.component}

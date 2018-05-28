@@ -61,7 +61,7 @@ export default class Repos extends Component {
               placeholder="Search Repo Name"
               onSearch={this.onSearch}
             />
-            <Link to="/manage/addrepo">
+            <Link to="/manage/repos/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>

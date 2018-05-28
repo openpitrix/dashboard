@@ -130,7 +130,7 @@ export default class Runtimes extends Component {
                 placeholder="Search Runtimes Name"
                 onSearch={this.onSearch}
               />
-              <Link to={`/manage/addruntime`}>
+              <Link to={`/manage/runtimes/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                   Create
                 </Button>

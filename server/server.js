@@ -15,7 +15,7 @@ isDevMode &&
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
-const convert = require('koa-convert');
+// const convert = require('koa-convert');
 const views = require('koa-views');
 const mount = require('koa-mount');
 const serve = require('koa-static');
@@ -52,28 +52,18 @@ serveStatic(config.http.static);
 app.use(favicon(root(config.http.favicon)));
 
 app.use(
-  convert(
-    bodyParser({
-      formLimit: '200kb',
-      jsonLimit: '200kb',
-      bufferLimit: '4mb'
-    })
-  )
+  bodyParser({
+    formLimit: '200kb',
+    jsonLimit: '200kb',
+    bufferLimit: '4mb',
+    onerror: function(err, ctx) {
+      ctx.throw('body parse error', 422);
+    }
+  })
 );
 
 // handle session
 app.use(session(app));
-
-// add routes
-app.use(loginRoute.routes());
-app.use(apiRoute.routes());
-app.use(pageRoute.routes());
-
-// pack client side assets
-if (isDevMode) {
-  const packClient = require('./pack-client');
-  packClient(app, process.env.COMPILE_CLIENT);
-}
 
 app.use(
   views(root('server/views'), {
@@ -82,6 +72,19 @@ app.use(
 );
 
 app.use(store);
+
+// add routes
+app.use(loginRoute.routes());
+app.use(apiRoute.routes());
+app.use(apiRoute.allowedMethods());
+app.use(pageRoute.routes());
+
+// pack client side assets
+// if (isDevMode) {
+//   const packClient = require('./pack-client');
+//   packClient(app, process.env.COMPILE_CLIENT);
+// }
+
 app.use(render);
 
 app.listen(PORT, err => {

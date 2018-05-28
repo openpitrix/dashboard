@@ -2,47 +2,43 @@ import { extendObservable } from 'mobx';
 import { isEmpty, pick } from 'lodash';
 import request from 'lib/request';
 
-let sharedConfig = {};
-
 export default class Store {
+  pageSize = 10;
+
   constructor(initialState, branch) {
-    this.pageSize = 10;
     if (initialState) {
       extendObservable(this, branch ? initialState[branch] : initialState);
-    }
 
-    if (isEmpty(sharedConfig)) {
-      sharedConfig = pick(initialState, ['config', 'serverUrl', 'apiVersion']);
-    }
-
-    if (!this.request.getOptions('prefix') && sharedConfig.serverUrl) {
-      this.request.setOptions({
-        prefix: sharedConfig.serverUrl
-      });
+      if (!request.getOptions('prefix')) {
+        request.setOptions({ prefix: initialState.apiServer });
+      }
     }
   }
 }
 
+const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
+
 Store.prototype = {
-  getConfig: () => sharedConfig,
-  setConfig: config => Object.assign(sharedConfig, config),
   request: new Proxy(request, {
     get: (target, method) => {
-      return (...args) => {
+      return async (...args) => {
         let url = args[0];
         let params = args[1];
-        if (target.hasOwnProperty(method) && typeof target[method] === 'function') {
+
+        if (allowMehhods.indexOf(method) > -1) {
           // decorate url
           if (typeof url === 'string') {
-            if (!url.startsWith('api') || !url.startsWith('/api')) {
-              url = `api/${sharedConfig.apiVersion}/${url.trimLeft('/')}`;
+            if (!/^\/?api\//.test(url)) {
+              url = '/api/' + url;
             }
+            return await target.post(url, { ...params, method });
           }
-          return target[method](url, params);
+        } else if (typeof target[method] === 'function') {
+          return target[method].apply(args);
         }
+
         throw Error(`invalid request method: ${method}`);
       };
     }
   })
 };
-

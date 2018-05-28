@@ -23,9 +23,45 @@ export default class RepoAdd extends Component {
     await repoStore.fetchRepoDetail(repoId);
   }
 
+  state = {
+    providers: ['qingcloud'],
+    visibility: 'public',
+    protocolType: 'http', // http, https, s3
+    accessKey: '',
+    secretKey: '',
+    curLabelKey: '',
+    curLabelValue: '',
+    labels: [],
+    selectors: [],
+    formValidated: false,
+    validateMsg: ''
+  };
+
+  changeProviders = providers => {
+    this.setState({ providers });
+  };
+
+  changeVisibility = visibility => {
+    this.setState({ visibility });
+  };
+
+  changeProtocolType = type => {
+    this.setState({ protocolType: type });
+  };
+
+  changeAccessKey = e => {
+    this.setState({ accessKey: e.target.value });
+  };
+
+  changeSecretKey = e => {
+    this.setState({ secretKey: e.target.value });
+  };
+
   render() {
     const { repoStore } = this.props;
-    const repoDetail = repoStore.repoDetail;
+    // const repoDetail = repoStore.repoDetail;
+
+    const { providers, visibility, protocolType } = this.state;
 
     return (
       <div className={styles.repoAdd}>
@@ -39,23 +75,26 @@ export default class RepoAdd extends Component {
             <form>
               <div>
                 <label className={styles.name}>Name</label>
-                <Input className={styles.input} />
+                <Input className={styles.input} name="name" required />
                 <p className={classNames(styles.rightShow, styles.note)}>The name of the repo</p>
               </div>
+
               <div>
                 <label className={styles.name}>Visibility</label>
-                <Radio checked="true" className={styles.radio}>
-                  Public
-                </Radio>
-                <Radio>Private</Radio>
+                <Radio.Group value={visibility} onChange={this.changeVisibility}>
+                  <Radio value="public">Public</Radio>
+                  <Radio value="private">Private</Radio>
+                </Radio.Group>
               </div>
+
               <div>
                 <label className={styles.name}>Runtime Provider</label>
-                <Checkbox checked="true" className={styles.checkbox}>
-                  QingCloud
-                </Checkbox>
-                <Checkbox>Kubernetes</Checkbox>
+                <Checkbox.Group values={providers} onChange={this.changeProviders}>
+                  <Checkbox value="qingcloud">QingCloud</Checkbox>
+                  <Checkbox value="k8s">Kubernetes</Checkbox>
+                </Checkbox.Group>
               </div>
+
               <div>
                 <label className={styles.name}>Runtime Selector</label>
                 <Input className={styles.inputSmall} placeholder="Key" />
@@ -64,18 +103,24 @@ export default class RepoAdd extends Component {
               </div>
               <div>
                 <label className={styles.name}>URL</label>
-                <Select className={styles.select} value="S3">
-                  <Select.Option value="1">S3</Select.Option>
-                  <Select.Option value="2">S8</Select.Option>
+                <Select
+                  value={protocolType}
+                  onChange={this.changeProtocolType}
+                  className={styles.select}
+                >
+                  <Select.Option value="http">HTTP</Select.Option>
+                  <Select.Option value="https">HTTPS</Select.Option>
+                  <Select.Option value="s3">S3</Select.Option>
                 </Select>
                 <Input className={styles.input} placeholder="www.example.com/path/point/" />
+
                 <div className={styles.rightShow}>
                   <p>
                     <label className={styles.inputTitle}>Access Key ID</label>
                     <label className={styles.inputTitle}>Secret Access Key</label>
                   </p>
-                  <Input className={styles.inputMiddle} placeholder="" />
-                  <Input className={styles.inputMiddle} placeholder="" />
+                  <Input className={styles.inputMiddle} required onChange={this.changeAccessKey} />
+                  <Input className={styles.inputMiddle} required onChange={this.changeSecretKey} />
                   <Button className={styles.add}>Validate</Button>
                 </div>
               </div>
@@ -89,16 +134,17 @@ export default class RepoAdd extends Component {
                 <Input className={styles.inputSmall} placeholder="Value" />
                 <Button className={styles.add}>Add</Button>
               </div>
+              <div className={styles.submit}>
+                <Button type={`primary`} className={`primary`} htmlType="submit">
+                  Confirm
+                </Button>
+                <Link to="/manage/repos">
+                  <Button>Cancel</Button>
+                </Link>
+              </div>
             </form>
-            <div className={styles.submit}>
-              <Button type={`primary`} className={`primary`} disabled="true">
-                Confirm
-              </Button>
-              <Link to="/manage/repos">
-                <Button>Cancel</Button>
-              </Link>
-            </div>
           </div>
+
           <div className={styles.rightInfo}>
             <div className={styles.title}>Guide</div>
             <div className={styles.content}>

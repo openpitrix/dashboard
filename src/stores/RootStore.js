@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { observable, action } from 'mobx';
 
 import Store from './Store';
 import AppStore from './AppStore';
@@ -11,7 +11,7 @@ import CategoryStore from './CategoryStore';
 import LoginStore from './LoginStore';
 
 export default class RootStore extends Store {
-  fixNav = false;
+  @observable fixNav = false;
 
   constructor(initialState) {
     super(initialState);
@@ -28,6 +28,6 @@ export default class RootStore extends Store {
 
   @action
   setNavFix(fixNav) {
-    this.fixNav = fixNav;
+    this.fixNav = !!fixNav;
   }
 }

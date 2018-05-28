@@ -1,16 +1,50 @@
 const Router = require('koa-router');
-const request = require('lib/request').default;
-const { getServerConfig } = require('lib/utils');
-
-const apiServer = getServerConfig('serverUrl');
+const agent = require('superagent');
+// const log=require('../log');
 
 const router = new Router();
 
-router.get('/api/:version/*', async ctx => {
+const header = {
+  Accept: 'application/json',
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+router.post('/api/*', async ctx => {
+  let endpoint = ctx.url.replace(/^\/api\//, '');
+  // strip query string
+  endpoint = endpoint.substring(
+    0,
+    endpoint.indexOf('?') > -1 ? endpoint.indexOf('?') : endpoint.length
+  );
+  let url = [ctx.store.apiServer, endpoint].join('/');
+
+  let body = ctx.request.body;
+  let forwardMethod = body.method || 'get';
+  delete body.method;
+
   try {
-    ctx.body = await request.get(apiServer + ctx.url);
+    let res;
+    if (forwardMethod === 'get') {
+      res = await agent
+        .get(url)
+        .set('Accept', 'application/json')
+        .query(body);
+    } else {
+      res = await agent[forwardMethod](url)
+        .set(header)
+        .send(body);
+    }
+
+    // normalize response body
+    ctx.body = res.body || null;
   } catch (err) {
-    ctx.status = err.code || 404;
+    ctx.body = {
+      err: err.message,
+      status: err.status || 404,
+      errDetail: err.response.body.error
+    };
+    // dont set ctx.status as 404, will cause page not found
+    // ctx.status=err.status || 404;
   }
 });
 

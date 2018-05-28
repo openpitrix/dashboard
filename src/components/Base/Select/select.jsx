@@ -10,16 +10,20 @@ export default class Select extends React.Component {
     className: PropTypes.string,
     children: PropTypes.any,
     onChange: PropTypes.func,
-    value: PropTypes.string,
-  }
+    value: PropTypes.string
+  };
 
   static defaultProps = {
-    className: '',
-  }
+    className: ''
+  };
 
   state = {
-    isOpen: false,
-  }
+    isOpen: false
+  };
+
+  childNodes = [];
+
+  currentLabel = '';
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleOutsideClick.bind(this));
@@ -31,11 +35,11 @@ export default class Select extends React.Component {
     }
   }
 
-  handleOptionClick = (e) => {
+  handleOptionClick = e => {
     const value = e.currentTarget.getAttribute('value');
     isFunction(this.props.onChange) && this.props.onChange(value);
     this.setState({ isOpen: false });
-  }
+  };
 
   handleControlClick = () => {
     const { isOpen } = this.state;
@@ -47,44 +51,61 @@ export default class Select extends React.Component {
     }
 
     this.setState({ isOpen: !isOpen });
-  }
+  };
+
+  setChildNodes = () => {
+    const { children, value } = this.props;
+
+    this.childNodes = React.Children.map(children, child => {
+      let checked = String(value) === child.props.value;
+      if (checked) {
+        this.currentLabel = child.props.children.toString();
+      }
+
+      return React.cloneElement(child, {
+        ...child.props,
+        onClick: this.handleOptionClick,
+        isSelected: checked
+      });
+    });
+
+    if (!this.currentLabel) {
+      this.currentLabel = value;
+    }
+
+    return this.childNodes;
+  };
 
   renderControl() {
-    const { value } = this.props;
     const { isOpen } = this.state;
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
-        <div className={styles.controlLabel}>{value}</div>
-        <i className={`fa fa-caret-${isOpen ? 'up' : 'down'}`}/>
+        <div className={styles.controlLabel}>{this.currentLabel}</div>
+        <i className={`fa fa-caret-${isOpen ? 'up' : 'd' + 'own'}`} />
       </div>
     );
   }
 
   renderOptions() {
-    const { children, value } = this.props;
     const { isOpen } = this.state;
 
-    const nodes = React.Children.map(children, (child) => React.cloneElement(child, {
-      ...child.props,
-      onClick: this.handleOptionClick,
-      isSelected: String(value) === child.props.value,
-    }));
-
     return (
-      <div className={classnames(styles.options, { [styles.show]: isOpen })}>
-        {nodes}
-      </div>
+      <div className={classnames(styles.options, { [styles.show]: isOpen })}>{this.childNodes}</div>
     );
   }
 
   render() {
     const { className, children, ...rest } = this.props;
 
+    this.setChildNodes();
+
     return (
       <div
         className={classnames(styles.select, className)}
         {...rest}
-        ref={ref => { this.wrapper = ref; }}
+        ref={ref => {
+          this.wrapper = ref;
+        }}
       >
         {this.renderControl()}
         {this.renderOptions()}
