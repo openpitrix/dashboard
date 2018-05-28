@@ -5,8 +5,9 @@ const postCssOptions = require('./postcss.options');
 const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
+  // devtool: 'cheap-module-eval-source-map',
   devtool: 'eval',
-  cache: true,
+  // cache: true,
   entry: [
     // 'webpack-hot-middleware/client',
     './src/index.js'
@@ -84,7 +85,7 @@ module.exports = {
     // new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.WatchIgnorePlugin([
-      resolve(__dirname, 'lib'),
+      // resolve(__dirname, 'lib'),
       resolve(__dirname, 'server'),
       resolve(__dirname, 'build'),
       resolve(__dirname, 'dist')
