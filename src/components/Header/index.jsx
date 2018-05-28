@@ -54,6 +54,7 @@ export default class Header extends Component {
       isHome,
       rootStore: { fixNav }
     } = this.props;
+
     const isDark = !isHome || fixNav;
     const logoUrl = isDark ? '/assets/logo2.svg' : '/assets/logo.svg';
 

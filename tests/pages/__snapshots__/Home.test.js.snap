@@ -4,7 +4,9 @@ exports[`Home basic render 1`] = `
 <Provider
   rootStore={
     Object {
-      "appStore": Object {},
+      "appStore": Object {
+        "apps": Array [],
+      },
       "config": Object {},
     }
   }
@@ -13,7 +15,9 @@ exports[`Home basic render 1`] = `
     <Home
       rootStore={
         Object {
-          "appStore": Object {},
+          "appStore": Object {
+            "apps": Array [],
+          },
           "config": Object {},
         }
       }
@@ -87,8 +91,8 @@ exports[`Home basic render 1`] = `
             />
           </Nav>
           <AppList
+            apps={Array []}
             className="apps"
-            fold={false}
           >
             <div
               className="appList apps"

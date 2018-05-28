@@ -1,0 +1,20 @@
+.list{
+  margin-top: 10px;
+  margin-left: 140px;
+  line-height: 14px;
+  .item{
+    max-width: 300px;
+    line-height: 20px;
+    clear: both;
+    margin: 10px 0;
+
+    span {
+      display: inline-block;
+      width: 80%;
+    }
+  }
+  .removeBtn{
+    float: right;
+    padding: 2px;
+  }
+}

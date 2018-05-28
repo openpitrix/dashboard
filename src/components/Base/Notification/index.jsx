@@ -12,7 +12,7 @@ export default class Notification extends React.Component {
     timeOut: PropTypes.number,
     onClick: PropTypes.func,
     onHide: PropTypes.func,
-    visible: PropTypes.bool
+    onClosed: PropTypes.func
   };
 
   static defaultProps = {
@@ -21,8 +21,11 @@ export default class Notification extends React.Component {
     message: null,
     timeOut: 2000,
     onClick: () => {},
-    onHide: () => {}
+    onHide: () => {},
+    onClosed: () => {}
   };
+
+  timer = null;
 
   // based on font-awesome icons
   iconMap = {
@@ -33,22 +36,19 @@ export default class Notification extends React.Component {
   };
 
   componentDidMount() {
-    const { timeOut } = this.props;
+    const { timeOut, onHide } = this.props;
     if (timeOut) {
-      this.timer = setTimeout(this.hide, timeOut);
+      this.timer = setTimeout(onHide, timeOut);
     }
   }
 
   componentWillUnmount() {
+    clearTimeout(this.props.onHide);
     this.timer = null;
+    this.props.onClosed();
   }
 
   handleClick = e => {};
-
-  hide = () => {
-    const { onHide } = this.props;
-    onHide && onHide();
-  };
 
   render() {
     const { type, title, message } = this.props;

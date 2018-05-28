@@ -130,9 +130,9 @@ export default class Clusters extends Component {
                 placeholder="Search Cluster Name or App"
                 onSearch={this.onSearch}
               />
-              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-                Create
-              </Button>
+              {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
+              {/*Create*/}
+              {/*</Button>*/}
               <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>

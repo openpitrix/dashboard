@@ -100,6 +100,12 @@
       }
 
     }
+
+    .credentialTip {
+      font-size:12px;
+      color: #626466;
+      margin-left: 135px;
+    }
   }
   .rightInfo{
     float: right;
@@ -132,3 +138,4 @@
     color: $title-color;
   }
 }
+

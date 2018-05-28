@@ -1,4 +1,4 @@
-import 'isomorphic-fetch';
+// import 'isomorphic-fetch';
 import 'lib/polyfills';
 
 import React from 'react';
@@ -18,5 +18,5 @@ if (typeof window !== 'undefined') {
   render(<App rootStore={store} />);
 }
 
-// todo: attach hmr,, deprecate react-hot-loader
+// attach hmr,, deprecate react-hot-loader
 module.hot && module.hot.accept();
