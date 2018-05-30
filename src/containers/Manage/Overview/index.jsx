@@ -11,7 +11,6 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import styles from './index.scss';
-import CategoryStore from '../../../stores/CategoryStore';
 
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,

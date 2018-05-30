@@ -26,4 +26,19 @@ export default class CategoryStore extends Store {
     this.category = get(result, 'category_set[0]', {});
     this.isLoading = false;
   }
+
+  @action
+  async fetchAddCategory(params) {
+    this.isLoading = true;
+    const result = await this.request.post('categories', params);
+    if (result.category) this.categories.unshift(result.category);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchDeleteCategory(categoryIds) {
+    this.isLoading = true;
+    await this.request.delete('categories', { category_id: categoryIds });
+    this.isLoading = false;
+  }
 }
