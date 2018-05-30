@@ -1,4 +1,3 @@
-// import 'isomorphic-fetch';
 import 'lib/polyfills';
 
 import React from 'react';

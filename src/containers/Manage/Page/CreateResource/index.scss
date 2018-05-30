@@ -1,0 +1,46 @@
+@import '~scss/variables';
+
+.wrapper{
+  margin: 0 auto 24px;
+  width: $content-width;
+
+  .leftInfo{
+    display: inline-block;
+    width: 744px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+
+    .title{
+      padding: 15px 24px 18px;
+      line-height: 24px;
+      font-size: 20px;
+      color: $title-color;
+      border-bottom: 1px solid #dadcde;
+    }
+  }
+
+  .rightInfo{
+    float: right;
+    width: 312px;
+    margin-right: 24px;
+
+    .title{
+      margin-bottom: 20px;
+      line-height: 24px;
+      font-family: Roboto;
+      font-weight: 500;
+      color: #300e56;
+    }
+
+    .content{
+      font-size: 14px;
+      line-height: 1.43;
+      text-align: left;
+      color: #4c4752;
+      p{
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

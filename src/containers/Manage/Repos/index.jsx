@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
-import ManageTabs from 'components/ManageTabs';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Popover from 'components/Base/Popover';
-import RepoCard from 'components/RepoCard';
+import { Icon, Button, Input } from 'components/Base';
+import Page from 'containers/Manage/Page';
+import RepoList from './RepoList';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  repoStore: rootStore.repoStore
+  store: rootStore.repoStore
 }))
 @observer
 export default class Repos extends Component {
@@ -22,8 +19,8 @@ export default class Repos extends Component {
     await repoStore.fetchRepos();
   }
 
-  onSearch = async name => {
-    await this.props.repoStore.fetchQueryRepos(name);
+  onSearch = async value => {
+    await this.props.store.fetchQueryRepos(value);
   };
 
   onRefresh = async () => {
@@ -38,23 +35,14 @@ export default class Repos extends Component {
   );
 
   render() {
-    const { repoStore } = this.props;
-    const repoList = toJS(repoStore.repos);
-    let reposPublic = [],
-      reposPrivate = [];
-    for (let i = 0; i < repoList.length; i++) {
-      if (repoList[i].visibility === 'Public') {
-        reposPublic.push(repoList[i]);
-      } else {
-        reposPrivate.push(repoList[i]);
-      }
-    }
+    const { store } = this.props;
+    const repoList = toJS(store.repos);
 
     return (
-      <div className={styles.repos}>
-        <ManageTabs />
+      <Page>
         <div className={styles.container}>
-          <div className={styles.pageTitle}>Repos</div>
+          <div className={styles.title}>Repos</div>
+
           <div className={styles.toolbar}>
             <Input.Search
               className={styles.search}
@@ -70,54 +58,11 @@ export default class Repos extends Component {
               <Icon name="refresh" />
             </Button>
           </div>
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>Public Repos ({reposPublic.length})</div>
-            </div>
-          </div>
-          {reposPublic.map(repo => (
-            <div className={styles.repoContent} key={repo.repo_id}>
-              <RepoCard
-                name={repo.name}
-                description={repo.description}
-                provider={repo.provider}
-                images={repo.images}
-                tags={repo.labels}
-              />
-              <div className={styles.handlePop}>
-                <div>
-                  <Popover content={this.renderHandleMenu(repo.repo_id)}>
-                    <Icon name="more" />
-                  </Popover>
-                </div>
-              </div>
-            </div>
-          ))}
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>Private Repos ({reposPrivate.length})</div>
-            </div>
-            {reposPrivate.map(repo => (
-              <div className={styles.repoContent} key={repo.repo_id}>
-                <RepoCard
-                  name={repo.name}
-                  description={repo.description}
-                  provider={repo.provider}
-                  images={repo.images}
-                  tags={repo.labels}
-                />
-                <div className={styles.handlePop}>
-                  <div>
-                    <Popover content={this.renderHandleMenu(repo.repo_id)}>
-                      <Icon name="more" />
-                    </Popover>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+
+          <RepoList visibility="public" repos={repoList} actionMenu={this.renderHandleMenu} />
+          <RepoList visibility="private" repos={repoList} actionMenu={this.renderHandleMenu} />
         </div>
-      </div>
+      </Page>
     );
   }
 }
