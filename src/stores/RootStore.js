@@ -9,6 +9,8 @@ import UserStore from './UserStore';
 import RoleStore from './RoleStore';
 import CategoryStore from './CategoryStore';
 import LoginStore from './LoginStore';
+import AppHandleStore from './AppHandleStore';
+import CategoryHandleStore from './CategoryHandleStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
@@ -24,6 +26,8 @@ export default class RootStore extends Store {
     this.roleStore = new RoleStore(initialState);
     this.categoryStore = new CategoryStore(initialState);
     this.loginStore = new LoginStore();
+    this.appHandleStore = new AppHandleStore();
+    this.categoryHandleStore = new CategoryHandleStore();
   }
 
   @action
