@@ -5,26 +5,30 @@ import { get } from 'lodash';
 export default class AppHandleStore extends Store {
   @observable appId = '';
   @observable categoryId = '';
+  @observable versionId = '';
   @observable categories = [];
-  @observable selectValue = '';
-  @observable showDeleteModal = false;
-  @observable showCategoryModal = false;
+  @observable selectedCategory = '';
+  @observable showDeleteApp = false;
+  @observable showCategoryModify = false;
+  @observable showCreateVersion = false;
+  @observable showDeleteVersion = false;
+  @observable showAllVersion = false;
 
   @action
   deleteAppShow = appId => {
     this.appId = appId;
-    this.showDeleteModal = true;
+    this.showDeleteApp = true;
   };
 
   @action
   deleteAppClose = () => {
-    this.showDeleteModal = false;
+    this.showDeleteApp = false;
   };
 
   @action
   deleteApp = async appStore => {
-    await appStore.fetchDeleteApp([this.appId]);
-    this.showDeleteModal = false;
+    await appStore.deleteApp([this.appId]);
+    this.showDeleteApp = false;
     await appStore.fetchQueryApps();
   };
 
@@ -32,15 +36,14 @@ export default class AppHandleStore extends Store {
   categoryModalShow = async (appId, category) => {
     const result = await this.request.get('categories');
     this.categories = get(result, 'category_set', []);
-    console.log(result, 'this.categories', this.categories);
     this.appId = appId;
     this.categoryId = category && category.category_id;
-    this.showCategoryModal = true;
+    this.showCategoryModify = true;
   };
 
   @action
   categoryModalClose = () => {
-    this.showCategoryModal = false;
+    this.showCategoryModify = false;
   };
 
   @action
@@ -49,16 +52,52 @@ export default class AppHandleStore extends Store {
       app_id: this.appId,
       category_id: this.categoryId
     };
-    await appStore.fetchModifyApp(data);
+    await appStore.modifyApp(data);
   };
 
   @action
   changeCategory = value => {
-    this.selectValue = value;
+    this.selectedCategory = value;
   };
 
   @action
   async onRefresh(appStore) {
     await appStore.fetchQueryApps();
   }
+
+  @action
+  createVersionShow = () => {
+    this.showCreateVersion = true;
+  };
+
+  @action
+  createVersionClose = () => {
+    this.showCreateVersion = false;
+  };
+
+  @action
+  deleteVersionShow = versionId => {
+    this.versionId = versionId;
+    this.showDeleteVersion = true;
+  };
+
+  @action
+  deleteVersionClose = () => {
+    this.showDeleteVersion = false;
+  };
+
+  @action
+  deleteVersionSubmit = async appStore => {
+    await appStore.deleteVersion(this.versionId);
+  };
+
+  @action
+  allVersionShow = () => {
+    this.showAllVersion = true;
+  };
+
+  @action
+  allVersionClose = () => {
+    this.showAllVersion = false;
+  };
 }

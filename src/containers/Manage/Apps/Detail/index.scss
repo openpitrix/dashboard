@@ -10,7 +10,18 @@
     margin-left: 384px;
   }
   .mb24{
+    position: relative;
     margin-bottom: 24px;
+    .operation{
+      position: absolute;
+      right: -24px;
+      top: 24px;
+      width: 120px;
+      text-align: center;
+      i.icon{
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 .backTo{
@@ -73,4 +84,35 @@
 }
 .ml12{
   margin-left: 12px;
+}
+.modalContent{
+  .noteWord{
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .selectItem{
+    margin-bottom: 20px;
+    .name{
+      display: inline-block;
+      margin-right:  20px;
+      width: 100px;
+      text-align: right;
+    }
+    .select{
+      width: 250px;
+    }
+  }
+  .operation{
+    text-align: center;
+    button{
+      margin: 0 6px;
+    }
+  }
+  .inputItem{
+    margin-bottom: 20px;
+    >label{
+      margin-right: 20px;
+      width: 120px;
+    }
+  }
 }

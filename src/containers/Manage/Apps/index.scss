@@ -60,8 +60,10 @@
     margin-bottom: 20px;
     .name{
       display: inline-block;
+      float: left;
       margin-right:  20px;
       width: 100px;
+      line-height: 32px;
       text-align: right;
     }
     .select{

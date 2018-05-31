@@ -22,8 +22,7 @@ router.post('/api/*', async ctx => {
   let body = ctx.request.body;
   let forwardMethod = body.method || 'get';
   delete body.method;
-  if (body.category_id) body.category_id = [body.category_id];
-  if (body.app_id) body.app_id = [body.app_id];
+
   try {
     let res;
     if (forwardMethod === 'get') {
@@ -34,7 +33,7 @@ router.post('/api/*', async ctx => {
     } else {
       res = await agent[forwardMethod](url)
         .set(header)
-        .send(JSON.stringify(body));
+        .send(body);
     }
 
     // normalize response body

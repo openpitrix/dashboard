@@ -46,7 +46,7 @@ export default class AppStore extends Store {
   // todo: fetch user's installed apps
   // api: /user_apps?uid=xxx
   @action
-  async fetchApp({ appId }) {
+  async fetchApp(appId) {
     this.isLoading = true;
     const result = await this.request.get(`apps`, { app_id: appId });
     this.app = get(result, 'app_set[0]', {});
@@ -66,8 +66,7 @@ export default class AppStore extends Store {
   @action
   async fetchAppVersions(appId) {
     this.isLoading = true;
-    //const result = await this.request.get('app_versions', { app_id: appId });
-    const result = await this.request.get('app_versions');
+    const result = await this.request.get('app_versions', { app_id: appId });
     this.versions = get(result, 'app_version_set', []);
     this.isLoading = false;
   }
@@ -81,23 +80,37 @@ export default class AppStore extends Store {
   }
 
   @action
-  async fetchDeleteApp(appIds) {
+  async deleteApp(appIds) {
     this.isLoading = true;
     await this.request.delete('apps', { app_id: appIds });
     this.isLoading = false;
   }
 
   @action
-  async fetchAddApp(params) {
+  async createApp(params) {
     this.isLoading = true;
     await this.request.post('apps', params);
     this.isLoading = false;
   }
 
   @action
-  async fetchModifyApp(params) {
+  async modifyApp(params) {
     this.isLoading = true;
     await this.request.patch('apps', params);
+    this.isLoading = false;
+  }
+
+  @action
+  async createVersion(params) {
+    this.isLoading = true;
+    await this.request.post('app_versions', params);
+    this.isLoading = false;
+  }
+
+  @action
+  async deleteVersion(versionId) {
+    this.isLoading = true;
+    await this.request.delete('app_versions', { version_id: [versionId] });
     this.isLoading = false;
   }
 }

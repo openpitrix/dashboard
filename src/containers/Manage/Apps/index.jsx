@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
@@ -37,35 +37,35 @@ export default class Apps extends Component {
       <div id={item.app_id} className="operate-menu">
         <Link to={`/manage/apps/${item.app_id}`}>View app detail</Link>
         {item.status !== 'deleted' && (
-          <span
-            onClick={() => {
-              deleteAppShow(item.app_id);
-            }}
-          >
-            Delete app
-          </span>
-        )}
-        {item.status !== 'deleted' && (
-          <span
-            onClick={() => {
-              categoryModalShow(item.app_id, item.app_category_set);
-            }}
-          >
-            Modify category
-          </span>
+          <Fragment>
+            <span
+              onClick={() => {
+                deleteAppShow(item.app_id);
+              }}
+            >
+              Delete app
+            </span>
+            <span
+              onClick={() => {
+                categoryModalShow(item.app_id, item.app_category_set);
+              }}
+            >
+              Modify category
+            </span>
+          </Fragment>
         )}
       </div>
     );
   };
 
   renderDeleteModal = () => {
-    const { showDeleteModal, deleteAppClose, deleteApp } = this.props.appHandleStore;
+    const { showDeleteApp, deleteAppClose, deleteApp } = this.props.appHandleStore;
 
     return (
       <Modal
         width={500}
         title="Delete APP"
-        visible={showDeleteModal}
+        visible={showDeleteApp}
         hideFooter
         onCancel={deleteAppClose}
       >
@@ -92,9 +92,9 @@ export default class Apps extends Component {
   renderCategoryModal = () => {
     const { appHandleStore } = this.props;
     const {
-      showCategoryModal,
+      showCategoryModify,
       categoryModalClose,
-      selectValue,
+      selectedCategory,
       changeCategory,
       modifyCategory
     } = this.props.appHandleStore;
@@ -104,18 +104,18 @@ export default class Apps extends Component {
       <Modal
         width={500}
         title="Modify Category"
-        visible={showCategoryModal}
+        visible={showCategoryModify}
         hideFooter
         onCancel={categoryModalClose}
       >
         <div className={styles.modalContent}>
           <div className={styles.selectItem}>
             <label className={styles.name}>Category</label>
-            <Select className={styles.select} value={selectValue} onChange={changeCategory}>
+            <Select className={styles.select} value={selectedCategory} onChange={changeCategory}>
               {categories &&
-                categories.map(data => (
-                  <Select.Option key={data.category_id} value={data.category_id}>
-                    {data.name}
+                categories.map(({ category_id, name }) => (
+                  <Select.Option key={category_id} value={category_id}>
+                    {name}
                   </Select.Option>
                 ))}
             </Select>
@@ -156,7 +156,14 @@ export default class Apps extends Component {
         title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        render: (text, obj) => <TdName name={text} description={obj.description} image={obj.icon} />
+        render: (text, obj) => (
+          <TdName
+            name={text}
+            description={obj.description}
+            image={obj.icon}
+            linkUrl={`/manage/apps/${obj.app_id}`}
+          />
+        )
       },
       {
         title: 'Latest Version',

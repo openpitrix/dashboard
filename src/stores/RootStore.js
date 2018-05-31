@@ -11,6 +11,8 @@ import CategoryStore from './CategoryStore';
 import LoginStore from './LoginStore';
 import RuntimeCreateStore from './RuntimeCreateStore';
 import RepoCreateStore from './RepoCreateStore';
+import AppHandleStore from './AppHandleStore';
+import CategoryHandleStore from './CategoryHandleStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
@@ -40,6 +42,8 @@ export default class RootStore extends Store {
     this.register('login', LoginStore, false);
     this.register('runtimeCreate', RuntimeCreateStore, false);
     this.register('repoCreate', RepoCreateStore, false);
+    this.register('appHandle', AppHandleStore, false);
+    this.register('categoryHandle', CategoryHandleStore, false);
   }
 
   @action
