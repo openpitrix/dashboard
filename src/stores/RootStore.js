@@ -14,7 +14,6 @@ import RepoCreateStore from './RepoCreateStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
-  @observable notifyMsg = '';
 
   register(name, store, withState = true) {
     if (typeof store !== 'function') {
@@ -45,15 +44,5 @@ export default class RootStore extends Store {
   @action
   setNavFix(fixNav) {
     this.fixNav = !!fixNav;
-  }
-
-  @action.bound
-  showMsg(msg) {
-    this.notifyMsg = msg;
-  }
-
-  @action.bound
-  hideMsg() {
-    this.notifyMsg = '';
   }
 }
