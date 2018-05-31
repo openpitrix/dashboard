@@ -17,4 +17,4 @@ export CategoryDetail from './Categories/Detail';
 export Roles from './Roles';
 export Users from './Users';
 export Tabs from './Tabs';
-export CreateResource from './CreateResource';
+export Page from './Page';

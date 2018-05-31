@@ -13,6 +13,7 @@ import Page, { BackBtn, CreateResource } from 'containers/Manage/Page';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
+  rootStore,
   store: rootStore.runtimeCreateStore
 }))
 @observer
@@ -30,7 +31,7 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.store.root;
+    const { notifyMsg, hideMsg } = this.props.rootStore;
 
     return (
       <Page msg={notifyMsg} hideMsg={hideMsg}>
