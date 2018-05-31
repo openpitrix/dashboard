@@ -24,7 +24,6 @@ export default class RootStore extends Store {
       name += 'Store';
     }
     this[name] = new store(withState ? this.state : '');
-    this[name].root = this;
   }
 
   constructor(initialState) {

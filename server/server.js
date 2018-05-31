@@ -15,7 +15,6 @@ isDevMode &&
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
-// const convert = require('koa-convert');
 const views = require('koa-views');
 const mount = require('koa-mount');
 const serve = require('koa-static');
@@ -55,10 +54,7 @@ app.use(
   bodyParser({
     formLimit: '200kb',
     jsonLimit: '200kb',
-    bufferLimit: '4mb',
-    onerror: function(err, ctx) {
-      ctx.throw('body parse error', 422);
-    }
+    bufferLimit: '4mb'
   })
 );
 
