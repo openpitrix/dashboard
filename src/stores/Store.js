@@ -19,6 +19,12 @@ export default class Store {
 const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
+  showMsg: function(msg) {
+    this.root.showMsg(msg);
+  },
+  hideMsg: function() {
+    this.root.hideMsg();
+  },
   request: new Proxy(request, {
     get: (target, method) => {
       return async (...args) => {

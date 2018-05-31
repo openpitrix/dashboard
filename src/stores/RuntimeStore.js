@@ -2,13 +2,12 @@ import { observable, action, toJS } from 'mobx';
 import Store from './Store';
 import { get } from 'lodash';
 
-export default class RuntimeStoreStore extends Store {
+export default class RuntimeStore extends Store {
   @observable runtimes = [];
   @observable runtimeDetail = {};
   @observable statistics = {};
   @observable isLoading = false;
   @observable totalCount = 0;
-  @observable lastCreatedRuntime = null;
 
   constructor(initialState) {
     super(initialState, 'runtimeStore');
@@ -46,12 +45,6 @@ export default class RuntimeStoreStore extends Store {
     this.isLoading = true;
     const result = await this.request.get('statistics');
     this.statistics = get(result, 'statistics_set.runtimes', {});
-    this.isLoading = false;
-  }
-
-  async create(params) {
-    this.isLoading = true;
-    this.lastCreatedRuntime = await this.request.post('runtimes', params);
     this.isLoading = false;
   }
 }

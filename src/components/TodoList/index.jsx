@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './index.scss';
 import Button from 'components/Base/Button';
 
-const LabelList = ({ labels = [], onRemove }) => {
+const TodoList = ({ labels = [], onRemove }) => {
   return (
     <ul className={styles.list}>
       {labels.map(label => {
@@ -20,7 +20,7 @@ const LabelList = ({ labels = [], onRemove }) => {
   );
 };
 
-LabelList.propTypes = {
+TodoList.propTypes = {
   labels: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string.isRequired,
@@ -30,8 +30,8 @@ LabelList.propTypes = {
   onRemove: PropTypes.func
 };
 
-LabelList.defaultProps = {
+TodoList.defaultProps = {
   onRemove: () => {}
 };
 
-export default LabelList;
+export default TodoList;

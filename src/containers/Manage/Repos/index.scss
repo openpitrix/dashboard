@@ -1,19 +1,15 @@
 @import '~scss/variables';
 
-.repos {
-  padding-top: $header-height;
-  background: $background-color;
-  .pageTitle{
-    height: 24px;
-    font-size: 20px;
-    font-weight: 500;
-    text-align: left;
-    color: $title-color;
-  }
-  .container {
-    width: $content-width;
-    margin: 0 auto;
-  }
+.title{
+  height: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  color: $title-color;
+}
+.container {
+  width: $content-width;
+  margin: 0 auto;
 }
 
 .toolbar {
@@ -39,38 +35,6 @@
   }
   .ml12 {
     margin-left: 12px;
-  }
-}
-.categories{
-  text-align: center;
-  padding: 12px 0;
-  .line{
-    display: inline-block;
-    width: 330px;
-    height: 1px;
-    border-bottom: 1px solid #e2d0f2;
-  }
-  .word{
-    display: inline-block;
-    position: relative;
-    bottom: 11px;
-    padding: 0 7px;
-    line-height: 24px;
-    font-size: 12px;
-    color: $third-text-color;
-    background: $background-color;
-  }
-}
-.repoContent {
-  position: relative;
-  height: 150px;
-  margin-bottom: 12px;
-  .handlePop {
-    position: absolute;
-    right: -30px;
-    top: 25px;
-    width: 130px;
-    text-align: center;
   }
 }
 

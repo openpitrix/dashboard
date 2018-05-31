@@ -6,7 +6,8 @@ const router = new Router();
 
 const header = {
   Accept: 'application/json',
-  'Content-Type': 'application/x-www-form-urlencoded'
+  // 'Content-Type': 'application/x-www-form-urlencoded'
+  'Content-Type': 'application/json'
 };
 
 router.post('/api/*', async ctx => {

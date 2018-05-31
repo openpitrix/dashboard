@@ -22,7 +22,7 @@ export default class RepoStore extends Store {
   @action
   async fetchQueryRepos(query) {
     this.isLoading = true;
-    const result = await this.request.get('repos', { q: query });
+    const result = await this.request.get('repos', { name: query });
     this.repos = get(result, 'repo_set', []);
     this.isLoading = false;
   }

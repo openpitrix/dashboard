@@ -3,7 +3,8 @@
   margin-left: 140px;
   line-height: 14px;
   .item{
-    max-width: 300px;
+    width: 360px;
+    max-width: 70%;
     line-height: 20px;
     clear: both;
     margin: 10px 0;
@@ -11,6 +12,7 @@
     span {
       display: inline-block;
       width: 80%;
+      margin-left: 10px;
     }
   }
   .removeBtn{

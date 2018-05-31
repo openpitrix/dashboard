@@ -43,7 +43,7 @@ export default class Notification extends React.Component {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.props.onHide);
+    clearTimeout(this.timer);
     this.timer = null;
     this.props.onClosed();
   }
