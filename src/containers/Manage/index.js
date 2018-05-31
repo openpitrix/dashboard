@@ -16,3 +16,5 @@ export Categories from './Categories';
 export CategoryDetail from './Categories/Detail';
 export Roles from './Roles';
 export Users from './Users';
+export Tabs from './Tabs';
+export Page from './Page';

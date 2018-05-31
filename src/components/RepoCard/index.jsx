@@ -9,13 +9,13 @@ export default class RepoCard extends PureComponent {
   static propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
-    provider: PropTypes.string,
+    providers: PropTypes.array,
     images: PropTypes.array,
     tags: PropTypes.array
   };
 
   render() {
-    const { name, description, provider, images, tags } = this.props;
+    const { name, description, providers, images, tags } = this.props;
     return (
       <div className={styles.repoCard}>
         <div className={styles.inner}>
@@ -25,7 +25,7 @@ export default class RepoCard extends PureComponent {
           </div>
           <div className={styles.column}>
             <div className={styles.title}>Runtime Provider</div>
-            <div className={styles.providerImg}>{provider}</div>
+            <div className={styles.providerImg}>{providers.join('\n')}</div>
           </div>
           <div className={styles.column}>
             <AppImages images={images} />
