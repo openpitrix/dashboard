@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
@@ -16,10 +16,12 @@ import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import Modal from 'components/Base/Modal';
+import Select from 'components/Base/Select';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  appHandleStore: rootStore.appHandleStore
 }))
 @observer
 export default class Apps extends Component {
@@ -28,74 +30,113 @@ export default class Apps extends Component {
     await appStore.fetchStatistics();
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      appId: '',
-      showDeleteModal: false
-    };
-  }
+  renderHandleMenu = item => {
+    const { deleteAppShow, categoryModalShow } = this.props.appHandleStore;
 
-  onSearch = async name => {
-    await this.props.appStore.fetchQueryApps(name);
-  };
-
-  onRefresh = async () => {
-    await this.onSearch();
-  };
-
-  deleteApp = async () => {
-    await this.props.appStore.fetchDeleteApp(this.state.appId);
-    this.deleteAppClose();
-    await this.onRefresh();
-  };
-
-  deleteAppShow = id => {
-    this.setState({
-      appId: id,
-      showDeleteModal: true
-    });
-  };
-  deleteAppClose = () => {
-    this.setState({
-      showDeleteModal: false
-    });
-  };
-
-  renderDeleteModal = () => (
-    <Modal
-      width={500}
-      title="Delete APP"
-      visible={this.state.showDeleteModal}
-      hideFooter
-      onCancel={this.deleteAppClose}
-    >
-      <div className={styles.modalContent}>
-        <div className={styles.noteWord}>Are you sure delete this App?</div>
-        <div className={styles.operation}>
-          <Button type="default" onClick={this.deleteAppClose}>
-            Cancel
-          </Button>
-          <Button type="primary" onClick={this.deleteApp}>
-            Confirm
-          </Button>
-        </div>
+    return (
+      <div id={item.app_id} className="operate-menu">
+        <Link to={`/manage/apps/${item.app_id}`}>View app detail</Link>
+        {item.status !== 'deleted' && (
+          <Fragment>
+            <span
+              onClick={() => {
+                deleteAppShow(item.app_id);
+              }}
+            >
+              Delete app
+            </span>
+            <span
+              onClick={() => {
+                categoryModalShow(item.app_id, item.app_category_set);
+              }}
+            >
+              Modify category
+            </span>
+          </Fragment>
+        )}
       </div>
-    </Modal>
-  );
+    );
+  };
 
-  renderHandleMenu = id => (
-    <div id={id} className="operate-menu">
-      <Link to={`/manage/apps/${id}`}>View app detail</Link>
-      <span
-        onClick={() => {
-          this.deleteAppShow(id);
-        }}
+  renderDeleteModal = () => {
+    const { showDeleteApp, deleteAppClose, deleteApp } = this.props.appHandleStore;
+
+    return (
+      <Modal
+        width={500}
+        title="Delete APP"
+        visible={showDeleteApp}
+        hideFooter
+        onCancel={deleteAppClose}
       >
-        Delete app
-      </span>
-    </div>
-  );
+        <div className={styles.modalContent}>
+          <div className={styles.noteWord}>Are you sure delete this App?</div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={deleteAppClose}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                deleteApp(this.props.appStore);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
+
+  renderCategoryModal = () => {
+    const { appHandleStore } = this.props;
+    const {
+      showCategoryModify,
+      categoryModalClose,
+      selectedCategory,
+      changeCategory,
+      modifyCategory
+    } = this.props.appHandleStore;
+    const categories = toJS(appHandleStore.categories);
+
+    return (
+      <Modal
+        width={500}
+        title="Modify Category"
+        visible={showCategoryModify}
+        hideFooter
+        onCancel={categoryModalClose}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.selectItem}>
+            <label className={styles.name}>Category</label>
+            <Select className={styles.select} value={selectedCategory} onChange={changeCategory}>
+              {categories &&
+                categories.map(({ category_id, name }) => (
+                  <Select.Option key={category_id} value={category_id}>
+                    {name}
+                  </Select.Option>
+                ))}
+            </Select>
+          </div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={categoryModalClose}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                modifyCategory(this.props.appStore);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
 
   render() {
     const { appStore } = this.props;
@@ -110,15 +151,19 @@ export default class Apps extends Component {
       lastedTotal,
       histograms
     } = toJS(appStore.statistics);
-    const fetchAll = async current => {
-      await appStore.fetchAll({ page: current });
-    };
     const columns = [
       {
         title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        render: (text, obj) => <TdName name={text} description={obj.description} image={obj.icon} />
+        render: (text, obj) => (
+          <TdName
+            name={text}
+            description={obj.description}
+            image={obj.icon}
+            linkUrl={`/manage/apps/${obj.app_id}`}
+          />
+        )
       },
       {
         title: 'Latest Version',
@@ -148,13 +193,13 @@ export default class Apps extends Component {
       },
       {
         title: 'Developer',
-        dataIndex: 'developer',
-        key: 'developer'
+        dataIndex: 'owner',
+        key: 'owner'
       },
       {
         title: 'Updated At',
-        dataIndex: 'update_time',
-        key: 'update_time',
+        dataIndex: 'status_time',
+        key: 'status_time',
         render: getParseDate
       },
       {
@@ -163,13 +208,15 @@ export default class Apps extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.app_id)}>
+            <Popover content={this.renderHandleMenu(item)}>
               <Icon name="more" />
             </Popover>
           </div>
         )
       }
     ];
+    const { fetchQueryApps } = appStore;
+    const { onRefresh } = this.props.appHandleStore;
 
     return (
       <div className={styles.apps}>
@@ -190,14 +237,19 @@ export default class Apps extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search App Name or Keywords"
-                onSearch={this.onSearch}
+                onSearch={fetchQueryApps}
               />
               {/*<Link to={'/manage/addapp'}>*/}
               {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
               {/*Create*/}
               {/*</Button>*/}
               {/*</Link>*/}
-              <Button className={styles.buttonRight} onClick={this.onRefresh}>
+              <Button
+                className={styles.buttonRight}
+                onClick={() => {
+                  onRefresh(this.props.appStore);
+                }}
+              >
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -205,10 +257,11 @@ export default class Apps extends Component {
             <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
           </div>
           {appStore.totalCount > 0 && (
-            <Pagination onChange={fetchAll} total={appStore.totalCount} />
+            <Pagination onChange={appStore.fetchAll} total={appStore.totalCount} />
           )}
         </div>
         {this.renderDeleteModal()}
+        {this.renderCategoryModal()}
       </div>
     );
   }

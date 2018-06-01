@@ -18,9 +18,7 @@ export default class Rectangle extends PureComponent {
     const { title, description, images, id, appTotal } = this.props;
     return (
       <div className={styles.rectangle}>
-        <div className={styles.title}>
-          <Link to={`/manage/categories/${id}`}>{title}</Link>
-        </div>
+        <div className={styles.title}>{title}</div>
         <div className={styles.idShow}>{id}</div>
         <div className={styles.description}>{description}</div>
         <AppImages images={images} appTotal={appTotal} />

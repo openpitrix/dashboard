@@ -29,9 +29,7 @@ export default class VersionList extends PureComponent {
                 <div className={styles.number}>{data.sequence}</div>
                 <div className={styles.word}>Cluster Count</div>
               </div>
-              <div className={classnames(styles.column, styles.download)}>
-                <Icon name="refresh" />
-              </div>
+              <div className={classnames(styles.column, styles.download)}>download</div>
             </li>
           ))}
         </ul>

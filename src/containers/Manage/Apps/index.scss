@@ -56,6 +56,20 @@
     font-size: 16px;
     margin-bottom: 30px;
   }
+  .selectItem{
+    margin-bottom: 20px;
+    .name{
+      display: inline-block;
+      float: left;
+      margin-right:  20px;
+      width: 100px;
+      line-height: 32px;
+      text-align: right;
+    }
+    .select{
+      width: 250px;
+    }
+  }
   .operation{
     text-align: center;
     button{

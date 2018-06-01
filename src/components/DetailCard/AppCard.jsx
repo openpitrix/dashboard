@@ -47,7 +47,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(appDetail.update_time)}
+            {getParseDate(appDetail.status_time)}
           </li>
         </ul>
       </div>
