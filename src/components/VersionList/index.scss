@@ -1,65 +1,52 @@
 @import '~scss/variables';
 
-.versionList {
-  width: 360px;
-  padding: 24px 16px;
-  border-radius: 3px;
-  background-color: $background-color-lighter;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-  .title{
-    line-height: 36px;
-    font-size: 16px;
-    font-weight: bold;
-    color: $title-color;
-    .all{
-      float: right;
-      font-size: 14px;
-      font-weight: normal;
-    }
+.versionList{
+  li{
+    box-sizing: border-box;
+    height: 64px;
+    padding: 14px 8px;
+    color: $purple-word;
+    border-bottom: 1px solid $border-lighter;
+    font-size: 14px;
   }
-  .list{
-    li{
-      box-sizing: border-box;
-      height: 64px;
-      padding: 14px 8px;
+  .column{
+    display: inline-block;
+    width:120px;
+    text-align: left;
+    &:last-child{
+      float: right;
+      margin-top: 10px;
+      width: 70px;
+      text-align: center;
+      i{
+        font-size: 20px;
+        color: $title-color;
+      }
+    }
+    .version{
+      line-height: 20px;
+      font-size: 16px;
+      font-weight: 500;
       color: $purple-word;
-      border-bottom: 1px solid $border-lighter;
+      width: 115px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .number{
+      line-height: 16px;
       font-size: 14px;
+      color: $purple-word;
     }
-    .column{
-      display: inline-block;
-      width:120px;
+    .word{
+      width: 115px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 12px;
+      line-height: 1.0;
       text-align: left;
-      &:last-child{
-        width: 70px;
-      }
-      .version{
-        line-height: 20px;
-        font-size: 16px;
-        font-weight: 500;
-        color: $purple-word;
-      }
-      .number{
-        line-height: 16px;
-        font-size: 14px;
-        color: $purple-word;
-      }
-      .word{
-        width: 115px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        font-size: 12px;
-        line-height: 1.0;
-        text-align: left;
-        color: $grey-word;
-      }
-      .download .icon{
-        font-size: 30px;
-        font-weight: normal;
-        color: $purple-word;
-      }
+      color: $grey-word;
     }
-
   }
 }

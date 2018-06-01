@@ -9,8 +9,20 @@
   .rightInfo{
     margin-left: 384px;
   }
-  .mb24{
+  .detailOuter{
+    position: relative;
     margin-bottom: 24px;
+    .operation{
+      position: absolute;
+      right: -24px;
+      top: 24px;
+      width: 120px;
+      text-align: center;
+      cursor: pointer;
+      i{
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 .backTo{
@@ -116,6 +128,4 @@
       color: #626466;
     }
   }
-
-
 }
