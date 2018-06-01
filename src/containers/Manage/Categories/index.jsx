@@ -118,7 +118,7 @@ export default class Categories extends Component {
 
   render() {
     const { categoryStore } = this.props;
-    const categoryList = toJS(categoryStore.categories) || [];
+    const categories = toJS(categoryStore.categories);
     const { createCategoryShow } = this.props.categoryHandleStore;
 
     return (
@@ -137,10 +137,10 @@ export default class Categories extends Component {
           </div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Default ({categoryList.length})</div>
+              <div className={styles.word}>Default ({categories.length})</div>
             </div>
           </div>
-          {categoryList.map(data => (
+          {categories.map(data => (
             <div key={data.category_id} className={styles.categoryContent}>
               <Rectangle
                 id={data.category_id}

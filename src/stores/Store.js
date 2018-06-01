@@ -1,4 +1,4 @@
-import { extendObservable } from 'mobx';
+import { extendObservable, observable, action } from 'mobx';
 import { isEmpty, pick } from 'lodash';
 import request from 'lib/request';
 
@@ -6,12 +6,12 @@ export default class Store {
   pageSize = 10;
 
   constructor(initialState, branch) {
+    extendObservable(this, {
+      notifyMsg: observable.box('')
+    });
+
     if (initialState) {
       extendObservable(this, branch ? initialState[branch] : initialState);
-
-      if (!request.getOptions('prefix')) {
-        request.setOptions({ prefix: initialState.apiServer });
-      }
     }
   }
 }
@@ -19,11 +19,13 @@ export default class Store {
 const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
+  @action.bound
   showMsg: function(msg) {
-    this.root.showMsg(msg);
+    this.notifyMsg = msg;
   },
+  @action.bound
   hideMsg: function() {
-    this.root.hideMsg();
+    this.notifyMsg = '';
   },
   request: new Proxy(request, {
     get: (target, method) => {

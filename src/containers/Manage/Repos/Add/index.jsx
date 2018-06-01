@@ -15,7 +15,6 @@ import Page, { BackBtn, CreateResource } from 'containers/Manage/Page';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  rootStore,
   store: rootStore.repoCreateStore
 }))
 @observer
@@ -33,7 +32,7 @@ export default class RepoAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.props.rootStore;
+    const { notifyMsg, hideMsg } = this.store;
 
     return (
       <Page msg={notifyMsg} hideMsg={hideMsg}>
