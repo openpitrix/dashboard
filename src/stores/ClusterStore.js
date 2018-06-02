@@ -6,7 +6,7 @@ export default class ClusterStore extends Store {
   @observable clusters = [];
   @observable clusterDetail = {};
   @observable clusterNodes = [];
-  @observable clusterActivities = [];
+  @observable clusterJobs = [];
   @observable statistics = {};
   @observable isLoading = false;
   @observable totalCount = 0;
@@ -16,23 +16,31 @@ export default class ClusterStore extends Store {
   }
 
   @action
-  async fetchClusters({ page }) {
+  fetchClusters = async page => {
     this.isLoading = true;
     page = page ? page : 1;
-    const result = await this.request.get('clusters', { _page: page });
+    const params = {
+      limit: this.pageSize,
+      offset: (page - 1) * this.pageSize
+    };
+    const result = await this.request.get('clusters', params);
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetchQueryClusters(query) {
+  fetchQueryClusters = async query => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters`, { q: query });
+    const params = {
+      limit: this.pageSize,
+      search_word: query
+    };
+    const result = await this.request.get(`clusters`, params);
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
   async fetchClusterDetail(clusterId) {
@@ -43,19 +51,18 @@ export default class ClusterStore extends Store {
   }
 
   @action
-  async fetchClusterNodes({ clusterId }) {
+  fetchClusterNodes = async clusterId => {
     this.isLoading = true;
-    const result = await this.request.get(`cluster_nodes`, { cluster_id: clusterId });
+    const result = await this.request.get(`clusters/nodes`, { cluster_id: clusterId });
     this.clusterNodes = get(result, 'cluster_node_set', []);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetchClusterActivities({ clusterId }) {
+  async fetchClusterJobs(clusterId) {
     this.isLoading = true;
-    //const result = await this.request.get(`cluster_activities`, { cluster_id: clusterId });
-    const result = await this.request.get(`cluster_activities`);
-    this.clusterActivities = get(result, 'cluster_activity_set', []);
+    const result = await this.request.get(`jobs`, { cluster_id: clusterId });
+    this.clusterJobs = get(result, 'job_set', []);
     this.isLoading = false;
   }
 
@@ -64,6 +71,13 @@ export default class ClusterStore extends Store {
     this.isLoading = true;
     const result = await this.request.get('statistics');
     this.statistics = get(result, 'statistics_set.clusters', {});
+    this.isLoading = false;
+  }
+
+  @action
+  async deleteCluster(clusterIds) {
+    this.isLoading = true;
+    await this.request.delete('clusters', { cluster_id: clusterIds });
     this.isLoading = false;
   }
 }

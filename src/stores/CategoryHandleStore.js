@@ -24,7 +24,7 @@ export default class CategoryHandleStore extends Store {
       name: this.name,
       locale: this.locale
     };
-    await categoryStore.fetchAddCategory(params);
+    await categoryStore.createCategory(params);
     this.showCategoryModal = false;
     await categoryStore.fetchCategories();
   };
@@ -52,7 +52,7 @@ export default class CategoryHandleStore extends Store {
 
   @action
   deleteCategory = async categoryStore => {
-    await categoryStore.fetchDeleteCategory([this.categoryId]);
+    await categoryStore.deleteCategory([this.categoryId]);
     this.deleteCategoryClose();
     await categoryStore.fetchCategories();
   };

@@ -28,7 +28,7 @@ export default class CategoryStore extends Store {
   }
 
   @action
-  async fetchAddCategory(params) {
+  async createCategory(params) {
     this.isLoading = true;
     const result = await this.request.post('categories', params);
     if (result.category) this.categories.unshift(result.category);
@@ -36,7 +36,7 @@ export default class CategoryStore extends Store {
   }
 
   @action
-  async fetchDeleteCategory(categoryIds) {
+  async deleteCategory(categoryIds) {
     this.isLoading = true;
     await this.request.delete('categories', { category_id: categoryIds });
     this.isLoading = false;

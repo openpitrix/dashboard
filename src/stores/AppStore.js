@@ -17,7 +17,7 @@ export default class AppStore extends Store {
   }
 
   @action
-  async fetchAll({ page }) {
+  async fetchAll(page) {
     this.isLoading = true;
     page = page ? page : 1;
     const params = {
@@ -66,7 +66,10 @@ export default class AppStore extends Store {
   @action
   async fetchAppVersions(appId) {
     this.isLoading = true;
-    const result = await this.request.get('app_versions', { app_id: appId });
+    const result = await this.request.get('app_versions', {
+      app_id: appId,
+      sort_key: 'create_time'
+    });
     this.versions = get(result, 'app_version_set', []);
     this.isLoading = false;
   }
