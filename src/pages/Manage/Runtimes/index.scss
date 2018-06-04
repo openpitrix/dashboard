@@ -1,0 +1,44 @@
+@import '~scss/variables';
+
+.container {
+  width: $content-width;
+  margin: 0 auto;
+}
+.wrapper {
+  margin: 0 0 25px 0;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+}
+.toolbar {
+  padding: 24px;
+  .search {
+    display: inline-block;
+    width: 337px;
+    border-color: $border-lighter;
+    box-shadow: none;
+    :global {
+      .fa {
+        color: $placeholder-color;
+      }
+    }
+
+    input::placeholder {
+      font-weight: 400;
+      color: $placeholder-color;
+    }
+  }
+  .buttonRight{
+    float: right;
+  }
+  .ml12{
+    margin-left: 12px;
+  }
+}
+.tableOuter {
+  margin: 0 12px;
+  .handlePop {
+    margin-left: 10px;
+  }
+}
+

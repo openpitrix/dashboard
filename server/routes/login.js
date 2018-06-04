@@ -19,6 +19,7 @@ router.post('/login', async ctx => {
       // todo: save session
       ctx.cookies.set('user', username, sessConfig);
       ctx.cookies.set('role', foundUser.role, sessConfig);
+      ctx.cookies.set('last_login', Date.now(), sessConfig);
 
       // ctx.redirect('/');  // fixme: login view not redirect
       ctx.body = apiMsg.extend({ success: true, redirect: '/' });
@@ -38,6 +39,7 @@ router.get('/logout', ctx => {
   ctx.session = null;
   ctx.cookies.set('user', '', cookieOptions);
   ctx.cookies.set('role', '', cookieOptions);
+  ctx.cookies.set('last_login', '', cookieOptions);
 
   ctx.redirect('/login');
 });
