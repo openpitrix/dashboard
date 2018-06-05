@@ -5,7 +5,7 @@ import toJson from 'enzyme-to-json';
 import { observable, useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 
-import Home from 'containers/Home';
+import Home from 'pages/Home';
 
 describe('Home', () => {
   let rootStore;

@@ -13,6 +13,7 @@ import { getCookie } from './utils';
 import './scss/main.scss';
 
 const bypassUrl = ['/deployment'];
+const validManageTypes = ['develop', 'manage'];
 
 class App extends Component {
   static propTypes = {
@@ -21,6 +22,24 @@ class App extends Component {
 
   hasLoggedIn = () => {
     return !!getCookie('user');
+  };
+
+  renderRoute = (match, route) => {
+    const { rootStore } = this.props;
+    const { params } = match;
+
+    if (route.needAuth && !this.hasLoggedIn()) {
+      return <Redirect to="/login" />;
+    }
+    if (route.noMatch && bypassUrl.indexOf(match.url) < 0) {
+      return <Redirect to="/" />;
+    }
+
+    if (params.manage && validManageTypes.indexOf(params.manage) < 0) {
+      return <Redirect to="/" />;
+    }
+
+    return <RouteWrapper component={route.component} match={match} rootStore={rootStore} />;
   };
 
   render() {
@@ -34,6 +53,7 @@ class App extends Component {
       <Provider rootStore={rootStore}>
         <Fragment>
           {!isLogin && <Header isHome={isHome} />}
+
           <div className="main">
             <Switch>
               {routes.map((route, i) => (
@@ -41,23 +61,12 @@ class App extends Component {
                   key={i}
                   exact={route.exact}
                   path={route.path}
-                  render={({ match }) =>
-                    route.needAuth && !this.hasLoggedIn() ? (
-                      <Redirect to="/login" />
-                    ) : route.noMatch && bypassUrl.indexOf(match.url) < 0 ? (
-                      <Redirect to="/" />
-                    ) : (
-                      <RouteWrapper
-                        component={route.component}
-                        match={match}
-                        rootStore={rootStore}
-                      />
-                    )
-                  }
+                  render={({ match }) => this.renderRoute(match, route)}
                 />
               ))}
             </Switch>
           </div>
+
           {!isLogin && <Footer />}
         </Fragment>
       </Provider>

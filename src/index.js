@@ -9,13 +9,13 @@ import RootStore from './stores/RootStore';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 
-const render = component => {
-  ReactDOM.render(<BrowserRouter>{component}</BrowserRouter>, document.getElementById('root'));
+const render = Component => {
+  ReactDOM.render(<BrowserRouter>{Component}</BrowserRouter>, document.getElementById('root'));
 };
 
 if (typeof window !== 'undefined') {
   render(<App rootStore={store} />);
 }
 
-// attach hmr,, deprecate react-hot-loader
+// attach hmr, deprecate react-hot-loader
 module.hot && module.hot.accept();
