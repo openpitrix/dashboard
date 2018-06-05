@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import capitalize from 'lodash/capitalize';
+import { capitalize, keys, values } from 'lodash';
 import { isArray } from 'src/utils/types';
 
 import styles from './index.scss';
@@ -10,7 +10,8 @@ const normalizeLink = (link, prefix = '') => {
   if (link.startsWith('/')) {
     link = link.substring(1);
   }
-  link = `${prefix}/${link}`;
+
+  link = link ? `${prefix}/${link}` : prefix;
   // always prefix with slash
   if (!link.startsWith('/')) {
     link = `/${link}`;
@@ -21,7 +22,7 @@ const normalizeLink = (link, prefix = '') => {
 
 const LinkItem = ({ link, label }) => (
   <li>
-    <NavLink to={link} activeClassName={styles.active}>
+    <NavLink to={link} activeClassName={styles.active} exact>
       {capitalize(label)}
     </NavLink>
   </li>
@@ -40,7 +41,13 @@ const TabsNav = ({ links, options }) => {
       <ul className={styles.tabsList}>
         {isArray(links)
           ? links.map(link => {
-              let label = link.substring(link.lastIndexOf('/') + 1);
+              let label;
+              if (typeof link === 'string') {
+                label = link.substring(link.lastIndexOf('/') + 1);
+              } else if (typeof link === 'object') {
+                label = values(link)[0];
+                link = keys(link)[0];
+              }
               return <LinkItem link={normalizeLink(link, prefix)} label={label} key={label} />;
             })
           : Object.keys(links).map(label => {

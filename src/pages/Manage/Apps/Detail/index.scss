@@ -1,0 +1,183 @@
+@import '~scss/variables';
+
+.appDetail {
+  padding-top: $header-height;
+  .leftInfo{
+    float: left;
+    width: 360px;
+  }
+  .rightInfo{
+    margin-left: 384px;
+  }
+  .detailOuter{
+    position: relative;
+    margin-bottom: 24px;
+    .operation{
+      position: absolute;
+      right: -35px;
+      top: 24px;
+      width: 135px;
+      text-align: center;
+      cursor: pointer;
+      i{
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+.backTo{
+  width: $content-width;
+  margin: 24px auto 12px;
+  line-height: 20px;
+  font-size: 14px;
+  a{
+    color: $title-color;
+  }
+}
+.wrapper {
+  position: relative;
+  width: $content-width;
+  margin: 0 auto 24px;
+}
+.wrapper2 {
+  position: relative;
+  width: 774px;
+  margin: 0 auto 24px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.leftInfo{
+  float: left;
+  width: 360px;
+}
+.rightInfo{
+  margin-left: 384px;
+}
+.mb24{
+  position: relative;
+  margin-bottom: 24px;
+  .operation{
+    position: absolute;
+    right: -24px;
+    top: 24px;
+    width: 120px;
+    text-align: center;
+    i.icon{
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.tagshow{
+  margin:15px 24px 0;
+}
+.toolbar {
+  padding: 24px;
+
+  .select {
+    width: 176px;
+    vertical-align: top;
+
+    div {
+      box-shadow: none !important;
+    }
+  }
+}
+.search {
+  display: inline-block;
+  width: 337px;
+  border-color: $border-lighter;
+  box-shadow: none;
+
+  :global {
+    .fa {
+      color: $placeholder-color;
+    }
+  }
+
+  input::placeholder {
+    font-weight: 400;
+    color: $placeholder-color;
+  }
+}
+.buttonRight{
+  float: right;
+}
+.ml12{
+  margin-left: 12px;
+}
+.modalContent{
+  .noteWord{
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .selectItem{
+    margin-bottom: 20px;
+    .name{
+      display: inline-block;
+      margin-right:  20px;
+      width: 100px;
+      text-align: right;
+    }
+    .select{
+      width: 250px;
+    }
+  }
+  .operation{
+    text-align: center;
+    button{
+      margin: 0 6px;
+    }
+  }
+  .inputItem{
+    margin-bottom: 20px;
+    >label{
+      margin-right: 20px;
+      width: 100px;
+      text-align: right;
+      color: $title-color;
+      font-weight: bold;
+    }
+    .input{
+      width: 300px;
+    }
+    .textarea{
+      padding: 7px 10px;
+      width: 300px;
+      height: 72px;
+      border-radius: 2px;
+      border: 1px solid #e7e7e7;
+      outline: none;
+      resize: none;
+      &:focus{
+        border: 1px solid $border-dark;
+      }
+    }
+    .textareaName{
+      position: relative;
+      bottom: 60px;
+    }
+  }
+}
+
+.versionOuter {
+  width: 360px;
+  padding: 24px 16px;
+  border-radius: 3px;
+  background-color: $background-color-lighter;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  .title{
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $title-color;
+    .all{
+      float: right;
+      font-size: 14px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+  }
+}

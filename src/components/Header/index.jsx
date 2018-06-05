@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
-import { getLoginUser } from 'src/utils';
+import { getCookie, getLoginUser } from 'src/utils';
 
 import Logo from '../Logo';
 import Input from '../Base/Input';
@@ -49,6 +49,15 @@ export default class Header extends Component {
     );
   }
 
+  renderDevOpsLink() {
+    const role = getCookie('role');
+
+    if (role === 'admin') {
+      return <NavLink to="/manage">Management</NavLink>;
+    }
+    return <NavLink to="/develop">Development</NavLink>;
+  }
+
   render() {
     const {
       isHome,
@@ -67,8 +76,8 @@ export default class Header extends Component {
           )}
           <div className={styles.menus}>
             <NavLink to="/apps">Catalog</NavLink>
-            <NavLink to="/deployment">Deployment</NavLink>
-            <NavLink to="/manage">{getLoginUser() ? 'Manage' : 'Development'}</NavLink>
+            {/*<NavLink to="/deployment">Deployment</NavLink>*/}
+            {this.renderDevOpsLink()}
             {this.renderLoginButton()}
           </div>
         </div>

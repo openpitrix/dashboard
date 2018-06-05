@@ -1,0 +1,66 @@
+@import '~scss/variables';
+
+.wrapper {
+  position: relative;
+  width: $content-width;
+  margin: 0 auto 24px;
+
+
+  .leftInfo{
+    float: left;
+    width: 360px;
+  }
+  .rightInfo{
+    margin-left: 384px;
+  }
+  .mb24{
+    margin-bottom: 24px;
+  }
+}
+.wrapper2 {
+  position: relative;
+  width: 774px;
+  margin: 0 auto 24px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.tagshow{
+  margin:15px 24px 0;
+}
+.toolbar {
+  padding: 24px;
+
+  .select {
+    width: 176px;
+    vertical-align: top;
+
+    div {
+      box-shadow: none !important;
+    }
+  }
+}
+.search {
+  display: inline-block;
+  width: 337px;
+  border-color: $border-lighter;
+  box-shadow: none;
+
+  :global {
+    .fa {
+      color: $placeholder-color;
+    }
+  }
+
+  input::placeholder {
+    font-weight: 400;
+    color: $placeholder-color;
+  }
+}
+.buttonRight{
+  float: right;
+}
+.ml12{
+  margin-left: 12px;
+}
