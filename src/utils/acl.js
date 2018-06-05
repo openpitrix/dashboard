@@ -1,13 +1,19 @@
 import { getCookie } from './index';
 
-const role = getCookie('role');
+let role;
 
 export default {
+  get loginRole(){
+    if(!role){
+      role = getCookie('role');
+    }
+    return role;
+  },
   isDeveloper() {
-    return role === 'developer';
+    return this.loginRole === 'developer';
   },
 
   isAdmin() {
-    return role === 'admin';
+    return this.loginRole === 'admin';
   }
 };
