@@ -1,12 +1,14 @@
 import { observable, action } from 'mobx';
 import Store from './Store';
 import { get } from 'lodash';
+import { toJS } from 'mobx';
 
 export default class AppHandleStore extends Store {
   @observable appId = '';
   @observable categoryId = '';
   @observable versionId = '';
   @observable categories = [];
+  @observable versionDetail = {};
   @observable selectedCategory = '';
   @observable showDeleteApp = false;
   @observable showCategoryModify = false;
@@ -29,7 +31,7 @@ export default class AppHandleStore extends Store {
   deleteApp = async appStore => {
     await appStore.deleteApp([this.appId]);
     this.showDeleteApp = false;
-    await appStore.fetchQueryApps();
+    await appStore.fetchAll({ page: 1 });
   };
 
   @action
@@ -76,6 +78,28 @@ export default class AppHandleStore extends Store {
   };
 
   @action
+  changeName = e => {
+    this.versionDetail.name = e.target.value;
+  };
+
+  @action
+  changePackageName = e => {
+    this.versionDetail.package_name = e.target.value;
+  };
+
+  @action
+  changeDescription = e => {
+    this.versionDetail.description = e.target.value;
+  };
+
+  @action
+  createVersionSubmit = async (appId, appStore) => {
+    this.versionDetail.app_id = appId;
+    await appStore.createVersion(toJS(this.versionDetail));
+    this.showCreateVersion = false;
+  };
+
+  @action
   deleteVersionShow = versionId => {
     this.versionId = versionId;
     this.showDeleteVersion = true;
@@ -89,6 +113,7 @@ export default class AppHandleStore extends Store {
   @action
   deleteVersionSubmit = async appStore => {
     await appStore.deleteVersion(this.versionId);
+    this.showDeleteVersion = false;
   };
 
   @action

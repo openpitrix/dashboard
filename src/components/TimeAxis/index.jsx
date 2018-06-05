@@ -15,13 +15,14 @@ export default class TimeAxis extends PureComponent {
     return (
       <div className={styles.timeAxis}>
         <ul className={styles.axis}>
-          {timeList.map((time, index) => (
-            <li key={index}>
-              <div className={styles.word}>{time.name}</div>
-              <div className={styles.time}>{getParseDate(time.create_time)}</div>
-              <span className={styles.dot} />
-            </li>
-          ))}
+          {timeList &&
+            timeList.map((time, index) => (
+              <li key={index}>
+                <div className={styles.word}>{time.job_action}</div>
+                <div className={styles.time}>{getParseDate(time.create_time)}</div>
+                <span className={styles.dot} />
+              </li>
+            ))}
         </ul>
       </div>
     );

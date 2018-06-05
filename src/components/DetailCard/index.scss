@@ -59,6 +59,9 @@
       line-height: 16px;
       font-size: 14px;
       list-style: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .name{
       display: inline-block;
