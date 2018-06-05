@@ -26,7 +26,7 @@ import styles from './index.scss';
 export default class RuntimeDetail extends Component {
   static async onEnter({ runtimeStore, clusterStore }, { runtimeId }) {
     await runtimeStore.fetchRuntimeDetail(runtimeId);
-    await clusterStore.fetchClusters({ page: 1 });
+    await clusterStore.fetchClusters();
   }
 
   onSearch = async name => {
@@ -42,7 +42,7 @@ export default class RuntimeDetail extends Component {
     const runtimeDetail = toJS(runtimeStore.runtimeDetail);
     const data = toJS(clusterStore.clusters);
     const fetchClusters = async current => {
-      await clusterStore.fetchClusters({ page: current });
+      await clusterStore.fetchClusters(current);
     };
 
     const columns = [

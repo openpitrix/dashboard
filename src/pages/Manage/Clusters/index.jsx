@@ -14,34 +14,70 @@ import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import Popover from 'components/Base/Popover';
 import Layout from 'pages/Layout/Admin';
+import Modal from 'components/Base/Modal';
 
 import { getParseDate } from 'utils';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  clusterHandleStore: rootStore.clusterHandleStore
 }))
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
-    await clusterStore.fetchClusters({ page: 1 });
+    await clusterStore.fetchClusters();
     await clusterStore.fetchStatistics();
   }
 
-  onSearch = async name => {
-    await this.props.clusterStore.fetchQueryClusters(name);
+  renderHandleMenu = (id, status) => {
+    const { deleteClusterShow } = this.props.clusterHandleStore;
+    return (
+      <div id={id} className="operate-menu">
+        <Link to={`/manage/clusters/${id}`}>View cluster detail</Link>
+        {status !== 'deleted' && (
+          <span
+            onClick={() => {
+              deleteClusterShow(id);
+            }}
+          >
+            Delete cluster
+          </span>
+        )}
+      </div>
+    );
   };
 
-  onRefresh = async () => {
-    await this.onSearch();
-  };
+  deleteClusterModal = () => {
+    const { showDeleteCluster, deleteClusterClose, deleteCluster } = this.props.clusterHandleStore;
 
-  renderHandleMenu = id => (
-    <div id={id} className="operate-menu">
-      <Link to={`/manage/clusters/${id}`}>View cluster detail</Link>
-      <span>Delete cluster</span>
-    </div>
-  );
+    return (
+      <Modal
+        width={500}
+        title="Delete Cluster"
+        visible={showDeleteCluster}
+        hideFooter
+        onCancel={deleteClusterClose}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.noteWord}>Are you sure delete this Cluster?</div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={deleteClusterClose}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                deleteCluster(this.props.clusterStore);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
 
   render() {
     const { clusterStore } = this.props;
@@ -101,7 +137,7 @@ export default class Clusters extends Component {
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.cluster_id)}>
+            <Popover content={this.renderHandleMenu(item.cluster_id, item.status)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -127,12 +163,17 @@ export default class Clusters extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search Cluster Name or App"
-                onSearch={this.onSearch}
+                onSearch={clusterStore.fetchQueryClusters}
               />
               {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
               {/*Create*/}
               {/*</Button>*/}
-              <Button className={styles.buttonRight} onClick={this.onRefresh}>
+              <Button
+                className={styles.buttonRight}
+                onClick={async () => {
+                  await clusterStore.fetchClusters(1);
+                }}
+              >
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -143,6 +184,7 @@ export default class Clusters extends Component {
             <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
           )}
         </div>
+        {this.deleteClusterModal()}
       </Layout>
     );
   }
