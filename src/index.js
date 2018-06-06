@@ -18,7 +18,7 @@ const AppWithRouter = withRouter(App);
 
 if (typeof window !== 'undefined') {
   ReactDOM.render(
-    <Provider rootStore={store}>
+    <Provider rootStore={store} sessInfo={null}>
       <BrowserRouter>
         <AppWithRouter>
           <Switch>
