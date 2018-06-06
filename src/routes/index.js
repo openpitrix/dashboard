@@ -36,7 +36,8 @@ const routes = [
 
 export default routes.map(route => {
   // add needAuth flag for /manage admin page
-  if (route.path.indexOf('/manage') === 0) {
+  const path = route.path;
+  if (path.indexOf('/:manage') === 0 || path.indexOf('/manage') === 0) {
     return { ...route, needAuth: true };
   }
   return route;

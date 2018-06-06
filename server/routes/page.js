@@ -3,7 +3,7 @@ const auth = require('../middleware/auth');
 
 const router = new Router();
 
-router.get('/manage/*', auth, async (ctx, next) => {
+router.get('/:page(/?.*)', auth, async (ctx, next) => {
   await next();
 });
 

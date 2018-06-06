@@ -1,5 +1,10 @@
+const authPages = ['manage', 'develop'];
+
 module.exports = async (ctx, next) => {
-  if (!ctx.cookies.get('user')) {
+  const page = (ctx.params.page || '').split('/')[0];
+  const needAuth = authPages.indexOf(page) > -1;
+
+  if (needAuth && !ctx.cookies.get('user')) {
     // not login
     ctx.redirect('/login');
   }
