@@ -26,7 +26,7 @@ describe('<App/>', () => {
 
   const renderPage = (location, store) => {
     return (
-      <Provider rootStore={store}>
+      <Provider rootStore={store} sessInfo={null}>
         <BrowserRouter>
           <App location={location}>
             <Switch>

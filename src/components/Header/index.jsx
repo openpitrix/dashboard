@@ -5,13 +5,13 @@ import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 
-import { getCookie, getLoginUser } from 'src/utils';
+import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
 import Input from '../Base/Input';
 
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject('rootStore', 'sessInfo')
 @observer
 export default class Header extends Component {
   state = {
@@ -25,7 +25,7 @@ export default class Header extends Component {
   };
 
   renderLoginButton() {
-    const loggedInUser = getLoginUser();
+    const loggedInUser = getSessInfo('user', this.props.sessInfo);
 
     if (!loggedInUser) {
       return <NavLink to="/login">Sign In</NavLink>;
@@ -50,7 +50,7 @@ export default class Header extends Component {
   }
 
   renderDevOpsLink() {
-    const role = getCookie('role');
+    const role = getSessInfo('role', this.props.sessInfo);
 
     if (role === 'admin') {
       return <NavLink to="/manage">Management</NavLink>;
