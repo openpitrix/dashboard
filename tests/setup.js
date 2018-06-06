@@ -1,7 +1,9 @@
-import Enzyme from 'enzyme';
+import React from 'react';
+import { configure, mount, shallow, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import toJson from 'enzyme-to-json';
 
-Enzyme.configure({ adapter: new Adapter() });
+configure({ adapter: new Adapter() });
 
 global.requestAnimationFrame =
   global.requestAnimationFrame ||
@@ -28,3 +30,11 @@ global.document.createRange = () => ({
     nodeName: 'BODY'
   }
 });
+
+// attach helpers to global
+global.React = React;
+global.mount = mount;
+global.shallow = shallow;
+global.render = render;
+global.toJson = toJson;
+

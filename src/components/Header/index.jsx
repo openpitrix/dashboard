@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
-import { getCookie, getLoginUser } from 'src/utils';
 
+import { getCookie, getLoginUser } from 'src/utils';
 import Logo from '../Logo';
 import Input from '../Base/Input';
+
 import styles from './index.scss';
 
 @inject('rootStore')
 @observer
 export default class Header extends Component {
   state = {
-    isHome: PropTypes.bool,
     dropdownOpen: false
   };
 

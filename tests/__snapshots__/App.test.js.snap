@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App/> basic render 1`] = `
+Array [
+  <div
+    class="header header darkHeader"
+  >
+    <div
+      class="wrapper"
+    >
+      <a
+        aria-current="false"
+        class="logo"
+        href="/"
+      >
+        <img
+          alt="logo"
+          height="100%"
+          src="/assets/logo.svg"
+        />
+      </a>
+      <div
+        class="menus"
+      >
+        <a
+          aria-current="false"
+          href="/apps"
+        >
+          Catalog
+        </a>
+        <a
+          aria-current="false"
+          href="/develop"
+        >
+          Development
+        </a>
+        <a
+          aria-current="false"
+          href="/login"
+        >
+          Sign In
+        </a>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="main"
+  />,
+  <div
+    class="footer"
+  >
+    <div
+      class="wrapper"
+    >
+      <span
+        class="logo"
+      >
+        OpenPitrix
+      </span>
+      <ul
+        class="terms"
+      >
+        <li>
+          <a
+            href="javascript:;"
+          >
+            About
+          </a>
+        </li>
+        <li>
+          <a
+            href="javascript:;"
+          >
+            Help
+          </a>
+        </li>
+        <li>
+          <a
+            href="javascript:;"
+          >
+            Terms
+          </a>
+        </li>
+        <li
+          class="copyright"
+        >
+          OpenPitrix © 2018
+        </li>
+      </ul>
+    </div>
+  </div>,
+]
+`;
