@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { inject } from 'mobx-react';
 import TabsNav from 'components/TabsNav';
 import Notification from 'components/Base/Notification';
-import acl from 'src/utils/acl';
+import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
 
+@inject('sessInfo')
 export default class Layout extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -26,28 +28,8 @@ export default class Layout extends React.PureComponent {
 
   constructor(props) {
     super(props);
-
     this.availableLinks = [];
     this.linkPrefix = '';
-
-    if (acl.isDeveloper()) {
-      this.availableLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes', 'repos'];
-      this.linkPrefix = '/develop';
-    }
-
-    if (acl.isAdmin()) {
-      this.availableLinks = [
-        { '': 'overview' },
-        'apps',
-        'clusters',
-        'runtimes',
-        'repos',
-        'users',
-        'roles',
-        'categories'
-      ];
-      this.linkPrefix = '/manage';
-    }
   }
 
   renderNotification() {
@@ -62,6 +44,26 @@ export default class Layout extends React.PureComponent {
   }
 
   renderTabs() {
+    const loginRole = getSessInfo('role', this.props.sessInfo);
+    if (loginRole === 'developer') {
+      this.availableLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes', 'repos'];
+      this.linkPrefix = '/develop';
+    }
+
+    if (loginRole === 'admin') {
+      this.availableLinks = [
+        { '': 'overview' },
+        'apps',
+        'clusters',
+        'runtimes',
+        'repos',
+        'users',
+        'roles',
+        'categories'
+      ];
+      this.linkPrefix = '/manage';
+    }
+
     const options = { prefix: this.linkPrefix };
 
     return <TabsNav links={this.availableLinks} options={options} />;

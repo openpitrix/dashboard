@@ -52,10 +52,6 @@
     color: $id-color;
   }
 
-  //.active {
-  //  background: rgba($border-dark, 0.5);
-  //}
-
   .dropdown-item {
     &.active, &:active {
       background: none;

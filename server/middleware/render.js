@@ -8,6 +8,7 @@ const { StaticRouter } = require('react-router-dom');
 const { matchRoutes, renderRoutes } = require('react-router-config');
 const { Provider } = require('mobx-react');
 
+const App = require('src/App').default;
 const routes = require('src/routes').default;
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -24,13 +25,19 @@ module.exports = async (ctx, next) => {
 
   const context = {};
 
+  const sessInfo = {
+    user: ctx.cookies.get('user'),
+    role: ctx.cookies.get('role'),
+    lastLogin: ctx.cookies.get('last_login')
+  };
+
   // when in dev mode, disable ssr
   const components = isDev
     ? null
     : renderToString(
-        <Provider rootStore={ctx.store}>
+        <Provider rootStore={ctx.store} sessInfo={sessInfo}>
           <StaticRouter location={ctx.url} context={context}>
-            {renderRoutes(routes)}
+            <App>{renderRoutes(routes)}</App>
           </StaticRouter>
         </Provider>
       );
