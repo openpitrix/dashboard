@@ -3,10 +3,9 @@ const Router = require('koa-router');
 const log = require('../log');
 const userModel = require('../models/users.json');
 const sessConfig = require('../session-config');
+// const apiMsg = require('lib/apiMsg');
 
 const router = new Router();
-
-const apiMsg = require('lib/apiMsg');
 
 router.post('/login', async ctx => {
   let { username, password } = ctx.request.body;
@@ -14,20 +13,18 @@ router.post('/login', async ctx => {
   if (username && password) {
     let foundUser = _.find(userModel, { name: username, password });
     if (foundUser) {
-      log('found user: ', foundUser);
+      // log('found user: ', foundUser);
 
-      // todo: save session
       ctx.cookies.set('user', username, sessConfig);
       ctx.cookies.set('role', foundUser.role, sessConfig);
       ctx.cookies.set('last_login', Date.now(), sessConfig);
 
-      // ctx.redirect('/');  // fixme: login view not redirect
-      ctx.body = apiMsg.extend({ success: true, redirect: '/' });
+      ctx.body = { success: true, redirect: '/' };
     } else {
-      ctx.body = apiMsg.extend({ msg: 'user not found' });
+      ctx.body = { msg: 'user not found' };
     }
   } else {
-    ctx.body = apiMsg.extend({ msg: 'invalid params' });
+    ctx.body = { msg: 'invalid params' };
   }
 });
 

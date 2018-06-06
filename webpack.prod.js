@@ -48,7 +48,7 @@ const clientConfig = {
           {
             loader: 'css-loader',
             options: {
-              minimize: false,
+              minimize: true,
               importLoaders: 0,
               localIdentName: '[folder]__[local]--[hash:base64:5]',
               modules: true
@@ -101,7 +101,7 @@ const serverConfig = {
     filename: 'server.js',
     libraryTarget: 'commonjs2'
   },
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval',
   module: {
     rules: [
       {
@@ -126,11 +126,17 @@ const serverConfig = {
         }
       },
       {
-        test: /\.s?css$/,
+        test: /\.scss$/,
         use: [
           {
-            loader: 'css-loader/locals'
-          }
+            loader: 'css-loader/locals',
+            options: {
+              importLoaders: 1,
+              localIdentName: '[folder]__[local]--[hash:base64:5]',
+              modules: true
+            }
+          },
+          { loader: 'sass-loader' }
         ]
       }
     ]
@@ -143,7 +149,4 @@ const serverConfig = {
   ]
 };
 
-module.exports = [
-  clientConfig,
-  serverConfig
-];
+module.exports = [clientConfig, serverConfig];
