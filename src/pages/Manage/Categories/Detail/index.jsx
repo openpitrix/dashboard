@@ -25,24 +25,35 @@ import styles from './index.scss';
 export default class CategoryDetail extends Component {
   static async onEnter({ categoryStore, appStore }, { categoryId }) {
     await categoryStore.fetchCategoryDetail(categoryId);
-    await appStore.fetchAll({ page: 1 });
+    await appStore.fetchQueryApps({ category_id: categoryId });
   }
 
   onSearch = async name => {
-    await this.props.appStore.fetchQueryApps(name);
+    const { categoryStore, appStore } = this.props;
+    await appStore.fetchQueryApps({
+      category_id: categoryStore.category.category_id,
+      search_word: name
+    });
   };
 
   onRefresh = async () => {
-    await this.onSearch();
+    const { categoryStore, appStore } = this.props;
+    await appStore.fetchQueryApps({ category_id: categoryStore.category.category_id });
+  };
+
+  changeApps = async current => {
+    const { categoryStore, appStore } = this.props;
+    await appStore.fetchQueryApps({
+      category_id: categoryStore.category.category_id,
+      offset: (current - 1) * appStore.pageSize
+    });
   };
 
   render() {
     const { categoryStore, appStore } = this.props;
     const detail = categoryStore.category;
     const data = toJS(appStore.apps);
-    const fetchAll = async current => {
-      await appStore.fetchAll({ page: current });
-    };
+    const appCount = appStore.totalCount;
     const columns = [
       {
         title: 'App Name',
@@ -80,7 +91,7 @@ export default class CategoryDetail extends Component {
         <BackBtn label="categories" link="/manage/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <CategoryCard detail={detail} />
+            <CategoryCard detail={detail} appCount={appCount} />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
@@ -98,7 +109,7 @@ export default class CategoryDetail extends Component {
               <Table columns={columns} dataSource={data} />
             </div>
             {appStore.totalCount > 0 && (
-              <Pagination onChange={fetchAll} total={appStore.totalCount} />
+              <Pagination onChange={this.changeApps} total={appStore.totalCount} />
             )}
           </div>
         </div>

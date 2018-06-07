@@ -22,9 +22,11 @@ const routes = [
   { path: '/:manage/clusters/:clusterId', exact: true, component: Manage.ClusterDetail },
   { path: '/:manage/runtimes', exact: true, component: Manage.Runtimes },
   { path: '/:manage/runtimes/create', exact: true, component: Manage.RuntimeAdd },
+  { path: '/:manage/runtimes/modify/:runtimeId', exact: true, component: Manage.RuntimeAdd },
   { path: '/:manage/runtimes/:runtimeId', exact: true, component: Manage.RuntimeDetail },
   { path: '/:manage/repos', exact: true, component: Manage.Repos },
   { path: '/:manage/repos/create', exact: true, component: Manage.RepoAdd },
+  { path: '/:manage/repos/modify/:repoId', exact: true, component: Manage.RepoAdd },
   { path: '/:manage/repos/:repoId', exact: true, component: Manage.RepoDetail },
 
   { path: '/manage/users', exact: true, component: Manage.Users },

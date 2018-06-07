@@ -20,6 +20,7 @@ import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
+  handleStore: rootStore.repoHandleStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore
 }))
@@ -27,25 +28,15 @@ import styles from './index.scss';
 export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await appStore.fetchAll({ page: 1 });
-    await runtimeStore.fetchRuntimes({ page: 1 });
+    await appStore.fetchQueryApps({ repo_id: repoId });
+    await runtimeStore.fetchRuntimes();
   }
-  componentDidMount() {}
-  constructor(props) {
-    super(props);
-    this.changeCurTag = this.changeCurTag.bind(this);
-    this.state = { curTag: 'Apps' };
-  }
-  changeCurTag = name => {
-    this.setState({
-      curTag: name
-    });
-  };
 
   render() {
     const { repoStore, appStore, runtimeStore } = this.props;
     const repoDetail = toJS(repoStore.repoDetail);
     const appsData = toJS(appStore.apps);
+    const appCount = appStore.totalCount;
     const runtimesData = toJS(runtimeStore.runtimes);
     const appsColumns = [
       {
@@ -121,13 +112,12 @@ export default class RepoDetail extends Component {
         render: getParseDate
       }
     ];
-    const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
-    const curTag = this.state.curTag;
 
+    const { tags, curTagName, selectCurTag } = this.props.handleStore;
     let data = [];
     let columns = [];
     let searchTip = 'Search App Name';
-    switch (curTag) {
+    switch (curTagName) {
       case 'Apps':
         data = appsData;
         columns = appsColumns;
@@ -144,11 +134,11 @@ export default class RepoDetail extends Component {
         <BackBtn label="repos" link="/manage/repos" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <RuntimeCard detail={repoDetail} />
+            <RuntimeCard detail={repoDetail} appCount={appCount} />
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} changeCurTag={this.changeCurTag} />
+              <TagNav tags={tags} curTag={curTagName} changeCurTag={selectCurTag} />
               <div className={styles.toolbar}>
                 <Input.Search className={styles.search} placeholder={searchTip} />
                 <Button className={styles.buttonRight}>

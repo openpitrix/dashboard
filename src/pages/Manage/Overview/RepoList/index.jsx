@@ -17,7 +17,7 @@ export default class RepoList extends PureComponent {
         {repos.map(data => (
           <li key={data.repo_id}>
             <img className={styles.icon} src={data.icon} />
-            <span className={styles.name}>{data.provider}</span>
+            <span className={styles.name}>{data.providers[0]}</span>
             <span className={styles.total}>
               <span className={styles.number}>{data.total || 0}</span>
               Clusters

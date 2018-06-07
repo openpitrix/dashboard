@@ -13,25 +13,34 @@ import Layout, { BackBtn, CreateResource } from 'pages/Layout/Admin';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  store: rootStore.runtimeCreateStore
+  runtimeStore: rootStore.runtimeStore,
+  runtimeCreateStore: rootStore.runtimeCreateStore
 }))
 @observer
 export default class RuntimeAdd extends Component {
+  static async onEnter({ runtimeStore, runtimeCreateStore }, { runtimeId }) {
+    if (runtimeId) {
+      await runtimeStore.fetchRuntimeDetail(runtimeId);
+      runtimeCreateStore.setRuntime(runtimeStore.runtimeDetail);
+    } else {
+      runtimeCreateStore.reset();
+    }
+  }
+
   constructor(props) {
     super(props);
-    this.store = this.props.store;
-    this.store.reset();
+    this.props.runtimeCreateStore.reset();
   }
 
   componentDidUpdate() {
-    if (get(this.store, 'runtimeCreated.runtime') && !this.store.isLoading) {
+    const { runtimeCreateStore } = this.props;
+    if (get(runtimeCreateStore, 'runtimeCreated.runtime') && !runtimeCreateStore.isLoading) {
       history.back();
     }
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.store;
-
+    const { notifyMsg, hideMsg } = this.props.runtimeCreateStore;
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/manage/runtimes" />
@@ -43,19 +52,37 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
-    const { provider, zone, labels, curLabelKey, curLabelValue, isLoading } = this.store;
-
+    const { runtimeCreateStore } = this.props;
+    const {
+      name,
+      provider,
+      zone,
+      labels,
+      curLabelKey,
+      accessKey,
+      secretKey,
+      description,
+      curLabelValue,
+      isLoading,
+      runtimeUrl
+    } = runtimeCreateStore;
     return (
-      <form onSubmit={this.store.handleSubmit} className={styles.createForm}>
+      <form onSubmit={runtimeCreateStore.handleSubmit} className={styles.createForm}>
         <div>
           <label className={styles.name}>Name</label>
-          <Input className={styles.input} name="name" required />
+          <Input
+            className={styles.input}
+            name="name"
+            required
+            onChange={runtimeCreateStore.changeName}
+            value={name}
+          />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the runtime</p>
         </div>
 
         <div>
           <label className={styles.name}>Provider</label>
-          <Radio.Group value={provider} onChange={this.store.changeProvider}>
+          <Radio.Group value={provider} onChange={runtimeCreateStore.changeProvider}>
             <Radio value="qingcloud">QingCloud</Radio>
             <Radio value="kubernetes">Kubernetes</Radio>
           </Radio.Group>
@@ -66,6 +93,8 @@ export default class RuntimeAdd extends Component {
             <div>
               <label className={styles.name}>URL</label>
               <Input
+                value={runtimeUrl}
+                onChange={runtimeCreateStore.changeUrl}
                 className={styles.inputUrl}
                 name="runtime_url"
                 placeholder="www.example.com/path/point/"
@@ -77,23 +106,32 @@ export default class RuntimeAdd extends Component {
                   <label className={styles.inputTitle}>Secret Access Key</label>
                 </p>
                 <Input
+                  value={accessKey}
                   className={styles.inputMiddle}
                   required
-                  onChange={this.store.changeAccessKey}
+                  onChange={runtimeCreateStore.changeAccessKey}
                 />
                 <Input
+                  value={secretKey}
                   className={styles.inputMiddle}
                   required
-                  onChange={this.store.changeSecretKey}
+                  onChange={runtimeCreateStore.changeSecretKey}
                 />
-                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+                <Button
+                  className={styles.add}
+                  onClick={runtimeCreateStore.handleValidateCredential}
+                >
                   Validate
                 </Button>
               </div>
             </div>
             <div>
               <label className={styles.name}>Zone</label>
-              <Select className={styles.select} value={zone} onChange={this.store.changeZone}>
+              <Select
+                className={styles.select}
+                value={zone}
+                onChange={runtimeCreateStore.changeZone}
+              >
                 <Select.Option value="pek3a">pek3a</Select.Option>
                 <Select.Option value="sh1a">sh1a</Select.Option>
                 <Select.Option value="gd1">gd1</Select.Option>
@@ -110,7 +148,12 @@ export default class RuntimeAdd extends Component {
 
         <div>
           <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-          <textarea className={styles.textarea} name="description" />
+          <textarea
+            className={styles.textarea}
+            name="description"
+            onChange={runtimeCreateStore.changeDescription}
+            value={description}
+          />
         </div>
         <div>
           <label className={styles.name}>Labels</label>
@@ -118,18 +161,18 @@ export default class RuntimeAdd extends Component {
             className={styles.inputSmall}
             placeholder="Key"
             value={curLabelKey}
-            onChange={this.store.changeLabelKey}
+            onChange={runtimeCreateStore.changeLabelKey}
           />
           <Input
             className={styles.inputSmall}
             placeholder="Value"
             value={curLabelValue}
-            onChange={this.store.changeLabelValue}
+            onChange={runtimeCreateStore.changeLabelValue}
           />
-          <Button className={styles.add} onClick={this.store.addLabel}>
+          <Button className={styles.add} onClick={runtimeCreateStore.addLabel}>
             Add
           </Button>
-          <TodoList labels={labels.slice()} onRemove={this.store.removeLabel} />
+          <TodoList labels={labels && labels.slice()} onRemove={runtimeCreateStore.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">

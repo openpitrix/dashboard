@@ -3,8 +3,12 @@ import Store from './Store';
 import _ from 'lodash';
 
 export default class RuntimeCreateStore extends Store {
+  @observable runtimeId = '';
+  @observable name = '';
   @observable provider = 'qingcloud';
   @observable zone = 'pek3a';
+  @observable description = '';
+  @observable runtimeUrl = '';
   @observable accessKey = '';
   @observable secretKey = '';
   @observable curLabelKey = '';
@@ -12,6 +16,21 @@ export default class RuntimeCreateStore extends Store {
   @observable labels = [];
   @observable runtimeCreated = null;
   @observable isLoading = false;
+
+  @action
+  changeName = e => {
+    this.name = e.target.value;
+  };
+
+  @action
+  changeUrl = e => {
+    this.runtimeUrl = e.target.value;
+  };
+
+  @action
+  changeDescription = e => {
+    this.description = e.target.value;
+  };
 
   @action
   changeProvider = provider => {
@@ -43,13 +62,13 @@ export default class RuntimeCreateStore extends Store {
     if (!(this.curLabelKey && this.curLabelValue)) {
       return this.showMsg('please input label key and value');
     }
-    if (_.find(this.labels, { key: this.curLabelKey })) {
+    if (_.find(this.labels, { label_key: this.curLabelKey })) {
       return this.showMsg('label key already exists');
     }
 
     this.labels.push({
-      key: this.curLabelKey,
-      value: this.curLabelValue
+      label_key: this.curLabelKey,
+      label_value: this.curLabelValue
     });
 
     this.curLabelKey = '';
@@ -69,7 +88,7 @@ export default class RuntimeCreateStore extends Store {
   @action
   removeLabel = key => {
     this.labels = this.labels.filter(label => {
-      return label.key !== key;
+      return label.label_key !== key;
     });
   };
 
@@ -103,17 +122,22 @@ export default class RuntimeCreateStore extends Store {
 
     data.labels = labels
       .map(label => {
-        return [label.key, label.value].join('=');
+        return [label.label_key, label.label_value].join('=');
       })
       .join('&');
 
     _.extend(data, { provider, zone });
 
-    await this.create(data);
+    if (this.runtimeId) {
+      _.extend(data, { runtime_id: this.runtimeId });
+      await this.modifyRuntime(data);
+    } else {
+      await this.create(data);
+    }
 
     // todo
     if (this.runtimeCreated.runtime) {
-      this.showMsg('create runtime successfully');
+      this.showMsg('create or modify runtime successfully');
     } else {
       let { errDetail } = this.runtimeCreated;
       this.showMsg(errDetail);
@@ -130,13 +154,21 @@ export default class RuntimeCreateStore extends Store {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.runtimeCreated = await this.request.post('runtimes', params);
   }
+  @action
+  async modifyRuntime(params) {
+    params = typeof params === 'object' ? params : JSON.stringify(params);
+    this.runtimeCreated = await this.request.patch('runtimes', params);
+  }
 
   @action
   reset() {
     this.hideMsg();
-
+    this.runtimeId = '';
+    this.name = '';
     this.provider = 'qingcloud';
     this.zone = 'pek3a';
+    this.runtimeUrl = '';
+    this.description = '';
     this.accessKey = '';
     this.secretKey = '';
     this.curLabelKey = '';
@@ -145,4 +177,24 @@ export default class RuntimeCreateStore extends Store {
     this.runtimeCreated = null;
     this.isLoading = false;
   }
+
+  @action
+  setRuntime = detail => {
+    if (detail) {
+      this.runtimeId = detail.runtime_id;
+      this.name = detail.name;
+      this.provider = detail.provider;
+      this.runtimeUrl = detail.runtime_url;
+      this.zone = detail.zone;
+      this.description = detail.description;
+      const credential = JSON.parse(detail.runtime_credential);
+      this.accessKey = credential.access_key_id;
+      this.secretKey = credential.secret_access_key;
+      this.labels = detail.labels;
+      if (detail.labels && detail.labels[0]) {
+        this.curLabelKey = detail.labels[0].label_key;
+        this.curLabelValue = detail.labels[0].label_value;
+      }
+    }
+  };
 }

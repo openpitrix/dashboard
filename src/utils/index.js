@@ -45,3 +45,10 @@ export function getSessInfo(key, store) {
   }
   return typeof store === 'object' ? get(store, key) : null;
 }
+
+export function getLoginDate(timestamp) {
+  let newDate = new Date();
+  if (timestamp) newDate.setTime(timestamp);
+  const temp = newDate.toDateString().split(' ');
+  return temp[1] + ' ' + temp[2] + ' at ' + newDate.toLocaleTimeString('en-US');
+}

@@ -1,10 +1,10 @@
 import { observable, action } from 'mobx';
 import Store from './Store';
-import { get } from 'lodash';
+import { get, assign } from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
-  @observable app = {};
+  @observable appDetail = {};
   @observable appClusters = [];
   @observable installedApps = [];
   @observable versions = [];
@@ -17,9 +17,17 @@ export default class AppStore extends Store {
   }
 
   @action
-  async fetchAll(page) {
+  async fetchAll(query) {
     this.isLoading = true;
-    page = page ? page : 1;
+    const result = await this.request.get('apps', query);
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  }
+
+  fetchApps = async page => {
+    this.isLoading = true;
+    page = page && !isNaN(page) ? page : 1;
     const params = {
       limit: this.pageSize,
       offset: (page - 1) * this.pageSize
@@ -28,15 +36,16 @@ export default class AppStore extends Store {
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
   fetchQueryApps = async query => {
     this.isLoading = true;
-    const params = {
-      limit: this.pageSize,
-      search_word: query
+    let params = {
+      limit: this.pageSize
     };
+    if (typeof query === 'object') assign(params, query);
+    if (typeof query === 'string') assign(params, { search_word: query });
     const result = await this.request.get(`apps`, params);
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -49,7 +58,7 @@ export default class AppStore extends Store {
   async fetchApp(appId) {
     this.isLoading = true;
     const result = await this.request.get(`apps`, { app_id: appId });
-    this.app = get(result, 'app_set[0]', {});
+    this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
   }
 

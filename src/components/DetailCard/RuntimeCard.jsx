@@ -9,11 +9,12 @@ import styles from './index.scss';
 
 export default class RuntimeCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object.isRequired
+    detail: PropTypes.object.isRequired,
+    appCount: PropTypes.number
   };
 
   render() {
-    const { detail } = this.props;
+    const { detail, appCount } = this.props;
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
@@ -28,7 +29,8 @@ export default class RuntimeCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Runtime Provider</span>
-            {detail.provider}
+            {detail.repo_id && detail.providers.map(data => <span key={data}>{data}</span>)}
+            {detail.runtime_id && <span>{detail.provider}</span>}
           </li>
           <li>
             <span className={styles.name}>Visibility</span>
@@ -40,7 +42,7 @@ export default class RuntimeCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>App Count</span>
-            {detail.count}
+            {appCount}
           </li>
           <li>
             <span className={styles.name}>Labels</span>
@@ -50,7 +52,7 @@ export default class RuntimeCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.update_time)}
+            {getParseDate(detail.status_time)}
           </li>
         </ul>
       </div>

@@ -27,7 +27,7 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   static async onEnter({ appStore }) {
-    await appStore.fetchAll({ page: 1 });
+    await appStore.fetchApps();
     await appStore.fetchStatistics();
   }
 
@@ -216,8 +216,6 @@ export default class Apps extends Component {
         )
       }
     ];
-    const { fetchQueryApps } = appStore;
-    const { onRefresh } = this.props.appHandleStore;
 
     return (
       <Layout>
@@ -237,14 +235,9 @@ export default class Apps extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search App Name or Keywords"
-                onSearch={fetchQueryApps}
+                onSearch={appStore.fetchQueryApps}
               />
-              <Button
-                className={styles.buttonRight}
-                onClick={() => {
-                  onRefresh(this.props.appStore);
-                }}
-              >
+              <Button className={styles.buttonRight} onClick={appStore.fetchApps}>
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -252,7 +245,7 @@ export default class Apps extends Component {
             <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
           </div>
           {appStore.totalCount > 0 && (
-            <Pagination onChange={appStore.fetchAll} total={appStore.totalCount} />
+            <Pagination onChange={appStore.fetchApps} total={appStore.totalCount} />
           )}
         </div>
         {this.renderDeleteModal()}

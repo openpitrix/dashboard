@@ -52,7 +52,7 @@ export default class AppDetail extends Component {
       changePackageName,
       changeDescription
     } = this.props.appHandleStore;
-    const app = toJS(this.props.appStore.app);
+    const appDetail = toJS(this.props.appStore.appDetail);
     return (
       <Modal
         width={500}
@@ -93,7 +93,7 @@ export default class AppDetail extends Component {
               type="primary"
               htmlType="submit"
               onClick={() => {
-                createVersionSubmit(app.app_id, this.props.appStore);
+                createVersionSubmit(appDetail.app_id, this.props.appStore);
               }}
             >
               Confirm
@@ -159,10 +159,10 @@ export default class AppDetail extends Component {
 
   render() {
     const { appStore, clusterStore } = this.props;
-    const appDetail = toJS(appStore.app);
+    const appDetail = toJS(appStore.appDetail);
     const versions = toJS(appStore.versions);
     const fetchClusters = async current => {
-      await clusterStore.fetchClusters({ page: current });
+      await clusterStore.fetchClusters(current);
     };
     const data = toJS(clusterStore.clusters);
     const columns = [
@@ -214,7 +214,7 @@ export default class AppDetail extends Component {
     const { fetchQueryClusters } = this.props.clusterStore;
 
     return (
-      <Layout>
+      <Layout className={styles.appDetail}>
         <BackBtn label="apps" link="/manage/apps" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>

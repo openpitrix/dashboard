@@ -8,9 +8,9 @@ const TodoList = ({ labels = [], onRemove }) => {
     <ul className={styles.list}>
       {labels.map(label => {
         return (
-          <li className={styles.item} key={label.key}>
-            <span>{label.key + ': ' + label.value}</span>
-            <Button className={styles.removeBtn} onClick={onRemove.bind(null, label.key)}>
+          <li className={styles.item} key={label.label_key}>
+            <span>{label.label_key + ': ' + label.label_value}</span>
+            <Button className={styles.removeBtn} onClick={onRemove.bind(null, label.label_key)}>
               Remove
             </Button>
           </li>
@@ -23,8 +23,8 @@ const TodoList = ({ labels = [], onRemove }) => {
 TodoList.propTypes = {
   labels: PropTypes.arrayOf(
     PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
+      label_key: PropTypes.string.isRequired,
+      label_value: PropTypes.string.isRequired
     })
   ),
   onRemove: PropTypes.func

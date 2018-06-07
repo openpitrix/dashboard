@@ -1,6 +1,6 @@
 import { observable, action, toJS } from 'mobx';
 import Store from './Store';
-import { get } from 'lodash';
+import { assign, get } from 'lodash';
 
 export default class RuntimeStore extends Store {
   @observable runtimes = [];
@@ -14,23 +14,32 @@ export default class RuntimeStore extends Store {
   }
 
   @action
-  async fetchRuntimes({ page }) {
+  fetchRuntimes = async page => {
     this.isLoading = true;
-    page = page ? page : 1;
-    const result = await this.request.get('runtimes', { _page: page });
+    page = page && !isNaN(page) ? page : 1;
+    const params = {
+      limit: this.pageSize,
+      offset: (page - 1) * this.pageSize
+    };
+    const result = await this.request.get('runtimes', params);
     this.runtimes = get(result, 'runtime_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetchQueryRuntimes(query) {
+  fetchQueryRuntimes = async query => {
     this.isLoading = true;
-    const result = await this.request.get('runtimes', { q: query });
+    let params = {
+      limit: this.pageSize
+    };
+    if (typeof query === 'object') assign(params, query);
+    if (typeof query === 'string') assign(params, { search_word: query });
+    const result = await this.request.get('runtimes', params);
     this.runtimes = get(result, 'runtime_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
   async fetchRuntimeDetail(runtimeId) {
@@ -45,6 +54,13 @@ export default class RuntimeStore extends Store {
     this.isLoading = true;
     const result = await this.request.get('statistics');
     this.statistics = get(result, 'statistics_set.runtimes', {});
+    this.isLoading = false;
+  }
+
+  @action
+  async deleteRuntime(runtimeIds) {
+    this.isLoading = true;
+    await this.request.delete('runtimes', { runtime_id: runtimeIds });
     this.isLoading = false;
   }
 }

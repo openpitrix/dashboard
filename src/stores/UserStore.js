@@ -17,7 +17,7 @@ export default class UserStore extends Store {
   }
 
   @action
-  async fetchUsers({ page }) {
+  async fetchUsers(page) {
     this.isLoading = true;
     page = page ? page : 1;
     const result = await this.request.get('users', { _page: page });

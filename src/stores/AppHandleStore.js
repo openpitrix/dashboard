@@ -31,7 +31,7 @@ export default class AppHandleStore extends Store {
   deleteApp = async appStore => {
     await appStore.deleteApp([this.appId]);
     this.showDeleteApp = false;
-    await appStore.fetchAll({ page: 1 });
+    await appStore.fetchApps();
   };
 
   @action

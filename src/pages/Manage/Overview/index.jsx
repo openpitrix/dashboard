@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
 
 import UserInfo from 'components/UserInfo';
 import TotalCard from 'components/UserInfo/TotalCard';
@@ -10,7 +9,7 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import Layout from 'pages/Layout/Admin';
-
+import { getParseDate, getCookie, getLoginDate } from 'utils';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -23,19 +22,19 @@ import styles from './index.scss';
 @observer
 export default class Overview extends Component {
   static async onEnter({ appStore, clusterStore, repoStore, categoryStore, userStore }) {
-    await appStore.fetchAll({ page: 1 });
-    await clusterStore.fetchClusters({ page: 1 });
+    await appStore.fetchApps();
+    await clusterStore.fetchClusters();
     await repoStore.fetchRepos();
     await categoryStore.fetchCategories();
-    await userStore.fetchUsers({ page: 1 });
+    await userStore.fetchUsers();
   }
 
   render() {
     const { userImg, name, role, loginInfo } = {
       userImg: 'http://via.placeholder.com/36x36',
-      name: 'Wayne',
-      role: 'Administrator',
-      loginInfo: 'Dec 29 at 10:17am'
+      name: getCookie('user'),
+      role: getCookie('role'),
+      loginInfo: getLoginDate(getCookie('last_login'))
     };
     const { appStore, clusterStore, repoStore, categoryStore, userStore } = this.props;
     const appList = appStore.apps.slice(0, 5);
@@ -45,12 +44,14 @@ export default class Overview extends Component {
     let reposPublic = [],
       reposPrivate = [];
     for (let i = 0; i < repoList.length; i++) {
-      if (repoList[i].visibility === 'Public') {
+      if (repoList[i].visibility === 'public') {
         reposPublic.push(repoList[i]);
       } else {
         reposPrivate.push(repoList[i]);
       }
     }
+    const publicLen = reposPrivate.length > 2 ? 3 : 5 - reposPrivate.length;
+    const privateLen = reposPublic.length > 2 ? 3 : 5 - reposPublic.length;
 
     const totalArray = [
       {
@@ -93,10 +94,10 @@ export default class Overview extends Component {
                   more...
                 </Link>
               </div>
-              <div className={styles.type}>Public</div>
-              <RepoList repos={reposPublic.slice(0, 2)} type={`Public`} />
-              <div className={styles.type}>Private</div>
-              <RepoList repos={reposPrivate.splice(0, 3)} type={`Private`} />
+              {reposPublic.length > 0 && <div className={styles.type}>Public</div>}
+              <RepoList repos={reposPublic.slice(0, publicLen)} type={`Public`} />
+              {reposPrivate.length > 0 && <div className={styles.type}>Private</div>}
+              <RepoList repos={reposPrivate.splice(0, privateLen)} type={`Private`} />
             </div>
             <div className={styles.cardList}>
               <div className={styles.title}>
