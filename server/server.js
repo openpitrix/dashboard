@@ -40,7 +40,7 @@ watchServerConfig();
 const serveStatic = (mount_points = {}) => {
   for (let [k, v] of Object.entries(mount_points)) {
     if (typeof v === 'string') {
-      app.use(mount(k, serve(root(v), { index: false })));
+      app.use(mount(k, serve(root(v), { index: false, maxage: 864000000 })));
     } else if (typeof v === 'object' && k === env) {
       serveStatic(v);
     }

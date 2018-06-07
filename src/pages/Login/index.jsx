@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 
@@ -21,15 +22,13 @@ export default class Login extends Component {
     this.props.store.login(params);
   };
 
-  resetErrMsg = () => {
-    this.props.store.errMsg = '';
-  };
-
   renderErrMsg() {
-    let { errMsg } = this.props.store;
+    let { notifyMsg, hideMsg } = this.props.store;
 
-    if (errMsg) {
-      return <Notification message={errMsg} onHide={this.resetErrMsg} />;
+    notifyMsg = toJS(notifyMsg);
+
+    if (notifyMsg) {
+      return <Notification message={notifyMsg} onHide={hideMsg} />;
     }
     return null;
   }
