@@ -4,7 +4,8 @@
   position: relative;
   width: $content-width;
   margin: 0 auto 24px;
-
+  clear: both;
+  overflow: auto;
   .leftInfo{
     float: left;
     width: 360px;
@@ -17,9 +18,9 @@
     margin-bottom: 24px;
     .operation{
       position: absolute;
-      right: -24px;
+      right: -35px;
       top: 24px;
-      width: 120px;
+      width: 135px;
       text-align: center;
       cursor: pointer;
       i{
@@ -30,7 +31,7 @@
 }
 .wrapper2 {
   position: relative;
-  width: 774px;
+  width: 744px;
   margin: 0 auto 24px;
   background-color: #fff;
   border-radius: 3px;

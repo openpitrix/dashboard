@@ -3,7 +3,6 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
-import classNames from 'classnames';
 
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Button from 'components/Base/Button';
@@ -13,6 +12,7 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
+import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import Layout, { BackBtn } from 'pages/Layout/Admin';
 
@@ -48,6 +48,14 @@ export default class RuntimeDetail extends Component {
       runtime_id: runtimeStore.runtimeDetail.runtime_id,
       offset: (current - 1) * runtimeStore.pageSize
     });
+  };
+
+  renderHandleMenu = id => {
+    return (
+      <div className="operate-menu">
+        <Link to={`/manage/runtimes/modify/${id}`}>Modify runtime</Link>
+      </div>
+    );
   };
 
   render() {
@@ -103,7 +111,15 @@ export default class RuntimeDetail extends Component {
         <BackBtn label="runtimes" link="/manage/runtimes" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <RuntimeCard detail={runtimeDetail} />
+            <div className={styles.detailOuter}>
+              <RuntimeCard detail={runtimeDetail} />
+              <Popover
+                className={styles.operation}
+                content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+              >
+                <Icon name="more" />
+              </Popover>
+            </div>
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
@@ -120,6 +136,7 @@ export default class RuntimeDetail extends Component {
               </div>
               <Table columns={columns} dataSource={data} />
             </div>
+            <ul />
             {clusterStore.totalCount > 0 && (
               <Pagination onChange={this.changeClusters} total={clusterStore.totalCount} />
             )}

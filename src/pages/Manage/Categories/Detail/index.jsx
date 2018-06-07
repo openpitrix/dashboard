@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 
 import CategoryCard from 'components/DetailCard/CategoryCard';
@@ -12,6 +11,8 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
+import Popover from 'components/Base/Popover';
+import Modal from 'components/Base/Modal';
 import TdName from 'components/TdName';
 import Layout, { BackBtn } from 'pages/Layout/Admin';
 
@@ -19,6 +20,7 @@ import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
+  categoryHandleStore: rootStore.categoryHandleStore,
   appStore: rootStore.appStore
 }))
 @observer
@@ -47,6 +49,78 @@ export default class CategoryDetail extends Component {
       category_id: categoryStore.category.category_id,
       offset: (current - 1) * appStore.pageSize
     });
+  };
+
+  renderHandleMenu = category => {
+    const { modifyCategoryShow } = this.props.categoryHandleStore;
+    return (
+      <div className="operate-menu">
+        <span
+          onClick={() => {
+            modifyCategoryShow(category);
+          }}
+        >
+          Modify Category
+        </span>
+      </div>
+    );
+  };
+
+  renderCategoryModal = () => {
+    const {
+      categoryDetail,
+      showCategoryModal,
+      createCategoryClose,
+      changeName,
+      changeLocale,
+      categorySubmit
+    } = this.props.categoryHandleStore;
+
+    return (
+      <Modal
+        width={500}
+        title="Modify Category"
+        visible={showCategoryModal}
+        hideFooter
+        onCancel={createCategoryClose}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.inputItem}>
+            <label className={styles.name}>Name</label>
+            <Input
+              className={styles.input}
+              name="name"
+              required
+              onChange={changeName}
+              defaultValue={categoryDetail.name}
+            />
+          </div>
+          <div className={styles.inputItem}>
+            <label className={styles.name}>locale</label>
+            <Input
+              className={styles.input}
+              name="locale"
+              required
+              onChange={changeLocale}
+              defaultValue={categoryDetail.locale}
+            />
+          </div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={createCategoryClose}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                categorySubmit(this.props.categoryStore, categoryDetail.category_id, 'detail');
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    );
   };
 
   render() {
@@ -91,7 +165,12 @@ export default class CategoryDetail extends Component {
         <BackBtn label="categories" link="/manage/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
-            <CategoryCard detail={detail} appCount={appCount} />
+            <div className={styles.detailOuter}>
+              <CategoryCard detail={detail} appCount={appCount} />
+              <Popover className={styles.operation} content={this.renderHandleMenu(detail)}>
+                <Icon name="more" />
+              </Popover>
+            </div>
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
@@ -113,6 +192,7 @@ export default class CategoryDetail extends Component {
             )}
           </div>
         </div>
+        {this.renderCategoryModal()}
       </Layout>
     );
   }

@@ -102,7 +102,13 @@ export default class Runtimes extends Component {
         title: 'Runtime Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        render: (name, obj) => (
+          <TdName
+            name={name}
+            description={obj.description}
+            linkUrl={`/manage/runtimes/${obj.runtime_id}`}
+          />
+        )
       },
       {
         title: 'Status',
@@ -141,6 +147,7 @@ export default class Runtimes extends Component {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
+        width: '80px',
         render: (text, item) => (
           <div className={styles.handlePop}>
             <Popover content={this.renderHandleMenu(item.runtime_id, item.status)}>

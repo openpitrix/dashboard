@@ -15,13 +15,23 @@ import Layout, { BackBtn, CreateResource } from 'pages/Layout/Admin';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  store: rootStore.repoCreateStore
+  repoStore: rootStore.repoStore,
+  repoCreateStore: rootStore.repoCreateStore
 }))
 @observer
 export default class RepoAdd extends Component {
+  static async onEnter({ repoStore, repoCreateStore }, { repoId }) {
+    if (repoId) {
+      await repoStore.fetchRepoDetail(repoId);
+      repoCreateStore.setRepo(repoStore.repoDetail);
+    } else {
+      repoCreateStore.reset();
+    }
+  }
+
   constructor(props) {
     super(props);
-    this.store = this.props.store;
+    this.store = this.props.repoCreateStore;
     this.store.reset();
   }
 
@@ -32,12 +42,13 @@ export default class RepoAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.store;
-
+    const { notifyMsg, hideMsg, repoId } = this.store;
+    let title = 'Create Repo';
+    if (repoId) title = 'Modify Repo';
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="repos" link="/manage/repos" />
-        <CreateResource title="Create Repo" aside={this.renderAside()}>
+        <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
       </Layout>
@@ -46,9 +57,12 @@ export default class RepoAdd extends Component {
 
   renderForm() {
     const {
-      providers,
+      name,
+      description,
+      url,
       visibility,
       protocolType,
+      providers,
       labels,
       selectors,
       accessKey,
@@ -64,7 +78,13 @@ export default class RepoAdd extends Component {
       <form className={styles.createForm} onSubmit={this.store.handleSubmit}>
         <div>
           <label className={styles.name}>Name</label>
-          <Input className={styles.input} name="name" required />
+          <Input
+            className={styles.input}
+            name="name"
+            required
+            onChange={this.store.changeName}
+            value={name}
+          />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the repo</p>
         </div>
 
@@ -78,7 +98,10 @@ export default class RepoAdd extends Component {
 
         <div>
           <label className={styles.name}>Runtime Provider</label>
-          <Checkbox.Group values={providers.slice()} onChange={this.store.changeProviders}>
+          <Checkbox.Group
+            values={providers && providers.slice()}
+            onChange={this.store.changeProviders}
+          >
             <Checkbox value="qingcloud">QingCloud</Checkbox>
             <Checkbox value="kubernetes">Kubernetes</Checkbox>
           </Checkbox.Group>
@@ -101,9 +124,8 @@ export default class RepoAdd extends Component {
           <Button className={styles.add} onClick={this.store.addSelector}>
             Add
           </Button>
-          <TodoList labels={selectors.slice()} onRemove={this.store.removeSelector} />
+          <TodoList labels={selectors && selectors.slice()} onRemove={this.store.removeSelector} />
         </div>
-
         <div>
           <label className={styles.name}>URL</label>
           <Select
@@ -115,8 +137,9 @@ export default class RepoAdd extends Component {
             <Select.Option value="https">HTTPS</Select.Option>
             <Select.Option value="s3">S3</Select.Option>
           </Select>
-
           <Input
+            value={url}
+            onChange={this.store.changeUrl}
             className={styles.input}
             placeholder="www.example.com/path/point/"
             required
@@ -149,7 +172,12 @@ export default class RepoAdd extends Component {
         </div>
         <div>
           <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-          <textarea className={styles.textarea} name="description" />
+          <textarea
+            className={styles.textarea}
+            name="description"
+            value={description}
+            onChange={this.store.changeDescription}
+          />
         </div>
         <div>
           <label className={styles.name}>Labels</label>
@@ -168,7 +196,7 @@ export default class RepoAdd extends Component {
           <Button className={styles.add} onClick={this.store.addLabel}>
             Add
           </Button>
-          <TodoList labels={labels.slice()} onRemove={this.store.removeLabel} />
+          <TodoList labels={labels && labels.slice()} onRemove={this.store.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>

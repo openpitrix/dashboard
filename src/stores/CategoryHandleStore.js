@@ -1,15 +1,18 @@
 import { observable, action } from 'mobx';
 import Store from './Store';
+import { assign } from 'lodash';
 
 export default class CategoryHandleStore extends Store {
   @observable name = '';
   @observable locale = '';
   @observable categoryId = '';
+  @observable categoryDetail = {};
   @observable showCategoryModal = false;
   @observable showDeleteModal = false;
 
   @action
   createCategoryShow = () => {
+    this.categoryDetail = {};
     this.showCategoryModal = true;
   };
 
@@ -19,14 +22,28 @@ export default class CategoryHandleStore extends Store {
   };
 
   @action
-  categorySubmit = async categoryStore => {
+  modifyCategoryShow = category => {
+    this.categoryDetail = category;
+    this.showCategoryModal = true;
+  };
+
+  @action
+  categorySubmit = async (categoryStore, categoryId, type) => {
     const params = {
-      name: this.name,
-      locale: this.locale
+      name: this.name || this.categoryDetail.name,
+      locale: this.locale || this.categoryDetail.locale
     };
-    await categoryStore.createCategory(params);
+    if (categoryId) {
+      await categoryStore.modifyCategory(assign(params, { category_id: categoryId }));
+    } else {
+      await categoryStore.createCategory(params);
+    }
     this.showCategoryModal = false;
-    await categoryStore.fetchCategories();
+    if (type === 'detail') {
+      await categoryStore.fetchCategoryDetail(categoryId);
+    } else {
+      await categoryStore.fetchCategories();
+    }
   };
 
   @action

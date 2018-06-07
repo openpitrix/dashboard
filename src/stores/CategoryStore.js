@@ -36,6 +36,13 @@ export default class CategoryStore extends Store {
   }
 
   @action
+  async modifyCategory(params) {
+    this.isLoading = true;
+    await this.request.patch('categories', params);
+    this.isLoading = false;
+  }
+
+  @action
   async deleteCategory(categoryIds) {
     this.isLoading = true;
     await this.request.delete('categories', { category_id: categoryIds });

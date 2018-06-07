@@ -35,7 +35,7 @@ export default class CategoryCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.update_time)}
+            {getParseDate(detail.update_time || detail.create_time)}
           </li>
         </ul>
       </div>

@@ -4,7 +4,8 @@
   position: relative;
   width: $content-width;
   margin: 0 auto 24px;
-
+  clear: both;
+  overflow: auto;
   .leftInfo{
     float: left;
     width: 360px;
@@ -12,13 +13,25 @@
   .rightInfo{
     margin-left: 384px;
   }
-  .mb24{
+  .detailOuter{
+    position: relative;
     margin-bottom: 24px;
+    .operation{
+      position: absolute;
+      right: -35px;
+      top: 24px;
+      width: 135px;
+      text-align: center;
+      cursor: pointer;
+      i{
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 .wrapper2 {
   position: relative;
-  width: 774px;
+  width: 744px;
   margin: 0 auto 24px;
   background-color: #fff;
   border-radius: 3px;
@@ -60,6 +73,28 @@
 .buttonRight{
   float: right;
 }
-.ml12{
-  margin-left: 12px;
+
+.modalContent{
+  .noteWord{
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .inputItem{
+    margin-bottom: 20px;
+    .name{
+      display: inline-block;
+      margin-right:  20px;
+      width: 100px;
+      text-align: right;
+    }
+    .input{
+      width: 250px;
+    }
+  }
+  .operation{
+    text-align: center;
+    button{
+      margin: 0 6px;
+    }
+  }
 }

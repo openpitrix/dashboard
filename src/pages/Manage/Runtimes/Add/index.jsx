@@ -29,22 +29,24 @@ export default class RuntimeAdd extends Component {
 
   constructor(props) {
     super(props);
-    this.props.runtimeCreateStore.reset();
+    this.store = this.props.runtimeCreateStore;
+    this.store.reset();
   }
 
   componentDidUpdate() {
-    const { runtimeCreateStore } = this.props;
-    if (get(runtimeCreateStore, 'runtimeCreated.runtime') && !runtimeCreateStore.isLoading) {
+    if (get(this.store, 'runtimeCreated.runtime') && !this.store.isLoading) {
       history.back();
     }
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.props.runtimeCreateStore;
+    const { notifyMsg, hideMsg, runtimeId } = this.store;
+    let title = 'Create Runtime';
+    if (runtimeId) title = 'Modify Runtime';
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/manage/runtimes" />
-        <CreateResource title="Create Runtime" aside={this.renderAside()}>
+        <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
       </Layout>
@@ -52,7 +54,6 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
-    const { runtimeCreateStore } = this.props;
     const {
       name,
       provider,
@@ -65,16 +66,17 @@ export default class RuntimeAdd extends Component {
       curLabelValue,
       isLoading,
       runtimeUrl
-    } = runtimeCreateStore;
+    } = this.store;
+
     return (
-      <form onSubmit={runtimeCreateStore.handleSubmit} className={styles.createForm}>
+      <form onSubmit={this.store.handleSubmit} className={styles.createForm}>
         <div>
           <label className={styles.name}>Name</label>
           <Input
             className={styles.input}
             name="name"
             required
-            onChange={runtimeCreateStore.changeName}
+            onChange={this.store.changeName}
             value={name}
           />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the runtime</p>
@@ -82,7 +84,7 @@ export default class RuntimeAdd extends Component {
 
         <div>
           <label className={styles.name}>Provider</label>
-          <Radio.Group value={provider} onChange={runtimeCreateStore.changeProvider}>
+          <Radio.Group value={provider} onChange={this.store.changeProvider}>
             <Radio value="qingcloud">QingCloud</Radio>
             <Radio value="kubernetes">Kubernetes</Radio>
           </Radio.Group>
@@ -94,7 +96,7 @@ export default class RuntimeAdd extends Component {
               <label className={styles.name}>URL</label>
               <Input
                 value={runtimeUrl}
-                onChange={runtimeCreateStore.changeUrl}
+                onChange={this.store.changeUrl}
                 className={styles.inputUrl}
                 name="runtime_url"
                 placeholder="www.example.com/path/point/"
@@ -109,29 +111,22 @@ export default class RuntimeAdd extends Component {
                   value={accessKey}
                   className={styles.inputMiddle}
                   required
-                  onChange={runtimeCreateStore.changeAccessKey}
+                  onChange={this.store.changeAccessKey}
                 />
                 <Input
                   value={secretKey}
                   className={styles.inputMiddle}
                   required
-                  onChange={runtimeCreateStore.changeSecretKey}
+                  onChange={this.store.changeSecretKey}
                 />
-                <Button
-                  className={styles.add}
-                  onClick={runtimeCreateStore.handleValidateCredential}
-                >
+                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
                   Validate
                 </Button>
               </div>
             </div>
             <div>
               <label className={styles.name}>Zone</label>
-              <Select
-                className={styles.select}
-                value={zone}
-                onChange={runtimeCreateStore.changeZone}
-              >
+              <Select className={styles.select} value={zone} onChange={this.store.changeZone}>
                 <Select.Option value="pek3a">pek3a</Select.Option>
                 <Select.Option value="sh1a">sh1a</Select.Option>
                 <Select.Option value="gd1">gd1</Select.Option>
@@ -151,7 +146,7 @@ export default class RuntimeAdd extends Component {
           <textarea
             className={styles.textarea}
             name="description"
-            onChange={runtimeCreateStore.changeDescription}
+            onChange={this.store.changeDescription}
             value={description}
           />
         </div>
@@ -161,18 +156,18 @@ export default class RuntimeAdd extends Component {
             className={styles.inputSmall}
             placeholder="Key"
             value={curLabelKey}
-            onChange={runtimeCreateStore.changeLabelKey}
+            onChange={this.store.changeLabelKey}
           />
           <Input
             className={styles.inputSmall}
             placeholder="Value"
             value={curLabelValue}
-            onChange={runtimeCreateStore.changeLabelValue}
+            onChange={this.store.changeLabelValue}
           />
-          <Button className={styles.add} onClick={runtimeCreateStore.addLabel}>
+          <Button className={styles.add} onClick={this.store.addLabel}>
             Add
           </Button>
-          <TodoList labels={labels && labels.slice()} onRemove={runtimeCreateStore.removeLabel} />
+          <TodoList labels={labels && labels.slice()} onRemove={this.store.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">

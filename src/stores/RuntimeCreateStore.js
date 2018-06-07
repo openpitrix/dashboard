@@ -117,6 +117,7 @@ export default class RuntimeCreateStore extends Store {
     } else if (provider === 'kubernetes') {
       let credential = data.credential;
       delete data.credential;
+      data.runtime_url = 'https://api.qingcloud.com';
       data.runtime_credential = credential;
     }
 
@@ -190,11 +191,7 @@ export default class RuntimeCreateStore extends Store {
       const credential = JSON.parse(detail.runtime_credential);
       this.accessKey = credential.access_key_id;
       this.secretKey = credential.secret_access_key;
-      this.labels = detail.labels;
-      if (detail.labels && detail.labels[0]) {
-        this.curLabelKey = detail.labels[0].label_key;
-        this.curLabelValue = detail.labels[0].label_value;
-      }
+      this.labels = detail.labels || [];
     }
   };
 }
