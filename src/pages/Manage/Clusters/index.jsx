@@ -168,12 +168,7 @@ export default class Clusters extends Component {
               {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
               {/*Create*/}
               {/*</Button>*/}
-              <Button
-                className={styles.buttonRight}
-                onClick={async () => {
-                  await clusterStore.fetchClusters(1);
-                }}
-              >
+              <Button className={styles.buttonRight} onClick={clusterStore.fetchClusters}>
                 <Icon name="refresh" />
               </Button>
             </div>

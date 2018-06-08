@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from './Store';
-import { get } from 'lodash';
+import { get, assign } from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
@@ -18,7 +18,7 @@ export default class ClusterStore extends Store {
   @action
   fetchClusters = async page => {
     this.isLoading = true;
-    page = page ? page : 1;
+    page = page && !isNaN(page) ? page : 1;
     const params = {
       limit: this.pageSize,
       offset: (page - 1) * this.pageSize
@@ -32,10 +32,11 @@ export default class ClusterStore extends Store {
   @action
   fetchQueryClusters = async query => {
     this.isLoading = true;
-    const params = {
-      limit: this.pageSize,
-      search_word: query
+    let params = {
+      limit: this.pageSize
     };
+    if (typeof query === 'object') assign(params, query);
+    if (typeof query === 'string') assign(params, { search_word: query });
     const result = await this.request.get(`clusters`, params);
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);

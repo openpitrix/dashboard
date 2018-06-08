@@ -13,13 +13,23 @@ import Layout, { BackBtn, CreateResource } from 'pages/Layout/Admin';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  store: rootStore.runtimeCreateStore
+  runtimeStore: rootStore.runtimeStore,
+  runtimeCreateStore: rootStore.runtimeCreateStore
 }))
 @observer
 export default class RuntimeAdd extends Component {
+  static async onEnter({ runtimeStore, runtimeCreateStore }, { runtimeId }) {
+    if (runtimeId) {
+      await runtimeStore.fetchRuntimeDetail(runtimeId);
+      runtimeCreateStore.setRuntime(runtimeStore.runtimeDetail);
+    } else {
+      runtimeCreateStore.reset();
+    }
+  }
+
   constructor(props) {
     super(props);
-    this.store = this.props.store;
+    this.store = this.props.runtimeCreateStore;
     this.store.reset();
   }
 
@@ -30,12 +40,13 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg } = this.store;
-
+    const { notifyMsg, hideMsg, runtimeId } = this.store;
+    let title = 'Create Runtime';
+    if (runtimeId) title = 'Modify Runtime';
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/manage/runtimes" />
-        <CreateResource title="Create Runtime" aside={this.renderAside()}>
+        <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
       </Layout>
@@ -43,13 +54,31 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
-    const { provider, zone, labels, curLabelKey, curLabelValue, isLoading } = this.store;
+    const {
+      name,
+      provider,
+      zone,
+      labels,
+      curLabelKey,
+      accessKey,
+      secretKey,
+      description,
+      curLabelValue,
+      isLoading,
+      runtimeUrl
+    } = this.store;
 
     return (
       <form onSubmit={this.store.handleSubmit} className={styles.createForm}>
         <div>
           <label className={styles.name}>Name</label>
-          <Input className={styles.input} name="name" required />
+          <Input
+            className={styles.input}
+            name="name"
+            required
+            onChange={this.store.changeName}
+            value={name}
+          />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the runtime</p>
         </div>
 
@@ -66,6 +95,8 @@ export default class RuntimeAdd extends Component {
             <div>
               <label className={styles.name}>URL</label>
               <Input
+                value={runtimeUrl}
+                onChange={this.store.changeUrl}
                 className={styles.inputUrl}
                 name="runtime_url"
                 placeholder="www.example.com/path/point/"
@@ -77,11 +108,13 @@ export default class RuntimeAdd extends Component {
                   <label className={styles.inputTitle}>Secret Access Key</label>
                 </p>
                 <Input
+                  value={accessKey}
                   className={styles.inputMiddle}
                   required
                   onChange={this.store.changeAccessKey}
                 />
                 <Input
+                  value={secretKey}
                   className={styles.inputMiddle}
                   required
                   onChange={this.store.changeSecretKey}
@@ -110,7 +143,12 @@ export default class RuntimeAdd extends Component {
 
         <div>
           <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-          <textarea className={styles.textarea} name="description" />
+          <textarea
+            className={styles.textarea}
+            name="description"
+            onChange={this.store.changeDescription}
+            value={description}
+          />
         </div>
         <div>
           <label className={styles.name}>Labels</label>
@@ -129,7 +167,7 @@ export default class RuntimeAdd extends Component {
           <Button className={styles.add} onClick={this.store.addLabel}>
             Add
           </Button>
-          <TodoList labels={labels.slice()} onRemove={this.store.removeLabel} />
+          <TodoList labels={labels && labels.slice()} onRemove={this.store.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">

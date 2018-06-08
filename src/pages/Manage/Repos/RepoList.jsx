@@ -19,7 +19,7 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
         </div>
       </div>
       {repos.length
-        ? repos.map(({ repo_id, name, description, providers, images, labels }) => (
+        ? repos.map(({ repo_id, status, name, description, providers, images, labels }) => (
             <div className={styles.item} key={repo_id}>
               <RepoCard
                 name={name}
@@ -30,7 +30,7 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
               />
               <div className={styles.actionMenu}>
                 <div>
-                  <Popover content={actionMenu(repo_id)}>
+                  <Popover content={actionMenu(repo_id, status)}>
                     <Icon name="more" />
                   </Popover>
                 </div>

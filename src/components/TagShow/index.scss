@@ -5,8 +5,8 @@
   margin-right: 15px;
   .inner{
     display: inline-block;
-    line-height: 14px;
-    height: 23px;
+    line-height: 13px;
+    height: 20px;
     border-radius: 1px;
     border: 1px solid #f5c414;
     background: #fff;
@@ -15,12 +15,12 @@
   }
   .name{
     display: inline-block;
-    padding: 4px;
+    padding: 3px 4px;
     overflow: auto;
   }
   .content{
     display: inline-block;
-    padding: 4px;
+    padding: 3px 4px;
     background: #f2d054;
     max-width: 100px;
     overflow: hidden;
@@ -31,6 +31,11 @@
 .purple{
   display: block;
   margin-right: 0;
+  &:last-child{
+    .inner{
+      margin-bottom: 0;
+    }
+  }
   .inner{
     border: 1px solid #e2d0f2;
     color: #7749ac;

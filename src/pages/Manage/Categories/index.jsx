@@ -25,15 +25,22 @@ export default class Categories extends Component {
     await categoryStore.fetchCategories();
   }
 
-  renderHandleMenu = id => {
-    const { deleteCategoryShow } = this.props.categoryHandleStore;
+  renderHandleMenu = category => {
+    const { deleteCategoryShow, modifyCategoryShow } = this.props.categoryHandleStore;
 
     return (
-      <div id={id} className="operate-menu">
-        <Link to={`/manage/categories/${id}`}>View Category detail</Link>
+      <div className="operate-menu">
+        <Link to={`/manage/categories/${category.category_id}`}>View Category detail</Link>
         <span
           onClick={() => {
-            deleteCategoryShow(id);
+            modifyCategoryShow(category);
+          }}
+        >
+          Modify Category
+        </span>
+        <span
+          onClick={() => {
+            deleteCategoryShow(category.category_id);
           }}
         >
           Delete Category
@@ -44,17 +51,20 @@ export default class Categories extends Component {
 
   renderCategoryModal = () => {
     const {
+      categoryDetail,
       showCategoryModal,
       createCategoryClose,
       changeName,
       changeLocale,
       categorySubmit
     } = this.props.categoryHandleStore;
+    let title = 'Create Category';
+    if (categoryDetail.category_id) title = 'Modify Category';
 
     return (
       <Modal
         width={500}
-        title="Create Category"
+        title={title}
         visible={showCategoryModal}
         hideFooter
         onCancel={createCategoryClose}
@@ -62,11 +72,23 @@ export default class Categories extends Component {
         <div className={styles.modalContent}>
           <div className={styles.inputItem}>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" required onChange={changeName} />
+            <Input
+              className={styles.input}
+              name="name"
+              required
+              onChange={changeName}
+              defaultValue={categoryDetail.name}
+            />
           </div>
           <div className={styles.inputItem}>
             <label className={styles.name}>locale</label>
-            <Input className={styles.input} name="locale" required onChange={changeLocale} />
+            <Input
+              className={styles.input}
+              name="locale"
+              required
+              onChange={changeLocale}
+              defaultValue={categoryDetail.locale}
+            />
           </div>
           <div className={styles.operation}>
             <Button type="default" onClick={createCategoryClose}>
@@ -75,7 +97,7 @@ export default class Categories extends Component {
             <Button
               type="primary"
               onClick={() => {
-                categorySubmit(this.props.categoryStore);
+                categorySubmit(this.props.categoryStore, categoryDetail.category_id);
               }}
             >
               Submit
@@ -150,7 +172,7 @@ export default class Categories extends Component {
                 images={data.images}
               />
               <div className={styles.handlePop}>
-                <Popover content={this.renderHandleMenu(data.category_id)}>
+                <Popover content={this.renderHandleMenu(data)}>
                   <Icon name="more" />
                 </Popover>
               </div>

@@ -38,10 +38,12 @@
   position: relative;
   width: $content-width;
   margin: 0 auto 24px;
+  clear: both;
+  overflow: auto;
 }
 .wrapper2 {
   position: relative;
-  width: 774px;
+  width: 744px;
   margin: 0 auto 24px;
   background-color: #fff;
   border-radius: 3px;

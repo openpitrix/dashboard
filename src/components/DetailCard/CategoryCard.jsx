@@ -8,11 +8,12 @@ import styles from './index.scss';
 
 export default class CategoryCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object.isRequired
+    detail: PropTypes.object.isRequired,
+    appCount: PropTypes.number
   };
 
   render() {
-    const { detail } = this.props;
+    const { detail, appCount } = this.props;
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
@@ -30,11 +31,11 @@ export default class CategoryCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>App Count</span>
-            {detail.count}
+            {appCount}
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.update_time)}
+            {getParseDate(detail.update_time || detail.create_time)}
           </li>
         </ul>
       </div>

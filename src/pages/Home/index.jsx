@@ -15,7 +15,7 @@ let lastTs = Date.now();
 @observer
 export default class Home extends Component {
   static async onEnter({ appStore, apiServer }, params, from_server) {
-    await appStore.fetchAll({ page: 1 });
+    await appStore.fetchAll();
   }
 
   state = {

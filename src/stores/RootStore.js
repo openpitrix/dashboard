@@ -14,6 +14,8 @@ import RepoCreateStore from './RepoCreateStore';
 import AppHandleStore from './AppHandleStore';
 import CategoryHandleStore from './CategoryHandleStore';
 import ClusterHandleStore from './ClusterHandleStore';
+import RepoHandleStore from './RepoHandleStore';
+import RuntimeHandleStore from './RuntimeHandleStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
@@ -45,6 +47,8 @@ export default class RootStore extends Store {
     this.register('appHandle', AppHandleStore, false);
     this.register('categoryHandle', CategoryHandleStore, false);
     this.register('clusterHandleStore', ClusterHandleStore, false);
+    this.register('repoHandleStore', RepoHandleStore, false);
+    this.register('runtimeHandleStore', RuntimeHandleStore, false);
   }
 
   @action

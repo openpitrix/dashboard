@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
@@ -15,33 +15,74 @@ import TdName from 'components/TdName';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import Layout from 'pages/Layout/Admin';
+import Modal from 'components/Base/Modal';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  handleStore: rootStore.runtimeHandleStore
 }))
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore }) {
-    await runtimeStore.fetchRuntimes({ page: 1 });
+    await runtimeStore.fetchRuntimes();
     await runtimeStore.fetchStatistics();
   }
 
-  onSearch = async name => {
-    await this.props.runtimeStore.fetchQueryRuntimes(name);
+  renderHandleMenu = (id, status) => {
+    const { deleteRuntimeOpen } = this.props.handleStore;
+    return (
+      <div id={id} className="operate-menu">
+        <Link to={`/manage/runtimes/${id}`}>View runtime detail</Link>
+        {status !== 'deleted' && (
+          <Fragment>
+            <Link to={`/manage/runtimes/modify/${id}`}>Modify runtime</Link>
+            <span
+              onClick={() => {
+                deleteRuntimeOpen(id);
+              }}
+            >
+              Delete runtime
+            </span>
+          </Fragment>
+        )}
+      </div>
+    );
   };
 
-  onRefresh = async () => {
-    await this.onSearch();
-  };
+  deleteRuntimeModal = () => {
+    const { showDeleteRuntime, deleteRuntimeClose, deleteRuntime } = this.props.handleStore;
 
-  renderHandleMenu = id => (
-    <div id={id} className="operate-menu">
-      <Link to={`/manage/runtimes/${id}`}>View runtime detail</Link>
-      <span>Delete runtime</span>
-    </div>
-  );
+    return (
+      <Modal
+        width={500}
+        title="Delete Runtime"
+        visible={showDeleteRuntime}
+        hideFooter
+        onCancel={deleteRuntimeClose}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={deleteRuntimeClose}>
+              Cancel
+            </Button>
+            {status !== 'deleted' && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  deleteRuntime(this.props.runtimeStore);
+                }}
+              >
+                Confirm
+              </Button>
+            )}
+          </div>
+        </div>
+      </Modal>
+    );
+  };
 
   render() {
     const { runtimeStore } = this.props;
@@ -61,7 +102,13 @@ export default class Runtimes extends Component {
         title: 'Runtime Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        render: (name, obj) => (
+          <TdName
+            name={name}
+            description={obj.description}
+            linkUrl={`/manage/runtimes/${obj.runtime_id}`}
+          />
+        )
       },
       {
         title: 'Status',
@@ -100,9 +147,10 @@ export default class Runtimes extends Component {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
+        width: '80px',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.runtime_id)}>
+            <Popover content={this.renderHandleMenu(item.runtime_id, item.status)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -128,14 +176,14 @@ export default class Runtimes extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search Runtimes Name"
-                onSearch={this.onSearch}
+                onSearch={runtimeStore.fetchQueryRuntimes}
               />
               <Link to={`/manage/runtimes/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                   Create
                 </Button>
               </Link>
-              <Button className={styles.buttonRight} onClick={this.onRefresh}>
+              <Button className={styles.buttonRight} onClick={runtimeStore.fetchRuntimes}>
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -146,6 +194,7 @@ export default class Runtimes extends Component {
             <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
           )}
         </div>
+        {this.deleteRuntimeModal()}
       </Layout>
     );
   }

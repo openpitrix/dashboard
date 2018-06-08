@@ -8,12 +8,11 @@
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   .inner {
-    height: 74px;
+    height: 75px;
   }
   .column {
     display: inline-block;
     float: left;
-    margin-bottom: 16px;
     &:nth-child(1) {
       width: 420px;
       margin-right: 120px;
