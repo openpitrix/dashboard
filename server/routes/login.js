@@ -3,7 +3,6 @@ const Router = require('koa-router');
 const log = require('../log');
 const userModel = require('../models/users.json');
 const sessConfig = require('../session-config');
-// const apiMsg = require('lib/apiMsg');
 
 const router = new Router();
 

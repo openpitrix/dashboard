@@ -1,6 +1,4 @@
-module.exports = (app, needCompile = true) => {
-  if (!needCompile || process.env.NODE_ENV !== 'development') return;
-
+module.exports = app => {
   // disable babel server env plugins transform
   process.env.BABEL_ENV = '';
 
@@ -17,7 +15,7 @@ module.exports = (app, needCompile = true) => {
         quiet: false,
         watchOptions: {
           aggregateTimeout: 300,
-          poll: true,
+          // poll: true,
           ignored: /node_modules/
         },
         stats: {
@@ -25,10 +23,10 @@ module.exports = (app, needCompile = true) => {
           // hash: true,
           timings: true,
           // version: false,
-          chunks: true,
-          modules: true,
+          chunks: true
+          // modules: true,
           // children: false,
-          chunkModules: true
+          // chunkModules: true
         }
       }
     })
