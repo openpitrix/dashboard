@@ -1,10 +1,9 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const postCssOptions = require('./postcss.options');
-const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
-  // devtool: 'eval',
+  devtool: 'eval',
   entry: [
     // 'webpack-hot-middleware/client',
     './src/index.js'
@@ -88,10 +87,6 @@ module.exports = {
     symlinks: false
   },
   plugins: [
-    new WebpackNotifierPlugin({
-      title: 'dashboard build done',
-      alwaysNotify: true
-    }),
     // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),

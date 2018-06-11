@@ -45,23 +45,17 @@ export default class Layout extends React.PureComponent {
 
   renderTabs() {
     const loginRole = getSessInfo('role', this.props.sessInfo);
-    if (loginRole === 'developer') {
-      this.availableLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes', 'repos'];
-      this.linkPrefix = '/develop';
-    }
+    const basicLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
 
-    if (loginRole === 'admin') {
-      this.availableLinks = [
-        { '': 'overview' },
-        'apps',
-        'clusters',
-        'runtimes',
-        'repos',
-        'users',
-        'roles',
-        'categories'
-      ];
+    if (loginRole === 'normal') {
+      this.linkPrefix = '/deploy';
+      this.availableLinks = [...basicLinks];
+    } else if (loginRole === 'developer') {
+      this.linkPrefix = '/develop';
+      this.availableLinks = [...basicLinks, 'repos'];
+    } else if (loginRole === 'admin') {
       this.linkPrefix = '/manage';
+      this.availableLinks = [...basicLinks, 'repos', 'users', 'roles', 'categories'];
     }
 
     const options = { prefix: this.linkPrefix };

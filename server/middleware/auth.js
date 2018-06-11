@@ -1,4 +1,4 @@
-const authPages = ['manage', 'develop'];
+const authPages = ['manage', 'develop', 'deploy'];
 
 module.exports = async (ctx, next) => {
   const page = (ctx.params.page || '').split('/')[0];
