@@ -3,8 +3,7 @@ import { Redirect } from 'react-router-dom';
 import RouteWrapper from './wrapper';
 import { getCookie } from '../utils';
 
-const bypassUrl = ['/deployment'];
-const validManageTypes = ['develop', 'manage'];
+const validAdminTypes = ['deploy', 'develop', 'manage'];
 
 const hasLoggedIn = () => {
   return !!getCookie('user');
@@ -12,16 +11,17 @@ const hasLoggedIn = () => {
 
 const renderRoute = (match, route, store) => {
   const { params } = match;
+  const adminType = params.admin;
 
-  if (route.needAuth && validManageTypes.indexOf(params.manage) > -1 && !hasLoggedIn()) {
+  if (route.needAuth && validAdminTypes.indexOf(adminType) > -1 && !hasLoggedIn()) {
     return <Redirect to="/login" />;
   }
 
-  if (params.manage && validManageTypes.indexOf(params.manage) < 0) {
+  if (adminType && validAdminTypes.indexOf(adminType) < 0) {
     return <Redirect to="/" />;
   }
 
-  if (route.noMatch && bypassUrl.indexOf(match.url) < 0) {
+  if (route.noMatch) {
     return <Redirect to="/" />;
   }
 

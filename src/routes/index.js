@@ -2,45 +2,52 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDeploy from 'pages/AppDeploy';
 import AppDetail from 'pages/AppDetail';
-// import InstalledApps from 'pages/InstalledApps';
 import ClusterDetail from 'pages/ClusterDetail';
-import * as Manage from 'pages/Manage';
+import * as Admin from 'pages/Admin';
 
-const routes = [
-  { path: '/', exact: true, component: Home },
-  { path: '/login', exact: true, component: Login },
-  { path: '/apps', exact: true, component: Home },
-  { path: '/apps/:category', exact: true, component: Home },
-  { path: '/app/:appId/deploy', exact: true, component: AppDeploy },
-  { path: '/app/:appId', exact: true, component: AppDetail },
-  { path: '/clusters/:clusterId', exact: true, component: ClusterDetail },
+const useExactRoute = true;
 
-  { path: '/:manage', exact: true, component: Manage.Overview },
-  { path: '/:manage/apps', exact: true, component: Manage.Apps },
-  { path: '/:manage/apps/:appId', exact: true, component: Manage.AppDetail },
-  { path: '/:manage/clusters', exact: true, component: Manage.Clusters },
-  { path: '/:manage/clusters/:clusterId', exact: true, component: Manage.ClusterDetail },
-  { path: '/:manage/runtimes', exact: true, component: Manage.Runtimes },
-  { path: '/:manage/runtimes/create', exact: true, component: Manage.RuntimeAdd },
-  { path: '/:manage/runtimes/modify/:runtimeId', exact: true, component: Manage.RuntimeAdd },
-  { path: '/:manage/runtimes/:runtimeId', exact: true, component: Manage.RuntimeDetail },
-  { path: '/:manage/repos', exact: true, component: Manage.Repos },
-  { path: '/:manage/repos/create', exact: true, component: Manage.RepoAdd },
-  { path: '/:manage/repos/modify/:repoId', exact: true, component: Manage.RepoAdd },
-  { path: '/:manage/repos/:repoId', exact: true, component: Manage.RepoDetail },
+const routes = {
+  '/': Home,
+  '/login': Login,
+  '/apps': Home,
+  '/app/:category': Home,
+  '/app/:appId/deploy': AppDeploy,
+  '/app/:appId': AppDetail,
+  '/clusters/:clusterId': ClusterDetail,
 
-  { path: '/manage/users', exact: true, component: Manage.Users },
-  { path: '/manage/roles', exact: true, component: Manage.Roles },
-  { path: '/manage/categories', exact: true, component: Manage.Categories },
-  { path: '/manage/categories/:categoryId', exact: true, component: Manage.CategoryDetail },
-  { path: '*', noMatch: true, component: Home }
-];
+  '/:admin': Admin.Overview,
+  '/:admin/apps': Admin.Apps,
+  '/:admin/apps/:appId': Admin.AppDetail,
+  '/:admin/clusters': Admin.Clusters,
+  '/:admin/cluster/:clusterId': Admin.ClusterDetail,
+  '/:admin/runtimes': Admin.Runtimes,
+  '/:admin/runtime/create': Admin.RuntimeAdd,
+  '/:admin/runtime/edit/:runtimeId': Admin.RuntimeDetail,
+  '/:admin/runtime/:runtimeId': Admin.RuntimeDetail,
+  '/:admin/repos': Admin.Repos,
+  '/:admin/repo/create': Admin.RepoAdd,
+  '/:admin/repo/edit/:repoId': Admin.RepoDetail,
+  '/:admin/repo/:repoId': Admin.RepoDetail,
+  '/:admin/users': Admin.Users,
+  '/:admin/roles': Admin.Roles,
+  '/:admin/categories': Admin.Categories,
+  '/:admin/category/:categoryId': Admin.CategoryDetail,
+  '*': Home
+};
 
-export default routes.map(route => {
-  // add needAuth flag for /manage admin page
-  const path = route.path;
-  if (path.indexOf('/:manage') === 0 || path.indexOf('/manage') === 0) {
-    return { ...route, needAuth: true };
+export default Object.keys(routes).map(route => {
+  const routeDefinition = Object.assign(
+    {},
+    {
+      path: route,
+      exact: useExactRoute,
+      component: routes[route],
+      needAuth: route.startsWith('/:admin')
+    }
+  );
+  if (route === '*') {
+    Object.assign(routeDefinition, { noMatch: true });
   }
-  return route;
+  return routeDefinition;
 });

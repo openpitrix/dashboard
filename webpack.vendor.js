@@ -9,13 +9,13 @@ module.exports = {
   entry: {
     vendor: [
       'react',
-      // 'react-dom',
+      'react-dom',
       'classnames',
       // 'lodash',
       // 'react-router',
-      'react-router-dom'
-      // 'mobx',
-      // 'mobx-react',
+      'react-router-dom',
+      'mobx',
+      'mobx-react'
     ]
   },
   output: {

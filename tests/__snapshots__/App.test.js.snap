@@ -30,9 +30,9 @@ Array [
         </a>
         <a
           aria-current="false"
-          href="/develop"
+          href="/deploy"
         >
-          Development
+          Deployment
         </a>
         <a
           aria-current="false"

@@ -54,8 +54,10 @@ export default class Header extends Component {
 
     if (role === 'admin') {
       return <NavLink to="/manage">Management</NavLink>;
+    } else if (role === 'developer') {
+      return <NavLink to="/develop">Development</NavLink>;
     }
-    return <NavLink to="/develop">Development</NavLink>;
+    return <NavLink to="/deploy">Deployment</NavLink>;
   }
 
   render() {
@@ -76,7 +78,6 @@ export default class Header extends Component {
           )}
           <div className={styles.menus}>
             <NavLink to="/apps">Catalog</NavLink>
-            {/*<NavLink to="/deployment">Deployment</NavLink>*/}
             {this.renderDevOpsLink()}
             {this.renderLoginButton()}
           </div>
