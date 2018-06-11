@@ -26,5 +26,7 @@ html(lang="en")
     script.
       window.__INITIAL_STATE__ = !{state || '{}'}
 
-    //script(src= bundlePrefix + '/vendor.js').
+    if isDev
+      script(src= bundlePrefix + '/common.js').
+      script(src= bundlePrefix + '/vendor.dll.js').
     script(src= bundlePrefix + '/bundle.js').

@@ -20,7 +20,7 @@ module.exports = {
     }
   ],
   resolve: {
-    extensions: ['.js', '.jsx', '.css', 'scss'],
+    extensions: ['.js', '.jsx', 'scss'],
     alias: {
       scss: resolve(__dirname, 'src/scss')
     },

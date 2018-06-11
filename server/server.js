@@ -1,16 +1,13 @@
 const semver = require('semver');
 if (semver.lt(process.version, '7.6.0')) {
-  console.error('Node version should be greater than 7.6, to support async/await');
+  console.error('Node version should be greater than 7.6');
   process.exit(-1);
 }
 
 const env = process.env.NODE_ENV || 'development';
-const isDevMode = env === 'development';
+const isDev = env === 'development';
 
-isDevMode &&
-  require('babel-register')({
-    cache: true
-  });
+isDev && require('babel-register')({ cache: true });
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
@@ -18,37 +15,34 @@ const favicon = require('koa-favicon');
 const views = require('koa-views');
 const mount = require('koa-mount');
 const serve = require('koa-static');
+const get = require('lodash/get');
+const chokidar = require('chokidar');
 
-const session = require('./middleware/session');
-const store = require('./middleware/store');
-const render = require('./middleware/render');
-const loginRoute = require('./routes/login');
-const apiRoute = require('./routes/api');
-const pageRoute = require('./routes/page');
-
+const log = require('./log');
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
 const app = new Koa();
 const config = getServerConfig();
+const httpConf = get(config, 'http', {});
 
-global.HOSTNAME = config.http.hostname || 'localhost';
-global.PORT = config.http.port || 8000;
-
-watchServerConfig();
+global.HOSTNAME = get(httpConf, 'hostname', 'localhost');
+global.PORT = get(httpConf, 'port', 8000);
 
 // serve static files
 const serveStatic = (mount_points = {}) => {
+  let opt = { index: false, maxage: 864000000 };
   for (let [k, v] of Object.entries(mount_points)) {
     if (typeof v === 'string') {
-      app.use(mount(k, serve(root(v), { index: false, maxage: 864000000 })));
+      app.use(mount(k, serve(root(v), opt)));
     } else if (typeof v === 'object' && k === env) {
       serveStatic(v);
     }
   }
 };
-serveStatic(config.http.static);
+serveStatic(get(httpConf, 'static', {}));
 
-app.use(favicon(root(config.http.favicon)));
+const favIconPath = get(httpConf, 'favicon', 'favicon.ico');
+app.use(favicon(root(favIconPath)));
 
 app.use(
   bodyParser({
@@ -59,7 +53,7 @@ app.use(
 );
 
 // handle session
-app.use(session(app));
+app.use(require('./middleware/session')(app));
 
 app.use(
   views(root('server/views'), {
@@ -67,25 +61,39 @@ app.use(
   })
 );
 
-app.use(store);
+app.use(require('./middleware/store'));
 
 // add routes
-app.use(loginRoute.routes());
-app.use(apiRoute.routes());
-app.use(apiRoute.allowedMethods());
-app.use(pageRoute.routes());
+app.use(require('./routes/login').routes());
+app.use(require('./routes/api').routes());
+app.use(require('./routes/page').routes());
 
 // pack client side assets
-// if (isDevMode) {
-//   const packClient = require('./pack-client');
-//   packClient(app, process.env.COMPILE_CLIENT);
-// }
+if (isDev && process.env.COMPILE_CLIENT) {
+  require('./pack-client')(app);
+}
 
-app.use(render);
+app.use(require('./middleware/render'));
 
 app.listen(PORT, err => {
   if (err) {
     return console.error(err);
   }
-  console.log(`Dashboard app running at port ${PORT}\n`);
+  log(`Dashboard app running at port ${PORT}`);
 });
+
+// watch files and reload server gracefully
+if (isDev) {
+  watchServerConfig();
+
+  // watch server w/ lib change
+  const watcher = chokidar.watch([root('server'), root('lib')]);
+  watcher.on('ready', function() {
+    watcher.on('all', function() {
+      log('Clearing */server/*, */lib/* module cache from server');
+      Object.keys(require.cache).forEach(function(id) {
+        if (/[\/\\](server|lib)[\/\\]/.test(id)) delete require.cache[id];
+      });
+    });
+  });
+}
