@@ -1,5 +1,7 @@
 export Apps from './Apps';
+export AppsInstalled from './Apps/Installed';
 export AppDetail from './Apps/Detail';
+export AppDeploy from './Apps/Deploy';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 export Runtimes from './Runtimes';

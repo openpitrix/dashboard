@@ -30,7 +30,7 @@ export default class Categories extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/manage/categories/${category.category_id}`}>View Category detail</Link>
+        <Link to={`/dashboard/categories/${category.category_id}`}>View Category detail</Link>
         <span
           onClick={() => {
             modifyCategoryShow(category);

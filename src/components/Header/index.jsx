@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 
-import { getSessInfo } from 'src/utils';
+import { getSessInfo, getLinkLabelFromRole } from 'src/utils';
 import Logo from '../Logo';
 import Input from '../Base/Input';
 
@@ -51,13 +51,7 @@ export default class Header extends Component {
 
   renderDevOpsLink() {
     const role = getSessInfo('role', this.props.sessInfo);
-
-    if (role === 'admin') {
-      return <NavLink to="/manage">Management</NavLink>;
-    } else if (role === 'developer') {
-      return <NavLink to="/develop">Development</NavLink>;
-    }
-    return <NavLink to="/deploy">Deployment</NavLink>;
+    return <NavLink to="/dashboard">{getLinkLabelFromRole(role)}</NavLink>;
   }
 
   render() {

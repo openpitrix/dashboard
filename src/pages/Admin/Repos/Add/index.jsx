@@ -47,7 +47,7 @@ export default class RepoAdd extends Component {
     if (repoId) title = 'Modify Repo';
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <BackBtn label="repos" link="/manage/repos" />
+        <BackBtn label="repos" link="/dashboard/repos" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
@@ -202,7 +202,7 @@ export default class RepoAdd extends Component {
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             Confirm
           </Button>
-          <Link to="/manage/repos">
+          <Link to="/dashboard/repos">
             <Button>Cancel</Button>
           </Link>
         </div>

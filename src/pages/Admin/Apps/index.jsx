@@ -36,7 +36,7 @@ export default class Apps extends Component {
 
     return (
       <div id={item.app_id} className="operate-menu">
-        <Link to={`/manage/apps/${item.app_id}`}>View app detail</Link>
+        <Link to={`/dashboard/apps/${item.app_id}`}>View app detail</Link>
         {item.status !== 'deleted' && (
           <Fragment>
             <span
@@ -162,7 +162,7 @@ export default class Apps extends Component {
             name={text}
             description={obj.description}
             image={obj.icon}
-            linkUrl={`/manage/apps/${obj.app_id}`}
+            linkUrl={`/dashboard/apps/${obj.app_id}`}
           />
         )
       },

@@ -30,7 +30,7 @@ Array [
         </a>
         <a
           aria-current="false"
-          href="/deploy"
+          href="/dashboard"
         >
           Deployment
         </a>

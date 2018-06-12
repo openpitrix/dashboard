@@ -45,7 +45,7 @@ export default class RuntimeAdd extends Component {
     if (runtimeId) title = 'Modify Runtime';
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <BackBtn label="runtime" link="/manage/runtimes" />
+        <BackBtn label="runtime" link="/dashboard/runtimes" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
@@ -173,7 +173,7 @@ export default class RuntimeAdd extends Component {
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">
             Confirm
           </Button>
-          <Link to="/manage/runtimes">
+          <Link to="/dashboard/runtimes">
             <Button>Cancel</Button>
           </Link>
         </div>

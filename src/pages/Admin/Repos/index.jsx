@@ -32,10 +32,10 @@ export default class Repos extends Component {
     const { deleteRepoOpen } = this.props.handleStore;
     return (
       <div id={id} className="operate-menu">
-        <Link to={`/manage/repos/${id}`}>View repo detail</Link>
+        <Link to={`/dashboard/repos/${id}`}>View repo detail</Link>
         {status !== 'deleted' && (
           <Fragment>
-            <Link to={`/manage/repos/modify/${id}`}>Modify repo</Link>
+            <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
             <span
               onClick={() => {
                 deleteRepoOpen(id);
@@ -97,7 +97,7 @@ export default class Repos extends Component {
               placeholder="Search Repo Name"
               onSearch={store.fetchQueryRepos}
             />
-            <Link to="/manage/repos/create">
+            <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>

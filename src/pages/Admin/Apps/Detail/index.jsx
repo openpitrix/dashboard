@@ -215,7 +215,7 @@ export default class AppDetail extends Component {
 
     return (
       <Layout className={styles.appDetail}>
-        <BackBtn label="apps" link="/manage/apps" />
+        <BackBtn label="apps" link="/dashboard/apps" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>

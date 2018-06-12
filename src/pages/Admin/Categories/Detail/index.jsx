@@ -162,7 +162,7 @@ export default class CategoryDetail extends Component {
 
     return (
       <Layout>
-        <BackBtn label="categories" link="/manage/categories" />
+        <BackBtn label="categories" link="/dashboard/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>

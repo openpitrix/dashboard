@@ -46,7 +46,7 @@ export default class RepoDetail extends Component {
   renderHandleMenu = id => {
     return (
       <div className="operate-menu">
-        <Link to={`/manage/repos/modify/${id}`}>Modify repo</Link>
+        <Link to={`/dashboard/repos/modify/${id}`}>Modify repo</Link>
       </div>
     );
   };
@@ -169,7 +169,7 @@ export default class RepoDetail extends Component {
 
     return (
       <Layout>
-        <BackBtn label="repos" link="/manage/repos" />
+        <BackBtn label="repos" link="/dashboard/repos" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>

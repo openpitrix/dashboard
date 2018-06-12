@@ -21,7 +21,7 @@ export default class AppCard extends PureComponent {
           <div className={styles.name}>{appDetail.name}</div>
           <div className={styles.id}>id:{appDetail.app_id}</div>
           <div className={styles.preview}>
-            <Link to="/manage/categories">Preview in Catalog →</Link>
+            <Link to="/dashboard/categories">Preview in Catalog →</Link>
           </div>
         </div>
         <ul className={styles.detail}>

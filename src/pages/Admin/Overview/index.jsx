@@ -90,7 +90,7 @@ export default class Overview extends Component {
             <div className={styles.cardList}>
               <div className={styles.title}>
                 Top Repos
-                <Link className={styles.more} to={'/manage/repos'}>
+                <Link className={styles.more} to={'/dashboard/repos'}>
                   more...
                 </Link>
               </div>
@@ -102,7 +102,7 @@ export default class Overview extends Component {
             <div className={styles.cardList}>
               <div className={styles.title}>
                 Top Apps
-                <Link className={styles.more} to={'/manage/apps'}>
+                <Link className={styles.more} to={'/dashboard/apps'}>
                   more...
                 </Link>
               </div>
@@ -111,7 +111,7 @@ export default class Overview extends Component {
             <div className={styles.cardList}>
               <div className={styles.title}>
                 Latest Clusters
-                <Link className={styles.more} to={'/manage/clusters'}>
+                <Link className={styles.more} to={'/dashboard/clusters'}>
                   more...
                 </Link>
               </div>

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import preload from 'hoc/preload';
 
 import styles from './index.scss';
 
 @inject('rootStore')
 @observer
-@preload('fetchApp')
-export default class AppDetail extends Component {
+export default class AppDeploy extends Component {
+  static async onEnter(store, params) {
+    await store.appStore.fetchApp(params.appId);
+  }
+
   render() {
     const { appStore } = this.props.rootStore;
 
@@ -16,7 +18,7 @@ export default class AppDetail extends Component {
       <div className={styles.deploy}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <Link to={`/app/${appStore.app.app_id}`}>
+            <Link to={`/app/${appStore.appDetail.app_id}`}>
               <i className="fa fa-long-arrow-left" /> 返回到目录
             </Link>
           </div>
