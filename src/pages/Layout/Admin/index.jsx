@@ -29,7 +29,7 @@ export default class Layout extends React.PureComponent {
   constructor(props) {
     super(props);
     this.availableLinks = [];
-    this.linkPrefix = '';
+    this.linkPrefix = '/dashboard';
   }
 
   renderNotification() {
@@ -45,17 +45,14 @@ export default class Layout extends React.PureComponent {
 
   renderTabs() {
     const loginRole = getSessInfo('role', this.props.sessInfo);
-    const basicLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
+    const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
 
     if (loginRole === 'normal') {
-      this.linkPrefix = '/deploy';
-      this.availableLinks = [...basicLinks];
+      this.availableLinks = [...normalLinks];
     } else if (loginRole === 'developer') {
-      this.linkPrefix = '/develop';
-      this.availableLinks = [...basicLinks, 'repos'];
+      this.availableLinks = [...normalLinks, 'repos'];
     } else if (loginRole === 'admin') {
-      this.linkPrefix = '/manage';
-      this.availableLinks = [...basicLinks, 'repos', 'users', 'roles', 'categories'];
+      this.availableLinks = [...normalLinks, 'repos', 'users', 'roles', 'categories'];
     }
 
     const options = { prefix: this.linkPrefix };

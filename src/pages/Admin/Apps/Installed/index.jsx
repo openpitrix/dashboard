@@ -8,7 +8,6 @@ import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
 import Popover from 'components/Base/Popover';
 import Layout from 'pages/Layout/Admin';
-import preload from 'hoc/preload';
 
 import styles from './index.scss';
 
@@ -16,8 +15,11 @@ import styles from './index.scss';
   appStore: rootStore.appStore
 }))
 @observer
-@preload('fetchInstalledApps')
 export default class InstalledApps extends Component {
+  static async onEnter({ appStore }) {
+    await appStore.fetchInstalledApps();
+  }
+
   renderHandleMenu = id => (
     <div id={id} className="operate-menu">
       <span>View app cluster</span>

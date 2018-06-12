@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import preload from 'hoc/preload';
 
 import Button from 'components/Base/Button';
 import styles from './index.scss';
 
 @inject('rootStore')
 @observer
-@preload('fetchApp')
 export default class AppDetail extends Component {
+  static async onEnter({ appStore }, params) {
+    await appStore.fetchApp(params.appId);
+  }
+
   render() {
     const { appStore } = this.props.rootStore;
 
@@ -41,7 +43,7 @@ export default class AppDetail extends Component {
               </div>
             </div>
             <div className={styles.meta}>
-              <Link to={`/app/${appStore.app.app_id}/deploy`}>
+              <Link to={`/dashboard/app/${appStore.appDetail.app_id}/deploy`}>
                 <Button className={styles.deployBtn} type="primary">
                   Deploy
                 </Button>

@@ -15,7 +15,6 @@ import Table from 'components/Base/Table';
 import Modal from 'components/Base/Modal';
 import Timeline from 'components/Base/Timeline';
 import Popover from 'components/Base/Popover';
-import preload from 'hoc/preload';
 
 import styles from './index.scss';
 
@@ -23,8 +22,12 @@ import styles from './index.scss';
   clusterStore: rootStore.clusterStore
 }))
 @observer
-@preload(['fetchClusterDetails', 'fetchClusterNodes'])
 export default class ClusterDetail extends Component {
+  static async onEnter({ clusterStore }, params) {
+    clusterStore.fetchClusterDetail();
+    clusterStore.fetchClusterNodes();
+  }
+
   constructor(props) {
     super(props);
 
@@ -279,7 +282,7 @@ export default class ClusterDetail extends Component {
       <div className={styles.cluster}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <Link to="/manage/clusters">
+            <Link to="/dashboard/clusters">
               <i className="fa fa-long-arrow-left" /> Back to Clusters
             </Link>
           </div>

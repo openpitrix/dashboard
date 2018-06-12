@@ -53,7 +53,7 @@ export default class RuntimeDetail extends Component {
   renderHandleMenu = id => {
     return (
       <div className="operate-menu">
-        <Link to={`/manage/runtimes/modify/${id}`}>Modify runtime</Link>
+        <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
       </div>
     );
   };
@@ -108,7 +108,7 @@ export default class RuntimeDetail extends Component {
 
     return (
       <Layout>
-        <BackBtn label="runtimes" link="/manage/runtimes" />
+        <BackBtn label="runtimes" link="/dashboard/runtimes" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>

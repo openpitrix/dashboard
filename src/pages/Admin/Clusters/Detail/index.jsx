@@ -201,7 +201,7 @@ export default class ClusterDetail extends Component {
 
     return (
       <Layout>
-        <BackBtn label="clusters" link="/manage/clusters" />
+        <BackBtn label="clusters" link="/dashboard/clusters" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>

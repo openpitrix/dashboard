@@ -34,7 +34,7 @@ export default class Clusters extends Component {
     const { deleteClusterShow } = this.props.clusterHandleStore;
     return (
       <div id={id} className="operate-menu">
-        <Link to={`/manage/clusters/${id}`}>View cluster detail</Link>
+        <Link to={`/dashboard/clusters/${id}`}>View cluster detail</Link>
         {status !== 'deleted' && (
           <span
             onClick={() => {

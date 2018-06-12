@@ -52,3 +52,14 @@ export function getLoginDate(timestamp) {
   const temp = newDate.toDateString().split(' ');
   return temp[1] + ' ' + temp[2] + ' at ' + newDate.toLocaleTimeString('en-US');
 }
+
+export function getLinkLabelFromRole(role) {
+  // roles: normal, developer, admin
+  if (role === 'admin') {
+    return 'Management';
+  } else if (role === 'developer') {
+    return 'Development';
+  } else {
+    return 'Deployment';
+  }
+}
