@@ -26,7 +26,7 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
-    await clusterStore.fetchClusters();
+    await clusterStore.fetchAll();
     await clusterStore.fetchStatistics();
   }
 
@@ -168,7 +168,7 @@ export default class Clusters extends Component {
               {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
               {/*Create*/}
               {/*</Button>*/}
-              <Button className={styles.buttonRight} onClick={clusterStore.fetchClusters}>
+              <Button className={styles.buttonRight} onClick={clusterStore.fetchAll}>
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -176,7 +176,7 @@ export default class Clusters extends Component {
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
           {clusterStore.totalCount > 0 && (
-            <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
+            <Pagination onChange={clusterStore.fetchAll} total={clusterStore.totalCount} />
           )}
         </div>
         {this.deleteClusterModal()}

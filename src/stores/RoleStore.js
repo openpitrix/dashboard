@@ -6,10 +6,6 @@ export default class RoleStoreStore extends Store {
   @observable roleDetail = [];
   @observable isLoading = false;
 
-  constructor(initialState) {
-    super(initialState, 'roleStore');
-  }
-
   @action
   async fetchRoles() {
     this.isLoading = true;

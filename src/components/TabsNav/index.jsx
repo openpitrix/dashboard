@@ -6,6 +6,16 @@ import { isArray } from 'src/utils/types';
 
 import styles from './index.scss';
 
+const plural = {
+  apps: 'app',
+  clusters: 'cluster',
+  runtimes: 'runtime',
+  repos: 'repo',
+  users: 'user',
+  roles: 'role',
+  categories: 'category'
+};
+
 const normalizeLink = (link, prefix = '') => {
   if (link.startsWith('/')) {
     link = link.substring(1);
@@ -20,9 +30,29 @@ const normalizeLink = (link, prefix = '') => {
   return link;
 };
 
+const isLinkActive = (curLink, match, location) => {
+  const { pathname } = location;
+  if (curLink === '/dashboard') {
+    return curLink === pathname;
+  } else {
+    let try_match = pathname.indexOf(curLink) === 0;
+    if (!try_match) {
+      let prefix = '/dashboard/';
+      let suffix = curLink.substring(prefix.length);
+      try_match = pathname.indexOf(prefix + plural[suffix]) === 0;
+    }
+    return try_match;
+  }
+};
+
 const LinkItem = ({ link, label }) => (
   <li>
-    <NavLink to={link} activeClassName={styles.active} exact>
+    <NavLink
+      to={link}
+      activeClassName={styles.active}
+      exact
+      isActive={isLinkActive.bind(null, link)}
+    >
       {capitalize(label)}
     </NavLink>
   </li>

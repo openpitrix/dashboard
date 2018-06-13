@@ -1,49 +1,52 @@
 import React, { Component } from 'react';
+import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
 import Button from 'components/Base/Button';
 import styles from './index.scss';
 
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  appStore: rootStore.appStore,
+  appVersionStore: rootStore.appVersionStore
+}))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore }, params) {
-    await appStore.fetchApp(params.appId);
+  static async onEnter({ appStore, appVersionStore }, { appId }) {
+    await appStore.fetch(appId);
+    await appVersionStore.fetchAll(appId);
   }
 
   render() {
-    const { appStore } = this.props.rootStore;
+    const { appStore, appVersionStore } = this.props.rootStore;
+    const appDetail = toJS(appStore.appDetail);
+    const appVersions = toJS(appVersionStore.versions);
 
     return (
       <div className={styles.app}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
             <Link to="/apps">
-              <i className="fa fa-long-arrow-left" /> 返回到目录
+              <i className="fa fa-long-arrow-left" /> 返回到Apps
             </Link>
           </div>
           <div className={styles.detail}>
             <div className={styles.intro}>
-              <div className={styles.title} />
-              <div className={styles.carousel} />
-              <div className={styles.desc}>
-                Esgyn是Apache™trafodion（孵化）项目的主要贡献者。trafodion是Apache
-                2014开源发布，在2015年5月成为一个Apache项目。从过去的十年中，它拥有100多个专利和3亿美元的投资，它的代码基础已经在从业务处理到大数据的各种企业工作负载中得到了验证。Apache
-                trafodion基础上的可扩展性，弹性，和Apache
-                Hadoop®数据结构的灵活性和带来操作SQL功能，包括保证事务完整性的Hadoop。Esgyn总理提供esgyndb，硬化，安全，对Hadoop的解决方案，是由Apache
-                trafodion供电企业级SQL。
-              </div>
+              <div className={styles.title}>{appDetail.name}</div>
+              <div className={styles.carousel}>{appDetail.screenshots}</div>
+              <div className={styles.desc}>{appDetail.description}</div>
               <div className={styles.versions}>
                 <p>VERSION AVAILABLE</p>
                 <ul>
-                  <li />
-                  <li />
+                  {appVersions.map(version => {
+                    const { version_id } = version;
+                    return <li key={version_id}>{version_id}</li>;
+                  })}
                 </ul>
               </div>
             </div>
             <div className={styles.meta}>
-              <Link to={`/dashboard/app/${appStore.appDetail.app_id}/deploy`}>
+              <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
                 <Button className={styles.deployBtn} type="primary">
                   Deploy
                 </Button>
@@ -62,11 +65,11 @@ export default class AppDetail extends Component {
               </div>
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>应用 ID</p>
-                <div className={`${styles.sectionContent} id`}>app-m05yzy0f</div>
+                <div className={`${styles.sectionContent} id`}>{appDetail.app_id}</div>
               </div>
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>CLOUD MANUFACTURE</p>
-                <div className={styles.sectionContent}>EsgynDB</div>
+                <div className={styles.sectionContent}>{appDetail.source}</div>
               </div>
               <div className={styles.section}>
                 <p className={styles.sectionTitle}>支持平台</p>

@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
+import Store from '../Store';
 import { get, assign } from 'lodash';
 
 export default class ClusterStore extends Store {
@@ -11,12 +11,13 @@ export default class ClusterStore extends Store {
   @observable isLoading = false;
   @observable totalCount = 0;
 
-  constructor(initialState) {
-    super(initialState, 'clusterStore');
-  }
+  @observable clusterId = '';
+  @observable showDeleteCluster = false;
+  @observable showClusterJobs = false;
+  @observable showClusterParameters = false;
 
   @action
-  fetchClusters = async page => {
+  fetchAll = async page => {
     this.isLoading = true;
     page = page && !isNaN(page) ? page : 1;
     const params = {
@@ -67,13 +68,13 @@ export default class ClusterStore extends Store {
     this.isLoading = false;
   }
 
-  @action
-  async fetchStatistics() {
-    this.isLoading = true;
-    const result = await this.request.get('statistics');
-    this.statistics = get(result, 'statistics_set.clusters', {});
-    this.isLoading = false;
-  }
+  // @action
+  // async fetchStatistics() {
+  //   this.isLoading = true;
+  //   const result = await this.request.get('statistics');
+  //   this.statistics = get(result, 'statistics_set.clusters', {});
+  //   this.isLoading = false;
+  // }
 
   @action
   async deleteCluster(clusterIds) {
@@ -81,4 +82,43 @@ export default class ClusterStore extends Store {
     await this.request.delete('clusters', { cluster_id: clusterIds });
     this.isLoading = false;
   }
+
+  // fixme: ///
+  @action
+  deleteClusterShow = clusterId => {
+    this.clusterId = clusterId;
+    this.showDeleteCluster = true;
+  };
+
+  @action
+  deleteClusterClose = () => {
+    this.showDeleteCluster = false;
+  };
+
+  // @action
+  // deleteCluster = async clusterStore => {
+  //   await clusterStore.deleteCluster([this.clusterId]);
+  //   this.showDeleteCluster = false;
+  //   await clusterStore.fetchClusters();
+  // };
+
+  @action
+  clusterJobsOpen = () => {
+    this.showClusterJobs = true;
+  };
+
+  @action
+  clusterJobsClose = () => {
+    this.showClusterJobs = false;
+  };
+
+  @action
+  clusterParametersOpen = () => {
+    this.showClusterParameters = true;
+  };
+
+  @action
+  clusterParametersClose = () => {
+    this.showClusterParameters = false;
+  };
 }

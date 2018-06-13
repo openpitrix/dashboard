@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
+import Store from '../Store';
 import _ from 'lodash';
 
 const s3UrlPattern = /^s3:\/\/s3\.(.+)\.(.+)\/(.+)\/?$/; // s3.<zone>.<host>/<bucket>

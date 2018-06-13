@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
+import Store from '../Store';
 import { get } from 'lodash';
 
 export default class RepoStore extends Store {
@@ -7,12 +7,13 @@ export default class RepoStore extends Store {
   @observable repoDetail = {};
   @observable isLoading = false;
 
-  constructor(initialState) {
-    super(initialState, 'repoStore');
-  }
+  @observable repoId = '';
+  @observable showDeleteRepo = false;
+  // tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
+  @observable curTagName = 'Apps';
 
   @action
-  fetchRepos = async () => {
+  fetchAll = async () => {
     this.isLoading = true;
     const result = await this.request.get('repos');
     this.repos = get(result, 'repo_set', []);
@@ -41,4 +42,31 @@ export default class RepoStore extends Store {
     await this.request.delete('repos', { repo_id: repoIds });
     this.isLoading = false;
   }
+
+  // fixme
+
+  @action
+  deleteRepoOpen = repoId => {
+    this.repoId = repoId;
+    this.showDeleteRepo = true;
+  };
+
+  @action
+  deleteRepoClose = () => {
+    this.showDeleteRepo = false;
+  };
+
+  // @action
+  // deleteRepo = async repoStore => {
+  //   await repoStore.deleteRepo([this.repoId]);
+  //   this.showDeleteRepo = false;
+  //   await repoStore.fetchRepos();
+  // };
+
+  @action
+  selectCurTag = tagName => {
+    this.curTagName = tagName;
+  };
 }
+
+export Create from './create';

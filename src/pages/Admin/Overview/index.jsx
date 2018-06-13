@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { toJS } from 'mobx';
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -9,36 +8,40 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import Layout from 'pages/Layout/Admin';
-import { getParseDate, getCookie, getLoginDate } from 'utils';
+import * as utils from 'src/utils';
+
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   repoStore: rootStore.repoStore,
   categoryStore: rootStore.categoryStore,
-  userStore: rootStore.userStore
+  userStore: rootStore.userStore,
+  sessInfo
 }))
 @observer
-export default class Overview extends Component {
+export default class Overview extends React.Component {
   static async onEnter({ appStore, clusterStore, repoStore, categoryStore, userStore }) {
-    await appStore.fetchApps();
-    await clusterStore.fetchClusters();
-    await repoStore.fetchRepos();
-    await categoryStore.fetchCategories();
-    await userStore.fetchUsers();
+    await appStore.fetchAll();
+    await clusterStore.fetchAll();
+    await repoStore.fetchAll();
+    await categoryStore.fetchAll();
+    await userStore.fetchAll();
   }
 
   render() {
-    const { userImg, name, role, loginInfo } = {
-      userImg: 'http://via.placeholder.com/36x36',
-      name: getCookie('user'),
-      role: getCookie('role'),
-      loginInfo: getLoginDate(getCookie('last_login'))
-    };
-    const { appStore, clusterStore, repoStore, categoryStore, userStore } = this.props;
-    const appList = appStore.apps.slice(0, 5);
-    const clusterList = clusterStore.clusters.slice(0, 5);
+    const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo } = this.props;
+    const userImg = utils.imgPlaceholder(36), // todo
+      iconPhd = utils.imgPlaceholder(24),
+      userName = utils.getSessInfo('user', sessInfo),
+      roleName = utils.getSessInfo('role', sessInfo),
+      lastLogin = utils.getLoginDate(utils.getSessInfo('last_login', sessInfo));
+
+    const countLimit = 5;
+
+    const appList = appStore.apps.slice(0, countLimit);
+    const clusterList = clusterStore.clusters.slice(0, countLimit);
     const repoList = repoStore.repos;
 
     let reposPublic = [],
@@ -55,22 +58,22 @@ export default class Overview extends Component {
 
     const totalArray = [
       {
-        icon: 'http://via.placeholder.com/24x24',
+        icon: iconPhd,
         name: 'apps',
         total: appStore.totalCount
       },
       {
-        icon: 'http://via.placeholder.com/24x24',
+        icon: iconPhd,
         name: 'Clusters',
         total: clusterStore.totalCount
       },
       {
-        icon: 'http://via.placeholder.com/24x24',
+        icon: iconPhd,
         name: 'Categories',
         total: categoryStore.categories.length
       },
       {
-        icon: 'http://via.placeholder.com/24x24',
+        icon: iconPhd,
         name: 'Users',
         total: userStore.totalCount
       }
@@ -80,7 +83,7 @@ export default class Overview extends Component {
       <Layout>
         <div className={styles.container}>
           <div className={styles.total}>
-            <UserInfo userImg={userImg} name={name} role={role} loginInfo={loginInfo} />
+            <UserInfo userImg={userImg} name={userName} role={roleName} loginInfo={lastLogin} />
             {totalArray.map((data, index) => (
               <TotalCard key={index} icon={data.icon} name={data.name} total={data.total} />
             ))}

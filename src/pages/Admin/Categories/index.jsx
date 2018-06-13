@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
@@ -10,66 +10,55 @@ import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
 import Popover from 'components/Base/Popover';
 import Icon from 'components/Base/Icon';
-import Layout from 'pages/Layout/Admin';
+import Layout, { Dialog } from 'pages/Layout/Admin';
 import { getParseDate } from 'utils';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  categoryStore: rootStore.categoryStore,
-  categoryHandleStore: rootStore.categoryHandleStore
+  categoryStore: rootStore.categoryStore
 }))
 @observer
 export default class Categories extends Component {
   static async onEnter({ categoryStore }) {
-    await categoryStore.fetchCategories();
+    await categoryStore.fetchAll();
   }
 
   renderHandleMenu = category => {
-    const { deleteCategoryShow, modifyCategoryShow } = this.props.categoryHandleStore;
+    const { categoryStore } = this.props;
+    const { showDeleteCategory, showModifyCategory } = categoryStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/categories/${category.category_id}`}>View Category detail</Link>
-        <span
-          onClick={() => {
-            modifyCategoryShow(category);
-          }}
-        >
-          Modify Category
-        </span>
-        <span
-          onClick={() => {
-            deleteCategoryShow(category.category_id);
-          }}
-        >
+        <Link to={`/dashboard/category/${category.category_id}`}>View Category detail</Link>
+        <span onClick={showModifyCategory.bind(categoryStore, category)}>Modify Category</span>
+        <span onClick={showDeleteCategory.bind(categoryStore, category.category_id)}>
           Delete Category
         </span>
       </div>
     );
   };
 
-  renderCategoryModal = () => {
-    const {
-      categoryDetail,
-      showCategoryModal,
-      createCategoryClose,
-      changeName,
-      changeLocale,
-      categorySubmit
-    } = this.props.categoryHandleStore;
-    let title = 'Create Category';
-    if (categoryDetail.category_id) title = 'Modify Category';
+  renderOpsModal = () => {
+    const { categoryStore } = this.props;
+    const { isModalOpen, hideModal, handleCate } = categoryStore;
+    let modalTitle = '',
+      modalBody = null,
+      onSubmit = () => {};
 
-    return (
-      <Modal
-        width={500}
-        title={title}
-        visible={showCategoryModal}
-        hideFooter
-        onCancel={createCategoryClose}
-      >
-        <div className={styles.modalContent}>
+    if (handleCate.action === 'delete_cate') {
+      modalTitle = 'Delete Category';
+      onSubmit = categoryStore.remove.bind(categoryStore);
+      modalBody = <div className={styles.noteWord}>Are you sure delete this Category?</div>;
+    }
+
+    if (handleCate.action === 'modify_cate' || handleCate.action === 'create_cate') {
+      const { categoryDetail, changeName, changeLocale } = categoryStore;
+      modalTitle = categoryDetail.category_id ? 'Modify Category' : 'Create Category';
+      // onSubmit=appStore.modifyCategoryById.bind(appStore);
+
+      modalBody = (
+        <Fragment>
           <div className={styles.inputItem}>
             <label className={styles.name}>Name</label>
             <Input
@@ -90,59 +79,21 @@ export default class Categories extends Component {
               defaultValue={categoryDetail.locale}
             />
           </div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={createCategoryClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                categorySubmit(this.props.categoryStore, categoryDetail.category_id);
-              }}
-            >
-              Submit
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    );
-  };
-
-  renderDeleteModal = () => {
-    const { showDeleteModal, deleteCategoryClose, deleteCategory } = this.props.categoryHandleStore;
+        </Fragment>
+      );
+    }
 
     return (
-      <Modal
-        width={500}
-        title="Delete Category"
-        visible={showDeleteModal}
-        hideFooter
-        onCancel={deleteCategoryClose}
-      >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Category?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteCategoryClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteCategory(this.props.categoryStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      <Dialog title={modalTitle} isOpen={isModalOpen} onCancel={hideModal} onSubmit={onSubmit}>
+        {modalBody}
+      </Dialog>
     );
   };
 
   render() {
     const { categoryStore } = this.props;
     const categories = toJS(categoryStore.categories);
-    const { createCategoryShow } = this.props.categoryHandleStore;
+    const { showCreateCategory } = categoryStore;
 
     return (
       <Layout>
@@ -152,7 +103,7 @@ export default class Categories extends Component {
             <Button
               className={classNames(styles.buttonRight)}
               type="primary"
-              onClick={createCategoryShow}
+              onClick={showCreateCategory}
             >
               Create
             </Button>
@@ -179,8 +130,7 @@ export default class Categories extends Component {
             </div>
           ))}
         </div>
-        {this.renderCategoryModal()}
-        {this.renderDeleteModal()}
+        {this.renderOpsModal()}
       </Layout>
     );
   }

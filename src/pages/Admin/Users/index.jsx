@@ -27,7 +27,7 @@ import styles from './index.scss';
 @observer
 export default class Users extends Component {
   static async onEnter({ userStore }) {
-    await userStore.fetchUsers();
+    await userStore.fetchAll();
     await userStore.fetchOrganizations();
     await userStore.fetchGroups();
     await userStore.fetchRoles();

@@ -21,7 +21,7 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
-    await clusterStore.fetchClusters();
+    await clusterStore.fetchAll();
   }
 
   render() {

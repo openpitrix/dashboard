@@ -18,7 +18,7 @@ module.exports = async (ctx, next) => {
   const promises = branches.map(
     ({ route, match }) =>
       route.component.onEnter
-        ? route.component.onEnter(ctx.store, match.params, 'from_server')
+        ? route.component.onEnter(ctx.store, match.params)
         : Promise.resolve(null)
   );
   await Promise.all(promises);

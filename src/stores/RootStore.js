@@ -1,24 +1,29 @@
 import { observable, action } from 'mobx';
 
 import Store from './Store';
-import AppStore from './AppStore';
-import ClusterStore from './ClusterStore';
-import RuntimeStore from './RuntimeStore';
-import RepoStore from './RepoStore';
+
+import App, { Deploy as AppDeploy, Version as AppVersion } from './app';
+import Category from './category';
+import Cluster from './cluster';
+import Repo, { Create as RepoCreate } from './repo';
+import Runtime, { Create as RuntimeCreate } from './runtime';
+
+import LoginStore from './LoginStore';
 import UserStore from './UserStore';
 import RoleStore from './RoleStore';
-import CategoryStore from './CategoryStore';
-import LoginStore from './LoginStore';
-import RuntimeCreateStore from './RuntimeCreateStore';
-import RepoCreateStore from './RepoCreateStore';
-import AppHandleStore from './AppHandleStore';
-import CategoryHandleStore from './CategoryHandleStore';
-import ClusterHandleStore from './ClusterHandleStore';
-import RepoHandleStore from './RepoHandleStore';
-import RuntimeHandleStore from './RuntimeHandleStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
+
+  constructor(initialState) {
+    super(initialState);
+    this.state = initialState;
+  }
+
+  @action
+  setNavFix(fixNav) {
+    this.fixNav = !!fixNav;
+  }
 
   register(name, store, withState = true) {
     if (typeof store !== 'function') {
@@ -27,32 +32,33 @@ export default class RootStore extends Store {
     if (!name.endsWith('Store')) {
       name += 'Store';
     }
-    this[name] = new store(withState ? this.state : '');
+    this[name] = new store(withState ? this.state : '', name);
   }
 
-  constructor(initialState) {
-    super(initialState);
-    this.state = initialState;
+  registerStores() {
+    // app
+    this.register('app', App);
+    this.register('appDeploy', AppDeploy);
+    this.register('appVersion', AppVersion);
 
-    this.register('app', AppStore);
-    this.register('cluster', ClusterStore);
-    this.register('runtime', RuntimeStore);
-    this.register('repo', RepoStore);
+    // cluster
+    this.register('cluster', Cluster);
+
+    // runtime
+    this.register('runtime', Runtime);
+    this.register('runtimeCreate', RuntimeCreate);
+
+    // repo
+    this.register('repo', Repo);
+    this.register('repoCreate', RepoCreate);
+
+    // category
+    this.register('category', Category);
+
+    this.register('login', LoginStore, false);
+
+    // user, role
     this.register('user', UserStore);
     this.register('role', RoleStore);
-    this.register('category', CategoryStore);
-    this.register('login', LoginStore, false);
-    this.register('runtimeCreate', RuntimeCreateStore, false);
-    this.register('repoCreate', RepoCreateStore, false);
-    this.register('appHandle', AppHandleStore, false);
-    this.register('categoryHandle', CategoryHandleStore, false);
-    this.register('clusterHandleStore', ClusterHandleStore, false);
-    this.register('repoHandleStore', RepoHandleStore, false);
-    this.register('runtimeHandleStore', RuntimeHandleStore, false);
-  }
-
-  @action
-  setNavFix(fixNav) {
-    this.fixNav = !!fixNav;
   }
 }

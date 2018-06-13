@@ -1,0 +1,21 @@
+.modal {
+  .header {
+    margin-top: 15px;
+  }
+
+  .content{
+    .noteWord{
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+  }
+
+  .operation{
+    text-align: center;
+    padding-top: 20px;
+    button{
+      margin: 0 6px;
+    }
+  }
+
+}

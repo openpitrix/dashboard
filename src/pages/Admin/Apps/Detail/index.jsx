@@ -3,63 +3,58 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { pick } from 'lodash';
 
+import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import AppCard from 'components/DetailCard/AppCard';
 import VersionList from 'components/VersionList';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
-import Popover from 'components/Base/Popover';
-import Modal from 'components/Base/Modal';
+
 import { getParseDate } from 'utils';
 import Layout, { BackBtn } from 'pages/Layout/Admin';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
-  clusterStore: rootStore.clusterStore,
-  appHandleStore: rootStore.appHandleStore
-}))
+@inject(({ rootStore }) => pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore']))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, clusterStore }, { appId }) {
-    await appStore.fetchApp(appId);
-    await appStore.fetchAppVersions(appId);
-    await clusterStore.fetchClusters();
+  static async onEnter({ appStore, clusterStore, appVersionStore }, { appId }) {
+    await appStore.fetch(appId);
+    await appVersionStore.fetchAll(appId);
+    await clusterStore.fetchAll();
   }
 
   renderHandleMenu = () => {
-    const { createVersionShow } = this.props.appHandleStore;
+    const { showModal } = this.props.appVersionStore;
+
     return (
       <div className="operate-menu">
-        <span onClick={createVersionShow}>Create version</span>
+        <span onClick={showModal}>Create version</span>
       </div>
     );
   };
 
   createVersionModal = () => {
     const {
-      showCreateVersion,
-      createVersionClose,
+      isModalOpen,
+      hideModal,
       createVersionSubmit,
       changeName,
       changePackageName,
       changeDescription
-    } = this.props.appHandleStore;
+    } = this.props.appVersionStore;
+
     const appDetail = toJS(this.props.appStore.appDetail);
+
     return (
       <Modal
         width={500}
         title="Create App Version"
-        visible={showCreateVersion}
+        visible={isModalOpen}
         hideFooter
-        onCancel={createVersionClose}
+        onCancel={hideModal}
       >
         <div className={styles.modalContent}>
           <div className={styles.inputItem}>
@@ -86,7 +81,7 @@ export default class AppDetail extends Component {
             />
           </div>
           <div className={styles.operation}>
-            <Button type="default" onClick={createVersionClose}>
+            <Button type="default" onClick={hideModal}>
               Cancel
             </Button>
             <Button
@@ -105,11 +100,7 @@ export default class AppDetail extends Component {
   };
 
   deleteVersionModal = () => {
-    const {
-      showDeleteVersion,
-      deleteVersionClose,
-      deleteVersionSubmit
-    } = this.props.appHandleStore;
+    const { showDeleteVersion, hideModal, deleteVersionSubmit } = this.props.appVersionStore;
 
     return (
       <Modal
@@ -117,12 +108,12 @@ export default class AppDetail extends Component {
         title="Delete Version"
         visible={showDeleteVersion}
         hideFooter
-        onCancel={deleteVersionClose}
+        onCancel={hideModal}
       >
         <div className={styles.modalContent}>
           <div className={styles.noteWord}>Are you sure delete this Version?</div>
           <div className={styles.operation}>
-            <Button type="default" onClick={deleteVersionClose}>
+            <Button type="default" onClick={hideModal}>
               Cancel
             </Button>
             <Button
@@ -140,31 +131,34 @@ export default class AppDetail extends Component {
   };
 
   allVersionModal = () => {
-    const { showAllVersion, allVersionClose, deleteVersionShow } = this.props.appHandleStore;
-    const versions = toJS(this.props.appStore.versions);
+    const { showAllVersion, hideModal, remove } = this.props.appVersionStore;
+    const versions = toJS(this.props.appVersionStore.versions);
+
     return (
       <Modal
         width={500}
         title="All Versions"
         visible={showAllVersion}
         hideFooter
-        onCancel={allVersionClose}
+        onCancel={hideModal}
       >
         <div className={styles.modalContent}>
-          <VersionList versions={versions} deleteVersion={deleteVersionShow} />
+          <VersionList versions={versions} deleteVersion={remove} />
         </div>
       </Modal>
     );
   };
 
   render() {
-    const { appStore, clusterStore } = this.props;
+    const { appStore, clusterStore, appVersionStore } = this.props;
     const appDetail = toJS(appStore.appDetail);
-    const versions = toJS(appStore.versions);
+    const versions = toJS(appVersionStore.versions);
+
     const fetchClusters = async current => {
-      await clusterStore.fetchClusters(current);
+      await clusterStore.fetchAll(current);
     };
     const data = toJS(clusterStore.clusters);
+
     const columns = [
       {
         title: 'Cluster Name',
@@ -210,7 +204,7 @@ export default class AppDetail extends Component {
     ];
     const tags = [{ id: 1, name: 'Clusters' }];
     const curTag = 'Clusters';
-    const { deleteVersionShow, allVersionShow } = this.props.appHandleStore;
+    const { remove, showModal } = this.props.appVersionStore;
     const { fetchQueryClusters } = this.props.clusterStore;
 
     return (
@@ -227,11 +221,11 @@ export default class AppDetail extends Component {
             <div className={styles.versionOuter}>
               <div className={styles.title}>
                 Versions
-                <div className={styles.all} onClick={allVersionShow}>
+                <div className={styles.all} onClick={showModal}>
                   All Versions →
                 </div>
               </div>
-              <VersionList versions={versions.slice(0, 4)} deleteVersion={deleteVersionShow} />
+              <VersionList versions={versions.slice(0, 4)} deleteVersion={remove} />
             </div>
           </div>
           <div className={styles.rightInfo}>
@@ -243,7 +237,7 @@ export default class AppDetail extends Component {
                   placeholder="Search & Filter"
                   onSearch={fetchQueryClusters}
                 />
-                <Button className={styles.buttonRight} onClick={clusterStore.fetchClusters}>
+                <Button className={styles.buttonRight} onClick={clusterStore.fetchAll}>
                   <Icon name="refresh" />
                 </Button>
               </div>

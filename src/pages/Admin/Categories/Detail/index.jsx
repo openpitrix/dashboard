@@ -20,7 +20,6 @@ import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
-  categoryHandleStore: rootStore.categoryHandleStore,
   appStore: rootStore.appStore
 }))
 @observer
@@ -52,12 +51,12 @@ export default class CategoryDetail extends Component {
   };
 
   renderHandleMenu = category => {
-    const { modifyCategoryShow } = this.props.categoryHandleStore;
+    const { showModifyCategory } = this.props.categoryStore;
     return (
       <div className="operate-menu">
         <span
           onClick={() => {
-            modifyCategoryShow(category);
+            showModifyCategory(category);
           }}
         >
           Modify Category
@@ -69,20 +68,20 @@ export default class CategoryDetail extends Component {
   renderCategoryModal = () => {
     const {
       categoryDetail,
-      showCategoryModal,
-      createCategoryClose,
+      isModalOpen,
+      hideModal,
       changeName,
       changeLocale,
       categorySubmit
-    } = this.props.categoryHandleStore;
+    } = this.props.categoryStore;
 
     return (
       <Modal
         width={500}
         title="Modify Category"
-        visible={showCategoryModal}
+        visible={isModalOpen}
         hideFooter
-        onCancel={createCategoryClose}
+        onCancel={hideModal}
       >
         <div className={styles.modalContent}>
           <div className={styles.inputItem}>
@@ -106,7 +105,7 @@ export default class CategoryDetail extends Component {
             />
           </div>
           <div className={styles.operation}>
-            <Button type="default" onClick={createCategoryClose}>
+            <Button type="default" onClick={hideModal}>
               Cancel
             </Button>
             <Button

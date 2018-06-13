@@ -1,5 +1,5 @@
 import { extendObservable, observable, action } from 'mobx';
-import { isEmpty, pick } from 'lodash';
+import { isEmpty, isObject, pick } from 'lodash';
 import request from 'lib/request';
 
 export default class Store {
@@ -26,6 +26,10 @@ Store.prototype = {
   @action.bound
   hideMsg: function() {
     this.notifyMsg = '';
+  },
+  @action.bound
+  apiMsg: function(msg) {
+    this.showMsg(isObject(msg) && msg.err ? msg.errDetail : 'Operation done');
   },
   request: new Proxy(request, {
     get: (target, method) => {

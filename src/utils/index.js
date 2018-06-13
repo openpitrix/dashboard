@@ -63,3 +63,7 @@ export function getLinkLabelFromRole(role) {
     return 'Deployment';
   }
 }
+
+export function imgPlaceholder(size = 24) {
+  return `http://via.placeholder.com/${size}x${size}`;
+}

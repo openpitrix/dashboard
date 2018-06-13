@@ -74,4 +74,5 @@ export default class Layout extends React.PureComponent {
 }
 
 export BackBtn from './BackBtn';
+export Dialog from './Dialog';
 export CreateResource from './CreateResource';

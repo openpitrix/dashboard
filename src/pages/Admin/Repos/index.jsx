@@ -17,7 +17,7 @@ import styles from './index.scss';
 @observer
 export default class Repos extends Component {
   static async onEnter({ repoStore }) {
-    await repoStore.fetchRepos();
+    await repoStore.fetchAll();
   }
 
   onSearch = async value => {
@@ -102,7 +102,7 @@ export default class Repos extends Component {
                 Create
               </Button>
             </Link>
-            <Button className={styles.buttonRight} onClick={store.fetchRepos}>
+            <Button className={styles.buttonRight} onClick={store.fetchAll}>
               <Icon name="refresh" />
             </Button>
           </div>
