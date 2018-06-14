@@ -24,22 +24,27 @@ const routes = {
   '/clusters/:clusterId': ClusterDetail,
 
   '/:dash': Dash.Overview,
+
   '/:dash/apps': Dash.Apps,
-  '/:dash/apps/:appId': Dash.AppDetail,
-  // '/:dash/apps/installed': Dash.AppsInstalled,
+  '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/app/:appId/deploy': Dash.AppDeploy,
+
   '/:dash/clusters': Dash.Clusters,
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
+
   '/:dash/runtimes': Dash.Runtimes,
   '/:dash/runtime/create': Dash.RuntimeAdd,
   '/:dash/runtime/edit/:runtimeId': Dash.RuntimeDetail,
   '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
+
   '/:dash/repos': Dash.Repos,
   '/:dash/repo/create': Dash.RepoAdd,
   '/:dash/repo/edit/:repoId': Dash.RepoDetail,
   '/:dash/repo/:repoId': Dash.RepoDetail,
+
   '/:dash/users': Dash.Users,
   '/:dash/roles': Dash.Roles,
+
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
   '*': Home

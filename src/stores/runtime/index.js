@@ -1,5 +1,5 @@
-import { observable, action, toJS } from 'mobx';
-import Store from './Store';
+import { observable, action } from 'mobx';
+import Store from '../Store';
 import { assign, get } from 'lodash';
 
 export default class RuntimeStore extends Store {
@@ -9,9 +9,8 @@ export default class RuntimeStore extends Store {
   @observable isLoading = false;
   @observable totalCount = 0;
 
-  constructor(initialState) {
-    super(initialState, 'runtimeStore');
-  }
+  @observable runtimeId = '';
+  @observable showDeleteRuntime = false;
 
   @action
   fetchRuntimes = async page => {
@@ -49,13 +48,13 @@ export default class RuntimeStore extends Store {
     this.isLoading = false;
   }
 
-  @action
-  async fetchStatistics() {
-    this.isLoading = true;
-    const result = await this.request.get('statistics');
-    this.statistics = get(result, 'statistics_set.runtimes', {});
-    this.isLoading = false;
-  }
+  // @action
+  // async fetchStatistics() {
+  //   this.isLoading = true;
+  //   const result = await this.request.get('statistics');
+  //   this.statistics = get(result, 'statistics_set.runtimes', {});
+  //   this.isLoading = false;
+  // }
 
   @action
   async deleteRuntime(runtimeIds) {
@@ -63,4 +62,25 @@ export default class RuntimeStore extends Store {
     await this.request.delete('runtimes', { runtime_id: runtimeIds });
     this.isLoading = false;
   }
+
+  // fixme //
+  @action
+  deleteRuntimeOpen = runtimeId => {
+    this.runtimeId = runtimeId;
+    this.showDeleteRuntime = true;
+  };
+
+  @action
+  deleteRuntimeClose = () => {
+    this.showDeleteRuntime = false;
+  };
+
+  // @action
+  // deleteRuntime = async runtimeStore => {
+  //   await runtimeStore.deleteRuntime([this.runtimeId]);
+  //   this.showDeleteRuntime = false;
+  //   await runtimeStore.fetchRuntimes();
+  // };
 }
+
+export Create from './create';

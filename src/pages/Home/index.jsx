@@ -14,7 +14,7 @@ let lastTs = Date.now();
 @inject('rootStore')
 @observer
 export default class Home extends Component {
-  static async onEnter({ appStore, apiServer }, params, from_server) {
+  static async onEnter({ appStore }) {
     await appStore.fetchAll();
   }
 
@@ -24,8 +24,9 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
+    const { appStore } = this.props.rootStore;
     this.threshold = this.getThreshold();
-    if (this.props.rootStore.appStore.apps.length) {
+    if (appStore.apps.length) {
       window.onscroll = throttle(this.handleScoll, 200);
     }
   }

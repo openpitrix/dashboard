@@ -1,175 +1,138 @@
 import React, { Component, Fragment } from 'react';
-import { toJS } from 'mobx';
+import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
-import classNames from 'classnames';
-
-import Statistics from 'components/Statistics';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+import classnames from 'classnames';
+import { get } from 'lodash';
+import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
-import Modal from 'components/Base/Modal';
-import Select from 'components/Base/Select';
-import Layout from 'pages/Layout/Admin';
+import Statistics from 'components/Statistics';
+import Layout, { Dialog } from 'components/Layout/Admin';
+import { getSessInfo, imgPlaceholder } from 'src/utils';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
-  appHandleStore: rootStore.appHandleStore
+  categoryStore: rootStore.categoryStore,
+  sessInfo
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchApps();
-    await appStore.fetchStatistics();
+  static async onEnter({ appStore, categoryStore }) {
+    await appStore.fetchAll();
+    await categoryStore.fetchAll();
+    // await appStore.fetchStatistics();
   }
 
+  constructor(props) {
+    super(props);
+    this.role = getSessInfo('role', this.props.sessInfo);
+  }
+
+  renderOpsModal = () => {
+    const { appStore, categoryStore } = this.props;
+    const { isModalOpen, hideModal, handleApp, changeAppCate } = appStore;
+    let modalTitle = '',
+      modalBody = null,
+      onSubmit;
+
+    if (handleApp.action === 'delete_app') {
+      onSubmit = appStore.remove.bind(appStore);
+      modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
+    }
+
+    if (handleApp.action === 'modify_cate') {
+      const categories = categoryStore.categories.toJSON();
+      onSubmit = appStore.modifyCategoryById.bind(appStore);
+
+      modalBody = (
+        <div className={styles.selectItem}>
+          <label className={styles.name}>Category</label>
+          <Select
+            className={styles.select}
+            value={handleApp.selectedCategory}
+            onChange={changeAppCate}
+          >
+            {categories.map(({ category_id, name }) => (
+              <Select.Option key={category_id} value={category_id}>
+                {name}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      );
+    }
+
+    return (
+      <Dialog title={modalTitle} isOpen={isModalOpen} onCancel={hideModal} onSubmit={onSubmit}>
+        {modalBody}
+      </Dialog>
+    );
+  };
+
   renderHandleMenu = item => {
-    const { deleteAppShow, categoryModalShow } = this.props.appHandleStore;
+    const { showDeleteApp, showModifyAppCate } = this.props.appStore;
+    let itemMenu = null;
+
+    if (item.status !== 'deleted') {
+      if (this.role === 'developer') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+          </Fragment>
+        );
+      }
+      if (this.role === 'admin') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+            <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
+          </Fragment>
+        );
+      }
+    }
 
     return (
       <div id={item.app_id} className="operate-menu">
-        <Link to={`/dashboard/apps/${item.app_id}`}>View app detail</Link>
-        {item.status !== 'deleted' && (
-          <Fragment>
-            <span
-              onClick={() => {
-                deleteAppShow(item.app_id);
-              }}
-            >
-              Delete app
-            </span>
-            <span
-              onClick={() => {
-                categoryModalShow(item.app_id, item.app_category_set);
-              }}
-            >
-              Modify category
-            </span>
-          </Fragment>
-        )}
+        <Link to={`/dashboard/app/${item.app_id}`}>View detail</Link>
+        {itemMenu}
       </div>
-    );
-  };
-
-  renderDeleteModal = () => {
-    const { showDeleteApp, deleteAppClose, deleteApp } = this.props.appHandleStore;
-
-    return (
-      <Modal
-        width={500}
-        title="Delete APP"
-        visible={showDeleteApp}
-        hideFooter
-        onCancel={deleteAppClose}
-      >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this App?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteAppClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteApp(this.props.appStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    );
-  };
-
-  renderCategoryModal = () => {
-    const { appHandleStore } = this.props;
-    const {
-      showCategoryModify,
-      categoryModalClose,
-      selectedCategory,
-      changeCategory,
-      modifyCategory
-    } = this.props.appHandleStore;
-    const categories = toJS(appHandleStore.categories);
-
-    return (
-      <Modal
-        width={500}
-        title="Modify Category"
-        visible={showCategoryModify}
-        hideFooter
-        onCancel={categoryModalClose}
-      >
-        <div className={styles.modalContent}>
-          <div className={styles.selectItem}>
-            <label className={styles.name}>Category</label>
-            <Select className={styles.select} value={selectedCategory} onChange={changeCategory}>
-              {categories &&
-                categories.map(({ category_id, name }) => (
-                  <Select.Option key={category_id} value={category_id}>
-                    {name}
-                  </Select.Option>
-                ))}
-            </Select>
-          </div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={categoryModalClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                modifyCategory(this.props.appStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
     );
   };
 
   render() {
     const { appStore } = this.props;
-    const appsData = toJS(appStore.apps);
     const {
-      image,
-      name,
-      total,
-      centerName,
-      progressTotal,
-      progress,
-      lastedTotal,
-      histograms
-    } = toJS(appStore.statistics);
+      onRefresh,
+      onSearch,
+      summaryInfo,
+      totalCount,
+      apps,
+      notifyMsg,
+      hideMsg
+    } = this.props.appStore;
+    const imgPhd = imgPlaceholder();
+
     const columns = [
       {
         title: 'App Name',
-        dataIndex: 'name',
         key: 'name',
-        render: (text, obj) => (
+        render: obj => (
           <TdName
-            name={text}
+            name={obj.name}
             description={obj.description}
-            image={obj.icon}
-            linkUrl={`/dashboard/apps/${obj.app_id}`}
+            image={obj.icon || imgPhd}
+            linkUrl={`/dashboard/app/${obj.app_id}`}
           />
         )
       },
       {
         title: 'Latest Version',
-        dataIndex: 'latest_version',
-        key: 'latest_version'
+        key: 'latest_version',
+        render: obj => get(obj, 'latest_app_version.version_id', '')
       },
       {
         title: 'Status',
@@ -179,33 +142,33 @@ export default class Apps extends Component {
       },
       {
         title: 'Categories',
-        dataIndex: 'category',
-        key: 'category'
+        key: 'category',
+        render: obj =>
+          get(obj, 'app_category_set', [])
+            .map(cate => cate.name)
+            .join(', ')
       },
       {
         title: 'Visibility',
-        dataIndex: 'visibility',
         key: 'visibility'
       },
       {
         title: 'Repo',
-        dataIndex: 'repo_id',
-        key: 'repo_id'
+        key: 'repo_id',
+        render: obj => obj.repo_id
       },
       {
         title: 'Developer',
-        dataIndex: 'owner',
-        key: 'owner'
+        key: 'owner',
+        render: obj => obj.owner
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
         key: 'status_time',
-        render: getParseDate
+        render: obj => obj.status_time
       },
       {
         title: 'Actions',
-        dataIndex: 'actions',
         key: 'actions',
         render: (text, item) => (
           <div className={styles.handlePop}>
@@ -218,38 +181,26 @@ export default class Apps extends Component {
     ];
 
     return (
-      <Layout>
-        <Statistics
-          image={image}
-          name={name}
-          total={total}
-          centerName={centerName}
-          progressTotal={progressTotal}
-          progress={progress}
-          lastedTotal={lastedTotal}
-          histograms={histograms}
-        />
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+        <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
                 placeholder="Search App Name or Keywords"
-                onSearch={appStore.fetchQueryApps}
+                onSearch={onSearch.bind(appStore)}
               />
-              <Button className={styles.buttonRight} onClick={appStore.fetchApps}>
+              <Button className={styles.buttonRight} onClick={onRefresh.bind(appStore)}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={appsData} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
           </div>
-          {appStore.totalCount > 0 && (
-            <Pagination onChange={appStore.fetchApps} total={appStore.totalCount} />
-          )}
+          <Pagination onChange={appStore.fetchAll.bind(appStore)} total={totalCount} />
         </div>
-        {this.renderDeleteModal()}
-        {this.renderCategoryModal()}
+        {this.renderOpsModal()}
       </Layout>
     );
   }

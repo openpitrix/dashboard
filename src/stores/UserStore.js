@@ -1,4 +1,4 @@
-import { observable, action, extendObservable } from 'mobx';
+import { observable, action } from 'mobx';
 import { get } from 'lodash';
 import Store from './Store';
 
@@ -12,12 +12,8 @@ export default class UserStore extends Store {
   @observable roles = [];
   @observable authorities = [];
 
-  constructor(initialState) {
-    super(initialState, 'userStore');
-  }
-
   @action
-  async fetchUsers(page) {
+  async fetchAll(page) {
     this.isLoading = true;
     page = page ? page : 1;
     const result = await this.request.get('users', { _page: page });

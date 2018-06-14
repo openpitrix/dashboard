@@ -1,70 +1,71 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { pick, assign } from 'lodash';
 
+import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import AppCard from 'components/DetailCard/AppCard';
 import VersionList from 'components/VersionList';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import TdName from 'components/TdName';
-import Popover from 'components/Base/Popover';
-import Modal from 'components/Base/Modal';
-import { getParseDate } from 'utils';
-import Layout, { BackBtn } from 'pages/Layout/Admin';
+import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import columns from './columns';
+
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
-  appStore: rootStore.appStore,
-  clusterStore: rootStore.clusterStore,
-  appHandleStore: rootStore.appHandleStore
-}))
+@inject(({ rootStore, sessInfo }) =>
+  assign(pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore']), sessInfo)
+)
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, clusterStore }, { appId }) {
-    await appStore.fetchApp(appId);
-    await appStore.fetchAppVersions(appId);
-    await clusterStore.fetchClusters();
+  static async onEnter({ appStore, clusterStore, appVersionStore }, { appId }) {
+    await appStore.fetch(appId);
+    await appVersionStore.fetchAll({ app_id: appId });
+    await clusterStore.fetchAll({ app_id: appId });
+  }
+
+  constructor(props) {
+    super(props);
+    this.appId = props.match.params.appId;
+    this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
   renderHandleMenu = () => {
-    const { createVersionShow } = this.props.appHandleStore;
+    const { showCreateVersion } = this.props.appVersionStore;
+
     return (
       <div className="operate-menu">
-        <span onClick={createVersionShow}>Create version</span>
+        <span onClick={showCreateVersion}>Create version</span>
       </div>
     );
   };
 
-  createVersionModal = () => {
-    const {
-      showCreateVersion,
-      createVersionClose,
-      createVersionSubmit,
-      changeName,
-      changePackageName,
-      changeDescription
-    } = this.props.appHandleStore;
-    const appDetail = toJS(this.props.appStore.appDetail);
-    return (
-      <Modal
-        width={500}
-        title="Create App Version"
-        visible={showCreateVersion}
-        hideFooter
-        onCancel={createVersionClose}
-      >
-        <div className={styles.modalContent}>
+  handleCreateVersion = async e => {
+    await this.props.appVersionStore.handleCreateVersion(e, {
+      app_id: this.appId,
+      owner: this.loginUser
+    });
+  };
+
+  renderOpsModal = () => {
+    const { appVersionStore } = this.props;
+    const { isModalOpen, hideModal, handleVersion, versions } = appVersionStore;
+    let modalTitle = '',
+      modalBody = null,
+      onSubmit = () => {},
+      resetProps = {};
+
+    if (handleVersion.action === 'create') {
+      modalTitle = 'Create App Version';
+      onSubmit = this.handleCreateVersion.bind(this);
+      modalBody = (
+        <Fragment>
           <div className={styles.inputItem}>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" required onChange={changeName} />
+            <Input className={styles.input} name="name" required />
           </div>
           <div className={styles.inputItem}>
             <label className={styles.name}>Package Name</label>
@@ -72,149 +73,57 @@ export default class AppDetail extends Component {
               className={styles.input}
               name="package_name"
               required
-              onChange={changePackageName}
               placeholder="http://openpitrix.pek3a.qingstor.com/package/zk-0.1.0.tgz"
             />
           </div>
           <div className={styles.inputItem}>
             <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-            <textarea
-              className={styles.textarea}
-              name="description"
-              required
-              onChange={changeDescription}
-            />
+            <textarea className={styles.textarea} name="description" />
           </div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={createVersionClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={() => {
-                createVersionSubmit(appDetail.app_id, this.props.appStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    );
-  };
+        </Fragment>
+      );
+    }
 
-  deleteVersionModal = () => {
-    const {
-      showDeleteVersion,
-      deleteVersionClose,
-      deleteVersionSubmit
-    } = this.props.appHandleStore;
+    if (handleVersion.action === 'delete') {
+      modalTitle = 'Delete Version';
+      modalBody = <div className={styles.noteWord}>Are you sure delete this Version?</div>;
+    }
+
+    if (handleVersion.action === 'show_all') {
+      modalTitle = 'All Versions';
+      modalBody = <VersionList versions={versions} />;
+      resetProps.noActions = true;
+    }
 
     return (
-      <Modal
-        width={500}
-        title="Delete Version"
-        visible={showDeleteVersion}
-        hideFooter
-        onCancel={deleteVersionClose}
+      <Dialog
+        title={modalTitle}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={onSubmit}
+        {...resetProps}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Version?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteVersionClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteVersionSubmit(this.props.appStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        {modalBody}
+      </Dialog>
     );
   };
 
-  allVersionModal = () => {
-    const { showAllVersion, allVersionClose, deleteVersionShow } = this.props.appHandleStore;
-    const versions = toJS(this.props.appStore.versions);
-    return (
-      <Modal
-        width={500}
-        title="All Versions"
-        visible={showAllVersion}
-        hideFooter
-        onCancel={allVersionClose}
-      >
-        <div className={styles.modalContent}>
-          <VersionList versions={versions} deleteVersion={deleteVersionShow} />
-        </div>
-      </Modal>
-    );
-  };
+  handlePagination = page => {};
 
   render() {
-    const { appStore, clusterStore } = this.props;
+    const { appStore, clusterStore, appVersionStore } = this.props;
     const appDetail = toJS(appStore.appDetail);
-    const versions = toJS(appStore.versions);
-    const fetchClusters = async current => {
-      await clusterStore.fetchClusters(current);
-    };
+    const versions = toJS(appVersionStore.versions);
+
     const data = toJS(clusterStore.clusters);
-    const columns = [
-      {
-        title: 'Cluster Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
-      },
-      {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        render: text => <Status type={text} name={text} />
-      },
-      {
-        title: 'App Version',
-        dataIndex: 'version_id',
-        key: 'version_id',
-        width: '100px'
-      },
-      {
-        title: 'Node Count',
-        dataIndex: 'cluster_node_set',
-        key: 'cluster_node_set',
-        render: nodeSet => <div>{nodeSet && nodeSet.length}</div>
-      },
-      {
-        title: 'Runtime',
-        dataIndex: 'runtime_id',
-        key: 'runtime_id',
-        width: '100px'
-      },
-      {
-        title: 'User',
-        dataIndex: 'owner',
-        key: 'owner'
-      },
-      {
-        title: 'Date Created',
-        dataIndex: 'create_time',
-        key: 'create_time',
-        render: getParseDate
-      }
-    ];
-    const tags = [{ id: 1, name: 'Clusters' }];
-    const curTag = 'Clusters';
-    const { deleteVersionShow, allVersionShow } = this.props.appHandleStore;
+
+    const { showAllVersions } = this.props.appVersionStore;
     const { fetchQueryClusters } = this.props.clusterStore;
 
+    const { notifyMsg, hideMsg } = this.props.appVersionStore;
+
     return (
-      <Layout className={styles.appDetail}>
+      <Layout className={styles.appDetail} msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
@@ -227,36 +136,35 @@ export default class AppDetail extends Component {
             <div className={styles.versionOuter}>
               <div className={styles.title}>
                 Versions
-                <div className={styles.all} onClick={allVersionShow}>
+                <div className={styles.all} onClick={showAllVersions}>
                   All Versions →
                 </div>
               </div>
-              <VersionList versions={versions.slice(0, 4)} deleteVersion={deleteVersionShow} />
+              <VersionList versions={versions.slice(0, 4)} />
             </div>
           </div>
+
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
+
               <div className={styles.toolbar}>
                 <Input.Search
                   className={styles.search}
                   placeholder="Search & Filter"
                   onSearch={fetchQueryClusters}
                 />
-                <Button className={styles.buttonRight} onClick={clusterStore.fetchClusters}>
+                <Button className={styles.buttonRight} onClick={clusterStore.fetchAll}>
                   <Icon name="refresh" />
                 </Button>
               </div>
+
               <Table columns={columns} dataSource={data} />
             </div>
-            {clusterStore.totalCount > 0 && (
-              <Pagination onChange={fetchClusters} total={clusterStore.totalCount} />
-            )}
+            <Pagination onChange={this.handlePagination} total={clusterStore.totalCount} />
           </div>
         </div>
-        {this.deleteVersionModal()}
-        {this.createVersionModal()}
-        {this.allVersionModal()}
+        {this.renderOpsModal()}
       </Layout>
     );
   }

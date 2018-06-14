@@ -3,36 +3,29 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { getParseDate } from 'utils';
 
-import CategoryCard from 'components/DetailCard/CategoryCard';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import Popover from 'components/Base/Popover';
-import Modal from 'components/Base/Modal';
 import TdName from 'components/TdName';
-import Layout, { BackBtn } from 'pages/Layout/Admin';
+import CategoryCard from 'components/DetailCard/CategoryCard';
+import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
-  categoryHandleStore: rootStore.categoryHandleStore,
   appStore: rootStore.appStore
 }))
 @observer
 export default class CategoryDetail extends Component {
   static async onEnter({ categoryStore, appStore }, { categoryId }) {
-    await categoryStore.fetchCategoryDetail(categoryId);
-    await appStore.fetchQueryApps({ category_id: categoryId });
+    await categoryStore.fetch(categoryId);
+    await appStore.fetchAll({ category_id: categoryId });
   }
 
   onSearch = async name => {
     const { categoryStore, appStore } = this.props;
-    await appStore.fetchQueryApps({
+    await appStore.fetchAll({
       category_id: categoryStore.category.category_id,
       search_word: name
     });
@@ -40,120 +33,100 @@ export default class CategoryDetail extends Component {
 
   onRefresh = async () => {
     const { categoryStore, appStore } = this.props;
-    await appStore.fetchQueryApps({ category_id: categoryStore.category.category_id });
+    await appStore.fetchAll({ category_id: categoryStore.category.category_id });
   };
 
   changeApps = async current => {
     const { categoryStore, appStore } = this.props;
-    await appStore.fetchQueryApps({
+    await appStore.fetchAll({
       category_id: categoryStore.category.category_id,
       offset: (current - 1) * appStore.pageSize
     });
   };
 
   renderHandleMenu = category => {
-    const { modifyCategoryShow } = this.props.categoryHandleStore;
+    const { showModifyCategory } = this.props.categoryStore;
     return (
       <div className="operate-menu">
-        <span
-          onClick={() => {
-            modifyCategoryShow(category);
-          }}
-        >
-          Modify Category
-        </span>
+        <span onClick={showModifyCategory.bind(this, category)}>Modify Category</span>
       </div>
     );
   };
 
+  handleModifyCate = ev => {
+    this.props.categoryStore.createOrModify();
+  };
+
   renderCategoryModal = () => {
+    const { categoryStore } = this.props;
     const {
-      categoryDetail,
-      showCategoryModal,
-      createCategoryClose,
-      changeName,
-      changeLocale,
-      categorySubmit
-    } = this.props.categoryHandleStore;
+      category,
+      isModalOpen,
+      hideModal,
+      changeName
+      // changeLocale,
+    } = categoryStore;
 
     return (
-      <Modal
-        width={500}
+      <Dialog
         title="Modify Category"
-        visible={showCategoryModal}
-        hideFooter
-        onCancel={createCategoryClose}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleModifyCate}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.inputItem}>
-            <label className={styles.name}>Name</label>
-            <Input
-              className={styles.input}
-              name="name"
-              required
-              onChange={changeName}
-              defaultValue={categoryDetail.name}
-            />
-          </div>
-          <div className={styles.inputItem}>
-            <label className={styles.name}>locale</label>
-            <Input
-              className={styles.input}
-              name="locale"
-              required
-              onChange={changeLocale}
-              defaultValue={categoryDetail.locale}
-            />
-          </div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={createCategoryClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                categorySubmit(this.props.categoryStore, categoryDetail.category_id, 'detail');
-              }}
-            >
-              Submit
-            </Button>
-          </div>
+        <div className={styles.inputItem}>
+          <label className={styles.name}>Name</label>
+          <Input
+            className={styles.input}
+            name="name"
+            required
+            autoFocus
+            onChange={changeName}
+            defaultValue={category.name}
+          />
         </div>
-      </Modal>
+        {/*<div className={styles.inputItem}>*/}
+        {/*<label className={styles.name}>locale</label>*/}
+        {/*<Input*/}
+        {/*className={styles.input}*/}
+        {/*name="locale"*/}
+        {/*required*/}
+        {/*onChange={changeLocale}*/}
+        {/*defaultValue={category.locale}*/}
+        {/*/>*/}
+        {/*</div>*/}
+      </Dialog>
     );
   };
 
   render() {
     const { categoryStore, appStore } = this.props;
-    const detail = categoryStore.category;
-    const data = toJS(appStore.apps);
-    const appCount = appStore.totalCount;
+    const { category } = categoryStore;
+    const apps = toJS(appStore.apps);
+
+    const { notifyMsg, hideMsg } = this.props.categoryStore;
+
     const columns = [
       {
         title: 'App Name',
-        dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
+        render: app => <TdName name={app.name} description={app.description} image={app.icon} />
       },
       {
         title: 'Latest Version',
-        dataIndex: 'latest_version',
         key: 'latest_version'
       },
       {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
-        render: text => <Status type={text} name={text} />
+        render: app => <Status type={app.status} name={app.status} />
       },
       {
         title: 'Developer',
-        dataIndex: 'owner',
         key: 'owner'
       },
       {
         title: 'Visibility',
-        dataIndex: 'visibility',
         key: 'visibility'
       }
     ];
@@ -161,13 +134,13 @@ export default class CategoryDetail extends Component {
     const curTag = 'Apps';
 
     return (
-      <Layout>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="categories" link="/dashboard/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
-              <CategoryCard detail={detail} appCount={appCount} />
-              <Popover className={styles.operation} content={this.renderHandleMenu(detail)}>
+              <CategoryCard detail={category} appCount={appStore.totalCount} />
+              <Popover className={styles.operation} content={this.renderHandleMenu(category)}>
                 <Icon name="more" />
               </Popover>
             </div>
@@ -185,7 +158,7 @@ export default class CategoryDetail extends Component {
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={data} />
+              <Table columns={columns} dataSource={apps} />
             </div>
             {appStore.totalCount > 0 && (
               <Pagination onChange={this.changeApps} total={appStore.totalCount} />

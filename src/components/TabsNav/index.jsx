@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { capitalize, keys, values } from 'lodash';
 import { isArray } from 'src/utils/types';
+import { plural } from 'src/utils/plural';
 
 import styles from './index.scss';
 
@@ -20,9 +21,29 @@ const normalizeLink = (link, prefix = '') => {
   return link;
 };
 
+const isLinkActive = (curLink, match, location) => {
+  const { pathname } = location;
+  if (curLink === '/dashboard') {
+    return curLink === pathname;
+  } else {
+    let try_match = pathname.indexOf(curLink) === 0;
+    if (!try_match) {
+      let prefix = '/dashboard/';
+      let suffix = curLink.substring(prefix.length);
+      try_match = pathname.indexOf(prefix + plural[suffix]) === 0;
+    }
+    return try_match;
+  }
+};
+
 const LinkItem = ({ link, label }) => (
   <li>
-    <NavLink to={link} activeClassName={styles.active} exact>
+    <NavLink
+      to={link}
+      activeClassName={styles.active}
+      exact
+      isActive={isLinkActive.bind(null, link)}
+    >
       {capitalize(label)}
     </NavLink>
   </li>

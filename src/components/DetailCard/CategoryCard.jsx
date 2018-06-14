@@ -8,12 +8,16 @@ import styles from './index.scss';
 
 export default class CategoryCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object.isRequired,
+    detail: PropTypes.object,
     appCount: PropTypes.number
   };
 
   render() {
     const { detail, appCount } = this.props;
+
+    if (!detail) {
+      return null;
+    }
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>

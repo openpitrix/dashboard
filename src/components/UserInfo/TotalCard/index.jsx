@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { imgPlaceholder } from 'src/utils';
 
 import styles from './index.scss';
 
@@ -10,11 +11,15 @@ export default class TotalCard extends PureComponent {
     total: PropTypes.number
   };
 
+  static defaultProps = {
+    icon: imgPlaceholder()
+  };
+
   render() {
-    const { icon, name, total } = this.props;
+    const { icon, name, total, ...rest } = this.props;
 
     return (
-      <div className={styles.totalCard}>
+      <div className={styles.totalCard} {...rest}>
         <div className={styles.name}>
           <img src={icon} />
           {name}

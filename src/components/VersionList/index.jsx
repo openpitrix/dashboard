@@ -1,13 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { isObject } from 'utils/types';
 
-import Icon from 'components/Base/Icon';
 import styles from './index.scss';
 
 export default class VersionList extends PureComponent {
   static propTypes = {
-    versions: PropTypes.array,
+    versions: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     deleteVersion: PropTypes.func
+  };
+
+  static defaultProps = {
+    deleteVersion: () => {}
   };
 
   deleteVersion = id => {
@@ -15,7 +19,12 @@ export default class VersionList extends PureComponent {
   };
 
   render() {
-    const { versions } = this.props;
+    let { versions } = this.props;
+
+    if (isObject(versions)) {
+      versions = versions.toJSON();
+    }
+
     return (
       <ul className={styles.versionList}>
         {versions.map(data => (
@@ -29,7 +38,7 @@ export default class VersionList extends PureComponent {
               <div className={styles.word}>Cluster Count</div>
             </div>
             <div className={styles.column}>
-              <a href={data.package_name} traget="_blank">
+              <a href={data.package_name} target="_blank">
                 <i className="fa fa-download" />
               </a>
             </div>

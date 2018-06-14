@@ -7,7 +7,7 @@ import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
 import Popover from 'components/Base/Popover';
-import Layout from 'pages/Layout/Admin';
+import Layout from 'components/Layout/Admin';
 
 import styles from './index.scss';
 

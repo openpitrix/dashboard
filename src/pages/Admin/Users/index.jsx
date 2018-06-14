@@ -4,20 +4,14 @@ import { observer, inject } from 'mobx-react';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
+import { Checkbox, Icon, Button, Input, Select, Table, Pagination, Modal } from 'components/Base';
+
 import Statistics from 'components/Statistics';
-import Checkbox from 'components/Base/Checkbox';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
 import Status from 'components/Status';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import OrgTree from 'components/OrgTree';
-import Modal from 'components/Base/Modal';
 import GroupCard from './GroupCard';
-import Layout from 'pages/Layout/Admin';
+import Layout from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
@@ -27,11 +21,12 @@ import styles from './index.scss';
 @observer
 export default class Users extends Component {
   static async onEnter({ userStore }) {
-    await userStore.fetchUsers();
-    await userStore.fetchOrganizations();
-    await userStore.fetchGroups();
-    await userStore.fetchRoles();
-    await userStore.fetchAuthorities();
+    // todo: api 404
+    // await userStore.fetchAll();
+    // await userStore.fetchOrganizations();
+    // await userStore.fetchGroups();
+    // await userStore.fetchRoles();
+    // await userStore.fetchAuthorities();
   }
 
   constructor(props) {
@@ -44,6 +39,7 @@ export default class Users extends Component {
       organizations: []
     };
   }
+
   componentWillMount = () => {
     this.setState({
       organizations: toJS(this.props.userStore.organizations)
@@ -56,6 +52,7 @@ export default class Users extends Component {
       selectItem: 0
     });
   };
+
   clickCompany = index => {
     let temp = this.state.organizations;
     temp[index].depShow = !temp[index].depShow;
@@ -64,6 +61,7 @@ export default class Users extends Component {
       organizations: temp
     });
   };
+
   clickDep = (index, depIndex) => {
     let temp = this.state.organizations;
     temp[index].department[depIndex].staffShow = !temp[index].department[depIndex].staffShow;
@@ -72,6 +70,7 @@ export default class Users extends Component {
       organizations: temp
     });
   };
+
   selectCard = value => {
     this.setState({
       selectItem: value
@@ -83,11 +82,13 @@ export default class Users extends Component {
       showAuthorityModal: true
     });
   };
+
   closeAuthorityModal = () => {
     this.setState({
       showAuthorityModal: false
     });
   };
+
   renderAuthorityModal = () => (
     <Modal
       width={744}

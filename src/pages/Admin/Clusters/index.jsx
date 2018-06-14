@@ -2,142 +2,127 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
-import Statistics from 'components/Statistics';
-import Icon from 'components/Base/Icon';
-import Input from 'components/Base/Input';
-import Button from 'components/Base/Button';
+import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
-import Popover from 'components/Base/Popover';
-import Layout from 'pages/Layout/Admin';
-import Modal from 'components/Base/Modal';
-
+import Statistics from 'components/Statistics';
+import Layout, { Dialog } from 'components/Layout/Admin';
 import { getParseDate } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore,
-  clusterHandleStore: rootStore.clusterHandleStore
+  clusterStore: rootStore.clusterStore
 }))
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
-    await clusterStore.fetchClusters();
-    await clusterStore.fetchStatistics();
+    await clusterStore.fetchAll();
+    // await clusterStore.fetchStatistics();
   }
 
-  renderHandleMenu = (id, status) => {
-    const { deleteClusterShow } = this.props.clusterHandleStore;
+  constructor(props) {
+    super(props);
+    this.store = this.props.clusterStore;
+  }
+
+  renderHandleMenu = item => {
+    const { showDeleteCluster } = this.props.clusterStore;
+    const { cluster_id, status } = item;
+
     return (
-      <div id={id} className="operate-menu">
-        <Link to={`/dashboard/clusters/${id}`}>View cluster detail</Link>
+      <div id={cluster_id} className="operate-menu">
+        <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
         {status !== 'deleted' && (
-          <span
-            onClick={() => {
-              deleteClusterShow(id);
-            }}
-          >
-            Delete cluster
-          </span>
+          <span onClick={showDeleteCluster.bind(this.store, item)}>Delete cluster</span>
         )}
       </div>
     );
   };
 
-  deleteClusterModal = () => {
-    const { showDeleteCluster, deleteClusterClose, deleteCluster } = this.props.clusterHandleStore;
+  handleDeleteCluster = ev => {
+    this.store.remove();
+  };
+
+  onSearch = search_word => {
+    if (!search_word) {
+      return false;
+    }
+    this.store.fetchAll({
+      search_word: search_word
+    });
+  };
+
+  onRefresh = ev => {
+    this.store.fetchAll();
+  };
+
+  onChangePagination = page => {
+    this.store.fetchAll({ page });
+  };
+
+  renderDeleteModal = () => {
+    const { hideModal, isModalOpen } = this.store;
 
     return (
-      <Modal
-        width={500}
+      <Dialog
         title="Delete Cluster"
-        visible={showDeleteCluster}
-        hideFooter
-        onCancel={deleteClusterClose}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleDeleteCluster}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Cluster?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteClusterClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteCluster(this.props.clusterStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        <div className={styles.noteWord}>Are you sure delete this Cluster?</div>
+      </Dialog>
     );
   };
 
   render() {
-    const { clusterStore } = this.props;
-    const data = toJS(clusterStore.clusters);
-    const {
-      image,
-      name,
-      total,
-      centerName,
-      progressTotal,
-      progress,
-      lastedTotal,
-      histograms
-    } = toJS(clusterStore.statistics);
+    const { summaryInfo, clusters, totalCount, notifyMsg, hideMsg } = this.store;
     const columns = [
       {
         title: 'Cluster Name',
-        dataIndex: 'name',
-        key: 'id',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        key: 'name',
+        render: cl => <TdName name={cl.name} description={cl.description} />
       },
       {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
-        render: text => <Status type={text} name={text} />
+        render: cl => <Status type={cl.status} name={cl.status} />
       },
       {
         title: 'App',
-        dataIndex: 'app_id',
-        key: 'app_id'
+        key: 'app_id',
+        render: cl => cl.app_id
       },
       {
         title: 'Runtime',
-        dataIndex: 'runtime_id',
-        key: 'runtime_id'
+        key: 'runtime_id',
+        render: cl => cl.runtime_id
       },
       {
         title: 'Node Count',
-        dataIndex: 'node_count',
-        key: 'node_count'
+        key: 'node_count',
+        render: cl => cl.cluster_node_set.length
       },
       {
         title: 'User',
-        dataIndex: 'owner',
-        key: 'owner'
+        key: 'owner',
+        render: cl => cl.owner
       },
       {
         title: 'Updated At',
-        dataIndex: 'upgrade_time',
         key: 'upgrade_time',
-        render: getParseDate
+        render: cl => getParseDate(cl.status_time)
       },
       {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
-        render: (text, item) => (
+        render: (text, cl) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.cluster_id, item.status)}>
+            <Popover content={this.renderHandleMenu(cl)}>
               <Icon name="more" />
             </Popover>
           </div>
@@ -146,40 +131,29 @@ export default class Clusters extends Component {
     ];
 
     return (
-      <Layout>
-        <Statistics
-          image={image}
-          name={name}
-          total={total}
-          centerName={centerName}
-          progressTotal={progressTotal}
-          progress={progress}
-          lastedTotal={lastedTotal}
-          histograms={histograms}
-        />
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+        <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
                 placeholder="Search Cluster Name or App"
-                onSearch={clusterStore.fetchQueryClusters}
+                onSearch={this.onSearch}
               />
               {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
               {/*Create*/}
               {/*</Button>*/}
-              <Button className={styles.buttonRight} onClick={clusterStore.fetchClusters}>
+              <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
+            <Table className={styles.tableOuter} columns={columns} dataSource={clusters.toJSON()} />
           </div>
-          {clusterStore.totalCount > 0 && (
-            <Pagination onChange={clusterStore.fetchClusters} total={clusterStore.totalCount} />
-          )}
+          <Pagination onChange={this.onChangePagination} total={totalCount} />
         </div>
-        {this.deleteClusterModal()}
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

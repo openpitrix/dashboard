@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
+import Store from '../Store';
 import _ from 'lodash';
+import { getFormData } from 'utils';
 
 const s3UrlPattern = /^s3:\/\/s3\.(.+)\.(.+)\/(.+)\/?$/; // s3.<zone>.<host>/<bucket>
 
@@ -148,11 +149,7 @@ export default class RepoCreateStore extends Store {
     this.isLoading = true;
     const { providers, visibility, protocolType, accessKey, secretKey, labels, selectors } = this;
 
-    let fd = new FormData(e.target);
-    let data = {};
-    for (let p of fd.entries()) {
-      data[p[0]] = p[1];
-    }
+    const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
       this.isLoading = false;

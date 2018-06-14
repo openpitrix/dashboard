@@ -6,6 +6,7 @@ const RootStore = require('stores/RootStore').default; // import esm
 useStaticRendering(true);
 
 const rootStore = new RootStore();
+rootStore.registerStores();
 
 /**
  * Middleware for creating the store

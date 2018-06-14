@@ -14,24 +14,23 @@ import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
-import Layout from 'pages/Layout/Admin';
+import Layout from 'components/Layout/Admin';
 import Modal from 'components/Base/Modal';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  runtimeStore: rootStore.runtimeStore,
-  handleStore: rootStore.runtimeHandleStore
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore }) {
     await runtimeStore.fetchRuntimes();
-    await runtimeStore.fetchStatistics();
+    // await runtimeStore.fetchStatistics();
   }
 
   renderHandleMenu = (id, status) => {
-    const { deleteRuntimeOpen } = this.props.handleStore;
+    const { deleteRuntimeOpen } = this.props.runtimeStore;
     return (
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/runtime/${id}`}>View runtime detail</Link>
@@ -52,7 +51,7 @@ export default class Runtimes extends Component {
   };
 
   deleteRuntimeModal = () => {
-    const { showDeleteRuntime, deleteRuntimeClose, deleteRuntime } = this.props.handleStore;
+    const { showDeleteRuntime, deleteRuntimeClose, deleteRuntime } = this.props.runtimeStore;
 
     return (
       <Modal

@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
+import Store from '../Store';
 import _ from 'lodash';
+import { getFormData } from 'utils';
 
 export default class RuntimeCreateStore extends Store {
   @observable runtimeId = '';
@@ -98,11 +99,7 @@ export default class RuntimeCreateStore extends Store {
     this.isLoading = true;
     const { provider, zone, labels } = this;
 
-    let fd = new FormData(e.target);
-    let data = {};
-    for (let p of fd.entries()) {
-      data[p[0]] = p[1];
-    }
+    const data = getFormData(e.target);
 
     if (_.isEmpty(labels)) {
       this.isLoading = false;

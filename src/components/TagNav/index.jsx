@@ -4,34 +4,36 @@ import classnames from 'classnames';
 
 import styles from './index.scss';
 
-export default class SubHeader extends Component {
+export default class TagNav extends Component {
   static propTypes = {
     tags: PropTypes.array,
     curTag: PropTypes.string,
-    changeCurTag: PropTypes.func
+    changeTag: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-    this.changeCurTag = this.changeCurTag.bind(this);
-  }
+  static defaultProps = {
+    changeTag: () => {},
+    curTag: ''
+  };
 
-  changeCurTag(name) {
-    this.props.changeCurTag(name);
-  }
+  state = {
+    curTag: this.props.curTag
+  };
+
+  changeCurTag = tag => {
+    this.props.changeTag(tag);
+  };
 
   render() {
-    const { tags, curTag } = this.props;
+    const { tags } = this.props;
 
     return (
       <div className={styles.tagNav}>
         {tags.map(tag => (
           <div
-            className={classnames(styles.tag, { [styles.active]: tag.name === curTag })}
+            className={classnames(styles.tag, { [styles.active]: tag.name === this.state.curTag })}
             key={tag.id}
-            onClick={() => {
-              this.changeCurTag(tag.name);
-            }}
+            onClick={this.changeCurTag.bind(null, tag.name)}
           >
             {tag.name}
           </div>

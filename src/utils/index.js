@@ -63,3 +63,17 @@ export function getLinkLabelFromRole(role) {
     return 'Deployment';
   }
 }
+
+export function imgPlaceholder(size = 24) {
+  return `http://via.placeholder.com/${size}x${size}`;
+}
+
+export function getFormData(form) {
+  const data = {};
+  const fd = new FormData(form);
+  for (let p of fd.entries()) {
+    data[p[0]] = p[1];
+  }
+
+  return data;
+}

@@ -10,7 +10,7 @@ import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'pages/Layout/Admin';
+import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 

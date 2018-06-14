@@ -3,13 +3,8 @@ import { Link } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
-
 import Logo from 'components/Logo';
-import Form from 'components/Base/Form';
-import Input from 'components/Base/Input';
-import Button from 'components/Base/Button';
-import Checkbox from 'components/Base/Checkbox';
-import Notification from 'components/Base/Notification';
+import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
 
 import styles from './index.scss';
 

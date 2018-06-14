@@ -3,38 +3,32 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
-import ClusterCard from 'components/DetailCard/ClusterCard';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
 import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
-import Popover from 'components/Base/Popover';
-import Modal from 'components/Base/Modal';
-import Layout, { BackBtn } from 'pages/Layout/Admin';
+import ClusterCard from 'components/DetailCard/ClusterCard';
+import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore,
-  clusterHandleStore: rootStore.clusterHandleStore
+  clusterStore: rootStore.clusterStore
 }))
 @observer
 export default class ClusterDetail extends Component {
   static async onEnter({ clusterStore }, { clusterId }) {
-    await clusterStore.fetchClusterDetail(clusterId);
-    await clusterStore.fetchClusterJobs(clusterId);
-    await clusterStore.fetchClusterNodes(clusterId);
+    await clusterStore.fetch(clusterId);
+    await clusterStore.fetchJobs(clusterId);
+    await clusterStore.fetchNodes(clusterId);
   }
 
   renderHandleMenu = () => {
-    const { clusterParametersOpen } = this.props.clusterHandleStore;
+    const { clusterParametersOpen } = this.props.clusterStore;
+
     return (
       <div className="operate-menu">
         <span onClick={clusterParametersOpen}>View Parameters</span>
@@ -43,32 +37,22 @@ export default class ClusterDetail extends Component {
   };
 
   clusterJobsModal = () => {
-    const { showClusterJobs, clusterJobsClose } = this.props.clusterHandleStore;
+    const { isModalOpen, hideModal } = this.props.clusterStore;
     const clusterJobs = toJS(this.props.clusterStore.clusterJobs);
+
     return (
-      <Modal
-        width={744}
-        title="Activities"
-        visible={showClusterJobs}
-        hideFooter
-        onCancel={clusterJobsClose}
-      >
+      <Modal width={744} title="Activities" visible={isModalOpen} hideFooter onCancel={hideModal}>
         <TimeAxis timeList={clusterJobs} />
       </Modal>
     );
   };
 
   clusterParametersModal = () => {
-    const { showClusterParameters, clusterParametersClose } = this.props.clusterHandleStore;
+    const { isModalOpen, hideModal } = this.props.clusterStore;
+
     return (
-      <Modal
-        width={744}
-        title="Parameters"
-        visible={showClusterParameters}
-        hideFooter
-        onCancel={clusterParametersClose}
-      >
-        <ul className={styles.modelContent}>
+      <Dialog title="Parameters" onCancel={hideModal} noActions isOpen={isModalOpen} width={744}>
+        <ul className={styles.parameters}>
           <li>
             <div className={styles.name}>Port</div>
             <div className={styles.info}>
@@ -141,59 +125,55 @@ export default class ClusterDetail extends Component {
             </div>
           </li>
         </ul>
-      </Modal>
+      </Dialog>
     );
   };
 
+  showClusterJobs = e => {};
+
   render() {
     const { clusterStore } = this.props;
-    const detail = toJS(clusterStore.clusterDetail);
+    const detail = toJS(clusterStore.cluster);
     const clusterJobs = toJS(clusterStore.clusterJobs);
     const clusterNodes = toJS(clusterStore.clusterNodes);
-    const { clusterJobsOpen } = this.props.clusterHandleStore;
+
     const columns = [
       {
         title: 'Name',
-        dataIndex: 'name',
         key: 'name',
-        render: (name, item) => <TdName name={name} description={item.description} />
+        render: item => <TdName name={item.name} description={item.description} />
       },
       {
         title: 'Role',
-        dataIndex: 'role',
-        key: 'role'
+        key: 'role',
+        dataIndex: 'role'
       },
       {
         title: 'Node Status',
-        dataIndex: 'node_status',
         key: 'status',
-        render: text => <Status type={text} name={text} />
+        render: obj => <Status type={obj.status} name={obj.status} />
       },
       {
         title: 'Service',
-        dataIndex: 'server_id',
-        key: 'server_id'
+        key: 'server_id',
+        dataIndex: 'server_id'
       },
       {
         title: 'App Version',
-        dataIndex: 'latest_version',
         key: 'latest_version'
       },
       {
         title: 'Configuration',
-        dataIndex: 'configuration',
         key: 'configuration'
       },
       {
         title: 'Private IP',
-        dataIndex: 'private_ip',
         key: 'private_ip'
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
         key: 'status_time',
-        render: getParseDate
+        render: obj => getParseDate(obj.status_time)
       }
     ];
     const tags = [{ id: 1, name: 'Nodes' }];
@@ -213,13 +193,14 @@ export default class ClusterDetail extends Component {
             <div className={styles.activities}>
               <div className={styles.title}>
                 Activities
-                <div className={styles.more} onClick={clusterJobsOpen}>
+                <div className={styles.more} onClick={this.showClusterJobs}>
                   More →
                 </div>
               </div>
               <TimeAxis timeList={clusterJobs.splice(0, 4)} />
             </div>
           </div>
+
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
               <TagNav tags={tags} curTag={curTag} />
@@ -232,7 +213,7 @@ export default class ClusterDetail extends Component {
               <Table columns={columns} dataSource={clusterNodes} />
             </div>
             {clusterNodes.length > 0 && (
-              <Pagination onChange={clusterStore.fetchClusterNodes} total={clusterNodes.length} />
+              <Pagination onChange={clusterStore.fetchNodes} total={clusterNodes.length} />
             )}
           </div>
         </div>
