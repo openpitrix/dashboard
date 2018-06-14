@@ -107,11 +107,11 @@ export default class Categories extends Component {
 
   render() {
     const { categoryStore } = this.props;
-    const { notifyMsg, hideMsg, showCreateCategory } = categoryStore;
+    const { notifyMsg, hideMsg, showCreateCategory, isLoading } = categoryStore;
     const categories = toJS(categoryStore.categories);
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <div className={styles.container}>
           <div className={styles.pageTitle}>
             Categories

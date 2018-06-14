@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import Notification from 'components/Base/Notification';
 import { Container } from 'components/Layout';
 import TabsNav from 'components/TabsNav';
+import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
@@ -17,7 +18,8 @@ export default class Layout extends React.Component {
     msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     hideMsg: PropTypes.func,
     noTabs: PropTypes.bool,
-    noNotification: PropTypes.bool
+    noNotification: PropTypes.bool,
+    isLoading: PropTypes.bool
   };
 
   static defaultProps = {
@@ -62,13 +64,14 @@ export default class Layout extends React.Component {
   }
 
   render() {
-    const { className, noTabs, noNotification, children } = this.props;
+    const { className, noTabs, noNotification, children, isLoading } = this.props;
 
     return (
       <div className={classnames(styles.container, className)}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
         <Container>{children}</Container>
+        {isLoading && <Loading />}
       </div>
     );
   }

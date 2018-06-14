@@ -86,6 +86,7 @@ export default class Runtimes extends Component {
   render() {
     const { runtimeStore } = this.props;
     const data = toJS(runtimeStore.runtimes);
+    const { isLoading } = runtimeStore;
     const {
       image,
       name,
@@ -159,7 +160,7 @@ export default class Runtimes extends Component {
     ];
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <Statistics
           image={image}
           name={name}
