@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import RouteWrapper from './wrapper';
 import { getCookie } from '../utils';
 
@@ -16,7 +17,9 @@ const renderRoute = (match, route, store) => {
     return <Redirect to="/" />;
   }
 
-  return <RouteWrapper component={route.component} match={match} rootStore={store} />;
+  // attach history to component
+  let component = withRouter(route.component);
+  return <RouteWrapper component={component} match={match} rootStore={store} />;
 };
 
 export default renderRoute;

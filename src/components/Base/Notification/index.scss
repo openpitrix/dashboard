@@ -6,6 +6,7 @@ $bg-error: red;
 
 .notification {
   position: fixed;
+  z-index: 9999;
   bottom: 70px;
   right: 20px;
   min-width:240px;

@@ -15,7 +15,7 @@ import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
-import Layout, { BackBtn } from 'pages/Layout/Admin';
+import Layout, { BackBtn } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
@@ -29,7 +29,7 @@ import styles from './index.scss';
 export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await appStore.fetchQueryApps({ repo_id: repoId });
+    await appStore.fetchAll({ repo_id: repoId });
     await runtimeStore.fetchQueryRuntimes({ repo_id: repoId });
   }
 
@@ -146,7 +146,7 @@ export default class RepoDetail extends Component {
         columns = appsColumns;
         totalCount = appStore.totalCount;
         changeTable = async current => {
-          await appStore.fetchQueryApps({
+          await appStore.fetchAll({
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * appStore.pageSize
           });

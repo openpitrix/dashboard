@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import TabsNav from 'components/TabsNav';
 import Notification from 'components/Base/Notification';
+import { Container } from 'components/Layout';
+import TabsNav from 'components/TabsNav';
 import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
 
 @inject('sessInfo')
-export default class Layout extends React.PureComponent {
+export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
@@ -67,7 +68,7 @@ export default class Layout extends React.PureComponent {
       <div className={classnames(styles.container, className)}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
-        {children}
+        <Container>{children}</Container>
       </div>
     );
   }

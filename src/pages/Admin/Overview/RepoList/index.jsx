@@ -1,30 +1,43 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { ucfirst } from 'utils/string';
 
 import styles from './index.scss';
 
 export default class RepoList extends PureComponent {
   static propTypes = {
     repos: PropTypes.array,
-    type: PropTypes.oneOf(['Public', 'Private'])
+    type: PropTypes.oneOf(['public', 'private']),
+    limit: PropTypes.number
+  };
+
+  static defaultProps = {
+    limit: 3,
+    type: 'public',
+    repos: []
   };
 
   render() {
-    const { repos, type } = this.props;
+    const { repos, type, limit } = this.props;
+    let filterRepos = repos.filter(repo => repo.visibility === type).slice(0, limit);
+
     return (
-      <ul className={classNames(styles.reposList, { [styles.reposBg]: type == 'Public' })}>
-        {repos.map(data => (
-          <li key={data.repo_id}>
-            <img className={styles.icon} src={data.icon} />
-            <span className={styles.name}>{data.providers[0]}</span>
-            <span className={styles.total}>
-              <span className={styles.number}>{data.total || 0}</span>
-              Clusters
-            </span>
-          </li>
-        ))}
-      </ul>
+      <Fragment>
+        <div className={styles.type}>{ucfirst(type)}</div>
+        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'public' })}>
+          {filterRepos.map(data => (
+            <li key={data.repo_id}>
+              <img className={styles.icon} src={data.icon} />
+              <span className={styles.name}>{data.providers[0]}</span>
+              <span className={styles.total}>
+                <span className={styles.number}>{data.total || 0}</span>
+                Clusters
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Fragment>
     );
   }
 }

@@ -44,7 +44,6 @@ export default class RepoStore extends Store {
   }
 
   // fixme
-
   @action
   deleteRepoOpen = repoId => {
     this.repoId = repoId;

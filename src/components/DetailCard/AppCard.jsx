@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { get } from 'lodash';
 
 import Status from 'components/Status';
 import { getParseDate } from 'utils';
@@ -35,7 +36,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Latest Version</span>
-            {appDetail.version}
+            {get(appDetail, 'latest_app_version.name', '')}
           </li>
           <li>
             <span className={styles.name}>Category</span>

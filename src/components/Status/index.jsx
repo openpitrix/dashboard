@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import styles from './index.scss';
 
@@ -9,21 +9,19 @@ export default class Status extends PureComponent {
     style: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
-    type: PropTypes.oneOf([
-      'active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted',
-    ]),
+    type: PropTypes.oneOf(['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'])
   };
 
   static defaultProps = {
-    status: 'pending',
+    status: 'pending'
   };
 
   render() {
     const { style, className, name, type } = this.props;
 
     return (
-      <span className={classNames(styles.status, className)} style={style}>
-        <i className={classNames(styles.icon, styles[type])}></i>
+      <span className={classnames(styles.status, className)} style={style}>
+        <i className={classnames(styles.icon, styles[type])} />
         {name}
       </span>
     );

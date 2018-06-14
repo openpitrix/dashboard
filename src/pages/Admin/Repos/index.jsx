@@ -5,14 +5,13 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { Icon, Button, Input, Modal } from 'components/Base';
-import Layout from 'pages/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout/Admin';
 import RepoList from './RepoList';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  store: rootStore.repoStore,
-  handleStore: rootStore.repoHandleStore
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class Repos extends Component {
@@ -21,7 +20,7 @@ export default class Repos extends Component {
   }
 
   onSearch = async value => {
-    await this.props.store.fetchQueryRepos(value);
+    await this.props.repoStore.fetchQueryRepos(value);
   };
 
   onRefresh = async () => {
@@ -29,7 +28,7 @@ export default class Repos extends Component {
   };
 
   renderHandleMenu = (id, status) => {
-    const { deleteRepoOpen } = this.props.handleStore;
+    const { deleteRepoOpen } = this.props.repoStore;
     return (
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/repos/${id}`}>View repo detail</Link>
@@ -50,7 +49,7 @@ export default class Repos extends Component {
   };
 
   deleteRepoModal = () => {
-    const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.handleStore;
+    const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
 
     return (
       <Modal
@@ -70,7 +69,7 @@ export default class Repos extends Component {
               <Button
                 type="primary"
                 onClick={() => {
-                  deleteRepo(this.props.store);
+                  deleteRepo(this.props.repoStore);
                 }}
               >
                 Confirm
@@ -82,9 +81,13 @@ export default class Repos extends Component {
     );
   };
 
+  onSearch = e => {};
+
+  onRefresh = e => {};
+
   render() {
-    const { store } = this.props;
-    const repoList = toJS(store.repos);
+    const { repoStore } = this.props;
+    const repoList = toJS(repoStore.repos);
 
     return (
       <Layout>
@@ -95,14 +98,14 @@ export default class Repos extends Component {
             <Input.Search
               className={styles.search}
               placeholder="Search Repo Name"
-              onSearch={store.fetchQueryRepos}
+              onSearch={this.onSearch}
             />
             <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
             </Link>
-            <Button className={styles.buttonRight} onClick={store.fetchAll}>
+            <Button className={styles.buttonRight} onClick={this.onRefresh}>
               <Icon name="refresh" />
             </Button>
           </div>

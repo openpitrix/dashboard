@@ -9,7 +9,7 @@ import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from '
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'pages/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout/Admin';
 import { getSessInfo, imgPlaceholder } from 'src/utils';
 
 import styles from './index.scss';

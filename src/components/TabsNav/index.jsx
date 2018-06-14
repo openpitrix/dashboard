@@ -3,18 +3,9 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { capitalize, keys, values } from 'lodash';
 import { isArray } from 'src/utils/types';
+import { plural } from 'src/utils/plural';
 
 import styles from './index.scss';
-
-const plural = {
-  apps: 'app',
-  clusters: 'cluster',
-  runtimes: 'runtime',
-  repos: 'repo',
-  users: 'user',
-  roles: 'role',
-  categories: 'category'
-};
 
 const normalizeLink = (link, prefix = '') => {
   if (link.startsWith('/')) {

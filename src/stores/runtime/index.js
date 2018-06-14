@@ -48,13 +48,13 @@ export default class RuntimeStore extends Store {
     this.isLoading = false;
   }
 
-  @action
-  async fetchStatistics() {
-    this.isLoading = true;
-    const result = await this.request.get('statistics');
-    this.statistics = get(result, 'statistics_set.runtimes', {});
-    this.isLoading = false;
-  }
+  // @action
+  // async fetchStatistics() {
+  //   this.isLoading = true;
+  //   const result = await this.request.get('statistics');
+  //   this.statistics = get(result, 'statistics_set.runtimes', {});
+  //   this.isLoading = false;
+  // }
 
   @action
   async deleteRuntime(runtimeIds) {

@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, assign } from 'lodash';
+import { get, assign, isObject, isArray, isEmpty } from 'lodash';
 import Store from '../Store';
 
 export default class CategoryStore extends Store {
@@ -9,8 +9,6 @@ export default class CategoryStore extends Store {
 
   @observable name = '';
   @observable locale = '';
-  @observable categoryId = '';
-  @observable categoryDetail = {};
   @observable isModalOpen = false;
 
   // menu actions
@@ -28,33 +26,49 @@ export default class CategoryStore extends Store {
   }
 
   @action
-  async fetch(categoryId) {
+  async fetch(category_id) {
     this.isLoading = true;
-    const result = await this.request.get(`categories`, { category_id: categoryId });
+    const result = await this.request.get(`categories`, { category_id: category_id });
     this.category = get(result, 'category_set[0]', {});
     this.isLoading = false;
+  }
+
+  postHandleResult(result) {
+    this.postHandleApi(result, async () => {
+      this.hideModal();
+
+      if (!isEmpty(this.category)) {
+        await this.fetch(this.category.category_id);
+      } else {
+        await this.fetchAll();
+      }
+    });
   }
 
   @action
   async create(params) {
     this.isLoading = true;
     const result = await this.request.post('categories', params);
-    if (result.category) this.categories.unshift(result.category);
     this.isLoading = false;
+    this.postHandleResult(result);
   }
 
   @action
   async modify(params) {
     this.isLoading = true;
-    await this.request.patch('categories', params);
+    const result = await this.request.patch('categories', params);
     this.isLoading = false;
+    this.postHandleResult(result);
   }
 
   @action
-  async remove(categoryIds) {
+  async remove(category_ids) {
+    category_ids = category_ids || [this.category.category_id];
     this.isLoading = true;
-    await this.request.delete('categories', { category_id: categoryIds });
+    const result = await this.request.delete('categories', { category_id: category_ids });
+    this.category = {};
     this.isLoading = false;
+    this.postHandleResult(result);
   }
 
   @action.bound
@@ -71,47 +85,6 @@ export default class CategoryStore extends Store {
     this.handleCate.action = action;
   }
 
-  // fixme: ///
-  @action
-  showCreateCategory = () => {
-    this.categoryDetail = {};
-    this.setAction('create_cate');
-    this.showModal();
-  };
-
-  @action
-  showModifyCategory = category => {
-    this.categoryDetail = category;
-    this.setAction('modify_cate');
-    this.showModal();
-  };
-
-  @action
-  showDeleteCategory = id => {
-    this.categoryId = id;
-    this.setAction('delete_cate');
-    this.showModal();
-  };
-
-  @action
-  categorySubmit = async (categoryStore, categoryId, type) => {
-    const params = {
-      name: this.name || this.categoryDetail.name,
-      locale: this.locale || this.categoryDetail.locale
-    };
-    if (categoryId) {
-      await categoryStore.modifyCategory(assign(params, { category_id: categoryId }));
-    } else {
-      await categoryStore.createCategory(params);
-    }
-    this.isModalOpen = false;
-    if (type === 'detail') {
-      await categoryStore.fetchCategoryDetail(categoryId);
-    } else {
-      await categoryStore.fetchAll();
-    }
-  };
-
   @action
   changeName = e => {
     this.name = e.target.value;
@@ -123,9 +96,52 @@ export default class CategoryStore extends Store {
   };
 
   @action
-  deleteCategory = async categoryStore => {
-    await categoryStore.deleteCategory([this.categoryId]);
-    this.hideModal();
-    await categoryStore.fetchAll();
+  createOrModify(ev) {
+    let method = this.category.category_id ? 'modify' : 'create';
+    let params = {
+      name: this.name,
+      locale: '{}'
+      // locale: `{${this.locale}}` // todo: used for i18n, json format: {zh-cn: '', en: ''}
+    };
+    if (method === 'modify') {
+      params.category_id = this.category.category_id;
+    }
+    if (ev === 'from_index') {
+      this.category = {};
+    }
+    this[method](params);
+  }
+
+  // fixme
+  @action
+  showCreateCategory = () => {
+    this.category = {};
+    this.name = '';
+    this.locale = '';
+    this.setAction('create_cate');
+    this.showModal();
   };
+
+  @action
+  showModifyCategory = category => {
+    this.category = category;
+    this.setAction('modify_cate');
+    this.showModal();
+  };
+
+  @action
+  showDeleteCategory = category => {
+    this.category = category;
+    this.setAction('delete_cate');
+    this.showModal();
+  };
+
+  @action
+  reset() {
+    this.category = {};
+    this.isLoading = false;
+    this.name = '';
+    this.locale = '';
+    this.hideModal();
+  }
 }

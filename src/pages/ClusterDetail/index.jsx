@@ -5,16 +5,18 @@ import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
-import Icon from 'components/Base/Icon';
-import Input from 'components/Base/Input';
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Select from 'components/Base/Select';
+import {
+  Icon,
+  Input,
+  Radio,
+  Button,
+  Select,
+  Table,
+  Modal,
+  Timeline,
+  Popover
+} from 'components/Base';
 import Status from 'components/Status';
-import Table from 'components/Base/Table';
-import Modal from 'components/Base/Modal';
-import Timeline from 'components/Base/Timeline';
-import Popover from 'components/Base/Popover';
 
 import styles from './index.scss';
 
@@ -23,9 +25,9 @@ import styles from './index.scss';
 }))
 @observer
 export default class ClusterDetail extends Component {
-  static async onEnter({ clusterStore }, params) {
-    clusterStore.fetchClusterDetail();
-    clusterStore.fetchClusterNodes();
+  static async onEnter({ clusterStore }, { clusterId }) {
+    clusterStore.fetch(clusterId);
+    clusterStore.fetchNodes();
   }
 
   constructor(props) {

@@ -1,20 +1,40 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import { get } from 'lodash';
+import { get, assign } from 'lodash';
+import { getFormData } from 'utils';
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
   @observable version = {};
   @observable isLoading = false;
   @observable isModalOpen = false;
+  @observable
+  handleVersion = {
+    action: '' // create, delete, show_all
+  };
 
   @action
-  async fetchAll(appId) {
+  async fetchAll(params = {}) {
+    // let pageOffset = params.page || 1;
+    // let defaultParams = {
+    //   limit: this.pageSize,
+    //   offset: (pageOffset - 1) * this.pageSize,
+    // };
+    // if (params.page) {
+    //   delete params.page;
+    // }
+
     this.isLoading = true;
-    const result = await this.request.get('app_versions', {
-      app_id: appId,
-      sort_key: 'create_time'
-    });
+    const result = await this.request.get(
+      'app_versions',
+      assign(
+        {
+          sort_key: 'create_time'
+        },
+        params
+      )
+    );
+
     this.versions = get(result, 'app_version_set', []);
     this.isLoading = false;
   }
@@ -44,37 +64,35 @@ export default class AppVersionStore extends Store {
     this.isModalOpen = false;
   };
 
-  @action
-  changeName = e => {
-    this.version.name = e.target.value;
-  };
+  setHandleType(type) {
+    this.handleVersion.action = type;
+  }
 
   @action
-  changePackageName = e => {
-    this.version.package_name = e.target.value;
-  };
-
-  @action
-  changeDescription = e => {
-    this.version.description = e.target.value;
-  };
-
-  @action
-  createVersionSubmit = async (appId, appStore) => {
-    this.version.app_id = appId;
-    await appStore.createVersion(toJS(this.version));
-    this.isModalOpen = false;
-  };
-
-  @action
-  deleteVersionShow = versionId => {
-    this.versionId = versionId;
+  showCreateVersion = () => {
+    this.setHandleType('create');
     this.showModal();
   };
 
   @action
-  deleteVersionSubmit = async appStore => {
-    await appStore.remove(this.versionId);
-    this.showDeleteVersion = false;
+  showAllVersions = () => {
+    this.setHandleType('show_all');
+    this.showModal();
   };
+
+  @action
+  showDeleteVersion = () => {
+    this.setHandleType('delete');
+    this.showModal();
+  };
+
+  @action
+  async handleCreateVersion(e, params) {
+    const data = getFormData(e.target);
+    const result = await this.create(assign(data, params));
+    this.postHandleApi(result, async () => {
+      this.hideModal();
+      await this.fetchAll();
+    });
+  }
 }

@@ -14,7 +14,7 @@ import Table from 'components/Base/Table';
 import Pagination from 'components/Base/Pagination';
 import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
-import Layout, { BackBtn } from 'pages/Layout/Admin';
+import Layout, { BackBtn } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 

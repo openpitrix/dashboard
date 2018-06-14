@@ -4,7 +4,7 @@ $line-height: $footer-height - 1;
 $fg-color: #a8a0b1;
 
 .footer {
-  position: absolute;
+  position: static;
   width: 100%;
   height: $footer-height;
   background-color: $background-color;
