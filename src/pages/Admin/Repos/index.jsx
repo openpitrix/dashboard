@@ -88,9 +88,10 @@ export default class Repos extends Component {
   render() {
     const { repoStore } = this.props;
     const repoList = toJS(repoStore.repos);
+    const { isLoading } = repoStore;
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <div className={styles.container}>
           <div className={styles.title}>Repos</div>
 

@@ -79,7 +79,7 @@ export default class Clusters extends Component {
   };
 
   render() {
-    const { summaryInfo, clusters, totalCount, notifyMsg, hideMsg } = this.store;
+    const { summaryInfo, clusters, totalCount, notifyMsg, hideMsg, isLoading } = this.store;
     const columns = [
       {
         title: 'Cluster Name',
@@ -131,7 +131,7 @@ export default class Clusters extends Component {
     ];
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>

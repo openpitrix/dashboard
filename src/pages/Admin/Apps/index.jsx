@@ -112,7 +112,8 @@ export default class Apps extends Component {
       totalCount,
       apps,
       notifyMsg,
-      hideMsg
+      hideMsg,
+      isLoading
     } = this.props.appStore;
     const imgPhd = imgPlaceholder();
 
@@ -181,7 +182,7 @@ export default class Apps extends Component {
     ];
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>

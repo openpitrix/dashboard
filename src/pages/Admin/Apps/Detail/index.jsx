@@ -33,11 +33,12 @@ export default class AppDetail extends Component {
     this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
-  renderHandleMenu = () => {
+  renderHandleMenu = appId => {
     const { showCreateVersion } = this.props.appVersionStore;
 
     return (
       <div className="operate-menu">
+        <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
         <span onClick={showCreateVersion}>Create version</span>
       </div>
     );
@@ -129,7 +130,10 @@ export default class AppDetail extends Component {
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
               <AppCard appDetail={appDetail} />
-              <Popover className={styles.operation} content={this.renderHandleMenu()}>
+              <Popover
+                className={styles.operation}
+                content={this.renderHandleMenu(appDetail.app_id)}
+              >
                 <Icon name="more" />
               </Popover>
             </div>

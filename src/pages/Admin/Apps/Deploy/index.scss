@@ -23,3 +23,90 @@
     }
   }
 }
+
+form.createForm {
+  display: block;
+  padding: 30px 0 24px 0;
+  .moduleTitle{
+    margin-left: 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $title-color;
+  }
+  &>div{
+    margin-bottom: 18px;
+  }
+  .name{
+    display: inline-block;
+    float: left;
+    margin-right: 16px;
+    width: 130px;
+    margin-left: 24px;
+    font-size: 14px;
+    line-height: 32px;
+    font-weight: bold;
+    color: $title-color;
+    text-align: right;
+  }
+  .showWord{
+    line-height: 32px;
+  }
+  .input{
+    width: 276px;
+  }
+
+  .inputSmall{
+    width: 138px;
+    margin-right: 10px;
+  }
+  .inputTitle{
+    display: inline-block;
+    margin: 8px 10px 3px 0;
+    width: 183px;
+    font-size: 12px;
+  }
+  .inputMiddle{
+    width: 183px;
+    margin-right: 10px;
+  }
+  .radio,.checkbox{
+    margin-right: 30px;
+  }
+  .add{
+    display: inline-block;
+    font-weight: bold;
+  }
+  .select{
+    width: 276px;
+    margin-right: 10px;
+  }
+  .textarea{
+    padding: 7px 10px;
+    width: 442px;
+    height: 88px;
+    border-radius: 2px;
+    border: 1px solid #e7e7e7;
+    outline: none;
+    resize: none;
+    &:focus{
+      border: 1px solid $border-dark;
+    }
+  }
+
+  .rightShow{
+    margin-top: 7px;
+    margin-left: 170px;
+  }
+  .note{
+    font-size: 12px;
+    color: #626466;
+  }
+  .submitBtnGroup{
+    padding: 24px 0 8.5px 160px;
+    margin-bottom: 0;
+    border-top: 1px solid #dadcde;
+    button{
+      margin-right: 12px;
+    }
+  }
+}
