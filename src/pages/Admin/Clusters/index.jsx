@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classnames from 'classnames';
-
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
@@ -20,7 +17,6 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
     await clusterStore.fetchAll();
-    // await clusterStore.fetchStatistics();
   }
 
   constructor(props) {
@@ -84,7 +80,13 @@ export default class Clusters extends Component {
       {
         title: 'Cluster Name',
         key: 'name',
-        render: cl => <TdName name={cl.name} description={cl.description} />
+        render: cl => (
+          <TdName
+            name={cl.name}
+            description={cl.description}
+            linkUrl={`/dashboard/cluster/${cl.cluster_id}`}
+          />
+        )
       },
       {
         title: 'Status',

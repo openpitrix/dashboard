@@ -4,24 +4,18 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 
-import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
+import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
-  handleStore: rootStore.repoHandleStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore
 }))
@@ -30,7 +24,7 @@ export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
     await appStore.fetchAll({ repo_id: repoId });
-    await runtimeStore.fetchQueryRuntimes({ repo_id: repoId });
+    await runtimeStore.fetchAll({ repo_id: repoId });
   }
 
   changeselectors = items => {
@@ -46,7 +40,7 @@ export default class RepoDetail extends Component {
   renderHandleMenu = id => {
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/repos/modify/${id}`}>Modify repo</Link>
+        <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
       </div>
     );
   };
@@ -132,7 +126,8 @@ export default class RepoDetail extends Component {
       }
     ];
 
-    const { tags, curTagName, selectCurTag } = this.props.handleStore;
+    const { tags, curTagName, selectCurTag } = this.props.repoStore;
+
     let data = [];
     let columns = [];
     let searchTip = 'Search App Name';
@@ -159,7 +154,7 @@ export default class RepoDetail extends Component {
         selectors = this.changeselectors(repoDetail.selectors);
         totalCount = runtimeStore.totalCount;
         changeTable = async current => {
-          await runtimeStore.fetchQueryRuntimes({
+          await runtimeStore.fetchAll({
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * runtimeStore.pageSize
           });
