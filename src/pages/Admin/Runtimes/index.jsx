@@ -52,7 +52,7 @@ export default class Runtimes extends Component {
       <Modal
         width={500}
         title="Delete Runtime"
-        visible={showDeleteRuntime}
+        visible={isModalOpen}
         hideFooter
         onCancel={hideModal}
       >

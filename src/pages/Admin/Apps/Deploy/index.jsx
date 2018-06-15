@@ -1,10 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
+import { Radio, Button, Input, Select, Slider } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
 
 import styles from './index.scss';
@@ -13,21 +10,23 @@ import classNames from 'classnames';
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  deployStore: rootStore.appDeployStore
+  appDeployStore: rootStore.appDeployStore
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore }, params) {
+  static async onEnter({ appStore, appDeployStore }, params) {
     await appStore.fetch(params.appId);
+    await appDeployStore.fetchVersions(params.appId);
+    await appDeployStore.fetchSubnets();
   }
 
   render() {
-    const { appStore, deployStore } = this.props;
+    const { appStore, appDeployStore } = this.props;
     const { notifyMsg, hideMsg } = appStore;
     const title = 'Deploy app';
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={appDeployStore.isLoading}>
         <BackBtn label="clusters" link="/dashboard/clusters" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
@@ -53,14 +52,31 @@ export default class AppDeploy extends Component {
     );
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    //
-  };
-
   renderForm() {
+    const {
+      versions,
+      subnets,
+      handleSubmit,
+      isLoading,
+      version,
+      vxNet,
+      perNode,
+      volume,
+      deploy,
+      changeRuntime,
+      changeVersion,
+      changeDescription,
+      changeCpu,
+      changeMemory,
+      changeType,
+      changeVolume,
+      changeVolumeInput,
+      changeIp,
+      changeVxNet,
+      changePerNode
+    } = this.props.appDeployStore;
     return (
-      <form className={styles.createForm} method="post" onSubmit={this.handleSubmit}>
+      <form className={styles.createForm} method="post" onSubmit={handleSubmit}>
         <div className={styles.moduleTitle}>1. Basic settings</div>
         {/*<div>*/}
         {/*<label className={styles.name}>ID</label>*/}
@@ -79,29 +95,36 @@ export default class AppDeploy extends Component {
         </div>
         <div>
           <label className={styles.name}>Runtime</label>
-          <Radio.Group className={styles.showWord}>
+          <Radio.Group className={styles.showWord} value={deploy.runtime} onChange={changeRuntime}>
             <Radio value="public">Public</Radio>
-            <Radio value="private">AWS</Radio>
-            <Radio value="Alibaba">Alibaba Cloud Computing</Radio>
+            <Radio value="aws">AWS</Radio>
+            <Radio value="alibaba">Alibaba Cloud Computing</Radio>
           </Radio.Group>
         </div>
         <div>
           <label className={styles.name}>Version</label>
-          <Select className={styles.select}>
-            <Select.Option value="a 0.0.1">a 0.0.1</Select.Option>
-            <Select.Option value="https">a 0.0.2</Select.Option>
-            <Select.Option value="a 0.0.3">a 0.0.3</Select.Option>
+          <Select className={styles.select} value={version} onChange={changeVersion}>
+            {versions.map(({ version_id, name }) => (
+              <Select.Option key={version_id} value={version_id}>
+                {name}
+              </Select.Option>
+            ))}
           </Select>
         </div>
         <div>
           <label className={styles.name}>Description</label>
-          <textarea className={styles.textarea} name="description" />
+          <textarea
+            className={styles.textarea}
+            name="description"
+            value={deploy.description}
+            onChange={changeDescription}
+          />
         </div>
 
         <div className={styles.moduleTitle}>2. Node Settings</div>
         <div>
           <label className={styles.name}>CPU</label>
-          <Radio.Group className={styles.showWord}>
+          <Radio.Group className={styles.showWord} value={deploy.cpu} onChange={changeCpu}>
             <Radio value="1-core">1-Core</Radio>
             <Radio value="2-core">2-Core</Radio>
             <Radio value="4-core">1-Core</Radio>
@@ -111,7 +134,7 @@ export default class AppDeploy extends Component {
         </div>
         <div>
           <label className={styles.name}>Memory</label>
-          <Radio.Group className={styles.showWord}>
+          <Radio.Group className={styles.showWord} value={deploy.memory} onChange={changeMemory}>
             <Radio value="32GB">32GB</Radio>
             <Radio value="64GB">64GB</Radio>
             <Radio value="128GB">128GB</Radio>
@@ -121,31 +144,49 @@ export default class AppDeploy extends Component {
         </div>
         <div>
           <label className={styles.name}>Type</label>
-          <Radio.Group className={styles.showWord}>
+          <Radio.Group className={styles.showWord} value={deploy.type} onChange={changeType}>
             <Radio value="high">High Performance</Radio>
             <Radio value="super-high">Super-high Performance</Radio>
           </Radio.Group>
         </div>
         <div>
+          <label className={styles.name}>Volume Size</label>
+          <Slider min={10} max={1000} step={1} value={volume} onChange={changeVolume} />
+          <span>
+            <Input
+              className={styles.inputSmall}
+              name="volume"
+              value={volume}
+              onChange={changeVolumeInput}
+            />{' '}
+            GB
+          </span>
+          <p className={classNames(styles.rightShow, styles.note)}>
+            10GB - 1000GB, The volume size for each instance
+          </p>
+        </div>
+        <div>
           <label className={styles.name}>Count</label>
-          <Input className={styles.input} name="count" type="number" />
+          <Input className={styles.input} name="count" type="number" data-min={1} data-max={100} />
           <p className={classNames(styles.rightShow, styles.note)}>Range: 1 - 100</p>
         </div>
 
         <div className={styles.moduleTitle}>3. Vxnet Settings</div>
         <div>
           <label className={styles.name}>VxNet to Join</label>
-          <Select className={styles.select}>
-            <Select.Option value="vxnet-fjedgh7e">vxnet-fjedgh7e</Select.Option>
-            <Select.Option value="vxnet-fjedgh8q">vxnet-fjedgh8q</Select.Option>
-            <Select.Option value="vxnet-fjedgh9w">vxnet-fjedgh9w3</Select.Option>
+          <Select className={styles.select} value={vxNet} onChange={changeVxNet}>
+            {subnets.map(({ subnet_id, name }) => (
+              <Select.Option key={subnet_id} value={subnet_id}>
+                {subnet_id} {name}
+              </Select.Option>
+            ))}
           </Select>
         </div>
         <div>
-          <label className={styles.name}>Type</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="high">High Performance</Radio>
-            <Radio value="super-high">Super-high Performance</Radio>
+          <label className={styles.name}>IP</label>
+          <Radio.Group className={styles.showWord} value={deploy.ip} onChange={changeIp}>
+            <Radio value="auto">Auto assigned</Radio>
+            <Radio value="assign">Assign manually</Radio>
           </Radio.Group>
         </div>
 
@@ -156,10 +197,10 @@ export default class AppDeploy extends Component {
         {/*<p className={classNames(styles.rightShow, styles.note)}>Choose a ZooKeeper to use</p>*/}
         {/*</div>*/}
 
-        <div className={styles.moduleTitle}>5. Environment Settings</div>
+        <div className={styles.moduleTitle}>4. Environment Settings</div>
         <div>
           <label className={styles.name}>dcs.servers.per.node</label>
-          <Select className={styles.select}>
+          <Select className={styles.select} value={perNode} onChange={changePerNode}>
             <Select.Option value="8">8</Select.Option>
             <Select.Option value="7">7</Select.Option>
             <Select.Option value="6">6</Select.Option>
@@ -170,26 +211,26 @@ export default class AppDeploy extends Component {
         </div>
         <div>
           <label className={styles.name}>dcs.master.port</label>
-          <Input className={styles.input} name="" />
+          <Input className={styles.input} name="masterPort" type="number" />
           <p className={classNames(styles.rightShow, styles.note)}>
             Connectivity Port for client connection
           </p>
         </div>
         <div>
           <label className={styles.name}>dcs.master.info.port</label>
-          <Input className={styles.input} name="" />
+          <Input className={styles.input} name="infoPort" type="number" />
           <p className={classNames(styles.rightShow, styles.note)}>
             The port for the Dcs Master web UI
           </p>
         </div>
         <div>
           <label className={styles.name}>dbmgr.http.port</label>
-          <Input className={styles.input} name="" />
+          <Input className={styles.input} name="httpPort" type="number" />
           <p className={classNames(styles.rightShow, styles.note)}>EsgynDB Manager HTTP Port</p>
         </div>
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit">
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             Confirm
           </Button>
           <Link to="/dashboard/apps">

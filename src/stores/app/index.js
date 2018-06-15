@@ -47,14 +47,23 @@ export default class AppStore extends Store {
   }
 
   @action
-  async onRefresh(e) {
+  async onRefresh() {
     await this.fetchAll();
+    this.currentPage = 1;
   }
 
   @action
   async onSearch(value) {
     await this.fetchAll({
       search_word: value
+    });
+  }
+
+  @action
+  async onChangePage(page) {
+    this.currentPage = page;
+    await this.fetchAll({
+      page: page
     });
   }
 

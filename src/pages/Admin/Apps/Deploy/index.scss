@@ -40,13 +40,19 @@ form.createForm {
   .showWord{
     line-height: 32px;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"]{
+    -moz-appearance: textfield;
+  }
   .input{
     width: 276px;
   }
-
   .inputSmall{
-    width: 138px;
-    margin-right: 10px;
+    width: 60px;
+    margin-left: 10px;
   }
   .inputTitle{
     display: inline-block;
