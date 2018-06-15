@@ -24,7 +24,6 @@ export default class Apps extends Component {
   static async onEnter({ appStore, categoryStore }) {
     await appStore.fetchAll();
     await categoryStore.fetchAll();
-    // await appStore.fetchStatistics();
   }
 
   constructor(props) {
@@ -75,9 +74,12 @@ export default class Apps extends Component {
 
   renderHandleMenu = item => {
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
-    let itemMenu = null;
+    let itemMenu = null,
+      deployEntry;
 
     if (item.status !== 'deleted') {
+      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
+
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>
@@ -98,6 +100,7 @@ export default class Apps extends Component {
     return (
       <div id={item.app_id} className="operate-menu">
         <Link to={`/dashboard/app/${item.app_id}`}>View detail</Link>
+        {deployEntry}
         {itemMenu}
       </div>
     );

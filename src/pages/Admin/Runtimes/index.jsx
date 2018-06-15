@@ -25,25 +25,20 @@ import styles from './index.scss';
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore }) {
-    await runtimeStore.fetchRuntimes();
-    // await runtimeStore.fetchStatistics();
+    await runtimeStore.fetchAll();
   }
 
   renderHandleMenu = (id, status) => {
-    const { deleteRuntimeOpen } = this.props.runtimeStore;
+    const { runtimeStore } = this.props;
+    const { showDeleteRuntime } = runtimeStore;
+
     return (
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/runtime/${id}`}>View runtime detail</Link>
         {status !== 'deleted' && (
           <Fragment>
             <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
-            <span
-              onClick={() => {
-                deleteRuntimeOpen(id);
-              }}
-            >
-              Delete runtime
-            </span>
+            <span onClick={showDeleteRuntime.bind(runtimeStore, id)}>Delete runtime</span>
           </Fragment>
         )}
       </div>
@@ -51,7 +46,7 @@ export default class Runtimes extends Component {
   };
 
   deleteRuntimeModal = () => {
-    const { showDeleteRuntime, deleteRuntimeClose, deleteRuntime } = this.props.runtimeStore;
+    const { isModalOpen, hideModal, remove } = this.props.runtimeStore;
 
     return (
       <Modal
@@ -59,19 +54,19 @@ export default class Runtimes extends Component {
         title="Delete Runtime"
         visible={showDeleteRuntime}
         hideFooter
-        onCancel={deleteRuntimeClose}
+        onCancel={hideModal}
       >
         <div className={styles.modalContent}>
           <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
           <div className={styles.operation}>
-            <Button type="default" onClick={deleteRuntimeClose}>
+            <Button type="default" onClick={hideModal}>
               Cancel
             </Button>
             {status !== 'deleted' && (
               <Button
                 type="primary"
                 onClick={() => {
-                  deleteRuntime(this.props.runtimeStore);
+                  remove(this.props.runtimeStore);
                 }}
               >
                 Confirm
@@ -177,14 +172,14 @@ export default class Runtimes extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search Runtimes Name"
-                onSearch={runtimeStore.fetchQueryRuntimes}
+                onSearch={runtimeStore.fetchAll}
               />
               <Link to={`/dashboard/runtime/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                   Create
                 </Button>
               </Link>
-              <Button className={styles.buttonRight} onClick={runtimeStore.fetchRuntimes}>
+              <Button className={styles.buttonRight} onClick={runtimeStore.fetchAll}>
                 <Icon name="refresh" />
               </Button>
             </div>
@@ -192,7 +187,7 @@ export default class Runtimes extends Component {
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
           {runtimeStore.totalCount > 0 && (
-            <Pagination onChange={runtimeStore.fetchRuntimes} total={runtimeStore.totalCount} />
+            <Pagination onChange={runtimeStore.fetchAll} total={runtimeStore.totalCount} />
           )}
         </div>
         {this.deleteRuntimeModal()}

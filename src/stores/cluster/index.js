@@ -68,14 +68,6 @@ export default class ClusterStore extends Store {
     this.isLoading = false;
   }
 
-  // @action
-  // async fetchStatistics() {
-  //   this.isLoading = true;
-  //   const result = await this.request.get('statistics');
-  //   this.statistics = get(result, 'statistics_set.clusters', {});
-  //   this.isLoading = false;
-  // }
-
   @action
   async remove(clusterIds) {
     this.isLoading = true;

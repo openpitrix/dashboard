@@ -4,16 +4,11 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
 
-import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Button from 'components/Base/Button';
-import Icon from 'components/Base/Icon';
-import Input from 'components/Base/Input';
+import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
+import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 
 import styles from './index.scss';
@@ -25,28 +20,35 @@ import styles from './index.scss';
 @observer
 export default class RuntimeDetail extends Component {
   static async onEnter({ runtimeStore, clusterStore }, { runtimeId }) {
-    await runtimeStore.fetchRuntimeDetail(runtimeId);
-    await clusterStore.fetchQueryClusters({ runtime_id: runtimeId });
+    await runtimeStore.fetch(runtimeId);
+    await clusterStore.fetchAll({ runtime_id: runtimeId });
   }
 
-  onSearch = async name => {
-    const detail = this.props.runtimeStore.runtimeDetail;
-    await this.props.clusterStore.fetchQueryClusters({
-      runtime_id: detail.runtime_id,
+  constructor(props) {
+    super(props);
+    this.runtimeId = props.match.params.runtimeId;
+  }
+
+  onSearch = async search_word => {
+    await this.props.runtimeStore.fetchAll({ search_word, runtime_id });
+
+    await this.props.clusterStore.fetchAll({
+      runtime_id: this.runtimeId,
       search_word: name
     });
   };
 
   onRefresh = async () => {
     const { runtimeStore } = this.props;
-    await runtimeStore.fetchQueryClusters({ runtime_id: runtimeStore.runtimeDetail.runtime_id });
+    const { runtime_id } = runtimeStore.runtimeDetail;
+    await runtimeStore.fetchAll({ runtime_id });
   };
 
-  changeClusters = async current => {
+  onChangePage = async page => {
     const { runtimeStore } = this.props;
-    await runtimeStore.fetchQueryClusters({
+    await runtimeStore.fetchAll({
       runtime_id: runtimeStore.runtimeDetail.runtime_id,
-      offset: (current - 1) * runtimeStore.pageSize
+      offset: (page - 1) * runtimeStore.pageSize
     });
   };
 
@@ -137,9 +139,7 @@ export default class RuntimeDetail extends Component {
               <Table columns={columns} dataSource={data} />
             </div>
             <ul />
-            {clusterStore.totalCount > 0 && (
-              <Pagination onChange={this.changeClusters} total={clusterStore.totalCount} />
-            )}
+            <Pagination onChange={this.onChangePage} total={clusterStore.totalCount} />
           </div>
         </div>
       </Layout>

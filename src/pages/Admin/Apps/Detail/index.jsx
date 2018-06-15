@@ -35,10 +35,13 @@ export default class AppDetail extends Component {
 
   renderHandleMenu = appId => {
     const { showCreateVersion } = this.props.appVersionStore;
+    const { appDetail } = this.props.appStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
+        {appDetail.status !== 'deleted' && (
+          <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
+        )}
         <span onClick={showCreateVersion}>Create version</span>
       </div>
     );

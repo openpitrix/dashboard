@@ -1,16 +1,5 @@
 @import "~scss/variables";
 
-.deploy{
-  min-height: $main-height;
-  padding-top: $header-height;
-  background-color: #fff;
-}
-
-.wrapper {
-  width: $content-width;
-  margin: 0 auto;
-}
-
 .header {
   margin: 24px 0;
   a {

@@ -24,28 +24,16 @@ export default class AppDeploy extends Component {
   render() {
     const { appStore, deployStore } = this.props;
     const { notifyMsg, hideMsg } = appStore;
-    const title = 'Deplo app';
+    const title = 'Deploy app';
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="clusters" link="/dashboard/clusters" />
-        <CreateResource title={title} aside={this.renderAside()} className={styles.deploy}>
+        <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
       </Layout>
     );
-
-    // return (
-    //   <div className={styles.deploy}>
-    //     <div className={styles.wrapper}>
-    //       <div className={styles.header}>
-    //         <Link to={`/app/${app_id}`}>
-    //           <i className="fa fa-long-arrow-left" /> 返回到App详情
-    //         </Link>
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
   }
 
   renderAside() {
@@ -65,17 +53,23 @@ export default class AppDeploy extends Component {
     );
   }
 
+  handleSubmit = e => {
+    e.preventDefault();
+    //
+  };
+
   renderForm() {
     return (
-      <form className={styles.createForm}>
+      <form className={styles.createForm} method="post" onSubmit={this.handleSubmit}>
         <div className={styles.moduleTitle}>1. Basic settings</div>
-        <div>
-          <label className={styles.name}>ID</label>
-          <span className={styles.showWord}>52712219520354767</span>
-          <p className={classNames(styles.rightShow, styles.note)}>
-            A unique ID of the application instance, used as the identifier before created
-          </p>
-        </div>
+        {/*<div>*/}
+        {/*<label className={styles.name}>ID</label>*/}
+        {/*<span className={styles.showWord}>52712219520354767</span>*/}
+        {/*<p className={classNames(styles.rightShow, styles.note)}>*/}
+        {/*A unique ID of the application instance, used as the identifier before created*/}
+        {/*</p>*/}
+        {/*</div>*/}
+
         <div>
           <label className={styles.name}>Name</label>
           <Input className={styles.input} name="name" />
@@ -155,12 +149,12 @@ export default class AppDeploy extends Component {
           </Radio.Group>
         </div>
 
-        <div className={styles.moduleTitle}>4. Dependent Service Settings</div>
-        <div>
-          <label className={styles.name}>ZooKeeper</label>
-          <Input className={styles.input} name="zookeeper" />
-          <p className={classNames(styles.rightShow, styles.note)}>Choose a ZooKeeper to use</p>
-        </div>
+        {/*<div className={styles.moduleTitle}>4. Dependent Service Settings</div>*/}
+        {/*<div>*/}
+        {/*<label className={styles.name}>ZooKeeper</label>*/}
+        {/*<Input className={styles.input} name="zookeeper" />*/}
+        {/*<p className={classNames(styles.rightShow, styles.note)}>Choose a ZooKeeper to use</p>*/}
+        {/*</div>*/}
 
         <div className={styles.moduleTitle}>5. Environment Settings</div>
         <div>

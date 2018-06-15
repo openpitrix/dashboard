@@ -31,7 +31,7 @@ export default class Repos extends Component {
     const { deleteRepoOpen } = this.props.repoStore;
     return (
       <div id={id} className="operate-menu">
-        <Link to={`/dashboard/repos/${id}`}>View repo detail</Link>
+        <Link to={`/dashboard/repo/${id}`}>View repo detail</Link>
         {status !== 'deleted' && (
           <Fragment>
             <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>

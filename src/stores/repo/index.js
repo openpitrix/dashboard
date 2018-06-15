@@ -9,8 +9,9 @@ export default class RepoStore extends Store {
 
   @observable repoId = '';
   @observable showDeleteRepo = false;
-  // tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
   @observable curTagName = 'Apps';
+
+  tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
   @action
   fetchAll = async () => {

@@ -20,7 +20,7 @@ import styles from './index.scss';
 export default class RuntimeAdd extends Component {
   static async onEnter({ runtimeStore, runtimeCreateStore }, { runtimeId }) {
     if (runtimeId) {
-      await runtimeStore.fetchRuntimeDetail(runtimeId);
+      await runtimeStore.fetch(runtimeId);
       runtimeCreateStore.setRuntime(runtimeStore.runtimeDetail);
     } else {
       runtimeCreateStore.reset();

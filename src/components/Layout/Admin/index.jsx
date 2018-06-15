@@ -70,8 +70,7 @@ export default class Layout extends React.Component {
       <div className={classnames(styles.container, className)}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
-        <Container>{children}</Container>
-        {isLoading && <Loading />}
+        <Container>{isLoading ? <Loading /> : children}</Container>
       </div>
     );
   }

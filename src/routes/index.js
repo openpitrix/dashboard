@@ -34,12 +34,12 @@ const routes = {
 
   '/:dash/runtimes': Dash.Runtimes,
   '/:dash/runtime/create': Dash.RuntimeAdd,
-  '/:dash/runtime/edit/:runtimeId': Dash.RuntimeDetail,
+  '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
   '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
   '/:dash/repos': Dash.Repos,
   '/:dash/repo/create': Dash.RepoAdd,
-  '/:dash/repo/edit/:repoId': Dash.RepoDetail,
+  '/:dash/repo/edit/:repoId': Dash.RepoAdd,
   '/:dash/repo/:repoId': Dash.RepoDetail,
 
   '/:dash/users': Dash.Users,
