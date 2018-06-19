@@ -133,9 +133,11 @@ export default class RuntimeCreateStore extends Store {
       await this.create(data);
     }
 
-    // todo
-    if (this.runtimeCreated.runtime) {
-      this.showMsg('create or modify runtime successfully');
+    if (_.get(this, 'runtimeCreated.runtime')) {
+      this.showMsg('Create runtime successfully');
+    } else if (_.get(this, 'runtimeCreated.runtime_id')) {
+      this.showMsg('Modify runtime successfully');
+      this.runtimeCreated.runtime = this.runtimeCreated.runtime_id;
     } else {
       let { errDetail } = this.runtimeCreated;
       this.showMsg(errDetail);

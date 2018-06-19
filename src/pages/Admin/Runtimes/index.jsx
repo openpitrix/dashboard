@@ -81,7 +81,14 @@ export default class Runtimes extends Component {
   render() {
     const { runtimeStore } = this.props;
     const data = toJS(runtimeStore.runtimes);
-    const { isLoading } = runtimeStore;
+    const {
+      isLoading,
+      onSearch,
+      onRefresh,
+      onChangePagination,
+      totalCount,
+      currentPage
+    } = runtimeStore;
     const {
       image,
       name,
@@ -172,22 +179,26 @@ export default class Runtimes extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search Runtimes Name"
-                onSearch={runtimeStore.fetchAll}
+                onSearch={onSearch.bind(runtimeStore)}
               />
               <Link to={`/dashboard/runtime/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                   Create
                 </Button>
               </Link>
-              <Button className={styles.buttonRight} onClick={runtimeStore.fetchAll}>
+              <Button className={styles.buttonRight} onClick={onRefresh.bind(runtimeStore)}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
             <Table className={styles.tableOuter} columns={columns} dataSource={data} />
           </div>
-          {runtimeStore.totalCount > 0 && (
-            <Pagination onChange={runtimeStore.fetchAll} total={runtimeStore.totalCount} />
+          {totalCount > 0 && (
+            <Pagination
+              onChange={onChangePagination.bind(runtimeStore)}
+              total={totalCount}
+              current={currentPage}
+            />
           )}
         </div>
         {this.deleteRuntimeModal()}

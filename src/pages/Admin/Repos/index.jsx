@@ -19,14 +19,6 @@ export default class Repos extends Component {
     await repoStore.fetchAll();
   }
 
-  onSearch = async value => {
-    await this.props.repoStore.fetchQueryRepos(value);
-  };
-
-  onRefresh = async () => {
-    await this.onSearch();
-  };
-
   renderHandleMenu = (id, status) => {
     const { deleteRepoOpen } = this.props.repoStore;
     return (
@@ -81,14 +73,10 @@ export default class Repos extends Component {
     );
   };
 
-  onSearch = e => {};
-
-  onRefresh = e => {};
-
   render() {
     const { repoStore } = this.props;
     const repoList = toJS(repoStore.repos);
-    const { isLoading } = repoStore;
+    const { isLoading, fetchQueryRepos, fetchAll } = repoStore;
 
     return (
       <Layout isLoading={isLoading}>
@@ -99,14 +87,14 @@ export default class Repos extends Component {
             <Input.Search
               className={styles.search}
               placeholder="Search Repo Name"
-              onSearch={this.onSearch}
+              onSearch={fetchQueryRepos.bind(repoStore)}
             />
             <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
             </Link>
-            <Button className={styles.buttonRight} onClick={this.onRefresh}>
+            <Button className={styles.buttonRight} onClick={fetchAll.bind(repoStore)}>
               <Icon name="refresh" />
             </Button>
           </div>

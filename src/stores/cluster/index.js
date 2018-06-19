@@ -14,6 +14,8 @@ export default class ClusterStore extends Store {
   @observable totalCount = 0;
   @observable isModalOpen = false;
 
+  @observable currentPage = 1;
+
   // @observable clusterId = '';
 
   @action.bound

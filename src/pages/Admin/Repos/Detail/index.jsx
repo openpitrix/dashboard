@@ -25,6 +25,7 @@ export default class RepoDetail extends Component {
     await repoStore.fetchRepoDetail(repoId);
     await appStore.fetchAll({ repo_id: repoId });
     await runtimeStore.fetchAll({ repo_id: repoId });
+    repoStore.curTagName = 'Apps';
   }
 
   changeselectors = items => {
@@ -83,7 +84,7 @@ export default class RepoDetail extends Component {
       },
       {
         title: 'Updated At',
-        dataIndex: 'update_time',
+        dataIndex: 'status_time',
         key: 'update_time',
         render: getParseDate
       }
@@ -120,13 +121,13 @@ export default class RepoDetail extends Component {
       },
       {
         title: 'Updated At',
-        dataIndex: 'update_time',
-        key: 'update_time',
+        dataIndex: 'status_time',
+        key: 'status_time',
         render: getParseDate
       }
     ];
 
-    const { tags, curTagName, selectCurTag } = this.props.repoStore;
+    const { tags, curTagName, selectCurTag } = repoStore;
 
     let data = [];
     let columns = [];
@@ -169,17 +170,23 @@ export default class RepoDetail extends Component {
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
               <RuntimeCard detail={repoDetail} appCount={appCount} />
-              <Popover
-                className={styles.operation}
-                content={this.renderHandleMenu(repoDetail.repo_id)}
-              >
-                <Icon name="more" />
-              </Popover>
+              {repoDetail.status !== 'deleted' && (
+                <Popover
+                  className={styles.operation}
+                  content={this.renderHandleMenu(repoDetail.repo_id)}
+                >
+                  <Icon name="more" />
+                </Popover>
+              )}
             </div>
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTagName} changeCurTag={selectCurTag} />
+              <TagNav
+                tags={toJS(tags)}
+                curTag={curTagName}
+                changeTag={selectCurTag.bind(repoStore)}
+              />
               {curTagName === 'Runtimes' && (
                 <div className={styles.selector}>
                   <div className={styles.title}>Runtime Selectors</div>

@@ -10,6 +10,7 @@ export default class RuntimeStore extends Store {
   @observable totalCount = 0;
   @observable runtimeId = '';
   @observable isModalOpen = false;
+  @observable currentPage = 1;
 
   @observable
   handleRuntime = {
@@ -49,6 +50,27 @@ export default class RuntimeStore extends Store {
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
     this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isLoading = false;
+  }
+
+  @action
+  async onRefresh() {
+    await this.fetchAll();
+    this.currentPage = 1;
+  }
+
+  @action
+  async onSearch(value) {
+    await this.fetchAll({
+      search_word: value
+    });
+  }
+
+  @action
+  async onChangePagination(page) {
+    this.currentPage = page;
+    await this.fetchAll({
+      page: page
+    });
   }
 
   @action

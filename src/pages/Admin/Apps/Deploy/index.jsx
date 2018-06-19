@@ -22,9 +22,8 @@ export default class AppDeploy extends Component {
 
   render() {
     const { appStore, appDeployStore } = this.props;
-    const { notifyMsg, hideMsg } = appStore;
+    const { notifyMsg, hideMsg } = appDeployStore;
     const title = 'Deploy app';
-
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={appDeployStore.isLoading}>
         <BackBtn label="clusters" link="/dashboard/clusters" />
@@ -125,11 +124,11 @@ export default class AppDeploy extends Component {
         <div>
           <label className={styles.name}>CPU</label>
           <Radio.Group className={styles.showWord} value={deploy.cpu} onChange={changeCpu}>
-            <Radio value="1-core">1-Core</Radio>
-            <Radio value="2-core">2-Core</Radio>
-            <Radio value="4-core">1-Core</Radio>
-            <Radio value="8-core">1-Core</Radio>
-            <Radio value="16-core">16-Core</Radio>
+            <Radio value="1">1-Core</Radio>
+            <Radio value="2">2-Core</Radio>
+            <Radio value="4">4-Core</Radio>
+            <Radio value="8">8-Core</Radio>
+            <Radio value="16">16-Core</Radio>
           </Radio.Group>
         </div>
         <div>

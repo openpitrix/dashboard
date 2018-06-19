@@ -9,8 +9,8 @@ export default class AppStore extends Store {
   @observable appId = ''; // current app_id
   @observable isLoading = false;
   @observable totalCount = 0;
-  @observable isModalOpen = false;
   @observable currentPage = 1;
+  @observable isModalOpen = false;
 
   // menu actions logic
   @observable

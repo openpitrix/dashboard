@@ -15,7 +15,7 @@ export default class AppDeployStore extends Store {
     type: 'high',
     volume: 100,
     vxNet: '',
-    ip: '',
+    ip: 'auto',
     perNode: ''
   };
   @observable version = '';
@@ -64,7 +64,6 @@ export default class AppDeployStore extends Store {
   changeVolumeInput = e => {
     let value = e.target.value;
     if (parseInt(value) > 1000 || parseInt(value) < 10) value = 10;
-    console.log(value);
     this.volume = value;
     this.deploy.volume = value;
   };
@@ -92,6 +91,14 @@ export default class AppDeployStore extends Store {
     this.isLoading = true;
     const data = getFormData(e.target);
     _.extend(data, this.deploy);
+    const checks = Object.keys(data);
+    for (let i = 0; i < checks.length; i++) {
+      if (!data[checks[i]]) {
+        this.isLoading = false;
+        this.showMsg('please input ' + checks[i]);
+        break;
+      }
+    }
   };
 
   @action
