@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
@@ -30,25 +29,24 @@ export default class RuntimeDetail extends Component {
   }
 
   onSearch = async search_word => {
-    await this.props.runtimeStore.fetchAll({ search_word, runtime_id });
-
     await this.props.clusterStore.fetchAll({
       runtime_id: this.runtimeId,
-      search_word: name
+      search_word
     });
   };
 
   onRefresh = async () => {
-    const { runtimeStore } = this.props;
-    const { runtime_id } = runtimeStore.runtimeDetail;
-    await runtimeStore.fetchAll({ runtime_id });
+    const { clusterStore } = this.props;
+    const { currentClusterPage } = this.props.runtimeStore;
+    await clusterStore.fetchAll({ runtime_id: this.runtimeId, page: currentClusterPage });
   };
 
   onChangePage = async page => {
-    const { runtimeStore } = this.props;
-    await runtimeStore.fetchAll({
-      runtime_id: runtimeStore.runtimeDetail.runtime_id,
-      offset: (page - 1) * runtimeStore.pageSize
+    const { clusterStore, runtimeStore } = this.props;
+    runtimeStore.setClusterPage(page);
+    await clusterStore.fetchAll({
+      runtime_id: this.runtimeId,
+      page
     });
   };
 
@@ -62,8 +60,8 @@ export default class RuntimeDetail extends Component {
 
   render() {
     const { runtimeStore, clusterStore } = this.props;
-    const runtimeDetail = toJS(runtimeStore.runtimeDetail);
-    const data = toJS(clusterStore.clusters);
+    const { runtimeDetail } = runtimeStore;
+    const { clusters, totalCount } = clusterStore;
 
     const columns = [
       {
@@ -136,10 +134,10 @@ export default class RuntimeDetail extends Component {
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={data} />
+              <Table columns={columns} dataSource={clusters.toJSON()} />
             </div>
             <ul />
-            <Pagination onChange={this.onChangePage} total={clusterStore.totalCount} />
+            <Pagination onChange={this.onChangePage} total={totalCount} />
           </div>
         </div>
       </Layout>

@@ -106,18 +106,39 @@ export default class Apps extends Component {
     );
   };
 
-  render() {
+  changePagination = page => {
     const { appStore } = this.props;
+    appStore.setCurrentPage(page);
+    appStore.fetchAll({ page });
+  };
+
+  onRefresh = () => {
+    const { currentPage, fetchAll } = this.props.appStore;
+    fetchAll({ page: currentPage, search_word: '' });
+  };
+
+  onSearch = search_word => {
+    const { fetchAll, changeSearchWord } = this.props.appStore;
+    fetchAll({ search_word });
+    changeSearchWord(search_word);
+  };
+
+  onClearSearch = e => {
+    this.onSearch('');
+  };
+
+  render() {
     const {
-      onRefresh,
-      onSearch,
+      apps,
       summaryInfo,
       totalCount,
-      apps,
       notifyMsg,
       hideMsg,
-      isLoading
+      isLoading,
+      searchWord,
+      currentPage
     } = this.props.appStore;
+
     const imgPhd = imgPlaceholder();
 
     const columns = [
@@ -193,16 +214,18 @@ export default class Apps extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search App Name or Keywords"
-                onSearch={onSearch.bind(appStore)}
+                onSearch={this.onSearch}
+                onClear={this.onClearSearch}
+                value={searchWord}
               />
-              <Button className={styles.buttonRight} onClick={onRefresh.bind(appStore)}>
+              <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
             <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
           </div>
-          <Pagination onChange={appStore.fetchAll.bind(appStore)} total={totalCount} />
+          <Pagination onChange={this.changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}
       </Layout>

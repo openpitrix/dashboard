@@ -1,21 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
 
-import Statistics from 'components/Statistics';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
 import Status from 'components/Status';
-import Popover from 'components/Base/Popover';
 import TdName from 'components/TdName';
-import Table from 'components/Base/Table';
-import Pagination from 'components/Base/Pagination';
-import Layout from 'components/Layout/Admin';
-import Modal from 'components/Base/Modal';
+import Statistics from 'components/Statistics';
+import Layout, { Dialog } from 'components/Layout/Admin';
 
 import styles from './index.scss';
 
@@ -45,54 +38,49 @@ export default class Runtimes extends Component {
     );
   };
 
-  deleteRuntimeModal = () => {
-    const { isModalOpen, hideModal, remove } = this.props.runtimeStore;
+  renderDeleteModal = () => {
+    const { runtimeStore } = this.props;
+    const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Modal
-        width={500}
+      <Dialog
         title="Delete Runtime"
-        visible={showDeleteRuntime}
-        hideFooter
         onCancel={hideModal}
+        isOpen={isModalOpen}
+        onSubmit={remove.bind(runtimeStore, null)}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={hideModal}>
-              Cancel
-            </Button>
-            {status !== 'deleted' && (
-              <Button
-                type="primary"
-                onClick={() => {
-                  remove(this.props.runtimeStore);
-                }}
-              >
-                Confirm
-              </Button>
-            )}
-          </div>
-        </div>
-      </Modal>
+        <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
+      </Dialog>
     );
   };
 
-  render() {
-    const { runtimeStore } = this.props;
-    const data = toJS(runtimeStore.runtimes);
-    const { isLoading } = runtimeStore;
-    const {
-      image,
-      name,
-      total,
-      centerName,
-      progressTotal,
-      progress,
-      lastedTotal,
-      histograms
-    } = toJS(runtimeStore.statistics);
+  onRefresh = () => {
+    const { currentPage, fetchAll } = this.props.runtimeStore;
+    fetchAll({ page: currentPage });
+  };
 
+  onSearch = search_word => {
+    const { fetchAll, changeSearchWord } = this.props.runtimeStore;
+    fetchAll({ search_word });
+    changeSearchWord(search_word);
+  };
+
+  onClearSearch = () => {
+    this.onSearch('');
+  };
+
+  render() {
+    const {
+      runtimes,
+      isLoading,
+      statistics,
+      changePagination,
+      totalCount,
+      currentPage,
+      searchWord,
+      notifyMsg,
+      hideMsg
+    } = this.props.runtimeStore;
     const columns = [
       {
         title: 'Runtime Name',
@@ -155,42 +143,31 @@ export default class Runtimes extends Component {
     ];
 
     return (
-      <Layout isLoading={isLoading}>
-        <Statistics
-          image={image}
-          name={name}
-          total={total}
-          centerName={centerName}
-          progressTotal={progressTotal}
-          progress={progress}
-          lastedTotal={lastedTotal}
-          histograms={histograms}
-        />
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            <div className={styles.toolbar}>
-              <Input.Search
-                className={styles.search}
-                placeholder="Search Runtimes Name"
-                onSearch={runtimeStore.fetchAll}
-              />
-              <Link to={`/dashboard/runtime/create`}>
-                <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
-                  Create
-                </Button>
-              </Link>
-              <Button className={styles.buttonRight} onClick={runtimeStore.fetchAll}>
-                <Icon name="refresh" />
+      <Layout isLoading={isLoading} msg={notifyMsg} hideMsg={hideMsg}>
+        <Statistics {...statistics} />
+        <div className={styles.wrapper}>
+          <div className={styles.toolbar}>
+            <Input.Search
+              className={styles.search}
+              placeholder="Search Runtimes Name"
+              onSearch={this.onSearch}
+              onClear={this.onClearSearch}
+              value={searchWord}
+            />
+            <Link to={`/dashboard/runtime/create`}>
+              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+                Create
               </Button>
-            </div>
-
-            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
+            </Link>
+            <Button className={styles.buttonRight} onClick={this.onRefresh}>
+              <Icon name="refresh" />
+            </Button>
           </div>
-          {runtimeStore.totalCount > 0 && (
-            <Pagination onChange={runtimeStore.fetchAll} total={runtimeStore.totalCount} />
-          )}
+          <Table className={styles.tableOuter} columns={columns} dataSource={runtimes.toJSON()} />
         </div>
-        {this.deleteRuntimeModal()}
+
+        <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

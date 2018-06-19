@@ -11,6 +11,9 @@ export default class AppStore extends Store {
   @observable totalCount = 0;
   @observable isModalOpen = false;
   @observable currentPage = 1;
+  @observable searchWord = '';
+  @observable currentClusterPage = 1;
+  @observable swCluster = ''; //search word cluster
 
   // menu actions logic
   @observable
@@ -20,8 +23,8 @@ export default class AppStore extends Store {
   };
 
   @action
-  async fetchAll(params = {}) {
-    let pageOffset = params.page || 1;
+  fetchAll = async (params = {}) => {
+    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize,
@@ -36,44 +39,44 @@ export default class AppStore extends Store {
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetch(appId = '') {
+  fetch = async (appId = '') => {
     this.isLoading = true;
     const result = await this.request.get(`apps`, { app_id: appId });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
-  }
+  };
 
   @action
-  async onRefresh(e) {
+  onRefresh = async e => {
     await this.fetchAll();
-  }
+  };
 
   @action
-  async onSearch(value) {
+  onSearch = async value => {
     await this.fetchAll({
       search_word: value
     });
-  }
+  };
 
   @action
-  async create(params = {}) {
+  create = async (params = {}) => {
     this.isLoading = true;
     await this.request.post('apps', params);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async modify(params = {}) {
+  modify = async (params = {}) => {
     this.isLoading = true;
     await this.request.patch('apps', params);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async remove(params = {}) {
+  remove = async (params = {}) => {
     this.isLoading = true;
     const result = await this.request.delete('apps', { app_id: [this.appId] });
     this.isLoading = false;
@@ -84,7 +87,7 @@ export default class AppStore extends Store {
     if (!result || !result.err) {
       await this.fetchAll();
     }
-  }
+  };
 
   @action
   changeAppCate = value => {
@@ -137,6 +140,25 @@ export default class AppStore extends Store {
     this.appId = app_id;
     this.showModal();
     this.setActionType('modify_cate');
+  };
+
+  @action
+  changeSearchWord = word => {
+    this.searchWord = word;
+  };
+
+  @action
+  setCurrentPage = page => {
+    this.currentPage = page;
+  };
+
+  @action
+  setClusterPage = page => {
+    this.currentClusterPage = page;
+  };
+
+  changeClusterSearchWord = sw => {
+    this.swCluster = sw;
   };
 }
 

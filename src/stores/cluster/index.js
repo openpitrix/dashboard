@@ -16,6 +16,8 @@ export default class ClusterStore extends Store {
 
   // @observable clusterId = '';
 
+  @observable currentPage = 1;
+
   @action.bound
   showModal = () => {
     this.isModalOpen = true;
@@ -27,8 +29,8 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  async fetchAll(params = {}) {
-    let pageOffset = params.page || 1;
+  fetchAll = async (params = {}) => {
+    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize
@@ -42,15 +44,15 @@ export default class ClusterStore extends Store {
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetch(clusterId) {
+  fetch = async clusterId => {
     this.isLoading = true;
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });
     this.cluster = get(result, 'cluster_set[0]', {});
     this.isLoading = false;
-  }
+  };
 
   @action
   fetchNodes = async clusterId => {
@@ -61,19 +63,19 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  async fetchJobs(clusterId) {
+  fetchJobs = async clusterId => {
     this.isLoading = true;
     const result = await this.request.get(`jobs`, { cluster_id: clusterId });
     this.clusterJobs = get(result, 'job_set', []);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async remove(clusterIds) {
+  remove = async clusterIds => {
     this.isLoading = true;
     await this.request.delete('clusters', { cluster_id: clusterIds });
     this.isLoading = false;
-  }
+  };
 
   // fixme
   @action
