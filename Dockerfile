@@ -5,11 +5,6 @@ ENV HOME=/home/web
 ENV PATH "$PATH:$HOME/app/node_modules/.bin"
 ENV NODE_ENV=production
 
-#RUN addgroup web && \
-#    adduser -D -G web -s /bin/sh web && \
-
-#USER web
-
 RUN mkdir -p $HOME/app
 
 RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/main/ > /etc/apk/repositories; \
@@ -31,10 +26,6 @@ WORKDIR $HOME/app
 COPY . .
 
 RUN yarn install --prod --prefer-offline --verbose
-
-# for yarn cache
-#ADD .yarn-cache.tgz /
-#RUN echo 'cache=/tmp/.yarn-cache' >> /tmp/.npmrc
 
 EXPOSE 8000
 
