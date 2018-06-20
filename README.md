@@ -35,7 +35,7 @@ docker-compose up --build
 make build && make dev
 ```
 
-**For some requisites, see installation details:** [install doc](./doc/install.md)
+**For some requisites, see installation details:** [install doc](./docs/install.md)
 
 ## Architecture
 
