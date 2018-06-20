@@ -26,3 +26,5 @@ package-lock.json
 /server/local_config.yml
 
 reports/
+
+.cache/
