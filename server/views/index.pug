@@ -23,10 +23,12 @@ html(lang="en")
 
     #root.
       !{children}
+
     script.
       window.__INITIAL_STATE__ = !{state || '{}'}
 
     if isDev
-      script(src= bundlePrefix + '/common.js').
-      script(src= bundlePrefix + '/vendor.dll.js').
-    script(src= bundlePrefix + '/bundle.js').
+      script(src= bundlePrefix + '/manifest.js').
+      script(src= bundlePrefix + '/vendor.js').
+
+    script(src= bundlePrefix + '/main.js').

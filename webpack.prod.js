@@ -3,22 +3,50 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-
-const commonConfig = require('./webpack.common');
 const postCssOptions = require('./postcss.options');
 
 const distDir = resolve(__dirname, 'dist');
+
+const resolveModules = {
+  extensions: ['.js', '.jsx', 'scss'],
+  alias: {
+    scss: resolve(__dirname, 'src/scss')
+  },
+  modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+};
 
 const clientConfig = {
   entry: './src/index.js',
   output: {
     path: distDir,
-    filename: 'bundle.js'
+    filename: 'main.js',
+    pathinfo: false
   },
-  // devtool: 'eval',  // cheap-module-eval-source-map
   module: {
     rules: [
-      ...commonConfig.moduleRules,
+      {
+        test: /\.jsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: '.cache/babel-loader'
+            }
+          }
+        ],
+        include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
+        // exclude: /(node_modules)/
+      },
+      {
+        test: /\.(jpg|png|svg)(\?.+)?$/,
+        use: 'url-loader?limit=100000',
+        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
+      },
+      {
+        test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
+        use: 'file-loader',
+        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
+      },
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({
@@ -40,25 +68,10 @@ const clientConfig = {
             { loader: 'sass-loader' }
           ]
         })
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              minimize: true,
-              importLoaders: 0,
-              localIdentName: '[folder]__[local]--[hash:base64:5]',
-              modules: true
-            }
-          }
-        ]
       }
     ]
   },
-  resolve: commonConfig.resolve,
+  resolve: resolveModules,
   plugins: [
     new ExtractTextPlugin({
       filename: 'bundle.css',
@@ -141,7 +154,7 @@ const serverConfig = {
       }
     ]
   },
-  resolve: commonConfig.resolve,
+  resolve: resolveModules,
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
