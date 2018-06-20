@@ -9,16 +9,20 @@ export default class Search extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     placeholder: PropTypes.string,
-    onSearch: PropTypes.func
+    value: PropTypes.string,
+    onSearch: PropTypes.func,
+    onClear: PropTypes.func
   };
 
   static defaultProps = {
     className: '',
-    onSearch: val => {}
+    onSearch: val => {},
+    onClear: () => {},
+    value: ''
   };
 
   state = {
-    value: ''
+    value: this.props.value
   };
 
   handleInputChange = e => {
@@ -32,7 +36,7 @@ export default class Search extends React.Component {
   };
 
   handleClear = () => {
-    this.setState({ value: '' });
+    this.setState({ value: '' }, this.props.onClear);
   };
 
   render() {
