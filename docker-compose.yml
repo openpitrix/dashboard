@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  openpitrix-web:
-#    build: .
-    image: openpitrix/node-app
-    command: yarn run dev
-    container_name: openpitrix-web
+  dashboard:
+    build: .
+    image: op/web-app
+    command: npm run prod:serve
+    container_name: openpitrix-dashboard
     ports:
       - "8000:8000"
-    volumes:
-      - .:/home/web/app
+#    volumes:
+#      - .:/home/web/app

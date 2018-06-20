@@ -3,11 +3,11 @@ cwd := $(shell pwd)
 
 build: Dockerfile
 	@echo 'building image..'
-	docker build -t openpitrix/node-app .
+	docker build -t op/web-app .
 
 # apline linux has no bash
 sh:
-	docker exec -it openpitrix-web sh
+	docker exec -it openpitrix-dashboard sh
 
 # todo: add yarn cache to reduce `yarn install` cycle
 #cache:
@@ -24,4 +24,5 @@ rm:
 	docker-compose rm
 
 run:
-	docker run --rm -it --name openpitrix-web -p 8000:8000 -v "$(cwd)":/home/web/app openpitrix/node-app sh
+	docker-compose rm -af
+	docker run --rm -it --name openpitrix-dashboard -p 8000:8000 op/web-app sh
