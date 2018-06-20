@@ -114,12 +114,19 @@ const serverConfig = {
     filename: 'server.js',
     libraryTarget: 'commonjs2'
   },
-  devtool: 'eval',
+  // devtool: 'eval',
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        use: 'babel-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: '.cache/babel-loader'
+            }
+          }
+        ],
         exclude: /(node_modules)/
       },
       {

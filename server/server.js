@@ -83,9 +83,9 @@ app.listen(PORT, err => {
 });
 
 // watch files and reload server gracefully
-if (isDev) {
-  watchServerConfig();
+watchServerConfig();
 
+if (isDev) {
   // watch server w/ lib change
   const watcher = chokidar.watch([root('server'), root('lib')]);
   watcher.on('ready', function() {
