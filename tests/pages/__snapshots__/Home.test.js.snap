@@ -51,8 +51,10 @@ exports[`Home basic render 1`] = `
             </div>
             <Search
               className="search"
+              onClear={[Function]}
               onSearch={[Function]}
               placeholder="Search apps in Pitrix..."
+              value=""
             >
               <div
                 className="inputGroup search"
