@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { getParseDate } from 'utils';
 import classnames from 'classnames';
 import { get } from 'lodash';
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
@@ -9,7 +10,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getParseDate } from 'src/utils';
+import { getSessInfo, imgPlaceholder } from 'src/utils';
 
 import styles from './index.scss';
 
@@ -110,8 +111,6 @@ export default class Apps extends Component {
     const {
       onRefresh,
       onSearch,
-      onChangePage,
-      currentPage,
       summaryInfo,
       totalCount,
       apps,
@@ -137,7 +136,7 @@ export default class Apps extends Component {
       {
         title: 'Latest Version',
         key: 'latest_version',
-        render: obj => get(obj, 'latest_app_version.name', '')
+        render: obj => get(obj, 'latest_app_version.version_id', '')
       },
       {
         title: 'Status',
@@ -148,9 +147,8 @@ export default class Apps extends Component {
       {
         title: 'Categories',
         key: 'category',
-        width: '150px',
         render: obj =>
-          get(obj, 'category_set', [])
+          get(obj, 'app_category_set', [])
             .map(cate => cate.name)
             .join(', ')
       },
@@ -171,7 +169,7 @@ export default class Apps extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: obj => getParseDate(obj.status_time)
+        render: obj => obj.status_time
       },
       {
         title: 'Actions',
@@ -204,11 +202,7 @@ export default class Apps extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
           </div>
-          <Pagination
-            onChange={onChangePage.bind(appStore)}
-            total={totalCount}
-            current={currentPage}
-          />
+          <Pagination onChange={appStore.fetchAll.bind(appStore)} total={totalCount} />
         </div>
         {this.renderOpsModal()}
       </Layout>

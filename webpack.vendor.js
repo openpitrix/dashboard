@@ -1,11 +1,8 @@
-// bundle common vendor libraries for development env
-// using webpack dll plugin
 const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
   context: process.cwd(),
-  // devtool: 'cheap-module-eval-source-map',
   entry: {
     vendor: [
       'react',
@@ -25,7 +22,6 @@ module.exports = {
     library: '[name]'
   },
   resolve: {
-    // extensions: ['.js', '.jsx'],
     modules: [__dirname, 'node_modules']
   },
   plugins: [

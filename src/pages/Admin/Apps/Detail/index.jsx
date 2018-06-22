@@ -112,19 +112,31 @@ export default class AppDetail extends Component {
     );
   };
 
-  handlePagination = page => {};
+  onRefresh = () => {
+    const { currentClusterPage } = this.props.appStore;
+    const { fetchAll } = this.props.clusterStore;
+    fetchAll({ page: currentClusterPage, search_word: '', app_id: this.appId });
+  };
+
+  onSearch = search_word => {
+    const { changeClusterSearchWord } = this.props.appStore;
+    const { fetchAll } = this.props.clusterStore;
+    fetchAll({ search_word, app_id: this.appId });
+    changeClusterSearchWord(search_word);
+  };
+
+  changePagination = page => {
+    const { setClusterPage } = this.props.appStore;
+    const { fetchAll } = this.props.clusterStore;
+    setClusterPage(page);
+    fetchAll({ app_id: this.appId, page });
+  };
 
   render() {
     const { appStore, clusterStore, appVersionStore } = this.props;
-    const appDetail = toJS(appStore.appDetail);
-    const versions = toJS(appVersionStore.versions);
-
-    const data = toJS(clusterStore.clusters);
-
-    const { showAllVersions } = this.props.appVersionStore;
-    const { fetchQueryClusters } = this.props.clusterStore;
-
-    const { notifyMsg, hideMsg } = this.props.appVersionStore;
+    const { appDetail, currentClusterPage, swCluster } = appStore;
+    const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
+    const { clusters } = clusterStore;
 
     return (
       <Layout className={styles.appDetail} msg={notifyMsg} hideMsg={hideMsg}>
@@ -159,16 +171,21 @@ export default class AppDetail extends Component {
                 <Input.Search
                   className={styles.search}
                   placeholder="Search & Filter"
-                  onSearch={fetchQueryClusters}
+                  onSearch={this.onSearch}
+                  value={swCluster}
                 />
-                <Button className={styles.buttonRight} onClick={clusterStore.fetchAll}>
+                <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
 
-              <Table columns={columns} dataSource={data} />
+              <Table columns={columns} dataSource={clusters.toJSON()} />
             </div>
-            <Pagination onChange={this.handlePagination} total={clusterStore.totalCount} />
+            <Pagination
+              onChange={this.changePagination}
+              total={clusterStore.totalCount}
+              current={currentClusterPage}
+            />
           </div>
         </div>
         {this.renderOpsModal()}

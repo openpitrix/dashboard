@@ -1,44 +1,27 @@
-FROM mhart/alpine-node:8
-MAINTAINER sunnyw <sunnywang@yunify.com>
+FROM node:9-jessie as builder
 
-# alpine-node doesn't have apt, bash
-#COPY docker/source.list /etc/apt/sources.list
-#RUN apt-get update \
-#    && apt-get install -y --no-install-recommends vim
+RUN mkdir -p /app
 
-RUN addgroup web && \
-    adduser -D -G web -s /bin/sh web
+WORKDIR /app
 
-ENV HOME=/home/web
+COPY . .
 
-# install node-sass binding from local, in case of download failed
-ENV SASS_BINARY_PATH=/tmp/linux_musl-x64-57_binding.node
+RUN yarn install --prefer-offline --verbose
+RUN npm run prod:build
+RUN rm -rf node_modules
 
-RUN mkdir -p $HOME/app
 
-# case: production way to install yarn
-#RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-#ENV PATH "$PATH:$HOME/.yarn/bin"
+FROM node:9-alpine
+MAINTAINER wangxi <sunnywang@yunify.com>
 
-# case: local dev way to install yarn
-ADD docker/yarn.tar.gz $HOME
-ENV PATH "$PATH:$HOME/yarn-v1.5.1/bin"
+COPY --from=builder /app /app
 
-# install deps firstly will re-use cache layer of docker
-COPY package.json yarn.lock .npmrc docker/linux_musl-x64-57_binding.node /tmp/
+ENV NODE_ENV=production
 
-RUN cd /tmp && yarn install --verbose \
-    && npm rebuild node-sass \
-    && cd $HOME/app \
-    && ln -s /tmp/node_modules \
-    && chown -R web:web $HOME
+WORKDIR /app
 
-WORKDIR $HOME/app
+RUN yarn install --prod --prefer-offline --verbose
 
-USER web
+EXPOSE 8000
 
-# for yarn cache
-#ADD .yarn-cache.tgz /
-#RUN echo 'cache=/tmp/.yarn-cache' >> /tmp/.npmrc
-
-CMD ["yarn", "--version"]
+CMD ["npm", "run", "prod:serve"]

@@ -9,7 +9,7 @@ module.exports = {
     './src/index.js'
   ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     chunkFilename: '[name].chunk.js',
     path: resolve(__dirname, 'build/'),
     publicPath: '/build',
@@ -37,7 +37,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              cacheDirectory: 'build/.cache/babel-loader'
+              cacheDirectory: '.cache/babel-loader'
             }
           }
         ],
@@ -101,16 +101,28 @@ module.exports = {
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
-    new webpack.DllReferencePlugin({
-      context: __dirname,
-      manifest: require('./build/vendor.json')
+    // new webpack.DllReferencePlugin({
+    //   context: __dirname,
+    //   manifest: require('./build/vendor.json')
+    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function(module) {
+        return module.context && module.context.includes('node_modules');
+      }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      filename: 'common.js',
-      // async: true,
-      // children: true,
-      minChunks: 3
+      name: 'manifest',
+      minChunks: Infinity
     })
+
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'common',
+    //   filename: 'common.js',
+    //   chunks: 'all',
+    //   // async: true,
+    //   // children: true,
+    //   minChunks: 2
+    // })
   ]
 };
