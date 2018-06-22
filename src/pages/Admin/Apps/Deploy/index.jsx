@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Link } from 'react-router-dom';
 import { Radio, Button, Input, Select, Slider } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Cell from './Cell/index.jsx';
+import { get } from 'lodash';
 
 import styles from './index.scss';
 import classNames from 'classnames';
@@ -10,14 +13,22 @@ import classNames from 'classnames';
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  appDeployStore: rootStore.appDeployStore
+  appDeployStore: rootStore.appDeployStore,
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, appDeployStore }, params) {
+  static async onEnter({ appStore, appDeployStore, runtimeStore }, params) {
     await appStore.fetch(params.appId);
-    await appDeployStore.fetchVersions(params.appId);
+    appDeployStore.appId = params.appId;
+    await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
     await appDeployStore.fetchSubnets();
+    await runtimeStore.fetchAll();
+  }
+
+  componentDidMount() {
+    const { appDeployStore, runtimeStore } = this.props;
+    appDeployStore.changeRuntime(get(runtimeStore, 'runtimes[0].runtime_id'));
   }
 
   render() {
@@ -52,57 +63,58 @@ export default class AppDeploy extends Component {
   }
 
   renderForm() {
+    const { appDeployStore, runtimeStore } = this.props;
+    const { runtimes } = runtimeStore;
     const {
-      versions,
-      subnets,
+      config,
+      configBasics,
+      configNodes,
+      configEnvs,
+      changeCell,
       handleSubmit,
       isLoading,
-      version,
-      vxNet,
-      perNode,
-      volume,
-      deploy,
+      versions,
+      subnets,
+      versionId,
+      runtimeId,
+      subnetId,
       changeRuntime,
       changeVersion,
-      changeDescription,
-      changeCpu,
-      changeMemory,
-      changeType,
-      changeVolume,
-      changeVolumeInput,
-      changeIp,
-      changeVxNet,
-      changePerNode
-    } = this.props.appDeployStore;
+      changeSubnet
+    } = appDeployStore;
+
     return (
       <form className={styles.createForm} method="post" onSubmit={handleSubmit}>
         <div className={styles.moduleTitle}>1. Basic settings</div>
-        {/*<div>*/}
-        {/*<label className={styles.name}>ID</label>*/}
-        {/*<span className={styles.showWord}>52712219520354767</span>*/}
-        {/*<p className={classNames(styles.rightShow, styles.note)}>*/}
-        {/*A unique ID of the application instance, used as the identifier before created*/}
-        {/*</p>*/}
-        {/*</div>*/}
-
-        <div>
-          <label className={styles.name}>Name</label>
-          <Input className={styles.input} name="name" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            The name of the EsgynDB service
-          </p>
-        </div>
-        <div>
+        {configBasics &&
+          configBasics.map(
+            (basic, index) =>
+              basic.key !== 'subnet' && (
+                <Cell
+                  key={basic.key}
+                  className={styles.cellModule}
+                  config={basic}
+                  type={`basic`}
+                  configIndex1={index}
+                  configIndex2={-1}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              )
+          )}
+        <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
-          <Radio.Group className={styles.showWord} value={deploy.runtime} onChange={changeRuntime}>
-            <Radio value="public">Public</Radio>
-            <Radio value="aws">AWS</Radio>
-            <Radio value="alibaba">Alibaba Cloud Computing</Radio>
+          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
+            {runtimes &&
+              runtimes.map(({ runtime_id, name }) => (
+                <Radio key={runtime_id} value={runtime_id}>
+                  {name}
+                </Radio>
+              ))}
           </Radio.Group>
         </div>
-        <div>
+        <div className={styles.cellModule}>
           <label className={styles.name}>Version</label>
-          <Select className={styles.select} value={version} onChange={changeVersion}>
+          <Select className={styles.select} value={versionId} onChange={changeVersion}>
             {versions.map(({ version_id, name }) => (
               <Select.Option key={version_id} value={version_id}>
                 {name}
@@ -110,123 +122,58 @@ export default class AppDeploy extends Component {
             ))}
           </Select>
         </div>
-        <div>
-          <label className={styles.name}>Description</label>
-          <textarea
-            className={styles.textarea}
-            name="description"
-            value={deploy.description}
-            onChange={changeDescription}
-          />
-        </div>
 
-        <div className={styles.moduleTitle}>2. Node Settings</div>
-        <div>
-          <label className={styles.name}>CPU</label>
-          <Radio.Group className={styles.showWord} value={deploy.cpu} onChange={changeCpu}>
-            <Radio value="1">1-Core</Radio>
-            <Radio value="2">2-Core</Radio>
-            <Radio value="4">4-Core</Radio>
-            <Radio value="8">8-Core</Radio>
-            <Radio value="16">16-Core</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Memory</label>
-          <Radio.Group className={styles.showWord} value={deploy.memory} onChange={changeMemory}>
-            <Radio value="32GB">32GB</Radio>
-            <Radio value="64GB">64GB</Radio>
-            <Radio value="128GB">128GB</Radio>
-            <Radio value="256GB">256GB</Radio>
-            <Radio value="512GB">512GB</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Type</label>
-          <Radio.Group className={styles.showWord} value={deploy.type} onChange={changeType}>
-            <Radio value="high">High Performance</Radio>
-            <Radio value="super-high">Super-high Performance</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Volume Size</label>
-          <Slider min={10} max={1000} step={1} value={volume} onChange={changeVolume} />
-          <span>
-            <Input
-              className={styles.inputSmall}
-              name="volume"
-              value={volume}
-              onChange={changeVolumeInput}
-            />{' '}
-            GB
-          </span>
-          <p className={classNames(styles.rightShow, styles.note)}>
-            10GB - 1000GB, The volume size for each instance
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>Count</label>
-          <Input className={styles.input} name="count" type="number" data-min={1} data-max={100} />
-          <p className={classNames(styles.rightShow, styles.note)}>Range: 1 - 100</p>
-        </div>
+        {configNodes &&
+          configNodes.map((node, index1) => (
+            <Fragment key={node.key}>
+              <div className={styles.moduleTitle}>
+                {index1 + 2}. Node Settings({node.key})
+              </div>
+              {node.properties.map((conf, index2) => (
+                <Cell
+                  key={conf.key}
+                  className={styles.cellModule}
+                  config={conf}
+                  type={`node`}
+                  configIndex1={index1}
+                  configIndex2={index2}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              ))}
+            </Fragment>
+          ))}
 
-        <div className={styles.moduleTitle}>3. Vxnet Settings</div>
-        <div>
+        <div className={styles.moduleTitle}>{configNodes.length + 2}. Vxnet Settings</div>
+        <div className={styles.cellModule}>
           <label className={styles.name}>VxNet to Join</label>
-          <Select className={styles.select} value={vxNet} onChange={changeVxNet}>
+          <Select className={styles.select} value={subnetId} onChange={changeSubnet}>
             {subnets.map(({ subnet_id, name }) => (
               <Select.Option key={subnet_id} value={subnet_id}>
-                {subnet_id} {name}
+                {subnet_id}
               </Select.Option>
             ))}
           </Select>
         </div>
-        <div>
-          <label className={styles.name}>IP</label>
-          <Radio.Group className={styles.showWord} value={deploy.ip} onChange={changeIp}>
-            <Radio value="auto">Auto assigned</Radio>
-            <Radio value="assign">Assign manually</Radio>
-          </Radio.Group>
-        </div>
 
-        {/*<div className={styles.moduleTitle}>4. Dependent Service Settings</div>*/}
-        {/*<div>*/}
-        {/*<label className={styles.name}>ZooKeeper</label>*/}
-        {/*<Input className={styles.input} name="zookeeper" />*/}
-        {/*<p className={classNames(styles.rightShow, styles.note)}>Choose a ZooKeeper to use</p>*/}
-        {/*</div>*/}
-
-        <div className={styles.moduleTitle}>4. Environment Settings</div>
-        <div>
-          <label className={styles.name}>dcs.servers.per.node</label>
-          <Select className={styles.select} value={perNode} onChange={changePerNode}>
-            <Select.Option value="8">8</Select.Option>
-            <Select.Option value="7">7</Select.Option>
-            <Select.Option value="6">6</Select.Option>
-          </Select>
-          <p className={classNames(styles.rightShow, styles.note)}>
-            Client Connection Servers per Node
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dcs.master.port</label>
-          <Input className={styles.input} name="masterPort" type="number" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            Connectivity Port for client connection
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dcs.master.info.port</label>
-          <Input className={styles.input} name="infoPort" type="number" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            The port for the Dcs Master web UI
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dbmgr.http.port</label>
-          <Input className={styles.input} name="httpPort" type="number" />
-          <p className={classNames(styles.rightShow, styles.note)}>EsgynDB Manager HTTP Port</p>
-        </div>
+        {configEnvs &&
+          configEnvs.map((env, index1) => (
+            <Fragment key={env.key}>
+              <div className={styles.moduleTitle}>
+                {index1 + configNodes.length + 3}.Environment Settings({env.key})
+              </div>
+              {env.properties.map((conf, index2) => (
+                <Cell
+                  key={conf.key}
+                  className={styles.cellModule}
+                  config={conf}
+                  type={`env`}
+                  configIndex={index1}
+                  configIndex2={index2}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              ))}
+            </Fragment>
+          ))}
 
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>

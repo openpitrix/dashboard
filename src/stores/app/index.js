@@ -11,6 +11,7 @@ export default class AppStore extends Store {
   @observable totalCount = 0;
   @observable currentPage = 1;
   @observable isModalOpen = false;
+  @observable appTitle = '';
 
   // menu actions logic
   @observable
@@ -37,6 +38,14 @@ export default class AppStore extends Store {
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
+
+  @action
+  fetchApps = async (params = {}) => {
+    this.isLoading = true;
+    const result = await this.request.get('apps', params);
+    this.apps = get(result, 'app_set', []);
+    this.isLoading = false;
+  };
 
   @action
   async fetch(appId = '') {

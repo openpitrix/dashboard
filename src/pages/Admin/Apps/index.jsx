@@ -113,6 +113,8 @@ export default class Apps extends Component {
       onSearch,
       summaryInfo,
       totalCount,
+      currentPage,
+      onChangePage,
       apps,
       notifyMsg,
       hideMsg,
@@ -202,7 +204,11 @@ export default class Apps extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
           </div>
-          <Pagination onChange={appStore.fetchAll.bind(appStore)} total={totalCount} />
+          <Pagination
+            onChange={onChangePage.bind(appStore)}
+            total={totalCount}
+            current={currentPage}
+          />
         </div>
         {this.renderOpsModal()}
       </Layout>
