@@ -47,7 +47,7 @@ export default class RuntimeCard extends PureComponent {
           <li>
             <span className={styles.name}>Labels</span>
             <div className={styles.labels}>
-              {detail.labels && <TagShow tags={detail.labels} tagStyle="purple" />}
+              {detail.labels && <TagShow tags={detail.labels.slice()} tagStyle="purple" />}
             </div>
           </li>
           <li>

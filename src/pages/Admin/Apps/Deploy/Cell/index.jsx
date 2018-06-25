@@ -96,6 +96,8 @@ export default class Cell extends PureComponent {
                 type="number"
                 name={config.key}
                 value={config.default}
+                min={config.min}
+                max={config.max}
                 onChange={this.changeCellInput}
               />{' '}
               GB
@@ -113,8 +115,8 @@ export default class Cell extends PureComponent {
               type="number"
               value={config.default}
               onChange={this.changeCell}
-              data-min={config.min}
-              data-max={config.max}
+              min={config.min}
+              max={config.max}
             />
             <p className={classNames(styles.rightShow, styles.note)}>
               Range: {config.min} - {config.max}

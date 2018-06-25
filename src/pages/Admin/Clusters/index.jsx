@@ -46,12 +46,14 @@ export default class Clusters extends Component {
     if (!search_word) {
       return false;
     }
+    this.store.currentPage = 1;
     this.store.fetchAll({
       search_word: search_word
     });
   };
 
   onRefresh = ev => {
+    this.store.currentPage = 1;
     this.store.fetchAll();
   };
 
@@ -115,7 +117,7 @@ export default class Clusters extends Component {
       {
         title: 'Node Count',
         key: 'node_count',
-        render: cl => cl.cluster_node_set.length
+        render: cl => cl.cluster_node_set && cl.cluster_node_set.length
       },
       {
         title: 'User',

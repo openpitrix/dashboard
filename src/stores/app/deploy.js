@@ -2,13 +2,19 @@ import { observable, action } from 'mobx';
 import Store from '../Store';
 import { getFormData } from 'utils';
 import _, { assign, get } from 'lodash';
+import { Base64 } from 'js-base64';
 
 export default class AppDeployStore extends Store {
   @observable versions = [];
+  @observable runtimes = [];
   @observable subnets = [];
   @observable files = {};
   @observable config = {};
-  @observable configData = '';
+  @observable
+  configData = {
+    cluster: {},
+    env: {}
+  };
   @observable paramsData = '';
   @observable configBasics = [];
   @observable configNodes = [];
@@ -17,15 +23,17 @@ export default class AppDeployStore extends Store {
   @observable versionId = '';
   @observable runtimeId = '';
   @observable subnetId = '';
+  @observable appDeployed = null;
   @observable isLoading = false;
+  checkResult = 'ok';
 
   @action
   changeCell = (value, item, params) => {
-    if (
+    const isInput =
       (item.type === 'string' && !item.range) ||
       (item.max && !item.step) ||
-      item.key === 'description'
-    ) {
+      item.key === 'description';
+    if (isInput) {
       value = value.target.value;
     }
     item.default = value;
@@ -38,8 +46,9 @@ export default class AppDeployStore extends Store {
     }
   };
   @action
-  changeRuntime = runtimeId => {
+  changeRuntime = async runtimeId => {
     this.runtimeId = runtimeId;
+    await this.fetchSubnets(runtimeId);
   };
 
   @action
@@ -58,58 +67,72 @@ export default class AppDeployStore extends Store {
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    let check = this.setConfigData(this.configData);
-    if (check !== 'ok') {
-      this.showMsg('Please input or select ' + check + '!');
-    } else {
+    this.getConfigData();
+    if (this.checkResult === 'ok') {
       this.isLoading = true;
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
         runtime_id: this.runtimeId,
-        conf: this.paramsData
+        conf: JSON.stringify(this.configData)
       };
       await this.create(params);
+      if (_.get(this, 'appDeployed.cluster_id')) {
+        this.showMsg('App deploy successfully.');
+      } else {
+        let { errDetail } = this.appDeployed;
+        this.showMsg(errDetail);
+      }
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 2000);
+    } else {
+      this.showMsg('Please input or select ' + this.checkResult + '!');
     }
   };
-
-  setConfigData = data => {
-    let checkResult = 'ok';
-    this.paramsData = data;
+  getConfigData = () => {
+    let cluster = {},
+      env = {};
+    this.checkResult = 'ok';
     for (let i = 0; i < this.configBasics.length; i++) {
       let basic = this.configBasics[i];
       if (basic.key === 'subnet') {
-        this.configBasics[i].default = basic.default = this.subnetId;
+        basic.default = this.subnetId;
       }
-      if (basic.required && !basic.default) {
-        checkResult = basic.label;
+      if (basic.required && _.isEmpty(basic.default)) {
+        this.checkResult = basic.label;
         break;
       }
-      this.changeConfigData(basic, 'cluster');
+      cluster[basic.key] = basic.default;
     }
     for (let i = 0; i < this.configNodes.length; i++) {
       let node = this.configNodes[i];
+      cluster[node.key] = {};
       for (let j = 0; j < node.properties.length; j++) {
-        if (node.properties[j].required && !node.properties[j].default) {
-          checkResult = node.properties[j].label;
+        let value = node.properties[j].default;
+        if (node.properties[j].required && _.isEmpty(_.toString(node.properties[j].default))) {
+          this.checkResult = node.properties[j].label;
           break;
         }
-        this.changeConfigData(node.properties[j], 'cluster', node.key);
+        if (node.properties[j].type === 'integer') value = parseInt(value);
+        cluster[node.key][node.properties[j].key] = value;
       }
     }
     for (let i = 0; i < this.configEnvs.length; i++) {
       let env = this.configEnvs[i];
+      env[env.key] = {};
       for (let j = 0; j < env.properties.length; j++) {
-        this.changeConfigData(env.properties[j], 'env', env.key);
-        if (env.properties[j].required && !env.properties[j].default) {
-          checkResult = env.properties[j].label;
+        if (env.properties[j].required && _.isEmpty(_.toString(env.properties[j].default))) {
+          this.checkResult = env.properties[j].label;
           break;
         }
+        cluster[env.key][env.properties[j].key] = env.properties[j].default;
       }
     }
-    this.paramsData = this.paramsData.replace(/\s/g, '');
-    this.paramsData = this.paramsData.replace(/\"/g, '"');
-    return checkResult;
+    if (!this.runtimeId) {
+      this.checkResult = 'Runtime';
+    }
+    this.configData = { cluster, env };
   };
 
   changeConfigData = (item, root, parent) => {
@@ -119,6 +142,7 @@ export default class AppDeployStore extends Store {
     } else {
       location += root + '.' + item.key + '}}';
     }
+    if (item.type === 'integer') item.default = parseInt(item.default);
     this.paramsData = this.paramsData.replace(location, item.default);
   };
 
@@ -128,28 +152,38 @@ export default class AppDeployStore extends Store {
     const result = await this.request.get('app_versions', params);
     this.versions = get(result, 'app_version_set', []);
     this.versionId = get(this.versions[0], 'version_id');
-    this.isLoading = false;
+    if (!flag) this.isLoading = false;
     if (flag) await this.fetchFiles(get(this.versions[0], 'version_id'));
   }
 
   @action
-  async fetchSubnets() {
-    let runtimeId = 'runtime-3wOkjGKn5vvr';
+  fetchRuntimes = async () => {
     this.isLoading = true;
+    const result = await this.request.get('runtimes');
+    this.runtimes = get(result, 'runtime_set', []);
+    if (this.runtimes[0]) {
+      this.runtimeId = this.runtimes[0].runtime_id;
+      await this.fetchSubnets(this.runtimes[0].runtime_id);
+    }
+    this.isLoading = false;
+  };
+
+  @action
+  async fetchSubnets(runtimeId) {
     const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
     this.subnets = get(result, 'subnet_set', []);
-    this.isLoading = false;
+    if (this.subnets[0]) this.subnetId = this.subnets[0].subnet_id;
   }
 
   @action
   async fetchFiles(versionId) {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId
     });
     this.files = get(result, 'files', {});
     if (this.files['config.json']) {
-      const config = JSON.parse(atob(this.files['config.json']));
+      const config = JSON.parse(Base64.decode(this.files['config.json']));
       this.configBasics = _.filter(_.get(config, 'properties[0].properties'), function(obj) {
         return !obj.properties;
       });
@@ -162,16 +196,13 @@ export default class AppDeployStore extends Store {
     } else {
       this.showMsg('Not find config file!');
     }
-    if (this.files['cluster.json.tmpl']) {
-      this.configData = atob(this.files['cluster.json.tmpl']);
-    }
-    this.isLoading = false;
+    //this.isLoading = false;
   }
 
   @action
   async create(params) {
     this.isLoading = true;
-    const result = await this.request.post(`clusters/create`, params);
+    this.appDeployed = await this.request.post(`clusters/create`, params);
     this.isLoading = false;
   }
 }

@@ -19,20 +19,19 @@ import classNames from 'classnames';
 @observer
 export default class AppDeploy extends Component {
   static async onEnter({ appStore, appDeployStore, runtimeStore }, params) {
-    await appStore.fetch(params.appId);
     appDeployStore.appId = params.appId;
     await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
-    await appDeployStore.fetchSubnets();
-    await runtimeStore.fetchAll();
+    await appDeployStore.fetchRuntimes();
   }
 
-  componentDidMount() {
-    const { appDeployStore, runtimeStore } = this.props;
-    appDeployStore.changeRuntime(get(runtimeStore, 'runtimes[0].runtime_id'));
+  componentDidUpdate() {
+    if (get(this.appDeployStore, 'appDeployed.cluster_id') && !this.appDeployStore.isLoading) {
+      history.back();
+    }
   }
 
   render() {
-    const { appStore, appDeployStore } = this.props;
+    const { appDeployStore } = this.props;
     const { notifyMsg, hideMsg } = appDeployStore;
     const title = 'Deploy app';
     return (
@@ -64,7 +63,6 @@ export default class AppDeploy extends Component {
 
   renderForm() {
     const { appDeployStore, runtimeStore } = this.props;
-    const { runtimes } = runtimeStore;
     const {
       config,
       configBasics,
@@ -74,6 +72,7 @@ export default class AppDeploy extends Component {
       handleSubmit,
       isLoading,
       versions,
+      runtimes,
       subnets,
       versionId,
       runtimeId,
@@ -84,7 +83,11 @@ export default class AppDeploy extends Component {
     } = appDeployStore;
 
     return (
-      <form className={styles.createForm} method="post" onSubmit={handleSubmit}>
+      <form
+        className={styles.createForm}
+        method="post"
+        onSubmit={handleSubmit.bind(appDeployStore)}
+      >
         <div className={styles.moduleTitle}>1. Basic settings</div>
         {configBasics &&
           configBasics.map(
