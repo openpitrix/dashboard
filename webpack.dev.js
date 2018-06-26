@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const postCssOptions = require('./postcss.options');
+const resolveModules = require('./resolve.modules');
 
 module.exports = {
   devtool: 'eval',
@@ -16,19 +17,6 @@ module.exports = {
     pathinfo: false // for speed
   },
   // profile: true,
-  // stats: {
-  //   hash: true,
-  //   // version: true,
-  //   timings: true,
-  //   // assets: true,
-  //   chunks: true,
-  //   // modules: true,
-  //   // children: true,
-  //   source: false,
-  //   errors: true,
-  //   errorDetails: true,
-  //   warnings: true
-  // },
   module: {
     rules: [
       {
@@ -42,7 +30,6 @@ module.exports = {
           }
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
-        // exclude: /(node_modules)/
       },
       // {
       //   test: /\.(jpg|png|svg)(\?.+)?$/,
@@ -78,21 +65,11 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    extensions: ['.js', '.jsx', 'scss'],
-    alias: {
-      scss: resolve(__dirname, 'src/scss')
-    },
-    modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules'],
-    symlinks: false
-  },
+  resolve: resolveModules,
   plugins: [
-    // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.NamedModulesPlugin(),
     // new webpack.WatchIgnorePlugin([
-    //   // resolve(__dirname, 'lib'),
+    //   resolve(__dirname, 'lib'),
     //   resolve(__dirname, 'server'),
     //   resolve(__dirname, 'build'),
     //   resolve(__dirname, 'dist')
