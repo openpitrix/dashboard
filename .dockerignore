@@ -9,3 +9,6 @@ npm-debug.log
 build/
 coverage/
 docs/
+dist/
+
+yarn-offline-cache.tgz
