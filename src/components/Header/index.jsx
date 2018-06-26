@@ -54,6 +54,11 @@ export default class Header extends Component {
     return <NavLink to="/dashboard">{getLinkLabelFromRole(role)}</NavLink>;
   }
 
+  onSearch = value => {
+    const { appStore } = this.props.rootStore;
+    appStore.fetchApps({ search_word: value });
+  };
+
   render() {
     const {
       isHome,
@@ -68,7 +73,11 @@ export default class Header extends Component {
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           {isDark && (
-            <Input.Search className={styles.search} placeholder="Search apps in Pitrix..." />
+            <Input.Search
+              className={styles.search}
+              onSearch={this.onSearch}
+              placeholder="Search apps in Pitrix..."
+            />
           )}
           <div className={styles.menus}>
             <NavLink to="/apps">Catalog</NavLink>

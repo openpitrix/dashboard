@@ -1,13 +1,22 @@
-@import "~scss/variables";
+@import '~scss/variables';
 
-.contentOuter{
+.contentOuter {
   background-color: $background-color-lighter;
 }
-.content{
+.content {
   position: relative;
-  height: $main-height;
+  min-height: $main-height;
   margin: 0 auto;
   width: $content-width;
+  .homeLoad{
+    position: absolute;
+    top: 0;
+    left: 192px;
+    background-color: #fff;
+    & >div{
+      top: 100px;
+    }
+  }
   .nav {
     position: absolute;
     top: 0;

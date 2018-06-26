@@ -6,6 +6,9 @@ export default class AppStore extends Store {
   @observable apps = [];
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
+  @observable appCategoryId = '';
+  @observable categoryTitle = '';
+  @observable appSearch = '';
   @observable appId = ''; // current app_id
   @observable isLoading = false;
   @observable totalCount = 0;
@@ -18,6 +21,18 @@ export default class AppStore extends Store {
   handleApp = {
     action: '', // delete, modify
     selectedCategory: '' // category id
+  };
+
+  @action
+  fetchApps = async (params = {}, title) => {
+    this.isLoading = true;
+    this.categoryTitle = title;
+    this.appCategoryId = params.category_id;
+    this.appSearch = params.search_word;
+    const result = await this.request.get('apps', params);
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
   };
 
   @action
@@ -38,14 +53,6 @@ export default class AppStore extends Store {
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
-
-  @action
-  fetchApps = async (params = {}) => {
-    this.isLoading = true;
-    const result = await this.request.get('apps', params);
-    this.apps = get(result, 'app_set', []);
-    this.isLoading = false;
-  };
 
   @action
   async fetch(appId = '') {

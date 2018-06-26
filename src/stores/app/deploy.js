@@ -177,7 +177,7 @@ export default class AppDeployStore extends Store {
 
   @action
   async fetchFiles(versionId) {
-    //this.isLoading = true;
+    this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId
     });
@@ -196,7 +196,7 @@ export default class AppDeployStore extends Store {
     } else {
       this.showMsg('Not find config file!');
     }
-    //this.isLoading = false;
+    this.isLoading = false;
   }
 
   @action

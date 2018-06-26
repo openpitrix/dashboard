@@ -1,53 +1,46 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { get } from 'lodash';
 
 import styles from './index.scss';
 
 export default class Nav extends PureComponent {
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    navs: PropTypes.array,
+    curCategory: PropTypes.string,
+    onChange: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      curValue: 'top'
-    };
-  }
-  changeValue = value => {
-    this.setState({
-      curValue: value
-    });
+  changeValue = (id, name) => {
+    this.props.onChange({ category_id: id }, name);
   };
 
   render() {
-    const { className, navs } = this.props;
+    const { className, navs, curCategory } = this.props;
     return (
       <div className={classnames(styles.nav, className)}>
-        {navs &&
-          navs.map(item => (
-            <ul key={item.title} className={styles.subNav}>
-              <p>{item.title.toUpperCase()}</p>
-              {item.value.map(subItem => (
-                <li
-                  key={subItem.value}
-                  className={classnames({
-                    [styles.current]: subItem.value === this.state.curValue
-                  })}
+        <ul className={styles.subNav}>
+          <p>CATEGORIES</p>
+          {navs &&
+            navs.map(nav => (
+              <li
+                key={nav.category_id}
+                className={classnames({
+                  [styles.current]: nav.category_id === curCategory
+                })}
+              >
+                <a
+                  onClick={() => {
+                    this.changeValue(nav.category_id, nav.name);
+                  }}
                 >
-                  <a
-                    href={`#${subItem.value}`}
-                    onClick={() => {
-                      this.changeValue(subItem.value);
-                    }}
-                  >
-                    {subItem.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ))}
+                  {nav.name}
+                </a>
+              </li>
+            ))}
+        </ul>
       </div>
     );
   }
