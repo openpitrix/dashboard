@@ -1,16 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
-import classnames from 'classnames';
 import { get } from 'lodash';
+
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder } from 'src/utils';
+import { getSessInfo, imgPlaceholder, getParseDate } from 'utils';
 
 import styles from './index.scss';
 
@@ -106,19 +104,38 @@ export default class Apps extends Component {
     );
   };
 
+  changePagination = page => {
+    const { appStore } = this.props;
+    appStore.setCurrentPage(page);
+    appStore.fetchAll({ page });
+  };
+
+  onRefresh = () => {
+    const { currentPage, fetchAll } = this.props.appStore;
+    fetchAll({ page: currentPage, search_word: '' });
+  };
+
+  onSearch = search_word => {
+    const { fetchAll, changeSearchWord } = this.props.appStore;
+    fetchAll({ search_word });
+    changeSearchWord(search_word);
+  };
+
+  onClearSearch = e => {
+    this.onSearch('');
+  };
+
   render() {
     const { appStore } = this.props;
     const {
-      onRefresh,
-      onSearch,
+      apps,
       summaryInfo,
       totalCount,
-      currentPage,
-      onChangePage,
-      apps,
       notifyMsg,
       hideMsg,
-      isLoading
+      isLoading,
+      searchWord,
+      currentPage
     } = this.props.appStore;
     const imgPhd = imgPlaceholder();
 
@@ -126,6 +143,7 @@ export default class Apps extends Component {
       {
         title: 'App Name',
         key: 'name',
+        width: '170px',
         render: obj => (
           <TdName
             name={obj.name}
@@ -144,13 +162,14 @@ export default class Apps extends Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        width: '120px',
         render: text => <Status type={text} name={text} />
       },
       {
         title: 'Categories',
         key: 'category',
         render: obj =>
-          get(obj, 'app_category_set', [])
+          get(obj, 'category_set', [])
             .map(cate => cate.name)
             .join(', ')
       },
@@ -171,7 +190,7 @@ export default class Apps extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: obj => obj.status_time
+        render: obj => getParseDate(obj.status_time)
       },
       {
         title: 'Actions',
@@ -195,20 +214,18 @@ export default class Apps extends Component {
               <Input.Search
                 className={styles.search}
                 placeholder="Search App Name or Keywords"
-                onSearch={onSearch.bind(appStore)}
+                onSearch={this.onSearch}
+                onClear={this.onClearSearch}
+                value={searchWord}
               />
-              <Button className={styles.buttonRight} onClick={onRefresh.bind(appStore)}>
+              <Button className={styles.buttonRight} onClick={this.onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
             <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
           </div>
-          <Pagination
-            onChange={onChangePage.bind(appStore)}
-            total={totalCount}
-            current={currentPage}
-          />
+          <Pagination onChange={this.changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}
       </Layout>

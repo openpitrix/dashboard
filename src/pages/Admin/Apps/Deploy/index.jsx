@@ -182,9 +182,13 @@ export default class AppDeploy extends Component {
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             Confirm
           </Button>
-          <Link to="/dashboard/apps">
-            <Button>Cancel</Button>
-          </Link>
+          <Button
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Cancel
+          </Button>
         </div>
       </form>
     );

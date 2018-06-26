@@ -45,6 +45,7 @@ export default class AppDeployStore extends Store {
       this.configEnvs[params.index1].properties.splice(params.index2, 1, item);
     }
   };
+
   @action
   changeRuntime = async runtimeId => {
     this.runtimeId = runtimeId;
@@ -90,6 +91,7 @@ export default class AppDeployStore extends Store {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }
   };
+
   getConfigData = () => {
     let cluster = {},
       env = {};

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import styles from './index.scss';
 
 export default class Loading extends PureComponent {
-  static PropTypes = {
+  static propTypes = {
     className: PropTypes.string
   };
 

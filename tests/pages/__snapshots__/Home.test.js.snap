@@ -7,16 +7,32 @@ exports[`Home basic render 1`] = `
       "appStore": Object {
         "apps": Array [],
       },
+      "categoryStore": Object {
+        "categories": Array [],
+      },
       "config": Object {},
     }
   }
 >
-  <inject-Home-with-rootStore>
+  <inject-Home>
     <Home
+      appStore={
+        Object {
+          "apps": Array [],
+        }
+      }
+      categoryStore={
+        Object {
+          "categories": Array [],
+        }
+      }
       rootStore={
         Object {
           "appStore": Object {
             "apps": Array [],
+          },
+          "categoryStore": Object {
+            "categories": Array [],
           },
           "config": Object {},
         }
@@ -87,39 +103,55 @@ exports[`Home basic render 1`] = `
         >
           <Nav
             className="nav"
+            navs={Array []}
           >
             <div
               className="nav nav"
-            />
+            >
+              <ul
+                className="subNav"
+              >
+                <p>
+                  CATEGORIES
+                </p>
+              </ul>
+            </div>
           </Nav>
           <AppList
             apps={Array []}
+            categoryApps={Array []}
             className="apps"
           >
             <div
               className="appList apps"
             >
               <CardTitle
-                more={true}
-                title="Catalog Title"
+                more={false}
+                title="Newest"
               >
                 <div
                   className="title"
                 >
-                  Catalog Title
+                  Newest
                    
                   <span
-                    className="more show"
+                    className="more"
+                    onClick={[Function]}
                   >
                     more...
                   </span>
                 </div>
               </CardTitle>
+              <div
+                className="noData"
+              >
+                No Application Data!
+              </div>
             </div>
           </AppList>
         </div>
       </div>
     </Home>
-  </inject-Home-with-rootStore>
+  </inject-Home>
 </Provider>
 `;

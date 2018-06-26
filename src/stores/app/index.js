@@ -15,6 +15,9 @@ export default class AppStore extends Store {
   @observable currentPage = 1;
   @observable isModalOpen = false;
   @observable appTitle = '';
+  @observable searchWord = '';
+  @observable currentClusterPage = 1;
+  @observable swCluster = ''; //search word cluster
 
   // menu actions logic
   @observable
@@ -37,7 +40,7 @@ export default class AppStore extends Store {
 
   @action
   async fetchAll(params = {}) {
-    let pageOffset = params.page || 1;
+    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize,
@@ -63,42 +66,33 @@ export default class AppStore extends Store {
   }
 
   @action
-  async onRefresh() {
+  onRefresh = async e => {
     await this.fetchAll();
-    this.currentPage = 1;
-  }
+  };
 
   @action
-  async onSearch(value) {
+  onSearch = async value => {
     await this.fetchAll({
       search_word: value
     });
-  }
+  };
 
   @action
-  async onChangePage(page) {
-    this.currentPage = page;
-    await this.fetchAll({
-      page: page
-    });
-  }
-
-  @action
-  async create(params = {}) {
+  create = async (params = {}) => {
     this.isLoading = true;
     await this.request.post('apps', params);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async modify(params = {}) {
+  modify = async (params = {}) => {
     this.isLoading = true;
     await this.request.patch('apps', params);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async remove(params = {}) {
+  remove = async (params = {}) => {
     this.isLoading = true;
     const result = await this.request.delete('apps', { app_id: [this.appId] });
     this.isLoading = false;
@@ -109,7 +103,7 @@ export default class AppStore extends Store {
     if (!result || !result.err) {
       await this.fetchAll();
     }
-  }
+  };
 
   @action
   changeAppCate = value => {
@@ -162,6 +156,26 @@ export default class AppStore extends Store {
     this.appId = app_id;
     this.showModal();
     this.setActionType('modify_cate');
+  };
+
+  @action
+  changeSearchWord = word => {
+    this.searchWord = word;
+  };
+
+  @action
+  setCurrentPage = page => {
+    this.currentPage = page;
+  };
+
+  @action
+  setClusterPage = page => {
+    this.currentClusterPage = page;
+  };
+
+  @action
+  changeClusterSearchWord = sw => {
+    this.swCluster = sw;
   };
 }
 

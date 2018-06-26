@@ -1,27 +1,8 @@
 @import "~scss/variables";
 
-.app{
-  min-height: $main-height;
-  padding-top: $header-height;
-  background-color: #fff;
-}
-
 .wrapper {
   width: $content-width;
   margin: 0 auto;
-}
-
-.header {
-  margin: 24px 0;
-  a {
-    line-height: 20px;
-    font-weight: 500;
-    color: $title-color;
-    transition: color .3s ease-in-out;
-    &:hover {
-      color: lighten($title-color, 20%);
-    }
-  }
 }
 
 .detail {
@@ -29,87 +10,123 @@
   width: 100%;
   vertical-align: top;
   .intro {
-    display: table-cell;
-    width: 840px;
-    .title {
+    margin: 0 24px 24px 0;
+    width: 744px;
+    padding: 0 24px;
+    border-radius: 3px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 1px rgba(48, 14, 86, 0.1);
+    .markdown{
+      margin: 22px 0 0 70px;
+    }
+    .titleOuter{
+      padding: 30px 0;
+      border-bottom: 1px solid rgba(48, 14, 86, 0.12);
+    }
+    .icon {
+      float: left;
+      width: 48px;
       height: 48px;
-      background-color: #dfdfdf;
+      border-radius: 24px;
+      border: solid 1px #e2d0f2;
+    }
+    .title {
+      margin-left: 70px;
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: bold;
+      color: $title-color;
     }
     .carousel {
-      width: 100%;
-      height: 398px;
-      margin-top: $base-margin;
-      background-color: #dfdfdf;
+      float: right;
+      line-height: 18px;
+      font-size: 14px;
+      color: $text-color;
     }
     .desc {
-      height: 84px;
-      margin-top: $base-margin + 2;
-      line-height: 1.5;
-	    color: #333333;
+      margin-left: 70px;
+      line-height: 18px;
+      font-size: 14px;
+      color: $text-color
     }
-    .versions {
-      margin-top: 44px;
-      p {
-        line-height: 19px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #2f0d56;
+    .section {
+      margin: 22px 0 0 70px;
+    }
+    .conTitle{
+      margin: 8px 0;
+      line-height: 21px;
+      font-size: 18px;
+      font-weight: 500;
+      color: $title-color;
+    }
+    .information{
+      padding-bottom: 30px;
+      dl{
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: normal;
       }
-      ul {
-        padding: 24px;
-        margin-top: 16px;
-        list-style: none;
-        border-radius: 3px;
-        background-color: rgba(255, 255, 255, 0.95);
-        border: solid 1px #c9bed7;
-        li {
-          display: block;
-          border-bottom: 1px solid #c9bed6;
-          &:last-of-type {
-            border-bottom: none;
-          }
-        }
+      dt{
+        display: inline-block;
+        width: 120px;
+        color: #667380;
+      }
+      dd{
+        display: inline-block;
+        color: #667380;
       }
     }
   }
   .meta {
     display: table-cell;
-    padding-left: 40px;
     vertical-align: top;
-    .deployBtn {
-      width: 100%;
-      box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
-    }
-    .section {
-      margin-bottom: 20px;
-      &:first-of-type {
-        margin-top: 30px;
-      }
-      .sectionTitle {
-        line-height: 22px;
-        font-size: 16px;
-        font-weight: 600;
-        color: $title-color;
-      }
-      .sectionContent {
-        margin-top: 15px;
-        line-height: 20px;
-        font-size: 14px;
-        text-align: left;
-        color: $text-color;
-        a {
-          display: block;
-          margin-bottom: 12px;
-          color: $link-color;
-          transition: color .3s ease-in-out;
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-          &:hover {
-            color: darken($link-color, 20%);
-          }
+    width: 360px;
+    .detailCard{
+      margin-bottom: 24px;
+      padding: 36px;
+      border-radius: 3px;
+      background-color: #ffffff;
+      box-shadow: 0 1px 2px 1px rgba(48, 14, 86, 0.1);
+      .item{
+        margin-bottom: 24px;
+        .title{
+          margin-bottom: 4px;
+          line-height: 24px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #300e56;
+        }
+        .value{
+         line-height: 24px;
+          font-size: 14px;
+          color: #7749ac;
         }
       }
     }
+    .deployBtn {
+      margin-top: 16px;
+      width: 100%;
+      box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
+    }
+    .versions{
+      margin-top: 36px;
+      &>p{
+        margin-bottom: 6px;
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $title-color;
+      }
+      li{
+        line-height: 30px;
+        font-size: 14px;
+        color: #7749ac;
+        .time{
+          float: right;
+          color: #4c4752;
+        }
+      }
+     }
   }
 }
