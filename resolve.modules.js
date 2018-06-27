@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
-  extensions: ['.js', '.jsx', 'scss'],
+  extensions: ['.js', '.jsx', '.scss'],
   alias: {
     scss: resolve(__dirname, 'src/scss')
   },

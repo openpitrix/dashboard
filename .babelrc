@@ -19,9 +19,7 @@
         "root": [
           "./",
           "./src/**"
-        ],
-        "alias": {
-        }
+        ]
       }
     ]
   ],
@@ -45,7 +43,7 @@
           "css-modules-transform",
           {
             "generateScopedName": "[folder]__[local]--[hash:base64:5]",
-            "extensions": [".css", ".scss"]
+            "extensions": [".scss"]
           }
         ]
       ]
