@@ -158,7 +158,10 @@ export default class RuntimeAdd extends Component {
             changeLabel={this.store.changeLabel}
             labelType="label"
           />
-          <Button className={styles.addLabel} onClick={this.store.addLabel}>
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: labels.length })}
+            onClick={this.store.addLabel}
+          >
             Add Label
           </Button>
         </div>

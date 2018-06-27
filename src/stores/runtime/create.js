@@ -67,8 +67,8 @@ export default class RuntimeCreateStore extends Store {
   };
 
   @action
-  removeLabel = () => {
-    this.labels.splice(this.labels.length - 1, 1);
+  removeLabel = index => {
+    this.labels.splice(index, 1);
   };
 
   @action
@@ -108,12 +108,12 @@ export default class RuntimeCreateStore extends Store {
     this.curLabelValue = e.target.value;
   };
 
-  @action
+  /*@action
   removeLabel = key => {
     this.labels = this.labels.filter(label => {
       return label.label_key !== key;
     });
-  };
+  };*/
 
   @action
   handleSubmit = async e => {

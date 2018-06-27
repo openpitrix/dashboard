@@ -88,8 +88,8 @@ export default class RepoCreateStore extends Store {
   };
 
   @action
-  removeSelector = () => {
-    this.selectors.splice(this.selectors.length - 1, 1);
+  removeSelector = index => {
+    this.selectors.splice(index, 1);
   };
 
   @action
@@ -101,8 +101,8 @@ export default class RepoCreateStore extends Store {
   };
 
   @action
-  removeLabel = () => {
-    this.labels.splice(this.labels.length - 1, 1);
+  removeLabel = index => {
+    this.labels.splice(index, 1);
   };
 
   @action

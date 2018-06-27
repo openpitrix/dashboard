@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import get from 'lodash/get';
+import { get } from 'lodash';
+import classnames from 'classnames';
 
 import Radio from 'components/Base/Radio';
 import Button from 'components/Base/Button';
@@ -66,10 +67,6 @@ export default class RepoAdd extends Component {
       selectors,
       accessKey,
       secretKey,
-      curLabelKey,
-      curLabelValue,
-      curSelectorKey,
-      curSelectorValue,
       isLoading
     } = this.store;
 
@@ -111,7 +108,10 @@ export default class RepoAdd extends Component {
             changeLabel={this.store.changeLabel}
             labelType="selector"
           />
-          <Button className={styles.add} onClick={this.store.addSelector}>
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: selectors.length })}
+            onClick={this.store.addSelector}
+          >
             Add Selector
           </Button>
         </div>
@@ -176,7 +176,10 @@ export default class RepoAdd extends Component {
             changeLabel={this.store.changeLabel}
             labelType="label"
           />
-          <Button className={styles.add} onClick={this.store.addLabel}>
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: labels.length })}
+            onClick={this.store.addLabel}
+          >
             Add Label
           </Button>
         </div>

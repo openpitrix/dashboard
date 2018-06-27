@@ -17,8 +17,8 @@ export default class TodoList extends PureComponent {
     changeLabel: PropTypes.func
   };
 
-  onRemove = () => {
-    this.props.onRemove();
+  onRemove = index => {
+    this.props.onRemove(index);
   };
 
   changeLabel = (event, index, type) => {
@@ -49,12 +49,14 @@ export default class TodoList extends PureComponent {
                   this.changeLabel(e, index, 'value');
                 }}
               />
-              {index === labels.length - 1 &&
-                index !== 0 && (
-                  <Button className={styles.removeBtn} onClick={this.onRemove}>
-                    Remove
-                  </Button>
-                )}
+              <Button
+                className={styles.removeBtn}
+                onClick={() => {
+                  this.onRemove(index);
+                }}
+              >
+                Remove
+              </Button>
             </li>
           );
         })}
