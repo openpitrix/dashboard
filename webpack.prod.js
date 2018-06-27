@@ -1,19 +1,11 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const postCssOptions = require('./postcss.options');
+const resolveModules = require('./resolve.modules');
 
 const distDir = resolve(__dirname, 'dist');
-
-const resolveModules = {
-  extensions: ['.js', '.jsx', 'scss'],
-  alias: {
-    scss: resolve(__dirname, 'src/scss')
-  },
-  modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
-};
 
 const clientConfig = {
   entry: './src/index.js',
@@ -35,7 +27,6 @@ const clientConfig = {
           }
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
-        // exclude: /(node_modules)/
       },
       {
         test: /\.(jpg|png|svg)(\?.+)?$/,
@@ -91,13 +82,6 @@ const clientConfig = {
     //     },
     //   },
     // }),
-    new MinifyPlugin(
-      { evaluate: false, mangle: false },
-      {
-        comments: false,
-        exclude: /node_modules/
-      }
-    ),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('production')
@@ -114,7 +98,6 @@ const serverConfig = {
     filename: 'server.js',
     libraryTarget: 'commonjs2'
   },
-  // devtool: 'eval',
   module: {
     rules: [
       {
