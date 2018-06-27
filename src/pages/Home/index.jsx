@@ -6,16 +6,22 @@ import { getScrollTop } from 'src/utils';
 import Nav from 'components/Nav';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
+import Loading from 'components/Loading';
 import styles from './index.scss';
-import { debounce, throttle } from 'lodash';
+import _, { debounce, throttle } from 'lodash';
 
 let lastTs = Date.now();
 
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  rootStore: rootStore,
+  categoryStore: rootStore.categoryStore,
+  appStore: rootStore.appStore
+}))
 @observer
 export default class Home extends Component {
-  static async onEnter({ appStore }) {
-    await appStore.fetchAll();
+  static async onEnter({ categoryStore, appStore }) {
+    await categoryStore.fetchAll();
+    await appStore.fetchApps();
   }
 
   state = {
@@ -69,15 +75,34 @@ export default class Home extends Component {
   };
 
   render() {
-    const { config, appStore, fixNav } = this.props.rootStore;
+    const { rootStore, appStore, categoryStore } = this.props;
+    const { fixNav } = rootStore;
+    const { fetchApps, categoryTitle, appCategoryId, appSearch, apps, isLoading } = appStore;
+    const navs = categoryStore.categories.slice();
+    const showApps = appCategoryId || appSearch ? apps.slice() : apps.slice(0, 3);
+    const { categories, getCategoryApps } = categoryStore;
+    const categoryApps = getCategoryApps(categories, apps);
 
     return (
       <Fragment>
-        <Banner />
+        <Banner onSearch={fetchApps} />
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
-            <Nav className={styles.nav} navs={config.navs} />
-            <AppList className={styles.apps} apps={appStore.apps} />
+            <Nav
+              className={styles.nav}
+              navs={navs}
+              curCategory={appCategoryId}
+              onChange={fetchApps}
+            />
+            <AppList
+              className={styles.apps}
+              apps={showApps}
+              categoryApps={categoryApps}
+              categoryTitle={categoryTitle}
+              appSearch={appSearch}
+              moreApps={fetchApps}
+            />
+            {isLoading && <Loading className={styles.homeLoad} />}
           </div>
         </div>
       </Fragment>

@@ -9,19 +9,18 @@ export default class Rectangle extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
-    images: PropTypes.array,
-    appTotal: PropTypes.number,
+    apps: PropTypes.array,
     id: PropTypes.string
   };
 
   render() {
-    const { title, description, images, id, appTotal } = this.props;
+    const { title, description, apps, id } = this.props;
     return (
       <div className={styles.rectangle}>
         <div className={styles.title}>{title}</div>
         <div className={styles.idShow}>{id}</div>
         <div className={styles.description}>{description}</div>
-        <AppImages images={images} appTotal={appTotal} />
+        <AppImages apps={apps} />
       </div>
     );
   }

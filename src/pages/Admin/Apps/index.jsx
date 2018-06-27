@@ -1,16 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
-import classnames from 'classnames';
 import { get } from 'lodash';
+
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder } from 'src/utils';
+import { getSessInfo, imgPlaceholder, getParseDate } from 'utils';
 
 import styles from './index.scss';
 
@@ -113,8 +111,8 @@ export default class Apps extends Component {
   };
 
   onRefresh = () => {
-    const { currentPage, fetchAll } = this.props.appStore;
-    fetchAll({ page: currentPage, search_word: '' });
+    const { currentPage, fetchAll, searchWord } = this.props.appStore;
+    fetchAll({ page: currentPage, search_word: searchWord });
   };
 
   onSearch = search_word => {
@@ -138,13 +136,13 @@ export default class Apps extends Component {
       searchWord,
       currentPage
     } = this.props.appStore;
-
     const imgPhd = imgPlaceholder();
 
     const columns = [
       {
         title: 'App Name',
         key: 'name',
+        width: '170px',
         render: obj => (
           <TdName
             name={obj.name}
@@ -163,13 +161,14 @@ export default class Apps extends Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        width: '120px',
         render: text => <Status type={text} name={text} />
       },
       {
         title: 'Categories',
         key: 'category',
         render: obj =>
-          get(obj, 'app_category_set', [])
+          get(obj, 'category_set', [])
             .map(cate => cate.name)
             .join(', ')
       },
@@ -190,7 +189,7 @@ export default class Apps extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: obj => obj.status_time
+        render: obj => getParseDate(obj.status_time)
       },
       {
         title: 'Actions',

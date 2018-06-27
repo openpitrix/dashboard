@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Link } from 'react-router-dom';
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
+import { Radio, Button, Input, Select, Slider } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Cell from './Cell/index.jsx';
+import { get } from 'lodash';
 
 import styles from './index.scss';
 import classNames from 'classnames';
@@ -13,21 +13,29 @@ import classNames from 'classnames';
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  deployStore: rootStore.appDeployStore
+  appDeployStore: rootStore.appDeployStore,
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore }, params) {
-    await appStore.fetch(params.appId);
+  static async onEnter({ appStore, appDeployStore, runtimeStore }, params) {
+    appDeployStore.appId = params.appId;
+    await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
+    await appDeployStore.fetchRuntimes();
+  }
+
+  componentDidUpdate() {
+    if (get(this.appDeployStore, 'appDeployed.cluster_id') && !this.appDeployStore.isLoading) {
+      history.back();
+    }
   }
 
   render() {
-    const { appStore, deployStore } = this.props;
-    const { notifyMsg, hideMsg } = appStore;
+    const { appDeployStore } = this.props;
+    const { notifyMsg, hideMsg } = appDeployStore;
     const title = 'Deploy app';
-
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={appDeployStore.isLoading}>
         <BackBtn label="clusters" link="/dashboard/clusters" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
@@ -53,148 +61,134 @@ export default class AppDeploy extends Component {
     );
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    //
-  };
-
   renderForm() {
+    const { appDeployStore, runtimeStore } = this.props;
+    const {
+      config,
+      configBasics,
+      configNodes,
+      configEnvs,
+      changeCell,
+      handleSubmit,
+      isLoading,
+      versions,
+      runtimes,
+      subnets,
+      versionId,
+      runtimeId,
+      subnetId,
+      changeRuntime,
+      changeVersion,
+      changeSubnet
+    } = appDeployStore;
+
     return (
-      <form className={styles.createForm} method="post" onSubmit={this.handleSubmit}>
+      <form
+        className={styles.createForm}
+        method="post"
+        onSubmit={handleSubmit.bind(appDeployStore)}
+      >
         <div className={styles.moduleTitle}>1. Basic settings</div>
-        {/*<div>*/}
-        {/*<label className={styles.name}>ID</label>*/}
-        {/*<span className={styles.showWord}>52712219520354767</span>*/}
-        {/*<p className={classNames(styles.rightShow, styles.note)}>*/}
-        {/*A unique ID of the application instance, used as the identifier before created*/}
-        {/*</p>*/}
-        {/*</div>*/}
-
-        <div>
-          <label className={styles.name}>Name</label>
-          <Input className={styles.input} name="name" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            The name of the EsgynDB service
-          </p>
-        </div>
-        <div>
+        {configBasics &&
+          configBasics.map(
+            (basic, index) =>
+              basic.key !== 'subnet' && (
+                <Cell
+                  key={basic.key}
+                  className={styles.cellModule}
+                  config={basic}
+                  type={`basic`}
+                  configIndex1={index}
+                  configIndex2={-1}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              )
+          )}
+        <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="public">Public</Radio>
-            <Radio value="private">AWS</Radio>
-            <Radio value="Alibaba">Alibaba Cloud Computing</Radio>
+          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
+            {runtimes &&
+              runtimes.map(({ runtime_id, name }) => (
+                <Radio key={runtime_id} value={runtime_id}>
+                  {name}
+                </Radio>
+              ))}
           </Radio.Group>
         </div>
-        <div>
+        <div className={styles.cellModule}>
           <label className={styles.name}>Version</label>
-          <Select className={styles.select}>
-            <Select.Option value="a 0.0.1">a 0.0.1</Select.Option>
-            <Select.Option value="https">a 0.0.2</Select.Option>
-            <Select.Option value="a 0.0.3">a 0.0.3</Select.Option>
+          <Select className={styles.select} value={versionId} onChange={changeVersion}>
+            {versions.map(({ version_id, name }) => (
+              <Select.Option key={version_id} value={version_id}>
+                {name}
+              </Select.Option>
+            ))}
           </Select>
         </div>
-        <div>
-          <label className={styles.name}>Description</label>
-          <textarea className={styles.textarea} name="description" />
-        </div>
 
-        <div className={styles.moduleTitle}>2. Node Settings</div>
-        <div>
-          <label className={styles.name}>CPU</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="1-core">1-Core</Radio>
-            <Radio value="2-core">2-Core</Radio>
-            <Radio value="4-core">1-Core</Radio>
-            <Radio value="8-core">1-Core</Radio>
-            <Radio value="16-core">16-Core</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Memory</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="32GB">32GB</Radio>
-            <Radio value="64GB">64GB</Radio>
-            <Radio value="128GB">128GB</Radio>
-            <Radio value="256GB">256GB</Radio>
-            <Radio value="512GB">512GB</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Type</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="high">High Performance</Radio>
-            <Radio value="super-high">Super-high Performance</Radio>
-          </Radio.Group>
-        </div>
-        <div>
-          <label className={styles.name}>Count</label>
-          <Input className={styles.input} name="count" type="number" />
-          <p className={classNames(styles.rightShow, styles.note)}>Range: 1 - 100</p>
-        </div>
+        {configNodes &&
+          configNodes.map((node, index1) => (
+            <Fragment key={node.key}>
+              <div className={styles.moduleTitle}>
+                {index1 + 2}. Node Settings({node.key})
+              </div>
+              {node.properties.map((conf, index2) => (
+                <Cell
+                  key={conf.key}
+                  className={styles.cellModule}
+                  config={conf}
+                  type={`node`}
+                  configIndex1={index1}
+                  configIndex2={index2}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              ))}
+            </Fragment>
+          ))}
 
-        <div className={styles.moduleTitle}>3. Vxnet Settings</div>
-        <div>
+        <div className={styles.moduleTitle}>{configNodes.length + 2}. Vxnet Settings</div>
+        <div className={styles.cellModule}>
           <label className={styles.name}>VxNet to Join</label>
-          <Select className={styles.select}>
-            <Select.Option value="vxnet-fjedgh7e">vxnet-fjedgh7e</Select.Option>
-            <Select.Option value="vxnet-fjedgh8q">vxnet-fjedgh8q</Select.Option>
-            <Select.Option value="vxnet-fjedgh9w">vxnet-fjedgh9w3</Select.Option>
+          <Select className={styles.select} value={subnetId} onChange={changeSubnet}>
+            {subnets.map(({ subnet_id, name }) => (
+              <Select.Option key={subnet_id} value={subnet_id}>
+                {subnet_id}
+              </Select.Option>
+            ))}
           </Select>
         </div>
-        <div>
-          <label className={styles.name}>Type</label>
-          <Radio.Group className={styles.showWord}>
-            <Radio value="high">High Performance</Radio>
-            <Radio value="super-high">Super-high Performance</Radio>
-          </Radio.Group>
-        </div>
 
-        {/*<div className={styles.moduleTitle}>4. Dependent Service Settings</div>*/}
-        {/*<div>*/}
-        {/*<label className={styles.name}>ZooKeeper</label>*/}
-        {/*<Input className={styles.input} name="zookeeper" />*/}
-        {/*<p className={classNames(styles.rightShow, styles.note)}>Choose a ZooKeeper to use</p>*/}
-        {/*</div>*/}
-
-        <div className={styles.moduleTitle}>5. Environment Settings</div>
-        <div>
-          <label className={styles.name}>dcs.servers.per.node</label>
-          <Select className={styles.select}>
-            <Select.Option value="8">8</Select.Option>
-            <Select.Option value="7">7</Select.Option>
-            <Select.Option value="6">6</Select.Option>
-          </Select>
-          <p className={classNames(styles.rightShow, styles.note)}>
-            Client Connection Servers per Node
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dcs.master.port</label>
-          <Input className={styles.input} name="" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            Connectivity Port for client connection
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dcs.master.info.port</label>
-          <Input className={styles.input} name="" />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            The port for the Dcs Master web UI
-          </p>
-        </div>
-        <div>
-          <label className={styles.name}>dbmgr.http.port</label>
-          <Input className={styles.input} name="" />
-          <p className={classNames(styles.rightShow, styles.note)}>EsgynDB Manager HTTP Port</p>
-        </div>
+        {configEnvs &&
+          configEnvs.map((env, index1) => (
+            <Fragment key={env.key}>
+              <div className={styles.moduleTitle}>
+                {index1 + configNodes.length + 3}.Environment Settings({env.key})
+              </div>
+              {env.properties.map((conf, index2) => (
+                <Cell
+                  key={conf.key}
+                  className={styles.cellModule}
+                  config={conf}
+                  type={`env`}
+                  configIndex={index1}
+                  configIndex2={index2}
+                  changeCell={changeCell.bind(appDeployStore)}
+                />
+              ))}
+            </Fragment>
+          ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit">
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             Confirm
           </Button>
-          <Link to="/dashboard/apps">
-            <Button>Cancel</Button>
-          </Link>
+          <Button
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Cancel
+          </Button>
         </div>
       </form>
     );

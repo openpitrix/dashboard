@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import styles from './index.scss';
 
-const Loading = () => (
-  <div className={styles.loading}>
-    <div className={styles.loadOuter}>
-      <div className={styles.loader} />
-    </div>
-  </div>
-);
+export default class Loading extends PureComponent {
+  static propTypes = {
+    className: PropTypes.string
+  };
 
-export default Loading;
+  render() {
+    const { className } = this.props;
+    return (
+      <div className={classnames(styles.loading, className)}>
+        <div className={styles.loadOuter}>
+          <div className={styles.loader} />
+        </div>
+      </div>
+    );
+  }
+}

@@ -23,7 +23,7 @@ export default [
   {
     title: 'Node Count',
     key: 'cluster_node_set',
-    render: ({ cluster_node_set }) => cluster_node_set.length
+    render: ({ cluster_node_set }) => cluster_node_set && cluster_node_set.length
   },
   {
     title: 'Runtime',

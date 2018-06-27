@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
-import { assign, get, isArray } from 'lodash';
 import Store from '../Store';
+import { assign, get } from 'lodash';
 
 export default class RuntimeStore extends Store {
   @observable runtimes = [];
@@ -11,8 +11,11 @@ export default class RuntimeStore extends Store {
   @observable runtimeId = '';
   @observable isModalOpen = false;
   @observable currentPage = 1;
-  @observable currentClusterPage = 1;
-  @observable searchWord = '';
+
+  @observable
+  handleRuntime = {
+    action: '' // delete
+  };
 
   @action.bound
   showModal = () => {
@@ -26,7 +29,7 @@ export default class RuntimeStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let pageOffset = params.page || this.currentPage;
+    let pageOffset = params.page || 1;
     let defaultParams = {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize
@@ -42,54 +45,45 @@ export default class RuntimeStore extends Store {
   };
 
   @action
-  fetch = async runtimeId => {
+  async fetch(runtimeId) {
     this.isLoading = true;
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
     this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isLoading = false;
-  };
+  }
 
   @action
-  remove = async runtimeIds => {
-    runtimeIds = runtimeIds || [this.runtimeId];
-    if (!isArray(runtimeIds)) {
-      runtimeIds = [runtimeIds];
-    }
-    const result = await this.request.delete('runtimes', { runtime_id: runtimeIds });
+  async onRefresh() {
+    await this.fetchAll();
+    this.currentPage = 1;
+  }
 
-    this.postHandleApi(result, () => {
-      this.hideModal();
-      setTimeout(async () => {
-        await this.fetchAll();
-      }, 500);
+  @action
+  async onSearch(value) {
+    await this.fetchAll({
+      search_word: value
     });
-  };
+  }
+
+  @action
+  async onChangePagination(page) {
+    this.currentPage = page;
+    await this.fetchAll({
+      page: page
+    });
+  }
+
+  @action
+  async remove(runtimeIds) {
+    this.isLoading = true;
+    await this.request.delete('runtimes', { runtime_id: runtimeIds });
+    this.isLoading = false;
+  }
 
   @action
   showDeleteRuntime = runtimeId => {
     this.runtimeId = runtimeId;
     this.showModal();
-  };
-
-  @action
-  setCurrentPage = page => {
-    this.currentPage = page;
-  };
-
-  @action
-  changePagination = page => {
-    this.setCurrentPage(page);
-    this.fetchAll({ page });
-  };
-
-  @action
-  changeSearchWord = word => {
-    this.searchWord = word;
-  };
-
-  @action
-  setClusterPage = page => {
-    this.currentClusterPage = page;
   };
 }
 

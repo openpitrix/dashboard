@@ -6,11 +6,15 @@ export default class AppStore extends Store {
   @observable apps = [];
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
+  @observable appCategoryId = '';
+  @observable categoryTitle = '';
+  @observable appSearch = '';
   @observable appId = ''; // current app_id
   @observable isLoading = false;
   @observable totalCount = 0;
-  @observable isModalOpen = false;
   @observable currentPage = 1;
+  @observable isModalOpen = false;
+  @observable appTitle = '';
   @observable searchWord = '';
   @observable currentClusterPage = 1;
   @observable swCluster = ''; //search word cluster
@@ -20,6 +24,18 @@ export default class AppStore extends Store {
   handleApp = {
     action: '', // delete, modify
     selectedCategory: '' // category id
+  };
+
+  @action
+  fetchApps = async (params = {}, title) => {
+    this.isLoading = true;
+    this.categoryTitle = title;
+    this.appCategoryId = params.category_id;
+    this.appSearch = params.search_word;
+    const result = await this.request.get('apps', params);
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
   };
 
   @action
@@ -42,12 +58,12 @@ export default class AppStore extends Store {
   };
 
   @action
-  fetch = async (appId = '') => {
+  async fetch(appId = '') {
     this.isLoading = true;
     const result = await this.request.get(`apps`, { app_id: appId });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
-  };
+  }
 
   @action
   onRefresh = async e => {
@@ -157,6 +173,7 @@ export default class AppStore extends Store {
     this.currentClusterPage = page;
   };
 
+  @action
   changeClusterSearchWord = sw => {
     this.swCluster = sw;
   };

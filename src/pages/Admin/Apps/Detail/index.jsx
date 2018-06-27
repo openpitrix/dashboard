@@ -113,8 +113,9 @@ export default class AppDetail extends Component {
   };
 
   onRefresh = () => {
-    const { currentClusterPage } = this.props.appStore;
+    const { currentClusterPage, changeClusterSearchWord } = this.props.appStore;
     const { fetchAll } = this.props.clusterStore;
+    changeClusterSearchWord('');
     fetchAll({ page: currentClusterPage, search_word: '', app_id: this.appId });
   };
 

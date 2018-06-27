@@ -20,9 +20,13 @@
       margin: 16px 0;
       line-height: 16px;
       list-style: none;
+      cursor: pointer;
       &.current {
         /*box-shadow: 1px 0 0 0 $third-text-color;*/
         border-right: 2px solid $border-dark;
+        a{
+          color: $third-text-color;
+        }
       }
       a {
         color: $second-text-color;

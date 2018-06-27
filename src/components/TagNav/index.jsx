@@ -12,12 +12,7 @@ export default class TagNav extends Component {
   };
 
   static defaultProps = {
-    changeTag: () => {},
-    curTag: ''
-  };
-
-  state = {
-    curTag: this.props.curTag
+    changeTag: () => {}
   };
 
   changeCurTag = tag => {
@@ -31,9 +26,9 @@ export default class TagNav extends Component {
       <div className={styles.tagNav}>
         {tags.map(tag => (
           <div
-            className={classnames(styles.tag, { [styles.active]: tag.name === this.state.curTag })}
+            className={classnames(styles.tag, { [styles.active]: tag.name === this.props.curTag })}
             key={tag.id}
-            onClick={this.changeCurTag.bind(null, tag.name)}
+            onClick={() => this.changeCurTag(tag.name)}
           >
             {tag.name}
           </div>

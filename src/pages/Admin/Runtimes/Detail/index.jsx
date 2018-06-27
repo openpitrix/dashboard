@@ -113,12 +113,14 @@ export default class RuntimeDetail extends Component {
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
               <RuntimeCard detail={runtimeDetail} />
-              <Popover
-                className={styles.operation}
-                content={this.renderHandleMenu(runtimeDetail.runtime_id)}
-              >
-                <Icon name="more" />
-              </Popover>
+              {runtimeDetail.status !== 'deleted' && (
+                <Popover
+                  className={styles.operation}
+                  content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+                >
+                  <Icon name="more" />
+                </Popover>
+              )}
             </div>
           </div>
           <div className={styles.rightInfo}>

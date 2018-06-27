@@ -46,16 +46,19 @@ export default class Clusters extends Component {
     if (!search_word) {
       return false;
     }
+    this.store.currentPage = 1;
     this.store.fetchAll({
       search_word: search_word
     });
   };
 
   onRefresh = ev => {
+    this.store.currentPage = 1;
     this.store.fetchAll();
   };
 
   onChangePagination = page => {
+    this.store.currentPage = page;
     this.store.fetchAll({ page });
   };
 
@@ -75,7 +78,15 @@ export default class Clusters extends Component {
   };
 
   render() {
-    const { summaryInfo, clusters, totalCount, notifyMsg, hideMsg, isLoading } = this.store;
+    const {
+      summaryInfo,
+      clusters,
+      totalCount,
+      notifyMsg,
+      hideMsg,
+      isLoading,
+      currentPage
+    } = this.props.clusterStore;
     const columns = [
       {
         title: 'Cluster Name',
@@ -106,7 +117,7 @@ export default class Clusters extends Component {
       {
         title: 'Node Count',
         key: 'node_count',
-        render: cl => cl.cluster_node_set.length
+        render: cl => cl.cluster_node_set && cl.cluster_node_set.length
       },
       {
         title: 'User',
@@ -131,7 +142,6 @@ export default class Clusters extends Component {
         )
       }
     ];
-
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
@@ -153,7 +163,7 @@ export default class Clusters extends Component {
 
             <Table className={styles.tableOuter} columns={columns} dataSource={clusters.toJSON()} />
           </div>
-          <Pagination onChange={this.onChangePagination} total={totalCount} />
+          <Pagination onChange={this.onChangePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderDeleteModal()}
       </Layout>

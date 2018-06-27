@@ -12,11 +12,13 @@ import Layout, { Dialog } from 'components/Layout/Admin';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
+  appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore
 }))
 @observer
 export default class Categories extends Component {
-  static async onEnter({ categoryStore }) {
+  static async onEnter({ categoryStore, appStore }) {
+    await appStore.fetchApps();
     await categoryStore.fetchAll();
   }
 
@@ -106,9 +108,11 @@ export default class Categories extends Component {
   // }
 
   render() {
-    const { categoryStore } = this.props;
-    const { notifyMsg, hideMsg, showCreateCategory, isLoading } = categoryStore;
+    const { appStore, categoryStore } = this.props;
+    const { notifyMsg, hideMsg, showCreateCategory, isLoading, getCategoryApps } = categoryStore;
     const categories = toJS(categoryStore.categories);
+    const apps = toJS(appStore.apps);
+    const categoryApps = getCategoryApps(categories, apps);
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
@@ -129,14 +133,14 @@ export default class Categories extends Component {
             </div>
           </div>
 
-          {categories.map(data => (
+          {categoryApps.map(data => (
             <div key={data.category_id} className={styles.categoryContent}>
               <Rectangle
                 id={data.category_id}
                 title={data.name}
                 idNo={data.idNo}
                 description={data.description}
-                images={data.images}
+                apps={data.apps}
               />
               <div className={styles.handlePop}>
                 <Popover content={this.renderHandleMenu(data)}>

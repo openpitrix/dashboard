@@ -40,7 +40,9 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Category</span>
-            {appDetail.category}
+            {get(appDetail, 'category_set', [])
+              .map(cate => cate.name)
+              .join(', ')}
           </li>
           <li>
             <span className={styles.name}>Developer</span>

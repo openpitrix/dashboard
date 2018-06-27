@@ -18,6 +18,10 @@ describe('Home', () => {
       config: {},
       appStore: {
         apps: []
+      },
+      categoryStore: {
+        getCategoryApps: () => {},
+        categories: []
       }
     });
   });
