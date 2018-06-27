@@ -74,33 +74,15 @@ export default class Home extends Component {
     }
   };
 
-  getCategoryApps = (categories, apps, appCategoryId) => {
-    let results = [];
-    for (let i = 0; i < categories.length; i++) {
-      categories[i].apps = null;
-      for (let j = 0; j < apps.length; j++) {
-        let categorySet = apps[j].category_set;
-        if (_.find(categorySet, { category_id: categories[i].category_id })) {
-          if (!categories[i].apps) categories[i].apps = [];
-          categories[i].apps.push(apps[j]);
-        }
-      }
-      if (appCategoryId === categories[i].category_id && categories[i].apps) {
-        categories[i].showFlag = true;
-      } else {
-        categories[i].showFlag = false;
-      }
-      results.push(categories[i]);
-    }
-    return results;
-  };
-
   render() {
-    const { appStore, fixNav, categoryStore } = this.props;
+    const { rootStore, appStore, categoryStore } = this.props;
+    const { fixNav } = rootStore;
     const { fetchApps, categoryTitle, appCategoryId, appSearch, apps, isLoading } = appStore;
     const navs = categoryStore.categories.slice();
     const showApps = appCategoryId || appSearch ? apps.slice() : apps.slice(0, 3);
-    const categoryApps = this.getCategoryApps(categoryStore.categories, apps, appCategoryId);
+    const { categories, getCategoryApps } = categoryStore;
+    const categoryApps = getCategoryApps(categories, apps);
+
     return (
       <Fragment>
         <Banner onSearch={fetchApps} />

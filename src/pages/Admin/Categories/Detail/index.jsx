@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { getParseDate } from 'utils';
+import { get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -25,15 +26,31 @@ export default class CategoryDetail extends Component {
 
   onSearch = async name => {
     const { categoryStore, appStore } = this.props;
-    await appStore.fetchAll({
+    const { fetchAll, changeSearchWord } = appStore;
+    await fetchAll({
       category_id: categoryStore.category.category_id,
       search_word: name
     });
+    changeSearchWord(name);
+  };
+
+  onClearSearch = async e => {
+    await this.onSearch();
   };
 
   onRefresh = async () => {
     const { categoryStore, appStore } = this.props;
-    await appStore.fetchAll({ category_id: categoryStore.category.category_id });
+    const { fetchAll, searchWord } = appStore;
+    await fetchAll({
+      category_id: categoryStore.category.category_id,
+      search_word: searchWord
+    });
+  };
+
+  changePagination = page => {
+    const { appStore } = this.props;
+    appStore.setCurrentPage(page);
+    appStore.fetchAll({ page });
   };
 
   changeApps = async current => {
@@ -101,10 +118,8 @@ export default class CategoryDetail extends Component {
 
   render() {
     const { categoryStore, appStore } = this.props;
-    const { category } = categoryStore;
+    const { category, notifyMsg, hideMsg, isLoading } = categoryStore;
     const apps = toJS(appStore.apps);
-
-    const { notifyMsg, hideMsg } = this.props.categoryStore;
 
     const columns = [
       {
@@ -114,7 +129,8 @@ export default class CategoryDetail extends Component {
       },
       {
         title: 'Latest Version',
-        key: 'latest_version'
+        key: 'latest_version',
+        render: obj => get(obj, 'latest_app_version.name', '')
       },
       {
         title: 'Status',
@@ -123,7 +139,8 @@ export default class CategoryDetail extends Component {
       },
       {
         title: 'Developer',
-        key: 'owner'
+        key: 'owner',
+        render: obj => obj.owner
       },
       {
         title: 'Visibility',
@@ -134,7 +151,7 @@ export default class CategoryDetail extends Component {
     const curTag = 'Apps';
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <BackBtn label="categories" link="/dashboard/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
@@ -152,7 +169,9 @@ export default class CategoryDetail extends Component {
                 <Input.Search
                   className={styles.search}
                   placeholder="Search & Filter"
+                  value={appStore.searchWord}
                   onSearch={this.onSearch}
+                  onClear={this.onClearSearch}
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />

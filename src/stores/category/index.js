@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, assign, isObject, isArray, isEmpty } from 'lodash';
+import { get, assign, isObject, isArray, isEmpty, find } from 'lodash';
 import Store from '../Store';
 
 export default class CategoryStore extends Store {
@@ -144,4 +144,20 @@ export default class CategoryStore extends Store {
     this.locale = '';
     this.hideModal();
   }
+
+  getCategoryApps = (categories, apps) => {
+    let results = [];
+    for (let i = 0; i < categories.length; i++) {
+      categories[i].apps = null;
+      for (let j = 0; j < apps.length; j++) {
+        let categorySet = apps[j].category_set;
+        if (find(categorySet, { category_id: categories[i].category_id })) {
+          if (!categories[i].apps) categories[i].apps = [];
+          categories[i].apps.push(apps[j]);
+        }
+      }
+      results.push(categories[i]);
+    }
+    return results;
+  };
 }

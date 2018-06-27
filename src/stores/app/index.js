@@ -39,7 +39,7 @@ export default class AppStore extends Store {
   };
 
   @action
-  async fetchAll(params = {}) {
+  fetchAll = async (params = {}) => {
     let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
@@ -55,7 +55,7 @@ export default class AppStore extends Store {
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
   async fetch(appId = '') {

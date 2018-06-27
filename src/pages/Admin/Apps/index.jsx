@@ -111,8 +111,8 @@ export default class Apps extends Component {
   };
 
   onRefresh = () => {
-    const { currentPage, fetchAll } = this.props.appStore;
-    fetchAll({ page: currentPage, search_word: '' });
+    const { currentPage, fetchAll, searchWord } = this.props.appStore;
+    fetchAll({ page: currentPage, search_word: searchWord });
   };
 
   onSearch = search_word => {
@@ -126,7 +126,6 @@ export default class Apps extends Component {
   };
 
   render() {
-    const { appStore } = this.props;
     const {
       apps,
       summaryInfo,

@@ -13,7 +13,6 @@ export default class AppList extends PureComponent {
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
     appSearch: PropTypes.string,
-    appSearch: PropTypes.string,
     moreApps: PropTypes.func
   };
 
@@ -38,7 +37,7 @@ export default class AppList extends PureComponent {
         {categoryShow &&
           categoryApps.map(data => (
             <Fragment key={data.category_id}>
-              {data.showFlag && (
+              {data.apps && (
                 <CardTitle
                   categoryId={data.category_id}
                   title={data.name}
@@ -46,7 +45,7 @@ export default class AppList extends PureComponent {
                   moreApps={moreApps}
                 />
               )}
-              {data.showFlag &&
+              {data.apps &&
                 data.apps.slice(0, 6).map(app => (
                   <Link key={app.app_id} to={`/app/${app.app_id}`}>
                     <Card icon={app.icon} name={app.name} desc={app.description} fold={true} />

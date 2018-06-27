@@ -8,12 +8,12 @@
   min-height: $main-height;
   margin: 0 auto;
   width: $content-width;
-  .homeLoad{
+  .homeLoad {
     position: absolute;
     top: 0;
     left: 192px;
     background-color: #fff;
-    & >div{
+    & > div {
       top: 100px;
     }
   }
@@ -23,19 +23,20 @@
     left: 0;
     width: $nav-width;
     height: 100%;
-    border-right: 2px solid $border;
   }
   .apps {
-    margin-left: 288px;
-    padding-bottom: 95px;
+    margin-left: 192px;
+    padding-left: 94px;
+    padding-bottom: 64px;
+    min-height: calc(100vh - #{$footer-height});
+    border-left: 2px solid $border;
   }
-  &.fixNav {
-    height: auto;
-    .nav {
-      position: fixed;
-      top: $header-height;
-      left: auto;
-      height: 100%;
-    }
+}
+.fixNav {
+  div[class*='_nav'] {
+    position: fixed;
+    top: $header-height;
+    left: auto;
+    height: $main-height;
   }
 }
