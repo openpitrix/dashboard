@@ -41,7 +41,7 @@ export default class RepoCreateStore extends Store {
 
   @action
   changeProviders = providers => {
-    this.providers = providers;
+    this.providers = [providers];
   };
 
   @action
@@ -80,46 +80,38 @@ export default class RepoCreateStore extends Store {
   };
 
   @action
-  addSelector = selector => {
-    if (!(this.curSelectorKey && this.curSelectorValue)) {
-      return this.showMsg('please input selector key and value');
-    }
-    if (_.find(this.selectors, { label_key: this.curSelectorKey })) {
-      return this.showMsg('selector key already exists');
-    }
-
+  addSelector = () => {
     this.selectors.push({
-      label_key: this.curSelectorKey.trim(),
-      label_value: this.curSelectorValue.trim()
+      label_key: '',
+      label_value: ''
     });
-
-    this.curSelectorKey = '';
-    this.curSelectorValue = '';
   };
 
   @action
-  removeSelector = key => {
-    this.selectors = this.selectors.filter(selector => {
-      return selector.label_key !== key;
-    });
+  removeSelector = index => {
+    this.selectors.splice(index, 1);
   };
 
   @action
   addLabel = () => {
-    if (!(this.curLabelKey && this.curLabelValue)) {
-      return this.showMsg('please input label key and value');
-    }
-    if (_.find(this.labels, { label_key: this.curLabelKey })) {
-      return this.showMsg('label key already exists');
-    }
-
     this.labels.push({
-      label_key: this.curLabelKey.trim(),
-      label_value: this.curLabelValue.trim()
+      label_key: '',
+      label_value: ''
     });
+  };
 
-    this.curLabelKey = '';
-    this.curLabelValue = '';
+  @action
+  removeLabel = index => {
+    this.labels.splice(index, 1);
+  };
+
+  @action
+  changeLabel = (value, index, type, labelType) => {
+    if (labelType === 'label') {
+      this.labels[index]['label_' + type] = value;
+    } else if (labelType === 'selector') {
+      this.selectors[index]['label_' + type] = value;
+    }
   };
 
   @action
@@ -132,13 +124,6 @@ export default class RepoCreateStore extends Store {
     this.curLabelValue = e.target.value;
   };
 
-  @action
-  removeLabel = key => {
-    this.labels = this.labels.filter(label => {
-      return label.label_key !== key;
-    });
-  };
-
   toQueryString(items) {
     return items.map(item => [item.label_key, item.label_value].join('=')).join('&');
   }
@@ -146,17 +131,31 @@ export default class RepoCreateStore extends Store {
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    this.isLoading = true;
     const { providers, visibility, protocolType, accessKey, secretKey, labels, selectors } = this;
 
     const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
-      this.isLoading = false;
       return this.showMsg('please select at least one provider');
     }
 
-    if (_.isEmpty(selectors)) {
+    for (let i = 0; i < this.selectors.length; i++) {
+      let item = this.selectors[i];
+      if (item.label_key && _.isEmpty(item.label_value)) {
+        return this.showMsg('Runtime Selector missing value');
+      } else if (item.label_value && _.isEmpty(item.label_key)) {
+        return this.showMsg('Runtime Selector missing key');
+      }
+    }
+    for (let i = 0; i < this.labels.length; i++) {
+      let item = this.labels[i];
+      if (item.label_key && _.isEmpty(item.label_value)) {
+        return this.showMsg('Labels missing value');
+      } else if (item.label_value && _.isEmpty(item.label_key)) {
+        return this.showMsg('Labels missing key');
+      }
+    }
+    /* if (_.isEmpty(selectors)) {
       this.isLoading = false;
       return this.showMsg('missing selectors');
     }
@@ -164,7 +163,7 @@ export default class RepoCreateStore extends Store {
     if (_.isEmpty(labels)) {
       this.isLoading = false;
       return this.showMsg('missing labels');
-    }
+    }*/
 
     if (protocolType === 's3') {
       data.credential = JSON.stringify({
@@ -178,7 +177,6 @@ export default class RepoCreateStore extends Store {
       }
 
       if (!s3UrlPattern.test(data.url)) {
-        this.isLoading = false;
         return this.showMsg('invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo');
       }
     } else {
@@ -213,6 +211,7 @@ export default class RepoCreateStore extends Store {
       type: protocolType
     });
 
+    this.isLoading = true;
     if (this.repoId) {
       _.extend(data, { repo_id: this.repoId });
       await this.modifyRepo(data);
@@ -231,9 +230,7 @@ export default class RepoCreateStore extends Store {
       this.showMsg(errDetail);
     }
 
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
+    this.isLoading = false;
   };
 
   @action
@@ -261,10 +258,10 @@ export default class RepoCreateStore extends Store {
     this.protocolType = 'http';
     this.accessKey = '';
     this.secretKey = '';
-    this.labels = [];
+    this.labels = [{ label_key: '', label_value: '' }];
     this.curLabelKey = '';
     this.curLabelValue = '';
-    this.selectors = [];
+    this.selectors = [{ label_key: '', label_value: '' }];
     this.curSelectorKey = '';
     this.curSelectorValue = '';
     this.repoCreated = null;
@@ -281,13 +278,15 @@ export default class RepoCreateStore extends Store {
       this.protocolType = detail.type;
       this.providers = detail.providers;
       this.visibility = detail.visibility;
-      this.labels = detail.labels || [];
+      this.labels = detail.labels || [{ label_key: '', label_value: '' }];
       this.selectors = detail.selectors || [];
       if (this.selectors.length > 0) {
         this.selectors = this.selectors.map(item => ({
           label_key: item.selector_key,
           label_value: item.selector_value
         }));
+      } else {
+        this.selectors = [{ label_key: '', label_value: '' }];
       }
     }
   };

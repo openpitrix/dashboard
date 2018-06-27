@@ -9,7 +9,6 @@ form.createForm {
   }
   .name{
     display: inline-block;
-    //float: left;
     margin-right: 16px;
     width: 110px;
     margin-left: 24px;
@@ -17,6 +16,10 @@ form.createForm {
     font-weight: bold;
     color: $title-color;
     text-align: right;
+  }
+  .fl{
+    float: left;
+    line-height: 32px;
   }
   .input{
     width: 280px;
@@ -41,6 +44,9 @@ form.createForm {
   .add{
     display: inline-block;
     font-weight: bold;
+  }
+  .addBottom{
+    margin-left: 150px;
   }
   .select{
     width: 86px;

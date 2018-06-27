@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import get from 'lodash/get';
+import { get } from 'lodash';
+import classnames from 'classnames';
 
-import Checkbox from 'components/Base/Checkbox';
 import Radio from 'components/Base/Radio';
 import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
@@ -67,10 +67,6 @@ export default class RepoAdd extends Component {
       selectors,
       accessKey,
       secretKey,
-      curLabelKey,
-      curLabelValue,
-      curSelectorKey,
-      curSelectorValue,
       isLoading
     } = this.store;
 
@@ -98,33 +94,26 @@ export default class RepoAdd extends Component {
 
         <div>
           <label className={styles.name}>Runtime Provider</label>
-          <Checkbox.Group
-            values={providers && providers.slice()}
-            onChange={this.store.changeProviders}
-          >
-            <Checkbox value="qingcloud">QingCloud</Checkbox>
-            <Checkbox value="kubernetes">Kubernetes</Checkbox>
-          </Checkbox.Group>
+          <Radio.Group value={providers[0]} onChange={this.store.changeProviders}>
+            <Radio value="qingcloud">QingCloud</Radio>
+            <Radio value="kubernetes">Kubernetes</Radio>
+          </Radio.Group>
         </div>
 
         <div>
-          <label className={styles.name}>Runtime Selector</label>
-          <Input
-            className={styles.inputSmall}
-            placeholder="Key"
-            value={curSelectorKey}
-            onChange={this.store.changeSelectorKey}
+          <label className={classNames(styles.name, styles.fl)}>Runtime Selector</label>
+          <TodoList
+            labels={selectors && selectors.slice()}
+            onRemove={this.store.removeSelector}
+            changeLabel={this.store.changeLabel}
+            labelType="selector"
           />
-          <Input
-            className={styles.inputSmall}
-            placeholder="Value"
-            value={curSelectorValue}
-            onChange={this.store.changeSelectorValue}
-          />
-          <Button className={styles.add} onClick={this.store.addSelector}>
-            Add
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: selectors.length })}
+            onClick={this.store.addSelector}
+          >
+            Add Selector
           </Button>
-          <TodoList labels={selectors && selectors.slice()} onRemove={this.store.removeSelector} />
         </div>
         <div>
           <label className={styles.name}>URL</label>
@@ -180,23 +169,19 @@ export default class RepoAdd extends Component {
           />
         </div>
         <div>
-          <label className={styles.name}>Labels</label>
-          <Input
-            className={styles.inputSmall}
-            placeholder="Key"
-            value={curLabelKey}
-            onChange={this.store.changeLabelKey}
+          <label className={classNames(styles.name, styles.fl)}>Labels</label>
+          <TodoList
+            labels={labels && labels.slice()}
+            onRemove={this.store.removeLabel}
+            changeLabel={this.store.changeLabel}
+            labelType="label"
           />
-          <Input
-            className={styles.inputSmall}
-            placeholder="Value"
-            value={curLabelValue}
-            onChange={this.store.changeLabelValue}
-          />
-          <Button className={styles.add} onClick={this.store.addLabel}>
-            Add
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: labels.length })}
+            onClick={this.store.addLabel}
+          >
+            Add Label
           </Button>
-          <TodoList labels={labels && labels.slice()} onRemove={this.store.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>

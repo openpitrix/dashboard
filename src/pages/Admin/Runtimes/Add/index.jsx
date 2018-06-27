@@ -151,23 +151,19 @@ export default class RuntimeAdd extends Component {
           />
         </div>
         <div>
-          <label className={styles.name}>Labels</label>
-          <Input
-            className={styles.inputSmall}
-            placeholder="Key"
-            value={curLabelKey}
-            onChange={this.store.changeLabelKey}
+          <label className={classNames(styles.name, styles.fl)}>Labels</label>
+          <TodoList
+            labels={labels && labels.slice()}
+            onRemove={this.store.removeLabel}
+            changeLabel={this.store.changeLabel}
+            labelType="label"
           />
-          <Input
-            className={styles.inputSmall}
-            placeholder="Value"
-            value={curLabelValue}
-            onChange={this.store.changeLabelValue}
-          />
-          <Button className={styles.add} onClick={this.store.addLabel}>
-            Add
+          <Button
+            className={classNames(styles.add, { [styles.addBottom]: labels.length })}
+            onClick={this.store.addLabel}
+          >
+            Add Label
           </Button>
-          <TodoList labels={labels && labels.slice()} onRemove={this.store.removeLabel} />
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">
