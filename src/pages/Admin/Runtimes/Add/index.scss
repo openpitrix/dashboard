@@ -20,6 +20,10 @@ form.createForm {
     color: $title-color;
     text-align: right;
   }
+  .fl{
+    float: left;
+    line-height: 32px;
+  }
   .input{
     width: 280px;
   }
@@ -45,6 +49,11 @@ form.createForm {
   }
   .add{
     display: inline-block;
+    font-weight: bold;
+  }
+  .addLabel{
+    display: inline-block;
+    margin-left: 150px;
     font-weight: bold;
   }
   .select{

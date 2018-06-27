@@ -14,7 +14,7 @@ export default class RuntimeCreateStore extends Store {
   @observable secretKey = '';
   @observable curLabelKey = '';
   @observable curLabelValue = '';
-  @observable labels = [];
+  @observable labels = [{ label_key: '', label_value: '' }];
   @observable runtimeCreated = null;
   @observable isLoading = false;
 
@@ -60,6 +60,28 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   addLabel = () => {
+    this.labels.push({
+      label_key: '',
+      label_value: ''
+    });
+  };
+
+  @action
+  removeLabel = () => {
+    this.labels.splice(this.labels.length - 1, 1);
+  };
+
+  @action
+  changeLabel = (value, index, type, labelType) => {
+    if (labelType === 'label') {
+      this.labels[index]['label_' + type] = value;
+    } else if (labelType === 'selector') {
+      this.selectors[index]['label_' + type] = value;
+    }
+  };
+
+  /* @action
+  addLabel = () => {
     if (!(this.curLabelKey && this.curLabelValue)) {
       return this.showMsg('please input label key and value');
     }
@@ -74,7 +96,7 @@ export default class RuntimeCreateStore extends Store {
 
     this.curLabelKey = '';
     this.curLabelValue = '';
-  };
+  };*/
 
   @action
   changeLabelKey = e => {
@@ -96,14 +118,17 @@ export default class RuntimeCreateStore extends Store {
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    this.isLoading = true;
     const { provider, zone, labels } = this;
 
     const data = getFormData(e.target);
 
-    if (_.isEmpty(labels)) {
-      this.isLoading = false;
-      return this.showMsg('missing labels');
+    for (let i = 0; i < this.labels.length; i++) {
+      let item = this.labels[i];
+      if (_.isEmpty(item.label_key)) {
+        return this.showMsg('Labels missing key');
+      } else if (_.isEmpty(item.label_value)) {
+        return this.showMsg('Labels missing value');
+      }
     }
 
     if (provider === 'qingcloud') {
@@ -126,6 +151,7 @@ export default class RuntimeCreateStore extends Store {
 
     _.extend(data, { provider, zone });
 
+    this.isLoading = true;
     if (this.runtimeId) {
       _.extend(data, { runtime_id: this.runtimeId });
       await this.modifyRuntime(data);
@@ -134,9 +160,9 @@ export default class RuntimeCreateStore extends Store {
     }
 
     if (_.get(this, 'runtimeCreated.runtime')) {
-      this.showMsg('Create runtime successfully');
+      //this.showMsg('Create runtime successfully');
     } else if (_.get(this, 'runtimeCreated.runtime_id')) {
-      this.showMsg('Modify runtime successfully');
+      //this.showMsg('Modify runtime successfully');
       this.runtimeCreated.runtime = this.runtimeCreated.runtime_id;
     } else {
       let { errDetail } = this.runtimeCreated;
@@ -144,9 +170,10 @@ export default class RuntimeCreateStore extends Store {
     }
 
     // disable re-submit form in 2 sec
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.isLoading = false;
-    }, 2000);
+    }, 2000);*/
+    this.isLoading = false;
   };
 
   @action
@@ -173,7 +200,7 @@ export default class RuntimeCreateStore extends Store {
     this.secretKey = '';
     this.curLabelKey = '';
     this.curLabelValue = '';
-    this.labels = [];
+    this.labels = [{ label_key: '', label_value: '' }];
     this.runtimeCreated = null;
     this.isLoading = false;
   }
@@ -190,7 +217,7 @@ export default class RuntimeCreateStore extends Store {
       const credential = JSON.parse(detail.runtime_credential);
       this.accessKey = credential.access_key_id;
       this.secretKey = credential.secret_access_key;
-      this.labels = detail.labels || [];
+      this.labels = detail.labels || [{ label_key: '', label_value: '' }];
     }
   };
 }
