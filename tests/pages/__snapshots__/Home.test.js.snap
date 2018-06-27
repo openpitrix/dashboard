@@ -9,6 +9,7 @@ exports[`Home basic render 1`] = `
       },
       "categoryStore": Object {
         "categories": Array [],
+        "getCategoryApps": [Function],
       },
       "config": Object {},
     }
@@ -24,6 +25,7 @@ exports[`Home basic render 1`] = `
       categoryStore={
         Object {
           "categories": Array [],
+          "getCategoryApps": [Function],
         }
       }
       rootStore={
@@ -33,6 +35,7 @@ exports[`Home basic render 1`] = `
           },
           "categoryStore": Object {
             "categories": Array [],
+            "getCategoryApps": [Function],
           },
           "config": Object {},
         }
@@ -119,7 +122,6 @@ exports[`Home basic render 1`] = `
           </Nav>
           <AppList
             apps={Array []}
-            categoryApps={Array []}
             className="apps"
           >
             <div

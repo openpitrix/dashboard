@@ -20,6 +20,7 @@ describe('Home', () => {
         apps: []
       },
       categoryStore: {
+        getCategoryApps: () => {},
         categories: []
       }
     });
