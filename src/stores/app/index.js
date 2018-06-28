@@ -6,7 +6,6 @@ export default class AppStore extends Store {
   @observable apps = [];
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
-  @observable appCategoryId = '';
   @observable categoryTitle = '';
   @observable appSearch = '';
   @observable appId = ''; // current app_id
@@ -30,7 +29,6 @@ export default class AppStore extends Store {
   fetchApps = async (params = {}, title) => {
     this.isLoading = true;
     this.categoryTitle = title;
-    this.appCategoryId = params.category_id;
     this.appSearch = params.search_word;
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
