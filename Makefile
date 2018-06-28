@@ -5,6 +5,10 @@ build: Dockerfile
 	@echo building image..
 	docker build -t op/web-app .
 
+ci-build: Dockerfile
+	@echo mimic docker auto build
+	docker build -t op/web-app-auto-build . --build-arg BUILD_ENV=docker
+
 run:
 	@echo up and running openpitrix-dashboard
 	docker run -p 8000:8000 --name openpitrix-dashboard op/web-app

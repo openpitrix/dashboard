@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, assign, isObject, isArray, isEmpty, find } from 'lodash';
+import _, { get, assign, isObject, isArray, isEmpty, find } from 'lodash';
 import Store from '../Store';
 
 export default class CategoryStore extends Store {
@@ -145,19 +145,24 @@ export default class CategoryStore extends Store {
     this.hideModal();
   }
 
-  getCategoryApps = (categories, apps) => {
-    let results = [];
-    for (let i = 0; i < categories.length; i++) {
-      categories[i].apps = null;
-      for (let j = 0; j < apps.length; j++) {
-        let categorySet = apps[j].category_set;
-        if (find(categorySet, { category_id: categories[i].category_id })) {
-          if (!categories[i].apps) categories[i].apps = [];
-          categories[i].apps.push(apps[j]);
-        }
-      }
-      results.push(categories[i]);
+  getCategoryApps = (categories = [], apps = []) => {
+    if (categories.toJSON) {
+      categories = categories.toJSON();
     }
-    return results;
+    if (apps.toJSON) {
+      apps = apps.toJSON();
+    }
+
+    categories = categories.map(cate => {
+      cate = _.pick(cate, ['category_id', 'name']);
+
+      let cate_apps = apps.filter(app => {
+        return _.find(app.category_set, { category_id: cate.category_id });
+      });
+
+      return { apps: cate_apps, ...cate };
+    });
+
+    return categories;
   };
 }

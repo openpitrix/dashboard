@@ -40,7 +40,6 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "dev:vendor": "NODE_ENV=development webpack --config webpack.vendor.js --progress",
     "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
     "dev:serve": "DEBUG=koa-*,-koa-views BABEL_ENV=server COMPILE_CLIENT=true NODE_ENV=development node server/server.js",
     "server": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development node server/server.js",
