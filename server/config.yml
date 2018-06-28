@@ -1,18 +1,18 @@
 ---
 # dashboard server side global configuration
 
-http:
-  hostname: localhost
-  port: 8000
-  favicon: src/assets/favicon.ico
-  static:
-    /assets: src/assets
-    development:
-      /build: build
-    production:
-      /dist: dist
+host: 127.0.0.1
+port: 8000
 
-# mock server url
+favicon: src/assets/favicon.ico
+static:
+  /assets: src/assets
+  development:
+    /build: build
+  production:
+    /dist: dist
+
+# mock server
 serverUrl: http://139.198.11.221:7300/mock/5a7acd265fbf5132a58d61e4
 
 app:
