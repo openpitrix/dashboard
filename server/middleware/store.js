@@ -1,7 +1,7 @@
+const url = require('url');
 const { useStaticRendering } = require('mobx-react');
-// const { toJS } = require('mobx');
 const { getServerConfig } = require('lib/utils');
-const RootStore = require('stores/RootStore').default; // import esm
+const RootStore = require('stores/RootStore').default;
 
 useStaticRendering(true);
 
@@ -19,12 +19,15 @@ module.exports = async (ctx, next) => {
   ctx.store.config = getServerConfig('app');
 
   // attach api server to ctx
-  let serverUrl = (getServerConfig('serverUrl') || '').trim();
-  let apiVer = (getServerConfig('apiVersion') || '').trim();
-  serverUrl = serverUrl.endsWith('/') ? serverUrl.substr(0, serverUrl.length - 1) : serverUrl;
-  apiVer = apiVer.startsWith('/') ? apiVer.substr(1) : apiVer;
+  let serverUrl = getServerConfig('serverUrl') || process.env.serverUrl || 'http://localhost:3000';
+  let apiVer = getServerConfig('apiVersion') || process.env.apiVersion || 'v1';
 
-  ctx.store.apiServer = `${serverUrl}/${apiVer}`;
+  if (!serverUrl.startsWith('http')) {
+    serverUrl = 'http://' + serverUrl;
+  }
+
+  // url.resolve need first string starts with http
+  ctx.store.apiServer = url.resolve(serverUrl, apiVer);
 
   await next();
 };

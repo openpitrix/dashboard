@@ -55,7 +55,7 @@
     "precommit": "yarn test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
-    "dbg": "DEBUG=koa-router BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js"
+    "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [

@@ -1,12 +1,10 @@
 const Router = require('koa-router');
 const agent = require('superagent');
-// const log=require('../log');
 
 const router = new Router();
 
 const header = {
   Accept: 'application/json',
-  // 'Content-Type': 'application/x-www-form-urlencoded'
   'Content-Type': 'application/json'
 };
 
@@ -17,7 +15,17 @@ router.post('/api/*', async ctx => {
     0,
     endpoint.indexOf('?') > -1 ? endpoint.indexOf('?') : endpoint.length
   );
-  let url = [ctx.store.apiServer, endpoint].join('/');
+
+  if (endpoint.startsWith('/')) {
+    endpoint = endpoint.substring(1);
+  }
+
+  let apiServer = ctx.store.apiServer;
+  if (apiServer.endsWith('/')) {
+    apiServer = apiServer.substring(0, apiServer.length - 1);
+  }
+
+  let url = [apiServer, endpoint].join('/');
 
   let body = ctx.request.body;
   let forwardMethod = body.method || 'get';
