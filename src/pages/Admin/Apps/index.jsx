@@ -39,11 +39,13 @@ export default class Apps extends Component {
       onSubmit;
 
     if (handleApp.action === 'delete_app') {
+      modalTitle = 'Delete App';
       onSubmit = appStore.remove.bind(appStore);
       modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
     }
 
     if (handleApp.action === 'modify_cate') {
+      modalTitle = 'Modify App Category';
       const categories = categoryStore.categories.toJSON();
       onSubmit = appStore.modifyCategoryById.bind(appStore);
 
