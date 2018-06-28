@@ -178,13 +178,13 @@ export default class AppDeployStore extends Store {
 
   @action
   async fetchFiles(versionId) {
-    this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId
     });
     this.files = get(result, 'files', {});
     if (this.files['config.json']) {
       const config = JSON.parse(Base64.decode(this.files['config.json']));
+      console.log('config:', config);
       this.configBasics = _.filter(_.get(config, 'properties[0].properties'), function(obj) {
         return !obj.properties;
       });
@@ -197,7 +197,6 @@ export default class AppDeployStore extends Store {
     } else {
       this.showMsg('Not find config file!');
     }
-    this.isLoading = false;
   }
 
   @action

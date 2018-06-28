@@ -1,11 +1,12 @@
 @import '~scss/variables';
 
 .reposList{
+  margin-bottom: 22px;
   li{
     box-sizing: border-box;
     margin-bottom: 2px;
-    padding: 14px 20px 14px 16px;
-    height: 58px;
+    padding: 13px 20px 13px 16px;
+    height: 56px;
     border-radius: 3px;
     border: 1px solid $border-gray-li;
     .icon{
@@ -32,12 +33,11 @@
       }
     }
   }
-
-  .type {
-    margin: 12px 0 8px;
-    font-size: 12px;
-    color: $grey-word;
-  }
+}
+.type {
+  margin: 12px 0 6px;
+  font-size: 12px;
+  color: $grey-word;
 }
 .reposBg{
   li {

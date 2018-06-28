@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { get } from 'lodash';
 
 import Status from 'components/Status';
-import { getParseDate } from 'utils';
+import { getParseDate, imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 export default class AppCard extends PureComponent {
@@ -15,9 +15,10 @@ export default class AppCard extends PureComponent {
 
   render() {
     const { appDetail } = this.props;
+    const imgPhd = imgPlaceholder(24);
     return (
       <div className={styles.detailCard}>
-        <img src={appDetail.icon} className={styles.icon} alt="Icon" />
+        <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
           <div className={styles.id}>id:{appDetail.app_id}</div>
