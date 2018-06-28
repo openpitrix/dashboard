@@ -2,9 +2,9 @@ FROM node:9-alpine as base
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
 ENV PATH=$PATH:/app/node_modules/.bin
-#ENV SASS_BINARY_PATH=/app/build-deps/linux-node-sass-x64-59_binding.node
+ENV SASS_BINARY_PATH=/app/build-deps/linux-node-sass-x64-59_binding.node
 
-ARG BUILD_ENV
+ARG BUILD_ENV=$BUILD_ENV
 
 WORKDIR /app
 
