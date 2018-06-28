@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const agent = require('superagent');
+const debug = require('debug')('op-dash');
 
 const router = new Router();
 
@@ -30,6 +31,8 @@ router.post('/api/*', async ctx => {
   let body = ctx.request.body;
   let forwardMethod = body.method || 'get';
   delete body.method;
+
+  debug('%s %s', forwardMethod.toUpperCase(), url);
 
   try {
     let res;

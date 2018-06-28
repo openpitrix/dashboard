@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const Router = require('koa-router');
-const log = require('../log');
+const log = require('../../lib/log');
 const userModel = require('../models/users.json');
 const sessConfig = require('../session-config');
 
