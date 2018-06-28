@@ -1,45 +1,37 @@
 import React, { PureComponent } from 'react';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { get } from 'lodash';
 
 import styles from './index.scss';
+
+const isNavLinkActive = (cate_id, match, location) => {
+  return location.pathname.indexOf(cate_id) > -1;
+};
 
 export default class Nav extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    navs: PropTypes.array,
-    curCategory: PropTypes.string,
-    onChange: PropTypes.func
-  };
-
-  changeValue = (id, name) => {
-    this.props.onChange({ category_id: id }, name);
+    navs: PropTypes.array
   };
 
   render() {
-    const { className, navs, curCategory } = this.props;
+    const { className, navs } = this.props;
     return (
       <div className={classnames(styles.nav, className)}>
         <ul className={styles.subNav}>
           <p>CATEGORIES</p>
-          {navs &&
-            navs.map(nav => (
-              <li
-                key={nav.category_id}
-                className={classnames({
-                  [styles.current]: nav.category_id === curCategory
-                })}
+          {navs.map(nav => (
+            <li key={nav.category_id}>
+              <NavLink
+                to={`/apps/${nav.category_id}`}
+                activeClassName={styles.current}
+                isActive={isNavLinkActive.bind(null, nav.category_id)}
               >
-                <a
-                  onClick={() => {
-                    this.changeValue(nav.category_id, nav.name);
-                  }}
-                >
-                  {nav.name}
-                </a>
-              </li>
-            ))}
+                {nav.name}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </div>
     );

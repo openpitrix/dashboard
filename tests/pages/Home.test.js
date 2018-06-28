@@ -30,10 +30,12 @@ describe('Home', () => {
     rootStore = null;
   });
 
+  let match = { path: '/', params: {} };
+
   it('basic render', () => {
     const wrapper = mount(
       <Provider rootStore={rootStore}>
-        <Home />
+        <Home match={match} />
       </Provider>
     );
 

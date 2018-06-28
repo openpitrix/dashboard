@@ -8,7 +8,7 @@ import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import styles from './index.scss';
-import _, { debounce, throttle } from 'lodash';
+import { throttle } from 'lodash';
 
 let lastTs = Date.now();
 
@@ -30,15 +30,25 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    const { appStore } = this.props.rootStore;
-    this.threshold = this.getThreshold();
-    if (appStore.apps.length) {
-      window.onscroll = throttle(this.handleScoll, 200);
+    const { rootStore, match } = this.props;
+    const { appStore } = rootStore;
+
+    if (match.params.category) {
+      rootStore.setNavFix(true);
+
+      // fetch apps by category
+      appStore.fetchApps({ category_id: match.params.category });
+    } else {
+      this.threshold = this.getThreshold();
+      window.onscroll = throttle(this.handleScroll, 300);
+      // window.scroll({top: 1, behavior: 'smooth'});
     }
   }
 
   componentWillUnmount() {
-    window.onscroll = null;
+    if (window.onscroll) {
+      window.onscroll = null;
+    }
   }
 
   getThreshold() {
@@ -50,7 +60,7 @@ export default class Home extends Component {
     return 0;
   }
 
-  handleScoll = () => {
+  handleScroll = () => {
     const { rootStore } = this.props;
 
     if (this.threshold <= 0) {
@@ -62,12 +72,12 @@ export default class Home extends Component {
     let needFixNav = scrollTop > this.threshold;
 
     if (needFixNav && !fixNav) {
-      if (Date.now() - lastTs > 500) {
+      if (Date.now() - lastTs > 200) {
         rootStore.setNavFix(true);
         lastTs = Date.now();
       }
     } else if (!needFixNav && fixNav) {
-      if (Date.now() - lastTs > 500) {
+      if (Date.now() - lastTs > 200) {
         rootStore.setNavFix(false);
         lastTs = Date.now();
       }
@@ -75,31 +85,30 @@ export default class Home extends Component {
   };
 
   render() {
-    const { rootStore, appStore, categoryStore } = this.props;
+    const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { fetchApps, categoryTitle, appCategoryId, appSearch, apps, isLoading } = appStore;
-    const navs = categoryStore.categories.slice();
-    const showApps = appCategoryId || appSearch ? apps.slice() : apps.slice(0, 3);
+    const { fetchApps, categoryTitle, appSearch, apps, isLoading } = appStore;
+    const showApps = appSearch ? apps.slice() : apps.slice(0, 3);
+
     const { categories, getCategoryApps } = categoryStore;
     const categoryApps = getCategoryApps(categories, apps);
 
+    const isHomePage = match.path === '/' || match.path === '/apps';
+    const categorySearch = !!match.params.category;
+
     return (
       <Fragment>
-        <Banner onSearch={fetchApps} />
+        {isHomePage && <Banner onSearch={fetchApps} />}
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
-            <Nav
-              className={styles.nav}
-              navs={navs}
-              curCategory={appCategoryId}
-              onChange={fetchApps}
-            />
+            <Nav className={styles.nav} navs={categories.toJSON()} />
             <AppList
               className={styles.apps}
               apps={showApps}
               categoryApps={categoryApps}
               categoryTitle={categoryTitle}
               appSearch={appSearch}
+              isCategorySearch={categorySearch}
               moreApps={fetchApps}
             />
             {isLoading && <Loading className={styles.homeLoad} />}

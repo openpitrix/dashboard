@@ -15,7 +15,14 @@ exports[`Home basic render 1`] = `
     }
   }
 >
-  <inject-Home>
+  <inject-Home
+    match={
+      Object {
+        "params": Object {},
+        "path": "/",
+      }
+    }
+  >
     <Home
       appStore={
         Object {
@@ -26,6 +33,12 @@ exports[`Home basic render 1`] = `
         Object {
           "categories": Array [],
           "getCategoryApps": [Function],
+        }
+      }
+      match={
+        Object {
+          "params": Object {},
+          "path": "/",
         }
       }
       rootStore={
@@ -123,6 +136,7 @@ exports[`Home basic render 1`] = `
           <AppList
             apps={Array []}
             className="apps"
+            isCategorySearch={false}
           >
             <div
               className="appList apps"
