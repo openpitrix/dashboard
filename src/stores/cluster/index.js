@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
+import _ from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
@@ -14,9 +15,11 @@ export default class ClusterStore extends Store {
   @observable totalCount = 0;
   @observable isModalOpen = false;
 
-  // @observable clusterId = '';
+  @observable clusterId = ''; // current delete cluster_id
 
   @observable currentPage = 1;
+  @observable searchWord = '';
+  @observable runtimeId = '';
 
   @action.bound
   showModal = () => {
@@ -35,6 +38,12 @@ export default class ClusterStore extends Store {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize
     };
+    if (this.searchWord) {
+      params.search_word = this.searchWord;
+    }
+    if (!params.runtime_id && this.runtimeId) {
+      params.runtime_id = this.runtimeId;
+    }
     if (params.page) {
       delete params.page;
     }
@@ -71,16 +80,22 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  remove = async clusterIds => {
-    this.isLoading = true;
-    await this.request.delete('clusters', { cluster_id: clusterIds });
-    this.isLoading = false;
+  remove = async () => {
+    const result = await this.request.post('clusters/delete', { cluster_id: [this.clusterId] });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      this.showMsg('Delete cluster successfully.');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
+    }
   };
 
   // fixme
   @action
-  showDeleteCluster = cluster => {
-    this.cluster = cluster;
+  showDeleteCluster = clusterId => {
+    this.clusterId = clusterId;
     this.showModal();
   };
 
@@ -102,5 +117,52 @@ export default class ClusterStore extends Store {
   @action
   clusterParametersClose = () => {
     this.showClusterParameters = false;
+  };
+
+  @action
+  changeSearchWord = word => {
+    this.searchWord = word;
+  };
+
+  @action
+  setCurrentPage = page => {
+    this.currentPage = page;
+  };
+
+  @action
+  onSearch = async searchWord => {
+    this.changeSearchWord(searchWord);
+    this.setCurrentPage(1);
+    await this.fetchAll();
+  };
+
+  @action
+  onClearSearch = async () => {
+    this.changeSearchWord('');
+    this.setCurrentPage(1);
+    await this.fetchAll();
+  };
+
+  @action
+  onRefresh = async () => {
+    await this.fetchAll();
+  };
+
+  @action
+  changePagination = async page => {
+    this.setCurrentPage(page);
+    await this.fetchAll();
+  };
+
+  @action
+  changeRuntimeId = id => {
+    this.runtimeId = id;
+  };
+
+  @action
+  loadPageInit = () => {
+    this.currentPage = 1;
+    this.searchWord = '';
+    this.runtimeId = '';
   };
 }

@@ -19,7 +19,8 @@ export default class Layout extends React.Component {
     hideMsg: PropTypes.func,
     noTabs: PropTypes.bool,
     noNotification: PropTypes.bool,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    loadClass: PropTypes.string
   };
 
   static defaultProps = {
@@ -64,13 +65,13 @@ export default class Layout extends React.Component {
   }
 
   render() {
-    const { className, noTabs, noNotification, children, isLoading } = this.props;
+    const { className, noTabs, noNotification, children, isLoading, loadClass } = this.props;
 
     return (
       <div className={classnames(styles.container, className)}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
-        <Container>{isLoading ? <Loading /> : children}</Container>
+        <Container>{isLoading ? <Loading className={styles[loadClass]} /> : children}</Container>
       </div>
     );
   }

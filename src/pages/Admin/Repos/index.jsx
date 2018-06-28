@@ -76,7 +76,7 @@ export default class Repos extends Component {
   render() {
     const { repoStore } = this.props;
     const repoList = toJS(repoStore.repos);
-    const { isLoading, fetchQueryRepos, fetchAll } = repoStore;
+    const { isLoading, fetchQueryRepos, searchWord, onClearSearch, onRefresh } = repoStore;
 
     return (
       <Layout isLoading={isLoading}>
@@ -87,14 +87,16 @@ export default class Repos extends Component {
             <Input.Search
               className={styles.search}
               placeholder="Search Repo Name"
-              onSearch={fetchQueryRepos.bind(repoStore)}
+              value={searchWord}
+              onSearch={fetchQueryRepos}
+              onClear={onClearSearch}
             />
             <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
             </Link>
-            <Button className={styles.buttonRight} onClick={fetchAll.bind(repoStore)}>
+            <Button className={styles.buttonRight} onClick={onRefresh}>
               <Icon name="refresh" />
             </Button>
           </div>

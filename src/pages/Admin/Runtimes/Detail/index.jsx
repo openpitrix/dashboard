@@ -8,6 +8,7 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
+
 import Layout, { BackBtn } from 'components/Layout/Admin';
 
 import styles from './index.scss';
@@ -19,6 +20,8 @@ import styles from './index.scss';
 @observer
 export default class RuntimeDetail extends Component {
   static async onEnter({ runtimeStore, clusterStore }, { runtimeId }) {
+    clusterStore.loadPageInit();
+    clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({ runtime_id: runtimeId });
   }
@@ -27,28 +30,6 @@ export default class RuntimeDetail extends Component {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
   }
-
-  onSearch = async search_word => {
-    await this.props.clusterStore.fetchAll({
-      runtime_id: this.runtimeId,
-      search_word
-    });
-  };
-
-  onRefresh = async () => {
-    const { clusterStore } = this.props;
-    const { currentClusterPage } = this.props.runtimeStore;
-    await clusterStore.fetchAll({ runtime_id: this.runtimeId, page: currentClusterPage });
-  };
-
-  onChangePage = async page => {
-    const { clusterStore, runtimeStore } = this.props;
-    runtimeStore.setClusterPage(page);
-    await clusterStore.fetchAll({
-      runtime_id: this.runtimeId,
-      page
-    });
-  };
 
   renderHandleMenu = id => {
     return (
@@ -61,7 +42,17 @@ export default class RuntimeDetail extends Component {
   render() {
     const { runtimeStore, clusterStore } = this.props;
     const { runtimeDetail } = runtimeStore;
-    const { clusters, totalCount } = clusterStore;
+    const {
+      clusters,
+      totalCount,
+      isLoading,
+      currentPage,
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      changePagination
+    } = clusterStore;
 
     const columns = [
       {
@@ -74,27 +65,29 @@ export default class RuntimeDetail extends Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        width: '120px',
         render: text => <Status type={text} name={text} />
       },
       {
         title: 'App Version',
-        dataIndex: 'latest_version',
-        key: 'latest_version'
+        dataIndex: 'version_id',
+        key: 'version_id',
+        render: cl => cl.version_id
       },
       {
         title: 'Node Count',
-        dataIndex: 'node_count',
-        key: 'id'
+        key: 'node_count',
+        render: cl => cl.cluster_node_set && cl.cluster_node_set.length
       },
       {
         title: 'Runtime',
-        dataIndex: 'runtime',
-        key: 'runtime'
+        dataIndex: 'runtime_id',
+        key: 'runtime_id'
       },
       {
         title: 'User',
-        dataIndex: 'user',
-        key: 'user'
+        dataIndex: 'owner',
+        key: 'owner'
       },
       {
         title: 'Date Created',
@@ -107,7 +100,7 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <BackBtn label="runtimes" link="/dashboard/runtimes" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
@@ -130,16 +123,18 @@ export default class RuntimeDetail extends Component {
                 <Input.Search
                   className={styles.search}
                   placeholder="Search Clusters Name"
-                  onSearch={this.onSearch}
+                  value={searchWord}
+                  onSearch={onSearch}
+                  onClear={onClearSearch}
                 />
-                <Button className={styles.buttonRight} onClick={this.onRefresh}>
+                <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
               <Table columns={columns} dataSource={clusters.toJSON()} />
             </div>
             <ul />
-            <Pagination onChange={this.onChangePage} total={totalCount} />
+            <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
           </div>
         </div>
       </Layout>

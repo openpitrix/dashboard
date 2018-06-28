@@ -16,6 +16,7 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore }) {
+    clusterStore.loadPageInit();
     await clusterStore.fetchAll();
   }
 
@@ -31,35 +32,15 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
-        {status !== 'deleted' && (
-          <span onClick={showDeleteCluster.bind(this.store, item)}>Delete cluster</span>
+        {status === 'active' && (
+          <span onClick={showDeleteCluster.bind(this.store, cluster_id)}>Delete cluster</span>
         )}
       </div>
     );
   };
 
-  handleDeleteCluster = ev => {
+  handleDeleteCluster = () => {
     this.store.remove();
-  };
-
-  onSearch = search_word => {
-    if (!search_word) {
-      return false;
-    }
-    this.store.currentPage = 1;
-    this.store.fetchAll({
-      search_word: search_word
-    });
-  };
-
-  onRefresh = ev => {
-    this.store.currentPage = 1;
-    this.store.fetchAll();
-  };
-
-  onChangePagination = page => {
-    this.store.currentPage = page;
-    this.store.fetchAll({ page });
   };
 
   renderDeleteModal = () => {
@@ -85,7 +66,12 @@ export default class Clusters extends Component {
       notifyMsg,
       hideMsg,
       isLoading,
-      currentPage
+      currentPage,
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      changePagination
     } = this.props.clusterStore;
     const columns = [
       {
@@ -150,20 +136,19 @@ export default class Clusters extends Component {
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
-                placeholder="Search Cluster Name or App"
-                onSearch={this.onSearch}
+                placeholder="Search Cluster"
+                value={searchWord}
+                onSearch={onSearch}
+                onClear={onClearSearch}
               />
-              {/*<Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">*/}
-              {/*Create*/}
-              {/*</Button>*/}
-              <Button className={styles.buttonRight} onClick={this.onRefresh}>
+              <Button className={styles.buttonRight} onClick={onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
 
             <Table className={styles.tableOuter} columns={columns} dataSource={clusters.toJSON()} />
           </div>
-          <Pagination onChange={this.onChangePagination} total={totalCount} current={currentPage} />
+          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderDeleteModal()}
       </Layout>
