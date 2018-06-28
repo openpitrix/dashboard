@@ -12,6 +12,15 @@
       color: $title-color;
     }
   }
+  .detailTab{
+    position: absolute;
+    top: 150px;
+    left: 384px;
+    background-color: #fff;
+    & > div {
+      top: 100px;
+    }
+  }
 }
 
 

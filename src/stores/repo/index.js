@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get } from 'lodash';
+import _ from 'lodash';
 
 export default class RepoStore extends Store {
   @observable repos = [];
@@ -10,6 +11,7 @@ export default class RepoStore extends Store {
   @observable repoId = '';
   @observable showDeleteRepo = false;
   @observable curTagName = 'Apps';
+  @observable searchWord = '';
 
   tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
@@ -23,10 +25,21 @@ export default class RepoStore extends Store {
 
   @action
   fetchQueryRepos = async query => {
+    this.changeSearchWord(query);
     this.isLoading = true;
     const result = await this.request.get('repos', { search_word: query });
     this.repos = get(result, 'repo_set', []);
     this.isLoading = false;
+  };
+
+  @action
+  onClearSearch = async () => {
+    await this.fetchQueryRepos('');
+  };
+
+  @action
+  onRefresh = async () => {
+    await this.fetchQueryRepos(this.searchWord);
   };
 
   @action
@@ -38,11 +51,17 @@ export default class RepoStore extends Store {
   }
 
   @action
-  async deleteRepo(repoIds) {
-    this.isLoading = true;
-    await this.request.delete('repos', { repo_id: repoIds });
-    this.isLoading = false;
-  }
+  deleteRepo = async () => {
+    const result = await this.request.delete('repos', { repo_id: [this.repoId] });
+    if (_.get(result, 'repo_id')) {
+      this.deleteRepoClose();
+      this.fetchAll();
+      this.showMsg('Delete repo successfully.');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
+    }
+  };
 
   // fixme
   @action
@@ -66,6 +85,11 @@ export default class RepoStore extends Store {
   @action
   selectCurTag = tagName => {
     this.curTagName = tagName;
+  };
+
+  @action
+  changeSearchWord = word => {
+    this.searchWord = word;
   };
 }
 

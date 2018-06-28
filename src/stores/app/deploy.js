@@ -79,14 +79,13 @@ export default class AppDeployStore extends Store {
       };
       await this.create(params);
       if (_.get(this, 'appDeployed.cluster_id')) {
-        this.showMsg('App deploy successfully.');
+        //this.showMsg('App deploy successfully.');
+        location.href = '/dashboard/clusters';
       } else {
         let { errDetail } = this.appDeployed;
         this.showMsg(errDetail);
       }
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+      this.isLoading = false;
     } else {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }

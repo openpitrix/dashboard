@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
+import _ from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
@@ -45,10 +46,14 @@ export default class AppStore extends Store {
       sort_key: 'update_time',
       reverse: true
     };
-    this.isLoading = true;
+    if (this.searchWord) {
+      params.search_word = this.searchWord;
+    }
     if (params.page) {
       delete params.page;
     }
+
+    this.isLoading = true;
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -62,18 +67,6 @@ export default class AppStore extends Store {
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
   }
-
-  @action
-  onRefresh = async e => {
-    await this.fetchAll();
-  };
-
-  @action
-  onSearch = async value => {
-    await this.fetchAll({
-      search_word: value
-    });
-  };
 
   @action
   create = async (params = {}) => {
@@ -90,16 +83,15 @@ export default class AppStore extends Store {
   };
 
   @action
-  remove = async (params = {}) => {
-    this.isLoading = true;
+  remove = async () => {
     const result = await this.request.delete('apps', { app_id: [this.appId] });
-    this.isLoading = false;
-    this.hideModal();
-    this.apiMsg(result);
-
-    // todo: no need re-fetch
-    if (!result || !result.err) {
+    if (_.get(result, 'app_id')) {
+      this.hideModal();
       await this.fetchAll();
+      this.showMsg('Delete app successfully.');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
     }
   };
 
@@ -167,8 +159,28 @@ export default class AppStore extends Store {
   };
 
   @action
-  setClusterPage = page => {
-    this.currentClusterPage = page;
+  onSearch = async searchWord => {
+    this.changeSearchWord(searchWord);
+    this.setCurrentPage(1);
+    await this.fetchAll();
+  };
+
+  @action
+  onClearSearch = async () => {
+    this.changeSearchWord('');
+    this.setCurrentPage(1);
+    await this.fetchAll();
+  };
+
+  @action
+  onRefresh = async () => {
+    await this.fetchAll();
+  };
+
+  @action
+  changePagination = async page => {
+    this.setCurrentPage(page);
+    await this.fetchAll();
   };
 
   @action

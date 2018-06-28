@@ -17,13 +17,17 @@ export default class TagShow extends Component {
   render() {
     const { tags, tagStyle } = this.props;
 
-    return tags.map((tag, index) => (
-      <div className={classnames(styles.tagShow, styles[tagStyle])} key={index}>
-        <div className={styles.inner}>
-          <span className={styles.name}>{tag.label_key}</span>
-          <span className={styles.content}>{tag.label_value}</span>
-        </div>
-      </div>
-    ));
+    return tags.map(
+      (tag, index) =>
+        tag.label_key &&
+        tag.label_value && (
+          <div className={classnames(styles.tagShow, styles[tagStyle])} key={index}>
+            <div className={styles.inner}>
+              <span className={styles.name}>{tag.label_key}</span>
+              <span className={styles.content}>{tag.label_value}</span>
+            </div>
+          </div>
+        )
+    );
   }
 }

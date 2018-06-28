@@ -24,12 +24,6 @@ export default class AppDeploy extends Component {
     await appDeployStore.fetchRuntimes();
   }
 
-  componentDidUpdate() {
-    if (get(this.appDeployStore, 'appDeployed.cluster_id') && !this.appDeployStore.isLoading) {
-      history.back();
-    }
-  }
-
   render() {
     const { appDeployStore } = this.props;
     const { notifyMsg, hideMsg } = appDeployStore;
