@@ -1,7 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const postCssOptions = require('./postcss.options');
-const resolveModules = require('./resolve.modules');
+const postCssOptions = require('./config/postcss.options');
 
 module.exports = {
   devtool: 'eval',
@@ -17,7 +16,13 @@ module.exports = {
     pathinfo: false // for speed
   },
   // profile: true,
+  performance: {
+    hints: 'warning'
+  },
   module: {
+    // noParse: function(content){
+    //   return /lodash/.test(content);
+    // },
     rules: [
       {
         test: /\.jsx?$/,
@@ -65,7 +70,13 @@ module.exports = {
       }
     ]
   },
-  resolve: resolveModules,
+  resolve: {
+    extensions: ['.js', '.jsx', '.scss'],
+    alias: {
+      scss: resolve(__dirname, 'src/scss')
+    },
+    modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+  },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.WatchIgnorePlugin([

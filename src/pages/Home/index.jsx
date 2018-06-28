@@ -34,14 +34,19 @@ export default class Home extends Component {
     const { appStore } = rootStore;
 
     if (match.params.category) {
-      rootStore.setNavFix(true);
-
       // fetch apps by category
       appStore.fetchApps({ category_id: match.params.category });
     } else {
       this.threshold = this.getThreshold();
       window.onscroll = throttle(this.handleScroll, 300);
-      // window.scroll({top: 1, behavior: 'smooth'});
+      window.scroll({ top: 1, behavior: 'smooth' });
+    }
+  }
+
+  componentDidUpdate() {
+    const { rootStore, match } = this.props;
+    if (match.params.category) {
+      rootStore.setNavFix(true);
     }
   }
 
@@ -60,7 +65,7 @@ export default class Home extends Component {
     return 0;
   }
 
-  handleScroll = () => {
+  handleScroll = e => {
     const { rootStore } = this.props;
 
     if (this.threshold <= 0) {

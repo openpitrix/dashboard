@@ -33,7 +33,7 @@ describe('Home', () => {
   let match = { path: '/', params: {} };
 
   it('basic render', () => {
-    const wrapper = mount(
+    const wrapper = render(
       <Provider rootStore={rootStore}>
         <Home match={match} />
       </Provider>

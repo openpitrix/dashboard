@@ -2,8 +2,15 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const postCssOptions = require('./postcss.options');
-const resolveModules = require('./resolve.modules');
+const postCssOptions = require('./config/postcss.options');
+
+const resolveModules = {
+  extensions: ['.js', '.jsx', '.scss'],
+  alias: {
+    scss: resolve(__dirname, 'src/scss')
+  },
+  modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+};
 
 const distDir = resolve(__dirname, 'dist');
 
@@ -13,6 +20,9 @@ const clientConfig = {
     path: distDir,
     filename: 'main.js',
     pathinfo: false
+  },
+  performance: {
+    hints: false
   },
   module: {
     rules: [

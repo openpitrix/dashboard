@@ -8,7 +8,7 @@
     "^.+\\.jsx?$": "babel-jest"
   }, 
   "moduleNameMapper": {
-    "\\.(png|svg)$": "<rootDir>/assets.transformer.js",
+    "\\.(png|svg)$": "<rootDir>/config/assets.transformer.js",
     "\\.(css|scss)$": "identity-obj-proxy"
   },
   "coverageDirectory": "./coverage/",
