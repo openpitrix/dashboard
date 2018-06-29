@@ -75,7 +75,7 @@ export default class Overview extends React.Component {
         <Section className={styles.listOuter}>
           <Panel title="Top Repos" linkTo="/dashboard/repos">
             <RepoList repos={repoList} type="public" />
-            <RepoList repos={repoList} type="private" />
+            <RepoList repos={repoList} type="private" limit={2} />
           </Panel>
 
           <Panel title="Top Apps" linkTo="/dashboard/apps">

@@ -164,7 +164,7 @@ export default class AppDeploy extends Component {
                   className={styles.cellModule}
                   config={conf}
                   type={`env`}
-                  configIndex={index1}
+                  configIndex1={index1}
                   configIndex2={index2}
                   changeCell={changeCell.bind(appDeployStore)}
                 />

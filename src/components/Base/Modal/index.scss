@@ -14,7 +14,7 @@
 
 .header {
   position: relative;
-  padding: 20px 27px;
+  padding: 13px 27px;
   border-radius: 4px 4px 0 0;
   background: #fff;
   color: rgba(0, 0, 0, 0.65);
@@ -31,7 +31,7 @@
     top: 0;
     right: 27px;
     font-size: 16px;
-    margin-top: 24px;
+    margin-top: 17px;
     cursor: pointer;
     color: #2f0d56;
   }
@@ -39,6 +39,7 @@
 
 .body {
   padding: 20px 30px;
+  overflow-y: auto;
 }
 
 .footer {

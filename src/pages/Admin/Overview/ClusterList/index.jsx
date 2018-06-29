@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { getPastTime } from 'utils';
+import { getPastTime, imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 export default class ClusterList extends PureComponent {
@@ -11,11 +11,12 @@ export default class ClusterList extends PureComponent {
 
   render() {
     const { clusters } = this.props;
+    const imgPhd = imgPlaceholder(20);
     return (
       <ul className={styles.clusterList}>
         {clusters.map(data => (
           <li key={data.cluster_id}>
-            <img className={styles.icon} src={data.icon} />
+            <img className={styles.icon} src={data.icon || imgPhd} />
             <div className={styles.word}>
               <div className={styles.name}>{data.name}</div>
               <div className={styles.detail}>

@@ -3,15 +3,17 @@
 .clusterList{
   li{
     box-sizing: border-box;
-    margin-bottom: 12px;
+    margin-bottom: 13px;
     padding: 12px 22px 12px 16px;
     height: 60px;
     border-bottom: 1px solid $border-gray-li;
-    vertical-align: center;
   }
   .icon{
     float:left;
     margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
   }
   .word{
     margin-left: 26px;
