@@ -8,3 +8,5 @@ services:
     container_name: openpitrix-dashboard
     ports:
       - "8000:8000"
+#    volumes:
+#      - .:/home/web/app

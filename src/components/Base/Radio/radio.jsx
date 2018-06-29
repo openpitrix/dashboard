@@ -8,18 +8,18 @@ export default class Radio extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     checked: PropTypes.bool,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
     onChange: PropTypes.func,
-    children: PropTypes.node,
-  }
+    children: PropTypes.node
+  };
 
   static defaultProps = {
-    className: '',
-  }
+    className: ''
+  };
 
   handleClick = () => {
     this.props.onChange(this.props.value);
-  }
+  };
 
   render() {
     const { className, checked, children } = this.props;
@@ -27,7 +27,7 @@ export default class Radio extends React.Component {
 
     return (
       <label className={classNames} onClick={this.handleClick}>
-        <span className={styles.circle}></span>
+        <span className={styles.circle} />
         <span className={styles.text}>{children}</span>
       </label>
     );

@@ -9,28 +9,27 @@ export default class Group extends React.Component {
     className: PropTypes.string,
     onChange: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  }
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool])
+  };
 
   static defaultProps = {
-    className: '',
-  }
+    className: ''
+  };
 
   render() {
     const { className, value, children, onChange, ...others } = this.props;
     const classNames = classnames(styles.group, className);
 
-    const childNodes = React.Children.map(children, (child) => React.cloneElement(child, {
-      ...child.props,
-      onChange,
-      checked: child.props.value === value,
-    }));
+    const childNodes = React.Children.map(children, child =>
+      React.cloneElement(child, {
+        ...child.props,
+        onChange,
+        checked: child.props.value === value
+      })
+    );
 
     return (
-      <div
-        {...others}
-        className={classNames}
-      >
+      <div {...others} className={classNames}>
         {childNodes}
       </div>
     );

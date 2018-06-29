@@ -1,4 +1,5 @@
-if (require('semver').lt(process.version, '7.6.0')) {
+const semver = require('semver');
+if (semver.lt(process.version, '7.6.0')) {
   console.error('Node version should be greater than 7.6');
   process.exit(-1);
 }
@@ -17,14 +18,15 @@ const serve = require('koa-static');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
 
-const log = require('../lib/log');
+const log = require('./log');
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
 const app = new Koa();
 const config = getServerConfig();
+const httpConf = get(config, 'http', {});
 
-global.HOSTNAME = get(config, 'host', '127.0.0.1');
-global.PORT = get(config, 'port', 8000);
+global.HOSTNAME = get(httpConf, 'hostname', 'localhost');
+global.PORT = get(httpConf, 'port', 8000);
 
 // serve static files
 const serveStatic = (mount_points = {}) => {
@@ -37,9 +39,9 @@ const serveStatic = (mount_points = {}) => {
     }
   }
 };
-serveStatic(get(config, 'static', {}));
+serveStatic(get(httpConf, 'static', {}));
 
-const favIconPath = get(config, 'favicon', 'favicon.ico');
+const favIconPath = get(httpConf, 'favicon', 'favicon.ico');
 app.use(favicon(root(favIconPath)));
 
 app.use(
@@ -74,8 +76,10 @@ if (isDev && process.env.COMPILE_CLIENT) {
 app.use(require('./middleware/render'));
 
 app.listen(PORT, err => {
-  if (err) throw err;
-  log(`server running at port ${PORT}`);
+  if (err) {
+    return console.error(err);
+  }
+  log(`Dashboard app running at port ${PORT}`);
 });
 
 // watch files and reload server gracefully

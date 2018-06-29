@@ -92,7 +92,7 @@ export default class AppVersionStore extends Store {
     const result = await this.create(assign(data, params));
     this.postHandleApi(result, async () => {
       this.hideModal();
-      await this.fetchAll();
+      await this.fetchAll({ app_id: params.app_id });
     });
   }
 }

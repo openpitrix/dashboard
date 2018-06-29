@@ -9,28 +9,30 @@
 ## Installation
 
 ### using git
+
 ```shell
 git clone https://github.com/openpitrix/dashboard.git
 cd dashboard
-yarn
-yarn dev
+yarn && yarn dev
 ```
 
 ### using docker
+
 ```shell
-docker pull openpitrix/dashboard
-docker run --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
+docker build -t op/web-app .
+docker run -d -p 8000:8000 --name openpitrix-dashborad op/web-app
 ```
 
-### docker-compose
+### using docker-compose
+
 ```shell
 docker-compose up --build
 ```
 
 ### using make
+
 ```shell
-make build
-make dev
+make build && make dev
 ```
 
 **For some requisites, see installation details:** [install doc](./docs/install.md)
