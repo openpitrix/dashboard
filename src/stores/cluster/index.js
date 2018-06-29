@@ -44,6 +44,9 @@ export default class ClusterStore extends Store {
     if (!params.runtime_id && this.runtimeId) {
       params.runtime_id = this.runtimeId;
     }
+    if (!params.status) {
+      params.status = this.defaultStatus;
+    }
     if (params.page) {
       delete params.page;
     }

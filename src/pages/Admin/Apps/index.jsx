@@ -129,7 +129,7 @@ export default class Apps extends Component {
       {
         title: 'App Name',
         key: 'name',
-        width: '170px',
+        width: '205px',
         render: obj => (
           <TdName
             name={obj.name}

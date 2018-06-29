@@ -4,6 +4,7 @@ import request from 'lib/request';
 
 export default class Store {
   pageSize = 10;
+  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 
   constructor(initialState, branch) {
     extendObservable(this, {
