@@ -160,9 +160,9 @@ export default class RuntimeCreateStore extends Store {
     }
 
     if (_.get(this, 'runtimeCreated.runtime')) {
-      //this.showMsg('Create runtime successfully');
+      this.showMsg('Create runtime successfully');
     } else if (_.get(this, 'runtimeCreated.runtime_id')) {
-      //this.showMsg('Modify runtime successfully');
+      this.showMsg('Modify runtime successfully');
       this.runtimeCreated.runtime = this.runtimeCreated.runtime_id;
     } else {
       let { errDetail } = this.runtimeCreated;
@@ -170,10 +170,9 @@ export default class RuntimeCreateStore extends Store {
     }
 
     // disable re-submit form in 2 sec
-    /* setTimeout(() => {
+    setTimeout(() => {
       this.isLoading = false;
-    }, 2000);*/
-    this.isLoading = false;
+    }, 2000);
   };
 
   @action

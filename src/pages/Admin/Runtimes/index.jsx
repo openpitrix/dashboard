@@ -23,19 +23,15 @@ export default class Runtimes extends Component {
     await runtimeStore.fetchAll();
   }
 
-  renderHandleMenu = (id, status) => {
+  renderHandleMenu = id => {
     const { runtimeStore } = this.props;
     const { showDeleteRuntime } = runtimeStore;
 
     return (
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/runtime/${id}`}>View runtime detail</Link>
-        {status !== 'deleted' && (
-          <Fragment>
-            <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
-            <span onClick={() => showDeleteRuntime(id)}>Delete runtime</span>
-          </Fragment>
-        )}
+        <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
+        <span onClick={() => showDeleteRuntime(id)}>Delete runtime</span>
       </div>
     );
   };
@@ -76,7 +72,7 @@ export default class Runtimes extends Component {
         render: (name, obj) => (
           <TdName
             name={name}
-            description={obj.description}
+            description={obj.runtime_id}
             linkUrl={`/dashboard/runtime/${obj.runtime_id}`}
           />
         )
@@ -121,7 +117,7 @@ export default class Runtimes extends Component {
         width: '80px',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.runtime_id, item.status)}>
+            <Popover content={this.renderHandleMenu(item.runtime_id)}>
               <Icon name="more" />
             </Popover>
           </div>

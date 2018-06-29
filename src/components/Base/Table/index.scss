@@ -19,6 +19,7 @@
   .pi-table {
     &-thead > tr > th {
       position: relative;
+      line-height: 16px;
       padding: 12px 12px;
       font-weight: 500;
       color: $title-color;
@@ -39,14 +40,16 @@
       transition: all $transition-speed;
 
       &:hover {
-        background-color: #f2f2f5;
-        
+        background-color: $tr-hover-bg;
         td {
+          &:hover a{
+            color: $link-hover;
+          }
           &:first-child {
-            border-left-color: #f2f2f5;
+            border-left-color: $tr-hover-bg;
           }
           &:last-child {
-            border-right-color: #f2f2f5;
+            border-right-color: $tr-hover-bg;
           }
         }
       }

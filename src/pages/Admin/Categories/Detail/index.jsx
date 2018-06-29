@@ -125,7 +125,15 @@ export default class CategoryDetail extends Component {
       {
         title: 'App Name',
         key: 'name',
-        render: app => <TdName name={app.name} description={app.description} image={app.icon} />
+        width: '205px',
+        render: app => (
+          <TdName
+            name={app.name}
+            description={app.app_id}
+            image={app.icon}
+            linkUrl={`/dashboard/app/${app.app_id}`}
+          />
+        )
       },
       {
         title: 'Latest Version',

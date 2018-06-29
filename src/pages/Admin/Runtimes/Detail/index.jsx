@@ -59,7 +59,13 @@ export default class RuntimeDetail extends Component {
         title: 'Cluster Name',
         dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        render: (name, obj) => (
+          <TdName
+            name={name}
+            description={obj.cluster_id}
+            linkUrl={`/dashboard/cluster/${obj.cluster_id}`}
+          />
+        )
       },
       {
         title: 'Status',

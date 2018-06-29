@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { getPastTime, imgPlaceholder } from 'utils';
 import styles from './index.scss';
@@ -18,7 +19,9 @@ export default class ClusterList extends PureComponent {
           <li key={data.cluster_id}>
             <img className={styles.icon} src={data.icon || imgPhd} />
             <div className={styles.word}>
-              <div className={styles.name}>{data.name}</div>
+              <Link className={styles.name} to={`/dashboard/app/${data.cluster_id}`}>
+                {data.name}
+              </Link>
               <div className={styles.detail}>
                 <span className={styles.description} title={data.description}>
                   {data.description}

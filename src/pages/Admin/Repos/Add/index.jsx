@@ -32,6 +32,7 @@ export default class RepoAdd extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.repoCreateStore;
+    this.store.repoCreated = null;
   }
 
   componentDidUpdate() {

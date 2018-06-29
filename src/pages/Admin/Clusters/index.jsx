@@ -32,9 +32,7 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
-        {status === 'active' && (
-          <span onClick={showDeleteCluster.bind(this.store, cluster_id)}>Delete cluster</span>
-        )}
+        <span onClick={showDeleteCluster.bind(this.store, cluster_id)}>Delete cluster</span>
       </div>
     );
   };
@@ -80,7 +78,7 @@ export default class Clusters extends Component {
         render: cl => (
           <TdName
             name={cl.name}
-            description={cl.description}
+            description={cl.cluster_id}
             linkUrl={`/dashboard/cluster/${cl.cluster_id}`}
           />
         )
