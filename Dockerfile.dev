@@ -12,9 +12,9 @@ COPY build-deps /tmp/build-deps
 COPY package.json yarn.lock /tmp/
 
 RUN cd /tmp && mkdir -p node_modules \
-    && yarn install --pure-lockfile --prefer-offline \
+    && yarn install --pure-lockfile --prefer-offline --verbose \
     && mv node_modules dev_node_modules \
-    && NODE_ENV=production yarn install --pure-lockfile --prod --prefer-offline \
+    && NODE_ENV=production yarn install --pure-lockfile --prod --prefer-offline --verbose \
     && mv node_modules prod_node_modules \
     && mv dev_node_modules node_modules
 
