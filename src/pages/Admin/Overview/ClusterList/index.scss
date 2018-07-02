@@ -7,6 +7,12 @@
     padding: 12px 22px 12px 16px;
     height: 60px;
     border-bottom: 1px solid $border-gray-li;
+    &:hover{
+      background-color: $li-hover-bg;
+      a{
+        color: $link-hover;
+      }
+    }
   }
   .icon{
     float:left;

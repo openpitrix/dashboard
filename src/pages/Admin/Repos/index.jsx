@@ -19,23 +19,13 @@ export default class Repos extends Component {
     await repoStore.fetchAll();
   }
 
-  renderHandleMenu = (id, status) => {
+  renderHandleMenu = id => {
     const { deleteRepoOpen } = this.props.repoStore;
     return (
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/repo/${id}`}>View repo detail</Link>
-        {status !== 'deleted' && (
-          <Fragment>
-            <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
-            <span
-              onClick={() => {
-                deleteRepoOpen(id);
-              }}
-            >
-              Delete Repo
-            </span>
-          </Fragment>
-        )}
+        <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
+        <span onClick={() => deleteRepoOpen(id)}>Delete Repo</span>
       </div>
     );
   };

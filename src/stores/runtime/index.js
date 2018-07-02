@@ -40,6 +40,9 @@ export default class RuntimeStore extends Store {
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }
+    if (!params.status) {
+      params.status = this.defaultStatus;
+    }
     if (params.page) {
       delete params.page;
     }

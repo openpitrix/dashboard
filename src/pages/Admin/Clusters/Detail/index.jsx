@@ -141,7 +141,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Name',
         key: 'name',
-        render: item => <TdName name={item.name} description={item.description} />
+        render: item => <TdName name={item.name} description={item.node_id} />
       },
       {
         title: 'Role',

@@ -57,8 +57,15 @@ export default class RepoDetail extends Component {
         title: 'App Name',
         dataIndex: 'name',
         key: 'name',
-        width: '150px',
-        render: (name, obj) => <TdName name={name} description={obj.description} image={obj.icon} />
+        width: '205px',
+        render: (name, obj) => (
+          <TdName
+            name={name}
+            description={obj.app_id}
+            image={obj.icon}
+            linkUrl={`/dashboard/app/${obj.app_id}`}
+          />
+        )
       },
       {
         title: 'Status',
@@ -95,7 +102,13 @@ export default class RepoDetail extends Component {
         dataIndex: 'name',
         key: 'name',
         width: '130px',
-        render: (name, obj) => <TdName name={name} description={obj.description} />
+        render: (name, obj) => (
+          <TdName
+            name={name}
+            description={obj.runtime_id}
+            linkUrl={`/dashboard/runtime/${obj.runtime_id}`}
+          />
+        )
       },
       {
         title: 'Status',

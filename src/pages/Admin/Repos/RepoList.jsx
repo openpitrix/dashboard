@@ -30,7 +30,7 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
               />
               <div className={styles.actionMenu}>
                 <div>
-                  <Popover content={actionMenu(repo_id, status)}>
+                  <Popover content={actionMenu(repo_id)}>
                     <Icon name="more" />
                   </Popover>
                 </div>

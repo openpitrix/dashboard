@@ -31,6 +31,9 @@ export default class AppStore extends Store {
     this.isLoading = true;
     this.categoryTitle = title;
     this.appSearch = params.search_word;
+    if (!params.status) {
+      params.status = this.defaultStatus;
+    }
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -49,10 +52,12 @@ export default class AppStore extends Store {
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }
+    if (!params.status) {
+      params.status = this.defaultStatus;
+    }
     if (params.page) {
       delete params.page;
     }
-
     this.isLoading = true;
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);

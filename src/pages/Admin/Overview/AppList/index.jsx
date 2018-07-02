@@ -18,7 +18,12 @@ export default class AppList extends PureComponent {
         {apps.map((data, index) => (
           <li key={data.app_id}>
             <span className={styles.order}>{index + 1}</span>
-            <TdName image={data.icon || imgPhd} name={data.name} description={data.description} />
+            <TdName
+              image={data.icon || imgPhd}
+              name={data.name}
+              description={data.description}
+              linkUrl={`/dashboard/app/${data.app_id}`}
+            />
             <span className={styles.total}>
               <span className={styles.number}>{data.total || 0}</span> Clusters
             </span>

@@ -160,7 +160,7 @@ export default class AppDeployStore extends Store {
   @action
   fetchRuntimes = async () => {
     this.isLoading = true;
-    const result = await this.request.get('runtimes');
+    const result = await this.request.get('runtimes', { status: this.defaultStatus });
     this.runtimes = get(result, 'runtime_set', []);
     if (this.runtimes[0]) {
       this.runtimeId = this.runtimes[0].runtime_id;

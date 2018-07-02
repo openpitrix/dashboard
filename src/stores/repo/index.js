@@ -18,7 +18,7 @@ export default class RepoStore extends Store {
   @action
   fetchAll = async () => {
     this.isLoading = true;
-    const result = await this.request.get('repos');
+    const result = await this.request.get('repos', { status: this.defaultStatus });
     this.repos = get(result, 'repo_set', []);
     this.isLoading = false;
   };
@@ -27,7 +27,10 @@ export default class RepoStore extends Store {
   fetchQueryRepos = async query => {
     this.changeSearchWord(query);
     this.isLoading = true;
-    const result = await this.request.get('repos', { search_word: query });
+    const result = await this.request.get('repos', {
+      status: this.defaultStatus,
+      search_word: query
+    });
     this.repos = get(result, 'repo_set', []);
     this.isLoading = false;
   };

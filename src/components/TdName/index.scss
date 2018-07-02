@@ -21,6 +21,9 @@
       max-width: 120px;
       overflow: hidden;
       white-space: nowrap;
+      &:hover{
+        color: $link-hover;
+      }
     }
     .description{
       display: inline-block;

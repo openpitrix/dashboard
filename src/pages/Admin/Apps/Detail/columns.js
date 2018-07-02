@@ -7,7 +7,13 @@ export default [
   {
     title: 'Cluster Name',
     key: 'name',
-    render: obj => <TdName name={obj.name} description={obj.description} />
+    render: obj => (
+      <TdName
+        name={obj.name}
+        description={obj.cluster_id}
+        linkUrl={`/dashboard/cluster/${obj.cluster_id}`}
+      />
+    )
   },
   {
     title: 'Status',

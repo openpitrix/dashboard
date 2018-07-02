@@ -76,27 +76,23 @@ export default class Apps extends Component {
 
   renderHandleMenu = item => {
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
-    let itemMenu = null,
-      deployEntry;
+    let itemMenu = null;
+    let deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
 
-    if (item.status !== 'deleted') {
-      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
-
-      if (this.role === 'developer') {
-        itemMenu = (
-          <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-          </Fragment>
-        );
-      }
-      if (this.role === 'admin') {
-        itemMenu = (
-          <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-            <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
-          </Fragment>
-        );
-      }
+    if (this.role === 'developer') {
+      itemMenu = (
+        <Fragment>
+          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+        </Fragment>
+      );
+    }
+    if (this.role === 'admin') {
+      itemMenu = (
+        <Fragment>
+          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+          <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
+        </Fragment>
+      );
     }
 
     return (
@@ -129,11 +125,11 @@ export default class Apps extends Component {
       {
         title: 'App Name',
         key: 'name',
-        width: '170px',
+        width: '205px',
         render: obj => (
           <TdName
             name={obj.name}
-            description={obj.description}
+            description={obj.app_id}
             image={obj.icon || imgPhd}
             linkUrl={`/dashboard/app/${obj.app_id}`}
           />
