@@ -12,3 +12,11 @@ docs/
 dist/
 
 yarn-offline-cache.tgz
+
+reports/
+tests/
+
+.eslintignore
+.eslintrc.js
+.prettierrc
+jest.config.json

@@ -7,6 +7,8 @@ const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
 const { matchRoutes, renderRoutes } = require('react-router-config');
 const { Provider } = require('mobx-react');
+const get = require('lodash/get');
+const renderPage = require('../render-page');
 
 const App = require('src/App').default;
 const routes = require('src/routes').default;
@@ -48,10 +50,10 @@ module.exports = async (ctx, next) => {
     return await next();
   }
 
-  await ctx.render('index.pug', {
+  ctx.body = renderPage({
     isDev,
     isLogin: ctx.url === '/login',
-    title: ctx.store.config.name,
+    title: get(ctx.store, 'config.name'),
     children: components,
     state: JSON.stringify(ctx.store)
   });

@@ -11,17 +11,19 @@ isDev && require('babel-register')({ cache: true });
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
-const views = require('koa-views');
 const mount = require('koa-mount');
 const serve = require('koa-static');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
+const debug = require('debug')('op-dash');
 
 const log = require('../lib/log');
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
 const app = new Koa();
 const config = getServerConfig();
+
+debug(`server config: %O`, config);
 
 global.HOSTNAME = get(config, 'host', '127.0.0.1');
 global.PORT = get(config, 'port', 8000);
@@ -52,13 +54,6 @@ app.use(
 
 // handle session
 app.use(require('./middleware/session')(app));
-
-app.use(
-  views(root('server/views'), {
-    extension: 'pug'
-  })
-);
-
 app.use(require('./middleware/store'));
 
 // add routes
@@ -67,9 +62,9 @@ app.use(require('./routes/api').routes());
 app.use(require('./routes/page').routes());
 
 // pack client side assets
-if (isDev && process.env.COMPILE_CLIENT) {
-  require('./pack-client')(app);
-}
+// if (isDev && process.env.COMPILE_CLIENT) {
+//   require('./pack-client')(app);
+// }
 
 app.use(require('./middleware/render'));
 
