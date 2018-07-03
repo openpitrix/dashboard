@@ -212,9 +212,7 @@ export default class ClusterDetail extends Component {
               </div>
               <Table columns={columns} dataSource={clusterNodes} />
             </div>
-            {clusterNodes.length > 0 && (
-              <Pagination onChange={clusterStore.fetchNodes} total={clusterNodes.length} />
-            )}
+            <Pagination onChange={clusterStore.fetchNodes} total={clusterNodes.length} />
           </div>
         </div>
         {this.clusterJobsModal()}

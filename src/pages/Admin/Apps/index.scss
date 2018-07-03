@@ -13,6 +13,13 @@
 
 .toolbar {
   padding: 24px;
+  .operation{
+    padding: 7px 16px;
+    border-radius: 16px;
+    i{
+      margin-right: 8px;
+    }
+  }
   .search {
     display: inline-block;
     width: 337px;

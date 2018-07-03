@@ -1,109 +1,66 @@
 @import '~scss/variables';
 
 .appDetail {
-  padding-top: $header-height;
+  position: relative;
+  width: $content-width;
+  margin: 0 auto 24px;
+  clear: both;
+
   .leftInfo{
     float: left;
     width: 360px;
+    .detailOuter{
+      position: relative;
+      margin-bottom: 24px;
+      .operation{
+        position: absolute;
+        right: -35px;
+        top: 24px;
+        width: 135px;
+        text-align: center;
+        cursor: pointer;
+        i{
+          transform: rotate(90deg);
+        }
+      }
+    }
   }
+
   .rightInfo{
     margin-left: 384px;
-  }
-  .detailOuter{
-    position: relative;
-    margin-bottom: 24px;
-    .operation{
-      position: absolute;
-      right: -35px;
-      top: 24px;
-      width: 135px;
-      text-align: center;
-      cursor: pointer;
-      i{
-        transform: rotate(90deg);
+    .wrapper {
+      position: relative;
+      width: 744px;
+      margin: 0 auto 24px;
+      background-color: #fff;
+      border-radius: 3px;
+      box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .toolbar {
+      padding: 24px;
+      .search {
+        display: inline-block;
+        width: 337px;
+        border-color: $border-lighter;
+        box-shadow: none;
+        :global {
+          .fa {
+            color: $placeholder-color;
+          }
+        }
+        input::placeholder {
+          font-weight: 400;
+          color: $placeholder-color;
+        }
+      }
+      .buttonRight{
+        float: right;
       }
     }
   }
 }
 
-
-.wrapper {
-  position: relative;
-  width: $content-width;
-  margin: 0 auto 24px;
-  clear: both;
-  overflow: auto;
-}
-
-.wrapper2 {
-  position: relative;
-  width: 744px;
-  margin: 0 auto 24px;
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-}
-
-.leftInfo{
-  float: left;
-  width: 360px;
-}
-.rightInfo{
-  margin-left: 384px;
-}
-.mb24{
-  position: relative;
-  margin-bottom: 24px;
-  .operation{
-    position: absolute;
-    right: -24px;
-    top: 24px;
-    width: 120px;
-    text-align: center;
-    i.icon{
-      transform: rotate(90deg);
-    }
-  }
-}
-
-.tagshow{
-  margin:15px 24px 0;
-}
-.toolbar {
-  padding: 24px;
-
-  .select {
-    width: 176px;
-    vertical-align: top;
-
-    div {
-      box-shadow: none !important;
-    }
-  }
-}
-.search {
-  display: inline-block;
-  width: 337px;
-  border-color: $border-lighter;
-  box-shadow: none;
-
-  :global {
-    .fa {
-      color: $placeholder-color;
-    }
-  }
-
-  input::placeholder {
-    font-weight: 400;
-    color: $placeholder-color;
-  }
-}
-.buttonRight{
-  float: right;
-}
-.ml12{
-  margin-left: 12px;
-}
 
 .inputItem{
   margin-bottom: 20px;

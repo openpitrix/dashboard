@@ -213,7 +213,7 @@ export default class RuntimeCreateStore extends Store {
       this.runtimeUrl = detail.runtime_url;
       this.zone = detail.zone;
       this.description = detail.description;
-      const credential = JSON.parse(detail.runtime_credential);
+      const credential = detail.runtime_credential && JSON.parse(detail.runtime_credential);
       this.accessKey = credential.access_key_id;
       this.secretKey = credential.secret_access_key;
       this.labels = detail.labels || [{ label_key: '', label_value: '' }];

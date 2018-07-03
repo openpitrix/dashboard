@@ -103,7 +103,7 @@ export default class Home extends Component {
 
     return (
       <Fragment>
-        {isHomePage && <Banner onSearch={fetchApps} />}
+        {isHomePage && <Banner onSearch={fetchApps} appSearch={appSearch} />}
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
             <Nav className={styles.nav} navs={categories.toJSON()} />

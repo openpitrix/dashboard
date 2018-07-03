@@ -230,7 +230,10 @@ export default class RepoCreateStore extends Store {
       this.showMsg(errDetail);
     }
 
-    this.isLoading = false;
+    // disable re-submit form in 2 sec
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   };
 
   @action

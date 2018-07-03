@@ -53,29 +53,32 @@
   }
 }
 
-
-.modalContent{
-  .noteWord{
-    font-size: 16px;
-    margin-bottom: 30px;
+.inputItem{
+  margin-bottom: 20px;
+  .name{
+    display: inline-block;
+    margin-right:  20px;
+    width: 100px;
+    text-align: right;
   }
-  .inputItem{
-    margin-bottom: 20px;
-    .name{
-      display: inline-block;
-      margin-right:  20px;
-      width: 100px;
-      text-align: right;
-    }
-    .input{
-      width: 250px;
+  .input{
+    width: 300px;
+  }
+  .textarea{
+    padding: 7px 10px;
+    width: 300px;
+    height: 72px;
+    border-radius: 2px;
+    border: 1px solid #e7e7e7;
+    outline: none;
+    resize: none;
+    &:focus{
+      border: 1px solid $border-dark;
     }
   }
-  .operation{
-    text-align: center;
-    button{
-      margin: 0 6px;
-    }
+  .textareaName{
+    position: relative;
+    bottom: 60px;
   }
 }
 

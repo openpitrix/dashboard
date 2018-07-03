@@ -14,6 +14,17 @@
 
 .toolbar {
   padding: 24px;
+  .operation{
+    margin-right: 12px;
+    padding: 7px 16px;
+    border-radius: 16px;
+    &:last-child{
+      margin-right: 0;
+    }
+    i{
+      margin-right: 8px;
+    }
+  }
   .refresh {
     border-color: $border-lighter;
     vertical-align: top;

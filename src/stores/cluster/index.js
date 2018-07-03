@@ -16,13 +16,19 @@ export default class ClusterStore extends Store {
   @observable isModalOpen = false;
 
   @observable clusterId = ''; // current delete cluster_id
+  @observable operateType = '';
 
   @observable currentPage = 1;
   @observable searchWord = '';
   @observable runtimeId = '';
+  @observable modalType = '';
+
+  @observable selectedRowKeys = [];
+  @observable clusterIds = [];
 
   @action.bound
-  showModal = () => {
+  showModal = type => {
+    this.modalType = type;
     this.isModalOpen = true;
   };
 
@@ -84,11 +90,12 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  remove = async () => {
-    const result = await this.request.post('clusters/delete', { cluster_id: [this.clusterId] });
+  remove = async clusterIds => {
+    const result = await this.request.post('clusters/delete', { cluster_id: clusterIds });
     if (_.get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
+      this.cancelSelected();
       this.showMsg('Delete cluster successfully.');
     } else {
       let { err, errDetail } = result;
@@ -96,11 +103,43 @@ export default class ClusterStore extends Store {
     }
   };
 
-  // fixme
   @action
-  showDeleteCluster = clusterId => {
-    this.clusterId = clusterId;
-    this.showModal();
+  start = async clusterIds => {
+    const result = await this.request.post('clusters/start', { cluster_id: clusterIds });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      this.cancelSelected();
+      this.showMsg('Start cluster successfully.');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
+    }
+  };
+
+  @action
+  stop = async clusterIds => {
+    const result = await this.request.post('clusters/stop', { cluster_id: clusterIds });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      this.cancelSelected();
+      this.showMsg('Stop cluster successfully.');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
+    }
+  };
+
+  @action
+  showOperateCluster = (clusterIds, type) => {
+    if (typeof clusterIds === 'string') {
+      this.clusterId = clusterIds;
+      this.operateType = 'single';
+    } else {
+      this.operateType = 'multiple';
+    }
+    this.showModal(type);
   };
 
   @action
@@ -168,5 +207,18 @@ export default class ClusterStore extends Store {
     this.currentPage = 1;
     this.searchWord = '';
     this.runtimeId = '';
+  };
+
+  @action
+  onChangeSelect = (selectedRowKeys, selectedRows) => {
+    this.selectedRowKeys = selectedRowKeys;
+    this.clusterIds = [];
+    selectedRows.map(row => this.clusterIds.push(row.cluster_id));
+  };
+
+  @action
+  cancelSelected = () => {
+    this.selectedRowKeys = [];
+    this.clusterIds = [];
   };
 }

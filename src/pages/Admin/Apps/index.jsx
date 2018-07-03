@@ -8,9 +8,10 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getParseDate } from 'utils';
+import { getSessInfo, imgPlaceholder, getParseDate, getParseTime } from 'utils';
 
 import styles from './index.scss';
+import classNames from 'classnames';
 
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
@@ -117,7 +118,12 @@ export default class Apps extends Component {
       onSearch,
       onClearSearch,
       onRefresh,
-      changePagination
+      changePagination,
+      showDeleteApp,
+      appIds,
+      selectedRowKeys,
+      onChangeSelect,
+      cancelSelected
     } = this.props.appStore;
     const imgPhd = imgPlaceholder();
 
@@ -172,7 +178,12 @@ export default class Apps extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: obj => getParseDate(obj.status_time)
+        render: app => (
+          <Fragment>
+            <div>{getParseDate(app.status_time)}</div>
+            <div>{getParseTime(app.status_time)}</div>
+          </Fragment>
+        )
       },
       {
         title: 'Actions',
@@ -186,26 +197,55 @@ export default class Apps extends Component {
         )
       }
     ];
+    const rowSelection = {
+      type: 'checkbox',
+      selectedRowKeys: selectedRowKeys,
+      onChange: onChangeSelect
+    };
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
-            <div className={styles.toolbar}>
-              <Input.Search
-                className={styles.search}
-                placeholder="Search App Name or Keywords"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-              />
-              <Button className={styles.buttonRight} onClick={onRefresh}>
-                <Icon name="refresh" />
-              </Button>
-            </div>
+            {appIds.length > 0 && (
+              <div className={styles.toolbar}>
+                <Button
+                  type="primary"
+                  className={styles.operation}
+                  onClick={() => showDeleteApp(appIds)}
+                >
+                  <Icon name="check" />Delete
+                </Button>
+                <Button
+                  className={classNames(styles.operation, styles.buttonRight)}
+                  onClick={cancelSelected}
+                >
+                  <Icon name="refresh" /> Cancel Selected
+                </Button>
+              </div>
+            )}
+            {appIds.length === 0 && (
+              <div className={styles.toolbar}>
+                <Input.Search
+                  className={styles.search}
+                  placeholder="Search App Name or Keywords"
+                  value={searchWord}
+                  onSearch={onSearch}
+                  onClear={onClearSearch}
+                />
+                <Button className={styles.buttonRight} onClick={onRefresh}>
+                  <Icon name="refresh" />
+                </Button>
+              </div>
+            )}
 
-            <Table className={styles.tableOuter} columns={columns} dataSource={apps.toJSON()} />
+            <Table
+              className={styles.tableOuter}
+              columns={columns}
+              dataSource={apps.toJSON()}
+              rowSelection={rowSelection}
+            />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>

@@ -19,7 +19,7 @@ export default class ClusterList extends PureComponent {
           <li key={data.cluster_id}>
             <img className={styles.icon} src={data.icon || imgPhd} />
             <div className={styles.word}>
-              <Link className={styles.name} to={`/dashboard/app/${data.cluster_id}`}>
+              <Link className={styles.name} to={`/dashboard/cluster/${data.cluster_id}`}>
                 {data.name}
               </Link>
               <div className={styles.detail}>

@@ -27,7 +27,7 @@ export default class AppDetail extends Component {
     const appVersions = toJS(appVersionStore.versions);
 
     return (
-      <Layout>
+      <Layout noTabs={true}>
         <div className={styles.wrapper}>
           <BackBtn label="catalog" link="/apps" />
           <div className={styles.detail}>
