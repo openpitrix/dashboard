@@ -16,7 +16,10 @@ describe('<App/>', () => {
     useStrict(false);
 
     store = observable({
-      fixNav: false
+      fixNav: false,
+      appStore: {
+        appSearch: () => {}
+      }
     });
   });
 
