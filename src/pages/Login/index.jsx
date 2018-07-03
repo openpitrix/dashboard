@@ -32,7 +32,7 @@ export default class Login extends Component {
     return (
       <div className={styles.login}>
         <div className={styles.loginTitle}>
-          <Logo url="/assets/logo3.svg" />
+          <Logo url="/assets/logo_light.svg" />
         </div>
         <div className={styles.loginForm}>
           <h1>Login OpenPitrix</h1>
