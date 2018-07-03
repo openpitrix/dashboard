@@ -13,7 +13,7 @@ static:
     /dist: dist
 
 # mock server
-serverUrl: http://139.198.11.221:7300/mock/5a7acd265fbf5132a58d61e4
+serverUrl: http://139.198.4.179:9100
 
 app:
   name: OpenPitrix Dashboard

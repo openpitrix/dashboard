@@ -63,6 +63,6 @@ yarn test
 
 For bug reporting, [open issue](https://github.com/openpitrix/dashboard/issues/new)
 
--Wanna help us to improve this project? Fork this repo, then send your awesome _PR_.
+Wanna help us to improve this project? Fork this repo, send your awesome _PR_.
 
 We are happy to see you :smiley:
