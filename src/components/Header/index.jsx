@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
+import { translate } from 'react-i18next';
 
 import { getSessInfo, getLinkLabelFromRole } from 'src/utils';
 import Logo from '../Logo';
@@ -11,6 +12,8 @@ import Input from '../Base/Input';
 
 import styles from './index.scss';
 
+// translate hoc should place before mobx
+@translate()
 @inject('rootStore', 'sessInfo')
 @observer
 export default class Header extends Component {
@@ -61,6 +64,7 @@ export default class Header extends Component {
 
   render() {
     const {
+      t,
       isHome,
       rootStore: { fixNav }
     } = this.props;
@@ -76,7 +80,7 @@ export default class Header extends Component {
             <Input.Search
               className={styles.search}
               onSearch={this.onSearch}
-              placeholder="Search apps in Pitrix..."
+              placeholder={t('search.placeholder')}
             />
           )}
           <div className={styles.menus}>
