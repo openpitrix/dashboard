@@ -16,7 +16,7 @@ Array [
         <img
           alt="logo"
           height="100%"
-          src="/assets/logo.svg"
+          src="/assets/logo_dark.svg"
         />
       </a>
       <div
@@ -55,7 +55,11 @@ Array [
       <span
         class="logo"
       >
-        OpenPitrix
+        <img
+          alt="logo"
+          height="100%"
+          src="/assets/logo_grey.svg"
+        />
       </span>
       <ul
         class="terms"

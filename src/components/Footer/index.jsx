@@ -7,7 +7,9 @@ export default class Footer extends PureComponent {
     return (
       <div className={styles.footer}>
         <div className={styles.wrapper}>
-          <span className={styles.logo}>OpenPitrix</span>
+          <span className={styles.logo}>
+            <img src="/assets/logo_grey.svg" alt="logo" height="100%" />
+          </span>
           <ul className={styles.terms}>
             <li>
               <a href="javascript:;">About</a>

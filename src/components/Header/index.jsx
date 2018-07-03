@@ -66,7 +66,7 @@ export default class Header extends Component {
     } = this.props;
 
     const isDark = !isHome || fixNav;
-    const logoUrl = isDark ? '/assets/logo2.svg' : '/assets/logo.svg';
+    const logoUrl = isDark ? '/assets/logo_light.svg' : '/assets/logo_dark.svg';
 
     return (
       <div className={classnames('header', styles.header, { [styles.darkHeader]: !isDark })}>
