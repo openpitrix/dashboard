@@ -38,9 +38,7 @@ Array [
           class="input"
           placeholder="Search apps in Pitrix..."
           type="text"
-        />
-        <i
-          class="icon icon-close"
+          value=""
         />
       </div>
     </div>
@@ -68,7 +66,7 @@ Array [
         <div
           class="title"
         >
-          There are 0 applications with search word: function appSearch() {} 
+          Newest 
           <span
             class="more"
           >
