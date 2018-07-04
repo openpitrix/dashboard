@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { get } from 'lodash';
 
 import Status from 'components/Status';
-import { getParseDate, imgPlaceholder } from 'utils';
+import { getParseDate, getParseTime, imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 export default class AppCard extends PureComponent {
@@ -42,6 +42,7 @@ export default class AppCard extends PureComponent {
           <li>
             <span className={styles.name}>Category</span>
             {get(appDetail, 'category_set', [])
+              .filter(cate => cate.category_id)
               .map(cate => cate.name)
               .join(', ')}
           </li>
@@ -51,7 +52,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(appDetail.status_time)}
+            {getParseDate(appDetail.status_time)} {getParseTime(appDetail.status_time)}
           </li>
         </ul>
       </div>

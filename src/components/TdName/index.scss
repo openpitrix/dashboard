@@ -30,10 +30,22 @@
       line-height: 14px;
       font-size: $size-small;
       color: #a6a1ab;
-      max-width: 120px;
+      max-width: 116px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    :global{
+      .fa-clipboard{
+        float: right;
+        margin-left: 2px;
+        font-size: 12px;
+        color: $title-color;
+        cursor: pointer;
+      }
+      td:hover .fa-clipboard{
+        color: $link-hover;
+      }
     }
   }
 }

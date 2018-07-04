@@ -11,12 +11,14 @@ import RepoList from './RepoList';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  repoStore: rootStore.repoStore
+  repoStore: rootStore.repoStore,
+  appStore: rootStore.appStore
 }))
 @observer
 export default class Repos extends Component {
-  static async onEnter({ repoStore }) {
+  static async onEnter({ repoStore, appStore }) {
     await repoStore.fetchAll();
+    await appStore.fetchApps({ status: ['active', 'deleted'] });
   }
 
   renderHandleMenu = id => {
@@ -64,10 +66,20 @@ export default class Repos extends Component {
   };
 
   render() {
-    const { repoStore } = this.props;
-    const repoList = toJS(repoStore.repos);
-    const { isLoading, fetchQueryRepos, searchWord, onClearSearch, onRefresh } = repoStore;
-
+    const { repoStore, appStore } = this.props;
+    //const repoList = toJS(repoStore.repos);
+    const {
+      getRepoApps,
+      repos,
+      isLoading,
+      fetchQueryRepos,
+      searchWord,
+      onClearSearch,
+      onRefresh
+    } = repoStore;
+    const { apps } = appStore;
+    const repoApps = toJS(getRepoApps(repos, apps));
+    console.log('repoApps:', repoApps);
     return (
       <Layout isLoading={isLoading}>
         <div className={styles.container}>
@@ -91,8 +103,8 @@ export default class Repos extends Component {
             </Button>
           </div>
 
-          <RepoList visibility="public" repos={repoList} actionMenu={this.renderHandleMenu} />
-          <RepoList visibility="private" repos={repoList} actionMenu={this.renderHandleMenu} />
+          <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
+          <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
         </div>
         {this.deleteRepoModal()}
       </Layout>

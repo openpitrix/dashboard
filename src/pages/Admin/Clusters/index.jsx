@@ -8,20 +8,25 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getParseDate, getParseTime } from 'utils';
+import { getParseDate, getParseTime, getObjName } from 'utils';
 
 import styles from './index.scss';
 import capitalize from 'lodash/capitalize';
 import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  appStore: rootStore.appStore,
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore }) {
+  static async onEnter({ clusterStore, appStore, runtimeStore }) {
     clusterStore.loadPageInit();
     await clusterStore.fetchAll();
+    //const clusterIds = clusterStore.clusters.map(cluster => cluster.cluster_id);
+    await appStore.fetchAll({ status: ['active', 'deleted'] });
+    await runtimeStore.fetchAll({ status: ['active', 'deleted'] });
   }
 
   constructor(props) {
@@ -102,6 +107,9 @@ export default class Clusters extends Component {
       onChangeSelect,
       cancelSelected
     } = this.props.clusterStore;
+    const { runtimes } = this.props.runtimeStore;
+    const { apps } = this.props.appStore;
+
     const columns = [
       {
         title: 'Cluster Name',
@@ -122,12 +130,20 @@ export default class Clusters extends Component {
       {
         title: 'App',
         key: 'app_id',
-        render: cl => cl.app_id
+        render: cl => (
+          <Link to={`/dashboard/app/${cl.app_id}`}>
+            {getObjName(apps, 'app_id', cl.app_id, 'name')}
+          </Link>
+        )
       },
       {
         title: 'Runtime',
         key: 'runtime_id',
-        render: cl => cl.runtime_id
+        render: cl => (
+          <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
+            {getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
+          </Link>
+        )
       },
       {
         title: 'Node Count',

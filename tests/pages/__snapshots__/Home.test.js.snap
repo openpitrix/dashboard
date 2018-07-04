@@ -66,12 +66,7 @@ Array [
         <div
           class="title"
         >
-          Newest 
-          <span
-            class="more"
-          >
-            more...
-          </span>
+          Newest
         </div>
         <div
           class="noData"

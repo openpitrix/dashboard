@@ -113,10 +113,9 @@ export default class AppDetail extends Component {
   };
 
   onRefresh = () => {
-    const { currentClusterPage, changeClusterSearchWord } = this.props.appStore;
+    const { currentClusterPage, swCluster } = this.props.appStore;
     const { fetchAll } = this.props.clusterStore;
-    changeClusterSearchWord('');
-    fetchAll({ page: currentClusterPage, search_word: '', app_id: this.appId });
+    fetchAll({ page: currentClusterPage, search_word: swCluster, app_id: this.appId });
   };
 
   onSearch = search_word => {
@@ -124,6 +123,10 @@ export default class AppDetail extends Component {
     const { fetchAll } = this.props.clusterStore;
     fetchAll({ search_word, app_id: this.appId });
     changeClusterSearchWord(search_word);
+  };
+
+  onClearSearch = () => {
+    this.onSearch('');
   };
 
   changePagination = page => {
@@ -173,6 +176,7 @@ export default class AppDetail extends Component {
                   className={styles.search}
                   placeholder="Search & Filter"
                   onSearch={this.onSearch}
+                  onClear={this.onClearSearch}
                   value={swCluster}
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>

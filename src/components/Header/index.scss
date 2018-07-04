@@ -11,8 +11,9 @@
   .wrapper {
     width: $content-width;
     margin: 0 auto;
+    height: 48px;
   }
-  
+
   .logo {
     width: $logo-width;
     height: $logo-height;
@@ -39,14 +40,18 @@
       font-size: $size-normal;
       border: none;
       border-radius: 16px;
+      border: solid 1px rgba(#ffffff, 0.1);
       background-color: rgba(#ffffff, 0.1);
+      &:focus{
+        border: solid 1px $border-dark;
+      }
       &::placeholder {
         color: rgba(#ffffff, 0.5);
         font-weight: 500;
-      } 
+      }
     }
   }
-  
+
   .menus {
     float: right;
     line-height: $header-height;

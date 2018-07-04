@@ -23,7 +23,8 @@ class App extends PureComponent {
     const { location, children } = this.props;
     const pathname = location.pathname;
     const isLoginPage = pathname === '/login';
-    const isHome = pathname === '/' || pathname === '/apps';
+    const isHome =
+      pathname === '/' || pathname === '/apps' || (pathname && pathname.indexOf('apps/ctg-') > -1);
 
     return (
       <I18nextProvider i18n={i18n}>

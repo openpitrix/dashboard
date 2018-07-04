@@ -36,7 +36,7 @@ export default class RepoAdd extends Component {
   }
 
   componentDidUpdate() {
-    if (get(this.store, 'repoCreated.repo') && !this.store.isLoading) {
+    if (get(this.store, 'repoCreated.repo_id') && !this.store.isLoading) {
       history.back();
     }
   }

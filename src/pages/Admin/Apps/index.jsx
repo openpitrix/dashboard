@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { filter, get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getParseDate, getParseTime } from 'utils';
+import { getSessInfo, imgPlaceholder, getParseDate, getParseTime, getObjName } from 'utils';
 
 import styles from './index.scss';
 import classNames from 'classnames';
@@ -16,6 +16,7 @@ import classNames from 'classnames';
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
+  repoStore: rootStore.repoStore,
   sessInfo
 }))
 @observer
@@ -108,6 +109,7 @@ export default class Apps extends Component {
   render() {
     const {
       apps,
+      appRepos,
       summaryInfo,
       totalCount,
       notifyMsg,
@@ -144,7 +146,7 @@ export default class Apps extends Component {
       {
         title: 'Latest Version',
         key: 'latest_version',
-        render: obj => get(obj, 'latest_app_version.version_id', '')
+        render: obj => get(obj, 'latest_app_version.name', '')
       },
       {
         title: 'Status',
@@ -158,17 +160,23 @@ export default class Apps extends Component {
         key: 'category',
         render: obj =>
           get(obj, 'category_set', [])
+            .filter(cate => cate.category_id)
             .map(cate => cate.name)
             .join(', ')
       },
       {
         title: 'Visibility',
-        key: 'visibility'
+        key: 'visibility',
+        render: app => getObjName(appRepos, 'repo_id', app.repo_id, 'visibility')
       },
       {
         title: 'Repo',
         key: 'repo_id',
-        render: obj => obj.repo_id
+        render: app => (
+          <Link to={`/dashboard/repo/${app.repo_id}`}>
+            {getObjName(appRepos, 'repo_id', app.repo_id, 'name')}
+          </Link>
+        )
       },
       {
         title: 'Developer',

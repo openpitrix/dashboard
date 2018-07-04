@@ -21,6 +21,7 @@ export default class AppStore extends Store {
   @observable appIds = [];
   @observable selectedRowKeys = [];
   @observable operateType = '';
+  @observable appRepos = [];
 
   // menu actions logic
   @observable
@@ -61,10 +62,19 @@ export default class AppStore extends Store {
     if (params.page) {
       delete params.page;
     }
+
     this.isLoading = true;
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    this.summaryInfo = {
+      name: 'Apps',
+      centerName: 'Repos',
+      total: get(result, 'total_count', 0),
+      progressTotal: get(result, 'repo_count', 0),
+      lastedTotal: get(result, 'last_two_week_count', 0)
+    };
+    await this.fetchRepos(this.apps.map(app => app.app_id));
     this.isLoading = false;
   };
 
@@ -214,6 +224,14 @@ export default class AppStore extends Store {
   cancelSelected = () => {
     this.selectedRowKeys = [];
     this.appIds = [];
+  };
+
+  @action
+  fetchRepos = async appIds => {
+    this.isLoading = true;
+    const result = await this.request.get('repos', { app_id: appIds });
+    this.appRepos = get(result, 'repo_set', []);
+    this.isLoading = false;
   };
 }
 

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import TdName from 'components/TdName';
 import Status from 'components/Status';
-import { getParseDate } from 'utils';
+import { getParseDate, getParseTime } from 'utils';
 
 export default [
   {
@@ -46,6 +46,11 @@ export default [
     title: 'Date Created',
     key: 'create_time',
     dataIndex: 'create_time',
-    render: getParseDate
+    render: cl => (
+      <Fragment>
+        <div>{getParseDate(cl.create_time)}</div>
+        <div>{getParseTime(cl.create_time)}</div>
+      </Fragment>
+    )
   }
 ];

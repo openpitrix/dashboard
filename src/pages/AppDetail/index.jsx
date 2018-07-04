@@ -51,6 +51,7 @@ export default class AppDetail extends Component {
                     <dt>Catelog</dt>
                     <dd>
                       {get(appDetail, 'category_set', [])
+                        .filter(cate => cate.category_id)
                         .map(cate => cate.name)
                         .join(', ')}
                     </dd>

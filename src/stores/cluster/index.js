@@ -62,6 +62,13 @@ export default class ClusterStore extends Store {
     const result = await this.request.get('clusters', assign(defaultParams, params));
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    this.summaryInfo = {
+      name: 'Clusters',
+      centerName: 'Runtimes',
+      total: get(result, 'total_count', 0),
+      progressTotal: get(result, 'runtime_count', 0),
+      lastedTotal: get(result, 'last_two_week_count', 0)
+    };
     this.isLoading = false;
   };
 
@@ -207,6 +214,8 @@ export default class ClusterStore extends Store {
     this.currentPage = 1;
     this.searchWord = '';
     this.runtimeId = '';
+    this.selectedRowKeys = [];
+    this.clusterIds = [];
   };
 
   @action

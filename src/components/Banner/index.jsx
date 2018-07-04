@@ -8,10 +8,12 @@ import PropTypes from 'prop-types';
 export default class Banner extends PureComponent {
   static propTypes = {
     appSearch: PropTypes.string,
-    onSearch: PropTypes.func
+    onSearch: PropTypes.func,
+    setScroll: PropTypes.func
   };
 
   onSearch = value => {
+    this.props.setScroll();
     this.props.onSearch({ search_word: value });
   };
 

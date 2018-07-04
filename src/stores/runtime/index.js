@@ -49,10 +49,18 @@ export default class RuntimeStore extends Store {
     if (params.page) {
       delete params.page;
     }
+
     this.isLoading = true;
     const result = await this.request.get('runtimes', assign(defaultParams, params));
     this.runtimes = get(result, 'runtime_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    this.summaryInfo = {
+      name: 'Runtimes',
+      centerName: 'Provider',
+      total: get(result, 'total_count', 0),
+      progressTotal: get(result, 'provider_count', 0),
+      lastedTotal: get(result, 'last_two_week_count', 0)
+    };
     this.isLoading = false;
   };
 

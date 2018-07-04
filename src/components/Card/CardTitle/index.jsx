@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
 import styles from './index.scss';
@@ -8,24 +9,24 @@ export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,
     title: PropTypes.string,
-    moreApps: PropTypes.func,
+    fixTitle: PropTypes.string,
     more: PropTypes.bool
   };
 
-  moreApps = () => {
-    const id = this.props.categoryId;
-    const title = this.props.title;
-    this.props.moreApps({ category_id: id }, title);
-  };
-
   render() {
-    const { title, more } = this.props;
+    const { categoryId, title, more, fixTitle } = this.props;
+
     return (
-      <div className={classnames(styles.title)}>
-        {title}{' '}
-        <span className={classnames(styles.more, { [styles.show]: more })} onClick={this.moreApps}>
-          more...
-        </span>
+      <div className={classnames(styles.title, { [styles.fixTitle]: fixTitle })}>
+        {title}
+        {more && (
+          <Link
+            className={classnames(styles.more, { [styles.show]: more })}
+            to={`/apps/${categoryId}`}
+          >
+            more...
+          </Link>
+        )}
       </div>
     );
   }

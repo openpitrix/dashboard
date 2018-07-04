@@ -10,7 +10,6 @@ export default class Histogram extends PureComponent {
 
   render() {
     const { histograms } = this.props;
-
     return (
       <div className={styles.histogram}>
         {histograms.map((data, index) => (

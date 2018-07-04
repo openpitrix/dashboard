@@ -13,14 +13,18 @@ import Layout, { Dialog } from 'components/Layout/Admin';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  clusterStore: rootStore.clusterStore
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore }) {
+  static async onEnter({ runtimeStore, clusterStore }) {
     runtimeStore.currentPage = 1;
     runtimeStore.searchWord = '';
     await runtimeStore.fetchAll();
+    await clusterStore.fetchAll({
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+    });
   }
 
   renderHandleMenu = id => {
@@ -48,8 +52,9 @@ export default class Runtimes extends Component {
   };
 
   render() {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, clusterStore } = this.props;
     const data = toJS(runtimeStore.runtimes);
+    const clusters = toJS(clusterStore.clusters);
     const {
       summaryInfo,
       isLoading,
@@ -100,8 +105,9 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Cluster Count',
-        dataIndex: 'node_count',
-        key: 'node_count'
+        key: 'node_count',
+        render: runtime =>
+          clusters.filter(cluster => runtime.runtime_id == cluster.runtime_id).length
       },
       {
         title: 'User',
