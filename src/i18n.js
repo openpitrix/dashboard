@@ -26,7 +26,7 @@ const translations = {
 i18n.use(LngDetector).init({
   detector: lngDetectorOptions,
 
-  preload: true,
+  // preload: true,
   resources: translations,
   fallbackLng: 'en',
   debug: process.env.NODE_ENV !== 'production',

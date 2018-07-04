@@ -38,7 +38,7 @@ const renderPage = (options = {}) => {
   const renderJs = () => {
     let snip = '';
     if (isDev) {
-      snip += ['manifest', 'vendor']
+      snip += ['vendors']
         .map(file => `<script src="${bundlePrefix}/${file}.js"></script>`)
         .join('\n');
     }

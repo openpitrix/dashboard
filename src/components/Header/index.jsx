@@ -34,8 +34,15 @@ export default class Header extends Component {
     });
   };
 
-  changeLocale = lang => {
-    this.props.i18n.changeLanguage(lang);
+  getCurrentLocale = () => {
+    return typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
+  };
+
+  changeLocale = (lang, e) => {
+    e.preventDefault();
+    if (this.getCurrentLocale() !== lang) {
+      this.props.i18n.changeLanguage(lang);
+    }
     this.toggleTranslationDropdown();
   };
 
@@ -67,7 +74,7 @@ export default class Header extends Component {
 
   renderLocaleBtns() {
     const { translationDropdownOpen } = this.state;
-    const curLocale = typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
+    const curLocale = this.getCurrentLocale();
 
     return (
       <Dropdown
@@ -86,12 +93,12 @@ export default class Header extends Component {
         </DropdownToggle>
         <DropdownMenu className={styles.transMenu}>
           <div className={styles.locale}>
-            <a href="javascript:void(0)" onClick={() => this.changeLocale('en')}>
+            <a href="#" onClick={this.changeLocale.bind(null, 'en')}>
               en
             </a>
           </div>
           <div className={styles.locale}>
-            <a href="javascript:void(0)" onClick={() => this.changeLocale('zh-CN')}>
+            <a href="#" onClick={this.changeLocale.bind(null, 'zh-CN')}>
               zh-CN
             </a>
           </div>
