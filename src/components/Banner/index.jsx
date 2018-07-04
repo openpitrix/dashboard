@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 export default class Banner extends PureComponent {
   static propTypes = {
+    appSearch: PropTypes.string,
     onSearch: PropTypes.func
   };
 
@@ -14,7 +15,12 @@ export default class Banner extends PureComponent {
     this.props.onSearch({ search_word: value });
   };
 
+  onClearSearch = () => {
+    this.onSearch('');
+  };
+
   render() {
+    const { appSearch } = this.props;
     return (
       <div className={classnames('banner', styles.banner)}>
         <div className={styles.wrapper}>
@@ -27,7 +33,9 @@ export default class Banner extends PureComponent {
           <Input.Search
             className={styles.search}
             placeholder="Search apps in Pitrix..."
+            value={appSearch}
             onSearch={this.onSearch}
+            onClear={this.onClearSearch}
           />
         </div>
       </div>

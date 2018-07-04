@@ -214,7 +214,7 @@ export default class RepoDetail extends Component {
               </div>
               <Table columns={columns} dataSource={data} />
             </div>
-            {totalCount > 0 && <Pagination onChange={changeTable} total={totalCount} />}
+            <Pagination onChange={changeTable} total={totalCount} />
           </div>
         </div>
       </Layout>

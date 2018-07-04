@@ -1,11 +1,13 @@
 @import '~scss/variables';
 
 .container {
-  padding-top: $header-height;
-
+  padding-top: 120px;
+  &.noTabs{
+    padding-top: 72px;
+  }
   .backTo{
     width: $content-width;
-    margin: 24px auto 12px;
+    margin: 0 auto 12px;
     line-height: 20px;
     font-size: 14px;
     a{

@@ -140,9 +140,9 @@ export default class AppDetail extends Component {
     const { clusters } = clusterStore;
 
     return (
-      <Layout className={styles.appDetail} msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
-        <div className={styles.wrapper}>
+        <div className={styles.appDetail}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
               <AppCard appDetail={appDetail} />
@@ -165,7 +165,7 @@ export default class AppDetail extends Component {
           </div>
 
           <div className={styles.rightInfo}>
-            <div className={styles.wrapper2}>
+            <div className={styles.wrapper}>
               <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
 
               <div className={styles.toolbar}>

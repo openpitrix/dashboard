@@ -54,9 +54,13 @@ export default class Header extends Component {
     return <NavLink to="/dashboard">{getLinkLabelFromRole(role)}</NavLink>;
   }
 
-  onSearch = value => {
+  onSearch = async value => {
     const { appStore } = this.props.rootStore;
-    appStore.fetchApps({ search_word: value });
+    await appStore.fetchApps({ search_word: value });
+  };
+
+  onClearSearch = async () => {
+    await this.onSearch('');
   };
 
   render() {
@@ -64,6 +68,8 @@ export default class Header extends Component {
       isHome,
       rootStore: { fixNav }
     } = this.props;
+    const { appStore } = this.props.rootStore;
+    const { appSearch } = appStore;
 
     const isDark = !isHome || fixNav;
     const logoUrl = isDark ? '/assets/logo_light.svg' : '/assets/logo_dark.svg';
@@ -75,8 +81,10 @@ export default class Header extends Component {
           {isDark && (
             <Input.Search
               className={styles.search}
-              onSearch={this.onSearch}
               placeholder="Search apps in Pitrix..."
+              value={appSearch}
+              onSearch={this.onSearch}
+              onClear={this.onClearSearch}
             />
           )}
           <div className={styles.menus}>

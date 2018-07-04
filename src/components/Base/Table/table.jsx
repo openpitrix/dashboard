@@ -14,7 +14,7 @@ export default class Table extends React.Component {
     dataSource: PropTypes.array,
     columns: PropTypes.array,
     pagination: PropTypes.bool,
-    rowSelection: PropTypes.object,
+    rowSelection: PropTypes.object
   };
 
   static defaultProps = {
@@ -23,7 +23,7 @@ export default class Table extends React.Component {
     columns: [],
     pagination: false,
     rowKey: 'key',
-    rowSelection: null,
+    rowSelection: null
   };
 
   constructor(props) {
@@ -31,7 +31,7 @@ export default class Table extends React.Component {
 
     this.state = {
       selectedRowKeys: (props.rowSelection || {}).selectedRowKeys || [],
-      selectionDirty: false,
+      selectionDirty: false
     };
   }
 
@@ -46,23 +46,24 @@ export default class Table extends React.Component {
       return item;
     });
     return data;
-  }
+  };
 
   getItemKey = (item, index) => {
     const rowKey = this.props.rowKey;
-    const itemKey = (typeof rowKey === 'function') ? rowKey(item, index) : item[rowKey];
+    const itemKey = typeof rowKey === 'function' ? rowKey(item, index) : item[rowKey];
     return itemKey === undefined ? index : itemKey;
-  }
+  };
 
-  getDefaultSelection = () => this.getTableData()
-    .filter(item => item.checked)
-    .map((item, i) => this.getItemKey(item, i));
+  getDefaultSelection = () =>
+    this.getTableData()
+      .filter(item => item.checked)
+      .map((item, i) => this.getItemKey(item, i));
 
   setSelectedRowKeys = (selectedRowKeys, { selectType, item, checked, changeRowKeys }) => {
     const { rowSelection } = this.props;
     this.setState({
       selectedRowKeys,
-      selectionDirty: true,
+      selectionDirty: true
     });
 
     const data = this.getTableData();
@@ -71,7 +72,7 @@ export default class Table extends React.Component {
       return;
     }
     const selectedRows = data.filter(
-      (row, i) => selectedRowKeys.indexOf(this.getItemKey(row, i)) !== -1,
+      (row, i) => selectedRowKeys.indexOf(this.getItemKey(row, i)) !== -1
     );
     if (rowSelection.onChange) {
       rowSelection.onChange(selectedRowKeys, selectedRows);
@@ -85,7 +86,7 @@ export default class Table extends React.Component {
           break;
         case 'onSelectAll': {
           const changeRows = data.filter(
-            (row, i) => changeRowKeys.indexOf(this.getItemKey(row, i)) !== -1,
+            (row, i) => changeRowKeys.indexOf(this.getItemKey(row, i)) !== -1
           );
           rowSelection[selectType](checked, selectedRows, changeRows);
           break;
@@ -95,7 +96,7 @@ export default class Table extends React.Component {
           break;
       }
     }
-  }
+  };
 
   handleCheckboxSelect = (value, index, e) => {
     const { rowKey } = this.props;
@@ -112,14 +113,13 @@ export default class Table extends React.Component {
     this.setSelectedRowKeys(selectedRowKeys, {
       selectType: 'onSelect',
       item: value,
-      checked,
+      checked
     });
-  }
+  };
 
-  handleRadioSelect = () => {
-  }
+  handleRadioSelect = () => {};
 
-  handleSelectAll = (e) => {
+  handleSelectAll = e => {
     const type = e.target.checked ? 'all' : 'removeAll';
     const data = this.getTableData();
     const defaultSelection = this.state.selectionDirty ? [] : this.getDefaultSelection();
@@ -170,20 +170,20 @@ export default class Table extends React.Component {
     this.setSelectedRowKeys(selectedRowKeys, {
       selectType,
       checked,
-      changeRowKeys,
+      changeRowKeys
     });
-  }
+  };
 
   renderSelectionBox = type => (value, row, index) => {
-    const handleChange = (e) => {
+    const handleChange = e => {
       e.stopPropagation();
-      type === 'radio' ? this.handleRadioSelect(value, index, e) : this.handleCheckboxSelect(value, index, e);
+      type === 'radio'
+        ? this.handleRadioSelect(value, index, e)
+        : this.handleCheckboxSelect(value, index, e);
     };
 
     if (type === 'radio') {
-      return (
-        <Radio />
-      );
+      return <Radio />;
     }
 
     return (
@@ -191,8 +191,7 @@ export default class Table extends React.Component {
         disabled={value.disabled}
         checked={this.state.selectedRowKeys.indexOf(value[this.props.rowKey]) !== -1}
         onChange={handleChange}
-      >
-      </Checkbox>
+      />
     );
   };
 
@@ -204,25 +203,20 @@ export default class Table extends React.Component {
       const data = this.getTableData();
       const selectionColumn = {
         key: 'selection-column',
-        width: '4.5%',
         render: this.renderSelectionBox(rowSelection.type),
         className: styles.selectionColumn,
-        fixed: rowSelection.fixed,
+        fixed: rowSelection.fixed
       };
 
       if (rowSelection.type === 'radio') {
         selectionColumn.title = '';
       } else {
-        const allChecked = data.length ?
-          data.every((item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i)) !== -1) : false;
-        selectionColumn.title = (
-          <Checkbox
-            className={styles.selectionCheck}
-            checked={allChecked}
-            onChange={this.handleSelectAll}
-          >
-          </Checkbox>
-        );
+        const allChecked = data.length
+          ? data.every(
+              (item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i)) !== -1
+            )
+          : false;
+        selectionColumn.title = <Checkbox checked={allChecked} onChange={this.handleSelectAll} />;
       }
 
       if (tableColumns[0] && tableColumns[0].key === 'selection-column') {
@@ -232,10 +226,9 @@ export default class Table extends React.Component {
       }
     }
     return tableColumns;
-  }
+  };
 
-  renderPagination = () => {
-  }
+  renderPagination = () => {};
 
   renderTable = () => {
     const { ...restProps } = this.props;
@@ -247,26 +240,19 @@ export default class Table extends React.Component {
       return newColumn;
     });
 
-    return (
-      <RcTable
-        {...restProps}
-        key="table"
-        data={data}
-        columns={columns}
-      />
-    );
-  }
+    return <RcTable {...restProps} key="table" data={data} columns={columns} />;
+  };
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.dataSource, nextProps.dataSource)) {
       this.setState({
-        selectionDirty: false,
+        selectionDirty: false
       });
     }
 
     if (nextProps.rowSelection && nextProps.rowSelection.selectedRowKeys) {
       this.setState({
-        selectedRowKeys: nextProps.rowSelection.selectedRowKeys || [],
+        selectedRowKeys: nextProps.rowSelection.selectedRowKeys || []
       });
     }
   }
@@ -275,10 +261,7 @@ export default class Table extends React.Component {
     const { className, style, pagination } = this.props;
 
     return (
-      <div
-        className={classNames(styles.table, className)}
-        style={style}
-      >
+      <div className={classNames(styles.table, className)} style={style}>
         {this.renderTable()}
         {pagination && this.renderPagination}
       </div>

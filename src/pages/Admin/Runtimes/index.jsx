@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { getParseDate } from 'utils';
+import { getParseDate, getParseTime } from 'utils';
 import classNames from 'classnames';
 
 import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
@@ -61,7 +61,12 @@ export default class Runtimes extends Component {
       onSearch,
       onClearSearch,
       onRefresh,
-      changePagination
+      changePagination,
+      showDeleteRuntime,
+      runtimeIds,
+      selectedRowKeys,
+      onChangeSelect,
+      cancelSelected
     } = runtimeStore;
 
     const columns = [
@@ -105,10 +110,13 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
         key: 'status_time',
-        width: '10%',
-        render: getParseDate
+        render: runtime => (
+          <Fragment>
+            <div>{getParseDate(runtime.status_time)}</div>
+            <div>{getParseTime(runtime.status_time)}</div>
+          </Fragment>
+        )
       },
       {
         title: 'Actions',
@@ -125,11 +133,35 @@ export default class Runtimes extends Component {
       }
     ];
 
+    const rowSelection = {
+      type: 'checkbox',
+      selectType: 'onSelect',
+      selectedRowKeys: selectedRowKeys,
+      onChange: onChangeSelect
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
+        <div className={styles.wrapper}>
+          {runtimeIds.length > 0 && (
+            <div className={styles.toolbar}>
+              <Button
+                type="primary"
+                className={styles.operation}
+                onClick={() => showDeleteRuntime(runtimeIds)}
+              >
+                <Icon name="check" />Delete
+              </Button>
+              <Button
+                className={classNames(styles.operation, styles.buttonRight)}
+                onClick={cancelSelected}
+              >
+                <Icon name="refresh" /> Cancel Selected
+              </Button>
+            </div>
+          )}
+          {runtimeIds.length === 0 && (
             <div className={styles.toolbar}>
               <Input.Search
                 className={styles.search}
@@ -147,13 +179,17 @@ export default class Runtimes extends Component {
                 <Icon name="refresh" />
               </Button>
             </div>
-
-            <Table className={styles.tableOuter} columns={columns} dataSource={data} />
-          </div>
-          {totalCount > 0 && (
-            <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
           )}
+
+          <Table
+            className={styles.tableOuter}
+            columns={columns}
+            dataSource={data}
+            rowSelection={rowSelection}
+          />
         </div>
+
+        <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         {this.renderDeleteModal()}
       </Layout>
     );

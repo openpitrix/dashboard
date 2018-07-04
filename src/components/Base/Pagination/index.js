@@ -32,9 +32,9 @@ export default class Pagination extends React.Component {
       return `${total} items in total`;
     },
     itemRender(current, type, originalElement) {
-      if (type === 'prev') {
+      if (type === 'prev' && this.total > 0) {
         return <span>Last</span>;
-      } else if (type === 'next') {
+      } else if (type === 'next' && this.total > 0) {
         return <span>Next</span>;
       }
       return originalElement;

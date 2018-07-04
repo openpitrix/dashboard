@@ -8,7 +8,7 @@ export default class CategoryStore extends Store {
   @observable isLoading = false;
 
   @observable name = '';
-  @observable locale = '';
+  @observable description = '';
   @observable isModalOpen = false;
 
   // menu actions
@@ -91,8 +91,8 @@ export default class CategoryStore extends Store {
   };
 
   @action
-  changeLocale = e => {
-    this.locale = e.target.value;
+  changeDescription = e => {
+    this.description = e.target.value;
   };
 
   @action
@@ -100,6 +100,7 @@ export default class CategoryStore extends Store {
     let method = this.category.category_id ? 'modify' : 'create';
     let params = {
       name: this.name,
+      description: this.description,
       locale: '{}'
       // locale: `{${this.locale}}` // todo: used for i18n, json format: {zh-cn: '', en: ''}
     };
@@ -117,7 +118,7 @@ export default class CategoryStore extends Store {
   showCreateCategory = () => {
     this.category = {};
     this.name = '';
-    this.locale = '';
+    this.description = '';
     this.setAction('create_cate');
     this.showModal();
   };
@@ -141,7 +142,7 @@ export default class CategoryStore extends Store {
     this.category = {};
     this.isLoading = false;
     this.name = '';
-    this.locale = '';
+    this.description = '';
     this.hideModal();
   }
 

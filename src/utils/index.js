@@ -6,7 +6,12 @@ export function getParseDate(text) {
     -2
   )}`;
 }
-
+export function getParseTime(text) {
+  const date = new Date(text);
+  return `${`0${date.getHours()}`.slice(-2)}:${`0${date.getMinutes()}`.slice(
+    -2
+  )}:${`0${date.getSeconds()}`.slice(-2)}`;
+}
 export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset

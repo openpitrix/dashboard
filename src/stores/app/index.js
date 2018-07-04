@@ -18,6 +18,9 @@ export default class AppStore extends Store {
   @observable searchWord = '';
   @observable currentClusterPage = 1;
   @observable swCluster = ''; //search word cluster
+  @observable appIds = [];
+  @observable selectedRowKeys = [];
+  @observable operateType = '';
 
   // menu actions logic
   @observable
@@ -89,10 +92,12 @@ export default class AppStore extends Store {
 
   @action
   remove = async () => {
-    const result = await this.request.delete('apps', { app_id: [this.appId] });
+    const ids = this.operateType === 'single' ? [this.appId] : this.appIds.toJSON();
+    const result = await this.request.delete('apps', { app_id: ids });
     if (_.get(result, 'app_id')) {
       this.hideModal();
       await this.fetchAll();
+      this.cancelSelected();
       this.showMsg('Delete app successfully.');
     } else {
       let { err, errDetail } = result;
@@ -140,8 +145,13 @@ export default class AppStore extends Store {
   };
 
   @action
-  showDeleteApp = app_id => {
-    this.appId = app_id;
+  showDeleteApp = appIds => {
+    if (typeof appIds === 'string') {
+      this.appId = appIds;
+      this.operateType = 'single';
+    } else {
+      this.operateType = 'multiple';
+    }
     this.showModal();
     this.setActionType('delete_app');
   };
@@ -191,6 +201,19 @@ export default class AppStore extends Store {
   @action
   changeClusterSearchWord = sw => {
     this.swCluster = sw;
+  };
+
+  @action
+  onChangeSelect = (selectedRowKeys, selectedRows) => {
+    this.selectedRowKeys = selectedRowKeys;
+    this.appIds = [];
+    selectedRows.map(row => this.appIds.push(row.app_id));
+  };
+
+  @action
+  cancelSelected = () => {
+    this.selectedRowKeys = [];
+    this.appIds = [];
   };
 }
 
