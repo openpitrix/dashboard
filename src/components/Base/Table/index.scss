@@ -12,6 +12,14 @@
     text-align: left;
     box-sizing: border-box;
     overflow: hidden;
+
+    .selectionColumn{
+      width: 36px;
+      label{
+        margin-left: 4px;
+        line-height: 4px;
+      }
+    }
   }
 }
 
@@ -38,12 +46,14 @@
 
     &-tbody > tr{
       transition: all $transition-speed;
-
       &:hover {
         background-color: $tr-hover-bg;
         td {
           &:hover a{
             color: $link-hover;
+          }
+          &:hover [class*="popper"] a{
+            color: $title-color;
           }
           &:first-child {
             border-left-color: $tr-hover-bg;
@@ -69,22 +79,17 @@
       word-wrap:break-word;
 
       &:first-child {
-        padding-left: 0;
-        border-left: 48px solid #fff;
+        //padding-left: 0;
+        //border-left: 48px solid #fff;
       }
 
       &:last-child {
-        border-right: 48px solid #fff;
+        //border-right: 48px solid #fff;
       }
     }
-
     &-placeholder {
       padding: 12px 0;
       text-align: center;
     }
   }
-}
-
-.selectionCheck {
-  padding-left: 14px;
 }

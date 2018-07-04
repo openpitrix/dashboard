@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Link } from 'react-router-dom';
+
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getParseDate } from 'utils';
+import { getParseDate, getParseTime } from 'utils';
 
 import styles from './index.scss';
+import capitalize from 'lodash/capitalize';
+import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore
@@ -26,32 +30,55 @@ export default class Clusters extends Component {
   }
 
   renderHandleMenu = item => {
-    const { showDeleteCluster } = this.props.clusterStore;
+    const { showOperateCluster } = this.props.clusterStore;
     const { cluster_id, status } = item;
 
     return (
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
-        <span onClick={showDeleteCluster.bind(this.store, cluster_id)}>Delete cluster</span>
+        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+        {status === 'stopped' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>Start cluster</span>
+        )}
+        {status === 'active' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>Stop cluster</span>
+        )}
       </div>
     );
   };
 
-  handleDeleteCluster = () => {
-    this.store.remove();
+  handleCluster = () => {
+    const { clusterId, clusterIds, modalType, operateType } = this.store;
+    let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+    switch (modalType) {
+      case 'delete':
+        this.store.remove(ids);
+        break;
+      case 'start':
+        this.store.start(ids);
+        break;
+      case 'stop':
+        this.store.stop(ids);
+        break;
+    }
+  };
+
+  oprateSelected = type => {
+    const { showOperateCluster, clusterIds } = this.props.clusterStore;
+    showOperateCluster(clusterIds, type);
   };
 
   renderDeleteModal = () => {
-    const { hideModal, isModalOpen } = this.store;
+    const { hideModal, isModalOpen, modalType } = this.store;
 
     return (
       <Dialog
-        title="Delete Cluster"
+        title={`${capitalize(modalType)} Cluster`}
         isOpen={isModalOpen}
         onCancel={hideModal}
-        onSubmit={this.handleDeleteCluster}
+        onSubmit={this.handleCluster}
       >
-        <div className={styles.noteWord}>Are you sure delete this Cluster?</div>
+        <div className={styles.noteWord}>{`Are you sure ${modalType} this Cluster?`}</div>
       </Dialog>
     );
   };
@@ -69,7 +96,11 @@ export default class Clusters extends Component {
       onSearch,
       onClearSearch,
       onRefresh,
-      changePagination
+      changePagination,
+      clusterIds,
+      selectedRowKeys,
+      onChangeSelect,
+      cancelSelected
     } = this.props.clusterStore;
     const columns = [
       {
@@ -110,8 +141,13 @@ export default class Clusters extends Component {
       },
       {
         title: 'Updated At',
-        key: 'upgrade_time',
-        render: cl => getParseDate(cl.status_time)
+        key: 'status_time',
+        render: cl => (
+          <Fragment>
+            <div>{getParseDate(cl.status_time)}</div>
+            <div>{getParseTime(cl.status_time)}</div>
+          </Fragment>
+        )
       },
       {
         title: 'Actions',
@@ -126,25 +162,69 @@ export default class Clusters extends Component {
         )
       }
     ];
+    const rowSelection = {
+      type: 'checkbox',
+      selectType: 'onSelect',
+      selectedRowKeys: selectedRowKeys,
+      onChange: onChangeSelect
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
         <Statistics {...summaryInfo} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
-            <div className={styles.toolbar}>
-              <Input.Search
-                className={styles.search}
-                placeholder="Search Cluster"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-              />
-              <Button className={styles.buttonRight} onClick={onRefresh}>
-                <Icon name="refresh" />
-              </Button>
-            </div>
-
-            <Table className={styles.tableOuter} columns={columns} dataSource={clusters.toJSON()} />
+            {clusterIds.length > 0 && (
+              <div className={styles.toolbar}>
+                <Button
+                  type="primary"
+                  className={styles.operation}
+                  onClick={() => this.oprateSelected('delete')}
+                >
+                  <Icon name="check" />Delete
+                </Button>
+                <Button
+                  type="primary"
+                  className={styles.operation}
+                  onClick={() => this.oprateSelected('start')}
+                >
+                  <Icon name="check" />Start
+                </Button>
+                <Button
+                  type="primary"
+                  className={styles.operation}
+                  onClick={() => this.oprateSelected('stop')}
+                >
+                  <Icon name="check" />Stop
+                </Button>
+                <Button
+                  className={classNames(styles.operation, styles.buttonRight)}
+                  onClick={cancelSelected}
+                >
+                  <Icon name="refresh" /> Cancel Selected
+                </Button>
+              </div>
+            )}
+            {clusterIds.length === 0 && (
+              <div className={styles.toolbar}>
+                <Input.Search
+                  className={styles.search}
+                  placeholder="Search Cluster"
+                  value={searchWord}
+                  onSearch={onSearch}
+                  onClear={onClearSearch}
+                />
+                <Button className={styles.buttonRight} onClick={onRefresh}>
+                  <Icon name="refresh" />
+                </Button>
+              </div>
+            )}
+            <Table
+              className={styles.tableOuter}
+              columns={columns}
+              dataSource={clusters.toJSON()}
+              rowSelection={rowSelection}
+            />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>

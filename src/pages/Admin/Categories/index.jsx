@@ -58,14 +58,11 @@ export default class Categories extends Component {
     }
 
     if (handleCate.action === 'modify_cate' || handleCate.action === 'create_cate') {
-      const { category, changeName, changeLocale } = categoryStore;
-      let { name, locale } = categoryStore;
+      const { category, changeName, changeDescription } = categoryStore;
       modalTitle = 'Create Category';
 
       if (category && category.category_id) {
         modalTitle = 'Modify Category';
-        name = category.name;
-        // locale=category.locale;
       }
       onSubmit = categoryStore.createOrModify.bind(categoryStore, 'from_index');
 
@@ -78,20 +75,19 @@ export default class Categories extends Component {
               name="name"
               required
               autoFocus
+              defaultValue={category.name}
               onChange={changeName}
-              defaultValue={name}
             />
           </div>
-          {/*<div className={styles.inputItem}>*/}
-          {/*<label className={styles.name}>locale</label>*/}
-          {/*<Input*/}
-          {/*className={styles.input}*/}
-          {/*name="locale"*/}
-          {/*required*/}
-          {/*onChange={changeLocale}*/}
-          {/*defaultValue={locale}*/}
-          {/*/>*/}
-          {/*</div>*/}
+          <div className={styles.inputItem}>
+            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+            <textarea
+              className={styles.textarea}
+              name="description"
+              defaultValue={category.description}
+              onChange={changeDescription}
+            />
+          </div>
         </Fragment>
       );
     }

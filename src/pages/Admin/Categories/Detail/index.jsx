@@ -12,6 +12,7 @@ import CategoryCard from 'components/DetailCard/CategoryCard';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
 
 import styles from './index.scss';
+import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
@@ -70,19 +71,13 @@ export default class CategoryDetail extends Component {
     );
   };
 
-  handleModifyCate = ev => {
+  handleModifyCate = () => {
     this.props.categoryStore.createOrModify();
   };
 
   renderCategoryModal = () => {
     const { categoryStore } = this.props;
-    const {
-      category,
-      isModalOpen,
-      hideModal,
-      changeName
-      // changeLocale,
-    } = categoryStore;
+    const { category, isModalOpen, hideModal, changeName, changeDescription } = categoryStore;
 
     return (
       <Dialog
@@ -102,16 +97,15 @@ export default class CategoryDetail extends Component {
             defaultValue={category.name}
           />
         </div>
-        {/*<div className={styles.inputItem}>*/}
-        {/*<label className={styles.name}>locale</label>*/}
-        {/*<Input*/}
-        {/*className={styles.input}*/}
-        {/*name="locale"*/}
-        {/*required*/}
-        {/*onChange={changeLocale}*/}
-        {/*defaultValue={category.locale}*/}
-        {/*/>*/}
-        {/*</div>*/}
+        <div className={styles.inputItem}>
+          <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+          <textarea
+            className={styles.textarea}
+            name="description"
+            defaultValue={category.description}
+            onChange={changeDescription}
+          />
+        </div>
       </Dialog>
     );
   };
@@ -187,9 +181,7 @@ export default class CategoryDetail extends Component {
               </div>
               <Table columns={columns} dataSource={apps} />
             </div>
-            {appStore.totalCount > 0 && (
-              <Pagination onChange={this.changeApps} total={appStore.totalCount} />
-            )}
+            <Pagination onChange={this.changeApps} total={appStore.totalCount} />
           </div>
         </div>
         {this.renderCategoryModal()}

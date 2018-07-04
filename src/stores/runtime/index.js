@@ -14,6 +14,9 @@ export default class RuntimeStore extends Store {
   @observable isModalOpen = false;
   @observable currentPage = 1;
   @observable searchWord = '';
+  @observable operateType = '';
+  @observable runtimeIds = [];
+  @observable selectedRowKeys = [];
 
   @observable
   handleRuntime = {
@@ -63,10 +66,12 @@ export default class RuntimeStore extends Store {
 
   @action
   remove = async () => {
-    const result = await this.request.delete('runtimes', { runtime_id: [this.runtimeId] });
+    const ids = this.operateType === 'single' ? [this.runtimeId] : this.runtimeIds.toJSON();
+    const result = await this.request.delete('runtimes', { runtime_id: ids });
     if (_.get(result, 'runtime_id')) {
       this.hideModal();
       await this.fetchAll();
+      this.cancelSelected();
       this.showMsg('Delete runtime successfully.');
     } else {
       let { err, errDetail } = result;
@@ -75,8 +80,13 @@ export default class RuntimeStore extends Store {
   };
 
   @action
-  showDeleteRuntime = runtimeId => {
-    this.runtimeId = runtimeId;
+  showDeleteRuntime = runtimeIds => {
+    if (typeof runtimeIds === 'string') {
+      this.runtimeId = runtimeIds;
+      this.operateType = 'single';
+    } else {
+      this.operateType = 'multiple';
+    }
     this.showModal();
   };
 
@@ -113,6 +123,19 @@ export default class RuntimeStore extends Store {
   changePagination = async page => {
     this.setCurrentPage(page);
     await this.fetchAll();
+  };
+
+  @action
+  onChangeSelect = (selectedRowKeys, selectedRows) => {
+    this.selectedRowKeys = selectedRowKeys;
+    this.runtimeIds = [];
+    selectedRows.map(row => this.runtimeIds.push(row.runtime_id));
+  };
+
+  @action
+  cancelSelected = () => {
+    this.selectedRowKeys = [];
+    this.runtimeIds = [];
   };
 }
 
