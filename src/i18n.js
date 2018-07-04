@@ -1,25 +1,38 @@
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import LngDetector from 'i18next-browser-languagedetector';
 
-import en_trans from '../locales/en/common.json';
-import zh_trans from '../locales/zh/common.json';
+const lngDetectorOptions = {
+  order: ['querystring', 'cookie', 'localStorage', 'navigator'],
 
-i18n.use(LanguageDetector).init({
-  // we init with resources
-  resources: {
-    en: {
-      common: en_trans
-    },
-    zh: {
-      common: zh_trans
-    }
-  },
-  // lng: 'zh',
+  // keys or params to lookup language from
+  lookupQuerystring: 'lang',
+  lookupCookie: 'lang',
+  lookupLocalStorage: 'i18nextLng',
+
+  // cache user language on
+  caches: ['localStorage', 'cookie'],
+  excludeCacheFor: ['cimode'], // languages to not persist (cookie, localStorage)
+
+  // optional expire and domain for set cookie
+  cookieMinutes: 1440
+  // cookieDomain: 'localhost',
+};
+
+const translations = {
+  en: require('../locales/en'),
+  'zh-CN': require('../locales/zh-CN')
+};
+
+i18n.use(LngDetector).init({
+  detector: lngDetectorOptions,
+
+  preload: true,
+  resources: translations,
   fallbackLng: 'en',
   debug: process.env.NODE_ENV !== 'production',
 
   // have a common namespace used around the full app
-  ns: ['common'],
+  ns: ['common', 'app', 'cluster', 'repo', 'runtime', 'category'],
   defaultNS: 'common',
 
   interpolation: {
@@ -28,7 +41,7 @@ i18n.use(LanguageDetector).init({
   },
 
   react: {
-    wait: false
+    wait: false // set wait to false when on SSR
   }
 });
 

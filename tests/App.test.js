@@ -9,6 +9,13 @@ import renderRoute from 'src/routes/renderRoute';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  clear: jest.fn()
+};
+global.localStorage = localStorageMock;
+
 describe('<App/>', () => {
   let store, location;
 

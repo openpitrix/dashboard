@@ -62,15 +62,37 @@
         background-color: rgba(#fff, 0.1);
       }
     }
+
+    .translation {
+      float: right;
+      margin-left: 10px;
+      color: #fff;
+      .transMenu {
+        .locale {
+          line-height: 1.2em;
+          padding: 5px;
+          a{
+            display: inline-block;
+            width: 80%;
+            color: $third-text-color;
+          }
+        }
+      }
+    }
   }
 }
 
 .darkHeader {
   background-image: none !important;
-  .menus a {
-    color: rgba($title-color, 0.8);
-    &:hover {
-      background-color: rgba($title-color, 0.1);
+  .menus, .locale {
+    .translation {
+      color: rgba($title-color, 0.8);
+    }
+    a {
+      color: rgba($title-color, 0.8);
+      &:hover {
+        background-color: rgba($title-color, 0.1);
+      }
     }
   }
 }
