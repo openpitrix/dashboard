@@ -1,0 +1,18 @@
+{
+  "Overview": "总览",
+  "Apps": "应用",
+  "Clusters": "集群",
+  "Runtimes": "运行时",
+  "Repos": "仓库",
+  "Users": "用户",
+  "Roles": "角色",
+  "Categories": "分类",
+  "Catalog": "目录",
+  "Deployment": "部署",
+  "Management": "管理",
+  "Sign In": "登录",
+
+  "search": {
+    "placeholder": "搜索应用.."
+  }
+}

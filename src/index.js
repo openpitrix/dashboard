@@ -9,17 +9,16 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import App from './App';
 import RootStore from './stores/RootStore';
-
 import routes from './routes';
 import renderRoute from './routes/renderRoute';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
-const AppWithRouter = withRouter(App);
-
 if (typeof window !== 'undefined') {
   window.toJS = toJS; // for dev debug
+
+  const AppWithRouter = withRouter(App);
 
   ReactDOM.render(
     <Provider rootStore={store} sessInfo={null}>
@@ -43,4 +42,4 @@ if (typeof window !== 'undefined') {
 }
 
 // attach hmr, deprecate react-hot-loader
-module.hot && module.hot.accept();
+// module.hot && module.hot.accept();
