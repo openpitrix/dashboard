@@ -1,3 +1,3 @@
 module.exports = {
-  common: require('./common.json')
+  common: require('./common')
 };

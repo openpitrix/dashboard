@@ -5,9 +5,11 @@ import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import Logo from 'components/Logo';
 import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
+import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   store: rootStore.loginStore
 }))
@@ -29,37 +31,39 @@ export default class Login extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className={styles.login}>
         <div className={styles.loginTitle}>
           <Logo url="/assets/logo_light.svg" />
         </div>
         <div className={styles.loginForm}>
-          <h1>Login OpenPitrix</h1>
+          <h1>{t('Login OpenPitrix')}</h1>
           <Form onSubmit={throttle(this.handleSubmit, 1000)}>
-            <Form.Item className={styles.formItem}>
+            <Form.Item className={styles.formItem} noLabel>
               <Input
                 className={styles.formInput}
                 icon="search"
                 name="username"
-                placeholder="Username"
+                placeholder={t('Username')}
               />
             </Form.Item>
-            <Form.Item className={styles.formItem}>
+            <Form.Item className={styles.formItem} noLabel>
               <Input
                 className={styles.formInput}
                 type="password"
                 icon="search"
                 name="password"
-                placeholder="Password"
+                placeholder={t('Password')}
               />
             </Form.Item>
-            <Form.Item className={styles.formItem}>
-              <Checkbox className={styles.checkbox}>Remember me</Checkbox>
+            <Form.Item className={styles.formItem} noLabel>
+              <Checkbox className={styles.checkbox}>{t('Remember me')}</Checkbox>
             </Form.Item>
-            <Form.Item className={styles.formItem}>
+            <Form.Item className={styles.formItem} noLabel>
               <Button htmlType="submit" className={styles.submitBtn}>
-                Login
+                {t('Login')}
               </Button>
             </Form.Item>
           </Form>

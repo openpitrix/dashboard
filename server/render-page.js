@@ -57,12 +57,10 @@ const renderPage = (options = {}) => {
     <link rel="stylesheet" href="/assets/fonts/roboto/roboto.css" />
     ${renderCss(isDev && 'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css')}
     ${renderCss(
-      !isLogin &&
-        (isDev
-          ? '/css/bootstrap.min.css'
-          : 'https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css')
+      isDev
+        ? '/css/bootstrap.min.css'
+        : 'https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css'
     )}
-    
     ${renderCss(!isDev && 'bundle.css')}
   </head>
   <body>
