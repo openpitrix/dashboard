@@ -3,17 +3,16 @@ const webpack = require('webpack');
 const postCssOptions = require('./config/postcss.options');
 
 module.exports = {
-  devtool: 'eval',
+  mode: 'development',
   entry: [
     // 'webpack-hot-middleware/client',
     './src/index.js'
   ],
   output: {
     filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
     path: resolve(__dirname, 'build/'),
     publicPath: '/build',
-    pathinfo: false // for speed
+    pathinfo: false
   },
   // profile: true,
   performance: {
@@ -79,38 +78,54 @@ module.exports = {
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
-    // new webpack.WatchIgnorePlugin([
-    //   resolve(__dirname, 'lib'),
-    //   resolve(__dirname, 'server'),
-    //   resolve(__dirname, 'build'),
-    //   resolve(__dirname, 'dist')
-    // ]),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
-    }),
-    // new webpack.DllReferencePlugin({
-    //   context: __dirname,
-    //   manifest: require('./build/vendor.json')
-    // }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function(module) {
-        return module.context && module.context.includes('node_modules');
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      minChunks: Infinity
     })
-
+    // for webpack v3
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: function(module) {
+    //     return module.context && module.context.includes('node_modules');
+    //   }
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'manifest',
+    //   minChunks: Infinity
+    // })
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'common',
     //   filename: 'common.js',
     //   chunks: 'all',
-    //   // async: true,
-    //   // children: true,
     //   minChunks: 2
     // })
-  ]
+  ],
+  // for webpack v4
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        // manifest: {
+        //   name: 'manifest',
+        //   chunks: 'initial',
+        //   minChunks: Infinity
+        // },
+        vendors: {
+          name: 'vendors',
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        commons: {
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2
+        },
+        default: {
+          minSize: 0,
+          minChunks: 1,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  }
 };
