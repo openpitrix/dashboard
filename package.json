@@ -12,6 +12,7 @@
     "deepmerge": "^2.1.0",
     "i18next": "^11.3.3",
     "i18next-browser-languagedetector": "^2.2.0",
+    "i18next-xhr-backend": "^1.5.1",
     "js-base64": "^2.4.5",
     "js-yaml": "^3.10.0",
     "koa": "^2.4.1",

@@ -1,4 +1,5 @@
 import i18n from 'i18next';
+import Backend from 'i18next-xhr-backend';
 import LngDetector from 'i18next-browser-languagedetector';
 
 const lngDetectorOptions = {
@@ -18,31 +19,41 @@ const lngDetectorOptions = {
   // cookieDomain: 'localhost',
 };
 
-const translations = {
-  en: require('../locales/en'),
-  'zh-CN': require('../locales/zh-CN')
-};
+i18n
+  .use(LngDetector)
+  .use(Backend)
+  .init({
+    detection: lngDetectorOptions,
 
-i18n.use(LngDetector).init({
-  detector: lngDetectorOptions,
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json'
+      // addPath: '/locales/add/{{lng}}/{{ns}}',
+    },
 
-  // preload: true,
-  resources: translations,
-  fallbackLng: 'en',
-  debug: process.env.NODE_ENV !== 'production',
+    // preload: true,
+    load: 'currentOnly',
+    // resources: translations,
+    fallbackLng: 'en',
+    debug: process.env.NODE_ENV !== 'production',
 
-  // have a common namespace used around the full app
-  ns: ['common', 'app', 'cluster', 'repo', 'runtime', 'category'],
-  defaultNS: 'common',
+    whitelist: ['en', 'zh-CN'],
 
-  interpolation: {
-    escapeValue: false // not needed for react!!
-    // formatSeparator: ","
-  },
+    // have a common namespace used around the full app
+    ns: ['common'],
+    defaultNS: 'common',
 
-  react: {
-    wait: false // set wait to false when on SSR
-  }
-});
+    interpolation: {
+      escapeValue: false // not needed for react!!
+      // formatSeparator: ","
+    },
+
+    // missing keys
+    // saveMissing: true,
+    // saveMissingTo: 'current',
+
+    react: {
+      wait: false // set wait to false when on SSR
+    }
+  });
 
 export default i18n;

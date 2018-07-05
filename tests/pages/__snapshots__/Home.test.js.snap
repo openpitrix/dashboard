@@ -25,9 +25,7 @@ Array [
       />
       <div
         class="title"
-      >
-        Application Management Platform on Multi-Cloud Environment.
-      </div>
+      />
       <div
         class="inputGroup search"
       >
@@ -36,7 +34,7 @@ Array [
         />
         <input
           class="input"
-          placeholder="Search apps in Pitrix..."
+          placeholder=""
           type="text"
           value=""
         />
@@ -55,9 +53,7 @@ Array [
         <ul
           class="subNav"
         >
-          <p>
-            CATEGORIES
-          </p>
+          <p />
         </ul>
       </div>
       <div
@@ -65,9 +61,7 @@ Array [
       >
         <div
           class="title"
-        >
-          Newest
-        </div>
+        />
         <div
           class="noData"
         >

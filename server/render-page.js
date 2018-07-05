@@ -39,10 +39,10 @@ const renderPage = (options = {}) => {
     let snip = '';
     if (isDev) {
       snip += ['vendors']
-        .map(file => `<script src="${bundlePrefix}/${file}.js"></script>`)
+        .map(file => `<script defer src="${bundlePrefix}/${file}.js"></script>`)
         .join('\n');
     }
-    snip += `<script src="${bundlePrefix}/main.js"></script>`;
+    snip += `<script defer src="${bundlePrefix}/main.js"></script>`;
     return snip;
   };
 

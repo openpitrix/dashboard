@@ -10,8 +10,9 @@ module.exports = {
   ],
   output: {
     filename: '[name].js',
+    // chunkFilename: "[name].[chunkhash].js",
     path: resolve(__dirname, 'build/'),
-    publicPath: '/build',
+    publicPath: '/build/',
     pathinfo: false
   },
   // profile: true,
@@ -35,16 +36,6 @@ module.exports = {
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
       },
-      // {
-      //   test: /\.(jpg|png|svg)(\?.+)?$/,
-      //   use: 'url-loader?limit=100000',
-      //   include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
-      // },
-      // {
-      //   test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
-      //   use: 'file-loader',
-      //   include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
-      // },
       {
         test: /\.scss$/,
         use: [
@@ -104,16 +95,18 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        // manifest: {
-        //   name: 'manifest',
-        //   chunks: 'initial',
-        //   minChunks: Infinity
-        // },
         vendors: {
           name: 'vendors',
-          chunks: 'all',
+          chunks: 'initial',
           test: /[\\/]node_modules[\\/]/,
           priority: -10
+        },
+        'async-vendors': {
+          name: 'async-vendors',
+          chunks: 'async',
+          test: /[\\/]node_modules[\\/]/,
+          minChunks: 2,
+          priority: 0
         },
         commons: {
           name: 'commons',
