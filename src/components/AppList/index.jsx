@@ -13,12 +13,11 @@ export default class AppList extends PureComponent {
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
     appSearch: PropTypes.string,
-    isCategorySearch: PropTypes.bool,
-    moreApps: PropTypes.func
+    isCategorySearch: PropTypes.bool
   };
 
   renderCategoryApps() {
-    const { categoryTitle, appSearch, moreApps, categoryApps, isCategorySearch } = this.props;
+    const { categoryTitle, appSearch, categoryApps, isCategorySearch } = this.props;
     const categoryShow = !categoryTitle && !appSearch && categoryApps;
 
     if (isCategorySearch) {
@@ -31,7 +30,9 @@ export default class AppList extends PureComponent {
 
         return (
           <div key={`${idx}-${cate.name}`}>
-            <CardTitle categoryId={cate.category_id} title={cate.name} more moreApps={moreApps} />
+            {cate.apps.length > 0 && (
+              <CardTitle categoryId={cate.category_id} title={cate.name} more />
+            )}
 
             {cate.apps.slice(0, 6).map(app => (
               <Link key={app.app_id} to={`/app/${app.app_id}`}>
@@ -48,16 +49,16 @@ export default class AppList extends PureComponent {
     let { apps, appSearch, categoryTitle = 'Newest' } = this.props;
     return (
       (appSearch && `There are ${apps.length} applications with search word: ${appSearch}`) ||
-      categoryTitle
+      categoryTitle ||
+      'Newest'
     );
   }
 
   render() {
-    const { apps, className } = this.props;
-
+    const { apps, className, categoryTitle } = this.props;
     return (
       <div className={classnames(styles.appList, className)}>
-        {apps && <CardTitle title={this.getSearchTitle()} more={false} />}
+        {<CardTitle title={this.getSearchTitle()} more={false} fixTitle={categoryTitle} />}
 
         {apps.map(app => (
           <Link key={app.app_id} to={`/app/${app.app_id}`}>

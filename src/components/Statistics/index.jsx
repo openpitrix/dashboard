@@ -18,6 +18,12 @@ export default class Statistics extends PureComponent {
     histograms: PropTypes.array
   };
 
+  static defaultProps = {
+    image: 'http://via.placeholder.com/24x24',
+    progress: new Array(),
+    histograms: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  };
+
   render() {
     const {
       image,
@@ -29,6 +35,7 @@ export default class Statistics extends PureComponent {
       lastedTotal,
       histograms
     } = this.props;
+
     return (
       <div className={styles.statistics}>
         <div className={styles.wrap}>

@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, filter } from 'lodash';
 
 export function getParseDate(text) {
   const date = new Date(text);
@@ -81,4 +81,8 @@ export function getFormData(form) {
   }
 
   return data;
+}
+
+export function getObjName(datas, key, value, name) {
+  return get(filter(datas, { [key]: value })[0], name, '');
 }

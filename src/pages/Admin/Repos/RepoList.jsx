@@ -19,13 +19,13 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
         </div>
       </div>
       {repos.length
-        ? repos.map(({ repo_id, status, name, description, providers, images, labels }) => (
+        ? repos.map(({ repo_id, status, name, description, providers, apps, labels }) => (
             <div className={styles.item} key={repo_id}>
               <RepoCard
                 name={name}
                 description={description}
                 providers={providers}
-                images={images}
+                apps={apps}
                 tags={labels}
               />
               <div className={styles.actionMenu}>

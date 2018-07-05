@@ -32,6 +32,7 @@
         }
 
         &.current {
+          color: $third-text-color;
           border-right: 2px solid $border-dark;
         }
       }

@@ -94,6 +94,23 @@ export default class RepoStore extends Store {
   changeSearchWord = word => {
     this.searchWord = word;
   };
+
+  @action
+  getRepoApps = (repos = [], apps = []) => {
+    if (repos.toJSON) {
+      repos = repos.toJSON();
+    }
+    if (apps.toJSON) {
+      apps = apps.toJSON();
+    }
+    repos = repos.map(repo => {
+      repo.apps = apps.filter(app => {
+        return app.repo_id == repo.repo_id;
+      });
+      return repo;
+    });
+    return repos;
+  };
 }
 
 export Create from './create';

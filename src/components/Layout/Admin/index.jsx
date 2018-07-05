@@ -56,7 +56,7 @@ export default class Layout extends React.Component {
     } else if (loginRole === 'developer') {
       this.availableLinks = [...normalLinks, 'repos'];
     } else if (loginRole === 'admin') {
-      this.availableLinks = [...normalLinks, 'repos', 'users', 'roles', 'categories'];
+      this.availableLinks = [...normalLinks, 'repos', 'users', 'categories'];
     }
 
     const options = { prefix: this.linkPrefix };

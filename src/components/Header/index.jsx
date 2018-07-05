@@ -121,6 +121,9 @@ export default class Header extends Component {
 
   onClearSearch = async () => {
     await this.onSearch('');
+    const { rootStore } = this.props;
+    rootStore.setNavFix(true);
+    window.scroll({ top: 1, behavior: 'smooth' });
   };
 
   render() {
@@ -139,15 +142,16 @@ export default class Header extends Component {
       <div className={classnames('header', styles.header, { [styles.darkHeader]: !isDark })}>
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
-          {isDark && (
-            <Input.Search
-              className={styles.search}
-              placeholder={t('search.placeholder')}
-              value={appSearch}
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-            />
-          )}
+          {isDark &&
+            isHome && (
+              <Input.Search
+                className={styles.search}
+                placeholder={t('search.placeholder')}
+                value={appSearch}
+                onSearch={this.onSearch}
+                onClear={this.onClearSearch}
+              />
+            )}
           <div className={styles.menus}>
             <NavLink to="/apps">{t('Catalog')}</NavLink>
             {this.renderDevOpsLink()}

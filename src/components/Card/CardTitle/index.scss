@@ -6,6 +6,9 @@
   font-size: 16px;
   font-weight: bold;
   color: $title-color;
+  &.fixTitle{
+    padding-top: 72px;
+  }
   .more{
     display: none;
     float: right;

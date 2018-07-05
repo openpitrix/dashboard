@@ -77,7 +77,9 @@
       border-bottom: 1px solid $border-lighter;
       transition: all $transition-speed;
       word-wrap:break-word;
-
+      a{
+        color: $title-color;
+      }
       &:first-child {
         //padding-left: 0;
         //border-left: 48px solid #fff;
