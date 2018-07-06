@@ -184,7 +184,8 @@ export default class RepoDetail extends Component {
       }
     ];
 
-    const { tags, curTagName, selectCurTag } = repoStore;
+    const { curTagName, selectCurTag } = repoStore;
+    const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
     let data = [];
     let columns = [];
@@ -245,11 +246,7 @@ export default class RepoDetail extends Component {
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav
-                tags={tags.toJSON()}
-                curTag={curTagName}
-                changeTag={selectCurTag.bind(repoStore)}
-              />
+              <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
               {curTagName === 'Runtimes' && (
                 <div className={styles.selector}>
                   <div className={styles.title}>Runtime Selectors</div>
