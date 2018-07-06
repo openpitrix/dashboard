@@ -153,6 +153,8 @@ export default class RuntimeCreateStore extends Store {
 
     this.isLoading = true;
     if (this.runtimeId) {
+      delete data.runtime_url;
+      delete data.runtime_credential;
       _.extend(data, { runtime_id: this.runtimeId });
       await this.modifyRuntime(data);
     } else {
@@ -212,10 +214,6 @@ export default class RuntimeCreateStore extends Store {
       this.provider = detail.provider;
       this.runtimeUrl = detail.runtime_url;
       this.zone = detail.zone;
-      this.description = detail.description;
-      const credential = detail.runtime_credential && JSON.parse(detail.runtime_credential);
-      this.accessKey = credential.access_key_id;
-      this.secretKey = credential.secret_access_key;
       this.labels = detail.labels || [{ label_key: '', label_value: '' }];
     }
   };

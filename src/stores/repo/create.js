@@ -213,6 +213,7 @@ export default class RepoCreateStore extends Store {
 
     this.isLoading = true;
     if (this.repoId) {
+      delete data.url;
       _.extend(data, { repo_id: this.repoId });
       await this.modifyRepo(data);
     } else {
