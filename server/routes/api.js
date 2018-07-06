@@ -52,11 +52,9 @@ router.post('/api/*', async ctx => {
   } catch (err) {
     ctx.body = {
       err: err.message,
-      status: err.status || 404,
+      status: err.statusCode || err.status || 500,
       errDetail: err.response.body.error
     };
-    // dont set ctx.status as 404, will cause page not found
-    // ctx.status=err.status || 404;
   }
 });
 

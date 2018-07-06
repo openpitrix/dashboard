@@ -23,38 +23,44 @@ module.exports = async (ctx, next) => {
         ? route.component.onEnter(ctx.store, match.params)
         : Promise.resolve(null)
   );
+
   await Promise.all(promises);
 
   const context = {};
 
+  const cookies = ctx.cookies;
   const sessInfo = {
-    user: ctx.cookies.get('user'),
-    role: ctx.cookies.get('role'),
-    lastLogin: ctx.cookies.get('last_login')
+    user: cookies.get('user'),
+    role: cookies.get('role'),
+    lastLogin: cookies.get('last_login')
   };
 
-  // when in dev mode, disable ssr
-  const components = isDev
-    ? null
-    : renderToString(
-        <Provider rootStore={ctx.store} sessInfo={sessInfo}>
-          <StaticRouter location={ctx.url} context={context}>
-            <App>{renderRoutes(routes)}</App>
-          </StaticRouter>
-        </Provider>
-      );
+  try {
+    // when in dev mode, disable ssr
+    const components = isDev
+      ? null
+      : renderToString(
+          <Provider rootStore={ctx.store} sessInfo={sessInfo}>
+            <StaticRouter location={ctx.url} context={context}>
+              <App>{renderRoutes(routes)}</App>
+            </StaticRouter>
+          </Provider>
+        );
 
-  if (context.url) {
-    ctx.redirect(context.url);
-    ctx.body = '<!DOCTYPE html>redirecting';
-    return await next();
+    if (context.url) {
+      ctx.redirect(context.url);
+      ctx.body = '<!DOCTYPE html>redirecting';
+      return await next();
+    }
+
+    ctx.body = renderPage({
+      isDev,
+      isLogin: ctx.url === '/login',
+      title: get(ctx.store, 'config.name'),
+      children: components,
+      state: JSON.stringify(ctx.store)
+    });
+  } catch (err) {
+    ctx.app.reportErr(err, ctx);
   }
-
-  ctx.body = renderPage({
-    isDev,
-    isLogin: ctx.url === '/login',
-    title: get(ctx.store, 'config.name'),
-    children: components,
-    state: JSON.stringify(ctx.store)
-  });
 };
