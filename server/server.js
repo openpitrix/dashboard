@@ -16,6 +16,7 @@ const serve = require('koa-static');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
 const debug = require('debug')('op-dash');
+const { reportErr, renderErrPage } = require('./report-error');
 
 const log = require('../lib/log');
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
@@ -23,10 +24,20 @@ const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 const app = new Koa();
 const config = getServerConfig();
 
+// mount err report function to app instance
+app.reportErr = reportErr;
+
 debug(`server config: %O`, config);
 
 global.HOSTNAME = get(config, 'host', '127.0.0.1');
 global.PORT = get(config, 'port', 8000);
+
+// centralize error handling
+app.on('error', (err, ctx) => {
+  log('server err: ', err);
+  ctx.status = err.status || 500;
+  ctx.body = renderErrPage(err);
+});
 
 // serve static files
 const serveStatic = (mount_points = {}) => {
