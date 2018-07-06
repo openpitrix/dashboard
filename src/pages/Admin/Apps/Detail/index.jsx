@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -21,10 +20,13 @@ import styles from './index.scss';
 )
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, clusterStore, appVersionStore }, { appId }) {
+  static async onEnter({ appStore, clusterStore, appVersionStore, repoStore }, { appId }) {
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
     await clusterStore.fetchAll({ app_id: appId });
+    if (appStore.appDetail.repo_id) {
+      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
   }
 
   constructor(props) {
@@ -141,9 +143,6 @@ export default class AppDetail extends Component {
     const { appDetail, currentClusterPage, swCluster } = appStore;
     const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
     const { clusters } = clusterStore;
-    if (appDetail.repo_id) {
-      repoStore.fetchRepoDetail(appDetail.repo_id);
-    }
     const repoName = get(repoStore.repoDetail, 'name', '');
 
     return (

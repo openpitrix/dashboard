@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
@@ -35,6 +34,7 @@ export default class RepoDetail extends Component {
       status: ['active', 'deleted']
     });
     await clusterStore.fetchAll({
+      repo_id: repoId,
       status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
     });
     repoStore.curTagName = 'Apps';
@@ -60,12 +60,12 @@ export default class RepoDetail extends Component {
 
   render() {
     const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    const repoDetail = toJS(repoStore.repoDetail);
-    const appsData = toJS(appStore.apps);
+    const repoDetail = repoStore.repoDetail;
+    const appsData = appStore.apps.toJSON();
     const appCount = appStore.totalCount;
-    const runtimesData = toJS(runtimeStore.runtimes);
-    const clusters = toJS(clusterStore.clusters) || [];
-    const eventsData = toJS(repoStore.repoEvents);
+    const runtimesData = runtimeStore.runtimes.toJSON();
+    const clusters = clusterStore.clusters.toJSON();
+    const eventsData = repoStore.repoEvents.toJSON();
 
     const appsColumns = [
       {
@@ -246,7 +246,7 @@ export default class RepoDetail extends Component {
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
               <TagNav
-                tags={toJS(tags)}
+                tags={tags.toJSON()}
                 curTag={curTagName}
                 changeTag={selectCurTag.bind(repoStore)}
               />

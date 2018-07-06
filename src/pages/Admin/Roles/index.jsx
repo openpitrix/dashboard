@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
-// import { getParseDate } from 'utils';
 
 import Rectangle from 'components/Rectangle';
 import Layout from 'components/Layout/Admin';
@@ -21,7 +18,7 @@ export default class Roles extends Component {
 
   render() {
     const { roleStore } = this.props;
-    const roleList = toJS(roleStore.roles) || [];
+    const roleList = roleStore.roles.toJSON();
 
     return (
       <Layout>

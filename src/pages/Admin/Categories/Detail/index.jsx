@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -120,8 +119,8 @@ export default class CategoryDetail extends Component {
   render() {
     const { categoryStore, appStore, repoStore } = this.props;
     const { category, notifyMsg, hideMsg, isLoading } = categoryStore;
-    const apps = toJS(appStore.apps);
-    const repos = toJS(repoStore.repos);
+    const apps = appStore.apps.toJSON();
+    const repos = repoStore.repos.toJSON();
     const { appCount } = appStore;
     const imgPhd = imgPlaceholder();
 

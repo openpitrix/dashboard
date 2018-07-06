@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
-import classnames from 'classnames';
 import { get } from 'lodash';
 
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
@@ -24,10 +21,17 @@ import styles from './index.scss';
 }))
 @observer
 export default class ClusterDetail extends Component {
-  static async onEnter({ clusterStore }, { clusterId }) {
+  static async onEnter({ clusterStore, appStore, runtimeStore }, { clusterId }) {
     await clusterStore.fetch(clusterId);
     await clusterStore.fetchJobs(clusterId);
     await clusterStore.fetchNodes(clusterId);
+    const { cluster } = clusterStore;
+    if (cluster.app_id) {
+      await appStore.fetch(cluster.app_id);
+    }
+    if (cluster.runtime_id) {
+      await runtimeStore.fetch(cluster.runtime_id);
+    }
   }
 
   renderHandleMenu = () => {
@@ -42,7 +46,7 @@ export default class ClusterDetail extends Component {
 
   clusterJobsModal = () => {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
-    const clusterJobs = toJS(this.props.clusterStore.clusterJobs);
+    const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
 
     if (modalType === 'jbos') {
       return null;
@@ -146,15 +150,9 @@ export default class ClusterDetail extends Component {
 
   render() {
     const { clusterStore, appStore, runtimeStore } = this.props;
-    const detail = toJS(clusterStore.cluster);
-    const clusterJobs = toJS(clusterStore.clusterJobs);
-    const clusterNodes = toJS(clusterStore.clusterNodes);
-    if (detail.app_id) {
-      appStore.fetch(detail.app_id);
-    }
-    if (detail.runtime_id) {
-      runtimeStore.fetch(detail.runtime_id);
-    }
+    const detail = clusterStore.cluster;
+    const clusterJobs = clusterStore.clusterJobs.toJSON();
+    const clusterNodes = clusterStore.clusterNodes.toJSON();
     const appName = get(appStore.appDetail, 'name', '');
     const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
 

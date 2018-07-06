@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -108,8 +107,8 @@ export default class Categories extends Component {
   render() {
     const { appStore, categoryStore } = this.props;
     const { notifyMsg, hideMsg, showCreateCategory, isLoading, getCategoryApps } = categoryStore;
-    const categories = toJS(categoryStore.categories);
-    const apps = toJS(appStore.apps);
+    const categories = categoryStore.categories.toJSON();
+    const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
 
     return (

@@ -13,7 +13,6 @@ import Admin from 'components/Layout/Admin';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
 
 import styles from './index.scss';
-import { toJS } from 'mobx/lib/mobx';
 
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,

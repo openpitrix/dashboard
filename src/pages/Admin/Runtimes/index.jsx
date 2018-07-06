@@ -53,8 +53,8 @@ export default class Runtimes extends Component {
 
   render() {
     const { runtimeStore, clusterStore } = this.props;
-    const data = toJS(runtimeStore.runtimes);
-    const clusters = toJS(clusterStore.clusters);
+    const data = runtimeStore.runtimes.toJSON();
+    const clusters = clusterStore.clusters.toJSON();
     const {
       summaryInfo,
       isLoading,

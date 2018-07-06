@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -49,16 +48,14 @@ export default class Repos extends Component {
             <Button type="default" onClick={deleteRepoClose}>
               Cancel
             </Button>
-            {status !== 'deleted' && (
-              <Button
-                type="primary"
-                onClick={() => {
-                  deleteRepo(this.props.repoStore);
-                }}
-              >
-                Confirm
-              </Button>
-            )}
+            <Button
+              type="primary"
+              onClick={() => {
+                deleteRepo(this.props.repoStore);
+              }}
+            >
+              Confirm
+            </Button>
           </div>
         </div>
       </Modal>
@@ -67,7 +64,6 @@ export default class Repos extends Component {
 
   render() {
     const { repoStore, appStore } = this.props;
-    //const repoList = toJS(repoStore.repos);
     const {
       getRepoApps,
       repos,
@@ -79,7 +75,6 @@ export default class Repos extends Component {
     } = repoStore;
     const { apps } = appStore;
     const repoApps = getRepoApps(repos, apps);
-    //const repoApps = toJS(repoStore.repos);
 
     return (
       <Layout isLoading={isLoading}>

@@ -1,4 +1,4 @@
-import { action, toJS } from 'mobx';
+import { action } from 'mobx';
 import request from 'lib/request';
 import Store from './Store';
 
@@ -7,10 +7,10 @@ export default class LoginStore extends Store {
   async login(params) {
     let apiMsg = await request.post('login', params);
 
-    apiMsg = toJS(apiMsg);
+    apiMsg = apiMsg.toJSON();
 
     if (!apiMsg.success) {
-      this.notifyMsg = toJS(apiMsg).msg;
+      this.notifyMsg = apiMsg.msg;
     }
   }
 }

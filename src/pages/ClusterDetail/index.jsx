@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { getParseDate } from 'utils';
@@ -40,7 +39,7 @@ export default class ClusterDetail extends Component {
       showViewNodeModal: false
     };
 
-    this.clusterNodes = toJS(this.props.clusterStore.clusterNodes.items) || [];
+    this.clusterNodes = this.props.clusterStore.clusterNodes;
   }
 
   openViewNodeModal = node => {
