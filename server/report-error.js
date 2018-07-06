@@ -11,7 +11,7 @@ const renderErrPage = (err = {}) => {
 
   return `<!doctype html><html>
     <head>
-      <title>OpenPitrix Error: ${title}</title>
+      <title>${title}</title>
       
       <style>
         .err-message {
