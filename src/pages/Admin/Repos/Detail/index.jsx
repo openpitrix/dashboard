@@ -17,7 +17,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
-  clusterStore: rootStore.appStore,
+  clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore
 }))
 @observer
