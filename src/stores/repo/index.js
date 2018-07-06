@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 export default class RepoStore extends Store {
   @observable repos = [];
+  @observable repoEvents = [];
   @observable repoDetail = {};
   @observable isLoading = false;
 
@@ -16,10 +17,14 @@ export default class RepoStore extends Store {
   tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
   @action
-  fetchAll = async () => {
+  fetchAll = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get('repos', { status: this.defaultStatus });
+    if (!params.status) {
+      params.status = this.defaultStatus;
+    }
+    const result = await this.request.get('repos', params);
     this.repos = get(result, 'repo_set', []);
+    console.log(params, this.repos);
     this.isLoading = false;
   };
 
@@ -50,6 +55,14 @@ export default class RepoStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`repos`, { repo_id: repoId });
     this.repoDetail = get(result, 'repo_set[0]', {});
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchRepoEvents(repoId) {
+    this.isLoading = true;
+    const result = await this.request.get(`repo_events`, { repo_id: repoId });
+    this.repoEvents = get(result, 'repo_event_set', {});
     this.isLoading = false;
   }
 
@@ -95,7 +108,6 @@ export default class RepoStore extends Store {
     this.searchWord = word;
   };
 
-  @action
   getRepoApps = (repos = [], apps = []) => {
     if (repos.toJSON) {
       repos = repos.toJSON();

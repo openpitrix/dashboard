@@ -198,9 +198,9 @@ export default class Users extends Component {
       total: 192,
       centerName: 'Roles',
       progressTotal: 5,
-      progress: [10, 20, 60, 10],
+      progress: {},
       lastedTotal: 40,
-      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      histograms: {}
     };
     const data = toJS(userStore.users);
     const columns = [

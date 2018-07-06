@@ -24,7 +24,7 @@ export default class Clusters extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
     clusterStore.loadPageInit();
     await clusterStore.fetchAll();
-    //const clusterIds = clusterStore.clusters.map(cluster => cluster.cluster_id);
+    await clusterStore.clusterStatistics();
     await appStore.fetchAll({ status: ['active', 'deleted'] });
     await runtimeStore.fetchAll({ status: ['active', 'deleted'] });
   }
@@ -187,37 +187,31 @@ export default class Clusters extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
-        <Statistics {...summaryInfo} />
+        <Statistics {...summaryInfo} objs={runtimes.slice()} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             {clusterIds.length > 0 && (
               <div className={styles.toolbar}>
                 <Button
                   type="primary"
-                  className={styles.operation}
+                  className={styles.delete}
                   onClick={() => this.oprateSelected('delete')}
                 >
-                  <Icon name="check" />Delete
+                  Delete
                 </Button>
                 <Button
                   type="primary"
-                  className={styles.operation}
+                  className={styles.start}
                   onClick={() => this.oprateSelected('start')}
                 >
-                  <Icon name="check" />Start
+                  Start
                 </Button>
                 <Button
                   type="primary"
-                  className={styles.operation}
+                  className={styles.stop}
                   onClick={() => this.oprateSelected('stop')}
                 >
-                  <Icon name="check" />Stop
-                </Button>
-                <Button
-                  className={classNames(styles.operation, styles.buttonRight)}
-                  onClick={cancelSelected}
-                >
-                  <Icon name="refresh" /> Cancel Selected
+                  Stop
                 </Button>
               </div>
             )}

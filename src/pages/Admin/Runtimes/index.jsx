@@ -19,9 +19,9 @@ import styles from './index.scss';
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore, clusterStore }) {
-    runtimeStore.currentPage = 1;
-    runtimeStore.searchWord = '';
+    runtimeStore.loadPageInit();
     await runtimeStore.fetchAll();
+    await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
       status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
     });
@@ -99,7 +99,7 @@ export default class Runtimes extends Component {
         key: 'provider'
       },
       {
-        title: 'Zone/Namspace',
+        title: 'Zone',
         dataIndex: 'zone',
         key: 'zone'
       },
@@ -107,7 +107,7 @@ export default class Runtimes extends Component {
         title: 'Cluster Count',
         key: 'node_count',
         render: runtime =>
-          clusters.filter(cluster => runtime.runtime_id == cluster.runtime_id).length
+          clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length
       },
       {
         title: 'User',
@@ -154,16 +154,10 @@ export default class Runtimes extends Component {
             <div className={styles.toolbar}>
               <Button
                 type="primary"
-                className={styles.operation}
+                className={styles.delete}
                 onClick={() => showDeleteRuntime(runtimeIds)}
               >
-                <Icon name="check" />Delete
-              </Button>
-              <Button
-                className={classNames(styles.operation, styles.buttonRight)}
-                onClick={cancelSelected}
-              >
-                <Icon name="refresh" /> Cancel Selected
+                Delete
               </Button>
             </div>
           )}

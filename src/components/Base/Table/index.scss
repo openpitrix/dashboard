@@ -49,18 +49,18 @@
       &:hover {
         background-color: $tr-hover-bg;
         td {
-          &:hover a{
-            color: $link-hover;
-          }
-          &:hover [class*="popper"] a{
-            color: $title-color;
-          }
           &:first-child {
             border-left-color: $tr-hover-bg;
           }
           &:last-child {
             border-right-color: $tr-hover-bg;
           }
+        }
+        td a, td [class*="tdName"] a{
+          color: $link-hover;
+        }
+        td [class*="popper"] a{
+          color: $title-color;
         }
       }
 
@@ -92,6 +92,25 @@
     &-placeholder {
       padding: 12px 0;
       text-align: center;
+    }
+  }
+
+  .detailTab{
+    thead > tr > th {
+      &:first-child {
+        padding-left: 36px;
+      }
+      &:last-child {
+        padding-right: 36px;
+      }
+    }
+    tbody > tr > td {
+      &:first-child {
+        border-left: 48px solid #fff;
+      }
+      &:last-child {
+        border-right: 48px solid #fff;
+      }
     }
   }
 }

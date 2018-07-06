@@ -12,6 +12,7 @@ export default class AppStore extends Store {
   @observable appId = ''; // current app_id
   @observable isLoading = false;
   @observable totalCount = 0;
+  @observable appCount = 0;
   @observable currentPage = 1;
   @observable isModalOpen = false;
   @observable appTitle = '';
@@ -21,7 +22,6 @@ export default class AppStore extends Store {
   @observable appIds = [];
   @observable selectedRowKeys = [];
   @observable operateType = '';
-  @observable appRepos = [];
 
   // menu actions logic
   @observable
@@ -67,14 +67,24 @@ export default class AppStore extends Store {
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    if (!this.searchWord) {
+      this.appCount = this.totalCount;
+    }
+    this.isLoading = false;
+  };
+
+  @action
+  appStatistics = async () => {
+    this.isLoading = true;
+    const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
       name: 'Apps',
       centerName: 'Repos',
-      total: get(result, 'total_count', 0),
+      total: get(result, 'app_count', 0),
       progressTotal: get(result, 'repo_count', 0),
-      lastedTotal: get(result, 'last_two_week_count', 0)
+      progress: get(result, 'top_ten_repos', {}),
+      histograms: get(result, 'last_two_week_created', {})
     };
-    await this.fetchRepos(this.apps.map(app => app.app_id));
     this.isLoading = false;
   };
 
@@ -226,12 +236,11 @@ export default class AppStore extends Store {
     this.appIds = [];
   };
 
-  @action
-  fetchRepos = async appIds => {
-    this.isLoading = true;
-    const result = await this.request.get('repos', { app_id: appIds });
-    this.appRepos = get(result, 'repo_set', []);
-    this.isLoading = false;
+  loadPageInit = () => {
+    this.currentPage = 1;
+    this.searchWord = '';
+    this.selectedRowKeys = [];
+    this.appIds = [];
   };
 }
 

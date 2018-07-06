@@ -24,9 +24,11 @@ export default class ClusterList extends PureComponent {
               </Link>
               <div className={styles.detail}>
                 <span className={styles.description} title={data.description}>
-                  {data.description}
+                  {data.description}&nbsp;
                 </span>
-                <span className={styles.nodes}>{data.node_count} Nodes</span>
+                <span className={styles.nodes}>
+                  {(data.cluster_node_set && data.cluster_node_set.length) || 0} Nodes
+                </span>
                 <span className={styles.time}>{getPastTime(data.status_time)}</span>
               </div>
             </div>

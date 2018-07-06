@@ -13,6 +13,7 @@ import Admin from 'components/Layout/Admin';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
 
 import styles from './index.scss';
+import { toJS } from 'mobx/lib/mobx';
 
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
@@ -42,7 +43,8 @@ export default class Overview extends React.Component {
 
     const appList = appStore.apps.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
-    const repoList = repoStore.repos.toJSON();
+    //const repoList = repoStore.repos.toJSON();
+    const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
 
     const userInfo = {
       userImg: imgPlaceholder(36),

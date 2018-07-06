@@ -1,4 +1,4 @@
-import { get, filter } from 'lodash';
+import _, { get, filter } from 'lodash';
 
 export function getParseDate(text) {
   const date = new Date(text);
@@ -85,4 +85,51 @@ export function getFormData(form) {
 
 export function getObjName(datas, key, value, name) {
   return get(filter(datas, { [key]: value })[0], name, '');
+}
+
+export function getStasTotal(obj) {
+  let total = 0;
+  _.forIn(obj, value => {
+    total += value;
+  });
+  return total;
+}
+
+export function getProgress(progress) {
+  let results = [];
+  _.forIn(progress, (value, key) => {
+    results.push({
+      id: key,
+      number: value
+    });
+  });
+  return results;
+}
+
+export function getHistograms(histograms) {
+  let now = new Date();
+  let nowTime = now.getTime();
+  let time,
+    date,
+    dateStr,
+    number = 0,
+    twoWeekDays = [];
+  for (let i = 0; i < 14; i++) {
+    number = 0;
+    time = nowTime - i * 24 * 3600 * 1000;
+    date = new Date(time);
+    dateStr = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
+      -2
+    )}-${`0${date.getDate()}`.slice(-2)}`;
+    _.forIn(histograms, (value, key) => {
+      if (dateStr === key) {
+        number = value;
+      }
+    });
+    twoWeekDays.push({
+      date: dateStr,
+      number: number
+    });
+  }
+  return twoWeekDays;
 }

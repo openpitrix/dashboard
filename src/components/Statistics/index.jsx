@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import Histogram from './Histogram';
 import Progress from './Progress';
 import styles from './index.scss';
+import { getStasTotal, getProgress, getHistograms } from 'utils';
 
 export default class Statistics extends PureComponent {
   static propTypes = {
@@ -13,15 +14,13 @@ export default class Statistics extends PureComponent {
     total: PropTypes.number,
     centerName: PropTypes.string,
     progressTotal: PropTypes.number,
-    progress: PropTypes.array,
-    lastedTotal: PropTypes.number,
-    histograms: PropTypes.array
+    progress: PropTypes.object,
+    histograms: PropTypes.object,
+    objs: PropTypes.array
   };
 
   static defaultProps = {
-    image: 'http://via.placeholder.com/24x24',
-    progress: new Array(),
-    histograms: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    image: 'http://via.placeholder.com/24x24'
   };
 
   render() {
@@ -32,9 +31,13 @@ export default class Statistics extends PureComponent {
       centerName,
       progressTotal,
       progress,
-      lastedTotal,
-      histograms
+      histograms,
+      objs
     } = this.props;
+    const centerTotal = getStasTotal(progress);
+    const lastedTotal = getStasTotal(histograms);
+    const topList = getProgress(progress);
+    const lastList = getHistograms(histograms);
 
     return (
       <div className={styles.statistics}>
@@ -55,7 +58,7 @@ export default class Statistics extends PureComponent {
               <div className={styles.name}>{centerName}</div>
               <div className={styles.number}>{progressTotal}</div>
             </div>
-            {progress && <Progress progress={progress} />}
+            {topList && <Progress progress={topList} total={centerTotal} type={name} objs={objs} />}
             <div className={classnames(styles.line)} />
           </div>
           <div className={styles.module}>
@@ -63,7 +66,7 @@ export default class Statistics extends PureComponent {
               <div className={styles.name}>Lasted 2 Weeks</div>
               <div className={styles.number}>{lastedTotal}</div>
             </div>
-            {histograms && <Histogram histograms={histograms} />}
+            {lastList && <Histogram histograms={lastList} total={lastedTotal} />}
           </div>
         </div>
       </div>

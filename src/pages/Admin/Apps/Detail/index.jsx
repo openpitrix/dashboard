@@ -3,7 +3,7 @@ import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { pick, assign } from 'lodash';
+import { pick, assign, get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import AppCard from 'components/DetailCard/AppCard';
@@ -17,7 +17,7 @@ import { getSessInfo } from 'utils';
 import styles from './index.scss';
 
 @inject(({ rootStore, sessInfo }) =>
-  assign(pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore']), sessInfo)
+  assign(pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore']), sessInfo)
 )
 @observer
 export default class AppDetail extends Component {
@@ -137,10 +137,14 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, clusterStore, appVersionStore } = this.props;
+    const { appStore, clusterStore, appVersionStore, repoStore } = this.props;
     const { appDetail, currentClusterPage, swCluster } = appStore;
     const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
     const { clusters } = clusterStore;
+    if (appDetail.repo_id) {
+      repoStore.fetchRepoDetail(appDetail.repo_id);
+    }
+    const repoName = get(repoStore.repoDetail, 'name', '');
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
@@ -148,7 +152,7 @@ export default class AppDetail extends Component {
         <div className={styles.appDetail}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
-              <AppCard appDetail={appDetail} />
+              <AppCard appDetail={appDetail} repoName={repoName} />
               <Popover
                 className={styles.operation}
                 content={this.renderHandleMenu(appDetail.app_id)}

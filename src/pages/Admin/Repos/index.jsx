@@ -78,8 +78,9 @@ export default class Repos extends Component {
       onRefresh
     } = repoStore;
     const { apps } = appStore;
-    const repoApps = toJS(getRepoApps(repos, apps));
-    console.log('repoApps:', repoApps);
+    const repoApps = getRepoApps(repos, apps);
+    //const repoApps = toJS(repoStore.repos);
+
     return (
       <Layout isLoading={isLoading}>
         <div className={styles.container}>

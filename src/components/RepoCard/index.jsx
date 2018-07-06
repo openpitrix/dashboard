@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import AppImages from '../Rectangle/AppImages';
 import TagShow from '../TagShow';
@@ -7,6 +8,7 @@ import styles from './index.scss';
 
 export default class RepoCard extends PureComponent {
   static propTypes = {
+    repoId: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
     providers: PropTypes.array,
@@ -15,12 +17,14 @@ export default class RepoCard extends PureComponent {
   };
 
   render() {
-    const { name, description, providers, apps, tags } = this.props;
+    const { repoId, name, description, providers, apps, tags } = this.props;
     return (
       <div className={styles.repoCard}>
         <div className={styles.inner}>
           <div className={styles.column}>
-            <div className={styles.titleName}>{name}</div>
+            <div className={styles.titleName}>
+              <Link to={`/dashboard/repo/${repoId}`}>{name}</Link>
+            </div>
             <div className={styles.description}>{description}</div>
           </div>
           <div className={styles.column}>

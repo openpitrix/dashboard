@@ -8,8 +8,8 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getParseDate, getParseTime, getObjName } from 'utils';
-
+import { getSessInfo, imgPlaceholder, getObjName } from 'utils';
+import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
 import classNames from 'classnames';
 
@@ -21,10 +21,11 @@ import classNames from 'classnames';
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore }) {
-    appStore.currentPage = 1;
-    appStore.searchWord = '';
+  static async onEnter({ appStore, categoryStore, repoStore }) {
+    appStore.loadPageInit();
     await appStore.fetchAll();
+    await appStore.appStatistics();
+    await repoStore.fetchAll({ status: ['active', 'deleted'] });
     await categoryStore.fetchAll();
   }
 
@@ -109,7 +110,6 @@ export default class Apps extends Component {
   render() {
     const {
       apps,
-      appRepos,
       summaryInfo,
       totalCount,
       notifyMsg,
@@ -127,6 +127,7 @@ export default class Apps extends Component {
       onChangeSelect,
       cancelSelected
     } = this.props.appStore;
+    const { repos } = this.props.repoStore;
     const imgPhd = imgPlaceholder();
 
     const columns = [
@@ -134,32 +135,31 @@ export default class Apps extends Component {
         title: 'App Name',
         key: 'name',
         width: '205px',
-        render: obj => (
+        render: item => (
           <TdName
-            name={obj.name}
-            description={obj.app_id}
-            image={obj.icon || imgPhd}
-            linkUrl={`/dashboard/app/${obj.app_id}`}
+            name={item.name}
+            description={item.app_id}
+            image={item.icon || imgPhd}
+            linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
       },
       {
         title: 'Latest Version',
         key: 'latest_version',
-        render: obj => get(obj, 'latest_app_version.name', '')
+        render: item => get(item, 'latest_app_version.name', '')
       },
       {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
         width: '120px',
-        render: text => <Status type={text} name={text} />
+        render: item => <Status type={item.status} name={item.status} />
       },
       {
         title: 'Categories',
         key: 'category',
-        render: obj =>
-          get(obj, 'category_set', [])
+        render: item =>
+          get(item, 'category_set', [])
             .filter(cate => cate.category_id)
             .map(cate => cate.name)
             .join(', ')
@@ -167,36 +167,32 @@ export default class Apps extends Component {
       {
         title: 'Visibility',
         key: 'visibility',
-        render: app => getObjName(appRepos, 'repo_id', app.repo_id, 'visibility')
+        render: item => getObjName(repos, 'repo_id', item.repo_id, 'visibility')
       },
       {
         title: 'Repo',
         key: 'repo_id',
-        render: app => (
-          <Link to={`/dashboard/repo/${app.repo_id}`}>
-            {getObjName(appRepos, 'repo_id', app.repo_id, 'name')}
+        render: item => (
+          <Link to={`/dashboard/repo/${item.repo_id}`}>
+            {getObjName(repos, 'repo_id', item.repo_id, 'name')}
           </Link>
         )
       },
       {
         title: 'Developer',
         key: 'owner',
-        render: obj => obj.owner
+        render: item => item.owner
       },
       {
         title: 'Updated At',
         key: 'status_time',
-        render: app => (
-          <Fragment>
-            <div>{getParseDate(app.status_time)}</div>
-            <div>{getParseTime(app.status_time)}</div>
-          </Fragment>
-        )
+        width: '100px',
+        render: item => <TimeShow time={item.status_time} />
       },
       {
         title: 'Actions',
         key: 'actions',
-        render: (text, item) => (
+        render: item => (
           <div className={styles.handlePop}>
             <Popover content={this.renderHandleMenu(item)}>
               <Icon name="more" />
@@ -205,6 +201,7 @@ export default class Apps extends Component {
         )
       }
     ];
+
     const rowSelection = {
       type: 'checkbox',
       selectedRowKeys: selectedRowKeys,
@@ -213,23 +210,17 @@ export default class Apps extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
-        <Statistics {...summaryInfo} />
+        <Statistics {...summaryInfo} objs={repos.slice()} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
             {appIds.length > 0 && (
               <div className={styles.toolbar}>
                 <Button
                   type="primary"
-                  className={styles.operation}
+                  className={styles.delete}
                   onClick={() => showDeleteApp(appIds)}
                 >
-                  <Icon name="check" />Delete
-                </Button>
-                <Button
-                  className={classNames(styles.operation, styles.buttonRight)}
-                  onClick={cancelSelected}
-                >
-                  <Icon name="refresh" /> Cancel Selected
+                  Delete
                 </Button>
               </div>
             )}

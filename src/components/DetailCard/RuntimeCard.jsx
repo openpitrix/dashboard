@@ -4,22 +4,25 @@ import classnames from 'classnames';
 
 import Status from '../Status';
 import TagShow from '../TagShow';
+import TimeShow from 'components/TimeShow';
+import CopyId from './CopyId';
 import { getParseDate } from 'utils';
 import styles from './index.scss';
 
 export default class RuntimeCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object.isRequired,
-    appCount: PropTypes.number
+    appCount: PropTypes.number,
+    clusterCount: PropTypes.number
   };
 
   render() {
-    const { detail, appCount } = this.props;
+    const { detail, appCount, clusterCount } = this.props;
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
           <div className={styles.name}>{detail.name}</div>
-          <div className={styles.id}>id:{detail.runtime_id || detail.repo_id}</div>
+          <CopyId id={detail.runtime_id || detail.repo_id} />
           <div className={styles.description}>{detail.description}</div>
         </div>
         <ul className={styles.detail}>
@@ -32,17 +35,26 @@ export default class RuntimeCard extends PureComponent {
             {detail.repo_id && detail.providers.map(data => <span key={data}>{data}</span>)}
             {detail.runtime_id && <span>{detail.provider}</span>}
           </li>
-          <li>
-            <span className={styles.name}>Visibility</span>
-            {detail.visibility}
-          </li>
+          {detail.repo_id && (
+            <li>
+              <span className={styles.name}>Visibility</span>
+              {detail.visibility}
+            </li>
+          )}
+          {detail.runtime_id && (
+            <li>
+              <span className={styles.name}>Zone</span>
+              {detail.zone}
+            </li>
+          )}
           <li>
             <span className={styles.name}>Creator</span>
             {detail.owner}
           </li>
           <li>
-            <span className={styles.name}>App Count</span>
-            {appCount}
+            <span className={styles.name}>{detail.repo_id ? 'App' : 'Cluster'} Count</span>
+            {detail.repo_id && appCount}
+            {detail.runtime_id && clusterCount}
           </li>
           <li>
             <span className={styles.name}>Labels</span>
@@ -52,7 +64,7 @@ export default class RuntimeCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.status_time)}
+            <TimeShow time={detail.status_time} type="detailTime" />
           </li>
         </ul>
       </div>

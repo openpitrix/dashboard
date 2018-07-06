@@ -10,11 +10,12 @@ export default class TdName extends PureComponent {
     image: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
-    linkUrl: PropTypes.string
+    linkUrl: PropTypes.string,
+    noCopy: PropTypes.bool
   };
 
   render() {
-    const { image, name, description, linkUrl } = this.props;
+    const { image, name, description, linkUrl, noCopy } = this.props;
     var clipboard = new ClipboardJS('.fa-clipboard');
     clipboard.on('success', function(e) {
       e.clearSelection();
@@ -26,16 +27,16 @@ export default class TdName extends PureComponent {
         <span className={styles.info}>
           {linkUrl && (
             <Link className={styles.name} to={linkUrl} title={name}>
-              {name}
+              {name}&nbsp;
             </Link>
           )}
           {!linkUrl && (
             <span className={styles.name} title={name}>
-              {name}
+              {name}&nbsp;
             </span>
           )}
-          <span className={styles.description}>{description}</span>
-          <i className="fa fa-clipboard" data-clipboard-text={description} />
+          <span className={styles.description}>{description}&nbsp;</span>
+          {!noCopy && <i className="fa fa-clipboard" data-clipboard-text={description} />}
         </span>
       </span>
     );
