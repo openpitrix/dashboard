@@ -16,12 +16,15 @@ export default class ClusterCard extends PureComponent {
     runtimeName: PropTypes.string
   };
 
-  render() {
-    const { detail, appName, runtimeName } = this.props;
+  componentDidMount() {
     let clipboard = new ClipboardJS('.fa-clipboard');
     clipboard.on('success', function(e) {
       e.clearSelection();
     });
+  }
+
+  render() {
+    const { detail, appName, runtimeName } = this.props;
 
     return (
       <div className={styles.detailCard}>

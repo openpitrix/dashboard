@@ -9,12 +9,15 @@ export default class CopyId extends PureComponent {
     id: PropTypes.string
   };
 
-  render() {
-    const { id } = this.props;
+  componentDidMount() {
     let clipboard = new ClipboardJS('.fa-clipboard');
     clipboard.on('success', function(e) {
       e.clearSelection();
     });
+  }
+
+  render() {
+    const { id } = this.props;
 
     return (
       <div className={styles.copyId}>

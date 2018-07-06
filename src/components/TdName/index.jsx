@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 
 import styles from './index.scss';
+import { throttle } from 'lodash';
 
 export default class TdName extends PureComponent {
   static propTypes = {
@@ -14,13 +15,15 @@ export default class TdName extends PureComponent {
     noCopy: PropTypes.bool
   };
 
-  render() {
-    const { image, name, description, linkUrl, noCopy } = this.props;
-    var clipboard = new ClipboardJS('.fa-clipboard');
+  componentDidMount() {
+    let clipboard = new ClipboardJS('.fa-clipboard');
     clipboard.on('success', function(e) {
       e.clearSelection();
     });
+  }
 
+  render() {
+    const { image, name, description, linkUrl, noCopy } = this.props;
     return (
       <span className={styles.tdName}>
         {image && <img src={image} className={styles.image} />}
