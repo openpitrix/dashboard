@@ -14,8 +14,6 @@ export default class RepoStore extends Store {
   @observable curTagName = 'Apps';
   @observable searchWord = '';
 
-  tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
-
   @action
   fetchAll = async (params = {}) => {
     this.isLoading = true;
