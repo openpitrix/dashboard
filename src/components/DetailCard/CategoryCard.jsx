@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Status from 'components/Status';
-import { getParseDate } from 'utils';
+import TimeShow from 'components/TimeShow';
+import CopyId from './CopyId';
 import styles from './index.scss';
 
 export default class CategoryCard extends PureComponent {
@@ -14,21 +14,16 @@ export default class CategoryCard extends PureComponent {
 
   render() {
     const { detail, appCount } = this.props;
-
-    if (!detail) {
-      return null;
-    }
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
-          <div className={styles.name}>{detail.name}</div>
-          <div className={styles.caId}>id:{detail.category_id}</div>
+          <div className={styles.name} title={detail.name}>
+            {detail.name}
+          </div>
+          <CopyId id={detail.category_id} />
+          <div className={styles.description}>{detail.description}</div>
         </div>
         <ul className={styles.detail}>
-          <li>
-            <span className={styles.name}>Status</span>
-            <Status name={detail.status} type={detail.status} />
-          </li>
           <li>
             <span className={styles.name}>Creator</span>
             {detail.owner}
@@ -39,7 +34,7 @@ export default class CategoryCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.update_time || detail.create_time)}
+            <TimeShow time={detail.create_time} type="detailTime" />
           </li>
         </ul>
       </div>

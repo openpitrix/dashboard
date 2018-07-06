@@ -42,7 +42,8 @@ export default class Overview extends React.Component {
 
     const appList = appStore.apps.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
-    const repoList = repoStore.repos.toJSON();
+    //const repoList = repoStore.repos.toJSON();
+    const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
 
     const userInfo = {
       userImg: imgPlaceholder(36),

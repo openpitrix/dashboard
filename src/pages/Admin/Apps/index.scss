@@ -13,11 +13,19 @@
 
 .toolbar {
   padding: 24px;
-  .operation{
-    padding: 7px 16px;
-    border-radius: 16px;
-    i{
-      margin-right: 8px;
+  .delete{
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: $delete-btn;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(119, 73, 172, 0.08);
+    border: solid 1px $border-lighter;
+    &:hover{
+      border-color: $delete-btn;
+      background-color: #fff;
+      box-shadow: 0 1px 2px 0 rgba(125, 65, 65, 0.26);
     }
   }
   .search {

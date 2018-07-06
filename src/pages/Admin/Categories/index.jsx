@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -7,8 +6,6 @@ import classNames from 'classnames';
 import { Input, Button, Popover, Icon } from 'components/Base';
 import Rectangle from 'components/Rectangle';
 import Layout, { Dialog } from 'components/Layout/Admin';
-// import { getParseDate } from 'utils';
-
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -40,7 +37,7 @@ export default class Categories extends Component {
     );
   };
 
-  handleDeleteCate = e => {
+  handleDeleteCate = () => {
     this.props.categoryStore.remove();
   };
 
@@ -77,6 +74,7 @@ export default class Categories extends Component {
               autoFocus
               defaultValue={category.name}
               onChange={changeName}
+              maxlength="50"
             />
           </div>
           <div className={styles.inputItem}>
@@ -86,6 +84,7 @@ export default class Categories extends Component {
               name="description"
               defaultValue={category.description}
               onChange={changeDescription}
+              maxlength="500"
             />
           </div>
         </Fragment>
@@ -93,21 +92,23 @@ export default class Categories extends Component {
     }
 
     return (
-      <Dialog title={modalTitle} isOpen={isModalOpen} onCancel={hideModal} onSubmit={onSubmit}>
+      <Dialog
+        title={modalTitle}
+        width={600}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={onSubmit}
+      >
         {modalBody}
       </Dialog>
     );
   };
 
-  // handleClickItem=(category_id, ev)=> {
-  //   this.props.history.push(`/dashboard/category/${category_id}`);
-  // }
-
   render() {
     const { appStore, categoryStore } = this.props;
     const { notifyMsg, hideMsg, showCreateCategory, isLoading, getCategoryApps } = categoryStore;
-    const categories = toJS(categoryStore.categories);
-    const apps = toJS(appStore.apps);
+    const categories = categoryStore.categories.toJSON();
+    const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
 
     return (

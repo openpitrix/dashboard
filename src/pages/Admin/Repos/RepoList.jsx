@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { Icon, Popover } from 'components/Base';
 import RepoCard from 'components/RepoCard';
 import capitalize from 'lodash/capitalize';
-
 import styles from './RepoList.scss';
 
 const RepoList = ({ repos, visibility, actionMenu }) => {
@@ -22,11 +22,12 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
         ? repos.map(({ repo_id, status, name, description, providers, apps, labels }) => (
             <div className={styles.item} key={repo_id}>
               <RepoCard
+                repoId={repo_id}
                 name={name}
                 description={description}
-                providers={providers}
-                apps={apps}
-                tags={labels}
+                providers={providers.slice()}
+                apps={apps.slice()}
+                tags={labels.slice()}
               />
               <div className={styles.actionMenu}>
                 <div>

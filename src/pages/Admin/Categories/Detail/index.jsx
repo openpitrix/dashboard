@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { getParseDate } from 'utils';
+import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
@@ -10,33 +10,36 @@ import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import CategoryCard from 'components/DetailCard/CategoryCard';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
-
+import TimeShow from 'components/TimeShow';
+import { imgPlaceholder, getObjName } from 'utils';
 import styles from './index.scss';
-import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class CategoryDetail extends Component {
-  static async onEnter({ categoryStore, appStore }, { categoryId }) {
+  static async onEnter({ categoryStore, appStore, repoStore }, { categoryId }) {
+    appStore.currentPage = 1;
+    appStore.searchWord = '';
     await categoryStore.fetch(categoryId);
-    await appStore.fetchAll({ category_id: categoryId });
+    await appStore.fetchAll({ category_id: categoryId, status: ['active', 'deleted'] });
+    await repoStore.fetchAll({ status: ['active', 'deleted'] });
   }
 
   onSearch = async name => {
     const { categoryStore, appStore } = this.props;
     const { fetchAll, changeSearchWord } = appStore;
-    await fetchAll({
-      category_id: categoryStore.category.category_id,
-      search_word: name
-    });
     changeSearchWord(name);
+    await fetchAll({
+      category_id: categoryStore.category.category_id
+    });
   };
 
-  onClearSearch = async e => {
-    await this.onSearch();
+  onClearSearch = async () => {
+    await this.onSearch('');
   };
 
   onRefresh = async () => {
@@ -82,6 +85,7 @@ export default class CategoryDetail extends Component {
     return (
       <Dialog
         title="Modify Category"
+        width={600}
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={this.handleModifyCate}
@@ -95,6 +99,7 @@ export default class CategoryDetail extends Component {
             autoFocus
             onChange={changeName}
             defaultValue={category.name}
+            maxlength="50"
           />
         </div>
         <div className={styles.inputItem}>
@@ -104,6 +109,7 @@ export default class CategoryDetail extends Component {
             name="description"
             defaultValue={category.description}
             onChange={changeDescription}
+            maxlength="500"
           />
         </div>
       </Dialog>
@@ -111,44 +117,65 @@ export default class CategoryDetail extends Component {
   };
 
   render() {
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore, appStore, repoStore } = this.props;
     const { category, notifyMsg, hideMsg, isLoading } = categoryStore;
-    const apps = toJS(appStore.apps);
+    const apps = appStore.apps.toJSON();
+    const repos = repoStore.repos.toJSON();
+    const { appCount } = appStore;
+    const imgPhd = imgPlaceholder();
 
     const columns = [
       {
         title: 'App Name',
         key: 'name',
         width: '205px',
-        render: app => (
+        render: item => (
           <TdName
-            name={app.name}
-            description={app.app_id}
-            image={app.icon}
-            linkUrl={`/dashboard/app/${app.app_id}`}
+            name={item.name}
+            description={item.app_id}
+            image={item.icon || imgPhd}
+            linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
       },
       {
         title: 'Latest Version',
         key: 'latest_version',
-        render: obj => get(obj, 'latest_app_version.name', '')
+        render: item => get(item, 'latest_app_version.name', '')
       },
       {
         title: 'Status',
         key: 'status',
-        render: app => <Status type={app.status} name={app.status} />
+        width: '120px',
+        render: item => <Status type={item.status} name={item.status} />
+      },
+      {
+        title: 'Visibility',
+        key: 'visibility',
+        render: item => getObjName(repos, 'repo_id', item.repo_id, 'visibility')
+      },
+      {
+        title: 'Repo',
+        key: 'repo_id',
+        render: item => (
+          <Link to={`/dashboard/repo/${item.repo_id}`}>
+            {getObjName(repos, 'repo_id', item.repo_id, 'name')}
+          </Link>
+        )
       },
       {
         title: 'Developer',
         key: 'owner',
-        render: obj => obj.owner
+        render: item => item.owner
       },
       {
-        title: 'Visibility',
-        key: 'visibility'
+        title: 'Updated At',
+        key: 'status_time',
+        width: '120px',
+        render: item => <TimeShow time={item.status_time} />
       }
     ];
+
     const tags = [{ id: 1, name: 'Apps', link: '#' }];
     const curTag = 'Apps';
 
@@ -158,7 +185,7 @@ export default class CategoryDetail extends Component {
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
-              <CategoryCard detail={category} appCount={appStore.totalCount} />
+              <CategoryCard detail={category} appCount={appCount} />
               <Popover className={styles.operation} content={this.renderHandleMenu(category)}>
                 <Icon name="more" />
               </Popover>
@@ -170,7 +197,7 @@ export default class CategoryDetail extends Component {
               <div className={styles.toolbar}>
                 <Input.Search
                   className={styles.search}
-                  placeholder="Search & Filter"
+                  placeholder="Search App Name"
                   value={appStore.searchWord}
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}
@@ -179,7 +206,7 @@ export default class CategoryDetail extends Component {
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={apps} />
+              <Table columns={columns} dataSource={apps} className="detailTab" />
             </div>
             <Pagination onChange={this.changeApps} total={appStore.totalCount} />
           </div>

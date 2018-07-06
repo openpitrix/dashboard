@@ -18,13 +18,18 @@
     margin: 24px -1px;
     height: 60px;
     &:nth-child(1){
-      width: 320px;
+      width: 350px;
+      padding-left: 48px;
+      .word{
+        width: auto;
+      }
     }
     &:nth-child(2){
-      width: 440px;
+      width: 430px;
     }
     &:nth-child(3){
-      width: 370px;
+      width: 350px;
+      padding-right: 0;
     }
     .line{
       position: absolute;
@@ -50,6 +55,7 @@
   }
   .word{
     display: inline-block;
+    width: 90px;
     .name{
       font-size: 12px;
       line-height: 2.0;

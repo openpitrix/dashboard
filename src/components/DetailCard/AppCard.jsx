@@ -1,27 +1,29 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { get } from 'lodash';
 
 import Status from 'components/Status';
-import { getParseDate, getParseTime, imgPlaceholder } from 'utils';
+import TimeShow from 'components/TimeShow';
+import CopyId from './CopyId';
+import { imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 export default class AppCard extends PureComponent {
   static propTypes = {
-    appDetail: PropTypes.object.isRequired
+    appDetail: PropTypes.object.isRequired,
+    repoName: PropTypes.string
   };
 
   render() {
-    const { appDetail } = this.props;
+    const { appDetail, repoName } = this.props;
     const imgPhd = imgPlaceholder(24);
     return (
       <div className={styles.detailCard}>
         <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
-          <div className={styles.id}>id:{appDetail.app_id}</div>
+          <CopyId id={appDetail.app_id} />
           <div className={styles.preview}>
             <Link to="/dashboard/categories">Preview in Catalog →</Link>
           </div>
@@ -33,7 +35,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Repo</span>
-            {appDetail.repo_id}
+            <Link to={`/dashboard/repo/${appDetail.repo_id}`}>{repoName}</Link>
           </li>
           <li>
             <span className={styles.name}>Latest Version</span>
@@ -52,7 +54,7 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(appDetail.status_time)} {getParseTime(appDetail.status_time)}
+            <TimeShow time={appDetail.status_time} type="detailTime" />
           </li>
         </ul>
       </div>

@@ -1,29 +1,33 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
 
 import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-
 import Layout, { BackBtn } from 'components/Layout/Admin';
-
+import TimeShow from 'components/TimeShow';
+import { getObjName } from 'utils';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  appStore: rootStore.appStore
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  static async onEnter({ runtimeStore, clusterStore }, { runtimeId }) {
+  static async onEnter({ runtimeStore, clusterStore, appStore }, { runtimeId }) {
     clusterStore.loadPageInit();
     clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
-    await clusterStore.fetchAll({ runtime_id: runtimeId });
+    await clusterStore.fetchAll({
+      runtime_id: runtimeId,
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+    });
+    await appStore.fetchAll({ status: ['active', 'deleted'] });
   }
 
   constructor(props) {
@@ -45,6 +49,7 @@ export default class RuntimeDetail extends Component {
     const {
       clusters,
       totalCount,
+      clusterCount,
       isLoading,
       currentPage,
       searchWord,
@@ -53,53 +58,51 @@ export default class RuntimeDetail extends Component {
       onRefresh,
       changePagination
     } = clusterStore;
+    const { apps } = this.props.appStore;
 
     const columns = [
       {
         title: 'Cluster Name',
-        dataIndex: 'name',
         key: 'name',
-        render: (name, obj) => (
+        width: '170px',
+        render: item => (
           <TdName
-            name={name}
-            description={obj.cluster_id}
-            linkUrl={`/dashboard/cluster/${obj.cluster_id}`}
+            name={item.name}
+            description={item.cluster_id}
+            linkUrl={`/dashboard/cluster/${item.cluster_id}`}
           />
         )
       },
       {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
         width: '120px',
-        render: text => <Status type={text} name={text} />
+        render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'App Version',
-        dataIndex: 'version_id',
-        key: 'version_id',
-        render: cl => cl.version_id
+        title: 'App',
+        key: 'app_id',
+        render: item => (
+          <Link to={`/dashboard/app/${item.app_id}`}>
+            {getObjName(apps, 'app_id', item.app_id, 'name')}
+          </Link>
+        )
       },
       {
         title: 'Node Count',
         key: 'node_count',
-        render: cl => cl.cluster_node_set && cl.cluster_node_set.length
-      },
-      {
-        title: 'Runtime',
-        dataIndex: 'runtime_id',
-        key: 'runtime_id'
+        render: item => item.cluster_node_set && item.cluster_node_set.length
       },
       {
         title: 'User',
-        dataIndex: 'owner',
-        key: 'owner'
+        key: 'owner',
+        dataIndex: 'owner'
       },
       {
-        title: 'Date Created',
-        dataIndex: 'create_time',
-        key: 'create_time',
-        render: getParseDate
+        title: 'Updated At',
+        key: 'status_time',
+        width: '120px',
+        render: item => <TimeShow time={item.status_time} />
       }
     ];
     const tags = [{ id: 1, name: 'Clusters' }];
@@ -111,7 +114,7 @@ export default class RuntimeDetail extends Component {
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
-              <RuntimeCard detail={runtimeDetail} />
+              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
               {runtimeDetail.status !== 'deleted' && (
                 <Popover
                   className={styles.operation}
@@ -137,7 +140,7 @@ export default class RuntimeDetail extends Component {
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={clusters.toJSON()} />
+              <Table columns={columns} dataSource={clusters.toJSON()} className="detailTab" />
             </div>
             <ul />
             <Pagination onChange={changePagination} total={totalCount} current={currentPage} />

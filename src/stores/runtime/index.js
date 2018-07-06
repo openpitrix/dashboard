@@ -54,13 +54,22 @@ export default class RuntimeStore extends Store {
     const result = await this.request.get('runtimes', assign(defaultParams, params));
     this.runtimes = get(result, 'runtime_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  };
+
+  @action
+  runtimeStatistics = async () => {
+    this.isLoading = true;
+    const result = await this.request.get('runtimes/statistics');
     this.summaryInfo = {
       name: 'Runtimes',
       centerName: 'Provider',
-      total: get(result, 'total_count', 0),
+      total: get(result, 'runtime_count', 0),
       progressTotal: get(result, 'provider_count', 0),
-      lastedTotal: get(result, 'last_two_week_count', 0)
+      progress: get(result, 'top_ten_providers', {}),
+      histograms: get(result, 'last_two_week_created', {})
     };
+    console.log(this.summaryInfo);
     this.isLoading = false;
   };
 
@@ -142,6 +151,13 @@ export default class RuntimeStore extends Store {
 
   @action
   cancelSelected = () => {
+    this.selectedRowKeys = [];
+    this.runtimeIds = [];
+  };
+
+  loadPageInit = () => {
+    this.currentPage = 1;
+    this.searchWord = '';
     this.selectedRowKeys = [];
     this.runtimeIds = [];
   };
