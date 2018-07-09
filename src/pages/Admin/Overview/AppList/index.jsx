@@ -23,6 +23,7 @@ export default class AppList extends PureComponent {
               name={data.name}
               description={data.description}
               linkUrl={`/dashboard/app/${data.app_id}`}
+              noCopy={true}
             />
             <span className={styles.total}>
               <span className={styles.number}>{data.total || 0}</span> Clusters

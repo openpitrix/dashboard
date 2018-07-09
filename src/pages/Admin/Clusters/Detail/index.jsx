@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
-import classnames from 'classnames';
+import { get } from 'lodash';
 
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -12,18 +9,29 @@ import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import Configuration from './Configuration';
+import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  appStore: rootStore.appStore,
+  runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class ClusterDetail extends Component {
-  static async onEnter({ clusterStore }, { clusterId }) {
+  static async onEnter({ clusterStore, appStore, runtimeStore }, { clusterId }) {
     await clusterStore.fetch(clusterId);
     await clusterStore.fetchJobs(clusterId);
     await clusterStore.fetchNodes(clusterId);
+    const { cluster } = clusterStore;
+    if (cluster.app_id) {
+      await appStore.fetch(cluster.app_id);
+    }
+    if (cluster.runtime_id) {
+      await runtimeStore.fetch(cluster.runtime_id);
+    }
   }
 
   renderHandleMenu = () => {
@@ -37,9 +45,12 @@ export default class ClusterDetail extends Component {
   };
 
   clusterJobsModal = () => {
-    const { isModalOpen, hideModal } = this.props.clusterStore;
-    const clusterJobs = toJS(this.props.clusterStore.clusterJobs);
+    const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
+    const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
 
+    if (modalType === 'jbos') {
+      return null;
+    }
     return (
       <Modal width={744} title="Activities" visible={isModalOpen} hideFooter onCancel={hideModal}>
         <TimeAxis timeList={clusterJobs} />
@@ -48,8 +59,11 @@ export default class ClusterDetail extends Component {
   };
 
   clusterParametersModal = () => {
-    const { isModalOpen, hideModal } = this.props.clusterStore;
+    const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
 
+    if (modalType === 'parameter') {
+      return null;
+    }
     return (
       <Dialog title="Parameters" onCancel={hideModal} noActions isOpen={isModalOpen} width={744}>
         <ul className={styles.parameters}>
@@ -129,18 +143,24 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  showClusterJobs = e => {};
+  showClusterJobs = () => {
+    const { showModal } = this.props.clusterStore;
+    showModal('jobs');
+  };
 
   render() {
-    const { clusterStore } = this.props;
-    const detail = toJS(clusterStore.cluster);
-    const clusterJobs = toJS(clusterStore.clusterJobs);
-    const clusterNodes = toJS(clusterStore.clusterNodes);
+    const { clusterStore, appStore, runtimeStore } = this.props;
+    const detail = clusterStore.cluster;
+    const clusterJobs = clusterStore.clusterJobs.toJSON();
+    const clusterNodes = clusterStore.clusterNodes.toJSON();
+    const appName = get(appStore.appDetail, 'name', '');
+    const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
 
     const columns = [
       {
         title: 'Name',
         key: 'name',
+        width: '170px',
         render: item => <TdName name={item.name} description={item.node_id} />
       },
       {
@@ -151,29 +171,28 @@ export default class ClusterDetail extends Component {
       {
         title: 'Node Status',
         key: 'status',
-        render: obj => <Status type={obj.status} name={obj.status} />
+        render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Service',
-        key: 'server_id',
-        dataIndex: 'server_id'
-      },
-      {
-        title: 'App Version',
-        key: 'latest_version'
+        title: 'Service Status',
+        key: 'server_status',
+        dataIndex: 'server_status'
       },
       {
         title: 'Configuration',
-        key: 'configuration'
+        key: 'configuration',
+        width: '120px',
+        render: item => <Configuration configuration={item.cluster_role || {}} />
       },
       {
         title: 'Private IP',
-        key: 'private_ip'
+        key: 'private_ip',
+        dataIndex: 'private_ip'
       },
       {
         title: 'Updated At',
         key: 'status_time',
-        render: obj => getParseDate(obj.status_time)
+        render: item => <TimeShow time={item.status_time} />
       }
     ];
     const tags = [{ id: 1, name: 'Nodes' }];
@@ -185,7 +204,7 @@ export default class ClusterDetail extends Component {
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
             <div className={styles.detailOuter}>
-              <ClusterCard detail={detail} />
+              <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
               <Popover className={styles.operation} content={this.renderHandleMenu()}>
                 <Icon name="more" />
               </Popover>
@@ -210,7 +229,7 @@ export default class ClusterDetail extends Component {
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={clusterNodes} />
+              <Table columns={columns} dataSource={clusterNodes} className="detailTab" />
             </div>
             <Pagination onChange={clusterStore.fetchNodes} total={clusterNodes.length} />
           </div>

@@ -1,14 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { toJS } from 'mobx';
-import { Link } from 'react-router-dom';
 import { Radio, Button, Input, Select, Slider } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
 import Cell from './Cell/index.jsx';
 import { get } from 'lodash';
 
 import styles from './index.scss';
-import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   rootStore,

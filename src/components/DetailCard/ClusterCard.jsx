@@ -1,36 +1,54 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import ClipboardJS from 'clipboard';
 
 import Status from 'components/Status';
-import { getParseDate } from 'utils';
+import TimeShow from 'components/TimeShow';
+import CopyId from './CopyId';
 import styles from './index.scss';
 
 export default class ClusterCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object.isRequired
+    detail: PropTypes.object.isRequired,
+    appName: PropTypes.string,
+    runtimeName: PropTypes.string
   };
 
+  componentDidMount() {
+    let clipboard = new ClipboardJS('.fa-clipboard');
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+    });
+  }
+
   render() {
-    const { detail } = this.props;
+    const { detail, appName, runtimeName } = this.props;
+
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
           <div className={styles.name}>{detail.name}</div>
-          <div className={styles.caId}>id:{detail.cluster_id}</div>
+          <CopyId id={detail.cluster_id} />
         </div>
         <ul className={styles.detail}>
+          <li>
+            <span className={styles.name}>Frontgate ID</span>
+            {detail.frontgate_id}
+            <i className="fa fa-clipboard" data-clipboard-text={detail.frontgate_id} />
+          </li>
           <li>
             <span className={styles.name}>Status</span>
             <Status name={detail.status} type={detail.status} />
           </li>
           <li>
             <span className={styles.name}>Runtime</span>
-            {detail.runtime_id}
+            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{runtimeName}</Link>
           </li>
           <li>
             <span className={styles.name}>App</span>
-            {detail.app_id}
+            <Link to={`/dashboard/app/${detail.app_id}`}>{appName}</Link>
           </li>
           <li>
             <span className={styles.name}>User</span>
@@ -38,11 +56,11 @@ export default class ClusterCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Node Count</span>
-            {detail.count}
+            {(detail.cluster_node_set && detail.cluster_node_set.length) || 0}
           </li>
           <li>
             <span className={styles.name}>Date Updated</span>
-            {getParseDate(detail.upgrade_time)}
+            <TimeShow time={detail.upgrade_time} type="detailTime" />
           </li>
         </ul>
       </div>

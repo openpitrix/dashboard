@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import Logo from 'components/Logo';
@@ -22,7 +21,7 @@ export default class Login extends Component {
   renderErrMsg() {
     let { notifyMsg, hideMsg } = this.props.store;
 
-    notifyMsg = toJS(notifyMsg);
+    notifyMsg = notifyMsg.toJSON();
 
     if (notifyMsg) {
       return <Notification message={notifyMsg} onHide={hideMsg} />;

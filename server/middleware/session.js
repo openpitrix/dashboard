@@ -11,6 +11,10 @@ module.exports = app => {
     let pv = ctx.session.pv || 0;
     ctx.session.pv = ++pv;
 
-    await next();
+    try {
+      await next();
+    } catch (err) {
+      ctx.app.reportErr(err, ctx);
+    }
   };
 };

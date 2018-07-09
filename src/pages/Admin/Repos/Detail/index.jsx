@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
+import { get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -11,24 +10,37 @@ import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
-
+import TimeShow from 'components/TimeShow';
+import { getObjName } from 'utils';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
+  clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class RepoDetail extends Component {
-  static async onEnter({ repoStore, appStore, runtimeStore }, { repoId }) {
+  static async onEnter({ repoStore, appStore, runtimeStore, clusterStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await appStore.fetchAll({ repo_id: repoId });
-    await runtimeStore.fetchAll({ repo_id: repoId });
+    await repoStore.fetchRepoEvents(repoId);
+    await appStore.fetchAll({
+      repo_id: repoId,
+      status: ['active', 'deleted']
+    });
+    await runtimeStore.fetchAll({
+      repo_id: repoId,
+      status: ['active', 'deleted']
+    });
+    await clusterStore.fetchAll({
+      repo_id: repoId,
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+    });
     repoStore.curTagName = 'Apps';
   }
 
-  changeselectors = items => {
+  changeSelectors = items => {
     return (
       items &&
       items.map(item => ({
@@ -47,100 +59,133 @@ export default class RepoDetail extends Component {
   };
 
   render() {
-    const { repoStore, appStore, runtimeStore } = this.props;
-    const repoDetail = toJS(repoStore.repoDetail);
-    const appsData = toJS(appStore.apps);
+    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
+    const repoDetail = repoStore.repoDetail;
+    const appsData = appStore.apps.toJSON();
     const appCount = appStore.totalCount;
-    const runtimesData = toJS(runtimeStore.runtimes);
+    const runtimesData = runtimeStore.runtimes.toJSON();
+    const clusters = clusterStore.clusters.toJSON();
+    const eventsData = repoStore.repoEvents.toJSON();
+
     const appsColumns = [
       {
         title: 'App Name',
-        dataIndex: 'name',
         key: 'name',
         width: '205px',
-        render: (name, obj) => (
+        render: item => (
           <TdName
-            name={name}
-            description={obj.app_id}
-            image={obj.icon}
-            linkUrl={`/dashboard/app/${obj.app_id}`}
+            name={item.name}
+            description={item.app_id}
+            image={item.icon}
+            linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
       },
       {
+        title: 'Latest Version',
+        key: 'latest_version',
+        render: item => get(item, 'latest_app_version.name', '')
+      },
+      {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
-        width: '130px',
-        render: text => <Status type={text} name={text} />
+        width: '120px',
+        render: item => <Status type={item.status} name={item.status} />
       },
       {
         title: 'Categories',
-        dataIndex: 'categories',
-        key: 'categories'
+        key: 'category',
+        render: item =>
+          get(item, 'category_set', [])
+            .filter(cate => cate.category_id)
+            .map(cate => cate.name)
+            .join(', ')
       },
       {
         title: 'Developer',
-        dataIndex: 'developer',
-        key: 'developer'
-      },
-      {
-        title: 'Visibility',
-        dataIndex: 'visibility',
-        key: 'visibility'
+        key: 'owner',
+        render: item => item.owner
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
-        key: 'update_time',
-        render: getParseDate
+        key: 'status_time',
+        render: item => <TimeShow time={item.status_time} />
       }
     ];
     const runtimesColumns = [
       {
         title: 'Runtime Name',
-        dataIndex: 'name',
         key: 'name',
-        width: '130px',
-        render: (name, obj) => (
+        width: '170px',
+        render: item => (
           <TdName
-            name={name}
-            description={obj.runtime_id}
-            linkUrl={`/dashboard/runtime/${obj.runtime_id}`}
+            name={item.name}
+            description={item.runtime_id}
+            linkUrl={`/dashboard/runtime/${item.runtime_id}`}
           />
         )
       },
       {
         title: 'Status',
-        dataIndex: 'status',
         key: 'status',
-        width: '130px',
-        render: text => <Status type={text} name={text} />
+        width: '120px',
+        render: item => <Status type={item.status} name={item.status} />
       },
       {
         title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider'
+        key: 'provider',
+        render: item => item.provider
       },
       {
         title: 'Zone',
-        dataIndex: 'zone',
-        key: 'zone'
+        key: 'zone',
+        render: item => item.zone
+      },
+      {
+        title: 'Cluster Count',
+        key: 'node_count',
+        render: item => clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length
       },
       {
         title: 'User',
-        dataIndex: 'owner',
-        key: 'owner'
+        key: 'owner',
+        render: item => item.owner
       },
       {
         title: 'Updated At',
-        dataIndex: 'status_time',
         key: 'status_time',
-        render: getParseDate
+        width: '120px',
+        render: item => <TimeShow time={item.status_time} />
+      }
+    ];
+    const eventsColumns = [
+      {
+        title: 'Event Id',
+        key: 'repo_event_id',
+        width: '170px',
+        render: item => item.repo_event_id
+      },
+      {
+        title: 'Status',
+        key: 'status',
+        width: '120px',
+        render: item => item.status
+      },
+      {
+        title: 'User',
+        key: 'owner',
+        render: item => item.owner
+      },
+      {
+        title: 'Updated At',
+        key: 'status_time',
+        width: '120px',
+        render: item => <TimeShow time={item.status_time} />
       }
     ];
 
-    const { tags, curTagName, selectCurTag } = repoStore;
+    const { curTagName, selectCurTag } = repoStore;
+    const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
     let data = [];
     let columns = [];
@@ -165,7 +210,7 @@ export default class RepoDetail extends Component {
         data = runtimesData;
         columns = runtimesColumns;
         searchTip = 'Search Runtime Name';
-        selectors = this.changeselectors(repoDetail.selectors);
+        selectors = this.changeSelectors(repoDetail.selectors);
         totalCount = runtimeStore.totalCount;
         changeTable = async current => {
           await runtimeStore.fetchAll({
@@ -173,6 +218,12 @@ export default class RepoDetail extends Component {
             offset: (current - 1) * runtimeStore.pageSize
           });
         };
+        break;
+      case 'Events':
+        data = eventsData;
+        columns = eventsColumns;
+        totalCount = eventsData.length;
+        searchTip = 'Search Events';
         break;
     }
 
@@ -195,24 +246,22 @@ export default class RepoDetail extends Component {
           </div>
           <div className={styles.rightInfo}>
             <div className={styles.wrapper2}>
-              <TagNav
-                tags={toJS(tags)}
-                curTag={curTagName}
-                changeTag={selectCurTag.bind(repoStore)}
-              />
+              <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
               {curTagName === 'Runtimes' && (
                 <div className={styles.selector}>
                   <div className={styles.title}>Runtime Selectors</div>
                   <TagShow tags={selectors} tagStyle="yellow" />
                 </div>
               )}
+
               <div className={styles.toolbar}>
                 <Input.Search className={styles.search} placeholder={searchTip} />
                 <Button className={styles.buttonRight}>
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={data} />
+
+              <Table columns={columns} dataSource={data} className="detailTab" />
             </div>
             <Pagination onChange={changeTable} total={totalCount} />
           </div>

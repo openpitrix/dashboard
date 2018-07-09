@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
@@ -24,7 +23,7 @@ export default class AppDetail extends Component {
   render() {
     const { appStore, appVersionStore } = this.props;
     const appDetail = appStore.appDetail;
-    const appVersions = toJS(appVersionStore.versions);
+    const appVersions = appVersionStore.versions.toJSON();
 
     return (
       <Layout noTabs={true}>

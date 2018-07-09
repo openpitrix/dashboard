@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { getParseDate } from 'utils';
 import classNames from 'classnames';
@@ -42,7 +41,7 @@ export default class Users extends Component {
 
   componentWillMount = () => {
     this.setState({
-      organizations: toJS(this.props.userStore.organizations)
+      organizations: this.props.userStore.organizations.toJSON()
     });
   };
 
@@ -198,11 +197,11 @@ export default class Users extends Component {
       total: 192,
       centerName: 'Roles',
       progressTotal: 5,
-      progress: [10, 20, 60, 10],
+      progress: {},
       lastedTotal: 40,
-      histograms: [10, 20, 30, 80, 5, 60, 56, 10, 20, 30, 80, 5, 60, 56]
+      histograms: {}
     };
-    const data = toJS(userStore.users);
+    const data = userStore.users.toJSON();
     const columns = [
       {
         title: 'UserName',
@@ -245,8 +244,8 @@ export default class Users extends Component {
       }
     ];
     const { treeFlag, organizations, selectValue, selectItem } = this.state;
-    const groups = toJS(userStore.groups);
-    const roles = toJS(userStore.roles);
+    const groups = userStore.groups.toJSON();
+    const roles = userStore.roles.toJSON();
 
     let selectContent;
     switch (selectValue) {

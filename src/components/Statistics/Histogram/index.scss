@@ -1,22 +1,64 @@
 @import '~scss/variables';
 
 .histogram{
+  float: right;
   display: inline-block;
-  margin-left: 38px;
+  margin-right: 36px;
   .column{
     position: relative;
     display: inline-block;
     height: 60px;
     width: 4px;
-    margin-right: 9px;
+    margin-right: 8px;
     background: $background-color;
+    cursor: pointer;
+    &:hover .tips{
+      display: inline-block;
+    }
     .inner{
       position: absolute;
       bottom: 0;
       left: 0;
       width: 4px;
-      height: 30%;
+      height: 0;
       background: #9a5cd1;
+    }
+    .tips{
+      position: absolute;
+      bottom: 25px;
+      z-index: 2;
+      display: none;
+      min-width: 90px;
+      margin-left: -12px;
+      height: 50px;
+      padding: 8px 12px 10px;
+      border-radius: 2px;
+      background-color: #301255;
+      box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.32);
+      .arrow{
+        position: absolute;
+        bottom: -6px;
+        left: 10px;
+        border-top: 6px solid #301255;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+      }
+      .number{
+        margin-bottom: 4px;
+        line-height: 14px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #ffffff;
+      }
+      .date{
+        max-width: 90px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap ;
+        line-height: 14px;
+        font-size: 12px;
+        color: #bfb3cd;
+      }
     }
   }
 }

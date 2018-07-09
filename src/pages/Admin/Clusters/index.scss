@@ -14,15 +14,30 @@
 
 .toolbar {
   padding: 24px;
-  .operation{
-    margin-right: 12px;
-    padding: 7px 16px;
-    border-radius: 16px;
-    &:last-child{
-      margin-right: 0;
+  .delete, .stop, .start{
+    margin-right: 8px;
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 2px;
+    border: solid 1px $border-lighter;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(119, 73, 172, 0.08);
+    &:hover{
+      background-color: #fff;
+      box-shadow: 0 1px 2px 0 rgba(125, 65, 65, 0.26);
     }
-    i{
-      margin-right: 8px;
+  }
+  .delete, .stop{
+    color: $delete-btn;
+    &:hover{
+      border-color: $delete-btn;
+    }
+  }
+  .start{
+    color: $link-color;
+    &:hover{
+      border-color: $link-color;
     }
   }
   .refresh {

@@ -14,20 +14,25 @@ rootStore.registerStores();
  * @param next
  */
 module.exports = async (ctx, next) => {
-  // Create state for SSR
-  ctx.store = rootStore;
-  ctx.store.config = getServerConfig('app');
+  try {
+    // Create state for SSR
+    ctx.store = rootStore;
+    ctx.store.config = getServerConfig('app');
 
-  // attach api server to ctx
-  let serverUrl = getServerConfig('serverUrl') || process.env.serverUrl || 'http://localhost:3000';
-  let apiVer = getServerConfig('apiVersion') || process.env.apiVersion || 'v1';
+    // attach api server to ctx
+    let serverUrl =
+      process.env.serverUrl || getServerConfig('serverUrl') || 'http://localhost:9100';
+    let apiVer = process.env.apiVersion || getServerConfig('apiVersion') || 'v1';
 
-  if (!serverUrl.startsWith('http')) {
-    serverUrl = 'http://' + serverUrl;
+    if (!serverUrl.startsWith('http')) {
+      serverUrl = 'http://' + serverUrl;
+    }
+
+    // url.resolve need first string starts with http
+    ctx.store.apiServer = url.resolve(serverUrl, apiVer);
+
+    await next();
+  } catch (err) {
+    ctx.app.reportErr(err, ctx);
   }
-
-  // url.resolve need first string starts with http
-  ctx.store.apiServer = url.resolve(serverUrl, apiVer);
-
-  await next();
 };

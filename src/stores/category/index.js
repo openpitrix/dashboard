@@ -155,7 +155,7 @@ export default class CategoryStore extends Store {
     }
 
     categories = categories.map(cate => {
-      cate = _.pick(cate, ['category_id', 'name']);
+      cate = _.pick(cate, ['category_id', 'name', 'description']);
 
       let cate_apps = apps.filter(app => {
         return _.find(app.category_set, { category_id: cate.category_id });

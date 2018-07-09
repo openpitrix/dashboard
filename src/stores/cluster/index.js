@@ -13,6 +13,7 @@ export default class ClusterStore extends Store {
   @observable summaryInfo = {};
   @observable isLoading = false;
   @observable totalCount = 0;
+  @observable clusterCount = 0;
   @observable isModalOpen = false;
 
   @observable clusterId = ''; // current delete cluster_id
@@ -50,6 +51,7 @@ export default class ClusterStore extends Store {
     }
     if (!params.runtime_id && this.runtimeId) {
       params.runtime_id = this.runtimeId;
+      params.status = ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'];
     }
     if (!params.status) {
       params.status = this.defaultStatus;
@@ -62,12 +64,23 @@ export default class ClusterStore extends Store {
     const result = await this.request.get('clusters', assign(defaultParams, params));
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
+    if (!this.searchWord) {
+      this.clusterCount = this.totalCount;
+    }
+    this.isLoading = false;
+  };
+
+  @action
+  clusterStatistics = async () => {
+    this.isLoading = true;
+    const result = await this.request.get('clusters/statistics');
     this.summaryInfo = {
       name: 'Clusters',
       centerName: 'Runtimes',
-      total: get(result, 'total_count', 0),
+      total: get(result, 'cluster_count', 0),
       progressTotal: get(result, 'runtime_count', 0),
-      lastedTotal: get(result, 'last_two_week_count', 0)
+      progress: get(result, 'top_ten_runtimes', {}),
+      histograms: get(result, 'last_two_week_created', {})
     };
     this.isLoading = false;
   };
