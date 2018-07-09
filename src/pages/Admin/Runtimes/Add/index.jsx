@@ -75,6 +75,7 @@ export default class RuntimeAdd extends Component {
           <Input
             className={styles.input}
             name="name"
+            maxlength="50"
             required
             onChange={this.store.changeName}
             value={name}
@@ -108,6 +109,7 @@ export default class RuntimeAdd extends Component {
                   className={styles.inputUrl}
                   name="runtime_url"
                   placeholder="www.example.com/path/point/"
+                  maxlength="100"
                   required
                 />
                 <div className={styles.rightShow}>
@@ -162,6 +164,7 @@ export default class RuntimeAdd extends Component {
             name="description"
             onChange={this.store.changeDescription}
             value={description}
+            maxlength="500"
           />
         </div>
         <div>

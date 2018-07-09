@@ -68,15 +68,17 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   removeLabel = index => {
-    this.labels.splice(index, 1);
+    this.labels = this.labels.filter((item, i) => i != index);
   };
 
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
       this.labels[index]['label_' + type] = value;
+      this.labels = [...this.labels];
     } else if (labelType === 'selector') {
       this.selectors[index]['label_' + type] = value;
+      this.selectors = [...this.selectors];
     }
   };
 
@@ -211,6 +213,7 @@ export default class RuntimeCreateStore extends Store {
     if (detail) {
       this.runtimeId = detail.runtime_id;
       this.name = detail.name;
+      this.description = detail.description;
       this.provider = detail.provider;
       this.runtimeUrl = detail.runtime_url;
       this.zone = detail.zone;

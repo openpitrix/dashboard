@@ -128,6 +128,7 @@ export default class Cell extends PureComponent {
             className={styles.textarea}
             name={config.key}
             value={config.default}
+            maxlength="500"
             onChange={this.changeCell}
           />
         )}
@@ -138,6 +139,7 @@ export default class Cell extends PureComponent {
               name={config.key}
               type="text"
               value={config.default}
+              maxlength="50"
               onChange={this.changeCell}
             />
             <p className={classNames(styles.rightShow, styles.note)}>{config.description}</p>

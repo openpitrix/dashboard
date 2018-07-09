@@ -47,10 +47,7 @@ export default class ClusterDetail extends Component {
   clusterJobsModal = () => {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
     const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
-
-    if (modalType === 'jbos') {
-      return null;
-    }
+    console.log(isModalOpen, hideModal, modalType);
     return (
       <Modal width={744} title="Activities" visible={isModalOpen} hideFooter onCancel={hideModal}>
         <TimeAxis timeList={clusterJobs} />
@@ -61,11 +58,14 @@ export default class ClusterDetail extends Component {
   clusterParametersModal = () => {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
 
-    if (modalType === 'parameter') {
-      return null;
-    }
     return (
-      <Dialog title="Parameters" onCancel={hideModal} noActions isOpen={isModalOpen} width={744}>
+      <Dialog
+        title="Parameters"
+        onCancel={hideModal}
+        noActions
+        isOpen={isModalOpen && modalType === 'parameters'}
+        width={744}
+      >
         <ul className={styles.parameters}>
           <li>
             <div className={styles.name}>Port</div>
@@ -143,11 +143,6 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  showClusterJobs = () => {
-    const { showModal } = this.props.clusterStore;
-    showModal('jobs');
-  };
-
   render() {
     const { clusterStore, appStore, runtimeStore } = this.props;
     const detail = clusterStore.cluster;
@@ -155,6 +150,7 @@ export default class ClusterDetail extends Component {
     const clusterNodes = clusterStore.clusterNodes.toJSON();
     const appName = get(appStore.appDetail, 'name', '');
     const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
+    const { clusterJobsOpen } = clusterStore;
 
     const columns = [
       {
@@ -212,7 +208,7 @@ export default class ClusterDetail extends Component {
             <div className={styles.activities}>
               <div className={styles.title}>
                 Activities
-                <div className={styles.more} onClick={this.showClusterJobs}>
+                <div className={styles.more} onClick={clusterJobsOpen}>
                   More →
                 </div>
               </div>

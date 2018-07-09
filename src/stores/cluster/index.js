@@ -164,7 +164,7 @@ export default class ClusterStore extends Store {
 
   @action
   clusterJobsOpen = () => {
-    this.showClusterJobs = true;
+    this.showModal('jobs');
   };
 
   @action
@@ -174,7 +174,7 @@ export default class ClusterStore extends Store {
 
   @action
   clusterParametersOpen = () => {
-    this.showClusterParameters = true;
+    this.showModal('parameters');
   };
 
   @action

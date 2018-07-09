@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import Histogram from './Histogram';
 import Progress from './Progress';
 import styles from './index.scss';
-import { getStasTotal, getProgress, getHistograms } from 'utils';
+import { getStasTotal, getTopTotal, getProgress, getHistograms } from 'utils';
 
 export default class Statistics extends PureComponent {
   static propTypes = {
@@ -34,10 +34,11 @@ export default class Statistics extends PureComponent {
       histograms,
       objs
     } = this.props;
-    const centerTotal = getStasTotal(progress);
-    const lastedTotal = getStasTotal(histograms);
+
     const topList = getProgress(progress);
     const lastList = getHistograms(histograms);
+    const topTotal = getTopTotal(topList);
+    const lastedTotal = getStasTotal(histograms);
 
     return (
       <div className={styles.statistics}>
@@ -56,9 +57,9 @@ export default class Statistics extends PureComponent {
           <div className={styles.module}>
             <div className={styles.word}>
               <div className={styles.name}>{centerName}</div>
-              <div className={styles.number}>{progressTotal}</div>
+              <div className={styles.number}>{topTotal}</div>
             </div>
-            {topList && <Progress progress={topList} total={centerTotal} type={name} objs={objs} />}
+            {topList && <Progress progress={topList} total={topTotal} type={name} objs={objs} />}
             <div className={classnames(styles.line)} />
           </div>
           <div className={styles.module}>

@@ -78,6 +78,7 @@ export default class RepoAdd extends Component {
           <Input
             className={styles.input}
             name="name"
+            maxlength="50"
             required
             onChange={this.store.changeName}
             value={name}
@@ -146,6 +147,7 @@ export default class RepoAdd extends Component {
               onChange={this.store.changeUrl}
               className={styles.input}
               placeholder="www.example.com/path/point/"
+              maxlength="100"
               required
               name="url"
             />
@@ -181,6 +183,7 @@ export default class RepoAdd extends Component {
             className={styles.textarea}
             name="description"
             value={description}
+            maxlength="500"
             onChange={this.store.changeDescription}
           />
         </div>
