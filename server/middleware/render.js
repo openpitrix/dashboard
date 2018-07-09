@@ -1,6 +1,6 @@
-if (process.env.COMPILE_CLIENT) {
-  process.env.BABEL_ENV = 'server';
-}
+// if (process.env.COMPILE_CLIENT) {
+//   process.env.BABEL_ENV = 'server';
+// }
 
 const React = require('react');
 const { renderToString } = require('react-dom/server');
@@ -12,9 +12,11 @@ const renderPage = require('../render-page');
 
 const App = require('src/App').default;
 const routes = require('src/routes').default;
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV !== 'production';
 
-// Server-side render
+const i18n = require('../i18n');
+const { I18nextProvider } = require('react-i18next');
+
 module.exports = async (ctx, next) => {
   const branches = matchRoutes(routes, ctx.url);
   const promises = branches.map(
@@ -36,16 +38,19 @@ module.exports = async (ctx, next) => {
   };
 
   try {
-    // when in dev mode, disable ssr
-    const components = isDev
-      ? null
-      : renderToString(
+    let components = null;
+
+    if (!isDev) {
+      renderToString(
+        <I18nextProvider i18n={i18n}>
           <Provider rootStore={ctx.store} sessInfo={sessInfo}>
             <StaticRouter location={ctx.url} context={context}>
               <App>{renderRoutes(routes)}</App>
             </StaticRouter>
           </Provider>
-        );
+        </I18nextProvider>
+      );
+    }
 
     if (context.url) {
       ctx.redirect(context.url);
@@ -55,7 +60,6 @@ module.exports = async (ctx, next) => {
 
     ctx.body = renderPage({
       isDev,
-      isLogin: ctx.url === '/login',
       title: get(ctx.store, 'config.name'),
       children: components,
       state: JSON.stringify(ctx.store)

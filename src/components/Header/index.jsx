@@ -75,6 +75,7 @@ export default class Header extends Component {
   renderLocaleBtns() {
     const { translationDropdownOpen } = this.state;
     const curLocale = this.getCurrentLocale();
+    const { t } = this.props;
 
     return (
       <Dropdown
@@ -89,17 +90,17 @@ export default class Header extends Component {
           caret
           style={{ cursor: 'pointer' }}
         >
-          {curLocale}
+          {t(`lang.${curLocale}`)}
         </DropdownToggle>
         <DropdownMenu className={styles.transMenu}>
           <div className={styles.locale}>
-            <a href="#" onClick={this.changeLocale.bind(null, 'en')}>
-              en
+            <a href="#" onClick={this.changeLocale.bind(null, 'zh')}>
+              {t('lang.zh')}
             </a>
           </div>
           <div className={styles.locale}>
-            <a href="#" onClick={this.changeLocale.bind(null, 'zh-CN')}>
-              zh-CN
+            <a href="#" onClick={this.changeLocale.bind(null, 'en')}>
+              {t('lang.en')}
             </a>
           </div>
         </DropdownMenu>

@@ -1,0 +1,18 @@
+{
+  "search": {
+    "placeholder": "Search apps in OpenPitrix.."
+  },
+
+  "lang": {
+    "en": "English",
+    "zh": "Chinese"
+  },
+
+  "brand": {
+    "slogan": "Application Management Platform on Multi-Cloud Environment"
+  },
+
+  "appList": {
+    "more": "more.."
+  }
+}

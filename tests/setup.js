@@ -31,10 +31,17 @@ global.document.createRange = () => ({
   }
 });
 
+jest.mock('react-i18next', () => ({
+  // this mock makes sure any components using the translate HoC receive the t function as a prop
+  translate: () => Component => {
+    Component.defaultProps = { ...Component.defaultProps, t: () => '' };
+    return Component;
+  }
+}));
+
 // attach helpers to global
 global.React = React;
 global.mount = mount;
 global.shallow = shallow;
 global.render = render;
 global.toJson = toJson;
-

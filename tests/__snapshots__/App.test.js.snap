@@ -25,21 +25,15 @@ Array [
         <a
           aria-current="false"
           href="/apps"
-        >
-          Catalog
-        </a>
+        />
         <a
           aria-current="false"
           href="/dashboard"
-        >
-          Deployment
-        </a>
+        />
         <a
           aria-current="false"
           href="/login"
-        >
-          Sign In
-        </a>
+        />
         <div
           class="translation dropdown"
         >
@@ -67,18 +61,14 @@ Array [
             >
               <a
                 href="#"
-              >
-                en
-              </a>
+              />
             </div>
             <div
               class="locale"
             >
               <a
                 href="#"
-              >
-                zh-CN
-              </a>
+              />
             </div>
           </div>
         </div>

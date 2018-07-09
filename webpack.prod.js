@@ -19,7 +19,8 @@ const clientConfig = {
   output: {
     path: distDir,
     filename: 'main.js',
-    pathinfo: false
+    pathinfo: false,
+    publicPath: '/dist/'
   },
   performance: {
     hints: false
