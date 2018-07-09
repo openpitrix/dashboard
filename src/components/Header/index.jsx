@@ -94,8 +94,8 @@ export default class Header extends Component {
         </DropdownToggle>
         <DropdownMenu className={styles.transMenu}>
           <div className={styles.locale}>
-            <a href="#" onClick={this.changeLocale.bind(null, 'zh-CN')}>
-              {t('lang.zh-CN')}
+            <a href="#" onClick={this.changeLocale.bind(null, 'zh')}>
+              {t('lang.zh')}
             </a>
           </div>
           <div className={styles.locale}>

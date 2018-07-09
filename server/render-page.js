@@ -5,7 +5,6 @@ const renderPage = (options = {}) => {
   const opt = pick(options, ['isDev', 'isLogin', 'title', 'children', 'state']);
 
   const isDev = !!opt.isDev;
-  const isLogin = !!opt.isLogin;
   const bundlePrefix = isDev ? '/build' : '/dist';
 
   const title = opt.title || 'Openpitrix Dashboard';

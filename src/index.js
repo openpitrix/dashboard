@@ -49,7 +49,7 @@ if (typeof window !== 'undefined') {
 
   // lazy loading
   import('./i18n').then(({ default: i18n }) => {
-    i18n.on('initialized', () => renderApp(i18n));
+    renderApp(i18n);
   });
 }
 

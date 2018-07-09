@@ -1,6 +1,7 @@
 import i18n from 'i18next';
-import Backend from 'i18next-xhr-backend';
+// import Backend from 'i18next-xhr-backend';
 import LngDetector from 'i18next-browser-languagedetector';
+import baseConf from '../config/i18n-config';
 
 const lngDetectorOptions = {
   order: ['querystring', 'cookie', 'localStorage', 'navigator'],
@@ -21,39 +22,15 @@ const lngDetectorOptions = {
 
 i18n
   .use(LngDetector)
-  .use(Backend)
-  .init({
-    detection: lngDetectorOptions,
+  // .use(Backend)
+  .init(
+    Object.assign({}, baseConf, {
+      detection: lngDetectorOptions
 
-    backend: {
-      loadPath: '/locales/{{lng}}/{{ns}}.json'
-      // addPath: '/locales/add/{{lng}}/{{ns}}',
-    },
-
-    // preload: true,
-    load: 'currentOnly',
-    // resources: translations,
-    fallbackLng: 'en',
-    debug: process.env.NODE_ENV !== 'production',
-
-    whitelist: ['en', 'zh-CN'],
-
-    // have a common namespace used around the full app
-    ns: ['common'],
-    defaultNS: 'common',
-
-    interpolation: {
-      escapeValue: false // not needed for react!!
-      // formatSeparator: ","
-    },
-
-    // missing keys
-    // saveMissing: true,
-    // saveMissingTo: 'current',
-
-    react: {
-      wait: false // set wait to false when on SSR
-    }
-  });
+      // backend: {
+      //   loadPath: '/locales/{{lng}}/{{ns}}.json'
+      // }
+    })
+  );
 
 export default i18n;
