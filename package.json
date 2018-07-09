@@ -57,7 +57,8 @@
     "precommit": "yarn test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
-    "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js"
+    "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
+    "e2e": "testcafe chrome e2e/*.spec.js"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [
@@ -109,6 +110,8 @@
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
+    "testcafe": "^0.20.4",
+    "testcafe-react-selectors": "^2.1.0",
     "url-loader": "0.5.9",
     "webpack": "^4.14.0",
     "webpack-bundle-analyzer": "^2.11.1",
