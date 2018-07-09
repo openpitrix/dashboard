@@ -103,8 +103,7 @@ export default class Clusters extends Component {
       changePagination,
       clusterIds,
       selectedRowKeys,
-      onChangeSelect,
-      cancelSelected
+      onChangeSelect
     } = this.props.clusterStore;
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -185,7 +184,7 @@ export default class Clusters extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={runtimes.slice()} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
@@ -222,6 +221,7 @@ export default class Clusters extends Component {
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
+                  maxlength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
@@ -233,6 +233,7 @@ export default class Clusters extends Component {
               columns={columns}
               dataSource={clusters.toJSON()}
               rowSelection={rowSelection}
+              isLoading={isLoading}
             />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />

@@ -59,7 +59,7 @@ export default class RuntimeStore extends Store {
 
   @action
   runtimeStatistics = async () => {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.get('runtimes/statistics');
     this.summaryInfo = {
       name: 'Runtimes',
@@ -69,8 +69,7 @@ export default class RuntimeStore extends Store {
       progress: get(result, 'top_ten_providers', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    console.log(this.summaryInfo);
-    this.isLoading = false;
+    //this.isLoading = false;
   };
 
   @action

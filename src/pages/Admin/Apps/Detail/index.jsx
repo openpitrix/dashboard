@@ -59,32 +59,34 @@ export default class AppDetail extends Component {
   renderOpsModal = () => {
     const { appVersionStore } = this.props;
     const { isModalOpen, hideModal, handleVersion, versions } = appVersionStore;
-    let modalTitle = '',
+    let width = 500,
+      modalTitle = '',
       modalBody = null,
       onSubmit = () => {},
       resetProps = {};
 
     if (handleVersion.action === 'create') {
-      modalTitle = 'Create App Version';
+      (width = 620), (modalTitle = 'Create App Version');
       onSubmit = this.handleCreateVersion.bind(this);
       modalBody = (
         <Fragment>
           <div className={styles.inputItem}>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" required />
+            <Input className={styles.input} name="name" maxlength="50" required />
           </div>
           <div className={styles.inputItem}>
             <label className={styles.name}>Package Name</label>
             <Input
               className={styles.input}
               name="package_name"
+              maxlength="100"
               required
               placeholder="http://openpitrix.pek3a.qingstor.com/package/zk-0.1.0.tgz"
             />
           </div>
           <div className={styles.inputItem}>
             <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-            <textarea className={styles.textarea} name="description" />
+            <textarea className={styles.textarea} name="description" maxlength="500" />
           </div>
         </Fragment>
       );
@@ -103,6 +105,7 @@ export default class AppDetail extends Component {
 
     return (
       <Dialog
+        width={width}
         title={modalTitle}
         isOpen={isModalOpen}
         onCancel={hideModal}
@@ -142,7 +145,7 @@ export default class AppDetail extends Component {
     const { appStore, clusterStore, appVersionStore, repoStore } = this.props;
     const { appDetail, currentClusterPage, swCluster } = appStore;
     const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
-    const { clusters } = clusterStore;
+    const { clusters, isLoading } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
 
     return (
@@ -177,17 +180,18 @@ export default class AppDetail extends Component {
               <div className={styles.toolbar}>
                 <Input.Search
                   className={styles.search}
-                  placeholder="Search & Filter"
+                  placeholder="Search Cluster Name"
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}
                   value={swCluster}
+                  maxlength="50"
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
 
-              <Table columns={columns} dataSource={clusters.toJSON()} />
+              <Table columns={columns} dataSource={clusters.toJSON()} isLoading={isLoading} />
             </div>
             <Pagination
               onChange={this.changePagination}

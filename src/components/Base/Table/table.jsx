@@ -6,6 +6,7 @@ import { isEqual } from 'lodash';
 
 import Checkbox from 'components/Base/Checkbox';
 import Radio from 'components/Base/Radio';
+import Loading from 'components/Loading';
 import styles from './index.scss';
 
 export default class Table extends React.Component {
@@ -14,7 +15,8 @@ export default class Table extends React.Component {
     dataSource: PropTypes.array,
     columns: PropTypes.array,
     pagination: PropTypes.bool,
-    rowSelection: PropTypes.object
+    rowSelection: PropTypes.object,
+    isLoading: PropTypes.bool
   };
 
   static defaultProps = {
@@ -258,9 +260,10 @@ export default class Table extends React.Component {
   }
 
   render() {
-    const { className, style, pagination } = this.props;
-
-    return (
+    const { className, style, pagination, isLoading } = this.props;
+    return isLoading ? (
+      <Loading className="loadTable" />
+    ) : (
       <div className={classNames(styles.table, className)} style={style}>
         {this.renderTable()}
         {pagination && this.renderPagination}

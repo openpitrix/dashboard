@@ -185,13 +185,14 @@ export default class RepoDetail extends Component {
     ];
 
     const { curTagName, selectCurTag } = repoStore;
+    const detailSearch = '';
     const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
     let data = [];
     let columns = [];
     let searchTip = 'Search App Name';
     let totalCount = 0;
-    let sWord, onSearch, onClearSearch, onRefresh, changeTable;
+    let onSearch, onClearSearch, onRefresh, changeTable, isLoading;
     let selectors = [];
 
     switch (curTagName) {
@@ -200,7 +201,7 @@ export default class RepoDetail extends Component {
         data = appsData;
         columns = appsColumns;
         totalCount = appStore.totalCount;
-        sWord = searchWord;
+        isLoading = appStore.isLoading;
         onSearch = async name => {
           changeSearchWord(name);
           await fetchAll({
@@ -232,7 +233,7 @@ export default class RepoDetail extends Component {
         searchTip = 'Search Runtime Name';
         selectors = this.changeSelectors(repoDetail.selectors);
         totalCount = runtimeStore.totalCount;
-        sWord = runtimeStore.searchWord;
+        isLoading = runtimeStore.isLoading;
         onSearch = async name => {
           runtimeStore.changeSearchWord(name);
           await runtimeStore.fetchAll({
@@ -262,7 +263,7 @@ export default class RepoDetail extends Component {
         data = eventsData;
         columns = eventsColumns;
         totalCount = eventsData.length;
-        sWord = '';
+        isLoading = repoStore.isLoading;
         searchTip = 'Search Events';
         break;
     }
@@ -294,19 +295,27 @@ export default class RepoDetail extends Component {
                 </div>
               )}
 
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder={searchTip}
-                  onSearch={onSearch}
-                  onClear={onClearSearch}
-                  value={sWord}
-                />
-                <Button className={styles.buttonRight} onClick={onRefresh}>
-                  <Icon name="refresh" />
-                </Button>
-              </div>
-              <Table columns={columns} dataSource={data} className="detailTab" />
+              {curTagName !== 'Events' && (
+                <div className={styles.toolbar}>
+                  <Input.Search
+                    className={styles.search}
+                    placeholder={searchTip}
+                    onSearch={onSearch}
+                    onClear={onClearSearch}
+                    value={detailSearch}
+                  />
+                  <Button className={styles.buttonRight} onClick={onRefresh}>
+                    <Icon name="refresh" />
+                  </Button>
+                </div>
+              )}
+
+              <Table
+                columns={columns}
+                dataSource={data}
+                className="detailTab"
+                isLoading={isLoading}
+              />
             </div>
             <Pagination onChange={changeTable} total={totalCount} />
           </div>

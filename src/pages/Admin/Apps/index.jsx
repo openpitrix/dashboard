@@ -11,7 +11,6 @@ import Layout, { Dialog } from 'components/Layout/Admin';
 import { getSessInfo, imgPlaceholder, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
-import classNames from 'classnames';
 
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
@@ -124,8 +123,7 @@ export default class Apps extends Component {
       showDeleteApp,
       appIds,
       selectedRowKeys,
-      onChangeSelect,
-      cancelSelected
+      onChangeSelect
     } = this.props.appStore;
     const { repos } = this.props.repoStore;
     const imgPhd = imgPlaceholder();
@@ -209,7 +207,7 @@ export default class Apps extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={repos.slice()} />
         <div className={styles.container}>
           <div className={styles.wrapper}>
@@ -228,10 +226,11 @@ export default class Apps extends Component {
               <div className={styles.toolbar}>
                 <Input.Search
                   className={styles.search}
-                  placeholder="Search App Name or Keywords"
+                  placeholder="Search App Name"
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
+                  maxlength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
@@ -244,6 +243,7 @@ export default class Apps extends Component {
               columns={columns}
               dataSource={apps.toJSON()}
               rowSelection={rowSelection}
+              isLoading={isLoading}
             />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />

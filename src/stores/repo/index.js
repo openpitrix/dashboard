@@ -13,6 +13,7 @@ export default class RepoStore extends Store {
   @observable showDeleteRepo = false;
   @observable curTagName = 'Apps';
   @observable searchWord = '';
+  @observable detailSearch = '';
 
   @action
   fetchAll = async (params = {}) => {
@@ -22,7 +23,6 @@ export default class RepoStore extends Store {
     }
     const result = await this.request.get('repos', params);
     this.repos = get(result, 'repo_set', []);
-    console.log(params, this.repos);
     this.isLoading = false;
   };
 

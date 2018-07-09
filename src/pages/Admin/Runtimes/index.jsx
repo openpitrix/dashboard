@@ -70,8 +70,7 @@ export default class Runtimes extends Component {
       showDeleteRuntime,
       runtimeIds,
       selectedRowKeys,
-      onChangeSelect,
-      cancelSelected
+      onChangeSelect
     } = runtimeStore;
 
     const columns = [
@@ -147,7 +146,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} />
         <div className={styles.wrapper}>
           {runtimeIds.length > 0 && (
@@ -169,6 +168,7 @@ export default class Runtimes extends Component {
                 value={searchWord}
                 onSearch={onSearch}
                 onClear={onClearSearch}
+                maxlength="50"
               />
               <Link to={`/dashboard/runtime/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -186,6 +186,7 @@ export default class Runtimes extends Component {
             columns={columns}
             dataSource={data}
             rowSelection={rowSelection}
+            isLoading={isLoading}
           />
         </div>
 

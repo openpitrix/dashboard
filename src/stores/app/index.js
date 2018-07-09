@@ -75,7 +75,7 @@ export default class AppStore extends Store {
 
   @action
   appStatistics = async () => {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
       name: 'Apps',
@@ -85,7 +85,7 @@ export default class AppStore extends Store {
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    this.isLoading = false;
+    //this.isLoading = false;
   };
 
   @action
