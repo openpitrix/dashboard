@@ -5,7 +5,6 @@ const renderPage = (options = {}) => {
   const opt = pick(options, ['isDev', 'isLogin', 'title', 'children', 'state']);
 
   const isDev = !!opt.isDev;
-  const isLogin = !!opt.isLogin;
   const bundlePrefix = isDev ? '/build' : '/dist';
 
   const title = opt.title || 'Openpitrix Dashboard';
@@ -39,10 +38,10 @@ const renderPage = (options = {}) => {
     let snip = '';
     if (isDev) {
       snip += ['vendors']
-        .map(file => `<script src="${bundlePrefix}/${file}.js"></script>`)
+        .map(file => `<script defer src="${bundlePrefix}/${file}.js"></script>`)
         .join('\n');
     }
-    snip += `<script src="${bundlePrefix}/main.js"></script>`;
+    snip += `<script defer src="${bundlePrefix}/main.js"></script>`;
     return snip;
   };
 

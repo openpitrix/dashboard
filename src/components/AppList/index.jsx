@@ -2,10 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
+
 import Card from '../Card';
 import CardTitle from '../Card/CardTitle';
 import styles from './index.scss';
 
+@translate()
 export default class AppList extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -46,11 +49,11 @@ export default class AppList extends PureComponent {
   }
 
   getSearchTitle() {
-    let { apps, appSearch, categoryTitle = 'Newest' } = this.props;
+    let { apps, appSearch, categoryTitle, t } = this.props;
     return (
       (appSearch && `There are ${apps.length} applications with search word: ${appSearch}`) ||
       categoryTitle ||
-      'Newest'
+      t('Newest')
     );
   }
 

@@ -1,10 +1,19 @@
+const debug = require('debug')('op-dash');
+
 const authPages = ['dashboard'];
 
 module.exports = async (ctx, next) => {
+  debug('%s page: %s', ctx.request.method, ctx.url);
+
   const page = (ctx.params.page || '').split('/')[0];
   const needAuth = authPages.indexOf(page) > -1;
 
-  if (needAuth && !ctx.cookies.get('user')) {
+  const brokenCookie = () => {
+    let cookies = ctx.cookies;
+    return !(cookies.get('user') && cookies.get('role') && cookies.get('last_login'));
+  };
+
+  if (needAuth && brokenCookie()) {
     // not login
     ctx.redirect('/login');
   }
