@@ -9,7 +9,7 @@ import styles from './index.scss';
 export default class RepoList extends PureComponent {
   static propTypes = {
     repos: PropTypes.array,
-    type: PropTypes.oneOf(['public', 'private']),
+    type: PropTypes.oneOf(['public', 'private', 'runtime']),
     limit: PropTypes.number
   };
 
@@ -21,24 +21,43 @@ export default class RepoList extends PureComponent {
 
   render() {
     const { repos, type, limit } = this.props;
-    let filterRepos = repos.filter(repo => repo.visibility === type).slice(0, limit);
+    let filterRepos = repos,
+      totalName = 'Clusters';
+    if (type !== 'runtime') {
+      filterRepos = repos.filter(repo => repo.visibility === type).slice(0, limit);
+      totalName = 'Apps';
+    }
 
     return (
       <Fragment>
-        <div className={styles.type}>{ucfirst(type)}</div>
-        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'public' })}>
-          {filterRepos.map(repo => (
-            <li key={repo.repo_id}>
-              <Link to={`/dashboard/repo/${repo.repo_id}`}>
-                <img className={styles.icon} src={repo.icon} />
-                <span className={styles.name}>{repo.name}</span>
-                <span className={styles.total}>
-                  <span className={styles.number}>{repo.apps.length}</span>
-                  Apps
-                </span>
-              </Link>
-            </li>
-          ))}
+        {type !== 'runtime' && <div className={styles.type}>{ucfirst(type)}</div>}
+        <ul
+          className={classNames(
+            styles.reposList,
+            { [styles.reposBg]: type === 'public' },
+            { [styles.runtimeBg]: type === 'runtime' }
+          )}
+        >
+          {filterRepos.map(item => {
+            let link = `/dashboard/repo/${item.repo_id}`;
+            let total = item.clusters && item.clusters.length;
+            if (type !== 'runtime') {
+              link = `/dashboard/repo/${item.repo_id}`;
+              total = item.apps && item.apps.length;
+            }
+            return (
+              <li key={item.repo_id || item.runtime_id}>
+                <Link to={link}>
+                  <img className={styles.icon} src={item.icon} />
+                  <span className={styles.name}>{item.name}</span>
+                  <span className={styles.total}>
+                    <span className={styles.number}>{total || 0}</span>
+                    {totalName}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </Fragment>
     );

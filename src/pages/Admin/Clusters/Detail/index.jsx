@@ -173,11 +173,6 @@ export default class ClusterDetail extends Component {
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Service Status',
-        key: 'server_status',
-        dataIndex: 'server_status'
-      },
-      {
         title: 'Configuration',
         key: 'configuration',
         width: '120px',

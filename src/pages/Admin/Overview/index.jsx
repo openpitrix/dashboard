@@ -9,7 +9,7 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import { Section } from 'components/Layout';
-import Admin from 'components/Layout/Admin';
+import Layout from 'components/Layout/Admin';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
 
 import styles from './index.scss';
@@ -20,29 +20,37 @@ import styles from './index.scss';
   repoStore: rootStore.repoStore,
   categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore,
+  runtimeStore: rootStore.runtimeStore,
   sessInfo
 }))
 @observer
 export default class Overview extends React.Component {
-  static async onEnter({ appStore, clusterStore, repoStore, categoryStore, userStore }) {
+  static async onEnter({
+    appStore,
+    clusterStore,
+    repoStore,
+    categoryStore,
+    userStore,
+    runtimeStore
+  }) {
     await appStore.fetchAll({ noLimit: true });
     await clusterStore.fetchAll();
     await repoStore.fetchAll();
     await categoryStore.fetchAll();
     await userStore.fetchAll();
+    await runtimeStore.fetchAll();
   }
 
   handleClickTotalCard = label => {
     this.props.history.push(`/dashboard/${label.toLowerCase()}`);
   };
 
-  render() {
+  adminOverview = () => {
     const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo } = this.props;
     const countLimit = 5;
 
     const appList = appStore.apps.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
-    //const repoList = repoStore.repos.toJSON();
     const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
 
     const userInfo = {
@@ -60,8 +68,8 @@ export default class Overview extends React.Component {
     };
 
     return (
-      <Admin>
-        <Section>
+      <Layout>
+        <section>
           <UserInfo {...userInfo} />
           {Object.keys(summary).map(label => (
             <TotalCard
@@ -71,23 +79,71 @@ export default class Overview extends React.Component {
               onClick={this.handleClickTotalCard.bind(this, label)}
             />
           ))}
-        </Section>
+        </section>
 
-        <Section className={styles.listOuter}>
-          <Panel title="Top Repos" linkTo="/dashboard/repos">
-            <RepoList repos={repoList} type="public" />
-            <RepoList repos={repoList} type="private" limit={2} />
+        <section className={styles.listOuter}>
+          <Panel title="Top Repos" linkTo="/dashboard/repos" isAdmin={true}>
+            <RepoList repos={repoList} type="public" isAdmin={true} />
+            <RepoList repos={repoList} type="private" limit={2} isAdmin={true} />
           </Panel>
 
-          <Panel title="Top Apps" linkTo="/dashboard/apps">
+          <Panel title="Top Apps" linkTo="/dashboard/apps" isAdmin={true}>
+            <AppList apps={appList} isAdmin={true} />
+          </Panel>
+
+          <Panel title="Latest Clusters" linkTo="/dashboard/clusters" isAdmin={true}>
+            <ClusterList clusters={clusterList} isAdmin={true} />
+          </Panel>
+        </section>
+      </Layout>
+    );
+  };
+
+  normalOverview = () => {
+    const { sessInfo, appStore, runtimeStore, clusterStore } = this.props;
+    const countLimit = 3;
+
+    const name = getSessInfo('user', sessInfo);
+    const appList = appStore.apps.slice(0, countLimit);
+    const runtimeList = runtimeStore.runtimes.slice(0, countLimit);
+    const clusterList = clusterStore.clusters.slice(0, countLimit);
+
+    return (
+      <Layout>
+        <section className={styles.userInfo}>
+          <div className={styles.userName}>Hi, {name}</div>
+          <div className={styles.hello}>Welcome to OpenPitirx, What would you like to do?</div>
+        </section>
+
+        <section className={styles.listOuter}>
+          <Panel title="Recently Viewed Apps" linkTo="/apps" btnName="Browse" len={appList.length}>
             <AppList apps={appList} />
           </Panel>
 
-          <Panel title="Latest Clusters" linkTo="/dashboard/clusters">
+          <Panel
+            title="My Runtimes"
+            linkTo="/dashboard/runtime/create"
+            btnName="Create"
+            len={runtimeList.length}
+          >
+            <RepoList repos={runtimeList} type="runtime" />
+          </Panel>
+
+          <Panel
+            title="Latest Clusters"
+            linkTo="/dashboard/clusters"
+            btnName="Manage"
+            len={clusterList.length}
+          >
             <ClusterList clusters={clusterList} />
           </Panel>
-        </Section>
-      </Admin>
+        </section>
+      </Layout>
     );
+  };
+
+  render() {
+    const role = getSessInfo('role', this.props.sessInfo);
+    return role === 'admin' ? this.adminOverview() : this.normalOverview();
   }
 }
