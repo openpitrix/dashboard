@@ -6,62 +6,64 @@
 [![codecov](https://codecov.io/gh/openpitrix/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
-## Installation
+## Install
 
-### using git
+If you already installed `git`, setting up this repo is very simple:
 ```shell
-git clone https://github.com/openpitrix/dashboard.git
+git clone --depth 1 https://github.com/openpitrix/dashboard.git
 cd dashboard
-yarn
-yarn dev
+yarn && yarn dev
 ```
 
-### using docker
+If you prefer to use `docker`:
 ```shell
 docker pull openpitrix/dashboard
 docker run --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
 ```
 
-### docker-compose
+If you prefer to use `docker-compose`:
 ```shell
 docker-compose up --build
 ```
 
-### using make
+We also prepared a Makefile, if you installed `make`:
 ```shell
 make build
 make dev
 ```
 
-**For some requisites, see installation details:** [install doc](./docs/install.md)
+**See how to install requisites:** [install doc](./docs/install.md)
 
-## Architecture
+## Build
 
-See: [arch doc](./docs/arch.md)
-
-## Building
-
-**For development mode**
-
+For `development` mode:
 ```shell
 yarn dev
 ```
 
-**For production mode**
-
+For `production` mode
 ```shell
 yarn prod
 ```
 
-## Testing
+## Test
 
+For `unit` and `integrate` test:
 ```shell
 yarn test
 ```
 
+For `e2e` test:
+```shell
+yarn e2e
+```
+
+## Architecture
+See: [arch doc](./docs/arch.md)
+
 ## Join the community
 
-For bug reporting, [open issue](https://github.com/openpitrix/dashboard/issues/new)
+For bug reporting, [fire a issue](https://github.com/openpitrix/dashboard/issues/new)
 
 Wanna help us to improve this project? Fork this repo, send your awesome _PR_.
 
