@@ -41,7 +41,7 @@ For `development` mode:
 yarn dev
 ```
 
-For `production` mode
+For `production` mode:
 ```shell
 yarn prod
 ```
