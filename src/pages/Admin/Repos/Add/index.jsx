@@ -5,10 +5,7 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import classnames from 'classnames';
 
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
+import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
 import TodoList from 'components/TodoList';
 import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
 
@@ -96,10 +93,11 @@ export default class RepoAdd extends Component {
             </div>
             <div>
               <label className={styles.name}>Runtime Provider</label>
-              <Radio.Group value={providers[0]} onChange={this.store.changeProviders}>
-                <Radio value="qingcloud">QingCloud</Radio>
-                <Radio value="kubernetes">Kubernetes</Radio>
-              </Radio.Group>
+              <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
+                <Checkbox value="qingcloud">QingCloud</Checkbox>
+                <Checkbox value="kubernetes">Kubernetes</Checkbox>
+                <Checkbox value="aws">AWS</Checkbox>
+              </Checkbox.Group>
             </div>
           </Fragment>
         )}

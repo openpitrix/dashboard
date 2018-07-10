@@ -42,6 +42,11 @@ export default class RepoCreateStore extends Store {
   @action
   changeProviders = providers => {
     this.providers = [providers];
+    const len = providers.length;
+    if (len > 1 && providers[len - 1] === 'kubernetes') {
+      this.providers = ['kubernetes'];
+      this.showMsg("Kubernetes can't be selected with others");
+    }
   };
 
   @action

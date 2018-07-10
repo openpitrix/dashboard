@@ -1,20 +1,22 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { getPastTime, imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 export default class ClusterList extends PureComponent {
   static propTypes = {
-    clusters: PropTypes.array
+    clusters: PropTypes.array,
+    isAdmin: PropTypes.bool
   };
 
   render() {
-    const { clusters } = this.props;
+    const { clusters, isAdmin } = this.props;
     const imgPhd = imgPlaceholder(20);
     return (
-      <ul className={styles.clusterList}>
+      <ul className={classNames(styles.clusterList, { [styles.normalList]: !isAdmin })}>
         {clusters.map(data => (
           <li key={data.cluster_id}>
             <img className={styles.icon} src={data.icon || imgPhd} />

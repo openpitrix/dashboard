@@ -4,4 +4,20 @@
   height: 420px;
   margin-bottom: 24px;
 }
+.userInfo{
+  margin: 40px auto;
+  text-align: center;
+  .userName{
+    margin-bottom: 12px;
+    line-height: 14px;
+    font-size: 12px;
+    color: #626466;
+  }
+  .hello{
+    line-height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    color: $title-color;
+  }
+}
 
