@@ -53,6 +53,13 @@ export default class AppStore extends Store {
       sort_key: 'update_time',
       reverse: true
     };
+
+    if (params.noLimit) {
+      delete defaultParams.limit;
+      delete defaultParams.offset;
+      delete params.noLimit;
+    }
+
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }

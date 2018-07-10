@@ -27,13 +27,13 @@ export default class RepoList extends PureComponent {
       <Fragment>
         <div className={styles.type}>{ucfirst(type)}</div>
         <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'public' })}>
-          {filterRepos.map(data => (
-            <li key={data.repo_id}>
-              <Link to={`/dashboard/repo/${data.repo_id}`}>
-                <img className={styles.icon} src={data.icon} />
-                <span className={styles.name}>{data.providers && data.providers[0]}</span>
+          {filterRepos.map(repo => (
+            <li key={repo.repo_id}>
+              <Link to={`/dashboard/repo/${repo.repo_id}`}>
+                <img className={styles.icon} src={repo.icon} />
+                <span className={styles.name}>{repo.name}</span>
                 <span className={styles.total}>
-                  <span className={styles.number}>{(data.apps && data.apps.length) || 0}</span>
+                  <span className={styles.number}>{repo.apps.length}</span>
                   Apps
                 </span>
               </Link>
