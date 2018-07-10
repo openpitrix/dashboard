@@ -113,13 +113,11 @@ export default class RepoStore extends Store {
     if (apps.toJSON) {
       apps = apps.toJSON();
     }
-    repos = repos.map(repo => {
-      repo.apps = apps.filter(app => {
-        return app.repo_id == repo.repo_id;
-      });
+
+    return repos.map(repo => {
+      repo.apps = apps.filter(app => app.repo_id === repo.repo_id);
       return repo;
     });
-    return repos;
   };
 }
 
