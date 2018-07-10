@@ -25,7 +25,7 @@ import styles from './index.scss';
 @observer
 export default class Overview extends React.Component {
   static async onEnter({ appStore, clusterStore, repoStore, categoryStore, userStore }) {
-    await appStore.fetchAll();
+    await appStore.fetchAll({ noLimit: true });
     await clusterStore.fetchAll();
     await repoStore.fetchAll();
     await categoryStore.fetchAll();

@@ -44,7 +44,6 @@
   },
   "scripts": {
     "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
-    "dev:serve": "DEBUG=op-dash,koa-*,-koa-views,-koa-router BABEL_ENV=server COMPILE_CLIENT=true NODE_ENV=development node server/server.js",
     "server": "DEBUG=op-dash BABEL_ENV=server NODE_ENV=development node server/server.js",
     "dev:watch": "npm run dev:client -- --watch",
     "dev": "rimraf build && npm run dev:client && npm run server",
@@ -68,7 +67,6 @@
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.0.6",
