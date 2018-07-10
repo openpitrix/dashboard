@@ -12,7 +12,7 @@ test(`basic render`, async t => {
   await t.expect(app.count).eql(1);
 });
 
-test.only(`search box`, async t => {
+test(`search box`, async t => {
   const searchBox = ReactSelector('App Banner Search');
   const appListItems = ReactSelector('App AppList Link');
 

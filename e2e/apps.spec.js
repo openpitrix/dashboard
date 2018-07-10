@@ -2,13 +2,13 @@ import { waitForReact, ReactSelector } from 'testcafe-react-selectors';
 import setup from './setup';
 import { normalRole } from './role';
 
-fixture`dashboard/apps tests`.page(setup.getPageUrl('dashboard/apps')).beforeEach(async () => {
+const page = setup.getPageUrl('dashboard/apps');
+
+fixture`dashboard/apps tests`.page(page).beforeEach(async t => {
   await waitForReact();
+  await t.useRole(normalRole).navigateTo(page);
 });
 
 test(`basic render`, async t => {
-  await t
-    .useRole(normalRole)
-    .expect(ReactSelector('Table').count)
-    .eql(1);
+  await t.expect(ReactSelector('Table').count).eql(1);
 });
