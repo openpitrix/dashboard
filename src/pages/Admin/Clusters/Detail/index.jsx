@@ -22,9 +22,10 @@ import styles from './index.scss';
 @observer
 export default class ClusterDetail extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }, { clusterId }) {
+    clusterStore.searchNode = '';
     await clusterStore.fetch(clusterId);
     await clusterStore.fetchJobs(clusterId);
-    await clusterStore.fetchNodes(clusterId);
+    await clusterStore.fetchNodes({ cluster_id: clusterId });
     const { cluster } = clusterStore;
     if (cluster.app_id) {
       await appStore.fetch(cluster.app_id);
@@ -48,9 +49,6 @@ export default class ClusterDetail extends Component {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
     const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
 
-    if (modalType === 'jbos') {
-      return null;
-    }
     return (
       <Modal width={744} title="Activities" visible={isModalOpen} hideFooter onCancel={hideModal}>
         <TimeAxis timeList={clusterJobs} />
@@ -61,11 +59,14 @@ export default class ClusterDetail extends Component {
   clusterParametersModal = () => {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
 
-    if (modalType === 'parameter') {
-      return null;
-    }
     return (
-      <Dialog title="Parameters" onCancel={hideModal} noActions isOpen={isModalOpen} width={744}>
+      <Dialog
+        title="Parameters"
+        onCancel={hideModal}
+        noActions
+        isOpen={isModalOpen && modalType === 'parameters'}
+        width={744}
+      >
         <ul className={styles.parameters}>
           <li>
             <div className={styles.name}>Port</div>
@@ -143,18 +144,15 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  showClusterJobs = () => {
-    const { showModal } = this.props.clusterStore;
-    showModal('jobs');
-  };
-
   render() {
     const { clusterStore, appStore, runtimeStore } = this.props;
+    const { isLoading, searchNode, onSearchNode, onClearNode, onRefreshNode } = clusterStore;
     const detail = clusterStore.cluster;
     const clusterJobs = clusterStore.clusterJobs.toJSON();
     const clusterNodes = clusterStore.clusterNodes.toJSON();
     const appName = get(appStore.appDetail, 'name', '');
     const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
+    const { clusterJobsOpen } = clusterStore;
 
     const columns = [
       {
@@ -171,6 +169,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Node Status',
         key: 'status',
+        width: '110px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -192,6 +191,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
+        width: '120px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
@@ -212,7 +212,7 @@ export default class ClusterDetail extends Component {
             <div className={styles.activities}>
               <div className={styles.title}>
                 Activities
-                <div className={styles.more} onClick={this.showClusterJobs}>
+                <div className={styles.more} onClick={clusterJobsOpen}>
                   More →
                 </div>
               </div>
@@ -224,14 +224,27 @@ export default class ClusterDetail extends Component {
             <div className={styles.wrapper2}>
               <TagNav tags={tags} curTag={curTag} />
               <div className={styles.toolbar}>
-                <Input.Search className={styles.search} placeholder="Search Node Name" />
-                <Button className={styles.buttonRight}>
+                <Input.Search
+                  className={styles.search}
+                  placeholder="Search Node Name"
+                  value={searchNode}
+                  onSearch={onSearchNode}
+                  onClear={onClearNode}
+                  maxlength="50"
+                />
+                <Button className={styles.buttonRight} onClick={onRefreshNode}>
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={clusterNodes} className="detailTab" />
+              <Table
+                columns={columns}
+                dataSource={clusterNodes}
+                className="detailTab"
+                isLoading={isLoading}
+              />
+              <div className={styles.total}>Total: {clusterNodes.length}</div>
             </div>
-            <Pagination onChange={clusterStore.fetchNodes} total={clusterNodes.length} />
+            <div className={styles.clear} />
           </div>
         </div>
         {this.clusterJobsModal()}

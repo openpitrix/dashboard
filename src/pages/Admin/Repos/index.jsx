@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { Icon, Button, Input, Modal } from 'components/Base';
 import Layout, { Dialog } from 'components/Layout/Admin';
 import RepoList from './RepoList';
-
+import Loading from 'components/Loading';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -77,7 +77,7 @@ export default class Repos extends Component {
     const repoApps = getRepoApps(repos, apps);
 
     return (
-      <Layout isLoading={isLoading}>
+      <Layout>
         <div className={styles.container}>
           <div className={styles.title}>Repos</div>
 
@@ -88,6 +88,7 @@ export default class Repos extends Component {
               value={searchWord}
               onSearch={fetchQueryRepos}
               onClear={onClearSearch}
+              maxlength="50"
             />
             <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -98,9 +99,14 @@ export default class Repos extends Component {
               <Icon name="refresh" />
             </Button>
           </div>
-
-          <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
-          <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
+          {isLoading ? (
+            <Loading className="loadTable" />
+          ) : (
+            <div>
+              <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
+              <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
+            </div>
+          )}
         </div>
         {this.deleteRepoModal()}
       </Layout>

@@ -95,13 +95,26 @@ export function getStasTotal(obj) {
   return total;
 }
 
+export function getTopTotal(topList) {
+  let total = 0;
+  for (let i = 0; i < topList.length; i++) {
+    total += topList[i].number;
+  }
+  return total;
+}
+
 export function getProgress(progress) {
-  let results = [];
+  let results = [],
+    i = 1;
   _.forIn(progress, (value, key) => {
+    if (i > 5) {
+      return null;
+    }
     results.push({
       id: key,
       number: value
     });
+    i++;
   });
   return results;
 }

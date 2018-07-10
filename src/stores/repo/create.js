@@ -102,15 +102,17 @@ export default class RepoCreateStore extends Store {
 
   @action
   removeLabel = index => {
-    this.labels.splice(index, 1);
+    this.labels = this.labels.filter((item, i) => i != index);
   };
 
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
       this.labels[index]['label_' + type] = value;
+      this.labels = [...this.labels];
     } else if (labelType === 'selector') {
       this.selectors[index]['label_' + type] = value;
+      this.selectors = [...this.selectors];
     }
   };
 
@@ -213,6 +215,7 @@ export default class RepoCreateStore extends Store {
 
     this.isLoading = true;
     if (this.repoId) {
+      delete data.url;
       _.extend(data, { repo_id: this.repoId });
       await this.modifyRepo(data);
     } else {

@@ -57,6 +57,7 @@ export default class RepoAdd extends Component {
 
   renderForm() {
     const {
+      repoId,
       name,
       description,
       url,
@@ -77,29 +78,43 @@ export default class RepoAdd extends Component {
           <Input
             className={styles.input}
             name="name"
+            maxlength="50"
             required
             onChange={this.store.changeName}
             value={name}
           />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the repo</p>
         </div>
-
-        <div>
-          <label className={styles.name}>Visibility</label>
-          <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
-            <Radio value="public">Public</Radio>
-            <Radio value="private">Private</Radio>
-          </Radio.Group>
-        </div>
-
-        <div>
-          <label className={styles.name}>Runtime Provider</label>
-          <Radio.Group value={providers[0]} onChange={this.store.changeProviders}>
-            <Radio value="qingcloud">QingCloud</Radio>
-            <Radio value="kubernetes">Kubernetes</Radio>
-          </Radio.Group>
-        </div>
-
+        {!repoId && (
+          <Fragment>
+            <div>
+              <label className={styles.name}>Visibility</label>
+              <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
+                <Radio value="public">Public</Radio>
+                <Radio value="private">Private</Radio>
+              </Radio.Group>
+            </div>
+            <div>
+              <label className={styles.name}>Runtime Provider</label>
+              <Radio.Group value={providers[0]} onChange={this.store.changeProviders}>
+                <Radio value="qingcloud">QingCloud</Radio>
+                <Radio value="kubernetes">Kubernetes</Radio>
+              </Radio.Group>
+            </div>
+          </Fragment>
+        )}
+        {!!repoId && (
+          <Fragment>
+            <div className={styles.showDiv}>
+              <label className={styles.name}>Visibility</label>
+              <label className={styles.showValue}>{visibility}</label>
+            </div>
+            <div className={styles.showDiv}>
+              <label className={styles.name}>Runtime Provider</label>
+              <label className={styles.showValue}>{providers[0]}</label>
+            </div>
+          </Fragment>
+        )}
         <div>
           <label className={classNames(styles.name, styles.fl)}>Runtime Selector</label>
           <TodoList
@@ -115,56 +130,60 @@ export default class RepoAdd extends Component {
             Add Selector
           </Button>
         </div>
-        <div>
-          <label className={styles.name}>URL</label>
-          <Select
-            value={protocolType}
-            onChange={this.store.changeProtocolType}
-            className={styles.select}
-          >
-            <Select.Option value="http">HTTP</Select.Option>
-            <Select.Option value="https">HTTPS</Select.Option>
-            <Select.Option value="s3">S3</Select.Option>
-          </Select>
-          <Input
-            value={url}
-            onChange={this.store.changeUrl}
-            className={styles.input}
-            placeholder="www.example.com/path/point/"
-            required
-            name="url"
-          />
+        {!repoId && (
+          <div>
+            <label className={styles.name}>URL</label>
+            <Select
+              value={protocolType}
+              onChange={this.store.changeProtocolType}
+              className={styles.select}
+            >
+              <Select.Option value="http">HTTP</Select.Option>
+              <Select.Option value="https">HTTPS</Select.Option>
+              <Select.Option value="s3">S3</Select.Option>
+            </Select>
+            <Input
+              value={url}
+              onChange={this.store.changeUrl}
+              className={styles.input}
+              placeholder="www.example.com/path/point/"
+              maxlength="100"
+              required
+              name="url"
+            />
 
-          {protocolType === 's3' ? (
-            <div className={styles.rightShow}>
-              <p>
-                <label className={styles.inputTitle}>Access Key ID</label>
-                <label className={styles.inputTitle}>Secret Access Key</label>
-              </p>
-              <Input
-                className={styles.inputMiddle}
-                required
-                value={accessKey}
-                onChange={this.store.changeAccessKey}
-              />
-              <Input
-                className={styles.inputMiddle}
-                required
-                value={secretKey}
-                onChange={this.store.changeSecretKey}
-              />
-              <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                Validate
-              </Button>
-            </div>
-          ) : null}
-        </div>
+            {protocolType === 's3' ? (
+              <div className={styles.rightShow}>
+                <p>
+                  <label className={styles.inputTitle}>Access Key ID</label>
+                  <label className={styles.inputTitle}>Secret Access Key</label>
+                </p>
+                <Input
+                  className={styles.inputMiddle}
+                  required
+                  value={accessKey}
+                  onChange={this.store.changeAccessKey}
+                />
+                <Input
+                  className={styles.inputMiddle}
+                  required
+                  value={secretKey}
+                  onChange={this.store.changeSecretKey}
+                />
+                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+                  Validate
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        )}
         <div>
           <label className={classNames(styles.name, styles.textareaName)}>Description</label>
           <textarea
             className={styles.textarea}
             name="description"
             value={description}
+            maxlength="500"
             onChange={this.store.changeDescription}
           />
         </div>

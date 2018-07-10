@@ -28,6 +28,14 @@
       }
     }
   }
+  .total{
+    margin: 0 24px;
+    padding: 16px 0;
+    border-top: 1px solid $border-lighter;
+  }
+}
+.clear{
+  clear: both;
 }
 .wrapper2 {
   position: relative;

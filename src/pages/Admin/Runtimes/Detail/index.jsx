@@ -20,7 +20,6 @@ import styles from './index.scss';
 @observer
 export default class RuntimeDetail extends Component {
   static async onEnter({ runtimeStore, clusterStore, appStore }, { runtimeId }) {
-    clusterStore.loadPageInit();
     clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
@@ -33,6 +32,7 @@ export default class RuntimeDetail extends Component {
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
+    this.props.clusterStore.loadPageInit();
   }
 
   renderHandleMenu = id => {
@@ -109,7 +109,7 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout isLoading={isLoading}>
+      <Layout>
         <BackBtn label="runtimes" link="/dashboard/runtimes" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
@@ -135,12 +135,18 @@ export default class RuntimeDetail extends Component {
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
+                  maxlength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={clusters.toJSON()} className="detailTab" />
+              <Table
+                columns={columns}
+                dataSource={clusters.toJSON()}
+                className="detailTab"
+                isLoading={isLoading}
+              />
             </div>
             <ul />
             <Pagination onChange={changePagination} total={totalCount} current={currentPage} />

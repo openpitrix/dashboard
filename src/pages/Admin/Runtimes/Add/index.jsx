@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+
 import get from 'lodash/get';
 import Radio from 'components/Base/Radio';
 import Button from 'components/Base/Button';
@@ -55,15 +56,14 @@ export default class RuntimeAdd extends Component {
 
   renderForm() {
     const {
+      runtimeId,
       name,
       provider,
       zone,
       labels,
-      curLabelKey,
       accessKey,
       secretKey,
       description,
-      curLabelValue,
       isLoading,
       runtimeUrl
     } = this.store;
@@ -75,65 +75,81 @@ export default class RuntimeAdd extends Component {
           <Input
             className={styles.input}
             name="name"
+            maxlength="50"
             required
             onChange={this.store.changeName}
             value={name}
           />
           <p className={classNames(styles.rightShow, styles.note)}>The name of the runtime</p>
         </div>
-
-        <div>
-          <label className={styles.name}>Provider</label>
-          <Radio.Group value={provider} onChange={this.store.changeProvider}>
-            <Radio value="qingcloud">QingCloud</Radio>
-            <Radio value="kubernetes">Kubernetes</Radio>
-          </Radio.Group>
-        </div>
+        {!runtimeId && (
+          <div>
+            <label className={styles.name}>Provider</label>
+            <Radio.Group value={provider} onChange={this.store.changeProvider}>
+              <Radio value="qingcloud">QingCloud</Radio>
+              <Radio value="kubernetes">Kubernetes</Radio>
+            </Radio.Group>
+          </div>
+        )}
+        {!!runtimeId && (
+          <div className={styles.showDiv}>
+            <label className={styles.name}>Provider</label>
+            <label className={styles.showValue}>{provider}</label>
+          </div>
+        )}
 
         {provider === 'qingcloud' ? (
           <Fragment>
-            <div>
-              <label className={styles.name}>URL</label>
-              <Input
-                value={runtimeUrl}
-                onChange={this.store.changeUrl}
-                className={styles.inputUrl}
-                name="runtime_url"
-                placeholder="www.example.com/path/point/"
-                required
-              />
-              <div className={styles.rightShow}>
-                <p>
-                  <label className={styles.inputTitle}>Access Key ID</label>
-                  <label className={styles.inputTitle}>Secret Access Key</label>
-                </p>
+            {!runtimeId && (
+              <div>
+                <label className={styles.name}>URL</label>
                 <Input
-                  value={accessKey}
-                  className={styles.inputMiddle}
+                  value={runtimeUrl}
+                  onChange={this.store.changeUrl}
+                  className={styles.inputUrl}
+                  name="runtime_url"
+                  placeholder="www.example.com/path/point/"
+                  maxlength="100"
                   required
-                  onChange={this.store.changeAccessKey}
                 />
-                <Input
-                  value={secretKey}
-                  className={styles.inputMiddle}
-                  required
-                  onChange={this.store.changeSecretKey}
-                />
-                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                  Validate
-                </Button>
+                <div className={styles.rightShow}>
+                  <p>
+                    <label className={styles.inputTitle}>Access Key ID</label>
+                    <label className={styles.inputTitle}>Secret Access Key</label>
+                  </p>
+                  <Fragment>
+                    <Input
+                      value={accessKey}
+                      className={styles.inputMiddle}
+                      required
+                      onChange={this.store.changeAccessKey}
+                    />
+                    <Input
+                      value={secretKey}
+                      className={styles.inputMiddle}
+                      required
+                      onChange={this.store.changeSecretKey}
+                    />
+                    <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+                      Validate
+                    </Button>
+                  </Fragment>
+                </div>
               </div>
-            </div>
-            <div>
+            )}
+            <div className={classNames({ [styles.showDiv]: !!runtimeId })}>
               <label className={styles.name}>Zone</label>
-              <Select className={styles.select} value={zone} onChange={this.store.changeZone}>
-                <Select.Option value="pek3a">pek3a</Select.Option>
-                <Select.Option value="sh1a">sh1a</Select.Option>
-                <Select.Option value="gd1">gd1</Select.Option>
-              </Select>
+              {!runtimeId && (
+                <Select className={styles.select} value={zone} onChange={this.store.changeZone}>
+                  <Select.Option value="pek3a">pek3a</Select.Option>
+                  <Select.Option value="sh1a">sh1a</Select.Option>
+                  <Select.Option value="gd1">gd1</Select.Option>
+                </Select>
+              )}
+              {!!runtimeId && <label className={styles.showValue}>{zone}</label>}
             </div>
           </Fragment>
-        ) : provider === 'kubernetes' ? (
+        ) : !runtimeId && provider === 'kubernetes' ? (
           <div>
             <label className={classNames(styles.name, styles.textareaName)}>Credential</label>
             <textarea className={styles.textarea} name="credential" required />
@@ -148,6 +164,7 @@ export default class RuntimeAdd extends Component {
             name="description"
             onChange={this.store.changeDescription}
             value={description}
+            maxlength="500"
           />
         </div>
         <div>

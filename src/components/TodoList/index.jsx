@@ -9,8 +9,8 @@ export default class TodoList extends PureComponent {
     labelType: PropTypes.oneOf(['label', 'selector']),
     labels: PropTypes.arrayOf(
       PropTypes.shape({
-        label_key: PropTypes.string.isRequired,
-        label_value: PropTypes.string.isRequired
+        label_key: PropTypes.string,
+        label_value: PropTypes.string
       })
     ),
     onRemove: PropTypes.func,
@@ -37,6 +37,7 @@ export default class TodoList extends PureComponent {
                 className={styles.inputSmall}
                 placeholder="Key"
                 value={label.label_key}
+                maxlength="30"
                 onChange={e => {
                   this.changeLabel(e, index, 'key');
                 }}
@@ -45,6 +46,7 @@ export default class TodoList extends PureComponent {
                 className={styles.inputSmall}
                 placeholder="Value"
                 value={label.label_value}
+                maxlength="30"
                 onChange={e => {
                   this.changeLabel(e, index, 'value');
                 }}

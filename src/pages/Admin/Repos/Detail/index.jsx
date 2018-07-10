@@ -185,22 +185,43 @@ export default class RepoDetail extends Component {
     ];
 
     const { curTagName, selectCurTag } = repoStore;
+    const detailSearch = '';
     const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
     let data = [];
     let columns = [];
     let searchTip = 'Search App Name';
     let totalCount = 0;
-    let changeTable;
+    let onSearch, onClearSearch, onRefresh, changeTable, isLoading;
     let selectors = [];
 
     switch (curTagName) {
       case 'Apps':
+        const { fetchAll, changeSearchWord, searchWord } = appStore;
         data = appsData;
         columns = appsColumns;
         totalCount = appStore.totalCount;
+        isLoading = appStore.isLoading;
+        onSearch = async name => {
+          changeSearchWord(name);
+          await fetchAll({
+            status: ['active', 'deleted'],
+            repo_id: repoDetail.repo_id
+          });
+        };
+        onClearSearch = async () => {
+          await onSearch('');
+        };
+        onRefresh = async () => {
+          await fetchAll({
+            status: ['active', 'deleted'],
+            repo_id: repoDetail.repo_id,
+            search_word: searchWord
+          });
+        };
         changeTable = async current => {
-          await appStore.fetchAll({
+          await fetchAll({
+            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * appStore.pageSize
           });
@@ -212,8 +233,27 @@ export default class RepoDetail extends Component {
         searchTip = 'Search Runtime Name';
         selectors = this.changeSelectors(repoDetail.selectors);
         totalCount = runtimeStore.totalCount;
+        isLoading = runtimeStore.isLoading;
+        onSearch = async name => {
+          runtimeStore.changeSearchWord(name);
+          await runtimeStore.fetchAll({
+            status: ['active', 'deleted'],
+            repo_id: repoDetail.repo_id
+          });
+        };
+        onClearSearch = async () => {
+          await onSearch('');
+        };
+        onRefresh = async () => {
+          await runtimeStore.fetchAll({
+            status: ['active', 'deleted'],
+            repo_id: repoDetail.repo_id,
+            search_word: searchWord
+          });
+        };
         changeTable = async current => {
           await runtimeStore.fetchAll({
+            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * runtimeStore.pageSize
           });
@@ -223,6 +263,7 @@ export default class RepoDetail extends Component {
         data = eventsData;
         columns = eventsColumns;
         totalCount = eventsData.length;
+        isLoading = repoStore.isLoading;
         searchTip = 'Search Events';
         break;
     }
@@ -254,14 +295,27 @@ export default class RepoDetail extends Component {
                 </div>
               )}
 
-              <div className={styles.toolbar}>
-                <Input.Search className={styles.search} placeholder={searchTip} />
-                <Button className={styles.buttonRight}>
-                  <Icon name="refresh" />
-                </Button>
-              </div>
+              {curTagName !== 'Events' && (
+                <div className={styles.toolbar}>
+                  <Input.Search
+                    className={styles.search}
+                    placeholder={searchTip}
+                    onSearch={onSearch}
+                    onClear={onClearSearch}
+                    value={detailSearch}
+                  />
+                  <Button className={styles.buttonRight} onClick={onRefresh}>
+                    <Icon name="refresh" />
+                  </Button>
+                </div>
+              )}
 
-              <Table columns={columns} dataSource={data} className="detailTab" />
+              <Table
+                columns={columns}
+                dataSource={data}
+                className="detailTab"
+                isLoading={isLoading}
+              />
             </div>
             <Pagination onChange={changeTable} total={totalCount} />
           </div>

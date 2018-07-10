@@ -68,15 +68,17 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   removeLabel = index => {
-    this.labels.splice(index, 1);
+    this.labels = this.labels.filter((item, i) => i != index);
   };
 
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
       this.labels[index]['label_' + type] = value;
+      this.labels = [...this.labels];
     } else if (labelType === 'selector') {
       this.selectors[index]['label_' + type] = value;
+      this.selectors = [...this.selectors];
     }
   };
 
@@ -153,6 +155,8 @@ export default class RuntimeCreateStore extends Store {
 
     this.isLoading = true;
     if (this.runtimeId) {
+      delete data.runtime_url;
+      delete data.runtime_credential;
       _.extend(data, { runtime_id: this.runtimeId });
       await this.modifyRuntime(data);
     } else {
@@ -209,13 +213,10 @@ export default class RuntimeCreateStore extends Store {
     if (detail) {
       this.runtimeId = detail.runtime_id;
       this.name = detail.name;
+      this.description = detail.description;
       this.provider = detail.provider;
       this.runtimeUrl = detail.runtime_url;
       this.zone = detail.zone;
-      this.description = detail.description;
-      const credential = detail.runtime_credential && JSON.parse(detail.runtime_credential);
-      this.accessKey = credential.access_key_id;
-      this.secretKey = credential.secret_access_key;
       this.labels = detail.labels || [{ label_key: '', label_value: '' }];
     }
   };

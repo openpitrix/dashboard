@@ -2,10 +2,19 @@
 
 form.createForm {
   display: block;
-  padding: 35px 0 24px 0;
+  padding: 36px 0 24px 0;
 
   &>div{
     margin-bottom: 24px;
+  }
+  &>.showDiv{
+    margin-bottom: 10px;
+    .rightShow{
+      margin-top: 7px;
+    }
+    .showValue{
+      color: $text-color;
+    }
   }
   .name{
     display: inline-block;

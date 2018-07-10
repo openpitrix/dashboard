@@ -118,10 +118,10 @@ export default class CategoryDetail extends Component {
 
   render() {
     const { categoryStore, appStore, repoStore } = this.props;
-    const { category, notifyMsg, hideMsg, isLoading } = categoryStore;
+    const { category, notifyMsg, hideMsg } = categoryStore;
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
-    const { appCount } = appStore;
+    const { isLoading, appCount, totalCount } = appStore;
     const imgPhd = imgPlaceholder();
 
     const columns = [
@@ -180,7 +180,7 @@ export default class CategoryDetail extends Component {
     const curTag = 'Apps';
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <BackBtn label="categories" link="/dashboard/categories" />
         <div className={styles.wrapper}>
           <div className={styles.leftInfo}>
@@ -201,14 +201,20 @@ export default class CategoryDetail extends Component {
                   value={appStore.searchWord}
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}
+                  maxlength="50"
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
-              <Table columns={columns} dataSource={apps} className="detailTab" />
+              <Table
+                columns={columns}
+                dataSource={apps}
+                className="detailTab"
+                isLoading={isLoading}
+              />
             </div>
-            <Pagination onChange={this.changeApps} total={appStore.totalCount} />
+            <Pagination onChange={this.changeApps} total={totalCount} />
           </div>
         </div>
         {this.renderCategoryModal()}

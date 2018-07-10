@@ -27,6 +27,8 @@ export default class ClusterStore extends Store {
   @observable selectedRowKeys = [];
   @observable clusterIds = [];
 
+  @observable searchNode = '';
+
   @action.bound
   showModal = type => {
     this.modalType = type;
@@ -72,7 +74,7 @@ export default class ClusterStore extends Store {
 
   @action
   clusterStatistics = async () => {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.get('clusters/statistics');
     this.summaryInfo = {
       name: 'Clusters',
@@ -82,7 +84,7 @@ export default class ClusterStore extends Store {
       progress: get(result, 'top_ten_runtimes', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    this.isLoading = false;
+    //this.isLoading = false;
   };
 
   @action
@@ -94,9 +96,12 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  fetchNodes = async clusterId => {
+  fetchNodes = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters/nodes`, { cluster_id: clusterId });
+    if (this.searchNode) {
+      params.search_word = this.searchNode;
+    }
+    const result = await this.request.get(`clusters/nodes`, params);
     this.clusterNodes = get(result, 'cluster_node_set', []);
     this.isLoading = false;
   };
@@ -164,7 +169,7 @@ export default class ClusterStore extends Store {
 
   @action
   clusterJobsOpen = () => {
-    this.showClusterJobs = true;
+    this.showModal('jobs');
   };
 
   @action
@@ -174,7 +179,7 @@ export default class ClusterStore extends Store {
 
   @action
   clusterParametersOpen = () => {
-    this.showClusterParameters = true;
+    this.showModal('parameters');
   };
 
   @action
@@ -242,5 +247,27 @@ export default class ClusterStore extends Store {
   cancelSelected = () => {
     this.selectedRowKeys = [];
     this.clusterIds = [];
+  };
+
+  @action
+  changeSearchNode = word => {
+    this.searchNode = word;
+  };
+
+  @action
+  onSearchNode = async searchWord => {
+    this.changeSearchNode(searchWord);
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  };
+
+  @action
+  onClearNode = async () => {
+    this.changeSearchNode('');
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  };
+
+  @action
+  onRefreshNode = async () => {
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 }
