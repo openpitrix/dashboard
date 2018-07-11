@@ -115,16 +115,17 @@ export default class Home extends Component {
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
             <Nav className={styles.nav} navs={categories.toJSON()} />
-            <AppList
-              className={styles.apps}
-              apps={showApps}
-              categoryApps={categoryApps}
-              categoryTitle={categoryTitle}
-              appSearch={appSearch}
-              isCategorySearch={categorySearch}
-              moreApps={fetchApps}
-            />
-            {isLoading && <Loading className={styles.homeLoad} />}
+            <Loading isLoading={isLoading} className={styles.homeLoad}>
+              <AppList
+                className={styles.apps}
+                apps={showApps}
+                categoryApps={categoryApps}
+                categoryTitle={categoryTitle}
+                appSearch={appSearch}
+                isCategorySearch={categorySearch}
+                moreApps={fetchApps}
+              />
+            </Loading>
           </div>
         </div>
       </Fragment>

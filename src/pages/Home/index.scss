@@ -8,15 +8,11 @@
   min-height: $main-height;
   margin: 0 auto;
   width: $content-width;
+
   .homeLoad {
-    position: absolute;
-    top: 0;
-    left: 192px;
-    background-color: #fff;
-    & > div {
-      top: 100px;
-    }
+    margin-left: 192px;
   }
+
   .nav {
     position: absolute;
     top: 0;
