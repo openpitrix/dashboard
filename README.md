@@ -3,6 +3,7 @@
 # OpenPitrix Dashboard
 
 [![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)
+[![docker build status](https://img.shields.io/docker/build/openpitrx/dashboard.svg)](https://cloud.docker.com/swarm/openpitrix/repository/docker/openpitrix/dashboard/builds)
 [![codecov](https://codecov.io/gh/openpitrix/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
