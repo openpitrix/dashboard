@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { ButtonDropdown, Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
-import { translate } from 'react-i18next';
+import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
+import trans, { __ } from 'hoc/trans';
 
 import { getSessInfo, getLinkLabelFromRole } from 'src/utils';
 import Logo from '../Logo';
@@ -13,13 +12,12 @@ import Input from '../Base/Input';
 import styles from './index.scss';
 
 // translate hoc should place before mobx
-@translate()
+@trans()
 @inject('rootStore', 'sessInfo')
 @observer
 export default class Header extends Component {
   state = {
-    dropdownOpen: false,
-    translationDropdownOpen: false
+    dropdownOpen: false
   };
 
   toggleDropdown = () => {
@@ -28,30 +26,15 @@ export default class Header extends Component {
     });
   };
 
-  toggleTranslationDropdown = () => {
-    this.setState({
-      translationDropdownOpen: !this.state.translationDropdownOpen
-    });
-  };
-
-  getCurrentLocale = () => {
-    return typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
-  };
-
-  changeLocale = (lang, e) => {
-    e.preventDefault();
-    if (this.getCurrentLocale() !== lang) {
-      this.props.i18n.changeLanguage(lang);
-    }
-    this.toggleTranslationDropdown();
-  };
+  renderMenuBtns() {
+    //
+  }
 
   renderLoginButton() {
-    const { t } = this.props;
     const loggedInUser = getSessInfo('user', this.props.sessInfo);
 
     if (!loggedInUser) {
-      return <NavLink to="/login">{t('Sign In')}</NavLink>;
+      return <NavLink to="/login">{__('Sign In')}</NavLink>;
     }
 
     return (
@@ -69,42 +52,6 @@ export default class Header extends Component {
           </DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
-    );
-  }
-
-  renderLocaleBtns() {
-    const { translationDropdownOpen } = this.state;
-    const curLocale = this.getCurrentLocale();
-    const { t } = this.props;
-
-    return (
-      <Dropdown
-        isOpen={translationDropdownOpen}
-        toggle={this.toggleTranslationDropdown}
-        className={styles.translation}
-      >
-        <DropdownToggle
-          tag="span"
-          onClick={this.toggleTranslationDropdown}
-          data-toggle="dropdown"
-          caret
-          style={{ cursor: 'pointer' }}
-        >
-          {t(`lang.${curLocale}`)}
-        </DropdownToggle>
-        <DropdownMenu className={styles.transMenu}>
-          <div className={styles.locale}>
-            <a href="#" onClick={this.changeLocale.bind(null, 'zh')}>
-              {t('lang.zh')}
-            </a>
-          </div>
-          <div className={styles.locale}>
-            <a href="#" onClick={this.changeLocale.bind(null, 'en')}>
-              {t('lang.en')}
-            </a>
-          </div>
-        </DropdownMenu>
-      </Dropdown>
     );
   }
 
@@ -128,10 +75,10 @@ export default class Header extends Component {
 
   render() {
     const {
-      t,
       isHome,
       rootStore: { fixNav }
     } = this.props;
+
     const { appStore } = this.props.rootStore;
     const { appSearch } = appStore;
 
@@ -146,17 +93,15 @@ export default class Header extends Component {
             isHome && (
               <Input.Search
                 className={styles.search}
-                placeholder={t('search.placeholder')}
+                placeholder={__('search.placeholder')}
                 value={appSearch}
                 onSearch={this.onSearch}
                 onClear={this.onClearSearch}
               />
             )}
           <div className={styles.menus}>
-            <NavLink to="/apps">{t('Catalog')}</NavLink>
             {this.renderDevOpsLink()}
             {this.renderLoginButton()}
-            {this.renderLocaleBtns()}
           </div>
         </div>
       </div>

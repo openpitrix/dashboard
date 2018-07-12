@@ -35,8 +35,11 @@
   "CATEGORIES": "分类",
   "Newest": "最新",
 
-  "appList": {
-    "more": "更多.."
-  }
+  "more": "更多..",
+
+  "About": "关于",
+  "Help": "帮助",
+  "Terms": "案例"
+
 
 }

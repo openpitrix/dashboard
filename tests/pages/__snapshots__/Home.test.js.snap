@@ -25,7 +25,9 @@ Array [
       />
       <div
         class="title"
-      />
+      >
+        brand.slogan
+      </div>
       <div
         class="inputGroup search"
       >
@@ -34,7 +36,7 @@ Array [
         />
         <input
           class="input"
-          placeholder=""
+          placeholder="search.placeholder"
           type="text"
           value=""
         />
@@ -53,7 +55,9 @@ Array [
         <ul
           class="subNav"
         >
-          <p />
+          <p>
+            CATEGORIES
+          </p>
         </ul>
       </div>
       <div
@@ -61,7 +65,9 @@ Array [
       >
         <div
           class="title"
-        />
+        >
+          Newest
+        </div>
         <div
           class="noData"
         >

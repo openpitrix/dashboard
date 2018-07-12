@@ -6,9 +6,6 @@ export default class LoginStore extends Store {
   @action
   async login(params) {
     let apiMsg = await request.post('login', params);
-
-    apiMsg = apiMsg.toJSON();
-
     if (!apiMsg.success) {
       this.notifyMsg = apiMsg.msg;
     }
