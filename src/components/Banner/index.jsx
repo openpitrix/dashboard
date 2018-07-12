@@ -14,6 +14,11 @@ export default class Banner extends PureComponent {
     setScroll: PropTypes.func
   };
 
+  constructor(props) {
+    super(props);
+    this.searchBox = React.createRef();
+  }
+
   onSearch = value => {
     this.props.setScroll();
     this.props.onSearch({ search_word: value });
@@ -22,6 +27,13 @@ export default class Banner extends PureComponent {
   onClearSearch = () => {
     this.onSearch('');
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.appSearch !== this.props.appSearch && nextProps.appSearch !== undefined) {
+      // clear search box manually
+      this.searchBox.current.setState({ value: nextProps.appSearch });
+    }
+  }
 
   render() {
     const { appSearch, t } = this.props;
@@ -34,6 +46,7 @@ export default class Banner extends PureComponent {
           <img className="banner-img-3" src="/assets/1-3.svg" alt="" />
           <div className={styles.title}>{t('brand.slogan')}</div>
           <Input.Search
+            ref={this.searchBox}
             className={styles.search}
             placeholder={t('search.placeholder')}
             value={appSearch}
