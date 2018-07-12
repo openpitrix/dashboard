@@ -19,18 +19,17 @@ let lastTs = Date.now();
 }))
 @observer
 export default class Home extends Component {
-  static async onEnter({ categoryStore, appStore }) {
+  static async onEnter({ categoryStore, appStore }, { category }) {
     await categoryStore.fetchAll();
-    await appStore.fetchApps();
+    await appStore.fetchApps(category ? { category_id: category } : {});
     appStore.appSearch = '';
   }
 
   componentDidMount() {
     const { rootStore, match } = this.props;
-    const { appStore } = rootStore;
+
     if (match.params.category) {
-      // fetch apps by category
-      appStore.fetchApps({ category_id: match.params.category });
+      rootStore.setNavFix(true);
     } else {
       this.threshold = this.getThreshold();
       window.onscroll = throttle(this.handleScroll, 300);
@@ -38,11 +37,8 @@ export default class Home extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { rootStore, match } = this.props;
-    if (match.params.category) {
-      rootStore.setNavFix(true);
-    }
+  componentWillReceiveProps({ match, rootStore }) {
+    rootStore.appStore.fetchApps({ category_id: match.params.category });
   }
 
   componentWillUnmount() {

@@ -3,6 +3,11 @@ const debug = require('debug')('op-dash');
 const authPages = ['dashboard'];
 
 module.exports = async (ctx, next) => {
+  // filter non-asset types
+  if (ctx.url.endsWith('.map')) {
+    return;
+  }
+
   debug('%s page: %s', ctx.request.method, ctx.url);
 
   const page = (ctx.params.page || '').split('/')[0];

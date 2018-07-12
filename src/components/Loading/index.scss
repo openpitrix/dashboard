@@ -47,17 +47,20 @@
   }
 }
 
-.loadTable{
-  position: static;
-  background-color: #fff;
-  .loadOuter{
+:global {
+  .loadTable{
     position: static;
-    padding: 30px 0 50px;
-    .loader {
-      margin: 0 auto;
+    background-color: #fff;
+    .loadOuter{
+      position: static;
+      padding: 30px 0 50px;
+      .loader {
+        margin: 0 auto;
+      }
     }
   }
 }
+
 
 @mixin load-frames() {
   0% {

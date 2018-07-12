@@ -122,8 +122,7 @@ export default class Header extends Component {
 
   onClearSearch = async () => {
     await this.onSearch('');
-    const { rootStore } = this.props;
-    rootStore.setNavFix(true);
+    // this.props.rootStore.setNavFix(true);
     window.scroll({ top: 1, behavior: 'smooth' });
   };
 
