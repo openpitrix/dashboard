@@ -103,7 +103,9 @@ export default class Clusters extends Component {
       changePagination,
       clusterIds,
       selectedRowKeys,
-      onChangeSelect
+      onChangeSelect,
+      onChangeStatus,
+      selectStatus
     } = this.props.clusterStore;
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -176,12 +178,29 @@ export default class Clusters extends Component {
         )
       }
     ];
+
     const rowSelection = {
       type: 'checkbox',
       selectType: 'onSelect',
       selectedRowKeys: selectedRowKeys,
       onChange: onChangeSelect
     };
+
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: 'Active', value: 'active' },
+          { name: 'Stopped', value: 'stopped' },
+          { name: 'Ceased', value: 'ceased' },
+          { name: 'Pending', value: 'pending' },
+          { name: 'Suspended', value: 'suspended' },
+          { name: 'Deleted', value: 'deleted' }
+        ],
+        onChangeFilter: onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
@@ -221,7 +240,7 @@ export default class Clusters extends Component {
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
-                  maxlength="50"
+                  maxLength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
@@ -234,6 +253,7 @@ export default class Clusters extends Component {
               dataSource={clusters.toJSON()}
               rowSelection={rowSelection}
               isLoading={isLoading}
+              filterList={filterList}
             />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />

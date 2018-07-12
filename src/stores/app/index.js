@@ -22,6 +22,9 @@ export default class AppStore extends Store {
   @observable appIds = [];
   @observable selectedRowKeys = [];
   @observable operateType = '';
+  @observable selectStatus = '';
+  @observable defaultStatus = ['active'];
+  @observable deleteResult = {};
 
   // menu actions logic
   @observable
@@ -119,12 +122,17 @@ export default class AppStore extends Store {
 
   @action
   remove = async () => {
-    const ids = this.operateType === 'single' ? [this.appId] : this.appIds.toJSON();
+    const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
     if (_.get(result, 'app_id')) {
-      this.hideModal();
-      await this.fetchAll();
-      this.cancelSelected();
+      if (this.operateType === 'detailDelete') {
+        this.deleteResult = result;
+        await this.fetch(this.appId);
+      } else {
+        this.hideModal();
+        await this.fetchAll();
+        this.cancelSelected();
+      }
       this.showMsg('Delete app successfully.');
     } else {
       let { err, errDetail } = result;
@@ -248,6 +256,12 @@ export default class AppStore extends Store {
     this.searchWord = '';
     this.selectedRowKeys = [];
     this.appIds = [];
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll({ status: this.selectStatus });
   };
 }
 

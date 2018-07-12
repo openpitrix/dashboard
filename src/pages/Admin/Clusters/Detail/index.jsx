@@ -146,7 +146,15 @@ export default class ClusterDetail extends Component {
 
   render() {
     const { clusterStore, appStore, runtimeStore } = this.props;
-    const { isLoading, searchNode, onSearchNode, onClearNode, onRefreshNode } = clusterStore;
+    const {
+      isLoading,
+      searchNode,
+      onSearchNode,
+      onClearNode,
+      onRefreshNode,
+      onChangeNodeStatus,
+      selectNodeStatus
+    } = clusterStore;
     const detail = clusterStore.cluster;
     const clusterJobs = clusterStore.clusterJobs.toJSON();
     const clusterNodes = clusterStore.clusterNodes.toJSON();
@@ -169,7 +177,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Node Status',
         key: 'status',
-        width: '110px',
+        width: '130px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -192,6 +200,21 @@ export default class ClusterDetail extends Component {
     ];
     const tags = [{ id: 1, name: 'Nodes' }];
     const curTag = 'Nodes';
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: 'Active', value: 'active' },
+          { name: 'Stopped', value: 'stopped' },
+          { name: 'Ceased', value: 'ceased' },
+          { name: 'Pending', value: 'pending' },
+          { name: 'Suspended', value: 'suspended' },
+          { name: 'Deleted', value: 'deleted' }
+        ],
+        onChangeFilter: onChangeNodeStatus,
+        selectValue: selectNodeStatus
+      }
+    ];
 
     return (
       <Layout>
@@ -225,7 +248,7 @@ export default class ClusterDetail extends Component {
                   value={searchNode}
                   onSearch={onSearchNode}
                   onClear={onClearNode}
-                  maxlength="50"
+                  maxLength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefreshNode}>
                   <Icon name="refresh" />
@@ -236,6 +259,7 @@ export default class ClusterDetail extends Component {
                 dataSource={clusterNodes}
                 className="detailTab"
                 isLoading={isLoading}
+                filterList={filterList}
               />
               <div className={styles.total}>Total: {clusterNodes.length}</div>
             </div>

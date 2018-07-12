@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -29,6 +29,15 @@ export default class CategoryDetail extends Component {
     await repoStore.fetchAll({ status: ['active', 'deleted'] });
   }
 
+  componentDidUpdate() {
+    const { category } = this.props.categoryStore;
+    if (!category.category_id) {
+      setTimeout(() => {
+        location.href = '/dashboard/categories';
+      }, 2000);
+    }
+  }
+
   onSearch = async name => {
     const { categoryStore, appStore } = this.props;
     const { fetchAll, changeSearchWord } = appStore;
@@ -51,12 +60,6 @@ export default class CategoryDetail extends Component {
     });
   };
 
-  changePagination = page => {
-    const { appStore } = this.props;
-    appStore.setCurrentPage(page);
-    appStore.fetchAll({ page });
-  };
-
   changeApps = async current => {
     const { categoryStore, appStore } = this.props;
     await appStore.fetchAll({
@@ -65,11 +68,21 @@ export default class CategoryDetail extends Component {
     });
   };
 
+  onChangeStatus = async status => {
+    const { categoryStore, appStore } = this.props;
+    appStore.selectStatus = appStore.selectStatus === status ? '' : status;
+    await appStore.fetchAll({
+      category_id: categoryStore.category.category_id,
+      status: appStore.selectStatus
+    });
+  };
+
   renderHandleMenu = category => {
-    const { showModifyCategory } = this.props.categoryStore;
+    const { showModifyCategory, showDeleteCategory } = this.props.categoryStore;
     return (
       <div className="operate-menu">
-        <span onClick={showModifyCategory.bind(this, category)}>Modify Category</span>
+        <span onClick={() => showModifyCategory(category)}>Modify Category</span>
+        <span onClick={() => showDeleteCategory(category)}>Delete Category</span>
       </div>
     );
   };
@@ -80,38 +93,58 @@ export default class CategoryDetail extends Component {
 
   renderCategoryModal = () => {
     const { categoryStore } = this.props;
-    const { category, isModalOpen, hideModal, changeName, changeDescription } = categoryStore;
+    const { isModalOpen, hideModal, handleCate, category } = categoryStore;
+    let modalTitle = '',
+      width = 500,
+      modalBody = null,
+      onSubmit = () => {};
 
+    if (handleCate.action === 'delete_cate') {
+      modalTitle = 'Delete Category';
+      onSubmit = () => categoryStore.remove([category.category_id]);
+      modalBody = <div className={styles.noteWord}>Are you sure delete this Category?</div>;
+    }
+    if (handleCate.action === 'modify_cate') {
+      const { changeName, changeDescription } = categoryStore;
+      width = 600;
+      modalTitle = 'Modify Category';
+      onSubmit = categoryStore.createOrModify;
+      modalBody = (
+        <Fragment>
+          <div className={styles.inputItem}>
+            <label className={styles.name}>Name</label>
+            <Input
+              className={styles.input}
+              name="name"
+              required
+              autoFocus
+              onChange={changeName}
+              defaultValue={category.name}
+              maxLength="50"
+            />
+          </div>
+          <div className={styles.inputItem}>
+            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+            <textarea
+              className={styles.textarea}
+              name="description"
+              defaultValue={category.description}
+              onChange={changeDescription}
+              maxLength="500"
+            />
+          </div>
+        </Fragment>
+      );
+    }
     return (
       <Dialog
-        title="Modify Category"
-        width={600}
+        title={modalTitle}
+        width={width}
         isOpen={isModalOpen}
         onCancel={hideModal}
-        onSubmit={this.handleModifyCate}
+        onSubmit={onSubmit}
       >
-        <div className={styles.inputItem}>
-          <label className={styles.name}>Name</label>
-          <Input
-            className={styles.input}
-            name="name"
-            required
-            autoFocus
-            onChange={changeName}
-            defaultValue={category.name}
-            maxlength="50"
-          />
-        </div>
-        <div className={styles.inputItem}>
-          <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-          <textarea
-            className={styles.textarea}
-            name="description"
-            defaultValue={category.description}
-            onChange={changeDescription}
-            maxlength="500"
-          />
-        </div>
+        {modalBody}
       </Dialog>
     );
   };
@@ -121,7 +154,7 @@ export default class CategoryDetail extends Component {
     const { category, notifyMsg, hideMsg } = categoryStore;
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
-    const { isLoading, appCount, totalCount } = appStore;
+    const { isLoading, appCount, totalCount, selectStatus } = appStore;
     const imgPhd = imgPlaceholder();
 
     const columns = [
@@ -176,6 +209,15 @@ export default class CategoryDetail extends Component {
       }
     ];
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        onChangeFilter: this.onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
+
     const tags = [{ id: 1, name: 'Apps', link: '#' }];
     const curTag = 'Apps';
 
@@ -201,7 +243,7 @@ export default class CategoryDetail extends Component {
                   value={appStore.searchWord}
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}
-                  maxlength="50"
+                  maxLength="50"
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
@@ -212,6 +254,7 @@ export default class CategoryDetail extends Component {
                 dataSource={apps}
                 className="detailTab"
                 isLoading={isLoading}
+                filterList={filterList}
               />
             </div>
             <Pagination onChange={this.changeApps} total={totalCount} />

@@ -113,4 +113,22 @@
       }
     }
   }
+
+  .filterContent{
+    margin: 0 -5px;
+    li{
+      padding: 0 12px;
+      width: 110px;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: normal;
+      color: $title-color;
+      cursor: pointer;
+      transition: all $transition-speed;
+      &:hover, &.active{
+        background-color: $purple-lighter;
+      }
+    }
+  }
 }
+

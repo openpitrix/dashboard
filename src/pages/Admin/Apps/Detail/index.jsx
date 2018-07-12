@@ -21,6 +21,7 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, clusterStore, appVersionStore, repoStore }, { appId }) {
+    appStore.deleteResult = {};
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
     await clusterStore.fetchAll({ app_id: appId });
@@ -35,8 +36,18 @@ export default class AppDetail extends Component {
     this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
+  componentDidUpdate() {
+    const { appDetail, deleteResult } = this.props.appStore;
+    console.log(appDetail.status, deleteResult);
+    if (appDetail.status === 'deleted' && deleteResult.app_id) {
+      setTimeout(() => {
+        history.back();
+      }, 2000);
+    }
+  }
+
   renderHandleMenu = appId => {
-    const { showCreateVersion } = this.props.appVersionStore;
+    const { showCreateVersion, showDeleteApp } = this.props.appVersionStore;
     const { appDetail } = this.props.appStore;
 
     return (
@@ -45,6 +56,7 @@ export default class AppDetail extends Component {
           <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
         )}
         <span onClick={showCreateVersion}>Create version</span>
+        <span onClick={showDeleteApp}>Delete App</span>
       </div>
     );
   };
@@ -72,21 +84,21 @@ export default class AppDetail extends Component {
         <Fragment>
           <div className={styles.inputItem}>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" maxlength="50" required />
+            <Input className={styles.input} name="name" maxLength="50" required />
           </div>
           <div className={styles.inputItem}>
             <label className={styles.name}>Package Name</label>
             <Input
               className={styles.input}
               name="package_name"
-              maxlength="100"
+              maxLength="100"
               required
               placeholder="http://openpitrix.pek3a.qingstor.com/package/zk-0.1.0.tgz"
             />
           </div>
           <div className={styles.inputItem}>
             <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-            <textarea className={styles.textarea} name="description" maxlength="500" />
+            <textarea className={styles.textarea} name="description" maxLength="500" />
           </div>
         </Fragment>
       );
@@ -95,6 +107,12 @@ export default class AppDetail extends Component {
     if (handleVersion.action === 'delete') {
       modalTitle = 'Delete Version';
       modalBody = <div className={styles.noteWord}>Are you sure delete this Version?</div>;
+    }
+
+    if (handleVersion.action === 'deleteApp') {
+      onSubmit = this.deleteApp;
+      modalTitle = 'Delete App';
+      modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
     }
 
     if (handleVersion.action === 'show_all') {
@@ -117,6 +135,14 @@ export default class AppDetail extends Component {
     );
   };
 
+  deleteApp = () => {
+    const { appStore, appVersionStore } = this.props;
+    appStore.appId = this.appId;
+    appStore.operateType = 'detailDelete';
+    appStore.remove();
+    appVersionStore.hideModal();
+  };
+
   onRefresh = () => {
     const { currentClusterPage, swCluster } = this.props.appStore;
     const { fetchAll } = this.props.clusterStore;
@@ -134,6 +160,12 @@ export default class AppDetail extends Component {
     this.onSearch('');
   };
 
+  onChangeStatus = async status => {
+    const { clusterStore } = this.props;
+    clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
+    await this.fetchAll({ status: clusterStore.selectStatus, app_id: this.appId });
+  };
+
   changePagination = page => {
     const { setClusterPage } = this.props.appStore;
     const { fetchAll } = this.props.clusterStore;
@@ -145,11 +177,29 @@ export default class AppDetail extends Component {
     const { appStore, clusterStore, appVersionStore, repoStore } = this.props;
     const { appDetail, currentClusterPage, swCluster } = appStore;
     const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
-    const { clusters, isLoading } = clusterStore;
+    const appNotifyMsg = appStore.notifyMsg;
+    const appHideMsg = appStore.hideMsg;
+    const { clusters, isLoading, selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: 'Active', value: 'active' },
+          { name: 'Stopped', value: 'stopped' },
+          { name: 'Ceased', value: 'ceased' },
+          { name: 'Pending', value: 'pending' },
+          { name: 'Suspended', value: 'suspended' },
+          { name: 'Deleted', value: 'deleted' }
+        ],
+        onChangeFilter: this.onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
+
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
         <div className={styles.appDetail}>
           <div className={styles.leftInfo}>
@@ -184,14 +234,19 @@ export default class AppDetail extends Component {
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}
                   value={swCluster}
-                  maxlength="50"
+                  maxLength="50"
                 />
                 <Button className={styles.buttonRight} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
 
-              <Table columns={columns} dataSource={clusters.toJSON()} isLoading={isLoading} />
+              <Table
+                columns={columns}
+                dataSource={clusters.toJSON()}
+                isLoading={isLoading}
+                filterList={filterList}
+              />
             </div>
             <Pagination
               onChange={this.changePagination}

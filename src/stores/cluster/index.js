@@ -29,6 +29,9 @@ export default class ClusterStore extends Store {
 
   @observable searchNode = '';
 
+  @observable selectStatus = '';
+  @observable defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+
   @action.bound
   showModal = type => {
     this.modalType = type;
@@ -53,10 +56,19 @@ export default class ClusterStore extends Store {
     }
     if (!params.runtime_id && this.runtimeId) {
       params.runtime_id = this.runtimeId;
-      params.status = ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'];
+      if (!params.status) {
+        params.status = this.selectStatus || [
+          'active',
+          'stopped',
+          'ceased',
+          'pending',
+          'suspended',
+          'deleted'
+        ];
+      }
     }
     if (!params.status) {
-      params.status = this.defaultStatus;
+      params.status = this.selectStatus || this.defaultStatus;
     }
     if (params.page) {
       delete params.page;
@@ -269,5 +281,20 @@ export default class ClusterStore extends Store {
   @action
   onRefreshNode = async () => {
     await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll({ status: this.selectStatus });
+  };
+
+  @action
+  onChangeNodeStatus = async status => {
+    this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
+    await this.fetchNodes({
+      cluster_id: this.cluster.cluster_id,
+      status: this.selectNodeStatus
+    });
   };
 }

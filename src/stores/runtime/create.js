@@ -133,7 +133,7 @@ export default class RuntimeCreateStore extends Store {
       }
     }
 
-    if (provider === 'qingcloud') {
+    if (provider === 'qingcloud' || provider === 'aws') {
       data.runtime_credential = JSON.stringify({
         access_key_id: this.accessKey,
         secret_access_key: this.secretKey
