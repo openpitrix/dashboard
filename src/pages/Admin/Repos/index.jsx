@@ -99,14 +99,12 @@ export default class Repos extends Component {
               <Icon name="refresh" />
             </Button>
           </div>
-          {isLoading ? (
-            <Loading className="loadTable" />
-          ) : (
+          <Loading className="loadTable" isLoading={isLoading}>
             <div>
               <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
               <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
             </div>
-          )}
+          </Loading>
         </div>
         {this.deleteRepoModal()}
       </Layout>

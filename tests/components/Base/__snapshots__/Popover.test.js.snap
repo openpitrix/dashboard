@@ -20,9 +20,6 @@ exports[`Base/Tooltip basic render 1`] = `
         test
       </div>
     </div>
-    <span
-      class="arrow pi-popover-popper_arrow"
-    />
   </div>
 </div>
 `;

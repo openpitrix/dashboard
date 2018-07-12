@@ -8,7 +8,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import App from './App';
-import Loading from 'components/Loading';
 import RootStore from './stores/RootStore';
 import routes from './routes';
 import renderRoute from './routes/renderRoute';
@@ -20,10 +19,8 @@ if (typeof window !== 'undefined') {
   const dest = document.getElementById('root');
   const AppWithRouter = withRouter(App);
 
-  // render loading
-  ReactDOM.render(<Loading />, dest);
-
-  const renderApp = i18n => {
+  // lazy loading
+  import('./i18n').then(({ default: i18n }) => {
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
         <Provider rootStore={store} sessInfo={null}>
@@ -45,11 +42,6 @@ if (typeof window !== 'undefined') {
       </I18nextProvider>,
       dest
     );
-  };
-
-  // lazy loading
-  import('./i18n').then(({ default: i18n }) => {
-    renderApp(i18n);
   });
 }
 

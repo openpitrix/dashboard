@@ -299,13 +299,14 @@ export default class Table extends React.Component {
 
   render() {
     const { className, style, pagination, isLoading } = this.props;
-    return isLoading ? (
-      <Loading className="loadTable" />
-    ) : (
-      <div className={classNames(styles.table, className)} style={style}>
-        {this.renderTable()}
-        {pagination && this.renderPagination}
-      </div>
+
+    return (
+      <Loading className="loadTable" isLoading={isLoading}>
+        <div className={classNames(styles.table, className)} style={style}>
+          {this.renderTable()}
+          {pagination && this.renderPagination}
+        </div>
+      </Loading>
     );
   }
 }
