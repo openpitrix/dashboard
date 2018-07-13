@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import styles from './index.scss';
-
 import trans, { __ } from 'hoc/trans';
+
+import styles from './index.scss';
 
 @trans()
 export default class Footer extends PureComponent {
@@ -25,13 +25,13 @@ export default class Footer extends PureComponent {
           </span>
           <ul className={styles.terms}>
             <li>
-              <a href="javascript:void(0)">{__('About')}</a>
+              <a href="#">{__('About')}</a>
             </li>
             <li>
-              <a href="javascript:void(0)">{__('Help')}</a>
+              <a href="#">{__('Help')}</a>
             </li>
             <li>
-              <a href="javascript:void(0)">{__('Terms')}</a>
+              <a href="#">{__('Terms')}</a>
             </li>
             <li className={styles.copyright}>OpenPitrix &copy; 2018</li>
             <li>

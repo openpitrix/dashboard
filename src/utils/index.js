@@ -58,17 +58,6 @@ export function getLoginDate(timestamp) {
   return temp[1] + ' ' + temp[2] + ' at ' + newDate.toLocaleTimeString('en-US');
 }
 
-export function getLinkLabelFromRole(role) {
-  // roles: normal, developer, admin
-  if (role === 'admin') {
-    return 'Management';
-  } else if (role === 'developer') {
-    return 'Development';
-  } else {
-    return 'Deployment';
-  }
-}
-
 export function imgPlaceholder(size = 24) {
   return `http://via.placeholder.com/${size}x${size}`;
 }

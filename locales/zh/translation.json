@@ -3,6 +3,7 @@
     "slogan": "多云应用管理平台"
   },
 
+  "Dashboard": "仪表盘",
   "Overview": "总览",
   "Apps": "应用",
   "Clusters": "集群",
@@ -22,6 +23,7 @@
   },
 
   "Login": "登录",
+  "Log out": "退出",
   "Remember me": "记住我",
   "Username": "用户名",
   "Password": "密码",
@@ -32,7 +34,6 @@
     "zh": "中文"
   },
 
-  "CATEGORIES": "分类",
   "Newest": "最新",
 
   "more": "更多..",
@@ -40,6 +41,4 @@
   "About": "关于",
   "Help": "帮助",
   "Terms": "案例"
-
-
 }

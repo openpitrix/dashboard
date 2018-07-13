@@ -7,8 +7,11 @@ import ReactMarkdown from 'react-markdown';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import Button from 'components/Base/Button';
 import { getParseDate } from 'utils';
+import trans, { __ } from 'hoc/trans';
+
 import styles from './index.scss';
 
+@trans()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore

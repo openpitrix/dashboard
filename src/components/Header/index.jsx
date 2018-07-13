@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { ButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 import trans, { __ } from 'hoc/trans';
 
-import { getSessInfo, getLinkLabelFromRole } from 'src/utils';
+import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
 import Input from '../Base/Input';
 
@@ -27,10 +27,6 @@ export default class Header extends Component {
   };
 
   renderMenuBtns() {
-    //
-  }
-
-  renderLoginButton() {
     const loggedInUser = getSessInfo('user', this.props.sessInfo);
 
     if (!loggedInUser) {
@@ -38,28 +34,24 @@ export default class Header extends Component {
     }
 
     return (
-      <ButtonDropdown
+      <Dropdown
         className={styles.loginButton}
         isOpen={this.state.dropdownOpen}
         toggle={this.toggleDropdown}
       >
-        <DropdownToggle caret className={styles.toggleBtn}>
+        <DropdownToggle tag="span" caret className={styles.toggleBtn}>
           {loggedInUser}
         </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem style={{ padding: 0 }}>
-            <a href="/logout">Logout</a>
+        <DropdownMenu className={styles.profiles}>
+          <DropdownItem className={styles.profileItem}>
+            <NavLink to="/dashboard">{__('Dashboard')}</NavLink>
+          </DropdownItem>
+          <DropdownItem className={styles.profileItem}>
+            <a href="/logout">{__('Log out')}</a>
           </DropdownItem>
         </DropdownMenu>
-      </ButtonDropdown>
+      </Dropdown>
     );
-  }
-
-  renderDevOpsLink() {
-    const { t } = this.props;
-    const role = getSessInfo('role', this.props.sessInfo);
-    let labelName = getLinkLabelFromRole(role);
-    return <NavLink to="/dashboard">{t(labelName)}</NavLink>;
   }
 
   onSearch = async value => {
@@ -84,25 +76,22 @@ export default class Header extends Component {
 
     const isDark = !isHome || fixNav;
     const logoUrl = isDark ? '/assets/logo_light.svg' : '/assets/logo_dark.svg';
+    const needShowSearch = isDark && isHome;
 
     return (
-      <div className={classnames('header', styles.header, { [styles.darkHeader]: !isDark })}>
+      <div className={classnames('header', styles.header, { [styles.lightHeader]: !isDark })}>
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
-          {isDark &&
-            isHome && (
-              <Input.Search
-                className={styles.search}
-                placeholder={__('search.placeholder')}
-                value={appSearch}
-                onSearch={this.onSearch}
-                onClear={this.onClearSearch}
-              />
-            )}
-          <div className={styles.menus}>
-            {this.renderDevOpsLink()}
-            {this.renderLoginButton()}
-          </div>
+          {needShowSearch && (
+            <Input.Search
+              className={styles.search}
+              placeholder={__('search.placeholder')}
+              value={appSearch}
+              onSearch={this.onSearch}
+              onClear={this.onClearSearch}
+            />
+          )}
+          <div className={styles.menus}>{this.renderMenuBtns()}</div>
         </div>
       </div>
     );

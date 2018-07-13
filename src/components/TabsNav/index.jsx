@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { capitalize, keys, values } from 'lodash';
 import { I18n } from 'react-i18next';
+import { __ } from 'hoc/trans';
 
 import { isArray } from 'src/utils/types';
 import { plural } from 'src/utils/plural';
@@ -40,7 +41,7 @@ const isLinkActive = (curLink, match, location) => {
 
 const LinkItem = ({ link, label }) => (
   <I18n>
-    {t => (
+    {() => (
       <li>
         <NavLink
           to={link}
@@ -48,7 +49,7 @@ const LinkItem = ({ link, label }) => (
           exact
           isActive={isLinkActive.bind(null, link)}
         >
-          {t(capitalize(label))}
+          {__(capitalize(label))}
         </NavLink>
       </li>
     )}

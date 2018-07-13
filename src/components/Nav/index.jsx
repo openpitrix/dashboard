@@ -23,7 +23,7 @@ export default class Nav extends PureComponent {
     return (
       <div className={classnames(styles.nav, className)}>
         <ul className={styles.subNav}>
-          <p>{__('CATEGORIES')}</p>
+          <p>{__('Categories')}</p>
           {navs.map(nav => (
             <li key={nav.category_id}>
               <NavLink
