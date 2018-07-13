@@ -3,14 +3,24 @@
     "placeholder": "Search apps in OpenPitrix.."
   },
 
-  "lang": {
-    "en": "English",
-    "zh": "Chinese"
-  },
-
   "brand": {
     "slogan": "Application Management Platform on Multi-Cloud Environment"
   },
 
-  "more": "more.."
+  "more": "more..",
+
+  "Back to link": "← Back to {{link}}",
+
+  "greet words": "Hi，{{name}}",
+
+  "role": "role",
+  "role_admin": "Administrator",
+  "role_developer": "Developer",
+  "role_normal": "Normal User",
+
+  "last login time": "Last Logged in {{last_login}}",
+
+  "pg-overview": {
+    "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
+  }
 }

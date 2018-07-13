@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import TdName from 'components/TdName/index';
-import styles from './index.scss';
 import { imgPlaceholder } from 'utils';
+import trans, { __ } from 'hoc/trans';
 
+import styles from './index.scss';
+
+@trans()
 export default class AppList extends PureComponent {
   static propTypes = {
     apps: PropTypes.array,
@@ -15,6 +18,7 @@ export default class AppList extends PureComponent {
   render() {
     const { apps, isAdmin } = this.props;
     const imgPhd = imgPlaceholder(24);
+
     return (
       <ul className={classNames(styles.appList, { [styles.normalList]: !isAdmin })}>
         {apps.map((data, index) => (
@@ -29,7 +33,7 @@ export default class AppList extends PureComponent {
             />
             {isAdmin && (
               <span className={styles.total}>
-                <span className={styles.number}>{data.total || 0}</span> Clusters
+                <span className={styles.number}>{data.total || 0}</span> {__('Clusters')}
               </span>
             )}
           </li>

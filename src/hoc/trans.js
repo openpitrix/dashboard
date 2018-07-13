@@ -7,8 +7,8 @@ const getComponentName = comp => {
   return comp.displayName || comp.name || 'Component';
 };
 
-export const __ = key => {
-  return (exists(key) && t(key)) || key;
+export const __ = (key, ...rest) => {
+  return (exists(key) && t(key, ...rest)) || key;
 };
 
 const trans = (namespace, options = {}) => WrapComponent => {

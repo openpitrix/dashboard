@@ -3,7 +3,7 @@
 exports[`<App/> basic render 1`] = `
 Array [
   <div
-    class="header header darkHeader"
+    class="header header lightHeader"
   >
     <div
       class="wrapper"
@@ -22,10 +22,6 @@ Array [
       <div
         class="menus"
       >
-        <a
-          aria-current="false"
-          href="/dashboard"
-        />
         <a
           aria-current="false"
           href="/login"
@@ -58,21 +54,21 @@ Array [
       >
         <li>
           <a
-            href="javascript:void(0)"
+            href="#"
           >
             About
           </a>
         </li>
         <li>
           <a
-            href="javascript:void(0)"
+            href="#"
           >
             Help
           </a>
         </li>
         <li>
           <a
-            href="javascript:void(0)"
+            href="#"
           >
             Terms
           </a>

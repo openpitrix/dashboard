@@ -8,12 +8,13 @@ import Panel from './Panel';
 import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
-import { Section } from 'components/Layout';
 import Layout from 'components/Layout/Admin';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
+import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
+@trans()
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
@@ -82,17 +83,17 @@ export default class Overview extends React.Component {
         </section>
 
         <section className={styles.listOuter}>
-          <Panel title="Top Repos" linkTo="/dashboard/repos" isAdmin={true}>
-            <RepoList repos={repoList} type="public" isAdmin={true} />
-            <RepoList repos={repoList} type="private" limit={2} isAdmin={true} />
+          <Panel title={__('Top Repos')} linkTo="/dashboard/repos" isAdmin>
+            <RepoList repos={repoList} type="public" />
+            <RepoList repos={repoList} type="private" limit={2} />
           </Panel>
 
-          <Panel title="Top Apps" linkTo="/dashboard/apps" isAdmin={true}>
-            <AppList apps={appList} isAdmin={true} />
+          <Panel title={__('Top Apps')} linkTo="/dashboard/apps" isAdmin>
+            <AppList apps={appList} />
           </Panel>
 
-          <Panel title="Latest Clusters" linkTo="/dashboard/clusters" isAdmin={true}>
-            <ClusterList clusters={clusterList} isAdmin={true} />
+          <Panel title={__('Latest Clusters')} linkTo="/dashboard/clusters" isAdmin>
+            <ClusterList clusters={clusterList} />
           </Panel>
         </section>
       </Layout>
@@ -111,17 +112,22 @@ export default class Overview extends React.Component {
     return (
       <Layout>
         <section className={styles.userInfo}>
-          <div className={styles.userName}>Hi, {name}</div>
+          <div className={styles.userName}>{__('greet words', { name })}</div>
           <div className={styles.hello}>Welcome to OpenPitirx, What would you like to do?</div>
         </section>
 
         <section className={styles.listOuter}>
-          <Panel title="Recently Viewed Apps" linkTo="/apps" btnName="Browse" len={appList.length}>
+          <Panel
+            title={__('Recently Viewed Apps')}
+            linkTo="/apps"
+            btnName="Browse"
+            len={appList.length}
+          >
             <AppList apps={appList} />
           </Panel>
 
           <Panel
-            title="My Runtimes"
+            title={__('My Runtimes')}
             linkTo="/dashboard/runtime/create"
             btnName="Create"
             len={runtimeList.length}
@@ -130,7 +136,7 @@ export default class Overview extends React.Component {
           </Panel>
 
           <Panel
-            title="Latest Clusters"
+            title={__('Latest Clusters')}
             linkTo="/dashboard/clusters"
             btnName="Manage"
             len={clusterList.length}

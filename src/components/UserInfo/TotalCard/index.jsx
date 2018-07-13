@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { imgPlaceholder } from 'src/utils';
+import { I18n } from 'react-i18next';
+import { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
@@ -19,13 +21,17 @@ export default class TotalCard extends PureComponent {
     const { icon, name, total, ...rest } = this.props;
 
     return (
-      <div className={styles.totalCard} {...rest}>
-        <div className={styles.name}>
-          <img src={icon} />
-          {name}
-        </div>
-        <div className={styles.number}>{total}</div>
-      </div>
+      <I18n>
+        {() => (
+          <div className={styles.totalCard} {...rest}>
+            <div className={styles.name}>
+              <img src={icon} />
+              {__(name)}
+            </div>
+            <div className={styles.number}>{total}</div>
+          </div>
+        )}
+      </I18n>
     );
   }
 }

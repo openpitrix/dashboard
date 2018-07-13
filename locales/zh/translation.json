@@ -29,16 +29,42 @@
   "Password": "密码",
   "Login OpenPitrix": "登录 OpenPitrix",
 
-  "lang": {
-    "en": "英文",
-    "zh": "中文"
-  },
-
   "Newest": "最新",
-
   "more": "更多..",
 
   "About": "关于",
   "Help": "帮助",
-  "Terms": "案例"
+  "Terms": "案例",
+
+  "Back to link": "← 返回 {{link}}",
+  "Deploy": "部署",
+  "Chart Versions": "Chart版本",
+  "Application Version": "应用版本",
+  "Home": "首页",
+  "Source repository": "代码仓库",
+  "Maintainers": "维护者",
+  "Related": "相关内容",
+
+  "greet words": "你好，{{name}}",
+  "last login time": "上次登录时间 {{last_login}}",
+
+  "role": "角色",
+  "role_admin": "管理员",
+  "role_developer": "开发者",
+  "role_normal": "普通用户",
+
+  "Top Repos": "人气最佳的仓库",
+  "Top Apps": "人气最佳的应用",
+  "Latest Clusters": "最新创建的集群",
+  "My Runtimes": "我的运行时",
+  "Recently Viewed Apps": "最近查看的应用",
+
+  "Public": "公共",
+  "Private": "私有",
+
+  "pg-overview": {
+    "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
+  },
+
+  "Nodes": "节点"
 }
