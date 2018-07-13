@@ -23,11 +23,11 @@ export default class AppDetail extends Component {
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
   }
-    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
-    if (type === 'dot') {
 
   changePicture = (type, number) => {
     const { appStore } = this.props;
+    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
+    if (type === 'dot') {
       appStore.currentPic = number;
     }
     if (type === 'pre' && appStore.currentPic > 2) {

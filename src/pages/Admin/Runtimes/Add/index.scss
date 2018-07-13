@@ -6,9 +6,12 @@ form.createForm {
 
   &>div{
     margin-bottom: 24px;
+    label{
+      margin-bottom: 0;
+    }
   }
   &>.showDiv{
-    margin-bottom: 10px;
+    margin-bottom: 22px;
     .rightShow{
       margin-top: 7px;
     }
@@ -16,7 +19,13 @@ form.createForm {
       color: $text-color;
     }
   }
-
+  .zoneItem{
+    height: 32px;
+    >label{
+      float: left;
+      line-height: 32px;
+    }
+  }
   .name{
     display: inline-block;
     //float: left;
@@ -65,8 +74,11 @@ form.createForm {
     margin-left: 150px;
   }
   .select{
-    width: 86px;
+    width: 183px;
     margin-right: 10px;
+  }
+  .textareaItem{
+    height: 88px;
   }
   .textarea{
     padding: 7px 10px;

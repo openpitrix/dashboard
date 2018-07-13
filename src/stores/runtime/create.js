@@ -7,16 +7,17 @@ export default class RuntimeCreateStore extends Store {
   @observable runtimeId = '';
   @observable name = '';
   @observable provider = 'qingcloud';
-  @observable zone = 'pek3a';
+  @observable zone = '';
+  @observable credential = '';
   @observable description = '';
   @observable runtimeUrl = '';
   @observable accessKey = '';
   @observable secretKey = '';
-  @observable curLabelKey = '';
-  @observable curLabelValue = '';
   @observable labels = [{ label_key: '', label_value: '' }];
+
   @observable runtimeCreated = null;
   @observable isLoading = false;
+  @observable runtimeZones = [];
 
   @action
   changeName = e => {
@@ -29,18 +30,32 @@ export default class RuntimeCreateStore extends Store {
   };
 
   @action
+  changeCredential = e => {
+    this.credential = e.target.value;
+  };
+
+  @action
   changeDescription = e => {
     this.description = e.target.value;
   };
 
   @action
-  changeProvider = provider => {
+  changeProvider = async provider => {
     this.provider = provider;
+    this.zone = '';
+    if (provider !== 'kubernetes') {
+      await this.getRuntimeZone();
+    }
   };
 
   @action
   changeZone = zone => {
     this.zone = zone;
+  };
+
+  @action
+  changeInputZone = e => {
+    this.zone = e.target.value;
   };
 
   @action
@@ -82,24 +97,6 @@ export default class RuntimeCreateStore extends Store {
     }
   };
 
-  /* @action
-  addLabel = () => {
-    if (!(this.curLabelKey && this.curLabelValue)) {
-      return this.showMsg('please input label key and value');
-    }
-    if (_.find(this.labels, { label_key: this.curLabelKey })) {
-      return this.showMsg('label key already exists');
-    }
-
-    this.labels.push({
-      label_key: this.curLabelKey,
-      label_value: this.curLabelValue
-    });
-
-    this.curLabelKey = '';
-    this.curLabelValue = '';
-  };*/
-
   @action
   changeLabelKey = e => {
     this.curLabelKey = e.target.value;
@@ -110,73 +107,111 @@ export default class RuntimeCreateStore extends Store {
     this.curLabelValue = e.target.value;
   };
 
-  /*@action
-  removeLabel = key => {
-    this.labels = this.labels.filter(label => {
-      return label.label_key !== key;
-    });
-  };*/
+  @action
+  getRuntimeZone = async () => {
+    if (this.runtimeUrl && this.accessKey && this.secretKey) {
+      const params = {
+        provider: this.provider,
+        runtime_url: this.runtimeUrl,
+        runtime_credential: JSON.stringify({
+          access_key_id: this.accessKey,
+          secret_access_key: this.secretKey
+        })
+      };
+      await this.fetchRuntimeZones(params);
+    }
+  };
+
+  checkSubmitDate = () => {
+    let result = 'ok',
+      keys = [];
+    const { name, zone, provider, labels, runtimeId } = this;
+    if (_.isEmpty(name)) {
+      result = 'Please input Name!';
+    }
+    if (_.isEmpty(zone)) {
+      result = 'Please select or input Zone!';
+    }
+    if (!runtimeId && provider !== 'kubernetes') {
+      if (_.isEmpty(this.runtimeUrl)) {
+        result = 'Please input URL!';
+      }
+      if (_.isEmpty(this.accessKey)) {
+        result = 'Please input Access Key ID!';
+      }
+      if (_.isEmpty(this.secretKey)) {
+        result = 'Please input Secret Access Key!';
+      }
+    } else if (!runtimeId) {
+      if (_.isEmpty(this.credential)) {
+        result = 'Please input Credential!';
+      }
+    }
+    for (let i = 0; i < labels.length; i++) {
+      let item = labels[i];
+      if (keys.find(key => key === item.label_key)) {
+        result = 'Labels has repeat key!';
+      } else if (item.label_key) {
+        keys.push(item.label_key);
+      }
+      if (item.label_value && _.isEmpty(item.label_key)) {
+        result = 'Labels missing key!';
+      } else if (item.label_key && _.isEmpty(item.label_value)) {
+        result = 'Labels missing value!';
+      }
+    }
+    return result;
+  };
 
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    const { provider, zone, labels } = this;
-
-    const data = getFormData(e.target);
-
-    for (let i = 0; i < this.labels.length; i++) {
-      let item = this.labels[i];
-      if (_.isEmpty(item.label_key)) {
-        return this.showMsg('Labels missing key');
-      } else if (_.isEmpty(item.label_value)) {
-        return this.showMsg('Labels missing value');
+    const checkResult = this.checkSubmitDate();
+    if (checkResult === 'ok') {
+      const { provider, zone, labels } = this;
+      const data = getFormData(e.target);
+      if (provider !== 'kubernetes') {
+        data.runtime_credential = JSON.stringify({
+          access_key_id: this.accessKey,
+          secret_access_key: this.secretKey
+        });
+      } else {
+        //data.runtime_url = 'https://api.qingcloud.com';
       }
-    }
+      data.labels = labels
+        .filter(label => label.label_key)
+        .map(label => [label.label_key, label.label_value].join('='))
+        .join('&');
+      _.extend(data, { provider, zone });
 
-    if (provider === 'qingcloud' || provider === 'aws') {
-      data.runtime_credential = JSON.stringify({
-        access_key_id: this.accessKey,
-        secret_access_key: this.secretKey
-      });
-    } else if (provider === 'kubernetes') {
-      let credential = data.credential;
-      delete data.credential;
-      data.runtime_url = 'https://api.qingcloud.com';
-      data.runtime_credential = credential;
-    }
+      this.isLoading = true;
+      if (this.runtimeId) {
+        delete data.runtime_url;
+        delete data.runtime_credential;
+        _.extend(data, { runtime_id: this.runtimeId });
+        await this.modifyRuntime(data);
+      } else {
+        await this.create(data);
+      }
 
-    data.labels = labels
-      .map(label => {
-        return [label.label_key, label.label_value].join('=');
-      })
-      .join('&');
+      if (_.get(this, 'runtimeCreated.runtime_id')) {
+        if (this.runtimeId) {
+          this.showMsg('Modify runtime successfully');
+        } else {
+          this.showMsg('Create runtime successfully');
+        }
+      } else {
+        let { errDetail } = this.runtimeCreated;
+        this.showMsg(errDetail);
+      }
 
-    _.extend(data, { provider, zone });
-
-    this.isLoading = true;
-    if (this.runtimeId) {
-      delete data.runtime_url;
-      delete data.runtime_credential;
-      _.extend(data, { runtime_id: this.runtimeId });
-      await this.modifyRuntime(data);
+      // disable re-submit form in 2 sec
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 2000);
     } else {
-      await this.create(data);
+      this.showMsg(checkResult);
     }
-
-    if (_.get(this, 'runtimeCreated.runtime')) {
-      this.showMsg('Create runtime successfully');
-    } else if (_.get(this, 'runtimeCreated.runtime_id')) {
-      this.showMsg('Modify runtime successfully');
-      this.runtimeCreated.runtime = this.runtimeCreated.runtime_id;
-    } else {
-      let { errDetail } = this.runtimeCreated;
-      this.showMsg(errDetail);
-    }
-
-    // disable re-submit form in 2 sec
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
   };
 
   @action
@@ -184,10 +219,22 @@ export default class RuntimeCreateStore extends Store {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.runtimeCreated = await this.request.post('runtimes', params);
   }
+
   @action
   async modifyRuntime(params) {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.runtimeCreated = await this.request.patch('runtimes', params);
+  }
+
+  @action
+  async fetchRuntimeZones(params) {
+    const result = await this.request.get(`runtimes/zones`, params);
+    this.runtimeZones = _.get(result, 'zone', []);
+    if (this.runtimeZones.length > 0) {
+      this.showMsg('Get zone data success!');
+    } else {
+      his.showMsg('Get zone data fail!');
+    }
   }
 
   @action
@@ -196,13 +243,12 @@ export default class RuntimeCreateStore extends Store {
     this.runtimeId = '';
     this.name = '';
     this.provider = 'qingcloud';
-    this.zone = 'pek3a';
     this.runtimeUrl = '';
-    this.description = '';
     this.accessKey = '';
     this.secretKey = '';
-    this.curLabelKey = '';
-    this.curLabelValue = '';
+    this.zone = '';
+    this.credential = '';
+    this.description = '';
     this.labels = [{ label_key: '', label_value: '' }];
     this.runtimeCreated = null;
     this.isLoading = false;
