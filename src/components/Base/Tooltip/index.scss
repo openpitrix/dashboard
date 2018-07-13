@@ -7,10 +7,16 @@ $bgcolor: $text-color;
 
 .target {
   cursor: pointer;
+  :global{
+    .icon{
+      margin-left: 12px;
+      font-size: 12px;
+    }
+  }
 }
 
 .popper {
-  padding: 4px 8px;
+  padding: 8px 0;
   border-radius: 3px;
   font-size: $size-small;
   line-height: 1.5;
@@ -83,7 +89,7 @@ $bgcolor: $text-color;
         border-width: 6px;
         border-color: transparent transparent transparent $bgcolor;
         z-index: 1;
-      }      
+      }
     }
   }
   &[data-placement^="right"] {
@@ -97,7 +103,7 @@ $bgcolor: $text-color;
         border-width: 6px;
         border-color: transparent $bgcolor transparent transparent;
         z-index: 1;
-      }    
-    }    
+      }
+    }
   }
 }

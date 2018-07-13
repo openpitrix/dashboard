@@ -44,7 +44,8 @@ export default class Categories extends Component {
   renderOpsModal = () => {
     const { categoryStore } = this.props;
     const { isModalOpen, hideModal, handleCate } = categoryStore;
-    let modalTitle = '',
+    let width = 500,
+      modalTitle = '',
       modalBody = null,
       onSubmit = () => {};
 
@@ -57,6 +58,7 @@ export default class Categories extends Component {
     if (handleCate.action === 'modify_cate' || handleCate.action === 'create_cate') {
       const { category, changeName, changeDescription } = categoryStore;
       modalTitle = 'Create Category';
+      width = 600;
 
       if (category && category.category_id) {
         modalTitle = 'Modify Category';
@@ -74,7 +76,7 @@ export default class Categories extends Component {
               autoFocus
               defaultValue={category.name}
               onChange={changeName}
-              maxlength="50"
+              maxLength="50"
             />
           </div>
           <div className={styles.inputItem}>
@@ -84,7 +86,7 @@ export default class Categories extends Component {
               name="description"
               defaultValue={category.description}
               onChange={changeDescription}
-              maxlength="500"
+              maxLength="500"
             />
           </div>
         </Fragment>
@@ -94,7 +96,7 @@ export default class Categories extends Component {
     return (
       <Dialog
         title={modalTitle}
-        width={600}
+        width={width}
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={onSubmit}

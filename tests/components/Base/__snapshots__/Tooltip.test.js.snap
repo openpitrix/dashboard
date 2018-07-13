@@ -14,9 +14,6 @@ exports[`Base/Tooltip basic render 1`] = `
     style="position:absolute;pointer-events:none;opacity:0"
   >
     test
-    <span
-      class="arrow pi-tooltip-popper_arrow"
-    />
   </div>
 </div>
 `;

@@ -88,7 +88,7 @@ export default class Repos extends Component {
               value={searchWord}
               onSearch={fetchQueryRepos}
               onClear={onClearSearch}
-              maxlength="50"
+              maxLength="50"
             />
             <Link to="/dashboard/repo/create">
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">

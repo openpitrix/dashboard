@@ -87,6 +87,12 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  showDeleteApp = () => {
+    this.setHandleType('deleteApp');
+    this.showModal();
+  };
+
+  @action
   async handleCreateVersion(e, params) {
     const data = getFormData(e.target);
     const result = await this.create(assign(data, params));

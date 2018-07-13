@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
-import Checkbox from 'components/Base/Checkbox';
-import Radio from 'components/Base/Radio';
+import { Checkbox, Radio, Popover, Tooltip, Icon } from 'components/Base';
+import Status from 'components/Status';
 import Loading from 'components/Loading';
 import styles from './index.scss';
 
@@ -16,7 +16,8 @@ export default class Table extends React.Component {
     columns: PropTypes.array,
     pagination: PropTypes.bool,
     rowSelection: PropTypes.object,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool,
+    filterList: PropTypes.array
   };
 
   static defaultProps = {
@@ -230,12 +231,49 @@ export default class Table extends React.Component {
     return tableColumns;
   };
 
+  renderFilterContent = filter => {
+    return (
+      <ul className="filterContent">
+        {filter.conditions.map(condition => (
+          <li
+            key={condition.value}
+            onClick={() => filter.onChangeFilter(condition.value)}
+            className={classNames({ active: condition.value === filter.selectValue })}
+          >
+            {condition.name}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  renderFilterColumn = columns => {
+    const { filterList } = this.props;
+    if (filterList) {
+      columns = columns.map(column => {
+        const newColumn = { ...column };
+        const filter = filterList.find(element => element.key === newColumn.key);
+        if (filter) {
+          newColumn.title = (
+            <Popover content={this.renderFilterContent(filter)}>
+              {newColumn.title}
+              <Icon name="arrow-down" />
+            </Popover>
+          );
+        }
+        return newColumn;
+      });
+    }
+    return columns;
+  };
+
   renderPagination = () => {};
 
   renderTable = () => {
     const { ...restProps } = this.props;
     const data = this.getTableData();
     let columns = this.renderRowSelection();
+    columns = this.renderFilterColumn(columns);
     columns = columns.map((column, i) => {
       const newColumn = { ...column };
       newColumn.key = column.key || column.dataIndex || i;

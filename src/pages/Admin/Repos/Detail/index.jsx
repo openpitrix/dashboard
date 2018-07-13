@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
@@ -24,7 +24,7 @@ import styles from './index.scss';
 export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore, clusterStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await repoStore.fetchRepoEvents(repoId);
+    await repoStore.fetchRepoEvents({ repo_id: repoId });
     await appStore.fetchAll({
       repo_id: repoId,
       status: ['active', 'deleted']
@@ -51,10 +51,42 @@ export default class RepoDetail extends Component {
   };
 
   renderHandleMenu = id => {
+    const { deleteRepoOpen } = this.props.repoStore;
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
+        <span onClick={() => deleteRepoOpen(id)}>Delete Repo</span>
       </div>
+    );
+  };
+
+  deleteRepoModal = () => {
+    const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
+    return (
+      <Modal
+        width={500}
+        title="Delete Repo"
+        visible={showDeleteRepo}
+        hideFooter
+        onCancel={deleteRepoClose}
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.noteWord}>Are you sure delete this Repo?</div>
+          <div className={styles.operation}>
+            <Button type="default" onClick={deleteRepoClose}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                deleteRepo(this.props.repoStore);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </div>
+      </Modal>
     );
   };
 
@@ -192,7 +224,7 @@ export default class RepoDetail extends Component {
     let columns = [];
     let searchTip = 'Search App Name';
     let totalCount = 0;
-    let onSearch, onClearSearch, onRefresh, changeTable, isLoading;
+    let onSearch, onClearSearch, onRefresh, changeTable, isLoading, onChangeStatus, selectStatus;
     let selectors = [];
 
     switch (curTagName) {
@@ -226,6 +258,14 @@ export default class RepoDetail extends Component {
             offset: (current - 1) * appStore.pageSize
           });
         };
+        onChangeStatus = async status => {
+          appStore.selectStatus = appStore.selectStatus === status ? '' : status;
+          await appStore.fetchAll({
+            repo_id: repoDetail.repo_id,
+            status: appStore.selectStatus
+          });
+        };
+        selectStatus = appStore.selectStatus;
         break;
       case 'Runtimes':
         data = runtimesData;
@@ -258,6 +298,14 @@ export default class RepoDetail extends Component {
             offset: (current - 1) * runtimeStore.pageSize
           });
         };
+        onChangeStatus = async status => {
+          runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
+          await runtimeStore.fetchAll({
+            repo_id: repoDetail.repo_id,
+            status: runtimeStore.selectStatus
+          });
+        };
+        selectStatus = runtimeStore.selectStatus;
         break;
       case 'Events':
         data = eventsData;
@@ -265,8 +313,28 @@ export default class RepoDetail extends Component {
         totalCount = eventsData.length;
         isLoading = repoStore.isLoading;
         searchTip = 'Search Events';
+        onChangeStatus = async status => {
+          repoStore.eventStatus = repoStore.eventStatus === status ? '' : status;
+          await repoStore.fetchRepoEvents({
+            repo_id: repoDetail.repo_id,
+            status: repoStore.eventStatus
+          });
+        };
+        selectStatus = repoStore.eventStatus;
         break;
     }
+
+    let filterList = [
+      {
+        key: 'status',
+        conditions:
+          curTagName === 'Events'
+            ? [{ name: 'Successful', value: 'successful' }, { name: 'Deleted', value: 'deleted' }]
+            : [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        onChangeFilter: onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
 
     return (
       <Layout>
@@ -315,11 +383,13 @@ export default class RepoDetail extends Component {
                 dataSource={data}
                 className="detailTab"
                 isLoading={isLoading}
+                filterList={filterList}
               />
             </div>
             <Pagination onChange={changeTable} total={totalCount} />
           </div>
         </div>
+        {this.deleteRepoModal()}
       </Layout>
     );
   }

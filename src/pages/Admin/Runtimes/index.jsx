@@ -70,7 +70,9 @@ export default class Runtimes extends Component {
       showDeleteRuntime,
       runtimeIds,
       selectedRowKeys,
-      onChangeSelect
+      onChangeSelect,
+      onChangeStatus,
+      selectStatus
     } = runtimeStore;
 
     const columns = [
@@ -145,6 +147,15 @@ export default class Runtimes extends Component {
       onChange: onChangeSelect
     };
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        onChangeFilter: onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} />
@@ -168,7 +179,7 @@ export default class Runtimes extends Component {
                 value={searchWord}
                 onSearch={onSearch}
                 onClear={onClearSearch}
-                maxlength="50"
+                maxLength="50"
               />
               <Link to={`/dashboard/runtime/create`}>
                 <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
@@ -187,6 +198,7 @@ export default class Runtimes extends Component {
             dataSource={data}
             rowSelection={rowSelection}
             isLoading={isLoading}
+            filterList={filterList}
           />
         </div>
 

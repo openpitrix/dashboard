@@ -2,29 +2,23 @@ import { extendObservable, observable, action } from 'mobx';
 import { isEmpty, isObject, pick } from 'lodash';
 import request from 'lib/request';
 
-const pageSize = 10;
-const defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
-
 export default class Store {
-  constructor(initialState = {}, branch) {
-    const state = branch ? initialState[branch] : initialState;
+  pageSize = 10;
 
+  constructor(initialState, branch) {
     extendObservable(this, {
-      notifyMsg: observable.box(''),
-      ...state
+      notifyMsg: observable.box('')
     });
+
+    if (initialState) {
+      extendObservable(this, branch ? initialState[branch] : initialState);
+    }
   }
 }
 
 const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
-  get pageSize() {
-    return pageSize;
-  },
-  get defaultStatus() {
-    return defaultStatus;
-  },
   @action.bound
   showMsg: function(msg) {
     this.notifyMsg = msg;

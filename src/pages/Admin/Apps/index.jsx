@@ -123,7 +123,9 @@ export default class Apps extends Component {
       showDeleteApp,
       appIds,
       selectedRowKeys,
-      onChangeSelect
+      onChangeSelect,
+      onChangeStatus,
+      selectStatus
     } = this.props.appStore;
     const { repos } = this.props.repoStore;
     const imgPhd = imgPlaceholder();
@@ -206,6 +208,15 @@ export default class Apps extends Component {
       onChange: onChangeSelect
     };
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        onChangeFilter: onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={repos.slice()} />
@@ -230,7 +241,8 @@ export default class Apps extends Component {
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
-                  maxlength="50"
+                  maxLength="50"
+                  max
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
@@ -244,6 +256,7 @@ export default class Apps extends Component {
               dataSource={apps.toJSON()}
               rowSelection={rowSelection}
               isLoading={isLoading}
+              filterList={filterList}
             />
           </div>
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
