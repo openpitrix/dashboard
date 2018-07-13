@@ -26,6 +26,8 @@ export default class AppStore extends Store {
   @observable defaultStatus = ['active'];
   @observable deleteResult = {};
 
+  @observable currentPic = 1;
+
   // menu actions logic
   @observable
   handleApp = {

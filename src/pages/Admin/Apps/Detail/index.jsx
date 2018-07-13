@@ -38,7 +38,6 @@ export default class AppDetail extends Component {
 
   componentDidUpdate() {
     const { appDetail, deleteResult } = this.props.appStore;
-    console.log(appDetail.status, deleteResult);
     if (appDetail.status === 'deleted' && deleteResult.app_id) {
       setTimeout(() => {
         history.back();

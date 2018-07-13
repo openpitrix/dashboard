@@ -107,6 +107,7 @@ export default class RuntimeDetail extends Component {
         render: item => <TimeShow time={item.status_time} />
       }
     ];
+
     const filterList = [
       {
         key: 'status',
