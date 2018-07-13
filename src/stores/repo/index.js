@@ -14,6 +14,8 @@ export default class RepoStore extends Store {
   @observable curTagName = 'Apps';
   @observable searchWord = '';
   @observable detailSearch = '';
+  @observable defaultStatus = ['active'];
+  @observable eventStatus = '';
 
   @action
   fetchAll = async (params = {}) => {
@@ -49,20 +51,20 @@ export default class RepoStore extends Store {
   };
 
   @action
-  async fetchRepoDetail(repoId) {
+  fetchRepoDetail = async repoId => {
     this.isLoading = true;
     const result = await this.request.get(`repos`, { repo_id: repoId });
     this.repoDetail = get(result, 'repo_set[0]', {});
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetchRepoEvents(repoId) {
+  fetchRepoEvents = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get(`repo_events`, { repo_id: repoId });
-    this.repoEvents = get(result, 'repo_event_set', {});
+    const result = await this.request.get(`repo_events`, params);
+    this.repoEvents = get(result, 'repo_event_set', []);
     this.isLoading = false;
-  }
+  };
 
   @action
   deleteRepo = async () => {

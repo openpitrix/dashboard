@@ -56,7 +56,9 @@ export default class RuntimeDetail extends Component {
       onSearch,
       onClearSearch,
       onRefresh,
-      changePagination
+      changePagination,
+      onChangeStatus,
+      selectStatus
     } = clusterStore;
     const { apps } = this.props.appStore;
 
@@ -105,6 +107,23 @@ export default class RuntimeDetail extends Component {
         render: item => <TimeShow time={item.status_time} />
       }
     ];
+
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: 'Active', value: 'active' },
+          { name: 'Stopped', value: 'stopped' },
+          { name: 'Ceased', value: 'ceased' },
+          { name: 'Pending', value: 'pending' },
+          { name: 'Suspended', value: 'suspended' },
+          { name: 'Deleted', value: 'deleted' }
+        ],
+        onChangeFilter: onChangeStatus,
+        selectValue: selectStatus
+      }
+    ];
+
     const tags = [{ id: 1, name: 'Clusters' }];
     const curTag = 'Clusters';
 
@@ -135,7 +154,7 @@ export default class RuntimeDetail extends Component {
                   value={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}
-                  maxlength="50"
+                  maxLength="50"
                 />
                 <Button className={styles.buttonRight} onClick={onRefresh}>
                   <Icon name="refresh" />
@@ -146,6 +165,7 @@ export default class RuntimeDetail extends Component {
                 dataSource={clusters.toJSON()}
                 className="detailTab"
                 isLoading={isLoading}
+                filterList={filterList}
               />
             </div>
             <ul />

@@ -12,53 +12,56 @@ export default class Tooltip extends React.Component {
     className: PropTypes.string,
     trigger: PropTypes.string,
     placement: PropTypes.string,
-    content: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.element,
-    ]),
+    content: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
     visible: PropTypes.bool,
     onVisibleChange: PropTypes.func,
+    isShowArrow: PropTypes.bool
   };
 
   static defaultProps = {
     prefixCls: 'pi-tooltip',
     trigger: 'hover',
-    placement: 'top',
+    placement: 'bottom',
     visible: false,
-    onVisibleChange() {},
+    onVisibleChange() {}
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      visible: props.visible,
+      visible: props.visible
     };
     this.trigger = props.trigger;
   }
 
   showPopper = () => {
     this.setState({ visible: true }, this.props.onVisibleChange(true, this.target));
-  }
+  };
 
   hidePopper = () => {
     this.setState({ visible: false }, this.props.onVisibleChange(false, this.target));
-  }
+  };
 
   handleTogglePopper = () => {
     this.state.visible ? this.hidePopper() : this.showPopper();
-  }
+  };
 
-  handleDocumentClick = (e) => {
+  handleDocumentClick = e => {
     const rootNode = findDOMNode(this);
 
-    if (!rootNode || rootNode.contains(e.target)
-        || !this.target || this.target.contains(e.target)
-        || !this.popper || this.popper.contains(e.target)) {
+    if (
+      !rootNode ||
+      rootNode.contains(e.target) ||
+      !this.target ||
+      this.target.contains(e.target) ||
+      !this.popper ||
+      this.popper.contains(e.target)
+    ) {
       return;
     }
     this.hidePopper();
-  }
+  };
 
   bindEvent = () => {
     const target = this.target;
@@ -75,7 +78,7 @@ export default class Tooltip extends React.Component {
       target.addEventListener('click', this.handleTogglePopper);
       document.addEventListener('click', this.handleDocumentClick);
     }
-  }
+  };
 
   removeEvent = () => {
     const target = this.target;
@@ -92,7 +95,7 @@ export default class Tooltip extends React.Component {
       target.removeEventListener('mouseenter', this.showPopper);
       target.removeEventListener('mouseleave', this.hidePopper);
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.visible !== this.state.visible) {
@@ -109,28 +112,31 @@ export default class Tooltip extends React.Component {
   }
 
   render() {
-    const { prefixCls, className, content, placement, children } = this.props;
+    const { prefixCls, className, content, placement, children, isShowArrow } = this.props;
     const visible = this.state.visible;
 
     return (
-      <Manager
-        className={classNames(styles.tooltip, className)}
-      >
+      <Manager className={classNames(styles.tooltip, className)}>
         <Target
           className={styles.target}
-          innerRef={c => { this.target = c; }}
+          innerRef={c => {
+            this.target = c;
+          }}
         >
           {children}
         </Target>
         <Popper
           className={classNames(styles.popper, `${prefixCls}-popper`, {
-            [styles.active]: visible,
+            [styles.active]: visible
           })}
           placement={placement}
-          innerRef={c => { this.popper = c; }}
+          innerRef={c => {
+            this.popper = c;
+          }}
         >
           {content}
-          <Arrow className={classNames(styles.arrow, `${prefixCls}-popper_arrow`)} />
+          {isShowArrow &&
+            content && <Arrow className={classNames(styles.arrow, `${prefixCls}-popper_arrow`)} />}
         </Popper>
       </Manager>
     );

@@ -10,6 +10,7 @@
 ## Install
 
 If you already installed `git`, setting up this repo is very simple:
+
 ```shell
 git clone --depth 1 https://github.com/openpitrix/dashboard.git
 cd dashboard
@@ -17,17 +18,20 @@ yarn && yarn dev
 ```
 
 If you prefer to use `docker`:
+
 ```shell
 docker pull openpitrix/dashboard
 docker run --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
 ```
 
 If you prefer to use `docker-compose`:
+
 ```shell
 docker-compose up --build
 ```
 
 We also prepared a Makefile, if you installed `make`:
+
 ```shell
 make build
 make dev
@@ -38,11 +42,13 @@ make dev
 ## Build
 
 For `development` mode:
+
 ```shell
 yarn dev
 ```
 
 For `production` mode:
+
 ```shell
 yarn prod
 ```
@@ -50,16 +56,19 @@ yarn prod
 ## Test
 
 For `unit` and `integrate` test:
+
 ```shell
 yarn test
 ```
 
 For `e2e` test:
+
 ```shell
 yarn e2e
 ```
 
 ## Architecture
+
 See: [arch doc](./docs/arch.md)
 
 ## Join the community

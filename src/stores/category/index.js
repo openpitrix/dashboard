@@ -18,22 +18,22 @@ export default class CategoryStore extends Store {
   };
 
   @action
-  async fetchAll() {
+  fetchAll = async () => {
     this.isLoading = true;
     const result = await this.request.get('categories');
     this.categories = get(result, 'category_set', []);
     this.isLoading = false;
-  }
+  };
 
   @action
-  async fetch(category_id) {
+  fetch = async category_id => {
     this.isLoading = true;
     const result = await this.request.get(`categories`, { category_id: category_id });
     this.category = get(result, 'category_set[0]', {});
     this.isLoading = false;
-  }
+  };
 
-  postHandleResult(result) {
+  postHandleResult = result => {
     this.postHandleApi(result, async () => {
       this.hideModal();
 
@@ -43,43 +43,43 @@ export default class CategoryStore extends Store {
         await this.fetchAll();
       }
     });
-  }
+  };
 
   @action
-  async create(params) {
+  create = async params => {
     this.isLoading = true;
     const result = await this.request.post('categories', params);
     this.isLoading = false;
     this.postHandleResult(result);
-  }
+  };
 
   @action
-  async modify(params) {
+  modify = async params => {
     this.isLoading = true;
     const result = await this.request.patch('categories', params);
     this.isLoading = false;
     this.postHandleResult(result);
-  }
+  };
 
   @action
-  async remove(category_ids) {
+  remove = async category_ids => {
     category_ids = category_ids || [this.category.category_id];
     this.isLoading = true;
     const result = await this.request.delete('categories', { category_id: category_ids });
     this.category = {};
     this.isLoading = false;
     this.postHandleResult(result);
-  }
+  };
 
   @action.bound
-  showModal() {
+  showModal = () => {
     this.isModalOpen = true;
-  }
+  };
 
   @action.bound
-  hideModal() {
+  hideModal = () => {
     this.isModalOpen = false;
-  }
+  };
 
   setAction(action) {
     this.handleCate.action = action;
@@ -96,7 +96,7 @@ export default class CategoryStore extends Store {
   };
 
   @action
-  createOrModify(ev) {
+  createOrModify = ev => {
     let method = this.category.category_id ? 'modify' : 'create';
     let params = {
       name: this.name,
@@ -111,7 +111,7 @@ export default class CategoryStore extends Store {
       this.category = {};
     }
     this[method](params);
-  }
+  };
 
   // fixme
   @action

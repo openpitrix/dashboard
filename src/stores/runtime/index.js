@@ -17,6 +17,8 @@ export default class RuntimeStore extends Store {
   @observable operateType = '';
   @observable runtimeIds = [];
   @observable selectedRowKeys = [];
+  @observable selectStatus = '';
+  @observable defaultStatus = ['active'];
 
   @observable
   handleRuntime = {
@@ -159,6 +161,12 @@ export default class RuntimeStore extends Store {
     this.searchWord = '';
     this.selectedRowKeys = [];
     this.runtimeIds = [];
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll({ status: this.selectStatus });
   };
 }
 

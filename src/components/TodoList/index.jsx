@@ -37,7 +37,7 @@ export default class TodoList extends PureComponent {
                 className={styles.inputSmall}
                 placeholder="Key"
                 value={label.label_key}
-                maxlength="30"
+                maxLength="30"
                 onChange={e => {
                   this.changeLabel(e, index, 'key');
                 }}
@@ -46,7 +46,7 @@ export default class TodoList extends PureComponent {
                 className={styles.inputSmall}
                 placeholder="Value"
                 value={label.label_value}
-                maxlength="30"
+                maxLength="30"
                 onChange={e => {
                   this.changeLabel(e, index, 'value');
                 }}
