@@ -1,7 +1,7 @@
 @import "~scss/variables";
 
 $line-height: $footer-height - 1;
-$fg-color: #a8a0b1;
+$fg-color: #78839e;
 
 .footer {
   position: static;
@@ -41,5 +41,14 @@ $fg-color: #a8a0b1;
         }
       }
     }
+  }
+
+  .dot {
+    display:inline-block;
+    height: 3px;
+    width: 3px;
+    background-color: $fg-color;
+    border-radius: 50%;
+    vertical-align: middle;
   }
 }

@@ -2,10 +2,12 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-
+import trans, { __ } from 'hoc/trans';
 import { ucfirst } from 'utils/string';
+
 import styles from './index.scss';
 
+@trans()
 export default class RepoList extends PureComponent {
   static propTypes = {
     repos: PropTypes.array,
@@ -23,6 +25,7 @@ export default class RepoList extends PureComponent {
     const { repos, type, limit } = this.props;
     let filterRepos = repos,
       totalName = 'Clusters';
+
     if (type !== 'runtime') {
       filterRepos = repos.filter(repo => repo.visibility === type).slice(0, limit);
       totalName = 'Apps';
@@ -30,7 +33,7 @@ export default class RepoList extends PureComponent {
 
     return (
       <Fragment>
-        {type !== 'runtime' && <div className={styles.type}>{ucfirst(type)}</div>}
+        {type !== 'runtime' && <div className={styles.type}>{__(ucfirst(type))}</div>}
         <ul
           className={classNames(
             styles.reposList,
@@ -52,7 +55,7 @@ export default class RepoList extends PureComponent {
                   <span className={styles.name}>{item.name}</span>
                   <span className={styles.total}>
                     <span className={styles.number}>{total || 0}</span>
-                    {totalName}
+                    {__(totalName)}
                   </span>
                 </Link>
               </li>

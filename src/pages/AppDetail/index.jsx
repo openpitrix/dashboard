@@ -8,8 +8,10 @@ import classnames from 'classnames';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import Button from 'components/Base/Button';
 import { getParseDate, imgPlaceholder } from 'utils';
+import trans, { __ } from 'hoc/trans';
 import styles from './index.scss';
 
+@trans()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore
@@ -21,11 +23,11 @@ export default class AppDetail extends Component {
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
   }
+    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
+    if (type === 'dot') {
 
   changePicture = (type, number) => {
     const { appStore } = this.props;
-    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
-    if (type === 'dot') {
       appStore.currentPic = number;
     }
     if (type === 'pre' && appStore.currentPic > 2) {
@@ -46,7 +48,7 @@ export default class AppDetail extends Component {
     const picLeft = (1 - appStore.currentPic) * 276 + 'px';
 
     return (
-      <Layout noTabs={true}>
+      <Layout noTabs>
         <div className={styles.wrapper}>
           <BackBtn label="catalog" link="/apps" />
           <div className={styles.detail}>
@@ -132,11 +134,11 @@ export default class AppDetail extends Component {
               <div className={styles.detailCard}>
                 <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
                   <Button className={styles.deployBtn} type="primary">
-                    Deploy
+                    {__('Deploy')}
                   </Button>
                 </Link>
                 <div className={styles.versions}>
-                  <p>Chart Versions</p>
+                  <p>{__('Chart Versions')}</p>
                   <ul>
                     {appVersions.map(version => (
                       <li key={version.version_id}>
@@ -150,25 +152,25 @@ export default class AppDetail extends Component {
               </div>
               <div className={styles.detailCard}>
                 <div className={styles.item}>
-                  <div className={styles.title}>Application Version</div>
+                  <div className={styles.title}>{__('Application Version')}</div>
                   <div className={styles.value}>
                     {appDetail.latest_app_version && appDetail.latest_app_version.name}
                   </div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>Home</div>
+                  <div className={styles.title}>{__('Home')}</div>
                   <div className={styles.value}>{appDetail.home}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>Source repository</div>
+                  <div className={styles.title}>{__('Source repository')}</div>
                   <div className={styles.value}>{appDetail.sources}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>Maintainers</div>
+                  <div className={styles.title}>{__('Maintainers')}</div>
                   <div className={styles.value}>{appDetail.maintainers}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>Related</div>
+                  <div className={styles.title}>{__('Related')}</div>
                   <div className={styles.value} />
                 </div>
               </div>

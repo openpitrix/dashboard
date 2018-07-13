@@ -39,6 +39,11 @@ jest.mock('react-i18next', () => ({
   }
 }));
 
+jest.mock('i18next', () => ({
+  t: () => '',
+  exists: () => false
+}));
+
 // attach helpers to global
 global.React = React;
 global.mount = mount;

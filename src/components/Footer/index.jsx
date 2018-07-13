@@ -1,8 +1,21 @@
 import React, { PureComponent } from 'react';
+import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
+@trans()
 export default class Footer extends PureComponent {
+  getCurrentLocale = () => {
+    return typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
+  };
+
+  changeLocale = (lang, e) => {
+    e.preventDefault();
+    if (this.getCurrentLocale() !== lang) {
+      this.props.i18n.changeLanguage(lang);
+    }
+  };
+
   render() {
     return (
       <div className={styles.footer}>
@@ -12,15 +25,28 @@ export default class Footer extends PureComponent {
           </span>
           <ul className={styles.terms}>
             <li>
-              <a href="javascript:;">About</a>
+              <a href="#">{__('About')}</a>
             </li>
             <li>
-              <a href="javascript:;">Help</a>
+              <a href="#">{__('Help')}</a>
             </li>
             <li>
-              <a href="javascript:;">Terms</a>
+              <a href="#">{__('Terms')}</a>
             </li>
             <li className={styles.copyright}>OpenPitrix &copy; 2018</li>
+            <li>
+              <a href="#" onClick={this.changeLocale.bind(null, 'zh')}>
+                中文
+              </a>
+            </li>
+            <li>
+              <span className={styles.dot} />
+            </li>
+            <li>
+              <a href="#" onClick={this.changeLocale.bind(null, 'en')}>
+                English
+              </a>
+            </li>
           </ul>
         </div>
       </div>

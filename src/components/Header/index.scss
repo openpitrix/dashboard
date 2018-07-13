@@ -1,5 +1,7 @@
 @import "~scss/variables";
 
+$profile-hover-color: #efe6f8;
+
 .header {
   position: fixed;
   top: 0;
@@ -38,7 +40,6 @@
       color: rgba(#ffffff, 0.7);
       font-weight: 400;
       font-size: $size-normal;
-      border: none;
       border-radius: 16px;
       border: solid 1px rgba(#ffffff, 0.1);
       background-color: rgba(#ffffff, 0.1);
@@ -68,19 +69,24 @@
       }
     }
 
-    .translation {
-      float: right;
-      margin-left: 10px;
-      color: #fff;
-      .transMenu {
-        .locale {
-          line-height: 1.2em;
-          padding: 5px;
-          a{
-            display: inline-block;
-            font-size: 12px;
-            width: 100%;
-            color: $third-text-color;
+    .profiles {
+      //width: 120px;
+      min-width: 120px;
+      margin-left: -70px;
+
+      .profileItem {
+        line-height: 24px;
+        height: 32px;
+        padding: 0;
+        a{
+          display: inline-block;
+          font-size: 14px;
+          line-height:24px;
+          width: 100%;
+          color: $third-text-color;
+          border-radius: 0;
+          &:hover {
+            background: $profile-hover-color;
           }
         }
       }
@@ -88,8 +94,9 @@
   }
 }
 
-.darkHeader {
+.lightHeader {
   background-image: none !important;
+
   .menus, .locale {
     .translation {
       color: rgba($title-color, 0.8);
@@ -101,13 +108,17 @@
       }
     }
   }
+
+  .toggleBtn {
+    line-height: 20px;
+    color: $third-text-color;
+    border-color: $border-dark
+  }
+
 }
 
 .toggleBtn {
-  color: $third-text-color;
-  background: #fff;
-  border-color: $border-dark
-}
-.loginButton button{
-  line-height: 16px;
+  color: #fff;
+  opacity: .9;
+  cursor: pointer;
 }

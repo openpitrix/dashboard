@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { getPastTime, imgPlaceholder } from 'utils';
+import trans, { __ } from 'hoc/trans';
+
 import styles from './index.scss';
 
+@trans()
 export default class ClusterList extends PureComponent {
   static propTypes = {
     clusters: PropTypes.array,
@@ -15,23 +18,24 @@ export default class ClusterList extends PureComponent {
   render() {
     const { clusters, isAdmin } = this.props;
     const imgPhd = imgPlaceholder(20);
+
     return (
       <ul className={classNames(styles.clusterList, { [styles.normalList]: !isAdmin })}>
-        {clusters.map(data => (
-          <li key={data.cluster_id}>
-            <img className={styles.icon} src={data.icon || imgPhd} />
+        {clusters.map(cluster => (
+          <li key={cluster.cluster_id}>
+            <img className={styles.icon} src={cluster.icon || imgPhd} />
             <div className={styles.word}>
-              <Link className={styles.name} to={`/dashboard/cluster/${data.cluster_id}`}>
-                {data.name}
+              <Link className={styles.name} to={`/dashboard/cluster/${cluster.cluster_id}`}>
+                {cluster.name}
               </Link>
               <div className={styles.detail}>
-                <span className={styles.description} title={data.description}>
-                  {data.description}&nbsp;
+                <span className={styles.description} title={cluster.description}>
+                  {cluster.description}&nbsp;
                 </span>
                 <span className={styles.nodes}>
-                  {(data.cluster_node_set && data.cluster_node_set.length) || 0} Nodes
+                  {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {__('Nodes')}
                 </span>
-                <span className={styles.time}>{getPastTime(data.status_time)}</span>
+                <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
               </div>
             </div>
           </li>

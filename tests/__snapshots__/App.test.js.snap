@@ -3,7 +3,7 @@
 exports[`<App/> basic render 1`] = `
 Array [
   <div
-    class="header header darkHeader"
+    class="header header lightHeader"
   >
     <div
       class="wrapper"
@@ -24,54 +24,10 @@ Array [
       >
         <a
           aria-current="false"
-          href="/apps"
-        />
-        <a
-          aria-current="false"
-          href="/dashboard"
-        />
-        <a
-          aria-current="false"
           href="/login"
-        />
-        <div
-          class="translation dropdown"
         >
-          <span
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="dropdown-toggle"
-            data-toggle="dropdown"
-            style="cursor:pointer"
-          >
-            <span
-              class="sr-only"
-            >
-              Toggle Dropdown
-            </span>
-          </span>
-          <div
-            aria-hidden="true"
-            class="transMenu dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            <div
-              class="locale"
-            >
-              <a
-                href="#"
-              />
-            </div>
-            <div
-              class="locale"
-            >
-              <a
-                href="#"
-              />
-            </div>
-          </div>
-        </div>
+          Sign In
+        </a>
       </div>
     </div>
   </div>,
@@ -98,21 +54,21 @@ Array [
       >
         <li>
           <a
-            href="javascript:;"
+            href="#"
           >
             About
           </a>
         </li>
         <li>
           <a
-            href="javascript:;"
+            href="#"
           >
             Help
           </a>
         </li>
         <li>
           <a
-            href="javascript:;"
+            href="#"
           >
             Terms
           </a>
@@ -121,6 +77,25 @@ Array [
           class="copyright"
         >
           OpenPitrix © 2018
+        </li>
+        <li>
+          <a
+            href="#"
+          >
+            中文
+          </a>
+        </li>
+        <li>
+          <span
+            class="dot"
+          />
+        </li>
+        <li>
+          <a
+            href="#"
+          >
+            English
+          </a>
         </li>
       </ul>
     </div>
