@@ -40,7 +40,7 @@ module.exports = async (ctx, next) => {
   try {
     let components = null;
 
-    if (!isDev && false) {
+    if (!isDev) {
       renderToString(
         <I18nextProvider i18n={i18n}>
           <Provider rootStore={ctx.store} sessInfo={sessInfo}>
