@@ -5,9 +5,18 @@ exports[`Base/Button basic render 1`] = `
   class="button default loading test"
   type="submit"
 >
-  <i
-    class="icon icon-spinner"
-  />
+  <span
+    class="icon"
+    style="width:32px;height:32px"
+  >
+    <svg
+      class="qicon qicon-spinner qicon-dark"
+    >
+      <use
+        href="#spinner"
+      />
+    </svg>
+  </span>
   test button
 </button>
 `;

@@ -39,7 +39,7 @@ export default class Login extends Component {
             <Form.Item className={styles.formItem} noLabel>
               <Input
                 className={styles.formInput}
-                icon="search"
+                icon="start"
                 name="username"
                 placeholder={t('Username')}
               />
@@ -48,7 +48,7 @@ export default class Login extends Component {
               <Input
                 className={styles.formInput}
                 type="password"
-                icon="search"
+                icon="human"
                 name="password"
                 placeholder={t('Password')}
               />
@@ -63,10 +63,6 @@ export default class Login extends Component {
             </Form.Item>
           </Form>
         </div>
-        {/*<p className={styles.tip}>*/}
-        {/*<span>No openpiotrix account?</span>*/}
-        {/*<Link to="/signup">Sign up</Link>*/}
-        {/*</p>*/}
 
         {this.renderErrMsg()}
       </div>

@@ -1,5 +1,13 @@
 @charset "utf-8";
-@import "variables";
+
+// basic variables
+@import "vars";
+
+// import other partial files
+@import "partial/color";
+//@import "partial/text";
+@import "partial/icon";
+@import "partial/grid";
 
 %active-dropdown-btn {
   color: $third-text-color !important;
@@ -74,5 +82,11 @@
 
   .show>.btn-secondary.dropdown-toggle {
     @extend %active-dropdown-btn;
+  }
+
+  // fix icon inner svg
+  svg {
+    width: 100%;
+    height: 100%;
   }
 }
