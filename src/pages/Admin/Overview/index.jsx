@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
 
 import UserInfo from 'components/UserInfo';
 import TotalCard from 'components/UserInfo/TotalCard';
@@ -10,11 +11,10 @@ import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import Layout from 'components/Layout/Admin';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
-import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 @inject(({ rootStore, sessInfo }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
@@ -47,7 +47,7 @@ export default class Overview extends React.Component {
   };
 
   adminOverview = () => {
-    const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo } = this.props;
+    const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo, t } = this.props;
     const countLimit = 5;
 
     const appList = appStore.apps.slice(0, countLimit);
@@ -83,16 +83,16 @@ export default class Overview extends React.Component {
         </section>
 
         <section className={styles.listOuter}>
-          <Panel title={__('Top Repos')} linkTo="/dashboard/repos" isAdmin>
+          <Panel title={t('Top Repos')} linkTo="/dashboard/repos" isAdmin>
             <RepoList repos={repoList} type="public" />
             <RepoList repos={repoList} type="private" limit={2} />
           </Panel>
 
-          <Panel title={__('Top Apps')} linkTo="/dashboard/apps" isAdmin>
+          <Panel title={t('Top Apps')} linkTo="/dashboard/apps" isAdmin>
             <AppList apps={appList} />
           </Panel>
 
-          <Panel title={__('Latest Clusters')} linkTo="/dashboard/clusters" isAdmin>
+          <Panel title={t('Latest Clusters')} linkTo="/dashboard/clusters" isAdmin>
             <ClusterList clusters={clusterList} />
           </Panel>
         </section>
@@ -101,7 +101,7 @@ export default class Overview extends React.Component {
   };
 
   normalOverview = () => {
-    const { sessInfo, appStore, runtimeStore, clusterStore } = this.props;
+    const { sessInfo, appStore, runtimeStore, clusterStore, t } = this.props;
     const countLimit = 3;
 
     const name = getSessInfo('user', sessInfo);
@@ -112,13 +112,13 @@ export default class Overview extends React.Component {
     return (
       <Layout>
         <section className={styles.userInfo}>
-          <div className={styles.userName}>{__('greet words', { name })}</div>
+          <div className={styles.userName}>{t('greet words', { name })}</div>
           <div className={styles.hello}>Welcome to OpenPitirx, What would you like to do?</div>
         </section>
 
         <section className={styles.listOuter}>
           <Panel
-            title={__('Recently Viewed Apps')}
+            title={t('Recently Viewed Apps')}
             linkTo="/apps"
             btnName="Browse"
             len={appList.length}
@@ -127,7 +127,7 @@ export default class Overview extends React.Component {
           </Panel>
 
           <Panel
-            title={__('My Runtimes')}
+            title={t('My Runtimes')}
             linkTo="/dashboard/runtime/create"
             btnName="Create"
             len={runtimeList.length}
@@ -136,7 +136,7 @@ export default class Overview extends React.Component {
           </Panel>
 
           <Panel
-            title={__('Latest Clusters')}
+            title={t('Latest Clusters')}
             linkTo="/dashboard/clusters"
             btnName="Manage"
             len={clusterList.length}

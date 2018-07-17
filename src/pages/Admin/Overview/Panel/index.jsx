@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { translate } from 'react-i18next';
 
 import Button from 'components/Base/Button';
 import { imgPlaceholder } from 'utils';
-import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class Panel extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
@@ -25,7 +25,7 @@ export default class Panel extends PureComponent {
   };
 
   renderWelcomForNormalUser() {
-    const { btnName, linkTo } = this.props;
+    const { btnName, linkTo, t } = this.props;
 
     return (
       <div className={styles.blankList}>
@@ -35,16 +35,16 @@ export default class Panel extends PureComponent {
           {btnName === 'Create' && 'Create Runtime'}
           {btnName === 'Manage' && 'Manage Clusters'}
         </div>
-        <div className={styles.description}>{__('pg-overview.normal_welcome_desc')}</div>
+        <div className={styles.description}>{t('pg-overview.normal_welcome_desc')}</div>
         <Link className={styles.button} to={linkTo}>
-          <Button>{__(btnName)}</Button>
+          <Button>{t(btnName)}</Button>
         </Link>
       </div>
     );
   }
 
   renderDataListForAdmin() {
-    const { isAdmin, linkTo, title, children, btnName } = this.props;
+    const { isAdmin, linkTo, title, children, btnName, t } = this.props;
     const childNodes = React.Children.map(children, child =>
       React.cloneElement(child, {
         ...child.props,
@@ -56,17 +56,17 @@ export default class Panel extends PureComponent {
       <div className={classNames(styles.panel, { [styles.normal]: !isAdmin })}>
         <div className={styles.title}>
           {!isAdmin && <img src={imgPlaceholder(24)} className={styles.image} />}
-          {__(title)}
+          {t(title)}
           {isAdmin && (
             <Link className={styles.more} to={linkTo}>
-              {__('more')}
+              {t('more')}
             </Link>
           )}
         </div>
         {childNodes}
         {!isAdmin && (
           <Link className={styles.button} to={linkTo}>
-            <Button>{__(btnName)}</Button>
+            <Button>{t(btnName)}</Button>
           </Link>
         )}
       </div>

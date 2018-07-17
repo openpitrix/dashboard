@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import trans, { __ } from 'hoc/trans';
+import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class Footer extends PureComponent {
   getCurrentLocale = () => {
     return typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
@@ -17,6 +17,8 @@ export default class Footer extends PureComponent {
   };
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className={styles.footer}>
         <div className={styles.wrapper}>
@@ -25,13 +27,13 @@ export default class Footer extends PureComponent {
           </span>
           <ul className={styles.terms}>
             <li>
-              <a href="#">{__('About')}</a>
+              <a href="#">{t('About')}</a>
             </li>
             <li>
-              <a href="#">{__('Help')}</a>
+              <a href="#">{t('Help')}</a>
             </li>
             <li>
-              <a href="#">{__('Terms')}</a>
+              <a href="#">{t('Terms')}</a>
             </li>
             <li className={styles.copyright}>OpenPitrix &copy; 2018</li>
             <li>

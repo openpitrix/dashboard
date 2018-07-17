@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import Button from 'components/Base/Button';
 import { getParseDate, imgPlaceholder } from 'utils';
-import trans, { __ } from 'hoc/trans';
 import styles from './index.scss';
 
-@trans()
+@translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore
@@ -39,7 +39,7 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, appVersionStore } = this.props;
+    const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
     const imgPhd = imgPlaceholder(64);
@@ -134,11 +134,11 @@ export default class AppDetail extends Component {
               <div className={styles.detailCard}>
                 <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
                   <Button className={styles.deployBtn} type="primary">
-                    {__('Deploy')}
+                    {t('Deploy')}
                   </Button>
                 </Link>
                 <div className={styles.versions}>
-                  <p>{__('Chart Versions')}</p>
+                  <p>{t('Chart Versions')}</p>
                   <ul>
                     {appVersions.map(version => (
                       <li key={version.version_id}>
@@ -152,25 +152,25 @@ export default class AppDetail extends Component {
               </div>
               <div className={styles.detailCard}>
                 <div className={styles.item}>
-                  <div className={styles.title}>{__('Application Version')}</div>
+                  <div className={styles.title}>{t('Application Version')}</div>
                   <div className={styles.value}>
                     {appDetail.latest_app_version && appDetail.latest_app_version.name}
                   </div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>{__('Home')}</div>
+                  <div className={styles.title}>{t('Home')}</div>
                   <div className={styles.value}>{appDetail.home}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>{__('Source repository')}</div>
+                  <div className={styles.title}>{t('Source repository')}</div>
                   <div className={styles.value}>{appDetail.sources}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>{__('Maintainers')}</div>
+                  <div className={styles.title}>{t('Maintainers')}</div>
                   <div className={styles.value}>{appDetail.maintainers}</div>
                 </div>
                 <div className={styles.item}>
-                  <div className={styles.title}>{__('Related')}</div>
+                  <div className={styles.title}>{t('Related')}</div>
                   <div className={styles.value} />
                 </div>
               </div>

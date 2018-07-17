@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
-import trans, { __ } from 'hoc/trans';
+import { translate } from 'react-i18next';
 
 import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
@@ -12,7 +12,7 @@ import Input from '../Base/Input';
 import styles from './index.scss';
 
 // translate hoc should place before mobx
-@trans()
+@translate()
 @inject('rootStore', 'sessInfo')
 @observer
 export default class Header extends Component {
@@ -28,9 +28,10 @@ export default class Header extends Component {
 
   renderMenuBtns() {
     const loggedInUser = getSessInfo('user', this.props.sessInfo);
+    const { t } = this.props;
 
     if (!loggedInUser) {
-      return <NavLink to="/login">{__('Sign In')}</NavLink>;
+      return <NavLink to="/login">{t('Sign In')}</NavLink>;
     }
 
     return (
@@ -44,10 +45,10 @@ export default class Header extends Component {
         </DropdownToggle>
         <DropdownMenu className={styles.profiles}>
           <DropdownItem className={styles.profileItem}>
-            <NavLink to="/dashboard">{__('Dashboard')}</NavLink>
+            <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
           </DropdownItem>
           <DropdownItem className={styles.profileItem}>
-            <a href="/logout">{__('Log out')}</a>
+            <a href="/logout">{t('Log out')}</a>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -67,6 +68,7 @@ export default class Header extends Component {
 
   render() {
     const {
+      t,
       isHome,
       rootStore: { fixNav }
     } = this.props;
@@ -85,7 +87,7 @@ export default class Header extends Component {
           {needShowSearch && (
             <Input.Search
               className={styles.search}
-              placeholder={__('search.placeholder')}
+              placeholder={t('search.placeholder')}
               value={appSearch}
               onSearch={this.onSearch}
               onClear={this.onClearSearch}

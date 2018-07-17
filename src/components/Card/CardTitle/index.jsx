@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import trans, { __ } from 'hoc/trans';
+import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,
@@ -16,7 +16,7 @@ export default class CardTitle extends PureComponent {
   };
 
   render() {
-    const { categoryId, title, more, fixTitle } = this.props;
+    const { categoryId, title, more, fixTitle, t } = this.props;
 
     return (
       <div className={classnames(styles.title, { [styles.fixTitle]: fixTitle })}>
@@ -26,7 +26,7 @@ export default class CardTitle extends PureComponent {
             className={classnames(styles.more, { [styles.show]: more })}
             to={`/apps/${categoryId}`}
           >
-            {__('more')}
+            {t('more')}
           </Link>
         )}
       </div>

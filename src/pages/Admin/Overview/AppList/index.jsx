@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
 import { imgPlaceholder } from 'utils';
-import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class AppList extends PureComponent {
   static propTypes = {
     apps: PropTypes.array,
@@ -16,7 +16,7 @@ export default class AppList extends PureComponent {
   };
 
   render() {
-    const { apps, isAdmin } = this.props;
+    const { apps, isAdmin, t } = this.props;
     const imgPhd = imgPlaceholder(24);
 
     return (
@@ -33,7 +33,7 @@ export default class AppList extends PureComponent {
             />
             {isAdmin && (
               <span className={styles.total}>
-                <span className={styles.number}>{data.total || 0}</span> {__('Clusters')}
+                <span className={styles.number}>{data.total || 0}</span> {t('Clusters')}
               </span>
             )}
           </li>
