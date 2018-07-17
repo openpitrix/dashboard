@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 import { translate } from 'react-i18next';
-import trans, { __ } from 'hoc/trans';
 
 import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
