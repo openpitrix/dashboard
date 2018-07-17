@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import Button from 'components/Base/Button';
-import { getParseDate, imgPlaceholder } from 'utils';
+import { formatTime, imgPlaceholder } from 'utils';
 import styles from './index.scss';
 
 @translate()
@@ -125,7 +125,7 @@ export default class AppDetail extends Component {
                   </dl>
                   <dl>
                     <dt>Created At</dt>
-                    <dd>{getParseDate(appDetail.create_time)}</dd>
+                    <dd>{formatTime(appDetail.create_time)}</dd>
                   </dl>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default class AppDetail extends Component {
                     {appVersions.map(version => (
                       <li key={version.version_id}>
                         {version.name}
-                        <span className={styles.time}>{getParseDate(version.create_time)}</span>
+                        <span className={styles.time}>{formatTime(version.create_time)}</span>
                       </li>
                     ))}
                   </ul>

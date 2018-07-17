@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { getParseDate } from 'utils';
+import { formatTime } from 'utils';
 import classNames from 'classnames';
 
 import { Checkbox, Icon, Button, Input, Select, Table, Pagination, Modal } from 'components/Base';
@@ -234,7 +234,7 @@ export default class Users extends Component {
         dataIndex: 'last_modified',
         key: 'last_modified',
         width: '10%',
-        render: getParseDate
+        render: formatTime
       },
       {
         title: 'Actions',

@@ -7,11 +7,10 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getParseDate, getParseTime, getObjName } from 'utils';
+import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
 import capitalize from 'lodash/capitalize';
-import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore,
@@ -158,12 +157,7 @@ export default class Clusters extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: cl => (
-          <Fragment>
-            <div>{getParseDate(cl.status_time)}</div>
-            <div>{getParseTime(cl.status_time)}</div>
-          </Fragment>
-        )
+        render: cl => formatTime(cl.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: 'Actions',
