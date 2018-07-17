@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
-import trans, { __ } from 'hoc/trans';
 import Input from '../Base/Input';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class Banner extends PureComponent {
   static propTypes = {
     appSearch: PropTypes.string,
@@ -37,7 +37,7 @@ export default class Banner extends PureComponent {
   }
 
   render() {
-    const { appSearch } = this.props;
+    const { appSearch, t } = this.props;
 
     return (
       <div className={classnames('banner', styles.banner)}>
@@ -45,11 +45,11 @@ export default class Banner extends PureComponent {
           <img className="banner-img-1" src="/assets/1-1.svg" alt="" />
           <img className="banner-img-2" src="/assets/1-2.svg" alt="" />
           <img className="banner-img-3" src="/assets/1-3.svg" alt="" />
-          <div className={styles.title}>{__('brand.slogan')}</div>
+          <div className={styles.title}>{t('brand.slogan')}</div>
           <Input.Search
             ref={this.searchBox}
             className={styles.search}
-            placeholder={__('search.placeholder')}
+            placeholder={t('search.placeholder')}
             value={appSearch}
             onSearch={this.onSearch}
             onClear={this.onClearSearch}

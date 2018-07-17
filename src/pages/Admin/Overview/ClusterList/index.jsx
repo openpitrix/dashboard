@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { translate } from 'react-i18next';
 
 import { getPastTime, imgPlaceholder } from 'utils';
-import trans, { __ } from 'hoc/trans';
 
 import styles from './index.scss';
 
-@trans()
+@translate()
 export default class ClusterList extends PureComponent {
   static propTypes = {
     clusters: PropTypes.array,
@@ -16,7 +16,7 @@ export default class ClusterList extends PureComponent {
   };
 
   render() {
-    const { clusters, isAdmin } = this.props;
+    const { clusters, isAdmin, t } = this.props;
     const imgPhd = imgPlaceholder(20);
 
     return (
@@ -33,7 +33,7 @@ export default class ClusterList extends PureComponent {
                   {cluster.description}&nbsp;
                 </span>
                 <span className={styles.nodes}>
-                  {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {__('Nodes')}
+                  {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {t('Nodes')}
                 </span>
                 <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
               </div>

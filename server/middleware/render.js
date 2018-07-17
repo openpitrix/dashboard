@@ -38,19 +38,17 @@ module.exports = async (ctx, next) => {
   };
 
   try {
-    let components = null;
-
-    if (!isDev) {
-      renderToString(
-        <I18nextProvider i18n={i18n}>
-          <Provider rootStore={ctx.store} sessInfo={sessInfo}>
-            <StaticRouter location={ctx.url} context={context}>
-              <App>{renderRoutes(routes)}</App>
-            </StaticRouter>
-          </Provider>
-        </I18nextProvider>
-      );
-    }
+    const components = !isDev
+      ? renderToString(
+          <I18nextProvider i18n={i18n}>
+            <Provider rootStore={ctx.store} sessInfo={sessInfo}>
+              <StaticRouter location={ctx.url} context={context}>
+                <App>{renderRoutes(routes)}</App>
+              </StaticRouter>
+            </Provider>
+          </I18nextProvider>
+        )
+      : null;
 
     if (context.url) {
       ctx.redirect(context.url);
