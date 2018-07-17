@@ -25,9 +25,7 @@ Array [
         <a
           aria-current="false"
           href="/login"
-        >
-          Sign In
-        </a>
+        />
       </div>
     </div>
   </div>,
@@ -55,23 +53,17 @@ Array [
         <li>
           <a
             href="#"
-          >
-            About
-          </a>
+          />
         </li>
         <li>
           <a
             href="#"
-          >
-            Help
-          </a>
+          />
         </li>
         <li>
           <a
             href="#"
-          >
-            Terms
-          </a>
+          />
         </li>
         <li
           class="copyright"
