@@ -6,7 +6,6 @@ import Status from '../Status';
 import TagShow from '../TagShow';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
-import { getParseDate } from 'utils';
 import styles from './index.scss';
 
 export default class RuntimeCard extends PureComponent {

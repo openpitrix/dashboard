@@ -11,7 +11,7 @@ import TagShow from 'components/TagShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import TimeShow from 'components/TimeShow';
-import { getObjName } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({

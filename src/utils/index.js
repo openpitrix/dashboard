@@ -1,17 +1,14 @@
 import _, { get, filter } from 'lodash';
+import day from 'dayjs';
 
-export function getParseDate(text) {
-  const date = new Date(text);
-  return `${date.getFullYear()}/${`0${date.getMonth() + 1}`.slice(-2)}/${`0${date.getDate()}`.slice(
-    -2
-  )}`;
+export function formatTime(ts, format = 'YYYY/MM/DD') {
+  const parsedTs = day(ts);
+  if (!parsedTs.isValid()) {
+    throw Error('invalid time: ', ts);
+  }
+  return parsedTs.format(format);
 }
-export function getParseTime(text) {
-  const date = new Date(text);
-  return `${`0${date.getHours()}`.slice(-2)}:${`0${date.getMinutes()}`.slice(
-    -2
-  )}:${`0${date.getSeconds()}`.slice(-2)}`;
-}
+
 export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset

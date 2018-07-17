@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { getParseDate, getParseTime } from 'utils';
+import { formatTime } from 'utils';
 import styles from './index.scss';
 
 export default class TimeShow extends Component {
@@ -19,8 +19,8 @@ export default class TimeShow extends Component {
 
     return (
       <Fragment>
-        <div className={styles[type]}>{getParseDate(time)}</div>
-        <div className={styles[type]}>{getParseTime(time)}</div>
+        <div className={styles[type]}>{formatTime(time)}</div>
+        <div className={styles[type]}>{formatTime(time, 'HH:mm:ss')}</div>
       </Fragment>
     );
   }
