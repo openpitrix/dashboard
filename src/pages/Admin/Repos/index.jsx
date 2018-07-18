@@ -2,16 +2,20 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { get } from 'lodash';
 
 import { Icon, Button, Input, Modal } from 'components/Base';
 import Layout, { Dialog } from 'components/Layout/Admin';
 import RepoList from './RepoList';
 import Loading from 'components/Loading';
+
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sock }) => ({
+  rootStore,
   repoStore: rootStore.repoStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  sock
 }))
 @observer
 export default class Repos extends Component {
@@ -19,6 +23,24 @@ export default class Repos extends Component {
     await repoStore.fetchAll();
     await appStore.fetchApps({ status: ['active', 'deleted'] });
   }
+
+  constructor(props) {
+    super(props);
+
+    // listen to job, prevent event fire multiple times
+    if (!props.sock._events['ops-resource']) {
+      props.sock.on('ops-resource', this.listenToJob);
+    }
+  }
+
+  listenToJob = payload => {
+    const { rootStore } = this.props;
+
+    if (['repo', 'repo_event'].includes(get(payload, 'resource.rtype'))) {
+      // repo_event: create, update, delete
+      rootStore.sockMessage = JSON.stringify(payload);
+    }
+  };
 
   renderHandleMenu = id => {
     const { deleteRepoOpen } = this.props.repoStore;

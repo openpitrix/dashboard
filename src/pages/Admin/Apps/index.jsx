@@ -12,11 +12,13 @@ import { getSessInfo, imgPlaceholder, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
 
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore, sessInfo, sock }) => ({
+  rootStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  sessInfo
+  sessInfo,
+  sock
 }))
 @observer
 export default class Apps extends Component {
@@ -31,7 +33,19 @@ export default class Apps extends Component {
   constructor(props) {
     super(props);
     this.role = getSessInfo('role', this.props.sessInfo);
+
+    if (!props.sock._events['ops-resource']) {
+      props.sock.on('ops-resource', this.listenToJob);
+    }
   }
+
+  listenToJob = payload => {
+    const { rootStore } = this.props;
+
+    if (['job'].includes(get(payload, 'resource.rtype'))) {
+      rootStore.sockMessage = JSON.stringify(payload);
+    }
+  };
 
   renderOpsModal = () => {
     const { appStore, categoryStore } = this.props;
