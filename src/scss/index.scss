@@ -83,4 +83,14 @@
     float: right;
     padding: 2px !important;
   }
+
+  .icon-close {
+    //width: 32px;
+    //height: 32px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.6);
+    cursor: pointer;
+  }
 }

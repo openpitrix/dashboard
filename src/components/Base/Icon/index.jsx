@@ -61,7 +61,7 @@ class Icon extends React.PureComponent {
   };
 
   componentWillMount() {
-    if (!window.iconfont__svg__inject) {
+    if (typeof window === 'object' && !window.iconfont__svg__inject) {
       window.iconfont__svg__inject = true;
       appendSvg();
     }
