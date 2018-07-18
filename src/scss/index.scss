@@ -89,4 +89,51 @@
     width: 100%;
     height: 100%;
   }
+
+  .toolbar {
+    padding: 8px 0 24px;
+    [class*='inputGroup'] {
+      display: inline-block;
+      width: 320px;
+      border-radius: 2px;
+      background-color: $N0;
+      input::placeholder {
+        color: $N45;
+      }
+    }
+    >button{
+      margin-left: 12px;
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+    a button{
+      margin-left: 12px;
+    }
+  }
+  .table-outer{
+    padding: 16px 24px;
+    border-radius: 3px;
+    background-color: $N0;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  }
+  //detail style
+  .detail-outer{
+    position: relative;
+    margin-bottom: 24px;
+    .operation{
+      position: absolute;
+      right: -35px;
+      top: 24px;
+      width: 135px;
+      text-align: center;
+      cursor: pointer;
+      i{
+        transform: rotate(90deg);
+      }
+    }
+  }
+  .f-right{
+    float: right;
+  }
 }

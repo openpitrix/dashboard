@@ -2,78 +2,78 @@
 
 .card {
    display: inline-block;
-   width: $card-width;
-   padding: 16px 24px 24px;
-   margin: 24px 24px 0 0;
-   border-radius: 3px;
-   border: 1px solid $border-light;
-   background-color: #ffffff;
+   width: $app-card-width;
+   height: $app-card-height;
+   padding: 40px 20px 20px;
+   margin: 0 24px 24px 0;
+   border-radius: 2px;
+   //border: 1px solid $border-light;
+   background-color: $N0;
    transition: all .3s ease-in-out;
-   text-align: left;
-   p {
+   text-align: center;
+   box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  p {
      margin: 0;
    }
    .title{
      .icon {
-       float: left;
+       //float: left;
        display: inline-block;
        width: 48px;
        height: 48px;
-       margin-bottom: 16px;
-       border-radius: 4px;
+       margin-bottom: 12px;
+       border-radius: 2px;
      }
      .name{
-       height: 48px;
        line-height: 16px;
-       margin-left: 64px;
        margin-bottom: 12px;
        font-weight: bold;
-       color: $title-color;
+       color: $N500;
+       width: 100%;
+       @include textCut;
      }
    }
 
    .line {
      height: 1px;
      border-radius: 3px;
-     background-color: $grey-light;
+     background-color: $N10;
    }
    .desc{
      margin-top: 12px;
-     height: 72px;
-     line-height: 1.29;
-     color: rgba($title-color, 0.7);
-     overflow: hidden;
+     font-size: $font12;
+     letter-spacing: 0;
+     color: $N100;
+     @include descHide(20px, 2);
    }
    &:hover {
-     transform: translate3d(0, -10px, 0);
-     box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+     transform: translate3d(0, -12px, 0);
+     box-shadow:  0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);;
+    // box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
    }
  }
 
 .foldCard {
-  padding: 12px 15px 12px;
+  height: 72px;
+  padding: 16px 18px;
   text-align: left;
   position: relative;
-  .icon {
-    margin: 0 14px 0 0;
-    float: left;
-  }
   .title{
     .icon {
-      margin-bottom: 0;
+      float: left;
+      width: 36px;
+      height: 36px;
     }
     .name {
-      height: auto;
-      margin: 0;
+      margin-left: 48px;
+      margin-bottom: 0;
+      width: auto;
     }
     .desc {
-      height: auto;
-      margin-left: 62px;
-      margin-top: 11px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      color: $text-color;
+      //height: auto;
+      margin-top: 0px;
+      margin-left: 48px;
+     @include textCut;
     }
   }
   &:hover {

@@ -130,47 +130,43 @@ export default class RuntimeDetail extends Component {
     return (
       <Layout>
         <BackBtn label="runtimes" link="/dashboard/runtimes" />
-        <div className={styles.wrapper}>
-          <div className={styles.leftInfo}>
-            <div className={styles.detailOuter}>
-              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
-              {runtimeDetail.status !== 'deleted' && (
-                <Popover
-                  className={styles.operation}
-                  content={this.renderHandleMenu(runtimeDetail.runtime_id)}
-                >
-                  <Icon name="more" />
-                </Popover>
-              )}
-            </div>
+
+        <div className="colu-mr-4">
+          <div className="detail-outer">
+            <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
+            {runtimeDetail.status !== 'deleted' && (
+              <Popover
+                className="operation"
+                content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+              >
+                <Icon name="more" />
+              </Popover>
+            )}
           </div>
-          <div className={styles.rightInfo}>
-            <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search Clusters Name"
-                  value={searchWord}
-                  onSearch={onSearch}
-                  onClear={onClearSearch}
-                  maxLength="50"
-                />
-                <Button className={styles.buttonRight} onClick={onRefresh}>
-                  <Icon name="refresh" />
-                </Button>
-              </div>
-              <Table
-                columns={columns}
-                dataSource={clusters.toJSON()}
-                className="detailTab"
-                isLoading={isLoading}
-                filterList={filterList}
-              />
-            </div>
-            <ul />
-            <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+        </div>
+
+        <div className="colu-8 table-outer">
+          <TagNav tags={tags} curTag={curTag} />
+          <div className="toolbar">
+            <Input.Search
+              placeholder="Search Clusters Name"
+              value={searchWord}
+              onSearch={onSearch}
+              onClear={onClearSearch}
+              maxLength="50"
+            />
+            <Button className="f-right" onClick={onRefresh}>
+              <Icon name="refresh" />
+            </Button>
           </div>
+
+          <Table
+            columns={columns}
+            dataSource={clusters.toJSON()}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
+          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
       </Layout>
     );

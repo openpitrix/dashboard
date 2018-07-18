@@ -159,22 +159,18 @@ export default class Runtimes extends Component {
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} />
-        <div className={styles.wrapper}>
+
+        <div className="table-outer">
           {runtimeIds.length > 0 && (
-            <div className={styles.toolbar}>
-              <Button
-                type="primary"
-                className={styles.delete}
-                onClick={() => showDeleteRuntime(runtimeIds)}
-              >
+            <div className="toolbar">
+              <Button type="delete" onClick={() => showDeleteRuntime(runtimeIds)}>
                 Delete
               </Button>
             </div>
           )}
           {runtimeIds.length === 0 && (
-            <div className={styles.toolbar}>
+            <div className="toolbar">
               <Input.Search
-                className={styles.search}
                 placeholder="Search Runtimes Name"
                 value={searchWord}
                 onSearch={onSearch}
@@ -182,18 +178,17 @@ export default class Runtimes extends Component {
                 maxLength="50"
               />
               <Link to={`/dashboard/runtime/create`}>
-                <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+                <Button className="f-right" type="primary">
                   Create
                 </Button>
               </Link>
-              <Button className={styles.buttonRight} onClick={onRefresh}>
+              <Button className="f-right" onClick={onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>
           )}
 
           <Table
-            className={styles.tableOuter}
             columns={columns}
             dataSource={data}
             rowSelection={rowSelection}

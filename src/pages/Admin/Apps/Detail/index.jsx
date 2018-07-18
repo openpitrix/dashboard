@@ -200,59 +200,54 @@ export default class AppDetail extends Component {
     return (
       <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
-        <div className={styles.appDetail}>
-          <div className={styles.leftInfo}>
-            <div className={styles.detailOuter}>
-              <AppCard appDetail={appDetail} repoName={repoName} />
-              <Popover
-                className={styles.operation}
-                content={this.renderHandleMenu(appDetail.app_id)}
-              >
-                <Icon name="more" />
-              </Popover>
-            </div>
-            <div className={styles.versionOuter}>
-              <div className={styles.title}>
-                Versions
-                <div className={styles.all} onClick={showAllVersions}>
-                  All Versions →
-                </div>
-              </div>
-              <VersionList versions={versions.slice(0, 4)} />
-            </div>
+
+        <div className="colu-mr-4">
+          <div className="detail-outer">
+            <AppCard appDetail={appDetail} repoName={repoName} />
+            <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
+              <Icon name="more" />
+            </Popover>
           </div>
 
-          <div className={styles.rightInfo}>
-            <div className={styles.wrapper}>
-              <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
-
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search Cluster Name"
-                  onSearch={this.onSearch}
-                  onClear={this.onClearSearch}
-                  value={swCluster}
-                  maxLength="50"
-                />
-                <Button className={styles.buttonRight} onClick={this.onRefresh}>
-                  <Icon name="refresh" />
-                </Button>
+          <div className={styles.versionOuter}>
+            <div className={styles.title}>
+              Versions
+              <div className={styles.all} onClick={showAllVersions}>
+                All Versions →
               </div>
-
-              <Table
-                columns={columns}
-                dataSource={clusters.toJSON()}
-                isLoading={isLoading}
-                filterList={filterList}
-              />
             </div>
-            <Pagination
-              onChange={this.changePagination}
-              total={clusterStore.totalCount}
-              current={currentClusterPage}
+            <VersionList versions={versions.slice(0, 4)} />
+          </div>
+        </div>
+
+        <div className="colu-8 table-outer">
+          <div className={styles.wrapper}>
+            <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
+            <div className="toolbar">
+              <Input.Search
+                placeholder="Search Cluster Name"
+                onSearch={this.onSearch}
+                onClear={this.onClearSearch}
+                value={swCluster}
+                maxLength="50"
+              />
+              <Button onClick={this.onRefresh}>
+                <Icon name="refresh" />
+              </Button>
+            </div>
+
+            <Table
+              columns={columns}
+              dataSource={clusters.toJSON()}
+              isLoading={isLoading}
+              filterList={filterList}
             />
           </div>
+          <Pagination
+            onChange={this.changePagination}
+            total={clusterStore.totalCount}
+            current={currentClusterPage}
+          />
         </div>
         {this.renderOpsModal()}
       </Layout>

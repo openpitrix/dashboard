@@ -21,10 +21,14 @@ export default class Card extends PureComponent {
         <div className={styles.title}>
           <img src={icon || imgPhd} className={styles.icon} alt="Icon" />
           <p className={styles.name}>{name}</p>
-          <p className={classnames(styles.desc, { [styles.hide]: !fold })}>{desc}</p>
+          <p className={classnames(styles.desc, { [styles.hide]: !fold })} title={desc}>
+            {desc}
+          </p>
         </div>
         <div className={classnames(styles.line, { [styles.hide]: fold })} />
-        <p className={classnames(styles.desc, { [styles.hide]: fold })}>{desc}</p>
+        <p className={classnames(styles.desc, { [styles.hide]: fold })} title={desc}>
+          {desc}
+        </p>
       </div>
     );
   }

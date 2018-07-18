@@ -1,27 +1,28 @@
 @import "~scss/vars";
 
 .button {
-  padding: 7px 14px;
+  height: 32px;
+  padding: 7px 12px;
   line-height: 16px;
-  border: none;
-  border-radius: 3px;
   font-size: $body-size;
+  border-radius: 2px;
+  border: 0 none;
+  background-color: $N0;
+  box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
   cursor: pointer;
   transition: all .3s ease-in-out;
-
   :global {
     .icon {
       vertical-align: baseline;
     }
   }
-
   &:focus {
     box-shadow: none;
     outline: none;
   }
 
   &.loading {
-    position: relative;    
+    position: relative;
     color: transparent !important;
     pointer-events: none;
 
@@ -33,37 +34,52 @@
       transform: translate(-50%, -50%);
     }
   }
-  
+
   &.primary {
-    color: #fff;
-    border: 1px solid $primary;
-    background-color: $primary;
+    color: $N0;
+    background-color: $P75;
+    box-shadow: 0 1px 3px 0 rgba(73, 33, 173, 0.16), 0 1px 2px 0 rgba(52, 57, 69, 0.03);
 
-    &:hover, &:disabled {
-      background-color: $purple-light;
-      border-color: $purple-light;
+    &:hover {
+      background-color: $P65 !important;
     }
-
     &:active {
-      background-color: $purple-dark;
-      border-color: $purple-dark;
+      background-color: $P200 !important;
+    }
+    &:disabled {
+      opacity: 0.5;
     }
   }
 
   &.default {
-    color: $title-color;
-    border: 1px solid $grey;
-    background-color: #fff;
-
-    &:hover, &:disabled {
-      background-color: #fff;
-      border-color: $third-text-color !important;
-      color: $third-text-color;
+    color: $P75;
+    background-color: $N0;
+    box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
+    border: solid 1px $N30;
+    &:hover {
+      background-color: $N10 !important;
     }
-
     &:active {
-      background-color: #fff;
-      border-color: $purple-dark;
+      background-color: rgba(188, 194, 209, 0.3);
+      border: solid 1px $N45;
+    }
+    &:disabled{
+      opacity: 0.5;
+    }
+  }
+
+  &.delete {
+    color: $N0;
+    background-color: $R75;
+    box-shadow: 0 1px 2px 0 rgba(178, 42, 38, 0.19);
+    &:hover{
+      background-color: $R65 !important;
+    }
+    &:active {
+      background-color: $R200 !important;
+    }
+    &:disabled{
+      opacity: 0.5;
     }
   }
 }

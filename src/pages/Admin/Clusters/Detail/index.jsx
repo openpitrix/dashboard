@@ -219,53 +219,50 @@ export default class ClusterDetail extends Component {
     return (
       <Layout>
         <BackBtn label="clusters" link="/dashboard/clusters" />
-        <div className={styles.wrapper}>
-          <div className={styles.leftInfo}>
-            <div className={styles.detailOuter}>
-              <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
-              <Popover className={styles.operation} content={this.renderHandleMenu()}>
-                <Icon name="more" />
-              </Popover>
-            </div>
-            <div className={styles.activities}>
-              <div className={styles.title}>
-                Activities
-                <div className={styles.more} onClick={clusterJobsOpen}>
-                  More →
-                </div>
-              </div>
-              <TimeAxis timeList={clusterJobs.splice(0, 4)} />
-            </div>
+
+        <div className="colu-mr-4">
+          <div className="detail-outer">
+            <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
+            <Popover className="operation" content={this.renderHandleMenu()}>
+              <Icon name="more" />
+            </Popover>
           </div>
 
-          <div className={styles.rightInfo}>
-            <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search Node Name"
-                  value={searchNode}
-                  onSearch={onSearchNode}
-                  onClear={onClearNode}
-                  maxLength="50"
-                />
-                <Button className={styles.buttonRight} onClick={onRefreshNode}>
-                  <Icon name="refresh" />
-                </Button>
+          <div className={styles.activities}>
+            <div className={styles.title}>
+              Activities
+              <div className={styles.more} onClick={clusterJobsOpen}>
+                More →
               </div>
-              <Table
-                columns={columns}
-                dataSource={clusterNodes}
-                className="detailTab"
-                isLoading={isLoading}
-                filterList={filterList}
-              />
-              <div className={styles.total}>Total: {clusterNodes.length}</div>
             </div>
-            <div className={styles.clear} />
+            <TimeAxis timeList={clusterJobs.splice(0, 4)} />
           </div>
         </div>
+
+        <div className="colu-8 table-outer">
+          <TagNav tags={tags} curTag={curTag} />
+          <div className="toolbar">
+            <Input.Search
+              className={styles.search}
+              placeholder="Search Node Name"
+              value={searchNode}
+              onSearch={onSearchNode}
+              onClear={onClearNode}
+              maxLength="50"
+            />
+            <Button onClick={onRefreshNode}>
+              <Icon name="refresh" />
+            </Button>
+          </div>
+          <Table
+            columns={columns}
+            dataSource={clusterNodes}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
+          <div className={styles.total}>Total: {clusterNodes.length}</div>
+        </div>
+
         {this.clusterJobsModal()}
         {this.clusterParametersModal()}
       </Layout>

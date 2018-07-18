@@ -1,5 +1,34 @@
 /* Text styles */
 
+//font-size setting
+$font12: 12x;
+$font14: 14px;
+$font16: 16px;
+$font18: 18px;
+$font20: 20px;
+$font32: 32px;
+
+@mixin textCut {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin descHide($line-height,$lines) {
+  position:relative;
+  line-height: $line-height;
+  height: $lines*$line-height;
+  overflow:hidden;
+}
+@mixin descCutAfter {
+  content:"...";
+  font-weight:bold;
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding:0 6px 0px 6px;
+  background-color: #fff;
+}
+
 // fixme: change following mock mixins
 
 @mixin HeroRobotoRightBlack {

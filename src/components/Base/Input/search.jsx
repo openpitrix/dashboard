@@ -44,7 +44,7 @@ export default class Search extends React.Component {
     const { value } = this.state;
     return (
       <div className={classnames(styles.inputGroup, className)}>
-        <Icon name="search" />
+        <Icon name="magnifier" />
         <input
           className={styles.input}
           type="text"
@@ -53,7 +53,9 @@ export default class Search extends React.Component {
           onChange={this.handleInputChange}
           onKeyDown={this.handleOnKeyDown}
         />
-        {value && <Icon name="close" onClick={this.handleClear} />}
+        {value && (
+          <Icon name="close" size={24} className={styles.close} onClick={this.handleClear} />
+        )}
       </div>
     );
   }

@@ -14,7 +14,8 @@
     overflow: hidden;
 
     .selectionColumn{
-      width: 36px;
+      width: 32px;
+      padding: 12px 0px 12px 8px;
       label{
         margin-left: 4px;
         line-height: 4px;
@@ -27,11 +28,13 @@
   .pi-table {
     &-thead > tr > th {
       position: relative;
+      line-height: 40px;
       line-height: 16px;
       padding: 12px 12px;
       font-weight: 500;
-      color: $title-color;
-      background: $th-background-color;
+      color: $N500;
+      letter-spacing: 0;
+      background-color: $N10;
 
       &::before {
         content: "";
@@ -60,13 +63,13 @@
           color: $link-hover;
         }
         td [class*="popper"] a{
-          color: $title-color;
+          color: $N500;
         }
       }
 
       &:last-child {
         td {
-          border-bottom: none;
+          //border-bottom: none;
         }
       }
     }
@@ -78,7 +81,7 @@
       transition: all $transition-speed;
       word-wrap:break-word;
       a{
-        color: $title-color;
+        color: $N500;
       }
       &:first-child {
         //padding-left: 0;
@@ -95,25 +98,6 @@
     }
   }
 
-  .detailTab{
-    thead > tr > th {
-      &:first-child {
-        padding-left: 36px;
-      }
-      &:last-child {
-        padding-right: 36px;
-      }
-    }
-    tbody > tr > td {
-      &:first-child {
-        border-left: 48px solid #fff;
-      }
-      &:last-child {
-        border-right: 48px solid #fff;
-      }
-    }
-  }
-
   .filterContent{
     margin: 0 -5px;
     li{
@@ -122,11 +106,11 @@
       line-height: 32px;
       font-size: 14px;
       font-weight: normal;
-      color: $title-color;
+      color: $N500;
       cursor: pointer;
       transition: all $transition-speed;
       &:hover, &.active{
-        background-color: $purple-lighter;
+        background-color: $N10;
       }
     }
   }

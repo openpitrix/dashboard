@@ -1,39 +1,40 @@
 @import "~scss/vars";
 
 .nav {
-  padding: $base-margin 0;
+  padding-top: 32px;
   .subNav {
     padding: 0;
     margin-top: $base-margin;
-    margin-right: -2px;
+    //margin-right: -2px;
     &:first-of-type {
       margin-top: 0;
     }
     p {
-      margin: 0;
-      line-height: 19px;
-      font-size: $size-medium;
+      margin: 0 0 20px;
+      line-height: 20px;
+      font-size: $font16;
       font-weight: bold;
-      color: $title-color;
+      color: $N500;
     }
     li {
-      margin: 16px 0;
-      line-height: 16px;
+      margin: 12px 0;
+      height: 20px;
+      line-height: 20px;
       list-style: none;
       //cursor: pointer;
-
       a {
+        @include textCut;
         display:inline-block;
-        width:100%;
-        color: $second-text-color;
+        width: 100%;
+        color: $N500;
         transition: color .3s ease-in;
-        &:hover {
-          color: $third-text-color;
+        &:hover{
+          color: $P75;
         }
-
-        &.current {
-          color: $third-text-color;
-          border-right: 2px solid $border-dark;
+      }
+      :global{
+        .active{
+          color: $P75;
         }
       }
     }

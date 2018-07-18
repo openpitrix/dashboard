@@ -46,7 +46,7 @@ class Icon extends React.PureComponent {
 
   static defaultProps = {
     type: 'dark',
-    size: 32,
+    size: 16,
     prefix: 'qicon',
     style: {},
     changeable: false,
