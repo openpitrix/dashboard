@@ -7,7 +7,8 @@ export default class Store {
 
   constructor(initialState, branch) {
     extendObservable(this, {
-      notifyMsg: observable.box('')
+      notifyMsg: observable.box(''),
+      sockMessage: '' // json.string websocket message
     });
 
     if (initialState) {

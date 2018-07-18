@@ -23,9 +23,13 @@ if (typeof window !== 'undefined') {
 
   // lazy loading
   import('./i18n').then(({ default: i18n }) => {
+    // setup websocket client
+    const sockEndpoint = SockClient.composeEndpointFromApiServer(store.apiServer);
+    const sc = new SockClient(sockEndpoint);
+
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
-        <Provider rootStore={store} sessInfo={null}>
+        <Provider rootStore={store} sessInfo={null} sock={sc}>
           <BrowserRouter>
             <AppWithRouter>
               <Switch>
@@ -45,15 +49,11 @@ if (typeof window !== 'undefined') {
       dest
     );
 
-    // setup websocket client
-    const sockEndpoint=SockClient.composeEndpointFromApiServer(store.apiServer);
-    const sc=new SockClient(sockEndpoint);
     sc.setUp();
 
-    if(isDev){
-      window._sc=sc;
+    if (isDev) {
+      window._sc = sc;
     }
-
   });
 }
 

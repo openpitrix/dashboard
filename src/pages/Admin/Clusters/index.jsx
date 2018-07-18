@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { get } from 'lodash';
 
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -12,10 +13,12 @@ import { formatTime, getObjName } from 'utils';
 import styles from './index.scss';
 import capitalize from 'lodash/capitalize';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sock }) => ({
+  rootStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  sock
 }))
 @observer
 export default class Clusters extends Component {
@@ -30,7 +33,19 @@ export default class Clusters extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.clusterStore;
+
+    if (!props.sock._events['ops-resource']) {
+      props.sock.on('ops-resource', this.listenToJob);
+    }
   }
+
+  listenToJob = payload => {
+    const { rootStore } = this.props;
+
+    if (['cluster'].includes(get(payload, 'resource.rtype'))) {
+      rootStore.sockMessage = JSON.stringify(payload);
+    }
+  };
 
   renderHandleMenu = item => {
     const { showOperateCluster } = this.props.clusterStore;
