@@ -244,7 +244,7 @@ export default class Apps extends Component {
                   maxLength="50"
                   max
                 />
-                <Button className={styles.buttonRight} onClick={onRefresh}>
+                <Button className={'refresh-btn'} onClick={onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>

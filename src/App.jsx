@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-import './scss/main.scss';
+import './scss/index.scss';
 
 class App extends PureComponent {
   static propTypes = {

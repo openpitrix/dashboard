@@ -1,4 +1,4 @@
-@import '~scss/variables';
+@import '~scss/vars';
 
 .input {
   width: 100%;
@@ -24,10 +24,12 @@
 
 .inputGroup {
   position: relative;
+
   :global {
-    .icon {
-      color: $placeholder-color;
-    }
+    //.icon {
+    //  color: $placeholder-color;
+    //}
+
     .icon-search {
       position: absolute;
       left: 12px;
@@ -42,6 +44,7 @@
       cursor: pointer;
     }
   }
+
   input {
     padding: 8px 8px 8px 40px;
   }

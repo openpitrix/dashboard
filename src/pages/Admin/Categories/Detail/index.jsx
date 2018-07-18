@@ -245,7 +245,7 @@ export default class CategoryDetail extends Component {
                   onClear={this.onClearSearch}
                   maxLength="50"
                 />
-                <Button className={styles.buttonRight} onClick={this.onRefresh}>
+                <Button className={'refresh-btn'} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>

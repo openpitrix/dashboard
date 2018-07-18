@@ -372,7 +372,7 @@ export default class RepoDetail extends Component {
                     onClear={onClearSearch}
                     value={detailSearch}
                   />
-                  <Button className={styles.buttonRight} onClick={onRefresh}>
+                  <Button className={'refresh-btn'} onClick={onRefresh}>
                     <Icon name="refresh" />
                   </Button>
                 </div>

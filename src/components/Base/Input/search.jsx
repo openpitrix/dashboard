@@ -44,7 +44,7 @@ export default class Search extends React.Component {
     const { value } = this.state;
     return (
       <div className={classnames(styles.inputGroup, className)}>
-        <Icon name="search" />
+        <Icon name="magnifier" />
         <input
           className={styles.input}
           type="text"

@@ -29,9 +29,17 @@ Array [
       <div
         class="inputGroup search"
       >
-        <i
-          class="icon icon-search"
-        />
+        <span
+          class="icon icon-search icon-is-small"
+        >
+          <svg
+            class="qicon qicon-magnifier qicon-dark"
+          >
+            <use
+              href="#magnifier"
+            />
+          </svg>
+        </span>
         <input
           class="input"
           placeholder=""

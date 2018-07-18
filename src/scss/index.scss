@@ -1,5 +1,8 @@
 @charset "utf-8";
-@import "variables";
+
+// basic variables
+@import "vars";
+
 
 %active-dropdown-btn {
   color: $third-text-color !important;
@@ -74,5 +77,20 @@
 
   .show>.btn-secondary.dropdown-toggle {
     @extend %active-dropdown-btn;
+  }
+
+  .refresh-btn {
+    float: right;
+    padding: 2px !important;
+  }
+
+  .icon-close {
+    //width: 32px;
+    //height: 32px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.6);
+    cursor: pointer;
   }
 }

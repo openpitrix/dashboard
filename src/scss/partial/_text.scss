@@ -1,0 +1,372 @@
+/* Text styles */
+
+// fixme: change following mock mixins
+
+@mixin HeroRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.23;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin MoreRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 12px;
+  text-align: right;
+  color: $N200;
+}
+
+@mixin H5RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin H6RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin H1RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: $N500;
+}
+
+@mixin NotesRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 1.67;
+  text-align: center;
+  color: $N100;
+}
+
+@mixin DescriptionRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  text-align: right;
+  color: $N75;
+}
+
+@mixin IDRobotoLeftBlack {
+  font-family: RobotoMono;
+  font-size: 12px;
+  line-height: 1.17;
+  color: $N75;
+}
+
+@mixin DescriptionRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  text-align: center;
+  color: $N75;
+}
+
+@mixin H3RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.14;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin H4RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.17;
+  color: $N500;
+}
+
+@mixin LinkRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.14;
+  text-align: center;
+  color: $P75;
+}
+
+@mixin NotesRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 1.67;
+  color: $N100;
+}
+
+@mixin H5RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: $N500;
+}
+
+@mixin IDRobotoRightBlack {
+  font-family: RobotoMono;
+  font-size: 12px;
+  line-height: 1.17;
+  text-align: right;
+  color: $N75;
+}
+
+@mixin ParapraphRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  text-align: right;
+  color: $N300;
+}
+
+@mixin H4RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.17;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin ResourceNameRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.14;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin H5RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin H3RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.14;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin BodyRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin DescriptionRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  color: $N75;
+}
+
+@mixin ParapraphRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  text-align: center;
+  color: $N300;
+}
+
+@mixin H6RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin ResourceNameRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.14;
+  color: $N500;
+}
+
+@mixin ResourceNameRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.14;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin H2RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: $N500;
+}
+
+@mixin H1RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin HeroRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.23;
+  color: $N500;
+}
+
+@mixin BodyRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.25;
+  color: $N500;
+}
+
+@mixin HeroRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 1.23;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin LinkRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.14;
+  text-align: right;
+  color: $P75;
+}
+
+@mixin H1RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin BodyRobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin IDRobotoCenterBlack {
+  font-family: RobotoMono;
+  font-size: 12px;
+  line-height: 1.17;
+  text-align: center;
+  color: $N75;
+}
+
+@mixin H3RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.14;
+  color: $N500;
+}
+
+@mixin H2RobotoCenterBlack {
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  color: $N500;
+}
+
+@mixin ParapraphRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.71;
+  color: $N300;
+}
+
+@mixin H4RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.17;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin NotesRobotoRightBlack {
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 1.67;
+  text-align: right;
+  color: $N100;
+}
+
+@mixin H2RobotoRightBlack {
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: right;
+  color: $N500;
+}
+
+@mixin H6RobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: $N500;
+}
+
+@mixin LinkRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.14;
+  color: $P75;
+}
+
+@mixin ResourceNameHoverRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.14;
+  color: $P75;
+}
+
+@mixin ResourceNameHoverRobotoLeftBlack {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.14;
+  color: $P75;
+}

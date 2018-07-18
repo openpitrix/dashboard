@@ -11,9 +11,17 @@ exports[`Base/Timeline basic render 1`] = `
       class="line purple dotCustom"
     >
       <span>
-        <i
-          class="icon icon-stop"
-        />
+        <span
+          class="icon icon-stop icon-is-small"
+        >
+          <svg
+            class="qicon qicon-stop qicon-dark"
+          >
+            <use
+              href="#stop"
+            />
+          </svg>
+        </span>
       </span>
     </div>
     123
@@ -25,9 +33,17 @@ exports[`Base/Timeline basic render 1`] = `
       class="line purple dotCustom"
     >
       <span>
-        <i
-          class="icon icon-refresh"
-        />
+        <span
+          class="icon icon-refresh icon-is-small"
+        >
+          <svg
+            class="qicon qicon-refresh qicon-dark"
+          >
+            <use
+              href="#refresh"
+            />
+          </svg>
+        </span>
       </span>
     </div>
     456

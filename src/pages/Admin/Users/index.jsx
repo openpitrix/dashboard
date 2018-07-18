@@ -338,7 +338,7 @@ export default class Users extends Component {
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
-              <Button className={styles.buttonRight}>
+              <Button className={'refresh-btn'}>
                 <Icon name="refresh" />
               </Button>
             </div>

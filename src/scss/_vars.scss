@@ -1,6 +1,9 @@
-//
-// Variables
-// --------------------------------------------------
+// import partials
+
+@import "./partial/color";
+//@import "partial/text";
+@import "partial/icon";
+@import "partial/grid";
 
 // init
 $blue: #5cb8e6;
