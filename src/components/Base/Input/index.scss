@@ -26,20 +26,20 @@
   position: relative;
 
   :global {
-    .icon {
+    .icon-search {
       position: absolute;
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
     }
-  }
-  .close {
-    position: absolute;
-    left: auto;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%) scale(0.6);
-    cursor: pointer;
+    .icon-close {
+      position: absolute;
+      left: auto;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%) scale(0.6);
+      cursor: pointer;
+    }
   }
 
   input {

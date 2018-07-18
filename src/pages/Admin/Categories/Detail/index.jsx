@@ -245,7 +245,7 @@ export default class CategoryDetail extends Component {
               maxLength="50"
             />
             <Button className={'refresh-btn'} onClick={this.onRefresh}>
-              <Icon name="refresh" />
+              <Icon name="refresh" size="mini" />
             </Button>
           </div>
           <Table

@@ -39,7 +39,8 @@ export default class Login extends Component {
             <Form.Item className={styles.formItem} noLabel>
               <Input
                 className={styles.formInput}
-                icon="start"
+                icon="human"
+                iconType="dark"
                 name="username"
                 placeholder={t('Username')}
               />
@@ -48,7 +49,8 @@ export default class Login extends Component {
               <Input
                 className={styles.formInput}
                 type="password"
-                icon="human"
+                icon="lock"
+                iconType="dark"
                 name="password"
                 placeholder={t('Password')}
               />

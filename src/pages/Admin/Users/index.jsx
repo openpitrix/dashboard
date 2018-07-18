@@ -335,11 +335,11 @@ export default class Users extends Component {
             </div>
             <div className={styles.toolbar}>
               <Input.Search className={styles.search} placeholder="Search App Name" />
-              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+              <Button className={classNames('f-right', styles.ml12)} type="primary">
                 Create
               </Button>
               <Button className={'refresh-btn'}>
-                <Icon name="refresh" />
+                <Icon name="refresh" size="mini" />
               </Button>
             </div>
             <Table columns={columns} dataSource={data} />

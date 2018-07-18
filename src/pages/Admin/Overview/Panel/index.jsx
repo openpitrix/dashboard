@@ -27,7 +27,7 @@ export default class Panel extends PureComponent {
     return (
       <div className={styles.blankList}>
         <div className={styles.iconName}>
-          <Icon name={iconName} size={64} type="coloured" />
+          <Icon name={iconName} size={64} />
         </div>
         <div className={styles.title}>
           {iconName === 'appcenter' && 'Browse Apps'}

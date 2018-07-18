@@ -118,11 +118,7 @@ export default class Categories extends Component {
         <div className={styles.container}>
           <div className={styles.pageTitle}>
             Categories
-            <Button
-              className={classNames(styles.buttonRight)}
-              type="primary"
-              onClick={showCreateCategory}
-            >
+            <Button className="f-right" type="primary" onClick={showCreateCategory}>
               Create
             </Button>
           </div>
