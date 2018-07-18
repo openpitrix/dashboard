@@ -11,7 +11,9 @@ import App from './App';
 import RootStore from './stores/RootStore';
 import routes from './routes';
 import renderRoute from './routes/renderRoute';
+import SockClient from './utils/sock-client';
 
+const isDev = process.env.NODE_ENV !== 'production';
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
@@ -42,6 +44,16 @@ if (typeof window !== 'undefined') {
       </I18nextProvider>,
       dest
     );
+
+    // setup websocket client
+    const sockEndpoint=SockClient.composeEndpointFromApiServer(store.apiServer);
+    const sc=new SockClient(sockEndpoint);
+    sc.setUp();
+
+    if(isDev){
+      window._sc=sc;
+    }
+
   });
 }
 
