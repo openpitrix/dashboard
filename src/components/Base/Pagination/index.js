@@ -29,12 +29,12 @@ export default class Pagination extends React.Component {
     total: 100,
     showQuickJumper: false,
     showTotal(total) {
-      return `${total} items in total`;
+      return `Total: ${total}`;
     },
     itemRender(current, type, originalElement) {
-      if (type === 'prev' && this.total > 0) {
+      if (type === 'prev') {
         return <span>Last</span>;
-      } else if (type === 'next' && this.total > 0) {
+      } else if (type === 'next') {
         return <span>Next</span>;
       }
       return originalElement;

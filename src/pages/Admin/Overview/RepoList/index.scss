@@ -1,65 +1,55 @@
 @import '~scss/vars';
 
 .reposList{
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   li{
     box-sizing: border-box;
-    margin-bottom: 2px;
-    height: 56px;
-    border-radius: 3px;
-    border: 1px solid $border-gray-li;
-    &:hover {
-      background-color: $tr-hover-bg;
-      box-shadow: 1px 1px 0 0 rgba(48, 14, 86, 0.08),
-      0 1px 1px 0 rgba(48, 14, 86, 0.04),
-      0 1px 1px 0 rgba(48, 14, 86, 0.16),
-      0 0 1px 1px  rgba(48, 14, 86, 0.04);
-      a{
-        color: $link-hover;
-      }
-    }
+    margin-bottom: 8px;
+    width: 312px;
+    height: 60px;
+    line-height: 24px;
+    border-radius: 2px;
+    background-color: $N0;
+    border: solid 1px $N30;
     a{
       display: block;
-      padding: 13px 20px 13px 16px;
+      padding: 17px 16px;
     }
     .icon{
       float: left;
-      margin-right: 4px;
+      margin-right: 12px;
     }
     .name{
-      line-height: 26px;
-      font-size: 14px;
-      color: #300e56;
+      display: inline-block;
+      max-width: 170px;
+      font-weight: 500;
+      font-size: $font14;
+      color: $N500;
+      @include textCut;
     }
     .total{
       display: inline-block;
       float: right;
-      line-height: 26px;
-      font-size: 12px;
-      color: $grey-word;
+      font-size: $font12;
+      color: $N100;
       .number{
         float: left;
-        margin-right: 4px;
-        font-size: 24px;
+        margin-right: 8px;
+        font-size: $font14;
         font-weight: 500;
-        color: $title-color;
+        color: $N500;
       }
     }
   }
 }
 .type {
-  margin: 12px 0 6px;
+  margin: 12px 0 8px;
   font-size: 12px;
-  color: $grey-word;
+  line-height: 1.67;
+  color: $N100;
 }
 .reposBg{
   li {
-    background-color: $li-bg;
-  }
-}
-.runtimeBg{
-  li{
-    margin-bottom: 8px;
-    height: 60px;
+    background-color: $N0;
   }
 }

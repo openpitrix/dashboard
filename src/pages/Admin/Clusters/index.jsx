@@ -214,58 +214,42 @@ export default class Clusters extends Component {
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={runtimes.slice()} />
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            {clusterIds.length > 0 && (
-              <div className={styles.toolbar}>
-                <Button
-                  type="primary"
-                  className={styles.delete}
-                  onClick={() => this.oprateSelected('delete')}
-                >
-                  Delete
-                </Button>
-                <Button
-                  type="primary"
-                  className={styles.start}
-                  onClick={() => this.oprateSelected('start')}
-                >
-                  Start
-                </Button>
-                <Button
-                  type="primary"
-                  className={styles.stop}
-                  onClick={() => this.oprateSelected('stop')}
-                >
-                  Stop
-                </Button>
-              </div>
-            )}
-            {clusterIds.length === 0 && (
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search Cluster"
-                  value={searchWord}
-                  onSearch={onSearch}
-                  onClear={onClearSearch}
-                  maxLength="50"
-                />
-                <Button className={'refresh-btn'} onClick={onRefresh}>
-                  <Icon name="refresh" />
-                </Button>
-              </div>
-            )}
-            <Table
-              className={styles.tableOuter}
-              columns={columns}
-              dataSource={clusters.toJSON()}
-              rowSelection={rowSelection}
-              isLoading={isLoading}
-              filterList={filterList}
-            />
-          </div>
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+        <div className="table-outer">
+          {clusterIds.length > 0 && (
+            <div className="toolbar">
+              <Button type="delete" onClick={() => this.oprateSelected('delete')}>
+                Delete
+              </Button>
+              <Button type="default" onClick={() => this.oprateSelected('start')}>
+                Start
+              </Button>
+              <Button type="delete" onClick={() => this.oprateSelected('stop')}>
+                Stop
+              </Button>
+            </div>
+          )}
+          {clusterIds.length === 0 && (
+            <div className="toolbar">
+              <Input.Search
+                className="fRight"
+                placeholder="Search Cluster"
+                value={searchWord}
+                onSearch={onSearch}
+                onClear={onClearSearch}
+                maxLength="50"
+              />
+              <Button className="f-right" onClick={onRefresh}>
+                <Icon name="refresh" />
+              </Button>
+            </div>
+          )}
+          <Table
+            columns={columns}
+            dataSource={clusters.toJSON()}
+            rowSelection={rowSelection}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
         </div>
         {this.renderDeleteModal()}
       </Layout>

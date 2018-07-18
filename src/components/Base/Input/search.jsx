@@ -53,7 +53,9 @@ export default class Search extends React.Component {
           onChange={this.handleInputChange}
           onKeyDown={this.handleOnKeyDown}
         />
-        {value && <Icon name="close" onClick={this.handleClear} />}
+        {value && (
+          <Icon name="close" size={24} className={styles.close} onClick={this.handleClear} />
+        )}
       </div>
     );
   }

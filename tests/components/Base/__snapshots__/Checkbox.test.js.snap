@@ -21,7 +21,8 @@ exports[`Base/Checkbox group render 1`] = `
     class="checkbox checked"
   >
     <span
-      class="icon icon-check icon-is-small"
+      class="icon"
+      style="width:16px;height:16px"
     >
       <svg
         class="qicon qicon-check qicon-dark"
@@ -53,7 +54,8 @@ exports[`Base/Checkbox group render 1`] = `
     class="checkbox checked"
   >
     <span
-      class="icon icon-check icon-is-small"
+      class="icon"
+      style="width:16px;height:16px"
     >
       <svg
         class="qicon qicon-check qicon-dark"

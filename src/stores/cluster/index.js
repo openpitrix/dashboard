@@ -90,6 +90,7 @@ export default class ClusterStore extends Store {
     const result = await this.request.get('clusters/statistics');
     this.summaryInfo = {
       name: 'Clusters',
+      iconName: 'cluster',
       centerName: 'Runtimes',
       total: get(result, 'cluster_count', 0),
       progressTotal: get(result, 'runtime_count', 0),

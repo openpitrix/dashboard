@@ -1,30 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { imgPlaceholder } from 'src/utils';
 import { I18n } from 'react-i18next';
 
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
 export default class TotalCard extends PureComponent {
   static propTypes = {
-    icon: PropTypes.string,
+    iconName: PropTypes.string,
+    iconSize: PropTypes.number,
     name: PropTypes.string,
     total: PropTypes.number
   };
 
   static defaultProps = {
-    icon: imgPlaceholder()
+    iconSize: 32
   };
 
   render() {
-    const { icon, name, total, ...rest } = this.props;
+    const { iconName, name, total, iconSize, ...rest } = this.props;
 
     return (
       <I18n>
         {t => (
           <div className={styles.totalCard} {...rest}>
             <div className={styles.name}>
-              <img src={icon} />
+              <Icon name={iconName} size={iconSize} type="coloured" />
               {t(name)}
             </div>
             <div className={styles.number}>{total}</div>

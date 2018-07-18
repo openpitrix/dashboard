@@ -10,8 +10,9 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import Layout from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight, Section } from 'components/Layout';
+import Icon from 'components/Base/Icon';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
-
 import styles from './index.scss';
 
 @translate()
@@ -51,11 +52,10 @@ export default class Overview extends React.Component {
     const countLimit = 5;
 
     const appList = appStore.apps.slice(0, countLimit);
-    const clusterList = clusterStore.clusters.slice(0, countLimit);
     const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
+    const clusterList = clusterStore.clusters.slice(0, countLimit);
 
     const userInfo = {
-      userImg: imgPlaceholder(36),
       name: getSessInfo('user', sessInfo),
       role: getSessInfo('role', sessInfo),
       loginInfo: getLoginDate(getSessInfo('last_login', sessInfo))
@@ -64,49 +64,85 @@ export default class Overview extends React.Component {
     const summary = {
       Apps: appStore.totalCount,
       Clusters: clusterStore.totalCount,
-      Categories: categoryStore.categories.length,
-      Users: userStore.totalCount
+      Categories: categoryStore.categories.length
+      //Users: userStore.totalCount
+    };
+    const iconName = {
+      Apps: 'appcenter',
+      Clusters: 'cluster',
+      Categories: 'components'
+      //Users: 'group'
     };
 
     return (
       <Layout>
-        <section>
-          <UserInfo {...userInfo} />
+        <Section>
+          <LayoutLeft column={4}>
+            <UserInfo {...userInfo} />
+          </LayoutLeft>
           {Object.keys(summary).map(label => (
-            <TotalCard
-              name={label}
-              total={summary[label]}
-              key={label}
-              onClick={this.handleClickTotalCard.bind(this, label)}
-            />
+            <LayoutLeft column={2} key={label}>
+              <TotalCard
+                name={label}
+                iconName={iconName[label]}
+                total={summary[label]}
+                onClick={this.handleClickTotalCard.bind(this, label)}
+              />
+            </LayoutLeft>
           ))}
-        </section>
+          <LayoutRight column={2}>
+            <TotalCard
+              name={`Users`}
+              iconName={`group`}
+              total={userStore.totalCount}
+              onClick={this.handleClickTotalCard.bind(this, 'users')}
+            />
+          </LayoutRight>
+        </Section>
 
-        <section className={styles.listOuter}>
-          <Panel title={t('Top Repos')} linkTo="/dashboard/repos" isAdmin>
-            <RepoList repos={repoList} type="public" />
-            <RepoList repos={repoList} type="private" limit={2} />
-          </Panel>
-
-          <Panel title={t('Top Apps')} linkTo="/dashboard/apps" isAdmin>
+        <LayoutLeft column={4}>
+          <Panel
+            title={t('Top Apps')}
+            linkTo="/dashboard/apps"
+            len={appList.length}
+            iconName="appcenter"
+          >
             <AppList apps={appList} />
           </Panel>
-
-          <Panel title={t('Latest Clusters')} linkTo="/dashboard/clusters" isAdmin>
+        </LayoutLeft>
+        <LayoutLeft column={4}>
+          <Panel
+            title={t('Top Repos')}
+            linkTo="/dashboard/repos"
+            len={repoList.length}
+            iconName="stateful-set"
+          >
+            <RepoList repos={repoList} type="public" limit={2} />
+            <RepoList repos={repoList} type="private" limit={2} />
+          </Panel>
+        </LayoutLeft>
+        <LayoutRight column={4}>
+          <Panel
+            title={t('Latest Clusters')}
+            linkTo="/dashboard/clusters"
+            len={clusterList.length}
+            iconName="cluster"
+          >
             <ClusterList clusters={clusterList} />
           </Panel>
-        </section>
+        </LayoutRight>
       </Layout>
     );
   };
 
   normalOverview = () => {
-    const { sessInfo, appStore, runtimeStore, clusterStore, t } = this.props;
+    const { sessInfo, appStore, repoStore, clusterStore, t } = this.props;
     const countLimit = 3;
 
     const name = getSessInfo('user', sessInfo);
+
     const appList = appStore.apps.slice(0, countLimit);
-    const runtimeList = runtimeStore.runtimes.slice(0, countLimit);
+    const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
 
     return (
@@ -116,34 +152,89 @@ export default class Overview extends React.Component {
           <div className={styles.hello}>Welcome to OpenPitirx, What would you like to do?</div>
         </section>
 
-        <section className={styles.listOuter}>
-          <Panel
-            title={t('Recently Viewed Apps')}
-            linkTo="/apps"
-            btnName="Browse"
-            len={appList.length}
-          >
+        <LayoutLeft column={4}>
+          <Panel title={t('Top Apps')} linkTo="/apps" len={appList.length} iconName="appcenter">
             <AppList apps={appList} />
           </Panel>
-
+        </LayoutLeft>
+        <LayoutLeft column={4}>
           <Panel
-            title={t('My Runtimes')}
-            linkTo="/dashboard/runtime/create"
-            btnName="Create"
-            len={runtimeList.length}
+            title={t('Top Repos')}
+            linkTo="/dashboard/repos"
+            len={repoList.length}
+            iconName="stateful-set"
           >
-            <RepoList repos={runtimeList} type="runtime" />
+            <RepoList repos={repoList} type="public" limit={2} />
+            <RepoList repos={repoList} type="private" limit={2} />
           </Panel>
-
+        </LayoutLeft>
+        <LayoutRight column={4}>
           <Panel
             title={t('Latest Clusters')}
             linkTo="/dashboard/clusters"
-            btnName="Manage"
             len={clusterList.length}
+            iconName="cluster"
           >
             <ClusterList clusters={clusterList} />
           </Panel>
-        </section>
+        </LayoutRight>
+      </Layout>
+    );
+  };
+
+  devlopOverview = () => {
+    const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo, t } = this.props;
+    const countLimit = 5;
+
+    const appList = appStore.apps.slice(0, countLimit);
+    const clusterList = clusterStore.clusters.slice(0, countLimit);
+
+    return (
+      <Layout>
+        <Section>
+          <LayoutLeft column={4}>
+            <UserInfo {...userInfo} />
+          </LayoutLeft>
+          <LayoutLeft column={4}>
+            <TotalCard
+              name={`Private Repo`}
+              iconName={`cloud`}
+              iconSize={64}
+              total={repoStore.totalCount}
+              onClick={this.handleClickTotalCard.bind(this, 'repos')}
+            />
+          </LayoutLeft>
+          <LayoutRight column={4}>
+            <TotalCard
+              name={`Runtimes`}
+              iconName={`stateful-set`}
+              iconSize={64}
+              total={runtimeStore.totalCount}
+              onClick={this.handleClickTotalCard.bind(this, 'runtimes')}
+            />
+          </LayoutRight>
+        </Section>
+
+        <LayoutLeft column={4}>
+          <Panel
+            title={t('Top Apps')}
+            linkTo="/dashboard/apps"
+            len={appList.length}
+            iconName="apps"
+          >
+            <AppList apps={appList} />
+          </Panel>
+        </LayoutLeft>
+        <LayoutRight column={8}>
+          <Panel
+            title={t('Latest Clusters')}
+            linkTo="/dashboard/clusters"
+            len={clusterList.length}
+            iconName="clusters"
+          >
+            <ClusterList clusters={clusterList} />
+          </Panel>
+        </LayoutRight>
       </Layout>
     );
   };

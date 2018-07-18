@@ -1,7 +1,7 @@
 // import partials
 
-@import "./partial/color";
-//@import "partial/text";
+@import "partial/color";
+@import "partial/text";
 @import "partial/icon";
 @import "partial/grid";
 
@@ -35,10 +35,10 @@ $background-color: #f6f6f8;
 $background-color-lighter: #ffffff;
 $th-background-color: #efe9f7;
 $li-bg:#f5f7fa;
-$li-hover-bg: rgba(243,229,255,.23);
+$li-hover-bg: rgba(213, 218, 229, 0.15);
 $link-hover: #7a2ac0;
-$tr-hover-bg: rgba(243,229,255,.23);
-
+$tr-hover-bg: rgba(213, 218, 229, 0.15);
+$body-bg: #f5f6f7;
 $delete-btn: #ac4949;
 
 $family-sans-serif: "Roboto", "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", 微软雅黑, STHeitiSC-Light, simsun, 宋体, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
@@ -76,11 +76,16 @@ $transition-speed: .3s;
 $content-width: 1128px;
 $nav-width: 192px;
 $header-height: 48px;
+$tabNavs-height: 48px;
 $banner-height: 400px;
 $footer-height: 64px;
 $base-margin: 24px;
 $card-width: 264px;
 
+$app-card-width: 264px;
+$app-card-height: 207px;
+
+$page-bottom: 48px;
 $main-height: calc(100vh - #{$footer-height});
 
 $login-bg: linear-gradient(to left, #794db3, #854fb9 32%, #484999);

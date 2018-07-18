@@ -84,6 +84,7 @@ export default class Header extends Component {
       <div className={classnames('header', styles.header, { [styles.lightHeader]: !isDark })}>
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
+          <div className={styles.menus}>{this.renderMenuBtns()}</div>
           {needShowSearch && (
             <Input.Search
               className={styles.search}
@@ -93,7 +94,6 @@ export default class Header extends Component {
               onClear={this.onClearSearch}
             />
           )}
-          <div className={styles.menus}>{this.renderMenuBtns()}</div>
         </div>
       </div>
     );

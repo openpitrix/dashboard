@@ -1,17 +1,19 @@
 @import '~scss/vars';
 
-.container {
-  padding-top: 120px;
+.layout {
+  display: flex;
+  padding-top: $header-height+$tabNavs-height+32px;
+  padding-bottom: $page-bottom;
   &.noTabs{
-    padding-top: 72px;
+    padding-top: $header-height+32px;
   }
   .backTo{
     width: $content-width;
-    margin: 0 auto 12px;
-    line-height: 20px;
+    margin: 0 auto 20px;
     font-size: 14px;
+    line-height: 1.43;
     a{
-      color: $title-color;
+      color: $P75;
     }
   }
   .detailTab{

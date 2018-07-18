@@ -33,7 +33,7 @@ export default class AppList extends PureComponent {
         cate.apps = cate.apps || [];
 
         return (
-          <div key={`${idx}-${cate.name}`}>
+          <div key={`${idx}-${cate.name}`} className={styles.categoryApps}>
             {cate.apps.length > 0 && (
               <CardTitle categoryId={cate.category_id} title={cate.name} more />
             )}

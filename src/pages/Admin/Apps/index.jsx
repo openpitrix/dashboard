@@ -8,7 +8,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getObjName } from 'utils';
+import { getSessInfo, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
 
@@ -142,7 +142,6 @@ export default class Apps extends Component {
       selectStatus
     } = this.props.appStore;
     const { repos } = this.props.repoStore;
-    const imgPhd = imgPlaceholder();
 
     const columns = [
       {
@@ -153,7 +152,7 @@ export default class Apps extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon || imgPhd}
+            image={item.icon || 'appcenter'}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
@@ -234,45 +233,37 @@ export default class Apps extends Component {
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={repos.slice()} />
-        <div className={styles.container}>
-          <div className={styles.wrapper}>
-            {appIds.length > 0 && (
-              <div className={styles.toolbar}>
-                <Button
-                  type="primary"
-                  className={styles.delete}
-                  onClick={() => showDeleteApp(appIds)}
-                >
-                  Delete
-                </Button>
-              </div>
-            )}
-            {appIds.length === 0 && (
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search App Name"
-                  value={searchWord}
-                  onSearch={onSearch}
-                  onClear={onClearSearch}
-                  maxLength="50"
-                  max
-                />
-                <Button className={'refresh-btn'} onClick={onRefresh}>
-                  <Icon name="refresh" />
-                </Button>
-              </div>
-            )}
 
-            <Table
-              className={styles.tableOuter}
-              columns={columns}
-              dataSource={apps.toJSON()}
-              rowSelection={rowSelection}
-              isLoading={isLoading}
-              filterList={filterList}
-            />
-          </div>
+        <div className="table-outer">
+          {appIds.length > 0 && (
+            <div className="toolbar">
+              <Button type="delete" onClick={() => showDeleteApp(appIds)}>
+                Delete
+              </Button>
+            </div>
+          )}
+          {appIds.length === 0 && (
+            <div className="toolbar">
+              <Input.Search
+                placeholder="Search App Name"
+                value={searchWord}
+                onSearch={onSearch}
+                onClear={onClearSearch}
+                maxLength="50"
+              />
+              <Button className="f-right" onClick={onRefresh}>
+                <Icon name="refresh" />
+              </Button>
+            </div>
+          )}
+
+          <Table
+            columns={columns}
+            dataSource={apps.toJSON()}
+            rowSelection={rowSelection}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}

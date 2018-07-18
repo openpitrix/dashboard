@@ -8,7 +8,7 @@ exports[`Base/Pagination basic render 1`] = `
   <li
     class="pi-pagination-total-text"
   >
-    100 items in total
+    Total: 100
   </li>
   <li
     aria-disabled="false"

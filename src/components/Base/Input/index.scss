@@ -2,23 +2,23 @@
 
 .input {
   width: 100%;
+  box-sizing: border-box;
   height: 32px;
   padding: 7px 10px;
+  line-height: 16px;
   border-radius: 2px;
-  background-color: #ffffff;
-  border: solid 1px $border;
+  background-color: $N0;
+  border: solid 1px $N30;
   color: $text-color;
   caret-color: #979797;
-  line-height: 16px;
-  box-sizing: border-box;
   transition: all .3s ease-in-out;
   &::placeholder {
-    color: $placeholder-color;
+    color: $N45;
   }
   &:focus {
     outline: none;
-    border: solid 1px $third-text-color;
-    box-shadow: 0 1px 2px 0 rgba(102, 38, 175, 0.1);
+    border: solid 1px $P75;
+    box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
   }
 }
 
@@ -26,26 +26,23 @@
   position: relative;
 
   :global {
-    //.icon {
-    //  color: $placeholder-color;
-    //}
-
-    .icon-search {
+    .icon {
       position: absolute;
       left: 12px;
       top: 50%;
       transform: translateY(-50%);
     }
-    .icon-close {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%) scale(0.6);
-      cursor: pointer;
-    }
+  }
+  .close {
+    position: absolute;
+    left: auto;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.6);
+    cursor: pointer;
   }
 
   input {
-    padding: 8px 8px 8px 40px;
+    padding: 8px 8px 8px 36px;
   }
 }

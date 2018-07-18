@@ -30,7 +30,8 @@ Array [
         class="inputGroup search"
       >
         <span
-          class="icon icon-search icon-is-small"
+          class="icon"
+          style="width:16px;height:16px"
         >
           <svg
             class="qicon qicon-magnifier qicon-dark"

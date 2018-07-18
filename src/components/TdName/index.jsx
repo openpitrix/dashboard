@@ -2,10 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
+import { throttle } from 'lodash';
 
 import { Tooltip } from 'components/Base';
+import { Icon } from 'components/Base';
 import styles from './index.scss';
-import { throttle } from 'lodash';
 
 export default class TdName extends PureComponent {
   static propTypes = {
@@ -36,9 +37,11 @@ export default class TdName extends PureComponent {
 
   render() {
     const { image, name, description, linkUrl, noCopy } = this.props;
+    const isIcon = ['appcenter', 'cluster'].find(data => data === image) ? true : false;
     return (
       <span className={styles.tdName}>
-        {image && <img src={image} className={styles.image} />}
+        {isIcon && <Icon name={image} size={24} type="coloured" />}
+        {!isIcon && image && <img src={image} className={styles.image} />}
         <span className={styles.info}>
           {linkUrl && (
             <Link className={styles.name} to={linkUrl} title={name}>

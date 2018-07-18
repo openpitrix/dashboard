@@ -9,6 +9,7 @@ import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
@@ -219,53 +220,50 @@ export default class ClusterDetail extends Component {
     return (
       <Layout>
         <BackBtn label="clusters" link="/dashboard/clusters" />
-        <div className={styles.wrapper}>
-          <div className={styles.leftInfo}>
-            <div className={styles.detailOuter}>
-              <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
-              <Popover className={styles.operation} content={this.renderHandleMenu()}>
-                <Icon name="more" />
-              </Popover>
-            </div>
-            <div className={styles.activities}>
-              <div className={styles.title}>
-                Activities
-                <div className={styles.more} onClick={clusterJobsOpen}>
-                  More →
-                </div>
-              </div>
-              <TimeAxis timeList={clusterJobs.splice(0, 4)} />
-            </div>
+
+        <LayoutLeft>
+          <div className="detail-outer">
+            <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
+            <Popover className="operation" content={this.renderHandleMenu()}>
+              <Icon name="more" />
+            </Popover>
           </div>
 
-          <div className={styles.rightInfo}>
-            <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTag} />
-              <div className={styles.toolbar}>
-                <Input.Search
-                  className={styles.search}
-                  placeholder="Search Node Name"
-                  value={searchNode}
-                  onSearch={onSearchNode}
-                  onClear={onClearNode}
-                  maxLength="50"
-                />
-                <Button className={'refresh-btn'} onClick={onRefreshNode}>
-                  <Icon name="refresh" />
-                </Button>
+          <div className={styles.activities}>
+            <div className={styles.title}>
+              Activities
+              <div className={styles.more} onClick={clusterJobsOpen}>
+                More →
               </div>
-              <Table
-                columns={columns}
-                dataSource={clusterNodes}
-                className="detailTab"
-                isLoading={isLoading}
-                filterList={filterList}
-              />
-              <div className={styles.total}>Total: {clusterNodes.length}</div>
             </div>
-            <div className={styles.clear} />
+            <TimeAxis timeList={clusterJobs.splice(0, 4)} />
           </div>
-        </div>
+        </LayoutLeft>
+
+        <LayoutRight className="table-outer">
+          <TagNav tags={tags} curTag={curTag} />
+          <div className="toolbar">
+            <Input.Search
+              placeholder="Search Node Name"
+              value={searchNode}
+              onSearch={onSearchNode}
+              onClear={onClearNode}
+              maxLength="50"
+            />
+            <Button className="f-right" onClick={onRefreshNode}>
+              <Icon name="refresh" />
+            </Button>
+          </div>
+
+          <Table
+            columns={columns}
+            dataSource={clusterNodes}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
+          <div className={styles.total}>Total: {clusterNodes.length}</div>
+        </LayoutRight>
+
         {this.clusterJobsModal()}
         {this.clusterParametersModal()}
       </Layout>

@@ -91,6 +91,7 @@ export default class AppStore extends Store {
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
       name: 'Apps',
+      iconName: 'appcenter',
       centerName: 'Repos',
       total: get(result, 'app_count', 0),
       progressTotal: get(result, 'repo_count', 0),

@@ -2,63 +2,69 @@
 
 .banner {
   height: $banner-height;
-  padding-top: 130px;
-  background-image: linear-gradient(-145deg, #F7F7F9 2%, #EDECF0 100%);
-  border-bottom: 1px solid $border;
+  padding-top: 120px;
+  background-color: $N0;
   .wrapper {
     position: relative;
     width: $content-width;
     margin: 0 auto;
   }
   .title {
-    width: 470px;
-    font-size: 28px;
+    width: 552px;
+    font-size: $font32;
     font-weight: 500;
-    line-height: 1.43;
-    text-align: left;
-    color: $title-color;
+    line-height: 1.25;
+    color: $P400;
   }
   .search {
     width: 360px;
-    margin-top: $base-margin;
+    margin-top: 32px;
     i {
-      font-size: $size-medium;
-      color: $third-text-color;
+      color: $N65;
+    }
+    &:hover {
+      i {
+        color: $P100;
+      }
     }
     input {
+      padding-left: 36px;
       border-color: transparent;
       border-radius: 16px;
-      background: rgba($border-light, 0.2);
+      background-color: $N10;
       transition: all .3s ease-in-out;
       &::placeholder {
-        color: rgba($third-text-color, 0.5);
+        color: $N65;
+        line-height: 1.0;
+        letter-spacing: 0;
       }
       &:focus {
-        border: solid 1px $border-dark;
+        border: solid 1px $P100;
       }
     }
   }
   :global {
     .banner-img-1 {
       position: absolute;
-      top: 0;
-      right: 420px;
+      top: -30px;
+      left: 600px;
       z-index: 1;
-      width: 150px;
+      width: 160px;
     }
     .banner-img-2 {
       position: absolute;
       top: -130px;
-      right: 190px;
+      right: 150px;
       z-index: 1;
       width: 155px;
     }
     .banner-img-3 {
       position: absolute;
-      top: 125px;
-      right: 175px;
+      top: 110px;
+      right: 180px;
       z-index: 1;
       width: 115px;
     }
   }
 }
+

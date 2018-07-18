@@ -67,7 +67,7 @@ export default class Layout extends React.Component {
   render() {
     const { className, noTabs, noNotification, children, isLoading, loadClass } = this.props;
     return (
-      <div className={classnames(styles.container, className, { [styles.noTabs]: noTabs })}>
+      <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
         <Container>

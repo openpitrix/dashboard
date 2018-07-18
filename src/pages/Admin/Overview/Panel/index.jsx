@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
 import Button from 'components/Base/Button';
-import { imgPlaceholder } from 'utils';
-
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
 @translate()
@@ -15,36 +13,37 @@ export default class Panel extends PureComponent {
     title: PropTypes.string,
     linkTo: PropTypes.string,
     children: PropTypes.node,
-    isAdmin: PropTypes.bool,
-    btnName: PropTypes.string,
+    iconName: PropTypes.string,
     len: PropTypes.number
   };
 
-  static defaultProps = {
-    isAdmin: false
-  };
-
-  renderWelcomForNormalUser() {
-    const { btnName, linkTo, t } = this.props;
-
+  renderNoDataWelcome() {
+    const { iconName, linkTo, t } = this.props;
+    const btnObj = {
+      appcenter: 'Browse',
+      'stateful-set': 'Create',
+      cluster: 'Manage'
+    };
     return (
       <div className={styles.blankList}>
-        <img src={imgPlaceholder(64)} className={styles.image} />
+        <div className={styles.iconName}>
+          <Icon name={iconName} size={64} type="coloured" />
+        </div>
         <div className={styles.title}>
-          {btnName === 'Browse' && 'Browse Apps'}
-          {btnName === 'Create' && 'Create Runtime'}
-          {btnName === 'Manage' && 'Manage Clusters'}
+          {iconName === 'appcenter' && 'Browse Apps'}
+          {iconName === 'stateful-set' && 'Create Repo'}
+          {iconName === 'cluster' && 'Manage Clusters'}
         </div>
         <div className={styles.description}>{t('pg-overview.normal_welcome_desc')}</div>
         <Link className={styles.button} to={linkTo}>
-          <Button>{t(btnName)}</Button>
+          <Button type="default">{t(btnObj[iconName])}</Button>
         </Link>
       </div>
     );
   }
 
-  renderDataListForAdmin() {
-    const { isAdmin, linkTo, title, children, btnName, t } = this.props;
+  renderDataList() {
+    const { isAdmin, linkTo, title, children, t } = this.props;
     const childNodes = React.Children.map(children, child =>
       React.cloneElement(child, {
         ...child.props,
@@ -53,33 +52,25 @@ export default class Panel extends PureComponent {
     );
 
     return (
-      <div className={classNames(styles.panel, { [styles.normal]: !isAdmin })}>
+      <div className={styles.panel}>
         <div className={styles.title}>
-          {!isAdmin && <img src={imgPlaceholder(24)} className={styles.image} />}
           {t(title)}
-          {isAdmin && (
-            <Link className={styles.more} to={linkTo}>
-              {t('more')}
-            </Link>
-          )}
+          <Link className={styles.more} to={linkTo}>
+            {t('more')}
+          </Link>
         </div>
         {childNodes}
-        {!isAdmin && (
-          <Link className={styles.button} to={linkTo}>
-            <Button>{t(btnName)}</Button>
-          </Link>
-        )}
       </div>
     );
   }
 
   render() {
-    const { isAdmin, len } = this.props;
+    const { len } = this.props;
 
-    if (!isAdmin && !len) {
-      return this.renderWelcomForNormalUser();
+    if (!len) {
+      return this.renderNoDataWelcome();
     }
 
-    return this.renderDataListForAdmin();
+    return this.renderDataList();
   }
 }

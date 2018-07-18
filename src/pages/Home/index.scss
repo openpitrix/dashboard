@@ -1,18 +1,16 @@
 @import '~scss/vars';
 
 .contentOuter {
-  background-color: $background-color-lighter;
+  background-color: $body-bg;
 }
 .content {
   position: relative;
   min-height: $main-height;
   margin: 0 auto;
   width: $content-width;
-
   .homeLoad {
-    margin-left: 192px;
+    margin-left: $nav-width;
   }
-
   .nav {
     position: absolute;
     top: 0;
@@ -21,11 +19,10 @@
     height: 100%;
   }
   .apps {
-    margin-left: 192px;
-    padding-left: 94px;
-    padding-bottom: 64px;
+    margin-left: $nav-width;
+    padding-left: 24px;
+    padding-bottom: $page-bottom;
     min-height: calc(100vh - #{$footer-height});
-    border-left: 2px solid $border;
   }
 }
 .fixNav {

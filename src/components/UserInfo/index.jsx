@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
 @translate()
@@ -14,12 +15,14 @@ export default class UserInfo extends PureComponent {
   };
 
   render() {
-    const { userImg, name, role, loginInfo, t } = this.props;
+    const { name, role, loginInfo, t } = this.props;
 
     return (
       <div className={styles.userInfo}>
         <div>
-          <img className={styles.userImg} src={userImg} />
+          <div className={styles.userImg}>
+            <Icon name="human" size={24} type="coloured" />
+          </div>
           <div className={styles.user}>
             <div className={styles.name}>{t('greet words', { name })}</div>
             <div className={styles.role}>{t('role', { context: role })}</div>
