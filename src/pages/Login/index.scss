@@ -46,11 +46,20 @@ $input-item-height: 48px;
   }
 
   .formInput {
-    i {
-      font-size: 18px;
-      left: 28px;
-      color: $login-placeholder;
+    //i {
+    //  font-size: 18px;
+    //  left: 28px;
+    //  color: $login-placeholder;
+    //}
+    :global {
+      .icon {
+        position: relative;
+        left: 20px;
+        top: 40px;
+        opacity: .5;
+      }
     }
+
     input {
       width: $input-item-width;
       height: $input-item-height;

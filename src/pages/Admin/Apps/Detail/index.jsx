@@ -9,10 +9,9 @@ import AppCard from 'components/DetailCard/AppCard';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight } from 'components/Layout';
 import columns from './columns';
-
 import { getSessInfo } from 'utils';
-
 import styles from './index.scss';
 
 @inject(({ rootStore, sessInfo }) =>
@@ -200,15 +199,13 @@ export default class AppDetail extends Component {
     return (
       <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
-
-        <div className="colu-mr-4">
+        <LayoutLeft>
           <div className="detail-outer">
             <AppCard appDetail={appDetail} repoName={repoName} />
             <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
               <Icon name="more" />
             </Popover>
           </div>
-
           <div className={styles.versionOuter}>
             <div className={styles.title}>
               Versions
@@ -218,37 +215,35 @@ export default class AppDetail extends Component {
             </div>
             <VersionList versions={versions.slice(0, 4)} />
           </div>
-        </div>
+        </LayoutLeft>
 
-        <div className="colu-8 table-outer">
-          <div className={styles.wrapper}>
-            <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
-            <div className="toolbar">
-              <Input.Search
-                placeholder="Search Cluster Name"
-                onSearch={this.onSearch}
-                onClear={this.onClearSearch}
-                value={swCluster}
-                maxLength="50"
-              />
-              <Button onClick={this.onRefresh}>
-                <Icon name="refresh" />
-              </Button>
-            </div>
-
-            <Table
-              columns={columns}
-              dataSource={clusters.toJSON()}
-              isLoading={isLoading}
-              filterList={filterList}
+        <LayoutRight className="table-outer">
+          <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
+          <div className="toolbar">
+            <Input.Search
+              placeholder="Search Cluster Name"
+              onSearch={this.onSearch}
+              onClear={this.onClearSearch}
+              value={swCluster}
+              maxLength="50"
             />
+            <Button className="f-right" onClick={this.onRefresh}>
+              <Icon name="refresh" />
+            </Button>
           </div>
+
+          <Table
+            columns={columns}
+            dataSource={clusters.toJSON()}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
           <Pagination
             onChange={this.changePagination}
             total={clusterStore.totalCount}
             current={currentClusterPage}
           />
-        </div>
+        </LayoutRight>
         {this.renderOpsModal()}
       </Layout>
     );

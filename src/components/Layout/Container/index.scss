@@ -4,3 +4,15 @@
   width: $content-width;
   margin: 0 auto;
 }
+
+[class*='layout-left-']{
+  float: left;
+}
+[class*='layout-right-']{
+  float: right;
+}
+
+@for $i from 0 through $columns {
+  @include calc-grid-column($i, 'layout-left');
+  @include calc-grid-column($i, 'layout-right');
+}

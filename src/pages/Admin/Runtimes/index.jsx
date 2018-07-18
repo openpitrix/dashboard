@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { getParseDate, getParseTime } from 'utils';
+import { formatTime } from 'utils';
 import classNames from 'classnames';
 
 import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
@@ -118,12 +118,7 @@ export default class Runtimes extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        render: runtime => (
-          <Fragment>
-            <div>{getParseDate(runtime.status_time)}</div>
-            <div>{getParseTime(runtime.status_time)}</div>
-          </Fragment>
-        )
+        render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: 'Actions',
@@ -195,9 +190,8 @@ export default class Runtimes extends Component {
             isLoading={isLoading}
             filterList={filterList}
           />
+          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
-
-        <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         {this.renderDeleteModal()}
       </Layout>
     );

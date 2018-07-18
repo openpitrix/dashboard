@@ -31,13 +31,13 @@ Array [
       >
         <span
           class="icon"
-          style="width:32px;height:32px"
+          style="width:16px;height:16px"
         >
           <svg
-            class="qicon qicon-search qicon-dark"
+            class="qicon qicon-magnifier qicon-dark"
           >
             <use
-              href="#search"
+              href="#magnifier"
             />
           </svg>
         </span>

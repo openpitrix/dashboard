@@ -13,7 +13,7 @@ exports[`Base/Timeline basic render 1`] = `
       <span>
         <span
           class="icon"
-          style="width:32px;height:32px"
+          style="width:16px;height:16px"
         >
           <svg
             class="qicon qicon-stop qicon-dark"
@@ -36,7 +36,7 @@ exports[`Base/Timeline basic render 1`] = `
       <span>
         <span
           class="icon"
-          style="width:32px;height:32px"
+          style="width:16px;height:16px"
         >
           <svg
             class="qicon qicon-refresh qicon-dark"

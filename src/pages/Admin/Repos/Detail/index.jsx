@@ -10,6 +10,7 @@ import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import styles from './index.scss';
@@ -339,56 +340,47 @@ export default class RepoDetail extends Component {
     return (
       <Layout>
         <BackBtn label="repos" link="/dashboard/repos" />
-        <div className={styles.wrapper}>
-          <div className={styles.leftInfo}>
-            <div className={styles.detailOuter}>
-              <RuntimeCard detail={repoDetail} appCount={appCount} />
-              {repoDetail.status !== 'deleted' && (
-                <Popover
-                  className={styles.operation}
-                  content={this.renderHandleMenu(repoDetail.repo_id)}
-                >
-                  <Icon name="more" />
-                </Popover>
-              )}
+
+        <LayoutLeft className="detail-outer">
+          <RuntimeCard detail={repoDetail} appCount={appCount} />
+          {repoDetail.status !== 'deleted' && (
+            <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
+              <Icon name="more" />
+            </Popover>
+          )}
+        </LayoutLeft>
+        <LayoutRight className="table-outer">
+          <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
+          {curTagName === 'Runtimes' && (
+            <div className={styles.selector}>
+              <div className={styles.title}>Runtime Selectors</div>
+              <TagShow tags={selectors} tagStyle="yellow" />
             </div>
-          </div>
-          <div className={styles.rightInfo}>
-            <div className={styles.wrapper2}>
-              <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
-              {curTagName === 'Runtimes' && (
-                <div className={styles.selector}>
-                  <div className={styles.title}>Runtime Selectors</div>
-                  <TagShow tags={selectors} tagStyle="yellow" />
-                </div>
-              )}
+          )}
 
-              {curTagName !== 'Events' && (
-                <div className={styles.toolbar}>
-                  <Input.Search
-                    className={styles.search}
-                    placeholder={searchTip}
-                    onSearch={onSearch}
-                    onClear={onClearSearch}
-                    value={detailSearch}
-                  />
-                  <Button className={styles.buttonRight} onClick={onRefresh}>
-                    <Icon name="refresh" />
-                  </Button>
-                </div>
-              )}
-
-              <Table
-                columns={columns}
-                dataSource={data}
-                className="detailTab"
-                isLoading={isLoading}
-                filterList={filterList}
+          {curTagName !== 'Events' && (
+            <div className="toolbar">
+              <Input.Search
+                className={styles.search}
+                placeholder={searchTip}
+                onSearch={onSearch}
+                onClear={onClearSearch}
+                value={detailSearch}
               />
+              <Button className="f-right" onClick={onRefresh}>
+                <Icon name="refresh" />
+              </Button>
             </div>
-            <Pagination onChange={changeTable} total={totalCount} />
-          </div>
-        </div>
+          )}
+
+          <Table
+            columns={columns}
+            dataSource={data}
+            isLoading={isLoading}
+            filterList={filterList}
+          />
+          <Pagination onChange={changeTable} total={totalCount} />
+        </LayoutRight>
         {this.deleteRepoModal()}
       </Layout>
     );

@@ -8,6 +8,7 @@ import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import styles from './index.scss';
@@ -131,22 +132,21 @@ export default class RuntimeDetail extends Component {
       <Layout>
         <BackBtn label="runtimes" link="/dashboard/runtimes" />
 
-        <div className="colu-mr-4">
-          <div className="detail-outer">
-            <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
-            {runtimeDetail.status !== 'deleted' && (
-              <Popover
-                className="operation"
-                content={this.renderHandleMenu(runtimeDetail.runtime_id)}
-              >
-                <Icon name="more" />
-              </Popover>
-            )}
-          </div>
-        </div>
+        <LayoutLeft className="detail-outer">
+          <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
+          {runtimeDetail.status !== 'deleted' && (
+            <Popover
+              className="operation"
+              content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+            >
+              <Icon name="more" />
+            </Popover>
+          )}
+        </LayoutLeft>
 
-        <div className="colu-8 table-outer">
+        <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
+
           <div className="toolbar">
             <Input.Search
               placeholder="Search Clusters Name"
@@ -167,7 +167,7 @@ export default class RuntimeDetail extends Component {
             filterList={filterList}
           />
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
-        </div>
+        </LayoutRight>
       </Layout>
     );
   }

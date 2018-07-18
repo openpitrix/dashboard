@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { getParseDate } from 'utils';
+import { formatTime } from 'utils';
 import classNames from 'classnames';
 
 import {
@@ -146,7 +146,7 @@ export default class ClusterDetail extends Component {
         dataIndex: 'created',
         key: 'created',
         width: '13%',
-        render: getParseDate
+        render: formatTime
       },
       {
         title: 'Operation',

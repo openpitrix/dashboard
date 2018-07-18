@@ -9,6 +9,7 @@ import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import { LayoutLeft, LayoutRight } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
@@ -220,7 +221,7 @@ export default class ClusterDetail extends Component {
       <Layout>
         <BackBtn label="clusters" link="/dashboard/clusters" />
 
-        <div className="colu-mr-4">
+        <LayoutLeft>
           <div className="detail-outer">
             <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
             <Popover className="operation" content={this.renderHandleMenu()}>
@@ -237,23 +238,23 @@ export default class ClusterDetail extends Component {
             </div>
             <TimeAxis timeList={clusterJobs.splice(0, 4)} />
           </div>
-        </div>
+        </LayoutLeft>
 
-        <div className="colu-8 table-outer">
+        <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
           <div className="toolbar">
             <Input.Search
-              className={styles.search}
               placeholder="Search Node Name"
               value={searchNode}
               onSearch={onSearchNode}
               onClear={onClearNode}
               maxLength="50"
             />
-            <Button onClick={onRefreshNode}>
+            <Button className="f-right" onClick={onRefreshNode}>
               <Icon name="refresh" />
             </Button>
           </div>
+
           <Table
             columns={columns}
             dataSource={clusterNodes}
@@ -261,7 +262,7 @@ export default class ClusterDetail extends Component {
             filterList={filterList}
           />
           <div className={styles.total}>Total: {clusterNodes.length}</div>
-        </div>
+        </LayoutRight>
 
         {this.clusterJobsModal()}
         {this.clusterParametersModal()}

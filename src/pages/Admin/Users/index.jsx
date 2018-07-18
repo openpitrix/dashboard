@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { getParseDate } from 'utils';
+import { formatTime } from 'utils';
 import classNames from 'classnames';
 
 import { Checkbox, Icon, Button, Input, Select, Table, Pagination, Modal } from 'components/Base';
@@ -234,7 +234,7 @@ export default class Users extends Component {
         dataIndex: 'last_modified',
         key: 'last_modified',
         width: '10%',
-        render: getParseDate
+        render: formatTime
       },
       {
         title: 'Actions',
@@ -338,7 +338,7 @@ export default class Users extends Component {
               <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
                 Create
               </Button>
-              <Button className={styles.buttonRight}>
+              <Button className={'refresh-btn'}>
                 <Icon name="refresh" />
               </Button>
             </div>

@@ -4,49 +4,16 @@ $grid-margin: 24px;
 $grid-width: ($content-width+$grid-margin)/$columns;
 $N0: #fff;
 
-:global {
-  .row {
-    margin-bottom: $grid-margin;
-  }
-  .flex-outer {
-    display: flex;
-  }
-}
-[class*='colu-']{
-  float: left;
-}
 @mixin calc-grid-column($index, $type) {
-  :global {
-    @if ($type == 'width') and ($index > 0) {
-      .colu-#{$index} {
-        //flex: 0 0 $grid-width*$index - $grid-margin;
-        width: $grid-width*$index - $grid-margin;
-      }
-    }
-    @if ($type == 'margin-r') and ($index > 0) {
-      .colu-mr-#{$index} {
-        //flex: 0 0 $grid-width*$index - $grid-margin;
-        width: $grid-width*$index - $grid-margin;
-        margin-right: $grid-margin;
-      }
-    }
-    @if ($type == 'margin-l') and ($index > 0) {
-      .colu-ml-#{$index} {
-        //flex: 0 0 $grid-width*$index - $grid-margin;
-        width: $grid-width*$index - $grid-margin;
-        margin-left: $grid-margin;
-      }
-    }
-    @if ($type == 'offset') and ($index > 0) {
-      .colu-offset-#{$index} {
-        margin-left: $grid-width*$index;
-      }
+  @if ($type == 'layout-left') and ($index > 0) {
+    .layout-left-#{$index} {
+      width: $grid-width*$index - $grid-margin;
+      margin-right: $grid-margin;
     }
   }
-}
-@for $i from 0 through $columns {
-  @include calc-grid-column($i, 'width');
-  @include calc-grid-column($i, 'margin-r');
-  @include calc-grid-column($i, 'margin-l');
-  @include calc-grid-column($i, 'offset');
+  @if ($type == 'layout-right') and ($index > 0) {
+    .layout-right-#{$index} {
+      width: $grid-width*$index - $grid-margin;
+    }
+  }
 }

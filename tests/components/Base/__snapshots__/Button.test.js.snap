@@ -7,7 +7,7 @@ exports[`Base/Button basic render 1`] = `
 >
   <span
     class="icon"
-    style="width:32px;height:32px"
+    style="width:16px;height:16px"
   >
     <svg
       class="qicon qicon-spinner qicon-dark"

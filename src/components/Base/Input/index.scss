@@ -24,6 +24,7 @@
 
 .inputGroup {
   position: relative;
+
   :global {
     .icon {
       position: absolute;
@@ -40,6 +41,7 @@
     transform: translateY(-50%) scale(0.6);
     cursor: pointer;
   }
+
   input {
     padding: 8px 8px 8px 36px;
   }

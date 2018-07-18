@@ -2532,6 +2532,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+dayjs@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.7.4.tgz#6001277372aec83021943157fa279ecf2b5f5cf8"
+
 debug@*, debug@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"

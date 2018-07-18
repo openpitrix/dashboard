@@ -1,9 +1,9 @@
-@import "~scss/partial/color";
-@import "~scss/partial/text";
+// import partials
 
-//
-// Variables
-// --------------------------------------------------
+@import "partial/color";
+@import "partial/text";
+@import "partial/icon";
+@import "partial/grid";
 
 // init
 $blue: #5cb8e6;
