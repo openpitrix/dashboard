@@ -29,6 +29,11 @@ const appendSvg = () => {
   }
 };
 
+// mapping icon name
+const iconNameMap = {
+  magnifier: 'search'
+};
+
 class Icon extends React.PureComponent {
   static propTypes = {
     prefix: PropTypes.string,
@@ -46,7 +51,7 @@ class Icon extends React.PureComponent {
 
   static defaultProps = {
     type: 'dark',
-    size: 32,
+    size: 'small',
     prefix: 'qicon',
     style: {},
     changeable: false,
@@ -96,8 +101,9 @@ class Icon extends React.PureComponent {
         style={styles}
         className={classNames(
           'icon',
+          `icon-${iconNameMap[name] || name}`,
           {
-            [`is-${size}`]: !isNumber(size),
+            [`icon-is-${size}`]: !isNumber(size),
             'icon-clickable': clickable,
             'icon-changeable': changeable && !disabled,
             'icon-disabled': disabled

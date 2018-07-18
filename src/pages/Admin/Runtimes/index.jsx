@@ -186,7 +186,7 @@ export default class Runtimes extends Component {
                   Create
                 </Button>
               </Link>
-              <Button className={styles.buttonRight} onClick={onRefresh}>
+              <Button className={'refresh-btn'} onClick={onRefresh}>
                 <Icon name="refresh" />
               </Button>
             </div>

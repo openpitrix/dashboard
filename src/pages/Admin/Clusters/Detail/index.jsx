@@ -250,7 +250,7 @@ export default class ClusterDetail extends Component {
                   onClear={onClearNode}
                   maxLength="50"
                 />
-                <Button className={styles.buttonRight} onClick={onRefreshNode}>
+                <Button className={'refresh-btn'} onClick={onRefreshNode}>
                   <Icon name="refresh" />
                 </Button>
               </div>

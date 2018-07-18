@@ -156,7 +156,7 @@ export default class RuntimeDetail extends Component {
                   onClear={onClearSearch}
                   maxLength="50"
                 />
-                <Button className={styles.buttonRight} onClick={onRefresh}>
+                <Button className={'refresh-btn'} onClick={onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>

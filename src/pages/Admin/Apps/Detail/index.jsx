@@ -235,7 +235,7 @@ export default class AppDetail extends Component {
                   value={swCluster}
                   maxLength="50"
                 />
-                <Button className={styles.buttonRight} onClick={this.onRefresh}>
+                <Button className={'refresh-btn'} onClick={this.onRefresh}>
                   <Icon name="refresh" />
                 </Button>
               </div>
