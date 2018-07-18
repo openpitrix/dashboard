@@ -228,7 +228,7 @@ export default class AppDetail extends Component {
               maxLength="50"
             />
             <Button className="f-right" onClick={this.onRefresh}>
-              <Icon name="refresh" />
+              <Icon name="refresh" size="mini" />
             </Button>
           </div>
 

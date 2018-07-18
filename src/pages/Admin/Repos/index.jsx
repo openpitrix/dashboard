@@ -113,12 +113,12 @@ export default class Repos extends Component {
               maxLength="50"
             />
             <Link to="/dashboard/repo/create">
-              <Button className={classNames(styles.buttonRight, styles.ml12)} type="primary">
+              <Button className={classNames('f-right', styles.ml12)} type="primary">
                 Create
               </Button>
             </Link>
-            <Button className={'refresh-btn'} onClick={onRefresh}>
-              <Icon name="refresh" />
+            <Button className="f-right" onClick={onRefresh}>
+              <Icon name="refresh" size="mini" />
             </Button>
           </div>
           <Loading className="loadTable" isLoading={isLoading}>

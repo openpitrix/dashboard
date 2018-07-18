@@ -368,7 +368,7 @@ export default class RepoDetail extends Component {
                 value={detailSearch}
               />
               <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" />
+                <Icon name="refresh" size="mini" />
               </Button>
             </div>
           )}

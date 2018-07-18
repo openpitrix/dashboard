@@ -178,7 +178,7 @@ export default class Runtimes extends Component {
                 </Button>
               </Link>
               <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" />
+                <Icon name="refresh" size="mini" />
               </Button>
             </div>
           )}

@@ -25,7 +25,7 @@ export default class TotalCard extends PureComponent {
         {t => (
           <div className={styles.totalCard} {...rest}>
             <div className={styles.name}>
-              <Icon name={iconName} size={iconSize} type="coloured" />
+              <Icon name={iconName} size={iconSize} />
               {t(name)}
             </div>
             <div className={styles.number}>{total}</div>

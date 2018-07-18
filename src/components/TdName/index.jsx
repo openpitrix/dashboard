@@ -37,10 +37,11 @@ export default class TdName extends PureComponent {
 
   render() {
     const { image, name, description, linkUrl, noCopy } = this.props;
-    const isIcon = ['appcenter', 'cluster'].find(data => data === image) ? true : false;
+    const isIcon = ['appcenter', 'cluster'].includes(image);
+
     return (
       <span className={styles.tdName}>
-        {isIcon && <Icon name={image} size={24} type="coloured" />}
+        {isIcon && <Icon name={image} />}
         {!isIcon && image && <img src={image} className={styles.image} />}
         <span className={styles.info}>
           {linkUrl && (

@@ -251,7 +251,7 @@ export default class ClusterDetail extends Component {
               maxLength="50"
             />
             <Button className="f-right" onClick={onRefreshNode}>
-              <Icon name="refresh" />
+              <Icon name="refresh" size="mini" />
             </Button>
           </div>
 
