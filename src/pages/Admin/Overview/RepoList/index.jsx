@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
 import { ucfirst } from 'utils/string';
-
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
 @translate()
@@ -17,7 +17,7 @@ export default class RepoList extends PureComponent {
   };
 
   static defaultProps = {
-    limit: 3,
+    limit: 2,
     type: 'public',
     repos: []
   };
@@ -32,16 +32,16 @@ export default class RepoList extends PureComponent {
       totalName = 'Apps';
     }
 
+    const colorStyles = {
+      primary: '#343945',
+      secondary: '#343945'
+    };
+
     return (
       <Fragment>
-        {type !== 'runtime' && <div className={styles.type}>{t(ucfirst(type))}</div>}
-        <ul
-          className={classNames(
-            styles.reposList,
-            { [styles.reposBg]: type === 'public' },
-            { [styles.runtimeBg]: type === 'runtime' }
-          )}
-        >
+        {type !== 'runtime' &&
+          filterRepos.length > 0 && <div className={styles.type}>{t(ucfirst(type))}</div>}
+        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'private' })}>
           {filterRepos.map(item => {
             let link = `/dashboard/repo/${item.repo_id}`;
             let total = item.clusters && item.clusters.length;
@@ -52,7 +52,14 @@ export default class RepoList extends PureComponent {
             return (
               <li key={item.repo_id || item.runtime_id}>
                 <Link to={link}>
-                  <img className={styles.icon} src={item.icon} />
+                  {item.repo_id && (
+                    <Icon
+                      name={item.providers && item.providers[0]}
+                      size={24}
+                      className={styles.icon}
+                      color={colorStyles}
+                    />
+                  )}
                   <span className={styles.name}>{item.name}</span>
                   <span className={styles.total}>
                     <span className={styles.number}>{total || 0}</span>

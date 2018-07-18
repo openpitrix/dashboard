@@ -2,6 +2,12 @@
 
 .tdName {
   display: inline-block;
+  :global{
+    .icon{
+      float: left;
+      margin: 4px 4px 0 0;
+    }
+  }
   .image{
     display: inline-block;
     float: left;

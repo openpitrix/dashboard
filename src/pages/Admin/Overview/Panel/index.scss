@@ -1,91 +1,79 @@
 @import '~scss/vars';
 
 .panel {
-  display: block;
-  float: left;
   box-sizing: border-box;
-  margin: 0 24px 24px 0;
-  padding: 16px 16px 20px 16px;
-  width: 360px;
-  height: 420px;
+  height: 412px;
+  padding: 20px 24px;
   overflow: hidden;
-  border-radius: 3px;
-  background-color: #fff;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-  &:last-child {
-    margin-right: 0;
-  }
+  border-radius: 2px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
   &:hover {
-    box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+    //box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
   }
-  .title {
-    margin-bottom: 16px;
-    line-height: 14px;
-    font-size: 14px;
-    font-weight: 500;
-    color: $title-color;
-    .more {
-      float: right;
-      font-size: 12px;
-      font-weight: normal;
-      color: $title-color;
-    }
-  }
-}
-.normal{
-  position: relative;
-  padding: 30px 16px 0 16px;
-  height: 416px;
   .title {
     margin-bottom: 24px;
-    line-height: 32px;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  .image{
-    margin-right: 12px;
-  }
-  .button{
-    position: absolute;
-    bottom: 60px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    button {
-      font-weight: bold;
+    line-height: 14px;
+    font-size: 14px;
+    color: $N300;
+    .more {
+      float: right;
+      font-size: $font12;
+      color: $N200;
     }
   }
 }
+/*.normal{
+   position: relative;
+   padding: 30px 16px 0 16px;
+   height: 416px;
+   .title {
+     margin-bottom: 24px;
+     line-height: 32px;
+     font-size: 18px;
+     font-weight: 500;
+   }
+   .image{
+     margin-right: 12px;
+   }
+   .button{
+     position: absolute;
+     bottom: 60px;
+     left: 50%;
+     transform: translate(-50%, 0);
+     button {
+       font-weight: bold;
+     }
+   }
+ }*/
 .blankList{
   position: relative;
-  display: block;
-  float: left;
   box-sizing: border-box;
   margin: 0 24px 24px 0;
   padding: 0 30px;
-  width: 360px;
   height: 416px;
   overflow: hidden;
   border-radius: 3px;
   background-color: #fff;
   box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   text-align: center;
-  &:last-child {
-    margin-right: 0;
-  }
-  img{
+  .iconName{
     margin: 60px 0 30px;
   }
   .title{
     margin-bottom: 12px;
-    line-height: 32px;
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 1.25;
     font-weight: 500;
+    color: $N500;
   }
   .description{
+    height: 96px;
     font-size: 14px;
     line-height: 1.71;
     text-align: center;
-    color: #adadad;
+    color: $N75;
+    overflow: hidden;
   }
   .button{
     position: absolute;

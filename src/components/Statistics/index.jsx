@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { Icon } from 'components/Base';
 import Histogram from './Histogram';
 import Progress from './Progress';
 import styles from './index.scss';
@@ -9,8 +10,8 @@ import { getStasTotal, getTopTotal, getProgress, getHistograms } from 'utils';
 
 export default class Statistics extends PureComponent {
   static propTypes = {
-    image: PropTypes.string,
     name: PropTypes.string,
+    iconName: PropTypes.string,
     total: PropTypes.number,
     centerName: PropTypes.string,
     progressTotal: PropTypes.number,
@@ -25,8 +26,8 @@ export default class Statistics extends PureComponent {
 
   render() {
     const {
-      image,
       name,
+      iconName,
       total,
       centerName,
       progressTotal,
@@ -45,7 +46,7 @@ export default class Statistics extends PureComponent {
         <div className={styles.wrap}>
           <div className={styles.module}>
             <div className={styles.apps}>
-              <img src={image} className={styles.icon} />
+              <Icon name={iconName} size={32} type="coloured" className={styles.icon} />
               {name}
             </div>
             <div className={classnames(styles.word, styles.fl)}>

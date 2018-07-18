@@ -1,15 +1,11 @@
 @import "~scss/vars";
 
 .userInfo {
-  display: inline-block;
-  float: left;
   box-sizing: border-box;
-  margin: 0 24px 24px 0;
-  padding: 24px 16px 14px;
-  width: 360px;
   height: 120px;
+  padding: 24px 24px 10px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: $N0;
   box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   .userImg {
     display: inline-block;
@@ -17,28 +13,33 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
+    background-color: $N10;
+    :global{
+      .icon{
+        margin: 6px;
+      }
+    }
   }
   .user {
     margin: 2px 0 0 45px;
     .name {
-      line-height: 16px;
-      font-size: 14px;
-      color: $border-dark;
+      line-height: 1.25;
+      font-size: $font16;
+      color: $N500;
     }
     .role {
-      margin-top: 8px;
-      font-size: 12px;
-      line-height: 1.0;
-      color: $grey-word;
+      font-size: $font12;
+      line-height: 1.67;
+      color: $N100;
     }
   }
   .loginInfo {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
     font-size: 12px;
-    line-height: 1.0;
-    color: $grey-word;
-    border-top: 1px solid $border-gray;
+    line-height: 1.67;
+    color: $N100;
+    border-top: 1px solid $N10;
   }
 }
 

@@ -31,11 +31,6 @@ export default class AppList extends PureComponent {
               linkUrl={`/dashboard/app/${data.app_id}`}
               noCopy={true}
             />
-            {isAdmin && (
-              <span className={styles.total}>
-                <span className={styles.number}>{data.total || 0}</span> {t('Clusters')}
-              </span>
-            )}
           </li>
         ))}
       </ul>

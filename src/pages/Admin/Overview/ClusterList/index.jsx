@@ -16,31 +16,34 @@ export default class ClusterList extends PureComponent {
   };
 
   render() {
-    const { clusters, isAdmin, t } = this.props;
-    const imgPhd = imgPlaceholder(20);
+    const { clusters, t } = this.props;
 
     return (
-      <ul className={classNames(styles.clusterList, { [styles.normalList]: !isAdmin })}>
+      <ul className={styles.clusterList}>
         {clusters.map(cluster => (
           <li key={cluster.cluster_id}>
-            <img className={styles.icon} src={cluster.icon || imgPhd} />
+            <div className={styles.dot}>{this.renderStatusDot(cluster.status)}</div>
             <div className={styles.word}>
               <Link className={styles.name} to={`/dashboard/cluster/${cluster.cluster_id}`}>
                 {cluster.name}
               </Link>
-              <div className={styles.detail}>
-                <span className={styles.description} title={cluster.description}>
-                  {cluster.description}&nbsp;
-                </span>
-                <span className={styles.nodes}>
-                  {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {t('Nodes')}
-                </span>
-                <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
+              <div className={styles.description} title={cluster.description}>
+                {cluster.description}&nbsp;
               </div>
+            </div>
+            <div className={styles.total}>
+              <div className={styles.nodes}>
+                {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {t('Nodes')}
+              </div>
+              <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
             </div>
           </li>
         ))}
       </ul>
     );
+  }
+
+  renderStatusDot(status) {
+    return <span className={classNames(styles.statusDot, status)} />;
   }
 }

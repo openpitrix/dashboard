@@ -3,8 +3,7 @@
 .clusterList{
   li{
     box-sizing: border-box;
-    margin-bottom: 13px;
-    padding: 12px 22px 12px 16px;
+    padding: 9px 0;
     height: 60px;
     border-bottom: 1px solid $border-gray-li;
     &:hover{
@@ -14,49 +13,72 @@
       }
     }
   }
-  .icon{
+  .dot{
     float:left;
-    margin-top: 10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    margin: 12px;
+    width: 12px;
+    height: 12px;
   }
   .word{
-    margin-left: 26px;
-  }
-  .name{
-    margin-bottom: 6px;
-    line-height: 16px;
-    font-size: 14px;
-    font-weight: bold;
-    color: $title-color;
-  }
-  .detail{
-    line-height: 14px;
-    font-size: 12px;
-    color: $text-color;
-    span{
-      display: inline-block;
+    float: left;
+    .name{
+      width: 150px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.14;
+      color: $N500;
+      @include textCut;
+    }
+    .description{
+      width: 150px;
+      font-size: 12px;
+      line-height: 1.67;
+      color: $N100;
+      @include textCut;
     }
   }
-  .description{
-    float: left;
-    width: 120px;
-    margin-right: 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .nodes{
-    font-weight: 500;
-  }
-  .time{
+  .total{
     float: right;
-    color: $grey-time;
+    .nodes{
+      margin-bottom: 4px;
+      font-size: 12px;
+      line-height: 1.0;
+      color: $N300;
+    }
+    .time{
+      font-size: 12px;
+      line-height: 1.67;
+      letter-spacing: 0;
+      text-align: right;
+      color: $N100;
+    }
   }
+
 }
 .normalList{
   li{
     margin-bottom: 8px;
+  }
+}
+.statusDot{
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $B75;
+  &.active{
+    background-color: $G75;
+  }
+  &.pending{
+    background-color: $B75;
+  }
+  &.suspended{
+    background-color: $Y100;
+  }
+  &.deleted{
+    background-color: $R300;
+  }
+  &.stopped{
+    background-color: $N30;
   }
 }

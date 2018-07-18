@@ -8,7 +8,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
-import { getSessInfo, imgPlaceholder, getObjName } from 'utils';
+import { getSessInfo, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
 
@@ -128,7 +128,6 @@ export default class Apps extends Component {
       selectStatus
     } = this.props.appStore;
     const { repos } = this.props.repoStore;
-    const imgPhd = imgPlaceholder();
 
     const columns = [
       {
@@ -139,7 +138,7 @@ export default class Apps extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon || imgPhd}
+            image={item.icon || 'appcenter'}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
