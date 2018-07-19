@@ -1,19 +1,29 @@
 $content-width: 1128px;
 $columns: 12;
-$grid-margin: 24px;
-$grid-width: ($content-width+$grid-margin)/$columns;
-$N0: #fff;
+$grid-gap: 24px;
+$grid-width: 72px;
 
-@mixin calc-grid-column($index, $type) {
-  @if ($type == 'layout-left') and ($index > 0) {
-    .layout-left-#{$index} {
-      width: $grid-width*$index - $grid-margin;
-      margin-right: $grid-margin;
-    }
-  }
-  @if ($type == 'layout-right') and ($index > 0) {
-    .layout-right-#{$index} {
-      width: $grid-width*$index - $grid-margin;
-    }
-  }
-}
+$grid-margin: 24px;
+$grid-width: ($content-width + $grid-margin) / $columns;
+
+$layout-margin: 156px;
+
+// basic
+$nav-width: 192px;
+$header-height: 48px;
+$tabNavs-height: 48px;
+$banner-height: 400px;
+$footer-height: 64px;
+$base-margin: 24px;
+$card-width: 264px;
+
+$page-bottom: 48px;
+$main-height: calc(100vh - #{$footer-height});
+
+// card
+$app-card-width: 264px;
+$app-card-height: 207px;
+
+// logo
+$logo-width: 142px;
+$logo-height: 21px;

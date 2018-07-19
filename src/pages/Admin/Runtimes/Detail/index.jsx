@@ -7,7 +7,7 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn } from 'components/Layout/Admin';
+import Layout, { BackBtn } from 'components/Layout';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';

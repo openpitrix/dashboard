@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { Input, Button, Popover, Icon } from 'components/Base';
 import Rectangle from 'components/Rectangle';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({

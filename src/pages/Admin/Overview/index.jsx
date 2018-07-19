@@ -9,7 +9,7 @@ import Panel from './Panel';
 import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
-import Layout from 'components/Layout/Admin';
+import Layout from 'components/Layout';
 import { LayoutLeft, LayoutRight, Section } from 'components/Layout';
 import Icon from 'components/Base/Icon';
 import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';

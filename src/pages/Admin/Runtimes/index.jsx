@@ -8,7 +8,7 @@ import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'componen
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout';
 
 import styles from './index.scss';
 

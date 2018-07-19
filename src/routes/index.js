@@ -18,7 +18,6 @@ const dashUrl = path => {
 const routes = {
   '/': Home,
   '/login': Login,
-  '/apps': Home,
   '/apps/:category': Home,
   '/app/:appId': AppDetail,
   '/clusters/:clusterId': ClusterDetail,

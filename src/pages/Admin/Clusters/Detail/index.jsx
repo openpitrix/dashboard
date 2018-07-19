@@ -8,7 +8,7 @@ import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import Layout, { BackBtn, Dialog } from 'components/Layout';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';

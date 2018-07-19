@@ -8,11 +8,13 @@ import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
+import Toolbar from 'components/Toolbar';
 import CategoryCard from 'components/DetailCard/CategoryCard';
-import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import Layout, { BackBtn, Dialog } from 'components/Layout';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { imgPlaceholder, getObjName } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -235,19 +237,15 @@ export default class CategoryDetail extends Component {
 
         <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
-          <div className={styles.toolbar}>
-            <Input.Search
-              className={styles.search}
-              placeholder="Search App Name"
-              value={appStore.searchWord}
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-              maxLength="50"
-            />
-            <Button className={'refresh-btn'} onClick={this.onRefresh}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
+
+          <Toolbar
+            searchPlacehoder="Search App Name"
+            searchWord={appStore.searchWord}
+            onSearch={this.onSearch}
+            onClear={this.onClearSearch}
+            onRefresh={this.onRefresh}
+          />
+
           <Table
             columns={columns}
             dataSource={apps}

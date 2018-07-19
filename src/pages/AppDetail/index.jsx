@@ -6,10 +6,11 @@ import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import Layout, { BackBtn } from 'components/Layout/Admin';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Container, LayoutLeft, LayoutRight } from 'components/Layout';
 import Button from 'components/Base/Button';
 import { formatTime, imgPlaceholder } from 'utils';
+// import {default as LayoutV1, Section} from 'components/v1/Layout';
+
 import styles from './index.scss';
 
 @translate()
@@ -41,62 +42,63 @@ export default class AppDetail extends Component {
 
   render() {
     const { appStore } = this.props;
+    const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
     const imgPhd = imgPlaceholder(64);
 
     return (
-      <Layout noTabs>
-        <div className={styles.wrapper}>
-          <BackBtn label="catalog" link="/apps" />
-          <LayoutLeft column={8}>
-            <div className={styles.introduction}>
-              <div className={styles.titleOuter}>
-                <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
-                <div className={styles.title}>{appDetail.name}</div>
-                <div className={styles.carousel}>{appDetail.screenshots}</div>
-                <div className={styles.desc}>{appDetail.description}</div>
+      <Layout noTabs noNotification isloading={isLoading}>
+        <BackBtn label="catalog" link="/" />
+
+        <LayoutLeft column={8}>
+          <div className={styles.introduction}>
+            <div className={styles.titleOuter}>
+              <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
+              <div className={styles.title}>{appDetail.name}</div>
+              <div className={styles.carousel}>{appDetail.screenshots}</div>
+              <div className={styles.desc}>{appDetail.description}</div>
+            </div>
+
+            <div className={styles.content}>
+              <div className={styles.markdown}>
+                <ReactMarkdown source={appDetail.readme} />
               </div>
+              {this.renderPictrues()}
 
-              <div className={styles.content}>
-                <div className={styles.markdown}>
-                  <ReactMarkdown source={appDetail.readme} />
-                </div>
-                {this.renderPictrues()}
-
-                <div className={styles.section}>
-                  <div className={styles.conTitle}>Information</div>
-                  <div className={styles.information}>
-                    <dl>
-                      <dt>Catelog</dt>
-                      <dd>
-                        {get(appDetail, 'category_set', [])
-                          .filter(cate => cate.category_id)
-                          .map(cate => cate.name)
-                          .join(', ')}
-                      </dd>
-                    </dl>
-                    <dl>
-                      <dt>Application ID</dt>
-                      <dd>{appDetail.app_id}</dd>
-                    </dl>
-                    <dl>
-                      <dt>Repo</dt>
-                      <dd>{appDetail.repo_id}</dd>
-                    </dl>
-                    <dl>
-                      <dt>Created At</dt>
-                      <dd>{formatTime(appDetail.create_time)}</dd>
-                    </dl>
-                  </div>
+              <div className={styles.section}>
+                <div className={styles.conTitle}>Information</div>
+                <div className={styles.information}>
+                  <dl>
+                    <dt>Catelog</dt>
+                    <dd>
+                      {get(appDetail, 'category_set', [])
+                        .filter(cate => cate.category_id)
+                        .map(cate => cate.name)
+                        .join(', ')}
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>Application ID</dt>
+                    <dd>{appDetail.app_id}</dd>
+                  </dl>
+                  <dl>
+                    <dt>Repo</dt>
+                    <dd>{appDetail.repo_id}</dd>
+                  </dl>
+                  <dl>
+                    <dt>Created At</dt>
+                    <dd>{formatTime(appDetail.create_time)}</dd>
+                  </dl>
                 </div>
               </div>
             </div>
-          </LayoutLeft>
-          <LayoutRight column={4} className={styles.rightInfo}>
-            {this.renderVersions()}
-            {this.renderVersionDetail()}
-          </LayoutRight>
-        </div>
+          </div>
+        </LayoutLeft>
+
+        <LayoutRight column={4} className={styles.rightInfo}>
+          {this.renderVersions()}
+          {this.renderVersionDetail()}
+        </LayoutRight>
       </Layout>
     );
   }

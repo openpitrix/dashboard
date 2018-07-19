@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 
 import { Icon, Button, Input, Modal } from 'components/Base';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout';
 import RepoList from './RepoList';
 import Loading from 'components/Loading';
 

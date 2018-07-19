@@ -7,7 +7,7 @@ import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from '
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout';
 import { getSessInfo, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
 import styles from './index.scss';

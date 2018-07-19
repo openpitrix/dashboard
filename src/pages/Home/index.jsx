@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import _, { throttle } from 'lodash';
+import { get, find, throttle } from 'lodash';
 
 import { getScrollTop } from 'src/utils';
 import Nav from 'components/Nav';
@@ -9,8 +9,6 @@ import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import styles from './index.scss';
-
-let lastTs = Date.now();
 
 @inject(({ rootStore }) => ({
   rootStore: rootStore,
@@ -32,7 +30,7 @@ export default class Home extends Component {
       rootStore.setNavFix(true);
     } else {
       this.threshold = this.getThreshold();
-      window.onscroll = throttle(this.handleScroll, 300);
+      window.onscroll = throttle(this.handleScroll, 200);
       window.scroll({ top: 1, behavior: 'smooth' });
     }
   }
@@ -56,7 +54,7 @@ export default class Home extends Component {
     return 0;
   }
 
-  handleScroll = e => {
+  handleScroll = () => {
     const { rootStore } = this.props;
 
     if (this.threshold <= 0) {
@@ -68,15 +66,9 @@ export default class Home extends Component {
     let needFixNav = scrollTop > this.threshold;
 
     if (needFixNav && !fixNav) {
-      if (Date.now() - lastTs > 200) {
-        rootStore.setNavFix(true);
-        lastTs = Date.now();
-      }
+      rootStore.setNavFix(true);
     } else if (!needFixNav && fixNav) {
-      if (Date.now() - lastTs > 200) {
-        rootStore.setNavFix(false);
-        lastTs = Date.now();
-      }
+      rootStore.setNavFix(false);
     }
   };
 
@@ -90,18 +82,13 @@ export default class Home extends Component {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
     const { fetchApps, appSearch, apps, isLoading } = appStore;
-    const categorySearch = !!match.params.category;
-    const showApps = appSearch || categorySearch ? apps.slice() : apps.slice(0, 3);
-
     const { categories, getCategoryApps } = categoryStore;
-    const categoryApps = getCategoryApps(categories, apps);
 
-    const isHomePage = match.path === '/' || match.path === '/apps';
-    const categoryTitle = _.get(
-      _.filter(categories, { category_id: match.params.category })[0],
-      'name',
-      ''
-    );
+    const categoryId = match.params.category;
+    const showApps = appSearch || Boolean(categoryId) ? apps.slice() : apps.slice(0, 3);
+    const categoryApps = getCategoryApps(categories, apps);
+    const isHomePage = match.path === '/';
+    const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
 
     return (
       <Fragment>
@@ -118,7 +105,7 @@ export default class Home extends Component {
                 categoryApps={categoryApps}
                 categoryTitle={categoryTitle}
                 appSearch={appSearch}
-                isCategorySearch={categorySearch}
+                isCategorySearch={Boolean(categoryId)}
                 moreApps={fetchApps}
               />
             </Loading>

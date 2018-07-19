@@ -8,7 +8,7 @@ import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'componen
 import AppCard from 'components/DetailCard/AppCard';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
-import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
+import Layout, { BackBtn, Dialog } from 'components/Layout';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import columns from './columns';
 import { getSessInfo } from 'utils';

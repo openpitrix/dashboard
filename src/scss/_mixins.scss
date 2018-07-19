@@ -1,0 +1,13 @@
+@mixin calc-grid-column($index, $type) {
+  @if ($type == 'layout-left') and ($index > 0) {
+    .layout-left-#{$index} {
+      width: $grid-width*$index - $grid-margin;
+      margin-right: $grid-margin;
+    }
+  }
+  @if ($type == 'layout-right') and ($index > 0) {
+    .layout-right-#{$index} {
+      width: $grid-width*$index - $grid-margin;
+    }
+  }
+}

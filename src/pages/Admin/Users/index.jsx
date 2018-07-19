@@ -10,7 +10,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import OrgTree from 'components/OrgTree';
 import GroupCard from './GroupCard';
-import Layout from 'components/Layout/Admin';
+import Layout from 'components/Layout';
 
 import styles from './index.scss';
 
@@ -338,7 +338,7 @@ export default class Users extends Component {
               <Button className={classNames('f-right', styles.ml12)} type="primary">
                 Create
               </Button>
-              <Button className={'refresh-btn'}>
+              <Button className="f-right">
                 <Icon name="refresh" size="mini" />
               </Button>
             </div>

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Radio, Button, Input, Select, Slider } from 'components/Base';
-import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import { get } from 'lodash';
 
