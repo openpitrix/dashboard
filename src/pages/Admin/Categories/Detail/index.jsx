@@ -10,8 +10,7 @@ import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import CategoryCard from 'components/DetailCard/CategoryCard';
-import Layout, { BackBtn, Dialog } from 'components/Layout';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { imgPlaceholder, getObjName } from 'utils';
 
@@ -239,7 +238,7 @@ export default class CategoryDetail extends Component {
           <TagNav tags={tags} curTag={curTag} />
 
           <Toolbar
-            searchPlacehoder="Search App Name"
+            placeholder="Search App Name"
             searchWord={appStore.searchWord}
             onSearch={this.onSearch}
             onClear={this.onClearSearch}

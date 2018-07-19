@@ -8,10 +8,11 @@ import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'componen
 import AppCard from 'components/DetailCard/AppCard';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
-import Layout, { BackBtn, Dialog } from 'components/Layout';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Toolbar from 'components/Toolbar';
+import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
 import columns from './columns';
 import { getSessInfo } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore, sessInfo }) =>
@@ -199,6 +200,7 @@ export default class AppDetail extends Component {
     return (
       <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
+
         <LayoutLeft>
           <div className="detail-outer">
             <AppCard appDetail={appDetail} repoName={repoName} />
@@ -219,18 +221,14 @@ export default class AppDetail extends Component {
 
         <LayoutRight className="table-outer">
           <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
-          <div className="toolbar">
-            <Input.Search
-              placeholder="Search Cluster Name"
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-              value={swCluster}
-              maxLength="50"
-            />
-            <Button className="f-right" onClick={this.onRefresh}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
+
+          <Toolbar
+            placeholder="Search Cluster Name"
+            searchWord={swCluster}
+            onSearch={this.onSearch}
+            onClear={this.onClearSearch}
+            onRefresh={this.onRefresh}
+          />
 
           <Table
             columns={columns}

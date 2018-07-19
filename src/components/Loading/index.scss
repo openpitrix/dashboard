@@ -49,15 +49,9 @@
 
 :global {
   .loadTable{
-    position: static;
+    position: sticky;
     background-color: #fff;
-    .loadOuter{
-      position: static;
-      padding: 30px 0 50px;
-      .loader {
-        margin: 0 auto;
-      }
-    }
+    //margin-left: 192px;
   }
 }
 

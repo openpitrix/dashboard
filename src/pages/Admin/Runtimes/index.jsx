@@ -1,14 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { formatTime } from 'utils';
-import classNames from 'classnames';
 
 import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
+import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout';
+import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
@@ -51,24 +51,51 @@ export default class Runtimes extends Component {
     );
   };
 
+  renderToolbar() {
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      showDeleteRuntime,
+      runtimeIds
+    } = this.props.runtimeStore;
+
+    if (runtimeIds.length) {
+      return (
+        <Toolbar>
+          <Button type="delete" onClick={() => showDeleteRuntime(runtimeIds)}>
+            Delete
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder="Search Runtimes Name"
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+        withCreateBtn={{ linkTo: `/dashboard/runtime/create` }}
+      />
+    );
+  }
+
   render() {
     const { runtimeStore, clusterStore } = this.props;
     const data = runtimeStore.runtimes.toJSON();
     const clusters = clusterStore.clusters.toJSON();
+
     const {
       summaryInfo,
       isLoading,
       notifyMsg,
       hideMsg,
-      searchWord,
       currentPage,
       totalCount,
-      onSearch,
-      onClearSearch,
-      onRefresh,
       changePagination,
-      showDeleteRuntime,
-      runtimeIds,
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
@@ -156,32 +183,7 @@ export default class Runtimes extends Component {
         <Statistics {...summaryInfo} />
 
         <div className="table-outer">
-          {runtimeIds.length > 0 && (
-            <div className="toolbar">
-              <Button type="delete" onClick={() => showDeleteRuntime(runtimeIds)}>
-                Delete
-              </Button>
-            </div>
-          )}
-          {runtimeIds.length === 0 && (
-            <div className="toolbar">
-              <Input.Search
-                placeholder="Search Runtimes Name"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-                maxLength="50"
-              />
-              <Link to={`/dashboard/runtime/create`}>
-                <Button className="f-right" type="primary">
-                  Create
-                </Button>
-              </Link>
-              <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
-          )}
+          {this.renderToolbar()}
 
           <Table
             columns={columns}
@@ -190,8 +192,10 @@ export default class Runtimes extends Component {
             isLoading={isLoading}
             filterList={filterList}
           />
+
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
+
         {this.renderDeleteModal()}
       </Layout>
     );

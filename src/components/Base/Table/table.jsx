@@ -5,8 +5,9 @@ import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { Checkbox, Radio, Popover, Tooltip, Icon } from 'components/Base';
-import Status from 'components/Status';
+// import Status from 'components/Status';
 import Loading from 'components/Loading';
+
 import styles from './index.scss';
 
 export default class Table extends React.Component {

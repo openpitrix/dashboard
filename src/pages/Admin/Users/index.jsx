@@ -11,6 +11,7 @@ import TdName from 'components/TdName';
 import OrgTree from 'components/OrgTree';
 import GroupCard from './GroupCard';
 import Layout from 'components/Layout';
+import Toolbar from 'components/Toolbar';
 
 import styles from './index.scss';
 
@@ -333,15 +334,9 @@ export default class Users extends Component {
                 action
               </div>
             </div>
-            <div className={styles.toolbar}>
-              <Input.Search className={styles.search} placeholder="Search App Name" />
-              <Button className={classNames('f-right', styles.ml12)} type="primary">
-                Create
-              </Button>
-              <Button className="f-right">
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
+
+            <Toolbar placeholder="Search App Name" withCreateBtn={{ linkTo: '#' }} />
+
             <Table columns={columns} dataSource={data} />
             <Pagination className={styles.page} />
           </div>

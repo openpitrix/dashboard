@@ -6,6 +6,7 @@ import { get } from 'lodash';
 import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
+import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout';
 import { formatTime, getObjName } from 'utils';
@@ -101,26 +102,52 @@ export default class Clusters extends Component {
     );
   };
 
+  renderToolbar() {
+    const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
+
+    if (clusterIds.length) {
+      return (
+        <Toolbar>
+          <Button type="delete" onClick={() => this.oprateSelected('delete')}>
+            Delete
+          </Button>
+          <Button type="default" onClick={() => this.oprateSelected('start')}>
+            Start
+          </Button>
+          <Button type="delete" onClick={() => this.oprateSelected('stop')}>
+            Stop
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder="Search Cluster"
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+      />
+    );
+  }
+
   render() {
     const {
       summaryInfo,
       clusters,
-      totalCount,
       notifyMsg,
       hideMsg,
       isLoading,
-      currentPage,
-      searchWord,
-      onSearch,
-      onClearSearch,
-      onRefresh,
-      changePagination,
-      clusterIds,
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
-      selectStatus
+      selectStatus,
+      currentPage,
+      totalCount,
+      changePagination
     } = this.props.clusterStore;
+
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
 
@@ -214,35 +241,9 @@ export default class Clusters extends Component {
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={runtimes.slice()} />
+
         <div className="table-outer">
-          {clusterIds.length > 0 && (
-            <div className="toolbar">
-              <Button type="delete" onClick={() => this.oprateSelected('delete')}>
-                Delete
-              </Button>
-              <Button type="default" onClick={() => this.oprateSelected('start')}>
-                Start
-              </Button>
-              <Button type="delete" onClick={() => this.oprateSelected('stop')}>
-                Stop
-              </Button>
-            </div>
-          )}
-          {clusterIds.length === 0 && (
-            <div className="toolbar">
-              <Input.Search
-                className="fRight"
-                placeholder="Search Cluster"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-                maxLength="50"
-              />
-              <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
-          )}
+          {this.renderToolbar()}
           <Table
             columns={columns}
             dataSource={clusters.toJSON()}
@@ -250,7 +251,9 @@ export default class Clusters extends Component {
             isLoading={isLoading}
             filterList={filterList}
           />
+          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
+
         {this.renderDeleteModal()}
       </Layout>
     );

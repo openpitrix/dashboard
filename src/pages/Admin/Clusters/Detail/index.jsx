@@ -7,9 +7,9 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
+import Toolbar from 'components/Toolbar';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import Layout, { BackBtn, Dialog } from 'components/Layout';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
@@ -242,18 +242,14 @@ export default class ClusterDetail extends Component {
 
         <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
-          <div className="toolbar">
-            <Input.Search
-              placeholder="Search Node Name"
-              value={searchNode}
-              onSearch={onSearchNode}
-              onClear={onClearNode}
-              maxLength="50"
-            />
-            <Button className="f-right" onClick={onRefreshNode}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
+
+          <Toolbar
+            placeholder="Search Node Name"
+            searchWord={searchNode}
+            onSearch={onSearchNode}
+            onClear={onClearNode}
+            onRefresh={onRefreshNode}
+          />
 
           <Table
             columns={columns}

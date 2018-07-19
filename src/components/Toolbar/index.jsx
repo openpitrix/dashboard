@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { noop } from 'lodash';
+import { Link } from 'react-router-dom';
 
 import { Icon, Button, Input } from 'components/Base';
 
@@ -13,20 +15,33 @@ const Toolbar = ({
   searchWord,
   placeholder,
   onRefresh,
-  inputMaxLen
+  inputMaxLen,
+  children,
+  withCreateBtn
 }) => (
   <div className={classnames(styles.toolbar, className)}>
-    <Input.Search
-      className={styles.search}
-      placeholder={placeholder}
-      value={searchWord}
-      onSearch={onSearch}
-      onClear={onClear}
-      maxLength={inputMaxLen}
-    />
-    <Button className={styles.refreshBtn} onClick={onRefresh}>
-      <Icon name="refresh" size="mini" />
-    </Button>
+    {children || (
+      <Fragment>
+        <Input.Search
+          className={styles.search}
+          placeholder={placeholder}
+          value={searchWord}
+          onSearch={onSearch}
+          onClear={onClear}
+          maxLength={inputMaxLen}
+        />
+        {withCreateBtn.linkTo && (
+          <Link to={withCreateBtn.linkTo}>
+            <Button className={styles.btnRight} type="primary">
+              Create
+            </Button>
+          </Link>
+        )}
+        <Button className={styles.refreshBtn} onClick={onRefresh}>
+          <Icon name="refresh" size="mini" />
+        </Button>
+      </Fragment>
+    )}
   </div>
 );
 
@@ -37,12 +52,21 @@ Toolbar.propTypes = {
   onRefresh: PropTypes.func,
   searchWord: PropTypes.string,
   placeholder: PropTypes.string,
-  inputMaxLen: PropTypes.number
+  inputMaxLen: PropTypes.number,
+  children: PropTypes.node,
+  withCreateBtn: PropTypes.shape({
+    linkTo: PropTypes.string
+  })
 };
 
 Toolbar.defaultProps = {
+  searchWord: '',
+  onSearch: noop,
+  onClear: noop,
+  onRefresh: noop,
   inputMaxLen: 50,
-  placeholder: 'Search..'
+  placeholder: '',
+  withCreateBtn: {}
 };
 
 export default Toolbar;

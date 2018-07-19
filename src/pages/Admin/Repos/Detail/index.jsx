@@ -8,11 +8,12 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
+import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
-import { getObjName } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -349,8 +350,10 @@ export default class RepoDetail extends Component {
             </Popover>
           )}
         </LayoutLeft>
+
         <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
+
           {curTagName === 'Runtimes' && (
             <div className={styles.selector}>
               <div className={styles.title}>Runtime Selectors</div>
@@ -359,18 +362,13 @@ export default class RepoDetail extends Component {
           )}
 
           {curTagName !== 'Events' && (
-            <div className="toolbar">
-              <Input.Search
-                className={styles.search}
-                placeholder={searchTip}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-                value={detailSearch}
-              />
-              <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
+            <Toolbar
+              placeholder={searchTip}
+              searchWord={detailSearch}
+              onSearch={onSearch}
+              onClear={onClearSearch}
+              onRefresh={onRefresh}
+            />
           )}
 
           <Table
@@ -381,6 +379,7 @@ export default class RepoDetail extends Component {
           />
           <Pagination onChange={changeTable} total={totalCount} />
         </LayoutRight>
+
         {this.deleteRepoModal()}
       </Layout>
     );

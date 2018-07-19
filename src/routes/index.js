@@ -42,7 +42,6 @@ const routes = {
   '/:dash/repo/:repoId': Dash.RepoDetail,
 
   '/:dash/users': Dash.Users,
-  '/:dash/roles': Dash.Roles,
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,

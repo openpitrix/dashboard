@@ -77,7 +77,3 @@ export default class Layout extends React.Component {
     );
   }
 }
-
-export BackBtn from './BackBtn';
-export Dialog from './Dialog';
-export CreateResource from './CreateResource';

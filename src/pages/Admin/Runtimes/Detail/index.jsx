@@ -6,11 +6,12 @@ import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
+import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn } from 'components/Layout';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -33,7 +34,7 @@ export default class RuntimeDetail extends Component {
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
-    this.props.clusterStore.loadPageInit();
+    // this.props.clusterStore.loadPageInit();
   }
 
   renderHandleMenu = id => {
@@ -61,6 +62,7 @@ export default class RuntimeDetail extends Component {
       onChangeStatus,
       selectStatus
     } = clusterStore;
+
     const { apps } = this.props.appStore;
 
     const columns = [
@@ -147,18 +149,13 @@ export default class RuntimeDetail extends Component {
         <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
 
-          <div className="toolbar">
-            <Input.Search
-              placeholder="Search Clusters Name"
-              value={searchWord}
-              onSearch={onSearch}
-              onClear={onClearSearch}
-              maxLength="50"
-            />
-            <Button className="f-right" onClick={onRefresh}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
+          <Toolbar
+            placeholder="Search Clusters Name"
+            searchWord={searchWord}
+            onSearch={onSearch}
+            onClear={onClearSearch}
+            onRefresh={onRefresh}
+          />
 
           <Table
             columns={columns}

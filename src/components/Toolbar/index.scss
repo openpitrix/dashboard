@@ -1,9 +1,24 @@
+%pull-right {
+  float: right;
+}
+
 .toolbar {
+  padding: 8px 0 24px;
+
+  button {
+    margin-right: 12px;
+  }
+
   .search {
-    float: left;
-    min-width: 320px;
+    display: inline-block;
+    width: 320px;
+    border-radius: 2px;
+    background-color: #fff;
   }
   .refreshBtn {
-    float: right;
+    @extend %pull-right;
+  }
+  .btnRight{
+    @extend %pull-right;
   }
 }

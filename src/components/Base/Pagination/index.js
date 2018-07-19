@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import enUS from 'rc-pagination/lib/locale/en_US';
+
 import styles from './index.scss';
 
 export default class Pagination extends React.Component {
@@ -43,6 +44,10 @@ export default class Pagination extends React.Component {
 
   render() {
     const { className, style, ...restProps } = this.props;
+
+    if (!restProps.total) {
+      return null;
+    }
 
     return (
       <RcPagination

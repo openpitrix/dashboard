@@ -6,6 +6,7 @@ import { filter, get } from 'lodash';
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
+import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout';
 import { getSessInfo, getObjName } from 'utils';
@@ -120,6 +121,37 @@ export default class Apps extends Component {
     );
   };
 
+  renderToolbar() {
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      showDeleteApp,
+      appIds
+    } = this.props.appStore;
+
+    if (appIds.length) {
+      return (
+        <Toolbar>
+          <Button type="delete" onClick={() => showDeleteApp(appIds)}>
+            Delete
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder="Search App Name"
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+      />
+    );
+  }
+
   render() {
     const {
       apps,
@@ -128,19 +160,14 @@ export default class Apps extends Component {
       notifyMsg,
       hideMsg,
       isLoading,
-      searchWord,
       currentPage,
-      onSearch,
-      onClearSearch,
-      onRefresh,
       changePagination,
-      showDeleteApp,
-      appIds,
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
       selectStatus
     } = this.props.appStore;
+
     const { repos } = this.props.repoStore;
 
     const columns = [
@@ -235,28 +262,7 @@ export default class Apps extends Component {
         <Statistics {...summaryInfo} objs={repos.slice()} />
 
         <div className="table-outer">
-          {appIds.length > 0 && (
-            <div className="toolbar">
-              <Button type="delete" onClick={() => showDeleteApp(appIds)}>
-                Delete
-              </Button>
-            </div>
-          )}
-          {appIds.length === 0 && (
-            <div className="toolbar">
-              <Input.Search
-                placeholder="Search App Name"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-                maxLength="50"
-              />
-              <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
-          )}
-
+          {this.renderToolbar()}
           <Table
             columns={columns}
             dataSource={apps.toJSON()}
@@ -266,6 +272,7 @@ export default class Apps extends Component {
           />
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
+
         {this.renderOpsModal()}
       </Layout>
     );
