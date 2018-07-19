@@ -10,22 +10,24 @@ export default class Input extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     icon: PropTypes.string,
-    iconType: PropTypes.string
+    iconType: PropTypes.string,
+    iconSize: PropTypes.number
   };
 
   static defaultProps = {
     className: '',
     icon: '',
-    iconType: 'light'
+    iconType: 'light',
+    iconSize: 16
   };
 
   render() {
-    const { className, icon, iconType, ...rest } = this.props;
+    const { className, icon, iconType, iconSize, ...rest } = this.props;
 
     if (icon) {
       return (
         <div className={classnames(styles.inputGroup, className)}>
-          <Icon name={icon} type={iconType} />
+          <Icon name={icon} type={iconType} size={iconSize} />
           <input className={styles.input} {...rest} />
         </div>
       );
