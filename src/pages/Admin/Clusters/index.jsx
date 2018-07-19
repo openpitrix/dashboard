@@ -242,7 +242,7 @@ export default class Clusters extends Component {
                 maxLength="50"
               />
               <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" />
+                <Icon name="refresh" size="mini" />
               </Button>
             </div>
           )}

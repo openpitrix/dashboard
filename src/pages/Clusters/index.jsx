@@ -82,7 +82,7 @@ export default class Clusters extends Component {
           <div className={styles.wrapper}>
             <div className={styles.toolbar}>
               <Button className={styles.refresh}>
-                <Icon name="refresh" />
+                <Icon name="refresh" size="mini" />
               </Button>
               <Select className={styles.select} value="All Types">
                 <Select.Option value="1">Types1</Select.Option>

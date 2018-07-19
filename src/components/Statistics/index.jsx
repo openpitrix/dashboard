@@ -21,7 +21,8 @@ export default class Statistics extends PureComponent {
   };
 
   static defaultProps = {
-    image: 'http://via.placeholder.com/24x24'
+    image: 'http://via.placeholder.com/24x24',
+    iconName: 'appcenter'
   };
 
   render() {
@@ -46,7 +47,7 @@ export default class Statistics extends PureComponent {
         <div className={styles.wrap}>
           <div className={styles.module}>
             <div className={styles.apps}>
-              <Icon name={iconName} size={32} type="coloured" className={styles.icon} />
+              <Icon name={iconName} size="medium" className={styles.icon} />
               {name}
             </div>
             <div className={classnames(styles.word, styles.fl)}>

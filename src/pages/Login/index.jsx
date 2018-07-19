@@ -40,6 +40,7 @@ export default class Login extends Component {
               <Input
                 className={styles.formInput}
                 icon="human"
+                iconType="dark"
                 name="username"
                 iconSize={24}
                 placeholder={t('Username')}
@@ -50,6 +51,7 @@ export default class Login extends Component {
                 className={styles.formInput}
                 type="password"
                 icon="lock"
+                iconType="dark"
                 name="password"
                 iconSize={24}
                 placeholder={t('Password')}

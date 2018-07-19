@@ -339,7 +339,7 @@ export default class ClusterDetail extends Component {
             <div className={styles.nodesContent}>
               <div className={styles.toolbar}>
                 <Button className={styles.refresh} onClick={this.refreshTable}>
-                  <Icon name="refresh" />
+                  <Icon name="refresh" size="mini" />
                 </Button>
                 <Select className={styles.select} value="All Status">
                   <Select.Option value="1">Types1</Select.Option>
