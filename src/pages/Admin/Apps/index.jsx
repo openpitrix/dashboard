@@ -5,7 +5,7 @@ import { filter, get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
 import { getSessInfo, getObjName } from 'utils';
@@ -187,7 +187,10 @@ export default class Apps extends Component {
         key: 'repo_id',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
-            {getObjName(repos, 'repo_id', item.repo_id, 'name')}
+            <ProviderName
+              name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
+              provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
+            />
           </Link>
         )
       },

@@ -95,14 +95,7 @@
 }
 
 :global{
-  .fa-clipboard{
-    //float: right;
-    margin-left: 5px;
-    font-size: 12px;
-    color: $title-color;
+  .copyId{
     cursor: pointer;
   }
-}
-.copyTip{
-  display: inline-block;
 }

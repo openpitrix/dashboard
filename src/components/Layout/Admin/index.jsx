@@ -16,6 +16,7 @@ export default class Layout extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    msgType: PropTypes.oneOfType(['error', 'success', 'warning', 'error']),
     hideMsg: PropTypes.func,
     noTabs: PropTypes.bool,
     noNotification: PropTypes.bool,
@@ -38,13 +39,13 @@ export default class Layout extends React.Component {
 
   renderNotification() {
     if (this.props.noNotification) return null;
-    let { msg } = this.props;
+    let { msg, msgType } = this.props;
     if (typeof msg === 'object') {
       msg = msg + ''; // transform mobx object
     }
     const { hideMsg } = this.props;
 
-    return msg ? <Notification message={msg} onHide={hideMsg} /> : null;
+    return msg ? <Notification type={msgType} message={msg} onHide={hideMsg} /> : null;
   }
 
   renderTabs() {

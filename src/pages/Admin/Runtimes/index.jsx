@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
 
@@ -96,11 +96,11 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider'
+        key: 'provider',
+        render: item => <ProviderName name={item.provider} provider={item.provider} />
       },
       {
-        title: 'Zone',
+        title: ' Zone/Namespace',
         dataIndex: 'zone',
         key: 'zone'
       },

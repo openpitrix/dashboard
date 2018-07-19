@@ -257,7 +257,7 @@ export default class Table extends React.Component {
           newColumn.title = (
             <Popover content={this.renderFilterContent(filter)}>
               {newColumn.title}
-              <Icon name="arrow-down" />
+              <Icon name="caret-down" />
             </Popover>
           );
         }

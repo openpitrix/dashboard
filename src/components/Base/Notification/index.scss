@@ -1,3 +1,4 @@
+@import '~scss/vars';
 
 $bg-info: lighten(black, 30%);
 $bg-success: green;
@@ -6,43 +7,58 @@ $bg-error: red;
 
 .notification {
   position: fixed;
-  z-index: 9999;
-  bottom: 70px;
-  right: 20px;
-  min-width:240px;
-  max-width: 400px;
-  min-height:60px;
-  padding: 3px 10px;
-  font-size:14px;
-  line-height:20px;
-  color: #fff;
+  z-index: 999;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-sizing: border-box;
-  border-radius: 6px;
-  //opacity: .8;
+  min-width:320px;
+  max-width: 600px;
+  min-height:40px;
+  padding: 7px 15px;
+
+  border-radius: 2px;
+  background-color: $R10;
+  box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
+  border: solid 1px $R45;
+  font-size: 14px;
+  line-height: 1.71;
+  color: $R300;
+
   animation-duration: 2s;
   animation-name: slidein;
 
-  .title {
-    display: inline-block;
-    font-size: 1.2em;
-    margin-bottom: 10px;
+  :global{
+    .icon{
+      float: left;
+      margin-right: 10px;
+      margin-top: 2px;
+    }
   }
 
-  .message {
-    text-indent:1em;
-    padding-bottom:10px;
-  }
-
-  &-info {
-    background: $bg-info;
+  &-error {
+    color: $R300;
+    background-color: $R10;
+    border: solid 1px $R45;
+    box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
   }
   &-success {
-    background: $bg-success;
+    color: $G300;
+    background-color: $G10;
+    border: solid 1px $G45;
+    box-shadow: 0 2px 4px 0 rgba(8, 131, 66, 0.1);
+  }
+  &-info {
+    color: $B300;
+    background-color: $B10;
+    border: solid 1px $B45;
+    box-shadow: 0 2px 4px 0 rgba(35, 92, 216, 0.1);
   }
   &-warning {
-    background: $bg-warning;
-  }
-  &-error {
-    background: $bg-error;
+    color: $Y500;
+    background-color: $Y10;
+    border: solid 1px $Y75;
+    box-shadow: 0 2px 4px 0 rgba(239, 118, 43, 0.1);
   }
 }
+

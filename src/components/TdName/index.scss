@@ -3,7 +3,7 @@
 .tdName {
   display: inline-block;
   :global{
-    .icon{
+   .icon{
       float: left;
       margin: 4px 4px 0 0;
     }
@@ -42,11 +42,10 @@
       white-space: nowrap;
     }
     :global{
-      .fa-clipboard{
+      .copy{
         float: right;
-        margin-left: 2px;
-        font-size: 12px;
-        color: $title-color;
+        position: relative;
+        bottom: 5px;
         cursor: pointer;
       }
       td:hover .fa-clipboard{
@@ -54,8 +53,10 @@
       }
     }
   }
-  .copyTip{
-    display: inline-block;
+}
+.repoName{
+  .icon{
+    margin-right: 2px;
   }
 }
 

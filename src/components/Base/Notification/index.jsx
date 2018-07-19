@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
 export default class Notification extends React.Component {
@@ -16,10 +17,10 @@ export default class Notification extends React.Component {
   };
 
   static defaultProps = {
-    type: 'info',
+    type: 'error',
     title: 'Notification',
     message: null,
-    timeOut: 2000,
+    timeOut: 3000,
     onClick: () => {},
     onHide: () => {},
     onClosed: () => {}
@@ -29,10 +30,16 @@ export default class Notification extends React.Component {
 
   // based on font-awesome icons
   iconMap = {
-    info: 'info-circle',
-    success: 'check-circle',
-    warning: 'exclamation-circle',
-    error: 'times-circle'
+    error: 'error',
+    success: 'information',
+    info: 'information',
+    warning: 'exclamation'
+  };
+  colorMap = {
+    error: '#cf3939',
+    success: '#15934e',
+    info: '#1e6eeb',
+    warning: '#ef762b'
   };
 
   componentDidMount() {
@@ -51,16 +58,16 @@ export default class Notification extends React.Component {
   handleClick = e => {};
 
   render() {
-    const { type, title, message } = this.props;
-    let icon = <i className={`fa fa-${this.iconMap[type]}`} />;
+    const { type, message } = this.props;
     const className = classnames(styles.notification, styles[`notification-${type}`]);
-
+    const colorStyles = {
+      primary: '#fff',
+      secondary: this.colorMap[type]
+    };
     return (
       <div className={className} onClick={this.handleClick} ref={c => (this.target = c)}>
-        <span className={styles.title}>
-          {icon} {title}
-        </span>
-        <div className={styles.message}>{message}</div>
+        <Icon name={this.iconMap[type]} size={18} color={colorStyles} />
+        {message}
       </div>
     );
   }
