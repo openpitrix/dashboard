@@ -47,46 +47,41 @@ export default class Apps extends Component {
     }
   };
 
-  renderOpsModal = () => {
-    const { appStore, categoryStore } = this.props;
-    const { isModalOpen, hideModal, handleApp, changeAppCate } = appStore;
-    let modalTitle = '',
-      modalBody = null,
-      onSubmit;
-
-    if (handleApp.action === 'delete_app') {
-      modalTitle = 'Delete App';
-      onSubmit = appStore.remove.bind(appStore);
-      modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
-    }
-
-    if (handleApp.action === 'modify_cate') {
-      modalTitle = 'Modify App Category';
-      const categories = categoryStore.categories.toJSON();
-      onSubmit = appStore.modifyCategoryById.bind(appStore);
-
-      modalBody = (
-        <div className={styles.selectItem}>
-          <label className={styles.name}>Category</label>
-          <Select
-            className={styles.select}
-            value={handleApp.selectedCategory}
-            onChange={changeAppCate}
-          >
-            {categories.map(({ category_id, name }) => (
-              <Select.Option key={category_id} value={category_id}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-      );
-    }
+  renderDeleteModal = () => {
+    const { isDeleteOpen, remove, hideModal } = this.props.appStore;
 
     return (
-      <Dialog title={modalTitle} isOpen={isModalOpen} onCancel={hideModal} onSubmit={onSubmit}>
-        {modalBody}
+      <Dialog title="Delete App" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this App?
       </Dialog>
+    );
+  };
+
+  renderOpsModal = () => {
+    const { appStore, categoryStore } = this.props;
+    const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
+    const categories = categoryStore.categories.toJSON();
+
+    return (
+      <Modal
+        title="Modify App Category"
+        visible={isModalOpen}
+        onCancel={hideModal}
+        onOk={modifyCategoryById}
+      >
+        <div className="formContent">
+          <div className="inputItem selectItem">
+            <label>Category</label>
+            <Select value={handleApp.selectedCategory} onChange={changeAppCate}>
+              {categories.map(({ category_id, name }) => (
+                <Select.Option key={category_id} value={category_id}>
+                  {name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+      </Modal>
     );
   };
 
@@ -270,6 +265,7 @@ export default class Apps extends Component {
           <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

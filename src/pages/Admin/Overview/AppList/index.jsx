@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
-import { imgPlaceholder } from 'utils';
-
 import styles from './index.scss';
 
 @translate()
@@ -17,7 +15,6 @@ export default class AppList extends PureComponent {
 
   render() {
     const { apps, isAdmin, t } = this.props;
-    const imgPhd = imgPlaceholder(24);
 
     return (
       <ul className={classNames(styles.appList, { [styles.normalList]: !isAdmin })}>
@@ -25,7 +22,8 @@ export default class AppList extends PureComponent {
           <li key={data.app_id}>
             {isAdmin && <span className={styles.order}>{index + 1}</span>}
             <TdName
-              image={data.icon || imgPhd}
+              image={data.icon || 'appcenter'}
+              imageSize={24}
               name={data.name}
               description={data.description}
               linkUrl={`/dashboard/app/${data.app_id}`}

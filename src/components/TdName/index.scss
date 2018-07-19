@@ -54,9 +54,12 @@
     }
   }
 }
-.repoName{
-  .icon{
-    margin-right: 2px;
+.repoName {
+  :global{
+    .icon {
+      float: left;
+      margin-right: 2px;
+    }
   }
 }
 

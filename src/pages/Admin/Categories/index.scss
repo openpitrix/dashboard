@@ -49,34 +49,6 @@
   }
 }
 
-.inputItem{
-  margin-bottom: 20px;
-  .name{
-    display: inline-block;
-    margin-right:  20px;
-    width: 100px;
-    text-align: right;
-  }
-  .input{
-    width: 400px;
-  }
-  .textarea{
-    padding: 7px 10px;
-    width: 400px;
-    height: 100px;
-    border-radius: 2px;
-    border: 1px solid #e7e7e7;
-    outline: none;
-    resize: none;
-    &:focus{
-      border: 1px solid $border-dark;
-    }
-  }
-  .textareaName{
-    position: relative;
-    bottom: 80px;
-  }
-}
 
 
 

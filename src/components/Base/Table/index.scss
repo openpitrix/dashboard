@@ -115,4 +115,11 @@
     }
   }
 }
-
+.filterOuter{
+  width: 90px;
+  :global{
+    .icon{
+      float: right;
+    }
+  }
+}

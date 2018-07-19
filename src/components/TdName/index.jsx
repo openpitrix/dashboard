@@ -9,6 +9,7 @@ import styles from './index.scss';
 export default class TdName extends PureComponent {
   static propTypes = {
     image: PropTypes.string,
+    imageSize: PropTypes.number,
     name: PropTypes.string,
     description: PropTypes.string,
     linkUrl: PropTypes.string,
@@ -62,7 +63,9 @@ export default class TdName extends PureComponent {
             </span>
           )}
         </span>
-        {message ? <Notification message={message} onHide={this.onHide} type="success" /> : null}
+        {message ? (
+          <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />
+        ) : null}
       </span>
     );
   }

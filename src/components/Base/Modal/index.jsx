@@ -11,16 +11,17 @@ import styles from './index.scss';
 ReactModal.defaultStyles.overlay = Object.assign({}, ReactModal.defaultStyles.overlay, {
   padding: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  zIndex: 2000,
+  zIndex: 2000
 });
 
-ReactModal.defaultStyles.content = Object.assign({},
+ReactModal.defaultStyles.content = Object.assign(
+  {},
   omit(ReactModal.defaultStyles.content, ['top', 'left', 'right', 'bottom', 'padding']),
   {
     width: 744,
     position: 'relative',
-    margin: '0 auto',
-  },
+    margin: '0 auto'
+  }
 );
 
 export default class Modal extends React.Component {
@@ -37,20 +38,36 @@ export default class Modal extends React.Component {
     closable: PropTypes.bool,
     hideHeader: PropTypes.bool,
     hideFooter: PropTypes.bool,
-  }
+    isDialog: PropTypes.bool
+  };
 
   static defaultProps = {
     className: '',
-    width: 600,
+    width: 744,
+    hideHeader: false,
     visible: false,
     closable: true,
+    isDialog: false,
     onOk() {},
-    onCancel() {},
-  }
+    onCancel() {}
+  };
 
   render() {
-    const { className, title, width, visible, children, hideHeader, hideFooter,
-      onOk, onCancel, okText, cancelText, closable } = this.props;
+    const {
+      className,
+      title,
+      width,
+      visible,
+      children,
+      hideHeader,
+      hideFooter,
+      onOk,
+      onCancel,
+      okText,
+      cancelText,
+      closable,
+      isDialog
+    } = this.props;
     const style = { content: { width } };
 
     return (
@@ -61,23 +78,25 @@ export default class Modal extends React.Component {
         onRequestClose={onCancel}
         ariaHideApp={false}
       >
-        {
-          !hideHeader &&
+        {!hideHeader && (
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
-            {closable && <Icon name="close" onClick={onCancel} />}
+            {closable && <Icon name="close" size={36} onClick={onCancel} />}
           </div>
-        }
-        <div className={styles.body}>
-          {children}
-        </div>
-        {
-          !hideFooter &&
+        )}
+        <div className={styles.body}>{children}</div>
+        {!hideFooter && (
           <div className={styles.footer}>
-            <Button type="primary" onClick={onOk}>{okText || '提交'}</Button>
-            <Button type="default" onClick={onCancel}>{cancelText || '取消'}</Button>
+            <div className={classnames({ [styles.operationBtn]: !isDialog })}>
+              <Button type="primary" onClick={onOk}>
+                {okText || 'Confirm'}
+              </Button>
+              <Button type="default" onClick={onCancel}>
+                {cancelText || 'Cancel'}
+              </Button>
+            </div>
           </div>
-        }
+        )}
       </ReactModal>
     );
   }

@@ -21,7 +21,7 @@ export default class UserInfo extends PureComponent {
       <div className={styles.userInfo}>
         <div>
           <div className={styles.userImg}>
-            <Icon name="human" />
+            <Icon name="human" type={'light'} size={24} />
           </div>
           <div className={styles.user}>
             <div className={styles.name}>{t('greet words', { name })}</div>

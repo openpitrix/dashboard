@@ -15,6 +15,7 @@ export default class AppStore extends Store {
   @observable appCount = 0;
   @observable currentPage = 1;
   @observable isModalOpen = false;
+  @observable isDeleteOpen = false;
   @observable appTitle = '';
   @observable searchWord = '';
   @observable currentClusterPage = 1;
@@ -136,7 +137,7 @@ export default class AppStore extends Store {
         await this.fetchAll();
         this.cancelSelected();
       }
-      this.showMsg('Delete app successfully.');
+      this.showMsg('Delete app successfully.', 'success');
     } else {
       let { err, errDetail } = result;
       this.showMsg(errDetail || err);
@@ -149,7 +150,7 @@ export default class AppStore extends Store {
   };
 
   @action
-  async modifyCategoryById() {
+  modifyCategoryById = async () => {
     if (!this.handleApp.selectedCategory) {
       this.showMsg('please select a category');
       return;
@@ -165,21 +166,12 @@ export default class AppStore extends Store {
     if (!result || !result.err) {
       await this.fetchAll();
     }
-  }
-
-  // app menu actions
-  @action
-  showModal = () => {
-    this.isModalOpen = true;
   };
 
   @action
   hideModal = () => {
+    this.isDeleteOpen = false;
     this.isModalOpen = false;
-  };
-
-  setActionType = type => {
-    this.handleApp.action = type;
   };
 
   @action
@@ -190,15 +182,13 @@ export default class AppStore extends Store {
     } else {
       this.operateType = 'multiple';
     }
-    this.showModal();
-    this.setActionType('delete_app');
+    this.isDeleteOpen = true;
   };
 
   @action
   showModifyAppCate = app_id => {
     this.appId = app_id;
-    this.showModal();
-    this.setActionType('modify_cate');
+    this.isModalOpen = true;
   };
 
   @action

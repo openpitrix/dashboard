@@ -255,7 +255,7 @@ export default class Table extends React.Component {
         const filter = filterList.find(element => element.key === newColumn.key);
         if (filter) {
           newColumn.title = (
-            <Popover content={this.renderFilterContent(filter)}>
+            <Popover content={this.renderFilterContent(filter)} className={styles.filterOuter}>
               {newColumn.title}
               <Icon name="caret-down" />
             </Popover>

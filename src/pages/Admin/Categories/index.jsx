@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Input, Button, Popover, Icon } from 'components/Base';
+import { Input, Button, Popover, Icon, Modal } from 'components/Base';
 import Rectangle from 'components/Rectangle';
 import Layout, { Dialog } from 'components/Layout/Admin';
 import styles from './index.scss';
@@ -15,6 +15,7 @@ import styles from './index.scss';
 @observer
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
+    categoryStore.isDetailPage = false;
     await appStore.fetchApps();
     await categoryStore.fetchAll();
   }
@@ -37,84 +38,66 @@ export default class Categories extends Component {
     );
   };
 
-  handleDeleteCate = () => {
-    this.props.categoryStore.remove();
-  };
-
   renderOpsModal = () => {
     const { categoryStore } = this.props;
-    const { isModalOpen, hideModal, handleCate } = categoryStore;
-    let width = 500,
-      modalTitle = '',
-      modalBody = null,
-      onSubmit = () => {};
-
-    if (handleCate.action === 'delete_cate') {
-      modalTitle = 'Delete Category';
-      onSubmit = this.handleDeleteCate.bind(this);
-      modalBody = <div className={styles.noteWord}>Are you sure delete this Category?</div>;
+    const { isModalOpen, hideModal, category, createOrModify } = categoryStore;
+    let modalTitle = 'Create Category';
+    if (category && category.category_id) {
+      modalTitle = 'Modify Category';
     }
-
-    if (handleCate.action === 'modify_cate' || handleCate.action === 'create_cate') {
-      const { category, changeName, changeDescription } = categoryStore;
-      modalTitle = 'Create Category';
-      width = 600;
-
-      if (category && category.category_id) {
-        modalTitle = 'Modify Category';
-      }
-      onSubmit = categoryStore.createOrModify.bind(categoryStore, 'from_index');
-
-      modalBody = (
-        <Fragment>
-          <div className={styles.inputItem}>
-            <label className={styles.name}>Name</label>
+    return (
+      <Modal title={modalTitle} visible={isModalOpen} onCancel={hideModal} onOk={createOrModify}>
+        <div className="formContent">
+          <div className="inputItem">
+            <label>Name</label>
             <Input
-              className={styles.input}
               name="name"
-              required
               autoFocus
               defaultValue={category.name}
-              onChange={changeName}
+              onChange={categoryStore.changeName}
               maxLength="50"
             />
           </div>
-          <div className={styles.inputItem}>
-            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+          <div className="inputItem textareaItem">
+            <label className="textareaName">Description</label>
             <textarea
-              className={styles.textarea}
               name="description"
               defaultValue={category.description}
-              onChange={changeDescription}
+              onChange={categoryStore.changeDescription}
               maxLength="500"
             />
           </div>
-        </Fragment>
-      );
-    }
+        </div>
+      </Modal>
+    );
+  };
+
+  renderDeleteModal = () => {
+    const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
 
     return (
-      <Dialog
-        title={modalTitle}
-        width={width}
-        isOpen={isModalOpen}
-        onCancel={hideModal}
-        onSubmit={onSubmit}
-      >
-        {modalBody}
+      <Dialog title="Delete Category" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this category?
       </Dialog>
     );
   };
 
   render() {
     const { appStore, categoryStore } = this.props;
-    const { notifyMsg, hideMsg, showCreateCategory, isLoading, getCategoryApps } = categoryStore;
+    const {
+      notifyMsg,
+      notifyType,
+      hideMsg,
+      isLoading,
+      showCreateCategory,
+      getCategoryApps
+    } = categoryStore;
     const categories = categoryStore.categories.toJSON();
     const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg} isLoading={isLoading}>
         <div className={styles.container}>
           <div className={styles.pageTitle}>
             Categories
@@ -146,6 +129,7 @@ export default class Categories extends Component {
           ))}
         </div>
         {this.renderOpsModal()}
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

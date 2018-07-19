@@ -7,48 +7,112 @@
   margin: 0 auto;
   margin-top: 100px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: $N0;
   outline: none;
   overflow: auto;
-}
 
-.header {
-  position: relative;
-  padding: 13px 27px;
-  border-radius: 4px 4px 0 0;
-  background: #fff;
-  color: rgba(0, 0, 0, 0.65);
-  border-bottom: 1px solid $border-lighter;
-  .title {
-    line-height: 24px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    color: #2f0d56;
-  }
-  i {
-    position: absolute;
-    top: 0;
-    right: 27px;
-    font-size: 16px;
-    margin-top: 17px;
-    cursor: pointer;
-    color: #2f0d56;
-  }
-}
-
-.body {
-  padding: 20px 30px;
-  overflow-y: auto;
-}
-
-.footer {
-  padding: 16px 27px;
-  border-top: 1px solid $border-lighter;
-  button {
-    margin-left: 10px;
-    &:first-of-type {
-      margin-left: 0;
+  .header {
+    position: relative;
+    padding: 20px 32px;
+    border-bottom: 1px solid $N10;
+    .title {
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 500;
+      color: $N500;
+    }
+    :global {
+      .icon-close {
+        position: absolute;
+        top: 32px;
+        right: 22px;
+        cursor: pointer;
+      }
     }
   }
+
+  .body {
+    padding: 20px 32px 30px;
+    overflow-y: auto;
+    :global{
+      .formContent{
+        margin: 12px 0 -18px;
+        .inputItem{
+          margin-bottom: 24px;
+          & > label{
+            display: inline-block;
+            margin-right:  24px;
+            width: 168px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.14;
+            text-align: right;
+            color: $N500;
+          }
+          & > input{
+            width: 256px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: $N0;
+            box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
+            border: solid 1px $P75;
+          }
+          & > textarea{
+            padding: 7px 10px;
+            width: 400px;
+            height: 100px;
+            border-radius: 2px;
+            border: 1px solid #e7e7e7;
+            outline: none;
+            resize: none;
+            border-radius: 2px;
+            background-color: $N0;
+            border: solid 1px $N30;
+            &:focus{
+              border: 1px solid $border-dark;
+            }
+          }
+          & > select{
+            width: 256px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: $N0;
+            box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
+            border: solid 1px $P75;
+          }
+        }
+        .textareaItem{
+          height: 100px;
+          & > label {
+            position: relative;
+            bottom: 80px;
+          }
+        }
+        .selectItem{
+          & > label{
+            float: left;
+            line-height: 32px;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    padding: 16px 32px;
+    border-top: 1px solid $N10;
+    text-align: right;
+    .operationBtn{
+      margin-left: 192px;
+      text-align: left;
+    }
+    button {
+      margin-right: 12px;
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+
+  }
 }
+
+

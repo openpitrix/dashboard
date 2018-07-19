@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { formatTime } from 'utils';
 import classNames from 'classnames';
 
-import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
+import { Icon, Button, Input, Popover, Table, Pagination } from 'components/Base';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
@@ -45,8 +45,8 @@ export default class Runtimes extends Component {
     const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Dialog title="Delete Runtime" onCancel={hideModal} isOpen={isModalOpen} onSubmit={remove}>
-        <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
+      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this Runtime?
       </Dialog>
     );
   };

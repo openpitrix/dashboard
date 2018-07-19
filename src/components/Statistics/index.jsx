@@ -47,7 +47,7 @@ export default class Statistics extends PureComponent {
         <div className={styles.wrap}>
           <div className={styles.module}>
             <div className={styles.apps}>
-              <Icon name={iconName} size="medium" className={styles.icon} />
+              <Icon name={iconName} size="medium" className={styles.icon} type={'light'} />
               {name}
             </div>
             <div className={classnames(styles.word, styles.fl)}>
