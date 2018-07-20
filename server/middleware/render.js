@@ -41,7 +41,7 @@ module.exports = async (ctx, next) => {
     const components = !isDev
       ? renderToString(
           <I18nextProvider i18n={i18n}>
-            <Provider rootStore={ctx.store} sessInfo={sessInfo}>
+            <Provider rootStore={ctx.store} sessInfo={sessInfo} sock={null}>
               <StaticRouter location={ctx.url} context={context}>
                 <App>{renderRoutes(routes)}</App>
               </StaticRouter>

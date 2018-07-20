@@ -35,7 +35,7 @@ export default class Clusters extends Component {
     super(props);
     this.store = this.props.clusterStore;
 
-    if (!props.sock._events['ops-resource']) {
+    if (props.sock && !props.sock._events['ops-resource']) {
       props.sock.on('ops-resource', this.listenToJob);
     }
   }
