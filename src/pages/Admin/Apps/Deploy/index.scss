@@ -13,24 +13,30 @@
   }
 }
 
-form.createForm {
+.createForm {
   display: block;
-  margin: -20px 0 20px 24px;
+  margin: 0;
+  margin-top: 5px;
+
   .moduleTitle{
-    margin: 50px 0 25px 0;
+    //margin: 50px 0 25px 0;
+    margin-bottom: 28px;
     font-size: 16px;
-    font-weight: bold;
-    color: $title-color;
+    color: $N500;
+
+    &:not(:first-of-type) {
+      margin-top: 50px;
+    }
   }
   .cellModule{
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     clear: both;
   }
   .name{
     display: inline-block;
     float: left;
-    margin-right: 16px;
-    width: 130px;
+    margin-right: 24px;
+    width: 168px;
     font-size: 14px;
     line-height: 32px;
     font-weight: bold;
@@ -38,7 +44,8 @@ form.createForm {
     text-align: right;
   }
   .showWord{
-    width: 540px;
+    display: inline-block;
+    max-width: 420px;
     line-height: 32px;
   }
 

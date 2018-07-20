@@ -1,28 +1,30 @@
 @import '~scss/vars';
 
 .wrapper{
-  margin: 0 auto 24px;
-  width: $content-width;
+  //margin: 0 auto 24px;
+  //width: $content-width;
 
-  .leftInfo{
-    border-radius: 2px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.07);
+  .main {
+    .card {
+      padding: 32px;
+    }
+
     .title{
-      padding: 15px 24px 18px;
+      padding: 20px 32px;
       line-height: 24px;
       font-size: 20px;
-      color: $title-color;
-      border-bottom: 1px solid #dadcde;
+      color: $N500;
+      border-bottom: 1px solid $N10;
     }
   }
 
-  .rightInfo{
+  .aside{
     .title{
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       line-height: 24px;
+      font-size:20px;
       font-weight: 500;
-      color: #300e56;
+      color: $N500;
     }
 
     .content{

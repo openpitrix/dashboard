@@ -5,8 +5,8 @@
   .name{
     display: inline-block;
     float: left;
-    margin-right: 16px;
-    width: 130px;
+    margin-right: 24px;
+    width: 168px;
     line-height: 1.2;
     font-size: 14px;
     font-weight: bold;
@@ -19,7 +19,8 @@
     line-height: 32px;
   }
   .showWord{
-    width: 570px;
+    display: inline;
+    width: auto;
   }
   .rightShow{
     margin-top: 7px;

@@ -1,7 +1,7 @@
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
-import ClusterDetail from 'pages/ClusterDetail';
+// import ClusterDetail from 'pages/ClusterDetail';
 import * as Dash from 'pages/Admin';
 
 const useExactRoute = true;

@@ -86,21 +86,20 @@ export default class AppDeploy extends Component {
         onSubmit={handleSubmit.bind(appDeployStore)}
       >
         <div className={styles.moduleTitle}>1. Basic settings</div>
-        {configBasics &&
-          configBasics.map(
-            (basic, index) =>
-              basic.key !== 'subnet' && (
-                <Cell
-                  key={basic.key}
-                  className={styles.cellModule}
-                  config={basic}
-                  type={`basic`}
-                  configIndex1={index}
-                  configIndex2={-1}
-                  changeCell={changeCell.bind(appDeployStore)}
-                />
-              )
-          )}
+        {configBasics.map(
+          (basic, index) =>
+            basic.key !== 'subnet' && (
+              <Cell
+                key={basic.key}
+                className={styles.cellModule}
+                config={basic}
+                type={`basic`}
+                configIndex1={index}
+                configIndex2={-1}
+                changeCell={changeCell.bind(appDeployStore)}
+              />
+            )
+        )}
         <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
           <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
