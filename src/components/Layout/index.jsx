@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
+
 import Notification from 'components/Base/Notification';
-import { Container } from 'components/Layout';
+// import { Grid } from 'components/Layout';
 import TabsNav from 'components/TabsNav';
 import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
@@ -20,6 +21,7 @@ export default class Layout extends React.Component {
     hideMsg: PropTypes.func,
     noTabs: PropTypes.bool,
     noNotification: PropTypes.bool,
+    backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string
   };
@@ -28,7 +30,8 @@ export default class Layout extends React.Component {
     msg: '',
     hideMsg: () => {},
     noTabs: false,
-    noNotification: false
+    noNotification: false,
+    backBtn: null
   };
 
   constructor(props) {
@@ -58,7 +61,7 @@ export default class Layout extends React.Component {
     } else if (loginRole === 'developer') {
       this.availableLinks = [...normalLinks, 'repos'];
     } else if (loginRole === 'admin') {
-      this.availableLinks = [...normalLinks, 'repos', 'categories'];
+      this.availableLinks = [...normalLinks, 'repos', 'categories']; // hide user tab
     }
 
     const options = { prefix: this.linkPrefix };
@@ -67,21 +70,25 @@ export default class Layout extends React.Component {
   }
 
   render() {
-    const { className, noTabs, noNotification, children, isLoading, loadClass } = this.props;
+    const {
+      className,
+      noTabs,
+      noNotification,
+      children,
+      isLoading,
+      loadClass,
+      backBtn
+    } = this.props;
+
     return (
       <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
-        <Container>
-          <Loading isLoading={isLoading} className={styles[loadClass]}>
-            {children}
-          </Loading>
-        </Container>
+        {backBtn}
+        <Loading isLoading={isLoading} className={styles[loadClass]}>
+          {children}
+        </Loading>
       </div>
     );
   }
 }
-
-export BackBtn from './BackBtn';
-export Dialog from './Dialog';
-export CreateResource from './CreateResource';

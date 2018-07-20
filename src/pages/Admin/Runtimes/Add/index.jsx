@@ -9,7 +9,7 @@ import Button from 'components/Base/Button';
 import Input from 'components/Base/Input';
 import Select from 'components/Base/Select';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Layout, { BackBtn, CreateResource } from 'components/Layout';
 
 import styles from './index.scss';
 
@@ -44,6 +44,7 @@ export default class RuntimeAdd extends Component {
     const { notifyMsg, hideMsg, notifyType, runtimeId } = this.store;
     let title = 'Create Runtime';
     if (runtimeId) title = 'Modify Runtime';
+
     return (
       <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/dashboard/runtimes" />

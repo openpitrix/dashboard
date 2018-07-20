@@ -3,15 +3,16 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Button, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
+import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime, getObjName } from 'utils';
+import capitalize from 'lodash/capitalize';
 
 import styles from './index.scss';
-import capitalize from 'lodash/capitalize';
 
 @inject(({ rootStore, sock }) => ({
   rootStore,
@@ -101,20 +102,40 @@ export default class Clusters extends Component {
     );
   };
 
+  renderToolbar() {
+    const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
+
+    if (clusterIds.length) {
+      return (
+        <Toolbar>
+          <Button type="delete" onClick={() => this.oprateSelected('delete')}>
+            Delete
+          </Button>
+          <Button type="default" onClick={() => this.oprateSelected('start')}>
+            Start
+          </Button>
+          <Button type="delete" onClick={() => this.oprateSelected('stop')}>
+            Stop
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder="Search Cluster"
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+      />
+    );
+  }
+
   render() {
     const { clusterStore } = this.props;
-    const {
-      summaryInfo,
-      clusters,
-      notifyMsg,
-      hideMsg,
-      isLoading,
-      searchWord,
-      onSearch,
-      onClearSearch,
-      onRefresh,
-      clusterIds
-    } = clusterStore;
+    const { summaryInfo, clusters, notifyMsg, hideMsg, isLoading } = clusterStore;
+
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
 
@@ -217,47 +238,28 @@ export default class Clusters extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <Statistics {...summaryInfo} objs={runtimes.slice()} />
+        <Row>
+          <Statistics {...summaryInfo} objs={runtimes.slice()} />
+        </Row>
 
-        <div className="table-outer">
-          {clusterIds.length > 0 && (
-            <div className="toolbar">
-              <Button type="delete" onClick={() => this.oprateSelected('delete')}>
-                Delete
-              </Button>
-              <Button type="default" onClick={() => this.oprateSelected('start')}>
-                Start
-              </Button>
-              <Button type="delete" onClick={() => this.oprateSelected('stop')}>
-                Stop
-              </Button>
-            </div>
-          )}
-          {clusterIds.length === 0 && (
-            <div className="toolbar">
-              <Input.Search
-                placeholder="Search Cluster"
-                value={searchWord}
-                onSearch={onSearch}
-                onClear={onClearSearch}
-                maxLength="50"
-              />
-              <Button className="f-right" onClick={onRefresh}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
-          )}
-
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            rowSelection={rowSelection}
-            isLoading={isLoading}
-            filterList={filterList}
-            pagination={pagination}
-          />
-        </div>
-        {this.renderDeleteModal()}
+        <Row>
+          <Grid>
+            <Section size={12}>
+              <Card>
+                {this.renderToolbar()}
+                <Table
+                  columns={columns}
+                  dataSource={clusters.toJSON()}
+                  rowSelection={rowSelection}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                  pagination={pagination}
+                />
+              </Card>
+              {this.renderDeleteModal()}
+            </Section>
+          </Grid>
+        </Row>
       </Layout>
     );
   }

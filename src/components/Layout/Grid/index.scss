@@ -1,0 +1,32 @@
+@import "~scss/vars";
+
+$debug: false !default;
+$row-gap: 24px;
+
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  width: $content-width;
+  margin: 0 auto;
+  justify-content: space-between;
+  //margin-top: 80px;
+
+  :global {
+    @for $i from 1 through $columns {
+      @include calc-section-size($i);
+      @include calc-section-offset($i - 1)
+    }
+  }
+
+  .section {
+    @if $debug {
+      border: 1px dashed #ddd;
+    }
+  }
+}
+
+.row {
+  display: block;
+  flex: none;
+  margin-bottom: $row-gap;
+}

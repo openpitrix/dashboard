@@ -212,8 +212,14 @@ export default class RepoCreateStore extends Store {
     // data.selectors = this.toQueryString(selectors);
     // data.labels = this.toQueryString(labels);
 
+    // fix: provider is mobx array
+    let flatProviders = providers.toJSON();
+    if (typeof flatProviders[0] !== 'string' && flatProviders[0].toJSON) {
+      flatProviders = flatProviders[0].toJSON();
+    }
+
     _.extend(data, {
-      providers,
+      providers: flatProviders,
       visibility,
       type: protocolType
     });

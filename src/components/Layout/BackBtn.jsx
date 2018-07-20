@@ -10,7 +10,7 @@ const BackBtn = ({ label, link }) => {
   return (
     <I18n>
       {t => (
-        <div className={styles.backTo}>
+        <div className={styles.backBtn}>
           <Link to={link}>{t('Back to link', { link: t(capitalize(label)) })}</Link>
         </div>
       )}

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
 
+import { Tooltip } from 'components/Base';
 import { Icon, Notification } from 'components/Base';
 import styles from './index.scss';
 
@@ -22,11 +23,11 @@ export default class CopyId extends PureComponent {
       });
       e.clearSelection();
     });
-  };
+  }
 
   componentWillUnmount() {
     this.clipboard.destroy();
-  };
+  }
 
   onHide = () => {
     this.setState({

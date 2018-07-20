@@ -1,21 +1,23 @@
 @import '~scss/vars';
 
 .layout {
-  display: flex;
-  padding-top: $header-height+$tabNavs-height+32px;
+  padding-top: $header-height + $tabNavs-height + 32px;
   padding-bottom: $page-bottom;
-  &.noTabs{
-    padding-top: $header-height+32px;
-  }
-  .backTo{
+
+  .backBtn{
     width: $content-width;
     margin: 0 auto 20px;
-    font-size: 14px;
+    font-size: $size-normal;
     line-height: 1.43;
     a{
       color: $P75;
     }
   }
+
+  &.noTabs{
+    padding-top: $header-height+32px;
+  }
+
   .detailTab{
     position: absolute;
     top: 150px;

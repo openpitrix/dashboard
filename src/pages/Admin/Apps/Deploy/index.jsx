@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Radio, Button, Input, Select, Slider } from 'components/Base';
-import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import { get } from 'lodash';
 
@@ -25,15 +25,15 @@ export default class AppDeploy extends Component {
     const { appDeployStore } = this.props;
     const { notifyMsg, notifyType, hideMsg, isLoading } = appDeployStore;
     const title = 'Deploy app';
+
     return (
       <Layout
         msg={notifyMsg}
-        msgType={notifyType}
         hideMsg={hideMsg}
-        isLoading={isLoading}
-        noTabs={true}
+        isLoading={appDeployStore.isLoading}
+        noTabs
+        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
       >
-        <BackBtn label="clusters" link="/dashboard/clusters" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
@@ -86,21 +86,20 @@ export default class AppDeploy extends Component {
         onSubmit={handleSubmit.bind(appDeployStore)}
       >
         <div className={styles.moduleTitle}>1. Basic settings</div>
-        {configBasics &&
-          configBasics.map(
-            (basic, index) =>
-              basic.key !== 'subnet' && (
-                <Cell
-                  key={basic.key}
-                  className={styles.cellModule}
-                  config={basic}
-                  type={`basic`}
-                  configIndex1={index}
-                  configIndex2={-1}
-                  changeCell={changeCell.bind(appDeployStore)}
-                />
-              )
-          )}
+        {configBasics.map(
+          (basic, index) =>
+            basic.key !== 'subnet' && (
+              <Cell
+                key={basic.key}
+                className={styles.cellModule}
+                config={basic}
+                type={`basic`}
+                configIndex1={index}
+                configIndex2={-1}
+                changeCell={changeCell.bind(appDeployStore)}
+              />
+            )
+        )}
         <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
           <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>

@@ -30,7 +30,7 @@ export default class TdName extends PureComponent {
     });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.clipboard.destroy();
   }
 

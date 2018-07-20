@@ -63,3 +63,55 @@ $N10: #eff0f5;
 $N0: #ffffff;
 //$body-background-color: #bcc2d126;
 
+
+// extract from _vars
+$blue: #5cb8e6;
+$red: #e67373;
+$green: #52cc8f;
+$yellow: #fad464;
+$orange: #f19e59;
+$purple: #6626af;
+$purple-light: #926dbd;
+$purple-lighter: #efe9f7;
+$purple-dark: #5f3a8a;
+$grey: #cccccc;
+$grey-light: #d6cfde;
+
+$sub-nav-color: #160029;
+$id-color: #127db3;
+$link-color: #6c2db5;
+$title-color: #300E56;
+$text-color: #333333;
+$second-text-color: #666666;
+$third-text-color: #7749ac;
+$placeholder-color: #c1c1c1;
+$grey-word: #a6a1ab;
+$grey-time: #9b9b9b;
+$purple-name: #9d80bf;
+$purple-word: #1c062f;
+
+$background-color: #f6f6f8;
+$background-color-lighter: #ffffff;
+$th-background-color: #efe9f7;
+$li-bg:#f5f7fa;
+$li-hover-bg: rgba(213, 218, 229, 0.15);
+$link-hover: #7a2ac0;
+$tr-hover-bg: rgba(213, 218, 229, 0.15);
+$body-bg: #f5f6f7;
+$delete-btn: #ac4949;
+
+$body-background-color: $background-color;
+
+$border-lighter: #e7e7e7;
+$border-light: #c9bed6;
+$border: $border-lighter;
+$border-dark: #7749AC;
+$border-gray: #e4ebf1;
+$border-gray-li: #e6ecf2;
+
+// Override
+$primary: $purple;
+$info: $blue;
+$danger: $red;
+$warning: $yellow;
+$success: $green;

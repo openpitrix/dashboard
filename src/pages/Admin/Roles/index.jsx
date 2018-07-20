@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 
 import Rectangle from 'components/Rectangle';
-import Layout from 'components/Layout/Admin';
+import Layout from 'components/Layout';
 
 import styles from './index.scss';
 

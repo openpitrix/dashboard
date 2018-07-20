@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
+import Status from 'components/Status';
 import { Checkbox, Radio, Popover, Tooltip, Icon, Pagination } from 'components/Base';
 import Loading from 'components/Loading';
 import NoData from './noData';
+
 import styles from './index.scss';
 
 export default class Table extends React.Component {

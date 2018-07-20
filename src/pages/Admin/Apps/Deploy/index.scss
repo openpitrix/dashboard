@@ -13,34 +13,37 @@
   }
 }
 
-form.createForm {
+.createForm {
   display: block;
-  padding: 36px 0 0 36px;
+  margin: 0;
+  margin-top: 5px;
+
   .moduleTitle{
-    margin: 48px 0 24px 0;
+    //margin: 50px 0 25px 0;
+    margin-bottom: 28px;
     font-size: 16px;
-    font-weight: bold;
     color: $N500;
-    &:first-child{
-      margin-top: 0;
+    &:not(:first-of-type) {
+      margin-top: 50px;
     }
   }
   .cellModule{
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     clear: both;
   }
   .name{
     display: inline-block;
+    float: left;
     margin-right: 24px;
     width: 168px;
-    line-height: 16px;
     font-size: 14px;
     font-weight: 500;
     color: $N500;
     text-align: right;
   }
   .showWord{
-    width: 510px;
+    display: inline-block;
+    max-width: 420px;
     line-height: 32px;
   }
 

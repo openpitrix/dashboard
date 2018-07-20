@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Table, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
+import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn } from 'components/Layout/Admin';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -33,7 +34,7 @@ export default class RuntimeDetail extends Component {
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
-    this.props.clusterStore.loadPageInit();
+    // this.props.clusterStore.loadPageInit();
   }
 
   renderHandleMenu = id => {
@@ -61,6 +62,7 @@ export default class RuntimeDetail extends Component {
       onChangeStatus,
       selectStatus
     } = clusterStore;
+
     const { apps } = this.props.appStore;
 
     const columns = [
@@ -136,45 +138,43 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout>
-        <BackBtn label="runtimes" link="/dashboard/runtimes" />
-
-        <LayoutLeft className="detail-outer">
-          <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
-          {runtimeDetail.status !== 'deleted' && (
-            <Popover
-              className="operation"
-              content={this.renderHandleMenu(runtimeDetail.runtime_id)}
-            >
-              <Icon name="more" />
-            </Popover>
-          )}
-        </LayoutLeft>
-
-        <LayoutRight className="table-outer">
-          <TagNav tags={tags} curTag={curTag} />
-
-          <div className="toolbar">
-            <Input.Search
-              placeholder="Search Clusters Name"
-              value={searchWord}
-              onSearch={onSearch}
-              onClear={onClearSearch}
-              maxLength="50"
-            />
-            <Button className="f-right" onClick={onRefresh}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
-
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            isLoading={isLoading}
-            filterList={filterList}
-            pagination={pagination}
-          />
-        </LayoutRight>
+      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+        <Grid>
+          <Section>
+            <Card>
+              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
+              {runtimeDetail.status !== 'deleted' && (
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+                >
+                  <Icon name="more" />
+                </Popover>
+              )}
+            </Card>
+          </Section>
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={tags} curTag={curTag} />
+              <Card>
+                <Toolbar
+                  placeholder="Search Clusters Name"
+                  searchWord={searchWord}
+                  onSearch={onSearch}
+                  onClear={onClearSearch}
+                  onRefresh={onRefresh}
+                />
+                <Table
+                  columns={columns}
+                  dataSource={clusters.toJSON()}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                  pagination={pagination}
+                />
+              </Card>
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

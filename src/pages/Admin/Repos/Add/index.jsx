@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'components/Layout/Admin';
+import Layout, { BackBtn, CreateResource } from 'components/Layout';
 
 import styles from './index.scss';
 

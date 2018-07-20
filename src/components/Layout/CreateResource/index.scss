@@ -1,0 +1,40 @@
+@import '~scss/vars';
+
+.wrapper{
+  //margin: 0 auto 24px;
+  //width: $content-width;
+
+  .main {
+    .card {
+      padding: 32px;
+    }
+
+    .title{
+      padding: 20px 32px;
+      line-height: 24px;
+      font-size: 20px;
+      color: $N500;
+      border-bottom: 1px solid $N10;
+    }
+  }
+
+  .aside{
+    .title{
+      margin-bottom: 16px;
+      line-height: 24px;
+      font-size:20px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .content{
+      font-size: 14px;
+      line-height: 1.43;
+      text-align: left;
+      color: #4c4752;
+      p{
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { formatTime } from 'utils';
-import classNames from 'classnames';
 
-import { Checkbox, Icon, Button, Input, Select, Table, Pagination, Modal } from 'components/Base';
+import { Checkbox, Button, Select, Table, Pagination, Modal } from 'components/Base';
 
 import Statistics from 'components/Statistics';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import OrgTree from 'components/OrgTree';
 import GroupCard from './GroupCard';
-import Layout from 'components/Layout/Admin';
+import Layout from 'components/Layout';
+import Toolbar from 'components/Toolbar';
 
 import styles from './index.scss';
 
@@ -333,15 +333,9 @@ export default class Users extends Component {
                 action
               </div>
             </div>
-            <div className={styles.toolbar}>
-              <Input.Search className={styles.search} placeholder="Search App Name" />
-              <Button className={classNames('f-right', styles.ml12)} type="primary">
-                Create
-              </Button>
-              <Button className={'refresh-btn'}>
-                <Icon name="refresh" size="mini" />
-              </Button>
-            </div>
+
+            <Toolbar placeholder="Search App Name" withCreateBtn={{ linkTo: '#' }} />
+
             <Table columns={columns} dataSource={data} />
             <Pagination className={styles.page} />
           </div>

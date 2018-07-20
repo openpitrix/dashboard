@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { get } from 'lodash';
 
-import { Icon, Button, Input } from 'components/Base';
-import Layout, { Dialog } from 'components/Layout/Admin';
+import Layout, { Dialog } from 'components/Layout';
+import Toolbar from 'components/Toolbar';
+
 import RepoList from './RepoList';
 import Loading from 'components/Loading';
 
@@ -86,29 +86,18 @@ export default class Repos extends Component {
         <div className={styles.container}>
           <div className={styles.title}>Repos</div>
 
-          <div className={styles.toolbar}>
-            <Input.Search
-              className={styles.search}
-              placeholder="Search Repo Name"
-              value={searchWord}
-              onSearch={fetchQueryRepos}
-              onClear={onClearSearch}
-              maxLength="50"
-            />
-            <Link to="/dashboard/repo/create">
-              <Button className={classNames('f-right', styles.ml12)} type="primary">
-                Create
-              </Button>
-            </Link>
-            <Button className="f-right" onClick={onRefresh}>
-              <Icon name="refresh" size="mini" />
-            </Button>
-          </div>
-          <Loading className="loadTable" isLoading={isLoading}>
-            <div>
-              <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
-              <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
-            </div>
+          <Toolbar
+            placeholder="Search Repo Name"
+            searchWord={searchWord}
+            onSearch={fetchQueryRepos}
+            onClear={onClearSearch}
+            onRefresh={onRefresh}
+            withCreateBtn={{ linkTo: `/dashboard/repo/create` }}
+          />
+
+          <Loading isLoading={isLoading}>
+            <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
+            <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
           </Loading>
         </div>
         {this.deleteRepoModal()}

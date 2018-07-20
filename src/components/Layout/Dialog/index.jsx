@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Modal, Button } from 'components/Base';
+import { Modal } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -32,7 +32,6 @@ export default class Dialog extends React.PureComponent {
         width={width}
         title={title}
         visible={isOpen}
-        hideFooter={false}
         onCancel={onCancel}
         onOk={this.handleSubmit}
         isDialog

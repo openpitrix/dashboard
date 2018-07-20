@@ -1,7 +1,7 @@
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
-import ClusterDetail from 'pages/ClusterDetail';
+// import ClusterDetail from 'pages/ClusterDetail';
 import * as Dash from 'pages/Admin';
 
 const useExactRoute = true;
@@ -18,10 +18,10 @@ const dashUrl = path => {
 const routes = {
   '/': Home,
   '/login': Login,
-  '/apps': Home,
   '/apps/:category': Home,
   '/app/:appId': AppDetail,
-  '/clusters/:clusterId': ClusterDetail,
+
+  // '/clusters/:clusterId': ClusterDetail,
 
   '/:dash': Dash.Overview,
 
@@ -43,10 +43,10 @@ const routes = {
   '/:dash/repo/:repoId': Dash.RepoDetail,
 
   '/:dash/users': Dash.Users,
-  '/:dash/roles': Dash.Roles,
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
+
   '*': Home
 };
 

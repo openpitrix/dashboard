@@ -1,213 +1,70 @@
 @import "~scss/vars";
 
-.wrapper {
-  width: $content-width;
-  margin: 0 auto;
+.section {
+  margin-left: 64px;
+
+  .title {
+    margin: 8px 0;
+    line-height: 21px;
+    font-size: 18px;
+    font-weight: 500;
+    color: $title-color;
+  }
+  .content {
+    line-height: 24px;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #576075;
+  }
 }
 
-.detail {
-  display: table;
-  width: 100%;
-  vertical-align: top;
-
-}
-
-.introduction {
+.introCard {
   padding: 32px;
-  border-radius: 2px;
-  background-color: $N0;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-  .titleOuter{
-    padding-bottom: 24px;
-    border-bottom: 1px solid $N10;
-    :global{
-      .icon {
-        float: left;
-        width: 48px;
-        height: 48px;
-        margin-right: 16px;
-        border-radius: 24px;
-      }
-    }
-    .title {
-      margin-bottom: 8px;
-      font-size: 24px;
-      line-height: 1.17;
-      font-weight: 500;
-      color: $N500;
-    }
-    .desc {
-      font-size: 14px;
-      line-height: 1.71;
-      color: $N300
-    }
-    .carousel {
+}
+
+.detailCard{
+  margin-bottom: 24px;
+  padding: 36px;
+}
+
+.versionItem{
+  margin-bottom: 24px;
+  .title{
+    margin-bottom: 4px;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #300e56;
+  }
+  .value{
+    line-height: 24px;
+    font-size: 14px;
+    color: #7749ac;
+  }
+}
+
+.deployBtn {
+  margin-top: 16px;
+  width: 100%;
+  box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
+}
+
+.versions{
+  margin-top: 36px;
+  &>p{
+    margin-bottom: 6px;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $title-color;
+  }
+  li{
+    line-height: 30px;
+    font-size: 14px;
+    color: #7749ac;
+    .time{
       float: right;
-      font-size: 12px;
-      line-height: 1.67;
-      color: $N100;
-    }
-  }
-  .content{
-    margin-left: 64px;
-    .markdown{
-      margin-top: 22px;
-    }
-    .section {
-      margin-top: 22px;
-      .conTitle{
-        margin: 8px 0;
-        line-height: 21px;
-        font-size: 18px;
-        font-weight: 500;
-        color: $title-color;
-      }
-      .description{
-        line-height: 24px;
-        font-size: 14px;
-        letter-spacing: 0;
-        color: #576075;
-      }
-      .information{
-        padding-bottom: 30px;
-        dl{
-          line-height: 30px;
-          font-size: 14px;
-          font-weight: normal;
-        }
-        dt{
-          display: inline-block;
-          width: 120px;
-          color: #667380;
-          font-weight: normal;
-        }
-        dd{
-          display: inline-block;
-          color: #667380;
-        }
-      }
-    }
-  }
-}
-
-.rightInfo {
-  display: table-cell;
-  vertical-align: top;
-  width: 360px;
-  .detailCard{
-    margin-bottom: 24px;
-    padding: 36px;
-    border-radius: 3px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 2px 1px rgba(48, 14, 86, 0.1);
-    .item{
-      margin-bottom: 24px;
-      .title{
-        margin-bottom: 4px;
-        line-height: 24px;
-        font-size: 14px;
-        font-weight: 500;
-        color: #300e56;
-      }
-      .value{
-        line-height: 24px;
-        font-size: 14px;
-        color: #7749ac;
-      }
-    }
-  }
-  .deployBtn {
-    margin-top: 16px;
-    width: 100%;
-    box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
-  }
-  .versions{
-    margin-top: 36px;
-    &>p{
-      margin-bottom: 6px;
-      line-height: 24px;
-      font-size: 14px;
-      font-weight: 500;
-      color: $title-color;
-    }
-    li{
-      line-height: 30px;
-      font-size: 14px;
-      color: #7749ac;
-      .time{
-        float: right;
-        color: #4c4752;
-      }
-    }
-  }
-}
-
-.slider{
-  position: relative;
-  .pre,.next{
-    position: absolute;
-    display: inline-block;
-    width: 18px;
-    height: 30px;
-    bottom: 80px;
-    cursor: pointer;
-  }
-  .pre{
-    left: 10px;
-  }
-  .next{
-    right: 10px;
-  }
-  .dotList{
-    position: absolute;
-    bottom: -35px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    .dot{
-      display: inline-block;
-      margin: 0 6px;
-      width: 6px;
-      height: 6px;
-      border-radius: 3px;
-      background-color: $grey;
-      cursor: pointer;
-    }
-    .active{
-      width: 44px;
-      background-color: $link-hover;
-    }
-  }
-  .listOuter{
-    position: relative;
-    margin: 40px 40px 70px;
-    height: 220px;
-    overflow: hidden;
-    .pictureList{
-      position: absolute;
-      left: 0;
-      bottom:0;
-      width: 1200px;
-    }
-  }
-  .pictureOuter{
-    float: left;
-    width: 270px;
-    height: 213px;
-    background-color: #eff0f5;
-    margin-right: 6px;
-    .picture{
-      margin: 20px 25px;
-      width: 220px;
-      height: 170px;
-      border-radius: 3px;
-      box-shadow: 0 2px 10px 1px rgba(20, 8, 32, 0.2);
-      background: #2f0d56;
-
-      color: red;
-      text-align: center;
-      line-height: 170px;
-      font-size: 30px;
+      color: #4c4752;
     }
   }
 }

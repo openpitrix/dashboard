@@ -1,0 +1,26 @@
+@import "./partial/color";
+
+@mixin calc-section-size($size: 1) {
+  .section-size-#{$size} {
+    width: ($grid-width + $grid-gap) * $size - $grid-gap;
+  }
+}
+
+@mixin calc-section-offset($offset: 0){
+  .section-offset-#{$offset} {
+    margin-left: ($grid-width + $grid-gap) * $offset;
+  }
+}
+
+@mixin bg-panel($bg-color: $N0, $radius: 3px) {
+  box-sizing: border-box;
+  border-radius: $radius;
+  background-color: $bg-color;
+  //min-height: 100px;
+  height: auto;
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+
+  //&:hover {
+  //  box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+  //}
+}
