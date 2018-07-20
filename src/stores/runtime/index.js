@@ -65,7 +65,7 @@ export default class RuntimeStore extends Store {
     const result = await this.request.get('runtimes/statistics');
     this.summaryInfo = {
       name: 'Runtimes',
-      iconName: 'appcenter',
+      iconName: 'stateful-set',
       centerName: 'Provider',
       total: get(result, 'runtime_count', 0),
       progressTotal: get(result, 'provider_count', 0),

@@ -125,6 +125,13 @@ export default class RuntimeDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     const tags = [{ id: 1, name: 'Clusters' }];
     const curTag = 'Clusters';
 
@@ -165,8 +172,8 @@ export default class RuntimeDetail extends Component {
             dataSource={clusters.toJSON()}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </LayoutRight>
       </Layout>
     );

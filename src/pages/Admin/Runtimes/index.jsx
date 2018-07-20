@@ -151,6 +151,13 @@ export default class Runtimes extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Runtimes',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} />
@@ -189,8 +196,8 @@ export default class Runtimes extends Component {
             rowSelection={rowSelection}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderDeleteModal()}
       </Layout>

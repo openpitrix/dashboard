@@ -90,24 +90,26 @@ export default class Apps extends Component {
     let itemMenu = null;
     let deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
 
-    if (this.role === 'developer') {
-      itemMenu = (
-        <Fragment>
-          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-        </Fragment>
-      );
-    }
-    if (this.role === 'admin') {
-      itemMenu = (
-        <Fragment>
-          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-          <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
-        </Fragment>
-      );
+    if (item.status === 'deleted') {
+      if (this.role === 'developer') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+          </Fragment>
+        );
+      }
+      if (this.role === 'admin') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+            <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
+          </Fragment>
+        );
+      }
     }
 
     return (
-      <div id={item.app_id} className="operate-menu">
+      <div className="operate-menu">
         <Link to={`/dashboard/app/${item.app_id}`}>View detail</Link>
         {deployEntry}
         {itemMenu}
@@ -228,6 +230,13 @@ export default class Apps extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Apps',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={repos.slice()} />
@@ -261,8 +270,8 @@ export default class Apps extends Component {
             rowSelection={rowSelection}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}
         {this.renderDeleteModal()}

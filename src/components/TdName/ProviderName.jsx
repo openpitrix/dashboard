@@ -8,7 +8,10 @@ import styles from './index.scss';
 export default class ProviderName extends Component {
   static propTypes = {
     name: PropTypes.string,
-    provider: PropTypes.oneOf(['qingcloud', 'aws', 'kubernetes'])
+    provider: PropTypes.string
+  };
+  static defaultProps = {
+    provider: 'qingcloud'
   };
 
   render() {

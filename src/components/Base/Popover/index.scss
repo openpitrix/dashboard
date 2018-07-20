@@ -3,12 +3,13 @@
 .popover {
   :global {
     .pi-popover-popper {
-      padding: 7px 5px;
+      min-width: 100px;
+      padding: 7px 0;
       font-size: $body-size;
-      color: $title-color;
-      border: 1px solid $border;
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.06), 0 1px 2px 0 rgba(48, 14, 86, 0.04);
+      border-radius: 2px;
+      background-color: $N0;
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
+      border: solid 1px $N30;
 
       .pi-popover-popper_arrow {
         width: 16px;
@@ -113,19 +114,23 @@
     }
 
     .operate-menu {
-      margin: 0 -5px;
+      //margin: 0 -5px;
       a {
-        color: $title-color;
+        color: $N300;
       }
-      a,span {
+      li,a,span {
         display: block;
-        line-height: 24px;
-        padding: 8px 12px 8px 11px;
-        text-align: left;
+        padding: 4px 12px;
+        height: 32px;
+        font-size: 14px;
+        line-height: 1.71;
+        color: $N300;
+        background-color: $N0;
         cursor: pointer;
         transition: all $transition-speed;
         &:hover {
-          background-color: $purple-lighter;
+          color: $N500;
+          background-color: $N10;
         }
       }
     }

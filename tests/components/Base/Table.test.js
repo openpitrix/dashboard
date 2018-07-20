@@ -40,7 +40,12 @@ describe('Base/Table', () => {
     onSelect: jest.fn(),
     onSelectAll: jest.fn()
   };
-
+  const pagination = {
+    tableType: 'Clusters',
+    onChange: jest.fn(),
+    total: 2,
+    current: 2
+  };
   it('basic render', () => {
     const wrapper = setup('render', { columns, dataSource });
 
@@ -48,7 +53,7 @@ describe('Base/Table', () => {
   });
 
   it('call onChange', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection });
+    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -64,7 +69,7 @@ describe('Base/Table', () => {
   });
 
   it('call onSelect', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection });
+    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -80,7 +85,7 @@ describe('Base/Table', () => {
   });
 
   it('call onSelectAll', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection });
+    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
     const checkbox = wrapper
       .find('thead th')
       .at(0)

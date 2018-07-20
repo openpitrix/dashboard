@@ -119,21 +119,7 @@
       position: absolute;
       right: 24px;
       top: 24px;
-      width: 40px;
-      height: 32px;
-      border-radius: 2px;
-      background-color: $N0;
-      border: solid 1px $N0;
-      text-align: center;
       cursor: pointer;
-      &:hover{
-        box-shadow: 0 1px 2px 0 rgba(52, 57, 69, 0.08);
-        border: solid 1px $N30;
-      }
-      .icon{
-        margin-top: 7px;
-        margin-right: 20px;
-      }
     }
   }
   .f-right {

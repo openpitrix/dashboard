@@ -26,6 +26,7 @@ exports[`Base/Checkbox group render 1`] = `
     >
       <svg
         class="qicon qicon-check qicon-dark"
+        style="--primary-color:#fff;--secondary-color:#fff"
       >
         <use
           href="#check"
@@ -59,6 +60,7 @@ exports[`Base/Checkbox group render 1`] = `
     >
       <svg
         class="qicon qicon-check qicon-dark"
+        style="--primary-color:#fff;--secondary-color:#fff"
       >
         <use
           href="#check"

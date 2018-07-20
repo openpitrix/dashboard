@@ -209,6 +209,13 @@ export default class CategoryDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Apps',
+      onChange: this.changeApps,
+      total: totalCount,
+      current: appStore.currentPage
+    };
+
     const tags = [{ id: 1, name: 'Apps', link: '#' }];
     const curTag = 'Apps';
 
@@ -238,14 +245,14 @@ export default class CategoryDetail extends Component {
               <Icon name="refresh" size="mini" />
             </Button>
           </div>
+
           <Table
             columns={columns}
             dataSource={apps}
-            className="detailTab"
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={this.changeApps} total={totalCount} />
         </LayoutRight>
 
         {this.renderCategoryModal()}

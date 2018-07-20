@@ -99,27 +99,47 @@
   }
 
   .filterContent{
-    margin: 0 -5px;
     li{
       padding: 0 12px;
       width: 110px;
       line-height: 32px;
       font-size: 14px;
       font-weight: normal;
-      color: $N500;
+      color: $N300;
       cursor: pointer;
       transition: all $transition-speed;
       &:hover, &.active{
         background-color: $N10;
+        color: $N500;
       }
     }
   }
 }
 .filterOuter{
-  width: 90px;
+  width: 95px;
+  [class*='target']{
+    height: auto;
+    width: auto;
+    border: 0 none;
+    &:hover{
+      border: 0 none;
+      box-shadow: none;
+    }
+  }
   :global{
     .icon{
       float: right;
     }
+  }
+}
+.noData{
+  padding: 30px 0 96px;
+  text-align: center;
+  .word{
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 1.67;
+    letter-spacing: 0;
+    color: $N100;
   }
 }

@@ -37,7 +37,7 @@
     :global{
       .formContent{
         margin: 12px 0 -18px;
-        .inputItem{
+        & > div, .inputItem{
           margin-bottom: 24px;
           & > label{
             display: inline-block;

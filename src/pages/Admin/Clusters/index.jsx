@@ -214,6 +214,13 @@ export default class Clusters extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={runtimes.slice()} />
@@ -253,6 +260,7 @@ export default class Clusters extends Component {
             rowSelection={rowSelection}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
         </div>
         {this.renderDeleteModal()}

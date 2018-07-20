@@ -36,6 +36,7 @@ export default class Dialog extends React.PureComponent {
         onCancel={onCancel}
         onOk={this.handleSubmit}
         isDialog
+        hideFooter={noActions}
         className={classnames(styles.modal, className)}
         {...rest}
       >
