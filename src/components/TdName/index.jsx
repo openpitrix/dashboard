@@ -21,8 +21,11 @@ export default class TdName extends PureComponent {
   };
 
   componentDidMount() {
-    let clipboard = new ClipboardJS('.copy');
-    clipboard.on('success', function(e) {
+    this.clipboard = new ClipboardJS('.copy');
+    this.clipboard.on('success', e => {
+      this.setState({
+        message: 'Copy success'
+      });
       e.clearSelection();
     });
   }
@@ -33,16 +36,10 @@ export default class TdName extends PureComponent {
     });
   };
 
-  copyNote = () => {
-    this.setState({
-      message: 'Copy success'
-    });
-  };
-
   render() {
     const { image, name, description, linkUrl, noCopy } = this.props;
     const { message } = this.state;
-    const isIcon = ['appcenter', 'cluster'].find(data => data === image) ? true : false;
+    const isIcon = ['appcenter', 'cluster'].includes(image);
 
     return (
       <span className={styles.tdName}>
