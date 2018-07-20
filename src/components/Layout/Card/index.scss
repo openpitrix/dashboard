@@ -8,10 +8,10 @@ $card-padding: 24px;
   :global {
     .operation{
       position: absolute;
-      right: -35px;
+      right: 24px;
       top: 24px;
-      width: 135px;
-      text-align: center;
+      //width: 135px;
+      //text-align: center;
       cursor: pointer;
       i{
         transform: rotate(90deg);

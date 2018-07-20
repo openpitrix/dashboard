@@ -27,7 +27,7 @@ export default class NoData extends PureComponent {
     return (
       <div className={styles.noData}>
         <Icon name={iconMap[type]} size={120} type={`light`} />
-        <div className={styles.word}>No resultes or datas for {type}</div>
+        <div className={styles.word}>No results or data for {type}</div>
       </div>
     );
   }

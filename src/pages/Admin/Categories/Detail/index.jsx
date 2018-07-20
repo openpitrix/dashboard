@@ -253,7 +253,6 @@ export default class CategoryDetail extends Component {
                   filterList={filterList}
                   pagination={pagination}
                 />
-                <Pagination onChange={this.changeApps} total={totalCount} />
               </Card>
               {this.renderCategoryModal()}
               {this.renderDeleteModal()}

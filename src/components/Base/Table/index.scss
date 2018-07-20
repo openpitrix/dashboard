@@ -28,7 +28,6 @@
   .pi-table {
     &-thead > tr > th {
       position: relative;
-      line-height: 40px;
       line-height: 16px;
       padding: 12px 12px;
       font-weight: 500;
@@ -133,7 +132,7 @@
   }
 }
 .noData{
-  padding: 30px 0 96px;
+  padding: 20px 0;
   text-align: center;
   .word{
     margin-bottom: 16px;

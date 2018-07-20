@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { filter, get } from 'lodash';
 
-import { Icon, Button, Table, Pagination, Popover, Select } from 'components/Base';
+import { Icon, Button, Table, Pagination, Popover, Select, Modal } from 'components/Base';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -284,7 +284,6 @@ export default class Apps extends Component {
                   filterList={filterList}
                   pagination={pagination}
                 />
-                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
               </Card>
               {this.renderOpsModal()}
               {this.renderDeleteModal()}

@@ -3,14 +3,14 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Button, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn, Grid, Section, Panel, Card } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
@@ -370,7 +370,6 @@ export default class RepoDetail extends Component {
                   filterList={filterList}
                   pagination={pagination}
                 />
-                <Pagination onChange={changeTable} total={totalCount} />
               </Card>
               {this.deleteRepoModal()}
             </Panel>

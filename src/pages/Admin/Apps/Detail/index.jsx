@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { pick, assign, get } from 'lodash';
 
-import { Icon, Input, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';

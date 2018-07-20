@@ -134,16 +134,7 @@ export default class Clusters extends Component {
 
   render() {
     const { clusterStore } = this.props;
-    const {
-      summaryInfo,
-      clusters,
-      notifyMsg,
-      hideMsg,
-      isLoading,
-      currentPage,
-      totalCount,
-      changePagination
-    } = clusterStore;
+    const { summaryInfo, clusters, notifyMsg, hideMsg, isLoading } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -264,7 +255,6 @@ export default class Clusters extends Component {
                   filterList={filterList}
                   pagination={pagination}
                 />
-                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
               </Card>
               {this.renderDeleteModal()}
             </Section>

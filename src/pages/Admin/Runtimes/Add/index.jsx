@@ -44,6 +44,7 @@ export default class RuntimeAdd extends Component {
     const { notifyMsg, hideMsg, notifyType, runtimeId } = this.store;
     let title = 'Create Runtime';
     if (runtimeId) title = 'Modify Runtime';
+
     return (
       <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/dashboard/runtimes" />
