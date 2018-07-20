@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { pick, assign, get } from 'lodash';
 
-import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
-import AppCard from 'components/DetailCard/AppCard';
+import { Icon, Input, Table, Pagination, Popover } from 'components/Base';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
-import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
+import AppCard from 'components/DetailCard/AppCard';
+import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
 import columns from './columns';
 import { getSessInfo } from 'utils';
 
@@ -198,51 +198,57 @@ export default class AppDetail extends Component {
     ];
 
     return (
-      <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
-        <BackBtn label="apps" link="/dashboard/apps" />
-
-        <LayoutLeft>
-          <div className="detail-outer">
-            <AppCard appDetail={appDetail} repoName={repoName} />
-            <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
-              <Icon name="more" />
-            </Popover>
-          </div>
-          <div className={styles.versionOuter}>
-            <div className={styles.title}>
-              Versions
-              <div className={styles.all} onClick={showAllVersions}>
-                All Versions →
+      <Layout
+        msg={notifyMsg || appNotifyMsg}
+        hideMsg={hideMsg || appHideMsg}
+        backBtn={<BackBtn label="apps" link="/dashboard/apps" />}
+      >
+        <Grid>
+          <Section>
+            <Card>
+              <AppCard appDetail={appDetail} repoName={repoName} />
+              <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
+                <Icon name="more" />
+              </Popover>
+            </Card>
+            <Card className={styles.versionCard}>
+              <div className={styles.title}>
+                Versions
+                <div className={styles.all} onClick={showAllVersions}>
+                  All Versions →
+                </div>
               </div>
-            </div>
-            <VersionList versions={versions.slice(0, 4)} />
-          </div>
-        </LayoutLeft>
+              <VersionList versions={versions.slice(0, 4)} />
+            </Card>
+          </Section>
 
-        <LayoutRight className="table-outer">
-          <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
-
-          <Toolbar
-            placeholder="Search Cluster Name"
-            searchWord={swCluster}
-            onSearch={this.onSearch}
-            onClear={this.onClearSearch}
-            onRefresh={this.onRefresh}
-          />
-
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination
-            onChange={this.changePagination}
-            total={clusterStore.totalCount}
-            current={currentClusterPage}
-          />
-        </LayoutRight>
-        {this.renderOpsModal()}
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
+              <Card>
+                <Toolbar
+                  placeholder="Search Cluster Name"
+                  searchWord={swCluster}
+                  onSearch={this.onSearch}
+                  onClear={this.onClearSearch}
+                  onRefresh={this.onRefresh}
+                />
+                <Table
+                  columns={columns}
+                  dataSource={clusters.toJSON()}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination
+                  onChange={this.changePagination}
+                  total={clusterStore.totalCount}
+                  current={currentClusterPage}
+                />
+              </Card>
+              {this.renderOpsModal()}
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn, LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 
@@ -131,40 +131,43 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout>
-        <BackBtn label="runtimes" link="/dashboard/runtimes" />
-
-        <LayoutLeft className="detail-outer">
-          <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
-          {runtimeDetail.status !== 'deleted' && (
-            <Popover
-              className="operation"
-              content={this.renderHandleMenu(runtimeDetail.runtime_id)}
-            >
-              <Icon name="more" />
-            </Popover>
-          )}
-        </LayoutLeft>
-
-        <LayoutRight className="table-outer">
-          <TagNav tags={tags} curTag={curTag} />
-
-          <Toolbar
-            placeholder="Search Clusters Name"
-            searchWord={searchWord}
-            onSearch={onSearch}
-            onClear={onClearSearch}
-            onRefresh={onRefresh}
-          />
-
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
-        </LayoutRight>
+      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+        <Grid>
+          <Section>
+            <Card>
+              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
+              {runtimeDetail.status !== 'deleted' && (
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu(runtimeDetail.runtime_id)}
+                >
+                  <Icon name="more" />
+                </Popover>
+              )}
+            </Card>
+          </Section>
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={tags} curTag={curTag} />
+              <Card>
+                <Toolbar
+                  placeholder="Search Clusters Name"
+                  searchWord={searchWord}
+                  onSearch={onSearch}
+                  onClear={onClearSearch}
+                  onRefresh={onRefresh}
+                />
+                <Table
+                  columns={columns}
+                  dataSource={clusters.toJSON()}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+              </Card>
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

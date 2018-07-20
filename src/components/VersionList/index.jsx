@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+
+import { Icon } from 'components/Base';
 import { isObject } from 'utils/types';
 
 import styles from './index.scss';
@@ -39,7 +41,7 @@ export default class VersionList extends PureComponent {
             </div>
             <div className={styles.column}>
               <a href={data.package_name} target="_blank">
-                <i className="fa fa-download" />
+                <Icon name="download" />
               </a>
             </div>
           </li>

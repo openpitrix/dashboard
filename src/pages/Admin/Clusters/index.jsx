@@ -3,16 +3,16 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Button, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime, getObjName } from 'utils';
+import capitalize from 'lodash/capitalize';
 
 import styles from './index.scss';
-import capitalize from 'lodash/capitalize';
 
 @inject(({ rootStore, sock }) => ({
   rootStore,
@@ -240,21 +240,28 @@ export default class Clusters extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <Statistics {...summaryInfo} objs={runtimes.slice()} />
+        <Row>
+          <Statistics {...summaryInfo} objs={runtimes.slice()} />
+        </Row>
 
-        <div className="table-outer">
-          {this.renderToolbar()}
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            rowSelection={rowSelection}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
-        </div>
-
-        {this.renderDeleteModal()}
+        <Row>
+          <Grid>
+            <Section size={12}>
+              <Card>
+                {this.renderToolbar()}
+                <Table
+                  columns={columns}
+                  dataSource={clusters.toJSON()}
+                  rowSelection={rowSelection}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+              </Card>
+              {this.renderDeleteModal()}
+            </Section>
+          </Grid>
+        </Row>
       </Layout>
     );
   }

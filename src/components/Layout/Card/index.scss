@@ -1,0 +1,21 @@
+$card-padding: 24px;
+
+.card {
+  position: relative;
+  padding: $card-padding;
+  margin-bottom: 24px;
+
+  :global {
+    .operation{
+      position: absolute;
+      right: -35px;
+      top: 24px;
+      width: 135px;
+      text-align: center;
+      cursor: pointer;
+      i{
+        transform: rotate(90deg);
+      }
+    }
+  }
+}

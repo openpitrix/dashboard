@@ -20,7 +20,8 @@ const routes = {
   '/login': Login,
   '/apps/:category': Home,
   '/app/:appId': AppDetail,
-  '/clusters/:clusterId': ClusterDetail,
+
+  // '/clusters/:clusterId': ClusterDetail,
 
   '/:dash': Dash.Overview,
 
@@ -45,6 +46,7 @@ const routes = {
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
+
   '*': Home
 };
 

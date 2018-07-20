@@ -3,14 +3,15 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { filter, get } from 'lodash';
 
-import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
+import { Icon, Button, Table, Pagination, Popover, Select } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { getSessInfo, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
+
 import styles from './index.scss';
 
 @inject(({ rootStore, sessInfo, sock }) => ({
@@ -259,21 +260,28 @@ export default class Apps extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <Statistics {...summaryInfo} objs={repos.slice()} />
+        <Row>
+          <Statistics {...summaryInfo} objs={repos.slice()} />
+        </Row>
 
-        <div className="table-outer">
-          {this.renderToolbar()}
-          <Table
-            columns={columns}
-            dataSource={apps.toJSON()}
-            rowSelection={rowSelection}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
-        </div>
-
-        {this.renderOpsModal()}
+        <Row>
+          <Grid>
+            <Section size={12}>
+              <Card>
+                {this.renderToolbar()}
+                <Table
+                  columns={columns}
+                  dataSource={apps.toJSON()}
+                  rowSelection={rowSelection}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+              </Card>
+              {this.renderOpsModal()}
+            </Section>
+          </Grid>
+        </Row>
       </Layout>
     );
   }

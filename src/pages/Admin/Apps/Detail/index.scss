@@ -30,18 +30,14 @@
   }
 }
 
+.versionCard {
 
-.versionOuter {
-  width: 360px;
-  padding: 24px 16px;
-  border-radius: 3px;
-  background-color: $background-color-lighter;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   .title{
-    line-height: 36px;
+    //line-height: 36px;
     font-size: 16px;
     font-weight: bold;
     color: $title-color;
+
     .all{
       float: right;
       font-size: 14px;

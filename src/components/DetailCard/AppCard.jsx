@@ -7,6 +7,7 @@ import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 import { imgPlaceholder } from 'utils';
+
 import styles from './index.scss';
 
 export default class AppCard extends PureComponent {
@@ -18,6 +19,7 @@ export default class AppCard extends PureComponent {
   render() {
     const { appDetail, repoName } = this.props;
     const imgPhd = imgPlaceholder(24);
+
     return (
       <div className={styles.detailCard}>
         <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />

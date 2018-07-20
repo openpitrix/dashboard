@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
 
 import { Tooltip } from 'components/Base';
+
 import styles from './index.scss';
 
 export default class CopyId extends PureComponent {

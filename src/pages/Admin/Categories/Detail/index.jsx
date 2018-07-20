@@ -4,13 +4,13 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Button, Input, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import CategoryCard from 'components/DetailCard/CategoryCard';
-import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { imgPlaceholder, getObjName } from 'utils';
 
@@ -224,37 +224,45 @@ export default class CategoryDetail extends Component {
     const curTag = 'Apps';
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <BackBtn label="categories" link="/dashboard/categories" />
+      <Layout
+        msg={notifyMsg}
+        hideMsg={hideMsg}
+        backBtn={<BackBtn label="categories" link="/dashboard/categories" />}
+      >
+        <Grid>
+          <Section>
+            <Card>
+              <CategoryCard detail={category} appCount={appCount} />
+              <Popover className="operation" content={this.renderHandleMenu(category)}>
+                <Icon name="more" />
+              </Popover>
+            </Card>
+          </Section>
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={tags} curTag={curTag} />
+              <Card>
+                <Toolbar
+                  placeholder="Search App Name"
+                  searchWord={appStore.searchWord}
+                  onSearch={this.onSearch}
+                  onClear={this.onClearSearch}
+                  onRefresh={this.onRefresh}
+                />
 
-        <LayoutLeft className="detail-outer">
-          <CategoryCard detail={category} appCount={appCount} />
-          <Popover className="operation" content={this.renderHandleMenu(category)}>
-            <Icon name="more" />
-          </Popover>
-        </LayoutLeft>
-
-        <LayoutRight className="table-outer">
-          <TagNav tags={tags} curTag={curTag} />
-
-          <Toolbar
-            placeholder="Search App Name"
-            searchWord={appStore.searchWord}
-            onSearch={this.onSearch}
-            onClear={this.onClearSearch}
-            onRefresh={this.onRefresh}
-          />
-
-          <Table
-            columns={columns}
-            dataSource={apps}
-            className="detailTab"
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination onChange={this.changeApps} total={totalCount} />
-        </LayoutRight>
-        {this.renderCategoryModal()}
+                <Table
+                  columns={columns}
+                  dataSource={apps}
+                  className="detailTab"
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={this.changeApps} total={totalCount} />
+              </Card>
+              {this.renderCategoryModal()}
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

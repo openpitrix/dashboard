@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import { Input, Button, Popover, Icon } from 'components/Base';
 import Rectangle from 'components/Rectangle';
 import Layout, { Dialog } from 'components/Layout';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -80,7 +81,7 @@ export default class Categories extends Component {
             />
           </div>
           <div className={styles.inputItem}>
-            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+            <label className={classnames(styles.name, styles.textareaName)}>Description</label>
             <textarea
               className={styles.textarea}
               name="description"

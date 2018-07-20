@@ -8,6 +8,7 @@ import Nav from 'components/Nav';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({

@@ -2,12 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
-import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
+import { Icon, Button, Popover, Table, Pagination } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime } from 'utils';
 
 import styles from './index.scss';
@@ -180,23 +180,28 @@ export default class Runtimes extends Component {
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
-        <Statistics {...summaryInfo} />
+        <Row>
+          <Statistics {...summaryInfo} />
+        </Row>
 
-        <div className="table-outer">
-          {this.renderToolbar()}
-
-          <Table
-            columns={columns}
-            dataSource={data}
-            rowSelection={rowSelection}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
-        </div>
-
-        {this.renderDeleteModal()}
+        <Row>
+          <Grid>
+            <Section size={12}>
+              <Card>
+                {this.renderToolbar()}
+                <Table
+                  columns={columns}
+                  dataSource={data}
+                  rowSelection={rowSelection}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
+              </Card>
+              {this.renderDeleteModal()}
+            </Section>
+          </Grid>
+        </Row>
       </Layout>
     );
   }

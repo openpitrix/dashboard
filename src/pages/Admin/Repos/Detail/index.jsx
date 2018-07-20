@@ -3,15 +3,14 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Icon, Button, Input, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Button, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn } from 'components/Layout';
-import { LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
@@ -339,48 +338,51 @@ export default class RepoDetail extends Component {
     ];
 
     return (
-      <Layout>
-        <BackBtn label="repos" link="/dashboard/repos" />
+      <Layout backBtn={<BackBtn label="repos" link="/dashboard/repos" />}>
+        <Grid>
+          <Section>
+            <Card>
+              <RuntimeCard detail={repoDetail} appCount={appCount} />
+              {repoDetail.status !== 'deleted' && (
+                <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
+                  <Icon name="more" />
+                </Popover>
+              )}
+            </Card>
+          </Section>
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
+              <Card>
+                {curTagName === 'Runtimes' && (
+                  <div className={styles.selector}>
+                    <div className={styles.title}>Runtime Selectors</div>
+                    <TagShow tags={selectors} tagStyle="yellow" />
+                  </div>
+                )}
 
-        <LayoutLeft className="detail-outer">
-          <RuntimeCard detail={repoDetail} appCount={appCount} />
-          {repoDetail.status !== 'deleted' && (
-            <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
-              <Icon name="more" />
-            </Popover>
-          )}
-        </LayoutLeft>
+                {curTagName !== 'Events' && (
+                  <Toolbar
+                    placeholder={searchTip}
+                    searchWord={detailSearch}
+                    onSearch={onSearch}
+                    onClear={onClearSearch}
+                    onRefresh={onRefresh}
+                  />
+                )}
 
-        <LayoutRight className="table-outer">
-          <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
-
-          {curTagName === 'Runtimes' && (
-            <div className={styles.selector}>
-              <div className={styles.title}>Runtime Selectors</div>
-              <TagShow tags={selectors} tagStyle="yellow" />
-            </div>
-          )}
-
-          {curTagName !== 'Events' && (
-            <Toolbar
-              placeholder={searchTip}
-              searchWord={detailSearch}
-              onSearch={onSearch}
-              onClear={onClearSearch}
-              onRefresh={onRefresh}
-            />
-          )}
-
-          <Table
-            columns={columns}
-            dataSource={data}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <Pagination onChange={changeTable} total={totalCount} />
-        </LayoutRight>
-
-        {this.deleteRepoModal()}
+                <Table
+                  columns={columns}
+                  dataSource={data}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <Pagination onChange={changeTable} total={totalCount} />
+              </Card>
+              {this.deleteRepoModal()}
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

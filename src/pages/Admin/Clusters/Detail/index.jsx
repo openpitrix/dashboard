@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { get } from 'lodash';
 
-import { Icon, Input, Button, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Table, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import Toolbar from 'components/Toolbar';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import Layout, { BackBtn, Dialog, LayoutLeft, LayoutRight } from 'components/Layout';
+import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
@@ -218,50 +218,52 @@ export default class ClusterDetail extends Component {
     ];
 
     return (
-      <Layout>
-        <BackBtn label="clusters" link="/dashboard/clusters" />
-
-        <LayoutLeft>
-          <div className="detail-outer">
-            <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
-            <Popover className="operation" content={this.renderHandleMenu()}>
-              <Icon name="more" />
-            </Popover>
-          </div>
-
-          <div className={styles.activities}>
-            <div className={styles.title}>
-              Activities
-              <div className={styles.more} onClick={clusterJobsOpen}>
-                More →
+      <Layout backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
+        <Grid>
+          <Section>
+            <Card>
+              <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
+              <Popover className="operation" content={this.renderHandleMenu()}>
+                <Icon name="more" />
+              </Popover>
+            </Card>
+            <Card className={styles.activities}>
+              <div className={styles.title}>
+                Activities
+                <div className={styles.more} onClick={clusterJobsOpen}>
+                  More →
+                </div>
               </div>
-            </div>
-            <TimeAxis timeList={clusterJobs.splice(0, 4)} />
-          </div>
-        </LayoutLeft>
+              <TimeAxis timeList={clusterJobs.splice(0, 4)} />
+            </Card>
+          </Section>
 
-        <LayoutRight className="table-outer">
-          <TagNav tags={tags} curTag={curTag} />
+          <Section size={8}>
+            <Panel>
+              <TagNav tags={tags} curTag={curTag} />
 
-          <Toolbar
-            placeholder="Search Node Name"
-            searchWord={searchNode}
-            onSearch={onSearchNode}
-            onClear={onClearNode}
-            onRefresh={onRefreshNode}
-          />
+              <Card>
+                <Toolbar
+                  placeholder="Search Node Name"
+                  searchWord={searchNode}
+                  onSearch={onSearchNode}
+                  onClear={onClearNode}
+                  onRefresh={onRefreshNode}
+                />
 
-          <Table
-            columns={columns}
-            dataSource={clusterNodes}
-            isLoading={isLoading}
-            filterList={filterList}
-          />
-          <div className={styles.total}>Total: {clusterNodes.length}</div>
-        </LayoutRight>
-
-        {this.clusterJobsModal()}
-        {this.clusterParametersModal()}
+                <Table
+                  columns={columns}
+                  dataSource={clusterNodes}
+                  isLoading={isLoading}
+                  filterList={filterList}
+                />
+                <div className={styles.total}>Total: {clusterNodes.length}</div>
+              </Card>
+              {this.clusterJobsModal()}
+              {this.clusterParametersModal()}
+            </Panel>
+          </Section>
+        </Grid>
       </Layout>
     );
   }
