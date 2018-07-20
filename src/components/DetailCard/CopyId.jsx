@@ -14,7 +14,7 @@ export default class CopyId extends PureComponent {
     message: ''
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.clipboard = new ClipboardJS('.copyId');
     this.clipboard.on('success', e => {
       this.setState({
@@ -24,7 +24,7 @@ export default class CopyId extends PureComponent {
     });
   };
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     this.clipboard.destroy();
   };
 

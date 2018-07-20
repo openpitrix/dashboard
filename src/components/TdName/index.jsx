@@ -30,6 +30,10 @@ export default class TdName extends PureComponent {
     });
   }
 
+  componentWillUnmount(){
+    this.clipboard.destroy();
+  }
+
   onHide = () => {
     this.setState({
       message: ''
