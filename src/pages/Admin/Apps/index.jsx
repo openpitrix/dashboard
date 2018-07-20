@@ -36,7 +36,7 @@ export default class Apps extends Component {
     super(props);
     this.role = getSessInfo('role', this.props.sessInfo);
 
-    if (!props.sock._events['ops-resource']) {
+    if (props.sock && !props.sock._events['ops-resource']) {
       props.sock.on('ops-resource', this.listenToJob);
     }
   }

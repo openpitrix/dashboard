@@ -12,9 +12,11 @@ import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sock }) => ({
   runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  rootStore,
+  sock
 }))
 @observer
 export default class Runtimes extends Component {
@@ -26,6 +28,22 @@ export default class Runtimes extends Component {
       status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
     });
   }
+
+  constructor(props) {
+    super(props);
+
+    if (props.sock && !props.sock._events['ops-resource']) {
+      props.sock.on('ops-resource', this.listenToJob);
+    }
+  }
+
+  listenToJob = payload => {
+    const { rootStore } = this.props;
+
+    if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
+      rootStore.sockMessage = JSON.stringify(payload);
+    }
+  };
 
   renderHandleMenu = id => {
     const { runtimeStore } = this.props;

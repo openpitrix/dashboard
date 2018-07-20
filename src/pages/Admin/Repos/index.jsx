@@ -27,7 +27,7 @@ export default class Repos extends Component {
   constructor(props) {
     super(props);
     // listen to job, prevent event fire multiple times
-    if (!props.sock._events['ops-resource']) {
+    if (props.sock && !props.sock._events['ops-resource']) {
       props.sock.on('ops-resource', this.listenToJob);
     }
   }
