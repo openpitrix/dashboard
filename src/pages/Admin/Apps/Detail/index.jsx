@@ -36,8 +36,8 @@ export default class AppDetail extends Component {
   }
 
   componentDidUpdate() {
-    const { appDetail, deleteResult } = this.props.appStore;
-    if (appDetail.status === 'deleted' && deleteResult.app_id) {
+    const { appDetail } = this.props.appStore;
+    if (!appDetail.app_id) {
       setTimeout(() => {
         history.back();
       }, 2000);
@@ -71,7 +71,7 @@ export default class AppDetail extends Component {
         title={`Create App Version`}
         visible={isModalOpen}
         onCancel={hideModal}
-        onSubmit={this.handleCreateVersion}
+        onOk={this.handleCreateVersion}
       >
         <div className="formContent">
           <div>

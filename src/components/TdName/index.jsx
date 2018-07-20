@@ -22,17 +22,20 @@ export default class TdName extends PureComponent {
 
   componentDidMount() {
     let clipboard = new ClipboardJS('.copy');
-    let _this = this;
     clipboard.on('success', function(e) {
-      _this.setState({
-        message: 'Copy success!'
-      });
       e.clearSelection();
     });
   }
+
   onHide = () => {
     this.setState({
       message: ''
+    });
+  };
+
+  copyNote = () => {
+    this.setState({
+      message: 'Copy success'
     });
   };
 
@@ -58,7 +61,7 @@ export default class TdName extends PureComponent {
           )}
           <span className={styles.description}>{description}&nbsp;</span>
           {!noCopy && (
-            <span className="copy" data-clipboard-text={description}>
+            <span className="copy" data-clipboard-text={description} onClick={this.copyNote}>
               <Icon name="copy" />
             </span>
           )}

@@ -73,7 +73,7 @@ export default class RuntimeAdd extends Component {
             <Input
               value={runtimeUrl}
               onChange={this.store.changeUrl}
-              className={styles.inputUrl}
+              className={styles.input}
               name="runtime_url"
               placeholder="www.example.com/path/point/"
               maxLength="100"

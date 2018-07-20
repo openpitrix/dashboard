@@ -4,10 +4,9 @@
   display: inline-block;
   position: relative;
   bottom: 3px;
-  margin-left: 20px;
-  width: 250px;
-  height: 7px;
-  background-color: #e2d0f2;
+  width: 200px;
+  height: 8px;
+  background-color: $P10;
   .inner{
     position: absolute;
     top: 0;
@@ -16,19 +15,19 @@
     height: 7px;
     cursor: pointer;
     &:nth-child(1){
-      background-color: #300e56;
+      background-color: $P500;
     }
     &:nth-child(2){
-      background-color: #9a5cd1;
+      background-color: $P200;
     }
     &:nth-child(3){
-      background-color: #ba95da;
+      background-color: $P75;
     }
     &:nth-child(4){
-      background-color: #e2d0f2;
+      background-color: $P45;
     }
     &:nth-child(5){
-      background-color: #e2e3e5;
+      background-color: $P10;
     }
     &:hover .tips{
       display: inline-block;

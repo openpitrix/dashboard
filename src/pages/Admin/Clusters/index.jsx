@@ -102,25 +102,19 @@ export default class Clusters extends Component {
   };
 
   render() {
+    const { clusterStore } = this.props;
     const {
       summaryInfo,
       clusters,
-      totalCount,
       notifyMsg,
       hideMsg,
       isLoading,
-      currentPage,
       searchWord,
       onSearch,
       onClearSearch,
       onRefresh,
-      changePagination,
-      clusterIds,
-      selectedRowKeys,
-      onChangeSelect,
-      onChangeStatus,
-      selectStatus
-    } = this.props.clusterStore;
+      clusterIds
+    } = clusterStore;
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
 
@@ -194,8 +188,8 @@ export default class Clusters extends Component {
     const rowSelection = {
       type: 'checkbox',
       selectType: 'onSelect',
-      selectedRowKeys: selectedRowKeys,
-      onChange: onChangeSelect
+      selectedRowKeys: clusterStore.selectedRowKeys,
+      onChange: clusterStore.onChangeSelect
     };
 
     const filterList = [
@@ -209,16 +203,16 @@ export default class Clusters extends Component {
           { name: 'Suspended', value: 'suspended' },
           { name: 'Deleted', value: 'deleted' }
         ],
-        onChangeFilter: onChangeStatus,
-        selectValue: selectStatus
+        onChangeFilter: clusterStore.onChangeStatus,
+        selectValue: clusterStore.selectStatus
       }
     ];
 
     const pagination = {
       tableType: 'Clusters',
-      onChange: changePagination,
-      total: totalCount,
-      current: currentPage
+      onChange: clusterStore.changePagination,
+      total: clusterStore.totalCount,
+      current: clusterStore.currentPage
     };
 
     return (

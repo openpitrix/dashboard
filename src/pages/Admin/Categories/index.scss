@@ -9,7 +9,7 @@
     font-size: 20px;
     font-weight: 500;
     text-align: left;
-    color: $title-color;
+    color: $N500;
   }
 }
 .categories{
@@ -19,7 +19,7 @@
     display: inline-block;
     width: 330px;
     height: 1px;
-    border-bottom: 1px solid #e2d0f2;
+    border-bottom: 1px solid $N10;
   }
   .word{
     display: inline-block;
@@ -42,10 +42,8 @@
   }
   .handlePop {
     position: absolute;
-    right: -60px;
+    right: 24px;
     top: 24px;
-    width: 180px;
-    text-align: center;
   }
 }
 

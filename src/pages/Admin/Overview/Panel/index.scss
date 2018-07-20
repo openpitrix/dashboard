@@ -22,6 +22,11 @@
       color: $N200;
     }
   }
+  :global{
+    .pi-table-thead, .pi-pagination{
+      display: none;
+    }
+  }
 }
 /*.normal{
    position: relative;

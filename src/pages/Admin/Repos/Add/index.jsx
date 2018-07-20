@@ -134,7 +134,7 @@ export default class RepoAdd extends Component {
             <Select
               value={protocolType}
               onChange={this.store.changeProtocolType}
-              className={styles.select}
+              className={styles.smallSelect}
             >
               <Select.Option value="http">HTTP</Select.Option>
               <Select.Option value="https">HTTPS</Select.Option>
@@ -175,7 +175,7 @@ export default class RepoAdd extends Component {
             ) : null}
           </div>
         )}
-        <div>
+        <div className={styles.textareaItem}>
           <label className={classNames(styles.name, styles.textareaName)}>Description</label>
           <textarea
             className={styles.textarea}

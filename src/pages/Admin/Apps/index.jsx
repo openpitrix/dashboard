@@ -90,7 +90,7 @@ export default class Apps extends Component {
     let itemMenu = null;
     let deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
 
-    if (item.status === 'deleted') {
+    if (item.status !== 'deleted') {
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>

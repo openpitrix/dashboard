@@ -44,6 +44,6 @@ export default class ClusterList extends PureComponent {
   }
 
   renderStatusDot(status) {
-    return <span className={classNames(styles.statusDot, status)} />;
+    return <span className={classNames(styles.statusDot, styles[status])} />;
   }
 }
