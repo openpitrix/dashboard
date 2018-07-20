@@ -15,21 +15,22 @@ export default class CopyId extends PureComponent {
   };
 
   componentDidMount() {
-    let clipboard = new ClipboardJS('.copyId');
-    clipboard.on('success', function(e) {
+    this.clipboard = new ClipboardJS('.copyId');
+    this.clipboard.on('success', e => {
+      this.setState({
+        message: 'Copy success'
+      });
       e.clearSelection();
     });
-  }
+  };
+
+  componentWillUnmount() {
+    this.clipboard.destroy();
+  };
 
   onHide = () => {
     this.setState({
       message: ''
-    });
-  };
-
-  copyNote = () => {
-    this.setState({
-      message: 'Copy success'
     });
   };
 
@@ -40,7 +41,7 @@ export default class CopyId extends PureComponent {
     return (
       <div className={styles.copyId}>
         id: {id}
-        <span className="copyId" data-clipboard-text={id} onClick={this.copyNote}>
+        <span className="copyId" data-clipboard-text={id}>
           <Icon name="copy" />
         </span>
         {message ? (

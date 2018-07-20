@@ -16,7 +16,7 @@ export default class Layout extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    msgType: PropTypes.oneOfType(['error', 'success', 'warning', 'error']),
+    msgType: PropTypes.oneOf(['error', 'success', 'warning', 'error']),
     hideMsg: PropTypes.func,
     noTabs: PropTypes.bool,
     noNotification: PropTypes.bool,

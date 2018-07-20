@@ -37,7 +37,7 @@ export default class Overview extends React.Component {
     userStore,
     runtimeStore
   }) {
-    await appStore.fetchAll({ noLimit: true });
+    await appStore.fetchAll({ status: ['active', 'deleted'] });
     await clusterStore.fetchAll({
       status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
     });
