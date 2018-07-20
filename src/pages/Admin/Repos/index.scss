@@ -5,8 +5,8 @@
   font-size: 20px;
   font-weight: 500;
   text-align: left;
-  color: $title-color;
   margin-bottom: 8px;
+  color: $N500;
 }
 .container {
   width: $content-width;
@@ -18,7 +18,7 @@
   .search {
     display: inline-block;
     width: 337px;
-    border-color: $border-lighter;
+    border-color: $N10;
     box-shadow: none;
     :global {
       .fa {

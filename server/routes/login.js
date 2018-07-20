@@ -18,7 +18,7 @@ router.post('/login', async ctx => {
       ctx.cookies.set('role', foundUser.role, sessConfig);
       ctx.cookies.set('last_login', Date.now(), sessConfig);
 
-      ctx.body = { success: true, redirect: '/' };
+      ctx.body = { success: true, redirect: '/dashboard' };
     } else {
       ctx.body = { msg: 'user not found' };
     }

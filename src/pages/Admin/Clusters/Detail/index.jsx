@@ -47,13 +47,13 @@ export default class ClusterDetail extends Component {
   };
 
   clusterJobsModal = () => {
-    const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
+    const { isModalOpen, hideModal } = this.props.clusterStore;
     const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
 
     return (
-      <Modal width={744} title="Activities" visible={isModalOpen} hideFooter onCancel={hideModal}>
+      <Dialog title="Activities" isOpen={isModalOpen} onCancel={hideModal} noActions>
         <TimeAxis timeList={clusterJobs} />
-      </Modal>
+      </Dialog>
     );
   };
 
@@ -61,12 +61,11 @@ export default class ClusterDetail extends Component {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
 
     return (
-      <Dialog
+      <Modal
         title="Parameters"
+        visible={isModalOpen && modalType === 'parameters'}
         onCancel={hideModal}
-        noActions
-        isOpen={isModalOpen && modalType === 'parameters'}
-        width={744}
+        hideFooter
       >
         <ul className={styles.parameters}>
           <li>
@@ -141,7 +140,7 @@ export default class ClusterDetail extends Component {
             </div>
           </li>
         </ul>
-      </Dialog>
+      </Modal>
     );
   };
 
@@ -201,6 +200,7 @@ export default class ClusterDetail extends Component {
     ];
     const tags = [{ id: 1, name: 'Nodes' }];
     const curTag = 'Nodes';
+
     const filterList = [
       {
         key: 'status',
@@ -216,6 +216,13 @@ export default class ClusterDetail extends Component {
         selectValue: selectNodeStatus
       }
     ];
+
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: () => {},
+      total: clusterNodes.length,
+      current: 1
+    };
 
     return (
       <Layout backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
@@ -250,12 +257,12 @@ export default class ClusterDetail extends Component {
                   onClear={onClearNode}
                   onRefresh={onRefreshNode}
                 />
-
                 <Table
                   columns={columns}
                   dataSource={clusterNodes}
                   isLoading={isLoading}
                   filterList={filterList}
+                  pagination={pagination}
                 />
                 <div className={styles.total}>Total: {clusterNodes.length}</div>
               </Card>

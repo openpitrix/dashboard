@@ -9,8 +9,8 @@
     width: 168px;
     line-height: 1.2;
     font-size: 14px;
-    font-weight: bold;
-    color: $title-color;
+    font-weight: 500;
+    color: $N500;
     text-align: right;
     word-wrap: break-word;
     word-break: break-word;
@@ -23,9 +23,12 @@
     width: auto;
   }
   .rightShow{
-    margin-top: 7px;
-    margin-left: 146px;
-    width: 570px;
+    margin-top: 8px;
+    margin-left: 192px;
+    width: 500px;
+    font-size: 12px;
+    line-height: 1.67;
+    color: $N100;
   }
   .note{
     font-size: 12px;
@@ -39,7 +42,7 @@
     -moz-appearance: textfield;
   }*/
   .input{
-    width: 276px;
+    width: 256px;
   }
   .inputSmall{
     width: 70px;
@@ -65,23 +68,23 @@
     margin-right: 10px;
   }
   .textarea{
+    box-sizing: border-box;
     padding: 7px 10px;
-    width: 442px;
+    width: 400px;
     height: 88px;
     border-radius: 2px;
-    border: 1px solid #e7e7e7;
+    background-color: $N0;
+    border: 1px solid $N30;
     outline: none;
     resize: none;
     &:focus{
-      border: 1px solid $border-dark;
+      box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
+      border: solid 1px $P75;
     }
   }
-  .submitBtnGroup{
-    padding: 24px 0 8.5px 160px;
-    margin-bottom: 0;
-    border-top: 1px solid #dadcde;
-    button{
-      margin-right: 12px;
-    }
+  .textareaName{
+    float: none;
+    position: relative;
+    bottom: 70px;
   }
 }

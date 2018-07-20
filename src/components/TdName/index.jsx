@@ -2,15 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
-import { throttle } from 'lodash';
 
-import { Tooltip } from 'components/Base';
-import { Icon } from 'components/Base';
+import { Icon, Notification } from 'components/Base';
 import styles from './index.scss';
 
 export default class TdName extends PureComponent {
   static propTypes = {
     image: PropTypes.string,
+    imageSize: PropTypes.number,
     name: PropTypes.string,
     description: PropTypes.string,
     linkUrl: PropTypes.string,
@@ -18,30 +17,37 @@ export default class TdName extends PureComponent {
   };
 
   state = {
-    visible: false
+    message: ''
   };
 
   componentDidMount() {
-    let clipboard = new ClipboardJS('.fa-clipboard');
-    let _this = this;
-    clipboard.on('success', function(e) {
-      _this.setState({ visible: true });
-      setTimeout(() => _this.setState({ visible: false }), 1000);
+    this.clipboard = new ClipboardJS('.copy');
+    this.clipboard.on('success', e => {
+      this.setState({
+        message: 'Copy success'
+      });
       e.clearSelection();
     });
   }
 
-  renderCopyMsg() {
-    return this.state.visible ? <div>Copy Success</div> : null;
+  componentWillUnmount() {
+    this.clipboard.destroy();
   }
+
+  onHide = () => {
+    this.setState({
+      message: ''
+    });
+  };
 
   render() {
     const { image, name, description, linkUrl, noCopy } = this.props;
+    const { message } = this.state;
     const isIcon = ['appcenter', 'cluster'].includes(image);
 
     return (
       <span className={styles.tdName}>
-        {isIcon && <Icon name={image} />}
+        {isIcon && <Icon name={image} size={24} type="coloured" />}
         {!isIcon && image && <img src={image} className={styles.image} />}
         <span className={styles.info}>
           {linkUrl && (
@@ -56,12 +62,17 @@ export default class TdName extends PureComponent {
           )}
           <span className={styles.description}>{description}&nbsp;</span>
           {!noCopy && (
-            <Tooltip className={styles.copyTip} content={this.renderCopyMsg()}>
-              <i className="fa fa-clipboard" data-clipboard-text={description} />
-            </Tooltip>
+            <span className="copy" data-clipboard-text={description} onClick={this.copyNote}>
+              <Icon name="copy" />
+            </span>
           )}
         </span>
+        {message ? (
+          <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />
+        ) : null}
       </span>
     );
   }
 }
+
+export ProviderName from './ProviderName';

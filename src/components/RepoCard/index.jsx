@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { ProviderName } from 'components/TdName';
 import AppImages from '../Rectangle/AppImages';
 import TagShow from '../TagShow';
 import styles from './index.scss';
@@ -29,7 +30,11 @@ export default class RepoCard extends PureComponent {
           </div>
           <div className={styles.column}>
             <div className={styles.title}>Runtime Provider</div>
-            <div className={styles.providerImg}>{providers && providers.join('\n')}</div>
+            <div className={styles.providerImg}>
+              {providers.map(provider => (
+                <ProviderName key={provider} name={provider} provider={provider} />
+              ))}
+            </div>
           </div>
           <div className={styles.column}>
             <AppImages apps={apps} />

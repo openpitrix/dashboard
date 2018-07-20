@@ -3,9 +3,9 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 
-import { Button, Modal } from 'components/Base';
-import Layout from 'components/Layout';
+import Layout, { Dialog } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
+
 import RepoList from './RepoList';
 import Loading from 'components/Loading';
 
@@ -26,7 +26,6 @@ export default class Repos extends Component {
 
   constructor(props) {
     super(props);
-
     // listen to job, prevent event fire multiple times
     if (!props.sock._events['ops-resource']) {
       props.sock.on('ops-resource', this.listenToJob);
@@ -57,30 +56,14 @@ export default class Repos extends Component {
     const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
 
     return (
-      <Modal
-        width={500}
+      <Dialog
         title="Delete Repo"
         visible={showDeleteRepo}
-        hideFooter
+        onSubmit={deleteRepo}
         onCancel={deleteRepoClose}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Repo?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteRepoClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteRepo(this.props.repoStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        Are you sure delete this Repo?
+      </Dialog>
     );
   };
 

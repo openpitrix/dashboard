@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
-import { Icon, Button, Popover, Table, Pagination } from 'components/Base';
+import { Icon, Button, Popover, Table } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime } from 'utils';
@@ -45,8 +45,8 @@ export default class Runtimes extends Component {
     const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Dialog title="Delete Runtime" onCancel={hideModal} isOpen={isModalOpen} onSubmit={remove}>
-        <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
+      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this Runtime?
       </Dialog>
     );
   };
@@ -123,11 +123,11 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider'
+        key: 'provider',
+        render: item => <ProviderName name={item.provider} provider={item.provider} />
       },
       {
-        title: 'Zone',
+        title: ' Zone/Namespace',
         dataIndex: 'zone',
         key: 'zone'
       },
@@ -178,6 +178,13 @@ export default class Runtimes extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Runtimes',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Row>
@@ -195,8 +202,8 @@ export default class Runtimes extends Component {
                   rowSelection={rowSelection}
                   isLoading={isLoading}
                   filterList={filterList}
+                  pagination={pagination}
                 />
-                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
               </Card>
               {this.renderDeleteModal()}
             </Section>

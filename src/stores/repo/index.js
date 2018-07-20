@@ -72,7 +72,7 @@ export default class RepoStore extends Store {
     if (_.get(result, 'repo_id')) {
       this.deleteRepoClose();
       this.fetchAll();
-      this.showMsg('Delete repo successfully.');
+      this.showMsg('Delete repo successfully.', 'success');
     } else {
       let { err, errDetail } = result;
       this.showMsg(errDetail || err);

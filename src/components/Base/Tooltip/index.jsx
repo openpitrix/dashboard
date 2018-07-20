@@ -126,6 +126,7 @@ export default class Tooltip extends React.Component {
           {children}
         </Target>
         <Popper
+          positionFixed={true}
           className={classNames(styles.popper, `${prefixCls}-popper`, {
             [styles.active]: visible
           })}

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
-import { Icon, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Table, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
+import TdName, { ProviderName } from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
@@ -127,6 +127,13 @@ export default class RuntimeDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     const tags = [{ id: 1, name: 'Clusters' }];
     const curTag = 'Clusters';
 
@@ -162,8 +169,8 @@ export default class RuntimeDetail extends Component {
                   dataSource={clusters.toJSON()}
                   isLoading={isLoading}
                   filterList={filterList}
+                  pagination={pagination}
                 />
-                <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
               </Card>
             </Panel>
           </Section>

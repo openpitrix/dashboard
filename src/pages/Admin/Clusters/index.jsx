@@ -5,8 +5,8 @@ import { get } from 'lodash';
 
 import { Icon, Button, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
 import Toolbar from 'components/Toolbar';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime, getObjName } from 'utils';
@@ -133,20 +133,17 @@ export default class Clusters extends Component {
   }
 
   render() {
+    const { clusterStore } = this.props;
     const {
       summaryInfo,
       clusters,
       notifyMsg,
       hideMsg,
       isLoading,
-      selectedRowKeys,
-      onChangeSelect,
-      onChangeStatus,
-      selectStatus,
       currentPage,
       totalCount,
       changePagination
-    } = this.props.clusterStore;
+    } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -182,7 +179,10 @@ export default class Clusters extends Component {
         key: 'runtime_id',
         render: cl => (
           <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
-            {getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
+            <ProviderName
+              name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
+              provider={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'provider')}
+            />
           </Link>
         )
       },
@@ -218,8 +218,8 @@ export default class Clusters extends Component {
     const rowSelection = {
       type: 'checkbox',
       selectType: 'onSelect',
-      selectedRowKeys: selectedRowKeys,
-      onChange: onChangeSelect
+      selectedRowKeys: clusterStore.selectedRowKeys,
+      onChange: clusterStore.onChangeSelect
     };
 
     const filterList = [
@@ -233,10 +233,17 @@ export default class Clusters extends Component {
           { name: 'Suspended', value: 'suspended' },
           { name: 'Deleted', value: 'deleted' }
         ],
-        onChangeFilter: onChangeStatus,
-        selectValue: selectStatus
+        onChangeFilter: clusterStore.onChangeStatus,
+        selectValue: clusterStore.selectStatus
       }
     ];
+
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: clusterStore.changePagination,
+      total: clusterStore.totalCount,
+      current: clusterStore.currentPage
+    };
 
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
@@ -255,6 +262,7 @@ export default class Clusters extends Component {
                   rowSelection={rowSelection}
                   isLoading={isLoading}
                   filterList={filterList}
+                  pagination={pagination}
                 />
                 <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
               </Card>

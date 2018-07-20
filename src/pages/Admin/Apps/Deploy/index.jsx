@@ -23,7 +23,7 @@ export default class AppDeploy extends Component {
 
   render() {
     const { appDeployStore } = this.props;
-    const { notifyMsg, hideMsg } = appDeployStore;
+    const { notifyMsg, notifyType, hideMsg, isLoading } = appDeployStore;
     const title = 'Deploy app';
 
     return (

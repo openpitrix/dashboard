@@ -196,9 +196,9 @@ export default class RuntimeCreateStore extends Store {
 
       if (_.get(this, 'runtimeCreated.runtime_id')) {
         if (this.runtimeId) {
-          this.showMsg('Modify runtime successfully');
+          this.showMsg('Modify runtime successfully', 'success');
         } else {
-          this.showMsg('Create runtime successfully');
+          this.showMsg('Create runtime successfully', 'success');
         }
       } else {
         let { errDetail } = this.runtimeCreated;
@@ -231,9 +231,9 @@ export default class RuntimeCreateStore extends Store {
     const result = await this.request.get(`runtimes/zones`, params);
     this.runtimeZones = _.get(result, 'zone', []);
     if (this.runtimeZones.length > 0) {
-      this.showMsg('Get zone data success!');
+      this.showMsg('Get zone data success!', 'success');
     } else {
-      his.showMsg('Get zone data fail!');
+      this.showMsg('Get zone data fail!', 'error');
     }
   }
 

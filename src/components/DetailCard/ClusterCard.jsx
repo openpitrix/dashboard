@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import ClipboardJS from 'clipboard';
 
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
@@ -16,13 +15,6 @@ export default class ClusterCard extends PureComponent {
     runtimeName: PropTypes.string
   };
 
-  componentDidMount() {
-    let clipboard = new ClipboardJS('.fa-clipboard');
-    clipboard.on('success', function(e) {
-      e.clearSelection();
-    });
-  }
-
   render() {
     const { detail, appName, runtimeName } = this.props;
 
@@ -33,11 +25,12 @@ export default class ClusterCard extends PureComponent {
           <CopyId id={detail.cluster_id} />
         </div>
         <ul className={styles.detail}>
-          <li>
-            <span className={styles.name}>Frontgate ID</span>
-            {detail.frontgate_id}
-            <i className="fa fa-clipboard" data-clipboard-text={detail.frontgate_id} />
-          </li>
+          {detail.frontgate_id && (
+            <li>
+              <span className={styles.name}>Frontgate ID</span>
+              {detail.frontgate_id}
+            </li>
+          )}
           <li>
             <span className={styles.name}>Status</span>
             <Status name={detail.status} type={detail.status} />

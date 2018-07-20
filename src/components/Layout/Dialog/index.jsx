@@ -32,25 +32,16 @@ export default class Dialog extends React.PureComponent {
         width={width}
         title={title}
         visible={isOpen}
-        hideFooter
+        hideFooter={false}
         onCancel={onCancel}
+        onOk={this.handleSubmit}
+        isDialog
+        hideFooter={noActions}
         className={classnames(styles.modal, className)}
         {...rest}
       >
         <div className={styles.content}>
-          <form method="post" onSubmit={this.handleSubmit}>
-            {children}
-            {!noActions && (
-              <div className={styles.operation}>
-                <Button type="default" onClick={onCancel}>
-                  Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
-                  Confirm
-                </Button>
-              </div>
-            )}
-          </form>
+          <form method="post">{children}</form>
         </div>
       </Modal>
     );

@@ -21,7 +21,6 @@ export default class Statistics extends PureComponent {
   };
 
   static defaultProps = {
-    image: 'http://via.placeholder.com/24x24',
     iconName: 'appcenter'
   };
 
@@ -47,23 +46,23 @@ export default class Statistics extends PureComponent {
         <div className={styles.wrap}>
           <div className={styles.module}>
             <div className={styles.apps}>
-              <Icon name={iconName} size="medium" className={styles.icon} />
+              <Icon name={iconName} size="medium" className={styles.icon} type={'light'} />
               {name}
             </div>
-            <div className={classnames(styles.word, styles.fl)}>
+            <div className={styles.word}>
               <div className={styles.name}>Total</div>
               <div className={styles.number}>{total}</div>
             </div>
-            <div className={classnames(styles.line)} />
           </div>
+
           <div className={styles.module}>
             <div className={styles.word}>
               <div className={styles.name}>{centerName}</div>
-              <div className={styles.number}>{topTotal}</div>
+              <div className={styles.number}>{progressTotal}</div>
             </div>
             {topList && <Progress progress={topList} total={topTotal} type={name} objs={objs} />}
-            <div className={classnames(styles.line)} />
           </div>
+
           <div className={styles.module}>
             <div className={styles.word}>
               <div className={styles.name}>Lasted 2 Weeks</div>

@@ -8,10 +8,8 @@ export default class AppVersionStore extends Store {
   @observable version = {};
   @observable isLoading = false;
   @observable isModalOpen = false;
-  @observable
-  handleVersion = {
-    action: '' // create, delete, show_all
-  };
+  @observable isDialogOpen = false;
+  @observable dialogType = ''; // delete, show_all
 
   @action
   async fetchAll(params = {}) {
@@ -60,36 +58,41 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  hideModal = () => {
-    this.isModalOpen = false;
+  showDialog = () => {
+    this.isDialogOpen = true;
   };
 
-  setHandleType(type) {
-    this.handleVersion.action = type;
+  @action
+  hideModal = () => {
+    this.isModalOpen = false;
+    this.isDialogOpen = false;
+  };
+
+  setDialogType(type) {
+    this.dialogType = type;
   }
 
   @action
   showCreateVersion = () => {
-    this.setHandleType('create');
     this.showModal();
   };
 
   @action
   showAllVersions = () => {
-    this.setHandleType('show_all');
-    this.showModal();
+    this.setDialogType('show_all');
+    this.showDialog();
   };
 
   @action
   showDeleteVersion = () => {
-    this.setHandleType('delete');
-    this.showModal();
+    this.setDialogType('delete');
+    this.showDialog();
   };
 
   @action
   showDeleteApp = () => {
-    this.setHandleType('deleteApp');
-    this.showModal();
+    this.setDialogType('deleteApp');
+    this.showDialog();
   };
 
   @action

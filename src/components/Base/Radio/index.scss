@@ -17,7 +17,7 @@
     width: 12px;
     height: 12px;
     background-color: #ffffff;
-    border: solid 1px $border-lighter;
+    border: solid 1px $N30;
     border-radius: 50%;
     box-sizing: border-box;
   }
@@ -28,7 +28,7 @@
   }
   &.checked {
     .circle {
-      border: solid 4px $third-text-color;
+      border: solid 4px $P100;
     }
   }
 }
@@ -40,7 +40,7 @@
 
   .text {
     display: inline-block;
-    color: $title-color;
+    color: $N300;
     padding: 9px 10px;
     border: 1px solid #fff;
     background-color: #fff;
@@ -50,10 +50,10 @@
 
   &.checked {
     .text {
-      color: $grey-light;
+      color: $N300;
       border-color: $border;
       box-shadow: none;
       background-color: $background-color;
     }
-  }  
+  }
 }

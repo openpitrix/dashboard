@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Checkbox, Radio, Popover, Tooltip, Icon } from 'components/Base';
-// import Status from 'components/Status';
+import Status from 'components/Status';
+import { Checkbox, Radio, Popover, Tooltip, Icon, Pagination } from 'components/Base';
 import Loading from 'components/Loading';
+import NoData from './noData';
 
 import styles from './index.scss';
 
@@ -15,7 +16,7 @@ export default class Table extends React.Component {
     prefixCls: PropTypes.string,
     dataSource: PropTypes.array,
     columns: PropTypes.array,
-    pagination: PropTypes.bool,
+    pagination: PropTypes.object,
     rowSelection: PropTypes.object,
     isLoading: PropTypes.bool,
     filterList: PropTypes.array
@@ -25,7 +26,7 @@ export default class Table extends React.Component {
     prefixCls: 'pi-table',
     dataSource: [],
     columns: [],
-    pagination: false,
+    pagination: {},
     rowKey: 'key',
     rowSelection: null
   };
@@ -256,9 +257,9 @@ export default class Table extends React.Component {
         const filter = filterList.find(element => element.key === newColumn.key);
         if (filter) {
           newColumn.title = (
-            <Popover content={this.renderFilterContent(filter)}>
+            <Popover content={this.renderFilterContent(filter)} className={styles.filterOuter}>
               {newColumn.title}
-              <Icon name="arrow-down" />
+              <Icon name="caret-down" />
             </Popover>
           );
         }
@@ -268,7 +269,15 @@ export default class Table extends React.Component {
     return columns;
   };
 
-  renderPagination = () => {};
+  renderPagination = pagination => {
+    return (
+      <Pagination
+        onChange={pagination.onChange}
+        total={pagination.total}
+        current={pagination.current}
+      />
+    );
+  };
 
   renderTable = () => {
     const { ...restProps } = this.props;
@@ -303,10 +312,14 @@ export default class Table extends React.Component {
 
     return (
       <Loading className="loadTable" isLoading={isLoading}>
-        <div className={classNames(styles.table, className)} style={style}>
-          {this.renderTable()}
-          {pagination && this.renderPagination}
-        </div>
+        {pagination.total > 0 ? (
+          <div className={classNames(styles.table, className)} style={style}>
+            {this.renderTable()}
+            {this.renderPagination(pagination)}
+          </div>
+        ) : (
+          <NoData type={pagination.tableType} />
+        )}
       </Loading>
     );
   }

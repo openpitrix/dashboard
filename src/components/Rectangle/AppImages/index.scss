@@ -18,6 +18,13 @@
         margin-left: 0;
       }
     }
+    :global{
+      .icon{
+        float: left;
+        margin-left: -5px;
+      }
+
+    }
     .totalNum{
       display: inline-block;
       margin-left: 6px;

@@ -1,8 +1,7 @@
 .list{
-  margin-left: 150px;
+  margin-left: 192px;
   line-height: 14px;
   .item{
-    width: 380px;
     line-height: 20px;
     margin-bottom: 10px;
     span {
@@ -11,11 +10,11 @@
       margin-left: 10px;
     }
     .inputSmall{
-      width: 138px;
-      margin-right: 10px;
+      width: 124px;
+      margin-right: 12px;
     }
   }
   .removeBtn{
-    font-weight: bold;
+    //font-weight: bold;
   }
 }

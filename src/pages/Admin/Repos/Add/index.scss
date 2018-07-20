@@ -2,7 +2,7 @@
 
 form.createForm {
   display: block;
-  padding: 36px 0 24px 0;
+  padding: 36px 0 0 36px;
 
   &>div{
     margin-bottom: 24px;
@@ -18,12 +18,12 @@ form.createForm {
   }
   .name{
     display: inline-block;
-    margin-right: 16px;
-    width: 110px;
-    margin-left: 24px;
+    margin-right: 24px;
+    width: 168px;
+    line-height: 16px;
     font-size: 14px;
-    font-weight: bold;
-    color: $title-color;
+    font-weight: 500;
+    color: $N500;
     text-align: right;
   }
   .fl{
@@ -31,7 +31,10 @@ form.createForm {
     line-height: 32px;
   }
   .input{
-    width: 280px;
+    width: 256px;
+  }
+  .inputUrl{
+    width: 376px;
   }
   .inputSmall{
     width: 138px;
@@ -39,38 +42,48 @@ form.createForm {
   }
   .inputTitle{
     display: inline-block;
-    margin: 8px 10px 3px 0;
-    width: 183px;
+    margin: 8px 12px 3px 0;
+    width: 124px;
     font-size: 12px;
+    color: $N100;
   }
   .inputMiddle{
-    width: 183px;
-    margin-right: 10px;
+    width: 124px;
+    margin-right: 12px;
   }
   .radio,.checkbox{
     margin-right: 30px;
   }
   .add{
     display: inline-block;
-    font-weight: bold;
   }
   .addBottom{
-    margin-left: 150px;
+    margin-left: 192px;
   }
   .select{
-    width: 86px;
-    margin-right: 10px;
+    width: 256px;
+    margin-right: 12px;
+  }
+  .smallSelect{
+    width: 88px;
+    margin-right: 12px;
+  }
+  .textareaItem{
+    height: 88px;
   }
   .textarea{
+    box-sizing: border-box;
     padding: 7px 10px;
-    width: 442px;
+    width: 400px;
     height: 88px;
     border-radius: 2px;
-    border: 1px solid #e7e7e7;
+    background-color: $N0;
+    border: 1px solid $N30;
     outline: none;
     resize: none;
     &:focus{
-      border: 1px solid $border-dark;
+      box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
+      border: solid 1px $P75;
     }
   }
   .textareaName{
@@ -79,17 +92,17 @@ form.createForm {
   }
 
   .rightShow{
-    margin-top: 7px;
-    margin-left: 150px;
-    .note{
-      font-size: 12px;
-      color: #626466;
-    }
+    margin-top: 8px;
+    margin-left: 192px;
+    font-size: 12px;
+    line-height: 1.67;
+    color: $N100;
   }
   .submitBtnGroup{
-    padding: 24px 0 8.5px 160px;
+    margin: 0 -32px;
+    padding: 16px 0 16px 224px;
+    border-top: 1px solid $N10;
     margin-bottom: 0;
-    border-top: 1px solid #dadcde;
     button{
       margin-right: 12px;
     }
