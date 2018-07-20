@@ -72,11 +72,4 @@ describe('<App/>', () => {
     expect(wrapper.find(Header).length).toBe(0);
     expect(wrapper.find(Footer).length).toBe(0);
   });
-
-  it('page except /login have both Header and Footer', () => {
-    location = { pathname: '/' };
-    const wrapper = shallow(<App rootStore={store} location={location} />);
-    expect(wrapper.find(Header).length).toBe(1);
-    expect(wrapper.find(Footer).length).toBe(1);
-  });
 });

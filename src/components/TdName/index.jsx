@@ -63,7 +63,7 @@ export default class TdName extends PureComponent {
           <span className={styles.description}>{description}&nbsp;</span>
           {!noCopy && (
             <span className="copy" data-clipboard-text={description} onClick={this.copyNote}>
-              <Icon name="copy" />
+              <Icon name="copy" type="dark" />
             </span>
           )}
         </span>

@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)
 [![docker build status](https://img.shields.io/docker/build/openpitrix/dashboard.svg)](https://cloud.docker.com/swarm/openpitrix/repository/docker/openpitrix/dashboard/builds)
+[![docker pull status](https://img.shields.io/docker/pulls/openpitrix/dashboard.svg)](http://lab.openpitrix.io)
 [![codecov](https://codecov.io/gh/openpitrix/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
@@ -73,7 +74,7 @@ See: [arch doc](./docs/arch.md)
 
 ## Join the community
 
-For bug reporting, [fire a issue](https://github.com/openpitrix/dashboard/issues/new)
+For bug reporting, [file an issue](https://github.com/openpitrix/dashboard/issues/new)
 
 Wanna help us to improve this project? Fork this repo, send your awesome _PR_.
 

@@ -264,7 +264,7 @@ export default class Overview extends React.Component {
         title: 'Updated At',
         key: 'status_time',
         width: '100px',
-        render: item => <div className="w-time">{getPastTime(item.status_time)}</div>
+        render: item => <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
       }
     ];
     const pagination = {

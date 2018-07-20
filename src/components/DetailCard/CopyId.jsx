@@ -43,7 +43,7 @@ export default class CopyId extends PureComponent {
       <div className={styles.copyId}>
         id: {id}
         <span className="copyId" data-clipboard-text={id}>
-          <Icon name="copy" />
+          <Icon name="copy" type="dark" />
         </span>
         {message ? (
           <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />

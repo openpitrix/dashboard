@@ -10,7 +10,7 @@ exports[`Base/Button basic render 1`] = `
     style="width:16px;height:16px"
   >
     <svg
-      class="qicon qicon-spinner qicon-dark"
+      class="qicon qicon-spinner qicon-light"
     >
       <use
         href="#spinner"

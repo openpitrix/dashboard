@@ -1,11 +1,9 @@
-import React, { Fragment, PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
 
 import './scss/index.scss';
 
-class App extends PureComponent {
+class App extends React.PureComponent {
   static propTypes = {
     rootStore: PropTypes.object,
     location: PropTypes.object
@@ -17,19 +15,7 @@ class App extends PureComponent {
   };
 
   render() {
-    const { location, children } = this.props;
-    const pathname = location.pathname;
-    const isLoginPage = pathname === '/login';
-    const isHome =
-      pathname === '/' || pathname === '/apps' || (pathname && pathname.indexOf('apps/ctg-') > -1);
-
-    return (
-      <Fragment>
-        {!isLoginPage && <Header isHome={isHome} />}
-        <div className="main">{children}</div>
-        {!isLoginPage && <Footer />}
-      </Fragment>
-    );
+    return <div className="main">{this.props.children}</div>;
   }
 }
 
