@@ -4,9 +4,9 @@ import { observer, inject } from 'mobx-react';
 import { formatTime } from 'utils';
 import classNames from 'classnames';
 
-import { Icon, Button, Input, Popover, Table, Pagination, Modal } from 'components/Base';
+import { Icon, Button, Input, Popover, Table, Pagination } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
 
@@ -45,8 +45,8 @@ export default class Runtimes extends Component {
     const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Dialog title="Delete Runtime" onCancel={hideModal} isOpen={isModalOpen} onSubmit={remove}>
-        <div className={styles.noteWord}>Are you sure delete this Runtime?</div>
+      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this Runtime?
       </Dialog>
     );
   };
@@ -96,11 +96,11 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Provider',
-        dataIndex: 'provider',
-        key: 'provider'
+        key: 'provider',
+        render: item => <ProviderName name={item.provider} provider={item.provider} />
       },
       {
-        title: 'Zone',
+        title: ' Zone/Namespace',
         dataIndex: 'zone',
         key: 'zone'
       },
@@ -151,6 +151,13 @@ export default class Runtimes extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Runtimes',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} />
@@ -189,8 +196,8 @@ export default class Runtimes extends Component {
             rowSelection={rowSelection}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderDeleteModal()}
       </Layout>

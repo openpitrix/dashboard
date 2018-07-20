@@ -14,8 +14,10 @@
   }
 
   .#{$icon-prefix}-coloured {
-    --primary-color: #00aa72;
-    --secondary-color: #90e0c5;
+    --primary-color: #{$P100};
+    --secondary-color: #{$P30};
+    --primary-opacity: 0.9;
+    --secondary-opacity: 0.4;
   }
 
   .icon {

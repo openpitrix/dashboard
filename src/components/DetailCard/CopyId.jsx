@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
 
-import { Tooltip } from 'components/Base';
+import { Icon, Notification } from 'components/Base';
 import styles from './index.scss';
 
 export default class CopyId extends PureComponent {
@@ -11,32 +11,42 @@ export default class CopyId extends PureComponent {
   };
 
   state = {
-    visible: false
+    message: ''
   };
 
-  componentDidMount() {
-    let clipboard = new ClipboardJS('.fa-clipboard');
-    let _this = this;
-    clipboard.on('success', function(e) {
-      _this.setState({ visible: true });
-      setTimeout(() => _this.setState({ visible: false }), 2000);
+  componentDidMount = () => {
+    this.clipboard = new ClipboardJS('.copyId');
+    this.clipboard.on('success', e => {
+      this.setState({
+        message: 'Copy success'
+      });
       e.clearSelection();
     });
-  }
+  };
 
-  renderCopyMsg() {
-    return this.state.visible ? <div>Copy Success</div> : null;
-  }
+  componentWillUnmount = () => {
+    this.clipboard.destroy();
+  };
+
+  onHide = () => {
+    this.setState({
+      message: ''
+    });
+  };
 
   render() {
     const { id } = this.props;
+    const { message } = this.state;
 
     return (
       <div className={styles.copyId}>
         id: {id}
-        <Tooltip className={styles.copyTip} content={this.renderCopyMsg()}>
-          <i className="fa fa-clipboard" data-clipboard-text={id} />
-        </Tooltip>
+        <span className="copyId" data-clipboard-text={id}>
+          <Icon name="copy" />
+        </span>
+        {message ? (
+          <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />
+        ) : null}
       </div>
     );
   }

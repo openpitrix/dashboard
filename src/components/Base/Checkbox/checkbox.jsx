@@ -11,24 +11,24 @@ export default class Checkbox extends Component {
     name: PropTypes.string,
     disabled: PropTypes.bool,
     checked: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
     className: '',
     disabled: false,
-    checked: false,
+    checked: false
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      isChecked: props.checked,
+      isChecked: props.checked
     };
   }
 
-  handleToggleCheck = (e) => {
+  handleToggleCheck = e => {
     const { disabled, onChange } = this.props;
 
     if (!disabled) {
@@ -36,7 +36,7 @@ export default class Checkbox extends Component {
       this.setState({ isChecked: !isChecked });
       onChange && onChange(e);
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.checked !== this.state.isChecked) {
@@ -47,16 +47,19 @@ export default class Checkbox extends Component {
   render() {
     const { style, className, disabled, checked, onChange, children, ...restProps } = this.props;
     const isChecked = this.state.isChecked;
-
+    const color = {
+      primary: '#fff',
+      secondary: '#fff'
+    };
     return (
       <label
         className={classNames(styles.checkbox, className, {
           [styles.disabled]: disabled,
-          [styles.checked]: isChecked,
+          [styles.checked]: isChecked
         })}
         style={style}
       >
-        {isChecked && <Icon name="check" />}
+        {isChecked && <Icon name="check" color={color} />}
         <input
           type="checkbox"
           disabled={disabled}

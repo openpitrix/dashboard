@@ -9,7 +9,7 @@
     font-size: 20px;
     font-weight: 500;
     text-align: left;
-    color: $title-color;
+    color: $N500;
   }
 }
 .categories{
@@ -19,7 +19,7 @@
     display: inline-block;
     width: 330px;
     height: 1px;
-    border-bottom: 1px solid #e2d0f2;
+    border-bottom: 1px solid $N10;
   }
   .word{
     display: inline-block;
@@ -42,41 +42,11 @@
   }
   .handlePop {
     position: absolute;
-    right: -60px;
+    right: 24px;
     top: 24px;
-    width: 180px;
-    text-align: center;
   }
 }
 
-.inputItem{
-  margin-bottom: 20px;
-  .name{
-    display: inline-block;
-    margin-right:  20px;
-    width: 100px;
-    text-align: right;
-  }
-  .input{
-    width: 400px;
-  }
-  .textarea{
-    padding: 7px 10px;
-    width: 400px;
-    height: 100px;
-    border-radius: 2px;
-    border: 1px solid #e7e7e7;
-    outline: none;
-    resize: none;
-    &:focus{
-      border: 1px solid $border-dark;
-    }
-  }
-  .textareaName{
-    position: relative;
-    bottom: 80px;
-  }
-}
 
 
 

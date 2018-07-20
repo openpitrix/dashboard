@@ -4,8 +4,8 @@
   //width: 360px;
   padding: 24px;
   border-radius: 3px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
   .icon{
     float: left;
     display: inline-block;
@@ -18,20 +18,19 @@
     padding-bottom: 24px;
     border-bottom: 1px solid $border-lighter;
     .name{
-      line-height: 24px;
+      margin-bottom: 8px;
       font-size: 24px;
       font-weight: 500;
-      color: $text-color;
-      max-width: 290px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      line-height: 1.17;
+      color: $N500;
+      max-width: 270px;
+      @include textCut;
     }
-    .id,.caId{
-      margin: 8px 0 10px;
-      line-height: 14px;
+    .id, .caId{
+      margin-bottom: 20px;
       font-size: 12px;
-      color: $grey-word;
+      line-height: 1.17;
+      color: $N75;
     }
     .caId{
       margin-bottom: 0;
@@ -40,8 +39,9 @@
       margin: 8px 0 -2px;
       line-height: 17px;
       font-size: 12px;
-      color: $grey-word;
+      color: $N300;
       word-break: break-word;
+      word-wrap: break-word;
     }
     .preview{
       line-height: 17px;
@@ -56,17 +56,15 @@
     padding-left: 0;
   }
   .detail{
-    margin-top: 17px;
+    margin-top: 24px;
     li{
-      color: $purple-word;
-      padding: 7px 0;
       min-height: 30px;
-      line-height: 16px;
       font-size: 14px;
+      line-height: 1.71;
+      letter-spacing: 0;
+      color: $N300;
       list-style: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      @include textCut;
       a{
         color: $text-color;
       }
@@ -76,9 +74,11 @@
     }
     .name{
       display: inline-block;
-      width: 110px;
+      width: 120px;
       margin-right: 24px;
-      color: #666666;
+      font-size: 14px;
+      line-height: 1.71;
+      color: $N75;
       text-align: right;
     }
     .labels{
@@ -88,21 +88,17 @@
   }
 }
 .copyId{
-  margin: 8px 0 10px;
-  line-height: 14px;
+  margin-bottom: 10px;
   font-size: 12px;
-  color: $grey-word;
+  line-height: 1.17;
+  letter-spacing: 0;
+  color: $N75;
 }
 
 :global{
-  .fa-clipboard{
-    //float: right;
-    margin-left: 5px;
-    font-size: 12px;
-    color: $title-color;
+  .copyId{
+    position: relative;
+    top: 4px;
     cursor: pointer;
   }
-}
-.copyTip{
-  display: inline-block;
 }

@@ -9,7 +9,7 @@ import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn } from 'components/Layout/Admin';
+import Layout, { BackBtn, Dialog } from 'components/Layout/Admin';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
@@ -63,31 +63,16 @@ export default class RepoDetail extends Component {
 
   deleteRepoModal = () => {
     const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
+
     return (
-      <Modal
-        width={500}
+      <Dialog
         title="Delete Repo"
-        visible={showDeleteRepo}
-        hideFooter
+        isOpen={showDeleteRepo}
         onCancel={deleteRepoClose}
+        onSubmit={deleteRepo}
       >
-        <div className={styles.modalContent}>
-          <div className={styles.noteWord}>Are you sure delete this Repo?</div>
-          <div className={styles.operation}>
-            <Button type="default" onClick={deleteRepoClose}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                deleteRepo(this.props.repoStore);
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        Are you sure delete this Repo?
+      </Dialog>
     );
   };
 
@@ -337,6 +322,13 @@ export default class RepoDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: curTagName,
+      onChange: changeTable,
+      total: totalCount,
+      current: 1
+    };
+
     return (
       <Layout>
         <BackBtn label="repos" link="/dashboard/repos" />
@@ -378,8 +370,8 @@ export default class RepoDetail extends Component {
             dataSource={data}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changeTable} total={totalCount} />
         </LayoutRight>
         {this.deleteRepoModal()}
       </Layout>

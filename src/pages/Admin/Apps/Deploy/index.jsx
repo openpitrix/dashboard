@@ -23,10 +23,16 @@ export default class AppDeploy extends Component {
 
   render() {
     const { appDeployStore } = this.props;
-    const { notifyMsg, hideMsg } = appDeployStore;
+    const { notifyMsg, notifyType, hideMsg, isLoading } = appDeployStore;
     const title = 'Deploy app';
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg} isLoading={appDeployStore.isLoading} noTabs={true}>
+      <Layout
+        msg={notifyMsg}
+        msgType={notifyType}
+        hideMsg={hideMsg}
+        isLoading={isLoading}
+        noTabs={true}
+      >
         <BackBtn label="clusters" link="/dashboard/clusters" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}

@@ -6,10 +6,11 @@ import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
+import { Icon } from 'components/Base';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
 import Button from 'components/Base/Button';
-import { formatTime, imgPlaceholder } from 'utils';
+import { formatTime } from 'utils';
 import styles from './index.scss';
 
 @translate()
@@ -42,7 +43,6 @@ export default class AppDetail extends Component {
   render() {
     const { appStore } = this.props;
     const appDetail = appStore.appDetail;
-    const imgPhd = imgPlaceholder(64);
 
     return (
       <Layout noTabs>
@@ -51,7 +51,10 @@ export default class AppDetail extends Component {
           <LayoutLeft column={8}>
             <div className={styles.introduction}>
               <div className={styles.titleOuter}>
-                <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
+                {appDetail.icon && (
+                  <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
+                )}
+                {!appDetail.icon && <Icon name={`appcenter`} size={48} type={`light`} />}
                 <div className={styles.title}>{appDetail.name}</div>
                 <div className={styles.carousel}>{appDetail.screenshots}</div>
                 <div className={styles.desc}>{appDetail.description}</div>

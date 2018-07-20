@@ -228,9 +228,9 @@ export default class RepoCreateStore extends Store {
     }
 
     if (this.repoId && _.get(this, 'repoCreated.repo_id')) {
-      this.showMsg('Modify repo successfully');
+      this.showMsg('Modify repo successfully', 'success');
     } else if (_.get(this, 'repoCreated.repo_id')) {
-      this.showMsg('Create repo successfully');
+      this.showMsg('Create repo successfully', 'success');
     } else {
       let { errDetail } = this.repoCreated;
       this.showMsg(errDetail);

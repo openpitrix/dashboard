@@ -41,11 +41,11 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg, runtimeId } = this.store;
+    const { notifyMsg, hideMsg, notifyType, runtimeId } = this.store;
     let title = 'Create Runtime';
     if (runtimeId) title = 'Modify Runtime';
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
         <BackBtn label="runtime" link="/dashboard/runtimes" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
@@ -73,7 +73,7 @@ export default class RuntimeAdd extends Component {
             <Input
               value={runtimeUrl}
               onChange={this.store.changeUrl}
-              className={styles.inputUrl}
+              className={styles.input}
               name="runtime_url"
               placeholder="www.example.com/path/point/"
               maxLength="100"
@@ -139,13 +139,13 @@ export default class RuntimeAdd extends Component {
               name="runtime_credential"
               onChange={this.store.changeCredential}
               value={credential}
-              maxLength="500"
+              maxLength="2000"
             />
             <p className={styles.credentialTip}>The Credential of provider</p>
           </div>
         )}
         <div className={classNames({ [styles.showDiv]: !!runtimeId })}>
-          <label className={styles.name}>Zone</label>
+          <label className={styles.name}>Namespace</label>
           {!runtimeId && (
             <Input
               className={styles.input}

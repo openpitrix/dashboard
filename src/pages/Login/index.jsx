@@ -42,6 +42,7 @@ export default class Login extends Component {
                 icon="human"
                 iconType="dark"
                 name="username"
+                iconSize={24}
                 placeholder={t('Username')}
               />
             </Form.Item>
@@ -52,6 +53,7 @@ export default class Login extends Component {
                 icon="lock"
                 iconType="dark"
                 name="password"
+                iconSize={24}
                 placeholder={t('Password')}
               />
             </Form.Item>

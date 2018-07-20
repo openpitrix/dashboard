@@ -15,6 +15,7 @@ export default class AppStore extends Store {
   @observable appCount = 0;
   @observable currentPage = 1;
   @observable isModalOpen = false;
+  @observable isDeleteOpen = false;
   @observable appTitle = '';
   @observable searchWord = '';
   @observable currentClusterPage = 1;
@@ -41,7 +42,7 @@ export default class AppStore extends Store {
     this.categoryTitle = title;
     this.appSearch = params.search_word;
     if (!params.status) {
-      params.status = this.defaultStatus;
+      params.status = ['active', 'deleted'];
     }
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
@@ -125,10 +126,12 @@ export default class AppStore extends Store {
 
   @action
   remove = async () => {
+    this.appId = this.appId ? this.appId : this.appDetail.app_id;
     const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
     if (_.get(result, 'app_id')) {
       if (this.operateType === 'detailDelete') {
+        this.appDetail = {};
         this.deleteResult = result;
         await this.fetch(this.appId);
       } else {
@@ -136,7 +139,7 @@ export default class AppStore extends Store {
         await this.fetchAll();
         this.cancelSelected();
       }
-      this.showMsg('Delete app successfully.');
+      this.showMsg('Delete app successfully.', 'success');
     } else {
       let { err, errDetail } = result;
       this.showMsg(errDetail || err);
@@ -149,7 +152,7 @@ export default class AppStore extends Store {
   };
 
   @action
-  async modifyCategoryById() {
+  modifyCategoryById = async () => {
     if (!this.handleApp.selectedCategory) {
       this.showMsg('please select a category');
       return;
@@ -165,21 +168,12 @@ export default class AppStore extends Store {
     if (!result || !result.err) {
       await this.fetchAll();
     }
-  }
-
-  // app menu actions
-  @action
-  showModal = () => {
-    this.isModalOpen = true;
   };
 
   @action
   hideModal = () => {
+    this.isDeleteOpen = false;
     this.isModalOpen = false;
-  };
-
-  setActionType = type => {
-    this.handleApp.action = type;
   };
 
   @action
@@ -190,15 +184,13 @@ export default class AppStore extends Store {
     } else {
       this.operateType = 'multiple';
     }
-    this.showModal();
-    this.setActionType('delete_app');
+    this.isDeleteOpen = true;
   };
 
   @action
   showModifyAppCate = app_id => {
     this.appId = app_id;
-    this.showModal();
-    this.setActionType('modify_cate');
+    this.isModalOpen = true;
   };
 
   @action

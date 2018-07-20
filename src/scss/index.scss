@@ -117,14 +117,9 @@
     margin-bottom: 24px;
     .operation{
       position: absolute;
-      right: -35px;
+      right: 24px;
       top: 24px;
-      width: 135px;
-      text-align: center;
       cursor: pointer;
-      i{
-        transform: rotate(90deg);
-      }
     }
   }
   .f-right {
@@ -136,5 +131,9 @@
     top: 50%;
     transform: translateY(-50%) scale(0.6);
     cursor: pointer;
+  }
+  .w-time{
+    font-size: 12px;
+    color: $N100;
   }
 }

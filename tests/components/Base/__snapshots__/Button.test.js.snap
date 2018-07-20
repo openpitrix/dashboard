@@ -6,10 +6,11 @@ exports[`Base/Button basic render 1`] = `
   type="submit"
 >
   <span
-    class="icon icon-spinner icon-is-small"
+    class="icon icon-spinner"
+    style="width:16px;height:16px"
   >
     <svg
-      class="qicon qicon-spinner qicon-light"
+      class="qicon qicon-spinner qicon-dark"
     >
       <use
         href="#spinner"

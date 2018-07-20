@@ -36,8 +36,8 @@ export default class AppDetail extends Component {
   }
 
   componentDidUpdate() {
-    const { appDetail, deleteResult } = this.props.appStore;
-    if (appDetail.status === 'deleted' && deleteResult.app_id) {
+    const { appDetail } = this.props.appStore;
+    if (!appDetail.app_id) {
       setTimeout(() => {
         history.back();
       }, 2000);
@@ -46,13 +46,10 @@ export default class AppDetail extends Component {
 
   renderHandleMenu = appId => {
     const { showCreateVersion, showDeleteApp } = this.props.appVersionStore;
-    const { appDetail } = this.props.appStore;
 
     return (
       <div className="operate-menu">
-        {appDetail.status !== 'deleted' && (
-          <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
-        )}
+        <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
         <span onClick={showCreateVersion}>Create version</span>
         <span onClick={showDeleteApp}>Delete App</span>
       </div>
@@ -67,66 +64,60 @@ export default class AppDetail extends Component {
   };
 
   renderOpsModal = () => {
-    const { appVersionStore } = this.props;
-    const { isModalOpen, hideModal, handleVersion, versions } = appVersionStore;
-    let width = 500,
-      modalTitle = '',
-      modalBody = null,
-      onSubmit = () => {},
-      resetProps = {};
+    const { isModalOpen, hideModal } = this.props.appVersionStore;
 
-    if (handleVersion.action === 'create') {
-      (width = 620), (modalTitle = 'Create App Version');
-      onSubmit = this.handleCreateVersion.bind(this);
-      modalBody = (
-        <Fragment>
-          <div className={styles.inputItem}>
+    return (
+      <Modal
+        title={`Create App Version`}
+        visible={isModalOpen}
+        onCancel={hideModal}
+        onOk={this.handleCreateVersion}
+      >
+        <div className="formContent">
+          <div>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" maxLength="50" required />
+            <Input className={styles.input} name="name" maxLength="50" />
           </div>
-          <div className={styles.inputItem}>
+          <div>
             <label className={styles.name}>Package Name</label>
             <Input
-              className={styles.input}
               name="package_name"
               maxLength="100"
               required
               placeholder="http://openpitrix.pek3a.qingstor.com/package/zk-0.1.0.tgz"
             />
           </div>
-          <div className={styles.inputItem}>
-            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
-            <textarea className={styles.textarea} name="description" maxLength="500" />
+          <div className="textareaItem">
+            <label>Description</label>
+            <textarea name="description" maxLength="500" />
           </div>
-        </Fragment>
-      );
-    }
+        </div>
+      </Modal>
+    );
+  };
 
-    if (handleVersion.action === 'delete') {
-      modalTitle = 'Delete Version';
-      modalBody = <div className={styles.noteWord}>Are you sure delete this Version?</div>;
-    }
+  renderDialog = () => {
+    const { isDialogOpen, hideModal, remove, dialogType, versions } = this.props.appVersionStore;
+    let title = '',
+      modalBody = 'Are you sure delete this App?',
+      hideFooter = false;
 
-    if (handleVersion.action === 'deleteApp') {
-      onSubmit = this.deleteApp;
-      modalTitle = 'Delete App';
-      modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
-    }
-
-    if (handleVersion.action === 'show_all') {
-      modalTitle = 'All Versions';
+    if (dialogType === 'show_all') {
+      title = 'Delete Version';
       modalBody = <VersionList versions={versions} />;
-      resetProps.noActions = true;
+      hideFooter = true;
+    } else if (dialogType === 'delete') {
+      title = 'Delete Version';
+      modalBody = 'Are you sure delete this Version?';
     }
 
     return (
       <Dialog
-        width={width}
-        title={modalTitle}
-        isOpen={isModalOpen}
+        title={title}
+        isOpen={isDialogOpen}
+        onSubmit={this.props.appStore.remove}
         onCancel={hideModal}
-        onSubmit={onSubmit}
-        {...resetProps}
+        hideFooter={hideFooter}
       >
         {modalBody}
       </Dialog>
@@ -196,15 +187,24 @@ export default class AppDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: this.changePagination,
+      total: clusterStore.totalCount,
+      current: currentClusterPage
+    };
+
     return (
       <Layout msg={notifyMsg || appNotifyMsg} hideMsg={hideMsg || appHideMsg}>
         <BackBtn label="apps" link="/dashboard/apps" />
         <LayoutLeft>
           <div className="detail-outer">
             <AppCard appDetail={appDetail} repoName={repoName} />
-            <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
-              <Icon name="more" />
-            </Popover>
+            {appDetail.status !== 'deleted' && (
+              <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
+                <Icon name="more" />
+              </Popover>
+            )}
           </div>
           <div className={styles.versionOuter}>
             <div className={styles.title}>
@@ -237,14 +237,12 @@ export default class AppDetail extends Component {
             dataSource={clusters.toJSON()}
             isLoading={isLoading}
             filterList={filterList}
-          />
-          <Pagination
-            onChange={this.changePagination}
-            total={clusterStore.totalCount}
-            current={currentClusterPage}
+            pagination={pagination}
           />
         </LayoutRight>
+
         {this.renderOpsModal()}
+        {this.renderDialog()}
       </Layout>
     );
   }

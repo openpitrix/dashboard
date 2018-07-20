@@ -10,12 +10,8 @@ export default class CategoryStore extends Store {
   @observable name = '';
   @observable description = '';
   @observable isModalOpen = false;
-
-  // menu actions
-  @observable
-  handleCate = {
-    action: '' // create, modify, delete
-  };
+  @observable isDeleteOpen = false;
+  @observable isDetailPage = false;
 
   @action
   fetchAll = async () => {
@@ -33,57 +29,53 @@ export default class CategoryStore extends Store {
     this.isLoading = false;
   };
 
-  postHandleResult = result => {
-    this.postHandleApi(result, async () => {
+  postHandleResult = async (result, type) => {
+    let msg = type + ' category successfully.';
+    if (!result.category_id) {
+      msg = result.errDetail || result.err || 'Operation fail!';
+      this.showMsg(msg);
+    } else {
       this.hideModal();
-
-      if (!isEmpty(this.category)) {
+      if (this.isDetailPage) {
         await this.fetch(this.category.category_id);
       } else {
         await this.fetchAll();
       }
-    });
+      this.showMsg(msg, 'success');
+    }
   };
 
   @action
   create = async params => {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.post('categories', params);
-    this.isLoading = false;
-    this.postHandleResult(result);
+    //this.isLoading = false;
+    await this.postHandleResult(result, 'Create');
   };
 
   @action
   modify = async params => {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.patch('categories', params);
-    this.isLoading = false;
-    this.postHandleResult(result);
+    //this.isLoading = false;
+    await this.postHandleResult(result, 'Modify');
   };
 
   @action
-  remove = async category_ids => {
-    category_ids = category_ids || [this.category.category_id];
-    this.isLoading = true;
-    const result = await this.request.delete('categories', { category_id: category_ids });
+  remove = async () => {
+    const categoryIds = [this.category.category_id];
+    //this.isLoading = true;
+    const result = await this.request.delete('categories', { category_id: categoryIds });
     this.category = {};
-    this.isLoading = false;
-    this.postHandleResult(result);
-  };
-
-  @action.bound
-  showModal = () => {
-    this.isModalOpen = true;
+    //this.isLoading = false;
+    await this.postHandleResult(result, 'Delete');
   };
 
   @action.bound
   hideModal = () => {
     this.isModalOpen = false;
+    this.isDeleteOpen = false;
   };
-
-  setAction(action) {
-    this.handleCate.action = action;
-  }
 
   @action
   changeName = e => {
@@ -110,7 +102,11 @@ export default class CategoryStore extends Store {
     if (ev === 'from_index') {
       this.category = {};
     }
-    this[method](params);
+    if (!this.name) {
+      this.showMsg('Please input category name!');
+    } else {
+      this[method](params);
+    }
   };
 
   // fixme
@@ -119,22 +115,19 @@ export default class CategoryStore extends Store {
     this.category = {};
     this.name = '';
     this.description = '';
-    this.setAction('create_cate');
-    this.showModal();
+    this.isModalOpen = true;
   };
 
   @action
   showModifyCategory = category => {
     this.category = category;
-    this.setAction('modify_cate');
-    this.showModal();
+    this.isModalOpen = true;
   };
 
   @action
   showDeleteCategory = category => {
     this.category = category;
-    this.setAction('delete_cate');
-    this.showModal();
+    this.isDeleteOpen = true;
   };
 
   @action

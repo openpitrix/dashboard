@@ -5,7 +5,7 @@ import { filter, get } from 'lodash';
 
 import { Icon, Button, Input, Table, Pagination, Popover, Modal, Select } from 'components/Base';
 import Status from 'components/Status';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import Layout, { Dialog } from 'components/Layout/Admin';
 import { getSessInfo, getObjName } from 'utils';
@@ -47,46 +47,41 @@ export default class Apps extends Component {
     }
   };
 
-  renderOpsModal = () => {
-    const { appStore, categoryStore } = this.props;
-    const { isModalOpen, hideModal, handleApp, changeAppCate } = appStore;
-    let modalTitle = '',
-      modalBody = null,
-      onSubmit;
-
-    if (handleApp.action === 'delete_app') {
-      modalTitle = 'Delete App';
-      onSubmit = appStore.remove.bind(appStore);
-      modalBody = <div className={styles.noteWord}>Are you sure delete this App?</div>;
-    }
-
-    if (handleApp.action === 'modify_cate') {
-      modalTitle = 'Modify App Category';
-      const categories = categoryStore.categories.toJSON();
-      onSubmit = appStore.modifyCategoryById.bind(appStore);
-
-      modalBody = (
-        <div className={styles.selectItem}>
-          <label className={styles.name}>Category</label>
-          <Select
-            className={styles.select}
-            value={handleApp.selectedCategory}
-            onChange={changeAppCate}
-          >
-            {categories.map(({ category_id, name }) => (
-              <Select.Option key={category_id} value={category_id}>
-                {name}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-      );
-    }
+  renderDeleteModal = () => {
+    const { isDeleteOpen, remove, hideModal } = this.props.appStore;
 
     return (
-      <Dialog title={modalTitle} isOpen={isModalOpen} onCancel={hideModal} onSubmit={onSubmit}>
-        {modalBody}
+      <Dialog title="Delete App" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this App?
       </Dialog>
+    );
+  };
+
+  renderOpsModal = () => {
+    const { appStore, categoryStore } = this.props;
+    const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
+    const categories = categoryStore.categories.toJSON();
+
+    return (
+      <Modal
+        title="Modify App Category"
+        visible={isModalOpen}
+        onCancel={hideModal}
+        onOk={modifyCategoryById}
+      >
+        <div className="formContent">
+          <div className="inputItem selectItem">
+            <label>Category</label>
+            <Select value={handleApp.selectedCategory} onChange={changeAppCate}>
+              {categories.map(({ category_id, name }) => (
+                <Select.Option key={category_id} value={category_id}>
+                  {name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+      </Modal>
     );
   };
 
@@ -95,24 +90,26 @@ export default class Apps extends Component {
     let itemMenu = null;
     let deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
 
-    if (this.role === 'developer') {
-      itemMenu = (
-        <Fragment>
-          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-        </Fragment>
-      );
-    }
-    if (this.role === 'admin') {
-      itemMenu = (
-        <Fragment>
-          <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-          <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
-        </Fragment>
-      );
+    if (item.status !== 'deleted') {
+      if (this.role === 'developer') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+          </Fragment>
+        );
+      }
+      if (this.role === 'admin') {
+        itemMenu = (
+          <Fragment>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+            <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
+          </Fragment>
+        );
+      }
     }
 
     return (
-      <div id={item.app_id} className="operate-menu">
+      <div className="operate-menu">
         <Link to={`/dashboard/app/${item.app_id}`}>View detail</Link>
         {deployEntry}
         {itemMenu}
@@ -187,7 +184,10 @@ export default class Apps extends Component {
         key: 'repo_id',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
-            {getObjName(repos, 'repo_id', item.repo_id, 'name')}
+            <ProviderName
+              name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
+              provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
+            />
           </Link>
         )
       },
@@ -230,6 +230,13 @@ export default class Apps extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Apps',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     return (
       <Layout msg={notifyMsg} hideMsg={hideMsg}>
         <Statistics {...summaryInfo} objs={repos.slice()} />
@@ -263,10 +270,11 @@ export default class Apps extends Component {
             rowSelection={rowSelection}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </div>
         {this.renderOpsModal()}
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

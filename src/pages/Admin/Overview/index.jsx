@@ -10,9 +10,11 @@ import AppList from './AppList';
 import ClusterList from './ClusterList';
 import RepoList from './RepoList';
 import Layout from 'components/Layout/Admin';
+import Status from 'components/Status';
+import TdName, { ProviderName } from 'components/TdName';
+import { Icon, Table } from 'components/Base';
 import { LayoutLeft, LayoutRight, Section } from 'components/Layout';
-import Icon from 'components/Base/Icon';
-import { imgPlaceholder, getSessInfo, getLoginDate } from 'src/utils';
+import { formatTime, getSessInfo, getLoginDate, getObjName, getPastTime } from 'src/utils';
 import styles from './index.scss';
 
 @translate()
@@ -35,12 +37,14 @@ export default class Overview extends React.Component {
     userStore,
     runtimeStore
   }) {
-    await appStore.fetchAll({ noLimit: true });
-    await clusterStore.fetchAll();
-    await repoStore.fetchAll();
+    await appStore.fetchAll({ status: ['active', 'deleted'] });
+    await clusterStore.fetchAll({
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
+    });
+    await repoStore.fetchAll({ status: ['active', 'deleted'] });
     await categoryStore.fetchAll();
     await userStore.fetchAll();
-    await runtimeStore.fetchAll();
+    await runtimeStore.fetchAll({ status: ['active', 'deleted'] });
   }
 
   handleClickTotalCard = label => {
@@ -183,11 +187,89 @@ export default class Overview extends React.Component {
   };
 
   devlopOverview = () => {
-    const { appStore, clusterStore, repoStore, categoryStore, userStore, sessInfo, t } = this.props;
+    const {
+      appStore,
+      clusterStore,
+      repoStore,
+      runtimeStore,
+      categoryStore,
+      userStore,
+      sessInfo,
+      t
+    } = this.props;
     const countLimit = 5;
+
+    const userInfo = {
+      name: getSessInfo('user', sessInfo),
+      role: getSessInfo('role', sessInfo),
+      loginInfo: getLoginDate(getSessInfo('last_login', sessInfo))
+    };
 
     const appList = appStore.apps.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
+
+    const columns = [
+      {
+        title: 'Cluster Name',
+        key: 'name',
+        render: item => (
+          <TdName
+            name={item.name}
+            description={item.cluster_id}
+            linkUrl={`/dashboard/cluster/${item.cluster_id}`}
+          />
+        )
+      },
+      {
+        title: 'Status',
+        key: 'status',
+        render: item => <Status type={item.status} name={item.status} />
+      },
+      {
+        title: 'App',
+        key: 'app_id',
+        render: item => (
+          <Link to={`/dashboard/app/${item.app_id}`}>
+            {getObjName(appStore.apps, 'app_id', item.app_id, 'name')}
+          </Link>
+        )
+      },
+      {
+        title: 'Runtime',
+        key: 'runtime_id',
+        render: item => (
+          <Link to={`/dashboard/runtime/${item.runtime_id}`}>
+            <ProviderName
+              name={getObjName(runtimeStore.runtimes, 'runtime_id', item.runtime_id, 'name')}
+              provider={getObjName(
+                runtimeStore.runtimes,
+                'runtime_id',
+                item.runtime_id,
+                'provider'
+              )}
+            />
+          </Link>
+        )
+      },
+      {
+        title: 'Node Count',
+        key: 'node_count',
+        width: '60px',
+        render: item => item.cluster_node_set && item.cluster_node_set.length
+      },
+      {
+        title: 'Updated At',
+        key: 'status_time',
+        width: '100px',
+        render: item => <div className="w-time">{getPastTime(item.status_time)}</div>
+      }
+    ];
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: () => {},
+      total: countLimit,
+      current: 1
+    };
 
     return (
       <Layout>
@@ -200,7 +282,7 @@ export default class Overview extends React.Component {
               name={`Private Repo`}
               iconName={`cloud`}
               iconSize={64}
-              total={repoStore.totalCount}
+              total={repoStore.repos.length}
               onClick={this.handleClickTotalCard.bind(this, 'repos')}
             />
           </LayoutLeft>
@@ -232,7 +314,7 @@ export default class Overview extends React.Component {
             len={clusterList.length}
             iconName="clusters"
           >
-            <ClusterList clusters={clusterList} />
+            <Table columns={columns} dataSource={clusterList} pagination={pagination} />
           </Panel>
         </LayoutRight>
       </Layout>
@@ -241,6 +323,10 @@ export default class Overview extends React.Component {
 
   render() {
     const role = getSessInfo('role', this.props.sessInfo);
-    return role === 'admin' ? this.adminOverview() : this.normalOverview();
+    return role === 'admin'
+      ? this.adminOverview()
+      : role === 'developer'
+        ? this.devlopOverview()
+        : this.devlopOverview();
   }
 }

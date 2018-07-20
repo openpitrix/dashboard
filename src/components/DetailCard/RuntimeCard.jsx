@@ -42,7 +42,7 @@ export default class RuntimeCard extends PureComponent {
           )}
           {detail.runtime_id && (
             <li>
-              <span className={styles.name}>Zone</span>
+              <span className={styles.name}>Zone/Namespace</span>
               {detail.zone}
             </li>
           )}

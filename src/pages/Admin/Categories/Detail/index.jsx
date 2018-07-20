@@ -14,6 +14,7 @@ import { LayoutLeft, LayoutRight } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { imgPlaceholder, getObjName } from 'utils';
 import styles from './index.scss';
+import Modal from '../../../../components/Base/Modal';
 
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
@@ -23,6 +24,7 @@ import styles from './index.scss';
 @observer
 export default class CategoryDetail extends Component {
   static async onEnter({ categoryStore, appStore, repoStore }, { categoryId }) {
+    categoryStore.isDetailPage = true;
     appStore.currentPage = 1;
     appStore.searchWord = '';
     await categoryStore.fetch(categoryId);
@@ -94,65 +96,53 @@ export default class CategoryDetail extends Component {
 
   renderCategoryModal = () => {
     const { categoryStore } = this.props;
-    const { isModalOpen, hideModal, handleCate, category } = categoryStore;
-    let modalTitle = '',
-      width = 500,
-      modalBody = null,
-      onSubmit = () => {};
+    const { isModalOpen, hideModal, createOrModify, category } = categoryStore;
 
-    if (handleCate.action === 'delete_cate') {
-      modalTitle = 'Delete Category';
-      onSubmit = () => categoryStore.remove([category.category_id]);
-      modalBody = <div className={styles.noteWord}>Are you sure delete this Category?</div>;
-    }
-    if (handleCate.action === 'modify_cate') {
-      const { changeName, changeDescription } = categoryStore;
-      width = 600;
-      modalTitle = 'Modify Category';
-      onSubmit = categoryStore.createOrModify;
-      modalBody = (
-        <Fragment>
-          <div className={styles.inputItem}>
-            <label className={styles.name}>Name</label>
+    return (
+      <Modal
+        title="Modify Category"
+        visible={isModalOpen}
+        onCancel={hideModal}
+        onOk={createOrModify}
+      >
+        <div className="formContent">
+          <div className="inputItem">
+            <label>Name</label>
             <Input
-              className={styles.input}
               name="name"
-              required
               autoFocus
-              onChange={changeName}
+              onChange={categoryStore.changeName}
               defaultValue={category.name}
               maxLength="50"
             />
           </div>
-          <div className={styles.inputItem}>
-            <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+          <div className="inputItem textareaItem">
+            <label>Description</label>
             <textarea
-              className={styles.textarea}
               name="description"
               defaultValue={category.description}
-              onChange={changeDescription}
+              onChange={categoryStore.changeDescription}
               maxLength="500"
             />
           </div>
-        </Fragment>
-      );
-    }
+        </div>
+      </Modal>
+    );
+  };
+
+  renderDeleteModal = () => {
+    const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
+
     return (
-      <Dialog
-        title={modalTitle}
-        width={width}
-        isOpen={isModalOpen}
-        onCancel={hideModal}
-        onSubmit={onSubmit}
-      >
-        {modalBody}
+      <Dialog title="Delete Category" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this category?
       </Dialog>
     );
   };
 
   render() {
     const { categoryStore, appStore, repoStore } = this.props;
-    const { category, notifyMsg, hideMsg } = categoryStore;
+    const { category, notifyMsg, notifyType, hideMsg } = categoryStore;
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
     const { isLoading, appCount, totalCount, selectStatus } = appStore;
@@ -219,11 +209,18 @@ export default class CategoryDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Apps',
+      onChange: this.changeApps,
+      total: totalCount,
+      current: appStore.currentPage
+    };
+
     const tags = [{ id: 1, name: 'Apps', link: '#' }];
     const curTag = 'Apps';
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
         <BackBtn label="categories" link="/dashboard/categories" />
 
         <LayoutLeft className="detail-outer">
@@ -235,7 +232,7 @@ export default class CategoryDetail extends Component {
 
         <LayoutRight className="table-outer">
           <TagNav tags={tags} curTag={curTag} />
-          <div className={styles.toolbar}>
+          <div className="toolbar">
             <Input.Search
               className={styles.search}
               placeholder="Search App Name"
@@ -244,20 +241,22 @@ export default class CategoryDetail extends Component {
               onClear={this.onClearSearch}
               maxLength="50"
             />
-            <Button className={'refresh-btn'} onClick={this.onRefresh}>
+            <Button className="f-right" onClick={this.onRefresh}>
               <Icon name="refresh" size="mini" />
             </Button>
           </div>
+
           <Table
             columns={columns}
             dataSource={apps}
-            className="detailTab"
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={this.changeApps} total={totalCount} />
         </LayoutRight>
+
         {this.renderCategoryModal()}
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

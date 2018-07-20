@@ -1,75 +1,65 @@
 @import "~scss/vars";
 
 .statistics{
+  margin: 0 auto 24px;
+  width: $content-width;
   .wrap{
-    margin: 0 auto 24px;
-    width: $content-width;
+    padding: 30px 24px;
     height: 120px;
     border-radius: 3px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-
+    background-color: $N0;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
   }
   .module{
     float: left;
     display: inline-block;
     position: relative;
-    padding: 0 32px;
-    margin: 24px -1px;
+    margin: 0 24px 0 24px;
     height: 60px;
-    &:nth-child(1){
-      width: 350px;
-      padding-left: 48px;
-      .word{
-        width: auto;
-      }
-    }
-    &:nth-child(2){
-      width: 430px;
-    }
-    &:nth-child(3){
-      width: 350px;
-      padding-right: 0;
-    }
-    .line{
+    width: 312px;
+   /* .line{
       position: absolute;
       right: 0;
       top: 10px;
       height: 48px;
       width: 1px;
       background:#d1d1d2;
-    }
+    }*/
   }
 
   .apps{
-    .icon{
-      float: left;
-      display: inline-block;
-      margin-right: 15px;
-    }
+    float: left;
     display: inline-block;
-    padding-top: 20px;
-    font-size: 20px;
+    width: 200px;
+    padding-top: 16px;
+    font-size: 24px;
     font-weight: 500;
-    color: #300e56
+    line-height: 1.17;
+    color: $N500;
+    :global{
+      .icon{
+        float: left;
+        display: inline-block;
+        margin-right: 12px;
+      }
+    }
   }
   .word{
     display: inline-block;
-    width: 90px;
+    width: 112px;
     .name{
+      margin-bottom: 4px;
       font-size: 12px;
-      line-height: 2.0;
-      text-align: left;
-      color: #a6a1ab;
+      line-height: 1.67;
+      color: $N100;
     }
     .number{
       display: inline-block;
-      margin-top: 4px;
-      line-height: 42px;
-      font-size: 36px;
+      font-size: 40px;
       font-weight: 500;
-      text-align: left;
-      color: #300e56;
+      line-height: 1.1;
+      letter-spacing: 0;
+      color: $N500;
     }
   }
   .fl{

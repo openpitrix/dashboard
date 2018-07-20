@@ -12,10 +12,11 @@ exports[`Base/Timeline basic render 1`] = `
     >
       <span>
         <span
-          class="icon icon-stop icon-is-small"
+          class="icon icon-stop"
+          style="width:16px;height:16px"
         >
           <svg
-            class="qicon qicon-stop qicon-light"
+            class="qicon qicon-stop qicon-dark"
           >
             <use
               href="#stop"
@@ -34,10 +35,11 @@ exports[`Base/Timeline basic render 1`] = `
     >
       <span>
         <span
-          class="icon icon-refresh icon-is-small"
+          class="icon icon-refresh"
+          style="width:16px;height:16px"
         >
           <svg
-            class="qicon qicon-refresh qicon-light"
+            class="qicon qicon-refresh qicon-dark"
           >
             <use
               href="#refresh"

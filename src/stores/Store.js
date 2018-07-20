@@ -7,6 +7,7 @@ export default class Store {
 
   constructor(initialState, branch) {
     extendObservable(this, {
+      notifyType: observable.box('success'),
       notifyMsg: observable.box(''),
       sockMessage: '' // json.string websocket message
     });
@@ -21,8 +22,13 @@ const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
   @action.bound
-  showMsg: function(msg) {
+  showMsg: function(msg, type) {
     this.notifyMsg = msg;
+    if (type) {
+      this.notifyType = type;
+    } else {
+      this.notifyType = 'error';
+    }
   },
   @action.bound
   hideMsg: function() {

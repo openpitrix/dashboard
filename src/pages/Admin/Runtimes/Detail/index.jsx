@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Icon, Input, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn } from 'components/Layout/Admin';
 import { LayoutLeft, LayoutRight } from 'components/Layout';
@@ -125,6 +125,13 @@ export default class RuntimeDetail extends Component {
       }
     ];
 
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: changePagination,
+      total: totalCount,
+      current: currentPage
+    };
+
     const tags = [{ id: 1, name: 'Clusters' }];
     const curTag = 'Clusters';
 
@@ -165,8 +172,8 @@ export default class RuntimeDetail extends Component {
             dataSource={clusters.toJSON()}
             isLoading={isLoading}
             filterList={filterList}
+            pagination={pagination}
           />
-          <Pagination onChange={changePagination} total={totalCount} current={currentPage} />
         </LayoutRight>
       </Layout>
     );

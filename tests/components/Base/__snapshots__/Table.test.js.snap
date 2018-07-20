@@ -2,87 +2,24 @@
 
 exports[`Base/Table basic render 1`] = `
 <div
-  class="table"
+  class="noData"
 >
-  <div
-    class="pi-table pi-table-scroll-position-left"
+  <span
+    class="icon icon-appcenter"
+    style="width:120px;height:120px"
   >
-    <div
-      class="pi-table-content"
+    <svg
+      class="qicon qicon-appcenter qicon-light"
     >
-      <div
-        class="pi-table-body"
-      >
-        <table
-          class=""
-        >
-          <colgroup>
-            <col
-              style="width:50%;min-width:50%"
-            />
-            <col
-              style="width:50%;min-width:50%"
-            />
-          </colgroup>
-          <thead
-            class="pi-table-thead"
-          >
-            <tr>
-              <th
-                class=""
-              >
-                Name
-              </th>
-              <th
-                class=""
-              >
-                Age
-              </th>
-            </tr>
-          </thead>
-          <tbody
-            class="pi-table-tbody"
-          >
-            <tr
-              class="pi-table-row  pi-table-row-level-0"
-            >
-              <td
-                class=""
-              >
-                <span
-                  class="pi-table-row-indent indent-level-0"
-                  style="padding-left:0px"
-                />
-                zhangsan
-              </td>
-              <td
-                class=""
-              >
-                20
-              </td>
-            </tr>
-            <tr
-              class="pi-table-row  pi-table-row-level-0"
-            >
-              <td
-                class=""
-              >
-                <span
-                  class="pi-table-row-indent indent-level-0"
-                  style="padding-left:0px"
-                />
-                lisi
-              </td>
-              <td
-                class=""
-              >
-                22
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <use
+        href="#appcenter"
+      />
+    </svg>
+  </span>
+  <div
+    class="word"
+  >
+    No resultes or datas for Apps
   </div>
 </div>
 `;
