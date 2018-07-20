@@ -84,18 +84,11 @@
     height: 100%;
   }
 
-  .f-right {
-    float: right;
-  }
   .icon-close {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%) scale(0.6);
     cursor: pointer;
-  }
-  .w-time{
-    font-size: 12px;
-    color: $N100;
   }
 }

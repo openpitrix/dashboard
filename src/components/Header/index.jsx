@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
@@ -16,6 +17,10 @@ import styles from './index.scss';
 @inject('rootStore', 'sessInfo')
 @observer
 export default class Header extends Component {
+  static propTypes = {
+    isHome: PropTypes.bool
+  };
+
   state = {
     dropdownOpen: false
   };
@@ -81,7 +86,7 @@ export default class Header extends Component {
     const needShowSearch = isDark && isHome;
 
     return (
-      <div className={classnames('header', styles.header, { [styles.lightHeader]: !isDark })}>
+      <div className={classnames('header', styles.header, { [styles.stickyHeader]: isDark })}>
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           <div className={styles.menus}>{this.renderMenuBtns()}</div>

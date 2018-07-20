@@ -51,4 +51,10 @@ $fg-color: #78839e;
     border-radius: 50%;
     vertical-align: middle;
   }
+
+  .toggleLocale {
+    &:hover {
+      color: $P75 !important;
+    }
+  }
 }

@@ -31,7 +31,7 @@ export default class Home extends Component {
       rootStore.setNavFix(true);
     } else {
       this.threshold = this.getThreshold();
-      window.onscroll = throttle(this.handleScroll, 200);
+      window.onscroll = throttle(this.handleScroll, 100);
       window.scroll({ top: 1, behavior: 'smooth' });
     }
   }

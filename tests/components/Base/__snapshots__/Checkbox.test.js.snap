@@ -25,7 +25,7 @@ exports[`Base/Checkbox group render 1`] = `
       style="width:16px;height:16px"
     >
       <svg
-        class="qicon qicon-check qicon-dark"
+        class="qicon qicon-check qicon-light"
         style="--primary-color:#fff;--secondary-color:#fff"
       >
         <use
@@ -59,7 +59,7 @@ exports[`Base/Checkbox group render 1`] = `
       style="width:16px;height:16px"
     >
       <svg
-        class="qicon qicon-check qicon-dark"
+        class="qicon qicon-check qicon-light"
         style="--primary-color:#fff;--secondary-color:#fff"
       >
         <use
