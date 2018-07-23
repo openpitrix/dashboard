@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 
-import { Icon, Notification } from 'components/Base';
+import { Icon, Notification, Image } from 'components/Base';
 import styles from './index.scss';
 
 export default class TdName extends PureComponent {
@@ -47,8 +47,8 @@ export default class TdName extends PureComponent {
 
     return (
       <span className={styles.tdName}>
-        {isIcon && <Icon name={image} size={24} type="coloured" />}
-        {!isIcon && image && <img src={image} className={styles.image} />}
+        {isIcon && <Icon name={image} size={24} />}
+        {!isIcon && <Image src={image} className={styles.image} />}
         <span className={styles.info}>
           {linkUrl && (
             <Link className={styles.name} to={linkUrl} title={name}>

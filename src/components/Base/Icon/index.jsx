@@ -79,7 +79,8 @@ class Icon extends React.PureComponent {
       clickable,
       changeable,
       disabled,
-      color
+      color,
+      ...rest
     } = this.props;
 
     let styles = style;
@@ -111,6 +112,7 @@ class Icon extends React.PureComponent {
           className
         )}
         onClick={onClick}
+        {...rest}
       >
         <svg className={`${prefix} ${prefix}-${name} ${prefix}-${type}`} style={colorStyles}>
           <use xlinkHref={`#${name}`} />

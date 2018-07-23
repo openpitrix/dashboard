@@ -14,3 +14,4 @@ export Switch from './Switch';
 export Table from './Table';
 export Timeline from './Timeline';
 export Tooltip from './Tooltip';
+export Image from './Image';

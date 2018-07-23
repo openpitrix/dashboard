@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { getPastTime, imgPlaceholder } from 'utils';
+import { getPastTime } from 'utils';
 
 import styles from './index.scss';
 

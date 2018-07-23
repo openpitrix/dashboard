@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
+import { Image } from 'components/Base';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
-import { imgPlaceholder } from 'utils';
 
 import styles from './index.scss';
 
@@ -18,11 +18,10 @@ export default class AppCard extends PureComponent {
 
   render() {
     const { appDetail, repoName } = this.props;
-    const imgPhd = imgPlaceholder(24);
 
     return (
       <div className={styles.detailCard}>
-        <img src={appDetail.icon || imgPhd} className={styles.icon} alt="Icon" />
+        <Image src={appDetail.icon} className={styles.icon} alt="Icon" />
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
           <CopyId id={appDetail.app_id} />
