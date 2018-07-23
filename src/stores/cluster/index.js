@@ -247,6 +247,7 @@ export default class ClusterStore extends Store {
     this.runtimeId = '';
     this.selectedRowKeys = [];
     this.clusterIds = [];
+    this.selectStatus = '';
   };
 
   @action
@@ -286,7 +287,7 @@ export default class ClusterStore extends Store {
 
   @action
   onChangeStatus = async status => {
-    this.selectStatus = this.selectStatus === status ? '' : status;
+    this.selectStatus = typeof status === 'string' ? [status] : status;
     await this.fetchAll({ status: this.selectStatus });
   };
 

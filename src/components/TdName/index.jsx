@@ -13,7 +13,12 @@ export default class TdName extends PureComponent {
     name: PropTypes.string,
     description: PropTypes.string,
     linkUrl: PropTypes.string,
-    noCopy: PropTypes.bool
+    noCopy: PropTypes.bool,
+    noIcon: PropTypes.bool
+  };
+
+  static defaultProps = {
+    noIcon: false
   };
 
   state = {
@@ -40,6 +45,22 @@ export default class TdName extends PureComponent {
     });
   };
 
+  renderIcon() {
+    const { noIcon, image } = this.props;
+    const isIcon = ['appcenter', 'cluster'].includes(image);
+
+    if (noIcon) {
+      return null;
+    }
+
+    if (isIcon) {
+      return <Icon name={image} size={24} />;
+    }
+    if (!isIcon) {
+      return <Image src={image} className={styles.image} />;
+    }
+  }
+
   render() {
     const { image, name, description, linkUrl, noCopy } = this.props;
     const { message } = this.state;
@@ -47,8 +68,7 @@ export default class TdName extends PureComponent {
 
     return (
       <span className={styles.tdName}>
-        {isIcon && <Icon name={image} size={24} />}
-        {!isIcon && <Image src={image} className={styles.image} />}
+        {this.renderIcon()}
         <span className={styles.info}>
           {linkUrl && (
             <Link className={styles.name} to={linkUrl} title={name}>

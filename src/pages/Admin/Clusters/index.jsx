@@ -148,6 +148,7 @@ export default class Clusters extends Component {
             name={cl.name}
             description={cl.cluster_id}
             linkUrl={`/dashboard/cluster/${cl.cluster_id}`}
+            noIcon
           />
         )
       },

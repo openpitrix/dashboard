@@ -21,7 +21,7 @@ export default class AppCard extends PureComponent {
 
     return (
       <div className={styles.detailCard}>
-        <Image src={appDetail.icon} className={styles.icon} alt="Icon" />
+        <Image src={appDetail.icon} className={styles.icon} size={24} alt="Icon" />
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
           <CopyId id={appDetail.app_id} />

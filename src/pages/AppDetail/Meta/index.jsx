@@ -9,7 +9,7 @@ import styles from './index.scss';
 const Meta = ({ app }) => {
   return (
     <div className={styles.meta}>
-      <Image src={app.icon} className={styles.icon} />
+      <Image src={app.icon} className={styles.icon} size={48} />
       <div className={styles.title}>
         {app.name}
         <span className={styles.latestVersion}>{get(app, 'latest_app_version.name')}</span>
