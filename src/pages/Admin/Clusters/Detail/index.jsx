@@ -264,7 +264,6 @@ export default class ClusterDetail extends Component {
                   filterList={filterList}
                   pagination={pagination}
                 />
-                <div className={styles.total}>Total: {clusterNodes.length}</div>
               </Card>
               {this.clusterJobsModal()}
               {this.clusterParametersModal()}

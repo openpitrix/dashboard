@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { Icon } from 'components/Base';
+import { Icon, Image } from 'components/Base';
+
 import styles from './index.scss';
 
 export default class Card extends PureComponent {
@@ -16,11 +17,12 @@ export default class Card extends PureComponent {
   render() {
     const { icon, name, desc, fold } = this.props;
     const iconSize = fold ? 36 : 48;
+
     return (
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
         <div className={styles.title}>
-          {icon && <img src={icon} className={styles.icon} alt="Icon" />}
-          {!icon && <Icon name={`appcenter`} size={iconSize} type={`light`} />}
+          {icon && <Image src={icon} className={styles.icon} alt="Icon" />}
+          {!icon && <Icon name="appcenter" size={iconSize} />}
           <p className={styles.name}>{name}</p>
           <p className={classnames(styles.desc, { [styles.hide]: !fold })} title={desc}>
             {desc}

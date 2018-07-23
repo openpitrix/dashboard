@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-
 import { Link } from 'react-router-dom';
-import Icon from 'components/Base/Icon';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
-import Popover from 'components/Base/Popover';
+
+import { Icon, Button, Input, Select, Popover, Image } from 'components/Base';
 import Layout from 'components/Layout';
 
 import styles from './index.scss';
@@ -46,7 +42,7 @@ export default class InstalledApps extends Component {
               {appStore.installedApps &&
                 appStore.installedApps.map(item => (
                   <li key={item.id} className={styles.listItem}>
-                    <img className={styles.icon} src={item.icon} />
+                    <Image className={styles.icon} src={item.icon} />
                     <div className={styles.name}>
                       <Link to={`/app/${item.id}`}>{item.name}</Link>
                     </div>

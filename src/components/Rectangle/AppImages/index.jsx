@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from 'components/Base';
+import { Icon, Image } from 'components/Base';
+
 import styles from './index.scss';
 
 export default class AppImages extends Component {
@@ -20,9 +21,9 @@ export default class AppImages extends Component {
               .map(
                 ({ app_id, icon }) =>
                   icon ? (
-                    <img key={app_id} src={icon} />
+                    <Image key={app_id} src={icon} />
                   ) : (
-                    <Icon key={app_id} size={24} name="appcenter" type="coloured" />
+                    <Icon key={app_id} size={24} name="appcenter" />
                   )
               )}
           <span className={styles.totalNum}>{apps ? apps.length : 0}</span>

@@ -11,7 +11,7 @@ import Toolbar from 'components/Toolbar';
 import CategoryCard from 'components/DetailCard/CategoryCard';
 import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
-import { imgPlaceholder, getObjName } from 'utils';
+import { getObjName } from 'utils';
 
 import styles from './index.scss';
 
@@ -145,7 +145,6 @@ export default class CategoryDetail extends Component {
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
     const { isLoading, appCount, totalCount, selectStatus } = appStore;
-    const imgPhd = imgPlaceholder();
 
     const columns = [
       {
@@ -156,7 +155,7 @@ export default class CategoryDetail extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon || imgPhd}
+            image={item.icon}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
