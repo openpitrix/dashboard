@@ -173,7 +173,10 @@ export default class AppDeployStore extends Store {
   async fetchSubnets(runtimeId) {
     const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
     this.subnets = get(result, 'subnet_set', []);
-    if (this.subnets[0]) this.subnetId = this.subnets[0].subnet_id;
+    let arrSubnets = this.subnets.toJSON();
+    if (arrSubnets[0]) {
+      this.subnetId = arrSubnets[0].subnet_id;
+    }
   }
 
   @action

@@ -15,6 +15,7 @@ import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Icon, Table } from 'components/Base';
 import { formatTime, getSessInfo, getLoginDate, getObjName, getPastTime } from 'src/utils';
+import resourceStatus from 'utils/resource-status';
 
 import styles from './index.scss';
 
@@ -38,14 +39,12 @@ export default class Overview extends React.Component {
     userStore,
     runtimeStore
   }) {
-    await appStore.fetchAll({ status: ['active', 'deleted'] });
-    await clusterStore.fetchAll({
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
-    });
-    await repoStore.fetchAll({ status: ['active', 'deleted'] });
+    await appStore.fetchAll({ status: resourceStatus.app });
+    await clusterStore.fetchAll({ status: resourceStatus.cluster });
+    await repoStore.fetchAll({ status: resourceStatus.repo });
     await categoryStore.fetchAll();
     await userStore.fetchAll();
-    await runtimeStore.fetchAll({ status: ['active', 'deleted'] });
+    await runtimeStore.fetchAll({ status: resourceStatus.runtime });
   }
 
   constructor(props) {
@@ -65,6 +64,7 @@ export default class Overview extends React.Component {
     const { appStore, clusterStore, repoStore, categoryStore, userStore, t } = this.props;
     const countLimit = 5;
 
+    const { isLoading } = appStore;
     const appList = appStore.apps.slice(0, countLimit);
     const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
@@ -83,7 +83,7 @@ export default class Overview extends React.Component {
     };
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <Row>
           <Grid>
             <Section>

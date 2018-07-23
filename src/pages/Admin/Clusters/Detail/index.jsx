@@ -225,7 +225,10 @@ export default class ClusterDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
+      <Layout
+        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
+        isloading={isLoading}
+      >
         <Grid>
           <Section>
             <Card>
