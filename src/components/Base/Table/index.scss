@@ -127,10 +127,12 @@
   }
   :global{
     .icon{
-      float: right;
+      //float: right;
+      margin-left: 8px;
     }
   }
 }
+
 .noData{
   padding: 20px 0;
   text-align: center;

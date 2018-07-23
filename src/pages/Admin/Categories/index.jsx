@@ -17,8 +17,8 @@ import styles from './index.scss';
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
     categoryStore.isDetailPage = false;
-    await appStore.fetchApps();
     await categoryStore.fetchAll();
+    await appStore.fetchApps();
   }
 
   constructor(props) {
@@ -93,6 +93,7 @@ export default class Categories extends Component {
       showCreateCategory,
       getCategoryApps
     } = categoryStore;
+
     const categories = categoryStore.categories.toJSON();
     const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
