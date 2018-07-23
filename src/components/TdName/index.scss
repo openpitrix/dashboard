@@ -55,7 +55,10 @@
   }
 }
 .repoName {
+  float: left;
+  width: 100px;
   line-height: 24px;
+  @include textCut;
   :global{
     .icon {
       float: left;

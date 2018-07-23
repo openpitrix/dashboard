@@ -155,7 +155,7 @@ export default class CategoryDetail extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon}
+            image={item.icon || 'appcenter'}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )

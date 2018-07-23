@@ -20,8 +20,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore, clusterStore }) {
-    runtimeStore.loadPageInit();
+  static async onEnter({ runtimeStore, clusterStore }, { isBack }) {
+    runtimeStore.loadPageInit(isBack !== 'back');
     await runtimeStore.fetchAll();
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({

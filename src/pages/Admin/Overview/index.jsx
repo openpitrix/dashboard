@@ -40,7 +40,7 @@ export default class Overview extends React.Component {
   }) {
     await appStore.fetchAll({ status: ['active', 'deleted'] });
     await clusterStore.fetchAll({
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
     });
     await repoStore.fetchAll({ status: ['active', 'deleted'] });
     await categoryStore.fetchAll();

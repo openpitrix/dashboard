@@ -5,6 +5,8 @@ import classnames from 'classnames';
 import Status from '../Status';
 import TagShow from '../TagShow';
 import TimeShow from 'components/TimeShow';
+
+import { ProviderName } from 'components/TdName';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
@@ -31,8 +33,16 @@ export default class RuntimeCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Runtime Provider</span>
-            {detail.repo_id && detail.providers.map(data => <span key={data}>{data}</span>)}
-            {detail.runtime_id && <span>{detail.provider}</span>}
+            {detail.repo_id && (
+              <div className={styles.labels}>
+                {detail.providers.map(data => (
+                  <ProviderName key={data} provider={data} name={data} />
+                ))}
+              </div>
+            )}
+            {detail.runtime_id && (
+              <ProviderName provider={detail.provider} name={detail.provider} />
+            )}
           </li>
           {detail.repo_id && (
             <li>

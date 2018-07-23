@@ -24,8 +24,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore }) {
-    appStore.loadPageInit();
+  static async onEnter({ appStore, categoryStore, repoStore }, { isBack }) {
+    appStore.loadPageInit(isBack !== 'back');
     await appStore.fetchAll();
     await appStore.appStatistics();
     await repoStore.fetchAll({ status: ['active', 'deleted'] });

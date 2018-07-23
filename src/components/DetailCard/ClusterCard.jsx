@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Status from 'components/Status';
+import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 import styles from './index.scss';
@@ -37,7 +38,9 @@ export default class ClusterCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Runtime</span>
-            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{runtimeName}</Link>
+            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
+              <ProviderName provider={detail.provider} name={detail.provider} />
+            </Link>
           </li>
           <li>
             <span className={styles.name}>App</span>

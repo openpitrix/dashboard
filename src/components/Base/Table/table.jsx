@@ -259,7 +259,7 @@ export default class Table extends React.Component {
           newColumn.title = (
             <Popover content={this.renderFilterContent(filter)} className={styles.filterOuter}>
               {newColumn.title}
-              <Icon name="caret-down" />
+              <Icon name="caret-down" type="dark" />
             </Popover>
           );
         }

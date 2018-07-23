@@ -11,6 +11,7 @@ import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
+import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
@@ -32,7 +33,8 @@ export default class RepoDetail extends Component {
     });
     await runtimeStore.fetchAll({
       repo_id: repoId,
-      status: ['active', 'deleted']
+      status: ['active', 'deleted'],
+      provider: repoStore.repoDetail.providers
     });
     await clusterStore.fetchAll({
       repo_id: repoId,
@@ -152,7 +154,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Provider',
         key: 'provider',
-        render: item => item.provider
+        render: item => <ProviderName provider={item.provider} name={item.provider} />
       },
       {
         title: 'Zone',
@@ -209,7 +211,8 @@ export default class RepoDetail extends Component {
     let data = [];
     let columns = [];
     let searchTip = 'Search App Name';
-    let totalCount = 0;
+    let totalCount = 0,
+      currentPage = 1;
     let onSearch, onClearSearch, onRefresh, changeTable, isLoading, onChangeStatus, selectStatus;
     let selectors = [];
 
@@ -238,12 +241,14 @@ export default class RepoDetail extends Component {
           });
         };
         changeTable = async current => {
+          appStore.setCurrentPage(current);
           await fetchAll({
             status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * appStore.pageSize
           });
         };
+        currentPage = appStore.currentPage;
         onChangeStatus = async status => {
           appStore.selectStatus = appStore.selectStatus === status ? '' : status;
           await appStore.fetchAll({
@@ -278,12 +283,14 @@ export default class RepoDetail extends Component {
           });
         };
         changeTable = async current => {
+          runtimeStore.setCurrentPage(current);
           await runtimeStore.fetchAll({
             status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * runtimeStore.pageSize
           });
         };
+        currentPage = runtimeStore.currentPage;
         onChangeStatus = async status => {
           runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
           await runtimeStore.fetchAll({
@@ -326,7 +333,7 @@ export default class RepoDetail extends Component {
       tableType: curTagName,
       onChange: changeTable,
       total: totalCount,
-      current: 1
+      current: currentPage
     };
 
     return (

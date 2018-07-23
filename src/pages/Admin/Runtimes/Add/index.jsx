@@ -140,7 +140,6 @@ export default class RuntimeAdd extends Component {
               name="runtime_credential"
               onChange={this.store.changeCredential}
               value={credential}
-              maxLength="2000"
             />
             <p className={styles.credentialTip}>The Credential of provider</p>
           </div>

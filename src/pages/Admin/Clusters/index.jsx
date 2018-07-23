@@ -23,12 +23,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }) {
-    clusterStore.loadPageInit();
+  static async onEnter({ clusterStore, appStore, runtimeStore }, { isBack }) {
+    clusterStore.loadPageInit(isBack !== 'back');
     await clusterStore.fetchAll();
     await clusterStore.clusterStatistics();
     await appStore.fetchAll({ status: ['active', 'deleted'] });
-    await runtimeStore.fetchAll({ status: ['active', 'deleted'] });
+    await runtimeStore.fetchAll({ status: ['active', 'deleted'], limit: 10000 });
   }
 
   constructor(props) {

@@ -34,7 +34,7 @@ export default class RuntimeDetail extends Component {
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
-    // this.props.clusterStore.loadPageInit();
+    this.props.clusterStore.loadPageInit(true);
   }
 
   renderHandleMenu = id => {
@@ -138,7 +138,7 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes/back" />}>
         <Grid>
           <Section>
             <Card>

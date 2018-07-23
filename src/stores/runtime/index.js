@@ -46,7 +46,7 @@ export default class RuntimeStore extends Store {
       params.search_word = this.searchWord;
     }
     if (!params.status) {
-      params.status = this.defaultStatus;
+      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
     if (params.page) {
       delete params.page;
@@ -157,9 +157,12 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
   };
 
-  loadPageInit = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+  loadPageInit = flag => {
+    if (flag) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
     this.selectedRowKeys = [];
     this.runtimeIds = [];
   };

@@ -48,7 +48,7 @@ export default class TdName extends PureComponent {
     return (
       <span className={styles.tdName}>
         {isIcon && <Icon name={image} size={24} />}
-        {!isIcon && <Image src={image} className={styles.image} />}
+        {!isIcon && image && <Image src={image} className={styles.image} />}
         <span className={styles.info}>
           {linkUrl && (
             <Link className={styles.name} to={linkUrl} title={name}>

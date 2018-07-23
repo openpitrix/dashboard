@@ -53,6 +53,17 @@
     background-color: #fff;
     //margin-left: 192px;
   }
+  .loadTable{
+    position: static;
+    background-color: #fff;
+    .loadOuter{
+      position: static;
+      padding: 30px 0 50px;
+      .loader {
+        margin: 0 auto;
+      }
+    }
+  }
 }
 
 

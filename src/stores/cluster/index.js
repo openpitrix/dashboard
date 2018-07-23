@@ -56,20 +56,11 @@ export default class ClusterStore extends Store {
     }
     if (!params.runtime_id && this.runtimeId) {
       params.runtime_id = this.runtimeId;
-      if (!params.status) {
-        params.status = this.selectStatus || [
-          'active',
-          'stopped',
-          'ceased',
-          'pending',
-          'suspended',
-          'deleted'
-        ];
-      }
     }
     if (!params.status) {
-      params.status = this.selectStatus || this.defaultStatus;
+      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
+
     if (params.page) {
       delete params.page;
     }
@@ -241,9 +232,12 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  loadPageInit = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+  loadPageInit = flag => {
+    if (flag) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
     this.runtimeId = '';
     this.selectedRowKeys = [];
     this.clusterIds = [];
