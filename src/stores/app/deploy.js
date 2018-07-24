@@ -70,7 +70,7 @@ export default class AppDeployStore extends Store {
     e.preventDefault();
     this.getConfigData();
     if (this.checkResult === 'ok') {
-      this.isLoading = true;
+      //this.isLoading = true;
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
@@ -85,7 +85,7 @@ export default class AppDeployStore extends Store {
         let { errDetail } = this.appDeployed;
         this.showMsg(errDetail);
       }
-      this.isLoading = false;
+      //this.isLoading = false;
     } else {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }

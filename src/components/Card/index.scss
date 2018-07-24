@@ -59,12 +59,10 @@
   text-align: left;
   position: relative;
   .title{
-    :global{
-      .icon {
-        float: left;
-        width: 36px;
-        height: 36px;
-      }
+    .icon {
+      float: left;
+      width: 36px;
+      height: 36px;
     }
     .name {
       margin-left: 48px;

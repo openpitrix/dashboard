@@ -28,7 +28,10 @@ export default class Apps extends Component {
     appStore.loadPageInit();
     await appStore.fetchAll();
     await appStore.appStatistics();
-    await repoStore.fetchAll({ status: ['active', 'deleted'] });
+    await repoStore.fetchAll({
+      status: ['active', 'deleted'],
+      limit: 10000
+    });
     await categoryStore.fetchAll();
   }
 
@@ -89,10 +92,11 @@ export default class Apps extends Component {
 
   renderHandleMenu = item => {
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
-    let itemMenu = null;
-    let deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
+    let itemMenu = null,
+      deployEntry = null;
 
     if (item.status !== 'deleted') {
+      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>
@@ -190,7 +194,7 @@ export default class Apps extends Component {
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -198,7 +202,7 @@ export default class Apps extends Component {
         key: 'category',
         render: item =>
           get(item, 'category_set', [])
-            .filter(cate => cate.category_id)
+            .filter(cate => cate.category_id && cate.status === 'enabled')
             .map(cate => cate.name)
             .join(', ')
       },

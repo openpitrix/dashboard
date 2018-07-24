@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { formatTime } from 'utils';
 import styles from './index.scss';
@@ -19,7 +20,7 @@ export default class TimeAxis extends PureComponent {
               <li key={index}>
                 <div className={styles.word}>{time.job_action}</div>
                 <div className={styles.time}>{formatTime(time.create_time)}</div>
-                <span className={styles.dot} />
+                <span className={classnames(styles.dot, styles[time.job_action])} />
               </li>
             ))}
         </ul>

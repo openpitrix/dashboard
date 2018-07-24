@@ -8,7 +8,7 @@
     border-bottom: 1px solid $border-gray-li;
     &:hover{
       background-color: $li-hover-bg;
-      a{
+      [class*="tdName"] a{
         color: $link-hover;
       }
     }

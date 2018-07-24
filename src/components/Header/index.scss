@@ -39,7 +39,7 @@ $profile-hover-color: #efe6f8;
       border-radius: 16px;
       border: transparent;
       background-color: rgba(#ffffff, 0.1);
-
+      transition: color 1s ease-in;
       &:focus{
         transition: color .5s ease-in;
         width: 360px;
@@ -99,23 +99,19 @@ $profile-hover-color: #efe6f8;
   .profiles {
     min-width: 120px;
     margin-left: -70px;
-    .profileItem {
-      line-height: 32px;
+    a{
+      display: block;
       height: 32px;
-      padding: 0;
-      a{
-        display: inline-block;
-        padding: 0 12px;
-        width: 100%;
-        line-height: 32px;
-        font-size: $font14;
-        color: $N300;
-        border-radius: 0;
-        letter-spacing: 0;
-        &:hover {
-          background: $P10;
-          color: $N500;
-        }
+      padding: 0 12px;
+      width: 100%;
+      line-height: 32px;
+      font-size: $font14;
+      color: $N300;
+      border-radius: 0;
+      letter-spacing: 0;
+      &:hover {
+        background-color: $N10;
+        color: $N500;
       }
     }
   }

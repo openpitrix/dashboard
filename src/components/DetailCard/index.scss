@@ -69,6 +69,7 @@
       }
     }
     .name{
+      float: left;
       display: inline-block;
       width: 120px;
       margin-right: 24px;
@@ -78,8 +79,8 @@
       text-align: right;
     }
     .labels{
-      margin-top: -18px;
-      margin-left: 134px;
+      margin-top: 0px;
+      margin-left: 144px;
     }
   }
 }

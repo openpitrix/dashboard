@@ -49,12 +49,8 @@ export default class Header extends Component {
           {loggedInUser}
         </DropdownToggle>
         <DropdownMenu className={styles.profiles}>
-          <DropdownItem className={styles.profileItem}>
             <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
-          </DropdownItem>
-          <DropdownItem className={styles.profileItem}>
             <a href="/logout">{t('Log out')}</a>
-          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );

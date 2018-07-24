@@ -44,6 +44,7 @@ export default class AppStore extends Store {
     if (!params.status) {
       params.status = ['active', 'deleted'];
     }
+    params.limit = 10000;
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -70,7 +71,7 @@ export default class AppStore extends Store {
       params.search_word = this.searchWord;
     }
     if (!params.status) {
-      params.status = this.defaultStatus;
+      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
     if (params.page) {
       delete params.page;
@@ -108,6 +109,7 @@ export default class AppStore extends Store {
     const result = await this.request.get(`apps`, { app_id: appId });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { app: true };
   }
 
   @action
@@ -247,10 +249,14 @@ export default class AppStore extends Store {
   };
 
   loadPageInit = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+    if (!this.pageInitMap.app) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
     this.selectedRowKeys = [];
     this.appIds = [];
+    this.pageInitMap = {};
   };
 
   @action

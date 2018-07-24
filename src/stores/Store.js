@@ -7,6 +7,7 @@ export default class Store {
 
   constructor(initialState, branch) {
     extendObservable(this, {
+      pageInitMap: {},
       notifyType: observable.box('success'),
       notifyMsg: observable.box(''),
       sockMessage: '' // json.string websocket message

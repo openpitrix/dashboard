@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Status from 'components/Status';
+import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 import styles from './index.scss';
@@ -12,11 +13,12 @@ export default class ClusterCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object.isRequired,
     appName: PropTypes.string,
-    runtimeName: PropTypes.string
+    runtimeName: PropTypes.string,
+    provider: PropTypes.string
   };
 
   render() {
-    const { detail, appName, runtimeName } = this.props;
+    const { detail, appName, runtimeName, provider } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -37,7 +39,9 @@ export default class ClusterCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Runtime</span>
-            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{runtimeName}</Link>
+            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
+              <ProviderName provider={runtimeName} name={provider} />
+            </Link>
           </li>
           <li>
             <span className={styles.name}>App</span>

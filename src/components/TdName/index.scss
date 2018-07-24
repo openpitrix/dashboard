@@ -23,7 +23,7 @@
       line-height: 16px;
       font-weight: 500;
       text-align: left;
-      color: $text-color;
+      color: $N500;
       max-width: 120px;
       overflow: hidden;
       white-space: nowrap;
@@ -35,8 +35,8 @@
       display: inline-block;
       line-height: 14px;
       font-size: $size-small;
-      color: #a6a1ab;
-      max-width: 116px;
+      color: $N75;
+      width: 110px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -48,14 +48,14 @@
         bottom: 5px;
         cursor: pointer;
       }
-      td:hover .fa-clipboard{
-        color: $link-hover;
-      }
     }
   }
 }
 .repoName {
-  line-height: 24px;
+  float: left;
+  width: 100px;
+  line-height: 16px;
+  @include textCut;
   :global{
     .icon {
       float: left;
@@ -63,5 +63,11 @@
     }
   }
 }
-
+:global {
+  .smallId {
+    [class*='description'] {
+      width: 75px !important;
+    }
+  }
+}
 

@@ -9,7 +9,7 @@
       padding-bottom: 25px;
       border-left: 2px solid #e2d0f2;
       &:first-child .dot, &:last-child .dot{
-        background-color: #cc5252;
+        //background-color: #cc5252;
       }
     }
     .word{
@@ -34,6 +34,9 @@
       border-radius: 50%;
       background-color: #24b36b;
       border: 2px solid #ffffff;
+    }
+    .StopClusters,DeleteClusters{
+      background-color: #cc5252;
     }
   }
 }

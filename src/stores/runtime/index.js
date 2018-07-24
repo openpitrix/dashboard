@@ -46,7 +46,7 @@ export default class RuntimeStore extends Store {
       params.search_word = this.searchWord;
     }
     if (!params.status) {
-      params.status = this.defaultStatus;
+      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
     if (params.page) {
       delete params.page;
@@ -81,6 +81,7 @@ export default class RuntimeStore extends Store {
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
     this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { runtime: true };
   };
 
   @action
@@ -158,10 +159,14 @@ export default class RuntimeStore extends Store {
   };
 
   loadPageInit = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+    if (!this.pageInitMap.runtime) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
     this.selectedRowKeys = [];
     this.runtimeIds = [];
+    this.pageInitMap = {};
   };
 
   @action

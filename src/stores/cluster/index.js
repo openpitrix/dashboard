@@ -16,7 +16,7 @@ export default class ClusterStore extends Store {
   @observable clusterCount = 0;
   @observable isModalOpen = false;
 
-  @observable clusterId = ''; // current delete cluster_id
+  @observable clusterId; // current delete cluster_id
   @observable operateType = '';
 
   @observable currentPage = 1;
@@ -56,20 +56,11 @@ export default class ClusterStore extends Store {
     }
     if (!params.runtime_id && this.runtimeId) {
       params.runtime_id = this.runtimeId;
-      if (!params.status) {
-        params.status = this.selectStatus || [
-          'active',
-          'stopped',
-          'ceased',
-          'pending',
-          'suspended',
-          'deleted'
-        ];
-      }
     }
     if (!params.status) {
-      params.status = this.selectStatus || this.defaultStatus;
+      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
+
     if (params.page) {
       delete params.page;
     }
@@ -106,6 +97,7 @@ export default class ClusterStore extends Store {
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });
     this.cluster = get(result, 'cluster_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { cluster: true };
   };
 
   @action
@@ -243,11 +235,15 @@ export default class ClusterStore extends Store {
 
   @action
   loadPageInit = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+    if (!this.pageInitMap.cluster) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
     this.runtimeId = '';
     this.selectedRowKeys = [];
     this.clusterIds = [];
+    this.pageInitMap = {};
     this.selectStatus = '';
   };
 

@@ -22,7 +22,11 @@ export default class Card extends PureComponent {
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
         <div className={styles.title}>
           {icon && <Image src={icon} className={styles.icon} alt="Icon" size={iconSize} />}
-          {!icon && <Icon name="appcenter" size={iconSize} />}
+          {!icon && (
+            <span className={styles.icon}>
+              <Icon name="appcenter" size={iconSize} />
+            </span>
+          )}
           <p className={styles.name}>{name}</p>
           <p className={classnames(styles.desc, { [styles.hide]: !fold })} title={desc}>
             {desc}

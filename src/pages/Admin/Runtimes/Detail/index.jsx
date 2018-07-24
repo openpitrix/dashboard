@@ -25,16 +25,18 @@ export default class RuntimeDetail extends Component {
     clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
-      runtime_id: runtimeId,
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
+      runtime_id: runtimeId
     });
-    await appStore.fetchAll({ status: ['active', 'deleted'] });
+    await appStore.fetchAll({
+      status: ['active', 'deleted'],
+      limit: 10000
+    });
   }
 
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
-    // this.props.clusterStore.loadPageInit();
+    this.props.clusterStore.loadPageInit(true);
   }
 
   renderHandleMenu = id => {

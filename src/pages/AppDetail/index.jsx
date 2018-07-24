@@ -39,10 +39,33 @@ export default class AppDetail extends Component {
     await appVersionStore.fetchAll({ app_id: appId });
   }
 
+  changePicture = (type, number) => {
+    const { appStore } = this.props;
+    let { currentPic } = appStore;
+    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
+    if (type === 'dot') {
+      currentPic = number;
+    }
+    if (type === 'pre' && currentPic > 2) {
+      currentPic -= 2;
+    }
+    if (type === 'next' && currentPic + 2 < pictures.length) {
+      currentPic += 2;
+    }
+    appStore.currentPic = currentPic;
+    return currentPic;
+  };
+
   renderBody() {
     const { appStore } = this.props;
     // mock
-    return <QingCloud app={appStore.appDetail} currentPic={appStore.currentPic} />;
+    return (
+      <QingCloud
+        app={appStore.appDetail}
+        currentPic={appStore.currentPic}
+        changePicture={this.changePicture}
+      />
+    );
   }
 
   render() {
@@ -80,7 +103,11 @@ export default class AppDetail extends Component {
       <Section>
         <Panel className={styles.detailCard}>
           <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
-            <Button className={styles.deployBtn} type="primary">
+            <Button
+              className={styles.deployBtn}
+              type="primary"
+              disabled={appDetail.status === 'deleted'}
+            >
               {t('Deploy')}
             </Button>
           </Link>
