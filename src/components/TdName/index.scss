@@ -25,8 +25,7 @@
       text-align: left;
       color: $N500;
       max-width: 120px;
-      overflow: hidden;
-      white-space: nowrap;
+      @include textCut;
       &:hover{
         color: $link-hover;
       }

@@ -1,4 +1,4 @@
-const readme =
+const markdown =
   '# OpenPitrix Dashboard\n' +
   '[![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)\n' +
   '[![docker build status](https://img.shields.io/docker/build/openpitrix/dashboard.svg)](https://cloud.docker.com/swarm/openpitrix/repository/docker/openpitrix/dashboard/builds)\n' +
@@ -78,4 +78,4 @@ const readme =
   '\n' +
   'We are happy to see you :smiley:\n';
 
-export default readme;
+export default markdown;

@@ -14,16 +14,25 @@ import { QingCloud, Helm } from './Body';
 
 import styles from './index.scss';
 
-const VersionItem = ({ title = '', value = '' }) => (
+const VersionItem = ({ title = '', value = '', type = '' }) => (
   <div className={styles.versionItem}>
     <div className={styles.title}>{title}</div>
-    <div className={styles.value}>{value}</div>
+    <div className={styles.value}>
+      {type === 'link' ? (
+        <a target="_blank" href={value}>
+          {value}
+        </a>
+      ) : (
+        type === 'array' && value.map((data, index) => <div key={index}>{data}</div>)
+      )}
+    </div>
   </div>
 );
 
 VersionItem.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.node
+  value: PropTypes.node,
+  type: PropTypes.string
 };
 
 @translate()
@@ -40,6 +49,9 @@ export default class AppDetail extends Component {
     await appVersionStore.fetchAll({ app_id: appId });
     if (appStore.appDetail.repo_id) {
       repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
+    if (appStore.appDetail.latest_app_version) {
+      appVersionStore.fetchPackageFiles(appStore.appDetail.latest_app_version.version_id);
     }
   }
 
@@ -61,32 +73,23 @@ export default class AppDetail extends Component {
 
   renderBody() {
     const { appStore } = this.props;
-    const pictures = [
-      '/assets/pictrues/pic2.png',
-      '/assets/pictrues/pic3.png',
-      '/assets/pictrues/pic4.png',
-      '/assets/pictrues/pic5.png',
-      '/assets/pictrues/pic6.jpeg',
-      '/assets/pictrues/pic1.jpeg'
-    ];
 
-    // mock
     return (
       <QingCloud
         app={appStore.appDetail}
         currentPic={appStore.currentPic}
         changePicture={this.changePicture}
-        pictures={pictures}
+        pictures={appStore.appDetail.screenshots}
       />
     );
   }
 
   render() {
-    const { appStore, repoStore } = this.props;
+    const { appStore, repoStore, appVersionStore } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
-
+    const isScreenshots = repoProvider !== 'kubernetes';
     return (
       <Layout
         noTabs
@@ -98,11 +101,11 @@ export default class AppDetail extends Component {
           <Section size={8}>
             <Panel className={styles.introCard}>
               <Meta app={appDetail} />
-              {repoProvider === 'kubernetes' && <Helm />}
-              {repoProvider !== 'kubernetes' && (
+              {!isScreenshots && <Helm readme={appVersionStore.readme} />}
+              {isScreenshots && (
                 <Fragment>
-                  {this.renderBody()}
-                  <Information app={appDetail} />
+                  {appDetail.screenshots && this.renderBody()}
+                  <Information app={appDetail} repo={repoStore.repoDetail} />
                 </Fragment>
               )}
             </Panel>
@@ -117,6 +120,15 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
+    let maintainers = [];
+    console.log(get(appDetail, 'maintainers'));
+    if (get(appDetail, 'maintainers')) {
+      const objs = JSON.parse(get(appDetail, 'maintainers'));
+      objs.map(obj => {
+        maintainers.push(obj.name);
+        maintainers.push(obj.email);
+      });
+    }
 
     return (
       <Section>
@@ -150,9 +162,9 @@ export default class AppDetail extends Component {
             title={t('Application Version')}
             value={get(appDetail, 'latest_app_version.name')}
           />
-          <VersionItem title={t('Home')} value={appDetail.home} />
-          <VersionItem title={t('Source repository')} value={appDetail.sources} />
-          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} />
+          <VersionItem title={t('Home')} value={appDetail.home} type="link" />
+          <VersionItem title={t('Source repository')} value={appDetail.sources} type="link" />
+          <VersionItem title={t('Maintainers')} value={maintainers} type="array" />
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>

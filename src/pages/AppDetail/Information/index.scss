@@ -1,14 +1,13 @@
 @import "~scss/vars";
 
 .information {
-  margin-top: 22px;
-
+  margin-top: 32px;
   .title {
-    margin: 8px 0;
-    line-height: 21px;
-    font-size: 18px;
+    margin-bottom: 16px;
+    font-size: 20px;
     font-weight: 500;
-    color: $title-color;
+    line-height: 1.2;
+    color: $N500;
   }
   .description{
     line-height: 24px;
@@ -17,21 +16,25 @@
     color: #576075;
   }
   .content {
-    padding-bottom: 30px;
-
     dt, dd {display: inline-block;}
 
     dl{
-      line-height: 30px;
+      margin-bottom: 8px;
+      line-height: 24px;
       font-size: 14px;
       font-weight: normal;
+      &:last-child{
+        margin-bottom: 0;
+      }
     }
     dt{
+      margin-right: 24px;
       width: 120px;
       color: $N75;
       font-weight: normal;
     }
     dd{
+      vertical-align: middle;
       color: $N300;
     }
   }

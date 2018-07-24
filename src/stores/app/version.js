@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
 import { getFormData } from 'utils';
+import { Base64 } from 'js-base64';
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
@@ -10,6 +11,7 @@ export default class AppVersionStore extends Store {
   @observable isModalOpen = false;
   @observable isDialogOpen = false;
   @observable dialogType = ''; // delete, show_all
+  @observable readme = '';
 
   @action
   async fetchAll(params = {}) {
@@ -103,5 +105,18 @@ export default class AppVersionStore extends Store {
       this.hideModal();
       await this.fetchAll({ app_id: params.app_id });
     });
+  }
+
+  @action
+  async fetchPackageFiles(versionId) {
+    const result = await this.request.get(`app_version/package/files`, {
+      version_id: versionId
+    });
+    const files = get(result, 'files', {});
+    if (files['README.md']) {
+      this.readme = Base64.decode(files['README.md']);
+    } else {
+      this.readme = '';
+    }
   }
 }
