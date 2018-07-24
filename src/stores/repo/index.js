@@ -121,6 +121,16 @@ export default class RepoStore extends Store {
       return repo;
     });
   };
+
+  @action
+  startIndexer = async repoId => {
+    let repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
+    if (repoEvent.repo_id) {
+      this.showMsg(`Started repo indexer: ${repoEvent.repo_id}`, 'success');
+    } else {
+      this.showMsg(`Start repo indexer failed: ${repoEvent.errDetail}`);
+    }
+  };
 }
 
 export Create from './create';

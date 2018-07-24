@@ -130,11 +130,12 @@ export default class ClusterStore extends Store {
   @action
   remove = async clusterIds => {
     const result = await this.request.post('clusters/delete', { cluster_id: clusterIds });
+    this.hideModal();
+
     if (_.get(result, 'cluster_id')) {
-      this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.showMsg('Delete cluster successfully.');
+      this.showMsg('Delete cluster successfully.', 'success');
     } else {
       let { err, errDetail } = result;
       this.showMsg(errDetail || err);
