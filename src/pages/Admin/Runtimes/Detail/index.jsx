@@ -25,10 +25,12 @@ export default class RuntimeDetail extends Component {
     clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
-      runtime_id: runtimeId,
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+      runtime_id: runtimeId
     });
-    await appStore.fetchAll({ status: ['active', 'deleted'] });
+    await appStore.fetchAll({
+      status: ['active', 'deleted'],
+      limit: 10000
+    });
   }
 
   constructor(props) {
@@ -138,7 +140,7 @@ export default class RuntimeDetail extends Component {
     const curTag = 'Clusters';
 
     return (
-      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes/back" />}>
+      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
         <Grid>
           <Section>
             <Card>

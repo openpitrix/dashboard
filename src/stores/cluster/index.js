@@ -97,6 +97,7 @@ export default class ClusterStore extends Store {
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });
     this.cluster = get(result, 'cluster_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { cluster: true };
   };
 
   @action
@@ -232,8 +233,8 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  loadPageInit = flag => {
-    if (flag) {
+  loadPageInit = () => {
+    if (!this.pageInitMap.cluster) {
       this.currentPage = 1;
       this.selectStatus = '';
       this.searchWord = '';
@@ -241,6 +242,7 @@ export default class ClusterStore extends Store {
     this.runtimeId = '';
     this.selectedRowKeys = [];
     this.clusterIds = [];
+    this.pageInitMap = {};
   };
 
   @action

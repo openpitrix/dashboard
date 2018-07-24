@@ -21,7 +21,9 @@ export default class AppCard extends PureComponent {
 
     return (
       <div className={styles.detailCard}>
-        <Image src={appDetail.icon} className={styles.icon} alt="Icon" />
+        <span className={styles.icon}>
+          <Image src={appDetail.icon} alt="Icon" />
+        </span>
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
           <CopyId id={appDetail.app_id} />
@@ -45,7 +47,7 @@ export default class AppCard extends PureComponent {
           <li>
             <span className={styles.name}>Category</span>
             {get(appDetail, 'category_set', [])
-              .filter(cate => cate.category_id)
+              .filter(cate => cate.category_id && cate.status === 'enabled')
               .map(cate => cate.name)
               .join(', ')}
           </li>

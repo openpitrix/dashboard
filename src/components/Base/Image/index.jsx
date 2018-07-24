@@ -9,10 +9,12 @@ import styles from './index.scss';
 export default class Image extends React.Component {
   static propTypes = {
     src: PropTypes.string,
+    iconSize: PropTypes.number,
     className: PropTypes.string
   };
 
   static defaultProps = {
+    iconSize: 24,
     src: ''
   };
 
@@ -42,11 +44,11 @@ export default class Image extends React.Component {
   }
 
   render() {
-    const { src, className, ...rest } = this.props;
+    const { src, className, iconSize, ...rest } = this.props;
     const { failed } = this.state;
 
     if (failed) {
-      return <Icon name="picture" size={24} type="dark" data-origin-url={src} />;
+      return <Icon name="picture" size={iconSize} type="dark" data-origin-url={src} />;
     }
 
     return (

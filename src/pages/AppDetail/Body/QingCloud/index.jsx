@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import Section from '../../section';
 
 import styles from './index.scss';
+import Icon from 'components/Base/Icon';
 
 @observer
 export default class QingCloud extends React.Component {
@@ -16,24 +17,12 @@ export default class QingCloud extends React.Component {
 
   static propTypes = {
     app: PropTypes.object,
-    currentPic: PropTypes.number
+    currentPic: PropTypes.number,
+    changePicture: PropTypes.func
   };
 
   changePicture = (type, number) => {
-    let { currentPic } = this.props;
-    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    if (type === 'dot') {
-      currentPic = number;
-    }
-    if (type === 'pre' && currentPic > 2) {
-      currentPic -= 2;
-    }
-    if (type === 'next' && currentPic + 2 < pictures.length) {
-      currentPic += 2;
-    }
-
-    return currentPic;
+    this.props.changePicture(type, number);
   };
 
   render() {
@@ -56,10 +45,10 @@ export default class QingCloud extends React.Component {
 
         <div className={styles.slider}>
           <label className={styles.pre} onClick={() => this.changePicture('pre')}>
-            pre
+            <Icon name="chevron-left" size={36} />
           </label>
           <label className={styles.next} onClick={() => this.changePicture('next')}>
-            next
+            <Icon name="chevron-right" size={36} />
           </label>
           <div className={styles.dotList}>
             {pictures.map(data => {

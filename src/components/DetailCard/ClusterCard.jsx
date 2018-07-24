@@ -13,11 +13,12 @@ export default class ClusterCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object.isRequired,
     appName: PropTypes.string,
-    runtimeName: PropTypes.string
+    runtimeName: PropTypes.string,
+    provider: PropTypes.string
   };
 
   render() {
-    const { detail, appName, runtimeName } = this.props;
+    const { detail, appName, runtimeName, provider } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -39,7 +40,7 @@ export default class ClusterCard extends PureComponent {
           <li>
             <span className={styles.name}>Runtime</span>
             <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
-              <ProviderName provider={detail.provider} name={detail.provider} />
+              <ProviderName provider={runtimeName} name={provider} />
             </Link>
           </li>
           <li>

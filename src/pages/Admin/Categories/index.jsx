@@ -17,8 +17,8 @@ import styles from './index.scss';
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
     categoryStore.isDetailPage = false;
-    await appStore.fetchApps();
     await categoryStore.fetchAll();
+    await appStore.fetchApps();
   }
 
   constructor(props) {

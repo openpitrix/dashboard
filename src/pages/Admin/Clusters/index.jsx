@@ -23,12 +23,15 @@ import styles from './index.scss';
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }, { isBack }) {
-    clusterStore.loadPageInit(isBack !== 'back');
+  static async onEnter({ clusterStore, appStore, runtimeStore }) {
+    clusterStore.loadPageInit();
     await clusterStore.fetchAll();
     await clusterStore.clusterStatistics();
     await appStore.fetchAll({ status: ['active', 'deleted'] });
-    await runtimeStore.fetchAll({ status: ['active', 'deleted'], limit: 10000 });
+    await runtimeStore.fetchAll({
+      status: ['active', 'deleted'],
+      limit: 10000
+    });
   }
 
   constructor(props) {
@@ -55,7 +58,9 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
-        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+        {status !== 'deleted' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+        )}
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>Start cluster</span>
         )}

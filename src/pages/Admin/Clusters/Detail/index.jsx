@@ -160,6 +160,7 @@ export default class ClusterDetail extends Component {
     const clusterNodes = clusterStore.clusterNodes.toJSON();
     const appName = get(appStore.appDetail, 'name', '');
     const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
+    const provider = get(runtimeStore.runtimeDetail, 'provider', '');
     const { clusterJobsOpen } = clusterStore;
 
     const columns = [
@@ -225,14 +226,21 @@ export default class ClusterDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="clusters" link="/dashboard/clusters/back" />}>
+      <Layout backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
         <Grid>
           <Section>
             <Card>
-              <ClusterCard detail={detail} appName={appName} runtimeName={runtimeName} />
-              <Popover className="operation" content={this.renderHandleMenu()}>
-                <Icon name="more" />
-              </Popover>
+              <ClusterCard
+                detail={detail}
+                appName={appName}
+                runtimeName={runtimeName}
+                provider={provider}
+              />
+              {detail.status !== 'deleted' && (
+                <Popover className="operation" content={this.renderHandleMenu()}>
+                  <Icon name="more" />
+                </Popover>
+              )}
             </Card>
             <Card className={styles.activities}>
               <div className={styles.title}>

@@ -27,8 +27,11 @@ export default class CategoryDetail extends Component {
     appStore.currentPage = 1;
     appStore.searchWord = '';
     await categoryStore.fetch(categoryId);
-    await appStore.fetchAll({ category_id: categoryId, status: ['active', 'deleted'] });
-    await repoStore.fetchAll({ status: ['active', 'deleted'] });
+    await appStore.fetchAll({ category_id: categoryId });
+    await repoStore.fetchAll({
+      status: ['active', 'deleted'],
+      limit: 10000
+    });
   }
 
   componentDidUpdate() {

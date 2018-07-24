@@ -26,16 +26,13 @@ const routes = {
   '/:dash': Dash.Overview,
 
   '/:dash/apps': Dash.Apps,
-  '/:dash/apps/:isBack': Dash.Apps,
   '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/app/:appId/deploy': Dash.AppDeploy,
 
   '/:dash/clusters': Dash.Clusters,
-  '/:dash/clusters/:isBack': Dash.Clusters,
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
 
   '/:dash/runtimes': Dash.Runtimes,
-  '/:dash/runtimes/:isBack': Dash.Runtimes,
   '/:dash/runtime/create': Dash.RuntimeAdd,
   '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
   '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,

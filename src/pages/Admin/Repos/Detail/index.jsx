@@ -28,12 +28,10 @@ export default class RepoDetail extends Component {
     await repoStore.fetchRepoDetail(repoId);
     await repoStore.fetchRepoEvents({ repo_id: repoId });
     await appStore.fetchAll({
-      repo_id: repoId,
-      status: ['active', 'deleted']
+      repo_id: repoId
     });
     await runtimeStore.fetchAll({
       repo_id: repoId,
-      status: ['active', 'deleted'],
       provider: repoStore.repoDetail.providers
     });
     await clusterStore.fetchAll({
@@ -117,7 +115,7 @@ export default class RepoDetail extends Component {
         key: 'category',
         render: item =>
           get(item, 'category_set', [])
-            .filter(cate => cate.category_id)
+            .filter(cate => cate.category_id && cate.status === 'enabled')
             .map(cate => cate.name)
             .join(', ')
       },

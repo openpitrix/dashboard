@@ -109,6 +109,7 @@ export default class AppStore extends Store {
     const result = await this.request.get(`apps`, { app_id: appId });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { app: true };
   }
 
   @action
@@ -247,14 +248,15 @@ export default class AppStore extends Store {
     this.appIds = [];
   };
 
-  loadPageInit = flag => {
-    if (flag) {
+  loadPageInit = () => {
+    if (!this.pageInitMap.app) {
       this.currentPage = 1;
       this.selectStatus = '';
       this.searchWord = '';
     }
     this.selectedRowKeys = [];
     this.appIds = [];
+    this.pageInitMap = {};
   };
 
   @action

@@ -199,7 +199,7 @@ export default class AppDetail extends Component {
       <Layout
         msg={notifyMsg || appNotifyMsg}
         hideMsg={hideMsg || appHideMsg}
-        backBtn={<BackBtn label="apps" link="/dashboard/apps/back" />}
+        backBtn={<BackBtn label="apps" link="/dashboard/apps" />}
       >
         <Grid>
           <Section>

@@ -14,7 +14,7 @@ const Information = ({ app }) => {
         <dt>Catelog</dt>
         <dd>
           {get(app, 'category_set', [])
-            .filter(cate => cate.category_id)
+            .filter(cate => cate.category_id && cate.status === 'enabled')
             .map(cate => cate.name)
             .join(', ')}
         </dd>

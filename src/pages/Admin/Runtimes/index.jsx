@@ -20,12 +20,13 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore, clusterStore }, { isBack }) {
-    runtimeStore.loadPageInit(isBack !== 'back');
+  static async onEnter({ runtimeStore, clusterStore }) {
+    runtimeStore.loadPageInit();
     await runtimeStore.fetchAll();
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'],
+      limit: 10000
     });
   }
 
@@ -45,15 +46,19 @@ export default class Runtimes extends Component {
     }
   };
 
-  renderHandleMenu = id => {
+  renderHandleMenu = detail => {
     const { runtimeStore } = this.props;
     const { showDeleteRuntime } = runtimeStore;
 
     return (
-      <div id={id} className="operate-menu">
-        <Link to={`/dashboard/runtime/${id}`}>View runtime detail</Link>
-        <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
-        <span onClick={() => showDeleteRuntime(id)}>Delete runtime</span>
+      <div className="operate-menu">
+        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>View runtime detail</Link>
+        {detail.runtime_id !== 'status' && (
+          <Fragment>
+            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>Modify runtime</Link>
+            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>Delete runtime</span>
+          </Fragment>
+        )}
       </div>
     );
   };
@@ -172,7 +177,7 @@ export default class Runtimes extends Component {
         width: '80px',
         render: (text, item) => (
           <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item.runtime_id)}>
+            <Popover content={this.renderHandleMenu(item)}>
               <Icon name="more" />
             </Popover>
           </div>

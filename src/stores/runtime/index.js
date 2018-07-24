@@ -81,6 +81,7 @@ export default class RuntimeStore extends Store {
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
     this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { runtime: true };
   };
 
   @action
@@ -157,14 +158,15 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
   };
 
-  loadPageInit = flag => {
-    if (flag) {
+  loadPageInit = () => {
+    if (!this.pageInitMap.runtime) {
       this.currentPage = 1;
       this.selectStatus = '';
       this.searchWord = '';
     }
     this.selectedRowKeys = [];
     this.runtimeIds = [];
+    this.pageInitMap = {};
   };
 
   @action
