@@ -151,7 +151,7 @@ export default class Runtimes extends Component {
         render: item => <ProviderName name={item.provider} provider={item.provider} />
       },
       {
-        title: ' Zone/Namespace',
+        title: 'Zone/Namespace',
         dataIndex: 'zone',
         key: 'zone'
       },

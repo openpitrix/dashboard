@@ -279,6 +279,17 @@ export default class Table extends React.Component {
     );
   };
 
+  rowClassName=(record, index)=> {
+    let {selectedRowKeys}=this.state;
+    if('toJSON' in selectedRowKeys){
+      selectedRowKeys = selectedRowKeys.toJSON();
+    }
+    if(selectedRowKeys.includes(index)){
+      return 'row-selected'
+    }
+    return '';
+  }
+
   renderTable = () => {
     const { ...restProps } = this.props;
     const data = this.getTableData();
@@ -290,7 +301,7 @@ export default class Table extends React.Component {
       return newColumn;
     });
 
-    return <RcTable {...restProps} key="table" data={data} columns={columns} />;
+    return <RcTable {...restProps} key="table" data={data} columns={columns} rowClassName={this.rowClassName} />;
   };
 
   componentWillReceiveProps(nextProps) {
