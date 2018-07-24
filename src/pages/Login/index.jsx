@@ -30,42 +30,44 @@ export default class Login extends Component {
 
     return (
       <div className={styles.login}>
-        <div className={styles.loginTitle}>
-          <Logo url="/assets/logo_light.svg" />
-        </div>
-        <div className={styles.loginForm}>
-          <h1>{t('Login OpenPitrix')}</h1>
-          <Form onSubmit={throttle(this.handleSubmit, 1000)}>
-            <Form.Item className={styles.formItem} noLabel>
-              <Input
-                className={styles.formInput}
-                icon="human"
-                iconType="dark"
-                name="username"
-                iconSize={24}
-                placeholder={t('Username')}
-              />
-            </Form.Item>
-            <Form.Item className={styles.formItem} noLabel>
-              <Input
-                className={styles.formInput}
-                type="password"
-                icon="lock"
-                iconType="dark"
-                name="password"
-                iconSize={24}
-                placeholder={t('Password')}
-              />
-            </Form.Item>
-            <Form.Item className={styles.formItem} noLabel>
-              <Checkbox className={styles.checkbox}>{t('Remember me')}</Checkbox>
-            </Form.Item>
-            <Form.Item className={styles.formItem} noLabel>
-              <Button htmlType="submit" className={styles.submitBtn}>
-                {t('Login')}
-              </Button>
-            </Form.Item>
-          </Form>
+        <div className={styles.loginContent}>
+          <div className={styles.loginTitle}>
+            <Logo url="/assets/logo_light.svg" />
+          </div>
+          <div className={styles.loginForm}>
+            <h1>{t('Login OpenPitrix')}</h1>
+            <Form onSubmit={throttle(this.handleSubmit, 1000)}>
+              <Form.Item className={styles.formItem} noLabel>
+                <Input
+                  className={styles.formInput}
+                  icon="human"
+                  iconType="dark"
+                  name="username"
+                  iconSize={24}
+                  placeholder={t('Username')}
+                />
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Input
+                  className={styles.formInput}
+                  type="password"
+                  icon="lock"
+                  iconType="dark"
+                  name="password"
+                  iconSize={24}
+                  placeholder={t('Password')}
+                />
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Checkbox className={styles.checkbox}>{t('Remember me')}</Checkbox>
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Button htmlType="submit" className={styles.submitBtn}>
+                  {t('Login')}
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
 
         {this.renderErrMsg()}
