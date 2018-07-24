@@ -7,12 +7,12 @@ $fg-color: #78839e;
   position: static;
   width: 100%;
   height: $footer-height;
-  background-color: $background-color;
-  border-top: 1px solid $border;
+  background-color: $N0;
   box-sizing: border-box;
 
   .wrapper {
-    margin: 0 $layout-margin;
+    width: $content-width;
+    margin: 0 auto;
     color: $fg-color;
 
     .logo {
@@ -21,6 +21,11 @@ $fg-color: #78839e;
       font-size: $size-medium;
       line-height: $line-height;
       text-transform: uppercase;
+      :global {
+        img {
+          height: 16px;
+        }
+      }
     }
     .terms {
       display:inline-block;
@@ -38,6 +43,9 @@ $fg-color: #78839e;
 
         a {
           color: $fg-color;
+          &:hover {
+            color: $P75;
+          }
         }
       }
     }
