@@ -28,8 +28,9 @@
       }
     }
     input {
+      color: $N500;
       padding-left: 36px;
-      border-color: transparent;
+      border: transparent;
       border-radius: 16px;
       background-color: $N10;
       transition: all .3s ease-in-out;
@@ -39,7 +40,13 @@
         letter-spacing: 0;
       }
       &:focus {
-        border: solid 1px $P100;
+        font-weight: normal;
+        //color: $N45;
+        border: solid 1px #7749ac
+      }
+      &:hover {
+        //color: $N45;
+        border: solid 1px $N45;
       }
     }
   }
