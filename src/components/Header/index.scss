@@ -60,12 +60,12 @@ $profile-hover-color: #efe6f8;
 
   .menus, .locale {
     .translation {
-      color: rgba($title-color, 0.8);
+      color: $title-color;
     }
     a {
-      color: rgba($title-color, 0.8);
+      color: $title-color;
       &:hover {
-        background-color: rgba($title-color, 0.1);
+        color: rgba($title-color, 0.9);
       }
     }
   }
@@ -74,20 +74,25 @@ $profile-hover-color: #efe6f8;
 .menus {
   float: right;
   line-height: $header-height;
+
   a {
     padding: 5px 10px;
     border-radius: 12px;
-    color: $N500;
-    font-weight: 400;
+    color: rgba($title-color, 0.9);
+    font-weight: 500;
     font-style: normal;
     line-height: 16px;
     transition: all .3s ease-in-out;
+
     &:hover {
-      background-color: rgba($N500, 0.1);
+      color: rgba($title-color, 1);
     }
 
     .stickyHeader & {
-      color: $N0;
+      color: rgba($N0, 0.9);
+      &:hover {
+        color: rgba($N0, 1);
+      }
     }
   }
 
@@ -117,6 +122,7 @@ $profile-hover-color: #efe6f8;
   opacity: .9;
   cursor: pointer;
   line-height: 20px;
+  height: 20px;
 
   .stickyHeader & {
     color: $N0;

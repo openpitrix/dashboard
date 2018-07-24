@@ -15,6 +15,7 @@
     font-size: $body-size;
     color: $text-color;
     background-color: $body-background-color;
+    -webkit-font-smoothing: antialiased;
   }
 
   li {
