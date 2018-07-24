@@ -1,7 +1,8 @@
 @import "~scss/vars";
 
 .footer {
-  position: static;
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: $footer-height;
   background-color: $N0;

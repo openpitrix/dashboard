@@ -76,10 +76,10 @@
      @include textCut;
     }
   }
-  &:hover {
-    transform: translate3d(0, 0, 0);
-    box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
-  }
+  //&:hover {
+  //  transform: translate3d(0, 0, 0);
+  //  box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+  //}
 }
 
 .hide {

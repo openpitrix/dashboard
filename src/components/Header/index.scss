@@ -43,6 +43,13 @@ $profile-hover-color: #efe6f8;
       background-color: rgba($N0, 0.1);
       transition: color .5s ease-in;
 
+      &::placeholder {
+        font-size: 14px;
+        color: $P45;
+        line-height: 1.0;
+        letter-spacing: 0;
+      }
+
       &:focus {
         transition: width .2s ease-in;
         width: 360px;
