@@ -81,7 +81,6 @@ $profile-hover-color: #efe6f8;
 .menus {
   float: right;
   line-height: $header-height;
-
   a {
     padding: 5px 10px;
     border-radius: 12px;
@@ -132,8 +131,17 @@ $profile-hover-color: #efe6f8;
   cursor: pointer;
   line-height: 20px;
   height: 20px;
-
   .stickyHeader & {
-    color: $N0;
+    color: rgba($N0,0.9);
+  }
+  &::after{
+    position: relative;
+    top: 2px;
+    margin-left: 4px;
+  }
+  &:hover{
+    .stickyHeader & {
+      color: $N0;
+    }
   }
 }

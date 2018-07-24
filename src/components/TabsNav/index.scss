@@ -14,17 +14,21 @@
     overflow: hidden;
     li {
       display: inline-block;
-      margin-left: 24px;
+      margin: 0 12px;
       line-height: 46px;
       list-style: none;
       a {
         display: inline-block;
         font-size: $body-size;
-        color: $title-color;
+        color: $N300;
         box-sizing: border-box;
-        &.active {
-          border-bottom: 2px solid $primary;
-          color: $primary;
+        &.active{
+          border-bottom: 2px solid $P75;
+          color: $P75;
+          font-weight: 500;
+        }
+        &:hover{
+          color: $P75;
         }
       }
     }
