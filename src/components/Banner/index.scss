@@ -30,7 +30,7 @@
     input {
       color: $N500;
       padding-left: 36px;
-      border: transparent;
+      border: 1px solid rgba($N10, 0.1);
       border-radius: 16px;
       background-color: $N10;
       transition: all .3s ease-in-out;
@@ -42,7 +42,7 @@
       &:focus {
         font-weight: normal;
         //color: $N45;
-        border: solid 1px #7749ac
+        border: solid 1px #7749ac !important;
       }
       &:hover {
         //color: $N45;
