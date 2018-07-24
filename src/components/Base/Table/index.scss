@@ -128,7 +128,8 @@
   }
   :global{
     .icon{
-      //float: right;
+      position: relative;
+      top: 3px;
       margin-left: 8px;
     }
   }
