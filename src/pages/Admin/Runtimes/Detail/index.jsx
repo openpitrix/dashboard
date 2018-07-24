@@ -26,7 +26,7 @@ export default class RuntimeDetail extends Component {
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
       runtime_id: runtimeId,
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+      status: ['active', 'stopped', 'ceased', 'pending', 'suspended']
     });
     await appStore.fetchAll({ status: ['active', 'deleted'] });
   }
