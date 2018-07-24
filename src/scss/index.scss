@@ -93,4 +93,10 @@
     transform: translateY(-50%) scale(0.6);
     cursor: pointer;
   }
+
+  table {
+    .row-selected {
+      background: rgba(213, 218, 229, 0.15);
+    }
+  }
 }

@@ -6,34 +6,14 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 import { formatTime } from 'utils';
 
-import Layout, { Grid, Section, BackBtn, Panel } from 'components/Layout';
+import Layout, { Grid, Section, BackBtn, Panel, Card } from 'components/Layout';
 import Button from 'components/Base/Button';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
+import VersionItem from './versionItem';
 
 import styles from './index.scss';
-
-const VersionItem = ({ title = '', value = '', type = '' }) => (
-  <div className={styles.versionItem}>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.value}>
-      {type === 'link' ? (
-        <a target="_blank" href={value}>
-          {value}
-        </a>
-      ) : (
-        type === 'array' && value.map((data, index) => <div key={index}>{data}</div>)
-      )}
-    </div>
-  </div>
-);
-
-VersionItem.propTypes = {
-  title: PropTypes.string,
-  value: PropTypes.node,
-  type: PropTypes.string
-};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -72,24 +52,34 @@ export default class AppDetail extends Component {
   };
 
   renderBody() {
-    const { appStore } = this.props;
+    const { appStore, repoStore, appVersionStore } = this.props;
+    const { appDetail } = appStore;
+
+    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
+    const isHelmApp = providerName === 'kubernetes';
+
+    if (isHelmApp) {
+      return <Helm readme={appVersionStore.readme} />;
+    }
 
     return (
-      <QingCloud
-        app={appStore.appDetail}
-        currentPic={appStore.currentPic}
-        changePicture={this.changePicture}
-        pictures={appStore.appDetail.screenshots}
-      />
+      <Fragment>
+        <QingCloud
+          app={appDetail}
+          currentPic={appStore.currentPic}
+          changePicture={this.changePicture}
+          pictures={appDetail.screenshots}
+        />
+        <Information app={appDetail} repo={repoStore.repoDetail} />
+      </Fragment>
     );
   }
 
   render() {
-    const { appStore, repoStore, appVersionStore } = this.props;
+    const { appStore } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
-    const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
-    const isScreenshots = repoProvider !== 'kubernetes';
+
     return (
       <Layout
         noTabs
@@ -101,13 +91,7 @@ export default class AppDetail extends Component {
           <Section size={8}>
             <Panel className={styles.introCard}>
               <Meta app={appDetail} />
-              {!isScreenshots && <Helm readme={appVersionStore.readme} />}
-              {isScreenshots && (
-                <Fragment>
-                  {appDetail.screenshots && this.renderBody()}
-                  <Information app={appDetail} repo={repoStore.repoDetail} />
-                </Fragment>
-              )}
+              {this.renderBody()}
             </Panel>
           </Section>
           {this.renderVersions()}
@@ -120,19 +104,10 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
-    let maintainers = [];
-    console.log(get(appDetail, 'maintainers'));
-    if (get(appDetail, 'maintainers')) {
-      const objs = JSON.parse(get(appDetail, 'maintainers'));
-      objs.map(obj => {
-        maintainers.push(obj.name);
-        maintainers.push(obj.email);
-      });
-    }
 
     return (
       <Section>
-        <Panel className={styles.detailCard}>
+        <Card className={styles.detailCard}>
           <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
             <Button
               className={styles.deployBtn}
@@ -155,7 +130,7 @@ export default class AppDetail extends Component {
               ))}
             </ul>
           </div>
-        </Panel>
+        </Card>
 
         <Panel className={styles.detailCard}>
           <VersionItem
@@ -164,7 +139,7 @@ export default class AppDetail extends Component {
           />
           <VersionItem title={t('Home')} value={appDetail.home} type="link" />
           <VersionItem title={t('Source repository')} value={appDetail.sources} type="link" />
-          <VersionItem title={t('Maintainers')} value={maintainers} type="array" />
+          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} type="maintainer" />
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>
