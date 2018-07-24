@@ -24,7 +24,7 @@ export default class Card extends PureComponent {
           {icon && <Image src={icon} className={styles.icon} alt="Icon" size={iconSize} />}
           {!icon && (
             <span className={styles.icon}>
-              <Icon name="appcenter" size={iconSize} />
+              <Icon name="appcenter" size={iconSize} type="dark" />
             </span>
           )}
           <p className={styles.name}>{name}</p>
