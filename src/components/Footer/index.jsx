@@ -27,16 +27,16 @@ export default class Footer extends PureComponent {
           </span>
           <ul className={styles.terms}>
             <li>
-              <a href="javascript:void(0)">{t('About')}</a>
-            </li>
-            <li>
+              <a href="javascript:void(0)" target="_blank" href="https://openpitrix.io">
+                {t('About')}
+              </a>
+              {/* <span className={styles.dot} />
               <a href="javascript:void(0)">{t('Help')}</a>
+              <span className={styles.dot} />
+              <a href="javascript:void(0)">{t('Terms')}</a>*/}
             </li>
-            <li>
-              <a href="javascript:void(0)">{t('Terms')}</a>
-            </li>
-            <li className={styles.copyright}>OpenPitrix &copy; 2018</li>
-            <li>
+            <li>OpenPitrix &copy; 2018</li>
+            {/*<li>
               <a
                 href="#"
                 onClick={this.changeLocale.bind(null, 'zh')}
@@ -44,11 +44,7 @@ export default class Footer extends PureComponent {
               >
                 中文
               </a>
-            </li>
-            <li>
               <span className={styles.dot} />
-            </li>
-            <li>
               <a
                 href="#"
                 onClick={this.changeLocale.bind(null, 'en')}
@@ -56,7 +52,7 @@ export default class Footer extends PureComponent {
               >
                 English
               </a>
-            </li>
+            </li>*/}
           </ul>
         </div>
       </div>
