@@ -14,6 +14,8 @@
       height: 100%;
     }
   }
+
+
   .title {
     //height: 28px;
     @include H4RobotoLeftBlack;
@@ -25,12 +27,6 @@
     color: $N300;
     margin-left: 60px;
   }
-  //.carousel {
-  //  float: right;
-  //  font-size: 12px;
-  //  line-height: 1.67;
-  //  color: $N100;
-  //}
   .latestVersion {
     display: inline-block;
     float: right;

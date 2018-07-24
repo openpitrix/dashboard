@@ -18,7 +18,6 @@ const Meta = ({ app }) => {
         {app.name}
         <span className={styles.latestVersion}>{get(app, 'latest_app_version.name')}</span>
       </div>
-      {/*<div className={styles.carousel}>{app.screenshots}</div>*/}
       <div className={styles.desc}>{app.description}</div>
     </div>
   );

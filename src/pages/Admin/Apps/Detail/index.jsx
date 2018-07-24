@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { pick, assign, get } from 'lodash';
 
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';

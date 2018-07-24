@@ -18,11 +18,6 @@ export default class Image extends React.Component {
     src: ''
   };
 
-  constructor(props) {
-    super(props);
-    this.imgRef = new React.createRef();
-  }
-
   state = {
     failed: false
   };
@@ -32,14 +27,14 @@ export default class Image extends React.Component {
   }
 
   componentDidMount() {
-    this.imgRef.current.onerror = () => {
+    this.img.onerror = () => {
       this.setState({ failed: true });
     };
   }
 
   componentWillUnmount() {
-    if (this.imgRef && this.imgRef.current) {
-      this.imgRef.current.onerror = null;
+    if (this.img && this.img.onerror) {
+      this.img.onerror = null;
     }
   }
 
@@ -65,7 +60,7 @@ export default class Image extends React.Component {
         src={src}
         data-origin-url={src}
         className={classnames(styles.img, className)}
-        ref={this.imgRef}
+        ref={c=> this.img = c}
         {...rest}
       />
     );

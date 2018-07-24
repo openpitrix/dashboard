@@ -94,7 +94,7 @@ export default class AppDetail extends Component {
       <Layout
         noTabs
         noNotification
-        isloading={isLoading}
+        isLoading={isLoading}
         backBtn={<BackBtn label="catalog" link="/" />}
       >
         <Grid>
