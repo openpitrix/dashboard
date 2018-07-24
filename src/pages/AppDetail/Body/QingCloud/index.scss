@@ -2,9 +2,6 @@
 
 .body{
   margin-left: 64px;
-  .markdown{
-    margin-top: 22px;
-  }
 }
 
 .slider{
@@ -67,12 +64,16 @@
       height: 170px;
       border-radius: 3px;
       box-shadow: 0 2px 10px 1px rgba(20, 8, 32, 0.2);
-      background: #2f0d56;
-
-      color: red;
+      background: transparent;
+      //color: red;
       text-align: center;
       line-height: 170px;
       font-size: 30px;
+      img{
+        display: inline-block;
+        width: 100%;
+        heigth: 100%;
+      }
     }
   }
 }

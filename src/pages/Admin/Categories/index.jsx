@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
 import Rectangle from 'components/Rectangle';
+import AppImages from 'components/Rectangle/AppImages';
 import Layout, { Dialog } from 'components/Layout';
 
 import styles from './index.scss';
@@ -97,6 +98,8 @@ export default class Categories extends Component {
     const categories = categoryStore.categories.toJSON();
     const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
+    const defaultCategories = categoryApps.filter(cate => cate.category_id !== 'ctg-uncategorized');
+    const uncategorized = categoryApps.find(cate => cate.category_id === 'ctg-uncategorized');
 
     return (
       <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg} isLoading={isLoading}>
@@ -113,7 +116,7 @@ export default class Categories extends Component {
             </div>
           </div>
 
-          {categoryApps.map(data => (
+          {defaultCategories.map(data => (
             <div key={data.category_id} className={styles.categoryContent}>
               <Rectangle
                 id={data.category_id}
@@ -129,6 +132,22 @@ export default class Categories extends Component {
               </div>
             </div>
           ))}
+
+          <div className={styles.categories}>
+            <div className={styles.line}>
+              <div className={styles.word}>Uncategories</div>
+            </div>
+          </div>
+          <div className={styles.categoryContent}>
+            <div className={styles.rectangle}>
+              <div className={styles.title} title={uncategorized.name}>
+                <Link to={`/dashboard/category/${uncategorized.category_id}`}>
+                  {uncategorized.name}
+                </Link>
+              </div>
+              <AppImages apps={uncategorized.apps} />
+            </div>
+          </div>
         </div>
         {this.renderOpsModal()}
         {this.renderDeleteModal()}

@@ -21,7 +21,7 @@ import styles from './index.scss';
 export default class Repos extends Component {
   static async onEnter({ repoStore, appStore }) {
     await repoStore.fetchAll();
-    await appStore.fetchApps({ status: ['active', 'deleted'] });
+    await appStore.fetchApps();
   }
 
   constructor(props) {

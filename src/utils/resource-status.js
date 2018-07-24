@@ -1,7 +1,7 @@
 export default {
-  app: ['active', 'deleted'],
+  app: ['active'],
   cluster: ['active', 'stopped', 'ceased', 'pending', 'suspended'],
-  repo: ['active', 'deleted'],
+  repo: ['active'],
   // user: [],
-  runtime: ['active', 'deleted']
+  runtime: ['active']
 };

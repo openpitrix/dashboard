@@ -21,7 +21,12 @@
     :global{
       .icon{
         float: left;
-        margin-left: -5px;
+        margin-left: -10px;
+      }
+      .icon:hover{
+        background-color: $tr-hover-bg;
+        border-radius: 50%;
+        transform: scale(1.2);
       }
 
     }
