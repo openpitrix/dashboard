@@ -30,23 +30,30 @@
     input {
       color: $N500;
       padding-left: 36px;
-      border: 1px solid rgba($N10, 0.1);
       border-radius: 16px;
       background-color: $N10;
       transition: all .3s ease-in-out;
       &::placeholder {
-        color: $N65;
+        font-size: 14px;
+        color: $N45;
         line-height: 1.0;
         letter-spacing: 0;
       }
       &:focus {
-        font-weight: normal;
-        //color: $N45;
-        border: solid 1px #7749ac !important;
+        border: solid 1px $P75 !important;
       }
+
       &:hover {
-        //color: $N45;
         border: solid 1px $N45;
+      }
+    }
+    :global {
+      .icon {
+        color: $N65;
+        opacity: 0.5;
+        &:hover, &:focus {
+          opacity: 1;
+        }
       }
     }
   }
