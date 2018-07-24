@@ -21,7 +21,7 @@ export default class Card extends PureComponent {
     return (
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
         <div className={styles.title}>
-          {icon && <Image src={icon} className={styles.icon} alt="Icon" />}
+          {icon && <Image src={icon} className={styles.icon} alt="Icon" size={iconSize} />}
           {!icon && (
             <span className={styles.icon}>
               <Icon name="appcenter" size={iconSize} />

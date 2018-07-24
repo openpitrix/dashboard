@@ -135,6 +135,7 @@ export default class Runtimes extends Component {
             name={name}
             description={obj.runtime_id}
             linkUrl={`/dashboard/runtime/${obj.runtime_id}`}
+            noIcon
           />
         )
       },

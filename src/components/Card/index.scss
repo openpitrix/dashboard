@@ -16,22 +16,13 @@
      margin: 0;
    }
    .title{
-     .icon{
+     .icon {
+       //float: left;
        display: inline-block;
        width: 48px;
        height: 48px;
        margin-bottom: 12px;
        border-radius: 2px;
-     }
-     :global {
-       .icon {
-         //float: left;
-         display: inline-block;
-         width: 48px;
-         height: 48px;
-         margin-bottom: 12px;
-         border-radius: 2px;
-       }
      }
      .name{
        line-height: 16px;
@@ -72,13 +63,6 @@
       float: left;
       width: 36px;
       height: 36px;
-    }
-    :global{
-      .icon {
-        float: left;
-        width: 36px;
-        height: 36px;
-      }
     }
     .name {
       margin-left: 48px;

@@ -52,10 +52,12 @@ export default class RepoDetail extends Component {
   };
 
   renderHandleMenu = id => {
-    const { deleteRepoOpen } = this.props.repoStore;
+    const { deleteRepoOpen, startIndexer } = this.props.repoStore;
+
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
+        <span onClick={() => startIndexer(id)}>Trigger indexer</span>
         <span onClick={() => deleteRepoOpen(id)}>Delete Repo</span>
       </div>
     );
@@ -85,6 +87,8 @@ export default class RepoDetail extends Component {
     const clusters = clusterStore.clusters.toJSON();
     const eventsData = repoStore.repoEvents.toJSON();
 
+    const { notifyMsg, notifyType, hideMsg } = repoStore;
+
     const appsColumns = [
       {
         title: 'App Name',
@@ -94,7 +98,7 @@ export default class RepoDetail extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon}
+            image={item.icon || 'appcenter'}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
@@ -335,7 +339,12 @@ export default class RepoDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="repos" link="/dashboard/repos" />}>
+      <Layout
+        backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
+        msg={notifyMsg}
+        msgType={notifyType}
+        hideMsg={hideMsg}
+      >
         <Grid>
           <Section>
             <Card>

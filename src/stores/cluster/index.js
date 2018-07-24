@@ -16,7 +16,7 @@ export default class ClusterStore extends Store {
   @observable clusterCount = 0;
   @observable isModalOpen = false;
 
-  @observable clusterId = ''; // current delete cluster_id
+  @observable clusterId; // current delete cluster_id
   @observable operateType = '';
 
   @observable currentPage = 1;
@@ -122,11 +122,12 @@ export default class ClusterStore extends Store {
   @action
   remove = async clusterIds => {
     const result = await this.request.post('clusters/delete', { cluster_id: clusterIds });
+    this.hideModal();
+
     if (_.get(result, 'cluster_id')) {
-      this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.showMsg('Delete cluster successfully.');
+      this.showMsg('Delete cluster successfully.', 'success');
     } else {
       let { err, errDetail } = result;
       this.showMsg(errDetail || err);
@@ -243,6 +244,7 @@ export default class ClusterStore extends Store {
     this.selectedRowKeys = [];
     this.clusterIds = [];
     this.pageInitMap = {};
+    this.selectStatus = '';
   };
 
   @action
@@ -282,7 +284,7 @@ export default class ClusterStore extends Store {
 
   @action
   onChangeStatus = async status => {
-    this.selectStatus = this.selectStatus === status ? '' : status;
+    this.selectStatus = typeof status === 'string' ? [status] : status;
     await this.fetchAll({ status: this.selectStatus });
   };
 

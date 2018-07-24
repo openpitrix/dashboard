@@ -68,6 +68,7 @@ export default class Cell extends PureComponent {
         <label
           className={classNames(
             styles.name,
+            { [styles.radioName]: isRadio },
             { [styles.inputName]: inputName },
             { [styles.textareaName]: isDescription }
           )}

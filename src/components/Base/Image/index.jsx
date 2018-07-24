@@ -48,7 +48,16 @@ export default class Image extends React.Component {
     const { failed } = this.state;
 
     if (failed) {
-      return <Icon name="picture" size={iconSize} type="dark" data-origin-url={src} />;
+      return (
+        <Icon
+          name="picture"
+          type="dark"
+          size={iconSize}
+          data-origin-url={src}
+          className={className}
+          {...rest}
+        />
+      );
     }
 
     return (

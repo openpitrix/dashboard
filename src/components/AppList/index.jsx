@@ -51,11 +51,7 @@ export default class AppList extends PureComponent {
 
   getSearchTitle() {
     let { apps, appSearch, categoryTitle, t } = this.props;
-    return (
-      (appSearch && `There are ${apps.length} applications with search word: ${appSearch}`) ||
-      categoryTitle ||
-      t('Newest')
-    );
+    return (appSearch && `Results`) || categoryTitle || t('Newest');
   }
 
   render() {

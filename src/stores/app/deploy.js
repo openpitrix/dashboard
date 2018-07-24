@@ -70,7 +70,7 @@ export default class AppDeployStore extends Store {
     e.preventDefault();
     this.getConfigData();
     if (this.checkResult === 'ok') {
-      this.isLoading = true;
+      //this.isLoading = true;
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
@@ -85,7 +85,7 @@ export default class AppDeployStore extends Store {
         let { errDetail } = this.appDeployed;
         this.showMsg(errDetail);
       }
-      this.isLoading = false;
+      //this.isLoading = false;
     } else {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }
@@ -173,7 +173,10 @@ export default class AppDeployStore extends Store {
   async fetchSubnets(runtimeId) {
     const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
     this.subnets = get(result, 'subnet_set', []);
-    if (this.subnets[0]) this.subnetId = this.subnets[0].subnet_id;
+    let arrSubnets = this.subnets.toJSON();
+    if (arrSubnets[0]) {
+      this.subnetId = arrSubnets[0].subnet_id;
+    }
   }
 
   @action

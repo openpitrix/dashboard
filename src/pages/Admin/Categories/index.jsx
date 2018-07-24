@@ -93,6 +93,7 @@ export default class Categories extends Component {
       showCreateCategory,
       getCategoryApps
     } = categoryStore;
+
     const categories = categoryStore.categories.toJSON();
     const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
