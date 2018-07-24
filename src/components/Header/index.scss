@@ -20,6 +20,7 @@ $profile-hover-color: #efe6f8;
     display: inline-block;
     margin-top: $header-height / 2;
     transform: translateY(-50%);
+    vertical-align: middle;
   }
 
   .search {
@@ -118,6 +119,8 @@ $profile-hover-color: #efe6f8;
 }
 
 .toggleBtn {
+  font-size: $size-normal;
+  font-weight: 500;
   color: $N500;
   opacity: .9;
   cursor: pointer;
