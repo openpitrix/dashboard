@@ -34,7 +34,7 @@ Array [
           style="width:16px;height:16px"
         >
           <svg
-            class="qicon qicon-magnifier qicon-light"
+            class="qicon qicon-magnifier qicon-dark"
           >
             <use
               href="#magnifier"

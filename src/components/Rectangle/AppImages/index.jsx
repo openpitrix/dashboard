@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { Icon, Image } from 'components/Base';
 
@@ -18,14 +19,15 @@ export default class AppImages extends Component {
           {apps &&
             apps
               .slice(0, 10)
-              .map(
-                ({ app_id, icon }) =>
-                  icon ? (
+              .map(({ app_id, icon }) => (
+                <Link to={`/dashboard/app/${app_id}`}>
+                  {icon ? (
                     <Image key={app_id} src={icon} />
                   ) : (
                     <Icon key={app_id} size={24} name="appcenter" />
-                  )
-              )}
+                  )}
+                </Link>
+              ))}
           <span className={styles.totalNum}>{apps ? apps.length : 0}</span>
         </div>
       </div>

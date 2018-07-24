@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
+import { ProviderName } from 'components/TdName';
 import { Image } from 'components/Base';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
@@ -13,11 +14,12 @@ import styles from './index.scss';
 export default class AppCard extends PureComponent {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
-    repoName: PropTypes.string
+    repoName: PropTypes.string,
+    repoProvider: PropTypes.string
   };
 
   render() {
-    const { appDetail, repoName } = this.props;
+    const { appDetail, repoName, repoProvider } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -38,7 +40,9 @@ export default class AppCard extends PureComponent {
           </li>
           <li>
             <span className={styles.name}>Repo</span>
-            <Link to={`/dashboard/repo/${appDetail.repo_id}`}>{repoName}</Link>
+            <Link to={`/dashboard/repo/${appDetail.repo_id}`}>
+              <ProviderName provider={repoProvider} name={repoName} />
+            </Link>
           </li>
           <li>
             <span className={styles.name}>Latest Version</span>
