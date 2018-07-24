@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
+import classnames from 'classnames';
 
 import { Icon, Notification, Image } from 'components/Base';
 import styles from './index.scss';
@@ -13,7 +14,8 @@ export default class TdName extends PureComponent {
     name: PropTypes.string,
     description: PropTypes.string,
     linkUrl: PropTypes.string,
-    noCopy: PropTypes.bool
+    noCopy: PropTypes.bool,
+    className: PropTypes.string
   };
 
   state = {
@@ -41,12 +43,12 @@ export default class TdName extends PureComponent {
   };
 
   render() {
-    const { image, name, description, linkUrl, noCopy } = this.props;
+    const { image, name, description, linkUrl, noCopy, className } = this.props;
     const { message } = this.state;
     const isIcon = ['appcenter', 'cluster'].includes(image);
 
     return (
-      <span className={styles.tdName}>
+      <span className={classnames(styles.tdName, className)}>
         {isIcon && <Icon name={image} size={24} />}
         {!isIcon && image && <Image src={image} className={styles.image} />}
         <span className={styles.info}>

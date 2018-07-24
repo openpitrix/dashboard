@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import CategoryCard from 'components/DetailCard/CategoryCard';
 import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card } from 'components/Layout';
@@ -156,6 +156,7 @@ export default class CategoryDetail extends Component {
         width: '205px',
         render: item => (
           <TdName
+            className="smallId"
             name={item.name}
             description={item.app_id}
             image={item.icon || 'appcenter'}
@@ -184,7 +185,10 @@ export default class CategoryDetail extends Component {
         key: 'repo_id',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
-            {getObjName(repos, 'repo_id', item.repo_id, 'name')}
+            <ProviderName
+              name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
+              provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
+            />
           </Link>
         )
       },

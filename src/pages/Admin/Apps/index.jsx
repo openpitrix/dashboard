@@ -194,7 +194,7 @@ export default class Apps extends Component {
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
