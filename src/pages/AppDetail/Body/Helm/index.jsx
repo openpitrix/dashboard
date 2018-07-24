@@ -1,8 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
+import ReactMarkdown from 'react-markdown';
+import readme from './readme.js';
 import styles from './index.scss';
 
-const Helm = props => {};
+@observer
+export default class Helm extends React.Component {
+  static defaultProps = {};
 
-export default Helm;
+  static propTypes = {};
+
+  render() {
+    return (
+      <div className={styles.body}>
+        <div className={styles.markdown}>
+          <ReactMarkdown source={readme} />
+        </div>
+      </div>
+    );
+  }
+}

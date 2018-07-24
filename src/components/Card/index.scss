@@ -55,7 +55,7 @@
 
 .foldCard {
   height: 72px;
-  padding: 16px 18px;
+  padding: 18px 16px;
   text-align: left;
   position: relative;
   .title{
@@ -77,7 +77,7 @@
     }
   }
   &:hover {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, -8px, 0);
     box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
   }
 }

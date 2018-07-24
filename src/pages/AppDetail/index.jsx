@@ -39,10 +39,9 @@ export default class AppDetail extends Component {
     await appVersionStore.fetchAll({ app_id: appId });
   }
 
-  changePicture = (type, number) => {
+  changePicture = (type, number, pictures) => {
     const { appStore } = this.props;
     let { currentPic } = appStore;
-    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
     if (type === 'dot') {
       currentPic = number;
     }
@@ -58,12 +57,22 @@ export default class AppDetail extends Component {
 
   renderBody() {
     const { appStore } = this.props;
+    const pictures = [
+      '/assets/pictrues/pic2.png',
+      '/assets/pictrues/pic3.png',
+      '/assets/pictrues/pic4.png',
+      '/assets/pictrues/pic5.png',
+      '/assets/pictrues/pic6.jpeg',
+      '/assets/pictrues/pic1.jpeg'
+    ];
+
     // mock
     return (
       <QingCloud
         app={appStore.appDetail}
         currentPic={appStore.currentPic}
         changePicture={this.changePicture}
+        pictures={pictures}
       />
     );
   }
@@ -84,7 +93,7 @@ export default class AppDetail extends Component {
           <Section size={8}>
             <Panel className={styles.introCard}>
               <Meta app={appDetail} />
-              {this.renderBody()}
+              {Math.random() > 0.5 ? this.renderBody() : <Helm />}
               <Information app={appDetail} />
             </Panel>
           </Section>

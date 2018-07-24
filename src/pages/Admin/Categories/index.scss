@@ -27,9 +27,10 @@
     bottom: 11px;
     padding: 0 7px;
     line-height: 24px;
-    font-size: 12px;
-    color: $third-text-color;
-    background: $background-color;
+    font-size: 14px;
+    font-weight: 500;
+    color: $P75;
+    background: $N0;
   }
 }
 
@@ -44,6 +45,31 @@
     position: absolute;
     right: 24px;
     top: 24px;
+  }
+  .rectangle{
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 24px;
+    width: 1128px;
+    height: 140px;
+    background-color: $N0;
+    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+    &:hover {
+      box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
+      .title a{
+        color: $link-color;
+      }
+    }
+    .title a{
+      display: block;
+      margin-bottom: 18px;
+      font-size: 20px;
+      line-height: 1.6;
+      font-weight: 500;
+      color: $N500;
+      max-width: 300px;
+      @include textCut;
+    }
   }
 }
 

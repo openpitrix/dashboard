@@ -17,16 +17,12 @@ export default class Card extends PureComponent {
   render() {
     const { icon, name, desc, fold } = this.props;
     const iconSize = fold ? 36 : 48;
+    const iconsrc = '/assets/None' + iconSize + '.svg';
 
     return (
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
         <div className={styles.title}>
-          {icon && <Image src={icon} className={styles.icon} alt="Icon" size={iconSize} />}
-          {!icon && (
-            <span className={styles.icon}>
-              <Icon name="appcenter" size={iconSize} type="dark" />
-            </span>
-          )}
+          <Image src={icon || iconsrc} className={styles.icon} alt="Icon" size={iconSize} />
           <p className={styles.name}>{name}</p>
           <p className={classnames(styles.desc, { [styles.hide]: !fold })} title={desc}>
             {desc}
