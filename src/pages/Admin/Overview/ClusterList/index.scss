@@ -1,6 +1,28 @@
 @import '~scss/vars';
 
 .clusterList{
+  .statusDot{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $G75;
+  }
+  .active{
+    background-color: $G75;
+  }
+  .pending{
+    background-color: $B75;
+  }
+  .suspended{
+    background-color: $Y100;
+  }
+  .deleted{
+    background-color: $R300;
+  }
+  .stopped{
+    background-color: $N30;
+  }
   li{
     box-sizing: border-box;
     padding: 9px 0;
@@ -60,25 +82,4 @@
     margin-bottom: 8px;
   }
 }
-.statusDot{
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: $B75;
-  & .active{
-    background-color: $G75;
-  }
-  &.pending{
-    background-color: $B75;
-  }
-  &.suspended{
-    background-color: $Y100;
-  }
-  &.deleted{
-    background-color: $R300;
-  }
-  &.stopped{
-    background-color: $N30;
-  }
-}
+
