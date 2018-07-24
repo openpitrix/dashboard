@@ -17,17 +17,15 @@ export default class AppImages extends Component {
         <div className={styles.name}>Apps</div>
         <div className={styles.images}>
           {apps &&
-            apps
-              .slice(0, 10)
-              .map(({ app_id, icon }) => (
-                <Link to={`/dashboard/app/${app_id}`}>
-                  {icon ? (
-                    <Image key={app_id} src={icon} />
-                  ) : (
-                    <Icon key={app_id} size={24} name="appcenter" />
-                  )}
-                </Link>
-              ))}
+            apps.slice(0, 10).map(({ app_id, icon }) => (
+              <Link key={app_id} to={`/dashboard/app/${app_id}`}>
+                {icon ? (
+                  <Image key={app_id} src={icon} />
+                ) : (
+                  <Icon key={app_id} size={24} name="appcenter" />
+                )}
+              </Link>
+            ))}
           <span className={styles.totalNum}>{apps ? apps.length : 0}</span>
         </div>
       </div>

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
+import { formatTime } from 'utils';
 
 import Layout, { Grid, Section, BackBtn, Panel } from 'components/Layout';
 import Button from 'components/Base/Button';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
-import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
@@ -29,14 +29,18 @@ VersionItem.propTypes = {
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  appVersionStore: rootStore.appVersionStore
+  appVersionStore: rootStore.appVersionStore,
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore }, { appId }) {
+  static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
     appStore.currentPic = 1;
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
+    if (appStore.appDetail.repo_id) {
+      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
   }
 
   changePicture = (type, number, pictures) => {
@@ -78,9 +82,10 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const { appStore } = this.props;
+    const { appStore, repoStore } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
+    const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
 
     return (
       <Layout
@@ -93,8 +98,13 @@ export default class AppDetail extends Component {
           <Section size={8}>
             <Panel className={styles.introCard}>
               <Meta app={appDetail} />
-              {Math.random() > 0.5 ? this.renderBody() : <Helm />}
-              <Information app={appDetail} />
+              {repoProvider === 'kubernetes' && <Helm />}
+              {repoProvider !== 'kubernetes' && (
+                <Fragment>
+                  {this.renderBody()}
+                  <Information app={appDetail} />
+                </Fragment>
+              )}
             </Panel>
           </Section>
           {this.renderVersions()}
