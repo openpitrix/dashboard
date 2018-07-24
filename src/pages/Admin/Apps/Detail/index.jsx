@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
 import { pick, assign, get } from 'lodash';
 
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
@@ -171,6 +170,7 @@ export default class AppDetail extends Component {
     const appHideMsg = appStore.hideMsg;
     const { clusters, isLoading, selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
+    const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
 
     const filterList = [
       {
@@ -204,7 +204,7 @@ export default class AppDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <AppCard appDetail={appDetail} repoName={repoName} />
+              <AppCard appDetail={appDetail} repoName={repoName} repoProvider={repoProvider} />
               {appDetail.status !== 'deleted' && (
                 <Popover className="operation" content={this.renderHandleMenu(appDetail.app_id)}>
                   <Icon name="more" />

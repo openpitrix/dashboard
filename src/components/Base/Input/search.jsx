@@ -42,6 +42,7 @@ export default class Search extends React.Component {
   render() {
     const { className, placeholder } = this.props;
     const { value } = this.state;
+
     return (
       <div className={classnames(styles.inputGroup, className)}>
         <Icon name="magnifier" />

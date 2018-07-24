@@ -1,0 +1,18 @@
+@import "~scss/vars";
+
+.body{
+  margin-left: 64px;
+  .markdown{
+    margin-top: 22px;
+    :global{
+      h1,h2{
+        margin: 10px 0;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0;
+        color: $N500;
+      }
+    }
+  }
+}

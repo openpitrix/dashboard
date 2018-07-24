@@ -4,14 +4,17 @@ import { get } from 'lodash';
 import Section from '../section';
 
 import { formatTime } from 'utils';
-
+import { ProviderName } from 'components/TdName';
 import styles from './index.scss';
 
-const Information = ({ app }) => {
+const Information = ({ app, repo }) => {
+  const repoName = get(repo, 'name', '');
+  const repoProvider = get(repo, 'providers[0]', '');
+
   return (
     <Section title="Information" className={styles.information} contentClass={styles.content}>
       <dl>
-        <dt>Catelog</dt>
+        <dt>Category</dt>
         <dd>
           {get(app, 'category_set', [])
             .filter(cate => cate.category_id && cate.status === 'enabled')
@@ -25,7 +28,9 @@ const Information = ({ app }) => {
       </dl>
       <dl>
         <dt>Repo</dt>
-        <dd>{app.repo_id}</dd>
+        <dd>
+          <ProviderName provider={repoProvider} name={repoName} />
+        </dd>
       </dl>
       <dl>
         <dt>Created At</dt>
@@ -36,11 +41,13 @@ const Information = ({ app }) => {
 };
 
 Information.propTypes = {
-  app: PropTypes.object
+  app: PropTypes.object,
+  repo: PropTypes.object
 };
 
 Information.defaultProps = {
-  app: {}
+  app: {},
+  repo: {}
 };
 
 export default Information;

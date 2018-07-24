@@ -42,7 +42,7 @@ export default class AppStore extends Store {
     this.categoryTitle = title;
     this.appSearch = params.search_word;
     if (!params.status) {
-      params.status = ['active', 'deleted'];
+      params.status = ['active'];
     }
     params.limit = 10000;
     const result = await this.request.get('apps', params);

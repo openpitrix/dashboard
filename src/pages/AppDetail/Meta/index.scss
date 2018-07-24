@@ -3,14 +3,19 @@
 .meta{
   padding-bottom: 24px;
   border-bottom: 1px solid $N10;
-
   .icon {
     float: left;
     width: 48px;
     height: 48px;
     margin-right: 16px;
     border-radius: 2px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
+
+
   .title {
     //height: 28px;
     @include H4RobotoLeftBlack;
@@ -19,14 +24,9 @@
   .desc {
     font-size: 14px;
     line-height: 1.71;
-    color: $N300
+    color: $N300;
+    margin-left: 60px;
   }
-  //.carousel {
-  //  float: right;
-  //  font-size: 12px;
-  //  line-height: 1.67;
-  //  color: $N100;
-  //}
   .latestVersion {
     display: inline-block;
     float: right;

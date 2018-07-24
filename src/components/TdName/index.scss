@@ -25,8 +25,7 @@
       text-align: left;
       color: $N500;
       max-width: 120px;
-      overflow: hidden;
-      white-space: nowrap;
+      @include textCut;
       &:hover{
         color: $link-hover;
       }
@@ -56,6 +55,7 @@
   width: 100px;
   line-height: 16px;
   @include textCut;
+  color: $N300;
   :global{
     .icon {
       float: left;

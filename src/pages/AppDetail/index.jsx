@@ -1,48 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
+import { formatTime } from 'utils';
 
-import Layout, { Grid, Section, BackBtn, Panel } from 'components/Layout';
+import Layout, { Grid, Section, BackBtn, Panel, Card } from 'components/Layout';
 import Button from 'components/Base/Button';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
-import { formatTime } from 'utils';
+import VersionItem from './versionItem';
 
 import styles from './index.scss';
-
-const VersionItem = ({ title = '', value = '' }) => (
-  <div className={styles.versionItem}>
-    <div className={styles.title}>{title}</div>
-    <div className={styles.value}>{value}</div>
-  </div>
-);
-
-VersionItem.propTypes = {
-  title: PropTypes.string,
-  value: PropTypes.node
-};
 
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  appVersionStore: rootStore.appVersionStore
+  appVersionStore: rootStore.appVersionStore,
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore }, { appId }) {
+  static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
     appStore.currentPic = 1;
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });
+    if (appStore.appDetail.repo_id) {
+      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
+    if (appStore.appDetail.latest_app_version) {
+      appVersionStore.fetchPackageFiles(appStore.appDetail.latest_app_version.version_id);
+    }
   }
 
-  changePicture = (type, number) => {
+  changePicture = (type, number, pictures) => {
     const { appStore } = this.props;
     let { currentPic } = appStore;
-    const pictures = [1, 2, 3, 4, 5, 6, 7, 8];
     if (type === 'dot') {
       currentPic = number;
     }
@@ -57,14 +52,26 @@ export default class AppDetail extends Component {
   };
 
   renderBody() {
-    const { appStore } = this.props;
-    // mock
+    const { appStore, repoStore, appVersionStore } = this.props;
+    const { appDetail } = appStore;
+
+    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
+    const isHelmApp = providerName === 'kubernetes';
+
+    if (isHelmApp) {
+      return <Helm readme={appVersionStore.readme} />;
+    }
+
     return (
-      <QingCloud
-        app={appStore.appDetail}
-        currentPic={appStore.currentPic}
-        changePicture={this.changePicture}
-      />
+      <Fragment>
+        <QingCloud
+          app={appDetail}
+          currentPic={appStore.currentPic}
+          changePicture={this.changePicture}
+          pictures={appDetail.screenshots}
+        />
+        <Information app={appDetail} repo={repoStore.repoDetail} />
+      </Fragment>
     );
   }
 
@@ -77,7 +84,7 @@ export default class AppDetail extends Component {
       <Layout
         noTabs
         noNotification
-        isloading={isLoading}
+        isLoading={isLoading}
         backBtn={<BackBtn label="catalog" link="/" />}
       >
         <Grid>
@@ -85,7 +92,6 @@ export default class AppDetail extends Component {
             <Panel className={styles.introCard}>
               <Meta app={appDetail} />
               {this.renderBody()}
-              <Information app={appDetail} />
             </Panel>
           </Section>
           {this.renderVersions()}
@@ -101,7 +107,7 @@ export default class AppDetail extends Component {
 
     return (
       <Section>
-        <Panel className={styles.detailCard}>
+        <Card className={styles.detailCard}>
           <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
             <Button
               className={styles.deployBtn}
@@ -124,16 +130,16 @@ export default class AppDetail extends Component {
               ))}
             </ul>
           </div>
-        </Panel>
+        </Card>
 
         <Panel className={styles.detailCard}>
           <VersionItem
             title={t('Application Version')}
             value={get(appDetail, 'latest_app_version.name')}
           />
-          <VersionItem title={t('Home')} value={appDetail.home} />
-          <VersionItem title={t('Source repository')} value={appDetail.sources} />
-          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} />
+          <VersionItem title={t('Home')} value={appDetail.home} type="link" />
+          <VersionItem title={t('Source repository')} value={appDetail.sources} type="link" />
+          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} type="maintainer" />
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>

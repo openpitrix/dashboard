@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { I18n } from 'react-i18next';
 
 import { Icon } from 'components/Base';
+import {Panel} from 'components/Layout';
+
 import styles from './index.scss';
 
 export default class TotalCard extends PureComponent {
@@ -23,13 +25,15 @@ export default class TotalCard extends PureComponent {
     return (
       <I18n>
         {t => (
-          <div className={styles.totalCard} {...rest}>
-            <div className={styles.name}>
-              <Icon name={iconName} size={iconSize} type={'light'} />
-              {t(name)}
+          <Panel>
+            <div className={styles.totalCard} {...rest}>
+              <div className={styles.name}>
+                <Icon name={iconName} size={iconSize} type={'light'} />
+                {t(name)}
+              </div>
+              <div className={styles.number}>{total}</div>
             </div>
-            <div className={styles.number}>{total}</div>
-          </div>
+          </Panel>
         )}
       </I18n>
     );

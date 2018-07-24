@@ -6,7 +6,7 @@ $grid-width: 72px;
 $layout-margin: 156px;
 
 // basic
-$nav-width: 192px;
+$nav-width: 264px;
 $header-height: 48px;
 $tabNavs-height: 48px;
 $banner-height: 400px;
@@ -15,7 +15,7 @@ $base-margin: 24px;
 $card-width: 264px;
 
 $page-bottom: 48px;
-$main-height: calc(100vh - #{$footer-height});
+$main-height: calc(100vh);
 
 // card
 $app-card-width: 264px;
