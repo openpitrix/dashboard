@@ -1,17 +1,21 @@
 @import "~scss/vars";
 
 .footer {
-  position: absolute;
-  bottom: 0;
+  position: static;
+  //bottom: 0;
   width: 100%;
-  height: $footer-height;
-  background-color: $N0;
-  box-sizing: border-box;
+  padding-top: 84px;
 
   .wrapper {
-    width: $content-width;
-    margin: 0 auto;
-    color: $N100;
+    height: $footer-height;
+    box-sizing: border-box;
+    background-color: $N0;
+
+    .inner {
+      width: $content-width;
+      margin: 0 auto;
+      color: $N100;
+    }
 
     .logo {
       display: inline-block;

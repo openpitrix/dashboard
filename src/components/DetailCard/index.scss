@@ -72,6 +72,9 @@
         color: $link-hover;
       }
     }
+    .id {
+      @include idText;
+    }
     .name{
       float: left;
       display: inline-block;
@@ -92,10 +95,8 @@
   position: relative;
   display: inline-block;
   margin-bottom: 10px;
-  font-size: 12px;
-  line-height: 1.17;
-  letter-spacing: 0;
-  color: $N75;
+  @include idText;
+
   :global{
     .copyId{
       display: none;

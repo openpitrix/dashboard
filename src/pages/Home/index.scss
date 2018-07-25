@@ -5,7 +5,8 @@
 }
 .content {
   position: relative;
-  min-height: $main-height;
+  height: $main-height;
+  min-height: $main-min-height;
   margin: 0 auto;
   width: $content-width;
   .homeLoad {

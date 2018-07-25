@@ -18,8 +18,7 @@
     color: $N300;
     .more {
       float: right;
-      font-size: $font12;
-      color: $N200;
+      @include moreText();
     }
   }
   :global{

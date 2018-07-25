@@ -22,6 +22,14 @@
   }
   .info{
     display: inline-block;
+    &:hover {
+      :global {
+        .copy {
+          visibility: visible;
+        }
+      }
+    }
+
     .name{
       display: block;
       line-height: 16px;
@@ -36,16 +44,16 @@
     }
     .description{
       display: inline-block;
-      line-height: 14px;
-      font-size: $size-small;
-      color: $N75;
       width: 110px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      @include idText;
     }
+
     :global{
       .copy{
+        visibility: hidden;
         float: right;
         position: relative;
         bottom: 5px;
