@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import { getFormData } from 'utils';
+import { getFormData, flattenObject, unflattenObject, getYamlList } from 'utils';
 import _, { assign, get } from 'lodash';
 import { Base64 } from 'js-base64';
+import yaml from 'js-yaml';
 
 export default class AppDeployStore extends Store {
   @observable versions = [];
@@ -15,10 +16,12 @@ export default class AppDeployStore extends Store {
     cluster: {},
     env: {}
   };
+  @observable isKubernetes = false;
   @observable paramsData = '';
   @observable configBasics = [];
   @observable configNodes = [];
   @observable configEnvs = [];
+  @observable yamlConfig = [];
   @observable appId = '';
   @observable versionId = '';
   @observable runtimeId = '';
@@ -47,6 +50,13 @@ export default class AppDeployStore extends Store {
   };
 
   @action
+  changeYmalCell = (value, name, index) => {
+    this.yamlConfig[index].value = value;
+    this.yamlConfig = [...this.yamlConfig];
+    this.yamlObj[name] = value;
+  };
+
+  @action
   changeRuntime = async runtimeId => {
     this.runtimeId = runtimeId;
     await this.fetchSubnets(runtimeId);
@@ -68,24 +78,37 @@ export default class AppDeployStore extends Store {
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    this.getConfigData();
+
+    let conf = null;
+
+    if (this.isKubernetes) {
+      this.checkResult = 'ok';
+      conf = yaml.safeDump(unflattenObject(this.yamlObj));
+      this.yamlConfig.map(config => {
+        if (typeof config.value === 'string' && !config.value) {
+          this.checkResult = config.name;
+        }
+      });
+    } else {
+      this.getConfigData();
+      conf = JSON.stringify(this.configData);
+    }
+
     if (this.checkResult === 'ok') {
-      //this.isLoading = true;
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
         runtime_id: this.runtimeId,
-        conf: JSON.stringify(this.configData)
+        conf: conf
       };
       await this.create(params);
+
       if (_.get(this, 'appDeployed.cluster_id')) {
-        //this.showMsg('App deploy successfully.');
         location.href = '/dashboard/clusters';
       } else {
         let { errDetail } = this.appDeployed;
         this.showMsg(errDetail);
       }
-      //this.isLoading = false;
     } else {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }
@@ -181,10 +204,13 @@ export default class AppDeployStore extends Store {
 
   @action
   async fetchFiles(versionId) {
+    const file = this.isKubernetes ? 'values.yaml' : 'config.json';
     const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId
+      version_id: versionId,
+      files: [file]
     });
     this.files = get(result, 'files', {});
+
     if (this.files['config.json']) {
       const config = JSON.parse(Base64.decode(this.files['config.json']));
       this.configBasics = _.filter(_.get(config, 'properties[0].properties'), function(obj) {
@@ -196,8 +222,16 @@ export default class AppDeployStore extends Store {
       this.configEnvs = _.filter(_.get(config, 'properties[1].properties'), function(obj) {
         return obj.properties;
       });
+    } else if (this.files['values.yaml']) {
+      const yamlStr = Base64.decode(this.files['values.yaml']);
+      this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
+      this.yamlConfig = getYamlList(this.yamlObj);
     } else {
       this.showMsg('Not find config file!');
+      this.yamlConfig = [];
+      this.configBasics = [];
+      this.configNodes = [];
+      this.configEnvs = [];
     }
   }
 

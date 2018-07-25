@@ -129,9 +129,6 @@ export default class RuntimeCreateStore extends Store {
     if (_.isEmpty(name)) {
       result = 'Please input Name!';
     }
-    if (_.isEmpty(zone)) {
-      result = 'Please select or input Zone!';
-    }
     if (!runtimeId && provider !== 'kubernetes') {
       if (_.isEmpty(this.runtimeUrl)) {
         result = 'Please input URL!';
@@ -141,6 +138,9 @@ export default class RuntimeCreateStore extends Store {
       }
       if (_.isEmpty(this.secretKey)) {
         result = 'Please input Secret Access Key!';
+      }
+      if (_.isEmpty(zone)) {
+        result = 'Please select Zone!';
       }
     } else if (!runtimeId) {
       if (_.isEmpty(this.credential)) {

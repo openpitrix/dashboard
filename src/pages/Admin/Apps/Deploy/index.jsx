@@ -3,39 +3,50 @@ import { observer, inject } from 'mobx-react';
 import { Radio, Button, Input, Select, Slider } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
+import YamlCell from './Cell/YamlCell.jsx';
 import { get } from 'lodash';
 
 import styles from './index.scss';
+import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
+  repoStore: rootStore.repoStore,
   appDeployStore: rootStore.appDeployStore,
   runtimeStore: rootStore.runtimeStore
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, appDeployStore, runtimeStore }, params) {
+  static async onEnter({ appStore, repoStore, appDeployStore, runtimeStore }, params) {
     appDeployStore.appId = params.appId;
+    if (appStore.appDetail.repo_id) {
+      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
+    const repoProviders = get(repoStore.repoDetail, 'providers', '');
+    if (repoProviders.includes('kubernetes')) {
+      appDeployStore.isKubernetes = true;
+    } else {
+      appDeployStore.isKubernetes = false;
+    }
     await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
     await appDeployStore.fetchRuntimes();
   }
 
   render() {
     const { appDeployStore } = this.props;
-    const { notifyMsg, notifyType, hideMsg, isLoading } = appDeployStore;
+    const { notifyMsg, notifyType, hideMsg, isKubernetes } = appDeployStore;
     const title = 'Deploy app';
 
     return (
       <Layout
         msg={notifyMsg}
         hideMsg={hideMsg}
-        isLoading={appDeployStore.isLoading}
         noTabs
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
       >
         <CreateResource title={title} aside={this.renderAside()}>
-          {this.renderForm()}
+          {isKubernetes ? this.renderYamlForm() : this.renderForm()}
         </CreateResource>
       </Layout>
     );
@@ -175,7 +186,92 @@ export default class AppDeploy extends Component {
           ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
+          <Button
+            type={`primary`}
+            className={`primary`}
+            htmlType="submit"
+            disabled={appDeployStore.isLoading}
+          >
+            Confirm
+          </Button>
+          <Button
+            onClick={() => {
+              history.back();
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    );
+  }
+
+  renderYamlForm() {
+    const { appDeployStore, runtimeStore } = this.props;
+    const {
+      yamlConfig,
+      changeYmalCell,
+      handleSubmit,
+      isLoading,
+      versions,
+      runtimes,
+      subnets,
+      versionId,
+      runtimeId,
+      subnetId,
+      changeRuntime,
+      changeVersion
+    } = appDeployStore;
+
+    return (
+      <form
+        className={styles.createForm}
+        method="post"
+        onSubmit={handleSubmit.bind(appDeployStore)}
+      >
+        <div className={styles.moduleTitle}>1. Basic settings</div>
+        <div className={styles.cellModule}>
+          <label className={styles.name}>Runtime</label>
+          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
+            {runtimes &&
+              runtimes.map(({ runtime_id, name }) => (
+                <Radio key={runtime_id} value={runtime_id}>
+                  {name}
+                </Radio>
+              ))}
+          </Radio.Group>
+        </div>
+        <div className={styles.cellModule}>
+          <label className={styles.name}>Version</label>
+          <Select className={styles.select} value={versionId} onChange={changeVersion}>
+            {versions.map(({ version_id, name }) => (
+              <Select.Option key={version_id} value={version_id}>
+                {name}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+
+        <div className={styles.moduleTitle}>2. Deploy Settings</div>
+        {yamlConfig &&
+          yamlConfig.map((conf, index) => (
+            <YamlCell
+              key={conf.name}
+              name={conf.name}
+              value={conf.value}
+              index={index}
+              className={styles.cellModule}
+              changeCell={changeYmalCell}
+            />
+          ))}
+
+        <div className={styles.submitBtnGroup}>
+          <Button
+            type={`primary`}
+            className={`primary`}
+            htmlType="submit"
+            disabled={appDeployStore.isLoading}
+          >
             Confirm
           </Button>
           <Button

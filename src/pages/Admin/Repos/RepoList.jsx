@@ -26,8 +26,8 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
                 name={name}
                 description={description}
                 providers={providers.slice()}
-                apps={apps.slice()}
-                tags={labels.slice()}
+                apps={apps && apps.slice()}
+                tags={labels && labels.slice()}
               />
               <div className={styles.actionMenu}>
                 <div>
