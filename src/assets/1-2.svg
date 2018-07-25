@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="202px" height="252px" viewBox="0 0 202 252" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+<svg width="273px" height="341px" viewBox="0 0 273 341" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
     <title>2</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Homepage-&amp;-Search-&amp;-App-Details" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Homepage" transform="translate(-1188.000000, -46.000000)">
-            <g id="Rectangle-8">
-                <g id="2" transform="translate(1188.000000, 46.000000)">
-                    <polygon id="Rectangle-7" fill="#6D35C3" points="28.1535976 200.54561 171.68132 169.322 172.920608 6.28369912 201.640788 3.69501466 199.624048 208.491137 29.2854643 251.744728"></polygon>
-                    <polygon id="Rectangle-8" fill="#D3C4ED" points="0.0363815269 186.228739 28.8433212 200.948534 29.6334511 252 1.6449812 234.818508"></polygon>
-                    <polygon id="Rectangle-8-Copy" fill="#EFE6F8" points="140.453242 158.146628 172.340326 169.828962 28.7854524 200.963974 0 186.221659"></polygon>
-                    <polygon id="Rectangle-9" fill="#D3C4ED" points="139.142609 2.2170088 173.323087 6.29816283 172.404644 170.168568 140.140292 158.762732"></polygon>
-                    <polygon id="Rectangle-10" fill="#FFFFFF" points="168.344843 0 201.647647 3.76103593 172.963779 6.54968286 139.230972 2.26724556"></polygon>
-                </g>
-            </g>
+    <defs>
+        <linearGradient x1="58.7239167%" y1="95.2579495%" x2="34.6986392%" y2="6.07289374%" id="linearGradient-1">
+            <stop stop-color="#6d35c3" offset="0%"></stop>
+            <stop stop-color="#6d35c3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="12.3475073%" y1="87.2765402%" x2="91.3953674%" y2="13.7019591%" id="linearGradient-2">
+            <stop stop-color="#d3c4ed" offset="0%"></stop>
+            <stop stop-color="#efe6f8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2">
+            <polygon id="Rectangle-7" fill="url(#linearGradient-1)" points="38.0491691 271.373226 232.024755 229.122231 233.699634 8.50294206 272.514531 5 269.788936 282.124911 39.5788701 340.654573"></polygon>
+            <polygon id="Rectangle-8" fill="#E1E1E3" points="0.0491690932 252 38.9813202 271.918452 40.0491691 341 2.22316766 317.750441"></polygon>
+            <polygon id="Rectangle-8-Copy" fill="url(#linearGradient-2)" points="189.820471 214 232.915392 229.808239 38.9031114 271.939346 0 251.99042"></polygon>
+            <polygon id="Rectangle-9" fill="#EDEDEF" points="188.049169 3 234.243578 8.52251398 233.002316 230.267784 189.397523 214.833697"></polygon>
+            <polygon id="Rectangle-10" fill="#FFFFFF" points="227.515555 0 272.5238 5.0893383 233.757978 8.8628645 188.168591 3.06797911"></polygon>
         </g>
     </g>
 </svg>

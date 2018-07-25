@@ -24,11 +24,11 @@
     :global{
       .icon{
         float: left;
-        margin-right: -8px;
-        border-radius: 50%;
+        margin-left: -10px;
       }
       .icon:hover{
         background-color: $tr-hover-bg;
+        border-radius: 50%;
         transform: scale(1.2);
       }
 

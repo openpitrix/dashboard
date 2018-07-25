@@ -16,6 +16,7 @@ export default class AppDeployStore extends Store {
     cluster: {},
     env: {}
   };
+  @observable Name = '';
   @observable isKubernetes = false;
   @observable paramsData = '';
   @observable configBasics = [];
@@ -51,9 +52,14 @@ export default class AppDeployStore extends Store {
 
   @action
   changeYmalCell = (value, name, index) => {
+    console.log(value, name, index);
     this.yamlConfig[index].value = value;
-    this.yamlConfig = [...this.yamlConfig];
     this.yamlObj[name] = value;
+  };
+
+  @action
+  changeName = event => {
+    this.Name = event.target.value;
   };
 
   @action
@@ -82,13 +88,15 @@ export default class AppDeployStore extends Store {
     let conf = null;
 
     if (this.isKubernetes) {
-      this.checkResult = 'ok';
-      conf = yaml.safeDump(unflattenObject(this.yamlObj));
-      this.yamlConfig.map(config => {
+      //this.checkResult = 'ok';
+      let yamlObj = unflattenObject(this.yamlObj);
+      /*this.yamlConfig.map(config => {
         if (typeof config.value === 'string' && !config.value) {
           this.checkResult = config.name;
         }
-      });
+      });*/
+      yamlObj.Name = this.Name;
+      conf = yaml.safeDump(yamlObj);
     } else {
       this.getConfigData();
       conf = JSON.stringify(this.configData);

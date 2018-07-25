@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="204px" height="331px" viewBox="0 0 204 331" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
-    <title>Group 4</title>
+<svg width="282px" height="450px" viewBox="0 0 282 450" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>1</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <filter x="-22.3%" y="-250.1%" width="144.6%" height="600.2%" filterUnits="objectBoundingBox" id="filter-1">
-            <feGaussianBlur stdDeviation="7.371" in="SourceGraphic"></feGaussianBlur>
+        <filter x="-22.6%" y="-250.0%" width="145.1%" height="600.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter x="-20.0%" y="-225.1%" width="140.0%" height="550.2%" filterUnits="objectBoundingBox" id="filter-2">
-            <feGaussianBlur stdDeviation="4.4226" in="SourceGraphic"></feGaussianBlur>
+        <filter x="-20.2%" y="-225.0%" width="140.4%" height="550.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="6" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <linearGradient x1="47.6384248%" y1="99.0419872%" x2="39.6447033%" y2="11.3606827%" id="linearGradient-3">
-            <stop stop-color="#8454CD" offset="0%"></stop>
-            <stop stop-color="#B79DE2" offset="100%"></stop>
+        <linearGradient x1="58.7239167%" y1="95.2579495%" x2="34.6986392%" y2="6.07289374%" id="linearGradient-3">
+            <stop stop-color="#6430bd" offset="0%"></stop>
+            <stop stop-color="#6430bd" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="47.6384248%" y1="99.0419872%" x2="39.6447033%" y2="11.3606827%" id="linearGradient-4">
+            <stop stop-color="#8454cd" offset="0%"></stop>
+            <stop stop-color="#b79de2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="12.0010338%" y1="4.12053281%" x2="89.218167%" y2="91.9484944%" id="linearGradient-5">
+            <stop stop-color="#efe6f8" offset="0%"></stop>
+            <stop stop-color="#efe6f8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="8.43363294%" x2="91.562725%" y2="70.6492996%" id="linearGradient-6">
+            <stop stop-color="#6430bd" offset="0%"></stop>
+            <stop stop-color="#6430bd" offset="100%"></stop>
         </linearGradient>
     </defs>
-    <g id="Homepage-&amp;-Search-&amp;-App-Details" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Homepage" transform="translate(-750.000000, -50.000000)">
-            <g id="Rectangle-8" transform="translate(0.000000, -104.000000)">
-                <g id="Group-4" transform="translate(759.000000, 154.000000)">
-                    <g id="Group-7" opacity="0.5" transform="translate(5.000000, 299.000000)" fill="#D8D8D8">
-                        <ellipse id="Oval-2" filter="url(#filter-1)" cx="49.695421" cy="9.54508577" rx="49.6268657" ry="4.42105263"></ellipse>
-                        <ellipse id="Oval-2" opacity="0.699999988" filter="url(#filter-2)" cx="38.3505695" cy="3.57747602" rx="33.2089552" ry="2.94736842"></ellipse>
-                    </g>
-                    <g id="Group-3">
-                        <polygon id="Rectangle-4" fill="#6430BD" points="47.6470588 72.6818182 87.8537403 88.2880611 93.479268 255.009144 58.1851504 272.480644"></polygon>
-                        <polygon id="Rectangle" fill="url(#linearGradient-3)" points="0 5.31818182 160.415417 74.6692557 161.29777 131.42012 49.0123873 79.5663711 58.2352941 272.113636 13.3853202 237.148595"></polygon>
-                        <polygon id="Rectangle-3" fill="#EFE6F8" points="40.0299718 0.443181818 194.663979 65.4851531 159.904465 74.7952002 0 5.30275477"></polygon>
-                        <polygon id="Rectangle-2" fill="#6430BD" points="160.067899 74.7855359 194.59554 65.5909091 194.59554 120.658268 161.293294 131.444857"></polygon>
-                    </g>
-                </g>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1" transform="translate(17.000000, 0.000000)">
+            <g id="Group-7" transform="translate(2.000000, 406.000000)" fill="#D8D8D8" opacity="0.200000003">
+                <ellipse id="Oval-2" filter="url(#filter-1)" cx="66.5918641" cy="12.954045" rx="66.5" ry="6"></ellipse>
+                <ellipse id="Oval-2" filter="url(#filter-2)" cx="51.3897631" cy="4.85514603" rx="44.5" ry="4"></ellipse>
+            </g>
+            <g id="Group-3">
+                <polygon id="Rectangle-4" fill="url(#linearGradient-3)" points="64.7511312 98.5064935 119.39098 119.657812 127.035928 345.616789 79.0721274 369.296111"></polygon>
+                <polygon id="Rectangle" fill="url(#linearGradient-4)" points="0 7.20779221 218.000439 101.20009 219.199534 178.115182 66.6065776 107.837206 79.1402715 368.798701 18.190307 321.410184"></polygon>
+                <polygon id="Rectangle-3" fill="url(#linearGradient-5)" points="54.3997053 0.600649351 264.543356 88.7527716 217.306067 101.370784 0 7.18688376"></polygon>
+                <polygon id="Rectangle-2" fill="url(#linearGradient-6)" points="217.52817 101.357686 264.450349 88.8961039 264.450349 163.529521 219.193451 178.148707"></polygon>
             </g>
         </g>
     </g>

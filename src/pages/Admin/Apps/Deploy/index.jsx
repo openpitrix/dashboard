@@ -215,10 +215,9 @@ export default class AppDeploy extends Component {
       isLoading,
       versions,
       runtimes,
-      subnets,
       versionId,
       runtimeId,
-      subnetId,
+      changeName,
       changeRuntime,
       changeVersion
     } = appDeployStore;
@@ -230,6 +229,17 @@ export default class AppDeploy extends Component {
         onSubmit={handleSubmit.bind(appDeployStore)}
       >
         <div className={styles.moduleTitle}>1. Basic settings</div>
+        <div className={styles.cellModule}>
+          <label className={styles.name}>Name</label>
+          <Input
+            className={styles.input}
+            name="Name"
+            type="text"
+            maxLength="50"
+            onChange={changeName}
+            required
+          />
+        </div>
         <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
           <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
@@ -266,12 +276,7 @@ export default class AppDeploy extends Component {
           ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button
-            type={`primary`}
-            className={`primary`}
-            htmlType="submit"
-            disabled={appDeployStore.isLoading}
-          >
+          <Button type={`primary`} className={`primary`} htmlType="submit">
             Confirm
           </Button>
           <Button

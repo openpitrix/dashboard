@@ -147,20 +147,8 @@ export default class AppDetail extends Component {
             value={get(appDetail, 'latest_app_version.name')}
           />
           <VersionItem title={t('Home')} value={appDetail.home} type="link" />
-          <div className={styles.versionItem}>
-            <div className={styles.title}>{t('Source repository')}</div>
-            <div className={styles.value}>
-              {appDetail.sources &&
-                appDetail.sources.split(',').map((data, index) => (
-                  <div key={index}>
-                    <a target="_blank" href={data}>
-                      {data}
-                    </a>
-                  </div>
-                ))}
-            </div>
-          </div>
-          <VersionItem title={t('Maintainers')} value={maintainers} type="array" />
+          <VersionItem title={t('Source repository')} value={appDetail.sources} type="link" />
+          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} type="maintainer" />
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>

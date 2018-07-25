@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>App Icon / None</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Components" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Cards" transform="translate(-83.000000, -470.000000)">
+            <g id="App-Icon-/-None" transform="translate(83.000000, 470.000000)">
+                <g id="Icon" transform="translate(-0.000000, 0.000000)">
+                    <rect id="Rectangle-2" stroke="#D3C4ED" fill="#FFFFFF" x="0.5" y="0.5" width="47" height="47" rx="4"></rect>
+                    <rect id="Rectangle-4" fill="#EFE6F8" transform="translate(23.926777, 23.926777) rotate(-45.000000) translate(-23.926777, -23.926777) " x="23.4267767" y="-7.99658185" width="1" height="63.8467171"></rect>
+                    <rect id="Rectangle-4" fill="#EFE6F8" transform="translate(23.926777, 23.926777) rotate(-135.000000) translate(-23.926777, -23.926777) " x="23.4267767" y="-7.99658185" width="1" height="63.8467171"></rect>
+                    <path d="M23.75,14 L23.75,1 L24.75,1 L24.75,14 L33.25,14 L33.25,1 L34.25,1 L34.25,14 L47,14 L47,15 L34.25,15 L34.25,23.5 L47,23.5 L47,24.5 L34.25,24.5 L34.25,33.5 L47,33.5 L47,34.5 L34.25,34.5 L34.25,47 L33.25,47 L33.25,34.5 L24.75,34.5 L24.75,47 L23.75,47 L23.75,34.5 L14.75,34.5 L14.75,47 L13.75,47 L13.75,34.5 L1,34.5 L1,33.5 L13.75,33.5 L13.75,24.5 L1,24.5 L1,23.5 L13.75,23.5 L13.75,15 L1,15 L1,14 L13.75,14 L13.75,1 L14.75,1 L14.75,14 L23.75,14 Z M23.75,15 L14.75,15 L14.75,23.5 L23.75,23.5 L23.75,15 Z M24.75,15 L24.75,23.5 L33.25,23.5 L33.25,15 L24.75,15 Z M23.75,24.5 L14.75,24.5 L14.75,33.5 L23.75,33.5 L23.75,24.5 Z M24.75,24.5 L24.75,33.5 L33.25,33.5 L33.25,24.5 L24.75,24.5 Z" id="Combined-Shape" fill="#EFE6F8"></path>
+                    <circle id="Oval" stroke="#EFE6F8" cx="24" cy="24" r="14"></circle>
+                    <rect id="Rectangle-2" stroke="#D3C4ED" x="0.5" y="0.5" width="47" height="47" rx="4"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
