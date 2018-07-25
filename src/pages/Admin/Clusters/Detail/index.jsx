@@ -15,10 +15,11 @@ import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sock }) => ({
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  sock
 }))
 @observer
 export default class ClusterDetail extends Component {
@@ -35,6 +36,28 @@ export default class ClusterDetail extends Component {
       await runtimeStore.fetch(cluster.runtime_id);
     }
   }
+
+  constructor(props) {
+    super(props);
+    props.clusterStore.setSocketMessage();
+  }
+
+  listenToJob = async payload => {
+    const { clusterStore, match } = this.props;
+    const rtype = get(payload, 'resource.rtype');
+    const rid = get(payload, 'resource.rid');
+
+    const { clusterId } = match.params;
+
+    if (rtype === 'cluster' && rid === clusterId) {
+      if (clusterStore.sockMessageChanged(payload)) {
+        await clusterStore.fetch(clusterId);
+        await clusterStore.fetchJobs(clusterId);
+        await clusterStore.fetchNodes({ cluster_id: clusterId });
+      }
+      clusterStore.setSocketMessage(payload);
+    }
+  };
 
   renderHandleMenu = () => {
     const { clusterParametersOpen } = this.props.clusterStore;
@@ -153,8 +176,10 @@ export default class ClusterDetail extends Component {
       onClearNode,
       onRefreshNode,
       onChangeNodeStatus,
-      selectNodeStatus
+      selectNodeStatus,
+      sockMessage
     } = clusterStore;
+
     const detail = clusterStore.cluster;
     const clusterJobs = clusterStore.clusterJobs.toJSON();
     const clusterNodes = clusterStore.clusterNodes.toJSON();
@@ -229,6 +254,8 @@ export default class ClusterDetail extends Component {
       <Layout
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
         isloading={isLoading}
+        sockMessage={sockMessage}
+        listenToJob={this.listenToJob}
       >
         <Grid>
           <Section>

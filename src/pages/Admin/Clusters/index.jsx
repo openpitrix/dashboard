@@ -40,10 +40,12 @@ export default class Clusters extends Component {
     this.store.setSocketMessage();
   }
 
-  listenToJob = payload => {
+  listenToJob = async payload => {
     const { clusterStore } = this.props;
+    const rtype = get(payload, 'resource.rtype');
 
-    if (['cluster'].includes(get(payload, 'resource.rtype'))) {
+    if (rtype === 'cluster') {
+      await clusterStore.fetchAll();
       clusterStore.setSocketMessage(payload);
     }
   };
