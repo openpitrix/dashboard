@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
+import { noop } from 'lodash';
 
 import Notification from 'components/Base/Notification';
 // import { Grid } from 'components/Layout';
@@ -11,7 +12,7 @@ import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
 
-@inject('sessInfo')
+@inject('sessInfo', 'sock')
 export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -23,15 +24,19 @@ export default class Layout extends React.Component {
     noNotification: PropTypes.bool,
     backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
-    loadClass: PropTypes.string
+    loadClass: PropTypes.string,
+    sockMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    listenToJob: PropTypes.func
   };
 
   static defaultProps = {
     msg: '',
-    hideMsg: () => {},
+    hideMsg: null,
     noTabs: false,
     noNotification: false,
-    backBtn: null
+    backBtn: null,
+    sockMessage: '',
+    listenToJob: noop
   };
 
   constructor(props) {
@@ -40,13 +45,22 @@ export default class Layout extends React.Component {
     this.linkPrefix = '/dashboard';
   }
 
+  componentDidMount() {
+    let { sock, listenToJob } = this.props;
+
+    if (sock && !sock._events['ops-resource']) {
+      sock.on('ops-resource', listenToJob);
+    }
+  }
+
   renderNotification() {
-    if (this.props.noNotification) return null;
-    let { msg, msgType } = this.props;
+    if (this.props.noNotification) {
+      return null;
+    }
+    let { msg, msgType, hideMsg } = this.props;
     if (typeof msg === 'object') {
       msg = msg + ''; // transform mobx object
     }
-    const { hideMsg } = this.props;
 
     return msg ? <Notification type={msgType} message={msg} onHide={hideMsg} /> : null;
   }
@@ -69,6 +83,22 @@ export default class Layout extends React.Component {
     return <TabsNav links={this.availableLinks} options={options} />;
   }
 
+  renderSocketMessage() {
+    let { sockMessage } = this.props;
+
+    if (typeof sockMessage === 'object') {
+      sockMessage = sockMessage + '';
+    }
+
+    // if(!sockMessage){
+    //   return null;
+    // }
+    // return <Notification type='info' message={`Socket Message: ${sockMessage}`} className={styles.socketMessage} />;
+
+    // todo: currently no need to implement job tips
+    return null;
+  }
+
   render() {
     const {
       className,
@@ -85,6 +115,7 @@ export default class Layout extends React.Component {
         {noTabs ? null : this.renderTabs()}
         {noNotification ? null : this.renderNotification()}
         {backBtn}
+        {this.renderSocketMessage()}
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {children}
         </Loading>
