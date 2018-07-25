@@ -20,6 +20,7 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, clusterStore, appVersionStore, repoStore }, { appId }) {
+    appStore.appDetail = {};
     appStore.deleteResult = {};
     await appStore.fetch(appId);
     await appVersionStore.fetchAll({ app_id: appId });

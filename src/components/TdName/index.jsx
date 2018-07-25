@@ -50,13 +50,14 @@ export default class TdName extends PureComponent {
   renderIcon() {
     const { noIcon, image } = this.props;
     const isIcon = ['appcenter', 'cluster'].includes(image);
+    const iconsrc = '/assets/None24.svg';
 
     if (noIcon) {
       return null;
     }
 
     if (isIcon) {
-      return <Icon name={image} size={24} />;
+      return <img src={iconsrc} className={styles.image} />;
     }
     if (!isIcon && image) {
       return <Image src={image} className={styles.image} />;
@@ -66,7 +67,6 @@ export default class TdName extends PureComponent {
   render() {
     const { image, name, description, linkUrl, noCopy, className } = this.props;
     const { message } = this.state;
-    const isIcon = ['appcenter', 'cluster'].includes(image);
 
     return (
       <span className={classnames(styles.tdName, className)}>
