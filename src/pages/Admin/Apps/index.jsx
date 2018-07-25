@@ -38,10 +38,6 @@ export default class Apps extends Component {
   constructor(props) {
     super(props);
     this.role = getSessInfo('role', this.props.sessInfo);
-
-    if (props.sock && !props.sock._events['ops-resource']) {
-      props.sock.on('ops-resource', this.listenToJob);
-    }
   }
 
   listenToJob = payload => {
@@ -160,7 +156,6 @@ export default class Apps extends Component {
       summaryInfo,
       totalCount,
       notifyMsg,
-      hideMsg,
       isLoading,
       currentPage,
       changePagination,
@@ -270,7 +265,7 @@ export default class Apps extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg}>
         <Row>
           <Statistics {...summaryInfo} objs={repos.slice()} />
         </Row>

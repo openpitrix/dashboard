@@ -30,24 +30,23 @@ export default class Clusters extends Component {
     await appStore.fetchAll({ status: ['active', 'deleted'] });
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 10000
+      limit: 999
     });
   }
 
   constructor(props) {
     super(props);
     this.store = this.props.clusterStore;
-
-    if (props.sock && !props.sock._events['ops-resource']) {
-      props.sock.on('ops-resource', this.listenToJob);
-    }
+    this.store.setSocketMessage();
   }
 
-  listenToJob = payload => {
-    const { rootStore } = this.props;
+  listenToJob = async payload => {
+    const { clusterStore } = this.props;
+    const rtype = get(payload, 'resource.rtype');
 
-    if (['cluster'].includes(get(payload, 'resource.rtype'))) {
-      rootStore.sockMessage = JSON.stringify(payload);
+    if (rtype === 'cluster') {
+      await clusterStore.fetchAll();
+      clusterStore.setSocketMessage(payload);
     }
   };
 
@@ -139,7 +138,7 @@ export default class Clusters extends Component {
 
   render() {
     const { clusterStore } = this.props;
-    const { summaryInfo, clusters, notifyMsg, hideMsg, isLoading } = clusterStore;
+    const { summaryInfo, clusters, notifyMsg, isLoading, sockMessage } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -243,7 +242,7 @@ export default class Clusters extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout msg={notifyMsg} listenToJob={this.listenToJob} sockMessage={sockMessage}>
         <Row>
           <Statistics {...summaryInfo} objs={runtimes.slice()} />
         </Row>

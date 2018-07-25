@@ -24,7 +24,7 @@ if (typeof window !== 'undefined') {
   // lazy loading
   import('./i18n').then(({ default: i18n }) => {
     // setup websocket client
-    const sockEndpoint = SockClient.composeEndpointFromApiServer(store.apiServer);
+    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl);
     const sc = new SockClient(sockEndpoint);
 
     ReactDOM.render(

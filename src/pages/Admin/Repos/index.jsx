@@ -26,18 +26,16 @@ export default class Repos extends Component {
 
   constructor(props) {
     super(props);
-    // listen to job, prevent event fire multiple times
-    if (props.sock && !props.sock._events['ops-resource']) {
-      props.sock.on('ops-resource', this.listenToJob);
-    }
+    this.props.repoStore.setSocketMessage();
   }
 
-  listenToJob = payload => {
-    const { rootStore } = this.props;
+  listenToJob = async payload => {
+    const { repoStore } = this.props;
 
-    if (['repo', 'repo_event'].includes(get(payload, 'resource.rtype'))) {
+    if (['repo'].includes(get(payload, 'resource.rtype'))) {
+      await repoStore.fetchAll();
       // repo_event: create, update, delete
-      rootStore.sockMessage = JSON.stringify(payload);
+      repoStore.setSocketMessage(payload);
     }
   };
 
@@ -76,13 +74,15 @@ export default class Repos extends Component {
       fetchQueryRepos,
       searchWord,
       onClearSearch,
-      onRefresh
+      onRefresh,
+      sockMessage
     } = repoStore;
+
     const { apps } = appStore;
     const repoApps = getRepoApps(repos, apps);
 
     return (
-      <Layout>
+      <Layout sockMessage={sockMessage} listenToJob={this.listenToJob}>
         <div className={styles.container}>
           <div className={styles.title}>Repos</div>
 

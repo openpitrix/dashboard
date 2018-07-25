@@ -16,11 +16,12 @@ import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sock }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  sock
 }))
 @observer
 export default class RepoDetail extends Component {
@@ -40,6 +41,27 @@ export default class RepoDetail extends Component {
     });
     repoStore.curTagName = 'Apps';
   }
+
+  constructor(props) {
+    super(props);
+    props.repoStore.setSocketMessage();
+  }
+
+  listenToJob = async payload => {
+    const { repoStore, match } = this.props;
+    const rtype = get(payload, 'resource.rtype');
+    const rid = get(payload, 'resource.rid');
+
+    const { repoId } = match.params;
+
+    if (rtype === 'repo_event' && rid === repoId) {
+      if (repoStore.sockMessageChanged(payload)) {
+        await repoStore.fetchRepoDetail(repoId);
+        await repoStore.fetchRepoEvents({ repo_id: repoId });
+      }
+      repoStore.setSocketMessage(payload);
+    }
+  };
 
   changeSelectors = items => {
     return (
@@ -87,7 +109,7 @@ export default class RepoDetail extends Component {
     const clusters = clusterStore.clusters.toJSON();
     const eventsData = repoStore.repoEvents.toJSON();
 
-    const { notifyMsg, notifyType, hideMsg } = repoStore;
+    const { notifyMsg, notifyType, sockMessage } = repoStore;
 
     const appsColumns = [
       {
@@ -343,7 +365,8 @@ export default class RepoDetail extends Component {
         backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
         msg={notifyMsg}
         msgType={notifyType}
-        hideMsg={hideMsg}
+        sockMessage={sockMessage}
+        listenToJob={this.listenToJob}
       >
         <Grid>
           <Section>

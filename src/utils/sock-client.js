@@ -13,10 +13,10 @@ const defaultOptions = {
 let reopenCount = 0;
 
 class SockClient extends EventEmitter {
-  static composeEndpointFromApiServer = apiServer => {
-    const re = /(https?:\/\/)?([^\/]+)/;
-    const suffix = '/v1/io?uid=system';
-    const matchParts = (apiServer + '').match(re);
+  static composeEndpoint = socketUrl => {
+    const re = /(\w+?:\/\/)?([^\\?]+)/;
+    const suffix = '?uid=system'; // todo: suffix is hard coded
+    const matchParts = (socketUrl + '').match(re);
     return `ws://${matchParts[2]}${suffix}`;
   };
 
@@ -65,7 +65,7 @@ class SockClient extends EventEmitter {
           data = JSON.parse(data);
         }
 
-        console.log('emit sock message: ', data);
+        console.log('sock message: ', data);
         this.emit(`ops-resource`, data);
       };
     }
