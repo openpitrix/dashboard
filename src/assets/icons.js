@@ -7,23 +7,6 @@ const svgSprites = `
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
 >
-<symbol id="none" viewBox="0 0 24 24">
-  <g id="Components" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path id="Cards" transform="translate(-83.000000, -470.000000)">
-            <path id="App-Icon-/-None" transform="translate(83.000000, 470.000000)">
-                <path transform="translate(-0.000000, 0.000000)">
-                    <rect id="Rectangle-2" stroke="#D3C4ED" fill="#FFFFFF" x="0.5" y="0.5" width="47" height="47" rx="4"></rect>
-                    <rect id="Rectangle-4" fill="#EFE6F8" transform="translate(23.926777, 23.926777) rotate(-45.000000) translate(-23.926777, -23.926777) " x="23.4267767" y="-7.99658185" width="1" height="63.8467171"></rect>
-                    <rect id="Rectangle-4" fill="#EFE6F8" transform="translate(23.926777, 23.926777) rotate(-135.000000) translate(-23.926777, -23.926777) " x="23.4267767" y="-7.99658185" width="1" height="63.8467171"></rect>
-                    <path d="M23.75,14 L23.75,1 L24.75,1 L24.75,14 L33.25,14 L33.25,1 L34.25,1 L34.25,14 L47,14 L47,15 L34.25,15 L34.25,23.5 L47,23.5 L47,24.5 L34.25,24.5 L34.25,33.5 L47,33.5 L47,34.5 L34.25,34.5 L34.25,47 L33.25,47 L33.25,34.5 L24.75,34.5 L24.75,47 L23.75,47 L23.75,34.5 L14.75,34.5 L14.75,47 L13.75,47 L13.75,34.5 L1,34.5 L1,33.5 L13.75,33.5 L13.75,24.5 L1,24.5 L1,23.5 L13.75,23.5 L13.75,15 L1,15 L1,14 L13.75,14 L13.75,1 L14.75,1 L14.75,14 L23.75,14 Z M23.75,15 L14.75,15 L14.75,23.5 L23.75,23.5 L23.75,15 Z M24.75,15 L24.75,23.5 L33.25,23.5 L33.25,15 L24.75,15 Z M23.75,24.5 L14.75,24.5 L14.75,33.5 L23.75,33.5 L23.75,24.5 Z M24.75,24.5 L24.75,33.5 L33.25,33.5 L33.25,24.5 L24.75,24.5 Z" id="Combined-Shape" fill="#EFE6F8"></path>
-                    <circle id="Oval" stroke="#EFE6F8" cx="24" cy="24" r="14"></circle>
-                    <rect id="Rectangle-2" stroke="#D3C4ED" x="0.5" y="0.5" width="47" height="47" rx="4"></rect>
-                </path>
-            </path>
-        </path>
-    </g>
-</symbol>
-
 <symbol id="add" viewBox="0 0 24 24">
   <path style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd" d="M13,11 L20,11 L20,13 L13,13 L13,20 L11,20 L11,13 L4,13 L4,11 L11,11 L11,4 L13,4 L13,11 Z"/>
 </symbol>

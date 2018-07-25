@@ -1,24 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="204" height="313" viewBox="0 0 204 313">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="204px" height="331px" viewBox="0 0 204 331" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
     <defs>
-        <filter id="a" width="144.6%" height="600.2%" x="-22.3%" y="-250.1%" filterUnits="objectBoundingBox">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="7.371"/>
+        <filter x="-22.3%" y="-250.1%" width="144.6%" height="600.2%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="7.371" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <filter id="b" width="140%" height="550.2%" x="-20%" y="-225.1%" filterUnits="objectBoundingBox">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="4.423"/>
+        <filter x="-20.0%" y="-225.1%" width="140.0%" height="550.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="4.4226" in="SourceGraphic"></feGaussianBlur>
         </filter>
-        <linearGradient id="c" x1="47.638%" x2="39.645%" y1="99.042%" y2="11.361%">
-            <stop offset="0%" stop-color="#8454CD"/>
-            <stop offset="100%" stop-color="#B79DE2"/>
+        <linearGradient x1="47.6384248%" y1="99.0419872%" x2="39.6447033%" y2="11.3606827%" id="linearGradient-3">
+            <stop stop-color="#8454CD" offset="0%"></stop>
+            <stop stop-color="#B79DE2" offset="100%"></stop>
         </linearGradient>
     </defs>
-    <g fill="none" fill-rule="evenodd">
-        <g fill="#D8D8D8" opacity=".5" transform="translate(14 299)">
-            <ellipse cx="49.695" cy="9.545" filter="url(#a)" rx="49.627" ry="4.421"/>
-            <ellipse cx="38.351" cy="3.577" filter="url(#b)" opacity=".7" rx="33.209" ry="2.947"/>
+    <g id="Homepage-&amp;-Search-&amp;-App-Details" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Homepage" transform="translate(-750.000000, -50.000000)">
+            <g id="Rectangle-8" transform="translate(0.000000, -104.000000)">
+                <g id="Group-4" transform="translate(759.000000, 154.000000)">
+                    <g id="Group-7" opacity="0.5" transform="translate(5.000000, 299.000000)" fill="#D8D8D8">
+                        <ellipse id="Oval-2" filter="url(#filter-1)" cx="49.695421" cy="9.54508577" rx="49.6268657" ry="4.42105263"></ellipse>
+                        <ellipse id="Oval-2" opacity="0.699999988" filter="url(#filter-2)" cx="38.3505695" cy="3.57747602" rx="33.2089552" ry="2.94736842"></ellipse>
+                    </g>
+                    <g id="Group-3">
+                        <polygon id="Rectangle-4" fill="#6430BD" points="47.6470588 72.6818182 87.8537403 88.2880611 93.479268 255.009144 58.1851504 272.480644"></polygon>
+                        <polygon id="Rectangle" fill="url(#linearGradient-3)" points="0 5.31818182 160.415417 74.6692557 161.29777 131.42012 49.0123873 79.5663711 58.2352941 272.113636 13.3853202 237.148595"></polygon>
+                        <polygon id="Rectangle-3" fill="#EFE6F8" points="40.0299718 0.443181818 194.663979 65.4851531 159.904465 74.7952002 0 5.30275477"></polygon>
+                        <polygon id="Rectangle-2" fill="#6430BD" points="160.067899 74.7855359 194.59554 65.5909091 194.59554 120.658268 161.293294 131.444857"></polygon>
+                    </g>
+                </g>
+            </g>
         </g>
-        <path fill="#6430BD" d="M56.647 72.682l40.207 15.606 5.625 166.721-35.294 17.472z"/>
-        <path fill="url(#c)" d="M0 5.318L160.415 74.67l.883 56.751L49.012 79.566l9.223 192.548-44.85-34.965z" transform="translate(9)"/>
-        <path fill="#EFE6F8" d="M49.03.443l154.634 65.042-34.76 9.31L9 5.303z"/>
-        <path fill="#6430BD" d="M169.068 74.786l34.528-9.195v55.067l-33.303 10.787z"/>
     </g>
 </svg>

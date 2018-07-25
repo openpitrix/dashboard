@@ -104,6 +104,15 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
+    let maintainers = [];
+    if (get(appDetail, 'maintainers')) {
+      const objs = JSON.parse(get(appDetail, 'maintainers'));
+      objs &&
+        objs.map(obj => {
+          maintainers.push(obj.name);
+          maintainers.push(obj.email);
+        });
+    }
 
     return (
       <Section>

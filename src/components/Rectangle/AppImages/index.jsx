@@ -12,7 +12,7 @@ export default class AppImages extends Component {
   };
   render() {
     const { apps } = this.props;
-    const iconsrc = '/assets/None24.svg';
+    const nonIcon = '/assets/none.svg';
     return (
       <div className={styles.appImages}>
         <div className={styles.name}>Apps</div>
@@ -20,7 +20,7 @@ export default class AppImages extends Component {
           {apps &&
             apps.slice(0, 10).map(({ app_id, icon }) => (
               <Link key={app_id} to={`/dashboard/app/${app_id}`}>
-                <Image src={icon || iconsrc} />
+                <Image src={icon || nonIcon} />
               </Link>
             ))}
           <span className={styles.totalNum}>{apps ? apps.length : 0}</span>
