@@ -1,4 +1,4 @@
-import _, { get, filter } from 'lodash';
+import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 
 export function formatTime(ts, format = 'YYYY/MM/DD') {
@@ -131,4 +131,46 @@ export function getHistograms(histograms) {
     });
   }
   return twoWeekDays;
+}
+
+export function flattenObject(obj) {
+  const result = {};
+
+  function recurse(cur, prop) {
+    if (Object(cur) !== cur) {
+      result[prop] = cur;
+      return;
+    }
+    if (Array.isArray(cur)) {
+      cur.forEach((item, index) => recurse(item, `${prop}[${index}]`));
+    } else {
+      Object.entries(cur).forEach(([key, value]) => {
+        recurse(value, prop ? `${prop}.${key}` : key);
+      });
+    }
+  }
+
+  recurse(obj, '');
+  return result;
+}
+
+export function unflattenObject(data) {
+  if (Object(data) !== data || Array.isArray(data)) {
+    return data;
+  }
+
+  const result = {};
+  Object.entries(data).forEach(([key, value]) => set(result, key, value));
+  return result;
+}
+
+export function getYamlList(yamlObj) {
+  let results = [];
+  _.forIn(yamlObj, (value, key) => {
+    results.push({
+      name: key,
+      value: value
+    });
+  });
+  return results;
 }
