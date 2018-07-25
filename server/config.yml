@@ -16,6 +16,8 @@ static:
 # mock server
 serverUrl: http://139.198.4.179:9100
 
+socketUrl: ws://139.198.121.148:9100/v1/io
+
 app:
   name: OpenPitrix Dashboard
   navs:

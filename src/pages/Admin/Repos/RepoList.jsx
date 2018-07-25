@@ -18,27 +18,25 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
           </div>
         </div>
       </div>
-      {repos.length
-        ? repos.map(({ repo_id, status, name, description, providers, apps, labels }) => (
-            <div className={styles.item} key={repo_id}>
-              <RepoCard
-                repoId={repo_id}
-                name={name}
-                description={description}
-                providers={providers.slice()}
-                apps={apps.slice()}
-                tags={labels.slice()}
-              />
-              <div className={styles.actionMenu}>
-                <div>
-                  <Popover content={actionMenu(repo_id)}>
-                    <Icon name="more" />
-                  </Popover>
-                </div>
-              </div>
+      {repos.map(({ repo_id, status, name, description, providers, apps, labels }) => (
+        <div className={styles.item} key={repo_id}>
+          <RepoCard
+            repoId={repo_id}
+            name={name}
+            description={description}
+            providers={providers.slice()}
+            apps={apps.slice()}
+            tags={(labels && labels.slice()) || []}
+          />
+          <div className={styles.actionMenu}>
+            <div>
+              <Popover content={actionMenu(repo_id)}>
+                <Icon name="more" />
+              </Popover>
             </div>
-          ))
-        : null}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

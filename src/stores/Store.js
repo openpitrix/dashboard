@@ -10,7 +10,7 @@ export default class Store {
       pageInitMap: {},
       notifyType: observable.box('success'),
       notifyMsg: observable.box(''),
-      sockMessage: '' // json.string websocket message
+      sockMessage: observable.box('') // json.string socket message
     });
 
     if (initialState) {
@@ -70,5 +70,10 @@ Store.prototype = {
         throw Error(`invalid request method: ${method}`);
       };
     }
-  })
+  }),
+
+  @action.bound
+  setSocketMessage: function(message = '') {
+    this.sockMessage = typeof message === 'object' ? JSON.stringify(message) : message.toString();
+  }
 };
