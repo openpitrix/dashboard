@@ -88,18 +88,29 @@
     }
   }
 }
-.copyId{
+.copyOuter{
+  position: relative;
+  display: inline-block;
   margin-bottom: 10px;
   font-size: 12px;
   line-height: 1.17;
   letter-spacing: 0;
   color: $N75;
-}
-
-:global{
-  .copyId{
-    position: relative;
-    top: 4px;
-    cursor: pointer;
+  :global{
+    .copyId{
+      display: none;
+      position: absolute;
+      top: 0px;
+      right: -16px;
+      cursor: pointer;
+    }
+  }
+  &:hover{
+    :global {
+      .copyId {
+        display: inline-block;
+      }
+    }
   }
 }
+

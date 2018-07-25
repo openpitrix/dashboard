@@ -40,7 +40,7 @@ export default class CopyId extends PureComponent {
     const { message } = this.state;
 
     return (
-      <div className={styles.copyId}>
+      <div className={styles.copyOuter}>
         id: {id}
         <span className="copyId" data-clipboard-text={id}>
           <Icon name="copy" type="dark" />
