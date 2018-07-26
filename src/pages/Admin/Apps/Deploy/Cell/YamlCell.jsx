@@ -8,7 +8,7 @@ import styles from './index.scss';
 export default class YamlCell extends PureComponent {
   static propTypes = {
     name: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
     index: PropTypes.number,
     changeCell: PropTypes.func,
     className: PropTypes.string
