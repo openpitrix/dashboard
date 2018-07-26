@@ -22,11 +22,14 @@ export default class NoData extends PureComponent {
       Runtimes: 'stateful-set',
       Repos: 'stateful-set',
       Categories: 'components',
-      Events: 'tateful-set'
+      Events: 'tateful-set',
+      Versions: 'tag'
     };
+    let iconName = iconMap[type] || 'appcenter';
+
     return (
       <div className={styles.noData}>
-        <Icon name={iconMap[type]} size={120} type={`light`} />
+        <Icon name={iconName} size={120} type={`light`} />
         <div className={styles.word}>No results or data for {type}</div>
       </div>
     );

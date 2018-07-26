@@ -2,7 +2,7 @@
 
 $login-bg: linear-gradient(305deg, $P75, #854fb9 32%, #484999);
 $login-form-bg: #ffffff;
-$login-form-shadow: 0 4px 35px 0 rgba(48, 14, 86, 0.3);
+$login-form-shadow: 0 4px 35px 0 rgba(35, 35, 36, 0.4);
 $login-submit-bg: linear-gradient(to left, #f1ac0e, #e68c22);
 $login-submit-hover-bg: linear-gradient(to left, #f0b40e, #e69122);
 $login-submit-active-bg: linear-gradient(to left, #f0b40e, #e69122);
@@ -30,6 +30,7 @@ $input-item-height: 48px;
 }
 
 .loginForm {
+  position: relative;
   width: 410px;
   margin: 40px auto 0;
   padding: 48px 45px;
@@ -37,6 +38,14 @@ $input-item-height: 48px;
   border-radius: 8px;
   background-color: $login-form-bg;
   box-shadow: $login-form-shadow;
+  .errorAlert{
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 240px;
+    text-align: left;
+  }
   h1 {
     margin-bottom: 24px;
     color: $title-color;
@@ -78,28 +87,11 @@ $input-item-height: 48px;
         width: $input-item-width;
         height: $input-item-height;
         padding: 15px 15px 15px 52px;
-        border: 1px solid $N30;
         border-radius: 24px;
-        box-shadow: none;
         font-size: $size-medium;
         opacity: 1;
         color: $N500;
         transition: all .3s ease-in-out;
-
-        &::placeholder {
-          color: $N45;
-          opacity: 1;
-          font-weight: normal;
-          font-size: $size-medium;
-        }
-
-        &:hover {
-          border: 1px solid $N45;
-        }
-        &:focus {
-          box-shadow: 0 2px 2px 0 rgba(48,14,86,0.06), 0 4px 8px 0 rgba(48,14,86,0.10);
-          border: 1px solid $P75;
-        }
       }
 
     }

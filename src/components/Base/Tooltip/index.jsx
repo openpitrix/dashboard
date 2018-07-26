@@ -118,7 +118,7 @@ export default class Tooltip extends React.Component {
     return (
       <Manager className={classNames(styles.tooltip, className)}>
         <Target
-          className={styles.target}
+          className={classNames(styles.target, { [styles.active]: visible })}
           innerRef={c => {
             this.target = c;
           }}

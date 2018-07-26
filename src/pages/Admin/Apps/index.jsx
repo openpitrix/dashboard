@@ -132,7 +132,7 @@ export default class Apps extends Component {
     if (appIds.length) {
       return (
         <Toolbar>
-          <Button type="delete" onClick={() => showDeleteApp(appIds)}>
+          <Button type="delete" onClick={() => showDeleteApp(appIds)} className="btn-handle">
             Delete
           </Button>
         </Toolbar>
@@ -233,8 +233,8 @@ export default class Apps extends Component {
         title: 'Actions',
         key: 'actions',
         render: item => (
-          <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item)}>
+          <div className={styles.actions}>
+            <Popover content={this.renderHandleMenu(item)} className="actions">
               <Icon name="more" />
             </Popover>
           </div>
@@ -261,7 +261,8 @@ export default class Apps extends Component {
       tableType: 'Apps',
       onChange: changePagination,
       total: totalCount,
-      current: currentPage
+      current: currentPage,
+      noCancel: false
     };
 
     return (

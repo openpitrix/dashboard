@@ -5,9 +5,11 @@
 }
 .content {
   position: relative;
-  min-height: $main-height;
+  height: auto;
+  min-height: $main-min-height;
   margin: 0 auto;
   width: $content-width;
+
   .homeLoad {
     margin-left: $nav-width;
   }

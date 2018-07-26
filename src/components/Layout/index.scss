@@ -2,7 +2,8 @@
 
 .layout {
   padding-top: $header-height + $tabNavs-height + 32px;
-  padding-bottom: $page-bottom;
+  //padding-bottom: $page-bottom;
+  min-height: $main-min-height;
 
   .backBtn{
     width: $content-width;

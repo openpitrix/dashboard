@@ -3,17 +3,25 @@
 $bgcolor: $text-color;
 
 .tooltip {
+  .active {
+    box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
+    border: solid 1px $N30;
+  }
 }
 
 .target {
   width: 40px;
-  height: 30px;
+  height: 32px;
   border-radius: 2px;
-  //background-color: $N0;
-  border: solid 1px $N0;
+  border: 1px solid transparent;
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
+    border: solid 1px $N30;
+  }
+  &:focus {
+    box-shadow: 0 1px 3px 0 #474e5d11;
     border: solid 1px $N30;
   }
   :global{
@@ -75,6 +83,7 @@ $bgcolor: $text-color;
   }
   &[data-placement^="bottom"] {
     margin-top: 10px;
+    //transform: translate3d(362px, 220px, 0px) !important;
 
     .arrow {
       top: -12px;

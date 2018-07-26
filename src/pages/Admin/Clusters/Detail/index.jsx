@@ -192,7 +192,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Name',
         key: 'name',
-        width: '170px',
+        width: '150px',
         render: item => <TdName name={item.name} description={item.node_id} noIcon />
       },
       {
@@ -203,13 +203,14 @@ export default class ClusterDetail extends Component {
       {
         title: 'Node Status',
         key: 'status',
-        width: '130px',
-        render: item => <Status type={item.status} name={item.status} />
+        width: '155px',
+        // fixme: prop type check case sensitive
+        render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
       },
       {
         title: 'Configuration',
         key: 'configuration',
-        width: '120px',
+        width: '100px',
         render: item => <Configuration configuration={item.cluster_role || {}} />
       },
       {
@@ -220,13 +221,10 @@ export default class ClusterDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '120px',
+        width: '100px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
-    const tags = [{ id: 1, name: 'Nodes' }];
-    const curTag = 'Nodes';
-
     const filterList = [
       {
         key: 'status',
@@ -285,7 +283,7 @@ export default class ClusterDetail extends Component {
 
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={['Nodes']} />
 
               <Card>
                 <Toolbar

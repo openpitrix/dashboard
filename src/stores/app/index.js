@@ -27,6 +27,10 @@ export default class AppStore extends Store {
   @observable defaultStatus = ['active'];
   @observable deleteResult = {};
 
+  @observable detailTab = '';
+  @observable swVersion = '';
+  @observable currentVersionPage = 1;
+
   @observable currentPic = 1;
 
   // menu actions logic
@@ -40,11 +44,14 @@ export default class AppStore extends Store {
   fetchApps = async (params = {}, title) => {
     this.isLoading = true;
     this.categoryTitle = title;
-    this.appSearch = params.search_word;
+    params.limit = 999;
+
     if (!params.status) {
       params.status = ['active'];
     }
-    params.limit = 10000;
+    if (this.appSearch) {
+      params.search_word = this.appSearch;
+    }
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -201,6 +208,11 @@ export default class AppStore extends Store {
   };
 
   @action
+  changeAppSearch = word => {
+    this.appSearch = word;
+  };
+
+  @action
   setCurrentPage = page => {
     this.currentPage = page;
   };
@@ -236,10 +248,14 @@ export default class AppStore extends Store {
   };
 
   @action
+  setCurrentVersionPage = page => {
+    this.currentVersionPage = page;
+  };
+
+  @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {
     this.selectedRowKeys = selectedRowKeys;
-    this.appIds = [];
-    selectedRows.map(row => this.appIds.push(row.app_id));
+    this.appIds = selectedRows.map(row => row.app_id);
   };
 
   @action
@@ -253,6 +269,7 @@ export default class AppStore extends Store {
       this.currentPage = 1;
       this.selectStatus = '';
       this.searchWord = '';
+      this.appSearch = '';
     }
     this.selectedRowKeys = [];
     this.appIds = [];

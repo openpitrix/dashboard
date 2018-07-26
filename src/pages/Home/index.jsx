@@ -19,9 +19,9 @@ import styles from './index.scss';
 @observer
 export default class Home extends Component {
   static async onEnter({ categoryStore, appStore }, { category }) {
+    appStore.loadPageInit();
     await categoryStore.fetchAll();
     await appStore.fetchApps(category ? { category_id: category } : {});
-    appStore.appSearch = '';
   }
 
   componentDidMount() {
@@ -82,7 +82,7 @@ export default class Home extends Component {
   render() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { fetchApps, appSearch, apps, isLoading } = appStore;
+    const { fetchApps, appSearch, apps, isLoading, changeAppSearch } = appStore;
     const { categories, getCategoryApps } = categoryStore;
 
     const categoryId = match.params.category;
@@ -94,7 +94,12 @@ export default class Home extends Component {
     return (
       <Fragment>
         {isHomePage && (
-          <Banner onSearch={fetchApps} appSearch={appSearch} setScroll={this.setScroll} />
+          <Banner
+            onSearch={fetchApps}
+            appSearch={appSearch}
+            setScroll={this.setScroll}
+            changeAppSearch={changeAppSearch}
+          />
         )}
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>

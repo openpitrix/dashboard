@@ -11,6 +11,8 @@ import NoData from './noData';
 
 import styles from './index.scss';
 
+const noop = () => {};
+
 export default class Table extends React.Component {
   static propTypes = {
     prefixCls: PropTypes.string,
@@ -28,7 +30,7 @@ export default class Table extends React.Component {
     columns: [],
     pagination: {},
     rowKey: 'key',
-    rowSelection: null
+    rowSelection: {}
   };
 
   constructor(props) {
@@ -269,26 +271,16 @@ export default class Table extends React.Component {
     return columns;
   };
 
-  renderPagination = pagination => {
-    return (
-      <Pagination
-        onChange={pagination.onChange}
-        total={pagination.total}
-        current={pagination.current}
-      />
-    );
-  };
-
-  rowClassName=(record, index)=> {
-    let {selectedRowKeys}=this.state;
-    if('toJSON' in selectedRowKeys){
+  rowClassName = (record, index) => {
+    let { selectedRowKeys } = this.state;
+    if ('toJSON' in selectedRowKeys) {
       selectedRowKeys = selectedRowKeys.toJSON();
     }
-    if(selectedRowKeys.includes(index)){
-      return 'row-selected'
+    if (selectedRowKeys.includes(index)) {
+      return 'row-selected';
     }
     return '';
-  }
+  };
 
   renderTable = () => {
     const { ...restProps } = this.props;
@@ -301,7 +293,15 @@ export default class Table extends React.Component {
       return newColumn;
     });
 
-    return <RcTable {...restProps} key="table" data={data} columns={columns} rowClassName={this.rowClassName} />;
+    return (
+      <RcTable
+        {...restProps}
+        key="table"
+        data={data}
+        columns={columns}
+        rowClassName={this.rowClassName}
+      />
+    );
   };
 
   componentWillReceiveProps(nextProps) {
@@ -319,14 +319,16 @@ export default class Table extends React.Component {
   }
 
   render() {
-    const { className, style, pagination, isLoading } = this.props;
+    const { className, style, pagination, isLoading, rowSelection } = this.props;
+    const { selectedRowKeys } = this.state;
+    const onSelectRow = rowSelection.onChange || noop;
 
     return (
       <Loading className="loadTable" isLoading={isLoading}>
         {pagination.total > 0 ? (
           <div className={classNames(styles.table, className)} style={style}>
             {this.renderTable()}
-            {this.renderPagination(pagination)}
+            <Pagination {...pagination} selectedRows={selectedRowKeys} onSelectRow={onSelectRow} />
           </div>
         ) : (
           <NoData type={pagination.tableType} />

@@ -25,9 +25,9 @@
   }
   li{
     box-sizing: border-box;
-    padding: 9px 0;
+    padding: 12px 12px 10px 12px;
     height: 60px;
-    border-bottom: 1px solid $border-gray-li;
+    border-bottom: 1px solid $N10;
     &:hover{
       background-color: $li-hover-bg;
       .name{
@@ -37,7 +37,7 @@
   }
   .dot{
     float:left;
-    margin: 12px;
+    margin: 8px 12px 0 0;
     width: 12px;
     height: 12px;
   }
@@ -69,17 +69,10 @@
     }
     .time{
       font-size: 12px;
-      line-height: 1.67;
-      letter-spacing: 0;
+      line-height: 20px;
       text-align: right;
       color: $N100;
     }
-  }
-
-}
-.normalList{
-  li{
-    margin-bottom: 8px;
   }
 }
 

@@ -236,7 +236,6 @@ export default class RepoDetail extends Component {
 
     const { curTagName, selectCurTag } = repoStore;
     const detailSearch = '';
-    const tags = [{ id: 1, name: 'Apps' }, { id: 2, name: 'Runtimes' }, { id: 3, name: 'Events' }];
 
     let data = [];
     let columns = [];
@@ -387,7 +386,11 @@ export default class RepoDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTagName} changeTag={selectCurTag.bind(repoStore)} />
+              <TagNav
+                tags={['Apps', 'Runtimes', 'Events']}
+                defaultTag={curTagName}
+                changeTag={selectCurTag.bind(repoStore)}
+              />
               <Card>
                 {curTagName === 'Runtimes' && (
                   <div className={styles.selector}>

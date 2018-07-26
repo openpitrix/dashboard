@@ -1,79 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Base/Pagination basic render 1`] = `
-<ul
-  class="pi-pagination pagination test"
-  unselectable="unselectable"
+<div
+  class="pagination test"
 >
-  <li
-    class="pi-pagination-total-text"
+  <div
+    class="total"
   >
     Total: 100
-  </li>
-  <li
-    aria-disabled="false"
-    class=" pi-pagination-prev"
-    tabindex="0"
-    title="Previous Page"
+  </div>
+  <div
+    class="pageItems"
   >
-    <span>
-      Last
+    <span
+      aria-disabled="false"
+      class="btn"
+    >
+      <span
+        class="icon icon-previous"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-previous qicon-light"
+        >
+          <use
+            href="#previous"
+          />
+        </svg>
+      </span>
     </span>
-  </li>
-  <li
-    class="pi-pagination-item pi-pagination-item-1"
-    tabindex="0"
-    title="1"
-  >
-    <a>
-      1
-    </a>
-  </li>
-  <li
-    class="pi-pagination-item pi-pagination-item-2 pi-pagination-item-active"
-    tabindex="0"
-    title="2"
-  >
-    <a>
-      2
-    </a>
-  </li>
-  <li
-    class="pi-pagination-item pi-pagination-item-3"
-    tabindex="0"
-    title="3"
-  >
-    <a>
-      3
-    </a>
-  </li>
-  <li
-    class="pi-pagination-item pi-pagination-item-4"
-    tabindex="0"
-    title="4"
-  >
-    <a>
-      4
-    </a>
-  </li>
-  <li
-    class="pi-pagination-item pi-pagination-item-5"
-    tabindex="0"
-    title="5"
-  >
-    <a>
-      5
-    </a>
-  </li>
-  <li
-    aria-disabled="false"
-    class=" pi-pagination-next"
-    tabindex="0"
-    title="Next Page"
-  >
-    <span>
-      Next
+    <span
+      class="current"
+    >
+      2 / 5
     </span>
-  </li>
-</ul>
+    <span
+      aria-disabled="false"
+      class="btn"
+    >
+      <span
+        class="icon icon-next"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-next qicon-light"
+        >
+          <use
+            href="#next"
+          />
+        </svg>
+      </span>
+    </span>
+  </div>
+</div>
 `;

@@ -3,7 +3,7 @@
 .select {
   display: inline-block;
   position: relative;
-  width: 276px;
+  width: 256px;
   text-align: left;
   i {
     position: absolute;
@@ -11,24 +11,35 @@
     top: 50%;
     transform: translateY(-50%);
   }
+
+}
+.disabledSel{
+  .control{
+    opacity: .5;
+  }
 }
 
 .control {
   position: relative;
+  box-sizing: border-box;
   height: 32px;
-  padding: 7px 10px;
-  border-radius: 3px;
-  background-color: #ffffff;
-  border: solid 1px $border;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  padding: 3px 12px;
+  border-radius: 2px;
+  background-color: $N0;
+  border: solid 1px $N30;
   cursor: pointer;
   transition: all .3s ease-in-out;
   .controlLabel {
-    line-height: 16px;
-    color: $text-color;
+    line-height: 24px;
+    color: $N300;
   }
   &:hover {
-    background-color: $border;
+    background-color: $N10;
+    border: solid 1px $N30;
+  }
+  &:active{
+    background-color: $N45 !important;
+    border: solid 1px $N45 !important;
   }
 }
 
@@ -38,17 +49,23 @@
   z-index: 11;
   width: 100%;
   //max-height: 200px;
-  margin-top: 2px;
-  border-radius: 3px;
-  border: solid 1px $border;
-  background-color: $background-color-lighter;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  margin-top: 8px;
+  padding: 8px 0;
+  border-radius: 2px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
+  border: solid 1px $N30;
   .option {
     position: relative;
-    padding: 9px 10px;
+    box-sizing: border-box;
+    padding: 4px 12px;
+    height: 32px;
+    line-height: 24px;
+    color: $N300;
     cursor: pointer;
     &:hover {
-      background-color: $border;
+      color: $N500;
+      background-color: $N10;
     }
   }
 }

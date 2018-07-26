@@ -10,11 +10,13 @@ export default class Select extends React.Component {
     className: PropTypes.string,
     children: PropTypes.any,
     onChange: PropTypes.func,
-    value: PropTypes.string
+    value: PropTypes.string,
+    disabled: PropTypes.bool
   };
 
   static defaultProps = {
-    className: ''
+    className: '',
+    disabled: false
   };
 
   state = {
@@ -89,19 +91,19 @@ export default class Select extends React.Component {
   renderOptions() {
     const { isOpen } = this.state;
 
-    return (
+    return this.childNodes.length > 0 ? (
       <div className={classnames(styles.options, { [styles.show]: isOpen })}>{this.childNodes}</div>
-    );
+    ) : null;
   }
 
   render() {
-    const { className, children, ...rest } = this.props;
+    const { className, children, disabled, ...rest } = this.props;
 
     this.setChildNodes();
 
     return (
       <div
-        className={classnames(styles.select, className)}
+        className={classnames(styles.select, className, { [styles.disabledSel]: disabled })}
         {...rest}
         ref={ref => {
           this.wrapper = ref;

@@ -43,12 +43,16 @@ export default class Image extends React.Component {
     const { failed } = this.state;
 
     if (failed) {
+      const nonIcon = '/assets/none.svg';
+      const sizeStyle = {
+        width: iconSize + 'px',
+        height: iconSize + 'px'
+      };
       return (
-        <Icon
-          name="picture"
-          type="dark"
-          size={iconSize}
+        <img
+          src={nonIcon}
           data-origin-url={src}
+          style={sizeStyle}
           className={className}
           {...rest}
         />
@@ -59,8 +63,8 @@ export default class Image extends React.Component {
       <img
         src={src}
         data-origin-url={src}
-        className={classnames(styles.img, className)}
-        ref={c=> this.img = c}
+        className={classnames(className)}
+        ref={c => (this.img = c)}
         {...rest}
       />
     );

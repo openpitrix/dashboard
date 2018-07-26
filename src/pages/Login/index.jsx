@@ -22,7 +22,11 @@ export default class Login extends Component {
   renderErrMsg() {
     let { notifyMsg, hideMsg } = this.props.store;
     notifyMsg = notifyMsg + '';
-    return notifyMsg && <Notification message={notifyMsg} onHide={hideMsg} />;
+    return (
+      notifyMsg && (
+        <Notification className={styles.errorAlert} message={notifyMsg} onHide={hideMsg} />
+      )
+    );
   }
 
   render() {
@@ -35,6 +39,7 @@ export default class Login extends Component {
             <Logo url="/assets/logo_light.svg" />
           </div>
           <div className={styles.loginForm}>
+            {this.renderErrMsg()}
             <h1>{t('Login OpenPitrix')}</h1>
             <Form onSubmit={throttle(this.handleSubmit, 1000)}>
               <Form.Item className={styles.formItem} noLabel>
@@ -69,8 +74,6 @@ export default class Login extends Component {
             </Form>
           </div>
         </div>
-
-        {this.renderErrMsg()}
       </div>
     );
   }
