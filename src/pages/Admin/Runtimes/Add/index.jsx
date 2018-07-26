@@ -234,15 +234,10 @@ export default class RuntimeAdd extends Component {
     return (
       <Fragment>
         <p>
-          Application repos are labelled for GUI to show in category list, and have label selector
-          to choose which runtime to run when user deploys any application that belongs to the repo.
+          Runtime is Cloud provider, It can be AWS，GCE, QingCloud,Kubernetes,OpenStack,VMware
+          VSphere etc. give OpenPitrix permisson to access those cloud provider, OpenPitrix will
+          manage all of them applications.
         </p>
-        <p>Runtime env is labelled. A runtime can have multiple labels.</p>
-        <p>
-          Repo indexer will scan configured repo list periodically and cache the metadata of the
-          repos.
-        </p>
-        <p>Repo manager is responsible for creating/deleting/updating repos.</p>
       </Fragment>
     );
   }

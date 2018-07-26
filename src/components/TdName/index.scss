@@ -67,13 +67,14 @@
 .repoName {
   float: left;
   width: 100px;
-  line-height: 20px;
+  line-height: 24px;
   @include textCut;
   color: $N300;
   :global{
     .icon {
       float: left;
-      margin-right: 2px;
+      margin-top: 2px;
+      margin-right: 4px;
     }
   }
 }
