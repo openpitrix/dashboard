@@ -27,6 +27,10 @@ export default class AppStore extends Store {
   @observable defaultStatus = ['active'];
   @observable deleteResult = {};
 
+  @observable detailTab = '';
+  @observable swVersion = '';
+  @observable currentVersionPage = 1;
+
   @observable currentPic = 1;
 
   // menu actions logic
@@ -233,6 +237,11 @@ export default class AppStore extends Store {
   @action
   changeClusterSearchWord = sw => {
     this.swCluster = sw;
+  };
+
+  @action
+  setCurrentVersionPage = page => {
+    this.currentVersionPage = page;
   };
 
   @action

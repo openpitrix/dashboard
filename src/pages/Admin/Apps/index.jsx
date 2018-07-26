@@ -261,7 +261,8 @@ export default class Apps extends Component {
       tableType: 'Apps',
       onChange: changePagination,
       total: totalCount,
-      current: currentPage
+      current: currentPage,
+      noCancel: false
     };
 
     return (

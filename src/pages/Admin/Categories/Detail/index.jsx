@@ -221,9 +221,6 @@ export default class CategoryDetail extends Component {
       current: appStore.currentPage
     };
 
-    const tags = [{ id: 1, name: 'Apps', link: '#' }];
-    const curTag = 'Apps';
-
     return (
       <Layout
         msg={notifyMsg}
@@ -241,7 +238,7 @@ export default class CategoryDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={['Apps']} />
               <Card>
                 <Toolbar
                   placeholder="Search App Name"

@@ -1,36 +1,61 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { noop } from 'lodash';
 
 import styles from './index.scss';
 
 export default class TagNav extends Component {
   static propTypes = {
     tags: PropTypes.array,
-    curTag: PropTypes.string,
-    changeTag: PropTypes.func
+    changeTag: PropTypes.func,
+    defaultTag: PropTypes.string
   };
 
   static defaultProps = {
-    changeTag: () => {}
+    changeTag: noop,
+    tags: [],
+    defaultTag: ''
   };
 
-  changeCurTag = tag => {
-    this.props.changeTag(tag);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      curTag: props.defaultTag || props.tags[0]
+    };
+  }
+
+  componentDidMount() {
+    const { curTag } = this.state;
+    curTag && this.props.changeTag(curTag);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.curTag !== this.state.curTag;
+  }
+
+  handleChange = tag => {
+    this.setState({ curTag: tag });
   };
+
+  componentDidUpdate() {
+    this.props.changeTag(this.state.curTag);
+  }
 
   render() {
     const { tags } = this.props;
+    const { curTag } = this.state;
 
     return (
       <div className={styles.tagNav}>
-        {tags.map(tag => (
+        {tags.map((tag, idx) => (
           <div
-            className={classnames(styles.tag, { [styles.active]: tag.name === this.props.curTag })}
-            key={tag.id}
-            onClick={() => this.changeCurTag(tag.name)}
+            className={classnames(styles.tag, { [styles.active]: tag === curTag })}
+            key={idx}
+            onClick={() => this.handleChange(tag)}
           >
-            {tag.name}
+            {tag}
           </div>
         ))}
       </div>

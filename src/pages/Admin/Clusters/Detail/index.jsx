@@ -225,9 +225,6 @@ export default class ClusterDetail extends Component {
         render: item => <TimeShow time={item.status_time} />
       }
     ];
-    const tags = [{ id: 1, name: 'Nodes' }];
-    const curTag = 'Nodes';
-
     const filterList = [
       {
         key: 'status',
@@ -286,7 +283,7 @@ export default class ClusterDetail extends Component {
 
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={['Nodes']} />
 
               <Card>
                 <Toolbar

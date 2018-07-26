@@ -210,7 +210,8 @@ export default class Runtimes extends Component {
       tableType: 'Runtimes',
       onChange: changePagination,
       total: totalCount,
-      current: currentPage
+      current: currentPage,
+      noCancel: false
     };
 
     return (

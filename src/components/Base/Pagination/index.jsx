@@ -17,7 +17,8 @@ export default class Pagination extends React.Component {
     total: PropTypes.number,
     onChange: PropTypes.func,
     selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    onSelectRow: PropTypes.func
+    onSelectRow: PropTypes.func,
+    noCancel: PropTypes.bool
   };
 
   static defaultProps = {
@@ -25,7 +26,8 @@ export default class Pagination extends React.Component {
     defaultPageSize: 10,
     total: 100,
     selectedRows: [],
-    onSelectRow: noop
+    onSelectRow: noop,
+    noCancel: true
   };
 
   constructor(props) {
@@ -108,7 +110,7 @@ export default class Pagination extends React.Component {
   };
 
   renderTotal() {
-    let { onSelectRow, total } = this.props;
+    let { onSelectRow, total, noCancel } = this.props;
     let { selectedRows } = this.state;
 
     if (!Array.isArray(selectedRows)) {
@@ -119,9 +121,11 @@ export default class Pagination extends React.Component {
       return (
         <Fragment>
           <span>{`Selected: ${selectedRows.length}`}</span>
-          <span className={styles.cancelBtn} onClick={onSelectRow.bind(null, [], [])}>
-            Cancel
-          </span>
+          {!noCancel && (
+            <span className={styles.cancelBtn} onClick={onSelectRow.bind(null, [], [])}>
+              Cancel
+            </span>
+          )}
         </Fragment>
       );
     }
