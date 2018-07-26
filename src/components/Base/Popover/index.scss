@@ -49,6 +49,7 @@
       }
       &[data-placement^="bottom"] {
         margin-top: 8px;
+        margin-left: -60px;
 
         .pi-popover-popper_arrow {
           top: -15px;

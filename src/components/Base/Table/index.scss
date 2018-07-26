@@ -15,10 +15,11 @@
 
     .selectionColumn{
       width: 32px;
-      padding: 12px 0px 12px 8px;
+      padding: 12px 0 12px 8px;
       label{
         margin-left: 4px;
-        line-height: 4px;
+        //line-height: 4px;
+        margin-bottom: 0;
       }
     }
   }
@@ -44,6 +45,14 @@
         width: 0;
         /*border-right: 1px solid $border-light;*/
       }
+
+      label {
+        margin-left: 0 !important;
+      }
+
+      //.pi-popover-popper[data-pacement^="bottom"] {
+      //  transform: translate3d(500px, 236px, 0px) !important;
+      //}
     }
 
     &-tbody > tr{

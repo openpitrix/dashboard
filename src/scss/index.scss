@@ -104,4 +104,9 @@
   button {
     font-weight: 500;
   }
+
+  .pi-table-thead > tr > th {
+    line-height: 18px !important;
+    padding: 10px 12px !important;
+  }
 }

@@ -16,6 +16,10 @@ $card-padding: 24px;
       i{
         transform: rotate(90deg);
       }
+
+      .pi-popover-popper {
+        margin-left: -70px;
+      }
     }
   }
 }

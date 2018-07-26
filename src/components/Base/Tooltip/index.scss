@@ -13,7 +13,7 @@ $bgcolor: $text-color;
   width: 40px;
   height: 32px;
   border-radius: 2px;
-  background-color: $N0;
+  //background-color: $N0;
   //border: solid 1px $N0;
   cursor: pointer;
 
@@ -84,7 +84,7 @@ $bgcolor: $text-color;
   }
   &[data-placement^="bottom"] {
     margin-top: 10px;
-    transform: translate3d(362px, 220px, 0px) !important;
+    //transform: translate3d(362px, 220px, 0px) !important;
 
     .arrow {
       top: -12px;
