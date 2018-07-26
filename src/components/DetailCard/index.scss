@@ -68,12 +68,12 @@
       &:last-child{
         margin-bottom: 0;
       }
-      a{
-        color: $text-color;
+      a:hover{
+        [class*='repoName']{
+          color: $P75;
+        }
       }
-      &:hover a{
-        color: $link-hover;
-      }
+
     }
     .id {
       @include idText;

@@ -20,17 +20,17 @@ export default class Panel extends PureComponent {
   renderNoDataWelcome() {
     const { iconName, linkTo, t } = this.props;
     const btnObj = {
+      appcenter: 'Browse',
+      'stateful-set': 'Create',
+      cluster: 'Manage'
+    };
+    const descMap = {
       appcenter:
         'If OpenPitrix administrator setting repo done, all applications can imported automaticly. As OpenPitrix user, can browse all public applications. and browse by label or categories.',
       'stateful-set':
         "Application developer create OpenPitrix packaged apps very easy, it's used yaml or json format for description language, and upload to http server or object storage .",
       cluster:
         'OpenPitrix managing application lifecycle ,both day1 and day2 , the staus application (as normal run as cluster )like : pending,active, shutdown,deleted. If admin want to stop clusters, just tell OpenPitrix, it will help cloud administrator finished the rest step.'
-    };
-    const descMap = {
-      appcenter: 'Browse',
-      'stateful-set': 'Create',
-      cluster: 'Manage'
     };
     return (
       <div className={styles.blankList}>
@@ -42,7 +42,7 @@ export default class Panel extends PureComponent {
           {iconName === 'stateful-set' && 'Create Repo'}
           {iconName === 'cluster' && 'Manage Clusters'}
         </div>
-        <div className={styles.description}>{t('pg-overview.normal_welcome_desc')}</div>
+        <div className={styles.description}>{descMap[iconName]}</div>
         <Link className={styles.button} to={linkTo}>
           <Button type="default">{t(btnObj[iconName])}</Button>
         </Link>
