@@ -55,29 +55,35 @@ export default class AppDetail extends Component {
     const { appStore, repoStore, appVersionStore } = this.props;
     const { appDetail } = appStore;
 
-    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
+    const providerName = get(repoStore.repoDetail, 'providers[0]', 'ddd');
     const isHelmApp = providerName === 'kubernetes';
-
+    let screenshots = [];
+    if (appDetail.screenshots) {
+      screenshots = JSON.parse(appDetail.screenshots);
+    }
     if (isHelmApp) {
       return <Helm readme={appVersionStore.readme} />;
     }
 
     return (
       <Fragment>
-        <QingCloud
-          app={appDetail}
-          currentPic={appStore.currentPic}
-          changePicture={this.changePicture}
-          pictures={appDetail.screenshots}
-        />
+        {screenshots.length > 1 && (
+          <QingCloud
+            app={appDetail}
+            currentPic={appStore.currentPic}
+            changePicture={this.changePicture}
+            pictures={screenshots}
+          />
+        )}
+
         <Information app={appDetail} repo={repoStore.repoDetail} />
       </Fragment>
     );
   }
 
   render() {
-    const { appStore } = this.props;
-    const { isLoading } = appStore;
+    const { appStore, appVersionStore } = this.props;
+    const { isLoading } = appVersionStore;
     const appDetail = appStore.appDetail;
 
     return (
@@ -104,6 +110,15 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
+    let maintainers = [];
+    if (get(appDetail, 'maintainers')) {
+      const objs = JSON.parse(get(appDetail, 'maintainers'));
+      objs &&
+        objs.map(obj => {
+          maintainers.push(obj.name);
+          maintainers.push(obj.email);
+        });
+    }
 
     return (
       <Section>
@@ -118,7 +133,7 @@ export default class AppDetail extends Component {
             </Button>
           </Link>
           <div className={styles.versions}>
-            <p>{t('Chart Versions')}</p>
+            <p>{t('Versions')}</p>
             <ul>
               {appVersions.map(version => (
                 <li key={version.version_id}>

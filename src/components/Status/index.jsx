@@ -9,7 +9,15 @@ export default class Status extends PureComponent {
     style: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
-    type: PropTypes.oneOf(['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'])
+    type: PropTypes.oneOf([
+      'running',
+      'active',
+      'stopped',
+      'ceased',
+      'pending',
+      'suspended',
+      'deleted'
+    ])
   };
 
   static defaultProps = {

@@ -8,6 +8,7 @@
     display: inline-block;
     height: 60px;
     width: 4px;
+    margin-top: 4px;
     margin-right: 8px;
     background: $N10;
     cursor: pointer;
@@ -39,11 +40,11 @@
       box-shadow: 0 2px 4px 0 rgba(71, 78, 93, 0.2);
       .arrow{
         position: absolute;
-        bottom: -6px;
+        bottom: -3px;
         left: 10px;
-        border-top: 6px solid $N500;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
+        border-top: 4px solid $N500;
+        border-left: 3px solid transparent;
+        border-right: 3px solid transparent;
       }
       .number{
         margin-bottom: 4px;

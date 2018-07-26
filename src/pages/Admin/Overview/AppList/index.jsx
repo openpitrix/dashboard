@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
@@ -13,11 +13,16 @@ export default class AppList extends PureComponent {
     isAdmin: PropTypes.bool
   };
 
+  static defaultProps={
+    apps: [],
+    isAdmin: false
+  }
+
   render() {
-    const { apps, isAdmin, t } = this.props;
+    const { apps, isAdmin } = this.props;
 
     return (
-      <ul className={classNames(styles.appList, { [styles.normalList]: !isAdmin })}>
+      <ul className={styles.appList}>
         {apps.map((data, index) => (
           <li key={data.app_id}>
             {isAdmin && <span className={styles.order}>{index + 1}</span>}
@@ -26,7 +31,7 @@ export default class AppList extends PureComponent {
               imageSize={24}
               name={data.name}
               description={data.description}
-              linkUrl={`/dashboard/app/${data.app_id}`}
+              linkUrl={isAdmin ? `/dashboard/app/${data.app_id}` : `/app/${data.app_id}`}
               noCopy={true}
             />
           </li>

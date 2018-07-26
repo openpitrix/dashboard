@@ -7,6 +7,7 @@ import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
+
 import styles from './index.scss';
 
 export default class ClusterCard extends PureComponent {
@@ -30,7 +31,7 @@ export default class ClusterCard extends PureComponent {
           {detail.frontgate_id && (
             <li>
               <span className={styles.name}>Frontgate ID</span>
-              {detail.frontgate_id}
+              <span className={styles.id}>{detail.frontgate_id}</span>
             </li>
           )}
           <li>

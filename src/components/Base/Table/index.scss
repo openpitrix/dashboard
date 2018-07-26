@@ -15,10 +15,11 @@
 
     .selectionColumn{
       width: 32px;
-      padding: 12px 0px 12px 8px;
+      padding: 12px 0 12px 8px;
       label{
         margin-left: 4px;
-        line-height: 4px;
+        //line-height: 4px;
+        margin-bottom: 0;
       }
     }
   }
@@ -42,8 +43,15 @@
         top: 8px;
         bottom: 8px;
         width: 0;
-        /*border-right: 1px solid $border-light;*/
       }
+
+      label {
+        margin-left: 0 !important;
+      }
+
+      //.pi-popover-popper[data-pacement^="bottom"] {
+      //  transform: translate3d(500px, 236px, 0px) !important;
+      //}
     }
 
     &-tbody > tr{
@@ -58,7 +66,7 @@
             border-right-color: $tr-hover-bg;
           }
         }
-        td a, td [class*="tdName"] a{
+        td a, td [class*='tdName'] a, td > a > [class*='repoName']{
           color: $link-hover;
         }
         td [class*="popper"] a{
@@ -74,9 +82,9 @@
     }
 
     &-tbody > tr > td {
-      padding: 12px 0 12px 12px;
+      padding: 13px 8px;
       line-height: 16px;
-      border-bottom: 1px solid $border-lighter;
+      border-bottom: 1px solid $N10;
       transition: all $transition-speed;
       word-wrap:break-word;
       a{
@@ -115,7 +123,7 @@
   }
 }
 .filterOuter{
-  min-width: 90px;
+  //min-width: 90px;
   max-width: 120px;
   [class*='target']{
     height: auto;
@@ -144,5 +152,10 @@
     line-height: 1.67;
     letter-spacing: 0;
     color: $N100;
+  }
+  :global {
+    .icon {
+      opacity: .2;
+    }
   }
 }

@@ -12,6 +12,7 @@ export default class Banner extends PureComponent {
   static propTypes = {
     appSearch: PropTypes.string,
     onSearch: PropTypes.func,
+    changeAppSearch: PropTypes.func,
     setScroll: PropTypes.func
   };
 
@@ -22,6 +23,7 @@ export default class Banner extends PureComponent {
 
   onSearch = value => {
     this.props.setScroll();
+    this.props.changeAppSearch(value);
     this.props.onSearch({ search_word: value });
   };
 

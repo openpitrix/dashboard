@@ -1,23 +1,27 @@
 @import '~scss/vars';
 
 .detailCard {
-
   .icon{
     float: left;
     display: inline-block;
     width: 24px;
     height: 24px;
     border-radius: 2px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
   .title{
+    margin-bottom: 20px;
     padding-left: 36px;
     padding-bottom: 24px;
-    border-bottom: 1px solid $border-lighter;
+    border-bottom: 1px solid $N10;
     .name{
-      margin-bottom: 8px;
-      font-size: 24px;
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size : 20px;
       font-weight: 500;
-      line-height: 1.17;
       color: $N500;
       max-width: 270px;
       @include textCut;
@@ -52,21 +56,27 @@
     padding-left: 0;
   }
   .detail{
-    margin-top: 24px;
+    margin-top: 32px;
     li{
-      min-height: 30px;
+      margin-bottom: 8px;
       font-size: 14px;
-      line-height: 1.71;
-      letter-spacing: 0;
+      line-height: 24px;
+      vertical-align: middle;
       color: $N300;
       list-style: none;
       @include textCut;
-      a{
-        color: $text-color;
+      &:last-child{
+        margin-bottom: 0;
       }
-      &:hover a{
-        color: $link-hover;
+      a:hover{
+        [class*='repoName']{
+          color: $P75;
+        }
       }
+
+    }
+    .id {
+      @include idText;
     }
     .name{
       float: left;
@@ -74,7 +84,7 @@
       width: 120px;
       margin-right: 24px;
       font-size: 14px;
-      line-height: 1.71;
+      line-height: 24px;
       color: $N75;
       text-align: right;
     }
@@ -82,16 +92,16 @@
       margin-top: 0px;
       margin-left: 144px;
     }
+    .repoName{
+      width: 150px;
+    }
   }
 }
 .copyOuter{
   position: relative;
   display: inline-block;
-  margin-bottom: 10px;
-  font-size: 12px;
-  line-height: 1.17;
-  letter-spacing: 0;
-  color: $N75;
+  //margin-bottom: 10px;
+  @include idText;
   :global{
     .copyId{
       display: none;

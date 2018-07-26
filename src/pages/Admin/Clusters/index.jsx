@@ -27,7 +27,9 @@ export default class Clusters extends Component {
     clusterStore.loadPageInit();
     await clusterStore.fetchAll();
     await clusterStore.clusterStatistics();
-    await appStore.fetchAll({ status: ['active', 'deleted'] });
+    await appStore.fetchApps({
+      status: ['active', 'deleted']
+    });
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       limit: 999
@@ -50,6 +52,20 @@ export default class Clusters extends Component {
     }
   };
 
+  getAppTdShow = (appId, apps) => {
+    const app = apps.find(item => item.app_id === appId);
+
+    return app ? (
+      <TdName
+        noCopy
+        className="smallId"
+        name={app.name}
+        description={get(app, 'latest_app_version.name')}
+        image={app.icon || 'appcenter'}
+        linkUrl={`/dashboard/app/${appId}`}
+      />
+    ) : null;
+  };
   renderHandleMenu = item => {
     const { showOperateCluster } = this.props.clusterStore;
     const { cluster_id, status } = item;
@@ -112,7 +128,11 @@ export default class Clusters extends Component {
     if (clusterIds.length) {
       return (
         <Toolbar>
-          <Button type="delete" onClick={() => this.oprateSelected('delete')}>
+          <Button
+            type="delete"
+            onClick={() => this.oprateSelected('delete')}
+            className="btn-handle"
+          >
             Delete
           </Button>
           <Button type="default" onClick={() => this.oprateSelected('start')}>
@@ -164,11 +184,8 @@ export default class Clusters extends Component {
       {
         title: 'App',
         key: 'app_id',
-        render: cl => (
-          <Link to={`/dashboard/app/${cl.app_id}`}>
-            {getObjName(apps, 'app_id', cl.app_id, 'name')}
-          </Link>
-        )
+        width: '150px',
+        render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
         title: 'Runtime',
@@ -202,8 +219,8 @@ export default class Clusters extends Component {
         dataIndex: 'actions',
         key: 'actions',
         render: (text, cl) => (
-          <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(cl)}>
+          <div className={styles.actions}>
+            <Popover content={this.renderHandleMenu(cl)} className="actions">
               <Icon name="more" />
             </Popover>
           </div>

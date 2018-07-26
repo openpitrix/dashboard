@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+
 import TdName from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
@@ -18,7 +19,7 @@ export default [
   {
     title: 'Status',
     key: 'status',
-    render: obj => <Status type={obj.status} name={obj.status} />
+    render: obj => <Status type={(obj.status + '').toLowerCase()} name={obj.status} />
   },
   {
     title: 'App Version',

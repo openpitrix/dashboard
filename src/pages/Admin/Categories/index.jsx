@@ -99,7 +99,7 @@ export default class Categories extends Component {
     const apps = appStore.apps.toJSON();
     const categoryApps = getCategoryApps(categories, apps);
     const defaultCategories = categoryApps.filter(cate => cate.category_id !== 'ctg-uncategorized');
-    const uncategorized = categoryApps.find(cate => cate.category_id === 'ctg-uncategorized');
+    const uncategorized = categoryApps.find(cate => cate.category_id === 'ctg-uncategorized') || {};
 
     return (
       <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg} isLoading={isLoading}>

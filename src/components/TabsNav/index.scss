@@ -15,17 +15,17 @@
     li {
       display: inline-block;
       margin: 0 12px;
-      line-height: 46px;
+      line-height: 48px;
       list-style: none;
       a {
         display: inline-block;
+        height: 48px;
         font-size: $body-size;
+        font-weight: 500;
         color: $N300;
-        box-sizing: border-box;
         &.active{
           border-bottom: 2px solid $P75;
           color: $P75;
-          font-weight: 500;
         }
         &:hover{
           color: $P75;

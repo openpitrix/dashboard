@@ -49,8 +49,8 @@ export default class Header extends Component {
           {loggedInUser}
         </DropdownToggle>
         <DropdownMenu className={styles.profiles}>
-            <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
-            <a href="/logout">{t('Log out')}</a>
+          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+          <a href="/logout">{t('Log out')}</a>
         </DropdownMenu>
       </Dropdown>
     );
@@ -58,6 +58,7 @@ export default class Header extends Component {
 
   onSearch = async value => {
     const { appStore } = this.props.rootStore;
+    appStore.changeAppSearch(value);
     await appStore.fetchApps({ search_word: value });
   };
 
