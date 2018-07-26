@@ -238,8 +238,7 @@ export default class AppStore extends Store {
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {
     this.selectedRowKeys = selectedRowKeys;
-    this.appIds = [];
-    selectedRows.map(row => this.appIds.push(row.app_id));
+    this.appIds = selectedRows.map(row => row.app_id);
   };
 
   @action

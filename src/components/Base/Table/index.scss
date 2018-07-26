@@ -83,9 +83,9 @@
     }
 
     &-tbody > tr > td {
-      padding: 12px 0 12px 12px;
+      padding: 13px 8px;
       line-height: 16px;
-      border-bottom: 1px solid $border-lighter;
+      border-bottom: 1px solid $N10;
       transition: all $transition-speed;
       word-wrap:break-word;
       a{
@@ -153,5 +153,10 @@
     line-height: 1.67;
     letter-spacing: 0;
     color: $N100;
+  }
+  :global {
+    .icon {
+      opacity: .2;
+    }
   }
 }

@@ -204,7 +204,8 @@ export default class ClusterDetail extends Component {
         title: 'Node Status',
         key: 'status',
         width: '130px',
-        render: item => <Status type={item.status} name={item.status} />
+        // fixme: prop type check case sensitive
+        render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
       },
       {
         title: 'Configuration',

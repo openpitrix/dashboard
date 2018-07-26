@@ -26,7 +26,7 @@ export default class Runtimes extends Component {
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
       status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'],
-      limit: 10000
+      limit: 999
     });
   }
 
@@ -87,7 +87,11 @@ export default class Runtimes extends Component {
     if (runtimeIds.length) {
       return (
         <Toolbar>
-          <Button type="delete" onClick={() => showDeleteRuntime(runtimeIds)}>
+          <Button
+            type="delete"
+            onClick={() => showDeleteRuntime(runtimeIds)}
+            className="btn-handle"
+          >
             Delete
           </Button>
         </Toolbar>
@@ -143,7 +147,7 @@ export default class Runtimes extends Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        render: text => <Status type={text} name={text} />
+        render: text => <Status type={(text + '').toLowerCase()} name={text} />
       },
       {
         title: 'Provider',
@@ -177,8 +181,8 @@ export default class Runtimes extends Component {
         key: 'actions',
         width: '80px',
         render: (text, item) => (
-          <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(item)}>
+          <div className={styles.actions}>
+            <Popover content={this.renderHandleMenu(item)} className="actions">
               <Icon name="more" />
             </Popover>
           </div>

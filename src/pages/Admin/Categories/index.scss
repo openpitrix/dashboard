@@ -45,6 +45,11 @@
     position: absolute;
     right: 24px;
     top: 24px;
+    :global {
+      .pi-popover-popper {
+        margin-left: -105px;
+      }
+    }
   }
   .rectangle{
     display: inline-block;

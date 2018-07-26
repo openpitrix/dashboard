@@ -112,7 +112,11 @@ export default class Clusters extends Component {
     if (clusterIds.length) {
       return (
         <Toolbar>
-          <Button type="delete" onClick={() => this.oprateSelected('delete')}>
+          <Button
+            type="delete"
+            onClick={() => this.oprateSelected('delete')}
+            className="btn-handle"
+          >
             Delete
           </Button>
           <Button type="default" onClick={() => this.oprateSelected('start')}>
@@ -202,8 +206,8 @@ export default class Clusters extends Component {
         dataIndex: 'actions',
         key: 'actions',
         render: (text, cl) => (
-          <div className={styles.handlePop}>
-            <Popover content={this.renderHandleMenu(cl)}>
+          <div className={styles.actions}>
+            <Popover content={this.renderHandleMenu(cl)} className="actions">
               <Icon name="more" />
             </Popover>
           </div>
