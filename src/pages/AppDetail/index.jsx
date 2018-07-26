@@ -127,7 +127,7 @@ export default class AppDetail extends Component {
             </Button>
           </Link>
           <div className={styles.versions}>
-            <p>{t('Chart Versions')}</p>
+            <p>{t('Versions')}</p>
             <ul>
               {appVersions.map(version => (
                 <li key={version.version_id}>

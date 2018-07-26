@@ -44,7 +44,7 @@ export default class AppStore extends Store {
     if (!params.status) {
       params.status = ['active'];
     }
-    params.limit = 10000;
+    params.limit = 999;
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
