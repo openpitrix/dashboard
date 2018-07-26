@@ -17,7 +17,7 @@ export default class AppList extends PureComponent {
     const { apps, isAdmin, t } = this.props;
 
     return (
-      <ul className={classNames(styles.appList, { [styles.normalList]: !isAdmin })}>
+      <ul className={styles.appList}>
         {apps.map((data, index) => (
           <li key={data.app_id}>
             {isAdmin && <span className={styles.order}>{index + 1}</span>}

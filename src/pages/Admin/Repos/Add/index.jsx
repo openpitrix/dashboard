@@ -216,15 +216,11 @@ export default class RepoAdd extends Component {
     return (
       <Fragment>
         <p>
-          Application repos are labelled for GUI to show in category list, and have label selector
-          to choose which runtime to run when user deploys any application that belongs to the repo.
+          In OpenPitrix, Every application deployed is base package repository, on the other words,
+          If you want to use OpenPitrix for your multi-cloud application manager, you need create
+          repository first. Application manager can store package to http/https server or S3 object
+          storage.
         </p>
-        <p>Runtime env is labelled. A runtime can have multiple labels.</p>
-        <p>
-          Repo indexer will scan configured repo list periodically and cache the metadata of the
-          repos.
-        </p>
-        <p>Repo manager is responsible for creating/deleting/updating repos.</p>
       </Fragment>
     );
   }

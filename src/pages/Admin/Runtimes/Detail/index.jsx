@@ -136,9 +136,6 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
-    const tags = [{ id: 1, name: 'Clusters' }];
-    const curTag = 'Clusters';
-
     return (
       <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
         <Grid>
@@ -157,7 +154,7 @@ export default class RuntimeDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={['Clusters']} />
               <Card>
                 <Toolbar
                   placeholder="Search Clusters Name"

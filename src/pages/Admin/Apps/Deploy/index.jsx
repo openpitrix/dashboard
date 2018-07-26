@@ -66,15 +66,10 @@ export default class AppDeploy extends Component {
     return (
       <Fragment>
         <p>
-          Application repos are labelled for GUI to show in category list, and have label selector
-          to choose which runtime to run when user deploys any application that belongs to the repo.
+          OpenPitrix deploy application to any cloud provider, it's very simple, selected
+          application want to deploy ,and then choose runtime (cloud provider), and press the
+          button. it's done.
         </p>
-        <p>Runtime env is labelled. A runtime can have multiple labels.</p>
-        <p>
-          Repo indexer will scan configured repo list periodically and cache the metadata of the
-          repos.
-        </p>
-        <p>Repo manager is responsible for creating/deleting/updating repos.</p>
       </Fragment>
     );
   }

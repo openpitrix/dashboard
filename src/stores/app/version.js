@@ -12,30 +12,27 @@ export default class AppVersionStore extends Store {
   @observable isDialogOpen = false;
   @observable dialogType = ''; // delete, show_all
   @observable readme = '';
+  @observable totalCount = 0;
+  @observable currentPage = 1;
 
   @action
   async fetchAll(params = {}) {
-    // let pageOffset = params.page || 1;
-    // let defaultParams = {
-    //   limit: this.pageSize,
-    //   offset: (pageOffset - 1) * this.pageSize,
-    // };
-    // if (params.page) {
-    //   delete params.page;
-    // }
+    let pageOffset = params.page || 1;
+    let defaultParams = {
+      limit: this.pageSize,
+      offset: (pageOffset - 1) * this.pageSize,
+      sort_key: 'create_time',
+      reverse: true
+    };
+    if (params.page) {
+      delete params.page;
+    }
 
     this.isLoading = true;
-    const result = await this.request.get(
-      'app_versions',
-      assign(
-        {
-          sort_key: 'create_time'
-        },
-        params
-      )
-    );
+    const result = await this.request.get('app_versions', assign(defaultParams, params));
 
     this.versions = get(result, 'app_version_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   }
 
@@ -110,7 +107,8 @@ export default class AppVersionStore extends Store {
   @action
   async fetchPackageFiles(versionId) {
     const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId
+      version_id: versionId,
+      files: ['README.md']
     });
     const files = get(result, 'files', {});
     if (files['README.md']) {

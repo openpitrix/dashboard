@@ -153,7 +153,7 @@ export default class CategoryDetail extends Component {
       {
         title: 'App Name',
         key: 'name',
-        width: '205px',
+        width: '150px',
         render: item => (
           <TdName
             className="smallId"
@@ -172,7 +172,7 @@ export default class CategoryDetail extends Component {
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -200,7 +200,7 @@ export default class CategoryDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '120px',
+        width: '100px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
@@ -221,9 +221,6 @@ export default class CategoryDetail extends Component {
       current: appStore.currentPage
     };
 
-    const tags = [{ id: 1, name: 'Apps', link: '#' }];
-    const curTag = 'Apps';
-
     return (
       <Layout
         msg={notifyMsg}
@@ -241,7 +238,7 @@ export default class CategoryDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={tags} curTag={curTag} />
+              <TagNav tags={['Apps']} />
               <Card>
                 <Toolbar
                   placeholder="Search App Name"

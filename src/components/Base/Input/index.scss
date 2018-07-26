@@ -5,20 +5,25 @@
   box-sizing: border-box;
   height: 32px;
   padding: 7px 10px;
+  font-size: 14px;
   line-height: 16px;
+  color: $N500;
   border-radius: 2px;
   background-color: $N0;
   border: solid 1px $N30;
-  color: $text-color;
+  box-shadow: none;
   caret-color: #979797;
   transition: all .3s ease-in-out;
   &::placeholder {
     color: $N45;
   }
+  &:hover{
+    border-color: $N45;
+  }
   &:focus {
     outline: none;
-    border: solid 1px $P75;
-    box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
+    border-color:  $P75;
+    box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
   }
 }
 

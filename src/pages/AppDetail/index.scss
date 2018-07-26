@@ -2,19 +2,17 @@
 
 .section {
   margin-left: 64px;
-
   .title {
-    margin: 8px 0;
+    margin-bottom: 16px;
     line-height: 21px;
     font-size: 18px;
     font-weight: 500;
-    color: $title-color;
+    color: $N500;
   }
   .content {
     line-height: 24px;
     font-size: 14px;
-    letter-spacing: 0;
-    color: #576075;
+    color: $N300;
   }
 }
 

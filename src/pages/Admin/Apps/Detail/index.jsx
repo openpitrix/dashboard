@@ -3,13 +3,15 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { pick, assign, get } from 'lodash';
 
-import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
+import { Icon, Input, Table, Popover, Modal } from 'components/Base';
 import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import AppCard from 'components/DetailCard/AppCard';
 import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
-import columns from './columns';
+import clusterColumns from './tabs/cluster-columns';
+import versionColumns from './tabs/version-columns';
+
 import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
@@ -19,11 +21,9 @@ import styles from './index.scss';
 )
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, clusterStore, appVersionStore, repoStore }, { appId }) {
+  static async onEnter({ appStore, repoStore }, { appId }) {
     appStore.deleteResult = {};
     await appStore.fetch(appId);
-    await appVersionStore.fetchAll({ app_id: appId });
-    await clusterStore.fetchAll({ app_id: appId });
     if (appStore.appDetail.repo_id) {
       repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
@@ -162,38 +162,135 @@ export default class AppDetail extends Component {
     fetchAll({ app_id: this.appId, page });
   };
 
+  changeVersionPagination = page => {
+    const { appStore, appVersionStore } = this.props;
+    appStore.setCurrentVersionPage(page);
+    appVersionStore.fetchAll({ app_id: this.appId, page });
+  };
+
+  changeDetailTab = async tab => {
+    const { appStore, clusterStore, appVersionStore, match } = this.props;
+    const { appId } = match.params;
+
+    appStore.detailTab = tab;
+    if (tab === 'Clusters') {
+      await clusterStore.fetchAll({ app_id: appId });
+    }
+    if (tab === 'Versions') {
+      await appVersionStore.fetchAll({ app_id: appId });
+    }
+  };
+
+  onSearchVersion = words => {
+    const { appStore, appVersionStore } = this.props;
+    appStore.swVersion = words;
+    appVersionStore.fetchAll({ search_word: words, app_id: this.appId });
+  };
+
+  onClearSearchVersion = () => {
+    this.onSearchVersion('');
+  };
+
+  onRefreshVersion = () => {
+    const { appStore, appVersionStore } = this.props;
+    const { swVersion, currentVersionPage } = appStore;
+    appVersionStore.fetchAll({
+      search_word: swVersion,
+      app_id: this.appId,
+      page: currentVersionPage
+    });
+  };
+
+  renderToolbar(options = {}) {
+    return (
+      <Toolbar
+        {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+      />
+    );
+  }
+  renderTable(options = {}) {
+    return (
+      <Table
+        {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
+      />
+    );
+  }
+
   render() {
     const { appStore, clusterStore, appVersionStore, repoStore } = this.props;
-    const { appDetail, currentClusterPage, swCluster } = appStore;
-    const { versions, showAllVersions, notifyMsg, hideMsg } = appVersionStore;
+    const {
+      appDetail,
+      currentClusterPage,
+      swCluster,
+      swVersion,
+      detailTab,
+      currentVersionPage
+    } = appStore;
+    const { notifyMsg, hideMsg } = appVersionStore;
     const appNotifyMsg = appStore.notifyMsg;
     const appHideMsg = appStore.hideMsg;
-    const { clusters, isLoading, selectStatus } = clusterStore;
+    const { selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
 
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: 'Active', value: 'active' },
-          { name: 'Stopped', value: 'stopped' },
-          { name: 'Ceased', value: 'ceased' },
-          { name: 'Pending', value: 'pending' },
-          { name: 'Suspended', value: 'suspended' },
-          { name: 'Deleted', value: 'deleted' }
-        ],
-        onChangeFilter: this.onChangeStatus,
-        selectValue: selectStatus
-      }
-    ];
+    let toolbarOptions, tableOptions;
 
-    const pagination = {
-      tableType: 'Clusters',
-      onChange: this.changePagination,
-      total: clusterStore.totalCount,
-      current: currentClusterPage
-    };
+    if (detailTab === 'Clusters') {
+      toolbarOptions = {
+        searchWord: swCluster,
+        placeholder: 'Search Cluster Name',
+        onSearch: this.onSearch,
+        onClear: this.onClearSearch,
+        onRefresh: this.onRefresh
+      };
+      tableOptions = {
+        columns: clusterColumns,
+        dataSource: clusterStore.clusters.toJSON(),
+        isLoading: clusterStore.isLoading,
+        filterList: [
+          {
+            key: 'status',
+            conditions: [
+              { name: 'Active', value: 'active' },
+              { name: 'Stopped', value: 'stopped' },
+              { name: 'Ceased', value: 'ceased' },
+              { name: 'Pending', value: 'pending' },
+              { name: 'Suspended', value: 'suspended' },
+              { name: 'Deleted', value: 'deleted' }
+            ],
+            onChangeFilter: this.onChangeStatus,
+            selectValue: selectStatus
+          }
+        ],
+        pagination: {
+          tableType: 'Clusters',
+          onChange: this.changePagination,
+          total: clusterStore.totalCount,
+          current: currentClusterPage
+        }
+      };
+    }
+
+    if (detailTab === 'Versions') {
+      toolbarOptions = {
+        searchWord: swVersion,
+        placeholder: 'Search Version Name',
+        onSearch: this.onSearchVersion,
+        onClear: this.onClearSearchVersion,
+        onRefresh: this.onRefreshVersion
+      };
+      tableOptions = {
+        columns: versionColumns,
+        dataSource: appVersionStore.versions.toJSON(),
+        isLoading: appVersionStore.isLoading,
+        pagination: {
+          tableType: 'Versions',
+          onChange: this.changeVersionPagination,
+          total: appVersionStore.totalCount,
+          current: currentVersionPage
+        }
+      };
+    }
 
     return (
       <Layout
@@ -211,40 +308,14 @@ export default class AppDetail extends Component {
                 </Popover>
               )}
             </Card>
-            <Card className={styles.versionCard}>
-              <div className={styles.title}>
-                Versions
-                <div className={styles.all} onClick={showAllVersions}>
-                  All Versions →
-                </div>
-              </div>
-              <VersionList versions={versions.slice(0, 4)} />
-            </Card>
           </Section>
 
           <Section size={8}>
             <Panel>
-              <TagNav tags={[{ id: 1, name: 'Clusters' }]} curTag="Clusters" />
-              <Card>
-                <Toolbar
-                  placeholder="Search Cluster Name"
-                  searchWord={swCluster}
-                  onSearch={this.onSearch}
-                  onClear={this.onClearSearch}
-                  onRefresh={this.onRefresh}
-                />
-                <Table
-                  columns={columns}
-                  dataSource={clusters.toJSON()}
-                  isLoading={isLoading}
-                  filterList={filterList}
-                />
-                <Pagination
-                  onChange={this.changePagination}
-                  total={clusterStore.totalCount}
-                  current={currentClusterPage}
-                  pagination={pagination}
-                />
+              <TagNav tags={['Clusters', 'Versions']} changeTag={this.changeDetailTab} />
+              <Card className={styles.tabCard}>
+                {this.renderToolbar(toolbarOptions)}
+                {this.renderTable(tableOptions)}
               </Card>
               {this.renderOpsModal()}
               {this.renderDialog()}

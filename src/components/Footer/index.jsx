@@ -22,38 +22,40 @@ export default class Footer extends PureComponent {
     return (
       <div className={styles.footer}>
         <div className={styles.wrapper}>
-          <span className={styles.logo}>
-            <img src="/assets/logo_grey.svg" alt="logo" height="100%" />
-          </span>
-          <ul className={styles.terms}>
-            <li>
-              <a target="_blank" href="https://openpitrix.io">
-                {t('About')}
-              </a>
-              {/* <span className={styles.dot} />
-              <a href="javascript:void(0)">{t('Help')}</a>
-              <span className={styles.dot} />
-              <a href="javascript:void(0)">{t('Terms')}</a>*/}
-            </li>
-            <li>OpenPitrix &copy; 2018</li>
-            {/*<li>
-              <a
-                href="#"
-                onClick={this.changeLocale.bind(null, 'zh')}
-                className={styles.toggleLocale}
-              >
-                中文
-              </a>
-              <span className={styles.dot} />
-              <a
-                href="#"
-                onClick={this.changeLocale.bind(null, 'en')}
-                className={styles.toggleLocale}
-              >
-                English
-              </a>
-            </li>*/}
-          </ul>
+          <div className={styles.inner}>
+            <span className={styles.logo}>
+              <img src="/assets/logo_grey.svg" alt="logo" height="100%" />
+            </span>
+            <ul className={styles.terms}>
+              <li>
+                <a target="_blank" href="https://openpitrix.io">
+                  {t('About')}
+                </a>
+                {/* <span className={styles.dot} />
+                 <a href="javascript:void(0)">{t('Help')}</a>
+                 <span className={styles.dot} />
+                 <a href="javascript:void(0)">{t('Terms')}</a>*/}
+              </li>
+              <li>OpenPitrix &copy; 2018</li>
+              {/*<li>
+               <a
+               href="#"
+               onClick={this.changeLocale.bind(null, 'zh')}
+               className={styles.toggleLocale}
+               >
+               中文
+               </a>
+               <span className={styles.dot} />
+               <a
+               href="#"
+               onClick={this.changeLocale.bind(null, 'en')}
+               className={styles.toggleLocale}
+               >
+               English
+               </a>
+               </li>*/}
+            </ul>
+          </div>
         </div>
       </div>
     );

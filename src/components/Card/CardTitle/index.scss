@@ -16,6 +16,7 @@
     font-weight: normal;
     color: $N200;
     cursor: pointer;
+    @include moreText();
   }
   .show{
     display: inline-block;

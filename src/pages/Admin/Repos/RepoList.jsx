@@ -29,11 +29,9 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
             tags={(labels && labels.slice()) || []}
           />
           <div className={styles.actionMenu}>
-            <div>
-              <Popover content={actionMenu(repo_id)}>
-                <Icon name="more" />
-              </Popover>
-            </div>
+            <Popover content={actionMenu(repo_id)} className="actions">
+              <Icon name="more" />
+            </Popover>
           </div>
         </div>
       ))}

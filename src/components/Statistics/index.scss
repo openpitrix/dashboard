@@ -4,7 +4,7 @@
   margin: 0 auto 24px;
   width: $content-width;
   .wrap{
-    padding: 30px 24px;
+    padding: 26px 24px;
     height: 120px;
     border-radius: 3px;
     background-color: $N0;
@@ -14,24 +14,18 @@
     float: left;
     display: inline-block;
     position: relative;
-    margin: 0 24px 0 24px;
-    height: 60px;
-    width: 312px;
-   /* .line{
-      position: absolute;
-      right: 0;
-      top: 10px;
-      height: 48px;
-      width: 1px;
-      background:#d1d1d2;
-    }*/
+    margin: 0 48px 0 0;
+    height: 68px;
+    &:last-child{
+      margin-right: 24px;
+    }
   }
 
   .apps{
     float: left;
     display: inline-block;
-    width: 200px;
-    padding-top: 16px;
+    margin-top: 18px;
+    width: 240px;
     font-size: 24px;
     font-weight: 500;
     line-height: 1.17;
@@ -40,13 +34,13 @@
       .icon{
         float: left;
         display: inline-block;
-        margin-right: 12px;
+        margin-left: 24px;
       }
     }
   }
   .word{
     display: inline-block;
-    width: 112px;
+    width: 120px;
     .name{
       margin-bottom: 4px;
       font-size: 12px;
@@ -61,8 +55,5 @@
       letter-spacing: 0;
       color: $N500;
     }
-  }
-  .fl{
-    float: right;
   }
 }

@@ -287,7 +287,7 @@ export default class Overview extends React.Component {
                 name={`Private Repo`}
                 iconName={`cloud`}
                 iconSize={64}
-                total={repoStore.totalCount}
+                total={repoStore.repos.length}
                 onClick={this.handleClickTotalCard.bind(this, 'repos')}
               />
             </Section>
@@ -310,7 +310,7 @@ export default class Overview extends React.Component {
                 title={t('Top Apps')}
                 linkTo="/dashboard/apps"
                 len={appList.length}
-                iconName="apps"
+                iconName="appcenter"
               >
                 <AppList apps={appList} />
               </Panel>
@@ -321,7 +321,7 @@ export default class Overview extends React.Component {
                 title={t('Latest Clusters')}
                 linkTo="/dashboard/clusters"
                 len={clusterList.length}
-                iconName="clusters"
+                iconName="cluster"
               >
                 <Table columns={columns} dataSource={clusterList} pagination={pagination} />
               </Panel>

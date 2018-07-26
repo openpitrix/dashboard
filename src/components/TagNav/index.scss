@@ -6,7 +6,7 @@
   padding: 0 24px;
   height: 48px;
   background: $N0;
-  border-bottom: 1px solid #e2d0f2;
+  border-bottom: 1px solid $N10;
 
   .tag{
     display: inline-block;
@@ -19,7 +19,7 @@
     cursor: pointer;
     &.active {
       color: $third-text-color;
-      border-bottom: 2px solid $third-text-color;
+      border-bottom: 1px solid $P75;
     }
   }
 }

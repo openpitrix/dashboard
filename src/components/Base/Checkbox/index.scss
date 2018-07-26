@@ -3,14 +3,16 @@
 .group {
   display: inline-block;
   .checkbox {
-    margin-right: 23px;
+    margin-right: 24px;
   }
 }
 
 .checkbox {
   position: relative;
   display: inline-block;
-  padding-left: 20px;
+  margin-bottom: 0;
+  padding-left: 22px;
+  color: $N300;
   transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 
   input[type="checkbox"] {
@@ -33,7 +35,6 @@
       cursor: pointer;
     }
   }
-
   &::before {
     content: "";
     position: absolute;
@@ -43,18 +44,28 @@
     width: 14px;
     height: 14px;
     font-style: normal;
-    background-color: $background-color-lighter;
-    border: 1px solid $border-lighter;
+    background-color: $N0;
+    border: 1px solid $N30;
     border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.04);
     box-sizing: border-box;
     transform: translate(0 ,-50%);
     cursor: pointer;
   }
+  &:hover{
+    &::before {
+      background-color: $N10;
+      border-color: $N30;
+    }
+  }
+  &:active{
+    &::before {
+      border-color: $P100 !important;
+    }
+  }
 
   &.checked {
     &::before {
-      //border-radius: 2px;
       border-color: $P75;
       background-color: $P75;
     }
@@ -64,11 +75,21 @@
         z-index: 3;
       }
     }
+    &:hover{
+      &::before {
+        background-color: $P65;
+      }
+    }
+    &:active{
+      &::before {
+        background-color: $P100 !important;
+      }
+    }
   }
 
   &.disabled {
     &::before {
-      background-color: $background-color;
+      opacity: 0.5;
       cursor: not-allowed;
     }
   }
