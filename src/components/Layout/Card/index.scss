@@ -1,4 +1,4 @@
-$card-padding: 24px;
+$card-padding: 24px 32px;
 
 .card {
   position: relative;
@@ -8,7 +8,7 @@ $card-padding: 24px;
   :global {
     .operation{
       position: absolute;
-      right: 24px;
+      right: 32px;
       top: 24px;
       //width: 135px;
       //text-align: center;

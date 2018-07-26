@@ -43,7 +43,6 @@
         top: 8px;
         bottom: 8px;
         width: 0;
-        /*border-right: 1px solid $border-light;*/
       }
 
       label {
@@ -67,7 +66,7 @@
             border-right-color: $tr-hover-bg;
           }
         }
-        td a, td [class*="tdName"] a{
+        td a, td [class*='tdName'] a, td > a > [class*='repoName']{
           color: $link-hover;
         }
         td [class*="popper"] a{
