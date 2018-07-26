@@ -197,7 +197,7 @@ export default class RepoAdd extends Component {
             className={classNames(styles.add, { [styles.addBottom]: labels.length })}
             onClick={this.store.addLabel}
           >
-            Add Label
+            Add
           </Button>
         </div>
         <div className={styles.submitBtnGroup}>

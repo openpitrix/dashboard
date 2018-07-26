@@ -113,7 +113,12 @@ export default class RuntimeAdd extends Component {
         >
           <label className={styles.name}>Zone</label>
           {!runtimeId && (
-            <Select className={styles.select} value={zone} onChange={this.store.changeZone}>
+            <Select
+              className={styles.select}
+              value={zone}
+              onChange={this.store.changeZone}
+              disabled={runtimeZones.length === 0}
+            >
               {runtimeZones.map(data => (
                 <Select.Option key={data} value={data}>
                   {data}

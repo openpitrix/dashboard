@@ -4,7 +4,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 32px;
-  padding: 7px 10px;
+  padding: 7px 12px;
   font-size: 14px;
   line-height: 16px;
   color: $N500;
@@ -24,6 +24,9 @@
     outline: none;
     border-color:  $P75;
     box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
+  }
+  &.error{
+    border: solid 1px $R100;
   }
 }
 

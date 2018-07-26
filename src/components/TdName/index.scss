@@ -11,7 +11,8 @@
   .image{
     display: inline-block;
     float: left;
-    margin: 3px 12px 3px 0;
+    //margin: 3px 12px 3px 0;
+    margin: 5px 12px 3px 0;
     width: 24px;
     height: 24px;
     border-radius: 2px;
@@ -31,10 +32,9 @@
         }
       }
     }
-
     .name{
       display: block;
-      line-height: 16px;
+      line-height: 20px;
       font-weight: 500;
       text-align: left;
       color: $N500;

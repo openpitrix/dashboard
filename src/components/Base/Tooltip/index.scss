@@ -13,8 +13,7 @@ $bgcolor: $text-color;
   width: 40px;
   height: 32px;
   border-radius: 2px;
-  //background-color: $N0;
-  //border: solid 1px $N0;
+  border: 1px solid transparent;
   cursor: pointer;
 
   &:hover {

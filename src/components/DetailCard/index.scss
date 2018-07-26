@@ -14,7 +14,7 @@
   }
   .title{
     margin-bottom: 20px;
-    padding-left: 28px;
+    padding-left: 36px;
     padding-bottom: 24px;
     border-bottom: 1px solid $N10;
     .name{
@@ -91,6 +91,9 @@
     .labels{
       margin-top: 0px;
       margin-left: 144px;
+    }
+    .repoName{
+      width: 150px;
     }
   }
 }

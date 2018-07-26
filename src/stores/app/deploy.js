@@ -235,7 +235,7 @@ export default class AppDeployStore extends Store {
       this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
       this.yamlConfig = getYamlList(this.yamlObj);
     } else {
-      this.showMsg('Not find config file!');
+      //this.showMsg('Not find config file!');
       this.yamlConfig = [];
       this.configBasics = [];
       this.configNodes = [];

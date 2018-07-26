@@ -29,7 +29,7 @@ const Information = ({ app, repo }) => {
       <dl>
         <dt>Repo</dt>
         <dd>
-          <ProviderName provider={repoProvider} name={repoName} />
+          <ProviderName provider={repoProvider} name={repoName} className={styles.repoName} />
         </dd>
       </dl>
       <dl>
