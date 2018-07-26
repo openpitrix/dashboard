@@ -1,4 +1,4 @@
-$card-padding: 24px 32px;
+$card-padding: 24px;
 
 .card {
   position: relative;
@@ -18,7 +18,7 @@ $card-padding: 24px 32px;
       }
 
       .pi-popover-popper {
-        margin-left: -70px;
+        margin-left: -75px;
       }
     }
   }

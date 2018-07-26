@@ -17,7 +17,7 @@ const CreateResource = ({ className, children, title, aside, asideTitle, ...rest
 
     {aside && (
       <Section className={styles.aside}>
-        <div className={styles.title}>{asideTitle}</div>
+        {asideTitle && <div className={styles.title}>{asideTitle}</div>}
         <div className={styles.content}>{aside}</div>
       </Section>
     )}

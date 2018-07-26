@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Radio, Button, Input, Select, Slider } from 'components/Base';
+import { Radio, Button, Input, Select, Slider, Image } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
 import { get } from 'lodash';
 
 import styles from './index.scss';
-import classNames from 'classnames';
 
 @inject(({ rootStore }) => ({
   rootStore,
@@ -18,24 +17,25 @@ import classNames from 'classnames';
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, repoStore, appDeployStore, runtimeStore }, params) {
-    appDeployStore.appId = params.appId;
+  static async onEnter({ appStore, repoStore, appDeployStore }, { appId }) {
+    appDeployStore.appId = appId;
+
+    await appStore.fetch(appId);
+
     if (appStore.appDetail.repo_id) {
-      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
+
     const repoProviders = get(repoStore.repoDetail, 'providers', []);
-    if (repoProviders.includes('kubernetes')) {
-      appDeployStore.isKubernetes = true;
-    } else {
-      appDeployStore.isKubernetes = false;
-    }
-    await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
+    appDeployStore.isKubernetes = repoProviders.includes('kubernetes');
+    await appDeployStore.fetchVersions({ app_id: [appId] }, true);
 
     const labels = get(repoStore.repoDetail, 'labels', []);
     const queryLabel = labels
       .filter(label => label.label_key)
       .map(label => [label.label_key, label.label_value].join('='))
       .join('&');
+
     await appDeployStore.fetchRuntimes({
       status: 'active',
       label: queryLabel,
@@ -44,9 +44,10 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore } = this.props;
+    const { appDeployStore, appStore } = this.props;
+    const appName = appStore.appDetail.name + '';
     const { notifyMsg, notifyType, hideMsg, isKubernetes } = appDeployStore;
-    const title = 'Deploy app';
+    const title = `Deploy ${appName}`;
 
     return (
       <Layout
@@ -55,7 +56,7 @@ export default class AppDeploy extends Component {
         noTabs
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
       >
-        <CreateResource title={title} aside={this.renderAside()}>
+        <CreateResource title={title} aside={this.renderAside()} asideTitle={''}>
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}
         </CreateResource>
       </Layout>
@@ -63,14 +64,21 @@ export default class AppDeploy extends Component {
   }
 
   renderAside() {
+    const { appStore } = this.props;
+    const { appDetail } = appStore;
+
     return (
-      <Fragment>
+      <div className={styles.aside}>
+        <div className={styles.appIntro}>
+          <Image src={appDetail.icon} size={24} className={styles.icon} />
+          <span className={styles.name}>{appDetail.name}</span>
+        </div>
         <p>
           OpenPitrix deploy application to any cloud provider, it's very simple, selected
           application want to deploy ,and then choose runtime (cloud provider), and press the
           button. it's done.
         </p>
-      </Fragment>
+      </div>
     );
   }
 
