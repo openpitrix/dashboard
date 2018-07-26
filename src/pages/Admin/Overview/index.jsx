@@ -112,7 +112,7 @@ export default class Overview extends React.Component {
                 len={appList.length}
                 iconName="appcenter"
               >
-                <AppList apps={appList} />
+                <AppList apps={appList} isAdmin />
               </Panel>
             </Section>
 
@@ -176,7 +176,7 @@ export default class Overview extends React.Component {
               iconName="stateful-set"
             >
               <RepoList repos={repoList} type="public" limit={2} />
-              <RepoList repos={repoList} type="private" limit={2} />
+              {/*<RepoList repos={repoList} type="private" limit={2} />*/}
             </Panel>
           </Section>
 
