@@ -23,14 +23,24 @@ export default class AppDeploy extends Component {
     if (appStore.appDetail.repo_id) {
       repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
-    const repoProviders = get(repoStore.repoDetail, 'providers', '');
+    const repoProviders = get(repoStore.repoDetail, 'providers', []);
     if (repoProviders.includes('kubernetes')) {
       appDeployStore.isKubernetes = true;
     } else {
       appDeployStore.isKubernetes = false;
     }
     await appDeployStore.fetchVersions({ app_id: [params.appId] }, true);
-    await appDeployStore.fetchRuntimes();
+
+    const labels = get(repoStore.repoDetail, 'labels', []);
+    const queryLabel = labels
+      .filter(label => label.label_key)
+      .map(label => [label.label_key, label.label_value].join('='))
+      .join('&');
+    await appDeployStore.fetchRuntimes({
+      status: 'active',
+      label: queryLabel,
+      provider: repoProviders
+    });
   }
 
   render() {
@@ -79,8 +89,8 @@ export default class AppDeploy extends Component {
       changeCell,
       handleSubmit,
       isLoading,
-      versions,
       runtimes,
+      versions,
       subnets,
       versionId,
       runtimeId,
@@ -213,8 +223,8 @@ export default class AppDeploy extends Component {
       changeYmalCell,
       handleSubmit,
       isLoading,
-      versions,
       runtimes,
+      versions,
       versionId,
       runtimeId,
       changeName,
@@ -268,7 +278,7 @@ export default class AppDeploy extends Component {
             <YamlCell
               key={conf.name}
               name={conf.name}
-              value={conf.value}
+              value={conf.value || ''}
               index={index}
               className={styles.cellModule}
               changeCell={changeYmalCell}
