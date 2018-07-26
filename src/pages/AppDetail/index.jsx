@@ -66,18 +66,18 @@ export default class AppDetail extends Component {
     }
 
     return (
-      screenshots > 1 && (
-        <Fragment>
+      <Fragment>
+        {screenshots.length > 1 && (
           <QingCloud
             app={appDetail}
             currentPic={appStore.currentPic}
             changePicture={this.changePicture}
             pictures={screenshots}
           />
+        )}
 
-          <Information app={appDetail} repo={repoStore.repoDetail} />
-        </Fragment>
-      )
+        <Information app={appDetail} repo={repoStore.repoDetail} />
+      </Fragment>
     );
   }
 
