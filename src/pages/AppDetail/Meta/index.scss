@@ -1,6 +1,7 @@
 @import "~scss/vars";
 
 .meta{
+  margin-bottom: 32px;
   padding-bottom: 24px;
   border-bottom: 1px solid $N10;
   .icon {
@@ -23,15 +24,18 @@
   }
   .desc {
     font-size: 14px;
-    line-height: 1.71;
+    line-height: 24px;
     color: $N300;
-    margin-left: 60px;
+    margin-left: 64px;
   }
   .latestVersion {
     display: inline-block;
     float: right;
     height: 20px;
-    @include NotesRobotoRightBlack;
+    font-size: 12px;
+    line-height: 28px;
+    color: $N100;
     font-weight: normal;
+    vertical-align: middle
   }
 }

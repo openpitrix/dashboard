@@ -19,7 +19,7 @@ export default class ProviderName extends Component {
 
     return (
       <div className={styles.repoName}>
-        <Icon name={provider} size={16} className={styles.icon} title={name} type="dark" />
+        <Icon name={provider} size={20} className={styles.icon} title={name} type="dark" />
         {name}
       </div>
     );

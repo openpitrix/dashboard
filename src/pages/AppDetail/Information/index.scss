@@ -16,7 +16,11 @@
     color: #576075;
   }
   .content {
-    dt, dd {display: inline-block;}
+    line-height: 24px;
+    vertical-align: middle;
+    dt, dd {
+      display: inline-block;
+    }
 
     dl{
       margin-bottom: 8px;
