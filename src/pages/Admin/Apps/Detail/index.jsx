@@ -22,7 +22,6 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, repoStore }, { appId }) {
-    appStore.deleteResult = {};
     await appStore.fetch(appId);
     if (appStore.appDetail.repo_id) {
       repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
@@ -33,15 +32,6 @@ export default class AppDetail extends Component {
     super(props);
     this.appId = props.match.params.appId;
     this.loginUser = getSessInfo('user', props.sessInfo);
-  }
-
-  componentDidUpdate() {
-    const { appDetail } = this.props.appStore;
-    if (!appDetail.app_id) {
-      setTimeout(() => {
-        history.back();
-      }, 2000);
-    }
   }
 
   renderHandleMenu = appId => {
@@ -56,27 +46,39 @@ export default class AppDetail extends Component {
     );
   };
 
-  handleCreateVersion = async e => {
-    await this.props.appVersionStore.handleCreateVersion(e, {
-      app_id: this.appId,
-      owner: this.loginUser
-    });
+  handleCreateVersion = async () => {
+    await this.props.appVersionStore.handleCreateVersion(this.appId);
   };
 
   renderOpsModal = () => {
-    const { isModalOpen, hideModal } = this.props.appVersionStore;
+    const { appVersionStore } = this.props;
+    const {
+      isModalOpen,
+      hideModal,
+      changeName,
+      changePackage,
+      changeDescription
+    } = appVersionStore;
 
     return (
       <Modal
+        width={744}
         title={`Create App Version`}
         visible={isModalOpen}
         onCancel={hideModal}
         onOk={this.handleCreateVersion}
       >
-        <div className="formContent">
+        <form className="formContent">
           <div>
             <label className={styles.name}>Name</label>
-            <Input className={styles.input} name="name" maxLength="50" />
+            <Input
+              className={styles.input}
+              name="name"
+              maxLength="50"
+              value={appVersionStore.name}
+              onChange={changeName}
+              required
+            />
           </div>
           <div>
             <label className={styles.name}>Package Name</label>
@@ -84,14 +86,21 @@ export default class AppDetail extends Component {
               name="package_name"
               maxLength="100"
               required
+              value={appVersionStore.packageName}
+              onChange={changePackage}
               placeholder="http://openpitrix.pek3a.qingstor.com/package/zk-0.1.0.tgz"
             />
           </div>
           <div className="textareaItem">
             <label>Description</label>
-            <textarea name="description" maxLength="500" />
+            <textarea
+              name="description"
+              maxLength="500"
+              value={appVersionStore.description}
+              onChange={changeDescription}
+            />
           </div>
-        </div>
+        </form>
       </Modal>
     );
   };
@@ -115,7 +124,7 @@ export default class AppDetail extends Component {
       <Dialog
         title={title}
         isOpen={isDialogOpen}
-        onSubmit={this.props.appStore.remove}
+        onSubmit={this.deleteApp}
         onCancel={hideModal}
         hideFooter={hideFooter}
       >
@@ -226,9 +235,10 @@ export default class AppDetail extends Component {
       detailTab,
       currentVersionPage
     } = appStore;
-    const { notifyMsg, hideMsg } = appVersionStore;
+    const { notifyMsg, hideMsg, msgType } = appVersionStore;
     const appNotifyMsg = appStore.notifyMsg;
     const appHideMsg = appStore.hideMsg;
+    const appMsgType = appStore.msgType;
     const { selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
@@ -296,6 +306,7 @@ export default class AppDetail extends Component {
       <Layout
         msg={notifyMsg || appNotifyMsg}
         hideMsg={hideMsg || appHideMsg}
+        msgType={msgType || appMsgType}
         backBtn={<BackBtn label="apps" link="/dashboard/apps" />}
       >
         <Grid>

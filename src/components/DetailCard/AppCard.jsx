@@ -24,10 +24,12 @@ export default class AppCard extends PureComponent {
     return (
       <div className={styles.detailCard}>
         <span className={styles.icon}>
-          <Image src={appDetail.icon} size={24} alt="Icon" className={styles.icon} />
+          <Image src={appDetail.icon} size={24} alt="Icon" />
         </span>
         <div className={styles.title}>
-          <div className={styles.name}>{appDetail.name}</div>
+          <div className={styles.name} title={appDetail.name}>
+            {appDetail.name}
+          </div>
           <CopyId id={appDetail.app_id} />
           <div className={styles.preview}>
             <Link to="/dashboard/categories">Preview in Catalog →</Link>
