@@ -43,7 +43,7 @@ export default class AppCard extends PureComponent {
           <li>
             <span className={styles.name}>Repo</span>
             <Link to={`/dashboard/repo/${appDetail.repo_id}`}>
-              <ProviderName provider={repoProvider} name={repoName} className={styles.repoName} />
+              <ProviderName provider={repoProvider} name={repoName} />
             </Link>
           </li>
           <li>

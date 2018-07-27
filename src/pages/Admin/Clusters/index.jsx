@@ -167,6 +167,7 @@ export default class Clusters extends Component {
       {
         title: 'Cluster Name',
         key: 'name',
+        width: '155px',
         render: cl => (
           <TdName
             name={cl.name}
@@ -216,8 +217,8 @@ export default class Clusters extends Component {
       },
       {
         title: 'Actions',
-        dataIndex: 'actions',
         key: 'actions',
+        width: '84px',
         render: (text, cl) => (
           <div className={styles.actions}>
             <Popover content={this.renderHandleMenu(cl)} className="actions">

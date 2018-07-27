@@ -200,7 +200,7 @@ export default class CategoryDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '100px',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];

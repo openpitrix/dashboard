@@ -70,7 +70,11 @@
       &:last-child{
         margin-bottom: 0;
       }
+      a{
+        color: $N300;
+      }
       a:hover{
+        color: $P75;
         [class*='repoName']{
           color: $P75;
         }
@@ -93,9 +97,6 @@
     .labels{
       margin-top: 0px;
       margin-left: 144px;
-    }
-    .repoName{
-      width: 150px;
     }
   }
 }

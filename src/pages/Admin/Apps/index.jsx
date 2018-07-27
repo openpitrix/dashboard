@@ -171,7 +171,7 @@ export default class Apps extends Component {
       {
         title: 'App Name',
         key: 'name',
-        width: '205px',
+        width: '190px',
         render: item => (
           <TdName
             name={item.name}
@@ -184,6 +184,7 @@ export default class Apps extends Component {
       {
         title: 'Latest Version',
         key: 'latest_version',
+        width: '120px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
@@ -232,6 +233,7 @@ export default class Apps extends Component {
       {
         title: 'Actions',
         key: 'actions',
+        width: '84px',
         render: item => (
           <div className={styles.actions}>
             <Popover content={this.renderHandleMenu(item)} className="actions">

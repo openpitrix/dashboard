@@ -35,6 +35,7 @@ export default [
     title: 'Date Created',
     key: 'create_time',
     dataIndex: 'create_time',
+    width: '110px',
     render: item => <TimeShow time={item.status_time} />
   }
 ];

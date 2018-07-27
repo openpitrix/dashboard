@@ -134,6 +134,7 @@ export default class Runtimes extends Component {
         title: 'Runtime Name',
         dataIndex: 'name',
         key: 'name',
+        width: '155px',
         render: (name, obj) => (
           <TdName
             name={name}
@@ -177,9 +178,8 @@ export default class Runtimes extends Component {
       },
       {
         title: 'Actions',
-        dataIndex: 'actions',
         key: 'actions',
-        width: '80px',
+        width: '84px',
         render: (text, item) => (
           <div className={styles.actions}>
             <Popover content={this.renderHandleMenu(item)} className="actions">

@@ -86,7 +86,8 @@
       line-height: 16px;
       border-bottom: 1px solid $N10;
       transition: all $transition-speed;
-      word-wrap:break-word;
+      word-wrap: break-word;
+      word-break: break-all;
       a{
         color: $N500;
       }

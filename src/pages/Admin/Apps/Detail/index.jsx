@@ -62,7 +62,6 @@ export default class AppDetail extends Component {
 
     return (
       <Modal
-        width={744}
         title={`Create App Version`}
         visible={isModalOpen}
         onCancel={hideModal}
