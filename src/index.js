@@ -9,24 +9,23 @@ import { I18nextProvider } from 'react-i18next';
 
 import App from './App';
 import RootStore from './stores/RootStore';
-import routes from './routes';
 import renderRoute from './routes/renderRoute';
 import SockClient from './utils/sock-client';
+import i18n from './i18n';
 
 const isDev = process.env.NODE_ENV !== 'production';
+
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
 if (typeof window !== 'undefined') {
-  const dest = document.getElementById('root');
   const AppWithRouter = withRouter(App);
 
-  // lazy loading
-  import('./i18n').then(({ default: i18n }) => {
-    // setup websocket client
-    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl);
-    const sc = new SockClient(sockEndpoint);
+  // setup websocket client
+  const sockEndpoint = SockClient.composeEndpoint(store.socketUrl);
+  const sc = new SockClient(sockEndpoint);
 
+  import('./routes').then(({ default: routes }) => {
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
         <Provider rootStore={store} sessInfo={null} sock={sc}>
@@ -46,7 +45,7 @@ if (typeof window !== 'undefined') {
           </BrowserRouter>
         </Provider>
       </I18nextProvider>,
-      dest
+      document.getElementById('root')
     );
 
     sc.setUp();
