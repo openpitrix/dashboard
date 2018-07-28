@@ -192,7 +192,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Name',
         key: 'name',
-        width: '150px',
+        width: '155px',
         render: item => <TdName name={item.name} description={item.node_id} noIcon />
       },
       {
@@ -203,7 +203,7 @@ export default class ClusterDetail extends Component {
       {
         title: 'Node Status',
         key: 'status',
-        width: '155px',
+        width: '126px',
         // fixme: prop type check case sensitive
         render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
       },
@@ -216,12 +216,13 @@ export default class ClusterDetail extends Component {
       {
         title: 'Private IP',
         key: 'private_ip',
-        dataIndex: 'private_ip'
+        dataIndex: 'private_ip',
+        width: '95px'
       },
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '100px',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
@@ -264,11 +265,11 @@ export default class ClusterDetail extends Component {
                 runtimeName={runtimeName}
                 provider={provider}
               />
-              {detail.status !== 'deleted' && (
+              {/*{detail.status !== 'deleted' && (
                 <Popover className="operation" content={this.renderHandleMenu()}>
                   <Icon name="more" />
                 </Popover>
-              )}
+              )}*/}
             </Card>
             <Card className={styles.activities}>
               <div className={styles.title}>

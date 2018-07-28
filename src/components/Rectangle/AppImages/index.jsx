@@ -18,8 +18,13 @@ export default class AppImages extends Component {
         <div className={styles.name}>Apps</div>
         <div className={styles.images}>
           {apps &&
-            apps.slice(0, 10).map(({ app_id, icon }) => (
-              <Link key={app_id} to={`/dashboard/app/${app_id}`}>
+            apps.slice(0, 10).map(({ app_id, icon, name }) => (
+              <Link
+                className={styles.image}
+                key={app_id}
+                to={`/dashboard/app/${app_id}`}
+                title={name}
+              >
                 <Image src={icon || nonIcon} />
               </Link>
             ))}
