@@ -240,7 +240,7 @@ export default class Users extends Component {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
-        width: '3%'
+        width: '84px'
       }
     ];
     const { treeFlag, organizations, selectValue, selectItem } = this.state;

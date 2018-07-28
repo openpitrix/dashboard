@@ -52,7 +52,6 @@ export default class AppDeployStore extends Store {
 
   @action
   changeYmalCell = (value, name, index) => {
-    console.log(value, name, index);
     this.yamlConfig[index].value = value;
     this.yamlObj[name] = value;
   };
@@ -180,11 +179,11 @@ export default class AppDeployStore extends Store {
 
   @action
   async fetchVersions(params = {}, flag) {
-    this.isLoading = true;
+    //this.isLoading = true;
     const result = await this.request.get('app_versions', params);
     this.versions = get(result, 'app_version_set', []);
     this.versionId = get(this.versions[0], 'version_id');
-    if (!flag) this.isLoading = false;
+    //if (!flag) this.isLoading = false;
     if (flag) await this.fetchFiles(get(this.versions[0], 'version_id'));
   }
 
@@ -196,6 +195,8 @@ export default class AppDeployStore extends Store {
     if (this.runtimes[0]) {
       this.runtimeId = this.runtimes[0].runtime_id;
       await this.fetchSubnets(this.runtimes[0].runtime_id);
+    } else {
+      this.showMsg('Not find Runtime data!');
     }
     this.isLoading = false;
   };
@@ -235,7 +236,7 @@ export default class AppDeployStore extends Store {
       this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
       this.yamlConfig = getYamlList(this.yamlObj);
     } else {
-      //this.showMsg('Not find config file!');
+      this.showMsg('Not find config file!');
       this.yamlConfig = [];
       this.configBasics = [];
       this.configNodes = [];

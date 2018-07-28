@@ -5,7 +5,7 @@
   :global{
    .icon{
       float: left;
-      margin: 4px 4px 0 0;
+      margin: 4px 0 0 0;
     }
   }
   .image{
@@ -38,7 +38,7 @@
       font-weight: 500;
       text-align: left;
       color: $N500;
-      max-width: 120px;
+      width: 126px;
       @include textCut;
       &:hover{
         color: $link-hover;
@@ -46,7 +46,7 @@
     }
     .description{
       display: inline-block;
-      width: 110px;
+      width: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -66,7 +66,7 @@
 }
 .repoName {
   float: left;
-  width: 100px;
+  max-width: 150px;
   line-height: 24px;
   @include textCut;
   color: $N300;
@@ -85,7 +85,7 @@
 :global {
   .smallId {
     [class*='name'] {
-      max-width: 100px !important;
+      width: 95px !important;
     }
     [class*='description'] {
       width: 75px !important;

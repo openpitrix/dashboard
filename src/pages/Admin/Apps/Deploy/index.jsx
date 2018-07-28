@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
+import classnames from 'classnames';
+
 import { Radio, Button, Input, Select, Slider, Image } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
@@ -136,10 +138,10 @@ export default class AppDeploy extends Component {
           </Radio.Group>
         </div>
         <div className={styles.cellModule}>
-          <label className={styles.name}>Version</label>
+          <label className={classnames(styles.name, styles.selectName)}>Version</label>
           <Select className={styles.select} value={versionId} onChange={changeVersion}>
             {versions.map(({ version_id, name }) => (
-              <Select.Option key={version_id} value={version_id}>
+              <Select.Option key={version_id} value={version_id} title={name}>
                 {name}
               </Select.Option>
             ))}
@@ -265,10 +267,10 @@ export default class AppDeploy extends Component {
           </Radio.Group>
         </div>
         <div className={styles.cellModule}>
-          <label className={styles.name}>Version</label>
+          <label className={classnames(styles.name, styles.selectName)}>Version</label>
           <Select className={styles.select} value={versionId} onChange={changeVersion}>
             {versions.map(({ version_id, name }) => (
-              <Select.Option key={version_id} value={version_id}>
+              <Select.Option key={version_id} value={version_id} title={name}>
                 {name}
               </Select.Option>
             ))}

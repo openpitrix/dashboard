@@ -15,6 +15,10 @@ export default class AppVersionStore extends Store {
   @observable totalCount = 0;
   @observable currentPage = 1;
 
+  @observable name = '';
+  @observable packageName = '';
+  @observable description = '';
+
   @action
   async fetchAll(params = {}) {
     let pageOffset = params.page || 1;
@@ -93,15 +97,39 @@ export default class AppVersionStore extends Store {
     this.setDialogType('deleteApp');
     this.showDialog();
   };
+  @action
+  changeName = event => {
+    this.name = event.target.value;
+  };
+  @action
+  changePackage = event => {
+    this.packageName = event.target.value;
+  };
+  @action
+  changeDescription = event => {
+    this.description = event.target.value;
+  };
 
   @action
-  async handleCreateVersion(e, params) {
-    const data = getFormData(e.target);
-    const result = await this.create(assign(data, params));
-    this.postHandleApi(result, async () => {
-      this.hideModal();
-      await this.fetchAll({ app_id: params.app_id });
-    });
+  async handleCreateVersion(appId) {
+    if (!this.name) {
+      this.showMsg('Please input Name!');
+    } else if (!this.packageName) {
+      this.showMsg('Please input Package Name!');
+    } else {
+      const data = {
+        app_id: appId,
+        name: this.name,
+        package_name: this.packageName,
+        description: this.description
+      };
+      const result = await this.create(data);
+      this.postHandleApi(result, async () => {
+        this.showMsg('Create App Version successful!', 'success');
+        this.hideModal();
+        await this.fetchAll({ app_id: appId });
+      });
+    }
   }
 
   @action

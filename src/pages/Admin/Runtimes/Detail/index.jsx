@@ -71,7 +71,7 @@ export default class RuntimeDetail extends Component {
       {
         title: 'Cluster Name',
         key: 'name',
-        width: '170px',
+        width: '155px',
         render: item => (
           <TdName
             name={item.name}
@@ -83,7 +83,7 @@ export default class RuntimeDetail extends Component {
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -108,7 +108,7 @@ export default class RuntimeDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '120px',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];

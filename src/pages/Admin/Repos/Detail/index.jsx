@@ -121,7 +121,7 @@ export default class RepoDetail extends Component {
       {
         title: 'App Name',
         key: 'name',
-        width: '205px',
+        width: '190px',
         render: item => (
           <TdName
             name={item.name}
@@ -134,12 +134,13 @@ export default class RepoDetail extends Component {
       {
         title: 'Latest Version',
         key: 'latest_version',
+        width: '116px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -159,6 +160,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
@@ -166,7 +168,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Runtime Name',
         key: 'name',
-        width: '170px',
+        width: '155px',
         render: item => (
           <TdName
             name={item.name}
@@ -178,7 +180,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
+        width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -204,7 +206,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '120px',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
@@ -212,13 +214,11 @@ export default class RepoDetail extends Component {
       {
         title: 'Event Id',
         key: 'repo_event_id',
-        width: '170px',
         render: item => item.repo_event_id
       },
       {
         title: 'Status',
         key: 'status',
-        width: '120px',
         render: item => item.status
       },
       {
@@ -229,7 +229,7 @@ export default class RepoDetail extends Component {
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '120px',
+        width: '95px',
         render: item => <TimeShow time={item.status_time} />
       }
     ];
