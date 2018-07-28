@@ -41,7 +41,7 @@ export default class ClusterCard extends PureComponent {
           <li>
             <span className={styles.name}>Runtime</span>
             <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
-              <ProviderName provider={runtimeName} name={provider} />
+              <ProviderName provider={provider} name={runtimeName} />
             </Link>
           </li>
           <li>

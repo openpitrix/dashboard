@@ -29,6 +29,8 @@
   border: solid 1px $N30;
   cursor: pointer;
   transition: all .3s ease-in-out;
+  word-break: break-all;
+  overflow: hidden;
   .controlLabel {
     line-height: 24px;
     color: $N300;
@@ -58,11 +60,13 @@
   .option {
     position: relative;
     box-sizing: border-box;
-    padding: 4px 12px;
+    padding: 4px 22px 4px 12px;
     height: 32px;
     line-height: 24px;
     color: $N300;
     cursor: pointer;
+    word-break: break-all;
+    overflow: hidden;
     &:hover {
       color: $N500;
       background-color: $N10;

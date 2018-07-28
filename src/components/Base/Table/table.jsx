@@ -206,7 +206,7 @@ export default class Table extends React.Component {
     const { rowSelection, columns } = this.props;
     const tableColumns = [...columns];
 
-    if (rowSelection) {
+    if (rowSelection.selectedRowKeys) {
       const data = this.getTableData();
       const selectionColumn = {
         key: 'selection-column',
