@@ -4,21 +4,10 @@ const postCssOptions = require('./config/postcss.options');
 
 module.exports = {
   mode: 'development',
-  entry: {
-    main: [
-      // 'webpack-hot-middleware/client',
-      './src/index.js'
-    ],
-    vendors: [
-      'react',
-      'react-dom',
-      'react-router',
-      'react-router-dom',
-      'mobx',
-      'mobx-react',
-      'react-i18next'
-    ]
-  },
+  entry: [
+    // 'webpack-hot-middleware/client',
+    './src/index.js'
+  ],
   output: {
     filename: '[name].js',
     path: resolve(__dirname, 'build/'),
@@ -30,9 +19,6 @@ module.exports = {
     hints: 'warning'
   },
   module: {
-    // noParse: function(content){
-    //   return /lodash/.test(content);
-    // },
     rules: [
       {
         test: /\.jsx?$/,
@@ -78,40 +64,33 @@ module.exports = {
     modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
+    // new webpack.NamedModulesPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
     })
-  ]
-  // optimization: {
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       vendors: {
-  //         name: 'vendors',
-  //         chunks: 'initial',
-  //         test: /[\\/]node_modules[\\/]/,
-  //         priority: -10
-  //       },
-  //       'async-vendors': {
-  //         name: 'async-vendors',
-  //         chunks: 'async',
-  //         test: /[\\/]node_modules[\\/]/,
-  //         minChunks: 2,
-  //         priority: 0
-  //       },
-  //       commons: {
-  //         name: 'commons',
-  //         chunks: 'all',
-  //         minChunks: 2
-  //       },
-  //       default: {
-  //         minSize: 0,
-  //         minChunks: 1,
-  //         reuseExistingChunk: true
-  //       }
-  //     }
-  //   }
-  // }
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          name: 'vendors',
+          chunks: 'initial',
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        commons: {
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2
+        },
+        default: {
+          minSize: 0,
+          minChunks: 1,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  }
 };

@@ -31,11 +31,12 @@ export default class RepoDetail extends Component {
     await appStore.fetchAll({
       repo_id: repoId
     });
-    const labels = repoStore.repoDetail.labels;
+    const labels = repoStore.repoDetail.labels || [];
     const queryLabel = labels
       .filter(label => label.label_key)
       .map(label => [label.label_key, label.label_value].join('='))
       .join('&');
+
     await runtimeStore.fetchAll({
       repo_id: repoId,
       label: queryLabel,
