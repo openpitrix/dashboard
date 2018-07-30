@@ -10,6 +10,7 @@ module.exports = {
   ],
   output: {
     filename: '[name].js',
+    // chunkFilename: "[name].[chunkhash].js",
     path: resolve(__dirname, 'build/'),
     publicPath: '/build/',
     pathinfo: false
@@ -19,6 +20,9 @@ module.exports = {
     hints: 'warning'
   },
   module: {
+    // noParse: function(content){
+    //   return /lodash/.test(content);
+    // },
     rules: [
       {
         test: /\.jsx?$/,
@@ -64,13 +68,30 @@ module.exports = {
     modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
   },
   plugins: [
-    // new webpack.NamedModulesPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
     })
+    // for webpack v3
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: function(module) {
+    //     return module.context && module.context.includes('node_modules');
+    //   }
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'manifest',
+    //   minChunks: Infinity
+    // })
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'common',
+    //   filename: 'common.js',
+    //   chunks: 'all',
+    //   minChunks: 2
+    // })
   ],
+  // for webpack v4
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -79,6 +100,13 @@ module.exports = {
           chunks: 'initial',
           test: /[\\/]node_modules[\\/]/,
           priority: -10
+        },
+        'async-vendors': {
+          name: 'async-vendors',
+          chunks: 'async',
+          test: /[\\/]node_modules[\\/]/,
+          minChunks: 2,
+          priority: 0
         },
         commons: {
           name: 'commons',

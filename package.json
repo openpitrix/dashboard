@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@koa/cors": "^2.2.2",
     "app-root-path": "^2.0.1",
     "babel-runtime": "^6.26.0",
     "chokidar": "^2.0.4",
@@ -44,13 +43,13 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "dev:client": "rimraf build && NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
     "server": "DEBUG=op-dash BABEL_ENV=server NODE_ENV=development node server/server.js",
     "dev:watch": "npm run dev:client -- --watch",
     "dev": "rimraf build && npm run dev:client && npm run server",
-    "prod:build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.prod.js --progress",
-    "prod:serve": "NODE_ENV=production DEBUG=op-dash,-koa-router,-koa-views node dist/server.js",
-    "prod": "npm run prod:build && npm run prod:serve",
+    "prod:build": "NODE_ENV=production webpack -p --config webpack.prod.js --progress",
+    "prod:serve": "NODE_ENV=production DEBUG=op-dash,koa-*,-koa-router,-koa-views node dist/server.js",
+    "prod": "rimraf dist && npm run prod:build && npm run prod:serve",
     "lint": "eslint . --fix",
     "test:single": "NODE_ENV=testing jest --config jest.config.json -u",
     "test": "npm run test:single -- --coverage",
@@ -115,7 +114,6 @@
     "webpack": "^4.14.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^3.0.8",
-    "webpack-manifest-plugin": "^2.0.3",
     "webpack-node-externals": "^1.7.2"
   },
   "engines": {
