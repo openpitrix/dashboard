@@ -3,8 +3,6 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const postCssOptions = require('./config/postcss.options');
-const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
-const ManifestPlugin = require('webpack-manifest-plugin');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss'],
@@ -17,21 +15,10 @@ const resolveModules = {
 const distDir = resolve(__dirname, 'dist');
 
 const clientConfig = {
-  entry: {
-    main: './src/index.js',
-    vendors: [
-      'react',
-      'react-dom',
-      'react-router',
-      'react-router-dom',
-      'mobx',
-      'mobx-react',
-      'react-i18next'
-    ]
-  },
+  entry: './src/index.js',
   output: {
     path: distDir,
-    filename: '[name].[chunkhash:8].js',
+    filename: 'main.js',
     pathinfo: false,
     publicPath: '/dist/'
   },
@@ -88,9 +75,6 @@ const clientConfig = {
   },
   resolve: resolveModules,
   plugins: [
-    new webpack.NamedModulesPlugin(),
-    new ManifestPlugin(),
-    new WriteHashPlugin(),
     new ExtractTextPlugin({
       filename: 'bundle.css',
       allChunks: true

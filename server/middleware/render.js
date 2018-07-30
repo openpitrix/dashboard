@@ -12,7 +12,7 @@ const renderPage = require('../render-page');
 
 const App = require('src/App').default;
 const routes = require('src/routes').default;
-const isProd = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV !== 'production';
 
 const i18n = require('../i18n');
 const { I18nextProvider } = require('react-i18next');
@@ -38,7 +38,7 @@ module.exports = async (ctx, next) => {
   };
 
   try {
-    const components = isProd
+    const components = !isDev
       ? renderToString(
           <I18nextProvider i18n={i18n}>
             <Provider rootStore={ctx.store} sessInfo={sessInfo} sock={null}>
@@ -57,7 +57,7 @@ module.exports = async (ctx, next) => {
     }
 
     ctx.body = renderPage({
-      isProd,
+      isDev,
       title: get(ctx.store, 'config.name'),
       children: components,
       state: JSON.stringify(ctx.store)
