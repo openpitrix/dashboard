@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const postCssOptions = require('./config/postcss.options');
+const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss'],
@@ -79,6 +80,8 @@ const clientConfig = {
       filename: 'bundle.css',
       allChunks: true
     }),
+    // new webpack.NamedModulesPlugin(),
+    new WriteHashPlugin(),
     // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.optimize.UglifyJsPlugin({
     //   parallel: 4,
