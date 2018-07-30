@@ -15,8 +15,6 @@ const mount = require('koa-mount');
 const serve = require('koa-static');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
-const cors = require('@koa/cors');
-
 const debug = require('debug')('op-dash');
 const { reportErr, renderErrPage } = require('./report-error');
 
@@ -55,8 +53,6 @@ const serveStatic = (mount_points = {}) => {
 serveStatic(get(config, 'static', {}));
 
 const favIconPath = get(config, 'favicon', 'favicon.ico');
-
-app.use(cors());
 app.use(favicon(root(favIconPath)));
 
 app.use(

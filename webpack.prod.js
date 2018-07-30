@@ -24,8 +24,8 @@ const clientConfig = {
       'react-dom',
       'react-router',
       'react-router-dom',
-      // 'mobx',
-      // 'mobx-react',
+      'mobx',
+      'mobx-react',
       'react-i18next'
     ]
   },
