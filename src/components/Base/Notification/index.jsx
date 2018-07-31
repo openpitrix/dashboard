@@ -23,7 +23,7 @@ export default class Notification extends React.Component {
     type: 'error',
     title: 'Notification',
     message: null,
-    timeOut: 2000,
+    timeOut: 3000,
     onClick: noop,
     onHide: null,
     onClosed: noop

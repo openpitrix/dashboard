@@ -5,60 +5,69 @@ $bg-success: green;
 $bg-warning: yellow;
 $bg-error: red;
 
-.notification {
+.wrapper {
   position: fixed;
   z-index: 9999;
   top: 100px;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-sizing: border-box;
-  min-width:320px;
-  max-width: 600px;
-  min-height:40px;
-  padding: 7px 15px;
+  //width: 100%;
+  height: auto;
 
-  border-radius: 2px;
-  background-color: $R10;
-  box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
-  border: solid 1px $R45;
-  font-size: 14px;
-  line-height: 1.71;
-  color: $R300;
+  .notification {
+    position: relative;
+    box-sizing: border-box;
+    min-width:320px;
+    max-width: 600px;
+    min-height:40px;
+    padding: 7px 15px;
+    margin-bottom: 3px;
 
-  animation-duration: 2s;
-  animation-name: slidein;
+    border-radius: 2px;
+    background-color: $R10;
+    box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
+    border: solid 1px $R45;
+    font-size: 14px;
+    line-height: 1.71;
+    color: $R300;
 
-  :global{
-    .icon{
-      float: left;
-      margin-right: 10px;
-      margin-top: 2px;
+    animation-duration: 2s;
+    animation-name: slidein;
+
+    :global{
+      .icon{
+        float: left;
+        margin-right: 10px;
+        margin-top: 2px;
+      }
+    }
+
+    &-error {
+      color: $R300;
+      background-color: $R10;
+      border: solid 1px $R45;
+      box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
+    }
+    &-success {
+      color: $G300;
+      background-color: $G10;
+      border: solid 1px $G45;
+      box-shadow: 0 2px 4px 0 rgba(8, 131, 66, 0.1);
+    }
+    &-info {
+      color: $B300;
+      background-color: $B10;
+      border: solid 1px $B45;
+      box-shadow: 0 2px 4px 0 rgba(35, 92, 216, 0.1);
+    }
+    &-warning {
+      color: $Y500;
+      background-color: $Y10;
+      border: solid 1px $Y75;
+      box-shadow: 0 2px 4px 0 rgba(239, 118, 43, 0.1);
     }
   }
-
-  &-error {
-    color: $R300;
-    background-color: $R10;
-    border: solid 1px $R45;
-    box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
-  }
-  &-success {
-    color: $G300;
-    background-color: $G10;
-    border: solid 1px $G45;
-    box-shadow: 0 2px 4px 0 rgba(8, 131, 66, 0.1);
-  }
-  &-info {
-    color: $B300;
-    background-color: $B10;
-    border: solid 1px $B45;
-    box-shadow: 0 2px 4px 0 rgba(35, 92, 216, 0.1);
-  }
-  &-warning {
-    color: $Y500;
-    background-color: $Y10;
-    border: solid 1px $Y75;
-    box-shadow: 0 2px 4px 0 rgba(239, 118, 43, 0.1);
-  }
 }
+
+
 
