@@ -22,7 +22,7 @@
     }
   }
   :global{
-    .pi-table-thead, .pi-pagination{
+    .pi-table-thead, .pi-pagination,[class*='_pagination']{
       display: none;
     }
   }

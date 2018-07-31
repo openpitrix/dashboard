@@ -137,7 +137,9 @@ export default class AppDetail extends Component {
             <ul>
               {appVersions.map(version => (
                 <li key={version.version_id}>
-                  {version.name}
+                  <span className={styles.name} title={version.name}>
+                    {version.name}
+                  </span>
                   <span className={styles.time}>
                     {formatTime(version.create_time, 'MMM D, YYYY')}
                   </span>
