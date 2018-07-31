@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { filter, get } from 'lodash';
 
-import { Icon, Button, Table, Pagination, Popover, Select, Modal } from 'components/Base';
+import { Icon, Button, Table, Popover, Select, Modal } from 'components/Base';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -155,7 +155,6 @@ export default class Apps extends Component {
       apps,
       summaryInfo,
       totalCount,
-      notifyMsg,
       isLoading,
       currentPage,
       changePagination,
@@ -268,7 +267,7 @@ export default class Apps extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg}>
+      <Layout>
         <Row>
           <Statistics {...summaryInfo} objs={repos.slice()} />
         </Row>

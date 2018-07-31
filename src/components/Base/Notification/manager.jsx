@@ -1,28 +1,38 @@
 import React from 'react';
 import PropType from 'prop-types';
 import classnames from 'classnames';
+import { observer, inject } from 'mobx-react';
 
-import Notification from './index';
+import NotificationItem from './item';
 
 import styles from './index.scss';
 
+@inject('rootStore')
+@observer
 export default class NotificationManager extends React.Component {
   static propTypes = {
-    notifications: PropType.array.isRequired,
-    className: PropType.string
-  };
-  static defaultProps = {
-    notifications: []
+    className: PropType.string,
+    itemClass: PropType.string
   };
 
-  dettachNotify = () => {};
+  componentWillUnmount() {
+    this.props.rootStore.notifications = [];
+  }
 
   render() {
-    const { className, notifications, ...rest } = this.props;
+    const { className, itemClass, rootStore } = this.props;
+    const { notifications, detachNotify } = rootStore;
 
     return (
       <div className={classnames(styles.wrapper, className)}>
-        {notifications.map((notification, idx) => <Notification {...notification} key={idx} />)}
+        {notifications.map((notification, idx) => (
+          <NotificationItem
+            className={itemClass}
+            {...notification}
+            key={idx}
+            detach={detachNotify}
+          />
+        ))}
       </div>
     );
   }

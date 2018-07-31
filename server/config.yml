@@ -1,10 +1,11 @@
 ---
-# dashboard server side global configuration
+# dashboard global configuration
 
 host: 127.0.0.1
 port: 8000
 
 favicon: src/assets/favicon.ico
+
 static:
   /assets: src/assets
   /locales: /locales
@@ -13,46 +14,14 @@ static:
   production:
     /dist: dist
 
-# mock server
-serverUrl: http://139.198.4.179:9100
+apiVersion: v1
 
-socketUrl: ws://139.198.121.148:9100/v1/io
+# api server
+serverUrl: ''
 
+# socket server
+socketUrl: ''
+
+# client side config
 app:
-  name: OpenPitrix Dashboard
-  navs:
-#  - title: Discover
-#    value:
-#    - title: Top Trending
-#      value: top
-#    - title: Essential Apps
-#      value: essential
-  - title: Categories
-    value:
-    - title: Software Infrastructure
-      value: software
-    - title: Business Software
-      value: business
-    - title: Development
-      value: develop
-    - title: Operation & Maintenance
-      value: operation
-    - title: Security
-      value: security
-    - title: Analysis
-      value: analysis
-
-#  - title: Cloud Manufacture
-#    value:
-#    - title: Amazon
-#      value: amazon
-#    - title: Microsoft
-#      value: microsoft
-#    - title: Google
-#      value: google
-#    - title: QingCloud
-#      value: qingcloud
-#    - title: VMWare
-#      value: wmware
-#    - title: See All
-#      value: all
+  title: 'OpenPitrix Dashboard'

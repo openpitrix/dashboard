@@ -192,7 +192,7 @@ export default class AppDeployStore extends Store {
     this.isLoading = true;
     const result = await this.request.get('runtimes', params);
     this.runtimes = get(result, 'runtime_set', []);
-    if (this.runtimes[0]) {
+    if (this.runtimes.length && this.runtimes[0]) {
       this.runtimeId = this.runtimes[0].runtime_id;
       await this.fetchSubnets(this.runtimes[0].runtime_id);
     } else {

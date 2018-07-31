@@ -7,7 +7,7 @@ import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-export default class Notification extends React.Component {
+export default class NotificationItem extends React.Component {
   static propTypes = {
     type: PropTypes.oneOf(['info', 'success', 'warning', 'error']),
     title: PropTypes.string,
@@ -16,7 +16,9 @@ export default class Notification extends React.Component {
     onClick: PropTypes.func,
     onHide: PropTypes.func,
     onClosed: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
+    detach: PropTypes.func,
+    ts: PropTypes.number
   };
 
   static defaultProps = {
@@ -26,7 +28,9 @@ export default class Notification extends React.Component {
     timeOut: 3000,
     onClick: noop,
     onHide: null,
-    onClosed: noop
+    onClosed: noop,
+    detach: noop,
+    ts: Date.now()
   };
 
   timer = null;
@@ -51,13 +55,20 @@ export default class Notification extends React.Component {
   };
 
   hideNotify = () => {
-    this.setState({ hidden: true });
+    const { ts, detach, onHide } = this.props;
+
+    this.setState({ hidden: true }, () => {
+      // detach notification from mobx store
+      detach(ts);
+
+      onHide && onHide();
+    });
   };
 
   componentDidMount() {
-    const { timeOut, onHide } = this.props;
+    const { timeOut } = this.props;
     if (timeOut) {
-      this.timer = setTimeout(onHide || this.hideNotify, timeOut);
+      this.timer = setTimeout(this.hideNotify, timeOut);
     }
   }
 
@@ -67,10 +78,12 @@ export default class Notification extends React.Component {
     this.props.onClosed();
   }
 
-  handleClick = e => {};
+  handleClick = e => {
+    // this.hideNotify();
+  };
 
   render() {
-    const { type, message, className } = this.props;
+    const { type, message, className, ...rest } = this.props;
     const { hidden } = this.state;
 
     const colorStyles = {

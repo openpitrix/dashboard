@@ -19,16 +19,6 @@ export default class Login extends Component {
     this.props.store.login(params);
   };
 
-  renderErrMsg() {
-    let { notifyMsg, hideMsg } = this.props.store;
-    notifyMsg = notifyMsg + '';
-    return (
-      notifyMsg && (
-        <Notification className={styles.errorAlert} message={notifyMsg} onHide={hideMsg} />
-      )
-    );
-  }
-
   render() {
     const { t } = this.props;
 
@@ -39,8 +29,8 @@ export default class Login extends Component {
             <Logo url="/assets/logo_light.svg" />
           </div>
           <div className={styles.loginForm}>
-            {this.renderErrMsg()}
             <h1>{t('Login OpenPitrix')}</h1>
+            <Notification className={styles.notify} itemClass={styles.notifyItem} />
             <Form onSubmit={throttle(this.handleSubmit, 1000)}>
               <Form.Item className={styles.formItem} noLabel>
                 <Input

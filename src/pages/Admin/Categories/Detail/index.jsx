@@ -144,7 +144,7 @@ export default class CategoryDetail extends Component {
 
   render() {
     const { categoryStore, appStore, repoStore } = this.props;
-    const { category, notifyMsg, notifyType, hideMsg } = categoryStore;
+    const { category } = categoryStore;
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
     const { isLoading, appCount, totalCount, selectStatus } = appStore;
@@ -222,11 +222,7 @@ export default class CategoryDetail extends Component {
     };
 
     return (
-      <Layout
-        msg={notifyMsg}
-        hideMsg={hideMsg}
-        backBtn={<BackBtn label="categories" link="/dashboard/categories" />}
-      >
+      <Layout backBtn={<BackBtn label="categories" link="/dashboard/categories" />}>
         <Grid>
           <Section>
             <Card>

@@ -257,7 +257,6 @@ export default class ClusterDetail extends Component {
         isloading={isLoading}
         sockMessage={sockMessage}
         listenToJob={this.listenToJob}
-        notifications={rootStore.notifications}
       >
         <Grid>
           <Section>

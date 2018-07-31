@@ -262,8 +262,6 @@ export default class RepoCreateStore extends Store {
 
   @action
   reset() {
-    this.hideMsg();
-
     this.repoId = '';
     this.name = '';
     this.description = '';

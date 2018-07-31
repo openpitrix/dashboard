@@ -47,8 +47,19 @@ export default class RootStore extends Store {
       throw Error('invalid notification msg');
     }
 
-    this.notifications.push(notification);
+    this.notifications.push(
+      Object.assign(notification, {
+        ts: Date.now()
+      })
+    );
   }
+
+  @action
+  detachNotify = ts => {
+    // this.notifications=this.notifications.filter(item=> item.ts !== ts);
+    const idx = this.notifications.findIndex(item => item.ts === ts);
+    this.notifications.splice(idx, 1);
+  };
 
   register(name, store, withState = true) {
     if (typeof store !== 'function') {
@@ -58,7 +69,6 @@ export default class RootStore extends Store {
       name += 'Store';
     }
     this[name] = new store(withState ? this.state : '', name);
-
     this[name].notify = this.notify.bind(this);
   }
 

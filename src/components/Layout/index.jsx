@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop } from 'lodash';
 
-import NotificationManager from 'components/Base/Notification/manager';
+import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
 import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
@@ -16,12 +16,7 @@ export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-
-    // msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    // msgType: PropTypes.oneOf(['error', 'success', 'warning', 'error']),
     noNotification: PropTypes.bool,
-    notifications: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-
     noTabs: PropTypes.bool,
     backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
@@ -36,8 +31,7 @@ export default class Layout extends React.Component {
     noNotification: false,
     backBtn: null,
     sockMessage: '',
-    listenToJob: noop,
-    notifications: []
+    listenToJob: noop
   };
 
   constructor(props) {
@@ -52,19 +46,6 @@ export default class Layout extends React.Component {
     if (sock && !sock._events['ops-resource']) {
       sock.on('ops-resource', listenToJob);
     }
-  }
-
-  renderNotification() {
-    if (this.props.noNotification) {
-      return null;
-    }
-
-    let { notifications } = this.props;
-
-    if (!Array.isArray(notifications)) {
-      notifications = notifications.toJSON();
-    }
-    return <NotificationManager notifications={notifications} />;
   }
 
   renderTabs() {
@@ -115,7 +96,7 @@ export default class Layout extends React.Component {
     return (
       <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
         {noTabs ? null : this.renderTabs()}
-        {noNotification ? null : this.renderNotification()}
+        {noNotification ? null : <Notification />}
         {backBtn}
         {this.renderSocketMessage()}
         <Loading isLoading={isLoading} className={styles[loadClass]}>

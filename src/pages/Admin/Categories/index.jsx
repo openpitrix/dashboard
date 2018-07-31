@@ -86,14 +86,7 @@ export default class Categories extends Component {
 
   render() {
     const { appStore, categoryStore } = this.props;
-    const {
-      notifyMsg,
-      notifyType,
-      hideMsg,
-      isLoading,
-      showCreateCategory,
-      getCategoryApps
-    } = categoryStore;
+    const { isLoading, showCreateCategory, getCategoryApps } = categoryStore;
 
     const categories = categoryStore.categories.toJSON();
     const apps = appStore.apps.toJSON();
@@ -102,7 +95,7 @@ export default class Categories extends Component {
     const uncategorized = categoryApps.find(cate => cate.category_id === 'ctg-uncategorized') || {};
 
     return (
-      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg} isLoading={isLoading}>
+      <Layout isLoading={isLoading}>
         <div className={styles.container}>
           <div className={styles.pageTitle}>
             Categories

@@ -234,10 +234,7 @@ export default class AppDetail extends Component {
       detailTab,
       currentVersionPage
     } = appStore;
-    const { notifyMsg, hideMsg, msgType } = appVersionStore;
-    const appNotifyMsg = appStore.notifyMsg;
-    const appHideMsg = appStore.hideMsg;
-    const appMsgType = appStore.msgType;
+
     const { selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
@@ -302,12 +299,7 @@ export default class AppDetail extends Component {
     }
 
     return (
-      <Layout
-        msg={notifyMsg || appNotifyMsg}
-        hideMsg={hideMsg || appHideMsg}
-        msgType={msgType || appMsgType}
-        backBtn={<BackBtn label="apps" link="/dashboard/apps" />}
-      >
+      <Layout backBtn={<BackBtn label="apps" link="/dashboard/apps" />}>
         <Grid>
           <Section>
             <Card>

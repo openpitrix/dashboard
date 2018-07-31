@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 
-import { Radio, Button, Input, Select, Slider, Image } from 'components/Base';
+import { Radio, Button, Input, Select, Image } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
@@ -48,16 +48,11 @@ export default class AppDeploy extends Component {
   render() {
     const { appDeployStore, appStore } = this.props;
     const appName = appStore.appDetail.name + '';
-    const { notifyMsg, notifyType, hideMsg, isKubernetes } = appDeployStore;
+    const { isKubernetes } = appDeployStore;
     const title = `Deploy ${appName}`;
 
     return (
-      <Layout
-        msg={notifyMsg}
-        hideMsg={hideMsg}
-        noTabs
-        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
-      >
+      <Layout noTabs backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
         <CreateResource title={title} aside={this.renderAside()} asideTitle={''}>
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}
         </CreateResource>

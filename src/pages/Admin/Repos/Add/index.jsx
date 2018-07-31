@@ -39,11 +39,12 @@ export default class RepoAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, notifyType, hideMsg, repoId } = this.store;
+    const { repoId } = this.store;
     let title = 'Create Repo';
     if (repoId) title = 'Modify Repo';
+
     return (
-      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
+      <Layout>
         <BackBtn label="repos" link="/dashboard/repos" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
