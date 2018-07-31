@@ -49,28 +49,37 @@ Store.prototype = {
       typeof cb === 'function' && cb();
     }
   },
-  request: new Proxy(request, {
-    get: (target, method) => {
-      return async (...args) => {
-        let url = args[0];
-        let params = args[1];
+  get request() {
+    return new Proxy(request, {
+      get: (target, method) => {
+        return async (...args) => {
+          let url = args[0];
+          let params = args[1];
+          let res;
 
-        if (allowMehhods.indexOf(method) > -1) {
-          // decorate url
-          if (typeof url === 'string') {
-            if (!/^\/?api\//.test(url)) {
-              url = '/api/' + url;
+          if (allowMehhods.includes(method)) {
+            // decorate url
+            if (typeof url === 'string') {
+              if (!/^\/?api\//.test(url)) {
+                url = '/api/' + url;
+              }
+              res = await target.post(url, { ...params, method });
             }
-            return await target.post(url, { ...params, method });
+          } else if (typeof target[method] === 'function') {
+            res = target[method].apply(args);
           }
-        } else if (typeof target[method] === 'function') {
-          return target[method].apply(args);
-        }
 
-        throw Error(`invalid request method: ${method}`);
-      };
-    }
-  }),
+          // error handling
+          if (res.err && res.status >= 400) {
+            this.notify(res.err || res.errDetail || 'internal error');
+            return;
+          }
+
+          return res;
+        };
+      }
+    });
+  },
 
   @action.bound
   setSocketMessage: function(message = '') {

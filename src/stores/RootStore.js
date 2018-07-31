@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import { get, pick } from 'lodash';
 
 import Store from './Store';
 
@@ -12,9 +13,13 @@ import LoginStore from './LoginStore';
 import UserStore from './UserStore';
 import RoleStore from './RoleStore';
 
+const defaultNotifyOption = { title: '', message: '', type: 'error' };
+
 export default class RootStore extends Store {
   @observable fixNav = false;
   @observable pageInit = {};
+
+  @observable notifications = [];
 
   constructor(initialState) {
     super(initialState);
@@ -26,6 +31,25 @@ export default class RootStore extends Store {
     this.fixNav = !!fixNav;
   }
 
+  @action
+  notify(...msg) {
+    let notification = {};
+
+    if (typeof msg[0] === 'object') {
+      notification = pick(Object.assign(defaultNotifyOption, msg[0]), ['title', 'message', 'type']);
+    } else if (typeof msg[0] === 'string') {
+      notification = Object.assign(defaultNotifyOption, {
+        message: msg[0] || '',
+        title: msg[1] || '',
+        type: msg[2] || 'error'
+      });
+    } else {
+      throw Error('invalid notification msg');
+    }
+
+    this.notifications.push(notification);
+  }
+
   register(name, store, withState = true) {
     if (typeof store !== 'function') {
       throw Error('store should be constructor function');
@@ -34,6 +58,8 @@ export default class RootStore extends Store {
       name += 'Store';
     }
     this[name] = new store(withState ? this.state : '', name);
+
+    this[name].notify = this.notify.bind(this);
   }
 
   registerStores() {

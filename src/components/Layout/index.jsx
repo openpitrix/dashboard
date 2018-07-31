@@ -4,8 +4,7 @@ import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop } from 'lodash';
 
-import Notification from 'components/Base/Notification';
-// import { Grid } from 'components/Layout';
+import NotificationManager from 'components/Base/Notification/manager';
 import TabsNav from 'components/TabsNav';
 import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
@@ -17,11 +16,13 @@ export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
-    msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    msgType: PropTypes.oneOf(['error', 'success', 'warning', 'error']),
-    hideMsg: PropTypes.func,
-    noTabs: PropTypes.bool,
+
+    // msg: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    // msgType: PropTypes.oneOf(['error', 'success', 'warning', 'error']),
     noNotification: PropTypes.bool,
+    notifications: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+
+    noTabs: PropTypes.bool,
     backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string,
@@ -31,12 +32,12 @@ export default class Layout extends React.Component {
 
   static defaultProps = {
     msg: '',
-    hideMsg: null,
     noTabs: false,
     noNotification: false,
     backBtn: null,
     sockMessage: '',
-    listenToJob: noop
+    listenToJob: noop,
+    notifications: []
   };
 
   constructor(props) {
@@ -57,12 +58,13 @@ export default class Layout extends React.Component {
     if (this.props.noNotification) {
       return null;
     }
-    let { msg, msgType, hideMsg } = this.props;
-    if (typeof msg === 'object') {
-      msg = msg + ''; // transform mobx object
-    }
 
-    return msg ? <Notification type={msgType} message={msg} onHide={hideMsg} /> : null;
+    let { notifications } = this.props;
+
+    if (!Array.isArray(notifications)) {
+      notifications = notifications.toJSON();
+    }
+    return <NotificationManager notifications={notifications} />;
   }
 
   renderTabs() {
