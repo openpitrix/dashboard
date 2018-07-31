@@ -19,6 +19,7 @@ export default class RuntimeStore extends Store {
   @observable selectedRowKeys = [];
   @observable selectStatus = '';
   @observable defaultStatus = ['active'];
+  @observable runtimeDeleted = null;
 
   @observable
   handleRuntime = {
@@ -87,14 +88,14 @@ export default class RuntimeStore extends Store {
   @action
   remove = async () => {
     const ids = this.operateType === 'single' ? [this.runtimeId] : this.runtimeIds.toJSON();
-    const result = await this.request.delete('runtimes', { runtime_id: ids });
-    if (_.get(result, 'runtime_id')) {
+    this.runtimeDeleted = await this.request.delete('runtimes', { runtime_id: ids });
+    if (_.get(this.runtimeDeleted, 'runtime_id')) {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
       this.showMsg('Delete runtime successfully.', 'success');
     } else {
-      let { err, errDetail } = result;
+      let { err, errDetail } = this.runtimeDeleted;
       this.showMsg(errDetail || err);
     }
   };
@@ -167,6 +168,7 @@ export default class RuntimeStore extends Store {
     this.selectedRowKeys = [];
     this.runtimeIds = [];
     this.pageInitMap = {};
+    this.runtimeDeleted = null;
   };
 
   @action

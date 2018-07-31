@@ -13,10 +13,10 @@ export default class AppList extends PureComponent {
     isAdmin: PropTypes.bool
   };
 
-  static defaultProps={
+  static defaultProps = {
     apps: [],
     isAdmin: false
-  }
+  };
 
   render() {
     const { apps, isAdmin } = this.props;
@@ -27,6 +27,7 @@ export default class AppList extends PureComponent {
           <li key={data.app_id}>
             {isAdmin && <span className={styles.order}>{index + 1}</span>}
             <TdName
+              className="largeShow"
               image={data.icon || 'appcenter'}
               imageSize={24}
               name={data.name}

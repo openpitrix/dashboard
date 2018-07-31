@@ -165,7 +165,7 @@ export default class AppDeploy extends Component {
 
         <div className={styles.moduleTitle}>{configNodes.length + 2}. Vxnet Settings</div>
         <div className={styles.cellModule}>
-          <label className={styles.name}>VxNet to Join</label>
+          <label className={classnames(styles.name, styles.selectName)}>VxNet to Join</label>
           <Select className={styles.select} value={subnetId} onChange={changeSubnet}>
             {subnets.map(({ subnet_id, name }) => (
               <Select.Option key={subnet_id} value={subnet_id}>

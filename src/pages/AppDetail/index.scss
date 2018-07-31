@@ -72,6 +72,11 @@
     line-height: 30px;
     font-size: 14px;
     color: $P75;
+    .name{
+      display: inline-block;
+      max-width: 200px;
+      @include textCut;
+    }
     .time{
       float: right;
       color: $N300;

@@ -50,7 +50,7 @@ export default class Categories extends Component {
     return (
       <Modal title={modalTitle} visible={isModalOpen} onCancel={hideModal} onOk={createOrModify}>
         <div className="formContent">
-          <div className="inputItem">
+          <div>
             <label>Name</label>
             <Input
               name="name"
@@ -60,8 +60,8 @@ export default class Categories extends Component {
               maxLength="50"
             />
           </div>
-          <div className={styles.inputItem}>
-            <label className={classnames(styles.name, styles.textareaName)}>Description</label>
+          <div className="textareaItem">
+            <label>Description</label>
             <textarea
               name="description"
               defaultValue={category.description}

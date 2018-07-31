@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { get } from 'lodash';
 
 import { Icon, Table, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -8,7 +9,7 @@ import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
+import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 
@@ -29,27 +30,49 @@ export default class RuntimeDetail extends Component {
     });
     await appStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 10000
+      limit: 999
     });
   }
 
   constructor(props) {
     super(props);
     this.runtimeId = props.match.params.runtimeId;
-    this.props.clusterStore.loadPageInit(true);
+    this.props.clusterStore.loadPageInit();
+  }
+
+  componentDidUpdate() {
+    const { runtimeDeleted } = this.props.runtimeStore;
+    if (get(runtimeDeleted, 'runtime_id')) {
+      history.back();
+    }
   }
 
   renderHandleMenu = id => {
+    const { runtimeStore } = this.props;
+    const { showDeleteRuntime } = runtimeStore;
+
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
+        <span onClick={() => showDeleteRuntime(id)}>Delete runtime</span>
       </div>
+    );
+  };
+
+  renderDeleteModal = () => {
+    const { runtimeStore } = this.props;
+    const { isModalOpen, hideModal, remove } = runtimeStore;
+
+    return (
+      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
+        Are you sure delete this Runtime?
+      </Dialog>
     );
   };
 
   render() {
     const { runtimeStore, clusterStore } = this.props;
-    const { runtimeDetail } = runtimeStore;
+    const { runtimeDetail, notifyMsg, hideMsg, notifyType } = runtimeStore;
     const {
       clusters,
       totalCount,
@@ -137,7 +160,12 @@ export default class RuntimeDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+      <Layout
+        msg={notifyMsg}
+        msgType={notifyType}
+        hideMsg={hideMsg}
+        backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}
+      >
         <Grid>
           <Section>
             <Card>
@@ -174,6 +202,7 @@ export default class RuntimeDetail extends Component {
             </Panel>
           </Section>
         </Grid>
+        {this.renderDeleteModal()}
       </Layout>
     );
   }
