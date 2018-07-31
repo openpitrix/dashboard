@@ -70,9 +70,6 @@
   line-height: 24px;
   @include textCut;
   color: $N300;
-  &:hover {
-    color: $P75;
-  }
 
   :global{
     .icon {
@@ -89,6 +86,14 @@
     }
     [class*='description'] {
       width: 75px !important;
+    }
+  }
+  .largeShow{
+    [class*='name'] {
+      width: 240px !important;
+    }
+    [class*='description'] {
+      width: 240px !important;
     }
   }
 }

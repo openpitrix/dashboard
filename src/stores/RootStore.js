@@ -14,7 +14,7 @@ import RoleStore from './RoleStore';
 
 export default class RootStore extends Store {
   @observable fixNav = false;
-  @observable pageInit = {};
+  //@observable pageInit = {};
 
   constructor(initialState) {
     super(initialState);

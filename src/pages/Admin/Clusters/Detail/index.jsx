@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { get } from 'lodash';
+import { get, capitalize } from 'lodash';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -59,14 +59,54 @@ export default class ClusterDetail extends Component {
     }
   };
 
-  renderHandleMenu = () => {
-    const { clusterParametersOpen } = this.props.clusterStore;
+  renderHandleMenu = item => {
+    const { clusterParametersOpen, showOperateCluster } = this.props.clusterStore;
+    const { cluster_id, status } = item;
 
     return (
       <div className="operate-menu">
-        <span onClick={clusterParametersOpen}>View Parameters</span>
+        {/* <span onClick={clusterParametersOpen}>View Parameters</span>*/}
+        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+        {status === 'stopped' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>Start cluster</span>
+        )}
+        {status !== 'stopped' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>Stop cluster</span>
+        )}
       </div>
     );
+  };
+
+  renderDeleteModal = () => {
+    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
+
+    return (
+      <Dialog
+        title={`${capitalize(modalType)} Cluster`}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleCluster}
+      >
+        {`Are you sure ${modalType} this Cluster?`}
+      </Dialog>
+    );
+  };
+
+  handleCluster = () => {
+    const { clusterStore } = this.props;
+    const { clusterId, modalType } = clusterStore;
+    let ids = [clusterId];
+    switch (modalType) {
+      case 'delete':
+        clusterStore.remove(ids);
+        break;
+      case 'start':
+        clusterStore.start(ids);
+        break;
+      case 'stop':
+        clusterStore.stop(ids);
+        break;
+    }
   };
 
   clusterJobsModal = () => {
@@ -177,7 +217,8 @@ export default class ClusterDetail extends Component {
       onRefreshNode,
       onChangeNodeStatus,
       selectNodeStatus,
-      sockMessage
+      sockMessage,
+      modalType
     } = clusterStore;
 
     const detail = clusterStore.cluster;
@@ -249,9 +290,14 @@ export default class ClusterDetail extends Component {
       current: 1
     };
 
+    const { notifyMsg, hideMsg, notifyType } = clusterStore;
+
     return (
       <Layout
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
+        msg={notifyMsg}
+        msgType={notifyType}
+        hideMsg={hideMsg}
         isloading={isLoading}
         sockMessage={sockMessage}
         listenToJob={this.listenToJob}
@@ -265,11 +311,11 @@ export default class ClusterDetail extends Component {
                 runtimeName={runtimeName}
                 provider={provider}
               />
-              {/*{detail.status !== 'deleted' && (
-                <Popover className="operation" content={this.renderHandleMenu()}>
+              {detail.status !== 'deleted' && (
+                <Popover className="operation" content={this.renderHandleMenu(detail)}>
                   <Icon name="more" />
                 </Popover>
-              )}*/}
+              )}
             </Card>
             <Card className={styles.activities}>
               <div className={styles.title}>
@@ -302,8 +348,9 @@ export default class ClusterDetail extends Component {
                   pagination={pagination}
                 />
               </Card>
-              {this.clusterJobsModal()}
-              {this.clusterParametersModal()}
+              {modalType === 'jobs' && this.clusterJobsModal()}
+              {modalType === 'parameters' && this.clusterParametersModal()}
+              {['delete', 'start', 'stop'].includes(modalType) && this.renderDeleteModal()}
             </Panel>
           </Section>
         </Grid>

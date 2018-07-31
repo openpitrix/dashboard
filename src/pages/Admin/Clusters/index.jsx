@@ -158,7 +158,15 @@ export default class Clusters extends Component {
 
   render() {
     const { clusterStore } = this.props;
-    const { summaryInfo, clusters, notifyMsg, isLoading, sockMessage } = clusterStore;
+    const {
+      summaryInfo,
+      clusters,
+      notifyMsg,
+      hideMsg,
+      notifyType,
+      isLoading,
+      sockMessage
+    } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -260,7 +268,13 @@ export default class Clusters extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} listenToJob={this.listenToJob} sockMessage={sockMessage}>
+      <Layout
+        msg={notifyMsg}
+        msgType={notifyType}
+        hideMsg={hideMsg}
+        listenToJob={this.listenToJob}
+        sockMessage={sockMessage}
+      >
         <Row>
           <Statistics {...summaryInfo} objs={runtimes.slice()} />
         </Row>
