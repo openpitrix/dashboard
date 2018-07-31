@@ -128,9 +128,9 @@ export default class AppStore extends Store {
 
   @action
   modify = async (params = {}) => {
-    this.isLoading = true;
-    await this.request.patch('apps', params);
-    this.isLoading = false;
+    // this.isLoading = true;
+    return await this.request.patch('apps', params);
+    // this.isLoading = false;
   };
 
   @action
@@ -173,10 +173,7 @@ export default class AppStore extends Store {
     });
     this.isLoading = false;
     this.hideModal();
-    this.apiMsg(result);
-    if (!result || !result.err) {
-      await this.fetchAll();
-    }
+    this.apiMsg(result, 'Modify category successfully', this.fetchAll);
   };
 
   @action

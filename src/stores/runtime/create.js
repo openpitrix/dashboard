@@ -239,7 +239,6 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   reset() {
-    this.hideMsg();
     this.runtimeId = '';
     this.name = '';
     this.provider = 'qingcloud';

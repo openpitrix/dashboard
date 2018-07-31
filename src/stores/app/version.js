@@ -43,8 +43,9 @@ export default class AppVersionStore extends Store {
   @action
   async create(params) {
     this.isLoading = true;
-    await this.request.post('app_versions', params);
+    let res = await this.request.post('app_versions', params);
     this.isLoading = false;
+    return res;
   }
 
   @action
@@ -124,8 +125,8 @@ export default class AppVersionStore extends Store {
         description: this.description
       };
       const result = await this.create(data);
-      this.postHandleApi(result, async () => {
-        this.showMsg('Create App Version successful!', 'success');
+
+      this.apiMsg(result, 'Create App Version successful!', async () => {
         this.hideModal();
         await this.fetchAll({ app_id: appId });
       });

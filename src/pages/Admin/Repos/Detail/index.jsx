@@ -115,7 +115,7 @@ export default class RepoDetail extends Component {
     const clusters = clusterStore.clusters.toJSON();
     const eventsData = repoStore.repoEvents.toJSON();
 
-    const { notifyMsg, notifyType, sockMessage } = repoStore;
+    const { sockMessage } = repoStore;
 
     const appsColumns = [
       {
@@ -368,8 +368,6 @@ export default class RepoDetail extends Component {
     return (
       <Layout
         backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
-        msg={notifyMsg}
-        msgType={notifyType}
         sockMessage={sockMessage}
         listenToJob={this.listenToJob}
       >

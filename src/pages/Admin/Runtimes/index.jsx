@@ -118,8 +118,6 @@ export default class Runtimes extends Component {
     const {
       summaryInfo,
       isLoading,
-      notifyMsg,
-      hideMsg,
       currentPage,
       totalCount,
       changePagination,
@@ -215,7 +213,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout msg={notifyMsg} hideMsg={hideMsg}>
+      <Layout>
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

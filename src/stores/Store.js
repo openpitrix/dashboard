@@ -1,5 +1,4 @@
 import { extendObservable, observable, action } from 'mobx';
-import { isEmpty, isObject, pick } from 'lodash';
 import request from 'lib/request';
 
 export default class Store {
@@ -8,8 +7,6 @@ export default class Store {
   constructor(initialState, branch) {
     extendObservable(this, {
       pageInitMap: {},
-      notifyType: observable.box('success'),
-      notifyMsg: observable.box(''),
       sockMessage: observable.box('') // json.string socket message
     });
 
@@ -21,63 +18,73 @@ export default class Store {
 
 const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
 
+const getMessage = message => {
+  return typeof message === 'object' ? JSON.stringify(message) : message.toString();
+};
+
 Store.prototype = {
   @action.bound
-  showMsg: function(msg, type) {
-    this.notifyMsg = msg;
-    if (type) {
-      this.notifyType = type;
+  showMsg: function(message, type) {
+    // back compat
+    this.notify({ message, type });
+  },
+  @action.bound
+  apiMsg: function(
+    result,
+    successTip = 'Operation successfully',
+    failTip = 'Operation failed',
+    cb
+  ) {
+    let apiSuccess = !result || !result.err;
+    if (apiSuccess) {
+      this.showMsg(successTip, 'success');
     } else {
-      this.notifyType = 'error';
+      this.showMsg(failTip);
     }
-  },
-  @action.bound
-  hideMsg: function() {
-    this.notifyMsg = '';
-  },
-  @action.bound
-  apiMsg: function(result) {
-    if (typeof result === 'string') {
-      this.showMsg(result);
-    } else if (typeof result === 'object') {
-      this.showMsg(result.err ? result.errDetail : 'Operation done');
-    }
-  },
-  postHandleApi(result, cb) {
-    this.apiMsg(result);
-    if (!result || !result.err) {
-      typeof cb === 'function' && cb();
-    }
-  },
-  request: new Proxy(request, {
-    get: (target, method) => {
-      return async (...args) => {
-        let url = args[0];
-        let params = args[1];
 
-        if (allowMehhods.indexOf(method) > -1) {
-          // decorate url
-          if (typeof url === 'string') {
-            if (!/^\/?api\//.test(url)) {
-              url = '/api/' + url;
+    if (arguments.length > 1 && typeof arguments[arguments.length - 1] === 'function') {
+      cb = arguments[arguments.length - 1];
+    }
+
+    typeof cb === 'function' && apiSuccess && cb();
+  },
+  get request() {
+    return new Proxy(request, {
+      get: (target, method) => {
+        return async (...args) => {
+          let url = args[0];
+          let params = args[1];
+          let res;
+
+          if (allowMehhods.includes(method)) {
+            // decorate url
+            if (typeof url === 'string') {
+              if (!/^\/?api\//.test(url)) {
+                url = '/api/' + url;
+              }
+              res = await target.post(url, { ...params, method });
             }
-            return await target.post(url, { ...params, method });
+          } else if (typeof target[method] === 'function') {
+            res = target[method].apply(args);
           }
-        } else if (typeof target[method] === 'function') {
-          return target[method].apply(args);
-        }
 
-        throw Error(`invalid request method: ${method}`);
-      };
-    }
-  }),
+          // error handling
+          if (res.err && res.status >= 400) {
+            this.notify(res.errDetail || res.err || 'internal error');
+            return;
+          }
+
+          return res;
+        };
+      }
+    });
+  },
 
   @action.bound
   setSocketMessage: function(message = '') {
-    this.sockMessage = typeof message === 'object' ? JSON.stringify(message) : message.toString();
+    this.sockMessage = getMessage(message);
   },
   sockMessageChanged: function(message = '') {
-    message = typeof message === 'object' ? JSON.stringify(message) : message.toString();
-    return this.sockMessage + '' === message;
+    return this.sockMessage + '' === getMessage(message);
   }
 };

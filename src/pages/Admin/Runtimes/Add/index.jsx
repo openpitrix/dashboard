@@ -41,12 +41,12 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { notifyMsg, hideMsg, notifyType, runtimeId } = this.store;
+    const { runtimeId } = this.store;
     let title = 'Create Runtime';
     if (runtimeId) title = 'Modify Runtime';
 
     return (
-      <Layout msg={notifyMsg} msgType={notifyType} hideMsg={hideMsg}>
+      <Layout>
         <BackBtn label="runtime" link="/dashboard/runtimes" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}

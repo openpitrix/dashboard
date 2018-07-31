@@ -59,7 +59,7 @@ module.exports = async (ctx, next) => {
 
     ctx.body = renderPage({
       isProd,
-      title: get(ctx.store, 'config.name'),
+      title: get(ctx.store, 'config.title'),
       children: components,
       state: JSON.stringify(ctx.store)
     });

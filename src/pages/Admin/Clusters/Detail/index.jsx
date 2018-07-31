@@ -19,6 +19,7 @@ import styles from './index.scss';
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
+  rootStore,
   sock
 }))
 @observer
@@ -208,7 +209,8 @@ export default class ClusterDetail extends Component {
   };
 
   render() {
-    const { clusterStore, appStore, runtimeStore } = this.props;
+    const { rootStore, clusterStore, appStore, runtimeStore } = this.props;
+
     const {
       isLoading,
       searchNode,
