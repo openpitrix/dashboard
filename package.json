@@ -12,7 +12,6 @@
     "debug": "^3.1.0",
     "deepmerge": "^2.1.0",
     "i18next": "^11.3.3",
-    "i18next-browser-languagedetector": "^2.2.0",
     "js-base64": "^2.4.5",
     "js-yaml": "^3.10.0",
     "koa": "^2.4.1",
@@ -57,7 +56,9 @@
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
-    "e2e": "testcafe chrome e2e/*.spec.js"
+    "e2e": "testcafe chrome tests/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
+    "prod-client": "node build.js --prod-client",
+    "prod-server": "node build.js --prod-server"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [

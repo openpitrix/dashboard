@@ -1,4 +1,4 @@
-const utils = require('../lib/utils');
+const utils = require('../../lib/utils');
 
 module.exports = {
   getPageUrl: (suffix = '') => {

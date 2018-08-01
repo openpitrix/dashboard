@@ -8,7 +8,7 @@ favicon: src/assets/favicon.ico
 
 static:
   /assets: src/assets
-  /locales: /locales
+  /locales: src/locales
   development:
     /build: build
   production:
