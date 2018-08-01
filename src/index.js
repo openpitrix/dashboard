@@ -17,10 +17,6 @@ const isDev = process.env.NODE_ENV !== 'production';
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
-// fix ssr notifications store not sync
-const now = Date.now();
-store.notifications = store.notifications.filter(item => now - item.ts <= 5000);
-
 if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
 

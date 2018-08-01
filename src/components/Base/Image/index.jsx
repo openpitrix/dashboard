@@ -23,7 +23,7 @@ export default class Image extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return Boolean(nextState.failed);
+    return nextProps.src !== this.props.src || Boolean(nextState.failed);
   }
 
   componentDidMount() {

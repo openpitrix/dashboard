@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
@@ -11,12 +11,17 @@ import CopyId from './CopyId';
 
 import styles from './index.scss';
 
-export default class AppCard extends PureComponent {
+export default class AppCard extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
     repoName: PropTypes.string,
     repoProvider: PropTypes.string
   };
+
+  shouldComponentUpdate(nextProps) {
+    const { appDetail } = nextProps;
+    return appDetail.app_id !== this.props.appDetail.app_id;
+  }
 
   render() {
     const { appDetail, repoName, repoProvider } = this.props;
