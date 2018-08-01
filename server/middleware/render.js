@@ -20,6 +20,10 @@ const { I18nextProvider } = require('react-i18next');
 
 module.exports = async (ctx, next) => {
   const branches = matchRoutes(routes, ctx.url);
+
+  // fix ssr notifications store not sync
+  ctx.store.notifications = [];
+
   const promises = branches.map(
     ({ route, match }) =>
       route.component.onEnter

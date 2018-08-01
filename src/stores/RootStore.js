@@ -44,7 +44,7 @@ export default class RootStore extends Store {
         type: msg[2] || 'error'
       });
     } else {
-      throw Error('invalid notification msg');
+      throw Error('invalid notification message');
     }
 
     this.notifications.push(
@@ -56,9 +56,7 @@ export default class RootStore extends Store {
 
   @action
   detachNotify = ts => {
-    // this.notifications=this.notifications.filter(item=> item.ts !== ts);
-    const idx = this.notifications.findIndex(item => item.ts === ts);
-    this.notifications.splice(idx, 1);
+    this.notifications = this.notifications.filter(item => item.ts !== ts);
   };
 
   register(name, store, withState = true) {

@@ -24,7 +24,7 @@ export default class AppDetail extends Component {
   static async onEnter({ appStore, repoStore }, { appId }) {
     await appStore.fetch(appId);
     if (appStore.appDetail.repo_id) {
-      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
   }
 
