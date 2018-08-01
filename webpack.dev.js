@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const postCssOptions = require('./config/postcss.options');
+const postCssOptions = require('./postcss.options');
 
 module.exports = {
   mode: 'development',

@@ -2,7 +2,7 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const postCssOptions = require('./config/postcss.options');
+const postCssOptions = require('./postcss.options');
 const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
 
 const resolveModules = {
@@ -16,6 +16,7 @@ const resolveModules = {
 const distDir = resolve(__dirname, 'dist');
 
 const clientConfig = {
+  mode: 'production',
   entry: './src/index.js',
   output: {
     path: distDir,
@@ -104,6 +105,7 @@ const clientConfig = {
 };
 
 const serverConfig = {
+  mode: 'production',
   entry: './server/server.js',
   target: 'node',
   externals: [nodeExternals()],
