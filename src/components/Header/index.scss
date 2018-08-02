@@ -93,19 +93,12 @@ $profile-hover-color: #efe6f8;
     .role{
       [class*='target']{
         color: $N0;
-        .iconHover, .iconDark, .iconDarkHover{
-          display: none;
-        }
-        .icon{
-          display: inline-block;
-        }
-        &:hover{
-          opacity: 1;
-          .icon, .iconDark, .iconDarkHover{
-            display: none;
-          }
-          .iconHover{
-            display: inline-block;
+        :global{
+          .icon-caret-down{
+            svg {
+              --primary-color: #{$N0};
+              --secondary-color: #{$N0};
+            }
           }
         }
       }
@@ -126,24 +119,19 @@ $profile-hover-color: #efe6f8;
       color: $N500;
       font-weight: 500;
       border: 0 none;
-      .icon, .iconHover, .iconDarkHover{
-        display: none;
-      }
       &:hover{
         box-shadow: none;
         opacity: 1;
-        .iconDark{
-          display: none;
-        }
-        .iconDarkHover{
-          display: inline-block;
-        }
       }
       :global{
         .icon-caret-down{
           position: relative;
           top: 3px;
           left: 2px;
+          svg {
+            --primary-color: #{$N500};
+            --secondary-color: #{$N500};
+          }
         }
       }
     }

@@ -49,22 +49,6 @@ export default class Header extends Component {
   renderMenuBtns() {
     const loggedInUser = getSessInfo('user', this.props.sessInfo);
     const { t } = this.props;
-    const colorDark = {
-      primary: 'rgba(52,57,69,.9)',
-      secondary: 'rgba(52,57,69,.9)'
-    };
-    const colorDarkHover = {
-      primary: 'rgba(52,57,69,1)',
-      secondary: 'rgba(52,57,69,1)'
-    };
-    const color = {
-      primary: 'rgba(255,255,255,.9)',
-      secondary: 'rgba(255,255,255,.9)'
-    };
-    const colorHover = {
-      primary: 'rgba(255,255,255,1)',
-      secondary: 'rgba(255,255,255,1)'
-    };
 
     if (!loggedInUser) {
       return <NavLink to="/login">{t('Sign In')}</NavLink>;
@@ -73,10 +57,7 @@ export default class Header extends Component {
     return (
       <Popover content={this.renderOperateMenu()} className={styles.role}>
         {loggedInUser}
-        <Icon name="caret-down" color={colorDark} className={styles.iconDark} />
-        <Icon name="caret-down" color={colorDarkHover} className={styles.iconDarkHover} />
-        <Icon name="caret-down" color={color} className={styles.icon} />
-        <Icon name="caret-down" color={colorHover} className={styles.iconHover} />
+        <Icon name="caret-down" className={styles.iconDark} />
       </Popover>
     );
   }
