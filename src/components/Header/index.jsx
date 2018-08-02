@@ -37,7 +37,6 @@ export default class Header extends Component {
     return (
       <ul className={styles.operateItems}>
         <li>
-          {' '}
           <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
         </li>
         <li>
