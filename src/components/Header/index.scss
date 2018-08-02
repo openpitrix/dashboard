@@ -89,15 +89,18 @@ $profile-hover-color: #efe6f8;
   top: 0;
   z-index: 999;
   background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
-
-  .menus, .locale {
-    .translation {
-      color: $title-color;
-    }
-    a {
-      color: $title-color;
-      &:hover {
-        color: rgba($title-color, 0.9);
+  .menus {
+    .role{
+      [class*='target']{
+        color: $N0;
+        :global{
+          .icon-caret-down{
+            svg {
+              --primary-color: #{$N0};
+              --secondary-color: #{$N0};
+            }
+          }
+        }
       }
     }
   }
@@ -106,73 +109,55 @@ $profile-hover-color: #efe6f8;
 .menus {
   float: right;
   line-height: $header-height;
-  a {
-    padding: 5px 10px;
-    border-radius: 12px;
-    color: rgba($title-color, 0.9);
-    font-weight: 500;
-    font-style: normal;
-    line-height: 16px;
-    transition: all .3s ease-in-out;
-
-    &:hover {
-      color: rgba($title-color, 1);
-    }
-
-    .stickyHeader & {
-      color: rgba($N0, 0.9);
-      &:hover {
-        color: rgba($N0, 1);
+  .role{
+    [class*='target']{
+      margin: 14px 0;
+      width: auto;
+      height: auto;
+      line-height: 20px;
+      opacity: 0.9;
+      color: $N500;
+      font-weight: 500;
+      border: 0 none;
+      &:hover{
+        box-shadow: none;
+        opacity: 1;
+      }
+      :global{
+        .icon-caret-down{
+          position: relative;
+          top: 3px;
+          left: 2px;
+          svg {
+            --primary-color: #{$N500};
+            --secondary-color: #{$N500};
+          }
+        }
       }
     }
-  }
-
-  .profiles {
-    min-width: 120px;
-    margin-left: -70px;
-    margin-top: 7px;
-    border-radius: 2px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
-    border: solid 1px $N30;
-    a{
-      display: block;
-      height: 32px;
-      padding: 0 12px;
-      width: 100%;
-      line-height: 32px;
-      font-size: $font14;
-      font-weight: normal;
-      color: $N300;
-      border-radius: 0;
-      letter-spacing: 0;
-      &:hover {
-        background-color: $N10;
-        color: $N500;
+    :global{
+      .pi-popover-popper{
+        margin-left: -69px;
+        margin-top: 6px;
       }
     }
-  }
-}
-
-.toggleBtn {
-  font-size: $size-normal;
-  font-weight: 500;
-  color: $N500;
-  opacity: .9;
-  cursor: pointer;
-  line-height: 20px;
-  height: 20px;
-  .stickyHeader & {
-    color: rgba($N0,0.9);
-  }
-  &::after{
-    position: relative;
-    top: 2px;
-    margin-left: 4px;
-  }
-  &:hover{
-    .stickyHeader & {
-      color: $N0;
+    .operateItems{
+      min-width: 120px;
+      li a{
+        display: block;
+        height: 32px;
+        padding: 0 12px;
+        width: 100%;
+        line-height: 32px;
+        font-size: $font14;
+        font-weight: normal;
+        color: $N300;
+        border-radius: 0;
+        &:hover {
+          background-color: $N10;
+          color: $N500;
+        }
+      }
     }
   }
 }

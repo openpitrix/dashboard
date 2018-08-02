@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { Dropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
 import { translate } from 'react-i18next';
 
+import { Popover, Icon } from 'components/Base';
 import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
 import Input from '../Base/Input';
@@ -31,6 +31,21 @@ export default class Header extends Component {
     });
   };
 
+  renderOperateMenu = () => {
+    const { t } = this.props;
+
+    return (
+      <ul className={styles.operateItems}>
+        <li>
+          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+        </li>
+        <li>
+          <a href="/logout">{t('Log out')}</a>
+        </li>
+      </ul>
+    );
+  };
+
   renderMenuBtns() {
     const loggedInUser = getSessInfo('user', this.props.sessInfo);
     const { t } = this.props;
@@ -40,19 +55,10 @@ export default class Header extends Component {
     }
 
     return (
-      <Dropdown
-        className={styles.loginButton}
-        isOpen={this.state.dropdownOpen}
-        toggle={this.toggleDropdown}
-      >
-        <DropdownToggle tag="span" caret className={styles.toggleBtn}>
-          {loggedInUser}
-        </DropdownToggle>
-        <DropdownMenu className={styles.profiles}>
-          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
-          <a href="/logout">{t('Log out')}</a>
-        </DropdownMenu>
-      </Dropdown>
+      <Popover content={this.renderOperateMenu()} className={styles.role}>
+        {loggedInUser}
+        <Icon name="caret-down" className={styles.iconDark} />
+      </Popover>
     );
   }
 
