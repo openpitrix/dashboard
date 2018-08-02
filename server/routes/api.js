@@ -9,6 +9,11 @@ const header = {
   'Content-Type': 'application/json'
 };
 
+const agentTimeout={
+  response: 5000,
+  deadline: 10000
+}
+
 router.post('/api/*', async ctx => {
   let endpoint = ctx.url.replace(/^\/api\//, '');
   // strip query string
@@ -39,10 +44,12 @@ router.post('/api/*', async ctx => {
     if (forwardMethod === 'get') {
       res = await agent
         .get(url)
+        .timeout(agentTimeout)
         .set('Accept', 'application/json')
         .query(body);
     } else {
       res = await agent[forwardMethod](url)
+        .timeout(agentTimeout)
         .set(header)
         .send(body);
     }
@@ -50,6 +57,13 @@ router.post('/api/*', async ctx => {
     // normalize response body
     ctx.body = res.body || null;
   } catch (err) {
+    if(err.timeout){
+      ctx.body={
+        err: 'request timeout',
+        status: 400
+      }
+    }
+
     ctx.body = {
       err: err.message,
       status: err.statusCode || err.status || 500,
