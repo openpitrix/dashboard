@@ -53,7 +53,7 @@ export default class Runtimes extends Component {
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/runtime/${detail.runtime_id}`}>View runtime detail</Link>
-        {detail.runtime_id !== 'status' && (
+        {detail.status !== 'deleted' && (
           <Fragment>
             <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>Modify runtime</Link>
             <span onClick={() => showDeleteRuntime(detail.runtime_id)}>Delete runtime</span>

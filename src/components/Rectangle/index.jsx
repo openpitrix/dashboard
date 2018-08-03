@@ -10,12 +10,13 @@ export default class Rectangle extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
-    apps: PropTypes.array,
+    apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     id: PropTypes.string
   };
 
   render() {
-    const { title, description, apps, id } = this.props;
+    const { title, description, apps, total, id } = this.props;
 
     return (
       <div className={styles.rectangle}>
@@ -24,7 +25,7 @@ export default class Rectangle extends PureComponent {
         </div>
         <CopyId id={id} />
         <div className={styles.description}>{description}</div>
-        <AppImages apps={apps} />
+        <AppImages apps={apps} total={total} />
       </div>
     );
   }

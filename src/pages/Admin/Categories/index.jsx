@@ -2,11 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { throttle } from 'lodash';
 
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
 import Rectangle from 'components/Rectangle';
 import AppImages from 'components/Rectangle/AppImages';
 import Layout, { Dialog } from 'components/Layout';
+import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
 
@@ -17,15 +19,45 @@ import styles from './index.scss';
 @observer
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
+    categoryStore.appStore = appStore;
     categoryStore.isDetailPage = false;
-    await categoryStore.fetchAll();
-    await appStore.fetchApps();
+    await categoryStore.fetchAll(categoryStore.appStore);
+    //wait appStore.fetchApps();
   }
 
   constructor(props) {
     super(props);
     this.props.categoryStore.reset();
   }
+
+  componentDidMount() {
+    window.scroll({ top: 0, behavior: 'smooth' });
+    window.onscroll = throttle(this.handleScroll, 200);
+  }
+
+  handleScroll = async () => {
+    const { categoryStore, appStore } = this.props;
+    const { categories, initLoadNumber } = categoryStore;
+    const len = categories.length;
+    if (len <= initLoadNumber || categories[len - 1].apps) {
+      return;
+    } else {
+      let scrollTop = getScrollTop();
+      let loadNumber = parseInt(scrollTop / 240);
+      for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
+        if (!categories[i].appFlag) {
+          categoryStore.categories[i].appFlag = true;
+          await appStore.fetchAll({ category_id: categories[i].category_id });
+          let temp = categoryStore.categories[i];
+          categoryStore.categories[i] = {
+            total: appStore.totalCount,
+            apps: appStore.apps,
+            ...temp
+          };
+        }
+      }
+    }
+  };
 
   renderHandleMenu = category => {
     const { categoryStore } = this.props;
@@ -85,14 +117,12 @@ export default class Categories extends Component {
   };
 
   render() {
-    const { appStore, categoryStore } = this.props;
+    const { categoryStore } = this.props;
     const { isLoading, showCreateCategory, getCategoryApps } = categoryStore;
 
-    const categories = categoryStore.categories.toJSON();
-    const apps = appStore.apps.toJSON();
-    const categoryApps = getCategoryApps(categories, apps);
-    const defaultCategories = categoryApps.filter(cate => cate.category_id !== 'ctg-uncategorized');
-    const uncategorized = categoryApps.find(cate => cate.category_id === 'ctg-uncategorized') || {};
+    const categories = categoryStore.categories;
+    const defaultCategories = categories.filter(cate => cate.category_id !== 'ctg-uncategorized');
+    const uncategorized = categories.find(cate => cate.category_id === 'ctg-uncategorized') || {};
 
     return (
       <Layout isLoading={isLoading}>
@@ -105,7 +135,7 @@ export default class Categories extends Component {
           </div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Default ({categories.length})</div>
+              <div className={styles.word}>Default ({defaultCategories.length})</div>
             </div>
           </div>
 
@@ -117,6 +147,7 @@ export default class Categories extends Component {
                 idNo={data.idNo}
                 description={data.description}
                 apps={data.apps}
+                total={data.total}
               />
               <div className={styles.handlePop}>
                 <Popover content={this.renderHandleMenu(data)}>
@@ -138,7 +169,7 @@ export default class Categories extends Component {
                   {uncategorized.name}
                 </Link>
               </div>
-              <AppImages apps={uncategorized.apps} />
+              <AppImages apps={uncategorized.apps} total={uncategorized.total} />
             </div>
           </div>
         </div>

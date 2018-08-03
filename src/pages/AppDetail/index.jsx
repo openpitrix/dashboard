@@ -60,6 +60,7 @@ export default class AppDetail extends Component {
     let screenshots = [];
     if (appDetail.screenshots) {
       screenshots = JSON.parse(appDetail.screenshots);
+      console.log(screenshots);
     }
     if (isHelmApp) {
       return <Helm readme={appVersionStore.readme} />;
@@ -67,14 +68,15 @@ export default class AppDetail extends Component {
 
     return (
       <Fragment>
-        {screenshots.length > 1 && (
-          <QingCloud
-            app={appDetail}
-            currentPic={appStore.currentPic}
-            changePicture={this.changePicture}
-            pictures={screenshots}
-          />
-        )}
+        {screenshots &&
+          screenshots.length > 1 && (
+            <QingCloud
+              app={appDetail}
+              currentPic={appStore.currentPic}
+              changePicture={this.changePicture}
+              pictures={screenshots}
+            />
+          )}
 
         <Information app={appDetail} repo={repoStore.repoDetail} />
       </Fragment>
