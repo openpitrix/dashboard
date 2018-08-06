@@ -13,11 +13,25 @@ export default class CategoryStore extends Store {
   @observable isDeleteOpen = false;
   @observable isDetailPage = false;
 
+  initLoadNumber = 6;
+  @observable appStore = null;
+
   @action
-  fetchAll = async () => {
+  fetchAll = async appStore => {
     this.isLoading = true;
+    this.categories = [];
     const result = await this.request.get('categories');
     this.categories = get(result, 'category_set', []);
+    if (appStore) {
+      for (let i = 0; i < this.initLoadNumber && i < this.categories.length; i++) {
+        await appStore.fetchAll({ category_id: this.categories[i].category_id });
+        this.categories[i] = {
+          total: appStore.totalCount,
+          apps: appStore.apps,
+          ...this.categories[i]
+        };
+      }
+    }
     this.isLoading = false;
   };
 
@@ -39,7 +53,7 @@ export default class CategoryStore extends Store {
       if (this.isDetailPage) {
         await this.fetch(this.category.category_id);
       } else {
-        await this.fetchAll();
+        await this.fetchAll(this.appStore);
       }
       this.showMsg(msg, 'success');
     }

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, throttle } from 'lodash';
 
+import { getScrollTop } from 'utils';
 import Layout, { Dialog } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
-
 import RepoList from './RepoList';
 import Loading from 'components/Loading';
 
@@ -20,14 +20,41 @@ import styles from './index.scss';
 @observer
 export default class Repos extends Component {
   static async onEnter({ repoStore, appStore }) {
-    await repoStore.fetchAll();
-    await appStore.fetchApps();
+    repoStore.appStore = appStore;
+    await repoStore.fetchAll({}, appStore);
+    //await appStore.fetchApps();
   }
 
   constructor(props) {
     super(props);
     this.props.repoStore.setSocketMessage();
   }
+
+  componentDidMount() {
+    window.scroll({ top: 0, behavior: 'auto' });
+    window.onscroll = throttle(this.handleScroll, 200);
+  }
+
+  handleScroll = async () => {
+    const { repoStore, appStore } = this.props;
+    const { repos, initLoadNumber } = repoStore;
+    const len = repos.length;
+    const loadDataHeight = 150 + 24;
+
+    if (len <= initLoadNumber || repos[len - 1].apps) {
+      return;
+    } else {
+      let scrollTop = getScrollTop();
+      let loadNumber = parseInt(scrollTop / loadDataHeight);
+      for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber; i++) {
+        if (!repos[i].appFlag) {
+          repoStore.repos[i].appFlag = true;
+          await appStore.fetchAll({ repo_id: repos[i].repo_id });
+          repoStore.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...repos[i] };
+        }
+      }
+    }
+  };
 
   listenToJob = async payload => {
     const { repoStore } = this.props;
@@ -66,9 +93,7 @@ export default class Repos extends Component {
   };
 
   render() {
-    const { repoStore, appStore } = this.props;
     const {
-      getRepoApps,
       repos,
       isLoading,
       fetchQueryRepos,
@@ -76,10 +101,7 @@ export default class Repos extends Component {
       onClearSearch,
       onRefresh,
       sockMessage
-    } = repoStore;
-
-    const { apps } = appStore;
-    const repoApps = getRepoApps(repos, apps);
+    } = this.props.repoStore;
 
     return (
       <Layout sockMessage={sockMessage} listenToJob={this.listenToJob}>
@@ -96,8 +118,16 @@ export default class Repos extends Component {
           />
 
           <Loading isLoading={isLoading}>
-            <RepoList visibility="public" repos={repoApps} actionMenu={this.renderHandleMenu} />
-            <RepoList visibility="private" repos={repoApps} actionMenu={this.renderHandleMenu} />
+            <RepoList
+              visibility="public"
+              repos={repos.toJSON()}
+              actionMenu={this.renderHandleMenu}
+            />
+            <RepoList
+              visibility="private"
+              repos={repos.toJSON()}
+              actionMenu={this.renderHandleMenu}
+            />
           </Loading>
         </div>
         {this.deleteRepoModal()}

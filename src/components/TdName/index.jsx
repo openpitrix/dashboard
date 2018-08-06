@@ -66,7 +66,6 @@ export default class TdName extends PureComponent {
     if (!isIcon && image) {
       return (
         <span className={styles.image}>
-          {' '}
           <Image src={image} />
         </span>
       );
@@ -74,7 +73,7 @@ export default class TdName extends PureComponent {
   }
 
   render() {
-    const { image, name, description, linkUrl, noCopy, className } = this.props;
+    const { name, description, linkUrl, noCopy, className } = this.props;
     const { message } = this.state;
 
     return (

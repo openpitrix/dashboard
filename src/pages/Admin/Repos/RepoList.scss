@@ -8,7 +8,7 @@
       display: inline-block;
       width: 330px;
       height: 1px;
-      border-bottom: 1px solid #e2d0f2;
+      border-bottom: 1px solid $N10;
     }
     .word{
       display: inline-block;
@@ -17,7 +17,8 @@
       padding: 0 7px;
       line-height: 24px;
       font-size: 12px;
-      color: $third-text-color;
+      font-weight: 500;
+      color: $P75;
       background: $background-color;
     }
   }
@@ -25,7 +26,7 @@
   .item{
     position: relative;
     height: 150px;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
 
     .actionMenu {
       position: absolute;

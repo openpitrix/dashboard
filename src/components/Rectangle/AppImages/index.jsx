@@ -8,11 +8,13 @@ import styles from './index.scss';
 
 export default class AppImages extends Component {
   static propTypes = {
-    apps: PropTypes.array
+    apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
   render() {
-    const { apps } = this.props;
+    const { apps, total } = this.props;
     const nonIcon = '/assets/none.svg';
+
     return (
       <div className={styles.appImages}>
         <div className={styles.name}>Apps</div>
@@ -28,7 +30,7 @@ export default class AppImages extends Component {
                 <Image src={icon || nonIcon} />
               </Link>
             ))}
-          <span className={styles.totalNum}>{apps ? apps.length : 0}</span>
+          <span className={styles.totalNum}>{total}</span>
         </div>
       </div>
     );

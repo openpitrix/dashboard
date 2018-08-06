@@ -18,14 +18,15 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
           </div>
         </div>
       </div>
-      {repos.map(({ repo_id, status, name, description, providers, apps, labels }) => (
+      {repos.map(({ repo_id, status, name, description, providers, apps, total, labels }) => (
         <div className={styles.item} key={repo_id}>
           <RepoCard
             repoId={repo_id}
             name={name}
             description={description}
             providers={providers.slice()}
-            apps={apps.slice()}
+            apps={apps}
+            total={total}
             tags={(labels && labels.slice()) || []}
           />
           <div className={styles.actionMenu}>

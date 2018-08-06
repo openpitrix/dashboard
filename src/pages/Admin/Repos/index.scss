@@ -1,52 +1,17 @@
 @import '~scss/vars';
-
-.title{
-  height: 24px;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  margin-bottom: 8px;
-  color: $N500;
-}
 .container {
   width: $content-width;
   margin: 0 auto;
-}
-
-.toolbar {
-  padding: 24px 0;
-  .search {
-    display: inline-block;
-    width: 337px;
-    border-color: $N10;
-    box-shadow: none;
-    :global {
-      .fa {
-        color: $placeholder-color;
-      }
-    }
-
-    input::placeholder {
-      font-weight: 400;
-      color: $placeholder-color;
-    }
-  }
-  .ml12 {
-    margin-left: 12px;
+  .title{
+    height: 24px;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+    margin-bottom: 24px;
+    color: $N500;
   }
 }
 
-.modalContent{
-  .noteWord{
-    font-size: 16px;
-    margin-bottom: 30px;
-  }
-  .operation{
-    text-align: center;
-    button{
-      margin: 0 6px;
-    }
-  }
-}
+
 
 

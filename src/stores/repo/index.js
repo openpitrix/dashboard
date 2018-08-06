@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import { get } from 'lodash';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 
 export default class RepoStore extends Store {
   @observable repos = [];
@@ -17,14 +16,23 @@ export default class RepoStore extends Store {
   @observable defaultStatus = ['active'];
   @observable eventStatus = '';
 
+  initLoadNumber = 3;
+  @observable appStore = null;
+
   @action
-  fetchAll = async (params = {}) => {
+  fetchAll = async (params = {}, appStore) => {
     this.isLoading = true;
     if (!params.status) {
       params.status = this.defaultStatus;
     }
     const result = await this.request.get('repos', params);
     this.repos = get(result, 'repo_set', []);
+    if (appStore) {
+      for (let i = 0; i < this.initLoadNumber && i < this.repos.length; i++) {
+        await appStore.fetchAll({ repo_id: this.repos[i].repo_id });
+        this.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...this.repos[i] };
+      }
+    }
     this.isLoading = false;
   };
 
@@ -71,7 +79,7 @@ export default class RepoStore extends Store {
     const result = await this.request.delete('repos', { repo_id: [this.repoId] });
     if (_.get(result, 'repo_id')) {
       this.deleteRepoClose();
-      this.fetchAll();
+      this.fetchAll({}, this.appStore);
       this.showMsg('Delete repo successfully.', 'success');
     } else {
       let { err, errDetail } = result;
