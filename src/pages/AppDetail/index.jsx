@@ -17,6 +17,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore: rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   repoStore: rootStore.repoStore
@@ -33,6 +34,10 @@ export default class AppDetail extends Component {
     if (appStore.appDetail.latest_app_version) {
       appVersionStore.fetchPackageFiles(appStore.appDetail.latest_app_version.version_id);
     }
+  }
+
+  componentDidMount() {
+    this.props.rootStore.setNavFix(true);
   }
 
   changePicture = (type, number, pictures) => {
@@ -59,8 +64,7 @@ export default class AppDetail extends Component {
     const isHelmApp = providerName === 'kubernetes';
     let screenshots = [];
     if (appDetail.screenshots) {
-      screenshots = JSON.parse(appDetail.screenshots);
-      console.log(screenshots);
+      screenshots = JSON.parse(appDetail.screenshots) || [];
     }
     if (isHelmApp) {
       return <Helm readme={appVersionStore.readme} />;
@@ -68,16 +72,12 @@ export default class AppDetail extends Component {
 
     return (
       <Fragment>
-        {screenshots &&
-          screenshots.length > 1 && (
-            <QingCloud
-              app={appDetail}
-              currentPic={appStore.currentPic}
-              changePicture={this.changePicture}
-              pictures={screenshots}
-            />
-          )}
-
+        <QingCloud
+          app={appDetail}
+          currentPic={appStore.currentPic}
+          changePicture={this.changePicture}
+          pictures={screenshots}
+        />
         <Information app={appDetail} repo={repoStore.repoDetail} />
       </Fragment>
     );

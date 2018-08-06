@@ -8,7 +8,7 @@
       display: inline-block;
       width: 330px;
       height: 1px;
-      border-bottom: 1px solid $P75;
+      border-bottom: 1px solid $N10;
     }
     .word{
       display: inline-block;
@@ -17,6 +17,7 @@
       padding: 0 7px;
       line-height: 24px;
       font-size: 12px;
+      font-weight: 500;
       color: $P75;
       background: $background-color;
     }

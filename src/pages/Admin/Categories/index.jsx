@@ -31,7 +31,7 @@ export default class Categories extends Component {
   }
 
   componentDidMount() {
-    window.scroll({ top: 0, behavior: 'smooth' });
+    window.scroll({ top: 0, behavior: 'auto' });
     window.onscroll = throttle(this.handleScroll, 200);
   }
 
@@ -39,11 +39,13 @@ export default class Categories extends Component {
     const { categoryStore, appStore } = this.props;
     const { categories, initLoadNumber } = categoryStore;
     const len = categories.length;
+    const loadDataHeight = 240 + 24;
+
     if (len <= initLoadNumber || categories[len - 1].apps) {
       return;
     } else {
       let scrollTop = getScrollTop();
-      let loadNumber = parseInt(scrollTop / 240);
+      let loadNumber = parseInt(scrollTop / loadDataHeight);
       for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
         if (!categories[i].appFlag) {
           categoryStore.categories[i].appFlag = true;

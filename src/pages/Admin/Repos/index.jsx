@@ -31,7 +31,7 @@ export default class Repos extends Component {
   }
 
   componentDidMount() {
-    window.scroll({ top: 0, behavior: 'smooth' });
+    window.scroll({ top: 0, behavior: 'auto' });
     window.onscroll = throttle(this.handleScroll, 200);
   }
 
@@ -39,11 +39,13 @@ export default class Repos extends Component {
     const { repoStore, appStore } = this.props;
     const { repos, initLoadNumber } = repoStore;
     const len = repos.length;
+    const loadDataHeight = 150 + 24;
+
     if (len <= initLoadNumber || repos[len - 1].apps) {
       return;
     } else {
       let scrollTop = getScrollTop();
-      let loadNumber = parseInt(scrollTop / (150 + 24));
+      let loadNumber = parseInt(scrollTop / loadDataHeight);
       for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber; i++) {
         if (!repos[i].appFlag) {
           repoStore.repos[i].appFlag = true;
