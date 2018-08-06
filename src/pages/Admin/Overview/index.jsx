@@ -31,19 +31,11 @@ import styles from './index.scss';
 }))
 @observer
 export default class Overview extends React.Component {
-  static async onEnter({
-    appStore,
-    clusterStore,
-    repoStore,
-    categoryStore,
-    userStore,
-    runtimeStore
-  }) {
+  static async onEnter({ appStore, clusterStore, repoStore, runtimeStore }) {
     await appStore.fetchAll({ status: resourceStatus.app });
     await clusterStore.fetchAll({ status: resourceStatus.cluster });
     await repoStore.fetchAll({ status: resourceStatus.repo });
     await categoryStore.fetchAll();
-    await userStore.fetchAll();
     await runtimeStore.fetchAll({ status: resourceStatus.runtime });
   }
 

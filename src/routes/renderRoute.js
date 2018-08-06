@@ -24,7 +24,7 @@ const renderRoute = (match, route, store) => {
   let component = withRouter(route.component);
 
   if (route.path !== '/login') {
-    const isHome = route.path === '/' || route.path === '/apps/:category';
+    const isHome = route.path === '/' || route.path.toString().startsWith('/app');
 
     return (
       <Fragment>

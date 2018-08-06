@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -16,19 +16,19 @@ import styles from './index.scss';
 @translate()
 @inject('rootStore', 'sessInfo')
 @observer
-export default class Header extends Component {
+class Header extends Component {
   static propTypes = {
     isHome: PropTypes.bool
   };
 
-  state = {
-    dropdownOpen: false
+  onSearch = async value => {
+    const { appStore } = this.props.rootStore;
+    this.props.history.push('/apps/search/' + value);
+    await appStore.fetchAll({ search_word: value });
   };
 
-  toggleDropdown = () => {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
+  onClearSearch = async () => {
+    this.props.history.push('/');
   };
 
   renderOperateMenu = () => {
@@ -62,31 +62,17 @@ export default class Header extends Component {
     );
   }
 
-  onSearch = async value => {
-    const { appStore } = this.props.rootStore;
-    appStore.changeAppSearch(value);
-    await appStore.fetchApps({ search_word: value });
-  };
-
-  onClearSearch = async () => {
-    await this.onSearch('');
-    // this.props.rootStore.setNavFix(true);
-    window.scroll({ top: 1, behavior: 'smooth' });
-  };
-
   render() {
     const {
       t,
       isHome,
+      match,
       rootStore: { fixNav }
     } = this.props;
-
-    const { appStore } = this.props.rootStore;
-    const { appSearch } = appStore;
-
     const isDark = !isHome || fixNav;
     const logoUrl = isDark ? '/assets/logo_light.svg' : '/assets/logo_dark.svg';
     const needShowSearch = isDark && isHome;
+    const appSearch = match.params.search;
 
     return (
       <div className={classnames('header', styles.header, { [styles.stickyHeader]: isDark })}>
@@ -107,3 +93,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withRouter(Header);

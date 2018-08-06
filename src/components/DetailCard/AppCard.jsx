@@ -29,7 +29,7 @@ export default class AppCard extends React.Component {
     return (
       <div className={styles.detailCard}>
         <span className={styles.icon}>
-          <Image src={appDetail.icon} size={24} alt="Icon" />
+          <Image src={appDetail.icon} alt="Icon" />
         </span>
         <div className={styles.title}>
           <div className={styles.name} title={appDetail.name}>

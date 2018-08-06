@@ -22,6 +22,7 @@
   }
   .apps {
     margin-left: $nav-width;
+
     padding-left: 24px;
     padding-bottom: $page-bottom;
     min-height: calc(100vh - #{$footer-height});
@@ -33,6 +34,9 @@
     top: $header-height;
     left: auto;
     height: $main-height;
+  }
+  div[class*='appList'] {
+    padding-top: 48px;
   }
   div[class*='_cateTitle']{
     padding-top: 72px;

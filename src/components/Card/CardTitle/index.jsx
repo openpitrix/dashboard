@@ -11,20 +11,19 @@ export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,
     title: PropTypes.string,
-    fixTitle: PropTypes.string,
     more: PropTypes.bool
   };
 
   render() {
-    const { categoryId, title, more, fixTitle, t } = this.props;
+    const { categoryId, title, more, t } = this.props;
 
     return (
-      <div className={classnames(styles.title, { [styles.fixTitle]: fixTitle })}>
+      <div className={styles.title}>
         {title}
         {more && (
           <Link
             className={classnames(styles.more, { [styles.show]: more })}
-            to={`/apps/${categoryId}`}
+            to={`/apps/category/${categoryId}`}
           >
             {t('more')}
           </Link>

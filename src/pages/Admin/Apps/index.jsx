@@ -30,7 +30,7 @@ export default class Apps extends Component {
     await appStore.appStatistics();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 10000
+      limit: 99
     });
     await categoryStore.fetchAll();
   }

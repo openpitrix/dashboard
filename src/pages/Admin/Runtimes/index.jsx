@@ -25,8 +25,7 @@ export default class Runtimes extends Component {
     await runtimeStore.fetchAll();
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'],
-      limit: 999
+      limit: 99
     });
   }
 

@@ -28,9 +28,8 @@ export default class RuntimeDetail extends Component {
     await clusterStore.fetchAll({
       runtime_id: runtimeId
     });
-    await appStore.fetchAll({
-      status: ['active', 'deleted'],
-      limit: 999
+    await appStore.fetchApps({
+      status: ['active', 'deleted']
     });
   }
 

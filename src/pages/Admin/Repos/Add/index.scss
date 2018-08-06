@@ -64,7 +64,12 @@ form.createForm {
     width: 256px;
     margin-right: 12px;
   }
+  .urlItem >label{
+    float: left;
+    line-height: 32px;
+  }
   .smallSelect{
+    float: left;
     width: 88px;
     margin-right: 12px;
     vertical-align: middle;

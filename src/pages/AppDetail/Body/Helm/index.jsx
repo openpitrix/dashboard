@@ -18,7 +18,7 @@ export default class Helm extends React.Component {
     return (
       <div className={styles.body}>
         <div className={styles.markdown}>
-          <ReactMarkdown source={readme || markdown} />
+          <ReactMarkdown source={readme} />
         </div>
       </div>
     );
