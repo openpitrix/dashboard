@@ -96,8 +96,8 @@ export default class RepoAdd extends Component {
               <label className={styles.name}>Runtime Provider</label>
               <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
                 <Checkbox value="qingcloud">QingCloud</Checkbox>
-                <Checkbox value="kubernetes">Kubernetes</Checkbox>
                 <Checkbox value="aws">AWS</Checkbox>
+                <Checkbox value="kubernetes">Kubernetes</Checkbox>
               </Checkbox.Group>
             </div>
           </Fragment>

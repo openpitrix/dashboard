@@ -347,6 +347,7 @@ export default class RepoDetail extends Component {
             ? [{ name: 'Successful', value: 'successful' }, { name: 'Deleted', value: 'deleted' }]
             : [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
         onChangeFilter: onChangeStatus,
+        changeTable: () => {},
         selectValue: selectStatus
       }
     ];
