@@ -18,27 +18,34 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
-  static async onEnter({ categoryStore, appStore }, { category }) {
+  static async onEnter({ categoryStore, appStore }, { category, search }) {
     appStore.loadPageInit();
     await categoryStore.fetchAll();
-    await appStore.fetchApps(category ? { category_id: category } : {});
+    let params = {};
+    if (category) {
+      params.category_id = category;
+    }
+    if (search) {
+      params.search_word = search;
+    }
+    await appStore.fetchApps(params);
   }
 
   componentDidMount() {
     const { rootStore, match } = this.props;
-
-    if (match.params.category) {
+    window.scroll({ top: 0, behavior: 'smooth' });
+    if (match.params.category || match.params.search) {
       rootStore.setNavFix(true);
     } else {
+      rootStore.setNavFix(false);
       this.threshold = this.getThreshold();
       window.onscroll = throttle(this.handleScroll, 100);
-      window.scroll({ top: 1, behavior: 'smooth' });
     }
   }
 
-  componentWillReceiveProps({ match, rootStore }) {
+  /* componentWillReceiveProps({ match, rootStore }) {
     rootStore.appStore.fetchApps({ category_id: match.params.category });
-  }
+  }*/
 
   componentWillUnmount() {
     if (window.onscroll) {
@@ -73,19 +80,14 @@ export default class Home extends Component {
     }
   };
 
-  setScroll = () => {
-    const { rootStore } = this.props;
-    rootStore.setNavFix(true);
-    window.scroll({ top: 360, behavior: 'smooth' });
-  };
-
   render() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { fetchApps, appSearch, apps, isLoading, changeAppSearch } = appStore;
+    const { fetchApps, apps, isLoading } = appStore;
     const { categories, getCategoryApps } = categoryStore;
 
     const categoryId = match.params.category;
+    const appSearch = match.params.search;
     const showApps = appSearch || Boolean(categoryId) ? apps.slice() : apps.slice(0, 3);
     const categoryApps = getCategoryApps(categories, apps);
     const isHomePage = match.path === '/';
@@ -93,14 +95,7 @@ export default class Home extends Component {
 
     return (
       <Fragment>
-        {isHomePage && (
-          <Banner
-            onSearch={fetchApps}
-            appSearch={appSearch}
-            setScroll={this.setScroll}
-            changeAppSearch={changeAppSearch}
-          />
-        )}
+        {isHomePage && <Banner />}
         <div className={styles.contentOuter}>
           <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
             <Nav className={styles.nav} navs={categories.toJSON()} />
@@ -111,7 +106,6 @@ export default class Home extends Component {
                 categoryApps={categoryApps}
                 categoryTitle={categoryTitle}
                 appSearch={appSearch}
-                isCategorySearch={Boolean(categoryId)}
                 moreApps={fetchApps}
               />
             </Loading>

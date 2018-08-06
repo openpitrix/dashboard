@@ -1,83 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home basic render 1`] = `
-Array [
+<div
+  class="contentOuter"
+>
   <div
-    class="banner banner"
+    class="content"
   >
     <div
-      class="wrapper"
+      class="nav nav"
     >
-      <img
-        alt=""
-        class="banner-img-1"
-        src="/assets/1-1.svg"
-      />
-      <img
-        alt=""
-        class="banner-img-2"
-        src="/assets/1-2.svg"
-      />
-      <img
-        alt=""
-        class="banner-img-3"
-        src="/assets/1-3.svg"
-      />
+      <ul
+        class="subNav"
+      >
+        <p />
+      </ul>
+    </div>
+    <div
+      class="appList apps"
+    >
       <div
         class="title"
       />
       <div
-        class="inputGroup search"
+        class="noData"
       >
-        <span
-          class="icon icon-search"
-          style="width:16px;height:16px"
-        >
-          <svg
-            class="qicon qicon-magnifier qicon-light"
-          >
-            <use
-              href="#magnifier"
-            />
-          </svg>
-        </span>
-        <input
-          class="input"
-          placeholder=""
-          type="text"
-          value=""
-        />
+        No Application Data!
       </div>
     </div>
-  </div>,
-  <div
-    class="contentOuter"
-  >
-    <div
-      class="content"
-    >
-      <div
-        class="nav nav"
-      >
-        <ul
-          class="subNav"
-        >
-          <p />
-        </ul>
-      </div>
-      <div
-        class="appList apps"
-      >
-        <div
-          class="title"
-        />
-        <div
-          class="noData"
-        >
-          No Application Data!
-        </div>
-      </div>
-    </div>
-  </div>,
-]
+  </div>
+</div>
 `;

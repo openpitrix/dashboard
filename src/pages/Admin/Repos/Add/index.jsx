@@ -130,7 +130,7 @@ export default class RepoAdd extends Component {
           </Button>
         </div>
         {!repoId && (
-          <div>
+          <div className={styles.urlItem}>
             <label className={styles.name}>URL</label>
             <Select
               value={protocolType}

@@ -16,15 +16,14 @@ export default class AppList extends PureComponent {
     apps: PropTypes.array,
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
-    appSearch: PropTypes.string,
-    isCategorySearch: PropTypes.bool
+    appSearch: PropTypes.string
   };
 
   renderCategoryApps() {
-    const { categoryTitle, appSearch, categoryApps, isCategorySearch } = this.props;
+    const { categoryTitle, appSearch, categoryApps } = this.props;
     const categoryShow = !categoryTitle && !appSearch && categoryApps;
 
-    if (isCategorySearch) {
+    if (!categoryShow) {
       return null;
     }
 
@@ -50,15 +49,15 @@ export default class AppList extends PureComponent {
   }
 
   getSearchTitle() {
-    let { apps, appSearch, categoryTitle, t } = this.props;
+    let { appSearch, categoryTitle, t } = this.props;
     return (appSearch && `Results`) || categoryTitle || t('Newest');
   }
 
   render() {
-    const { apps, className, categoryTitle } = this.props;
+    const { apps, className } = this.props;
     return (
       <div className={classnames(styles.appList, className)}>
-        {<CardTitle title={this.getSearchTitle()} more={false} fixTitle={categoryTitle} />}
+        {<CardTitle title={this.getSearchTitle()} more={false} />}
 
         {apps.map(app => (
           <Link key={app.app_id} to={`/app/${app.app_id}`}>

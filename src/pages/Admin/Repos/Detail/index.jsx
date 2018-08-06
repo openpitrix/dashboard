@@ -42,8 +42,7 @@ export default class RepoDetail extends Component {
       provider: repoStore.repoDetail.providers
     });
     await clusterStore.fetchAll({
-      repo_id: repoId,
-      status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+      repo_id: repoId
     });
     repoStore.curTagName = 'Apps';
   }
@@ -255,7 +254,6 @@ export default class RepoDetail extends Component {
         onSearch = async name => {
           changeSearchWord(name);
           await fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id
           });
         };
@@ -264,7 +262,6 @@ export default class RepoDetail extends Component {
         };
         onRefresh = async () => {
           await fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             search_word: searchWord
           });
@@ -272,7 +269,6 @@ export default class RepoDetail extends Component {
         changeTable = async current => {
           appStore.setCurrentPage(current);
           await fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * appStore.pageSize
           });
@@ -297,7 +293,6 @@ export default class RepoDetail extends Component {
         onSearch = async name => {
           runtimeStore.changeSearchWord(name);
           await runtimeStore.fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id
           });
         };
@@ -306,7 +301,6 @@ export default class RepoDetail extends Component {
         };
         onRefresh = async () => {
           await runtimeStore.fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             search_word: searchWord
           });
@@ -314,7 +308,6 @@ export default class RepoDetail extends Component {
         changeTable = async current => {
           runtimeStore.setCurrentPage(current);
           await runtimeStore.fetchAll({
-            status: ['active', 'deleted'],
             repo_id: repoDetail.repo_id,
             offset: (current - 1) * runtimeStore.pageSize
           });

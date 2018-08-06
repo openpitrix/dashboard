@@ -30,7 +30,7 @@ export default class CategoryDetail extends Component {
     await appStore.fetchAll({ category_id: categoryId });
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 10000
+      limit: 99
     });
   }
 

@@ -194,7 +194,7 @@ export default class AppDeployStore extends Store {
     this.runtimes = get(result, 'runtime_set', []);
     if (this.runtimes.length && this.runtimes[0]) {
       this.runtimeId = this.runtimes[0].runtime_id;
-      await this.fetchSubnets(this.runtimes[0].runtime_id);
+      if (!this.isKubernetes) await this.fetchSubnets(this.runtimes[0].runtime_id);
     } else {
       this.showMsg('Not find Runtime data!');
     }

@@ -2,44 +2,25 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
 
 import Input from '../Base/Input';
 
 import styles from './index.scss';
 
 @translate()
-export default class Banner extends PureComponent {
-  static propTypes = {
-    appSearch: PropTypes.string,
-    onSearch: PropTypes.func,
-    changeAppSearch: PropTypes.func,
-    setScroll: PropTypes.func
-  };
-
-  constructor(props) {
-    super(props);
-    this.searchBox = React.createRef();
-  }
-
+class Banner extends PureComponent {
   onSearch = value => {
-    this.props.setScroll();
-    this.props.changeAppSearch(value);
-    this.props.onSearch({ search_word: value });
+    this.props.history.push('/apps/search/' + value);
   };
 
   onClearSearch = () => {
-    this.onSearch('');
+    this.props.history.push('/');
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.appSearch !== this.props.appSearch && nextProps.appSearch !== undefined) {
-      // clear search box manually
-      this.searchBox.current.setState({ value: nextProps.appSearch });
-    }
-  }
-
   render() {
-    const { appSearch, t } = this.props;
+    const { match, t } = this.props;
+    const appSearch = match.params.search;
 
     return (
       <div className={classnames('banner', styles.banner)}>
@@ -49,7 +30,6 @@ export default class Banner extends PureComponent {
           <img className="banner-img-3" src="/assets/1-3.svg" alt="" />
           <div className={styles.title}>{t('brand.slogan')}</div>
           <Input.Search
-            ref={this.searchBox}
             className={styles.search}
             placeholder={t('search.placeholder')}
             value={appSearch}
@@ -61,3 +41,5 @@ export default class Banner extends PureComponent {
     );
   }
 }
+
+export default withRouter(Banner);

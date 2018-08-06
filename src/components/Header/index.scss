@@ -90,6 +90,9 @@ $profile-hover-color: #efe6f8;
   z-index: 999;
   background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
   .menus {
+    a {
+      color: $N0;
+    }
     .role{
       [class*='target']{
         color: $N0;
@@ -109,6 +112,14 @@ $profile-hover-color: #efe6f8;
 .menus {
   float: right;
   line-height: $header-height;
+  a {
+    opacity: 0.9;
+    color: $N500;
+    font-weight: 500;
+    &:hover {
+      opacity: 1;
+    }
+  }
   .role{
     [class*='target']{
       margin: 14px 0;

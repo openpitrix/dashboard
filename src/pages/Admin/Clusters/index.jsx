@@ -32,7 +32,7 @@ export default class Clusters extends Component {
     });
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 999
+      limit: 99
     });
   }
 
