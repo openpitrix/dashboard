@@ -292,14 +292,9 @@ export default class ClusterDetail extends Component {
       current: 1
     };
 
-    const { notifyMsg, hideMsg, notifyType } = clusterStore;
-
     return (
       <Layout
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
-        msg={notifyMsg}
-        msgType={notifyType}
-        hideMsg={hideMsg}
         isloading={isLoading}
         sockMessage={sockMessage}
         listenToJob={this.listenToJob}

@@ -72,7 +72,8 @@ export default class RuntimeDetail extends Component {
 
   render() {
     const { runtimeStore, clusterStore } = this.props;
-    const { runtimeDetail, notifyMsg, hideMsg, notifyType } = runtimeStore;
+    const { runtimeDetail } = runtimeStore;
+
     const {
       clusters,
       totalCount,
@@ -160,12 +161,7 @@ export default class RuntimeDetail extends Component {
     };
 
     return (
-      <Layout
-        msg={notifyMsg}
-        msgType={notifyType}
-        hideMsg={hideMsg}
-        backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}
-      >
+      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
         <Grid>
           <Section>
             <Card>

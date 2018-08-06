@@ -1,13 +1,16 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 import classnames from 'classnames';
+import { observer, inject } from 'mobx-react';
 
-import { Icon, Notification, Image } from 'components/Base';
+import { Icon, Image } from 'components/Base';
 import styles from './index.scss';
 
-export default class TdName extends PureComponent {
+@inject('rootStore')
+@observer
+export default class TdName extends React.Component {
   static propTypes = {
     image: PropTypes.string,
     imageSize: PropTypes.number,
@@ -20,32 +23,26 @@ export default class TdName extends PureComponent {
   };
 
   static defaultProps = {
-    noIcon: false
-  };
-
-  state = {
-    message: ''
+    noIcon: false,
+    noCopy: false
   };
 
   componentDidMount() {
-    this.clipboard = new ClipboardJS('.copy');
-    this.clipboard.on('success', e => {
-      this.setState({
-        message: 'Copy success'
+    const { noCopy } = this.props;
+
+    if (!noCopy) {
+      this.clipboard = new ClipboardJS(this.refs.copyBtn);
+
+      this.clipboard.on('success', e => {
+        this.props.rootStore.notify({ message: 'Copy success', type: 'success' });
+        e.clearSelection();
       });
-      e.clearSelection();
-    });
+    }
   }
 
   componentWillUnmount() {
-    this.clipboard.destroy();
+    this.clipboard && this.clipboard.destroy();
   }
-
-  onHide = () => {
-    this.setState({
-      message: ''
-    });
-  };
 
   renderIcon() {
     const { noIcon, image } = this.props;
@@ -63,6 +60,7 @@ export default class TdName extends PureComponent {
         </span>
       );
     }
+
     if (!isIcon && image) {
       return (
         <span className={styles.image}>
@@ -74,7 +72,6 @@ export default class TdName extends PureComponent {
 
   render() {
     const { name, description, linkUrl, noCopy, className } = this.props;
-    const { message } = this.state;
 
     return (
       <span className={classnames(styles.tdName, className)}>
@@ -94,14 +91,11 @@ export default class TdName extends PureComponent {
             {description}&nbsp;
           </span>
           {!noCopy && (
-            <span className="copy" data-clipboard-text={description} onClick={this.copyNote}>
+            <span className="copy" data-clipboard-text={description} ref="copyBtn">
               <Icon name="copy" type="dark" />
             </span>
           )}
         </span>
-        {message ? (
-          <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />
-        ) : null}
       </span>
     );
   }
