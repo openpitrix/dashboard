@@ -43,6 +43,12 @@
     background-color: $N45 !important;
     border: solid 1px $N45 !important;
   }
+
+  :global {
+    .icon {
+      float: right;
+    }
+  }
 }
 
 .options {

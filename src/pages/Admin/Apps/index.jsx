@@ -63,6 +63,8 @@ export default class Apps extends Component {
     const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
     const categories = categoryStore.categories.toJSON();
 
+    const { selectedCategory } = handleApp;
+
     return (
       <Modal
         title="Modify App Category"
@@ -73,9 +75,13 @@ export default class Apps extends Component {
         <div className="formContent">
           <div className="inputItem selectItem">
             <label>Category</label>
-            <Select value={handleApp.selectedCategory} onChange={changeAppCate}>
+            <Select value={selectedCategory} onChange={changeAppCate}>
               {categories.map(({ category_id, name }) => (
-                <Select.Option key={category_id} value={category_id}>
+                <Select.Option
+                  key={category_id}
+                  value={category_id}
+                  isSelected={category_id === selectedCategory}
+                >
                   {name}
                 </Select.Option>
               ))}
@@ -104,7 +110,9 @@ export default class Apps extends Component {
         itemMenu = (
           <Fragment>
             <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
-            <span onClick={showModifyAppCate.bind(null, item.app_id)}>Modify category</span>
+            <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
+              Modify category
+            </span>
           </Fragment>
         );
       }

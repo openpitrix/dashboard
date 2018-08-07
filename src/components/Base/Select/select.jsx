@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isFunction from 'lodash/isFunction';
+import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -83,7 +84,7 @@ export default class Select extends React.Component {
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
         <div className={styles.controlLabel}>{this.currentLabel}</div>
-        <i className={`fa fa-caret-${isOpen ? 'up' : 'd' + 'own'}`} />
+        <Icon name={isOpen ? 'caret-up' : 'caret-down'} />
       </div>
     );
   }

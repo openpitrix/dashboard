@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { Icon } from 'components/Base';
+
 import styles from './index.scss';
 
 export default class Option extends React.Component {
@@ -9,12 +11,12 @@ export default class Option extends React.Component {
     className: PropTypes.string,
     value: PropTypes.string,
     children: PropTypes.any,
-    isSelected: PropTypes.bool,
-  }
+    isSelected: PropTypes.bool
+  };
 
   static defaultProps = {
-    className: '',
-  }
+    className: ''
+  };
 
   render() {
     const { className, children, isSelected, ...rest } = this.props;
@@ -24,7 +26,7 @@ export default class Option extends React.Component {
     return (
       <div className={classNames} {...rest}>
         {children}
-        {isSelected && <i className="fa fa-check"/>}
+        {isSelected && <Icon name="check" />}
       </div>
     );
   }
