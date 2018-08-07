@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { translate } from 'react-i18next';
 
 import get from 'lodash/get';
 import Radio from 'components/Base/Radio';
@@ -13,6 +14,7 @@ import Layout, { BackBtn, CreateResource } from 'components/Layout';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   runtimeCreateStore: rootStore.runtimeCreateStore
@@ -41,9 +43,10 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
+    const { t } = this.props;
     const { runtimeId } = this.store;
-    let title = 'Create Runtime';
-    if (runtimeId) title = 'Modify Runtime';
+    let title = t('Create Runtime');
+    if (runtimeId) title = t('Modify Runtime');
 
     return (
       <Layout>
@@ -56,6 +59,7 @@ export default class RuntimeAdd extends Component {
   }
 
   renderUrlAndZone() {
+    const { t } = this.props;
     const {
       runtimeId,
       runtimeUrl,
@@ -111,7 +115,7 @@ export default class RuntimeAdd extends Component {
             { [styles.showDiv]: !!runtimeId }
           )}
         >
-          <label className={styles.name}>Zone</label>
+          <label className={styles.name}>{t('Zone')}</label>
           {!runtimeId && (
             <Select
               className={styles.select}
@@ -133,24 +137,27 @@ export default class RuntimeAdd extends Component {
   }
 
   renderCredential() {
+    const { t } = this.props;
     const { runtimeId, credential, zone } = this.store;
 
     return (
       <Fragment>
         {!runtimeId && (
           <div>
-            <label className={classNames(styles.name, styles.textareaName)}>Credential</label>
+            <label className={classNames(styles.name, styles.textareaName)}>
+              {t('Credential')}
+            </label>
             <textarea
               className={styles.textarea}
               name="runtime_credential"
               onChange={this.store.changeCredential}
               value={credential}
             />
-            <p className={styles.credentialTip}>The Credential of provider</p>
+            <p className={styles.credentialTip}>{t('The Credential of provider')}</p>
           </div>
         )}
         <div className={classNames({ [styles.showDiv]: !!runtimeId })}>
-          <label className={styles.name}>Namespace</label>
+          <label className={styles.name}>{t('Namespace')}</label>
           {!runtimeId && (
             <Input
               className={styles.input}
@@ -166,12 +173,13 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
+    const { t } = this.props;
     const { runtimeId, name, provider, labels, description, isLoading } = this.store;
 
     return (
       <form onSubmit={this.store.handleSubmit} className={styles.createForm}>
         <div>
-          <label className={styles.name}>Name</label>
+          <label className={styles.name}>{t('Name')}</label>
           <Input
             className={styles.input}
             name="name"
@@ -179,11 +187,13 @@ export default class RuntimeAdd extends Component {
             onChange={this.store.changeName}
             value={name}
           />
-          <p className={classNames(styles.rightShow, styles.note)}>The name of the runtime</p>
+          <p className={classNames(styles.rightShow, styles.note)}>
+            {t('The name of the runtime')}
+          </p>
         </div>
         {!runtimeId && (
           <div>
-            <label className={styles.name}>Provider</label>
+            <label className={styles.name}>{t('Provider')}</label>
             <Radio.Group
               value={provider}
               onChange={this.store.changeProvider}
@@ -197,13 +207,13 @@ export default class RuntimeAdd extends Component {
         )}
         {!!runtimeId && (
           <div className={styles.showDiv}>
-            <label className={styles.name}>Provider</label>
+            <label className={styles.name}>{t('Provider')}</label>
             <label className={styles.showValue}>{provider}</label>
           </div>
         )}
         {provider !== 'kubernetes' ? this.renderUrlAndZone() : this.renderCredential()}
         <div className={styles.textareaItem}>
-          <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+          <label className={classNames(styles.name, styles.textareaName)}>{t('Description')}</label>
           <textarea
             className={styles.textarea}
             name="description"
@@ -213,7 +223,7 @@ export default class RuntimeAdd extends Component {
           />
         </div>
         <div>
-          <label className={classNames(styles.name, styles.fl)}>Labels</label>
+          <label className={classNames(styles.name, styles.fl)}>{t('Labels')}</label>
           <TodoList
             labels={labels && labels.slice()}
             onRemove={this.store.removeLabel}
@@ -229,10 +239,10 @@ export default class RuntimeAdd extends Component {
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">
-            Confirm
+            {t('Confirm')}
           </Button>
           <Link to="/dashboard/runtimes">
-            <Button>Cancel</Button>
+            <Button>{t('Cancel')}</Button>
           </Link>
         </div>
       </form>
@@ -240,13 +250,11 @@ export default class RuntimeAdd extends Component {
   }
 
   renderAside() {
+    const { t } = this.props;
+
     return (
       <Fragment>
-        <p>
-          Runtime is Cloud provider, It can be AWS，GCE, QingCloud,Kubernetes,OpenStack,VMware
-          VSphere etc. give OpenPitrix permisson to access those cloud provider, OpenPitrix will
-          manage all of them applications.
-        </p>
+        <p>{t('Create Runtime explain')}</p>
       </Fragment>
     );
   }

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get, throttle } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { getScrollTop } from 'utils';
 import Layout, { Dialog } from 'components/Layout';
@@ -11,6 +12,7 @@ import Loading from 'components/Loading';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   rootStore,
   repoStore: rootStore.repoStore,
@@ -67,32 +69,35 @@ export default class Repos extends Component {
   };
 
   renderHandleMenu = id => {
+    const { t } = this.props;
     const { deleteRepoOpen } = this.props.repoStore;
     return (
       <div id={id} className="operate-menu">
-        <Link to={`/dashboard/repo/${id}`}>View repo detail</Link>
-        <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
-        <span onClick={() => deleteRepoOpen(id)}>Delete Repo</span>
+        <Link to={`/dashboard/repo/${id}`}>{t('View detail')}</Link>
+        <Link to={`/dashboard/repo/edit/${id}`}>{t('Modify Repo')}</Link>
+        <span onClick={() => deleteRepoOpen(id)}>{t('Delete Repo')}</span>
       </div>
     );
   };
 
   deleteRepoModal = () => {
+    const { t } = this.props;
     const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
 
     return (
       <Dialog
-        title="Delete Repo"
+        title={t('Delete Repo')}
         visible={showDeleteRepo}
         onSubmit={deleteRepo}
         onCancel={deleteRepoClose}
       >
-        Are you sure delete this Repo?
+        {t('Delete Repo desc')}
       </Dialog>
     );
   };
 
   render() {
+    const { t } = this.props;
     const {
       repos,
       isLoading,
@@ -106,15 +111,15 @@ export default class Repos extends Component {
     return (
       <Layout sockMessage={sockMessage} listenToJob={this.listenToJob}>
         <div className={styles.container}>
-          <div className={styles.title}>Repos</div>
+          <div className={styles.title}>{t('Repos')}</div>
 
           <Toolbar
-            placeholder="Search Repo Name"
+            placeholder={t('Search Repo')}
             searchWord={searchWord}
             onSearch={fetchQueryRepos}
             onClear={onClearSearch}
             onRefresh={onRefresh}
-            withCreateBtn={{ linkTo: `/dashboard/repo/create` }}
+            withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
           />
 
           <Loading isLoading={isLoading}>

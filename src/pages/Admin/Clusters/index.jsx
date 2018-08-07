@@ -156,7 +156,7 @@ export default class Clusters extends Component {
 
     return (
       <Toolbar
-        placeholder={t('Search Cluster')}
+        placeholder={t('Search Clusters')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}

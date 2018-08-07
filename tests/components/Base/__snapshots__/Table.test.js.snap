@@ -18,8 +18,6 @@ exports[`Base/Table basic render 1`] = `
   </span>
   <div
     class="word"
-  >
-    No results or data for Apps
-  </div>
+  />
 </div>
 `;

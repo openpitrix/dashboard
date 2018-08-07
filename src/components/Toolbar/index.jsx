@@ -17,7 +17,8 @@ const Toolbar = ({
   onRefresh,
   inputMaxLen,
   children,
-  withCreateBtn
+  withCreateBtn,
+  t
 }) => (
   <div className={classnames(styles.toolbar, className)}>
     {children || (
@@ -33,7 +34,7 @@ const Toolbar = ({
         {withCreateBtn.linkTo && (
           <Link to={withCreateBtn.linkTo}>
             <Button className={styles.btnRight} type="primary">
-              Create
+              {withCreateBtn.name || 'Create'}
             </Button>
           </Link>
         )}
