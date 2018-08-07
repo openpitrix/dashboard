@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
-import _ from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
@@ -135,7 +134,7 @@ export default class AppStore extends Store {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
     const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
-    if (_.get(result, 'app_id')) {
+    if (get(result, 'app_id')) {
       if (this.operateType === 'detailDelete') {
         this.appDetail = {};
         this.deleteResult = result;
@@ -191,8 +190,13 @@ export default class AppStore extends Store {
   };
 
   @action
-  showModifyAppCate = app_id => {
+  showModifyAppCate = (app_id, category_set = []) => {
     this.appId = app_id;
+    if ('toJSON' in category_set) {
+      category_set = category_set.toJSON();
+    }
+    let availableCate = category_set.find(cate => cate.category_id && cate.status === 'enabled');
+    this.handleApp.selectedCategory = get(availableCate, 'category_id', '');
     this.isModalOpen = true;
   };
 

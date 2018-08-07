@@ -43,15 +43,15 @@ export default class Repos extends Component {
 
     if (len <= initLoadNumber || repos[len - 1].apps) {
       return;
-    } else {
-      let scrollTop = getScrollTop();
-      let loadNumber = parseInt(scrollTop / loadDataHeight);
-      for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber; i++) {
-        if (!repos[i].appFlag) {
-          repoStore.repos[i].appFlag = true;
-          await appStore.fetchAll({ repo_id: repos[i].repo_id });
-          repoStore.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...repos[i] };
-        }
+    }
+
+    let scrollTop = getScrollTop();
+    let loadNumber = parseInt(scrollTop / loadDataHeight);
+    for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber; i++) {
+      if (!repos[i].appFlag) {
+        repoStore.repos[i].appFlag = true;
+        await appStore.fetchAll({ repo_id: repos[i].repo_id });
+        repoStore.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...repos[i] };
       }
     }
   };

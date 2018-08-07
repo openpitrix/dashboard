@@ -79,12 +79,7 @@ const renderPage = (options = {}) => {
     <link rel="shortcut icon" href="/assets/favicon.ico" />
     <link rel="stylesheet" href="/assets/css/normalize.min.css" />
     <link rel="stylesheet" href="/assets/fonts/roboto/roboto.css" />
-    ${renderCss('https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css')}
-    ${renderCss(
-      !isProd
-        ? '/css/bootstrap.min.css'
-        : 'https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css'
-    )}
+    
     ${renderCss(isProd && 'bundle.css')}
   </head>
   <body>

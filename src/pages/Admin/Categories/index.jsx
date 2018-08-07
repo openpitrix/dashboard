@@ -22,7 +22,6 @@ export default class Categories extends Component {
     categoryStore.appStore = appStore;
     categoryStore.isDetailPage = false;
     await categoryStore.fetchAll(categoryStore.appStore);
-    //wait appStore.fetchApps();
   }
 
   constructor(props) {
@@ -43,20 +42,20 @@ export default class Categories extends Component {
 
     if (len <= initLoadNumber || categories[len - 1].apps) {
       return;
-    } else {
-      let scrollTop = getScrollTop();
-      let loadNumber = parseInt(scrollTop / loadDataHeight);
-      for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
-        if (!categories[i].appFlag) {
-          categoryStore.categories[i].appFlag = true;
-          await appStore.fetchAll({ category_id: categories[i].category_id });
-          let temp = categoryStore.categories[i];
-          categoryStore.categories[i] = {
-            total: appStore.totalCount,
-            apps: appStore.apps,
-            ...temp
-          };
-        }
+    }
+
+    let scrollTop = getScrollTop();
+    let loadNumber = parseInt(scrollTop / loadDataHeight);
+    for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
+      if (!categories[i].appFlag) {
+        categoryStore.categories[i].appFlag = true;
+        await appStore.fetchAll({ category_id: categories[i].category_id });
+        let temp = categoryStore.categories[i];
+        categoryStore.categories[i] = {
+          total: appStore.totalCount,
+          apps: appStore.apps,
+          ...temp
+        };
       }
     }
   };

@@ -184,7 +184,11 @@ export default class RuntimeAdd extends Component {
         {!runtimeId && (
           <div>
             <label className={styles.name}>Provider</label>
-            <Radio.Group value={provider} onChange={this.store.changeProvider}>
+            <Radio.Group
+              value={provider}
+              onChange={this.store.changeProvider}
+              className={styles.radioGroup}
+            >
               <Radio value="qingcloud">QingCloud</Radio>
               <Radio value="aws">AWS</Radio>
               <Radio value="kubernetes">Kubernetes</Radio>

@@ -119,8 +119,13 @@
   .actions {
     margin-left: 14px;
     .pi-popover-popper {
-      margin-left: -111px !important;
+      margin-left: -93px !important;
     }
+  }
+
+  // polyfill
+  .pull-right {
+    float: right;
   }
 
 }
