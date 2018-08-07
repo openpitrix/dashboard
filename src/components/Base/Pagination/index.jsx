@@ -2,11 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { noop } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
+@translate()
 export default class Pagination extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -110,7 +112,7 @@ export default class Pagination extends React.Component {
   };
 
   renderTotal() {
-    let { onSelectRow, total, noCancel } = this.props;
+    let { onSelectRow, total, noCancel, t } = this.props;
     let { selectedRows } = this.state;
 
     if (!Array.isArray(selectedRows)) {
@@ -120,16 +122,18 @@ export default class Pagination extends React.Component {
     if (selectedRows.length) {
       return (
         <Fragment>
-          <span>{`Selected: ${selectedRows.length}`}</span>
+          <span>
+            {t('Selected')}: {selectedRows.length}
+          </span>
           {!noCancel && (
             <span className={styles.cancelBtn} onClick={onSelectRow.bind(null, [], [])}>
-              Cancel
+              {t('Cancel')}
             </span>
           )}
         </Fragment>
       );
     }
-    return `Total: ${total}`;
+    return `${t('Total')}: ${total}`;
   }
 
   render() {

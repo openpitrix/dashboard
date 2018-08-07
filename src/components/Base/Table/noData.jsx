@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import styles from './index.scss';
 
+@translate()
 export default class NoData extends PureComponent {
   static propTypes = {
     type: PropTypes.string
@@ -15,7 +17,7 @@ export default class NoData extends PureComponent {
   };
 
   render() {
-    const { type } = this.props;
+    const { type, t } = this.props;
     const iconMap = {
       Apps: 'appcenter',
       Clusters: 'cluster',
@@ -30,7 +32,7 @@ export default class NoData extends PureComponent {
     return (
       <div className={styles.noData}>
         <Icon name={iconName} size={120} type={`light`} />
-        <div className={styles.word}>No results or data for {type}</div>
+        <div className={styles.word}>{t('No search data')}</div>
       </div>
     );
   }

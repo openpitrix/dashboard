@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { get, capitalize } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -15,6 +16,7 @@ import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
@@ -61,34 +63,36 @@ export default class ClusterDetail extends Component {
   };
 
   renderHandleMenu = item => {
+    const { t } = this.props;
     const { clusterParametersOpen, showOperateCluster } = this.props.clusterStore;
     const { cluster_id, status } = item;
 
     return (
       <div className="operate-menu">
         {/* <span onClick={clusterParametersOpen}>View Parameters</span>*/}
-        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete cluster')}</span>
         {status === 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'start')}>Start cluster</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
         )}
         {status !== 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>Stop cluster</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
         )}
       </div>
     );
   };
 
   renderDeleteModal = () => {
+    const { t } = this.props;
     const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
     return (
       <Dialog
-        title={`${capitalize(modalType)} Cluster`}
+        title={t(`${capitalize(modalType)} cluster`)}
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={this.handleCluster}
       >
-        {`Are you sure ${modalType} this Cluster?`}
+        {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
       </Dialog>
     );
   };
@@ -111,11 +115,12 @@ export default class ClusterDetail extends Component {
   };
 
   clusterJobsModal = () => {
+    const { t } = this.props;
     const { isModalOpen, hideModal } = this.props.clusterStore;
     const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
 
     return (
-      <Dialog title="Activities" isOpen={isModalOpen} onCancel={hideModal} noActions>
+      <Dialog title={t('Activities')} isOpen={isModalOpen} onCancel={hideModal} noActions>
         <TimeAxis timeList={clusterJobs} />
       </Dialog>
     );
@@ -209,7 +214,7 @@ export default class ClusterDetail extends Component {
   };
 
   render() {
-    const { rootStore, clusterStore, appStore, runtimeStore } = this.props;
+    const { clusterStore, appStore, runtimeStore, t } = this.props;
 
     const {
       isLoading,
@@ -233,37 +238,37 @@ export default class ClusterDetail extends Component {
 
     const columns = [
       {
-        title: 'Name',
+        title: t('Name'),
         key: 'name',
         width: '155px',
         render: item => <TdName name={item.name} description={item.node_id} noIcon />
       },
       {
-        title: 'Role',
+        title: t('Role'),
         key: 'role',
         dataIndex: 'role'
       },
       {
-        title: 'Node Status',
+        title: t('Node Status'),
         key: 'status',
         width: '126px',
         // fixme: prop type check case sensitive
         render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
       },
       {
-        title: 'Configuration',
+        title: t('Configuration'),
         key: 'configuration',
         width: '100px',
         render: item => <Configuration configuration={item.cluster_role || {}} />
       },
       {
-        title: 'Private IP',
+        title: t('Private IP'),
         key: 'private_ip',
         dataIndex: 'private_ip',
         width: '95px'
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -273,12 +278,12 @@ export default class ClusterDetail extends Component {
       {
         key: 'status',
         conditions: [
-          { name: 'Active', value: 'active' },
-          { name: 'Stopped', value: 'stopped' },
-          { name: 'Ceased', value: 'ceased' },
-          { name: 'Pending', value: 'pending' },
-          { name: 'Suspended', value: 'suspended' },
-          { name: 'Deleted', value: 'deleted' }
+          { name: t('Pending'), value: 'pending' },
+          { name: t('Active'), value: 'active' },
+          { name: t('Stopped'), value: 'stopped' },
+          { name: t('Suspended'), value: 'suspended' },
+          { name: t('Deleted'), value: 'deleted' },
+          { name: t('Ceased'), value: 'ceased' }
         ],
         onChangeFilter: onChangeNodeStatus,
         selectValue: selectNodeStatus
@@ -316,9 +321,9 @@ export default class ClusterDetail extends Component {
             </Card>
             <Card className={styles.activities}>
               <div className={styles.title}>
-                Activities
+                {t('Activities')}
                 <div className={styles.more} onClick={clusterJobsOpen}>
-                  More →
+                  {t('More')} →
                 </div>
               </div>
               <TimeAxis timeList={clusterJobs.splice(0, 4)} />
@@ -331,7 +336,7 @@ export default class ClusterDetail extends Component {
 
               <Card>
                 <Toolbar
-                  placeholder="Search Node Name"
+                  placeholder={t('Search Node')}
                   searchWord={searchNode}
                   onSearch={onSearchNode}
                   onClear={onClearNode}

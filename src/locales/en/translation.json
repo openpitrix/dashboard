@@ -22,5 +22,15 @@
 
   "pg-overview": {
     "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
-  }
+  },
+
+  "Delete App desc": "Are you sure delete this App?",
+  "Delete Version desc": "Are you sure delete this Version?",
+  "Delete Category desc": "Are you sure delete this category?",
+
+  "No search data": "No results for search.",
+
+  "operate cluster desc": "Are you sure {{operate}} this Cluster?",
+
+  "Deploy App explain": "OpenPitrix deploy application to any cloud provider, it's very simple, selected application want to deploy ,and then choose runtime (cloud provider), and press the button. it's done."
 }

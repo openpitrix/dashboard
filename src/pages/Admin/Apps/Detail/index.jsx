@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
 import { pick, assign, get } from 'lodash';
 
 import { Icon, Input, Table, Popover, Modal } from 'components/Base';
-import VersionList from 'components/VersionList';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import AppCard from 'components/DetailCard/AppCard';
@@ -16,6 +16,7 @@ import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sessInfo }) =>
   assign(pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore']), sessInfo)
 )
@@ -35,13 +36,14 @@ export default class AppDetail extends Component {
   }
 
   renderHandleMenu = appId => {
+    const { t } = this.props;
     const { showCreateVersion, showDeleteApp } = this.props.appVersionStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/app/${appId}/deploy`}>Deploy App</Link>
-        <span onClick={showCreateVersion}>Create version</span>
-        <span onClick={showDeleteApp}>Delete App</span>
+        <Link to={`/dashboard/app/${appId}/deploy`}>{t('Deploy App')}</Link>
+        <span onClick={showCreateVersion}>{t('Create version')}</span>
+        <span onClick={showDeleteApp}>{t('Delete App')}</span>
       </div>
     );
   };
@@ -51,7 +53,7 @@ export default class AppDetail extends Component {
   };
 
   renderOpsModal = () => {
-    const { appVersionStore } = this.props;
+    const { appVersionStore, t } = this.props;
     const {
       isModalOpen,
       hideModal,
@@ -62,14 +64,14 @@ export default class AppDetail extends Component {
 
     return (
       <Modal
-        title={`Create App Version`}
+        title={t('Create App Version')}
         visible={isModalOpen}
         onCancel={hideModal}
         onOk={this.handleCreateVersion}
       >
         <form className="formContent">
           <div>
-            <label className={styles.name}>Name</label>
+            <label className={styles.name}>{t('Name')}</label>
             <Input
               className={styles.input}
               name="name"
@@ -80,7 +82,7 @@ export default class AppDetail extends Component {
             />
           </div>
           <div>
-            <label className={styles.name}>Package Name</label>
+            <label className={styles.name}>{t('Package address')}</label>
             <Input
               name="package_name"
               maxLength="100"
@@ -91,7 +93,7 @@ export default class AppDetail extends Component {
             />
           </div>
           <div className="textareaItem">
-            <label>Description</label>
+            <label>{t('Description')}</label>
             <textarea
               name="description"
               maxLength="500"
@@ -105,18 +107,15 @@ export default class AppDetail extends Component {
   };
 
   renderDialog = () => {
-    const { isDialogOpen, hideModal, remove, dialogType, versions } = this.props.appVersionStore;
+    const { t } = this.props;
+    const { isDialogOpen, hideModal, dialogType } = this.props.appVersionStore;
     let title = '',
-      modalBody = 'Are you sure delete this App?',
+      modalBody = t('Delete App desc'),
       hideFooter = false;
 
-    if (dialogType === 'show_all') {
-      title = 'Delete Version';
-      modalBody = <VersionList versions={versions} />;
-      hideFooter = true;
-    } else if (dialogType === 'delete') {
-      title = 'Delete Version';
-      modalBody = 'Are you sure delete this Version?';
+    if (dialogType === 'delete') {
+      title = t('Delete Version');
+      modalBody = t('Delete Version desc');
     }
 
     return (
@@ -225,7 +224,7 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const { appStore, clusterStore, appVersionStore, repoStore } = this.props;
+    const { appStore, clusterStore, appVersionStore, repoStore, t } = this.props;
     const {
       appDetail,
       currentClusterPage,
@@ -244,7 +243,7 @@ export default class AppDetail extends Component {
     if (detailTab === 'Clusters') {
       toolbarOptions = {
         searchWord: swCluster,
-        placeholder: 'Search Cluster Name',
+        placeholder: t('Search Cluster'),
         onSearch: this.onSearch,
         onClear: this.onClearSearch,
         onRefresh: this.onRefresh
@@ -280,7 +279,7 @@ export default class AppDetail extends Component {
     if (detailTab === 'Versions') {
       toolbarOptions = {
         searchWord: swVersion,
-        placeholder: 'Search Version Name',
+        placeholder: t('Search Version'),
         onSearch: this.onSearchVersion,
         onClear: this.onClearSearchVersion,
         onRefresh: this.onRefreshVersion

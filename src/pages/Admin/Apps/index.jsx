@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
 import { filter, get } from 'lodash';
 
 import { Icon, Button, Table, Popover, Select, Modal } from 'components/Base';
@@ -14,6 +15,7 @@ import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sessInfo, sock }) => ({
   rootStore,
   appStore: rootStore.appStore,
@@ -49,17 +51,18 @@ export default class Apps extends Component {
   };
 
   renderDeleteModal = () => {
-    const { isDeleteOpen, remove, hideModal } = this.props.appStore;
+    const { appStore, t } = this.props;
+    const { isDeleteOpen, remove, hideModal } = appStore;
 
     return (
-      <Dialog title="Delete App" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
-        Are you sure delete this App?
+      <Dialog title={t('Delete App')} visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+        {t('Delete App desc')}
       </Dialog>
     );
   };
 
   renderOpsModal = () => {
-    const { appStore, categoryStore } = this.props;
+    const { appStore, categoryStore, t } = this.props;
     const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
     const categories = categoryStore.categories.toJSON();
 
@@ -67,14 +70,14 @@ export default class Apps extends Component {
 
     return (
       <Modal
-        title="Modify App Category"
+        title={t('Modify App Category')}
         visible={isModalOpen}
         onCancel={hideModal}
         onOk={modifyCategoryById}
       >
         <div className="formContent">
           <div className="inputItem selectItem">
-            <label>Category</label>
+            <label>{t('Category')}</label>
             <Select value={selectedCategory} onChange={changeAppCate}>
               {categories.map(({ category_id, name }) => (
                 <Select.Option
@@ -93,25 +96,26 @@ export default class Apps extends Component {
   };
 
   renderHandleMenu = item => {
+    const { t } = this.props;
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
     let itemMenu = null,
       deployEntry = null;
 
     if (item.status !== 'deleted') {
-      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>Deploy app</Link>;
+      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
           </Fragment>
         );
       }
       if (this.role === 'admin') {
         itemMenu = (
           <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>Delete app</span>
+            <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
             <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
-              Modify category
+              {t('Modify category')}
             </span>
           </Fragment>
         );
@@ -120,7 +124,7 @@ export default class Apps extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/app/${item.app_id}`}>View detail</Link>
+        <Link to={`/dashboard/app/${item.app_id}`}>{t('View detail')}</Link>
         {deployEntry}
         {itemMenu}
       </div>
@@ -128,6 +132,7 @@ export default class Apps extends Component {
   };
 
   renderToolbar() {
+    const { t } = this.props;
     const {
       searchWord,
       onSearch,
@@ -141,7 +146,7 @@ export default class Apps extends Component {
       return (
         <Toolbar>
           <Button type="delete" onClick={() => showDeleteApp(appIds)} className="btn-handle">
-            Delete
+            {t('Delete')}
           </Button>
         </Toolbar>
       );
@@ -149,7 +154,7 @@ export default class Apps extends Component {
 
     return (
       <Toolbar
-        placeholder="Search App Name"
+        placeholder={t('Search App')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
@@ -159,6 +164,7 @@ export default class Apps extends Component {
   }
 
   render() {
+    const { t } = this.props;
     const {
       apps,
       summaryInfo,
@@ -176,7 +182,7 @@ export default class Apps extends Component {
 
     const columns = [
       {
-        title: 'App Name',
+        title: t('App Name'),
         key: 'name',
         width: '190px',
         render: item => (
@@ -189,19 +195,19 @@ export default class Apps extends Component {
         )
       },
       {
-        title: 'Latest Version',
+        title: t('Latest Version'),
         key: 'latest_version',
         width: '120px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Categories',
+        title: t('Categories'),
         key: 'category',
         render: item =>
           get(item, 'category_set', [])
@@ -210,12 +216,12 @@ export default class Apps extends Component {
             .join(', ')
       },
       {
-        title: 'Visibility',
+        title: t('Visibility'),
         key: 'visibility',
-        render: item => getObjName(repos, 'repo_id', item.repo_id, 'visibility')
+        render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
       },
       {
-        title: 'Repo',
+        title: t('Repo'),
         key: 'repo_id',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
@@ -227,18 +233,18 @@ export default class Apps extends Component {
         )
       },
       {
-        title: 'Developer',
+        title: t('Developer'),
         key: 'owner',
         render: item => item.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '100px',
         render: item => <TimeShow time={item.status_time} />
       },
       {
-        title: 'Actions',
+        title: t('Actions'),
         key: 'actions',
         width: '84px',
         render: item => (
@@ -260,7 +266,10 @@ export default class Apps extends Component {
     const filterList = [
       {
         key: 'status',
-        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        conditions: [
+          { name: t('Active'), value: 'active' },
+          { name: t('Deleted'), value: 'deleted' }
+        ],
         onChangeFilter: onChangeStatus,
         selectValue: selectStatus
       }

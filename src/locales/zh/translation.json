@@ -66,5 +66,109 @@
     "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
   },
 
-  "Nodes": "节点"
+  "Nodes": "节点",
+  "Deploy": "部署",
+
+  "Delete App": "删除应用",
+  "Delete App desc": "您确定要删除该应用吗?",
+  "Modify App Category": "修改应用分类",
+  "Category": "分类",
+  "View detail": "查看详情",
+  "Deploy App": "部署应用",
+  "Modify category": "修改分类",
+
+  "Delete": "删除",
+  "Search App": "搜索应用",
+  "App Name": "应用名称",
+  "Latest Version": "最近版本",
+  "Categories": "分类",
+  "Status": "状态",
+  "Visibility": "可见性",
+  "Repo": "仓库",
+  "Developer": "开发者",
+  "Updated At": "更新时间",
+  "Actions": "操作",
+
+  "Create version": "创建版本",
+  "Create App Version": "创建应用版本",
+  "Name": "名称",
+  "Package address": "程序包地址",
+  "Description": "描述",
+  "Delete Version": "删除版本",
+  "Delete Version desc": "您确定要删除该版本吗?",
+  "Search Cluster": "搜索集群",
+  "Search Version": "搜索版本",
+  "Versions": "版本",
+
+
+  "Preview in Catalog": "在分类中预览",
+  "Date Updated": "更新时间",
+
+  "Total": "总共",
+  "Lasted 2 Weeks": "最近两周",
+
+
+  "Pending": "等待中",
+  "Active": "活跃",
+  "Stopped": "已关闭",
+  "Suspended": "已暂停",
+  "Deleted": "已删除",
+  "Ceased": "已销毁",
+
+  "public": "公共的",
+  "private": "私有的",
+
+  "Basic Settings": "基本设置",
+  "Deploy Settings": "部署设置",
+  "Node Settings": "节点设置",
+  "Vxnet Settings": "网络设置",
+  "Environment Settings": "环境设置",
+
+
+  "Delete cluster": "删除集群",
+  "Start cluster": "启用集群",
+  "Stop cluster": "停用集群",
+  "Start": "启用",
+  "Stop": "停用",
+  "operate cluster desc": "您确定要{{operate}}该集群吗？",
+  "Cluster Name": "集群名称",
+  "App": "应用",
+  "Runtime": "运行时",
+  "Node Count": "节点数量",
+  "User": "用户",
+
+  "Frontgate ID": "Frontgate ID",
+  "More": "更多",
+  "Activities": "活动",
+  "Search Node": "搜索节点",
+  "Role": "角色",
+  "Node Status": "节点状态",
+  "Configuration": "配置",
+  "Private IP": "私有IP",
+
+  "Runtime Provider" : "运行环境提供者",
+  "Zone/Namespace" : "域/命名空间",
+  "Cluster": "集群",
+  "Creator": "创建者",
+  "Count": "数量",
+  "App Count": "应用数量",
+  "Labels": "标签",
+  "Events": "事件",
+
+  "Create": "创建",
+  "Default": "默认",
+  "Uncategories": "未分类",
+  "Create Category": "创建分类",
+  "Modify Category": "修改分类",
+  "Delete Category": "删除分类",
+  "Delete Category desc": "您确定要删除该分类吗?",
+
+
+  "Confirm": "确定",
+  "Cancel": "取消",
+  "Selected": "已选中",
+
+
+  "No search data": "没有相关搜索结果！",
+  "Deploy App explain": "OpenPitrix将应用程序部署到任何云提供商，它非常简单，选择想要部署的应用程序，然后选择运行时（云提供商），最后按下确定按钮。这样就完成了。"
 }

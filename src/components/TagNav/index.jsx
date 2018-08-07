@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { noop } from 'lodash';
+import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
+@translate()
 export default class TagNav extends Component {
   static propTypes = {
     tags: PropTypes.array,
@@ -44,7 +46,7 @@ export default class TagNav extends Component {
   }
 
   render() {
-    const { tags } = this.props;
+    const { tags, t } = this.props;
     const { curTag } = this.state;
 
     return (
@@ -55,7 +57,7 @@ export default class TagNav extends Component {
             key={idx}
             onClick={() => this.handleChange(tag)}
           >
-            {tag}
+            {t(tag)}
           </div>
         ))}
       </div>

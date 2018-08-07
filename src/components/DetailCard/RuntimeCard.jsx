@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import Status from '../Status';
 import TagShow from '../TagShow';
@@ -10,6 +11,7 @@ import { ProviderName } from 'components/TdName';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
+@translate()
 export default class RuntimeCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object.isRequired,
@@ -18,7 +20,8 @@ export default class RuntimeCard extends PureComponent {
   };
 
   render() {
-    const { detail, appCount, clusterCount } = this.props;
+    const { detail, appCount, clusterCount, t } = this.props;
+
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
@@ -28,11 +31,11 @@ export default class RuntimeCard extends PureComponent {
         </div>
         <ul className={styles.detail}>
           <li>
-            <span className={styles.name}>Status</span>
+            <span className={styles.name}>{t('Status')}</span>
             <Status name={detail.status} type={detail.status} />
           </li>
           <li>
-            <span className={styles.name}>Runtime Provider</span>
+            <span className={styles.name}>{t('Runtime Provider')}</span>
             {detail.repo_id && (
               <div className={styles.labels}>
                 {detail.providers.map(data => (
@@ -46,33 +49,36 @@ export default class RuntimeCard extends PureComponent {
           </li>
           {detail.repo_id && (
             <li>
-              <span className={styles.name}>Visibility</span>
+              <span className={styles.name}>{t('Visibility')}</span>
               {detail.visibility}
             </li>
           )}
           {detail.runtime_id && (
             <li>
-              <span className={styles.name}>Zone/Namespace</span>
+              <span className={styles.name}>{t('Zone/Namespace')}</span>
               {detail.zone}
             </li>
           )}
           <li>
-            <span className={styles.name}>Creator</span>
+            <span className={styles.name}>{t('Creator')}</span>
             {detail.owner}
           </li>
           <li>
-            <span className={styles.name}>{detail.repo_id ? 'App' : 'Cluster'} Count</span>
+            <span className={styles.name}>
+              {detail.repo_id ? t('App') : t('Cluster')}
+              {t('Count')}
+            </span>
             {detail.repo_id && appCount}
             {detail.runtime_id && clusterCount}
           </li>
           <li>
-            <span className={styles.name}>Labels</span>
+            <span className={styles.name}>{t('Labels')}</span>
             <div className={styles.labels}>
               {detail.labels && <TagShow tags={detail.labels.slice()} tagStyle="purple" />}
             </div>
           </li>
           <li>
-            <span className={styles.name}>Date Updated</span>
+            <span className={styles.name}>{t('Date Updated')}</span>
             <TimeShow time={detail.status_time} type="detailTime" />
           </li>
         </ul>
