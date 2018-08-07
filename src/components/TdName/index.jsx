@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { Icon, Image } from 'components/Base';
 import styles from './index.scss';
 
+@translate()
 @inject('rootStore')
 @observer
 export default class TdName extends React.Component {
@@ -28,13 +30,13 @@ export default class TdName extends React.Component {
   };
 
   componentDidMount() {
-    const { noCopy } = this.props;
+    const { noCopy, t } = this.props;
 
     if (!noCopy) {
       this.clipboard = new ClipboardJS(this.refs.copyBtn);
 
       this.clipboard.on('success', e => {
-        this.props.rootStore.notify({ message: 'Copy success', type: 'success' });
+        this.props.rootStore.notify({ message: t('Copy success'), type: 'success' });
         e.clearSelection();
       });
     }

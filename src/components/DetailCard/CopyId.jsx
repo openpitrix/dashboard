@@ -1,53 +1,44 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
+import { observer, inject } from 'mobx-react';
+import { translate } from 'react-i18next';
 
-import { Tooltip } from 'components/Base';
-import { Icon, Notification } from 'components/Base';
+import { Icon } from 'components/Base';
 import styles from './index.scss';
 
-export default class CopyId extends PureComponent {
+@translate()
+@inject('rootStore')
+@observer
+export default class CopyId extends React.Component {
   static propTypes = {
     id: PropTypes.string
   };
 
-  state = {
-    message: ''
-  };
-
   componentDidMount() {
-    this.clipboard = new ClipboardJS('.copyId');
+    const { t } = this.props;
+
+    this.clipboard = new ClipboardJS(this.refs.copyBtn);
+
     this.clipboard.on('success', e => {
-      this.setState({
-        message: 'Copy success'
-      });
+      this.props.rootStore.notify({ message: t('Copy success'), type: 'success' });
       e.clearSelection();
     });
   }
 
   componentWillUnmount() {
-    this.clipboard.destroy();
+    this.clipboard && this.clipboard.destroy();
   }
-
-  onHide = () => {
-    this.setState({
-      message: ''
-    });
-  };
 
   render() {
     const { id } = this.props;
-    const { message } = this.state;
 
     return (
       <div className={styles.copyOuter}>
         id: {id}
-        <span className="copyId" data-clipboard-text={id}>
+        <span className="copyId" data-clipboard-text={id} ref="copyBtn">
           <Icon name="copy" type="dark" />
         </span>
-        {message ? (
-          <Notification message={message} timeOut={1000} onHide={this.onHide} type="success" />
-        ) : null}
       </div>
     );
   }

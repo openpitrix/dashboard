@@ -24,9 +24,7 @@ exports[`Home basic render 1`] = `
       />
       <div
         class="noData"
-      >
-        No Application Data!
-      </div>
+      />
     </div>
   </div>
 </div>

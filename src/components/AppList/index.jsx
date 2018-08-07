@@ -50,11 +50,12 @@ export default class AppList extends PureComponent {
 
   getSearchTitle() {
     let { appSearch, categoryTitle, t } = this.props;
-    return (appSearch && `Results`) || categoryTitle || t('Newest');
+    return (appSearch && t('search_results')) || categoryTitle || t('Newest');
   }
 
   render() {
-    const { apps, className } = this.props;
+    const { apps, className, t } = this.props;
+
     return (
       <div className={classnames(styles.appList, className)}>
         {<CardTitle title={this.getSearchTitle()} more={false} />}
@@ -65,7 +66,7 @@ export default class AppList extends PureComponent {
           </Link>
         ))}
 
-        {!apps.length && <div className={styles.noData}>No Application Data!</div>}
+        {!apps.length && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
 
         {this.renderCategoryApps()}
       </div>

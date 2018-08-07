@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
+import { getLoginDate } from 'src/utils';
+
 import styles from './index.scss';
 
 @translate()
@@ -15,7 +17,8 @@ export default class UserInfo extends PureComponent {
   };
 
   render() {
-    const { name, role, loginInfo, t } = this.props;
+    const { name, role, loginInfo, t, i18n } = this.props;
+    const lng = i18n.language || 'en';
 
     return (
       <div className={styles.userInfo}>
@@ -28,7 +31,9 @@ export default class UserInfo extends PureComponent {
             <div className={styles.role}>{t('role', { context: role })}</div>
           </div>
         </div>
-        <div className={styles.loginInfo}>{t('last login time', { last_login: loginInfo })}</div>
+        <div className={styles.loginInfo}>
+          {t('last login time', { last_login: getLoginDate(loginInfo, lng) })}
+        </div>
       </div>
     );
   }

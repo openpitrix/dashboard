@@ -19,7 +19,7 @@ export default class CardTitle extends PureComponent {
 
     return (
       <div className={styles.title}>
-        {title}
+        {t(title)}
         {more && (
           <Link
             className={classnames(styles.more, { [styles.show]: more })}

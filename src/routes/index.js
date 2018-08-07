@@ -43,7 +43,7 @@ const routes = {
   '/:dash/repo/edit/:repoId': Dash.RepoAdd,
   '/:dash/repo/:repoId': Dash.RepoDetail,
 
-  '/:dash/users': Dash.Users,
+  // '/:dash/users': Dash.Users,
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,

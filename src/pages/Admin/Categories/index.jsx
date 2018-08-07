@@ -36,6 +36,12 @@ export default class Categories extends Component {
     window.onscroll = throttle(this.handleScroll, 200);
   }
 
+  componentWillUnmount() {
+    if (window.onscroll) {
+      window.onscroll = null;
+    }
+  }
+
   handleScroll = async () => {
     const { categoryStore, appStore } = this.props;
     const { categories, initLoadNumber } = categoryStore;
