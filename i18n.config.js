@@ -14,8 +14,7 @@ module.exports = {
   // init common resource
   resources: translations,
 
-  // fixme: override lang
-  lng: 'en',
+  // lng: 'en',
   fallbackLng: 'en',
   // debug: process.env.NODE_ENV !== 'production',
 

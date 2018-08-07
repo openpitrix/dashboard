@@ -37,23 +37,23 @@ export default class Footer extends PureComponent {
                  <a href="javascript:void(0)">{t('Terms')}</a>*/}
               </li>
               <li>OpenPitrix &copy; 2018</li>
-              {/*<li>
-               <a
-               href="#"
-               onClick={this.changeLocale.bind(null, 'zh')}
-               className={styles.toggleLocale}
-               >
-               中文
-               </a>
-               <span className={styles.dot} />
-               <a
-               href="#"
-               onClick={this.changeLocale.bind(null, 'en')}
-               className={styles.toggleLocale}
-               >
-               English
-               </a>
-               </li>*/}
+              <li>
+                <a
+                  href="#"
+                  onClick={this.changeLocale.bind(null, 'zh')}
+                  className={styles.toggleLocale}
+                >
+                  中文
+                </a>
+                <span className={styles.dot}/>
+                <a
+                  href="#"
+                  onClick={this.changeLocale.bind(null, 'en')}
+                  className={styles.toggleLocale}
+                >
+                  English
+                </a>
+              </li>
             </ul>
           </div>
         </div>
