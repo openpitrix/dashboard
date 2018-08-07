@@ -33,19 +33,27 @@ export default class Home extends Component {
 
   componentDidMount() {
     const { rootStore, match } = this.props;
+    const { params } = match;
+
     window.scroll({ top: 0, behavior: 'smooth' });
-    if (match.params.category || match.params.search) {
+
+    if (params.category || params.search) {
+      // search or category filter page
       rootStore.setNavFix(true);
     } else {
+      // home page
       rootStore.setNavFix(false);
       this.threshold = this.getThreshold();
       window.onscroll = throttle(this.handleScroll, 100);
     }
   }
 
-  /* componentWillReceiveProps({ match, rootStore }) {
-    rootStore.appStore.fetchApps({ category_id: match.params.category });
-  }*/
+  componentWillReceiveProps({ match, rootStore }) {
+    const { params } = match;
+    if (params.category) {
+      rootStore.appStore.fetchApps({ category_id: params.category });
+    }
+  }
 
   componentWillUnmount() {
     if (window.onscroll) {

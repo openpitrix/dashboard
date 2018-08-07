@@ -42,7 +42,7 @@ export default class AppStore extends Store {
   fetchApps = async (params = {}, title) => {
     this.isLoading = true;
     this.categoryTitle = title;
-    params.limit = 999;
+    params.limit = 200;
 
     if (!params.status) {
       params.status = ['active'];
