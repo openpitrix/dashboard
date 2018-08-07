@@ -37,6 +37,12 @@ export default class Repos extends Component {
     window.onscroll = throttle(this.handleScroll, 200);
   }
 
+  componentWillUnmount() {
+    if (window.onscroll) {
+      window.onscroll = null;
+    }
+  }
+
   handleScroll = async () => {
     const { repoStore, appStore } = this.props;
     const { repos, initLoadNumber } = repoStore;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Table, Pagination, Popover } from 'components/Base';
+import { Icon, Table, Popover } from 'components/Base';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';

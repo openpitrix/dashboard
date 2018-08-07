@@ -13,8 +13,8 @@ import RepoList from './RepoList';
 import Layout, { Grid, Section, Row } from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
-import { Icon, Table } from 'components/Base';
-import { formatTime, getSessInfo, getLoginDate, getObjName, getPastTime } from 'src/utils';
+import { Table } from 'components/Base';
+import { formatTime, getSessInfo, getObjName, getPastTime } from 'src/utils';
 import resourceStatus from 'utils/resource-status';
 
 import styles from './index.scss';
@@ -45,7 +45,7 @@ export default class Overview extends React.Component {
     this.userInfo = {
       name: getSessInfo('user', props.sessInfo),
       role: getSessInfo('role', props.sessInfo),
-      loginInfo: getLoginDate(getSessInfo('last_login', props.sessInfo))
+      loginInfo: getSessInfo('last_login', props.sessInfo)
     };
   }
   handleClickTotalCard = label => {
@@ -150,7 +150,7 @@ export default class Overview extends React.Component {
         <Row>
           <div className={styles.userInfo}>
             <div className={styles.userName}>{t('greet words', { name })}</div>
-            <div className={styles.hello}>Welcome to OpenPitirx, What would you like to do?</div>
+            <div className={styles.hello}>{t('NORMAL_GUIDING_WORDS')}</div>
           </div>
         </Row>
         <Grid>

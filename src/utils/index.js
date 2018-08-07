@@ -48,15 +48,15 @@ export function getSessInfo(key, store) {
   return typeof store === 'object' ? get(store, key) : null;
 }
 
-export function getLoginDate(timestamp) {
-  let newDate = new Date();
-  if (timestamp) newDate.setTime(timestamp);
-  const temp = newDate.toDateString().split(' ');
-  return temp[1] + ' ' + temp[2] + ' at ' + newDate.toLocaleTimeString('en-US');
-}
-
-export function imgPlaceholder(size = 24) {
-  return `http://via.placeholder.com/${size}x${size}`;
+export function getLoginDate(timestamp, locale = 'en') {
+  let ts = day(parseInt(timestamp));
+  if (locale === 'en') {
+    return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
+  }
+  if (locale === 'zh' || locale === 'zh-cn') {
+    let am = ts.format('a') === 'am' ? '上午' : '下午';
+    return `${ts.format('M月D日')} ${am} ${ts.format('HH:mm:ss')}`;
+  }
 }
 
 export function getFormData(form) {

@@ -20,10 +20,6 @@
 
   "last login time": "Last Logged in {{last_login}}",
 
-  "pg-overview": {
-    "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
-  },
-
   "Delete App desc": "Are you sure delete this App?",
   "Delete Version desc": "Are you sure delete this Version?",
   "Delete Category desc": "Are you sure delete this category?",
@@ -36,5 +32,18 @@
 
   "Create Runtime explain": "Runtime is Cloud provider, It can be AWS，GCE, QingCloud,Kubernetes,OpenStack,VMwareVSphere etc. give OpenPitrix permission to access those cloud provider, OpenPitrix willmanage all of them applications.",
   "Create Repo explain": "In OpenPitrix, Every application deployed is base package repository, on the other words, If you want to use OpenPitrix for your multi-cloud application manager, you need create repository first. Application manager can store package to http/https server or S3 object storage.",
-  "Deploy App explain": "OpenPitrix deploy application to any cloud provider, it's very simple, selected application want to deploy ,and then choose runtime (cloud provider), and press the button. it's done."
+  "Deploy App explain": "OpenPitrix deploy application to any cloud provider, it's very simple, selected application want to deploy ,and then choose runtime (cloud provider), and press the button. it's done.",
+
+  "NO_SEARCH_DATA": "No Application Data!",
+
+  "repo_visible": "{{visible}} Repos",
+
+  "EMPTY_APP_TIPS": "If OpenPitrix administrator setting repo done, all applications can imported automatically. As OpenPitrix user, can browse all public applications. and browse by label or categories",
+  "EMPTY_REPO_TIPS": "Application developer create OpenPitrix packaged apps very easy, it's used yaml or json format for description language, and upload to http server or object storage",
+  "EMPTY_CLUSTER_TIPS": "OpenPitrix managing application lifecycle ,both day1 and day2 , the status of application (as normal run as cluster )like : pending, active, shutdown, deleted. If admin want to stop clusters, just tell OpenPitrix, it will help cloud administrator finished the rest steps",
+
+  "NORMAL_GUIDING_WORDS": "Welcome to OpenPitirx, What would you like to do?",
+
+  "search_results": "Results"
+
 }

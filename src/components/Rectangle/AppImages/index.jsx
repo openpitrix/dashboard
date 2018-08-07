@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
 
-import { Icon, Image } from 'components/Base';
+import { Image } from 'components/Base';
 
 import styles from './index.scss';
 
+@translate()
 export default class AppImages extends Component {
   static propTypes = {
     apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     total: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
+
   render() {
-    const { apps, total } = this.props;
+    const { apps, total, t } = this.props;
     const nonIcon = '/assets/none.svg';
 
     return (
       <div className={styles.appImages}>
-        <div className={styles.name}>Apps</div>
+        <div className={styles.name}>{t('Apps')}</div>
         <div className={styles.images}>
           {apps &&
             apps.slice(0, 10).map(({ app_id, icon, name }) => (
