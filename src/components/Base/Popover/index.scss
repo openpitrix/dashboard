@@ -121,11 +121,11 @@
       }
       li,a,span {
         display: block;
-        //min-width: 150px;
-        padding: 4px 12px;
+        min-width: 105px;
+        padding: 0 12px;
         height: 32px;
         font-size: 14px;
-        line-height: 1.71;
+        line-height: 32px;
         color: $N300;
         background-color: $N0;
         cursor: pointer;

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon, Button, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -14,6 +15,7 @@ import capitalize from 'lodash/capitalize';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   rootStore,
   clusterStore: rootStore.clusterStore,
@@ -67,20 +69,23 @@ export default class Clusters extends Component {
     ) : null;
   };
   renderHandleMenu = item => {
+    const { t } = this.props;
     const { showOperateCluster } = this.props.clusterStore;
     const { cluster_id, status } = item;
 
     return (
       <div id={cluster_id} className="operate-menu">
-        <Link to={`/dashboard/cluster/${cluster_id}`}>View detail</Link>
+        <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
         {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>Delete cluster</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            {t('Delete cluster')}
+          </span>
         )}
         {status === 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'start')}>Start cluster</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
         )}
         {status === 'active' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>Stop cluster</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
         )}
       </div>
     );
@@ -108,21 +113,25 @@ export default class Clusters extends Component {
   };
 
   renderDeleteModal = () => {
+    const { t } = this.props;
     const { hideModal, isModalOpen, modalType } = this.store;
 
     return (
       <Dialog
-        title={`${capitalize(modalType)} Cluster`}
+        title={t(`${capitalize(modalType)} cluster`)}
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={this.handleCluster}
       >
-        <div className={styles.noteWord}>{`Are you sure ${modalType} this Cluster?`}</div>
+        <div className={styles.noteWord}>
+          {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
+        </div>
       </Dialog>
     );
   };
 
   renderToolbar() {
+    const { t } = this.props;
     const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
 
     if (clusterIds.length) {
@@ -133,13 +142,13 @@ export default class Clusters extends Component {
             onClick={() => this.oprateSelected('delete')}
             className="btn-handle"
           >
-            Delete
+            {t('Delete')}
           </Button>
           <Button type="default" onClick={() => this.oprateSelected('start')}>
-            Start
+            {t('Start')}
           </Button>
           <Button type="delete" onClick={() => this.oprateSelected('stop')}>
-            Stop
+            {t('Stop')}
           </Button>
         </Toolbar>
       );
@@ -147,7 +156,7 @@ export default class Clusters extends Component {
 
     return (
       <Toolbar
-        placeholder="Search Cluster"
+        placeholder={t('Search Clusters')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
@@ -157,7 +166,7 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore } = this.props;
+    const { clusterStore, t } = this.props;
     const { summaryInfo, clusters, isLoading, sockMessage } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
@@ -165,7 +174,7 @@ export default class Clusters extends Component {
 
     const columns = [
       {
-        title: 'Cluster Name',
+        title: t('Cluster Name'),
         key: 'name',
         width: '155px',
         render: cl => (
@@ -178,18 +187,18 @@ export default class Clusters extends Component {
         )
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         render: cl => <Status type={cl.status} name={cl.status} />
       },
       {
-        title: 'App',
+        title: t('App'),
         key: 'app_id',
         width: '150px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
-        title: 'Runtime',
+        title: t('Runtime'),
         key: 'runtime_id',
         render: cl => (
           <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
@@ -201,22 +210,22 @@ export default class Clusters extends Component {
         )
       },
       {
-        title: 'Node Count',
+        title: t('Node Count'),
         key: 'node_count',
         render: cl => cl.cluster_node_set && cl.cluster_node_set.length
       },
       {
-        title: 'User',
+        title: t('User'),
         key: 'owner',
         render: cl => cl.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         render: cl => formatTime(cl.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
-        title: 'Actions',
+        title: t('Actions'),
         key: 'actions',
         width: '84px',
         render: (text, cl) => (
@@ -240,12 +249,12 @@ export default class Clusters extends Component {
       {
         key: 'status',
         conditions: [
-          { name: 'Active', value: 'active' },
-          { name: 'Stopped', value: 'stopped' },
-          { name: 'Ceased', value: 'ceased' },
-          { name: 'Pending', value: 'pending' },
-          { name: 'Suspended', value: 'suspended' },
-          { name: 'Deleted', value: 'deleted' }
+          { name: t('Pending'), value: 'pending' },
+          { name: t('Active'), value: 'active' },
+          { name: t('Stopped'), value: 'stopped' },
+          { name: t('Suspended'), value: 'suspended' },
+          { name: t('Deleted'), value: 'deleted' },
+          { name: t('Ceased'), value: 'ceased' }
         ],
         onChangeFilter: clusterStore.onChangeStatus,
         selectValue: clusterStore.selectStatus
@@ -256,7 +265,8 @@ export default class Clusters extends Component {
       tableType: 'Clusters',
       onChange: clusterStore.changePagination,
       total: clusterStore.totalCount,
-      current: clusterStore.currentPage
+      current: clusterStore.currentPage,
+      noCancel: false
     };
 
     return (

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -15,6 +16,7 @@ import { getObjName } from 'utils';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
@@ -47,30 +49,35 @@ export default class RuntimeDetail extends Component {
   }
 
   renderHandleMenu = id => {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, t } = this.props;
     const { showDeleteRuntime } = runtimeStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/runtime/edit/${id}`}>Modify runtime</Link>
-        <span onClick={() => showDeleteRuntime(id)}>Delete runtime</span>
+        <Link to={`/dashboard/runtime/edit/${id}`}>{t('Modify Runtime')}</Link>
+        <span onClick={() => showDeleteRuntime(id)}>{t('Delete Runtime')}</span>
       </div>
     );
   };
 
   renderDeleteModal = () => {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, t } = this.props;
     const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
-        Are you sure delete this Runtime?
+      <Dialog
+        title={t('Delete Runtime')}
+        isOpen={isModalOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('Delete Runtime desc')}
       </Dialog>
     );
   };
 
   render() {
-    const { runtimeStore, clusterStore } = this.props;
+    const { runtimeStore, clusterStore, t } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -92,7 +99,7 @@ export default class RuntimeDetail extends Component {
 
     const columns = [
       {
-        title: 'Cluster Name',
+        title: t('Cluster Name'),
         key: 'name',
         width: '155px',
         render: item => (
@@ -104,13 +111,13 @@ export default class RuntimeDetail extends Component {
         )
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'App',
+        title: t('App'),
         key: 'app_id',
         render: item => (
           <Link to={`/dashboard/app/${item.app_id}`}>
@@ -119,17 +126,17 @@ export default class RuntimeDetail extends Component {
         )
       },
       {
-        title: 'Node Count',
+        title: t('Node Count'),
         key: 'node_count',
         render: item => item.cluster_node_set && item.cluster_node_set.length
       },
       {
-        title: 'User',
+        title: t('User'),
         key: 'owner',
         dataIndex: 'owner'
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -140,12 +147,12 @@ export default class RuntimeDetail extends Component {
       {
         key: 'status',
         conditions: [
-          { name: 'Active', value: 'active' },
-          { name: 'Stopped', value: 'stopped' },
-          { name: 'Ceased', value: 'ceased' },
-          { name: 'Pending', value: 'pending' },
-          { name: 'Suspended', value: 'suspended' },
-          { name: 'Deleted', value: 'deleted' }
+          { name: t('Pending'), value: 'pending' },
+          { name: t('Active'), value: 'active' },
+          { name: t('Stopped'), value: 'stopped' },
+          { name: t('Suspended'), value: 'suspended' },
+          { name: t('Deleted'), value: 'deleted' },
+          { name: t('Ceased'), value: 'ceased' }
         ],
         onChangeFilter: onChangeStatus,
         selectValue: selectStatus
@@ -180,7 +187,7 @@ export default class RuntimeDetail extends Component {
               <TagNav tags={['Clusters']} />
               <Card>
                 <Toolbar
-                  placeholder="Search Clusters Name"
+                  placeholder={t('Search Clusters')}
                   searchWord={searchWord}
                   onSearch={onSearch}
                   onClear={onClearSearch}

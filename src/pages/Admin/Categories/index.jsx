@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { throttle } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
 import Rectangle from 'components/Rectangle';
@@ -12,6 +13,7 @@ import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore
@@ -61,30 +63,34 @@ export default class Categories extends Component {
   };
 
   renderHandleMenu = category => {
-    const { categoryStore } = this.props;
+    const { categoryStore, t } = this.props;
     const { showDeleteCategory, showModifyCategory } = categoryStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/category/${category.category_id}`}>View Category detail</Link>
-        <span onClick={showModifyCategory.bind(categoryStore, category)}>Modify Category</span>
-        <span onClick={showDeleteCategory.bind(categoryStore, category)}>Delete Category</span>
+        <Link to={`/dashboard/category/${category.category_id}`}>{t('View detail')}</Link>
+        <span onClick={showModifyCategory.bind(categoryStore, category)}>
+          {t('Modify Category')}
+        </span>
+        <span onClick={showDeleteCategory.bind(categoryStore, category)}>
+          {t('Delete Category')}
+        </span>
       </div>
     );
   };
 
   renderOpsModal = () => {
-    const { categoryStore } = this.props;
+    const { categoryStore, t } = this.props;
     const { isModalOpen, hideModal, category, createOrModify } = categoryStore;
-    let modalTitle = 'Create Category';
+    let modalTitle = t('Create Category');
     if (category && category.category_id) {
-      modalTitle = 'Modify Category';
+      modalTitle = t('Modify Category');
     }
     return (
       <Modal title={modalTitle} visible={isModalOpen} onCancel={hideModal} onOk={createOrModify}>
         <div className="formContent">
           <div>
-            <label>Name</label>
+            <label>{t('Name')}</label>
             <Input
               name="name"
               autoFocus
@@ -94,7 +100,7 @@ export default class Categories extends Component {
             />
           </div>
           <div className="textareaItem">
-            <label>Description</label>
+            <label>{t('Description')}</label>
             <textarea
               name="description"
               defaultValue={category.description}
@@ -108,17 +114,23 @@ export default class Categories extends Component {
   };
 
   renderDeleteModal = () => {
+    const { t } = this.props;
     const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
 
     return (
-      <Dialog title="Delete Category" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
-        Are you sure delete this category?
+      <Dialog
+        title={t('Delete Category')}
+        visible={isDeleteOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('Delete Category desc')}
       </Dialog>
     );
   };
 
   render() {
-    const { categoryStore } = this.props;
+    const { categoryStore, t } = this.props;
     const { isLoading, showCreateCategory, getCategoryApps } = categoryStore;
 
     const categories = categoryStore.categories;
@@ -129,14 +141,16 @@ export default class Categories extends Component {
       <Layout isLoading={isLoading}>
         <div className={styles.container}>
           <div className={styles.pageTitle}>
-            Categories
+            {t('Categories')}
             <Button className="pull-right" type="primary" onClick={showCreateCategory}>
-              Create
+              {t('Create')}
             </Button>
           </div>
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Default ({defaultCategories.length})</div>
+              <div className={styles.word}>
+                {t('Default')} ({defaultCategories.length})
+              </div>
             </div>
           </div>
 
@@ -160,7 +174,7 @@ export default class Categories extends Component {
 
           <div className={styles.categories}>
             <div className={styles.line}>
-              <div className={styles.word}>Uncategories</div>
+              <div className={styles.word}>{t('Uncategories')}</div>
             </div>
           </div>
           <div className={styles.categoryContent}>

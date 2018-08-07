@@ -22,5 +22,19 @@
 
   "pg-overview": {
     "normal_welcome_desc": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud"
-  }
+  },
+
+  "Delete App desc": "Are you sure delete this App?",
+  "Delete Version desc": "Are you sure delete this Version?",
+  "Delete Category desc": "Are you sure delete this category?",
+  "Delete Repo desc": "Are you sure delete this Repo?",
+  "Delete Runtime desc": "Are you sure delete this Runtime?",
+
+  "No search data": "No results for search.",
+
+  "operate cluster desc": "Are you sure {{operate}} this Cluster?",
+
+  "Create Runtime explain": "Runtime is Cloud provider, It can be AWS，GCE, QingCloud,Kubernetes,OpenStack,VMwareVSphere etc. give OpenPitrix permission to access those cloud provider, OpenPitrix willmanage all of them applications.",
+  "Create Repo explain": "In OpenPitrix, Every application deployed is base package repository, on the other words, If you want to use OpenPitrix for your multi-cloud application manager, you need create repository first. Application manager can store package to http/https server or S3 object storage.",
+  "Deploy App explain": "OpenPitrix deploy application to any cloud provider, it's very simple, selected application want to deploy ,and then choose runtime (cloud provider), and press the button. it's done."
 }

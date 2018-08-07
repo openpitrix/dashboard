@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { translate } from 'react-i18next';
 
 import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
@@ -10,6 +11,7 @@ import CopyId from './CopyId';
 
 import styles from './index.scss';
 
+@translate()
 export default class ClusterCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object.isRequired,
@@ -19,7 +21,7 @@ export default class ClusterCard extends PureComponent {
   };
 
   render() {
-    const { detail, appName, runtimeName, provider } = this.props;
+    const { detail, appName, runtimeName, provider, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -30,34 +32,34 @@ export default class ClusterCard extends PureComponent {
         <ul className={styles.detail}>
           {detail.frontgate_id && (
             <li>
-              <span className={styles.name}>Frontgate ID</span>
+              <span className={styles.name}>{t('Frontgate ID')}</span>
               <span className={styles.id}>{detail.frontgate_id}</span>
             </li>
           )}
           <li>
-            <span className={styles.name}>Status</span>
+            <span className={styles.name}>{t('Status')}</span>
             <Status name={detail.status} type={detail.status} />
           </li>
           <li>
-            <span className={styles.name}>Runtime</span>
+            <span className={styles.name}>{t('Runtime')}</span>
             <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
               <ProviderName provider={provider} name={runtimeName} />
             </Link>
           </li>
           <li>
-            <span className={styles.name}>App</span>
+            <span className={styles.name}>{t('App')}</span>
             <Link to={`/dashboard/app/${detail.app_id}`}>{appName}</Link>
           </li>
           <li>
-            <span className={styles.name}>User</span>
+            <span className={styles.name}>{t('User')}</span>
             {detail.owner}
           </li>
           <li>
-            <span className={styles.name}>Node Count</span>
+            <span className={styles.name}>{t('Node Count')}</span>
             {(detail.cluster_node_set && detail.cluster_node_set.length) || 0}
           </li>
           <li>
-            <span className={styles.name}>Date Updated</span>
+            <span className={styles.name}>{t('Date Updated')}</span>
             <TimeShow time={detail.upgrade_time} type="detailTime" />
           </li>
         </ul>

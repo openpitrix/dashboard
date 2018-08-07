@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import { Radio, Button, Input, Select, Image } from 'components/Base';
 import Layout, { BackBtn, CreateResource } from 'components/Layout';
@@ -10,6 +11,7 @@ import { get } from 'lodash';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
@@ -46,10 +48,10 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore } = this.props;
+    const { appDeployStore, appStore, t } = this.props;
     const appName = appStore.appDetail.name + '';
     const { isKubernetes } = appDeployStore;
-    const title = `Deploy ${appName}`;
+    const title = `${t('Deploy')} ${appName}`;
 
     return (
       <Layout noTabs backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
@@ -61,7 +63,7 @@ export default class AppDeploy extends Component {
   }
 
   renderAside() {
-    const { appStore } = this.props;
+    const { appStore, t } = this.props;
     const { appDetail } = appStore;
 
     return (
@@ -70,17 +72,13 @@ export default class AppDeploy extends Component {
           <Image src={appDetail.icon} className={styles.icon} />
           <span className={styles.name}>{appDetail.name}</span>
         </div>
-        <p>
-          OpenPitrix deploy application to any cloud provider, it's very simple, selected
-          application want to deploy ,and then choose runtime (cloud provider), and press the
-          button. it's done.
-        </p>
+        <p>{t('Deploy App explain')}</p>
       </div>
     );
   }
 
   renderForm() {
-    const { appDeployStore, runtimeStore } = this.props;
+    const { appDeployStore, runtimeStore, t } = this.props;
     const {
       config,
       configBasics,
@@ -106,7 +104,7 @@ export default class AppDeploy extends Component {
         method="post"
         onSubmit={handleSubmit.bind(appDeployStore)}
       >
-        <div className={styles.moduleTitle}>1. Basic settings</div>
+        <div className={styles.moduleTitle}>1. {t('Basic Settings')}</div>
         {configBasics.map(
           (basic, index) =>
             basic.key !== 'subnet' && (
@@ -147,7 +145,7 @@ export default class AppDeploy extends Component {
           configNodes.map((node, index1) => (
             <Fragment key={node.key}>
               <div className={styles.moduleTitle}>
-                {index1 + 2}. Node Settings({node.key})
+                {index1 + 2}. {t('Node Settings')}({node.key})
               </div>
               {node.properties.map((conf, index2) => (
                 <Cell
@@ -163,7 +161,9 @@ export default class AppDeploy extends Component {
             </Fragment>
           ))}
 
-        <div className={styles.moduleTitle}>{configNodes.length + 2}. Vxnet Settings</div>
+        <div className={styles.moduleTitle}>
+          {configNodes.length + 2}. {t('Vxnet Settings')}
+        </div>
         <div className={styles.cellModule}>
           <label className={classnames(styles.name, styles.selectName)}>VxNet to Join</label>
           <Select className={styles.select} value={subnetId} onChange={changeSubnet}>
@@ -179,7 +179,7 @@ export default class AppDeploy extends Component {
           configEnvs.map((env, index1) => (
             <Fragment key={env.key}>
               <div className={styles.moduleTitle}>
-                {index1 + configNodes.length + 3}.Environment Settings({env.key})
+                {index1 + configNodes.length + 3}. {t('Environment Settings')}({env.key})
               </div>
               {env.properties.map((conf, index2) => (
                 <Cell
@@ -202,14 +202,14 @@ export default class AppDeploy extends Component {
             htmlType="submit"
             disabled={appDeployStore.isLoading}
           >
-            Confirm
+            {t('Confirm')}
           </Button>
           <Button
             onClick={() => {
               history.back();
             }}
           >
-            Cancel
+            {t('Cancel')}
           </Button>
         </div>
       </form>
@@ -217,7 +217,7 @@ export default class AppDeploy extends Component {
   }
 
   renderYamlForm() {
-    const { appDeployStore, runtimeStore } = this.props;
+    const { appDeployStore, t } = this.props;
     const {
       yamlConfig,
       changeYmalCell,
@@ -238,7 +238,7 @@ export default class AppDeploy extends Component {
         method="post"
         onSubmit={handleSubmit.bind(appDeployStore)}
       >
-        <div className={styles.moduleTitle}>1. Basic settings</div>
+        <div className={styles.moduleTitle}>1. {t('Basic Settings')}</div>
         <div className={styles.cellModule}>
           <label className={styles.name}>Name</label>
           <Input
@@ -272,7 +272,7 @@ export default class AppDeploy extends Component {
           </Select>
         </div>
 
-        <div className={styles.moduleTitle}>2. Deploy Settings</div>
+        <div className={styles.moduleTitle}>2. {t('Deploy Settings')}</div>
         {yamlConfig &&
           yamlConfig.map((conf, index) => (
             <YamlCell
@@ -287,14 +287,14 @@ export default class AppDeploy extends Component {
 
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit">
-            Confirm
+            {t('Confirm')}
           </Button>
           <Button
             onClick={() => {
               history.back();
             }}
           >
-            Cancel
+            {t('Cancel')}
           </Button>
         </div>
       </form>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { get } from 'lodash';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
 import TodoList from 'components/TodoList';
@@ -11,6 +12,7 @@ import Layout, { BackBtn, CreateResource } from 'components/Layout';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   repoCreateStore: rootStore.repoCreateStore
@@ -39,9 +41,10 @@ export default class RepoAdd extends Component {
   }
 
   render() {
+    const { t } = this.props;
     const { repoId } = this.store;
-    let title = 'Create Repo';
-    if (repoId) title = 'Modify Repo';
+    let title = t('Create Repo');
+    if (repoId) title = t('Modify Repo');
 
     return (
       <Layout>
@@ -54,6 +57,7 @@ export default class RepoAdd extends Component {
   }
 
   renderForm() {
+    const { t } = this.props;
     const {
       repoId,
       name,
@@ -72,7 +76,7 @@ export default class RepoAdd extends Component {
     return (
       <form className={styles.createForm} onSubmit={this.store.handleSubmit}>
         <div>
-          <label className={styles.name}>Name</label>
+          <label className={styles.name}>{t('Name')}</label>
           <Input
             className={styles.input}
             name="name"
@@ -81,19 +85,19 @@ export default class RepoAdd extends Component {
             onChange={this.store.changeName}
             value={name}
           />
-          <p className={classNames(styles.rightShow, styles.note)}>The name of the repo</p>
+          <p className={classNames(styles.rightShow, styles.note)}>{t('The name of the repo')}</p>
         </div>
         {!repoId && (
           <Fragment>
             <div>
-              <label className={styles.name}>Visibility</label>
+              <label className={styles.name}>{t('Visibility')}</label>
               <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
-                <Radio value="public">Public</Radio>
-                <Radio value="private">Private</Radio>
+                <Radio value="public">{t('Public')}</Radio>
+                <Radio value="private">{t('Private')}</Radio>
               </Radio.Group>
             </div>
             <div>
-              <label className={styles.name}>Runtime Provider</label>
+              <label className={styles.name}>{t('Runtime Provider')}</label>
               <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
                 <Checkbox value="qingcloud">QingCloud</Checkbox>
                 <Checkbox value="aws">AWS</Checkbox>
@@ -105,17 +109,17 @@ export default class RepoAdd extends Component {
         {!!repoId && (
           <Fragment>
             <div className={styles.showDiv}>
-              <label className={styles.name}>Visibility</label>
+              <label className={styles.name}>{t('Visibility')}</label>
               <label className={styles.showValue}>{visibility}</label>
             </div>
             <div className={styles.showDiv}>
-              <label className={styles.name}>Runtime Provider</label>
+              <label className={styles.name}>{t('Runtime Provider')}</label>
               <label className={styles.showValue}>{providers[0]}</label>
             </div>
           </Fragment>
         )}
         <div>
-          <label className={classNames(styles.name, styles.fl)}>Runtime Selector</label>
+          <label className={classNames(styles.name, styles.fl)}>{t('Runtime Selectors')}</label>
           <TodoList
             labels={selectors && selectors.slice()}
             onRemove={this.store.removeSelector}
@@ -177,7 +181,7 @@ export default class RepoAdd extends Component {
           </div>
         )}
         <div className={styles.textareaItem}>
-          <label className={classNames(styles.name, styles.textareaName)}>Description</label>
+          <label className={classNames(styles.name, styles.textareaName)}>{t('Description')}</label>
           <textarea
             className={styles.textarea}
             name="description"
@@ -187,7 +191,7 @@ export default class RepoAdd extends Component {
           />
         </div>
         <div>
-          <label className={classNames(styles.name, styles.fl)}>Labels</label>
+          <label className={classNames(styles.name, styles.fl)}>{t('Labels')}</label>
           <TodoList
             labels={labels && labels.slice()}
             onRemove={this.store.removeLabel}
@@ -198,15 +202,15 @@ export default class RepoAdd extends Component {
             className={classNames(styles.add, { [styles.addBottom]: labels.length })}
             onClick={this.store.addLabel}
           >
-            Add
+            {t('Add')}
           </Button>
         </div>
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
-            Confirm
+            {t('Confirm')}
           </Button>
           <Link to="/dashboard/repos">
-            <Button>Cancel</Button>
+            <Button>{t('Cancel')}</Button>
           </Link>
         </div>
       </form>
@@ -214,14 +218,11 @@ export default class RepoAdd extends Component {
   }
 
   renderAside() {
+    const { t } = this.props;
+
     return (
       <Fragment>
-        <p>
-          In OpenPitrix, Every application deployed is base package repository, on the other words,
-          If you want to use OpenPitrix for your multi-cloud application manager, you need create
-          repository first. Application manager can store package to http/https server or S3 object
-          storage.
-        </p>
+        <p>{t('Create Repo explain')}</p>
       </Fragment>
     );
   }

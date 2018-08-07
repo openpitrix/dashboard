@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { Icon, Button, Popover, Table } from 'components/Base';
 import Status from 'components/Status';
@@ -12,6 +13,7 @@ import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
@@ -46,16 +48,16 @@ export default class Runtimes extends Component {
   };
 
   renderHandleMenu = detail => {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, t } = this.props;
     const { showDeleteRuntime } = runtimeStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>View runtime detail</Link>
+        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{t('View detail')}</Link>
         {detail.status !== 'deleted' && (
           <Fragment>
-            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>Modify runtime</Link>
-            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>Delete runtime</span>
+            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>{t('Modify Runtime')}</Link>
+            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>{t('Delete Runtime')}</span>
           </Fragment>
         )}
       </div>
@@ -63,17 +65,23 @@ export default class Runtimes extends Component {
   };
 
   renderDeleteModal = () => {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, t } = this.props;
     const { isModalOpen, hideModal, remove } = runtimeStore;
 
     return (
-      <Dialog title="Delete Runtime" isOpen={isModalOpen} onSubmit={remove} onCancel={hideModal}>
-        Are you sure delete this Runtime?
+      <Dialog
+        title={t('Delete Runtime')}
+        isOpen={isModalOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('Delete Runtime desc')}
       </Dialog>
     );
   };
 
   renderToolbar() {
+    const { t } = this.props;
     const {
       searchWord,
       onSearch,
@@ -91,7 +99,7 @@ export default class Runtimes extends Component {
             onClick={() => showDeleteRuntime(runtimeIds)}
             className="btn-handle"
           >
-            Delete
+            {t('Delete')}
           </Button>
         </Toolbar>
       );
@@ -99,18 +107,18 @@ export default class Runtimes extends Component {
 
     return (
       <Toolbar
-        placeholder="Search Runtimes Name"
+        placeholder={t('Search Runtimes')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-        withCreateBtn={{ linkTo: `/dashboard/runtime/create` }}
+        withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/runtime/create` }}
       />
     );
   }
 
   render() {
-    const { runtimeStore, clusterStore } = this.props;
+    const { runtimeStore, clusterStore, t } = this.props;
     const data = runtimeStore.runtimes.toJSON();
     const clusters = clusterStore.clusters.toJSON();
 
@@ -128,7 +136,7 @@ export default class Runtimes extends Component {
 
     const columns = [
       {
-        title: 'Runtime Name',
+        title: t('Runtime Name'),
         dataIndex: 'name',
         key: 'name',
         width: '155px',
@@ -142,39 +150,39 @@ export default class Runtimes extends Component {
         )
       },
       {
-        title: 'Status',
+        title: t('Status'),
         dataIndex: 'status',
         key: 'status',
         render: text => <Status type={(text + '').toLowerCase()} name={text} />
       },
       {
-        title: 'Provider',
+        title: t('Provider'),
         key: 'provider',
         render: item => <ProviderName name={item.provider} provider={item.provider} />
       },
       {
-        title: 'Zone/Namespace',
+        title: t('Zone/Namespace'),
         dataIndex: 'zone',
         key: 'zone'
       },
       {
-        title: 'Cluster Count',
+        title: t('Cluster Count'),
         key: 'node_count',
         render: runtime =>
           clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length
       },
       {
-        title: 'User',
+        title: t('User'),
         dataIndex: 'owner',
         key: 'owner'
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
-        title: 'Actions',
+        title: t('Actions'),
         key: 'actions',
         width: '84px',
         render: (text, item) => (
@@ -197,7 +205,10 @@ export default class Runtimes extends Component {
     const filterList = [
       {
         key: 'status',
-        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        conditions: [
+          { name: t('Active'), value: 'active' },
+          { name: t('Deleted'), value: 'deleted' }
+        ],
         onChangeFilter: onChangeStatus,
         selectValue: selectStatus
       }

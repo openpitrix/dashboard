@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName';
 import Status from 'components/Status';

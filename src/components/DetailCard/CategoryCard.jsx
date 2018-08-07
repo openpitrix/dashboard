@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
+@translate()
 export default class CategoryCard extends PureComponent {
   static propTypes = {
     detail: PropTypes.object,
@@ -13,7 +15,8 @@ export default class CategoryCard extends PureComponent {
   };
 
   render() {
-    const { detail, appCount } = this.props;
+    const { detail, appCount, t } = this.props;
+
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
@@ -25,15 +28,15 @@ export default class CategoryCard extends PureComponent {
         </div>
         <ul className={styles.detail}>
           <li>
-            <span className={styles.name}>Creator</span>
+            <span className={styles.name}>{t('Creator')}</span>
             {detail.owner}
           </li>
           <li>
-            <span className={styles.name}>App Count</span>
+            <span className={styles.name}>{t('App Count')}</span>
             {appCount}
           </li>
           <li>
-            <span className={styles.name}>Date Updated</span>
+            <span className={styles.name}>{t('Date Updated')}</span>
             <TimeShow time={detail.create_time} type="detailTime" />
           </li>
         </ul>

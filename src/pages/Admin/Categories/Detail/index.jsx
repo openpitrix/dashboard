@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -15,6 +16,7 @@ import { getObjName } from 'utils';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   categoryStore: rootStore.categoryStore,
   appStore: rootStore.appStore,
@@ -83,11 +85,12 @@ export default class CategoryDetail extends Component {
   };
 
   renderHandleMenu = category => {
+    const { t } = this.props;
     const { showModifyCategory, showDeleteCategory } = this.props.categoryStore;
     return (
       <div className="operate-menu">
-        <span onClick={() => showModifyCategory(category)}>Modify Category</span>
-        <span onClick={() => showDeleteCategory(category)}>Delete Category</span>
+        <span onClick={() => showModifyCategory(category)}>{t('Modify Category')}</span>
+        <span onClick={() => showDeleteCategory(category)}>{t('Delete Category')}</span>
       </div>
     );
   };
@@ -97,19 +100,19 @@ export default class CategoryDetail extends Component {
   };
 
   renderCategoryModal = () => {
-    const { categoryStore } = this.props;
+    const { categoryStore, t } = this.props;
     const { isModalOpen, hideModal, createOrModify, category } = categoryStore;
 
     return (
       <Modal
-        title="Modify Category"
+        title={t('Modify Category')}
         visible={isModalOpen}
         onCancel={hideModal}
         onOk={createOrModify}
       >
         <div className="formContent">
           <div className="inputItem">
-            <label>Name</label>
+            <label>{t('Name')}</label>
             <Input
               name="name"
               autoFocus
@@ -119,7 +122,7 @@ export default class CategoryDetail extends Component {
             />
           </div>
           <div className="inputItem textareaItem">
-            <label>Description</label>
+            <label>{t('Description')}</label>
             <textarea
               name="description"
               defaultValue={category.description}
@@ -133,17 +136,23 @@ export default class CategoryDetail extends Component {
   };
 
   renderDeleteModal = () => {
+    const { t } = this.props;
     const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
 
     return (
-      <Dialog title="Delete Category" visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
-        Are you sure delete this category?
+      <Dialog
+        title={t('Delete Category')}
+        visible={isDeleteOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('Delete Category desc')}
       </Dialog>
     );
   };
 
   render() {
-    const { categoryStore, appStore, repoStore } = this.props;
+    const { categoryStore, appStore, repoStore, t } = this.props;
     const { category } = categoryStore;
     const apps = appStore.apps.toJSON();
     const repos = repoStore.repos.toJSON();
@@ -151,7 +160,7 @@ export default class CategoryDetail extends Component {
 
     const columns = [
       {
-        title: 'App Name',
+        title: t('App Name'),
         key: 'name',
         width: '150px',
         render: item => (
@@ -165,23 +174,24 @@ export default class CategoryDetail extends Component {
         )
       },
       {
-        title: 'Latest Version',
+        title: t('Latest Version'),
         key: 'latest_version',
+        width: '80px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Visibility',
+        title: t('Visibility'),
         key: 'visibility',
-        render: item => getObjName(repos, 'repo_id', item.repo_id, 'visibility')
+        render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
       },
       {
-        title: 'Repo',
+        title: t('Repo'),
         key: 'repo_id',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
@@ -193,12 +203,12 @@ export default class CategoryDetail extends Component {
         )
       },
       {
-        title: 'Developer',
+        title: t('Developer'),
         key: 'owner',
         render: item => item.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -208,7 +218,10 @@ export default class CategoryDetail extends Component {
     const filterList = [
       {
         key: 'status',
-        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        conditions: [
+          { name: t('Active'), value: 'active' },
+          { name: t('Deleted'), value: 'deleted' }
+        ],
         onChangeFilter: this.onChangeStatus,
         selectValue: selectStatus
       }
@@ -237,7 +250,7 @@ export default class CategoryDetail extends Component {
               <TagNav tags={['Apps']} />
               <Card>
                 <Toolbar
-                  placeholder="Search App Name"
+                  placeholder={t('Search App')}
                   searchWord={appStore.searchWord}
                   onSearch={this.onSearch}
                   onClear={this.onClearSearch}

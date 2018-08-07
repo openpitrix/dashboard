@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Icon, Table, Pagination, Popover } from 'components/Base';
 import Status from 'components/Status';
@@ -16,6 +17,7 @@ import TimeShow from 'components/TimeShow';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
@@ -79,34 +81,36 @@ export default class RepoDetail extends Component {
   };
 
   renderHandleMenu = id => {
+    const { t } = this.props;
     const { deleteRepoOpen, startIndexer } = this.props.repoStore;
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/repo/edit/${id}`}>Modify repo</Link>
-        <span onClick={() => startIndexer(id)}>Trigger indexer</span>
-        <span onClick={() => deleteRepoOpen(id)}>Delete Repo</span>
+        <Link to={`/dashboard/repo/edit/${id}`}>{t('Modify Repo')}</Link>
+        <span onClick={() => startIndexer(id)}>{t('Trigger indexer')}</span>
+        <span onClick={() => deleteRepoOpen(id)}>{t('Delete Repo')}</span>
       </div>
     );
   };
 
   deleteRepoModal = () => {
+    const { t } = this.props;
     const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
 
     return (
       <Dialog
-        title="Delete Repo"
+        title={t('Delete Repo')}
         isOpen={showDeleteRepo}
         onCancel={deleteRepoClose}
         onSubmit={deleteRepo}
       >
-        Are you sure delete this Repo?
+        {t('Delete Repo desc')}
       </Dialog>
     );
   };
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
+    const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
     const repoDetail = repoStore.repoDetail;
     const appsData = appStore.apps.toJSON();
     const appCount = appStore.totalCount;
@@ -118,7 +122,7 @@ export default class RepoDetail extends Component {
 
     const appsColumns = [
       {
-        title: 'App Name',
+        title: t('App Name'),
         key: 'name',
         width: '190px',
         render: item => (
@@ -131,19 +135,19 @@ export default class RepoDetail extends Component {
         )
       },
       {
-        title: 'Latest Version',
+        title: t('Latest Version'),
         key: 'latest_version',
         width: '116px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Categories',
+        title: t('Categories'),
         key: 'category',
         render: item =>
           get(item, 'category_set', [])
@@ -152,12 +156,12 @@ export default class RepoDetail extends Component {
             .join(', ')
       },
       {
-        title: 'Developer',
+        title: t('Developer'),
         key: 'owner',
         render: item => item.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -165,7 +169,7 @@ export default class RepoDetail extends Component {
     ];
     const runtimesColumns = [
       {
-        title: 'Runtime Name',
+        title: t('Runtime Name'),
         key: 'name',
         width: '155px',
         render: item => (
@@ -177,33 +181,33 @@ export default class RepoDetail extends Component {
         )
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Provider',
+        title: t('Provider'),
         key: 'provider',
         render: item => <ProviderName provider={item.provider} name={item.provider} />
       },
       {
-        title: 'Zone',
+        title: t('Zone'),
         key: 'zone',
         render: item => item.zone
       },
       {
-        title: 'Cluster Count',
+        title: t('Cluster Count'),
         key: 'node_count',
         render: item => clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length
       },
       {
-        title: 'User',
+        title: t('User'),
         key: 'owner',
         render: item => item.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -211,22 +215,22 @@ export default class RepoDetail extends Component {
     ];
     const eventsColumns = [
       {
-        title: 'Event Id',
+        title: t('Event Id'),
         key: 'repo_event_id',
         render: item => item.repo_event_id
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         render: item => item.status
       },
       {
-        title: 'User',
+        title: t('User'),
         key: 'owner',
         render: item => item.owner
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         width: '95px',
         render: item => <TimeShow time={item.status_time} />
@@ -238,7 +242,7 @@ export default class RepoDetail extends Component {
 
     let data = [];
     let columns = [];
-    let searchTip = 'Search App Name';
+    let searchTip = t('Search App');
     let totalCount = 0,
       currentPage = 1;
     let onSearch, onClearSearch, onRefresh, changeTable, isLoading, onChangeStatus, selectStatus;
@@ -286,7 +290,7 @@ export default class RepoDetail extends Component {
       case 'Runtimes':
         data = runtimesData;
         columns = runtimesColumns;
-        searchTip = 'Search Runtime Name';
+        searchTip = t('Search Runtimes');
         selectors = this.changeSelectors(repoDetail.selectors);
         totalCount = runtimeStore.totalCount;
         isLoading = runtimeStore.isLoading;
@@ -327,7 +331,7 @@ export default class RepoDetail extends Component {
         columns = eventsColumns;
         totalCount = eventsData.length;
         isLoading = repoStore.isLoading;
-        searchTip = 'Search Events';
+        searchTip = t('Search Events');
         onChangeStatus = async status => {
           repoStore.eventStatus = repoStore.eventStatus === status ? '' : status;
           await repoStore.fetchRepoEvents({
@@ -344,8 +348,11 @@ export default class RepoDetail extends Component {
         key: 'status',
         conditions:
           curTagName === 'Events'
-            ? [{ name: 'Successful', value: 'successful' }, { name: 'Deleted', value: 'deleted' }]
-            : [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+            ? [
+                { name: t('Successful'), value: 'successful' },
+                { name: t('Deleted'), value: 'deleted' }
+              ]
+            : [{ name: t('Active'), value: 'active' }, { name: t('Deleted'), value: 'deleted' }],
         onChangeFilter: onChangeStatus,
         changeTable: () => {},
         selectValue: selectStatus
@@ -386,7 +393,7 @@ export default class RepoDetail extends Component {
               <Card>
                 {curTagName === 'Runtimes' && (
                   <div className={styles.selector}>
-                    <div className={styles.title}>Runtime Selectors</div>
+                    <div className={styles.title}>{t('Runtime Selectors')}</div>
                     <TagShow tags={selectors} tagStyle="yellow" />
                   </div>
                 )}

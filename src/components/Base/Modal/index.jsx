@@ -3,6 +3,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import Icon from '../Icon';
 import Button from '../Button';
@@ -24,6 +25,7 @@ ReactModal.defaultStyles.content = Object.assign(
   }
 );
 
+@translate()
 export default class Modal extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -66,7 +68,8 @@ export default class Modal extends React.Component {
       okText,
       cancelText,
       closable,
-      isDialog
+      isDialog,
+      t
     } = this.props;
     const style = { content: { width } };
 
@@ -89,10 +92,10 @@ export default class Modal extends React.Component {
           <div className={styles.footer}>
             <div className={classnames({ [styles.operationBtn]: !isDialog })}>
               <Button type="primary" onClick={onOk}>
-                {okText || 'Confirm'}
+                {okText || t('Confirm')}
               </Button>
               <Button type="default" onClick={onCancel}>
-                {cancelText || 'Cancel'}
+                {cancelText || t('Cancel')}
               </Button>
             </div>
           </div>
