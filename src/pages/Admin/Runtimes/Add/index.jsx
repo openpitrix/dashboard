@@ -86,8 +86,8 @@ export default class RuntimeAdd extends Component {
             />
             <div className={styles.rightShow}>
               <p>
-                <label className={styles.inputTitle}>Access Key ID</label>
-                <label className={styles.inputTitle}>Secret Access Key</label>
+                <label className={styles.inputTitle}>{t('Access Key ID')}</label>
+                <label className={styles.inputTitle}>{t('Secret Access Key')}</label>
               </p>
               <Fragment>
                 <Input
@@ -103,7 +103,7 @@ export default class RuntimeAdd extends Component {
                   onBlur={getRuntimeZone}
                 />
                 <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                  Validate
+                  {t('Validate')}
                 </Button>
               </Fragment>
             </div>
@@ -234,7 +234,7 @@ export default class RuntimeAdd extends Component {
             className={classNames(styles.add, { [styles.addBottom]: labels.length })}
             onClick={this.store.addLabel}
           >
-            Add Label
+            {t('Add')}
           </Button>
         </div>
         <div className={styles.submitBtnGroup}>

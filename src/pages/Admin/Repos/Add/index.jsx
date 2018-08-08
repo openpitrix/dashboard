@@ -130,7 +130,7 @@ export default class RepoAdd extends Component {
             className={classNames(styles.add, { [styles.addBottom]: selectors.length })}
             onClick={this.store.addSelector}
           >
-            Add Selector
+            {t('Add')}
           </Button>
         </div>
         {!repoId && (

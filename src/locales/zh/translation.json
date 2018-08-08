@@ -44,6 +44,12 @@
   "Source repository": "代码仓库",
   "Maintainers": "维护者",
   "Related": "相关内容",
+  "Introduction": "介绍",
+  "Information": "信息",
+  "Application ID": "应用ID",
+  "Created At": "创建时间",
+
+
 
   "greet words": "你好，{{name}}",
   "last login time": "上次登录时间 {{last_login}}",
@@ -140,7 +146,7 @@
   "Private IP": "私有IP",
 
   "Runtime Provider" : "运行环境提供商",
-  "Zone/Namespace" : "区/命名空间",
+  "Zone/Namespace" : "地区/命名空间",
   "Cluster": "集群",
   "Creator": "创建者",
   "Count": "数量",
@@ -180,8 +186,12 @@
   "Credential": "证书",
   "The name of the runtime": "运行环境的名称",
   "The Credential of provider": "提供商的凭证",
+  "Access Key ID": "访问密钥ID",
+  "Secret Access Key": "访问密钥私钥",
+
   "Remove": "移除",
   "Add": "添加",
+  "Validate": "验证",
 
   "Confirm": "确定",
   "Cancel": "取消",

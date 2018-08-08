@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import Section from '../../section';
-
 import styles from './index.scss';
 import Icon from 'components/Base/Icon';
 
+@translate()
 @observer
 export default class QingCloud extends React.Component {
   static defaultProps = {
@@ -83,9 +84,15 @@ export default class QingCloud extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className={styles.body}>
-        <Section title="Introduction" contentClass={styles.description} style={{ marginLeft: 0 }}>
+        <Section
+          title={t('Introduction')}
+          contentClass={styles.description}
+          style={{ marginLeft: 0 }}
+        >
           {`is the Apache trafodion (the main contribution of the project hatch). Trafodion is the
           open source release of Apache 2014 and became a Apache project in May 2015. In the past
           ten years.`}

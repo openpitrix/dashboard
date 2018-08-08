@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
+
 import styles from './index.scss';
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
 
+@translate()
 export default class TodoList extends PureComponent {
   static propTypes = {
     labelType: PropTypes.oneOf(['label', 'selector']),
@@ -27,7 +30,7 @@ export default class TodoList extends PureComponent {
   };
 
   render() {
-    const { labels } = this.props;
+    const { labels, t } = this.props;
     return (
       <ul className={styles.list}>
         {labels.map((label, index) => {
@@ -57,7 +60,7 @@ export default class TodoList extends PureComponent {
                   this.onRemove(index);
                 }}
               >
-                Remove
+                {t('Remove')}
               </Button>
             </li>
           );
