@@ -49,8 +49,6 @@
   "Application ID": "应用ID",
   "Created At": "创建时间",
 
-
-
   "greet words": "你好，{{name}}",
   "last login time": "上次登录时间 {{last_login}}",
 
@@ -227,6 +225,7 @@
 
   "Copy success": "复制成功",
 
-  "search_results": "搜索结果"
+  "search_results": "搜索结果",
 
+  "None": "无"
 }
