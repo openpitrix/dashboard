@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { I18n } from 'react-i18next';
 
 import TdName from 'components/TdName';
 import Status from 'components/Status';
@@ -7,23 +8,17 @@ import { Icon } from 'components/Base';
 
 export default [
   {
-    title: 'Version Name',
+    title: <I18n>{t => <span>{t('Version Name')}</span>}</I18n>,
     key: 'name',
     render: obj => <TdName name={obj.name} description={obj.version_id} />
   },
   {
-    title: 'Status',
+    title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
     key: 'status',
     render: obj => <Status type={(obj.status + '').toLowerCase()} name={obj.status} />
   },
-  // {
-  //   title: 'Version ID',
-  //   key: 'version_id',
-  //   dataIndex: 'version_id',
-  //   width: '100px'
-  // },
   {
-    title: 'Package',
+    title: <I18n>{t => <span>{t('Download')}</span>}</I18n>,
     key: 'package_name',
     render: obj => (
       <a href={obj.package_name} target="_blank">
@@ -32,10 +27,9 @@ export default [
     )
   },
   {
-    title: 'Date Created',
+    title: <I18n>{t => <span>{t('Date Created')}</span>}</I18n>,
     key: 'create_time',
-    dataIndex: 'create_time',
-    width: '110px',
-    render: item => <TimeShow time={item.status_time} />
+    width: '150px',
+    render: item => <TimeShow time={item.status_time} type="lineTime" />
   }
 ];

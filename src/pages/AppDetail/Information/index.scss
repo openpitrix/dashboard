@@ -40,6 +40,9 @@
     dd{
       vertical-align: middle;
       color: $N300;
+      >div{
+        max-width: 450px;
+      }
     }
   }
 }

@@ -159,7 +159,7 @@ export default class AppDetail extends Component {
   onChangeStatus = async status => {
     const { clusterStore } = this.props;
     clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
-    await this.fetchAll({ status: clusterStore.selectStatus, app_id: this.appId });
+    await clusterStore.fetchAll({ status: clusterStore.selectStatus, app_id: this.appId });
   };
 
   changePagination = page => {
@@ -256,12 +256,12 @@ export default class AppDetail extends Component {
           {
             key: 'status',
             conditions: [
-              { name: 'Active', value: 'active' },
-              { name: 'Stopped', value: 'stopped' },
-              { name: 'Ceased', value: 'ceased' },
-              { name: 'Pending', value: 'pending' },
-              { name: 'Suspended', value: 'suspended' },
-              { name: 'Deleted', value: 'deleted' }
+              { name: t('Pending'), value: 'pending' },
+              { name: t('Active'), value: 'active' },
+              { name: t('Stopped'), value: 'stopped' },
+              { name: t('Suspended'), value: 'suspended' },
+              { name: t('Deleted'), value: 'deleted' },
+              { name: t('Ceased'), value: 'ceased' }
             ],
             onChangeFilter: this.onChangeStatus,
             selectValue: selectStatus

@@ -44,6 +44,12 @@
   "Source repository": "代码仓库",
   "Maintainers": "维护者",
   "Related": "相关内容",
+  "Introduction": "介绍",
+  "Information": "信息",
+  "Application ID": "应用ID",
+  "Created At": "创建时间",
+
+
 
   "greet words": "你好，{{name}}",
   "last login time": "上次登录时间 {{last_login}}",
@@ -75,7 +81,7 @@
   "Delete": "删除",
   "Search App": "搜索应用",
   "App Name": "应用名称",
-  "Latest Version": "最近版本",
+  "Latest Version": "最新版本",
   "Status": "状态",
   "Visibility": "可见性",
   "Repo": "仓库",
@@ -92,6 +98,10 @@
   "Delete Version desc": "您确定要删除该版本吗?",
   "Search Clusters": "搜索集群",
   "Search Version": "搜索版本",
+  "App Version": "应用版本",
+  "Version Name": "版本名称",
+  "Download": "下载",
+  "Date Created": "创建时间",
 
 
   "Preview in Catalog": "在目录中预览",
@@ -140,7 +150,7 @@
   "Private IP": "私有IP",
 
   "Runtime Provider" : "运行环境提供商",
-  "Zone/Namespace" : "区/命名空间",
+  "Zone/Namespace" : "地区/命名空间",
   "Cluster": "集群",
   "Creator": "创建者",
   "Count": "数量",
@@ -180,8 +190,12 @@
   "Credential": "证书",
   "The name of the runtime": "运行环境的名称",
   "The Credential of provider": "提供商的凭证",
+  "Access Key ID": "访问密钥ID",
+  "Secret Access Key": "访问密钥私钥",
+
   "Remove": "移除",
   "Add": "添加",
+  "Validate": "验证",
 
   "Confirm": "确定",
   "Cancel": "取消",
