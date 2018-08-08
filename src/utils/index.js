@@ -48,7 +48,7 @@ export function getSessInfo(key, store) {
   return typeof store === 'object' ? get(store, key) : null;
 }
 
-export function getLoginDate(timestamp, locale = 'en') {
+export function getLoginDate(timestamp = Date.now(), locale = 'en') {
   let ts = day(parseInt(timestamp));
   if (locale === 'en') {
     return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
