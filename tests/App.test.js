@@ -4,8 +4,11 @@ import { Provider } from 'mobx-react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import App from 'src/App';
-import routes from 'src/routes';
+// import routes from 'src/routes';
 import renderRoute from 'src/routes/renderRoute';
+
+import Home from 'pages/Home';
+import Login from 'pages/Login';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -17,10 +20,10 @@ const localStorageMock = {
 global.localStorage = localStorageMock;
 
 describe('<App/>', () => {
-  let store, location;
+  let store, location, routes;
 
   beforeEach(() => {
-    useStrict(false);
+    useStrict(true);
 
     store = observable({
       fixNav: false,
@@ -28,32 +31,37 @@ describe('<App/>', () => {
         appSearch: () => {}
       }
     });
+
+    // mock routes
+    routes = [
+      { path: '/', component: Home, exact: true },
+      { path: '/login', component: Login, exact: true }
+    ];
   });
 
   afterEach(() => {
     store = null;
+    routes = [];
   });
 
-  const renderPage = (location, store) => {
-    return (
-      <Provider rootStore={store} sessInfo={null}>
-        <BrowserRouter>
-          <App location={location}>
-            <Switch>
-              {routes.map((route, i) => (
-                <Route
-                  key={i}
-                  exact={route.exact}
-                  path={route.path}
-                  render={({ match }) => renderRoute(match, route, store)}
-                />
-              ))}
-            </Switch>
-          </App>
-        </BrowserRouter>
-      </Provider>
-    );
-  };
+  const renderPage = (location, store) => (
+    <Provider rootStore={store} sessInfo={null}>
+      <BrowserRouter>
+        <App location={location}>
+          <Switch>
+            {routes.map((route, i) => (
+              <Route
+                key={i}
+                exact={route.exact}
+                path={route.path}
+                render={({ match }) => renderRoute(match, route, store)}
+              />
+            ))}
+          </Switch>
+        </App>
+      </BrowserRouter>
+    </Provider>
+  );
 
   it('basic render', () => {
     location = { pathname: '/' };
