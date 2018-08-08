@@ -81,7 +81,7 @@
   "Delete": "删除",
   "Search App": "搜索应用",
   "App Name": "应用名称",
-  "Latest Version": "最近版本",
+  "Latest Version": "最新版本",
   "Status": "状态",
   "Visibility": "可见性",
   "Repo": "仓库",
@@ -98,6 +98,10 @@
   "Delete Version desc": "您确定要删除该版本吗?",
   "Search Clusters": "搜索集群",
   "Search Version": "搜索版本",
+  "App Version": "应用版本",
+  "Version Name": "版本名称",
+  "Download": "下载",
+  "Date Created": "创建时间",
 
 
   "Preview in Catalog": "在目录中预览",

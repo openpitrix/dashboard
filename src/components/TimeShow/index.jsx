@@ -7,7 +7,7 @@ import styles from './index.scss';
 export default class TimeShow extends Component {
   static propTypes = {
     time: PropTypes.string,
-    type: PropTypes.oneOf(['listTime', 'detailTime'])
+    type: PropTypes.oneOf(['listTime', 'detailTime', 'lineTime'])
   };
 
   static defaultProps = {
