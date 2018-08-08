@@ -183,7 +183,6 @@ export default class RepoDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {

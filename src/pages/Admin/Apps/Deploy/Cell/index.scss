@@ -20,12 +20,13 @@
     line-height: 32px;
   }
   .radioName{
+
     margin-top: 5px;
   }
   .showWord{
     float: left;
     display: inline-block;
-    max-width: 420px;
+    max-width: 480px;
     line-height: 32px;
   }
   .rightShow{
@@ -82,15 +83,13 @@
     background-color: $N0;
     border: 1px solid $N30;
     outline: none;
-    resize: none;
     &:focus{
       box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
       border: solid 1px $P75;
     }
   }
   .textareaName{
-    float: none;
     position: relative;
-    bottom: 60px;
+    top: 5px;
   }
 }
