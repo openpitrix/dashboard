@@ -48,11 +48,11 @@
     .preview{
       line-height: 17px;
       font-size: 14px;
-      color: $preview-title;
+      color: $P75;
       margin-top: 10px;
-      //a, a:active{
-      //  color: $preview-title;
-      //}
+      a, a:active{
+       color: $P75;
+      }
     }
   }
   .noImg{

@@ -38,20 +38,21 @@ export default class RepoDetail extends Component {
       .filter(label => label.label_key)
       .map(label => [label.label_key, label.label_value].join('='))
       .join('&');
+    repoStore.queryLabel = queryLabel;
+    repoStore.queryProviders = repoStore.repoDetail.providers;
     await runtimeStore.fetchAll({
-      repo_id: repoId,
       label: queryLabel,
       provider: repoStore.repoDetail.providers
     });
     await clusterStore.fetchAll({
       repo_id: repoId
     });
-    repoStore.curTagName = 'Apps';
   }
 
   constructor(props) {
     super(props);
     props.repoStore.setSocketMessage();
+    this.props.repoStore.pageInit();
   }
 
   listenToJob = async payload => {
@@ -183,7 +184,6 @@ export default class RepoDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
@@ -297,7 +297,8 @@ export default class RepoDetail extends Component {
         onSearch = async name => {
           runtimeStore.changeSearchWord(name);
           await runtimeStore.fetchAll({
-            repo_id: repoDetail.repo_id
+            label: repoStore.queryLabel,
+            provider: repoStore.queryProviders
           });
         };
         onClearSearch = async () => {
@@ -305,14 +306,16 @@ export default class RepoDetail extends Component {
         };
         onRefresh = async () => {
           await runtimeStore.fetchAll({
-            repo_id: repoDetail.repo_id,
+            label: repoStore.queryLabel,
+            provider: repoStore.queryProviders,
             search_word: searchWord
           });
         };
         changeTable = async current => {
           runtimeStore.setCurrentPage(current);
           await runtimeStore.fetchAll({
-            repo_id: repoDetail.repo_id,
+            label: repoStore.queryLabel,
+            provider: repoStore.queryProviders,
             offset: (current - 1) * runtimeStore.pageSize
           });
         };
@@ -320,7 +323,8 @@ export default class RepoDetail extends Component {
         onChangeStatus = async status => {
           runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
           await runtimeStore.fetchAll({
-            repo_id: repoDetail.repo_id,
+            label: repoStore.queryLabel,
+            provider: repoStore.queryProviders,
             status: runtimeStore.selectStatus
           });
         };

@@ -120,7 +120,7 @@ export default class AppDeploy extends Component {
             )
         )}
         <div className={styles.cellModule}>
-          <label className={styles.name}>Runtime</label>
+          <label className={classnames(styles.name, styles.radioName)}>Runtime</label>
           <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
             {runtimes &&
               runtimes.map(({ runtime_id, name }) => (

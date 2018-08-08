@@ -243,7 +243,7 @@ export default class AppDetail extends Component {
     if (detailTab === 'Clusters') {
       toolbarOptions = {
         searchWord: swCluster,
-        placeholder: t('Search Cluster'),
+        placeholder: t('Search Clusters'),
         onSearch: this.onSearch,
         onClear: this.onClearSearch,
         onRefresh: this.onRefresh

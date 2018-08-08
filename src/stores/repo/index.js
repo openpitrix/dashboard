@@ -11,6 +11,8 @@ export default class RepoStore extends Store {
   @observable repoId = '';
   @observable showDeleteRepo = false;
   @observable curTagName = 'Apps';
+  @observable queryLabel = '';
+  @observable queryProviders = '';
   @observable searchWord = '';
   @observable detailSearch = '';
   @observable defaultStatus = ['active'];
@@ -138,6 +140,13 @@ export default class RepoStore extends Store {
     } else {
       this.showMsg(`Start repo indexer failed: ${repoEvent.errDetail}`);
     }
+  };
+
+  @action
+  pageInit = () => {
+    this.curTagName = 'Apps';
+    this.queryLabel = '';
+    this.queryProviders = '';
   };
 }
 

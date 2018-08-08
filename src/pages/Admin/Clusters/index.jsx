@@ -189,6 +189,7 @@ export default class Clusters extends Component {
       {
         title: t('Status'),
         key: 'status',
+        width: '102px',
         render: cl => <Status type={cl.status} name={cl.status} />
       },
       {

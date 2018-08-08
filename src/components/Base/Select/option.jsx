@@ -26,7 +26,7 @@ export default class Option extends React.Component {
     return (
       <div className={classNames} {...rest}>
         {children}
-        {isSelected && <Icon name="check" />}
+        {isSelected && <Icon name="check" type="dark" />}
       </div>
     );
   }
