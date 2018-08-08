@@ -1,52 +1,77 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
-import { isArray, isObject } from 'utils/types';
+import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
-const VersionItem = ({ title = '', value = '', type = '' }) => {
-  const resolveValue = value => {
-    if (!value) return 'None';
-    if (type === 'link') {
-      return (
-        <a href={value} target="_blank">
-          {value}
-        </a>
-      );
+@translate()
+export default class VersionItem extends PureComponent {
+  static defaultProps = {
+    title: '',
+    values: '',
+    type: ''
+  };
+
+  static propTypes = {
+    title: PropTypes.string,
+    value: PropTypes.node,
+    type: PropTypes.string
+  };
+
+  resolveValue(value) {
+    if (typeof value === 'string') {
+      if (value.indexOf(',') > -1) {
+        value = value.split(',');
+      }
     }
+
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+
+    return value;
+  }
+
+  renderValue(value, type) {
+    const { t } = this.props;
+
+    if (!value) {
+      return t('None');
+    }
+
+    if (type === 'link') {
+      return this.resolveValue(value).map((item, idx) => (
+        <div key={idx} className={styles.linkItem}>
+          <a href={item} target="_blank">
+            {item}
+          </a>
+        </div>
+      ));
+    }
+
     if (type === 'maintainer') {
       try {
         value = JSON.parse(value);
       } catch (e) {}
 
-      value = value || [];
-      if (isObject(value)) {
-        value = [value];
-      }
-      if (isArray(value)) {
-        return value.map((v, i) => (
-          <div key={i}>
-            <a href={`mailto:${v.email || ''}`}>{v.name || ''}</a>
-          </div>
-        ));
-      }
+      return this.resolveValue(value).map((item, idx) => (
+        <div key={idx} className={styles.linkItem}>
+          <a href={`mailto:${item.email || ''}`}>{item.name || ''}</a>
+        </div>
+      ));
     }
+
     return value.toString();
-  };
+  }
 
-  return (
-    <div className={styles.versionItem}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.value}>{resolveValue(value)}</div>
-    </div>
-  );
-};
+  render() {
+    const { title, value, type } = this.props;
 
-VersionItem.propTypes = {
-  title: PropTypes.string,
-  value: PropTypes.node,
-  type: PropTypes.string
-};
-
-export default VersionItem;
+    return (
+      <div className={styles.versionItem}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.value}>{this.renderValue(value, type)}</div>
+      </div>
+    );
+  }
+}
