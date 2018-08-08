@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { I18n } from 'react-i18next';
 
 import { Grid, Section, Panel, Card } from 'components/Layout';
-
 import styles from './index.scss';
 
 const CreateResource = ({ className, children, title, aside, asideTitle, ...rest }) => (
@@ -17,7 +17,9 @@ const CreateResource = ({ className, children, title, aside, asideTitle, ...rest
 
     {aside && (
       <Section className={styles.aside}>
-        {asideTitle && <div className={styles.title}>{asideTitle}</div>}
+        <div className={styles.title}>
+          <I18n>{t => <span>{t(asideTitle)}</span>}</I18n>
+        </div>
         <div className={styles.content}>{aside}</div>
       </Section>
     )}

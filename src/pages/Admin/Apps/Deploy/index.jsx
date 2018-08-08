@@ -23,7 +23,7 @@ import styles from './index.scss';
 export default class AppDeploy extends Component {
   static async onEnter({ appStore, repoStore, appDeployStore }, { appId }) {
     appDeployStore.appId = appId;
-
+    appStore.isLoading = true;
     await appStore.fetch(appId);
 
     if (appStore.appDetail.repo_id) {
@@ -45,16 +45,22 @@ export default class AppDeploy extends Component {
       label: queryLabel,
       provider: repoProviders
     });
+    appStore.isLoading = false;
   }
 
   render() {
     const { appDeployStore, appStore, t } = this.props;
     const appName = appStore.appDetail.name + '';
     const { isKubernetes } = appDeployStore;
+    const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appName}`;
 
     return (
-      <Layout noTabs backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}>
+      <Layout
+        noTabs
+        isLoading={isLoading}
+        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
+      >
         <CreateResource title={title} aside={this.renderAside()} asideTitle={''}>
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}
         </CreateResource>
@@ -78,9 +84,8 @@ export default class AppDeploy extends Component {
   }
 
   renderForm() {
-    const { appDeployStore, runtimeStore, t } = this.props;
+    const { appDeployStore, t } = this.props;
     const {
-      config,
       configBasics,
       configNodes,
       configEnvs,
@@ -196,12 +201,7 @@ export default class AppDeploy extends Component {
           ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button
-            type={`primary`}
-            className={`primary`}
-            htmlType="submit"
-            disabled={appDeployStore.isLoading}
-          >
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             {t('Confirm')}
           </Button>
           <Button
@@ -286,7 +286,7 @@ export default class AppDeploy extends Component {
           ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit">
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
             {t('Confirm')}
           </Button>
           <Button
