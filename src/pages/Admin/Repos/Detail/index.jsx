@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, pick } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import TdName from 'components/TdName';
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import { ProviderName } from 'components/TdName';
-import TimeShow from 'components/TimeShow';
+import appColumns from './tabs/app-columns';
+import runtimesColumns from './tabs/runtime-columns';
+import eventsColumns from './tabs/event-columns';
 
 import styles from './index.scss';
 
@@ -29,30 +29,12 @@ import styles from './index.scss';
 export default class RepoDetail extends Component {
   static async onEnter({ repoStore, appStore, runtimeStore, clusterStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
-    await repoStore.fetchRepoEvents({ repo_id: repoId });
-    await appStore.fetchAll({
-      repo_id: repoId
-    });
-    const labels = repoStore.repoDetail.labels || [];
-    const queryLabel = labels
-      .filter(label => label.label_key)
-      .map(label => [label.label_key, label.label_value].join('='))
-      .join('&');
-    repoStore.queryLabel = queryLabel;
-    repoStore.queryProviders = repoStore.repoDetail.providers;
-    await runtimeStore.fetchAll({
-      label: queryLabel,
-      provider: repoStore.repoDetail.providers
-    });
-    await clusterStore.fetchAll({
-      repo_id: repoId
-    });
   }
 
   constructor(props) {
     super(props);
     props.repoStore.setSocketMessage();
-    this.props.repoStore.pageInit();
+    this.props.repoStore.loadPageInit();
   }
 
   listenToJob = async payload => {
@@ -72,13 +54,10 @@ export default class RepoDetail extends Component {
   };
 
   changeSelectors = items => {
-    return (
-      items &&
-      items.map(item => ({
-        label_key: item.selector_key,
-        label_value: item.selector_value
-      }))
-    );
+    return items.map(item => ({
+      label_key: item.selector_key,
+      label_value: item.selector_value
+    }));
   };
 
   renderHandleMenu = id => {
@@ -110,265 +89,231 @@ export default class RepoDetail extends Component {
     );
   };
 
+  changeDetailTab = async tab => {
+    const { appStore, runtimeStore, repoStore, clusterStore, match } = this.props;
+    const { repoId } = match.params;
+    repoStore.curTagName = tab;
+
+    if (tab === 'Apps') {
+      appStore.searchWord = '';
+      await appStore.fetchAll({ repo_id: repoId });
+    } else if (tab === 'Runtimes') {
+      runtimeStore.searchWord = '';
+      const labels = repoStore.repoDetail.labels || [];
+      const queryLabel = labels
+        .filter(label => label.label_key)
+        .map(label => [label.label_key, label.label_value].join('='))
+        .join('&');
+      repoStore.queryLabel = queryLabel;
+      repoStore.queryProviders = repoStore.repoDetail.providers;
+      await runtimeStore.fetchAll({
+        label: queryLabel,
+        provider: repoStore.repoDetail.providers
+      });
+      if (!clusterStore.clusters.length) {
+        await clusterStore.fetchAll();
+      }
+    } else if (tab === 'Events') {
+      await repoStore.fetchRepoEvents({ repo_id: repoId });
+    }
+  };
+
+  onSearchApp = async name => {
+    const { changeSearchWord, fetchAll } = this.props.appStore;
+    const { repoDetail } = this.props.repoStore;
+    changeSearchWord(name);
+    await fetchAll({
+      repo_id: repoDetail.repo_id
+    });
+  };
+
+  onClearApp = async () => {
+    await this.onSearchApp('');
+  };
+
+  onRefreshApp = async () => {
+    const { fetchAll, searchWord, currentPage, pageSize } = this.props.appStore;
+    const { repoDetail } = this.props.repoStore;
+    await fetchAll({
+      repo_id: repoDetail.repo_id,
+      search_word: searchWord,
+      offset: (currentPage - 1) * pageSize
+    });
+  };
+
+  changeTableApp = async current => {
+    const { setCurrentPage, fetchAll, currentPage, pageSize } = this.props.appStore;
+    const { repoDetail } = this.props.repoStore;
+    setCurrentPage(current);
+    await fetchAll({
+      repo_id: repoDetail.repo_id,
+      offset: (currentPage - 1) * pageSize
+    });
+  };
+
+  onChangeStatusApp = async status => {
+    const { appStore, repoStore } = this.props;
+    appStore.selectStatus = appStore.selectStatus === status ? '' : status;
+    await appStore.fetchAll({
+      repo_id: repoStore.repoDetail.repo_id,
+      status: appStore.selectStatus
+    });
+  };
+
+  onSearch = async name => {
+    const { runtimeStore, repoStore } = this.props;
+    runtimeStore.changeSearchWord(name);
+    await runtimeStore.fetchAll({
+      label: repoStore.queryLabel,
+      provider: repoStore.queryProviders
+    });
+  };
+
+  onClear = async () => {
+    await this.onSearch('');
+  };
+
+  onRefresh = async () => {
+    const { runtimeStore, repoStore } = this.props;
+    await runtimeStore.fetchAll({
+      label: repoStore.queryLabel,
+      provider: repoStore.queryProviders,
+      search_word: runtimeStore.searchWord,
+      offset: (runtimeStore.currentPage - 1) * runtimeStore.pageSize
+    });
+  };
+
+  changeTable = async current => {
+    const { runtimeStore, repoStore } = this.props;
+    runtimeStore.setCurrentPage(current);
+    await runtimeStore.fetchAll({
+      label: repoStore.queryLabel,
+      provider: repoStore.queryProviders,
+      offset: (current - 1) * runtimeStore.pageSize
+    });
+  };
+
+  onChangeStatus = async status => {
+    const { runtimeStore, repoStore } = this.props;
+    runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
+    await runtimeStore.fetchAll({
+      label: repoStore.queryLabel,
+      provider: repoStore.queryProviders,
+      status: runtimeStore.selectStatus
+    });
+  };
+
+  changeTableEvent = async current => {
+    const { repoStore, match } = this.props;
+    const { repoId } = match.params;
+    repoStore.setCurrentPage(current);
+    await repoStore.fetchRepoEvents({
+      repo_id: repoId,
+      offset: (current - 1) * repoStore.pageSize
+    });
+  };
+
+  renderToolbar(options = {}) {
+    return (
+      <Toolbar
+        {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+      />
+    );
+  }
+  renderTable(options = {}) {
+    return (
+      <Table
+        {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
+      />
+    );
+  }
+
   render() {
     const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
-    const repoDetail = repoStore.repoDetail;
-    const appsData = appStore.apps.toJSON();
+    const { repoDetail, curTagName, sockMessage } = repoStore;
     const appCount = appStore.totalCount;
-    const runtimesData = runtimeStore.runtimes.toJSON();
     const clusters = clusterStore.clusters.toJSON();
-    const eventsData = repoStore.repoEvents.toJSON();
-
-    const { sockMessage } = repoStore;
-
-    const appsColumns = [
-      {
-        title: t('App Name'),
-        key: 'name',
-        width: '190px',
-        render: item => (
-          <TdName
-            name={item.name}
-            description={item.app_id}
-            image={item.icon || 'appcenter'}
-            linkUrl={`/dashboard/app/${item.app_id}`}
-          />
-        )
-      },
-      {
-        title: t('Latest Version'),
-        key: 'latest_version',
-        width: '116px',
-        render: item => get(item, 'latest_app_version.name', '')
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        width: '100px',
-        render: item => <Status type={item.status} name={item.status} />
-      },
-      {
-        title: t('Categories'),
-        key: 'category',
-        render: item =>
-          get(item, 'category_set', [])
-            .filter(cate => cate.category_id && cate.status === 'enabled')
-            .map(cate => cate.name)
-            .join(', ')
-      },
-      {
-        title: t('Developer'),
-        key: 'owner',
-        render: item => item.owner
-      },
-      {
-        title: t('Updated At'),
-        key: 'status_time',
-        width: '95px',
-        render: item => <TimeShow time={item.status_time} />
-      }
-    ];
-    const runtimesColumns = [
-      {
-        title: t('Runtime Name'),
-        key: 'name',
-        width: '155px',
-        render: item => (
-          <TdName
-            name={item.name}
-            description={item.runtime_id}
-            linkUrl={`/dashboard/runtime/${item.runtime_id}`}
-          />
-        )
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        render: item => <Status type={item.status} name={item.status} />
-      },
-      {
-        title: t('Provider'),
-        key: 'provider',
-        render: item => <ProviderName provider={item.provider} name={item.provider} />
-      },
-      {
-        title: t('Zone'),
-        key: 'zone',
-        render: item => item.zone
-      },
-      {
-        title: t('Cluster Count'),
-        key: 'node_count',
-        render: item => clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length
-      },
-      {
-        title: t('User'),
-        key: 'owner',
-        render: item => item.owner
-      },
-      {
-        title: t('Updated At'),
-        key: 'status_time',
-        width: '95px',
-        render: item => <TimeShow time={item.status_time} />
-      }
-    ];
-    const eventsColumns = [
-      {
-        title: t('Event Id'),
-        key: 'repo_event_id',
-        render: item => item.repo_event_id
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        render: item => item.status
-      },
-      {
-        title: t('User'),
-        key: 'owner',
-        render: item => item.owner
-      },
-      {
-        title: t('Updated At'),
-        key: 'status_time',
-        width: '95px',
-        render: item => <TimeShow time={item.status_time} />
-      }
-    ];
-
-    const { curTagName, selectCurTag } = repoStore;
-    const detailSearch = '';
-
-    let data = [];
-    let columns = [];
-    let searchTip = t('Search App');
-    let totalCount = 0,
-      currentPage = 1;
-    let onSearch, onClearSearch, onRefresh, changeTable, isLoading, onChangeStatus, selectStatus;
     let selectors = [];
+    let toolbarOptions, tableOptions;
 
     switch (curTagName) {
       case 'Apps':
-        const { fetchAll, changeSearchWord, searchWord } = appStore;
-        data = appsData;
-        columns = appsColumns;
-        totalCount = appStore.totalCount;
-        isLoading = appStore.isLoading;
-        onSearch = async name => {
-          changeSearchWord(name);
-          await fetchAll({
-            repo_id: repoDetail.repo_id
-          });
+        toolbarOptions = {
+          searchWord: appStore.searchWord,
+          placeholder: t('Search App'),
+          onSearch: this.onSearchApp,
+          onClear: this.onClearApp,
+          onRefresh: this.onRefreshApp
         };
-        onClearSearch = async () => {
-          await onSearch('');
+        tableOptions = {
+          columns: appColumns,
+          dataSource: appStore.apps.toJSON(),
+          isLoading: appStore.isLoading,
+          filterList: [
+            {
+              key: 'status',
+              conditions: [
+                { name: t('Active'), value: 'active' },
+                { name: t('Deleted'), value: 'deleted' }
+              ],
+              onChangeFilter: this.onChangeStatusApp,
+              selectValue: appStore.selectStatus
+            }
+          ],
+          pagination: {
+            tableType: 'Apps',
+            onChange: this.changeTableApp,
+            total: appStore.totalCount,
+            current: appStore.currentPage
+          }
         };
-        onRefresh = async () => {
-          await fetchAll({
-            repo_id: repoDetail.repo_id,
-            search_word: searchWord
-          });
-        };
-        changeTable = async current => {
-          appStore.setCurrentPage(current);
-          await fetchAll({
-            repo_id: repoDetail.repo_id,
-            offset: (current - 1) * appStore.pageSize
-          });
-        };
-        currentPage = appStore.currentPage;
-        onChangeStatus = async status => {
-          appStore.selectStatus = appStore.selectStatus === status ? '' : status;
-          await appStore.fetchAll({
-            repo_id: repoDetail.repo_id,
-            status: appStore.selectStatus
-          });
-        };
-        selectStatus = appStore.selectStatus;
         break;
       case 'Runtimes':
-        data = runtimesData;
-        columns = runtimesColumns;
-        searchTip = t('Search Runtimes');
-        selectors = this.changeSelectors(repoDetail.selectors);
-        totalCount = runtimeStore.totalCount;
-        isLoading = runtimeStore.isLoading;
-        onSearch = async name => {
-          runtimeStore.changeSearchWord(name);
-          await runtimeStore.fetchAll({
-            label: repoStore.queryLabel,
-            provider: repoStore.queryProviders
-          });
+        selectors = this.changeSelectors(repoDetail.selectors || []);
+        toolbarOptions = {
+          searchWord: runtimeStore.searchWord,
+          placeholder: t('Search Runtimes'),
+          onSearch: this.onSearch,
+          onClear: this.onClear,
+          onRefresh: this.onRefresh
         };
-        onClearSearch = async () => {
-          await onSearch('');
+        tableOptions = {
+          columns: runtimesColumns(clusters),
+          dataSource: runtimeStore.runtimes.toJSON(),
+          isLoading: runtimeStore.isLoading,
+          filterList: [
+            {
+              key: 'status',
+              conditions: [
+                { name: t('Active'), value: 'active' },
+                { name: t('Deleted'), value: 'deleted' }
+              ],
+              onChangeFilter: this.onChangeStatus,
+              selectValue: runtimeStore.selectStatus
+            }
+          ],
+          pagination: {
+            tableType: 'Runtimes',
+            onChange: this.changeTable,
+            total: runtimeStore.totalCount,
+            current: runtimeStore.currentPage
+          }
         };
-        onRefresh = async () => {
-          await runtimeStore.fetchAll({
-            label: repoStore.queryLabel,
-            provider: repoStore.queryProviders,
-            search_word: searchWord
-          });
-        };
-        changeTable = async current => {
-          runtimeStore.setCurrentPage(current);
-          await runtimeStore.fetchAll({
-            label: repoStore.queryLabel,
-            provider: repoStore.queryProviders,
-            offset: (current - 1) * runtimeStore.pageSize
-          });
-        };
-        currentPage = runtimeStore.currentPage;
-        onChangeStatus = async status => {
-          runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
-          await runtimeStore.fetchAll({
-            label: repoStore.queryLabel,
-            provider: repoStore.queryProviders,
-            status: runtimeStore.selectStatus
-          });
-        };
-        selectStatus = runtimeStore.selectStatus;
         break;
       case 'Events':
-        data = eventsData;
-        columns = eventsColumns;
-        totalCount = eventsData.length;
-        isLoading = repoStore.isLoading;
-        searchTip = t('Search Events');
-        onChangeStatus = async status => {
-          repoStore.eventStatus = repoStore.eventStatus === status ? '' : status;
-          await repoStore.fetchRepoEvents({
-            repo_id: repoDetail.repo_id,
-            status: repoStore.eventStatus
-          });
+        tableOptions = {
+          columns: eventsColumns,
+          dataSource: repoStore.repoEvents.toJSON(),
+          isLoading: repoStore.isLoading,
+          pagination: {
+            tableType: 'Events',
+            onChange: this.changeTableEvent,
+            total: repoStore.totalCount,
+            current: repoStore.currentPage
+          }
         };
-        selectStatus = repoStore.eventStatus;
         break;
     }
-
-    let filterList = [
-      {
-        key: 'status',
-        conditions:
-          curTagName === 'Events'
-            ? [
-                { name: t('Successful'), value: 'successful' },
-                { name: t('Deleted'), value: 'deleted' }
-              ]
-            : [{ name: t('Active'), value: 'active' }, { name: t('Deleted'), value: 'deleted' }],
-        onChangeFilter: onChangeStatus,
-        changeTable: () => {},
-        selectValue: selectStatus
-      }
-    ];
-
-    const pagination = {
-      tableType: curTagName,
-      onChange: changeTable,
-      total: totalCount,
-      current: currentPage
-    };
 
     return (
       <Layout
@@ -392,7 +337,7 @@ export default class RepoDetail extends Component {
               <TagNav
                 tags={['Apps', 'Runtimes', 'Events']}
                 defaultTag={curTagName}
-                changeTag={selectCurTag.bind(repoStore)}
+                changeTag={this.changeDetailTab}
               />
               <Card>
                 {curTagName === 'Runtimes' && (
@@ -401,24 +346,8 @@ export default class RepoDetail extends Component {
                     <TagShow tags={selectors} tagStyle="yellow" />
                   </div>
                 )}
-
-                {curTagName !== 'Events' && (
-                  <Toolbar
-                    placeholder={searchTip}
-                    searchWord={detailSearch}
-                    onSearch={onSearch}
-                    onClear={onClearSearch}
-                    onRefresh={onRefresh}
-                  />
-                )}
-
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  isLoading={isLoading}
-                  filterList={filterList}
-                  pagination={pagination}
-                />
+                {curTagName !== 'Events' && this.renderToolbar(toolbarOptions)}
+                {this.renderTable(tableOptions)}
               </Card>
               {this.deleteRepoModal()}
             </Panel>

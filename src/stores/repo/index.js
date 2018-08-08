@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import _, { get } from 'lodash';
+import _, { get, assign } from 'lodash';
 
 export default class RepoStore extends Store {
   @observable repos = [];
@@ -17,6 +17,8 @@ export default class RepoStore extends Store {
   @observable detailSearch = '';
   @observable defaultStatus = ['active'];
   @observable eventStatus = '';
+  @observable currentPage = 1;
+  @observable totalCount = 0;
 
   initLoadNumber = 3;
   @observable appStore = null;
@@ -71,8 +73,14 @@ export default class RepoStore extends Store {
   @action
   fetchRepoEvents = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get(`repo_events`, params);
+    let pageOffset = params.page || this.currentPage;
+    let defaultParams = {
+      limit: this.pageSize,
+      offset: (pageOffset - 1) * this.pageSize
+    };
+    const result = await this.request.get(`repo_events`, assign(defaultParams, params));
     this.repoEvents = get(result, 'repo_event_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
@@ -143,10 +151,15 @@ export default class RepoStore extends Store {
   };
 
   @action
-  pageInit = () => {
+  loadPageInit = () => {
     this.curTagName = 'Apps';
     this.queryLabel = '';
     this.queryProviders = '';
+  };
+
+  @action
+  setCurrentPage = page => {
+    this.currentPage = page;
   };
 }
 
