@@ -183,16 +183,18 @@ export default class Categories extends Component {
               <div className={styles.word}>{t('Uncategories')}</div>
             </div>
           </div>
-          <div className={styles.categoryContent}>
-            <div className={styles.rectangle}>
-              <div className={styles.title} title={uncategorized.name}>
-                <Link to={`/dashboard/category/${uncategorized.category_id}`}>
-                  {uncategorized.name}
-                </Link>
+          {uncategorized.category_id && (
+            <div className={styles.categoryContent}>
+              <div className={styles.rectangle}>
+                <div className={styles.title} title={uncategorized.name}>
+                  <Link to={`/dashboard/category/${uncategorized.category_id}`}>
+                    {uncategorized.name}
+                  </Link>
+                </div>
+                <AppImages apps={uncategorized.apps} total={uncategorized.total} />
               </div>
-              <AppImages apps={uncategorized.apps} total={uncategorized.total} />
             </div>
-          </div>
+          )}
         </div>
         {this.renderOpsModal()}
         {this.renderDeleteModal()}

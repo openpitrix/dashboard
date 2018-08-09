@@ -15,6 +15,12 @@ export function getScrollTop() {
     : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 }
 
+export function getScrollBottom() {
+  const bodyHeight = document.body.clientHeight;
+  const docHeight = document.documentElement.clientHeight;
+  return bodyHeight - docHeight - getScrollTop();
+}
+
 export function getCookie(name) {
   let re = new RegExp(name + '=([^;]+)');
   let value = re.exec(document.cookie);

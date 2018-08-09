@@ -4,6 +4,7 @@ import { get, assign } from 'lodash';
 
 export default class AppStore extends Store {
   @observable apps = [];
+  @observable homeApps = []; //home page category apps
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable categoryTitle = '';
@@ -80,7 +81,11 @@ export default class AppStore extends Store {
       delete params.page;
     }
 
-    this.isLoading = true;
+    if (!params.noLoading) {
+      this.isLoading = true;
+    } else {
+      delete params.noLoading;
+    }
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);

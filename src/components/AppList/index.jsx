@@ -28,16 +28,14 @@ export default class AppList extends PureComponent {
     }
 
     if (categoryShow) {
-      return categoryApps.map((cate, idx) => {
-        cate.apps = cate.apps || [];
+      return categoryApps.map(({ category_id, name, apps }) => {
+        apps = apps || [];
 
         return (
-          <div key={`${idx}-${cate.name}`} className={styles.categoryApps}>
-            {cate.apps.length > 0 && (
-              <CardTitle categoryId={cate.category_id} title={cate.name} more />
-            )}
+          <div key={category_id} className={styles.categoryApps}>
+            {apps.length > 0 && <CardTitle categoryId={category_id} title={name} more />}
 
-            {cate.apps.slice(0, 6).map(app => (
+            {apps.slice(0, 6).map(app => (
               <Link key={app.app_id} to={`/app/${app.app_id}`}>
                 <Card icon={app.icon} name={app.name} desc={app.description} fold />
               </Link>
