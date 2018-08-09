@@ -188,7 +188,7 @@ export default class Categories extends Component {
               <div className={styles.rectangle}>
                 <div className={styles.title} title={uncategorized.name}>
                   <Link to={`/dashboard/category/${uncategorized.category_id}`}>
-                    {uncategorized.name}
+                    {t(uncategorized.name)}
                   </Link>
                 </div>
                 <AppImages apps={uncategorized.apps} total={uncategorized.total} />

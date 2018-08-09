@@ -96,19 +96,18 @@ export function getTopTotal(topList) {
 }
 
 export function getProgress(progress) {
-  let results = [],
-    i = 1;
+  console.log(progress);
+  let results = [];
   _.forIn(progress, (value, key) => {
-    if (i > 5) {
-      return null;
-    }
     results.push({
       id: key,
       number: value
     });
-    i++;
   });
-  return results;
+  results = _.sortBy(results, function(o) {
+    return o.number;
+  });
+  return results.slice(-5).reverse();
 }
 
 export function getHistograms(histograms) {

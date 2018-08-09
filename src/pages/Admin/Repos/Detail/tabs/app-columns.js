@@ -35,11 +35,18 @@ export default [
   {
     title: <I18n>{t => <span>{t('Categories')}</span>}</I18n>,
     key: 'category',
-    render: item =>
-      get(item, 'category_set', [])
-        .filter(cate => cate.category_id && cate.status === 'enabled')
-        .map(cate => cate.name)
-        .join(', ')
+    render: item => (
+      <I18n>
+        {t =>
+          t(
+            get(item, 'category_set', [])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => cate.name)
+              .join(', ')
+          )
+        }
+      </I18n>
+    )
   },
   {
     title: <I18n>{t => <span>{t('Developer')}</span>}</I18n>,
