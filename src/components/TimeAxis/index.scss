@@ -7,36 +7,33 @@
       position: relative;
       padding-left: 28px;
       padding-bottom: 25px;
-      border-left: 2px solid #e2d0f2;
-      &:first-child .dot, &:last-child .dot{
-        //background-color: #cc5252;
-      }
+      border-left: 2px solid $N10;
     }
     .word{
       margin-bottom: 6px;
       line-height: 19px;
       font-size: 16px;
       font-weight: bold;
-      color: #300e56;
+      color: $N500;
     }
     .time{
       line-height: 16px;
       font-size: 14px;
-      color: #333333;
+      color: $N75;
     }
     .dot{
       display: inline-block;
       position: absolute;
-      left: -7px;
-      top: -1px;
+      left: -9px;
+      top: 1px;
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background-color: #24b36b;
-      border: 2px solid #ffffff;
+      background-color: $G75;
+      border: 2px solid $N0;
     }
-    .StopClusters,DeleteClusters{
-      background-color: #cc5252;
+    .StopClusters, .DeleteClusters{
+      background-color: $R300;
     }
   }
 }

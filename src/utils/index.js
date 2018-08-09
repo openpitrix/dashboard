@@ -96,7 +96,6 @@ export function getTopTotal(topList) {
 }
 
 export function getProgress(progress) {
-  console.log(progress);
   let results = [];
   _.forIn(progress, (value, key) => {
     results.push({
