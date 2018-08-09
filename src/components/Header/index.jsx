@@ -25,6 +25,7 @@ class Header extends Component {
     const { appStore } = this.props.rootStore;
     this.props.history.push('/apps/search/' + value);
     await appStore.fetchAll({ search_word: value });
+    appStore.homeApps = appStore.apps;
   };
 
   onClearSearch = async () => {

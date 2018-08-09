@@ -210,10 +210,12 @@ export default class Apps extends Component {
         title: t('Categories'),
         key: 'category',
         render: item =>
-          get(item, 'category_set', [])
-            .filter(cate => cate.category_id && cate.status === 'enabled')
-            .map(cate => cate.name)
-            .join(', ')
+          t(
+            get(item, 'category_set', [])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => cate.name)
+              .join(', ')
+          )
       },
       {
         title: t('Visibility'),

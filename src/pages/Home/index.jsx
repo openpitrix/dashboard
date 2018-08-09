@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { get, find, throttle } from 'lodash';
 
-import { getScrollTop } from 'src/utils';
+import { getScrollTop, getScrollBottom } from 'src/utils';
 import Nav from 'components/Nav';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
@@ -29,6 +29,7 @@ export default class Home extends Component {
       params.search_word = search;
     }
     await appStore.fetchApps(params);
+    appStore.homeApps = appStore.apps;
   }
 
   componentDidMount() {
@@ -44,14 +45,15 @@ export default class Home extends Component {
       // home page
       rootStore.setNavFix(false);
       this.threshold = this.getThreshold();
-      window.onscroll = throttle(this.handleScroll, 100);
+      window.onscroll = throttle(this.handleScroll, 200);
     }
   }
 
-  componentWillReceiveProps({ match, rootStore }) {
+  async componentWillReceiveProps({ match, rootStore }) {
     const { params } = match;
     if (params.category) {
-      rootStore.appStore.fetchApps({ category_id: params.category });
+      await rootStore.appStore.fetchApps({ category_id: params.category });
+      rootStore.appStore.homeApps = rootStore.appStore.apps;
     }
   }
 
@@ -70,34 +72,76 @@ export default class Home extends Component {
     return 0;
   }
 
-  handleScroll = () => {
+  handleScroll = async () => {
     const { rootStore } = this.props;
-
     if (this.threshold <= 0) {
       return;
     }
 
+    //judge header fixed
     let fixNav = rootStore.fixNav;
     let scrollTop = getScrollTop();
     let needFixNav = scrollTop > this.threshold;
-
     if (needFixNav && !fixNav) {
       rootStore.setNavFix(true);
     } else if (!needFixNav && fixNav) {
       rootStore.setNavFix(false);
+    }
+
+    //load app data progressive by window scroll
+    const { appStore, categoryStore } = this.props;
+    const { categories } = categoryStore;
+    const len = categories.length;
+    if (len > 0 && categories[len - 1].appFlag) {
+      return;
+    }
+
+    const initLoadNumber = parseInt((document.body.clientHeight - 720) / 250);
+    if (len > 0 && !categories[0].appFlag && !appStore.isLoading) {
+      this.loadAppData(categories, initLoadNumber);
+    }
+
+    let scrollBottom = getScrollBottom();
+    if (scrollBottom < 200 && !appStore.isLoading) {
+      this.loadAppData(categories);
+    }
+  };
+
+  loadAppData = async (categories, initLoadNumber) => {
+    const { categoryStore, appStore } = this.props;
+    for (let i = 0; i < categories.length; i++) {
+      if (!categories[i].appFlag) {
+        categoryStore.categories[i].appFlag = true;
+        await appStore.fetchAll({
+          category_id: categories[i].category_id,
+          noLoading: true
+        });
+        let temp = categoryStore.categories[i];
+        categoryStore.categories[i] = {
+          apps: appStore.apps,
+          ...temp
+        };
+        if (initLoadNumber) {
+          if (appStore.apps.length === 0) {
+            initLoadNumber++;
+          } else if (initLoadNumber === i + 1) {
+            break;
+          }
+        } else if (appStore.apps.length > 0) {
+          break;
+        }
+      }
     }
   };
 
   render() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { fetchApps, apps, isLoading } = appStore;
-    const { categories, getCategoryApps } = categoryStore;
-
+    const { homeApps, isLoading } = appStore;
+    const categories = categoryStore.categories;
     const categoryId = match.params.category;
     const appSearch = match.params.search;
-    const showApps = appSearch || Boolean(categoryId) ? apps.slice() : apps.slice(0, 3);
-    const categoryApps = getCategoryApps(categories, apps);
+    const showApps = appSearch || Boolean(categoryId) ? homeApps.slice() : homeApps.slice(0, 3);
     const isHomePage = match.path === '/';
     const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
 
@@ -111,10 +155,9 @@ export default class Home extends Component {
               <AppList
                 className={styles.apps}
                 apps={showApps}
-                categoryApps={categoryApps}
+                categoryApps={categories.toJSON()}
                 categoryTitle={categoryTitle}
                 appSearch={appSearch}
-                moreApps={fetchApps}
               />
             </Loading>
           </div>

@@ -17,7 +17,7 @@ describe('Home', () => {
     rootStore = observable({
       config: {},
       appStore: {
-        apps: [],
+        homeApps: [],
         appSearch: ''
       },
       categoryStore: {

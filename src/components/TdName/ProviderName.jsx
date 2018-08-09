@@ -15,13 +15,25 @@ export default class ProviderName extends Component {
     provider: 'qingcloud'
   };
 
+  getShowProvider = name => {
+    const nameMap = {
+      qingcloud: 'QingCloud',
+      aws: 'AWS',
+      kubernetes: 'Kubernetes'
+    };
+    if (nameMap[name]) {
+      return nameMap[name];
+    }
+    return name;
+  };
+
   render() {
     const { name, provider, className } = this.props;
 
     return (
       <div className={classnames(styles.repoName, className)} title={name}>
         <Icon name={provider} size={20} className={styles.icon} type="dark" />
-        {name}
+        {this.getShowProvider(name)}
       </div>
     );
   }

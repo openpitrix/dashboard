@@ -54,7 +54,7 @@ export default class RepoDetail extends Component {
   };
 
   changeSelectors = items => {
-    return items.map(item => ({
+    return items.filter(item => item.selector_key).map(item => ({
       label_key: item.selector_key,
       label_value: item.selector_value
     }));
@@ -340,12 +340,13 @@ export default class RepoDetail extends Component {
                 changeTag={this.changeDetailTab}
               />
               <Card>
-                {curTagName === 'Runtimes' && (
-                  <div className={styles.selector}>
-                    <div className={styles.title}>{t('Runtime Selectors')}</div>
-                    <TagShow tags={selectors} tagStyle="yellow" />
-                  </div>
-                )}
+                {curTagName === 'Runtimes' &&
+                  selectors.length > 0 && (
+                    <div className={styles.selector}>
+                      <div className={styles.title}>{t('Runtime Selectors')}</div>
+                      <TagShow tags={selectors} tagStyle="yellow" />
+                    </div>
+                  )}
                 {curTagName !== 'Events' && this.renderToolbar(toolbarOptions)}
                 {this.renderTable(tableOptions)}
               </Card>

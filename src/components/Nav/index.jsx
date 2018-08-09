@@ -31,7 +31,7 @@ export default class Nav extends PureComponent {
                 activeClassName={styles.current}
                 isActive={isNavLinkActive.bind(null, nav.category_id)}
               >
-                {nav.name}
+                {t(nav.name)}
               </NavLink>
             </li>
           ))}

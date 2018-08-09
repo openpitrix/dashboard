@@ -18,7 +18,10 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore, sessInfo }) =>
-  assign(pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore']), sessInfo)
+  assign(
+    pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore', 'runtimeStore']),
+    sessInfo
+  )
 )
 @observer
 export default class AppDetail extends Component {
@@ -176,12 +179,17 @@ export default class AppDetail extends Component {
   };
 
   changeDetailTab = async tab => {
-    const { appStore, clusterStore, appVersionStore, match } = this.props;
+    const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
     const { appId } = match.params;
 
     appStore.detailTab = tab;
     if (tab === 'Clusters') {
       await clusterStore.fetchAll({ app_id: appId });
+      const { clusters } = clusterStore;
+      const runtimeIds = clusters.map(item => item.runtime_id);
+      const versionIds = clusters.map(item => item.version_id);
+      await runtimeStore.fetchAll({ runtime_id: runtimeIds });
+      await appVersionStore.fetchAll({ version_id: versionIds });
     }
     if (tab === 'Versions') {
       await appVersionStore.fetchAll({ app_id: appId });
@@ -224,7 +232,7 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const { appStore, clusterStore, appVersionStore, repoStore, t } = this.props;
+    const { appStore, clusterStore, appVersionStore, repoStore, runtimeStore, t } = this.props;
     const {
       appDetail,
       currentClusterPage,
@@ -249,7 +257,7 @@ export default class AppDetail extends Component {
         onRefresh: this.onRefresh
       };
       tableOptions = {
-        columns: clusterColumns,
+        columns: clusterColumns(runtimeStore.runtimes, appVersionStore.versions),
         dataSource: clusterStore.clusters.toJSON(),
         isLoading: clusterStore.isLoading,
         filterList: [
