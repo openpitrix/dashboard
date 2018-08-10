@@ -18,7 +18,7 @@ export default class VersionItem extends PureComponent {
     type: PropTypes.string
   };
 
-  resolveValue(value) {
+  resolveValue(value = []) {
     if (typeof value === 'string') {
       if (value.indexOf(',') > -1) {
         value = value.split(',');
@@ -26,7 +26,7 @@ export default class VersionItem extends PureComponent {
     }
 
     if (!Array.isArray(value)) {
-      value = [value];
+      value = [value].filter(Boolean);
     }
 
     return value;
