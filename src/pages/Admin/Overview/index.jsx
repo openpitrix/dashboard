@@ -41,7 +41,11 @@ export default class Overview extends React.Component {
 
   constructor(props) {
     super(props);
-
+    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+    appStore.loadPageInit();
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    repoStore.loadPageInit();
     this.userInfo = {
       name: getSessInfo('user', props.sessInfo),
       role: getSessInfo('role', props.sessInfo),
@@ -250,7 +254,7 @@ export default class Overview extends React.Component {
         title: 'Node Count',
         key: 'node_count',
         width: '60px',
-        render: item => item.cluster_node_set && item.cluster_node_set.length
+        render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: 'Updated At',

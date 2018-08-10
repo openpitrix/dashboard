@@ -27,7 +27,6 @@ import styles from './index.scss';
 @observer
 export default class ClusterDetail extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }, { clusterId }) {
-    clusterStore.searchNode = '';
     await clusterStore.fetch(clusterId);
     await clusterStore.fetchJobs(clusterId);
     await clusterStore.fetchNodes({ cluster_id: clusterId });
@@ -42,6 +41,7 @@ export default class ClusterDetail extends Component {
 
   constructor(props) {
     super(props);
+    props.clusterStore.loadNodeInit();
     props.clusterStore.setSocketMessage();
   }
 

@@ -29,6 +29,9 @@ export default class RepoStore extends Store {
     if (!params.status) {
       params.status = this.defaultStatus;
     }
+    if (this.searchWord) {
+      params.search_word = this.searchWord;
+    }
     const result = await this.request.get('repos', params);
     this.repos = get(result, 'repo_set', []);
     if (appStore) {
@@ -41,25 +44,19 @@ export default class RepoStore extends Store {
   };
 
   @action
-  fetchQueryRepos = async query => {
+  onSearch = async query => {
     this.changeSearchWord(query);
-    this.isLoading = true;
-    const result = await this.request.get('repos', {
-      status: this.defaultStatus,
-      search_word: query
-    });
-    this.repos = get(result, 'repo_set', []);
-    this.isLoading = false;
+    await this.fetchAll();
   };
 
   @action
   onClearSearch = async () => {
-    await this.fetchQueryRepos('');
+    await this.onSearch('');
   };
 
   @action
   onRefresh = async () => {
-    await this.fetchQueryRepos(this.searchWord);
+    await this.onSearch(this.searchWord);
   };
 
   @action
@@ -68,6 +65,7 @@ export default class RepoStore extends Store {
     const result = await this.request.get(`repos`, { repo_id: repoId });
     this.repoDetail = get(result, 'repo_set[0]', {});
     this.isLoading = false;
+    this.pageInitMap = { repo: true };
   };
 
   @action
@@ -152,9 +150,12 @@ export default class RepoStore extends Store {
 
   @action
   loadPageInit = () => {
-    this.curTagName = 'Apps';
     this.queryLabel = '';
     this.queryProviders = '';
+    if (!this.pageInitMap.repo) {
+      this.searchWord = '';
+    }
+    this.pageInitMap = {};
   };
 
   @action

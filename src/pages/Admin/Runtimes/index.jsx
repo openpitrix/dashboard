@@ -23,7 +23,6 @@ import styles from './index.scss';
 @observer
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore, clusterStore }) {
-    runtimeStore.loadPageInit();
     await runtimeStore.fetchAll();
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
@@ -33,7 +32,9 @@ export default class Runtimes extends Component {
 
   constructor(props) {
     super(props);
-
+    const { runtimeStore, clusterStore } = this.props;
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
     if (props.sock && !props.sock._events['ops-resource']) {
       props.sock.on('ops-resource', this.listenToJob);
     }

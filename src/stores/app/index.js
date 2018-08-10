@@ -17,8 +17,6 @@ export default class AppStore extends Store {
   @observable isDeleteOpen = false;
   @observable appTitle = '';
   @observable searchWord = '';
-  @observable currentClusterPage = 1;
-  @observable swCluster = ''; //search word cluster
   @observable appIds = [];
   @observable selectedRowKeys = [];
   @observable operateType = '';
@@ -27,8 +25,6 @@ export default class AppStore extends Store {
   @observable deleteResult = {};
 
   @observable detailTab = '';
-  @observable swVersion = '';
-  @observable currentVersionPage = 1;
 
   @observable currentPic = 1;
 
@@ -64,6 +60,9 @@ export default class AppStore extends Store {
       sort_key: 'update_time',
       reverse: true
     };
+    if (params.page) {
+      delete params.page;
+    }
 
     if (params.noLimit) {
       delete defaultParams.limit;
@@ -77,9 +76,6 @@ export default class AppStore extends Store {
     if (!params.status) {
       params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
-    if (params.page) {
-      delete params.page;
-    }
 
     if (!params.noLoading) {
       this.isLoading = true;
@@ -89,7 +85,7 @@ export default class AppStore extends Store {
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
-    if (!this.searchWord) {
+    if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }
     this.isLoading = false;
@@ -224,9 +220,7 @@ export default class AppStore extends Store {
 
   @action
   onClearSearch = async () => {
-    this.changeSearchWord('');
-    this.setCurrentPage(1);
-    await this.fetchAll();
+    await this.onSearch('');
   };
 
   @action
@@ -241,13 +235,10 @@ export default class AppStore extends Store {
   };
 
   @action
-  changeClusterSearchWord = sw => {
-    this.swCluster = sw;
-  };
-
-  @action
-  setCurrentVersionPage = page => {
-    this.currentVersionPage = page;
+  onChangeStatus = async status => {
+    this.setCurrentPage(1);
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll();
   };
 
   @action
@@ -271,12 +262,6 @@ export default class AppStore extends Store {
     this.selectedRowKeys = [];
     this.appIds = [];
     this.pageInitMap = {};
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll({ status: this.selectStatus });
   };
 }
 

@@ -76,6 +76,43 @@ export default class RuntimeDetail extends Component {
     );
   };
 
+  onSearch = async name => {
+    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.clusterStore;
+    changeSearchWord(name);
+    setCurrentPage(1);
+    await fetchAll({
+      runtime_id: this.runtimeId
+    });
+  };
+
+  onClear = async () => {
+    await this.onSearch('');
+  };
+
+  onRefresh = async () => {
+    const { fetchAll } = this.props.clusterStore;
+    await fetchAll({
+      runtime_id: this.runtimeId
+    });
+  };
+
+  changeTable = async current => {
+    const { setCurrentPage, fetchAll } = this.props.clusterStore;
+    setCurrentPage(current);
+    await fetchAll({
+      runtime_id: this.runtimeId
+    });
+  };
+
+  onChangeStatus = async status => {
+    const { clusterStore } = this.props;
+    clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
+    clusterStore.setCurrentPage(1);
+    await clusterStore.fetchAll({
+      runtime_id: this.runtimeId
+    });
+  };
+
   render() {
     const { runtimeStore, clusterStore, t } = this.props;
     const { runtimeDetail } = runtimeStore;
@@ -87,11 +124,6 @@ export default class RuntimeDetail extends Component {
       isLoading,
       currentPage,
       searchWord,
-      onSearch,
-      onClearSearch,
-      onRefresh,
-      changePagination,
-      onChangeStatus,
       selectStatus
     } = clusterStore;
 
@@ -128,7 +160,7 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        render: item => item.cluster_node_set && item.cluster_node_set.length
+        render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('User'),
@@ -154,14 +186,14 @@ export default class RuntimeDetail extends Component {
           { name: t('Deleted'), value: 'deleted' },
           { name: t('Ceased'), value: 'ceased' }
         ],
-        onChangeFilter: onChangeStatus,
+        onChangeFilter: this.onChangeStatus,
         selectValue: selectStatus
       }
     ];
 
     const pagination = {
       tableType: 'Clusters',
-      onChange: changePagination,
+      onChange: this.changeTable,
       total: totalCount,
       current: currentPage
     };
@@ -189,9 +221,9 @@ export default class RuntimeDetail extends Component {
                 <Toolbar
                   placeholder={t('Search Clusters')}
                   searchWord={searchWord}
-                  onSearch={onSearch}
-                  onClear={onClearSearch}
-                  onRefresh={onRefresh}
+                  onSearch={this.onSearch}
+                  onClear={this.onClear}
+                  onRefresh={this.onRefresh}
                 />
                 <Table
                   columns={columns}

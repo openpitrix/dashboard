@@ -33,8 +33,12 @@ export default class RepoDetail extends Component {
 
   constructor(props) {
     super(props);
-    props.repoStore.setSocketMessage();
-    this.props.repoStore.loadPageInit();
+    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
+    repoStore.setSocketMessage();
+    repoStore.curTagName = 'Apps';
+    appStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
   }
 
   listenToJob = async payload => {
@@ -110,8 +114,14 @@ export default class RepoDetail extends Component {
         label: queryLabel,
         provider: repoStore.repoDetail.providers
       });
-      if (!clusterStore.clusters.length) {
-        await clusterStore.fetchAll();
+      const { runtimes } = runtimeStore;
+      if (runtimes.length > 0) {
+        const runtimeIds = runtimes.map(item => item.runtime_id);
+        await clusterStore.fetchAll({
+          //status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'],
+          runtime_id: runtimeIds,
+          limit: 200
+        });
       }
     } else if (tab === 'Events') {
       await repoStore.fetchRepoEvents({ repo_id: repoId });
@@ -119,9 +129,10 @@ export default class RepoDetail extends Component {
   };
 
   onSearchApp = async name => {
-    const { changeSearchWord, fetchAll } = this.props.appStore;
+    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.appStore;
     const { repoDetail } = this.props.repoStore;
     changeSearchWord(name);
+    setCurrentPage(1);
     await fetchAll({
       repo_id: repoDetail.repo_id
     });
@@ -132,37 +143,35 @@ export default class RepoDetail extends Component {
   };
 
   onRefreshApp = async () => {
-    const { fetchAll, searchWord, currentPage, pageSize } = this.props.appStore;
+    const { fetchAll } = this.props.appStore;
     const { repoDetail } = this.props.repoStore;
     await fetchAll({
-      repo_id: repoDetail.repo_id,
-      search_word: searchWord,
-      offset: (currentPage - 1) * pageSize
+      repo_id: repoDetail.repo_id
     });
   };
 
   changeTableApp = async current => {
-    const { setCurrentPage, fetchAll, currentPage, pageSize } = this.props.appStore;
+    const { setCurrentPage, fetchAll } = this.props.appStore;
     const { repoDetail } = this.props.repoStore;
     setCurrentPage(current);
     await fetchAll({
-      repo_id: repoDetail.repo_id,
-      offset: (currentPage - 1) * pageSize
+      repo_id: repoDetail.repo_id
     });
   };
 
   onChangeStatusApp = async status => {
     const { appStore, repoStore } = this.props;
     appStore.selectStatus = appStore.selectStatus === status ? '' : status;
+    appStore.setCurrentPage(1);
     await appStore.fetchAll({
-      repo_id: repoStore.repoDetail.repo_id,
-      status: appStore.selectStatus
+      repo_id: repoStore.repoDetail.repo_id
     });
   };
 
   onSearch = async name => {
     const { runtimeStore, repoStore } = this.props;
     runtimeStore.changeSearchWord(name);
+    runtimeStore.setCurrentPage(1);
     await runtimeStore.fetchAll({
       label: repoStore.queryLabel,
       provider: repoStore.queryProviders
@@ -177,9 +186,7 @@ export default class RepoDetail extends Component {
     const { runtimeStore, repoStore } = this.props;
     await runtimeStore.fetchAll({
       label: repoStore.queryLabel,
-      provider: repoStore.queryProviders,
-      search_word: runtimeStore.searchWord,
-      offset: (runtimeStore.currentPage - 1) * runtimeStore.pageSize
+      provider: repoStore.queryProviders
     });
   };
 
@@ -188,18 +195,17 @@ export default class RepoDetail extends Component {
     runtimeStore.setCurrentPage(current);
     await runtimeStore.fetchAll({
       label: repoStore.queryLabel,
-      provider: repoStore.queryProviders,
-      offset: (current - 1) * runtimeStore.pageSize
+      provider: repoStore.queryProviders
     });
   };
 
   onChangeStatus = async status => {
     const { runtimeStore, repoStore } = this.props;
     runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
+    runtimeStore.setCurrentPage(1);
     await runtimeStore.fetchAll({
       label: repoStore.queryLabel,
-      provider: repoStore.queryProviders,
-      status: runtimeStore.selectStatus
+      provider: repoStore.queryProviders
     });
   };
 
@@ -208,8 +214,7 @@ export default class RepoDetail extends Component {
     const { repoId } = match.params;
     repoStore.setCurrentPage(current);
     await repoStore.fetchRepoEvents({
-      repo_id: repoId,
-      offset: (current - 1) * repoStore.pageSize
+      repo_id: repoId
     });
   };
 
@@ -231,7 +236,6 @@ export default class RepoDetail extends Component {
   render() {
     const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
     const { repoDetail, curTagName, sockMessage } = repoStore;
-    const appCount = appStore.totalCount;
     const clusters = clusterStore.clusters.toJSON();
     let selectors = [];
     let toolbarOptions, tableOptions;
@@ -324,7 +328,7 @@ export default class RepoDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <RuntimeCard detail={repoDetail} appCount={appCount} />
+              <RuntimeCard detail={repoDetail} appCount={appStore.appCount} />
               {repoDetail.status !== 'deleted' && (
                 <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
                   <Icon name="more" />

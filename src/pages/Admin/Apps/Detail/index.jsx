@@ -34,6 +34,11 @@ export default class AppDetail extends Component {
 
   constructor(props) {
     super(props);
+    const { clusterStore, runtimeStore, appVersionStore } = this.props;
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    appVersionStore.currentPage = 1;
+    appVersionStore.searchWord = '';
     this.appId = props.match.params.appId;
     this.loginUser = getSessInfo('user', props.sessInfo);
   }
@@ -143,77 +148,81 @@ export default class AppDetail extends Component {
   };
 
   onRefresh = () => {
-    const { currentClusterPage, swCluster } = this.props.appStore;
     const { fetchAll } = this.props.clusterStore;
-    fetchAll({ page: currentClusterPage, search_word: swCluster, app_id: this.appId });
+    fetchAll({ app_id: this.appId });
   };
 
-  onSearch = search_word => {
-    const { changeClusterSearchWord } = this.props.appStore;
-    const { fetchAll } = this.props.clusterStore;
-    fetchAll({ search_word, app_id: this.appId });
-    changeClusterSearchWord(search_word);
+  onSearch = async name => {
+    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.clusterStore;
+    changeSearchWord(name);
+    setCurrentPage(1);
+    await fetchAll({ app_id: this.appId });
   };
 
-  onClearSearch = () => {
-    this.onSearch('');
+  onClearSearch = async () => {
+    await this.onSearch('');
   };
 
   onChangeStatus = async status => {
     const { clusterStore } = this.props;
     clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
-    await clusterStore.fetchAll({ status: clusterStore.selectStatus, app_id: this.appId });
+    clusterStore.setCurrentPage(1);
+    await clusterStore.fetchAll({ app_id: this.appId });
   };
 
-  changePagination = page => {
-    const { setClusterPage } = this.props.appStore;
-    const { fetchAll } = this.props.clusterStore;
-    setClusterPage(page);
-    fetchAll({ app_id: this.appId, page });
+  changePagination = async page => {
+    const { setCurrentPage, fetchAll } = this.props.clusterStore;
+    setCurrentPage(page);
+    await fetchAll({ app_id: this.appId });
   };
 
-  changeVersionPagination = page => {
-    const { appStore, appVersionStore } = this.props;
-    appStore.setCurrentVersionPage(page);
-    appVersionStore.fetchAll({ app_id: this.appId, page });
+  onSearchVersion = async name => {
+    const { appVersionStore } = this.props;
+    appVersionStore.currentPage = 1;
+    appVersionStore.searchWord = name;
+    await appVersionStore.fetchAll({ app_id: this.appId });
+  };
+
+  onClearSearchVersion = async () => {
+    await this.onSearchVersion('');
+  };
+
+  onRefreshVersion = async () => {
+    const { appVersionStore } = this.props;
+    await appVersionStore.fetchAll({
+      app_id: this.appId
+    });
+  };
+
+  changeVersionPagination = async page => {
+    const { appVersionStore } = this.props;
+    appVersionStore.currentPage = page;
+    await appVersionStore.fetchAll({ app_id: this.appId });
   };
 
   changeDetailTab = async tab => {
     const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
     const { appId } = match.params;
-
     appStore.detailTab = tab;
+
     if (tab === 'Clusters') {
       await clusterStore.fetchAll({ app_id: appId });
       const { clusters } = clusterStore;
-      const runtimeIds = clusters.map(item => item.runtime_id);
-      const versionIds = clusters.map(item => item.version_id);
-      await runtimeStore.fetchAll({ runtime_id: runtimeIds });
-      await appVersionStore.fetchAll({ version_id: versionIds });
-    }
-    if (tab === 'Versions') {
+      if (clusters.length > 0) {
+        const runtimeIds = clusters.map(item => item.runtime_id);
+        const versionIds = clusters.map(item => item.version_id);
+        await runtimeStore.fetchAll({
+          status: ['active', 'deleted'],
+          runtime_id: runtimeIds
+        });
+        await appVersionStore.fetchAll({
+          status: ['active', 'deleted'],
+          version_id: versionIds
+        });
+      }
+    } else if (tab === 'Versions') {
       await appVersionStore.fetchAll({ app_id: appId });
     }
-  };
-
-  onSearchVersion = words => {
-    const { appStore, appVersionStore } = this.props;
-    appStore.swVersion = words;
-    appVersionStore.fetchAll({ search_word: words, app_id: this.appId });
-  };
-
-  onClearSearchVersion = () => {
-    this.onSearchVersion('');
-  };
-
-  onRefreshVersion = () => {
-    const { appStore, appVersionStore } = this.props;
-    const { swVersion, currentVersionPage } = appStore;
-    appVersionStore.fetchAll({
-      search_word: swVersion,
-      app_id: this.appId,
-      page: currentVersionPage
-    });
   };
 
   renderToolbar(options = {}) {
@@ -233,16 +242,8 @@ export default class AppDetail extends Component {
 
   render() {
     const { appStore, clusterStore, appVersionStore, repoStore, runtimeStore, t } = this.props;
-    const {
-      appDetail,
-      currentClusterPage,
-      swCluster,
-      swVersion,
-      detailTab,
-      currentVersionPage
-    } = appStore;
+    const { appDetail, detailTab } = appStore;
 
-    const { selectStatus } = clusterStore;
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
 
@@ -250,7 +251,7 @@ export default class AppDetail extends Component {
 
     if (detailTab === 'Clusters') {
       toolbarOptions = {
-        searchWord: swCluster,
+        searchWord: clusterStore.searchWord,
         placeholder: t('Search Clusters'),
         onSearch: this.onSearch,
         onClear: this.onClearSearch,
@@ -272,21 +273,19 @@ export default class AppDetail extends Component {
               { name: t('Ceased'), value: 'ceased' }
             ],
             onChangeFilter: this.onChangeStatus,
-            selectValue: selectStatus
+            selectValue: clusterStore.selectStatus
           }
         ],
         pagination: {
           tableType: 'Clusters',
           onChange: this.changePagination,
           total: clusterStore.totalCount,
-          current: currentClusterPage
+          current: clusterStore.currentPage
         }
       };
-    }
-
-    if (detailTab === 'Versions') {
+    } else if (detailTab === 'Versions') {
       toolbarOptions = {
-        searchWord: swVersion,
+        searchWord: appVersionStore.searchWord,
         placeholder: t('Search Version'),
         onSearch: this.onSearchVersion,
         onClear: this.onClearSearchVersion,
@@ -300,7 +299,7 @@ export default class AppDetail extends Component {
           tableType: 'Versions',
           onChange: this.changeVersionPagination,
           total: appVersionStore.totalCount,
-          current: currentVersionPage
+          current: appVersionStore.currentPage
         }
       };
     }
