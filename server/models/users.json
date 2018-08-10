@@ -1,5 +1,5 @@
 [
-  {"name": "admin", "password": "zhu88jie", "role": "admin"},
-  {"name": "dev", "password": "zhu88jie", "role": "developer"},
-  {"name": "normal", "password": "zhu88jie", "role": "normal"}
+  {"name": "admin", "password": "passw0rd", "role": "admin"},
+  {"name": "dev", "password": "passw0rd", "role": "developer"},
+  {"name": "normal", "password": "passw0rd", "role": "normal"}
 ]
