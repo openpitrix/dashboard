@@ -26,7 +26,6 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
-    clusterStore.loadPageInit();
     await clusterStore.fetchAll();
     await clusterStore.clusterStatistics();
     await appStore.fetchApps({
@@ -40,8 +39,11 @@ export default class Clusters extends Component {
 
   constructor(props) {
     super(props);
-    this.store = this.props.clusterStore;
-    this.store.setSocketMessage();
+    const { clusterStore, runtimeStore } = this.props;
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    this.store = clusterStore;
+    clusterStore.setSocketMessage();
   }
 
   listenToJob = async payload => {
@@ -213,7 +215,7 @@ export default class Clusters extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        render: cl => cl.cluster_node_set && cl.cluster_node_set.length
+        render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
         title: t('User'),

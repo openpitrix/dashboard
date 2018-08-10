@@ -130,9 +130,7 @@ export default class RuntimeStore extends Store {
 
   @action
   onClearSearch = async () => {
-    this.changeSearchWord('');
-    this.setCurrentPage(1);
-    await this.fetchAll();
+    await this.onSearch('');
   };
 
   @action
@@ -144,6 +142,13 @@ export default class RuntimeStore extends Store {
   changePagination = async page => {
     this.setCurrentPage(page);
     await this.fetchAll();
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    this.setCurrentPage(1);
+    await this.fetchAll({ status: this.selectStatus });
   };
 
   @action
@@ -169,12 +174,6 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
     this.pageInitMap = {};
     this.runtimeDeleted = null;
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll({ status: this.selectStatus });
   };
 }
 

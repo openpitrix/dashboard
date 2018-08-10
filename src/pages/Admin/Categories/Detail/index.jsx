@@ -25,15 +25,19 @@ import styles from './index.scss';
 @observer
 export default class CategoryDetail extends Component {
   static async onEnter({ categoryStore, appStore, repoStore }, { categoryId }) {
-    categoryStore.isDetailPage = true;
-    appStore.currentPage = 1;
-    appStore.searchWord = '';
     await categoryStore.fetch(categoryId);
     await appStore.fetchAll({ category_id: categoryId });
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       limit: 99
     });
+  }
+
+  constructor(props) {
+    super(props);
+    const { categoryStore, appStore } = this.props;
+    categoryStore.isDetailPage = true;
+    appStore.loadPageInit();
   }
 
   componentDidUpdate() {
@@ -49,6 +53,7 @@ export default class CategoryDetail extends Component {
     const { categoryStore, appStore } = this.props;
     const { fetchAll, changeSearchWord } = appStore;
     changeSearchWord(name);
+    appStore.setCurrentPage(1);
     await fetchAll({
       category_id: categoryStore.category.category_id
     });
@@ -60,24 +65,23 @@ export default class CategoryDetail extends Component {
 
   onRefresh = async () => {
     const { categoryStore, appStore } = this.props;
-    const { fetchAll, searchWord } = appStore;
-    await fetchAll({
-      category_id: categoryStore.category.category_id,
-      search_word: searchWord
+    await appStore.fetchAll({
+      category_id: categoryStore.category.category_id
     });
   };
 
   changeApps = async current => {
     const { categoryStore, appStore } = this.props;
+    appStore.setCurrentPage(current);
     await appStore.fetchAll({
-      category_id: categoryStore.category.category_id,
-      offset: (current - 1) * appStore.pageSize
+      category_id: categoryStore.category.category_id
     });
   };
 
   onChangeStatus = async status => {
     const { categoryStore, appStore } = this.props;
     appStore.selectStatus = appStore.selectStatus === status ? '' : status;
+    appStore.setCurrentPage(1);
     await appStore.fetchAll({
       category_id: categoryStore.category.category_id,
       status: appStore.selectStatus

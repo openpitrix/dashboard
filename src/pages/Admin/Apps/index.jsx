@@ -27,7 +27,6 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   static async onEnter({ appStore, categoryStore, repoStore }) {
-    appStore.loadPageInit();
     await appStore.fetchAll();
     await appStore.appStatistics();
     await repoStore.fetchAll({
@@ -39,7 +38,10 @@ export default class Apps extends Component {
 
   constructor(props) {
     super(props);
-    this.role = getSessInfo('role', this.props.sessInfo);
+    const { appStore, repoStore, sessInfo } = this.props;
+    appStore.loadPageInit();
+    repoStore.loadPageInit();
+    this.role = getSessInfo('role', sessInfo);
   }
 
   listenToJob = payload => {

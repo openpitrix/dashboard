@@ -14,6 +14,7 @@ export default class AppVersionStore extends Store {
   @observable readme = '';
   @observable totalCount = 0;
   @observable currentPage = 1;
+  @observable searchWord = '';
 
   @observable name = '';
   @observable packageName = '';
@@ -21,7 +22,7 @@ export default class AppVersionStore extends Store {
 
   @action
   async fetchAll(params = {}) {
-    let pageOffset = params.page || 1;
+    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize,
@@ -31,10 +32,12 @@ export default class AppVersionStore extends Store {
     if (params.page) {
       delete params.page;
     }
+    if (this.searchWord) {
+      params.search_word = this.searchWord;
+    }
 
     this.isLoading = true;
     const result = await this.request.get('app_versions', assign(defaultParams, params));
-
     this.versions = get(result, 'app_version_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;

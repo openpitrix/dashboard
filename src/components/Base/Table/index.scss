@@ -14,12 +14,10 @@
     overflow: hidden;
 
     .selectionColumn{
-      width: 32px;
-      padding: 12px 0 12px 8px;
+      width: 14px;
+      padding: 12px 12px 12px 8px;
       label{
-        margin-left: 4px;
-        //line-height: 4px;
-        margin-bottom: 0;
+        padding: 0;
       }
     }
 
@@ -73,12 +71,15 @@
     &-thead > tr > th {
       position: relative;
       line-height: 16px;
-      padding: 12px 12px;
+      padding: 12px 8px;
       font-weight: 500;
       color: $N500;
       letter-spacing: 0;
       background-color: $N10;
 
+      &:last-child{
+        text-align: center;
+      }
       &::before {
         content: "";
         position: absolute;
@@ -125,7 +126,7 @@
     }
 
     &-tbody > tr > td {
-      padding: 13px 8px;
+      padding: 12px 8px;
       line-height: 16px;
       border-bottom: 1px solid $N10;
       transition: all $transition-speed;

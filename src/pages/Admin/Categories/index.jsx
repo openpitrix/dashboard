@@ -22,13 +22,15 @@ import styles from './index.scss';
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
     categoryStore.appStore = appStore;
-    categoryStore.isDetailPage = false;
     await categoryStore.fetchAll(categoryStore.appStore);
   }
 
   constructor(props) {
     super(props);
-    this.props.categoryStore.reset();
+    const { categoryStore, appStore } = this.props;
+    categoryStore.isDetailPage = false;
+    categoryStore.reset();
+    appStore.loadPageInit();
   }
 
   componentDidMount() {

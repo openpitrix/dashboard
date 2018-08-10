@@ -24,12 +24,14 @@ export default class Repos extends Component {
   static async onEnter({ repoStore, appStore }) {
     repoStore.appStore = appStore;
     await repoStore.fetchAll({}, appStore);
-    //await appStore.fetchApps();
   }
 
   constructor(props) {
     super(props);
-    this.props.repoStore.setSocketMessage();
+    const { repoStore, appStore } = this.props;
+    repoStore.setSocketMessage();
+    repoStore.loadPageInit();
+    appStore.loadPageInit();
   }
 
   componentDidMount() {
@@ -107,8 +109,8 @@ export default class Repos extends Component {
     const {
       repos,
       isLoading,
-      fetchQueryRepos,
       searchWord,
+      onSearch,
       onClearSearch,
       onRefresh,
       sockMessage
@@ -122,7 +124,7 @@ export default class Repos extends Component {
           <Toolbar
             placeholder={t('Search Repo')}
             searchWord={searchWord}
-            onSearch={fetchQueryRepos}
+            onSearch={onSearch}
             onClear={onClearSearch}
             onRefresh={onRefresh}
             withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}

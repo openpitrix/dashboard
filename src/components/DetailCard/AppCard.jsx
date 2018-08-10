@@ -20,10 +20,10 @@ export default class AppCard extends React.Component {
     repoProvider: PropTypes.string
   };
 
-  shouldComponentUpdate(nextProps) {
-    const { appDetail } = nextProps;
+  /*shouldComponentUpdate(nextProps) {
+    const { appDetail} = nextProps;
     return appDetail.app_id !== this.props.appDetail.app_id;
-  }
+  }*/
 
   render() {
     const { appDetail, repoName, repoProvider, t } = this.props;

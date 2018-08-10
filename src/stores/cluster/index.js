@@ -27,7 +27,9 @@ export default class ClusterStore extends Store {
   @observable selectedRowKeys = [];
   @observable clusterIds = [];
 
+  @observable currentNodePage = 1;
   @observable searchNode = '';
+  @observable selectNodeStatus = '';
 
   @observable selectStatus = '';
   @observable defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
@@ -60,7 +62,6 @@ export default class ClusterStore extends Store {
     if (!params.status) {
       params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
     }
-
     if (params.page) {
       delete params.page;
     }
@@ -69,7 +70,7 @@ export default class ClusterStore extends Store {
     const result = await this.request.get('clusters', assign(defaultParams, params));
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
-    if (!this.searchWord) {
+    if (!this.searchWord && !this.selectStatus) {
       this.clusterCount = this.totalCount;
     }
     this.isLoading = false;
@@ -103,10 +104,20 @@ export default class ClusterStore extends Store {
   @action
   fetchNodes = async (params = {}) => {
     this.isLoading = true;
+    let pageOffset = params.page || this.currentNodePage;
+    let defaultParams = {
+      sort_key: 'upgrade_time',
+      limit: this.pageSize,
+      offset: (pageOffset - 1) * this.pageSize
+    };
+
     if (this.searchNode) {
       params.search_word = this.searchNode;
     }
-    const result = await this.request.get(`clusters/nodes`, params);
+    if (!params.selectNodeStatus) {
+      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.cluster.status;
+    }
+    const result = await this.request.get(`clusters/nodes`, assign(defaultParams, params));
     this.clusterNodes = get(result, 'cluster_node_set', []);
     this.isLoading = false;
   };
@@ -212,9 +223,7 @@ export default class ClusterStore extends Store {
 
   @action
   onClearSearch = async () => {
-    this.changeSearchWord('');
-    this.setCurrentPage(1);
-    await this.fetchAll();
+    await this.onSearch('');
   };
 
   @action
@@ -225,6 +234,13 @@ export default class ClusterStore extends Store {
   @action
   changePagination = async page => {
     this.setCurrentPage(page);
+    await this.fetchAll();
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.setCurrentPage(1);
+    this.selectStatus = this.selectStatus === status ? '' : status;
     await this.fetchAll();
   };
 
@@ -244,7 +260,6 @@ export default class ClusterStore extends Store {
     this.selectedRowKeys = [];
     this.clusterIds = [];
     this.pageInitMap = {};
-    this.selectStatus = '';
   };
 
   @action
@@ -268,13 +283,13 @@ export default class ClusterStore extends Store {
   @action
   onSearchNode = async searchWord => {
     this.changeSearchNode(searchWord);
+    this.currentNodePage = 1;
     await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
   @action
   onClearNode = async () => {
-    this.changeSearchNode('');
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    await this.onSearchNode('');
   };
 
   @action
@@ -283,17 +298,24 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  onChangeStatus = async status => {
-    this.selectStatus = typeof status === 'string' ? [status] : status;
-    await this.fetchAll({ status: this.selectStatus });
+  changePaginationNode = async page => {
+    this.currentNodePage = page;
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
   @action
   onChangeNodeStatus = async status => {
+    this.currentNodePage = 1;
     this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
     await this.fetchNodes({
-      cluster_id: this.cluster.cluster_id,
-      status: this.selectNodeStatus
+      cluster_id: this.cluster.cluster_id
     });
+  };
+
+  @action
+  loadNodeInit = () => {
+    this.currentNodePage = 1;
+    this.selectNodeStatus = '';
+    this.searchNode = '';
   };
 }
