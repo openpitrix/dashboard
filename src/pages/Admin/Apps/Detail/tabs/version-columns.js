@@ -21,7 +21,7 @@ export default [
     title: <I18n>{t => <span>{t('Download')}</span>}</I18n>,
     key: 'package_name',
     render: obj => (
-      <a href={obj.package_name}>
+      <a href={obj.package_name} target="_blank">
         <Icon name="download" />
       </a>
     )

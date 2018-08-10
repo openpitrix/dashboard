@@ -29,21 +29,23 @@ Store.prototype = {
     this.notify({ message, type });
   },
   @action.bound
-  apiMsg: function(
-    result,
-    successTip = 'Operation successfully',
-    failTip = 'Operation failed',
-    cb
-  ) {
+  apiMsg: function(result, successTip, failTip, cb) {
+    if (arguments.length > 1 && typeof arguments[arguments.length - 1] === 'function') {
+      cb = arguments[arguments.length - 1];
+    }
+
+    if (typeof successTip !== 'string' || !successTip) {
+      successTip = 'Operation successfully';
+    }
+    if (typeof failTip !== 'string' || !failTip) {
+      failTip = 'Operation failed';
+    }
+
     let apiSuccess = !result || !result.err;
     if (apiSuccess) {
       this.showMsg(successTip, 'success');
     } else {
       this.showMsg(failTip);
-    }
-
-    if (arguments.length > 1 && typeof arguments[arguments.length - 1] === 'function') {
-      cb = arguments[arguments.length - 1];
     }
 
     typeof cb === 'function' && apiSuccess && cb();
@@ -71,7 +73,7 @@ Store.prototype = {
           // error handling
           if (res.err && res.status >= 400) {
             this.notify(res.errDetail || res.err || 'internal error');
-            return;
+            return res;
           }
 
           return res;

@@ -108,14 +108,14 @@ export default class AppDeployStore extends Store {
         runtime_id: this.runtimeId,
         conf: conf
       };
-      await this.create(params);
 
-      if (_.get(this, 'appDeployed.cluster_id')) {
-        location.href = '/dashboard/clusters';
-      } else {
-        let { errDetail } = this.appDeployed;
-        this.showMsg(errDetail);
-      }
+      const res = await this.create(params);
+
+      this.apiMsg(res, () => {
+        if (_.get(this, 'appDeployed.cluster_id')) {
+          location.href = '/dashboard/clusters';
+        }
+      });
     } else {
       this.showMsg('Please input or select ' + this.checkResult + '!');
     }
@@ -249,5 +249,6 @@ export default class AppDeployStore extends Store {
     this.isLoading = true;
     this.appDeployed = await this.request.post(`clusters/create`, params);
     this.isLoading = false;
+    return this.appDeployed;
   }
 }
