@@ -13,7 +13,7 @@ import renderRoute from './routes/renderRoute';
 import SockClient from './utils/sock-client';
 import i18n from './i18n';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isProd = process.env.NODE_ENV === 'production';
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
@@ -21,8 +21,18 @@ if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
 
   import('./routes').then(({ default: routes }) => {
+    let sc = null;
     const sockEndpoint = SockClient.composeEndpoint(store.socketUrl);
-    const sc = new SockClient(sockEndpoint);
+    try {
+      sc = new SockClient(sockEndpoint);
+      sc.setUp();
+
+      if (!isProd) {
+        window._sc = sc;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
 
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
@@ -45,12 +55,6 @@ if (typeof window !== 'undefined') {
       </I18nextProvider>,
       document.getElementById('root')
     );
-
-    sc.setUp();
-
-    if (isDev) {
-      window._sc = sc;
-    }
   });
 }
 
