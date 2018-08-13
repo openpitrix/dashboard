@@ -35,7 +35,7 @@ export default class VersionItem extends PureComponent {
   renderValue(value, type) {
     const { t } = this.props;
 
-    if (!value) {
+    if (!value || value === 'null') {
       return t('None');
     }
 

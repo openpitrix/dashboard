@@ -4,13 +4,20 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const postCssOptions = require('./postcss.options');
 const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss'],
   alias: {
     scss: resolve(__dirname, 'src/scss')
   },
-  modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+  modules: [
+    resolve(__dirname, 'src'),
+    resolve(__dirname, 'lib'),
+    resolve(__dirname, 'dist'),
+    'node_modules'
+  ]
 };
 
 const distDir = resolve(__dirname, 'dist');
@@ -20,7 +27,8 @@ const clientConfig = {
   entry: './src/index.js',
   output: {
     path: distDir,
-    filename: 'main.js',
+    filename: '[name].js',
+    // chunkFilename: '[name].js',
     pathinfo: false,
     publicPath: '/dist/'
   },
@@ -81,8 +89,12 @@ const clientConfig = {
       filename: 'bundle.css',
       allChunks: true
     }),
-    // new webpack.NamedModulesPlugin(),
+    new webpack.NamedModulesPlugin(),
+    // new ManifestPlugin(),
     new WriteHashPlugin(),
+    new ReactLoadablePlugin({
+      filename: resolve(__dirname, './server/react-loadable.json'),
+    }),
     // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.optimize.UglifyJsPlugin({
     //   parallel: 4,
@@ -101,7 +113,24 @@ const clientConfig = {
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ]
+  ],
+  optimization: {
+    minimize: false,
+    // runtimeChunk: {
+    //   name: 'runtime'
+    // },
+    // namedModules: true,
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendors: {
+    //       name: 'vendors',
+    //       test: /[\\/]node_modules[\\/]/,
+    //       priority: -10,
+    //       chunks: 'all'
+    //     }
+    //   }
+    // }
+  }
 };
 
 const serverConfig = {
@@ -165,7 +194,10 @@ const serverConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ]
+  ],
+  optimization: {
+    minimize: false
+  }
 };
 
 module.exports = [clientConfig, serverConfig];

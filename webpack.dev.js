@@ -20,9 +20,6 @@ module.exports = {
     hints: 'warning'
   },
   module: {
-    // noParse: function(content){
-    //   return /lodash/.test(content);
-    // },
     rules: [
       {
         test: /\.jsx?$/,
@@ -68,6 +65,7 @@ module.exports = {
     modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
   },
   plugins: [
+    new webpack.NamedModulesPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
@@ -89,8 +87,8 @@ module.exports = {
           minChunks: 2
         },
         default: {
-          minSize: 0,
-          minChunks: 1,
+          minSize: 30000,
+          minChunks: 2,
           reuseExistingChunk: true
         }
       }

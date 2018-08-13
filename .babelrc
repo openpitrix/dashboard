@@ -13,6 +13,7 @@
     "transform-runtime",
     "transform-decorators-legacy",
     "lodash",
+//    "syntax-dynamic-import",
     [
       "module-resolver",
       {
@@ -26,6 +27,10 @@
   "env": {
     "production": {
       "plugins": [
+//        ["import-inspector", {
+//          "serverSideRequirePath": true,
+//          "webpackRequireWeakId": true
+//        }],
         [
           "transform-react-remove-prop-types",
           {
@@ -39,6 +44,7 @@
     },
     "server": {
       "plugins": [
+        "dynamic-import-node",
         [
           "css-modules-transform",
           {

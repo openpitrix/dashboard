@@ -4,9 +4,9 @@ if (require('semver').lt(process.version, '7.6.0')) {
 }
 
 const env = process.env.NODE_ENV || 'development';
-const isDev = env === 'development';
+const isProd = env === 'production';
 
-isDev && require('babel-register')({ cache: true });
+!isProd && require('babel-register')({ cache: true });
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
@@ -15,6 +15,8 @@ const mount = require('koa-mount');
 const serve = require('koa-static');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
+const Loadable = require('react-loadable');
+
 const debug = require('debug')('op-dash');
 const { reportErr, renderErrPage } = require('./report-error');
 
@@ -41,7 +43,7 @@ app.on('error', (err, ctx) => {
 
 // serve static files
 const serveStatic = (mount_points = {}) => {
-  let opt = { index: false, maxage: 864000000 };
+  let opt = { index: false, maxage: 86400 * 10000 };
   for (let [k, v] of Object.entries(mount_points)) {
     if (typeof v === 'string') {
       app.use(mount(k, serve(root(v), opt)));
@@ -73,29 +75,33 @@ app.use(require('./routes/api').routes());
 app.use(require('./routes/page').routes());
 
 // pack client side assets
-// if (isDev && process.env.COMPILE_CLIENT) {
+// if (!isProd && process.env.COMPILE_CLIENT) {
 //   require('./pack-client')(app);
 // }
 
 app.use(require('./middleware/render'));
 
-app.listen(PORT, err => {
-  if (err) throw err;
-  log(`server running at port ${PORT}`);
-});
+const listen = ()=> {
+  app.listen(PORT, err => {
+    if (err) throw err;
+    log(`server running at port ${PORT}`);
+  });
 
-// watch files and reload server gracefully
-watchServerConfig();
+  // watch files and reload server gracefully
+  watchServerConfig();
 
-if (isDev) {
-  // watch server w/ lib change
-  const watcher = chokidar.watch([root('server'), root('lib')]);
-  watcher.on('ready', function() {
-    watcher.on('all', function() {
-      log('Clearing */server/*, */lib/* module cache from server');
-      Object.keys(require.cache).forEach(function(id) {
-        if (/[\/\\](server|lib)[\/\\]/.test(id)) delete require.cache[id];
+  if (!isProd) {
+    // watch server w/ lib change
+    const watcher = chokidar.watch([root('server'), root('lib')]);
+    watcher.on('ready', function() {
+      watcher.on('all', function() {
+        log('Clearing */server/*, */lib/* module cache from server');
+        Object.keys(require.cache).forEach(function(id) {
+          if (/[\/\\](server|lib)[\/\\]/.test(id)) delete require.cache[id];
+        });
       });
     });
-  });
+  }
 }
+
+isProd && Loadable.preloadAll().then(listen) || listen();
