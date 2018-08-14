@@ -180,6 +180,9 @@ export default class Runtimes extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
+        width: '150px',
+        sorter: true,
+        onChangeSort: runtimeStore.fetchAll,
         render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {

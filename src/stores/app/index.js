@@ -56,9 +56,7 @@ export default class AppStore extends Store {
     let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize,
-      sort_key: 'update_time',
-      reverse: true
+      offset: (pageOffset - 1) * this.pageSize
     };
     if (params.page) {
       delete params.page;

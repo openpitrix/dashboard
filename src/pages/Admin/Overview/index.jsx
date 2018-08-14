@@ -32,7 +32,7 @@ import styles from './index.scss';
 @observer
 export default class Overview extends React.Component {
   static async onEnter({ appStore, clusterStore, repoStore, runtimeStore, categoryStore }) {
-    await appStore.fetchAll({ status: resourceStatus.app });
+    await appStore.fetchApps({ status: resourceStatus.app });
     await clusterStore.fetchAll({ status: resourceStatus.cluster });
     await repoStore.fetchAll({ status: resourceStatus.repo });
     await categoryStore.fetchAll();
@@ -119,8 +119,8 @@ export default class Overview extends React.Component {
                 len={repoList.length}
                 iconName="stateful-set"
               >
-                <RepoList repos={repoList} type="public" limit={2} />
-                <RepoList repos={repoList} type="private" limit={2} />
+                <RepoList repos={repoList} type="public" limit={4} />
+                <RepoList repos={repoList} type="private" limit={4} />
               </Panel>
             </Section>
 
@@ -142,7 +142,8 @@ export default class Overview extends React.Component {
 
   normalView = () => {
     const { sessInfo, appStore, repoStore, clusterStore, t } = this.props;
-    const countLimit = 3;
+    const countLimit = 5;
+    const { isLoading } = appStore;
 
     const name = getSessInfo('user', sessInfo);
     const appList = appStore.apps.slice(0, countLimit);
@@ -150,7 +151,7 @@ export default class Overview extends React.Component {
     const clusterList = clusterStore.clusters.slice(0, countLimit);
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <Row>
           <div className={styles.userInfo}>
             <div className={styles.userName}>{t('greet words', { name })}</div>
@@ -171,7 +172,7 @@ export default class Overview extends React.Component {
               len={repoList.length}
               iconName="stateful-set"
             >
-              <RepoList repos={repoList} type="public" limit={2} />
+              <RepoList repos={repoList} type="public" limit={4} />
               {/*<RepoList repos={repoList} type="private" limit={2} />*/}
             </Panel>
           </Section>
@@ -203,6 +204,7 @@ export default class Overview extends React.Component {
       t
     } = this.props;
     const countLimit = 5;
+    const { isLoading } = appStore;
 
     const appList = appStore.apps.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
@@ -271,7 +273,7 @@ export default class Overview extends React.Component {
     };
 
     return (
-      <Layout>
+      <Layout isLoading={isLoading}>
         <Row>
           <Grid>
             <Section>

@@ -166,7 +166,7 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { appStore, repoStore, t } = this.props;
     const {
       apps,
       summaryInfo,
@@ -178,9 +178,9 @@ export default class Apps extends Component {
       onChangeSelect,
       onChangeStatus,
       selectStatus
-    } = this.props.appStore;
+    } = appStore;
 
-    const { repos } = this.props.repoStore;
+    const { repos } = repoStore;
 
     const columns = [
       {
@@ -244,7 +244,9 @@ export default class Apps extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '100px',
+        width: '108px',
+        sorter: true,
+        onChangeSort: appStore.fetchAll,
         render: item => <TimeShow time={item.status_time} />
       },
       {

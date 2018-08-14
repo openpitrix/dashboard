@@ -28,14 +28,9 @@ export default class RepoList extends PureComponent {
       totalName = 'Clusters';
 
     if (type !== 'runtime') {
-      filterRepos = repos.filter(repo => repo.visibility === type).slice(0, limit);
+      filterRepos = repos.slice(0, limit).filter(repo => repo.visibility === type);
       totalName = 'Apps';
     }
-
-    const colorStyles = {
-      primary: '#343945',
-      secondary: '#343945'
-    };
 
     return (
       <Fragment>
@@ -57,7 +52,7 @@ export default class RepoList extends PureComponent {
                       name={item.providers && item.providers[0]}
                       size={24}
                       className={styles.icon}
-                      color={colorStyles}
+                      type="dark"
                     />
                   )}
                   <span className={styles.name}>{item.name}</span>
