@@ -62,6 +62,15 @@
           }
         }
       }
+      .sortOuter{
+        :global{
+          .icon{
+            vertical-align: middle;
+            margin-left: 6px;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }

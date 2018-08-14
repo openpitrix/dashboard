@@ -38,7 +38,8 @@ export default class Table extends React.Component {
 
     this.state = {
       selectedRowKeys: (props.rowSelection || {}).selectedRowKeys || [],
-      selectionDirty: false
+      selectionDirty: false,
+      reverse: true
     };
   }
 
@@ -261,7 +262,7 @@ export default class Table extends React.Component {
           newColumn.title = (
             <Popover content={this.renderFilterContent(filter)} className={styles.filterOuter}>
               {newColumn.title}
-              <Icon name="caret-down" type="dark" />
+              <Icon name="caret-down" type={`${filter.selectValue ? 'light' : 'dark'}`} />
             </Popover>
           );
         }
@@ -290,6 +291,24 @@ export default class Table extends React.Component {
     columns = columns.map((column, i) => {
       const newColumn = { ...column };
       newColumn.key = column.key || column.dataIndex || i;
+      if (newColumn.sorter) {
+        const { reverse } = this.state;
+        const onChangeSort = () => {
+          this.setState({
+            reverse: !reverse
+          });
+          column.onChangeSort({
+            sort_key: column.key,
+            reverse: !reverse
+          });
+        };
+        newColumn.title = (
+          <span onClick={() => onChangeSort()} className={styles.sortOuter}>
+            {newColumn.title}
+            <Icon name={`sort-${reverse ? 'descend' : 'ascend'}ing`} />
+          </span>
+        );
+      }
       return newColumn;
     });
 

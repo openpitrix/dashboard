@@ -225,6 +225,9 @@ export default class Clusters extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
+        width: '150px',
+        sorter: true,
+        onChangeSort: clusterStore.fetchAll,
         render: cl => formatTime(cl.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
