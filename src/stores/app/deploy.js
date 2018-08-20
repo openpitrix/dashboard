@@ -150,14 +150,14 @@ export default class AppDeployStore extends Store {
       }
     }
     for (let i = 0; i < this.configEnvs.length; i++) {
-      let env = this.configEnvs[i];
-      env[env.key] = {};
-      for (let j = 0; j < env.properties.length; j++) {
-        if (env.properties[j].required && _.isEmpty(_.toString(env.properties[j].default))) {
-          this.checkResult = env.properties[j].label;
+      let temp = this.configEnvs[i];
+      env[temp.key] = {};
+      for (let j = 0; j < temp.properties.length; j++) {
+        if (temp.properties[j].required && _.isEmpty(_.toString(temp.properties[j].default))) {
+          this.checkResult = temp.properties[j].label;
           break;
         }
-        cluster[env.key][env.properties[j].key] = env.properties[j].default;
+        env[temp.key][temp.properties[j].key] = temp.properties[j].default;
       }
     }
     if (!this.runtimeId) {
