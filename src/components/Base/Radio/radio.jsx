@@ -18,7 +18,8 @@ export default class Radio extends React.Component {
   };
 
   handleClick = () => {
-    this.props.onChange(this.props.value);
+    const { checked, value, onChange } = this.props;
+    !checked && onChange(value);
   };
 
   render() {
