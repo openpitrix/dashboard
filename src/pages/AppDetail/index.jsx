@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
@@ -25,14 +24,20 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
+    // firstly fetch app version data, because `isLoading` is belong appVersion store
+    // this will prevent page flashing
+    await appVersionStore.fetchAll({ app_id: appId });
+
     appStore.currentPic = 1;
     await appStore.fetch(appId);
-    await appVersionStore.fetchAll({ app_id: appId });
+
     if (appStore.appDetail.repo_id) {
-      repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+      await repoStore.fetchRepoDetail(get(appStore, 'appDetail.repo_id', ''));
     }
     if (appStore.appDetail.latest_app_version) {
-      appVersionStore.fetchPackageFiles(appStore.appDetail.latest_app_version.version_id);
+      await appVersionStore.fetchPackageFiles(
+        get(appStore, 'appDetail.latest_app_version.version_id', '')
+      );
     }
   }
 
@@ -89,12 +94,7 @@ export default class AppDetail extends Component {
     const appDetail = appStore.appDetail;
 
     return (
-      <Layout
-        noTabs
-        noNotification
-        isLoading={isLoading}
-        backBtn={<BackBtn label="catalog" link="/" />}
-      >
+      <Layout noTabs isLoading={isLoading} backBtn={<BackBtn label="catalog" link="/" />}>
         <Grid>
           <Section size={8}>
             <Panel className={styles.introCard}>

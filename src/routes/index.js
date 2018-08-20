@@ -1,7 +1,6 @@
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
-// import ClusterDetail from 'pages/ClusterDetail';
 import * as Dash from 'pages/Admin';
 
 const useExactRoute = true;
@@ -22,8 +21,6 @@ const routes = {
   '/apps/category/:category': Home,
   '/app/:appId': AppDetail,
 
-  // '/clusters/:clusterId': ClusterDetail,
-
   '/:dash': Dash.Overview,
 
   '/:dash/apps': Dash.Apps,
@@ -42,8 +39,6 @@ const routes = {
   '/:dash/repo/create': Dash.RepoAdd,
   '/:dash/repo/edit/:repoId': Dash.RepoAdd,
   '/:dash/repo/:repoId': Dash.RepoDetail,
-
-  // '/:dash/users': Dash.Users,
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
