@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
 import { formatTime } from 'utils';
+import { versionCompare } from 'utils/string';
 
 import Layout, { Grid, Section, BackBtn, Panel, Card } from 'components/Layout';
 import Button from 'components/Base/Button';
@@ -112,15 +113,6 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
-    let maintainers = [];
-    if (get(appDetail, 'maintainers')) {
-      const objs = JSON.parse(get(appDetail, 'maintainers'));
-      objs &&
-        objs.map(obj => {
-          maintainers.push(obj.name);
-          maintainers.push(obj.email);
-        });
-    }
 
     return (
       <Section>
@@ -137,16 +129,18 @@ export default class AppDetail extends Component {
           <div className={styles.versions}>
             <p>{t('Versions')}</p>
             <ul>
-              {appVersions.map(version => (
-                <li key={version.version_id}>
-                  <span className={styles.name} title={version.name}>
-                    {version.name}
-                  </span>
-                  <span className={styles.time}>
-                    {formatTime(version.create_time, 'MMM D, YYYY')}
-                  </span>
-                </li>
-              ))}
+              {appVersions
+                .sort((verA, verB) => versionCompare(verA.name, verB.name) < 0)
+                .map(version => (
+                  <li key={version.version_id}>
+                    <span className={styles.name} title={version.name}>
+                      {version.name}
+                    </span>
+                    <span className={styles.time}>
+                      {formatTime(version.create_time, 'MMM D, YYYY')}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
         </Card>
