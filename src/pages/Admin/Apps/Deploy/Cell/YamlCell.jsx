@@ -24,29 +24,19 @@ export default class YamlCell extends PureComponent {
 
   render() {
     const { name, value, className } = this.props;
-    const isRadio = typeof value === 'boolean';
 
     return (
       <div className={classNames(styles.cell, className)}>
         <label className={classNames(styles.name, styles.inputName)} title={name}>
           {name}
         </label>
-
-        {!isRadio && (
-          <Input
-            className={styles.input}
-            name={name}
-            type="text"
-            value={value}
-            onChange={this.changeCellInput}
-          />
-        )}
-        {isRadio && (
-          <Radio.Group className={styles.showWord} value={value} onChange={this.changeCell}>
-            <Radio value={true}>true</Radio>
-            <Radio value={false}>false</Radio>
-          </Radio.Group>
-        )}
+        <Input
+          className={styles.input}
+          name={name}
+          type="text"
+          value={value}
+          onChange={this.changeCellInput}
+        />
       </div>
     );
   }
