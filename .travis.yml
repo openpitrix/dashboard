@@ -32,7 +32,7 @@ script:
 
 after_success:
   - yarn report-cov
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
   - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
     docker build -f Dockerfile -t $REPO:$COMMIT .
     docker tag $REPO:$COMMIT $REPO:$TAG
