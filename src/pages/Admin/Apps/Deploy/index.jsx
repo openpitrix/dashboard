@@ -278,7 +278,7 @@ export default class AppDeploy extends Component {
             <YamlCell
               key={conf.name}
               name={conf.name}
-              value={(conf.value || '').toString()}
+              value={conf.value}
               index={index}
               className={styles.cellModule}
               changeCell={changeYmalCell}
