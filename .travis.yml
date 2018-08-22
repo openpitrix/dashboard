@@ -1,21 +1,39 @@
-language: node_js
-sudo: false
+sudo: required
+
 dist: trusty
+
+services:
+  - docker
+
+language: node_js
+
 node_js:
-  - "9"
-  - "8"
-  - "7"
+  - '9'
+
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
+    - REPO=openpitrix/dashboard
 
 cache:
   yarn: true
   directories:
-    - "node_modules"
+    - node_modules
 
 install:
   - yarn
 
 script:
   - yarn test
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
 after_success:
-  - yarn run report-cov
+  - yarn report-cov
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+  - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
+    docker build -t $REPO:$COMMIT .
+    docker tag $REPO:$COMMIT $REPO:$TAG
+    docker push $REPO:$TAG;
+    fi
+
+

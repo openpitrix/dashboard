@@ -46,7 +46,7 @@
     "server": "DEBUG=op-dash BABEL_ENV=server NODE_ENV=development node server/server.js",
     "dev:watch": "npm run dev:client -- --watch",
     "dev": "rimraf build && npm run dev:client && npm run server",
-    "prod:build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.prod.js --progress",
+    "prod:build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.prod.js",
     "prod:serve": "NODE_ENV=production DEBUG=op-dash,koa-*,-koa-router,-koa-views node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
     "lint": "eslint . --fix",
