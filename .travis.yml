@@ -12,11 +12,8 @@ node_js:
 
 env:
   global:
-    - secure: Pr9xESYpZ7+rfms27JPbw6ZFhE61HMSqrYGHqGcJTt//MK+cuv4yy8Z5YOELQNquTY5gz7gVQrc24SoLyyof0apk2NbBwrHax49XzB8MxvmH65264B3DkvPyNkmIOR7BaY+5rNCkv69SaWjWQJCvC2UhwmXJB35wfsEZtEXwAUX2+BT78sGidijvQ3SNRonYk/IUaTFdBT0VVmKZNlQ2jhV9ISc7K+3WhAqzr9sFK1fbUxFX/6NVKvjKw+RB7A6JGtleAbuIj1HL9dZAYonjo37LXLfsweb5odUK1hN6xAorrkkKe+MiIKAYZLRrL5gYfe8FdgOdCEaMwhWRl03CPTqFXLwiJ6eZNUtxF+V1nWW0+w9CjQEa63ShFV9mHfiqtFydJTcYqoAJASSziq+B8bSbRHfZXtSiYKuG6uxoQpkOKM9Hjn8LS2h0rg2b3/ezEPEXrLHDr2Yy7roz04TgyMiBZZ8ZWse9ocpDTpQlqef2RSah1ddXG6jnGSOD6ZzIbmii/MexEq9KjdPWrmxDz+cdTC235d9N4MHNRYvTn7eKmPAjC6uBFweqNqOmy2BAf0Vhon7CfLqV6mu/VRr0QUhOlk8Ej+CWbYB9T2LHj0kd9wj0nrGTA3CNtIhJhHb14nOornMRqb8NTsSU8DTgypX33g6AHltOnI6HjUiVfNU=
-    - secure: kPZqAMSNKogCQ/5c27CYisyBKOxcVNCL/2XDqjUQuFZ5gyTdih7364Xzu/AQqREX9/m6QxgD/V9uvm7lYNsqPV8u95Px4OB+Ke4hO2wwynkbeupfIfFPQzQ6k6LrbOYNvEa48tPWww5wAWwvsKvvUgLnvurzs/0o/rm3r5KFTGHQ2IIImqEsjOxq+6iDlSu8SSt6octXYSzjMeW1SBwaqqfSrHxv4CVXvWZYS5rUIzo3XuwSYNSPTr/d4nwuXxxxHepy6i0K7+vkNbmipiij7f2I9Dypiq7jo/J41LS5oRNyI4Fj5+2tWBq0ePhmKWUIkc1I4qc0D+q2omFy0xfeTEf9nzKo+0sK8T7juxR6YkitNjEA648M1NRE7GvVOOs2X5AR0me0oVhKDQwf+lgxuBll23R8t7Kl8vMzRO9S4C5Jwlta8ZkLn3tuIDIyvTsAFmdrvaSCbyKy2bzT+96ZXT0HsKunj7kkp/2ayOZ2LWhP7Di7L2EflFBBLEkpjZ2Op2Ib1GRaxa8yF85wGpsvXCVKLdpby683PgBNEI5fqh+GmHHyGX7dk8VG3ezG22tmQwCj02Z0biCJ6YkGUGXz/gN9XMVZd+z9A6iOLmLG2QSi+97tTGjR0JNRGuMGIzmujuFiC3IL4dU7D+3uPhw1MnxOG+VaJN9OTDO9T/iN7sQ=
     - COMMIT=${TRAVIS_COMMIT::8}
     - REPO=openpitrix/dashboard
-
 
 cache:
   yarn: true
@@ -34,7 +31,7 @@ after_success:
   - yarn report-cov
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
   - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
-    docker build -f Dockerfile -t $REPO:$COMMIT .
+    docker build -t $REPO:$COMMIT .
     docker tag $REPO:$COMMIT $REPO:$TAG
     docker push $REPO:$TAG;
     fi
