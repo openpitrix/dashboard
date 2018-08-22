@@ -5,6 +5,8 @@ set -e
 REPO=openpitrix/dashboard
 COMMIT=$(git rev-parse --short HEAD)
 
+echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
 echo "Building docker image from git HEAD commit: $COMMIT"
 docker build -t $REPO:$COMMIT .
 

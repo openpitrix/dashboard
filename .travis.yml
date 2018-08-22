@@ -24,13 +24,10 @@ script:
 after_success:
   - yarn report-cov
 
-before_deploy:
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-
 deploy:
   skip_cleanup: true
   provider: script
-  script: deploy-docker.sh
+  script: chmod +x ./deploy-docker.sh && ./deploy-docker.sh
   on:
     branch: master
 
