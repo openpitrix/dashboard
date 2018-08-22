@@ -4,7 +4,7 @@ cwd := $(shell pwd)
 
 # Unconditionally make all targets
 # make build --always-make
-.PHONY: build build-dev
+.PHONY: build build-dev clean
 
 build: Dockerfile
 	@echo building image..
@@ -33,3 +33,9 @@ run-official:
 	@echo up and running official image
 	docker pull openpitrix/dashboard
 	docker run -d -p 8000:8000 --name openpitrix-dashboard openpitrix/dashboard
+
+# kill any running openpitrix-dashboard containers
+clean:
+	@echo "Cleaning up old containers.."
+	docker ps -a | grep openpitrix-dashboard | awk '{print $1}' | xargs docker rm -f || true
+
