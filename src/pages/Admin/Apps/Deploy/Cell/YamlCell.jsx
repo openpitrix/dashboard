@@ -14,6 +14,10 @@ export default class YamlCell extends PureComponent {
     className: PropTypes.string
   };
 
+  static defaultProps = {
+    value: ''
+  };
+
   changeCell = value => {
     this.props.changeCell(value, this.props.name, this.props.index);
   };
