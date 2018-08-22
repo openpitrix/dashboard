@@ -8,12 +8,7 @@ services:
 language: node_js
 
 node_js:
-  - '9'
-
-env:
-  global:
-    - COMMIT=${TRAVIS_COMMIT::8}
-    - REPO=openpitrix/dashboard
+  - 9
 
 cache:
   yarn: true
@@ -25,15 +20,17 @@ install:
 
 script:
   - yarn test
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
 after_success:
   - yarn report-cov
+
+before_deploy:
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-  - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then
-    docker build -t $REPO:$COMMIT .
-    docker tag $REPO:$COMMIT $REPO:$TAG
-    docker push $REPO:$TAG;
-    fi
+
+deploy:
+  provider: script
+  script: deploy-docker.sh
+  on:
+    branch: master
 
 
