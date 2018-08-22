@@ -14,4 +14,4 @@ echo "Tagging latest image as $REPO:$COMMIT"
 docker tag $REPO:$COMMIT $REPO:latest
 
 echo "Push image to docker hub.."
-docker push $REPO
+docker push $REPO:latest
