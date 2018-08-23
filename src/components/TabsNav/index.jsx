@@ -25,7 +25,11 @@ const normalizeLink = (link, prefix = '') => {
 
 const isLinkActive = (curLink, match, location) => {
   const { pathname } = location;
+
   if (curLink === '/dashboard') {
+    return curLink === pathname;
+  }
+  if (curLink === '/profile') {
     return curLink === pathname;
   } else {
     let try_match = pathname.indexOf(curLink) === 0;
@@ -38,22 +42,28 @@ const isLinkActive = (curLink, match, location) => {
   }
 };
 
-const LinkItem = ({ link, label }) => (
-  <I18n>
-    {t => (
-      <li>
-        <NavLink
-          to={link}
-          activeClassName={styles.active}
-          exact
-          isActive={isLinkActive.bind(null, link)}
-        >
-          {t(capitalize(label))}
-        </NavLink>
-      </li>
-    )}
-  </I18n>
-);
+const LinkItem = ({ link, label }) => {
+  if (link.indexOf('/profile/sshkeys') === -1) {
+    label = capitalize(label);
+  }
+
+  return (
+    <I18n>
+      {t => (
+        <li>
+          <NavLink
+            to={link}
+            activeClassName={styles.active}
+            exact
+            isActive={isLinkActive.bind(null, link)}
+          >
+            {t(label)}
+          </NavLink>
+        </li>
+      )}
+    </I18n>
+  );
+};
 
 LinkItem.propTypes = {
   link: PropTypes.string.isRequired,

@@ -43,7 +43,10 @@ export default class Tooltip extends React.Component {
     this.setState({ visible: false }, this.props.onVisibleChange(false, this.target));
   };
 
-  handleTogglePopper = () => {
+  handleTogglePopper = e => {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
     this.state.visible ? this.hidePopper() : this.showPopper();
   };
 

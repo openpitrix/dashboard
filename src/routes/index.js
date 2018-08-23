@@ -2,6 +2,8 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
 import * as Dash from 'pages/Admin';
+import Profile from 'pages/Profile';
+import SSHKeys from 'pages/Profile/SSHKeys';
 
 const useExactRoute = true;
 const dashboardPrefix = '/dashboard';
@@ -42,6 +44,9 @@ const routes = {
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
+
+  '/profile': Profile,
+  '/profile/sshkeys': SSHKeys,
 
   '*': Home
 };
