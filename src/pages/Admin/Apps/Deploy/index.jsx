@@ -34,15 +34,11 @@ export default class AppDeploy extends Component {
     appDeployStore.isKubernetes = repoProviders.includes('kubernetes');
     await appDeployStore.fetchVersions({ app_id: [appId] }, true);
 
-    const labels = get(repoStore.repoDetail, 'labels', []);
-    const queryLabel = labels
-      .filter(label => label.label_key)
-      .map(label => [label.label_key, label.label_value].join('='))
-      .join('&');
+    const querySelector = repoStore.getStringFor('selectors');
 
     await appDeployStore.fetchRuntimes({
       status: 'active',
-      label: queryLabel,
+      label: querySelector,
       provider: repoProviders
     });
     appStore.isLoading = false;

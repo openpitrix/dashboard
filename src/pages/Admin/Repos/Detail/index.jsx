@@ -56,7 +56,7 @@ export default class RepoDetail extends Component {
     }
   };
 
-  changeSelectors = items => {
+  filterSelectors = items => {
     return items.filter(item => item.selector_key).map(item => ({
       label_key: item.selector_key,
       label_value: item.selector_value
@@ -92,6 +92,15 @@ export default class RepoDetail extends Component {
     );
   };
 
+  getRuntimeParams = () => {
+    const { repoStore } = this.props;
+
+    return {
+      label: repoStore.querySelector,
+      provider: repoStore.queryProviders
+    };
+  };
+
   changeDetailTab = async tab => {
     const { appStore, runtimeStore, repoStore, clusterStore, match } = this.props;
     const { repoId } = match.params;
@@ -102,18 +111,12 @@ export default class RepoDetail extends Component {
       await appStore.fetchAll({ repo_id: repoId });
     } else if (tab === 'Runtimes') {
       runtimeStore.searchWord = '';
-      const labels = repoStore.repoDetail.labels || [];
-      const queryLabel = labels
-        .filter(label => label.label_key)
-        .map(label => [label.label_key, label.label_value].join('='))
-        .join('&');
+      // query runtime label by repo selector
+      repoStore.querySelector = repoStore.getStringFor('selectors');
+      repoStore.queryProviders = repoStore.repoDetail.providers.slice();
 
-      repoStore.queryLabel = queryLabel;
-      repoStore.queryProviders = repoStore.repoDetail.providers;
-      await runtimeStore.fetchAll({
-        selector: queryLabel,
-        provider: repoStore.repoDetail.providers
-      });
+      await runtimeStore.fetchAll(this.getRuntimeParams());
+
       const { runtimes } = runtimeStore;
       if (runtimes.length > 0) {
         const runtimeIds = runtimes.map(item => item.runtime_id);
@@ -168,45 +171,37 @@ export default class RepoDetail extends Component {
     });
   };
 
-  onSearch = async name => {
-    const { runtimeStore, repoStore } = this.props;
-    runtimeStore.changeSearchWord(name);
-    runtimeStore.setCurrentPage(1);
-    await runtimeStore.fetchAll({
-      label: repoStore.queryLabel,
-      provider: repoStore.queryProviders
-    });
+  onSearch = async (name = '', isRefresh = false) => {
+    const { runtimeStore } = this.props;
+
+    if (!isRefresh) {
+      runtimeStore.changeSearchWord(name);
+      runtimeStore.setCurrentPage(1);
+    }
+
+    await runtimeStore.fetchAll(this.getRuntimeParams());
   };
 
   onClear = async () => {
-    await this.onSearch('');
+    await this.onSearch();
   };
 
   onRefresh = async () => {
-    const { runtimeStore, repoStore } = this.props;
-    await runtimeStore.fetchAll({
-      label: repoStore.queryLabel,
-      provider: repoStore.queryProviders
-    });
+    await this.onSearch('', true);
   };
 
   changeTable = async current => {
-    const { runtimeStore, repoStore } = this.props;
+    const { runtimeStore } = this.props;
     runtimeStore.setCurrentPage(current);
-    await runtimeStore.fetchAll({
-      label: repoStore.queryLabel,
-      provider: repoStore.queryProviders
-    });
+    await runtimeStore.fetchAll(this.getRuntimeParams());
   };
 
   onChangeStatus = async status => {
-    const { runtimeStore, repoStore } = this.props;
+    const { runtimeStore } = this.props;
     runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
     runtimeStore.setCurrentPage(1);
-    await runtimeStore.fetchAll({
-      label: repoStore.queryLabel,
-      provider: repoStore.queryProviders
-    });
+
+    await runtimeStore.fetchAll(this.getRuntimeParams());
   };
 
   changeTableEvent = async current => {
@@ -273,7 +268,7 @@ export default class RepoDetail extends Component {
         };
         break;
       case 'Runtimes':
-        selectors = this.changeSelectors(repoDetail.selectors || []);
+        selectors = this.filterSelectors(repoDetail.selectors || []);
         toolbarOptions = {
           searchWord: runtimeStore.searchWord,
           placeholder: t('Search Runtimes'),
