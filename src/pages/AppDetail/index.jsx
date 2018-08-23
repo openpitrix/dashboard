@@ -65,13 +65,16 @@ export default class AppDetail extends Component {
   renderBody() {
     const { appStore, repoStore, appVersionStore } = this.props;
     const { appDetail } = appStore;
-
-    const providerName = get(repoStore.repoDetail, 'providers[0]', 'ddd');
+    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
     const isHelmApp = providerName === 'kubernetes';
+
     let screenshots = [];
     if (appDetail.screenshots) {
-      screenshots = JSON.parse(appDetail.screenshots) || [];
+      try {
+        screenshots = JSON.parse(appDetail.screenshots) || [];
+      } catch (err) {}
     }
+
     if (isHelmApp) {
       return <Helm readme={appVersionStore.readme} />;
     }
