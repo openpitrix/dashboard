@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import _, { get, assign } from 'lodash';
+import { get, assign, values } from 'lodash';
 
 export default class RepoStore extends Store {
   @observable repos = [];
@@ -11,8 +11,8 @@ export default class RepoStore extends Store {
   @observable repoId = '';
   @observable showDeleteRepo = false;
   @observable curTagName = 'Apps';
-  @observable queryLabel = '';
   @observable queryProviders = '';
+  @observable querySelector = '';
   @observable searchWord = '';
   @observable detailSearch = '';
   @observable defaultStatus = ['active'];
@@ -85,7 +85,7 @@ export default class RepoStore extends Store {
   @action
   deleteRepo = async () => {
     const result = await this.request.delete('repos', { repo_id: [this.repoId] });
-    if (_.get(result, 'repo_id')) {
+    if (get(result, 'repo_id')) {
       this.deleteRepoClose();
       this.fetchAll({}, this.appStore);
       this.showMsg('Delete repo successfully.', 'success');
@@ -150,8 +150,8 @@ export default class RepoStore extends Store {
 
   @action
   loadPageInit = () => {
-    this.queryLabel = '';
     this.queryProviders = '';
+    this.querySelector = '';
     if (!this.pageInitMap.repo) {
       this.searchWord = '';
     }
@@ -161,6 +161,20 @@ export default class RepoStore extends Store {
   @action
   setCurrentPage = page => {
     this.currentPage = page;
+  };
+
+  // get string representation for label / selector
+  getStringFor = (type = 'selectors') => {
+    if (!['selectors', 'labels'].includes(type)) {
+      return '';
+    }
+
+    const itemKey = type === 'selectors' ? 'selector_key' : 'label_key';
+
+    return get(this.repoDetail, type, [])
+      .filter(item => Boolean(item[itemKey]))
+      .map(item => values(item).join('='))
+      .join('&');
   };
 }
 
