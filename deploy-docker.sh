@@ -13,8 +13,8 @@ docker pull $REPO:latest
 echo "Building docker image from git HEAD commit: $COMMIT"
 docker build --cache-from $REPO:latest -t $REPO:$COMMIT .
 
-echo "Tag latest image as $REPO:$COMMIT"
+echo "Tag $REPO:$COMMIT as latest image"
 docker tag $REPO:$COMMIT $REPO:latest
 
-echo "Push image to docker hub"
+echo "Push latest image to docker hub"
 docker push $REPO:latest
