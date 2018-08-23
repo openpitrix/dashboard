@@ -3,16 +3,7 @@ import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
 import * as Dash from 'pages/Admin';
 
-const useExactRoute = true;
-const dashboardPrefix = '/dashboard';
-
-const dashUrl = path => {
-  if (!path) return dashboardPrefix;
-  if (path.startsWith('/:dash')) {
-    path = path.replace('/:dash', dashboardPrefix);
-  }
-  return path;
-};
+import {generateRoutes} from './utils';
 
 const routes = {
   '/': Home,
@@ -46,18 +37,4 @@ const routes = {
   '*': Home
 };
 
-export default Object.keys(routes).map(route => {
-  const routeDefinition = Object.assign(
-    {},
-    {
-      path: dashUrl(route),
-      exact: useExactRoute,
-      component: routes[route],
-      needAuth: route.startsWith('/:dash')
-    }
-  );
-  if (route === '*') {
-    Object.assign(routeDefinition, { noMatch: true });
-  }
-  return routeDefinition;
-});
+export default generateRoutes(routes);

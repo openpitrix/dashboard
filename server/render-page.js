@@ -9,12 +9,16 @@ const defaultOptions = {
 
 const readManifest = (file, prefix = '/dist') => {
   let manifest = {};
-  try {
-    let manifest_file = path.join(process.cwd(), `${prefix}/${file}`);
-    manifest = JSON.parse(fs.readFileSync(manifest_file, 'utf8'));
-  } catch (e) {
-    throw Error(`parse ${file} err: ${e.message}`);
+  if(prefix === '/dist'){
+    // prod env
+    try {
+      let manifest_file = path.join(process.cwd(), `${prefix}/${file}`);
+      manifest = JSON.parse(fs.readFileSync(manifest_file, 'utf8'));
+    } catch (e) {
+      throw Error(`parse ${file} err: ${e.message}`);
+    }
   }
+
   return manifest;
 };
 
@@ -24,7 +28,7 @@ const renderPage = (options = {}) => {
   const isProd = !!options.isProd;
   const bundlePrefix = isProd ? '/dist' : '/build';
 
-  const manifest = readManifest('build-hash.json');
+  const manifest = readManifest('build-hash.json', bundlePrefix);
 
   const normalizeCssFilePath = css_file => {
     if (css_file.startsWith('http')) {
@@ -92,7 +96,9 @@ const renderPage = (options = {}) => {
     <script>
       window.__INITIAL_STATE__ = ${options.state} 
     </script>
-
+    ${isProd && options.bundles.map(bundle=> {
+      return `<script src="/dist/${bundle.file}"></script>`  
+    }).join('\n')}
     ${renderJs()}
   </body>
 </html>
