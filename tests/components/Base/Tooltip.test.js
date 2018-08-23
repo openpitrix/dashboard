@@ -24,7 +24,7 @@ describe('Base/Tooltip', () => {
     );
     const instance = wrapper.instance();
 
-    instance.handleTogglePopper();
+    instance.handleTogglePopper(instance);
     expect(mockChange).toHaveBeenCalled();
     expect(wrapper.state().visible).not.toBeTruthy();
   });
