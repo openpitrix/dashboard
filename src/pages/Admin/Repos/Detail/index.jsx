@@ -10,7 +10,6 @@ import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
-import { ProviderName } from 'components/TdName';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
@@ -27,7 +26,7 @@ import styles from './index.scss';
 }))
 @observer
 export default class RepoDetail extends Component {
-  static async onEnter({ repoStore, appStore, runtimeStore, clusterStore }, { repoId }) {
+  static async onEnter({ repoStore }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
   }
 
@@ -108,10 +107,11 @@ export default class RepoDetail extends Component {
         .filter(label => label.label_key)
         .map(label => [label.label_key, label.label_value].join('='))
         .join('&');
+
       repoStore.queryLabel = queryLabel;
       repoStore.queryProviders = repoStore.repoDetail.providers;
       await runtimeStore.fetchAll({
-        label: queryLabel,
+        selector: queryLabel,
         provider: repoStore.repoDetail.providers
       });
       const { runtimes } = runtimeStore;
