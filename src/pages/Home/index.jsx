@@ -102,7 +102,7 @@ export default class Home extends Component {
     }
 
     let scrollBottom = getScrollBottom();
-    if (scrollBottom < 200 && !appStore.isLoading) {
+    if (scrollBottom < 100 && !appStore.isProgressive) {
       this.loadAppData(categories);
     }
   };
@@ -137,7 +137,7 @@ export default class Home extends Component {
   render() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { homeApps, isLoading } = appStore;
+    const { homeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
     const categoryId = match.params.category;
     const appSearch = match.params.search;
@@ -159,6 +159,13 @@ export default class Home extends Component {
                 categoryTitle={categoryTitle}
                 appSearch={appSearch}
               />
+              {isProgressive && (
+                <div className={styles.loading}>
+                  <div className={styles.loadOuter}>
+                    <div className={styles.loader} />
+                  </div>
+                </div>
+              )}
             </Loading>
           </div>
         </div>

@@ -1,8 +1,5 @@
 @import '~scss/vars';
 
-.contentOuter {
-  //background-color: $body-bg;
-}
 .content {
   position: relative;
   height: auto;
@@ -27,6 +24,42 @@
     padding-bottom: $page-bottom;
     min-height: calc(100vh - #{$footer-height});
   }
+
+  .progressive{
+    position: static;
+    height: 60px;
+    .loadOuter{
+      position: static;
+      padding: 30px 0;
+      .loader {
+        margin: 0 auto;
+      }
+    }
+  }
+  .loading {
+    margin-top: -20px;
+    margin-left: $nav-width;
+    text-align: center;
+    .loadOuter{
+      display: inline-block;
+      .loader {
+        border-radius:50%;
+        width:40px;
+        height:40px;
+        &:after {
+          border-radius:50%;
+          width:40px;
+          height:40px;
+        }
+        border-top: 2px solid rgba($purple-light,0.2);
+        border-right: 2px solid rgba($purple-light,0.2);
+        border-bottom: 2px solid rgba($purple-light,0.2);
+        border-left: 2px solid rgba($purple-light,1);
+        transform: translateZ(0);
+        animation:load 1.1s infinite linear;
+      }
+    }
+  }
 }
 .fixNav {
   div[class*='_nav'] {
@@ -42,3 +75,16 @@
     padding-top: 72px;
   }
 }
+
+@mixin load-frames() {
+  0% {
+    -webkit-transform:rotate(0deg);
+    transform:rotate(0deg);
+  }
+  100% {
+    -webkit-transform:rotate(360deg);
+    transform:rotate(360deg);
+  }
+}
+@-webkit-keyframes load {@include load-frames;}
+@keyframes load {@include load-frames;}
