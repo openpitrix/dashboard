@@ -58,7 +58,9 @@
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "e2e": "testcafe chrome tests/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
     "prod-client": "node build.js --prod-client",
-    "prod-server": "node build.js --prod-server"
+    "prod-server": "node build.js --prod-server",
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 -n ./changelog.config.js"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [
@@ -67,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
     "autoprefixer": "7.1.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
@@ -84,6 +87,7 @@
     "babel-register": "^6.26.0",
     "codecov": "^3.0.2",
     "compression-webpack-plugin": "^1.1.11",
+    "conventional-changelog-cli": "^2.0.5",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
