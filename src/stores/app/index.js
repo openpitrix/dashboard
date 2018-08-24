@@ -10,6 +10,7 @@ export default class AppStore extends Store {
   @observable categoryTitle = '';
   @observable appId = ''; // current app_id
   @observable isLoading = false;
+  @observable isProgressive = false;
   @observable totalCount = 0;
   @observable appCount = 0;
   @observable currentPage = 1;
@@ -78,6 +79,7 @@ export default class AppStore extends Store {
     if (!params.noLoading) {
       this.isLoading = true;
     } else {
+      this.isProgressive = true;
       delete params.noLoading;
     }
     const result = await this.request.get('apps', assign(defaultParams, params));
@@ -87,6 +89,7 @@ export default class AppStore extends Store {
       this.appCount = this.totalCount;
     }
     this.isLoading = false;
+    this.isProgressive = false;
   };
 
   @action
