@@ -13,7 +13,7 @@ const hasLoggedIn = () => {
 
 const renderRoute = (match, route, store) => {
   if (route.needAuth && !hasLoggedIn()) {
-    return <Redirect to="/login" />;
+    return <Redirect to={'/login?url=' + match.url} />;
   }
 
   if (route.noMatch) {
