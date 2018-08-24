@@ -46,10 +46,11 @@ export default class Select extends React.Component {
 
   handleControlClick = () => {
     const { isOpen } = this.state;
+    const { disabled } = this.props;
 
     if (isOpen) {
       document.removeEventListener('click', this.handleOutsideClick.bind(this));
-    } else {
+    } else if (!disabled) {
       document.addEventListener('click', this.handleOutsideClick.bind(this));
     }
 
@@ -81,30 +82,35 @@ export default class Select extends React.Component {
 
   renderControl() {
     const { isOpen } = this.state;
+    const { disabled } = this.props;
+
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
         <div className={styles.controlLabel}>{this.currentLabel}</div>
-        <Icon name={isOpen ? 'caret-up' : 'caret-down'} type="dark" />
+        <Icon name={isOpen && !disabled ? 'caret-up' : 'caret-down'} type="dark" />
       </div>
     );
   }
 
   renderOptions() {
     const { isOpen } = this.state;
+    const { disabled } = this.props;
 
     return this.childNodes.length > 0 ? (
-      <div className={classnames(styles.options, { [styles.show]: isOpen })}>{this.childNodes}</div>
+      <div className={classnames(styles.options, { [styles.show]: isOpen && !disabled })}>
+        {this.childNodes}
+      </div>
     ) : null;
   }
 
   render() {
-    const { className, children, disabled, ...rest } = this.props;
+    const { className, ...rest } = this.props;
 
     this.setChildNodes();
 
     return (
       <div
-        className={classnames(styles.select, className, { [styles.disabledSel]: disabled })}
+        className={classnames(styles.select, className)}
         {...rest}
         ref={ref => {
           this.wrapper = ref;

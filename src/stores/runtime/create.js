@@ -70,7 +70,11 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   handleValidateCredential = () => {
-    this.showMsg(this.accessKey && this.secretKey ? 'valid credential' : 'invalid credential');
+    if (this.runtimeUrl && this.accessKey && this.secretKey) {
+      this.getRuntimeZone();
+    } else {
+      this.showMsg('Incomplete credential information!');
+    }
   };
 
   @action
@@ -119,6 +123,8 @@ export default class RuntimeCreateStore extends Store {
         })
       };
       await this.fetchRuntimeZones(params);
+    } else {
+      this.runtimeZones = [];
     }
   };
 
@@ -186,8 +192,11 @@ export default class RuntimeCreateStore extends Store {
 
       this.isLoading = true;
       if (this.runtimeId) {
-        delete data.runtime_url;
-        delete data.runtime_credential;
+        if (!this.accessKey || !this.secretKey) {
+          delete data.runtime_credential;
+        } else {
+          data.runtime_url = this.runtimeUrl;
+        }
         _.extend(data, { runtime_id: this.runtimeId });
         await this.modifyRuntime(data);
       } else {
@@ -246,6 +255,7 @@ export default class RuntimeCreateStore extends Store {
     this.accessKey = '';
     this.secretKey = '';
     this.zone = '';
+    this.runtimeZones = [];
     this.credential = '';
     this.description = '';
     this.labels = [{ label_key: '', label_value: '' }];

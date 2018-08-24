@@ -33,7 +33,6 @@
       font-size: $size-small;
       color: #fff;
       transform: translate(0 ,-50%) scale(0.7);
-      cursor: pointer;
     }
   }
   &::before {
@@ -87,11 +86,16 @@
       }
     }
   }
-
-  &.disabled {
+}
+.checkbox.disabled {
+  opacity: 0.5;
+  &::before {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &:active{
     &::before {
-      opacity: 0.5;
-      cursor: not-allowed;
+      border-color: $N30 !important;
     }
   }
 }

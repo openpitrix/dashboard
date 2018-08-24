@@ -57,12 +57,12 @@ export default class Checkbox extends Component {
           [styles.disabled]: disabled,
           [styles.checked]: isChecked
         })}
+        {...restProps}
         style={style}
       >
         {isChecked && <Icon name="check" color={color} />}
         <input
           type="checkbox"
-          disabled={disabled}
           checked={isChecked}
           onChange={this.handleToggleCheck}
           {...restProps}

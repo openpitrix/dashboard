@@ -59,10 +59,18 @@
       }
     }
   }
-  &.disabled {
+}
+.radio[disabled] {
+  .circle {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .text {
+    opacity: 0.5;
+  }
+  &:active{
     .circle {
-      opacity: 0.5;
-      cursor: not-allowed;
+      border-color: $N30 !important;
     }
   }
 }
