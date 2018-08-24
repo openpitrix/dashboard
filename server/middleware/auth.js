@@ -20,7 +20,7 @@ module.exports = async (ctx, next) => {
 
   if (needAuth && brokenCookie()) {
     // not login
-    ctx.redirect('/login');
+    ctx.redirect('/login?url=' + ctx.params.page);
   }
 
   await next();

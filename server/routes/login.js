@@ -7,7 +7,7 @@ const sessConfig = require('../session-config');
 const router = new Router();
 
 router.post('/login', async ctx => {
-  let { username, password } = ctx.request.body;
+  let { username, password, url } = ctx.request.body;
 
   if (username && password) {
     let foundUser = _.find(userModel, { name: username, password });
@@ -18,7 +18,7 @@ router.post('/login', async ctx => {
       ctx.cookies.set('role', foundUser.role, sessConfig);
       ctx.cookies.set('last_login', Date.now(), sessConfig);
 
-      ctx.body = { success: true, redirect: '/dashboard' };
+      ctx.body = { success: true, redirect: url ? url : '/dashboard' };
     } else {
       ctx.body = { msg: 'user not found' };
     }
