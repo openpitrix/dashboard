@@ -104,14 +104,14 @@ export default class Select extends React.Component {
   }
 
   render() {
-    const { className, ...rest } = this.props;
+    const { className, disabled } = this.props;
 
     this.setChildNodes();
 
     return (
       <div
         className={classnames(styles.select, className)}
-        {...rest}
+        disabled={disabled}
         ref={ref => {
           this.wrapper = ref;
         }}

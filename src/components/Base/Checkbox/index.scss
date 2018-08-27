@@ -55,7 +55,6 @@
   &:hover{
     &::before {
       background-color: $N10;
-      border-color: $N30;
     }
   }
   &:active{
@@ -87,15 +86,36 @@
     }
   }
 }
-.checkbox.disabled {
+.checkbox[disabled] {
   opacity: 0.5;
   &::before {
     opacity: 0.5;
     cursor: not-allowed;
   }
+  &:hover{
+    &::before {
+      background-color: $N0;
+    }
+  }
   &:active{
     &::before {
       border-color: $N30 !important;
+    }
+  }
+  &.checked {
+    &::before {
+      border-color: $P75;
+      background-color: $P75;
+    }
+    &:hover{
+      &::before {
+        background-color: $P75;
+      }
+    }
+    &:active{
+      &::before {
+        background-color: $P75 !important;
+      }
     }
   }
 }

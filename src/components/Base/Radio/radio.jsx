@@ -27,11 +27,11 @@ export default class Radio extends React.Component {
   };
 
   render() {
-    const { className, checked, children, ...others } = this.props;
+    const { className, checked, children, disabled } = this.props;
     const classNames = classnames(styles.radio, className, { [styles.checked]: checked });
 
     return (
-      <label className={classNames} onClick={this.handleClick} {...others}>
+      <label className={classNames} onClick={this.handleClick} disabled={disabled}>
         <span className={styles.circle} />
         <span className={styles.text}>{children}</span>
       </label>

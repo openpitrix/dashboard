@@ -54,10 +54,9 @@ export default class Checkbox extends Component {
     return (
       <label
         className={classNames(styles.checkbox, className, {
-          [styles.disabled]: disabled,
           [styles.checked]: isChecked
         })}
-        {...restProps}
+        disabled={disabled}
         style={style}
       >
         {isChecked && <Icon name="check" color={color} />}

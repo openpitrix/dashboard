@@ -33,7 +33,6 @@ export default class RuntimeAdd extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.runtimeCreateStore;
-    this.store.reset();
     this.store.runtimeCreated = null;
   }
 
