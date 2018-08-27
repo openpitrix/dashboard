@@ -1,9 +1,9 @@
 const translations = {
   en: {
-    translation: require('./src/locales/en/translation.json')
+    translation: require('../src/locales/en/translation.json')
   },
   zh: {
-    translation: require('./src/locales/zh/translation.json')
+    translation: require('../src/locales/zh/translation.json')
   }
 };
 
