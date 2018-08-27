@@ -13,6 +13,7 @@ const bodyParser = require('koa-bodyparser');
 const favicon = require('koa-favicon');
 const mount = require('koa-mount');
 const serve = require('koa-static');
+const helmet = require('koa-helmet');
 const get = require('lodash/get');
 const chokidar = require('chokidar');
 const debug = require('debug')('op-dash');
@@ -22,6 +23,8 @@ const log = require('../lib/log');
 const { root, getServerConfig, watchServerConfig } = require('../lib/utils');
 
 const app = new Koa();
+app.use(helmet());
+
 const config = getServerConfig();
 
 // mount err report function to app instance
