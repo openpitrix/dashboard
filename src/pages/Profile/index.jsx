@@ -10,6 +10,10 @@ import styles from './index.scss';
 @observer
 export default class Profile extends Component {
   render() {
-    return <Layout isProfile>Profile</Layout>;
+    return (
+      <Layout isProfile>
+        <Grid>Develop ...</Grid>
+      </Layout>
+    );
   }
 }
