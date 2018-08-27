@@ -159,6 +159,7 @@ export default class Apps extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
+        withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/app/create` }}
       />
     );
   }

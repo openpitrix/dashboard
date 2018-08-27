@@ -26,6 +26,7 @@ const routes = {
   '/:dash': Dash.Overview,
 
   '/:dash/apps': Dash.Apps,
+  '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/app/:appId/deploy': Dash.AppDeploy,
 
