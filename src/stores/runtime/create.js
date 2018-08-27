@@ -70,7 +70,11 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   handleValidateCredential = () => {
-    this.showMsg(this.accessKey && this.secretKey ? 'valid credential' : 'invalid credential');
+    if (this.runtimeUrl && this.accessKey && this.secretKey) {
+      this.getRuntimeZone();
+    } else {
+      this.showMsg('Incomplete credential information!');
+    }
   };
 
   @action
@@ -119,6 +123,8 @@ export default class RuntimeCreateStore extends Store {
         })
       };
       await this.fetchRuntimeZones(params);
+    } else {
+      this.runtimeZones = [];
     }
   };
 
@@ -167,51 +173,56 @@ export default class RuntimeCreateStore extends Store {
   handleSubmit = async e => {
     e.preventDefault();
     const checkResult = this.checkSubmitDate();
-    if (checkResult === 'ok') {
-      const { provider, zone, labels } = this;
-      const data = getFormData(e.target);
-      if (provider !== 'kubernetes') {
-        data.runtime_credential = JSON.stringify({
-          access_key_id: this.accessKey,
-          secret_access_key: this.secretKey
-        });
-      } else {
-        //data.runtime_url = 'https://api.qingcloud.com';
-      }
-      data.labels = labels
-        .filter(label => label.label_key)
-        .map(label => [label.label_key, label.label_value].join('='))
-        .join('&');
-      _.extend(data, { provider, zone });
-
-      this.isLoading = true;
-      if (this.runtimeId) {
-        delete data.runtime_url;
-        delete data.runtime_credential;
-        _.extend(data, { runtime_id: this.runtimeId });
-        await this.modifyRuntime(data);
-      } else {
-        await this.create(data);
-      }
-
-      if (_.get(this, 'runtimeCreated.runtime_id')) {
-        if (this.runtimeId) {
-          this.showMsg('Modify runtime successfully', 'success');
-        } else {
-          this.showMsg('Create runtime successfully', 'success');
-        }
-      } else {
-        let { errDetail } = this.runtimeCreated;
-        this.showMsg(errDetail);
-      }
-
-      // disable re-submit form in 2 sec
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
-    } else {
+    if (checkResult !== 'ok') {
       this.showMsg(checkResult);
+      return;
     }
+
+    const { provider, zone, labels } = this;
+    const data = getFormData(e.target);
+    if (provider !== 'kubernetes') {
+      data.runtime_credential = JSON.stringify({
+        access_key_id: this.accessKey,
+        secret_access_key: this.secretKey
+      });
+    }
+    data.labels = labels
+      .filter(label => label.label_key)
+      .map(label => [label.label_key, label.label_value].join('='))
+      .join('&');
+    _.extend(data, { provider, zone });
+
+    this.isLoading = true;
+    if (this.runtimeId) {
+      if (provider !== 'kubernetes' && (!this.accessKey || !this.secretKey)) {
+        delete data.runtime_credential;
+      } else if (provider !== 'kubernetes') {
+        data.runtime_url = this.runtimeUrl;
+      }
+      if (!data.runtime_credential) {
+        delete data.runtime_credential;
+      }
+      _.extend(data, { runtime_id: this.runtimeId });
+      await this.modifyRuntime(data);
+    } else {
+      await this.create(data);
+    }
+
+    if (_.get(this, 'runtimeCreated.runtime_id')) {
+      if (this.runtimeId) {
+        this.showMsg('Modify runtime successfully', 'success');
+      } else {
+        this.showMsg('Create runtime successfully', 'success');
+      }
+    } else {
+      let { errDetail } = this.runtimeCreated;
+      this.showMsg(errDetail);
+    }
+
+    // disable re-submit form in 2 sec
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   };
 
   @action
@@ -246,6 +257,7 @@ export default class RuntimeCreateStore extends Store {
     this.accessKey = '';
     this.secretKey = '';
     this.zone = '';
+    this.runtimeZones = [];
     this.credential = '';
     this.description = '';
     this.labels = [{ label_key: '', label_value: '' }];

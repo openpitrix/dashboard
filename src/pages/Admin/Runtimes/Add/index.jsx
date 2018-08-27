@@ -42,6 +42,11 @@ export default class RuntimeAdd extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { runtimeCreateStore } = this.props;
+    runtimeCreateStore.reset();
+  }
+
   render() {
     const { t } = this.props;
     const { runtimeId } = this.store;
@@ -72,65 +77,56 @@ export default class RuntimeAdd extends Component {
 
     return (
       <Fragment>
-        {!runtimeId && (
-          <div>
-            <label className={styles.name}>URL</label>
-            <Input
-              value={runtimeUrl}
-              onChange={this.store.changeUrl}
-              className={styles.input}
-              name="runtime_url"
-              placeholder="www.example.com/path/point/"
-              maxLength="100"
-              onBlur={getRuntimeZone}
-            />
-            <div className={styles.rightShow}>
-              <p>
-                <label className={styles.inputTitle}>{t('Access Key ID')}</label>
-                <label className={styles.inputTitle}>{t('Secret Access Key')}</label>
-              </p>
-              <Fragment>
-                <Input
-                  value={accessKey}
-                  className={styles.inputMiddle}
-                  onChange={this.store.changeAccessKey}
-                  onBlur={getRuntimeZone}
-                />
-                <Input
-                  value={secretKey}
-                  className={styles.inputMiddle}
-                  onChange={this.store.changeSecretKey}
-                  onBlur={getRuntimeZone}
-                />
-                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                  {t('Validate')}
-                </Button>
-              </Fragment>
-            </div>
+        <div>
+          <label className={styles.name}>URL</label>
+          <Input
+            value={runtimeUrl}
+            onChange={this.store.changeUrl}
+            className={styles.input}
+            name="runtime_url"
+            placeholder="www.example.com/path/point/"
+            maxLength="100"
+            onBlur={getRuntimeZone}
+            disabled={Boolean(runtimeId)}
+          />
+          <div className={styles.rightShow}>
+            <p>
+              <label className={styles.inputTitle}>{t('Access Key ID')}</label>
+              <label className={styles.inputTitle}>{t('Secret Access Key')}</label>
+            </p>
+            <Fragment>
+              <Input
+                value={accessKey}
+                className={styles.inputMiddle}
+                onChange={this.store.changeAccessKey}
+                onBlur={getRuntimeZone}
+              />
+              <Input
+                value={secretKey}
+                className={styles.inputMiddle}
+                onChange={this.store.changeSecretKey}
+                onBlur={getRuntimeZone}
+              />
+              <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+                {t('Validate')}
+              </Button>
+            </Fragment>
           </div>
-        )}
-        <div
-          className={classNames(
-            { [styles.zoneItem]: !runtimeId },
-            { [styles.showDiv]: !!runtimeId }
-          )}
-        >
+        </div>
+        <div className={styles.zoneItem}>
           <label className={styles.name}>{t('Zone')}</label>
-          {!runtimeId && (
-            <Select
-              className={styles.select}
-              value={zone}
-              onChange={this.store.changeZone}
-              disabled={runtimeZones.length === 0}
-            >
-              {runtimeZones.map(data => (
-                <Select.Option key={data} value={data}>
-                  {data}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
-          {!!runtimeId && <label className={styles.showValue}>{zone}</label>}
+          <Select
+            className={styles.select}
+            value={zone}
+            onChange={this.store.changeZone}
+            disabled={runtimeZones.length === 0}
+          >
+            {runtimeZones.map(data => (
+              <Select.Option key={data} value={data}>
+                {data}
+              </Select.Option>
+            ))}
+          </Select>
         </div>
       </Fragment>
     );
@@ -142,31 +138,24 @@ export default class RuntimeAdd extends Component {
 
     return (
       <Fragment>
-        {!runtimeId && (
-          <div>
-            <label className={classNames(styles.name, styles.textareaName)}>
-              {t('Credential')}
-            </label>
-            <textarea
-              className={styles.textarea}
-              name="runtime_credential"
-              onChange={this.store.changeCredential}
-              value={credential}
-            />
-            <p className={styles.credentialTip}>{t('The Credential of provider')}</p>
-          </div>
-        )}
+        <div>
+          <label className={classNames(styles.name, styles.textareaName)}>{t('Credential')}</label>
+          <textarea
+            className={styles.textarea}
+            name="runtime_credential"
+            onChange={this.store.changeCredential}
+            value={credential}
+          />
+          <p className={styles.credentialTip}>{t('The Credential of provider')}</p>
+        </div>
         <div className={classNames({ [styles.showDiv]: !!runtimeId })}>
           <label className={styles.name}>{t('Namespace')}</label>
-          {!runtimeId && (
-            <Input
-              className={styles.input}
-              maxLength="20"
-              onChange={this.store.changeInputZone}
-              value={zone}
-            />
-          )}
-          {!!runtimeId && <label className={styles.showValue}>{zone}</label>}
+          <Input
+            className={styles.input}
+            maxLength="20"
+            onChange={this.store.changeInputZone}
+            value={zone}
+          />
         </div>
       </Fragment>
     );
@@ -191,26 +180,24 @@ export default class RuntimeAdd extends Component {
             {t('The name of the runtime')}
           </p>
         </div>
-        {!runtimeId && (
-          <div>
-            <label className={styles.name}>{t('Provider')}</label>
-            <Radio.Group
-              value={provider}
-              onChange={this.store.changeProvider}
-              className={styles.radioGroup}
-            >
-              <Radio value="qingcloud">QingCloud</Radio>
-              <Radio value="aws">AWS</Radio>
-              <Radio value="kubernetes">Kubernetes</Radio>
-            </Radio.Group>
-          </div>
-        )}
-        {!!runtimeId && (
-          <div className={styles.showDiv}>
-            <label className={styles.name}>{t('Provider')}</label>
-            <label className={styles.showValue}>{provider}</label>
-          </div>
-        )}
+        <div>
+          <label className={styles.name}>{t('Provider')}</label>
+          <Radio.Group
+            value={provider}
+            onChange={this.store.changeProvider}
+            className={styles.radioGroup}
+          >
+            <Radio value="qingcloud" disabled={Boolean(runtimeId)}>
+              QingCloud
+            </Radio>
+            <Radio value="aws" disabled={Boolean(runtimeId)}>
+              AWS
+            </Radio>
+            <Radio value="kubernetes" disabled={Boolean(runtimeId)}>
+              Kubernetes
+            </Radio>
+          </Radio.Group>
+        </div>
         {provider !== 'kubernetes' ? this.renderUrlAndZone() : this.renderCredential()}
         <div className={styles.textareaItem}>
           <label className={classNames(styles.name, styles.textareaName)}>{t('Description')}</label>

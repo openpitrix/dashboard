@@ -29,7 +29,10 @@
     border: solid 1px $R100;
   }
 }
-
+.input[disabled]{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .inputGroup {
   position: relative;
 

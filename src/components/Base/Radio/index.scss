@@ -59,10 +59,40 @@
       }
     }
   }
-  &.disabled {
+}
+.radio[disabled] {
+  .circle {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .text {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &:hover{
     .circle {
-      opacity: 0.5;
-      cursor: not-allowed;
+      background-color: $N0;
+      border-color: $N30;
+    }
+  }
+  &:active{
+    .circle {
+      border-color: $N30 !important;
+    }
+  }
+  &.checked {
+    .circle {
+      border: solid 4px $P75;
+    }
+    &:hover{
+      .circle {
+        border-color: $P75;
+      }
+    }
+    &:active{
+      .circle {
+        border-color: $P75 !important;
+      }
     }
   }
 }
