@@ -2,6 +2,11 @@ npm_cache := $(shell npm config get cache)
 yarn_cache := $(shell yarn cache dir)
 cwd := $(shell pwd)
 
+repo := openpitrix/dashboard
+
+# get latest git tag
+tag := $$(git tag -l --sort=-v:refname | head -1)
+
 # Unconditionally make all targets
 # make build --always-make
 .PHONY: build build-dev clean
@@ -38,4 +43,12 @@ run-official:
 clean:
 	@echo "Cleaning up old containers.."
 	docker ps -a | grep openpitrix-dashboard | awk '{print $1}' | xargs docker rm -f || true
+
+# override tag argument
+# example: make docker-tag tag=v1.0
+docker-tag:
+	@echo "build docker image from git tag ${tag}"
+	docker pull ${repo}:latest
+	docker build --cache-from ${repo}:latest -t ${repo}:${tag} .
+	docker push ${repo}:${tag}
 
