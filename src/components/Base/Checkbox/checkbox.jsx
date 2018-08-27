@@ -31,11 +31,12 @@ export default class Checkbox extends Component {
   handleToggleCheck = e => {
     const { disabled, onChange } = this.props;
 
-    if (!disabled) {
-      const isChecked = this.state.isChecked;
-      this.setState({ isChecked: !isChecked });
-      onChange && onChange(e);
+    if (disabled) {
+      return;
     }
+    const isChecked = this.state.isChecked;
+    this.setState({ isChecked: !isChecked });
+    onChange && onChange(e);
   };
 
   componentWillReceiveProps(nextProps) {
