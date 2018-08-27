@@ -1,4 +1,5 @@
 export Apps from './Apps';
+export AppAdd from './Apps/Add';
 export AppsInstalled from './Apps/Installed';
 export AppDetail from './Apps/Detail';
 export AppDeploy from './Apps/Deploy';
