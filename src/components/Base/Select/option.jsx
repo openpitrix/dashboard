@@ -19,12 +19,12 @@ export default class Option extends React.Component {
   };
 
   render() {
-    const { className, children, isSelected, ...rest } = this.props;
+    const { className, children, isSelected } = this.props;
 
     const classNames = classnames(styles.option, className);
 
     return (
-      <div className={classNames} {...rest}>
+      <div className={classNames}>
         {children}
         {isSelected && <Icon name="check" type="dark" />}
       </div>

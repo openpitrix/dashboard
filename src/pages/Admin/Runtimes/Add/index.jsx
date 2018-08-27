@@ -42,6 +42,11 @@ export default class RuntimeAdd extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { runtimeCreateStore } = this.props;
+    runtimeCreateStore.reset();
+  }
+
   render() {
     const { t } = this.props;
     const { runtimeId } = this.store;
