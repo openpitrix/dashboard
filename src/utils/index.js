@@ -178,3 +178,14 @@ export function getYamlList(yamlObj) {
   });
   return results;
 }
+
+//get url param by name
+export function getUrlParam(name) {
+  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  const result = window.location.search.substr(1).match(reg);
+  if (result !== null) {
+    return decodeURIComponent(result[2]);
+  } else {
+    return '';
+  }
+}

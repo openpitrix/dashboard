@@ -87,37 +87,31 @@ export default class RepoAdd extends Component {
           />
           <p className={classNames(styles.rightShow, styles.note)}>{t('The name of the repo')}</p>
         </div>
-        {!repoId && (
-          <Fragment>
-            <div>
-              <label className={styles.name}>{t('Visibility')}</label>
-              <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
-                <Radio value="public">{t('Public')}</Radio>
-                <Radio value="private">{t('Private')}</Radio>
-              </Radio.Group>
-            </div>
-            <div>
-              <label className={styles.name}>{t('Runtime Provider')}</label>
-              <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
-                <Checkbox value="qingcloud">QingCloud</Checkbox>
-                <Checkbox value="aws">AWS</Checkbox>
-                <Checkbox value="kubernetes">Kubernetes</Checkbox>
-              </Checkbox.Group>
-            </div>
-          </Fragment>
-        )}
-        {!!repoId && (
-          <Fragment>
-            <div className={styles.showDiv}>
-              <label className={styles.name}>{t('Visibility')}</label>
-              <label className={styles.showValue}>{visibility}</label>
-            </div>
-            <div className={styles.showDiv}>
-              <label className={styles.name}>{t('Runtime Provider')}</label>
-              <label className={styles.showValue}>{providers[0]}</label>
-            </div>
-          </Fragment>
-        )}
+        <div>
+          <label className={styles.name}>{t('Visibility')}</label>
+          <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
+            <Radio value="public" disabled={Boolean(repoId)}>
+              {t('Public')}
+            </Radio>
+            <Radio value="private" disabled={Boolean(repoId)}>
+              {t('Private')}
+            </Radio>
+          </Radio.Group>
+        </div>
+        <div>
+          <label className={styles.name}>{t('Runtime Provider')}</label>
+          <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
+            <Checkbox value="qingcloud" disabled={Boolean(repoId)}>
+              QingCloud
+            </Checkbox>
+            <Checkbox value="aws" disabled={Boolean(repoId)}>
+              AWS
+            </Checkbox>
+            <Checkbox value="kubernetes" disabled={Boolean(repoId)}>
+              Kubernetes
+            </Checkbox>
+          </Checkbox.Group>
+        </div>
         <div>
           <label className={classNames(styles.name, styles.fl)}>{t('Runtime Selectors')}</label>
           <TodoList
@@ -133,53 +127,54 @@ export default class RepoAdd extends Component {
             {t('Add')}
           </Button>
         </div>
-        {!repoId && (
-          <div className={styles.urlItem}>
-            <label className={styles.name}>URL</label>
-            <Select
-              value={protocolType}
-              onChange={this.store.changeProtocolType}
-              className={styles.smallSelect}
-            >
-              <Select.Option value="http">HTTP</Select.Option>
-              <Select.Option value="https">HTTPS</Select.Option>
-              <Select.Option value="s3">S3</Select.Option>
-            </Select>
-            <Input
-              value={url}
-              onChange={this.store.changeUrl}
-              className={styles.input}
-              placeholder="www.example.com/path/point/"
-              maxLength="100"
-              required
-              name="url"
-            />
+        <div className={styles.urlItem}>
+          <label className={styles.name}>URL</label>
+          <Select
+            value={protocolType}
+            onChange={this.store.changeProtocolType}
+            className={styles.smallSelect}
+            disabled={Boolean(repoId)}
+          >
+            <Select.Option value="http">HTTP</Select.Option>
+            <Select.Option value="https">HTTPS</Select.Option>
+            <Select.Option value="s3">S3</Select.Option>
+          </Select>
+          <Input
+            value={url}
+            onChange={this.store.changeUrl}
+            className={styles.input}
+            placeholder="www.example.com/path/point/"
+            maxLength="100"
+            required
+            name="url"
+            title={url}
+            disabled={Boolean(repoId)}
+          />
 
-            {protocolType === 's3' ? (
-              <div className={styles.rightShow}>
-                <p>
-                  <label className={styles.inputTitle}>Access Key ID</label>
-                  <label className={styles.inputTitle}>Secret Access Key</label>
-                </p>
-                <Input
-                  className={styles.inputMiddle}
-                  required
-                  value={accessKey}
-                  onChange={this.store.changeAccessKey}
-                />
-                <Input
-                  className={styles.inputMiddle}
-                  required
-                  value={secretKey}
-                  onChange={this.store.changeSecretKey}
-                />
-                <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                  Validate
-                </Button>
-              </div>
-            ) : null}
-          </div>
-        )}
+          {protocolType === 's3' ? (
+            <div className={styles.rightShow}>
+              <p>
+                <label className={styles.inputTitle}>Access Key ID</label>
+                <label className={styles.inputTitle}>Secret Access Key</label>
+              </p>
+              <Input
+                className={styles.inputMiddle}
+                required
+                value={accessKey}
+                onChange={this.store.changeAccessKey}
+              />
+              <Input
+                className={styles.inputMiddle}
+                required
+                value={secretKey}
+                onChange={this.store.changeSecretKey}
+              />
+              <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+                Validate
+              </Button>
+            </div>
+          ) : null}
+        </div>
         <div className={styles.textareaItem}>
           <label className={classNames(styles.name, styles.textareaName)}>{t('Description')}</label>
           <textarea

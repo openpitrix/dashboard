@@ -43,11 +43,11 @@
   },
   "scripts": {
     "dev:client": "rimraf build && NODE_ENV=development webpack --config webpack.dev.js --progress",
-    "server": "DEBUG=op-dash BABEL_ENV=server NODE_ENV=development node server/server.js",
+    "server": "DEBUG=op-dash,koa-router BABEL_ENV=server NODE_ENV=development node server/server.js",
     "dev:watch": "npm run dev:client -- --watch",
     "dev": "rimraf build && npm run dev:client && npm run server",
     "prod:build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.prod.js",
-    "prod:serve": "NODE_ENV=production DEBUG=op-dash,koa-*,-koa-router,-koa-views node dist/server.js",
+    "prod:serve": "NODE_ENV=production DEBUG=op-dash node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
     "lint": "eslint . --fix",
     "test:single": "NODE_ENV=testing jest --config jest.config.json -u",
@@ -58,7 +58,9 @@
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "e2e": "testcafe chrome tests/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
     "prod-client": "node build.js --prod-client",
-    "prod-server": "node build.js --prod-server"
+    "prod-server": "node build.js --prod-server",
+    "commitmsg": "commitlint -E GIT_PARAMS",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 -n ./changelog.config.js"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [
@@ -67,6 +69,7 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
     "autoprefixer": "7.1.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
@@ -83,6 +86,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.26.0",
     "codecov": "^3.0.2",
+    "compression-webpack-plugin": "^1.1.11",
+    "conventional-changelog-cli": "^2.0.5",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -112,9 +117,9 @@
     "testcafe": "^0.20.4",
     "testcafe-react-selectors": "^2.1.0",
     "url-loader": "0.5.9",
-    "webpack": "^4.14.0",
+    "webpack": "^4.17.1",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^3.0.8",
+    "webpack-cli": "^3.1.0",
     "webpack-node-externals": "^1.7.2"
   },
   "engines": {

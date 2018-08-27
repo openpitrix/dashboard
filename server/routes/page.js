@@ -1,9 +1,10 @@
 const Router = require('koa-router');
 const auth = require('../middleware/auth');
+const gzip = require('../middleware/gzip');
 
 const router = new Router();
 
-router.get('/:page(/?.*)', auth, async (ctx, next) => {
+router.get('/:page(/?.*)', auth, gzip, async (ctx, next) => {
   try {
     await next();
   } catch (err) {

@@ -13,9 +13,19 @@
   }
 
 }
-.disabledSel{
+.select[disabled]{
   .control{
-    opacity: .5;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .control {
+    &:hover {
+      background-color: $N0;
+    }
+    &:active {
+      background-color: $N0 !important;
+      border: solid 1px $N30 !important;
+    }
   }
 }
 

@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const postCssOptions = require('./postcss.options');
 const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss'],
@@ -77,6 +78,13 @@ const clientConfig = {
   },
   resolve: resolveModules,
   plugins: [
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      cache: true,
+      test: /\.(js|css)$/,
+      threshold: 1024 * 10 // bytes
+    }),
     new ExtractTextPlugin({
       filename: 'bundle.css',
       allChunks: true

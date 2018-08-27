@@ -8,7 +8,7 @@ module.exports = async (ctx, next) => {
     return;
   }
 
-  debug('%s page: %s', ctx.request.method, ctx.url);
+  debug('PAGE: %s', ctx.url);
 
   const page = (ctx.params.page || '').split('/')[0];
   const needAuth = authPages.indexOf(page) > -1;
@@ -20,7 +20,7 @@ module.exports = async (ctx, next) => {
 
   if (needAuth && brokenCookie()) {
     // not login
-    ctx.redirect('/login');
+    ctx.redirect('/login?url=' + ctx.params.page);
   }
 
   await next();

@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
+import { getUrlParam } from 'utils';
 import Logo from 'components/Logo';
 import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
 
@@ -16,6 +17,7 @@ import styles from './index.scss';
 @observer
 export default class Login extends Component {
   handleSubmit = params => {
+    params.url = getUrlParam('url');
     this.props.store.login(params);
   };
 
