@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, orderBy } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Button, Table, Pagination, Popover } from 'components/Base';
@@ -112,6 +112,12 @@ export default class Clusters extends Component {
   oprateSelected = type => {
     const { showOperateCluster, clusterIds } = this.props.clusterStore;
     showOperateCluster(clusterIds, type);
+  };
+
+  onChangeSort = (params = {}) => {
+    const { clusterStore } = this.props;
+    const order = params.reverse ? 'asc' : 'desc';
+    clusterStore.clusters = orderBy(clusterStore.clusters, params.sort_key, order);
   };
 
   renderDeleteModal = () => {
@@ -227,7 +233,7 @@ export default class Clusters extends Component {
         key: 'status_time',
         width: '150px',
         sorter: true,
-        onChangeSort: clusterStore.fetchAll,
+        onChangeSort: this.onChangeSort,
         render: cl => formatTime(cl.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {

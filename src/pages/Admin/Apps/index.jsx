@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { filter, get } from 'lodash';
+import { filter, get, orderBy } from 'lodash';
 
 import { Icon, Button, Table, Popover, Select, Modal } from 'components/Base';
 import Status from 'components/Status';
@@ -50,6 +50,12 @@ export default class Apps extends Component {
     if (['job'].includes(get(payload, 'resource.rtype'))) {
       rootStore.sockMessage = JSON.stringify(payload);
     }
+  };
+
+  onChangeSort = (params = {}) => {
+    const { appStore } = this.props;
+    const order = params.reverse ? 'asc' : 'desc';
+    appStore.apps = orderBy(appStore.apps, params.sort_key, order);
   };
 
   renderDeleteModal = () => {
@@ -246,7 +252,7 @@ export default class Apps extends Component {
         key: 'status_time',
         width: '108px',
         sorter: true,
-        onChangeSort: appStore.fetchAll,
+        onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
       },
       {

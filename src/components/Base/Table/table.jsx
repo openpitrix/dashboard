@@ -49,7 +49,7 @@ export default class Table extends React.Component {
 
     data.map((item, i) => {
       if (!item[rowKey]) {
-        item[rowKey] = item.id || i;
+        item[rowKey] = item.id || rowKey + i;
       }
       return item;
     });
@@ -299,13 +299,13 @@ export default class Table extends React.Component {
           });
           column.onChangeSort({
             sort_key: column.key,
-            reverse: !reverse
+            reverse: reverse
           });
         };
         newColumn.title = (
           <span onClick={() => onChangeSort()} className={styles.sortOuter}>
             {newColumn.title}
-            <Icon name={`sort-${reverse ? 'descend' : 'ascend'}ing`} />
+            <Icon name={`sort-${reverse ? 'ascend' : 'descend'}ing`} />
           </span>
         );
       }

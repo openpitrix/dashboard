@@ -49,6 +49,7 @@ export default class ClusterStore extends Store {
   fetchAll = async (params = {}) => {
     let pageOffset = params.page || this.currentPage;
     let defaultParams = {
+      sort_key: 'status_time',
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize
     };

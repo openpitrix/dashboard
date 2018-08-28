@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
+import { orderBy } from 'lodash';
 
 import { Icon, Button, Popover, Table } from 'components/Base';
 import Status from 'components/Status';
@@ -46,6 +47,12 @@ export default class Runtimes extends Component {
     if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
       rootStore.sockMessage = JSON.stringify(payload);
     }
+  };
+
+  onChangeSort = (params = {}) => {
+    const { runtimeStore } = this.props;
+    const order = params.reverse ? 'asc' : 'desc';
+    runtimeStore.runtimes = orderBy(runtimeStore.runtimes, params.sort_key, order);
   };
 
   renderHandleMenu = detail => {
@@ -182,7 +189,7 @@ export default class Runtimes extends Component {
         key: 'status_time',
         width: '150px',
         sorter: true,
-        onChangeSort: runtimeStore.fetchAll,
+        onChangeSort: this.onChangeSort,
         render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
