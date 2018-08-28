@@ -102,7 +102,13 @@ export default class QingCloud extends React.Component {
     );
   }
 
-  renderOverlay(picture) {
+  renderOverlay() {
+    const { showOverlay, currentPic } = this.state;
+
+    if(!showOverlay){
+      return null;
+    }
+
     return (
       <div className={styles.overlay}>
         <div className={styles.closeOverlay} onClick={this.closeOverlay}>
@@ -115,7 +121,7 @@ export default class QingCloud extends React.Component {
           <label className={styles.next}>
             <Icon name="chevron-right" size={36} />
           </label>
-          <img src={picture} alt="overlay picture" className={styles.overlayPic} />
+          <img src={currentPic} alt="overlay picture" className={styles.overlayPic} />
         </div>
       </div>
     );
@@ -123,7 +129,6 @@ export default class QingCloud extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { showOverlay, currentPic } = this.state;
 
     return (
       <div className={styles.body}>
@@ -137,7 +142,7 @@ export default class QingCloud extends React.Component {
           ten years.`}
         </Section>
         {this.renderSlider()}
-        {showOverlay && this.renderOverlay(currentPic)}
+        {this.renderOverlay()}
       </div>
     );
   }
