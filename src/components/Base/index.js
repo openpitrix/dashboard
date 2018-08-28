@@ -15,3 +15,4 @@ export Table from './Table';
 export Timeline from './Timeline';
 export Tooltip from './Tooltip';
 export Image from './Image';
+export Upload from './Upload';

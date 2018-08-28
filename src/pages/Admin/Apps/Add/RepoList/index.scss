@@ -2,7 +2,6 @@
 
 .repoList{
   display: inline-block;
-  float: left;
   margin: 0 12px;
   width: 312px;
   text-align: left;
@@ -45,7 +44,7 @@
       }
     }
 
-    &:hover, &.active{
+    &.active{
       border-color: $P75;
     }
   }

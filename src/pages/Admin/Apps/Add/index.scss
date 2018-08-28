@@ -34,10 +34,6 @@
     color: $N500;
   }
 
-  .repoOuter{
-    display: inline-block;
-  }
-
   .stepOperate{
     display: inline-block;
     margin-top: 80px;
@@ -46,6 +42,10 @@
     text-align: center;
     color: $P75;
     cursor: pointer;
+    &.noClick{
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
   .upload{
