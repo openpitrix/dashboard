@@ -58,6 +58,7 @@
     height: 213px;
     background-color: #eff0f5;
     margin-right: 6px;
+
     .picture{
       margin: 20px 25px;
       width: 220px;
@@ -69,10 +70,74 @@
       text-align: center;
       line-height: 170px;
       font-size: 30px;
+      cursor: pointer;
+
       img{
         display: inline-block;
         width: 100%;
-        heigth: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  transform: opacity 0.8s ease-in-out;
+  opacity: 0.95;
+  z-index: 100;
+
+  .viewCont {
+    position: relative;
+    top: 100px;
+    display: flex;
+
+    .overlayPic {
+      margin: 0 auto;
+      width: 1000px;
+      height: 600px;
+    }
+
+    .pre {
+      :global {
+        .icon {
+          position: fixed;
+          float: left;
+          top: 50%;
+          left: 10px;
+        }
+      }
+    }
+
+    .next {
+      :global {
+        .icon {
+          position: fixed;
+          float: right;
+          top: 50%;
+          right: 10px;
+        }
+      }
+    }
+  }
+
+  .closeOverlay {
+    position: fixed;
+    float: right;
+    width: 35px;
+    height: 35px;
+    background: #c1c0c0;
+    border-radius: 50%;
+    top: $header-height + 10px;
+    right: 20px;
+    :global {
+      .icon-close {
+        right: 3px;
       }
     }
   }
