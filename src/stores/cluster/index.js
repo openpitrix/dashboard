@@ -105,7 +105,7 @@ export default class ClusterStore extends Store {
     this.isLoading = true;
     let pageOffset = params.page || this.currentNodePage;
     let defaultParams = {
-      sort_key: 'upgrade_time',
+      sort_key: 'create_time',
       limit: this.pageSize,
       offset: (pageOffset - 1) * this.pageSize
     };
