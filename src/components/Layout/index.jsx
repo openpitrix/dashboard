@@ -22,7 +22,8 @@ export default class Layout extends React.Component {
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string,
     sockMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    listenToJob: PropTypes.func
+    listenToJob: PropTypes.func,
+    isProfile: PropTypes.bool
   };
 
   static defaultProps = {
@@ -31,7 +32,8 @@ export default class Layout extends React.Component {
     noNotification: false,
     backBtn: null,
     sockMessage: '',
-    listenToJob: noop
+    listenToJob: noop,
+    isProfile: false
   };
 
   constructor(props) {
@@ -48,11 +50,13 @@ export default class Layout extends React.Component {
     }
   }
 
-  renderTabs() {
+  renderTabs(isProfile) {
     const loginRole = getSessInfo('role', this.props.sessInfo);
     const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
-
-    if (loginRole === 'normal') {
+    if (isProfile) {
+      this.linkPrefix = '/profile';
+      this.availableLinks = [{ '': 'profile' }, { sshkeys: 'SSH Keys' }];
+    } else if (loginRole === 'normal') {
       this.availableLinks = [...normalLinks];
       this.availableLinks.splice(1, 1);
     } else if (loginRole === 'developer') {
@@ -90,12 +94,13 @@ export default class Layout extends React.Component {
       children,
       isLoading,
       loadClass,
-      backBtn
+      backBtn,
+      isProfile
     } = this.props;
 
     return (
       <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
-        {noTabs ? null : this.renderTabs()}
+        {noTabs ? null : this.renderTabs(isProfile)}
         {noNotification ? null : <Notification />}
         {backBtn}
         {this.renderSocketMessage()}

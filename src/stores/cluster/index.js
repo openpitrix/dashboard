@@ -14,6 +14,7 @@ export default class ClusterStore extends Store {
   @observable isLoading = false;
   @observable totalCount = 0;
   @observable clusterCount = 0;
+  @observable totalNodeCount = 0;
   @observable isModalOpen = false;
 
   @observable clusterId; // current delete cluster_id
@@ -33,6 +34,10 @@ export default class ClusterStore extends Store {
 
   @observable selectStatus = '';
   @observable defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+
+  @observable keyPairs = [];
+  @observable pairId = '';
+  @observable currentPairId = '';
 
   @action.bound
   showModal = type => {
@@ -114,11 +119,12 @@ export default class ClusterStore extends Store {
     if (this.searchNode) {
       params.search_word = this.searchNode;
     }
-    if (!params.selectNodeStatus) {
-      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.cluster.status;
+    if (!params.status) {
+      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
     }
     const result = await this.request.get(`clusters/nodes`, assign(defaultParams, params));
     this.clusterNodes = get(result, 'cluster_node_set', []);
+    this.totalNodeCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
@@ -317,5 +323,51 @@ export default class ClusterStore extends Store {
     this.currentNodePage = 1;
     this.selectNodeStatus = '';
     this.searchNode = '';
+  };
+
+  @action
+  fetchKeyPairs = async (params = {}) => {
+    let defaultParams = {
+      limit: 200
+    };
+    const result = await this.request.get('clusters/key_pairs', assign(defaultParams, params));
+    this.keyPairs = get(result, 'key_pair_set', []);
+    if (!this.currentPairId || this.currentPairId === this.pairId) {
+      const nodeIds = get(this.keyPairs[0], 'node_id', '');
+      this.currentPairId = get(this.keyPairs[0], 'key_pair_id', '');
+      await this.fetchNodes({ node_id: nodeIds });
+    }
+  };
+
+  @action
+  addKeyPairs = async (params = {}) => {
+    if (!this.pairName) {
+      this.showMsg('Please input Name!');
+    } else {
+      const data = {
+        name: this.pairName,
+        mode: this.pairMode,
+        pub_key: this.pubKey
+      };
+      const result = await this.request.post('clusters/key_pairs', data);
+      this.apiMsg(result, 'Create SSH Key successful!', async () => {
+        this.hideModal();
+        await this.fetchKeyPairs();
+      });
+    }
+  };
+
+  @action
+  removeKeyPairs = async () => {
+    const result = await this.request.delete('clusters/key_pairs', { key_pair_id: [this.pairId] });
+    this.hideModal();
+
+    if (_.get(result, 'key_pair_id')) {
+      await this.fetchKeyPairs();
+      this.showMsg('Delete SSH Key successfully.', 'success');
+    } else {
+      let { err, errDetail } = result;
+      this.showMsg(errDetail || err);
+    }
   };
 }

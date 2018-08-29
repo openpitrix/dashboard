@@ -6,8 +6,10 @@ import Panel from '../Panel';
 
 import styles from './index.scss';
 
-const Card = ({ className, children }) => (
-  <Panel className={classnames(styles.card, className)}>{children}</Panel>
+const Card = ({ className, children, ...others }) => (
+  <Panel className={classnames(styles.card, className)} {...others}>
+    {children}
+  </Panel>
 );
 
 Card.propTypes = {

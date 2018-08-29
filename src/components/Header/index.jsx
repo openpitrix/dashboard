@@ -41,6 +41,9 @@ class Header extends Component {
           <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
         </li>
         <li>
+          <NavLink to="/profile">{t('Profile')}</NavLink>
+        </li>
+        <li>
           <a href="/logout">{t('Log out')}</a>
         </li>
       </ul>
