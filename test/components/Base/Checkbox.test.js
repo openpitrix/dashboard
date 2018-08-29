@@ -33,7 +33,7 @@ describe('Base/Checkbox', () => {
     wrapper.find('input').simulate('change');
 
     const isChecked = wrapper.state().isChecked;
-    expect(isChecked).not.toBeTruthy();
+    expect(isChecked).toBeTruthy();
     expect(mockChange).toHaveBeenCalled();
     expect(mockChange).toHaveBeenCalledTimes(1);
     expect(mockChange.mock.calls[0][0].target.checked).toEqual(isChecked);

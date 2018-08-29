@@ -143,7 +143,7 @@ export default class RepoCreateStore extends Store {
     const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
-      return this.showMsg('please select at least one provider');
+      return this.showMsg('Please select at least one Runtime Provider');
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
