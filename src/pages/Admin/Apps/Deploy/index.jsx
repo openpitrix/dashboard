@@ -133,7 +133,12 @@ export default class AppDeploy extends Component {
         </div>
         <div className={styles.cellModule}>
           <label className={classnames(styles.name, styles.selectName)}>Version</label>
-          <Select className={styles.select} value={versionId} onChange={changeVersion}>
+          <Select
+            className={styles.select}
+            value={versionId}
+            onChange={changeVersion}
+            disabled={versions.length === 0}
+          >
             {versions.map(({ version_id, name }) => (
               <Select.Option key={version_id} value={version_id} title={name}>
                 {name}
@@ -167,7 +172,12 @@ export default class AppDeploy extends Component {
         </div>
         <div className={styles.cellModule}>
           <label className={classnames(styles.name, styles.selectName)}>VxNet to Join</label>
-          <Select className={styles.select} value={subnetId} onChange={changeSubnet}>
+          <Select
+            className={styles.select}
+            value={subnetId}
+            onChange={changeSubnet}
+            disabled={subnets.length === 0}
+          >
             {subnets.map(({ subnet_id, name }) => (
               <Select.Option key={subnet_id} value={subnet_id}>
                 {subnet_id}
