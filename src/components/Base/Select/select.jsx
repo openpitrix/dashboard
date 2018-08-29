@@ -48,9 +48,12 @@ export default class Select extends React.Component {
     const { isOpen } = this.state;
     const { disabled } = this.props;
 
+    if (disabled) {
+      return;
+    }
     if (isOpen) {
       document.removeEventListener('click', this.handleOutsideClick.bind(this));
-    } else if (!disabled) {
+    } else {
       document.addEventListener('click', this.handleOutsideClick.bind(this));
     }
 
@@ -82,11 +85,11 @@ export default class Select extends React.Component {
 
   renderControl() {
     const { isOpen } = this.state;
-    const { disabled } = this.props;
+    const { value, disabled } = this.props;
 
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
-        <div className={styles.controlLabel}>{this.currentLabel}</div>
+        <div className={styles.controlLabel}>{value}</div>
         <Icon name={isOpen && !disabled ? 'caret-up' : 'caret-down'} type="dark" />
       </div>
     );

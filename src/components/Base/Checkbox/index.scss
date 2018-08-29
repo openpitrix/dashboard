@@ -72,6 +72,10 @@
       .icon {
         display: block;
         z-index: 3;
+        svg {
+          --primary-color: #{$N0};
+          --secondary-color: #{$N0};
+        }
       }
     }
     &:hover{

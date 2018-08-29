@@ -208,6 +208,8 @@ export default class AppDeployStore extends Store {
     let arrSubnets = this.subnets.toJSON();
     if (arrSubnets[0]) {
       this.subnetId = arrSubnets[0].subnet_id;
+    } else {
+      this.subnetId = '';
     }
   }
 

@@ -11,50 +11,47 @@ export default class CheckboxGroup extends Component {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
     values: PropTypes.array,
     name: PropTypes.string,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
     children: [],
     values: [],
-    name: '',
+    name: ''
   };
 
   constructor(props) {
     super(props);
-
-    this.values = [...props.values];
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     e.stopPropagation();
 
     const { name, onChange } = this.props;
     const targetValue = e.target.value;
+    let values = this.props.values;
 
     if (e.target.checked) {
-      this.values.push(targetValue);
+      values.push(targetValue);
     } else {
-      remove(this.values, v => v === targetValue);
+      remove(values, v => v === targetValue);
     }
-    onChange && onChange(this.values, name);
-  }
+    onChange && onChange(values, name);
+  };
 
   render() {
-    const { className, name, children } = this.props;
+    const { className, name, children, values } = this.props;
 
-    const childNodes = React.Children.map(children, (child) => React.cloneElement(child, {
-      ...child.props,
-      key: `check-${child.props.value}`,
-      name: child.props.name || name,
-      checked: this.values.indexOf(child.props.value) !== -1,
-      onChange: this.handleChange,
-    }));
-
-    return (
-      <div className={classNames(styles.group, className)}>
-        {childNodes}
-      </div>
+    const childNodes = React.Children.map(children, child =>
+      React.cloneElement(child, {
+        ...child.props,
+        key: `check-${child.props.value}`,
+        name: child.props.name || name,
+        checked: values.indexOf(child.props.value) !== -1,
+        onChange: this.handleChange
+      })
     );
+
+    return <div className={classNames(styles.group, className)}>{childNodes}</div>;
   }
 }
