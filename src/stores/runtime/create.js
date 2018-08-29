@@ -214,9 +214,6 @@ export default class RuntimeCreateStore extends Store {
       } else {
         this.showMsg('Create runtime successfully', 'success');
       }
-    } else {
-      let { errDetail } = this.runtimeCreated;
-      this.showMsg(errDetail);
     }
 
     // disable re-submit form in 2 sec

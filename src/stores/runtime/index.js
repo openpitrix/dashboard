@@ -102,9 +102,6 @@ export default class RuntimeStore extends Store {
       await this.fetchAll();
       this.cancelSelected();
       this.showMsg('Delete runtime successfully.', 'success');
-    } else {
-      let { err, errDetail } = this.runtimeDeleted;
-      this.showMsg(errDetail || err);
     }
   };
 

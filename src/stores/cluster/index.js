@@ -153,9 +153,6 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       this.cancelSelected();
       this.showMsg('Delete cluster successfully.', 'success');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
     }
   };
 
@@ -167,9 +164,6 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       this.cancelSelected();
       this.showMsg('Start cluster successfully.');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
     }
   };
 
@@ -181,9 +175,6 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       this.cancelSelected();
       this.showMsg('Stop cluster successfully.');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
     }
   };
 

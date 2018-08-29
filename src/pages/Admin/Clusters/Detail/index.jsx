@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { get, capitalize } from 'lodash';
+import { get, capitalize, pick, has } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
@@ -45,21 +45,35 @@ export default class ClusterDetail extends Component {
     props.clusterStore.setSocketMessage();
   }
 
-  listenToJob = async payload => {
+  listenToJob = async (payload = {}) => {
     const { clusterStore, match } = this.props;
-    const rtype = get(payload, 'resource.rtype');
-    const rid = get(payload, 'resource.rid');
-
     const { clusterId } = match.params;
 
+    const rtype = get(payload, 'resource.rtype');
+    const rid = get(payload, 'resource.rid');
+    const values = get(payload, 'resource.values', {});
+
+    if (rtype === 'job' && values.cluster_id === clusterId) {
+      await clusterStore.fetchJobs(clusterId);
+      clusterStore.showMsg(JSON.stringify(payload));
+    }
+
     if (rtype === 'cluster' && rid === clusterId) {
-      if (clusterStore.sockMessageChanged(payload)) {
-        await clusterStore.fetch(clusterId);
+      await clusterStore.fetch(clusterId);
+
+      if (values.transition_status === '' && !has(values, 'status')) {
+        // job is done
         await clusterStore.fetchJobs(clusterId);
         await clusterStore.fetchNodes({ cluster_id: clusterId });
       }
-      clusterStore.setSocketMessage(payload);
     }
+
+    let curNodes = clusterStore.clusterNodes.toJSON().map(node => node.node_id);
+    if (rtype === 'cluster_node' && curNodes.includes(rid)) {
+      await clusterStore.fetchNodes({ cluster_id: clusterId });
+    }
+
+    clusterStore.setSocketMessage(payload);
   };
 
   renderHandleMenu = item => {
@@ -253,7 +267,13 @@ export default class ClusterDetail extends Component {
         key: 'status',
         width: '102px',
         // fixme: prop type check case sensitive
-        render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
+        render: item => (
+          <Status
+            type={(item.status + '').toLowerCase()}
+            name={item.status}
+            transitionStatus={item.transition_status}
+          />
+        )
       },
       {
         title: t('Configuration'),

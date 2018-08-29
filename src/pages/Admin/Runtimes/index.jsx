@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { orderBy } from 'lodash';
+import { get, orderBy } from 'lodash';
 
 import { Icon, Button, Popover, Table } from 'components/Base';
 import Status from 'components/Status';
@@ -36,16 +36,13 @@ export default class Runtimes extends Component {
     const { runtimeStore, clusterStore } = this.props;
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
-    if (props.sock && !props.sock._events['ops-resource']) {
-      props.sock.on('ops-resource', this.listenToJob);
-    }
   }
 
   listenToJob = payload => {
-    const { rootStore } = this.props;
+    const { runtimeStore } = this.props;
 
     if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
-      rootStore.sockMessage = JSON.stringify(payload);
+      runtimeStore.sockMessage = JSON.stringify(payload);
     }
   };
 
@@ -139,7 +136,8 @@ export default class Runtimes extends Component {
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
-      selectStatus
+      selectStatus,
+      sockMessage
     } = runtimeStore;
 
     const columns = [
@@ -234,7 +232,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout>
+      <Layout listenToJob={this.listenToJob} sockMessage={sockMessage}>
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

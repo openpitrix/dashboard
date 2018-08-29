@@ -30,6 +30,10 @@ export default class YamlCell extends PureComponent {
     const { name, value, className } = this.props;
     const isRadio = typeof value === 'boolean';
 
+    if (value === null) {
+      return null;
+    }
+
     return (
       <div className={classNames(styles.cell, className)}>
         <label className={classNames(styles.name, styles.inputName)} title={name}>

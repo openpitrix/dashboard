@@ -21,6 +21,7 @@
       font-size: 14px;
       color: $N75;
     }
+
     .dot{
       display: inline-block;
       position: absolute;
@@ -29,10 +30,18 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background-color: $G75;
       border: 2px solid $N0;
     }
-    .StopClusters, .DeleteClusters{
+
+    .successful {
+      background-color: $G75;
+    }
+    .working {
+      background-color: $B75;
+      border-color: $B65;
+      @include transitionStatus;
+    }
+    .failed {
       background-color: $R300;
     }
   }

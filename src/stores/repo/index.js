@@ -121,9 +121,6 @@ export default class RepoStore extends Store {
       this.deleteRepoClose();
       this.fetchAll({}, this.appStore);
       this.showMsg('Delete repo successfully.', 'success');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
     }
   };
 

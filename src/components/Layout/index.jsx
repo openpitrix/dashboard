@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { inject } from 'mobx-react';
-import { noop } from 'lodash';
+import { inject, observer } from 'mobx-react';
+import { noop, clone, isEmpty, get } from 'lodash';
 
 import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
@@ -11,7 +11,8 @@ import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
 
-@inject('sessInfo', 'sock')
+@inject('rootStore', 'sessInfo', 'sock')
+@observer
 export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -43,10 +44,15 @@ export default class Layout extends React.Component {
   }
 
   componentDidMount() {
-    let { sock, listenToJob } = this.props;
+    const { sock, listenToJob } = this.props;
+    sock && sock.on('ops-resource', listenToJob);
+  }
 
-    if (sock && !sock._events['ops-resource']) {
-      sock.on('ops-resource', listenToJob);
+  componentWillUnmount() {
+    const { sock } = this.props;
+
+    if (sock && !isEmpty(sock._events)) {
+      sock._events = {};
     }
   }
 
@@ -70,21 +76,29 @@ export default class Layout extends React.Component {
     return <TabsNav links={this.availableLinks} options={options} />;
   }
 
-  renderSocketMessage() {
-    let { sockMessage } = this.props;
-
-    if (typeof sockMessage === 'object') {
-      sockMessage = sockMessage + '';
-    }
-
-    // if(!sockMessage){
-    //   return null;
-    // }
-    // return <Notification type='info' message={`Socket Message: ${sockMessage}`} className={styles.socketMessage} />;
-
-    // todo: currently no need to implement job tips
-    return null;
-  }
+  // renderSocketMessage() {
+  //   const { sockMessage, rootStore, noNotification } = this.props;
+  //
+  //   let sockMsg = clone(sockMessage);
+  //   if (typeof sockMsg === 'object') {
+  //     sockMsg = sockMsg + '';
+  //   }
+  //
+  //   if(!sockMsg){
+  //     return null;
+  //   }
+  //
+  //   // push side-effect to next tick
+  //   // !noNotification && setTimeout(()=> {
+  //   //   rootStore.notify({
+  //   //     type: 'info',
+  //   //     message: `Socket Message: ${sockMsg}`
+  //   //   });
+  //   // });
+  //
+  //   // todo: currently no need to implement job tips
+  //   // return null;
+  // }
 
   render() {
     const {
@@ -103,7 +117,7 @@ export default class Layout extends React.Component {
         {noTabs ? null : this.renderTabs(isProfile)}
         {noNotification ? null : <Notification />}
         {backBtn}
-        {this.renderSocketMessage()}
+        {/*{this.renderSocketMessage()}*/}
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {children}
         </Loading>

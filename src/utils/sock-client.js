@@ -8,7 +8,7 @@ let sockInst; // singleton socket client
 
 const readyStates = ['connecting', 'open', 'closing', 'closed'];
 const defaultOptions = {
-  reopenLimit: 3
+  reopenLimit: 2
 };
 let reopenCount = 0;
 
@@ -65,9 +65,11 @@ class SockClient extends EventEmitter {
 
     if (!this.client.onmessage) {
       this.client.onmessage = message => {
-        let data = message.data;
+        let data = message.data || {};
         if (typeof data === 'string') {
-          data = JSON.parse(data);
+          try {
+            data = JSON.parse(data);
+          } catch (err) {}
         }
 
         console.log('sock message: ', data);
@@ -81,8 +83,7 @@ class SockClient extends EventEmitter {
         // if sock will close, try to keep alive
         if (reopenCount < this.options.reopenLimit) {
           console.log('reopen socket..');
-          setTimeout(this.setUp.bind(this), 1000);
-          // this.setUp();
+          setTimeout(this.setUp.bind(this), 1500);
           reopenCount++;
         }
       };

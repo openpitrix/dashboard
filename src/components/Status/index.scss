@@ -4,6 +4,7 @@
   text-transform: capitalize;
 }
 
+
 .icon {
   display: inline-block;
   vertical-align: middle;
@@ -15,6 +16,8 @@
 
   &.pending {
     background-color: $B75;
+    border-color: $B65;
+    @include transitionStatus;
   }
   &.ceased {
     background-color: $Y100;
@@ -30,6 +33,11 @@
   }
   &.deleted {
     background-color: $R300;
+  }
+  &.stopping {
+    background-color: $B65;
+    border-color: $B45;
+    @include transitionStatus;
   }
 }
 

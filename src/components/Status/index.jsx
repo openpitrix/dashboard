@@ -15,24 +15,29 @@ export default class Status extends PureComponent {
     type: PropTypes.oneOf([
       'running',
       'active',
+      'stopping',
       'stopped',
       'ceased',
       'pending',
       'suspended',
       'deleted'
-    ])
+    ]),
+    transitionStatus: PropTypes.string
   };
 
   static defaultProps = {
-    status: 'pending'
+    status: 'pending',
+    transitionStatus: ''
   };
 
   render() {
-    const { style, className, name, type, t } = this.props;
+    const { style, className, name, type, transitionStatus, t } = this.props;
+
+    let status = transitionStatus || type;
 
     return (
       <span className={classnames(styles.status, className)} style={style}>
-        <i className={classnames(styles.icon, styles[type])} />
+        <i className={classnames(styles.icon, styles[status])} />
         {t(capitalize(name))}
       </span>
     );

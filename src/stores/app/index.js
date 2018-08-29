@@ -159,9 +159,6 @@ export default class AppStore extends Store {
         this.cancelSelected();
       }
       this.showMsg('Delete app successfully.', 'success');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
     }
   };
 

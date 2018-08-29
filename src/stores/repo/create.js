@@ -237,9 +237,6 @@ export default class RepoCreateStore extends Store {
       this.showMsg('Modify repo successfully', 'success');
     } else if (_.get(this, 'repoCreated.repo_id')) {
       this.showMsg('Create repo successfully', 'success');
-    } else {
-      let { errDetail } = this.repoCreated;
-      this.showMsg(errDetail);
     }
 
     // disable re-submit form in 2 sec
