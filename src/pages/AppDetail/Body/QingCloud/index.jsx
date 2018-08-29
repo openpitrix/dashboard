@@ -5,8 +5,9 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
 import Section from '../../section';
-import styles from './index.scss';
 import Icon from 'components/Base/Icon';
+
+import styles from './index.scss';
 
 @translate()
 @observer
@@ -21,6 +22,27 @@ export default class QingCloud extends React.Component {
     pictures: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     currentPic: PropTypes.number,
     changePicture: PropTypes.func
+  };
+
+  state = {
+    showOverlay: false,
+    currentPic: ''
+  };
+
+  handleClickPicture = e => {
+    const { pic } = e.currentTarget.dataset;
+
+    this.setState({
+      showOverlay: true,
+      currentPic: pic
+    });
+  };
+
+  closeOverlay = () => {
+    this.setState({
+      showOverlay: false,
+      currentPic: ''
+    });
   };
 
   changePicture = (type, number) => {
@@ -65,19 +87,41 @@ export default class QingCloud extends React.Component {
           })}
         </div>
         <div className={styles.listOuter}>
-          <ul
-            className={styles.pictureList}
-            style={{ width: picWidth + 'px', left: picLeft + 'px' }}
-          >
-            {pictures.map(data => (
-              <li className={styles.pictureOuter} key={data}>
-                <div className={styles.picture}>
-                  <img src={data} />
+          <ul className={styles.pictureList} style={{ width: picWidth, left: picLeft }}>
+            {pictures.map((pic, idx) => (
+              <li className={styles.pictureOuter} key={idx}>
+                <div className={styles.picture} data-pic={pic} onClick={this.handleClickPicture}>
+                  <img src={pic} />
                 </div>
               </li>
             ))}
           </ul>
           <div />
+        </div>
+      </div>
+    );
+  }
+
+  renderOverlay() {
+    const { showOverlay, currentPic } = this.state;
+
+    if(!showOverlay){
+      return null;
+    }
+
+    return (
+      <div className={styles.overlay}>
+        <div className={styles.closeOverlay} onClick={this.closeOverlay}>
+          <Icon name="close" size={32} />
+        </div>
+        <div className={styles.viewCont}>
+          <label className={styles.pre}>
+            <Icon name="chevron-left" size={36} />
+          </label>
+          <label className={styles.next}>
+            <Icon name="chevron-right" size={36} />
+          </label>
+          <img src={currentPic} alt="overlay picture" className={styles.overlayPic} />
         </div>
       </div>
     );
@@ -98,6 +142,7 @@ export default class QingCloud extends React.Component {
           ten years.`}
         </Section>
         {this.renderSlider()}
+        {this.renderOverlay()}
       </div>
     );
   }

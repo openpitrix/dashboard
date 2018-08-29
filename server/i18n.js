@@ -1,7 +1,7 @@
 // const path=require('path');
 const i18n = require('i18next');
 // const Backend=require('i18next-node-fs-backend');
-const baseConf = require('../i18n.config');
+const baseConf = require('../config/i18n.config');
 
 i18n
   // .use(Backend)

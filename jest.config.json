@@ -1,6 +1,6 @@
 {
   "setupFiles": [
-    "./tests/setup.js"
+    "./test/setup.js"
   ],
   "bail": true,
   "verbose": true,
@@ -8,7 +8,7 @@
     "^.+\\.jsx?$": "babel-jest"
   }, 
   "moduleNameMapper": {
-    "\\.(png|svg)$": "<rootDir>/assets.transform.js",
+    "\\.(png|svg)$": "<rootDir>/config/assets.transform.js",
     "\\.(css|scss)$": "identity-obj-proxy"
   },
   "coverageDirectory": "./coverage/",

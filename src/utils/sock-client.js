@@ -17,7 +17,12 @@ class SockClient extends EventEmitter {
     const re = /(\w+?:\/\/)?([^\\?]+)/;
     const suffix = '?uid=system'; // todo: suffix is hard coded
     const matchParts = (socketUrl + '').match(re);
-    return `ws://${matchParts[2]}${suffix}`;
+    let wsPrefix = 'ws://';
+    if (typeof window === 'object' && window.location.protocol === 'https:') {
+      wsPrefix = 'wss://';
+    }
+
+    return `${wsPrefix}${matchParts[2]}${suffix}`;
   };
 
   constructor(endpoint, options = {}) {

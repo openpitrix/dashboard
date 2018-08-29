@@ -18,6 +18,7 @@
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-favicon": "^2.0.0",
+    "koa-helmet": "^4.0.0",
     "koa-mount": "^3.0.0",
     "koa-router": "^7.3.0",
     "koa-session": "^5.8.1",
@@ -56,11 +57,11 @@
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
-    "e2e": "testcafe chrome tests/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
+    "e2e": "testcafe chrome test/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
     "prod-client": "node build.js --prod-client",
     "prod-server": "node build.js --prod-server",
-    "commitmsg": "commitlint -E GIT_PARAMS",
-    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 -n ./changelog.config.js"
+    "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
+    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 -n ./config/changelog.config.js"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [

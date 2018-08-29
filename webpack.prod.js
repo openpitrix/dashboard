@@ -2,7 +2,7 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const postCssOptions = require('./postcss.options');
+const postCssOptions = require('./config/postcss.options');
 const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
 const CompressionPlugin = require('compression-webpack-plugin');
 
