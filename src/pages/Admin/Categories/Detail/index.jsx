@@ -29,15 +29,16 @@ export default class CategoryDetail extends Component {
     await appStore.fetchAll({ category_id: categoryId });
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 99
+      noLimit: true
     });
   }
 
   constructor(props) {
     super(props);
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore, appStore, match } = this.props;
     categoryStore.isDetailPage = true;
     appStore.loadPageInit();
+    appStore.categoryId = match.params.categoryId;
   }
 
   componentDidUpdate() {
@@ -49,45 +50,6 @@ export default class CategoryDetail extends Component {
     }
   }
 
-  onSearch = async name => {
-    const { categoryStore, appStore } = this.props;
-    const { fetchAll, changeSearchWord } = appStore;
-    changeSearchWord(name);
-    appStore.setCurrentPage(1);
-    await fetchAll({
-      category_id: categoryStore.category.category_id
-    });
-  };
-
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  onRefresh = async () => {
-    const { categoryStore, appStore } = this.props;
-    await appStore.fetchAll({
-      category_id: categoryStore.category.category_id
-    });
-  };
-
-  changeApps = async current => {
-    const { categoryStore, appStore } = this.props;
-    appStore.setCurrentPage(current);
-    await appStore.fetchAll({
-      category_id: categoryStore.category.category_id
-    });
-  };
-
-  onChangeStatus = async status => {
-    const { categoryStore, appStore } = this.props;
-    appStore.selectStatus = appStore.selectStatus === status ? '' : status;
-    appStore.setCurrentPage(1);
-    await appStore.fetchAll({
-      category_id: categoryStore.category.category_id,
-      status: appStore.selectStatus
-    });
-  };
-
   renderHandleMenu = category => {
     const { t } = this.props;
     const { showModifyCategory, showDeleteCategory } = this.props.categoryStore;
@@ -97,10 +59,6 @@ export default class CategoryDetail extends Component {
         <span onClick={() => showDeleteCategory(category)}>{t('Delete Category')}</span>
       </div>
     );
-  };
-
-  handleModifyCate = () => {
-    this.props.categoryStore.createOrModify();
   };
 
   renderCategoryModal = () => {
@@ -226,14 +184,14 @@ export default class CategoryDetail extends Component {
           { name: t('Active'), value: 'active' },
           { name: t('Deleted'), value: 'deleted' }
         ],
-        onChangeFilter: this.onChangeStatus,
+        onChangeFilter: appStore.changePagination,
         selectValue: selectStatus
       }
     ];
 
     const pagination = {
       tableType: 'Apps',
-      onChange: this.changeApps,
+      onChange: appStore.changePagination,
       total: totalCount,
       current: appStore.currentPage
     };
@@ -256,9 +214,9 @@ export default class CategoryDetail extends Component {
                 <Toolbar
                   placeholder={t('Search App')}
                   searchWord={appStore.searchWord}
-                  onSearch={this.onSearch}
-                  onClear={this.onClearSearch}
-                  onRefresh={this.onRefresh}
+                  onSearch={appStore.onSearch}
+                  onClear={appStore.onClearSearch}
+                  onRefresh={appStore.onRefresh}
                 />
 
                 <Table

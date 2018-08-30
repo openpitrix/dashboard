@@ -11,6 +11,7 @@ export default class UserStore extends Store {
   @observable groups = [];
   @observable roles = [];
   @observable authorities = [];
+  @observable currentTag = '';
 
   @action
   async fetchAll(page) {

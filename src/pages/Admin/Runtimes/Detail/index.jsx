@@ -25,7 +25,6 @@ import styles from './index.scss';
 @observer
 export default class RuntimeDetail extends Component {
   static async onEnter({ runtimeStore, clusterStore, appStore }, { runtimeId }) {
-    clusterStore.changeRuntimeId(runtimeId);
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
       runtime_id: runtimeId
@@ -37,8 +36,9 @@ export default class RuntimeDetail extends Component {
 
   constructor(props) {
     super(props);
-    this.runtimeId = props.match.params.runtimeId;
-    this.props.clusterStore.loadPageInit();
+    const { clusterStore, match } = this.props;
+    clusterStore.loadPageInit();
+    clusterStore.runtimeId = match.params.runtimeId;
   }
 
   componentDidUpdate() {
@@ -74,43 +74,6 @@ export default class RuntimeDetail extends Component {
         {t('Delete Runtime desc')}
       </Dialog>
     );
-  };
-
-  onSearch = async name => {
-    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.clusterStore;
-    changeSearchWord(name);
-    setCurrentPage(1);
-    await fetchAll({
-      runtime_id: this.runtimeId
-    });
-  };
-
-  onClear = async () => {
-    await this.onSearch('');
-  };
-
-  onRefresh = async () => {
-    const { fetchAll } = this.props.clusterStore;
-    await fetchAll({
-      runtime_id: this.runtimeId
-    });
-  };
-
-  changeTable = async current => {
-    const { setCurrentPage, fetchAll } = this.props.clusterStore;
-    setCurrentPage(current);
-    await fetchAll({
-      runtime_id: this.runtimeId
-    });
-  };
-
-  onChangeStatus = async status => {
-    const { clusterStore } = this.props;
-    clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
-    clusterStore.setCurrentPage(1);
-    await clusterStore.fetchAll({
-      runtime_id: this.runtimeId
-    });
   };
 
   render() {
@@ -186,14 +149,14 @@ export default class RuntimeDetail extends Component {
           { name: t('Deleted'), value: 'deleted' },
           { name: t('Ceased'), value: 'ceased' }
         ],
-        onChangeFilter: this.onChangeStatus,
+        onChangeFilter: clusterStore.onChangeStatus,
         selectValue: selectStatus
       }
     ];
 
     const pagination = {
       tableType: 'Clusters',
-      onChange: this.changeTable,
+      onChange: clusterStore.changePagination,
       total: totalCount,
       current: currentPage
     };
@@ -221,9 +184,9 @@ export default class RuntimeDetail extends Component {
                 <Toolbar
                   placeholder={t('Search Clusters')}
                   searchWord={searchWord}
-                  onSearch={this.onSearch}
-                  onClear={this.onClear}
-                  onRefresh={this.onRefresh}
+                  onSearch={clusterStore.onSearch}
+                  onClear={clusterStore.onClearSearch}
+                  onRefresh={clusterStore.onRefresh}
                 />
                 <Table
                   columns={columns}

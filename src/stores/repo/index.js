@@ -13,27 +13,46 @@ export default class RepoStore extends Store {
   @observable curTagName = 'Apps';
   @observable queryProviders = '';
   @observable querySelector = '';
+
+  @observable currentPage = 1; //app table query params
   @observable searchWord = '';
-  @observable detailSearch = '';
   @observable defaultStatus = ['active'];
-  @observable eventStatus = '';
-  @observable currentPage = 1;
+  @observable selectStatus = '';
+  @observable userId = '';
   @observable totalCount = 0;
+
+  @observable currentEventPage = 1; //events table query params
+  @observable totalEventCount = 0;
 
   initLoadNumber = 3;
   @observable appStore = null;
 
   @action
   fetchAll = async (params = {}, appStore) => {
-    this.isLoading = true;
-    if (!params.status) {
-      params.status = this.defaultStatus;
+    let defaultParams = {
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : this.defaultStatus
+    };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
     }
+
     if (this.searchWord) {
-      params.search_word = this.searchWord;
+      defaultParams.search_word = this.searchWord;
     }
-    const result = await this.request.get('repos', params);
+    if (this.userId) {
+      defaultParams.user_id = this.userId;
+    }
+
+    this.isLoading = true;
+    const result = await this.request.get('repos', assign(defaultParams, params));
     this.repos = get(result, 'repo_set', []);
+    this.totalCount = get(result, 'total_count', 0);
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.repos.length; i++) {
         await appStore.fetchAll({ repo_id: this.repos[i].repo_id });
@@ -44,8 +63,9 @@ export default class RepoStore extends Store {
   };
 
   @action
-  onSearch = async query => {
-    this.changeSearchWord(query);
+  onSearch = async word => {
+    this.searchWord = word;
+    this.currentPage = 1;
     await this.fetchAll();
   };
 
@@ -56,7 +76,20 @@ export default class RepoStore extends Store {
 
   @action
   onRefresh = async () => {
-    await this.onSearch(this.searchWord);
+    await this.fetchAll();
+  };
+
+  @action
+  changePagination = async page => {
+    this.currentPage = page;
+    await this.fetchAll();
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.currentPage = 1;
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll();
   };
 
   @action
@@ -71,14 +104,13 @@ export default class RepoStore extends Store {
   @action
   fetchRepoEvents = async (params = {}) => {
     this.isLoading = true;
-    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize
+      offset: (this.currentEventPage - 1) * this.pageSize
     };
     const result = await this.request.get(`repo_events`, assign(defaultParams, params));
     this.repoEvents = get(result, 'repo_event_set', []);
-    this.totalCount = get(result, 'total_count', 0);
+    this.totalEventCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
@@ -119,11 +151,6 @@ export default class RepoStore extends Store {
     this.curTagName = tagName;
   };
 
-  @action
-  changeSearchWord = word => {
-    this.searchWord = word;
-  };
-
   getRepoApps = (repos = [], apps = []) => {
     if (repos.toJSON) {
       repos = repos.toJSON();
@@ -153,8 +180,11 @@ export default class RepoStore extends Store {
     this.queryProviders = '';
     this.querySelector = '';
     if (!this.pageInitMap.repo) {
+      this.currentPage = 1;
+      this.selectStatus = '';
       this.searchWord = '';
     }
+    this.userId = '';
     this.pageInitMap = {};
   };
 

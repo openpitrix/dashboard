@@ -23,7 +23,7 @@ import styles from './index.scss';
 export default class Repos extends Component {
   static async onEnter({ repoStore, appStore }) {
     repoStore.appStore = appStore;
-    await repoStore.fetchAll({}, appStore);
+    await repoStore.fetchAll({ noLimit: true }, appStore);
   }
 
   constructor(props) {
