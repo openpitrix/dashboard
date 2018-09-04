@@ -23,7 +23,7 @@ export default class ClusterStore extends Store {
 
   @observable currentPage = 1; //cluster table query params
   @observable searchWord = '';
-  @observable defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
   @observable selectStatus = '';
   @observable appId = '';
   @observable runtimeId = '';

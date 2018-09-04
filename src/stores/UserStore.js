@@ -15,7 +15,7 @@ export default class UserStore extends Store {
 
   @observable currentPage = 1; //user table query params
   @observable searchWord = '';
-  @observable defaultStatus = ['active'];
+  defaultStatus = ['active'];
   @observable selectStatus = '';
 
   @action

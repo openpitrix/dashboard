@@ -16,7 +16,7 @@ export default class AppVersionStore extends Store {
 
   @observable currentPage = 1; //version table query params
   @observable searchWord = '';
-  @observable defaultStatus = ['active'];
+  defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable appId = '';
 

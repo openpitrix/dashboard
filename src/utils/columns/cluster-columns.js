@@ -8,7 +8,7 @@ import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import { ProviderName } from 'components/TdName';
 
-export default function(runtimes, versions) {
+export default (runtimes, versions) => {
   return [
     {
       title: <I18n>{t => <span>{t('Cluster Name')}</span>}</I18n>,
@@ -63,4 +63,4 @@ export default function(runtimes, versions) {
       render: item => <TimeShow time={item.status_time} />
     }
   ];
-}
+};

@@ -6,7 +6,7 @@ import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 
-export default function(clusters) {
+export default clusters => {
   return [
     {
       title: <I18n>{t => <span>{t('Runtime Name')}</span>}</I18n>,
@@ -52,4 +52,4 @@ export default function(clusters) {
       render: item => <TimeShow time={item.status_time} />
     }
   ];
-}
+};

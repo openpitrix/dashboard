@@ -15,7 +15,7 @@ export default class RuntimeStore extends Store {
 
   @observable currentPage = 1; //runtime table query params
   @observable searchWord = '';
-  @observable defaultStatus = ['active'];
+  defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable userId = '';
 

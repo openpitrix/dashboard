@@ -16,7 +16,7 @@ export default class RepoStore extends Store {
 
   @observable currentPage = 1; //app table query params
   @observable searchWord = '';
-  @observable defaultStatus = ['active'];
+  defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable userId = '';
   @observable totalCount = 0;

@@ -38,12 +38,15 @@ export default class Detail extends Component {
     repoStore.loadPageInit();
   }
 
+  //todo
+  deleteUser = id => {};
+
   renderHandleMenu = id => {
     const { t } = this.props;
 
     return (
       <div className="operate-menu">
-        <span>{t('Delete user')}</span>
+        <span onClick={() => this.deleteUser(id)}>{t('Delete user')}</span>
       </div>
     );
   };
