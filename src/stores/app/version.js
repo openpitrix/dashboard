@@ -13,8 +13,12 @@ export default class AppVersionStore extends Store {
   @observable dialogType = ''; // delete, show_all
   @observable readme = '';
   @observable totalCount = 0;
-  @observable currentPage = 1;
+
+  @observable currentPage = 1; //version table query params
   @observable searchWord = '';
+  defaultStatus = ['active'];
+  @observable selectStatus = '';
+  @observable appId = '';
 
   @observable name = '';
   @observable packageName = '';
@@ -22,18 +26,18 @@ export default class AppVersionStore extends Store {
 
   @action
   async fetchAll(params = {}) {
-    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
-      limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize,
       sort_key: 'create_time',
-      reverse: true
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : this.defaultStatus
     };
-    if (params.page) {
-      delete params.page;
-    }
+
     if (this.searchWord) {
-      params.search_word = this.searchWord;
+      defaultParams.search_word = this.searchWord;
+    }
+    if (this.appId) {
+      defaultParams.app_id = this.appId;
     }
 
     this.isLoading = true;
@@ -149,4 +153,41 @@ export default class AppVersionStore extends Store {
       this.readme = '';
     }
   }
+
+  @action
+  onSearch = async word => {
+    this.currentPage = 1;
+    this.searchWord = word;
+    await this.fetchAll();
+  };
+
+  @action
+  onClearSearch = async () => {
+    await this.onSearch('');
+  };
+
+  @action
+  onRefresh = async () => {
+    await this.fetchAll();
+  };
+
+  @action
+  changePagination = async page => {
+    this.currentPage = page;
+    await this.fetchAll();
+  };
+
+  @action
+  onChangeStatus = async status => {
+    this.currentPage = 1;
+    this.selectStatus = this.selectStatus === status ? '' : status;
+    await this.fetchAll();
+  };
+
+  loadPageInit = () => {
+    this.currentPage = 1;
+    this.selectStatus = '';
+    this.searchWord = '';
+    this.appId = '';
+  };
 }

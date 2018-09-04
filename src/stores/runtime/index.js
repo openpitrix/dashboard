@@ -12,13 +12,16 @@ export default class RuntimeStore extends Store {
   @observable totalCount = 0;
   @observable runtimeId = '';
   @observable isModalOpen = false;
-  @observable currentPage = 1;
+
+  @observable currentPage = 1; //runtime table query params
   @observable searchWord = '';
+  defaultStatus = ['active'];
+  @observable selectStatus = '';
+  @observable userId = '';
+
   @observable operateType = '';
   @observable runtimeIds = [];
   @observable selectedRowKeys = [];
-  @observable selectStatus = '';
-  @observable defaultStatus = ['active'];
   @observable runtimeDeleted = null;
 
   @observable
@@ -38,20 +41,24 @@ export default class RuntimeStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : this.defaultStatus
     };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
     if (this.searchWord) {
-      params.search_word = this.searchWord;
+      defaultParams.search_word = this.searchWord;
     }
-    if (!params.status) {
-      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
-    }
-    if (params.page) {
-      delete params.page;
+    if (this.userId) {
+      defaultParams.user_id = this.userId;
     }
 
     this.isLoading = true;
@@ -113,19 +120,9 @@ export default class RuntimeStore extends Store {
   };
 
   @action
-  changeSearchWord = word => {
+  onSearch = async word => {
     this.searchWord = word;
-  };
-
-  @action
-  setCurrentPage = page => {
-    this.currentPage = page;
-  };
-
-  @action
-  onSearch = async searchWord => {
-    this.changeSearchWord(searchWord);
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     await this.fetchAll();
   };
 
@@ -141,14 +138,14 @@ export default class RuntimeStore extends Store {
 
   @action
   changePagination = async page => {
-    this.setCurrentPage(page);
+    this.currentPage = page;
     await this.fetchAll();
   };
 
   @action
   onChangeStatus = async status => {
     this.selectStatus = this.selectStatus === status ? '' : status;
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     await this.fetchAll({ status: this.selectStatus });
   };
 
@@ -171,6 +168,7 @@ export default class RuntimeStore extends Store {
       this.selectStatus = '';
       this.searchWord = '';
     }
+    this.userId = '';
     this.selectedRowKeys = [];
     this.runtimeIds = [];
     this.pageInitMap = {};

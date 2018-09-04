@@ -45,6 +45,9 @@ const routes = {
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
 
+  '/:dash/users': Dash.Users,
+  '/:dash/user/:userId': Dash.UserDetail,
+
   '/profile': Profile,
   '/profile/sshkeys': SSHKeys,
 

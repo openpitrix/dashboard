@@ -3,6 +3,7 @@ import request from 'lib/request';
 
 export default class Store {
   pageSize = 10;
+  maxLimit = 200;
 
   constructor(initialState, branch) {
     extendObservable(this, {

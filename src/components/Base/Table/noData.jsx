@@ -23,6 +23,7 @@ export default class NoData extends PureComponent {
       Clusters: 'cluster',
       Runtimes: 'stateful-set',
       Repos: 'stateful-set',
+      Users: 'group',
       Categories: 'components',
       Events: 'tateful-set',
       Versions: 'tag'

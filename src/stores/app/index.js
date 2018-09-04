@@ -13,16 +13,23 @@ export default class AppStore extends Store {
   @observable isProgressive = false;
   @observable totalCount = 0;
   @observable appCount = 0;
-  @observable currentPage = 1;
+
+  @observable currentPage = 1; //app table query params
+  @observable searchWord = '';
+  defaultStatus = ['active'];
+  @observable selectStatus = '';
+  @observable repoId = '';
+  @observable categoryId = '';
+  @observable userId = '';
+
   @observable isModalOpen = false;
   @observable isDeleteOpen = false;
+  @observable operateType = '';
+
   @observable appTitle = '';
-  @observable searchWord = '';
   @observable appIds = [];
   @observable selectedRowKeys = [];
-  @observable operateType = '';
-  @observable selectStatus = '';
-  @observable defaultStatus = ['active'];
+
   @observable deleteResult = {};
 
   @observable detailTab = '';
@@ -54,27 +61,30 @@ export default class AppStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : this.defaultStatus
     };
-    if (params.page) {
-      delete params.page;
-    }
 
     if (params.noLimit) {
-      delete defaultParams.limit;
-      delete defaultParams.offset;
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
       delete params.noLimit;
     }
 
     if (this.searchWord) {
-      params.search_word = this.searchWord;
+      defaultParams.search_word = this.searchWord;
     }
-    if (!params.status) {
-      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
+    if (this.categoryId) {
+      defaultParams.category_id = this.categoryId;
+    }
+    if (this.repoId) {
+      defaultParams.repo_id = this.repoId;
+    }
+    if (this.userId) {
+      defaultParams.user_id = this.userId;
     }
 
     if (!params.noLoading) {
@@ -83,6 +93,7 @@ export default class AppStore extends Store {
       this.isProgressive = true;
       delete params.noLoading;
     }
+
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -204,19 +215,9 @@ export default class AppStore extends Store {
   };
 
   @action
-  changeSearchWord = word => {
+  onSearch = async word => {
     this.searchWord = word;
-  };
-
-  @action
-  setCurrentPage = page => {
-    this.currentPage = page;
-  };
-
-  @action
-  onSearch = async searchWord => {
-    this.changeSearchWord(searchWord);
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     await this.fetchAll();
   };
 
@@ -232,13 +233,13 @@ export default class AppStore extends Store {
 
   @action
   changePagination = async page => {
-    this.setCurrentPage(page);
+    this.currentPage = page;
     await this.fetchAll();
   };
 
   @action
   onChangeStatus = async status => {
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
     await this.fetchAll();
   };
@@ -261,6 +262,9 @@ export default class AppStore extends Store {
       this.selectStatus = '';
       this.searchWord = '';
     }
+    this.categoryId = '';
+    this.repoId = '';
+    this.userId = '';
     this.selectedRowKeys = [];
     this.appIds = [];
     this.pageInitMap = {};

@@ -9,7 +9,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import OrgTree from 'components/OrgTree';
 import GroupCard from './GroupCard';
-import Layout from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 
 import styles from './index.scss';
@@ -189,6 +189,20 @@ export default class Users extends Component {
     </Modal>
   );
 
+  renderToolbar() {
+    const { searchWord, onSearch, onClearSearch, onRefresh } = this.props.userStore;
+
+    return (
+      <Toolbar
+        placeholder="Search users"
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+      />
+    );
+  }
+
   render() {
     const { userStore } = this.props;
     const { image, name, total, centerName, progressTotal, progress, lastedTotal, histograms } = {
@@ -201,6 +215,44 @@ export default class Users extends Component {
       lastedTotal: 40,
       histograms: {}
     };
+
+    const { treeFlag, organizations, selectValue, selectItem } = this.state;
+    const groups = userStore.groups.toJSON();
+    const roles = userStore.roles.toJSON();
+    let selectContent;
+    switch (selectValue) {
+      case 'Organization':
+        selectContent = (
+          <OrgTree
+            treeFlag={treeFlag}
+            organizations={organizations}
+            clickCompany={this.clickCompany}
+            clickDep={this.clickDep}
+          />
+        );
+        break;
+      case 'Group':
+        selectContent = (
+          <GroupCard
+            groups={groups}
+            selectCard={this.selectCard}
+            selectValue={selectValue}
+            selectItem={selectItem}
+          />
+        );
+        break;
+      case 'Role':
+        selectContent = (
+          <GroupCard
+            groups={roles}
+            selectCard={this.selectCard}
+            selectValue={selectValue}
+            selectItem={selectItem}
+          />
+        );
+        break;
+    }
+
     const data = userStore.users.toJSON();
     const columns = [
       {
@@ -243,43 +295,20 @@ export default class Users extends Component {
         width: '84px'
       }
     ];
-    const { treeFlag, organizations, selectValue, selectItem } = this.state;
-    const groups = userStore.groups.toJSON();
-    const roles = userStore.roles.toJSON();
-
-    let selectContent;
-    switch (selectValue) {
-      case 'Organization':
-        selectContent = (
-          <OrgTree
-            treeFlag={treeFlag}
-            organizations={organizations}
-            clickCompany={this.clickCompany}
-            clickDep={this.clickDep}
-          />
-        );
-        break;
-      case 'Group':
-        selectContent = (
-          <GroupCard
-            groups={groups}
-            selectCard={this.selectCard}
-            selectValue={selectValue}
-            selectItem={selectItem}
-          />
-        );
-        break;
-      case 'Role':
-        selectContent = (
-          <GroupCard
-            groups={roles}
-            selectCard={this.selectCard}
-            selectValue={selectValue}
-            selectItem={selectItem}
-          />
-        );
-        break;
-    }
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        onChangeFilter: userStore.onChangeStatus,
+        selectValue: userStore.selectStatus
+      }
+    ];
+    const pagination = {
+      tableType: 'Users',
+      onChange: userStore.changePagination,
+      total: userStore.totalCount,
+      current: userStore.currentPage
+    };
 
     return (
       <Layout>
@@ -294,8 +323,8 @@ export default class Users extends Component {
           histograms={histograms}
         />
 
-        <div className={styles.container}>
-          <div className={styles.leftNav}>
+        <Grid>
+          <Section size={3}>
             <Select className={styles.select} value={selectValue} onChange={this.changeSelect}>
               <Select.Option value="Organization">Organization</Select.Option>
               <Select.Option value="Group">Group</Select.Option>
@@ -325,22 +354,27 @@ export default class Users extends Component {
                 selectItem={selectItem}
               />
             )}
-          </div>
-          <div className={styles.rightTab}>
-            <div className={styles.selectedInfo}>
-              <div className={styles.selected}>Selected: Developer</div>
-              <div className={styles.action} onClick={this.openAuthorityModal}>
-                action
-              </div>
-            </div>
+          </Section>
 
-            <Toolbar placeholder="Search App Name" withCreateBtn={{ linkTo: '#' }} />
-
-            <Table columns={columns} dataSource={data} />
-            <Pagination className={styles.page} />
-          </div>
-        </div>
-
+          <Section size={9}>
+            <Card>
+              {/* <div className={styles.selectedInfo}>
+                <div className={styles.selected}>Selected: Developer</div>
+                <div className={styles.action} onClick={this.openAuthorityModal}>
+                  action
+                </div>
+              </div>*/}
+              {this.renderToolbar()}
+              <Table
+                columns={columns}
+                dataSource={data}
+                isLoading={userStore.isLoading}
+                filterList={filterList}
+                pagination={pagination}
+              />
+            </Card>
+          </Section>
+        </Grid>
         {this.renderAuthorityModal()}
       </Layout>
     );

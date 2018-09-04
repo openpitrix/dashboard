@@ -107,10 +107,9 @@ export default class RepoDetail extends Component {
     repoStore.curTagName = tab;
 
     if (tab === 'Apps') {
-      appStore.searchWord = '';
-      await appStore.fetchAll({ repo_id: repoId });
+      appStore.repoId = repoId;
+      await appStore.fetchAll();
     } else if (tab === 'Runtimes') {
-      runtimeStore.searchWord = '';
       // query runtime label by repo selector
       repoStore.querySelector = repoStore.getStringFor('selectors');
       repoStore.queryProviders = repoStore.repoDetail.providers.slice();
@@ -121,9 +120,8 @@ export default class RepoDetail extends Component {
       if (runtimes.length > 0) {
         const runtimeIds = runtimes.map(item => item.runtime_id);
         await clusterStore.fetchAll({
-          //status: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted'],
           runtime_id: runtimeIds,
-          limit: 200
+          noLimit: true
         });
       }
     } else if (tab === 'Events') {
@@ -131,52 +129,12 @@ export default class RepoDetail extends Component {
     }
   };
 
-  onSearchApp = async name => {
-    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.appStore;
-    const { repoDetail } = this.props.repoStore;
-    changeSearchWord(name);
-    setCurrentPage(1);
-    await fetchAll({
-      repo_id: repoDetail.repo_id
-    });
-  };
-
-  onClearApp = async () => {
-    await this.onSearchApp('');
-  };
-
-  onRefreshApp = async () => {
-    const { fetchAll } = this.props.appStore;
-    const { repoDetail } = this.props.repoStore;
-    await fetchAll({
-      repo_id: repoDetail.repo_id
-    });
-  };
-
-  changeTableApp = async current => {
-    const { setCurrentPage, fetchAll } = this.props.appStore;
-    const { repoDetail } = this.props.repoStore;
-    setCurrentPage(current);
-    await fetchAll({
-      repo_id: repoDetail.repo_id
-    });
-  };
-
-  onChangeStatusApp = async status => {
-    const { appStore, repoStore } = this.props;
-    appStore.selectStatus = appStore.selectStatus === status ? '' : status;
-    appStore.setCurrentPage(1);
-    await appStore.fetchAll({
-      repo_id: repoStore.repoDetail.repo_id
-    });
-  };
-
   onSearch = async (name = '', isRefresh = false) => {
     const { runtimeStore } = this.props;
 
     if (!isRefresh) {
-      runtimeStore.changeSearchWord(name);
-      runtimeStore.setCurrentPage(1);
+      runtimeStore.searchWord = name;
+      runtimeStore.currentPage = 1;
     }
 
     await runtimeStore.fetchAll(this.getRuntimeParams());
@@ -190,24 +148,24 @@ export default class RepoDetail extends Component {
     await this.onSearch('', true);
   };
 
-  changeTable = async current => {
+  changePagination = async page => {
     const { runtimeStore } = this.props;
-    runtimeStore.setCurrentPage(current);
+    runtimeStore.currentPage = page;
     await runtimeStore.fetchAll(this.getRuntimeParams());
   };
 
   onChangeStatus = async status => {
     const { runtimeStore } = this.props;
     runtimeStore.selectStatus = runtimeStore.selectStatus === status ? '' : status;
-    runtimeStore.setCurrentPage(1);
+    runtimeStore.currentPage = 1;
 
     await runtimeStore.fetchAll(this.getRuntimeParams());
   };
 
-  changeTableEvent = async current => {
+  changePaginationEvent = async page => {
     const { repoStore, match } = this.props;
     const { repoId } = match.params;
-    repoStore.setCurrentPage(current);
+    repoStore.currentEventPage = page;
     await repoStore.fetchRepoEvents({
       repo_id: repoId
     });
@@ -240,9 +198,9 @@ export default class RepoDetail extends Component {
         toolbarOptions = {
           searchWord: appStore.searchWord,
           placeholder: t('Search App'),
-          onSearch: this.onSearchApp,
-          onClear: this.onClearApp,
-          onRefresh: this.onRefreshApp
+          onSearch: appStore.onSearch,
+          onClear: appStore.onClearSearch,
+          onRefresh: appStore.onRefresh
         };
         tableOptions = {
           columns: appColumns,
@@ -255,13 +213,13 @@ export default class RepoDetail extends Component {
                 { name: t('Active'), value: 'active' },
                 { name: t('Deleted'), value: 'deleted' }
               ],
-              onChangeFilter: this.onChangeStatusApp,
+              onChangeFilter: appStore.onChangeStatus,
               selectValue: appStore.selectStatus
             }
           ],
           pagination: {
             tableType: 'Apps',
-            onChange: this.changeTableApp,
+            onChange: appStore.changePagination,
             total: appStore.totalCount,
             current: appStore.currentPage
           }
@@ -293,7 +251,7 @@ export default class RepoDetail extends Component {
           ],
           pagination: {
             tableType: 'Runtimes',
-            onChange: this.changeTable,
+            onChange: this.changePagination,
             total: runtimeStore.totalCount,
             current: runtimeStore.currentPage
           }
@@ -306,9 +264,9 @@ export default class RepoDetail extends Component {
           isLoading: repoStore.isLoading,
           pagination: {
             tableType: 'Events',
-            onChange: this.changeTableEvent,
-            total: repoStore.totalCount,
-            current: repoStore.currentPage
+            onChange: this.changePaginationEvent,
+            total: repoStore.totalEventCount,
+            current: repoStore.currentEventPage
           }
         };
         break;

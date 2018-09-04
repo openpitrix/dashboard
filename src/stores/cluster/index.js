@@ -16,14 +16,18 @@ export default class ClusterStore extends Store {
   @observable clusterCount = 0;
   @observable totalNodeCount = 0;
   @observable isModalOpen = false;
+  @observable modalType = '';
 
   @observable clusterId; // current delete cluster_id
   @observable operateType = '';
 
-  @observable currentPage = 1;
+  @observable currentPage = 1; //cluster table query params
   @observable searchWord = '';
+  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  @observable selectStatus = '';
+  @observable appId = '';
   @observable runtimeId = '';
-  @observable modalType = '';
+  @observable userId = '';
 
   @observable selectedRowKeys = [];
   @observable clusterIds = [];
@@ -31,9 +35,6 @@ export default class ClusterStore extends Store {
   @observable currentNodePage = 1;
   @observable searchNode = '';
   @observable selectNodeStatus = '';
-
-  @observable selectStatus = '';
-  @observable defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 
   @observable keyPairs = [];
   @observable pairId = '';
@@ -52,23 +53,30 @@ export default class ClusterStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let pageOffset = params.page || this.currentPage;
     let defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : this.defaultStatus
     };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
     if (this.searchWord) {
-      params.search_word = this.searchWord;
+      defaultParams.search_word = this.searchWord;
     }
-    if (!params.runtime_id && this.runtimeId) {
-      params.runtime_id = this.runtimeId;
+    if (this.appId) {
+      defaultParams.app_id = this.appId;
     }
-    if (!params.status) {
-      params.status = this.selectStatus ? this.selectStatus : this.defaultStatus;
+    if (this.runtimeId) {
+      defaultParams.runtime_id = this.runtimeId;
     }
-    if (params.page) {
-      delete params.page;
+    if (this.userId) {
+      defaultParams.user_id = this.userId;
     }
 
     this.isLoading = true;
@@ -211,19 +219,9 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changeSearchWord = word => {
+  onSearch = async word => {
     this.searchWord = word;
-  };
-
-  @action
-  setCurrentPage = page => {
-    this.currentPage = page;
-  };
-
-  @action
-  onSearch = async searchWord => {
-    this.changeSearchWord(searchWord);
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     await this.fetchAll();
   };
 
@@ -239,20 +237,15 @@ export default class ClusterStore extends Store {
 
   @action
   changePagination = async page => {
-    this.setCurrentPage(page);
+    this.currentPage = page;
     await this.fetchAll();
   };
 
   @action
   onChangeStatus = async status => {
-    this.setCurrentPage(1);
+    this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
     await this.fetchAll();
-  };
-
-  @action
-  changeRuntimeId = id => {
-    this.runtimeId = id;
   };
 
   @action
@@ -262,7 +255,9 @@ export default class ClusterStore extends Store {
       this.selectStatus = '';
       this.searchWord = '';
     }
+    this.appId = '';
     this.runtimeId = '';
+    this.userId = '';
     this.selectedRowKeys = [];
     this.clusterIds = [];
     this.pageInitMap = {};
@@ -282,13 +277,8 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changeSearchNode = word => {
+  onSearchNode = async word => {
     this.searchNode = word;
-  };
-
-  @action
-  onSearchNode = async searchWord => {
-    this.changeSearchNode(searchWord);
     this.currentNodePage = 1;
     await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };

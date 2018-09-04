@@ -217,6 +217,7 @@ export default class Apps extends Component {
       {
         title: t('Categories'),
         key: 'category',
+        width: '150px',
         render: item =>
           t(
             get(item, 'category_set', [])

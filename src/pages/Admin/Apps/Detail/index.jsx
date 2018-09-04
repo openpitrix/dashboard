@@ -34,14 +34,39 @@ export default class AppDetail extends Component {
 
   constructor(props) {
     super(props);
-    const { clusterStore, runtimeStore, appVersionStore } = this.props;
+    const { clusterStore, appVersionStore } = this.props;
     clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    appVersionStore.currentPage = 1;
-    appVersionStore.searchWord = '';
-    this.appId = props.match.params.appId;
-    this.loginUser = getSessInfo('user', props.sessInfo);
+    appVersionStore.loadPageInit();
   }
+
+  changeDetailTab = async tab => {
+    const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
+    const { appId } = match.params;
+    appStore.detailTab = tab;
+
+    if (tab === 'Clusters') {
+      clusterStore.appId = appId;
+      await clusterStore.fetchAll();
+      const { clusters } = clusterStore;
+      if (clusters.length > 0) {
+        runtimeStore.loadPageInit();
+        appVersionStore.loadPageInit();
+        const versionIds = clusters.map(item => item.version_id);
+        const runtimeIds = clusters.map(item => item.runtime_id);
+        await runtimeStore.fetchAll({
+          status: ['active', 'deleted'],
+          runtime_id: runtimeIds
+        });
+        await appVersionStore.fetchAll({
+          status: ['active', 'deleted'],
+          version_id: versionIds
+        });
+      }
+    } else if (tab === 'Versions') {
+      appVersionStore.appId = appId;
+      await appVersionStore.fetchAll({ app_id: appId });
+    }
+  };
 
   renderHandleMenu = appId => {
     const { t } = this.props;
@@ -57,7 +82,8 @@ export default class AppDetail extends Component {
   };
 
   handleCreateVersion = async () => {
-    await this.props.appVersionStore.handleCreateVersion(this.appId);
+    const { appId } = this.props.match.params;
+    await this.props.appVersionStore.handleCreateVersion(appId);
   };
 
   renderOpsModal = () => {
@@ -139,92 +165,6 @@ export default class AppDetail extends Component {
     );
   };
 
-  deleteApp = () => {
-    const { appStore, appVersionStore } = this.props;
-    appStore.appId = this.appId;
-    appStore.operateType = 'detailDelete';
-    appStore.remove();
-    appVersionStore.hideModal();
-  };
-
-  onRefresh = () => {
-    const { fetchAll } = this.props.clusterStore;
-    fetchAll({ app_id: this.appId });
-  };
-
-  onSearch = async name => {
-    const { changeSearchWord, setCurrentPage, fetchAll } = this.props.clusterStore;
-    changeSearchWord(name);
-    setCurrentPage(1);
-    await fetchAll({ app_id: this.appId });
-  };
-
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  onChangeStatus = async status => {
-    const { clusterStore } = this.props;
-    clusterStore.selectStatus = clusterStore.selectStatus === status ? '' : status;
-    clusterStore.setCurrentPage(1);
-    await clusterStore.fetchAll({ app_id: this.appId });
-  };
-
-  changePagination = async page => {
-    const { setCurrentPage, fetchAll } = this.props.clusterStore;
-    setCurrentPage(page);
-    await fetchAll({ app_id: this.appId });
-  };
-
-  onSearchVersion = async name => {
-    const { appVersionStore } = this.props;
-    appVersionStore.currentPage = 1;
-    appVersionStore.searchWord = name;
-    await appVersionStore.fetchAll({ app_id: this.appId });
-  };
-
-  onClearSearchVersion = async () => {
-    await this.onSearchVersion('');
-  };
-
-  onRefreshVersion = async () => {
-    const { appVersionStore } = this.props;
-    await appVersionStore.fetchAll({
-      app_id: this.appId
-    });
-  };
-
-  changeVersionPagination = async page => {
-    const { appVersionStore } = this.props;
-    appVersionStore.currentPage = page;
-    await appVersionStore.fetchAll({ app_id: this.appId });
-  };
-
-  changeDetailTab = async tab => {
-    const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
-    const { appId } = match.params;
-    appStore.detailTab = tab;
-
-    if (tab === 'Clusters') {
-      await clusterStore.fetchAll({ app_id: appId });
-      const { clusters } = clusterStore;
-      if (clusters.length > 0) {
-        const runtimeIds = clusters.map(item => item.runtime_id);
-        const versionIds = clusters.map(item => item.version_id);
-        await runtimeStore.fetchAll({
-          status: ['active', 'deleted'],
-          runtime_id: runtimeIds
-        });
-        await appVersionStore.fetchAll({
-          status: ['active', 'deleted'],
-          version_id: versionIds
-        });
-      }
-    } else if (tab === 'Versions') {
-      await appVersionStore.fetchAll({ app_id: appId });
-    }
-  };
-
   renderToolbar(options = {}) {
     return (
       <Toolbar
@@ -232,6 +172,7 @@ export default class AppDetail extends Component {
       />
     );
   }
+
   renderTable(options = {}) {
     return (
       <Table
@@ -253,9 +194,9 @@ export default class AppDetail extends Component {
       toolbarOptions = {
         searchWord: clusterStore.searchWord,
         placeholder: t('Search Clusters'),
-        onSearch: this.onSearch,
-        onClear: this.onClearSearch,
-        onRefresh: this.onRefresh
+        onSearch: clusterStore.onSearch,
+        onClear: clusterStore.onClearSearch,
+        onRefresh: clusterStore.onRefresh
       };
       tableOptions = {
         columns: clusterColumns(runtimeStore.runtimes, appVersionStore.versions),
@@ -272,13 +213,13 @@ export default class AppDetail extends Component {
               { name: t('Deleted'), value: 'deleted' },
               { name: t('Ceased'), value: 'ceased' }
             ],
-            onChangeFilter: this.onChangeStatus,
+            onChangeFilter: clusterStore.onChangeStatus,
             selectValue: clusterStore.selectStatus
           }
         ],
         pagination: {
           tableType: 'Clusters',
-          onChange: this.changePagination,
+          onChange: clusterStore.changePagination,
           total: clusterStore.totalCount,
           current: clusterStore.currentPage
         }
@@ -287,17 +228,28 @@ export default class AppDetail extends Component {
       toolbarOptions = {
         searchWord: appVersionStore.searchWord,
         placeholder: t('Search Version'),
-        onSearch: this.onSearchVersion,
-        onClear: this.onClearSearchVersion,
-        onRefresh: this.onRefreshVersion
+        onSearch: appVersionStore.onSearch,
+        onClear: appVersionStore.onClearSearch,
+        onRefresh: appVersionStore.onRefresh
       };
       tableOptions = {
         columns: versionColumns,
         dataSource: appVersionStore.versions.toJSON(),
         isLoading: appVersionStore.isLoading,
+        filterList: [
+          {
+            key: 'status',
+            conditions: [
+              { name: t('Active'), value: 'active' },
+              { name: t('Deleted'), value: 'deleted' }
+            ],
+            onChangeFilter: appVersionStore.onChangeStatus,
+            selectValue: appVersionStore.selectStatus
+          }
+        ],
         pagination: {
           tableType: 'Versions',
-          onChange: this.changeVersionPagination,
+          onChange: appVersionStore.changePagination,
           total: appVersionStore.totalCount,
           current: appVersionStore.currentPage
         }

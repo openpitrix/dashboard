@@ -27,7 +27,7 @@ export default class Runtimes extends Component {
     await runtimeStore.fetchAll();
     await runtimeStore.runtimeStatistics();
     await clusterStore.fetchAll({
-      limit: 99
+      noLimit: true
     });
   }
 
