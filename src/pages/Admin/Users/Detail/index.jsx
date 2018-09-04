@@ -38,8 +38,6 @@ export default class Detail extends Component {
     repoStore.loadPageInit();
   }
 
-  deleteUser = id => {};
-
   renderHandleMenu = id => {
     const { t } = this.props;
 
