@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { get, capitalize, pick, has } from 'lodash';
+import _ from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
@@ -42,38 +42,52 @@ export default class ClusterDetail extends Component {
   constructor(props) {
     super(props);
     props.clusterStore.loadNodeInit();
-    props.clusterStore.setSocketMessage();
   }
 
-  listenToJob = async (payload = {}) => {
+  listenToJob = async ({ rtype, rid, op, values = {} }) => {
     const { clusterStore, match } = this.props;
     const { clusterId } = match.params;
+    const { jobs } = clusterStore;
 
-    const rtype = get(payload, 'resource.rtype');
-    const rid = get(payload, 'resource.rid');
-    const values = get(payload, 'resource.values', {});
+    const status = _.pick(values, ['status', 'transition_status']);
+    const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
 
-    if (rtype === 'job' && values.cluster_id === clusterId) {
+    if (op === 'create:job' && values.cluster_id === clusterId) {
+      // new job
+      jobs[rid] = clusterId;
       await clusterStore.fetchJobs(clusterId);
-      clusterStore.showMsg(JSON.stringify(payload));
+      logJobs();
+    }
+
+    // job updated
+    if (op === 'update:job' && jobs[rid] === clusterId) {
+      if (['successful', 'failed'].includes(status.status)) {
+        // assume job is done
+        await clusterStore.fetch(clusterId);
+        await clusterStore.fetchJobs(clusterId);
+        await clusterStore.fetchNodes({ cluster_id: clusterId });
+        delete jobs[rid];
+      }
+
+      logJobs();
     }
 
     if (rtype === 'cluster' && rid === clusterId) {
-      await clusterStore.fetch(clusterId);
+      Object.assign(clusterStore.cluster, status);
+    }
 
-      if (values.transition_status === '' && !has(values, 'status')) {
-        // job is done
-        await clusterStore.fetchJobs(clusterId);
-        await clusterStore.fetchNodes({ cluster_id: clusterId });
+    if (rtype === 'cluster_node') {
+      let curNodes = clusterStore.clusterNodes.toJSON().map(node => node.node_id);
+
+      if (curNodes.includes(rid)) {
+        clusterStore.clusterNodes = clusterStore.clusterNodes.map(node => {
+          if (node.node_id === rid) {
+            Object.assign(node, status);
+          }
+          return node;
+        });
       }
     }
-
-    let curNodes = clusterStore.clusterNodes.toJSON().map(node => node.node_id);
-    if (rtype === 'cluster_node' && curNodes.includes(rid)) {
-      await clusterStore.fetchNodes({ cluster_id: clusterId });
-    }
-
-    clusterStore.setSocketMessage(payload);
   };
 
   renderHandleMenu = item => {
@@ -84,13 +98,13 @@ export default class ClusterDetail extends Component {
     return (
       <div className="operate-menu">
         {/* <span onClick={clusterParametersOpen}>View Parameters</span>*/}
-        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete cluster')}</span>
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
         )}
         {status !== 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
         )}
+        <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete cluster')}</span>
       </div>
     );
   };
@@ -101,12 +115,12 @@ export default class ClusterDetail extends Component {
 
     return (
       <Dialog
-        title={t(`${capitalize(modalType)} cluster`)}
+        title={t(`${_.capitalize(modalType)} cluster`)}
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={this.handleCluster}
       >
-        {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
+        {t('operate cluster desc', { operate: t(_.capitalize(modalType)) })}
       </Dialog>
     );
   };
@@ -238,16 +252,15 @@ export default class ClusterDetail extends Component {
       onRefreshNode,
       onChangeNodeStatus,
       selectNodeStatus,
-      sockMessage,
       modalType
     } = clusterStore;
 
     const detail = clusterStore.cluster;
     const clusterJobs = clusterStore.clusterJobs.toJSON();
     const clusterNodes = clusterStore.clusterNodes.toJSON();
-    const appName = get(appStore.appDetail, 'name', '');
-    const runtimeName = get(runtimeStore.runtimeDetail, 'name', '');
-    const provider = get(runtimeStore.runtimeDetail, 'provider', '');
+    const appName = _.get(appStore.appDetail, 'name', '');
+    const runtimeName = _.get(runtimeStore.runtimeDetail, 'name', '');
+    const provider = _.get(runtimeStore.runtimeDetail, 'provider', '');
     const { clusterJobsOpen } = clusterStore;
 
     const columns = [
@@ -265,27 +278,19 @@ export default class ClusterDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '102px',
-        // fixme: prop type check case sensitive
-        render: item => (
-          <Status
-            type={(item.status + '').toLowerCase()}
-            name={item.status}
-            transitionStatus={item.transition_status}
-          />
-        )
+        render: item => <Status type={item.status} transition={item.transition_status} />
       },
       {
         title: t('Configuration'),
         key: 'configuration',
-        width: '100px',
+        width: '130px',
         render: item => <Configuration configuration={item.cluster_role || {}} />
       },
       {
         title: t('Private IP'),
         key: 'private_ip',
         dataIndex: 'private_ip',
-        width: '95px'
+        width: '100px'
       },
       {
         title: t('Updated At'),
@@ -321,7 +326,6 @@ export default class ClusterDetail extends Component {
       <Layout
         backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
         isloading={isLoading}
-        sockMessage={sockMessage}
         listenToJob={this.listenToJob}
       >
         <Grid>
@@ -353,7 +357,6 @@ export default class ClusterDetail extends Component {
           <Section size={8}>
             <Panel>
               <TagNav tags={['Nodes']} />
-
               <Card>
                 <Toolbar
                   placeholder={t('Search Node')}

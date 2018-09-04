@@ -47,9 +47,9 @@ export default class Apps extends Component {
   listenToJob = payload => {
     const { rootStore } = this.props;
 
-    if (['job'].includes(get(payload, 'resource.rtype'))) {
-      rootStore.sockMessage = JSON.stringify(payload);
-    }
+    // if (['job'].includes(get(payload, 'resource.rtype'))) {
+    //   rootStore.sockMessage = JSON.stringify(payload);
+    // }
   };
 
   onChangeSort = (params = {}) => {

@@ -20,11 +20,14 @@ export default class Loading extends Component {
 
     if (isLoading) {
       return (
-        <div className={classnames(styles.loading, className)}>
-          <div className={styles.loadOuter}>
-            <div className={styles.loader} />
+        <Fragment>
+          <div className={classnames(styles.loading, className)}>
+            <div className={styles.loadOuter}>
+              <div className={styles.loader} />
+            </div>
           </div>
-        </div>
+          {children}
+        </Fragment>
       );
     }
 

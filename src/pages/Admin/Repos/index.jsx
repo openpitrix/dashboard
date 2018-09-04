@@ -29,7 +29,6 @@ export default class Repos extends Component {
   constructor(props) {
     super(props);
     const { repoStore, appStore } = this.props;
-    repoStore.setSocketMessage();
     repoStore.loadPageInit();
     appStore.loadPageInit();
   }
@@ -69,11 +68,10 @@ export default class Repos extends Component {
   listenToJob = async payload => {
     const { repoStore } = this.props;
 
-    if (['repo'].includes(get(payload, 'resource.rtype'))) {
-      await repoStore.fetchAll();
-      // repo_event: create, update, delete
-      repoStore.setSocketMessage(payload);
-    }
+    // if (['repo'].includes(get(payload, 'resource.rtype'))) {
+    //   await repoStore.fetchAll();
+    //   // repo_event: create, update, delete
+    // }
   };
 
   renderHandleMenu = id => {
@@ -112,12 +110,11 @@ export default class Repos extends Component {
       searchWord,
       onSearch,
       onClearSearch,
-      onRefresh,
-      sockMessage
+      onRefresh
     } = this.props.repoStore;
 
     return (
-      <Layout sockMessage={sockMessage} listenToJob={this.listenToJob}>
+      <Layout listenToJob={this.listenToJob}>
         <div className={styles.container}>
           <div className={styles.title}>{t('Repos')}</div>
 

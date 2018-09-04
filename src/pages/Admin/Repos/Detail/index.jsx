@@ -33,7 +33,6 @@ export default class RepoDetail extends Component {
   constructor(props) {
     super(props);
     const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    repoStore.setSocketMessage();
     repoStore.curTagName = 'Apps';
     appStore.loadPageInit();
     runtimeStore.loadPageInit();
@@ -44,16 +43,14 @@ export default class RepoDetail extends Component {
     const { repoStore, match } = this.props;
     const rtype = get(payload, 'resource.rtype');
     const rid = get(payload, 'resource.rid');
-
     const { repoId } = match.params;
 
-    if (rtype === 'repo_event' && rid === repoId) {
-      if (repoStore.sockMessageChanged(payload)) {
-        await repoStore.fetchRepoDetail(repoId);
-        await repoStore.fetchRepoEvents({ repo_id: repoId });
-      }
-      repoStore.setSocketMessage(payload);
-    }
+    // if (rtype === 'repo_event' && rid === repoId) {
+    //   if (repoStore.sockMessageChanged(payload)) {
+    //     await repoStore.fetchRepoDetail(repoId);
+    //     await repoStore.fetchRepoEvents({ repo_id: repoId });
+    //   }
+    // }
   };
 
   filterSelectors = items => {
@@ -188,8 +185,9 @@ export default class RepoDetail extends Component {
 
   render() {
     const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
-    const { repoDetail, curTagName, sockMessage } = repoStore;
+    const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
+
     let selectors = [];
     let toolbarOptions, tableOptions;
 
@@ -275,7 +273,6 @@ export default class RepoDetail extends Component {
     return (
       <Layout
         backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
-        sockMessage={sockMessage}
         listenToJob={this.listenToJob}
       >
         <Grid>

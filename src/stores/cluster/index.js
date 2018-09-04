@@ -40,6 +40,12 @@ export default class ClusterStore extends Store {
   @observable pairId = '';
   @observable currentPairId = '';
 
+  // cluster job queue
+  @observable
+  jobs = {
+    // job_id=> cluster_id
+  };
+
   @action.bound
   showModal = type => {
     this.modalType = type;
@@ -152,7 +158,7 @@ export default class ClusterStore extends Store {
     if (_.get(result, 'cluster_id')) {
       await this.fetchAll();
       this.cancelSelected();
-      this.showMsg('Delete cluster successfully.', 'success');
+      this.success('Delete cluster successfully.');
     }
   };
 
@@ -163,7 +169,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.showMsg('Start cluster successfully.');
+      this.success('Start cluster successfully.');
     }
   };
 
@@ -174,7 +180,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.showMsg('Stop cluster successfully.');
+      this.success('Stop cluster successfully.');
     }
   };
 

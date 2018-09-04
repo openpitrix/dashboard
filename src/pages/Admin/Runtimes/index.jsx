@@ -41,9 +41,9 @@ export default class Runtimes extends Component {
   listenToJob = payload => {
     const { runtimeStore } = this.props;
 
-    if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
-      runtimeStore.sockMessage = JSON.stringify(payload);
-    }
+    // if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
+    //   runtimeStore.sockMessage = JSON.stringify(payload);
+    // }
   };
 
   onChangeSort = (params = {}) => {
@@ -136,8 +136,7 @@ export default class Runtimes extends Component {
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
-      selectStatus,
-      sockMessage
+      selectStatus
     } = runtimeStore;
 
     const columns = [
@@ -232,7 +231,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout listenToJob={this.listenToJob} sockMessage={sockMessage}>
+      <Layout listenToJob={this.listenToJob}>
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

@@ -47,7 +47,7 @@ export default class CategoryStore extends Store {
     let msg = type + ' category successfully.';
     if (!result.category_id) {
       msg = result.errDetail || result.err || 'Operation fail!';
-      this.showMsg(msg);
+      this.error(msg);
     } else {
       this.hideModal();
       if (this.isDetailPage) {
@@ -55,7 +55,7 @@ export default class CategoryStore extends Store {
       } else {
         await this.fetchAll(this.appStore);
       }
-      this.showMsg(msg, 'success');
+      this.success(msg);
     }
   };
 
@@ -117,7 +117,7 @@ export default class CategoryStore extends Store {
       this.category = {};
     }
     if (!this.name) {
-      this.showMsg('Please input category name!');
+      this.info('Please input category name!');
     } else {
       this[method](params);
     }

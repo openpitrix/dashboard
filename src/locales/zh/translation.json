@@ -115,6 +115,11 @@
   "Suspended": "已暂停",
   "Deleted": "已删除",
   "Ceased": "已销毁",
+  "Running": "运行中",
+  "Starting": "启动中",
+  "Working": "工作中",
+  "Updating": "更新中",
+  "Stopping": "停止中",
 
   "public": "公共",
   "private": "私有",

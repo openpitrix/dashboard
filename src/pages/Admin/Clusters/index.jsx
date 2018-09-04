@@ -43,17 +43,16 @@ export default class Clusters extends Component {
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     this.store = clusterStore;
-    clusterStore.setSocketMessage();
   }
 
   listenToJob = async payload => {
     const { clusterStore } = this.props;
-    const rtype = get(payload, 'resource.rtype');
-
-    if (rtype === 'cluster') {
-      await clusterStore.fetchAll();
-      clusterStore.setSocketMessage(payload);
-    }
+    // const rtype = get(payload, 'resource.rtype');
+    //
+    // if (rtype === 'cluster') {
+    //   await clusterStore.fetchAll();
+    //   clusterStore.setSocketMessage(payload);
+    // }
   };
 
   getAppTdShow = (appId, apps) => {
@@ -78,16 +77,16 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
-        {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
-            {t('Delete cluster')}
-          </span>
-        )}
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
         )}
         {status === 'active' && (
           <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
+        )}
+        {status !== 'deleted' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            {t('Delete cluster')}
+          </span>
         )}
       </div>
     );
@@ -175,7 +174,7 @@ export default class Clusters extends Component {
 
   render() {
     const { clusterStore, t } = this.props;
-    const { summaryInfo, clusters, isLoading, sockMessage } = clusterStore;
+    const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { apps } = this.props.appStore;
@@ -282,7 +281,7 @@ export default class Clusters extends Component {
     };
 
     return (
-      <Layout listenToJob={this.listenToJob} sockMessage={sockMessage}>
+      <Layout listenToJob={this.listenToJob}>
         <Row>
           <Statistics {...summaryInfo} objs={runtimes.slice()} />
         </Row>

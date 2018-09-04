@@ -73,7 +73,7 @@ export default class RuntimeCreateStore extends Store {
     if (this.runtimeUrl && this.accessKey && this.secretKey) {
       this.getRuntimeZone();
     } else {
-      this.showMsg('Incomplete credential information!');
+      this.error('Incomplete credential information!');
     }
   };
 
@@ -174,8 +174,7 @@ export default class RuntimeCreateStore extends Store {
     e.preventDefault();
     const checkResult = this.checkSubmitDate();
     if (checkResult !== 'ok') {
-      this.showMsg(checkResult);
-      return;
+      return this.error(checkResult);
     }
 
     const { provider, zone, labels } = this;
@@ -210,9 +209,9 @@ export default class RuntimeCreateStore extends Store {
 
     if (_.get(this, 'runtimeCreated.runtime_id')) {
       if (this.runtimeId) {
-        this.showMsg('Modify runtime successfully', 'success');
+        this.success('Modify runtime successfully');
       } else {
-        this.showMsg('Create runtime successfully', 'success');
+        this.success('Create runtime successfully');
       }
     }
 
@@ -239,9 +238,9 @@ export default class RuntimeCreateStore extends Store {
     const result = await this.request.get(`runtimes/zones`, params);
     this.runtimeZones = _.get(result, 'zone', []);
     if (this.runtimeZones.length > 0) {
-      this.showMsg('Get zone data success!', 'success');
+      this.success('Get zone data success!');
     } else {
-      this.showMsg('Get zone data fail!', 'error');
+      this.error('Get zone data fail!');
     }
   }
 

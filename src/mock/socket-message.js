@@ -6,7 +6,7 @@ const messages = [
     resource: {
       rtype: 'job',
       rid: 'j-nXlExrDjKD1x',
-      values: { app_id: '', cluster_id: 'cl-z8q7v1zxkjmq26', status: 'pending' }
+      values: { app_id: '', cluster_id: 'cl-p2oxz33p1o1x29', status: 'pending' }
     }
   },
   {
@@ -17,7 +17,7 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster',
-      rid: 'cl-z8q7v1zxkjmq26',
+      rid: 'cl-p2oxz33p1o1x29',
       values: { transition_status: 'starting' }
     }
   },
@@ -26,7 +26,7 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-N32EjM3Mz5W2',
+      rid: 'cln-KmEwgxAD8Lyo',
       values: { transition_status: 'starting' }
     }
   },
@@ -34,7 +34,7 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-RD7QqGMGOp1M',
+      rid: 'cln-Z6GVrNA6VYL5',
       values: { transition_status: 'starting' }
     }
   },
@@ -42,39 +42,39 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-VKDmmW1WmE5X',
+      rid: 'cln-gPyVpGmNRVZv',
       values: { transition_status: 'starting' }
     }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-RD7QqGMGOp1M', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-Z6GVrNA6VYL5', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-RD7QqGMGOp1M', values: { status: 'active' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-Z6GVrNA6VYL5', values: { status: 'active' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-VKDmmW1WmE5X', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-gPyVpGmNRVZv', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-VKDmmW1WmE5X', values: { status: 'active' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-gPyVpGmNRVZv', values: { status: 'active' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-N32EjM3Mz5W2', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-KmEwgxAD8Lyo', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-N32EjM3Mz5W2', values: { status: 'active' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-KmEwgxAD8Lyo', values: { status: 'active' } }
   },
   {
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-RD7QqGMGOp1M',
+      rid: 'cln-Z6GVrNA6VYL5',
       values: { transition_status: 'updating' }
     }
   },
@@ -82,7 +82,7 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-N32EjM3Mz5W2',
+      rid: 'cln-KmEwgxAD8Lyo',
       values: { transition_status: 'updating' }
     }
   },
@@ -90,35 +90,27 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-VKDmmW1WmE5X',
+      rid: 'cln-gPyVpGmNRVZv',
       values: { transition_status: 'updating' }
     }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-RD7QqGMGOp1M', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-Z6GVrNA6VYL5', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-VKDmmW1WmE5X', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-gPyVpGmNRVZv', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-N32EjM3Mz5W2', values: { transition_status: '' } }
-  },
-  {
-    type: 'update',
-    resource: {
-      rtype: 'cluster_node',
-      rid: 'cln-RD7QqGMGOp1M',
-      values: { transition_status: 'updating' }
-    }
+    resource: { rtype: 'cluster_node', rid: 'cln-KmEwgxAD8Lyo', values: { transition_status: '' } }
   },
   {
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-VKDmmW1WmE5X',
+      rid: 'cln-Z6GVrNA6VYL5',
       values: { transition_status: 'updating' }
     }
   },
@@ -126,27 +118,7 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-N32EjM3Mz5W2',
-      values: { transition_status: 'updating' }
-    }
-  },
-  {
-    type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-RD7QqGMGOp1M', values: { transition_status: '' } }
-  },
-  {
-    type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-VKDmmW1WmE5X', values: { transition_status: '' } }
-  },
-  {
-    type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-N32EjM3Mz5W2', values: { transition_status: '' } }
-  },
-  {
-    type: 'update',
-    resource: {
-      rtype: 'cluster_node',
-      rid: 'cln-RD7QqGMGOp1M',
+      rid: 'cln-gPyVpGmNRVZv',
       values: { transition_status: 'updating' }
     }
   },
@@ -154,7 +126,27 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-VKDmmW1WmE5X',
+      rid: 'cln-KmEwgxAD8Lyo',
+      values: { transition_status: 'updating' }
+    }
+  },
+  {
+    type: 'update',
+    resource: { rtype: 'cluster_node', rid: 'cln-Z6GVrNA6VYL5', values: { transition_status: '' } }
+  },
+  {
+    type: 'update',
+    resource: { rtype: 'cluster_node', rid: 'cln-gPyVpGmNRVZv', values: { transition_status: '' } }
+  },
+  {
+    type: 'update',
+    resource: { rtype: 'cluster_node', rid: 'cln-KmEwgxAD8Lyo', values: { transition_status: '' } }
+  },
+  {
+    type: 'update',
+    resource: {
+      rtype: 'cluster_node',
+      rid: 'cln-Z6GVrNA6VYL5',
       values: { transition_status: 'updating' }
     }
   },
@@ -162,26 +154,34 @@ const messages = [
     type: 'update',
     resource: {
       rtype: 'cluster_node',
-      rid: 'cln-N32EjM3Mz5W2',
+      rid: 'cln-gPyVpGmNRVZv',
       values: { transition_status: 'updating' }
     }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-RD7QqGMGOp1M', values: { transition_status: '' } }
+    resource: {
+      rtype: 'cluster_node',
+      rid: 'cln-KmEwgxAD8Lyo',
+      values: { transition_status: 'updating' }
+    }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-N32EjM3Mz5W2', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-Z6GVrNA6VYL5', values: { transition_status: '' } }
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster_node', rid: 'cln-VKDmmW1WmE5X', values: { transition_status: '' } }
+    resource: { rtype: 'cluster_node', rid: 'cln-KmEwgxAD8Lyo', values: { transition_status: '' } }
+  },
+  {
+    type: 'update',
+    resource: { rtype: 'cluster_node', rid: 'cln-gPyVpGmNRVZv', values: { transition_status: '' } }
   },
 
   {
     type: 'update',
-    resource: { rtype: 'cluster', rid: 'cl-z8q7v1zxkjmq26', values: { status: 'active' } }
+    resource: { rtype: 'cluster', rid: 'cl-p2oxz33p1o1x29', values: { status: 'active' } }
   },
   {
     type: 'update',
@@ -189,7 +189,7 @@ const messages = [
   },
   {
     type: 'update',
-    resource: { rtype: 'cluster', rid: 'cl-z8q7v1zxkjmq26', values: { transition_status: '' } }
+    resource: { rtype: 'cluster', rid: 'cl-p2oxz33p1o1x29', values: { transition_status: '' } }
   }
 ];
 
@@ -201,10 +201,13 @@ export const mockSocketData = sockClient => {
     sockClient.emit(`ops-resource`, msg);
   };
 
+  let folkMsg = messages.slice();
+
   let curMsg,
-    len = messages.length;
-  while ((curMsg = messages.shift())) {
-    let idx = len - messages.length;
+    len = folkMsg.length;
+
+  while ((curMsg = folkMsg.shift())) {
+    let idx = len - folkMsg.length;
     wait(idx * 1000).then(sendMsg.bind(null, curMsg));
   }
 };

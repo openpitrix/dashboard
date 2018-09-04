@@ -14,11 +14,7 @@
   border-radius: 50%;
   font-style: normal;
 
-  &.pending {
-    background-color: $B75;
-    border-color: $B65;
-    @include transitionStatus;
-  }
+
   &.ceased {
     background-color: $Y100;
   }
@@ -34,10 +30,35 @@
   &.deleted {
     background-color: $R300;
   }
+
+  &.running,
+  &.working,
+  &.starting,
+  &.pending,
+  &.updating,
   &.stopping {
-    background-color: $B65;
-    border-color: $B45;
     @include transitionStatus;
+  }
+
+  &.starting {
+    background-color: $P75;
+    border-color: $P65;
+  }
+  &.running, &.working {
+    background-color: $G200;
+    border-color: $G100;
+  }
+  &.updating {
+    background-color: $Y75;
+    border-color: $Y65;
+  }
+  &.stopping {
+    background-color: $Y300;
+    border-color: $Y200;
+  }
+  &.pending {
+    background-color: $B75;
+    border-color: $B65;
   }
 }
 
