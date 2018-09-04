@@ -32,15 +32,21 @@ export default class AppDetail extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    const { clusterStore, appVersionStore } = this.props;
+    clusterStore.loadPageInit();
+    appVersionStore.loadPageInit();
+  }
+
   changeDetailTab = async tab => {
     const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
     const { appId } = match.params;
     appStore.detailTab = tab;
 
     if (tab === 'Clusters') {
-      clusterStore.loadPageInit();
       clusterStore.appId = appId;
-      await clusterStore.fetchAll({ status: 'deleted' });
+      await clusterStore.fetchAll();
       const { clusters } = clusterStore;
       if (clusters.length > 0) {
         runtimeStore.loadPageInit();
@@ -57,7 +63,6 @@ export default class AppDetail extends Component {
         });
       }
     } else if (tab === 'Versions') {
-      appVersionStore.loadPageInit();
       appVersionStore.appId = appId;
       await appVersionStore.fetchAll({ app_id: appId });
     }

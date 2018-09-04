@@ -57,17 +57,14 @@ export default class Detail extends Component {
 
     switch (tab) {
       case 'Apps':
-        appStore.loadPageInit();
         appStore.userId = userId;
         await appStore.fetchAll();
         break;
       case 'Clusters':
-        clusterStore.loadPageInit();
         clusterStore.userId = userId;
         await clusterStore.fetchAll();
         break;
       case 'Runtimes':
-        runtimeStore.loadPageInit();
         runtimeStore.userId = userId;
         await runtimeStore.fetchAll();
         const { runtimes } = runtimeStore;
@@ -80,7 +77,6 @@ export default class Detail extends Component {
         }
         break;
       case 'Repos':
-        repoStore.loadPageInit();
         repoStore.userId = userId;
         console.log('Repos', userId);
         await repoStore.fetchAll();

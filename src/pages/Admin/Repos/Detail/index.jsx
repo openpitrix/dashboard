@@ -107,11 +107,9 @@ export default class RepoDetail extends Component {
     repoStore.curTagName = tab;
 
     if (tab === 'Apps') {
-      appStore.loadPageInit();
       appStore.repoId = repoId;
       await appStore.fetchAll();
     } else if (tab === 'Runtimes') {
-      runtimeStore.loadPageInit();
       // query runtime label by repo selector
       repoStore.querySelector = repoStore.getStringFor('selectors');
       repoStore.queryProviders = repoStore.repoDetail.providers.slice();
@@ -122,7 +120,7 @@ export default class RepoDetail extends Component {
       if (runtimes.length > 0) {
         const runtimeIds = runtimes.map(item => item.runtime_id);
         await clusterStore.fetchAll({
-          runtimeid: runtimeIds,
+          runtime_id: runtimeIds,
           noLimit: true
         });
       }
