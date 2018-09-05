@@ -1,7 +1,8 @@
 $content-width: 1128px;
 $columns: 12;
 $grid-gap: 24px;
-$grid-width: 72px;
+//$grid-width: 72px;
+$grid-width: calc(100% + #{$grid-gap})/12;
 
 $layout-margin: 156px;
 

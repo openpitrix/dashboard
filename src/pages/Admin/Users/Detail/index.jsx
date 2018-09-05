@@ -79,7 +79,6 @@ export default class Detail extends Component {
         break;
       case 'Repos':
         repoStore.userId = userId;
-        console.log('Repos', userId);
         await repoStore.fetchAll();
         break;
     }

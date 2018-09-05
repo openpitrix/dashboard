@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { ucfirst } from 'utils/string';
 import { Icon } from 'components/Base';
 import styles from './index.scss';
 
@@ -13,14 +12,15 @@ export default class StepContent extends PureComponent {
   static propTypes = {
     name: PropTypes.string,
     explain: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
+    className: PropTypes.string
   };
 
   render() {
-    const { name, explain, children } = this.props;
+    const { name, explain, children, className } = this.props;
 
     return (
-      <div className={styles.stepContent}>
+      <div className={classNames(styles.stepContent, className)}>
         <div className={styles.stepName}>{name}</div>
         <div className={styles.stepExplain}>{explain}</div>
         {children}
