@@ -14,7 +14,6 @@
   border-radius: 50%;
   font-style: normal;
 
-
   &.ceased {
     background-color: $Y100;
   }
@@ -27,8 +26,14 @@
   &.active, &.successful {
     background-color: $G75;
   }
-  &.deleted {
+  &.deleted, &.failed {
     background-color: $R300;
+  }
+  &.enabled {
+    background-color: $G65;
+  }
+  &.disabled {
+    background-color: $N65;
   }
 
   &.running,
@@ -36,11 +41,19 @@
   &.starting,
   &.pending,
   &.updating,
-  &.stopping {
+  &.stopping,
+  &.upgrading,
+  &.creating,
+  &.rollbacking,
+  &.recovering,
+  &.ceasing,
+  &.resizing,
+  &.scaling,
+  &.deleting {
     @include transitionStatus;
   }
 
-  &.starting {
+  &.starting, &.creating {
     background-color: $P75;
     border-color: $P65;
   }
@@ -48,17 +61,21 @@
     background-color: $G200;
     border-color: $G100;
   }
-  &.updating {
+  &.updating, &.upgrading, &.resizing, &.scaling {
     background-color: $Y75;
     border-color: $Y65;
   }
-  &.stopping {
+  &.stopping, &.ceasing {
     background-color: $Y300;
     border-color: $Y200;
   }
-  &.pending {
+  &.pending, &.rollbacking, &.recovering {
     background-color: $B75;
     border-color: $B65;
+  }
+  &.deleting {
+    background-color: $R200;
+    border-color: $R100;
   }
 }
 

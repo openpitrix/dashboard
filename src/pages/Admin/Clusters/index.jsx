@@ -250,12 +250,12 @@ export default class Clusters extends Component {
         render: cl => cl.owner
       },
       {
-        title: t('Updated At'),
-        key: 'status_time',
+        title: t('Created At'),
+        key: 'create_time',
         width: '150px',
         sorter: true,
         onChangeSort: this.onChangeSort,
-        render: cl => formatTime(cl.status_time, 'YYYY/MM/DD HH:mm:ss')
+        render: cl => formatTime(cl.create_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: t('Actions'),

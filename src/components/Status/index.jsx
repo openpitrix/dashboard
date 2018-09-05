@@ -20,10 +20,27 @@ export default class Status extends PureComponent {
       'pending',
       'suspended',
       'successful',
+      'failed',
       'deleted',
-      'working' // job status
+      'working', // job status
+
+      'enabled',
+      'disabled'
     ]),
-    transition: PropTypes.oneOf(['', 'starting', 'updating', 'stopping'])
+    transition: PropTypes.oneOf([
+      '',
+      'starting',
+      'updating',
+      'stopping',
+      'deleting',
+      'creating',
+      'upgrading',
+      'rollbacking',
+      'recovering',
+      'ceasing',
+      'resizing',
+      'scaling'
+    ])
   };
 
   static defaultProps = {
