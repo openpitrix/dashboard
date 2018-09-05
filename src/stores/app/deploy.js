@@ -16,7 +16,7 @@ export default class AppDeployStore extends Store {
     cluster: {},
     env: {}
   };
-  @observable Name = '';
+  @observable name = '';
   @observable isKubernetes = false;
   @observable paramsData = '';
   @observable configBasics = [];
@@ -58,7 +58,7 @@ export default class AppDeployStore extends Store {
 
   @action
   changeName = event => {
-    this.Name = event.target.value;
+    this.name = event.target.value;
   };
 
   @action
@@ -87,14 +87,8 @@ export default class AppDeployStore extends Store {
     let conf = null;
 
     if (this.isKubernetes) {
-      //this.checkResult = 'ok';
-      let yamlObj = unflattenObject(this.yamlObj);
-      /*this.yamlConfig.map(config => {
-        if (typeof config.value === 'string' && !config.value) {
-          this.checkResult = config.name;
-        }
-      });*/
-      yamlObj.Name = this.Name;
+      const yamlObj = unflattenObject(this.yamlObj);
+      yamlObj.name = this.name;
       conf = yaml.safeDump(yamlObj);
     } else {
       this.getConfigData();
@@ -165,35 +159,26 @@ export default class AppDeployStore extends Store {
     this.configData = { cluster, env };
   };
 
-  changeConfigData = (item, root, parent) => {
-    let location = '{{.';
-    if (parent) {
-      location += root + '.' + parent + '.' + item.key + '}}';
-    } else {
-      location += root + '.' + item.key + '}}';
-    }
-    if (item.type === 'integer') item.default = parseInt(item.default);
-    this.paramsData = this.paramsData.replace(location, item.default);
-  };
-
   @action
-  async fetchVersions(params = {}, flag) {
-    //this.isLoading = true;
+  fetchVersions = async (params = {}, flag) => {
     const result = await this.request.get('app_versions', params);
     this.versions = get(result, 'app_version_set', []);
     this.versionId = get(this.versions[0], 'version_id');
-    //if (!flag) this.isLoading = false;
-    if (flag) await this.fetchFiles(get(this.versions[0], 'version_id'));
-  }
+    if (flag) {
+      await this.fetchFiles(get(this.versions[0], 'version_id'));
+    }
+  };
 
   @action
   fetchRuntimes = async (params = {}) => {
     this.isLoading = true;
     const result = await this.request.get('runtimes', params);
     this.runtimes = get(result, 'runtime_set', []);
-    if (this.runtimes.length && this.runtimes[0]) {
+    if (this.runtimes.length > 0) {
       this.runtimeId = this.runtimes[0].runtime_id;
-      if (!this.isKubernetes) await this.fetchSubnets(this.runtimes[0].runtime_id);
+      if (!this.isKubernetes) {
+        await this.fetchSubnets(this.runtimeId);
+      }
     } else {
       this.info('Not find Runtime data!');
     }
@@ -204,12 +189,7 @@ export default class AppDeployStore extends Store {
   async fetchSubnets(runtimeId) {
     const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
     this.subnets = get(result, 'subnet_set', []);
-    let arrSubnets = this.subnets.toJSON();
-    if (arrSubnets[0]) {
-      this.subnetId = arrSubnets[0].subnet_id;
-    } else {
-      this.subnetId = '';
-    }
+    this.subnetId = this.subnets[0] ? this.subnets[0].subnet_id : '';
   }
 
   @action
