@@ -17,9 +17,6 @@ const isProd = process.env.NODE_ENV === 'production';
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
-// mock socket messages
-import { mockSocketData } from './mock/socket-message';
-
 if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
 
@@ -32,9 +29,6 @@ if (typeof window !== 'undefined') {
 
       if (!isProd) {
         window._sc = sc;
-
-        // fixme: mock
-        window.mockSocketData = mockSocketData;
       }
     } catch (err) {
       console.warn(err);
