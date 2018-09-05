@@ -2,12 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
-import { isNumber } from 'lodash';
 
 import { Icon, Button, Upload } from 'components/Base';
 import Layout, { Grid } from 'components/Layout';
 import RepoList from './RepoList';
-import StepContent from 'StepContent';
+import StepContent from './StepContent';
 
 import styles from './index.scss';
 
@@ -107,18 +106,16 @@ export default class AppAdd extends Component {
     const explain = 'Select a Repo to store your application';
 
     return (
-      <StepContent name={name} explain={explain}>
+      <StepContent name={name} explain={explain} className={styles.createVersion}>
         <div>
-          <div>
-            <RepoList type="public" repos={publicRepos} onChange={this.onChange} />
-            <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
-          </div>
-          <div
-            onClick={() => this.selectRepoNext(selectRepos.length)}
-            className={classNames(styles.stepOperate, { [styles.noClick]: !selectRepos.length })}
-          >
-            Next →
-          </div>
+          <RepoList type="public" repos={publicRepos} onChange={this.onChange} />
+          <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
+        </div>
+        <div
+          onClick={() => this.selectRepoNext(selectRepos.length)}
+          className={classNames(styles.stepOperate, { [styles.noClick]: !selectRepos.length })}
+        >
+          Next →
         </div>
       </StepContent>
     );
@@ -130,33 +127,31 @@ export default class AppAdd extends Component {
     const explain = 'Upload Package';
 
     return (
-      <StepContent name={name} explain={explain}>
-        <div>
-          <Upload {...this.uploaderProps}>
-            <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
-              <Icon name="upload" size={48} type="dark" />
-              <p className={styles.word}>Please click to select file upload</p>
-              <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
-              {loading && <div className={styles.loading} />}
-            </div>
-          </Upload>
+      <StepContent name={name} explain={explain} className={styles.createVersion}>
+        <Upload {...this.uploaderProps}>
+          <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
+            <Icon name="upload" size={48} type="dark" />
+            <p className={styles.word}>Please click to select file upload</p>
+            <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
+            {loading && <div className={styles.loading} />}
+          </div>
+        </Upload>
 
-          <div className={styles.operateWord}>
-            View the
-            <span onClick={() => this.setCreateStep(3)} className={styles.link}>
-              《AppCenter Develop Guide》
-            </span>
-            and learn how to make config files
+        <div className={styles.operateWord}>
+          View the
+          <span onClick={() => this.setCreateStep(3)} className={styles.link}>
+            《Openpitrix Develop Guide》
+          </span>
+          and learn how to make config files
+        </div>
+        {errorMsg && (
+          <div className={styles.errorNote}>
+            <Icon name="error" size={24} />
+            {errorMsg}
           </div>
-          {errorMsg && (
-            <div className={styles.errorNote}>
-              <Icon name="error" size={24} />
-              {errorMsg}
-            </div>
-          )}
-          <div onClick={() => this.setCreateStep(1)} className={styles.stepOperate}>
-            ← Back
-          </div>
+        )}
+        <div onClick={() => this.setCreateStep(1)} className={styles.stepOperate}>
+          ← Back
         </div>
       </StepContent>
     );
@@ -167,7 +162,7 @@ export default class AppAdd extends Component {
     const explain = 'Your application has been created.';
 
     return (
-      <StepContent name={name} explain={explain}>
+      <StepContent name={name} explain={explain} className={styles.createVersion}>
         <div className={styles.checkImg}>
           <label>
             <Icon name="check" size={48} />

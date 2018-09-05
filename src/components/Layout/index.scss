@@ -4,9 +4,11 @@
   padding-top: $header-height + $tabNavs-height + 32px;
   //padding-bottom: $page-bottom;
   min-height: $main-min-height;
+  width: $content-width;
+  margin: 0 auto;
 
   .backBtn{
-    width: $content-width;
+    //width: $content-width;
     margin: 0 auto 20px;
     font-size: $size-normal;
     line-height: 1.43;
