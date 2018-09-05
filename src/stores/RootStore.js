@@ -13,7 +13,7 @@ import LoginStore from './LoginStore';
 import UserStore from './UserStore';
 import RoleStore from './RoleStore';
 
-const defaultNotifyOption = { title: '', message: '', type: 'error' };
+const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
 export default class RootStore extends Store {
   @observable fixNav = false;
@@ -39,9 +39,9 @@ export default class RootStore extends Store {
       notification = pick(Object.assign(defaultNotifyOption, msg[0]), ['title', 'message', 'type']);
     } else if (typeof msg[0] === 'string') {
       notification = Object.assign(defaultNotifyOption, {
-        message: msg[0] || '',
-        title: msg[1] || '',
-        type: msg[2] || 'error'
+        message: msg[0],
+        type: msg[1],
+        title: msg[2]
       });
     } else {
       throw Error('invalid notification message');

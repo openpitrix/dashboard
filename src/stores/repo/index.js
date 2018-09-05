@@ -27,6 +27,11 @@ export default class RepoStore extends Store {
   initLoadNumber = 3;
   @observable appStore = null;
 
+  @observable
+  jobs = {
+    // repo_id=> {repo_event, repo_status}
+  };
+
   @action
   fetchAll = async (params = {}, appStore) => {
     let defaultParams = {
@@ -120,10 +125,7 @@ export default class RepoStore extends Store {
     if (get(result, 'repo_id')) {
       this.deleteRepoClose();
       this.fetchAll({}, this.appStore);
-      this.showMsg('Delete repo successfully.', 'success');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
+      this.success('Delete repo successfully.');
     }
   };
 
@@ -169,9 +171,9 @@ export default class RepoStore extends Store {
   startIndexer = async repoId => {
     let repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
     if (repoEvent.repo_id) {
-      this.showMsg(`Started repo indexer: ${repoEvent.repo_id}`, 'success');
+      this.success(`Started repo indexer: ${repoEvent.repo_id}`);
     } else {
-      this.showMsg(`Start repo indexer failed: ${repoEvent.errDetail}`);
+      this.error(`Start repo indexer failed: ${repoEvent.errDetail}`);
     }
   };
 

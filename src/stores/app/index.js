@@ -148,6 +148,7 @@ export default class AppStore extends Store {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
     const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
+
     if (get(result, 'app_id')) {
       if (this.operateType === 'detailDelete') {
         this.appDetail = {};
@@ -158,10 +159,7 @@ export default class AppStore extends Store {
         await this.fetchAll();
         this.cancelSelected();
       }
-      this.showMsg('Delete app successfully.', 'success');
-    } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
+      this.success('Delete app successfully.');
     }
   };
 
@@ -173,17 +171,19 @@ export default class AppStore extends Store {
   @action
   modifyCategoryById = async () => {
     if (!this.handleApp.selectedCategory) {
-      this.showMsg('please select a category');
+      this.info('please select a category');
       return;
     }
-    this.isLoading = true;
     const result = await this.modify({
       category_id: this.handleApp.selectedCategory,
       app_id: this.appId
     });
-    this.isLoading = false;
     this.hideModal();
-    this.apiMsg(result, 'Modify category successfully', this.fetchAll);
+
+    if (!result.err) {
+      this.success('Modify category successfully');
+      await this.fetchAll();
+    }
   };
 
   @action

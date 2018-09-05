@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import { noop } from 'lodash';
+import { noop, clone, isEmpty, get } from 'lodash';
 
 import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
@@ -21,7 +21,6 @@ export default class Layout extends React.Component {
     backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string,
-    sockMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     listenToJob: PropTypes.func,
     isProfile: PropTypes.bool
   };
@@ -31,7 +30,6 @@ export default class Layout extends React.Component {
     noTabs: false,
     noNotification: false,
     backBtn: null,
-    sockMessage: '',
     listenToJob: noop,
     isProfile: false
   };
@@ -43,10 +41,26 @@ export default class Layout extends React.Component {
   }
 
   componentDidMount() {
-    let { sock, listenToJob } = this.props;
+    const { sock, listenToJob } = this.props;
 
-    if (sock && !sock._events['ops-resource']) {
-      sock.on('ops-resource', listenToJob);
+    sock &&
+      sock.on('ops-resource', (payload = {}) => {
+        const { type } = payload;
+        const { resource = {} } = payload;
+
+        listenToJob({
+          op: `${type}:${resource.rtype}`,
+          type,
+          ...resource
+        });
+      });
+  }
+
+  componentWillUnmount() {
+    const { sock } = this.props;
+
+    if (sock && !isEmpty(sock._events)) {
+      sock._events = {};
     }
   }
 
@@ -55,35 +69,19 @@ export default class Layout extends React.Component {
     const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
     if (isProfile) {
       this.linkPrefix = '/profile';
-      this.availableLinks = [{ '': 'profile' }, { sshkeys: 'SSH Keys' }];
+      this.availableLinks = [{ '': 'profile' }, { ssh_keys: 'SSH Keys' }];
     } else if (loginRole === 'normal') {
       this.availableLinks = [...normalLinks];
       this.availableLinks.splice(1, 1);
     } else if (loginRole === 'developer') {
       this.availableLinks = [...normalLinks, 'repos'];
     } else if (loginRole === 'admin') {
-      this.availableLinks = [...normalLinks, 'repos', 'categories']; // hide user tab
+      this.availableLinks = [...normalLinks, 'repos', 'categories', 'users'];
     }
 
     const options = { prefix: this.linkPrefix };
 
     return <TabsNav links={this.availableLinks} options={options} />;
-  }
-
-  renderSocketMessage() {
-    let { sockMessage } = this.props;
-
-    if (typeof sockMessage === 'object') {
-      sockMessage = sockMessage + '';
-    }
-
-    // if(!sockMessage){
-    //   return null;
-    // }
-    // return <Notification type='info' message={`Socket Message: ${sockMessage}`} className={styles.socketMessage} />;
-
-    // todo: currently no need to implement job tips
-    return null;
   }
 
   render() {
@@ -103,7 +101,6 @@ export default class Layout extends React.Component {
         {noTabs ? null : this.renderTabs(isProfile)}
         {noNotification ? null : <Notification />}
         {backBtn}
-        {this.renderSocketMessage()}
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {children}
         </Loading>

@@ -111,13 +111,12 @@ export default class AppDeployStore extends Store {
 
       const res = await this.create(params);
 
-      this.apiMsg(res, () => {
-        if (_.get(this, 'appDeployed.cluster_id')) {
-          location.href = '/dashboard/clusters';
-        }
-      });
+      if (!res.err && _.get(this.appDeployed, 'cluster_id')) {
+        this.success('Deploy app successfully');
+        location.href = '/dashboard/clusters';
+      }
     } else {
-      this.showMsg('Please input or select ' + this.checkResult + '!');
+      this.info('Please input or select ' + this.checkResult + '!');
     }
   };
 
@@ -196,7 +195,7 @@ export default class AppDeployStore extends Store {
       this.runtimeId = this.runtimes[0].runtime_id;
       if (!this.isKubernetes) await this.fetchSubnets(this.runtimes[0].runtime_id);
     } else {
-      this.showMsg('Not find Runtime data!');
+      this.info('Not find Runtime data!');
     }
     this.isLoading = false;
   };
@@ -238,7 +237,7 @@ export default class AppDeployStore extends Store {
       this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
       this.yamlConfig = getYamlList(this.yamlObj);
     } else {
-      this.showMsg('Not find config file!');
+      this.info('Not find config file!');
       this.yamlConfig = [];
       this.configBasics = [];
       this.configNodes = [];

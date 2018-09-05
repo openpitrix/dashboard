@@ -44,7 +44,7 @@ export default class RepoCreateStore extends Store {
     const len = providers.length;
     if (len > 1 && providers.includes('kubernetes')) {
       providers = providers.filter(data => data !== 'kubernetes');
-      return this.showMsg("Kubernetes can't be selected with others");
+      return this.info("Kubernetes can't be selected with others");
     }
     this.providers = providers;
   };
@@ -66,7 +66,11 @@ export default class RepoCreateStore extends Store {
 
   @action
   handleValidateCredential = () => {
-    this.showMsg(this.accessKey && this.secretKey ? 'valid credential' : 'invalid credential');
+    if (this.accessKey && this.secretKey) {
+      this.success('valid credential');
+    } else {
+      this.error('invalid credential');
+    }
   };
 
   @action
@@ -143,33 +147,33 @@ export default class RepoCreateStore extends Store {
     const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
-      return this.showMsg('Please select at least one Runtime Provider');
+      return this.info('Please select at least one Runtime Provider');
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
       let item = this.selectors[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.showMsg('Runtime Selector missing value');
+        return this.info('Runtime Selector missing value');
       } else if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.showMsg('Runtime Selector missing key');
+        return this.info('Runtime Selector missing key');
       }
     }
     for (let i = 0; i < this.labels.length; i++) {
       let item = this.labels[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.showMsg('Labels missing value');
+        return this.info('Labels missing value');
       } else if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.showMsg('Labels missing key');
+        return this.info('Labels missing key');
       }
     }
     /* if (_.isEmpty(selectors)) {
       this.isLoading = false;
-      return this.showMsg('missing selectors');
+      return this.info('missing selectors');
     }
 
     if (_.isEmpty(labels)) {
       this.isLoading = false;
-      return this.showMsg('missing labels');
+      return this.info('missing labels');
     }*/
 
     if (protocolType === 's3') {
@@ -184,7 +188,7 @@ export default class RepoCreateStore extends Store {
       }
 
       if (!s3UrlPattern.test(data.url)) {
-        return this.showMsg('invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo');
+        return this.info('invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo');
       }
     } else {
       let url = data.url;
@@ -234,18 +238,15 @@ export default class RepoCreateStore extends Store {
     }
 
     if (this.repoId && _.get(this, 'repoCreated.repo_id')) {
-      this.showMsg('Modify repo successfully', 'success');
+      this.success('Modify repo successfully');
     } else if (_.get(this, 'repoCreated.repo_id')) {
-      this.showMsg('Create repo successfully', 'success');
-    } else {
-      let { errDetail } = this.repoCreated;
-      this.showMsg(errDetail);
+      this.success('Create repo successfully');
     }
 
     // disable re-submit form in 2 sec
     setTimeout(() => {
       this.isLoading = false;
-    }, 2000);
+    }, 1000);
   };
 
   @action

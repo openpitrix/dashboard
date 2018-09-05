@@ -2,6 +2,7 @@ import React from 'react';
 import { I18n } from 'react-i18next';
 
 import TimeShow from 'components/TimeShow';
+import Status from 'components/Status';
 
 export default [
   {
@@ -12,7 +13,7 @@ export default [
   {
     title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
     key: 'status',
-    render: item => item.status
+    render: item => <Status type={item.status} transition={item.transition} />
   },
   {
     title: <I18n>{t => <span>{t('User')}</span>}</I18n>,

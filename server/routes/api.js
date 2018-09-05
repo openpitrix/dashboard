@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const agent = require('superagent');
 const debug = require('debug')('op-dash');
+const get = require('lodash/get');
 
 const router = new Router();
 
@@ -9,10 +10,10 @@ const header = {
   'Content-Type': 'application/json'
 };
 
-const agentTimeout={
+const agentTimeout = {
   response: 5000,
   deadline: 10000
-}
+};
 
 router.post('/api/*', async ctx => {
   let endpoint = ctx.url.replace(/^\/api\//, '');
@@ -55,19 +56,19 @@ router.post('/api/*', async ctx => {
     }
 
     // normalize response body
-    ctx.body = res.body || null;
+    ctx.body = (res && res.body) || null;
   } catch (err) {
-    if(err.timeout){
-      ctx.body={
+    if (err.timeout) {
+      ctx.body = {
         err: 'request timeout',
         status: 400
-      }
+      };
     }
 
     ctx.body = {
       err: err.message,
       status: err.statusCode || err.status || 500,
-      errDetail: err.response.body.error
+      errDetail: get(err, 'response.body.error', '')
     };
   }
 });

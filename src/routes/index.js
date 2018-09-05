@@ -49,7 +49,7 @@ const routes = {
   '/:dash/user/:userId': Dash.UserDetail,
 
   '/profile': Profile,
-  '/profile/sshkeys': SSHKeys,
+  '/profile/ssh_keys': SSHKeys,
 
   '*': Home
 };

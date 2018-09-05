@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get, pick } from 'lodash';
+import _ from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
@@ -33,26 +33,52 @@ export default class RepoDetail extends Component {
   constructor(props) {
     super(props);
     const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    repoStore.setSocketMessage();
     repoStore.curTagName = 'Apps';
     appStore.loadPageInit();
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
   }
 
-  listenToJob = async payload => {
+  listenToJob = async ({ op, rid, values = {} }) => {
     const { repoStore, match } = this.props;
-    const rtype = get(payload, 'resource.rtype');
-    const rid = get(payload, 'resource.rid');
-
     const { repoId } = match.params;
+    const { jobs } = repoStore;
 
-    if (rtype === 'repo_event' && rid === repoId) {
-      if (repoStore.sockMessageChanged(payload)) {
+    const status = _.pick(values, ['status', 'transition_status']);
+    const logJobs = () => repoStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+
+    if (op === 'create:repo' && rid === repoId) {
+      // rid is repo_id
+      jobs[rid] = status;
+      logJobs();
+    }
+
+    if (op === 'update:repo' && rid === repoId) {
+      jobs[rid] = status;
+      logJobs();
+      Object.assign(repoStore.repoDetail, status);
+    }
+
+    if (op === 'create:repo_event') {
+      const { repo_id } = values;
+      if (repoId === repo_id && _.has(jobs, repo_id)) {
+        Object.assign(jobs[repo_id], { repo_event: rid });
+        await repoStore.fetchRepoEvents({ repo_id: repoId });
+      }
+    }
+
+    if (op === 'update:repo_event') {
+      const repoIdKey = _.findKey(jobs, item => item.repo_event === rid);
+      if (!repoIdKey || repoIdKey !== repoId) {
+        return;
+      }
+
+      if (['successful', 'deleted'].includes(status.status)) {
+        delete jobs[repoId];
+        logJobs();
         await repoStore.fetchRepoDetail(repoId);
         await repoStore.fetchRepoEvents({ repo_id: repoId });
       }
-      repoStore.setSocketMessage(payload);
     }
   };
 
@@ -174,22 +200,23 @@ export default class RepoDetail extends Component {
   renderToolbar(options = {}) {
     return (
       <Toolbar
-        {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+        {..._.pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
       />
     );
   }
   renderTable(options = {}) {
     return (
       <Table
-        {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
+        {..._.pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
       />
     );
   }
 
   render() {
     const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
-    const { repoDetail, curTagName, sockMessage } = repoStore;
+    const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
+
     let selectors = [];
     let toolbarOptions, tableOptions;
 
@@ -275,7 +302,6 @@ export default class RepoDetail extends Component {
     return (
       <Layout
         backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
-        sockMessage={sockMessage}
         listenToJob={this.listenToJob}
       >
         <Grid>
@@ -296,7 +322,7 @@ export default class RepoDetail extends Component {
                 defaultTag={curTagName}
                 changeTag={this.changeDetailTab}
               />
-              <Card>
+              <Card hasTable>
                 {curTagName === 'Runtimes' &&
                   selectors.length > 0 && (
                     <div className={styles.selector}>

@@ -180,7 +180,7 @@ export default class RuntimeDetail extends Component {
           <Section size={8}>
             <Panel>
               <TagNav tags={['Clusters']} />
-              <Card>
+              <Card hasTable>
                 <Toolbar
                   placeholder={t('Search Clusters')}
                   searchWord={searchWord}

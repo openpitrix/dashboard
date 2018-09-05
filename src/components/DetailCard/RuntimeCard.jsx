@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
@@ -12,7 +12,7 @@ import CopyId from './CopyId';
 import styles from './index.scss';
 
 @translate()
-export default class RuntimeCard extends PureComponent {
+export default class RuntimeCard extends Component {
   static propTypes = {
     detail: PropTypes.object.isRequired,
     appCount: PropTypes.number,
@@ -32,7 +32,7 @@ export default class RuntimeCard extends PureComponent {
         <ul className={styles.detail}>
           <li>
             <span className={styles.name}>{t('Status')}</span>
-            <Status name={detail.status} type={detail.status} />
+            <Status type={detail.status} transition={detail.transition} />
           </li>
           <li>
             <span className={styles.name}>{t('Runtime Provider')}</span>

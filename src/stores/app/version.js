@@ -121,9 +121,9 @@ export default class AppVersionStore extends Store {
   @action
   async handleCreateVersion(appId) {
     if (!this.name) {
-      this.showMsg('Please input Name!');
+      this.info('Please input Name!');
     } else if (!/https?:\/\/.+/.test(this.packageName)) {
-      this.showMsg('Package url is empty or invalid!');
+      this.info('Package url is empty or invalid!');
     } else {
       const data = {
         app_id: appId,
@@ -133,10 +133,11 @@ export default class AppVersionStore extends Store {
       };
       const result = await this.create(data);
 
-      this.apiMsg(result, 'Create App Version successful!', async () => {
+      if (!result.err) {
+        this.success('Create App Version successful');
         this.hideModal();
         await this.fetchAll({ app_id: appId });
-      });
+      }
     }
   }
 

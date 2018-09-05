@@ -1,4 +1,4 @@
-import { extendObservable, observable, action } from 'mobx';
+import { extendObservable } from 'mobx';
 import request from 'lib/request';
 
 export default class Store {
@@ -6,9 +6,9 @@ export default class Store {
   maxLimit = 200;
 
   constructor(initialState, branch) {
+    // fixme: upgrade mobx
     extendObservable(this, {
-      pageInitMap: {},
-      sockMessage: observable.box('') // json.string socket message
+      pageInitMap: {}
     });
 
     if (initialState) {
@@ -17,39 +17,17 @@ export default class Store {
   }
 }
 
-const allowMehhods = ['get', 'post', 'put', 'delete', 'patch'];
-
-const getMessage = message => {
-  return typeof message === 'object' ? JSON.stringify(message) : message.toString();
-};
+const allowMethods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
-  @action.bound
-  showMsg: function(message, type) {
-    // back compat
-    this.notify({ message, type });
+  info: function(message) {
+    this.notify(message, 'info');
   },
-  @action.bound
-  apiMsg: function(result, successTip, failTip, cb) {
-    if (arguments.length > 1 && typeof arguments[arguments.length - 1] === 'function') {
-      cb = arguments[arguments.length - 1];
-    }
-
-    if (typeof successTip !== 'string' || !successTip) {
-      successTip = 'Operation successfully';
-    }
-    if (typeof failTip !== 'string' || !failTip) {
-      failTip = 'Operation failed';
-    }
-
-    let apiSuccess = !result || !result.err;
-    if (apiSuccess) {
-      this.showMsg(successTip, 'success');
-    } else {
-      this.showMsg(failTip);
-    }
-
-    typeof cb === 'function' && apiSuccess && cb();
+  success: function(message) {
+    this.notify(message, 'success');
+  },
+  error: function(message) {
+    this.notify(message, 'error');
   },
   get request() {
     return new Proxy(request, {
@@ -59,7 +37,7 @@ Store.prototype = {
           let params = args[1];
           let res;
 
-          if (allowMehhods.includes(method)) {
+          if (allowMethods.includes(method)) {
             // decorate url
             if (typeof url === 'string') {
               if (!/^\/?api\//.test(url)) {
@@ -73,7 +51,7 @@ Store.prototype = {
 
           // error handling
           if (res.err && res.status >= 400) {
-            this.notify(res.errDetail || res.err || 'internal error');
+            this.error(res.errDetail || res.err || 'internal error');
             return res;
           }
 
@@ -81,13 +59,5 @@ Store.prototype = {
         };
       }
     });
-  },
-
-  @action.bound
-  setSocketMessage: function(message = '') {
-    this.sockMessage = getMessage(message);
-  },
-  sockMessageChanged: function(message = '') {
-    return this.sockMessage + '' === getMessage(message);
   }
 };

@@ -44,14 +44,6 @@ export default class Apps extends Component {
     this.role = getSessInfo('role', sessInfo);
   }
 
-  listenToJob = payload => {
-    const { rootStore } = this.props;
-
-    if (['job'].includes(get(payload, 'resource.rtype'))) {
-      rootStore.sockMessage = JSON.stringify(payload);
-    }
-  };
-
   onChangeSort = (params = {}) => {
     const { appStore } = this.props;
     const order = params.reverse ? 'asc' : 'desc';

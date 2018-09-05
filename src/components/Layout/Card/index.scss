@@ -17,3 +17,14 @@ $card-padding: 24px;
     }
   }
 }
+
+.tableCard {
+  padding: $card-padding;
+
+  :global {
+    .loadTable {
+      position: sticky !important;
+      margin-top: 0;
+    }
+  }
+}

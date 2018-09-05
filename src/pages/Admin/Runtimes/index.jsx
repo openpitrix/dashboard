@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { orderBy } from 'lodash';
+import { get, orderBy } from 'lodash';
 
 import { Icon, Button, Popover, Table } from 'components/Base';
 import Status from 'components/Status';
@@ -15,11 +15,10 @@ import { formatTime } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  rootStore,
-  sock
+  rootStore
 }))
 @observer
 export default class Runtimes extends Component {
@@ -36,18 +35,7 @@ export default class Runtimes extends Component {
     const { runtimeStore, clusterStore } = this.props;
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
-    if (props.sock && !props.sock._events['ops-resource']) {
-      props.sock.on('ops-resource', this.listenToJob);
-    }
   }
-
-  listenToJob = payload => {
-    const { rootStore } = this.props;
-
-    if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
-      rootStore.sockMessage = JSON.stringify(payload);
-    }
-  };
 
   onChangeSort = (params = {}) => {
     const { runtimeStore } = this.props;

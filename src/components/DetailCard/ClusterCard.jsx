@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import CopyId from './CopyId';
 import styles from './index.scss';
 
 @translate()
-export default class ClusterCard extends PureComponent {
+export default class ClusterCard extends Component {
   static propTypes = {
     detail: PropTypes.object.isRequired,
     appName: PropTypes.string,
@@ -38,7 +38,7 @@ export default class ClusterCard extends PureComponent {
           )}
           <li>
             <span className={styles.name}>{t('Status')}</span>
-            <Status name={detail.status} type={detail.status} />
+            <Status type={detail.status} transition={detail.transition_status} />
           </li>
           <li>
             <span className={styles.name}>{t('Runtime')}</span>

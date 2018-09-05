@@ -22,7 +22,7 @@ export default class NotificationItem extends React.Component {
   };
 
   static defaultProps = {
-    type: 'error',
+    type: 'info',
     title: 'Notification',
     message: null,
     timeOut: 3000,
