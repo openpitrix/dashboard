@@ -210,7 +210,7 @@ export default class CategoryDetail extends Component {
           <Section size={8}>
             <Panel>
               <TagNav tags={['Apps']} />
-              <Card>
+              <Card hasTable>
                 <Toolbar
                   placeholder={t('Search App')}
                   searchWord={appStore.searchWord}

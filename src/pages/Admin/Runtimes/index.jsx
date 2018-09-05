@@ -15,11 +15,10 @@ import { formatTime } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  rootStore,
-  sock
+  rootStore
 }))
 @observer
 export default class Runtimes extends Component {
@@ -37,14 +36,6 @@ export default class Runtimes extends Component {
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
   }
-
-  listenToJob = payload => {
-    const { runtimeStore } = this.props;
-
-    // if (['runtime', 'job'].includes(get(payload, 'resource.rtype'))) {
-    //   runtimeStore.sockMessage = JSON.stringify(payload);
-    // }
-  };
 
   onChangeSort = (params = {}) => {
     const { runtimeStore } = this.props;
@@ -231,7 +222,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout listenToJob={this.listenToJob}>
+      <Layout>
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

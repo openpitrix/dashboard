@@ -24,7 +24,7 @@
   &.suspended {
     background-color: $Y100;
   }
-  &.active {
+  &.active, &.successful {
     background-color: $G75;
   }
   &.deleted {

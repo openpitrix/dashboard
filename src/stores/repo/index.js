@@ -27,6 +27,11 @@ export default class RepoStore extends Store {
   initLoadNumber = 3;
   @observable appStore = null;
 
+  @observable
+  jobs = {
+    // repo_id=> {repo_event, repo_status}
+  };
+
   @action
   fetchAll = async (params = {}, appStore) => {
     let defaultParams = {

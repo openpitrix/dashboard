@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
@@ -215,10 +214,6 @@ export default class RepoAdd extends Component {
   renderAside() {
     const { t } = this.props;
 
-    return (
-      <Fragment>
-        <p>{t('Create Repo explain')}</p>
-      </Fragment>
-    );
+    return <p>{t('Create Repo explain')}</p>;
   }
 }

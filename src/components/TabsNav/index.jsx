@@ -43,7 +43,7 @@ const isLinkActive = (curLink, match, location) => {
 };
 
 const LinkItem = ({ link, label }) => {
-  if (link.indexOf('/profile/sshkeys') === -1) {
+  if (link.indexOf('/profile/ssh_keys') === -1) {
     label = capitalize(label);
   }
 

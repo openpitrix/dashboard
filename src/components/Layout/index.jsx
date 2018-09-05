@@ -69,14 +69,14 @@ export default class Layout extends React.Component {
     const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
     if (isProfile) {
       this.linkPrefix = '/profile';
-      this.availableLinks = [{ '': 'profile' }, { sshkeys: 'SSH Keys' }];
+      this.availableLinks = [{ '': 'profile' }, { ssh_keys: 'SSH Keys' }];
     } else if (loginRole === 'normal') {
       this.availableLinks = [...normalLinks];
       this.availableLinks.splice(1, 1);
     } else if (loginRole === 'developer') {
       this.availableLinks = [...normalLinks, 'repos'];
     } else if (loginRole === 'admin') {
-      this.availableLinks = [...normalLinks, 'repos', 'categories']; // hide user tab
+      this.availableLinks = [...normalLinks, 'repos', 'categories', 'users'];
     }
 
     const options = { prefix: this.linkPrefix };

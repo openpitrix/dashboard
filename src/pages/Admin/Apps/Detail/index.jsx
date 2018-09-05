@@ -12,8 +12,6 @@ import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/
 import clusterColumns from './tabs/cluster-columns';
 import versionColumns from './tabs/version-columns';
 
-import { getSessInfo } from 'utils';
-
 import styles from './index.scss';
 
 @translate()
@@ -273,10 +271,12 @@ export default class AppDetail extends Component {
           <Section size={8}>
             <Panel>
               <TagNav tags={['Clusters', 'Versions']} changeTag={this.changeDetailTab} />
-              <Card className={styles.tabCard}>
+
+              <Card hasTable>
                 {this.renderToolbar(toolbarOptions)}
                 {this.renderTable(tableOptions)}
               </Card>
+
               {this.renderOpsModal()}
               {this.renderDialog()}
             </Panel>

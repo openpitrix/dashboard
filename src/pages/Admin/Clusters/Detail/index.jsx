@@ -44,7 +44,7 @@ export default class ClusterDetail extends Component {
     props.clusterStore.loadNodeInit();
   }
 
-  listenToJob = async ({ rtype, rid, op, values = {} }) => {
+  listenToJob = async ({ op, rtype, rid, values = {} }) => {
     const { clusterStore, match } = this.props;
     const { clusterId } = match.params;
     const { jobs } = clusterStore;
@@ -357,7 +357,7 @@ export default class ClusterDetail extends Component {
           <Section size={8}>
             <Panel>
               <TagNav tags={['Nodes']} />
-              <Card>
+              <Card hasTable>
                 <Toolbar
                   placeholder={t('Search Node')}
                   searchWord={searchNode}

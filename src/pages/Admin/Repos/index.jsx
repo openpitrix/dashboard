@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get, throttle } from 'lodash';
+import _ from 'lodash';
 import { translate } from 'react-i18next';
 
 import { getScrollTop } from 'utils';
@@ -13,11 +13,10 @@ import Loading from 'components/Loading';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore }) => ({
   rootStore,
   repoStore: rootStore.repoStore,
-  appStore: rootStore.appStore,
-  sock
+  appStore: rootStore.appStore
 }))
 @observer
 export default class Repos extends Component {
@@ -35,13 +34,11 @@ export default class Repos extends Component {
 
   componentDidMount() {
     window.scroll({ top: 0, behavior: 'auto' });
-    window.onscroll = throttle(this.handleScroll, 200);
+    window.onscroll = _.throttle(this.handleScroll, 200);
   }
 
   componentWillUnmount() {
-    if (window.onscroll) {
-      window.onscroll = null;
-    }
+    window.onscroll = null;
   }
 
   handleScroll = async () => {
@@ -65,13 +62,44 @@ export default class Repos extends Component {
     }
   };
 
-  listenToJob = async payload => {
+  listenToJob = async ({ op, rid, values = {} }) => {
     const { repoStore } = this.props;
+    const { jobs } = repoStore;
+    const repoIds = repoStore.repos.map(repo => repo.repo_id);
+    console.log(repoIds);
 
-    // if (['repo'].includes(get(payload, 'resource.rtype'))) {
-    //   await repoStore.fetchAll();
-    //   // repo_event: create, update, delete
-    // }
+    const status = _.pick(values, ['status', 'transition_status']);
+    const logJobs = () => repoStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+
+    if (op === 'create:repo') {
+      // rid is repo_id
+      jobs[rid] = status;
+      logJobs();
+    }
+
+    if (op === 'update:repo' && repoIds.includes(rid)) {
+      await repoStore.fetchAll();
+      logJobs();
+    }
+
+    if (op === 'create:repo_event') {
+      const { repo_id } = values;
+      if (repo_id && _.has(jobs, repo_id)) {
+        Object.assign(jobs[repo_id], { repo_event: rid });
+      }
+    }
+
+    if (op === 'update:repo_event') {
+      let repoId = _.findKey(jobs, item => item.repo_event === rid);
+      if (!repoId) {
+        return;
+      }
+      if (['successful', 'deleted'].includes(status.status)) {
+        delete jobs[repoId];
+        await repoStore.fetchAll();
+        logJobs();
+      }
+    }
   };
 
   renderHandleMenu = id => {
