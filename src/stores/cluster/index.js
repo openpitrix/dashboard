@@ -60,7 +60,7 @@ export default class ClusterStore extends Store {
   @action
   fetchAll = async (params = {}) => {
     let defaultParams = {
-      sort_key: 'status_time',
+      sort_key: 'create_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
       status: this.selectStatus ? this.selectStatus : this.defaultStatus
