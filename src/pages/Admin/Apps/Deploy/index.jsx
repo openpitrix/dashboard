@@ -98,6 +98,7 @@ export default class AppDeploy extends Component {
       changeVersion,
       changeSubnet
     } = appDeployStore;
+    const btnDisabled = isLoading || !configBasics.length || !runtimes.length;
 
     return (
       <form
@@ -207,7 +208,7 @@ export default class AppDeploy extends Component {
           ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={btnDisabled}>
             {t('Confirm')}
           </Button>
           <Button
@@ -237,6 +238,7 @@ export default class AppDeploy extends Component {
       changeRuntime,
       changeVersion
     } = appDeployStore;
+    const btnDisabled = isLoading || !yamlConfig.length || !runtimes.length;
 
     return (
       <form
@@ -249,7 +251,7 @@ export default class AppDeploy extends Component {
           <label className={styles.name}>Name</label>
           <Input
             className={styles.input}
-            name="Name"
+            name="name"
             type="text"
             maxLength="50"
             onChange={changeName}
@@ -279,20 +281,19 @@ export default class AppDeploy extends Component {
         </div>
 
         <div className={styles.moduleTitle}>2. {t('Deploy Settings')}</div>
-        {yamlConfig &&
-          yamlConfig.map((conf, index) => (
-            <YamlCell
-              key={conf.name}
-              name={conf.name}
-              value={conf.value}
-              index={index}
-              className={styles.cellModule}
-              changeCell={changeYmalCell}
-            />
-          ))}
+        {yamlConfig.map((conf, index) => (
+          <YamlCell
+            key={conf.name}
+            name={conf.name}
+            value={conf.value}
+            index={index}
+            className={styles.cellModule}
+            changeCell={changeYmalCell}
+          />
+        ))}
 
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
+          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={btnDisabled}>
             {t('Confirm')}
           </Button>
           <Button
