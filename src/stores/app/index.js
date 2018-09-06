@@ -273,3 +273,4 @@ export default class AppStore extends Store {
 
 export Deploy from './deploy';
 export Version from './version';
+export Create from './create';

@@ -3,13 +3,14 @@
 
 @mixin calc-section-size($size: 1) {
   .section-size-#{$size} {
-    width: ($grid-width + $grid-gap) * $size - $grid-gap;
+    //width: (#{$grid-width} + $grid-gap) * $size - $grid-gap;
+    width: calc(#{$grid-width} * #{$size} - #{$grid-gap});
   }
 }
 
 @mixin calc-section-offset($offset: 0){
   .section-offset-#{$offset} {
-    margin-left: ($grid-width + $grid-gap) * $offset;
+    margin-left: calc((#{$grid-width} + #{$grid-gap}) * #{$offset});
   }
 }
 

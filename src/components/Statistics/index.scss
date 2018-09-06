@@ -1,15 +1,14 @@
 @import "~scss/vars";
 
 .statistics{
-  margin: 0 auto 24px;
-  width: $content-width;
-  .wrap{
-    padding: 26px 24px;
-    height: 120px;
-    border-radius: 3px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-  }
+  //margin: 0 auto 24px;
+  //width: $content-width;
+  padding: 26px 24px;
+  height: 120px;
+  border-radius: 3px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
   .module{
     float: left;
     display: inline-block;
