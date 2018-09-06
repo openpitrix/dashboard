@@ -3,8 +3,10 @@ import Store from '../Store';
 import { assign, get } from 'lodash';
 import _ from 'lodash';
 
+const defaultStatus = ['active'];
+
 export default class RuntimeStore extends Store {
-  @observable runtimes = [];
+  @observable runtimes = []; // current runtimes
   @observable runtimeDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable statistics = {};
@@ -15,7 +17,6 @@ export default class RuntimeStore extends Store {
 
   @observable currentPage = 1; //runtime table query params
   @observable searchWord = '';
-  defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable userId = '';
 
@@ -28,6 +29,8 @@ export default class RuntimeStore extends Store {
   handleRuntime = {
     action: '' // delete
   };
+
+  @observable allRuntimes = [];
 
   @action.bound
   showModal = () => {
@@ -45,7 +48,7 @@ export default class RuntimeStore extends Store {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : this.defaultStatus
+      status: this.selectStatus ? this.selectStatus : defaultStatus
     };
 
     if (params.noLimit) {
@@ -62,14 +65,25 @@ export default class RuntimeStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('runtimes', assign(defaultParams, params));
-    this.runtimes = get(result, 'runtime_set', []);
-    this.totalCount = get(result, 'total_count', 0);
+    let finalParams = assign(defaultParams, params);
+
+    if (!params.simpleQuery) {
+      let result = await this.request.get('runtimes', finalParams);
+      this.runtimes = get(result, 'runtime_set', []);
+      this.totalCount = get(result, 'total_count', 0);
+    } else {
+      // simple query: just fetch runtime data used in other pages
+      // no need to set totalCount
+      delete finalParams.simpleQuery;
+      let result = await this.request.get('runtimes', finalParams);
+      this.allRuntimes = get(result, 'runtime_set', []);
+    }
+
     this.isLoading = false;
   };
 
   @action
-  runtimeStatistics = async () => {
+  fetchStatistics = async () => {
     //this.isLoading = true;
     const result = await this.request.get('runtimes/statistics');
     this.summaryInfo = {

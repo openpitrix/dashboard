@@ -1,5 +1,4 @@
-import 'lib/polyfills';
-
+import 'promise-polyfill/src/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';

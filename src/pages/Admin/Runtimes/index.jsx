@@ -24,7 +24,7 @@ import styles from './index.scss';
 export default class Runtimes extends Component {
   static async onEnter({ runtimeStore, clusterStore }) {
     await runtimeStore.fetchAll();
-    await runtimeStore.runtimeStatistics();
+    await runtimeStore.fetchStatistics();
     await clusterStore.fetchAll({
       noLimit: true
     });
@@ -35,6 +35,11 @@ export default class Runtimes extends Component {
     const { runtimeStore, clusterStore } = this.props;
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
+  }
+
+  componentWillMount() {
+    const { runtimeStore } = this.props;
+    runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
   }
 
   onChangeSort = (params = {}) => {

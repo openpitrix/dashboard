@@ -27,13 +27,14 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
     await clusterStore.fetchAll();
-    await clusterStore.clusterStatistics();
+    await clusterStore.fetchStatistics();
     await appStore.fetchApps({
       status: ['active', 'deleted']
     });
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 99
+      noLimit: true,
+      simpleQuery: true
     });
   }
 
@@ -91,6 +92,7 @@ export default class Clusters extends Component {
       />
     ) : null;
   };
+
   renderHandleMenu = item => {
     const { t } = this.props;
     const { showOperateCluster } = this.props.clusterStore;
@@ -198,7 +200,7 @@ export default class Clusters extends Component {
     const { clusterStore, t } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
-    const { runtimes } = this.props.runtimeStore;
+    const runtimes = this.props.runtimeStore.allRuntimes;
     const { apps } = this.props.appStore;
 
     const columns = [
