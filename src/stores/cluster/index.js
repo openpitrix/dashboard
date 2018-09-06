@@ -96,7 +96,7 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  clusterStatistics = async () => {
+  fetchStatistics = async () => {
     //this.isLoading = true;
     const result = await this.request.get('clusters/statistics');
     this.summaryInfo = {
