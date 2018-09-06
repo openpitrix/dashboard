@@ -17,8 +17,6 @@ const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
 export default class RootStore extends Store {
   @observable fixNav = false;
-  //@observable pageInit = {};
-
   @observable notifications = [];
 
   constructor(initialState) {

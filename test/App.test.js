@@ -1,4 +1,4 @@
-import { observable, useStrict } from 'mobx';
+import { observable, decorate } from 'mobx';
 import { Provider } from 'mobx-react';
 // import { withRouter } from 'react-router';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -23,9 +23,7 @@ describe('<App/>', () => {
   let store, location, routes;
 
   beforeEach(() => {
-    useStrict(true);
-
-    store = observable({
+    store = observable.object({
       fixNav: false,
       appStore: {
         appSearch: () => {}

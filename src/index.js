@@ -13,7 +13,6 @@ import renderRoute from './routes/renderRoute';
 import SockClient from './utils/sock-client';
 import i18n from './i18n';
 
-const isProd = process.env.NODE_ENV === 'production';
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 
@@ -26,10 +25,6 @@ if (typeof window !== 'undefined') {
     try {
       sc = new SockClient(sockEndpoint);
       sc.setUp();
-
-      if (!isProd) {
-        window._sc = sc;
-      }
     } catch (err) {
       console.warn(err);
     }

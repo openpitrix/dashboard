@@ -1,25 +1,37 @@
-import { extendObservable } from 'mobx';
+import { set, decorate, observable } from 'mobx';
 import request from 'lib/request';
 
 export default class Store {
-  pageSize = 10;
-  maxLimit = 200;
-
   constructor(initialState, branch) {
-    // fixme: upgrade mobx
-    extendObservable(this, {
-      pageInitMap: {}
-    });
+    this.pageInitMap = {};
 
     if (initialState) {
-      extendObservable(this, branch ? initialState[branch] : initialState);
+      if (branch) {
+        set(this, initialState[branch]);
+      } else {
+        // set rootStore
+        Object.getOwnPropertyNames(initialState)
+          .filter(prop => !prop.endsWith('Store'))
+          .map(prop => {
+            set(this, {
+              [prop]: initialState[prop]
+            });
+          });
+      }
     }
   }
 }
 
+decorate(Store, {
+  pageInitMap: observable
+});
+
 const allowMethods = ['get', 'post', 'put', 'delete', 'patch'];
 
 Store.prototype = {
+  pageSize: 10,
+  maxLimit: 200, // fixme: api max returned data count
+
   info: function(message) {
     this.notify(message, 'info');
   },
