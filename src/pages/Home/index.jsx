@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import { get, find, throttle } from 'lodash';
+import { get, find } from 'lodash';
 
 import { getScrollTop, getScrollBottom } from 'src/utils';
 import Nav from 'components/Nav';
@@ -19,15 +19,16 @@ import styles from './index.scss';
 @observer
 export default class Home extends Component {
   static async onEnter({ categoryStore, appStore }, { category, search }) {
-    appStore.loadPageInit();
-    await categoryStore.fetchAll();
-    let params = {};
+    const params = {};
     if (category) {
       params.category_id = category;
     }
     if (search) {
       params.search_word = search;
     }
+
+    appStore.loadPageInit();
+    await categoryStore.fetchAll();
     await appStore.fetchApps(params);
     appStore.homeApps = appStore.apps;
   }
@@ -45,7 +46,7 @@ export default class Home extends Component {
       // home page
       rootStore.setNavFix(false);
       this.threshold = this.getThreshold();
-      window.onscroll = throttle(this.handleScroll, 200);
+      window.onscroll = this.handleScroll;
     }
   }
 
@@ -58,9 +59,7 @@ export default class Home extends Component {
   }
 
   componentWillUnmount() {
-    if (window.onscroll) {
-      window.onscroll = null;
-    }
+    window.onscroll = null;
   }
 
   getThreshold() {
@@ -98,17 +97,18 @@ export default class Home extends Component {
 
     const initLoadNumber = parseInt((document.body.clientHeight - 720) / 250);
     if (len > 0 && !categories[0].appFlag && !appStore.isLoading) {
-      this.loadAppData(categories, initLoadNumber);
+      await this.loadAppData(categories, initLoadNumber);
     }
 
     let scrollBottom = getScrollBottom();
     if (scrollBottom < 100 && !appStore.isProgressive) {
-      this.loadAppData(categories);
+      await this.loadAppData(categories);
     }
   };
 
   loadAppData = async (categories, initLoadNumber) => {
     const { categoryStore, appStore } = this.props;
+
     for (let i = 0; i < categories.length; i++) {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
@@ -148,26 +148,24 @@ export default class Home extends Component {
     return (
       <Fragment>
         {isHomePage && <Banner />}
-        <div className={styles.contentOuter}>
-          <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
-            <Nav className={styles.nav} navs={categories.toJSON()} />
-            <Loading isLoading={isLoading} className={styles.homeLoad}>
-              <AppList
-                className={styles.apps}
-                apps={showApps}
-                categoryApps={categories.toJSON()}
-                categoryTitle={categoryTitle}
-                appSearch={appSearch}
-              />
-              {isProgressive && (
-                <div className={styles.loading}>
-                  <div className={styles.loadOuter}>
-                    <div className={styles.loader} />
-                  </div>
+        <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
+          <Nav className={styles.nav} navs={categories.toJSON()} />
+          <Loading isLoading={isLoading} className={styles.homeLoad}>
+            <AppList
+              className={styles.apps}
+              apps={showApps}
+              categoryApps={categories.toJSON()}
+              categoryTitle={categoryTitle}
+              appSearch={appSearch}
+            />
+            {isProgressive && (
+              <div className={styles.loading}>
+                <div className={styles.loadOuter}>
+                  <div className={styles.loader} />
                 </div>
-              )}
-            </Loading>
-          </div>
+              </div>
+            )}
+          </Loading>
         </div>
       </Fragment>
     );

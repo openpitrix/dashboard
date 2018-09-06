@@ -2,31 +2,27 @@
 
 exports[`Home basic render 1`] = `
 <div
-  class="contentOuter"
+  class="content"
 >
   <div
-    class="content"
+    class="nav nav"
+  >
+    <p
+      class="caption"
+    />
+    <ul
+      class="subNav"
+    />
+  </div>
+  <div
+    class="appList apps"
   >
     <div
-      class="nav nav"
-    >
-      <p
-        class="caption"
-      />
-      <ul
-        class="subNav"
-      />
-    </div>
+      class="title"
+    />
     <div
-      class="appList apps"
-    >
-      <div
-        class="title"
-      />
-      <div
-        class="noData"
-      />
-    </div>
+      class="noData"
+    />
   </div>
 </div>
 `;

@@ -73,13 +73,18 @@ class Header extends Component {
       match,
       rootStore: { fixNav }
     } = this.props;
-    const isDark = !isHome || fixNav;
-    const logoUrl = isDark ? '/logo_light.svg' : '/logo_dark.svg';
-    const needShowSearch = isDark && isHome;
+
+    const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
+    const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;
 
     return (
-      <div className={classnames('header', styles.header, { [styles.stickyHeader]: isDark })}>
+      <div
+        className={classnames('header', styles.header, {
+          [styles.deep]: !isHome,
+          [styles.deepHome]: isHome && fixNav
+        })}
+      >
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           <div className={styles.menus}>{this.renderMenuBtns()}</div>
