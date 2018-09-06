@@ -28,7 +28,7 @@ export default class Login extends Component {
       <div className={styles.login}>
         <div className={styles.loginContent}>
           <div className={styles.loginTitle}>
-            <Logo url="/assets/logo_light.svg" />
+            <Logo url="/logo_light.svg" />
           </div>
           <div className={styles.loginForm}>
             <h1>{t('Login OpenPitrix')}</h1>

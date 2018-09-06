@@ -25,9 +25,9 @@ class Banner extends PureComponent {
     return (
       <div className={classnames('banner', styles.banner)}>
         <div className={styles.wrapper}>
-          <img className="banner-img-1" src="/assets/1-1.svg" alt="" />
-          <img className="banner-img-2" src="/assets/1-2.svg" alt="" />
-          <img className="banner-img-3" src="/assets/1-3.svg" alt="" />
+          <img className="banner-img-1" src="/1-1.svg" alt="" />
+          <img className="banner-img-2" src="/1-2.svg" alt="" />
+          <img className="banner-img-3" src="/1-3.svg" alt="" />
           <div className={styles.title}>{t('brand.slogan')}</div>
           <Input.Search
             className={styles.search}

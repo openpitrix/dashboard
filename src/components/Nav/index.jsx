@@ -22,8 +22,8 @@ export default class Nav extends PureComponent {
 
     return (
       <div className={classnames(styles.nav, className)}>
+        <p className={styles.caption}>{t('Categories')}</p>
         <ul className={styles.subNav}>
-          <p>{t('Categories')}</p>
           {navs.map(nav => (
             <li key={nav.category_id}>
               <NavLink

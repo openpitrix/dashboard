@@ -17,7 +17,7 @@ export default class Card extends PureComponent {
   render() {
     const { icon, name, desc, fold } = this.props;
     const iconSize = fold ? 36 : 48;
-    const noneIcon = '/assets/none.svg';
+    const noneIcon = '/none.svg';
 
     return (
       <div className={classnames(styles.card, { [styles.foldCard]: fold })}>

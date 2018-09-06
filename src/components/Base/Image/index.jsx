@@ -43,7 +43,7 @@ export default class Image extends React.Component {
     const { failed } = this.state;
 
     if (failed) {
-      const nonIcon = '/assets/none.svg';
+      const nonIcon = '/none.svg';
       const sizeStyle = {
         width: iconSize + 'px',
         height: iconSize + 'px'

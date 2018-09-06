@@ -10,11 +10,12 @@ exports[`Home basic render 1`] = `
     <div
       class="nav nav"
     >
+      <p
+        class="caption"
+      />
       <ul
         class="subNav"
-      >
-        <p />
-      </ul>
+      />
     </div>
     <div
       class="appList apps"

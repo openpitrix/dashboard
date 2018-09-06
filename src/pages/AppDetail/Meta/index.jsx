@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import styles from './index.scss';
 
 const Meta = ({ app }) => {
-  const iconSrc = '/assets/None48.svg';
+  const iconSrc = '/none.svg';
 
   return (
     <div className={styles.meta}>

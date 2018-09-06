@@ -1,6 +1,7 @@
 build/
 dist/
-docker/
 docs/
 node_modules/
 reports/
+public/
+.cache/

@@ -74,7 +74,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
     const isDark = !isHome || fixNav;
-    const logoUrl = isDark ? '/assets/logo_light.svg' : '/assets/logo_dark.svg';
+    const logoUrl = isDark ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isDark && isHome;
     const appSearch = match.params.search;
 

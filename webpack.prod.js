@@ -45,12 +45,12 @@ const clientConfig = {
       {
         test: /\.(jpg|png|svg)(\?.+)?$/,
         use: 'url-loader?limit=100000',
-        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
+        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
       },
       {
         test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
         use: 'file-loader',
-        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')]
+        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
       },
       {
         test: /\.scss$/,
@@ -89,7 +89,6 @@ const clientConfig = {
       filename: 'bundle.css',
       allChunks: true
     }),
-    // new webpack.NamedModulesPlugin(),
     new WriteHashPlugin(),
     // new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.optimize.UglifyJsPlugin({
@@ -139,7 +138,7 @@ const serverConfig = {
       {
         test: /\.(jpg|png|svg)(\?.+)?$/,
         loader: 'url-loader?limit=100000',
-        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')],
+        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')],
         options: {
           emit: false // don't copy the files
         }
@@ -147,7 +146,7 @@ const serverConfig = {
       {
         test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
         loader: 'file-loader',
-        include: [resolve(__dirname, 'src/assets'), resolve(__dirname, 'src/components')],
+        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')],
         options: {
           emit: false
         }
