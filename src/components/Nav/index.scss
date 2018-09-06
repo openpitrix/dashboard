@@ -2,6 +2,15 @@
 
 .nav {
   padding-top: 32px;
+
+  .caption {
+    margin: 0 0 20px;
+    line-height: 20px;
+    font-size: $font16;
+    font-weight: bold;
+    color: $N500;
+  }
+
   .subNav {
     padding: 0;
     margin-top: $base-margin;
@@ -9,13 +18,7 @@
     &:first-of-type {
       margin-top: 0;
     }
-    p {
-      margin: 0 0 20px;
-      line-height: 20px;
-      font-size: $font16;
-      font-weight: bold;
-      color: $N500;
-    }
+
     li {
       margin: 12px 0;
       height: 20px;

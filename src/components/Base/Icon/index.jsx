@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isNumber, noop } from 'lodash';
 
-import styles from './index.scss';
+import svgSprite from 'utils/icons';
 
-import svgSprite from 'assets/icons';
+import './index.scss';
 
 const prepend = (el, target) => {
   if (target.firstChild) {

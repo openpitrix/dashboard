@@ -24,11 +24,11 @@ export default class Footer extends PureComponent {
         <div className={styles.wrapper}>
           <div className={styles.inner}>
             <span className={styles.logo}>
-              <img src="/assets/logo_grey.svg" alt="logo" height="100%" />
+              <img src="/logo_grey.svg" alt="logo" height="100%" />
             </span>
             <ul className={styles.terms}>
               <li>
-                <a target="_blank" href="https://openpitrix.io">
+                <a target="_blank" href="https://openpitrix.io" rel="noreferrer">
                   {t('About')}
                 </a>
                 {/* <span className={styles.dot} />
@@ -45,7 +45,7 @@ export default class Footer extends PureComponent {
                 >
                   中文
                 </a>
-                <span className={styles.dot}/>
+                <span className={styles.dot} />
                 <a
                   href="#"
                   onClick={this.changeLocale.bind(null, 'en')}

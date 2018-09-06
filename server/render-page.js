@@ -19,19 +19,22 @@ const readManifest = (file, prefix = '/dist') => {
 };
 
 const renderPage = (options = {}) => {
-  Object.assign(defaultOptions, options);
+  options = Object.assign({}, defaultOptions, options);
 
-  const isProd = !!options.isProd;
+  const isProd = Boolean(options.isProd);
   const bundlePrefix = isProd ? '/dist' : '/build';
+  let manifest = {};
 
-  const manifest = readManifest('build-hash.json');
+  if (isProd) {
+    manifest = readManifest('build-hash.json', bundlePrefix);
+  }
 
   const normalizeCssFilePath = css_file => {
     if (css_file.startsWith('http')) {
       return css_file;
     }
     if (css_file.startsWith('/css')) {
-      return `/assets${css_file}`;
+      return `/${css_file}`;
     }
 
     if (isProd) {
@@ -71,14 +74,15 @@ const renderPage = (options = {}) => {
   };
 
   return `<!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="Description" content="OpenPitrix: Application Management Platform on Multi-Cloud Environment">
     <title>${options.title}</title>
-    <link rel="shortcut icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/assets/css/normalize.min.css" />
-    <link rel="stylesheet" href="/assets/fonts/roboto/roboto.css" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/normalize.min.css" />
+    <link rel="stylesheet" href="/fonts/roboto/roboto.css" />
     
     ${renderCss(isProd && 'bundle.css')}
   </head>

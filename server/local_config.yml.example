@@ -1,5 +1,6 @@
 ---
 
 serverUrl: http://127.0.0.1:9100
-
+socketUrl: ws://127.0.0.1:9100/v1/io
 apiVersion: v1
+

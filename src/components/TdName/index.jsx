@@ -49,7 +49,7 @@ export default class TdName extends React.Component {
   renderIcon() {
     const { noIcon, image } = this.props;
     const isIcon = ['appcenter', 'cluster'].includes(image);
-    const nonIcon = '/assets/none.svg';
+    const nonIcon = '/none.svg';
 
     if (noIcon) {
       return null;

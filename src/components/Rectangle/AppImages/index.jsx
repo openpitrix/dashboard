@@ -16,7 +16,7 @@ export default class AppImages extends Component {
 
   render() {
     const { apps, total, t } = this.props;
-    const nonIcon = '/assets/none.svg';
+    const nonIcon = '/none.svg';
 
     return (
       <div className={styles.appImages}>
