@@ -50,7 +50,7 @@ class Header extends Component {
           {t('Store')}
         </NavLink>
         <NavLink
-          to="/dashboard/clusters"
+          to="/purchased"
           exact
           activeClassName={styles.active}
           isActive={this.isLinkActive.bind(null, 'purchased')}
@@ -75,6 +75,9 @@ class Header extends Component {
     return (
       <ul className={styles.operateItems}>
         <li>
+          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+        </li>
+        <li>
           <NavLink to="/profile">{t('Profile')}</NavLink>
         </li>
         <li>
@@ -88,11 +91,15 @@ class Header extends Component {
   };
 
   renderMenuBtns() {
-    const loggedInUser = getSessInfo('user', this.props.sessInfo);
     const { t } = this.props;
+    const loggedInUser = getSessInfo('user', this.props.sessInfo);
 
     if (!loggedInUser) {
-      return <NavLink to="/login">{t('Sign In')}</NavLink>;
+      return (
+        <NavLink to="/login" className={styles.login}>
+          {t('Sign In')}
+        </NavLink>
+      );
     }
 
     return (
@@ -113,6 +120,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
 
+    const hasMenu = getSessInfo('role', this.props.sessInfo) === 'normal';
     const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;
@@ -127,10 +135,10 @@ class Header extends Component {
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           <div className={styles.menuOuter}>
-            {this.renderMenus()}
+            {hasMenu && this.renderMenus()}
             {this.renderMenuBtns()}
           </div>
-          {/*{needShowSearch && (
+          {needShowSearch && (
             <Input.Search
               className={styles.search}
               placeholder={t('search.placeholder')}
@@ -138,7 +146,7 @@ class Header extends Component {
               onSearch={this.onSearch}
               onClear={this.onClearSearch}
             />
-          )}*/}
+          )}
         </div>
       </div>
     );

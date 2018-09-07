@@ -117,7 +117,7 @@ export default class Store extends Component {
     return (
       <Layout title="Store" hasSearch>
         <div className={styles.storeContent}>
-          <Nav className={styles.nav} navs={categories.toJSON()} />
+          <Nav className={styles.nav} navs={categories.toJSON()} skipLink="store" />
           <Loading isLoading={isLoading} className={styles.homeLoad}>
             <AppList
               className={styles.apps}
@@ -125,6 +125,7 @@ export default class Store extends Component {
               categoryApps={categories.toJSON()}
               categoryTitle={categoryTitle}
               appSearch={appSearch}
+              skipLink="store"
             />
             {isProgressive && (
               <div className={styles.loading}>

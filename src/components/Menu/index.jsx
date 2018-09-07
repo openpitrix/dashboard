@@ -76,14 +76,14 @@ export default class Menu extends React.Component {
 
     return (
       <div className={styles.header}>
-        <Popover content={this.renderOperateMenu()} className={styles.role}>
+        <Popover content={this.renderOperateMenu()} className={styles.user}>
           {loggedInUser}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
     );
   }
-  ß;
+
   render() {
     return (
       <Fragment>

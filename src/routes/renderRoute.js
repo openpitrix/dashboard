@@ -8,7 +8,7 @@ import RouteWrapper from './wrapper';
 import { getCookie } from '../utils';
 
 const hasLoggedIn = () => !!getCookie('user');
-const isNormal = getCookie('role') === 'normal';
+const hasHeader = getCookie('role') === 'normal' || !getCookie('role');
 
 const renderRoute = (match, route, store) => {
   if (route.needAuth && !hasLoggedIn()) {
@@ -27,9 +27,9 @@ const renderRoute = (match, route, store) => {
 
     return (
       <Fragment>
-        {isNormal && <Header isHome={isHome} />}
+        {(hasHeader || isHome) && <Header isHome={isHome} />}
         <RouteWrapper component={component} match={match} rootStore={store} />
-        {isNormal && <Footer />}
+        {(hasHeader || isHome) && <Footer />}
       </Fragment>
     );
   }

@@ -285,7 +285,7 @@ export default class SSHKeys extends Component {
     const { keyPairs } = this.props.clusterStore;
 
     return (
-      <Layout isProfile>
+      <Layout>
         {keyPairs.length > 0 ? (
           this.renderDetail()
         ) : (

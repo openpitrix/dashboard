@@ -5,6 +5,7 @@ import * as Dash from 'pages/Admin';
 import Profile from 'pages/Profile';
 import SSHKeys from 'pages/SSHKeys';
 import Store from 'pages/Store';
+import Purchased from 'pages/Purchased';
 
 const useExactRoute = true;
 const dashboardPrefix = '/dashboard';
@@ -28,13 +29,16 @@ const routes = {
   '/store/search/:search': Store,
   '/store/category/:category': Store,
   '/store/:appId': AppDetail,
+  '/store/:appId/deploy': Dash.AppDeploy,
+
+  '/purchased': Purchased,
+  '/purchased/:clusterId': Dash.ClusterDetail,
 
   '/:dash': Dash.Overview,
 
   '/:dash/apps': Dash.Apps,
   '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
-  '/:dash/app/:appId/deploy': Dash.AppDeploy,
 
   '/:dash/clusters': Dash.Clusters,
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
