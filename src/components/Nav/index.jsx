@@ -27,7 +27,7 @@ export default class Nav extends PureComponent {
           {navs.map(nav => (
             <li key={nav.category_id}>
               <NavLink
-                to={`/apps/category/${nav.category_id}`}
+                to={`/store/category/${nav.category_id}`}
                 activeClassName={styles.current}
                 isActive={isNavLinkActive.bind(null, nav.category_id)}
               >

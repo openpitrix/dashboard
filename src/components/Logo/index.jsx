@@ -11,7 +11,7 @@ export default class Logo extends PureComponent {
   render() {
     const { className, url } = this.props;
     return (
-      <NavLink to="/">
+      <NavLink to="/dashboard">
         <img className={className} src={url} alt="logo" height="100%" />
       </NavLink>
     );

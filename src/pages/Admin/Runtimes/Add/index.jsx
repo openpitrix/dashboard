@@ -47,22 +47,6 @@ export default class RuntimeAdd extends Component {
     runtimeCreateStore.reset();
   }
 
-  render() {
-    const { t } = this.props;
-    const { runtimeId } = this.store;
-    let title = t('Create Runtime');
-    if (runtimeId) title = t('Modify Runtime');
-
-    return (
-      <Layout>
-        <BackBtn label="runtime" link="/dashboard/runtimes" />
-        <CreateResource title={title} aside={this.renderAside()}>
-          {this.renderForm()}
-        </CreateResource>
-      </Layout>
-    );
-  }
-
   renderUrlAndZone() {
     const { t } = this.props;
     const {
@@ -243,6 +227,22 @@ export default class RuntimeAdd extends Component {
       <Fragment>
         <p>{t('Create Runtime explain')}</p>
       </Fragment>
+    );
+  }
+
+  render() {
+    const { t } = this.props;
+    const { runtimeId } = this.store;
+    let title = t('Create Runtime');
+    if (runtimeId) title = t('Modify Runtime');
+
+    return (
+      <Layout title="My Runtimes">
+        <BackBtn label="runtime" link="/dashboard/runtimes" />
+        <CreateResource title={title} aside={this.renderAside()}>
+          {this.renderForm()}
+        </CreateResource>
+      </Layout>
     );
   }
 }

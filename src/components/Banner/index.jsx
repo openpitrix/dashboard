@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
@@ -9,7 +8,7 @@ import Input from '../Base/Input';
 import styles from './index.scss';
 
 @translate()
-class Banner extends PureComponent {
+class Banner extends Component {
   onSearch = value => {
     this.props.history.push('/apps/search/' + value);
   };

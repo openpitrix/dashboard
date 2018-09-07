@@ -24,6 +24,8 @@ export default class AppVersionStore extends Store {
   @observable packageName = '';
   @observable description = '';
 
+  @observable isTipsOpen = false;
+
   @action
   async fetchAll(params = {}) {
     let defaultParams = {
@@ -50,7 +52,7 @@ export default class AppVersionStore extends Store {
   @action
   async create(params) {
     this.isLoading = true;
-    let res = await this.request.post('app_versions', params);
+    const res = await this.request.post('app_versions', params);
     this.isLoading = false;
     return res;
   }
@@ -74,9 +76,15 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  showTipsOpen = () => {
+    this.isTipsOpen = true;
+  };
+
+  @action
   hideModal = () => {
     this.isModalOpen = false;
     this.isDialogOpen = false;
+    this.isTipsOpen = false;
   };
 
   setDialogType(type) {
