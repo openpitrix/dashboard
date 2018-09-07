@@ -58,10 +58,10 @@ class Header extends Component {
           {t('Purchased')}
         </NavLink>
         <NavLink
-          to="/dashboard/runtimes"
+          to="/runtimes"
           exact
           activeClassName={styles.active}
-          isActive={this.isLinkActive.bind(null, 'runtimes')}
+          isActive={this.isLinkActive.bind(null, 'runtime')}
         >
           {t('My runtimes')}
         </NavLink>

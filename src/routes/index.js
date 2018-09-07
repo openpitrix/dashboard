@@ -6,6 +6,7 @@ import Profile from 'pages/Profile';
 import SSHKeys from 'pages/SSHKeys';
 import Store from 'pages/Store';
 import Purchased from 'pages/Purchased';
+import Runtimes from 'pages/Runtimes';
 
 const useExactRoute = true;
 const dashboardPrefix = '/dashboard';
@@ -33,6 +34,8 @@ const routes = {
 
   '/purchased': Purchased,
   '/purchased/:clusterId': Dash.ClusterDetail,
+
+  '/runtimes': Runtimes,
 
   '/:dash': Dash.Overview,
 

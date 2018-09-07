@@ -162,7 +162,7 @@ export default class RuntimeDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+      <Layout title="My Runtimes" backBtn={<BackBtn label="runtimes" link="/runtimes" />}>
         <Grid>
           <Section>
             <Card>
