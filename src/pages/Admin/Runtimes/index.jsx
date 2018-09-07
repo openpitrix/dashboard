@@ -227,7 +227,7 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout>
+      <Layout title="My Runtimes">
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

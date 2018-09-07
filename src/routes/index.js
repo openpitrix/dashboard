@@ -3,7 +3,8 @@ import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
 import * as Dash from 'pages/Admin';
 import Profile from 'pages/Profile';
-import SSHKeys from 'pages/Profile/SSHKeys';
+import SSHKeys from 'pages/SSHKeys';
+import Store from 'pages/Store';
 
 const useExactRoute = true;
 const dashboardPrefix = '/dashboard';
@@ -22,6 +23,11 @@ const routes = {
   '/apps/search/:search': Home,
   '/apps/category/:category': Home,
   '/app/:appId': AppDetail,
+
+  '/store': Store,
+  '/store/search/:search': Store,
+  '/store/category/:category': Store,
+  '/store/:appId': AppDetail,
 
   '/:dash': Dash.Overview,
 
@@ -50,7 +56,7 @@ const routes = {
   '/:dash/user/:userId': Dash.UserDetail,
 
   '/profile': Profile,
-  '/profile/ssh_keys': SSHKeys,
+  '/ssh_keys': SSHKeys,
 
   '*': Home
 };

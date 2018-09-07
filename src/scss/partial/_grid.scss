@@ -1,4 +1,7 @@
 $content-width: 1128px;
+$menu-width: 248px;
+$menu-nav-width: 48px;
+$menu-sub-nav-width: 200px;
 $columns: 12;
 $grid-gap: 24px;
 //$grid-width: 72px;
@@ -9,9 +12,12 @@ $layout-margin: 156px;
 // basic
 $nav-width: 264px;
 $header-height: 48px;
+$title-banner-height: 72px;
+$layout-top: $header-height + $title-banner-height + 20px;
 $tabNavs-height: 48px;
 $banner-height: 400px;
 $footer-height: 64px;
+$content-height: calc(100vh - #{$footer-height} - #{$layout-top});
 $base-margin: 24px;
 $card-width: 264px;
 

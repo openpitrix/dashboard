@@ -13,10 +13,13 @@
     float: left;
     display: inline-block;
     position: relative;
-    margin: 0 48px 0 0;
+    width: 33.33%;
     height: 68px;
-    &:last-child{
-      margin-right: 24px;
+    &:first-child{
+      .word{
+        float: right;
+        margin-right: 48px;
+      }
     }
   }
 
@@ -24,7 +27,6 @@
     float: left;
     display: inline-block;
     margin-top: 18px;
-    width: 240px;
     font-size: 24px;
     font-weight: 500;
     line-height: 1.17;
@@ -33,13 +35,13 @@
       .icon{
         float: left;
         display: inline-block;
-        margin-left: 24px;
+        margin-left: 12px;
       }
     }
   }
   .word{
     display: inline-block;
-    width: 120px;
+    //width: 120px;
     .name{
       margin-bottom: 4px;
       font-size: 12px;

@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 
 import { ucfirst } from 'utils/string';
 import { Icon } from 'components/Base';
+
 import styles from './index.scss';
 
 @translate()

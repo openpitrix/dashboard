@@ -66,7 +66,6 @@ export default class Repos extends Component {
     const { repoStore } = this.props;
     const { jobs } = repoStore;
     const repoIds = repoStore.repos.map(repo => repo.repo_id);
-    console.log(repoIds);
 
     const status = _.pick(values, ['status', 'transition_status']);
     const logJobs = () => repoStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);

@@ -6,8 +6,10 @@ import { noop, clone, isEmpty, get } from 'lodash';
 
 import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
+import Menu from 'components/Menu';
 import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
+import TitleBanner from './TitleBanner';
 
 import styles from './index.scss';
 
@@ -22,7 +24,9 @@ export default class Layout extends React.Component {
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string,
     listenToJob: PropTypes.func,
-    isProfile: PropTypes.bool
+    isProfile: PropTypes.bool,
+    title: PropTypes.string,
+    hasSearch: PropTypes.bool
   };
 
   static defaultProps = {
@@ -31,7 +35,9 @@ export default class Layout extends React.Component {
     noNotification: false,
     backBtn: null,
     listenToJob: noop,
-    isProfile: false
+    isProfile: false,
+    title: '',
+    hasSearch: false
   };
 
   constructor(props) {
@@ -93,12 +99,22 @@ export default class Layout extends React.Component {
       isLoading,
       loadClass,
       backBtn,
-      isProfile
+      isProfile,
+      hasSearch,
+      title
     } = this.props;
+    const isNormal = getSessInfo('role', this.props.sessInfo) === 'normal';
 
     return (
-      <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
-        {noTabs ? null : this.renderTabs(isProfile)}
+      <div
+        className={classnames(
+          styles.layout,
+          className,
+          { [styles.noTabs]: noTabs },
+          { [styles.hasMenu]: !isNormal }
+        )}
+      >
+        {isNormal ? <TitleBanner title={title} hasSearch={hasSearch} /> : <Menu />}
         {noNotification ? null : <Notification />}
         {backBtn}
         <Loading isLoading={isLoading} className={styles[loadClass]}>

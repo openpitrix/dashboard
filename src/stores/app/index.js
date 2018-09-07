@@ -5,6 +5,7 @@ import { get, assign } from 'lodash';
 export default class AppStore extends Store {
   @observable apps = [];
   @observable homeApps = []; //home page category apps
+  @observable storeApps = []; //store page category apps
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable categoryTitle = '';

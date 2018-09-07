@@ -7,7 +7,7 @@ import defaultRequest from './utils/request';
 import attrAccept from './utils/attr-accept';
 import traverseFileTree from './utils/traverseFileTree';
 
-const now = +new Date();
+const now = Date.now();
 let index = 0;
 
 function getUid() {
