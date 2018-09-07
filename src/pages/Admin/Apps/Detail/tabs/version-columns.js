@@ -15,7 +15,7 @@ export default [
   {
     title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
     key: 'status',
-    render: obj => <Status type={(obj.status + '').toLowerCase()} name={obj.status} />
+    render: obj => <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
   },
   {
     title: <I18n>{t => <span>{t('Download')}</span>}</I18n>,

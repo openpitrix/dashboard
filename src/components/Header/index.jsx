@@ -5,10 +5,9 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Popover, Icon } from 'components/Base';
+import { Popover, Icon, Input } from 'components/Base';
 import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
-import Input from '../Base/Input';
 
 import styles from './index.scss';
 
@@ -23,7 +22,7 @@ class Header extends Component {
 
   onSearch = async value => {
     const { appStore } = this.props.rootStore;
-    this.props.history.push('/apps/search/' + value);
+    this.props.history.push('/store/search/' + value);
     await appStore.fetchAll({ search_word: value });
     appStore.homeApps = appStore.apps;
   };
@@ -32,16 +31,54 @@ class Header extends Component {
     this.props.history.push('/');
   };
 
+  isLinkActive = (curLink, match, location) => {
+    const { pathname } = location;
+    return pathname.indexOf(curLink) > -1;
+  };
+
+  renderMenus = () => {
+    const { t } = this.props;
+
+    return (
+      <div className={styles.menus}>
+        <NavLink
+          to="/store"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'store')}
+        >
+          {t('Store')}
+        </NavLink>
+        <NavLink
+          to="/dashboard/clusters"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'purchased')}
+        >
+          {t('Purchased')}
+        </NavLink>
+        <NavLink
+          to="/dashboard/runtimes"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'runtimes')}
+        >
+          {t('My runtimes')}
+        </NavLink>
+      </div>
+    );
+  };
+
   renderOperateMenu = () => {
     const { t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
         <li>
-          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+          <NavLink to="/profile">{t('Profile')}</NavLink>
         </li>
         <li>
-          <NavLink to="/profile">{t('Profile')}</NavLink>
+          <NavLink to="/ssh_keys">{t('SSH Keys')}</NavLink>
         </li>
         <li>
           <a href="/logout">{t('Log out')}</a>
@@ -59,10 +96,12 @@ class Header extends Component {
     }
 
     return (
-      <Popover content={this.renderOperateMenu()} className={styles.role}>
-        {loggedInUser}
-        <Icon name="caret-down" className={styles.iconDark} />
-      </Popover>
+      <div className={styles.user}>
+        <Popover content={this.renderOperateMenu()}>
+          {loggedInUser}
+          <Icon name="caret-down" className={styles.iconDark} type="dark" />
+        </Popover>
+      </div>
     );
   }
 
@@ -87,8 +126,11 @@ class Header extends Component {
       >
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
-          <div className={styles.menus}>{this.renderMenuBtns()}</div>
-          {needShowSearch && (
+          <div className={styles.menuOuter}>
+            {this.renderMenus()}
+            {this.renderMenuBtns()}
+          </div>
+          {/*{needShowSearch && (
             <Input.Search
               className={styles.search}
               placeholder={t('search.placeholder')}
@@ -96,7 +138,7 @@ class Header extends Component {
               onSearch={this.onSearch}
               onClear={this.onClearSearch}
             />
-          )}
+          )}*/}
         </div>
       </div>
     );

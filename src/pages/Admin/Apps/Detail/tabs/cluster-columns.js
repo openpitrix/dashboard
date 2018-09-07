@@ -25,7 +25,7 @@ export default function(runtimes, versions) {
       title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
       key: 'status',
       width: '80px',
-      render: obj => <Status type={(obj.status + '').toLowerCase()} name={obj.status} />
+      render: obj => <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
     },
     {
       title: <I18n>{t => <span>{t('App Version')}</span>}</I18n>,

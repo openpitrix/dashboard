@@ -1,0 +1,104 @@
+@import '~scss/vars';
+
+.detailBlock {
+  margin-bottom: 24px;
+  width: 100%;
+  height: 100px;
+  padding: 28px 32px;
+  border-radius: 3px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  .deploy{
+    float: right;
+    margin-top: 6px;
+    margin-right: 52px;
+  }
+}
+
+.titleOuter{
+  float: left;
+  width: 360px;
+  .icon{
+    float: left;
+    display: inline-block;
+    margin: 6px 8px 6px 0;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    img{
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .title{
+    .name{
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size : 20px;
+      font-weight: 500;
+      color: $N500;
+      max-width: 260px;
+      @include textCut;
+    }
+
+    .id, .caId{
+      line-height: 30px;
+      font-size: 16px;
+      letter-spacing: 0;
+      color: $N75;
+    }
+    .caId{
+      margin-bottom: 0;
+    }
+  }
+}
+.detailOuter{
+  dl{
+    display: inline-block;
+    float: left;
+    margin-right: 12px;
+    width: 118px;
+    @include textCut;
+    &:last-child{
+      margin-right: 0;
+      width: 160px;
+    }
+  }
+  dt{
+    display: block;
+    font-size: 12px;
+    line-height: 20px;
+    color: $N100;
+  }
+  dd{
+    font-size: 14px;
+    line-height: 24px;
+    color: $N300;
+  }
+}
+.copyOuter{
+  position: relative;
+  display: inline-block;
+  //margin-bottom: 10px;
+  @include idText;
+  :global{
+    .copyId{
+      display: none;
+      position: absolute;
+      top: 0px;
+      right: -16px;
+      cursor: pointer;
+    }
+  }
+  &:hover{
+    :global {
+      .copyId {
+        display: inline-block;
+      }
+    }
+  }
+}
+
