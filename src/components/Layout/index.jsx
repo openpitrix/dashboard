@@ -6,8 +6,10 @@ import { noop, clone, isEmpty, get } from 'lodash';
 
 import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
+import Menu from 'components/Menu';
 import Loading from 'components/Loading';
 import { getSessInfo } from 'src/utils';
+import TitleBanner from './TitleBanner';
 
 import styles from './index.scss';
 
@@ -17,21 +19,21 @@ export default class Layout extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     noNotification: PropTypes.bool,
-    noTabs: PropTypes.bool,
     backBtn: PropTypes.node,
     isLoading: PropTypes.bool,
     loadClass: PropTypes.string,
     listenToJob: PropTypes.func,
-    isProfile: PropTypes.bool
+    title: PropTypes.string,
+    hasSearch: PropTypes.bool
   };
 
   static defaultProps = {
     msg: '',
-    noTabs: false,
     noNotification: false,
     backBtn: null,
     listenToJob: noop,
-    isProfile: false
+    title: '',
+    hasSearch: false
   };
 
   constructor(props) {
@@ -64,6 +66,7 @@ export default class Layout extends React.Component {
     }
   }
 
+  /*
   renderTabs(isProfile) {
     const loginRole = getSessInfo('role', this.props.sessInfo);
     const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
@@ -83,22 +86,27 @@ export default class Layout extends React.Component {
 
     return <TabsNav links={this.availableLinks} options={options} />;
   }
+*/
 
   render() {
     const {
       className,
-      noTabs,
       noNotification,
       children,
       isLoading,
       loadClass,
       backBtn,
-      isProfile
+      hasSearch,
+      title
     } = this.props;
+    const role = getSessInfo('role', this.props.sessInfo);
+    const isNormal = role === 'normal';
+    const hasMenu = ['developer', 'admin'].includes(role);
 
     return (
-      <div className={classnames(styles.layout, className, { [styles.noTabs]: noTabs })}>
-        {noTabs ? null : this.renderTabs(isProfile)}
+      <div className={classnames(styles.layout, className, { [styles.hasMenu]: hasMenu })}>
+        {isNormal && <TitleBanner title={title} hasSearch={hasSearch} />}
+        {hasMenu && <Menu />}
         {noNotification ? null : <Notification />}
         {backBtn}
         <Loading isLoading={isLoading} className={styles[loadClass]}>

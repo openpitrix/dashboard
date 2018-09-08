@@ -324,9 +324,10 @@ export default class ClusterDetail extends Component {
 
     return (
       <Layout
-        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
+        backBtn={<BackBtn label="purchased" link="/purchased" />}
         isloading={isLoading}
         listenToJob={this.listenToJob}
+        title="Purchased"
       >
         <Grid>
           <Section>

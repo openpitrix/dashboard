@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
 import Rectangle from 'components/Rectangle';
 import AppImages from 'components/Rectangle/AppImages';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
@@ -147,22 +147,22 @@ export default class Categories extends Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <div className={styles.container}>
-          <div className={styles.pageTitle}>
-            {t('Categories')}
-            <Button className="pull-right" type="primary" onClick={showCreateCategory}>
-              {t('Create')}
-            </Button>
-          </div>
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>
-                {t('Default')} ({defaultCategories.length})
-              </div>
+        <div className={styles.pageTitle}>
+          {t('Categories')}
+          <Button className="pull-right" type="primary" onClick={showCreateCategory}>
+            {t('Create')}
+          </Button>
+        </div>
+
+        <div className={styles.categories}>
+          <div className={styles.line}>
+            <div className={styles.word}>
+              {t('Default')} ({defaultCategories.length})
             </div>
           </div>
-
-          {defaultCategories.map(data => (
+        </div>
+        <div>
+          {defaultCategories.map((data, index) => (
             <div key={data.category_id} className={styles.categoryContent}>
               <Rectangle
                 id={data.category_id}
@@ -179,25 +179,25 @@ export default class Categories extends Component {
               </div>
             </div>
           ))}
+        </div>
 
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>{t('Uncategories')}</div>
+        <div className={styles.categories}>
+          <div className={styles.line}>
+            <div className={styles.word}>{t('Uncategories')}</div>
+          </div>
+        </div>
+        {uncategorized.category_id && (
+          <div className={styles.categoryContent}>
+            <div className={styles.rectangle}>
+              <div className={styles.title} title={uncategorized.name}>
+                <Link to={`/dashboard/category/${uncategorized.category_id}`}>
+                  {t(uncategorized.name)}
+                </Link>
+              </div>
+              <AppImages apps={uncategorized.apps} total={uncategorized.total} />
             </div>
           </div>
-          {uncategorized.category_id && (
-            <div className={styles.categoryContent}>
-              <div className={styles.rectangle}>
-                <div className={styles.title} title={uncategorized.name}>
-                  <Link to={`/dashboard/category/${uncategorized.category_id}`}>
-                    {t(uncategorized.name)}
-                  </Link>
-                </div>
-                <AppImages apps={uncategorized.apps} total={uncategorized.total} />
-              </div>
-            </div>
-          )}
-        </div>
+        )}
         {this.renderOpsModal()}
         {this.renderDeleteModal()}
       </Layout>

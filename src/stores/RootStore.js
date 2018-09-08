@@ -3,7 +3,7 @@ import { get, pick } from 'lodash';
 
 import Store from './Store';
 
-import App, { Deploy as AppDeploy, Version as AppVersion } from './app';
+import App, { Deploy as AppDeploy, Version as AppVersion, Create as AppCreate } from './app';
 import Category from './category';
 import Cluster from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
@@ -73,6 +73,7 @@ export default class RootStore extends Store {
     this.register('app', App);
     this.register('appDeploy', AppDeploy);
     this.register('appVersion', AppVersion);
+    this.register('appCreate', AppCreate);
 
     // cluster
     this.register('cluster', Cluster);

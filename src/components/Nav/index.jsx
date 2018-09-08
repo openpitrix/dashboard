@@ -14,11 +14,16 @@ const isNavLinkActive = (cate_id, match, location) => {
 export default class Nav extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
-    navs: PropTypes.array
+    navs: PropTypes.array,
+    skipLink: PropTypes.string
+  };
+
+  static defaultProps = {
+    skipLink: 'app'
   };
 
   render() {
-    const { className, navs, t } = this.props;
+    const { className, navs, skipLink, t } = this.props;
 
     return (
       <div className={classnames(styles.nav, className)}>
@@ -27,7 +32,7 @@ export default class Nav extends PureComponent {
           {navs.map(nav => (
             <li key={nav.category_id}>
               <NavLink
-                to={`/apps/category/${nav.category_id}`}
+                to={`/${skipLink}/category/${nav.category_id}`}
                 activeClassName={styles.current}
                 isActive={isNavLinkActive.bind(null, nav.category_id)}
               >

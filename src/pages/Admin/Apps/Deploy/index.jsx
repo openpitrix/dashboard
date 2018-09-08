@@ -44,26 +44,6 @@ export default class AppDeploy extends Component {
     appStore.isLoading = false;
   }
 
-  render() {
-    const { appDeployStore, appStore, t } = this.props;
-    const appName = appStore.appDetail.name + '';
-    const { isKubernetes } = appDeployStore;
-    const { isLoading } = appStore;
-    const title = `${t('Deploy')} ${appName}`;
-
-    return (
-      <Layout
-        noTabs
-        isLoading={isLoading}
-        backBtn={<BackBtn label="clusters" link="/dashboard/clusters" />}
-      >
-        <CreateResource title={title} aside={this.renderAside()} asideTitle={''}>
-          {isKubernetes ? this.renderYamlForm() : this.renderForm()}
-        </CreateResource>
-      </Layout>
-    );
-  }
-
   renderAside() {
     const { appStore, t } = this.props;
     const { appDetail } = appStore;
@@ -305,6 +285,28 @@ export default class AppDeploy extends Component {
           </Button>
         </div>
       </form>
+    );
+  }
+
+  render() {
+    const { appDeployStore, appStore, t } = this.props;
+    const appName = appStore.appDetail.name;
+    const { appDetail } = appStore;
+    const { isKubernetes } = appDeployStore;
+    const { isLoading } = appStore;
+    const title = `${t('Deploy')} ${appDetail.name}`;
+
+    return (
+      <Layout
+        title="Store"
+        hasSearch
+        isLoading={isLoading}
+        backBtn={<BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
+      >
+        <CreateResource title={title} aside={this.renderAside()} asideTitle="">
+          {isKubernetes ? this.renderYamlForm() : this.renderForm()}
+        </CreateResource>
+      </Layout>
     );
   }
 }

@@ -11,7 +11,7 @@ import styles from './index.scss';
 export default class Profile extends Component {
   render() {
     return (
-      <Layout isProfile>
+      <Layout>
         <Grid>Develop ...</Grid>
       </Layout>
     );

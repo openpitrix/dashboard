@@ -102,7 +102,7 @@ export default class Apps extends Component {
       deployEntry = null;
 
     if (item.status !== 'deleted') {
-      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
+      deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>
@@ -159,6 +159,7 @@ export default class Apps extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
+        withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/app/create` }}
       />
     );
   }

@@ -98,7 +98,12 @@ export default class AppDetail extends Component {
     const appDetail = appStore.appDetail;
 
     return (
-      <Layout noTabs isLoading={isLoading} backBtn={<BackBtn label="catalog" link="/" />}>
+      <Layout
+        isLoading={isLoading}
+        title="Store"
+        hasSearch
+        backBtn={<BackBtn label="Store" link="/store" />}
+      >
         <Grid>
           <Section size={8}>
             <Panel className={styles.introCard}>
@@ -120,7 +125,7 @@ export default class AppDetail extends Component {
     return (
       <Section>
         <Card className={styles.detailCard}>
-          <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
+          <Link to={`/store/${appDetail.app_id}/deploy`}>
             <Button
               className={styles.deployBtn}
               type="primary"

@@ -1,0 +1,181 @@
+@import '~scss/vars';
+
+.menu {
+  display: inline-block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: $menu-width;
+
+  .nav{
+    float: left;
+    width: $menu-nav-width;
+    height: 100vh;
+    background-image: linear-gradient(to top, $P75, #854fb9 32%, #484999);
+    li{
+      height: 48px;
+
+      &:hover{
+        background-color: rgba($Y300, 0.08);
+      }
+
+      :global{
+        .icon{
+          margin: 12px;
+        }
+      }
+    }
+  }
+}
+
+.subNav{
+  float: left;
+  height: 100vh;
+  width: $menu-sub-nav-width;
+  background-color: #343945;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.07);
+
+  .title{
+    margin: 0 24px;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 48px;
+    color: $N0;
+  }
+
+  .app{
+    margin: 0 24px 12px;
+
+    >span{
+      display: inline-block;
+      height: 32px;
+      opacity: 0.5;
+      border-radius: 2px;
+      background-color: $N400;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .plus{
+      width: 104px;
+
+    }
+
+    .more{
+      float: right;
+      width: 40px;
+    }
+
+    :global{
+      .icon{
+        margin: 8px 0;
+        svg{
+          --primary-color: rgba($N0, 1);
+          --secondary-color: rgba($N0, 1);
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+  .test{
+    margin: 5px 0 16px;
+    height: 32px;
+    border-bottom: 1px solid rgba($N400, 0.4);
+
+    .word{
+      display: inline-block;
+      position: relative;
+      bottom: -16px;
+      left: 24px;
+      padding: 0 3px;
+      line-height: 32px;
+      font-size: 12px;
+      color: #69748c;
+      background-color: #343945;
+    }
+  }
+
+  .link{
+    display: block;
+    padding: 9px 24px;
+    line-height: 14px;
+    font-size: 14px;
+    color: $N30;
+
+    &.active {
+      font-weight: 500;
+    }
+  }
+
+}
+
+.header{
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  height: 48px;
+  width: 100%;
+  background-color: $background-color;
+
+  .user [class*='target']{
+    float: right;
+    margin: 12px 24px;
+    height: 20px;
+    width: auto;
+    line-height: 20px;
+    opacity: 0.9;
+    color: $N500;
+    font-weight: 500;
+    border: 0 none;
+    &:hover{
+      border: 0 none;
+      box-shadow: none;
+      opacity: 1;
+    }
+    :global{
+      .icon-caret-down{
+        position: relative;
+        top: 3px;
+        left: 2px;
+        svg {
+          --primary-color: #{$N500};
+          --secondary-color: #{$N500};
+        }
+      }
+    }
+  }
+
+  :global{
+    .pi-popover-popper{
+      margin-left: -85px !important;
+      margin-top: 6px !important;
+    }
+  }
+
+  .operateItems{
+    min-width: 120px;
+    li a{
+      display: block;
+      height: 32px;
+      padding: 0 12px;
+      //width: 100%;
+      line-height: 32px;
+      font-size: $font14;
+      font-weight: normal;
+      color: $N300;
+      border-radius: 0;
+      &:hover {
+        background-color: $N10;
+        color: $N500;
+      }
+      &.line{
+        border-bottom: 1px solid $N10;
+      }
+    }
+  }
+}
+
+
