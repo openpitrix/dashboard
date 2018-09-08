@@ -1,0 +1,119 @@
+@import '~scss/vars';
+
+.types{
+  margin-top: 20px;
+  margin-bottom: 12px;
+
+  label{
+    display: inline-block;
+    margin-right: 12px;
+    font-size: 12px;
+    line-height: 20px;
+    color: $N100;
+    cursor: pointer;
+
+    &.active{
+      font-weight: 500;
+      color: $N500;
+      cursor: auto;
+    }
+  }
+}
+
+.cardContent {
+  float: left;
+  display: inline-block;
+  margin: 0 24px 24px 0;
+  width: calc(33.333% - 16px);
+  height: 189px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  &:nth-child(3n+3) {
+    margin-right: 0;
+  }
+}
+
+.addRuntime {
+  float: left;
+  display: inline-block;
+  width: calc(33.33% - 16px);
+  height: 189px;
+  line-height: 189px;
+  background-color: $N0;
+  border: dashed 1px $P30;
+  text-align: center;
+  cursor: pointer;
+}
+
+.runtimeCard{
+  position: relative;
+  padding: 24px;
+
+  .name{
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: $N500;
+    @include textCut;
+
+    &:hover{
+      color: $P75;
+    }
+  }
+  .description{
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0;
+    color: $N100;
+    @include textCut;
+  }
+  .others{
+    margin-top: 35px;
+  }
+  dl{
+    float: left;
+    display: inline-block;
+    width: 40%;
+
+    &:last-child{
+      width: 20%;
+    }
+
+    dt{
+      display: block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      line-height: 20px;
+      letter-spacing: 0;
+      color: $N100;
+    }
+
+    dd{
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0;
+      color: $N500;
+      @include textCut;
+    }
+
+    .provider{
+      position: relative;
+      top: -4px;
+    }
+  }
+}
+
+.operation {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  :global {
+    .pi-popover-popper {
+      margin-left: -90px !important;
+    }
+  }
+}

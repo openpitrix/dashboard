@@ -130,4 +130,8 @@
     float: right;
   }
 
+  .clearfix {
+    overflow: hidden;
+    _zoom: 1;
+  }
 }

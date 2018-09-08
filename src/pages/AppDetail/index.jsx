@@ -125,7 +125,7 @@ export default class AppDetail extends Component {
     return (
       <Section>
         <Card className={styles.detailCard}>
-          <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
+          <Link to={`/store/${appDetail.app_id}/deploy`}>
             <Button
               className={styles.deployBtn}
               type="primary"
