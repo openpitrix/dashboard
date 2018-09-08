@@ -57,6 +57,7 @@ form.createForm {
   line-height: 28px;
   color: $N500;
 }
+
 .sshCard {
   .title {
     margin-bottom: 18px;
@@ -77,6 +78,7 @@ form.createForm {
     @include textCut;
   }
 }
+
 .sshCardOuter {
   border: 1px solid transparent;
   cursor: pointer;
@@ -90,6 +92,14 @@ form.createForm {
     }
   }
 }
+
 .addButton {
   width: 100%;
+}
+
+.downloadWord {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 24px;
+  color: $N300;
 }

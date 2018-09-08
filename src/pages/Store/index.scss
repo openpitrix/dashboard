@@ -2,7 +2,6 @@
 
 .storeContent {
   position: relative;
-  //min-height: $main-min-height;
 
   .homeLoad {
     margin-left: $nav-width;
@@ -10,17 +9,15 @@
 
   .nav {
     position: fixed;
-    top: $layout-top;
+    top:  $header-height + $title-banner-height + 8px;
     left: auto;
     height: $content-height;
   }
 
-
   .apps {
+    margin-top: -32px;
     margin-left: $nav-width;
     padding-left: 24px;
-    padding-bottom: $page-bottom;
-    min-height: $content-height;
   }
 
   .progressive{

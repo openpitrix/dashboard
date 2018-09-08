@@ -11,11 +11,16 @@ export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,
     title: PropTypes.string,
+    skipLink: PropTypes.string,
     more: PropTypes.bool
   };
 
+  static defaultProps = {
+    skipLink: 'apps'
+  };
+
   render() {
-    const { categoryId, title, more, t } = this.props;
+    const { categoryId, title, more, skipLink, t } = this.props;
 
     return (
       <div className={styles.title}>
@@ -23,7 +28,7 @@ export default class CardTitle extends PureComponent {
         {more && (
           <Link
             className={classnames(styles.more, { [styles.show]: more })}
-            to={`/apps/category/${categoryId}`}
+            to={`/${skipLink}/category/${categoryId}`}
           >
             {t('more')}
           </Link>

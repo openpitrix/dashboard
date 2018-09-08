@@ -2,10 +2,13 @@
 
 .layout {
   padding-top: $layout-top;
-  //padding-bottom: $page-bottom;
   min-height: $content-height;
   width: $content-width;
   margin: 0 auto;
+
+  &.hasBack{
+    padding-top: $layout-top - 20px;
+  }
 
   &.hasMenu{
     margin: 68px 20px 20px $menu-width+20px;

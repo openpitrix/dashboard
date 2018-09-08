@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Table, Popover, Radio, Button, Input, Select, Icon } from 'components/Base';
+import { Table, Popover, Radio, Button, Input, Select, Icon, Modal } from 'components/Base';
 import Layout, { CreateResource, Dialog, Panel, Grid, Row, Section, Card } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import Configuration from 'pages/Admin/Clusters/Detail/Configuration';
 import { getObjName, formatTime } from 'utils';
+
 import styles from './index.scss';
 
 @translate()
@@ -23,7 +24,7 @@ export default class SSHKeys extends Component {
   static async onEnter({ clusterStore }) {
     await clusterStore.fetchKeyPairs();
     await clusterStore.fetchAll({
-      limit: 200,
+      noLimit: true,
       active: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
     });
   }
@@ -45,7 +46,12 @@ export default class SSHKeys extends Component {
     e.stopPropagation();
     const { clusterStore } = this.props;
     clusterStore.pairId = pairId;
-    clusterStore.showModal('delPair');
+    clusterStore.showModal('deleteKey');
+  };
+
+  showCreateModal = () => {
+    const { clusterStore } = this.props;
+    clusterStore.showModal('addKey');
   };
 
   renderOperateMenu = pairId => {
@@ -69,6 +75,37 @@ export default class SSHKeys extends Component {
         onCancel={hideModal}
       >
         Are you sure delete this SSH Key?
+      </Dialog>
+    );
+  };
+
+  renderAddModal = () => {
+    const { clusterStore, t } = this.props;
+    const { isModalOpen, hideModal } = clusterStore;
+
+    return (
+      <Modal title={t('Add SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
+        {this.renderForm()}
+      </Modal>
+    );
+  };
+
+  renderDownloadModal = () => {
+    const { clusterStore, t } = this.props;
+    const { isModalOpen, hideModal } = clusterStore;
+
+    return (
+      <Dialog
+        title={t('Download the private key of the SSH key ')}
+        visible={isModalOpen}
+        onCancel={hideModal}
+        hideFooter
+      >
+        <p className={styles.downloadWord}>
+          Click "Download" button to get the private key. Its download link will be kept for 10
+          minutes.
+        </p>
+        <Button type="primary">Download</Button>
       </Dialog>
     );
   };
@@ -106,9 +143,7 @@ export default class SSHKeys extends Component {
           <Button type={`primary`} className={`primary`} htmlType="submit">
             {t('Confirm')}
           </Button>
-          <Link to="/profile">
-            <Button>{t('Cancel')}</Button>
-          </Link>
+          <Button>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -152,6 +187,7 @@ export default class SSHKeys extends Component {
       currentPairId
     } = clusterStore;
     const clusterNodes = clusterStore.clusterNodes.toJSON();
+
     const columns = [
       {
         title: t('Name'),
@@ -247,7 +283,11 @@ export default class SSHKeys extends Component {
               </Popover>
             </Card>
           ))}
-          <Button className={styles.addButton} type="primary">
+          <Button
+            onClick={() => this.showCreateModal()}
+            className={styles.addButton}
+            type="primary"
+          >
             Add
           </Button>
         </Section>
@@ -277,7 +317,7 @@ export default class SSHKeys extends Component {
   }
 
   render() {
-    const { keyPairs } = this.props.clusterStore;
+    const { keyPairs, modalType } = this.props.clusterStore;
 
     return (
       <Layout title="SSH Keys">
@@ -288,7 +328,9 @@ export default class SSHKeys extends Component {
             {this.renderForm()}
           </CreateResource>
         )}
-        {this.renderDeleteModal()}
+        {modalType === 'deleteKey' && this.renderDeleteModal()}
+        {modalType === 'addKey' && this.renderAddModal()}
+        {modalType === 'download' && this.renderDownloadModal()}
       </Layout>
     );
   }

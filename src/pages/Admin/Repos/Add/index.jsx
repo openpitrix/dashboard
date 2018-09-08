@@ -46,8 +46,7 @@ export default class RepoAdd extends Component {
     if (repoId) title = t('Modify Repo');
 
     return (
-      <Layout>
-        <BackBtn label="repos" link="/dashboard/repos" />
+      <Layout backBtn={<BackBtn label="repos" link="/dashboard/repos" />}>
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
