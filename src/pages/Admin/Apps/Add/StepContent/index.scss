@@ -14,8 +14,12 @@
 @keyframes load {@include load-frames;}
 
 .stepContent{
-  width: 100%;
-  margin-top: 72px;
+  position: fixed;
+  top: calc(50% + 20px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 700px;
+  min-height: 500px;
   text-align: center;
 
   .stepName{
@@ -36,7 +40,7 @@
 
   .stepOperate{
     display: inline-block;
-    margin-top: 80px;
+    margin: 60px 0 0;
     font-size: 14px;
     line-height: 16px;
     text-align: center;

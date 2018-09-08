@@ -13,11 +13,29 @@
 @-webkit-keyframes load {@include load-frames;}
 @keyframes load {@include load-frames;}
 
-.createVersion{
-  width: 100%;
-  margin-top: 72px;
-  text-align: center;
+.createApp{
+  background: $background-color;
+  min-width: 744px;
+  min-height: 100vh;
 
+  .operate{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 20px;
+
+    >label{
+      display: inline-block;
+      font-size: 12px;
+      line-height: 20px;
+      color: $N100;
+      cursor: pointer;
+    }
+  }
+}
+
+.createVersion{
   .stepName{
     margin-bottom: 4px;
     font-size: 14px;
@@ -36,7 +54,7 @@
 
   .stepOperate{
     display: inline-block;
-    margin-top: 80px;
+    margin: 60px 0 0;
     font-size: 14px;
     line-height: 16px;
     text-align: center;

@@ -13,9 +13,12 @@
     float: left;
     display: inline-block;
     position: relative;
-    width: 33.33%;
+    width: 35%;
     height: 68px;
+
     &:first-child{
+      width: 30%;
+
       .word{
         float: right;
         margin-right: 48px;

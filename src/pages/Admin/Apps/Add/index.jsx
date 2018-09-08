@@ -71,9 +71,14 @@ export default class AppAdd extends Component {
   }
 
   setCreateStep = step => {
-    const { setCreateStep } = this.props.appCreateStore;
     window.scroll({ top: 0, behavior: 'smooth' });
-    setCreateStep(step);
+    const { setCreateStep, createStep } = this.props.appCreateStore;
+    step = step ? step : createStep - 1;
+    if (step) {
+      setCreateStep(step);
+    } else {
+      history.back();
+    }
   };
 
   selectRepoNext = length => {
@@ -150,9 +155,6 @@ export default class AppAdd extends Component {
             {errorMsg}
           </div>
         )}
-        <div onClick={() => this.setCreateStep(1)} className={styles.stepOperate}>
-          ← Back
-        </div>
       </StepContent>
     );
   }
@@ -187,13 +189,17 @@ export default class AppAdd extends Component {
     const { createStep } = this.props.appCreateStore;
 
     return (
-      <Layout>
-        <Grid>
-          {createStep === 1 && this.renderSelectRepo()}
-          {createStep === 2 && this.renderUploadPackage()}
-          {createStep === 3 && this.renderCreatedApp()}
-        </Grid>
-      </Layout>
+      <div className={styles.createApp}>
+        <div className={styles.operate}>
+          <label onClick={() => this.setCreateStep()}>Back</label>
+          <label className="pull-right" onClick={() => history.back()}>
+            Esc
+          </label>
+        </div>
+        {createStep === 1 && this.renderSelectRepo()}
+        {createStep === 2 && this.renderUploadPackage()}
+        {createStep === 3 && this.renderCreatedApp()}
+      </div>
     );
   }
 }

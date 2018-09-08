@@ -16,10 +16,18 @@
     border-radius: 2px;
     background-color: #fff;
   }
+
   .refreshBtn {
     @extend %pull-right;
   }
+
   .btnRight{
     @extend %pull-right;
+  }
+
+  .viewIcon{
+    @extend %pull-right;
+    margin: 4px 0 4px 12px;
+    cursor: pointer;
   }
 }
