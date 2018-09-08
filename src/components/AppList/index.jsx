@@ -21,7 +21,7 @@ export default class AppList extends PureComponent {
   };
 
   static defaultProps = {
-    skipLink: 'app'
+    skipLink: 'apps'
   };
 
   renderCategoryApps() {
@@ -38,7 +38,9 @@ export default class AppList extends PureComponent {
 
         return (
           <div key={category_id} className={styles.categoryApps}>
-            {apps.length > 0 && <CardTitle categoryId={category_id} title={name} more />}
+            {apps.length > 0 && (
+              <CardTitle skipLink={skipLink} categoryId={category_id} title={name} more />
+            )}
 
             {apps.slice(0, 6).map(app => (
               <Link key={app.app_id} to={`/${skipLink}/${app.app_id}`}>

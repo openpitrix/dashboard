@@ -3,14 +3,12 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
-
 import get from 'lodash/get';
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
+
+import { Radio, Button, Input } from 'components/Base';
+import Layout, { BackBtn, CreateResource } from 'components/Layout';
 import Select from 'components/Base/Select';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'components/Layout';
 
 import styles from './index.scss';
 
@@ -212,9 +210,7 @@ export default class RuntimeAdd extends Component {
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">
             {t('Confirm')}
           </Button>
-          <Link to="/dashboard/runtimes">
-            <Button>{t('Cancel')}</Button>
-          </Link>
+          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -237,8 +233,7 @@ export default class RuntimeAdd extends Component {
     if (runtimeId) title = t('Modify Runtime');
 
     return (
-      <Layout title="My Runtimes">
-        <BackBtn label="runtime" link="/runtimes" />
+      <Layout title="My Runtimes" backBtn={<BackBtn label="runtime" link="/runtimes" />}>
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>
