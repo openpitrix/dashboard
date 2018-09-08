@@ -238,7 +238,7 @@ export default class RuntimeAdd extends Component {
 
     return (
       <Layout title="My Runtimes">
-        <BackBtn label="runtime" link="/dashboard/runtimes" />
+        <BackBtn label="runtime" link="/runtimes" />
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>

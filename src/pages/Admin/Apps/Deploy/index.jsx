@@ -301,7 +301,7 @@ export default class AppDeploy extends Component {
         title="Store"
         hasSearch
         isLoading={isLoading}
-        backBtn={<BackBtn label={appDetail.name} link={`/app/${appDetail.app_id}`} />}
+        backBtn={<BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
       >
         <CreateResource title={title} aside={this.renderAside()} asideTitle="">
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}

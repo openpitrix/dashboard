@@ -16,11 +16,16 @@ export default class AppList extends PureComponent {
     apps: PropTypes.array,
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
-    appSearch: PropTypes.string
+    appSearch: PropTypes.string,
+    skipLink: PropTypes.string
+  };
+
+  static defaultProps = {
+    skipLink: 'app'
   };
 
   renderCategoryApps() {
-    const { categoryTitle, appSearch, categoryApps } = this.props;
+    const { categoryTitle, appSearch, categoryApps, skipLink } = this.props;
     const categoryShow = !categoryTitle && !appSearch && categoryApps;
 
     if (!categoryShow) {
@@ -36,7 +41,7 @@ export default class AppList extends PureComponent {
             {apps.length > 0 && <CardTitle categoryId={category_id} title={name} more />}
 
             {apps.slice(0, 6).map(app => (
-              <Link key={app.app_id} to={`/store/${app.app_id}`}>
+              <Link key={app.app_id} to={`/${skipLink}/${app.app_id}`}>
                 <Card icon={app.icon} name={app.name} desc={app.description} fold />
               </Link>
             ))}

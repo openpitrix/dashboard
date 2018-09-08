@@ -63,7 +63,7 @@ export default class AppBlock extends React.Component {
             </dd>
           </dl>
         </div>
-        <Link className={styles.deploy} to={`/dashboard/app/${appDetail.app_id}/deploy`}>
+        <Link className={styles.deploy} to={`/store/${appDetail.app_id}/deploy`}>
           <Button type="primary">Deploy</Button>
         </Link>
       </div>
