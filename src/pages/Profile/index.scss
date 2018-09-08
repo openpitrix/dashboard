@@ -1,0 +1,55 @@
+@import '~scss/vars';
+
+.title {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: $N500;
+}
+
+.items {
+  >p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: $N500;
+    cursor: pointer;
+
+    &.active{
+      color: $P75;
+      cursor: auto;
+    }
+  }
+}
+
+.form {
+  & > div {
+    margin-bottom: 24px;
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .name{
+    display: inline-block;
+    //float: left;
+    margin-right: 24px;
+    width: 168px;
+    line-height: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .input{
+    width: 256px;
+  }
+
+  .submitBtn{
+    padding-left: 192px;
+    button{
+      margin-right: 12px;
+    }
+  }
+}

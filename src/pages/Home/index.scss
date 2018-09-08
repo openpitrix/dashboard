@@ -2,9 +2,8 @@
 
 .content {
   position: relative;
-  height: auto;
-  min-height: $main-min-height;
   margin: 0 auto;
+  min-height: $content-height;
   width: $content-width;
 
   .homeLoad {
@@ -19,10 +18,8 @@
   }
   .apps {
     margin-left: $nav-width;
-
     padding-left: 24px;
     padding-bottom: $page-bottom;
-    min-height: calc(100vh - #{$footer-height});
   }
 
   .progressive{
@@ -61,6 +58,7 @@
     }
   }
 }
+
 .fixNav {
   div[class*='_nav'] {
     position: fixed;
@@ -68,9 +66,11 @@
     left: auto;
     height: $main-height;
   }
+
   div[class*='appList'] {
-    padding-top: 48px;
+    padding-top: $header-height;
   }
+
   div[class*='_cateTitle']{
     padding-top: 72px;
   }

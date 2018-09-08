@@ -19,7 +19,7 @@ export default class Nav extends PureComponent {
   };
 
   static defaultProps = {
-    skipLink: 'app'
+    skipLink: 'apps'
   };
 
   render() {

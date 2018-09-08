@@ -104,7 +104,14 @@ export default class Layout extends React.Component {
     const hasMenu = ['developer', 'admin'].includes(role);
 
     return (
-      <div className={classnames(styles.layout, className, { [styles.hasMenu]: hasMenu })}>
+      <div
+        className={classnames(
+          styles.layout,
+          className,
+          { [styles.hasMenu]: hasMenu },
+          { [styles.hasBack]: Boolean(backBtn) }
+        )}
+      >
         {isNormal && <TitleBanner title={title} hasSearch={hasSearch} />}
         {hasMenu && <Menu />}
         {noNotification ? null : <Notification />}
