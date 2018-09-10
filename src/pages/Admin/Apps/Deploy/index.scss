@@ -1,5 +1,9 @@
 @import "~scss/vars";
 
+.deployApp{
+  min-width: 980px !important;
+}
+
 .header {
   margin: 24px 0;
   a {
@@ -52,7 +56,7 @@
   }
   .showWord{
     display: inline-block;
-    max-width: 480px;
+    max-width: calc(100% - 192px);
     line-height: 32px;
   }
 

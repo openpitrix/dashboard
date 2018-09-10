@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
@@ -8,8 +8,8 @@ import classNames from 'classnames';
 import { Icon, Input, Table, Popover, Modal, Button, Upload } from 'components/Base';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
-import AppBlock from 'components/DetailBlock/AppBlock';
-import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
+import DetailBlock from './DetailBlock';
+import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import StepContent from 'StepContent';
 import clusterColumns from './tabs/cluster-columns';
 
@@ -384,9 +384,13 @@ export default class AppDetail extends Component {
     }
 
     return (
-      <Layout backBtn={<BackBtn label="apps" link="/dashboard/apps" />}>
+      <Layout className={styles.appDetail}>
+        <NavLink>
+          <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
+        </NavLink>
+
         <Grid className={styles.appInfo}>
-          <AppBlock appDetail={appDetail} repoName={repoName} repoProvider={repoProvider} />
+          <DetailBlock appDetail={appDetail} repoName={repoName} repoProvider={repoProvider} />
           {appDetail.status !== 'deleted' && (
             <Popover className={styles.operation} content={this.renderHandleMenu(appDetail.app_id)}>
               <Icon name="more" />

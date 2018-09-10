@@ -82,6 +82,7 @@
     box-sizing: border-box;
     padding: 7px 10px;
     width: 400px;
+    max-width: calc(100% - 192px);
     height: 88px;
     border-radius: 2px;
     background-color: $N0;

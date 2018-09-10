@@ -6,7 +6,7 @@ import { filter, get, orderBy } from 'lodash';
 import classnames from 'classnames';
 
 import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -343,7 +343,7 @@ export default class Apps extends Component {
             <Statistics {...summaryInfo} objs={repos.slice()} />
           </Row>
         )}
-
+        <NavLink>My Apps / All</NavLink>
         <Row>
           <Grid>
             <Section size={12}>

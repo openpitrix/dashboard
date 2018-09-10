@@ -64,7 +64,7 @@ export default class Menu extends React.Component {
         <Link className={styles.link} to="/dashboard/clusters">
           Clusters
         </Link>
-        <Link className={styles.link} to="/dashboard/runtimes">
+        <Link className={styles.link} to="/runtimes">
           Runtimes
         </Link>
       </div>

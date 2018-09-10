@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Icon, Popover } from 'components/Base';
-import RepoCard from 'components/RepoCard';
+import RepoCard from './RepoCard';
 import capitalize from 'lodash/capitalize';
 import { I18n } from 'react-i18next';
 

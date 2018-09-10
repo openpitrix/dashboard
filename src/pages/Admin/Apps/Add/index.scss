@@ -16,7 +16,7 @@
 .createApp{
   background: $background-color;
   min-width: 744px;
-  min-height: 100vh;
+  min-height: calc(100vh - 100px);
 
   .operate{
     position: fixed;

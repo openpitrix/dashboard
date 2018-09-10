@@ -70,7 +70,7 @@ form.createForm {
   }
   .smallSelect{
     float: left;
-    width: 88px;
+    width: 80px;
     margin-right: 12px;
     vertical-align: middle;
   }
@@ -81,6 +81,7 @@ form.createForm {
     box-sizing: border-box;
     padding: 7px 10px;
     width: 400px;
+    max-width: calc(100% - 192px);
     height: 88px;
     border-radius: 2px;
     background-color: $N0;

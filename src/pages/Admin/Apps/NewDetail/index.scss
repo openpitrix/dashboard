@@ -1,5 +1,9 @@
 @import '~scss/vars';
 
+.appDetail{
+  min-width: 950px !important;
+}
+
 .appInfo{
   position: relative;
 
@@ -41,7 +45,8 @@
 
   li{
     margin-bottom: 4px;
-    padding: 0 20px 0 26px;
+    //padding: 0 20px 0 26px;
+    padding: 0 10px;
     line-height: 40px;
     border-radius: 2px;
     background-color: $B10;
@@ -126,7 +131,8 @@
   }
 
   .addVersion{
-    padding: 0 24px;
+    //padding: 0 24px;
+    padding: 0 10px;
     line-height: 40px;
     font-size: 14px;
     color: $P75;
@@ -142,7 +148,8 @@
 
     dt{
       display: inline-block;
-      width: 264px;
+      //width: 264px;
+      width: calc(35% - 12px);
       margin-top: 8px;
       margin-right: 24px;
       font-size: 14px;
@@ -153,7 +160,8 @@
 
     dd{
       display: inline-block;
-      width: 430px;
+      //width: 430px;
+      width: calc(65% - 12px);
       vertical-align: top;
     }
   }
@@ -241,7 +249,7 @@
 @keyframes load {@include load-frames;}
 
 .createVersion{
-  margin-bottom: 150px;
+  //margin-bottom: 150px;
 
   .upload{
     position: relative;

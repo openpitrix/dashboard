@@ -14,12 +14,13 @@
 @keyframes load {@include load-frames;}
 
 .stepContent{
-  position: fixed;
+  padding: 100px 0;
+  /*position: fixed;
   top: calc(50% + 20px);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);*/
   min-width: 700px;
-  min-height: 500px;
+  //min-height: 500px;
   text-align: center;
 
   .stepName{

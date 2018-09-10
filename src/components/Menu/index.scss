@@ -110,13 +110,13 @@
 }
 
 .header{
-  /*position: fixed;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 3;
-  width: 100%;*/
-  position: static;
-  margin: -68px -20px 20px;
+  width: 100%;
+ /* position: static;
+  margin: -68px -20px 20px;*/
   height: 48px;
   background-color: $background-color;
 
