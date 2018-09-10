@@ -48,12 +48,12 @@ export default class Menu extends React.Component {
       <div className={styles.subNav}>
         <div className={styles.title}>Dashboard</div>
         <div className={styles.app}>
-          <span className={styles.plus}>
+          <Link className={styles.plus} to="/dashboard/app/create">
             <Icon name="add" />
-          </span>
-          <span className={styles.more}>
+          </Link>
+          <Link className={styles.more} to="/dashboard/apps">
             <Icon name="more" />
-          </span>
+          </Link>
         </div>
         <Link className={styles.link} to="/dashboard/repos">
           Repos
@@ -64,7 +64,7 @@ export default class Menu extends React.Component {
         <Link className={styles.link} to="/dashboard/clusters">
           Clusters
         </Link>
-        <Link className={styles.link} to="/dashboard/runtimes">
+        <Link className={styles.link} to="/runtimes">
           Runtimes
         </Link>
       </div>

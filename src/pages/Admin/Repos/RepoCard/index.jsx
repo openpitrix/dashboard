@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
 import { ProviderName } from 'components/TdName';
-import AppImages from '../Rectangle/AppImages';
-import TagShow from '../TagShow';
+import AppImages from 'components/Rectangle/AppImages/index';
+import TagShow from 'components/TagShow/index';
 
 import styles from './index.scss';
 

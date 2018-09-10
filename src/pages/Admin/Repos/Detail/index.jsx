@@ -3,25 +3,28 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
 import TagNav from 'components/TagNav';
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore, sessInfo, sock }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
+  sessInfo,
   sock
 }))
 @observer
@@ -213,7 +216,7 @@ export default class RepoDetail extends Component {
   }
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore, t } = this.props;
+    const { repoStore, appStore, runtimeStore, clusterStore, sessInfo, t } = this.props;
     const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
 
@@ -299,11 +302,21 @@ export default class RepoDetail extends Component {
         break;
     }
 
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+
     return (
       <Layout
-        backBtn={<BackBtn label="repos" link="/dashboard/repos" />}
+        className={classnames({ [styles.repoDetail]: !isNormal })}
+        backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}
         listenToJob={this.listenToJob}
       >
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> /
+            <Link to="/dashboard/repos">Repos</Link> / {repoDetail.name}
+          </NavLink>
+        )}
+
         <Grid>
           <Section>
             <Card>

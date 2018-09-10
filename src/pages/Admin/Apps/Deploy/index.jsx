@@ -1,23 +1,26 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { get } from 'lodash';
 
 import { Radio, Button, Input, Select, Image } from 'components/Base';
-import Layout, { BackBtn, CreateResource } from 'components/Layout';
+import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
-import { get } from 'lodash';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore,
   appStore: rootStore.appStore,
   repoStore: rootStore.repoStore,
   appDeployStore: rootStore.appDeployStore,
-  runtimeStore: rootStore.runtimeStore
+  runtimeStore: rootStore.runtimeStore,
+  sessInfo
 }))
 @observer
 export default class AppDeploy extends Component {
@@ -289,20 +292,28 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore, t } = this.props;
+    const { appDeployStore, appStore, sessInfo, t } = this.props;
     const appName = appStore.appDetail.name;
     const { appDetail } = appStore;
     const { isKubernetes } = appDeployStore;
     const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appDetail.name}`;
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
 
     return (
       <Layout
+        className={classnames({ [styles.deployApp]: !isNormal })}
         title="Store"
         hasSearch
         isLoading={isLoading}
-        backBtn={<BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
+        backBtn={isNormal && <BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
       >
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / Test / Deploy
+          </NavLink>
+        )}
+
         <CreateResource title={title} aside={this.renderAside()} asideTitle="">
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}
         </CreateResource>

@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
+import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import Toolbar from 'components/Toolbar';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore, sessInfo, sock }) => ({
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
   rootStore,
+  sessInfo,
   sock
 }))
 @observer
@@ -242,7 +246,7 @@ export default class ClusterDetail extends Component {
   };
 
   render() {
-    const { clusterStore, appStore, runtimeStore, t } = this.props;
+    const { clusterStore, appStore, runtimeStore, sessInfo, t } = this.props;
 
     const {
       isLoading,
@@ -267,7 +271,7 @@ export default class ClusterDetail extends Component {
       {
         title: t('Name'),
         key: 'name',
-        width: '155px',
+        width: '130px',
         render: item => <TdName name={item.name} description={item.node_id} noIcon />
       },
       {
@@ -322,13 +326,23 @@ export default class ClusterDetail extends Component {
       current: 1
     };
 
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+
     return (
       <Layout
-        backBtn={<BackBtn label="purchased" link="/purchased" />}
+        className={classnames({ [styles.clusterDetail]: !isNormal })}
+        backBtn={isNormal && <BackBtn label="purchased" link="/purchased" />}
         isloading={isLoading}
         listenToJob={this.listenToJob}
         title="Purchased"
       >
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / Test /
+            <Link to="/dashboard/clusters">Clusters</Link> / {detail.name}
+          </NavLink>
+        )}
+
         <Grid>
           <Section>
             <Card>

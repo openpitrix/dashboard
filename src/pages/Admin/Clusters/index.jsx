@@ -1,26 +1,26 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
+import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Button, Table, Popover } from 'components/Base';
+import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
-import { formatTime, getObjName } from 'utils';
-import capitalize from 'lodash/capitalize';
+import { formatTime, getObjName, getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore, sessInfo, sock }) => ({
   rootStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
+  sessInfo,
   sock
 }))
 @observer
@@ -197,7 +197,7 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, t } = this.props;
+    const { clusterStore, sessInfo, t } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
@@ -304,11 +304,22 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
+
     return (
       <Layout listenToJob={this.listenToJob}>
-        <Row>
-          <Statistics {...summaryInfo} objs={runtimes.slice()} />
-        </Row>
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / Test / Clusters
+          </NavLink>
+        )}
+
+        {role === 'adimin' && (
+          <Row>
+            <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
+          </Row>
+        )}
 
         <Row>
           <Grid>

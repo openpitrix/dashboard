@@ -13,7 +13,7 @@ import { Grid, Section, Card, Panel } from 'components/Layout';
 import styles from './index.scss';
 
 @translate()
-export default class AppBlock extends React.Component {
+export default class DetailBlock extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
     repoName: PropTypes.string,
