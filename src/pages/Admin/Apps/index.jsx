@@ -28,14 +28,16 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   static async onEnter({ appStore, categoryStore, repoStore, sessInfo }) {
-    const role = getSessInfo('role', sessInfo);
     await appStore.fetchAll();
-    if (role === 'adimin') {
+
+    const role = getSessInfo('role', sessInfo);
+    if (role === 'admin') {
       await appStore.appStatistics();
     }
+
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 99
+      noLimit: true
     });
     await categoryStore.fetchAll();
   }
@@ -338,12 +340,14 @@ export default class Apps extends Component {
 
     return (
       <Layout>
-        {this.role === 'adimin' && (
+        <NavLink>My Apps / All</NavLink>
+
+        {this.role === 'admin' && (
           <Row>
             <Statistics {...summaryInfo} objs={repos.slice()} />
           </Row>
         )}
-        <NavLink>My Apps / All</NavLink>
+
         <Row>
           <Grid>
             <Section size={12}>
@@ -353,13 +357,12 @@ export default class Apps extends Component {
                 this.renderCardApps()
               ) : (
                 <Card>
-                  {this.role === 'adimin' && this.renderToolbar()}
+                  {this.role === 'admin' && this.renderToolbar()}
 
                   <Table
                     columns={columns}
                     dataSource={apps.toJSON()}
                     rowSelection={rowSelection}
-                    isLoading={isLoading}
                     filterList={filterList}
                     pagination={pagination}
                     className={styles.appTable}

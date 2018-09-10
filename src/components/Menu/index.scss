@@ -8,7 +8,7 @@
   z-index: 4;
   width: $menu-width;
 
-  .nav{
+  .nav {
     float: left;
     width: $menu-nav-width;
     height: 100vh;
@@ -16,11 +16,17 @@
     li{
       height: 48px;
 
-      &:hover{
-        background-color: rgba($Y300, 0.08);
+      >a {
+        display: inline-block;
+        height: 48px;
       }
 
-      :global{
+      .active {
+        background-color: rgba($Y300, 0.08);
+        cursor: auto;
+      }
+
+      :global {
         .icon{
           margin: 12px;
         }
@@ -29,14 +35,14 @@
   }
 }
 
-.subNav{
+.subNav {
   float: left;
   height: 100vh;
   width: $menu-sub-nav-width;
   background-color: #343945;
   box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.07);
 
-  .title{
+  .title {
     margin: 0 24px;
     font-size: 16px;
     font-weight: 900;
@@ -44,10 +50,10 @@
     color: $N0;
   }
 
-  .app{
+  .app {
     margin: 0 24px 12px;
 
-    >a{
+    >a {
       display: inline-block;
       height: 32px;
       //opacity: 0.5;
@@ -57,17 +63,17 @@
       cursor: pointer;
     }
 
-    .plus{
+    .plus {
       width: 104px;
     }
 
-    .more{
+    .more {
       float: right;
       width: 40px;
     }
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         margin: 8px 0;
         /*svg{
           --primary-color: rgba($N0, 0.9);
@@ -77,12 +83,12 @@
     }
   }
 
-  .test{
+  .test {
     margin: 5px 0 16px;
     height: 32px;
     border-bottom: 1px solid rgba($N400, 0.4);
 
-    .word{
+    .word {
       display: inline-block;
       position: relative;
       bottom: -16px;
@@ -95,7 +101,7 @@
     }
   }
 
-  .link{
+  .link {
     display: block;
     padding: 9px 24px;
     line-height: 14px;
@@ -104,6 +110,7 @@
 
     &.active {
       font-weight: 500;
+      border-right: 2px solid $Y200;
     }
   }
 
