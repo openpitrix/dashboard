@@ -43,7 +43,7 @@ export default class AppList extends PureComponent {
             )}
 
             {apps.slice(0, 6).map(app => (
-              <Link key={app.app_id} to={`/${skipLink}/${app.app_id}`}>
+              <Link key={app.app_id} to={`/store/${app.app_id}`}>
                 <Card icon={app.icon} name={app.name} desc={app.description} fold />
               </Link>
             ))}

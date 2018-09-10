@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -75,13 +75,13 @@ class Header extends Component {
     return (
       <ul className={styles.operateItems}>
         <li>
-          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+          <Link to="/dashboard">{t('Dashboard')}</Link>
         </li>
         <li>
-          <NavLink to="/profile">{t('Profile')}</NavLink>
+          <Link to="/profile">{t('Profile')}</Link>
         </li>
         <li>
-          <NavLink to="/ssh_keys">{t('SSH Keys')}</NavLink>
+          <Link to="/ssh_keys">{t('SSH Keys')}</Link>
         </li>
         <li>
           <a href="/logout">{t('Log out')}</a>
