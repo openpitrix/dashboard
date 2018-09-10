@@ -26,13 +26,13 @@
   .showWord{
     float: left;
     display: inline-block;
-    max-width: 480px;
+    max-width: calc(100% - 192px);
     line-height: 32px;
   }
   .rightShow{
     margin-top: 8px;
     margin-left: 192px;
-    width: 500px;
+    width: calc(100% - 192px);
     font-size: 12px;
     line-height: 1.67;
     color: $N100;

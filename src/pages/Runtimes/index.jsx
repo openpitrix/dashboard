@@ -5,16 +5,18 @@ import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
 import { Icon, Button, Popover } from 'components/Base';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, NavLink } from 'components/Layout';
 import { ProviderName } from 'components/TdName';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  rootStore
+  rootStore,
+  sessInfo
 }))
 @observer
 export default class Runtimes extends Component {
@@ -124,7 +126,7 @@ export default class Runtimes extends Component {
   }
 
   render() {
-    const { runtimeStore, t } = this.props;
+    const { runtimeStore, sessInfo, t } = this.props;
     const { runtimes } = runtimeStore;
 
     const types = [
@@ -135,9 +137,16 @@ export default class Runtimes extends Component {
     ];
 
     const { currentType } = this.state;
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
 
     return (
       <Layout title="My Runtimes" className="clearfix">
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / Test / Runtimes
+          </NavLink>
+        )}
+
         <div className={styles.types}>
           {types.map(type => (
             <label

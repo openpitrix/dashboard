@@ -20,19 +20,19 @@
     display: inline-block;
     float: left;
     &:nth-child(1) {
-      width: 420px;
-      margin-right: 120px;
+      width: 40%;
     }
     &:nth-child(2) {
-      width: 180px;
+      width: 25%;
       margin-top: 8px;
     }
     &:nth-child(3) {
-      width: 320px;
+      width: 35%;
       margin-top: 8px;
     }
   }
   .titleName {
+    margin-bottom: 8px;
     line-height: 24px;
     font-size: 20px;
     font-weight: 500;
@@ -42,11 +42,13 @@
     }
   }
   .description {
-    height: 34px;
-    line-height: 17px;
+    margin-right: 24px;
+    height: 40px;
+    line-height: 20px;
     font-size: 12px;
     text-align: left;
     color: $grey-word;
+    word-break: break-all;
     overflow: hidden;
   }
   .title {

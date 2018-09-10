@@ -4,19 +4,20 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
 
-import { getScrollTop } from 'utils';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, NavLink } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
-import RepoList from './RepoList';
 import Loading from 'components/Loading';
+import RepoList from './RepoList';
+import { getScrollTop, getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore,
   repoStore: rootStore.repoStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  sessInfo
 }))
 @observer
 export default class Repos extends Component {
@@ -130,7 +131,7 @@ export default class Repos extends Component {
   };
 
   render() {
-    const { t } = this.props;
+    const { sessInfo, t } = this.props;
     const {
       repos,
       isLoading,
@@ -139,11 +140,16 @@ export default class Repos extends Component {
       onClearSearch,
       onRefresh
     } = this.props.repoStore;
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
 
     return (
       <Layout listenToJob={this.listenToJob}>
         <div className={styles.container}>
-          <div className={styles.title}>{t('Repos')}</div>
+          {!isNormal && (
+            <NavLink>
+              <Link to="/dashboard/apps">My Apps</Link> / Repos
+            </NavLink>
+          )}
 
           <Toolbar
             placeholder={t('Search Repo')}

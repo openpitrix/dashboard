@@ -3,8 +3,9 @@
 .progress{
   display: inline-block;
   position: relative;
-  bottom: -5px;
-  width: 200px;
+  bottom: 0;
+  margin-left: 5%;
+  width: 68%;
   height: 8px;
   background-color: $P10;
   .inner{

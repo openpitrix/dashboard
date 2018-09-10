@@ -77,10 +77,12 @@
 
 :global {
   .pi-table {
+    overflow-x: auto;
+
     &-thead > tr > th {
       position: relative;
       line-height: 16px;
-      padding: 12px 8px;
+      padding: 12px 5px;
       font-weight: 500;
       color: $N500;
       letter-spacing: 0;
@@ -135,7 +137,7 @@
     }
 
     &-tbody > tr > td {
-      padding: 12px 8px;
+      padding: 12px 5px;
       line-height: 16px;
       border-bottom: 1px solid $N10;
       transition: all $transition-speed;
@@ -153,6 +155,7 @@
         //border-right: 48px solid #fff;
       }
     }
+
     &-placeholder {
       padding: 12px 0;
       text-align: center;

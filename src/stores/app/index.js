@@ -37,6 +37,8 @@ export default class AppStore extends Store {
 
   @observable currentPic = 1;
 
+  @observable viewType = 'list';
+
   // menu actions logic
   @observable
   handleApp = {

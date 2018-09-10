@@ -5,17 +5,18 @@ import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import get from 'lodash/get';
 
-import { Radio, Button, Input } from 'components/Base';
-import Layout, { BackBtn, CreateResource } from 'components/Layout';
-import Select from 'components/Base/Select';
+import { Radio, Button, Input, Select } from 'components/Base';
+import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import TodoList from 'components/TodoList';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   runtimeStore: rootStore.runtimeStore,
-  runtimeCreateStore: rootStore.runtimeCreateStore
+  runtimeCreateStore: rootStore.runtimeCreateStore,
+  sessInfo
 }))
 @observer
 export default class RuntimeAdd extends Component {
@@ -227,13 +228,23 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { sessInfo, t } = this.props;
     const { runtimeId } = this.store;
-    let title = t('Create Runtime');
-    if (runtimeId) title = t('Modify Runtime');
+    const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
 
     return (
-      <Layout title="My Runtimes" backBtn={<BackBtn label="runtime" link="/runtimes" />}>
+      <Layout
+        title="My Runtimes"
+        backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
+      >
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / Test /
+            <Link to="/runtimes">Runtimes</Link> / {title}
+          </NavLink>
+        )}
+
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
         </CreateResource>

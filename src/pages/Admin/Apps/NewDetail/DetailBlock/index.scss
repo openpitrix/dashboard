@@ -17,7 +17,7 @@
 
 .titleOuter{
   float: left;
-  width: 360px;
+  width: calc(calc(100% + 24px)/12 * 4 - 56px);
   .icon{
     float: left;
     display: inline-block;
@@ -59,12 +59,15 @@
   dl{
     display: inline-block;
     float: left;
-    margin-right: 12px;
-    width: 118px;
+    //margin-right: 12px;
+    //width: 118px;
+    width: 14%;
     @include textCut;
+    &:first-child{
+      width: 12%;
+    }
     &:last-child{
-      margin-right: 0;
-      width: 160px;
+      width: 17%;
     }
   }
   dt{

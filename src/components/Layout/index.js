@@ -10,4 +10,6 @@ export Row from './Grid/row';
 export Panel from './Panel';
 export Card from './Card';
 
+export NavLink from './NavLink';
+
 export default Layout;
