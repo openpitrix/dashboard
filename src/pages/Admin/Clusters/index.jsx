@@ -25,9 +25,14 @@ import styles from './index.scss';
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }) {
+  static async onEnter({ clusterStore, appStore, runtimeStore, sessInfo }) {
     await clusterStore.fetchAll();
-    await clusterStore.fetchStatistics();
+
+    const role = getSessInfo('role', sessInfo);
+    if (role === 'admin') {
+      await clusterStore.fetchStatistics();
+    }
+
     await appStore.fetchApps({
       status: ['active', 'deleted']
     });
@@ -315,7 +320,7 @@ export default class Clusters extends Component {
           </NavLink>
         )}
 
-        {role === 'adimin' && (
+        {role === 'admin' && (
           <Row>
             <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
           </Row>
