@@ -37,24 +37,26 @@
   }
   .dot{
     float:left;
-    margin: 8px 12px 0 0;
+    margin: 9px 12px 0 0;
     width: 12px;
     height: 12px;
   }
   .word{
     float: left;
+    width: calc(100% - 90px);
+
     .name{
-      width: 150px;
+      display: block;
       font-size: 14px;
       font-weight: 500;
-      line-height: 1.14;
+      line-height: 16px;
       color: $N500;
       @include textCut;
     }
+
     .description{
-      width: 150px;
       font-size: 12px;
-      line-height: 1.67;
+      line-height: 20px;
       color: $N100;
       @include textCut;
     }

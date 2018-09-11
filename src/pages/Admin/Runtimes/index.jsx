@@ -2,14 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { get, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 
 import { Icon, Button, Popover, Table } from 'components/Base';
+import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime } from 'utils';
 
 import styles from './index.scss';
@@ -227,7 +227,9 @@ export default class Runtimes extends Component {
     };
 
     return (
-      <Layout title="My Runtimes">
+      <Layout>
+        <NavLink>Platform / Runtimes</NavLink>
+
         <Row>
           <Statistics {...summaryInfo} />
         </Row>

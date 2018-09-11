@@ -4,26 +4,27 @@
   .category {
     text-align: center;
     padding: 12px 0;
-    .line{
+
+    .line {
       display: inline-block;
       width: 330px;
       height: 1px;
       border-bottom: 1px solid $N10;
     }
-    .word{
+
+    .word {
       display: inline-block;
       position: relative;
-      bottom: 11px;
+      bottom: 10px;
       padding: 0 7px;
-      line-height: 24px;
+      line-height:20px;
       font-size: 12px;
-      font-weight: 500;
-      color: $P75;
+      color: $N100;
       background: $background-color;
     }
   }
 
-  .item{
+  .item {
     position: relative;
     height: 150px;
     margin-bottom: 24px;
@@ -34,5 +35,4 @@
       top: 24px;
     }
   }
-
 }

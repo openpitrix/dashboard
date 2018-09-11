@@ -28,12 +28,6 @@ import styles from './index.scss';
 export default class Apps extends Component {
   static async onEnter({ appStore, categoryStore, repoStore, sessInfo }) {
     await appStore.fetchAll();
-
-    const role = getSessInfo('role', sessInfo);
-    if (role === 'admin') {
-      await appStore.appStatistics();
-    }
-
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true
@@ -47,6 +41,15 @@ export default class Apps extends Component {
     appStore.loadPageInit();
     repoStore.loadPageInit();
     this.role = getSessInfo('role', sessInfo);
+  }
+
+  componentDidMount() {
+    const { appStore, sessInfo } = this.props;
+    const role = getSessInfo('role', sessInfo);
+
+    if (role === 'admin') {
+      appStore.fetchStatistics();
+    }
   }
 
   onChangeSort = (params = {}) => {
@@ -288,7 +291,7 @@ export default class Apps extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '92px',
+        width: '112px',
         sorter: this.role === 'admin',
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
@@ -337,9 +340,14 @@ export default class Apps extends Component {
       noCancel: false
     };
 
+    let navLinkShow = 'My Apps / All';
+    if (this.role === 'admin') {
+      navLinkShow = 'Store / All Apps';
+    }
+
     return (
-      <Layout>
-        <NavLink>My Apps / All</NavLink>
+      <Layout className={styles.apps}>
+        <NavLink>{navLinkShow}</NavLink>
 
         {this.role === 'admin' && (
           <Row>
@@ -364,7 +372,6 @@ export default class Apps extends Component {
                     rowSelection={rowSelection}
                     filterList={filterList}
                     pagination={pagination}
-                    className={styles.appTable}
                   />
                 </Card>
               )}

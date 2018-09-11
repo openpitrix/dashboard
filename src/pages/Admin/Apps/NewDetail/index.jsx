@@ -295,7 +295,7 @@ export default class AppDetail extends Component {
             </p>
           </dt>
           <dd>
-            <Input className={styles.input} value={name} />
+            <Input className={styles.input} value={name} onChange={() => {}} />
           </dd>
         </dl>
         <dl>
@@ -334,6 +334,25 @@ export default class AppDetail extends Component {
           </dd>
         </dl>
       </div>
+    );
+  };
+
+  renderNavLink = () => {
+    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
+    const { appDetail } = this.props.appStore;
+
+    if (isAdmin) {
+      return (
+        <NavLink>
+          Store / <Link to="/dashboard/apps">All Apps</Link> / {appDetail.name}
+        </NavLink>
+      );
+    }
+
+    return (
+      <NavLink>
+        <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
+      </NavLink>
     );
   };
 
@@ -385,9 +404,7 @@ export default class AppDetail extends Component {
 
     return (
       <Layout className={styles.appDetail}>
-        <NavLink>
-          <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
-        </NavLink>
+        {this.renderNavLink()}
 
         <Grid className={styles.appInfo}>
           <DetailBlock appDetail={appDetail} repoName={repoName} repoProvider={repoProvider} />

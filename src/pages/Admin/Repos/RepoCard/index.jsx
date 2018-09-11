@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
 import { ProviderName } from 'components/TdName';
-import AppImages from 'components/Rectangle/AppImages/index';
+import AppImages from 'components/AppImages';
 import TagShow from 'components/TagShow/index';
 
 import styles from './index.scss';

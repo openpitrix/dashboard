@@ -301,8 +301,8 @@ export default class RepoDetail extends Component {
         };
         break;
     }
-
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
 
     return (
       <Layout
@@ -312,8 +312,9 @@ export default class RepoDetail extends Component {
       >
         {!isNormal && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> /
-            <Link to="/dashboard/repos">Repos</Link> / {repoDetail.name}
+            {role === 'developer' && <Link to="/dashboard/apps">My Apps</Link>}
+            {role === 'admin' && <label>Platform</label>}
+            &nbsp;/ <Link to="/dashboard/repos">Repos</Link> / {repoDetail.name}
           </NavLink>
         )}
 

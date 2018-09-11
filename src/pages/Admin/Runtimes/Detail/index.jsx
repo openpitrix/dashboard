@@ -10,8 +10,8 @@ import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import TimeShow from 'components/TimeShow';
+import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import { getObjName, getSessInfo } from 'utils';
 
 import styles from './index.scss';
@@ -162,17 +162,23 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
       >
-        {!isNormal && (
+        {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test /
+            <Link to="/dashboard/apps">My Apps</Link> / Test /&nbsp;
             <Link to="/runtimes">Runtimes</Link> / {runtimeDetail.name}
+          </NavLink>
+        )}
+        {role === 'admin' && (
+          <NavLink>
+            Platform / <Link to="/dashboard/runtimes">Runtimes</Link> / {runtimeDetail.name}
           </NavLink>
         )}
 

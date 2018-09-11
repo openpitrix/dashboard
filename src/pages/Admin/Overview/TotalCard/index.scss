@@ -2,12 +2,9 @@
 
 .totalCard {
   box-sizing: border-box;
-  padding: 20px;
+  padding: 16px 15px;
   height: 120px;
   text-align: right;
-  //border-radius: 3px;
-  //background-color: $N0;
-  //box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
   cursor: pointer;
 
   :global{
@@ -24,10 +21,10 @@
     color: $P75;
   }
   .number {
-    margin-top: 4px;
+    margin-top: 16px;
     font-size: $font40;
     font-weight: 500;
-    line-height: 1.1;
+    line-height: 44px;
     color: $N500;
   }
 }

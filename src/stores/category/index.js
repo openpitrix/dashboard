@@ -16,12 +16,23 @@ export default class CategoryStore extends Store {
   initLoadNumber = 6;
   @observable appStore = null;
 
+  @observable searchWord = '';
+
   @action
   fetchAll = async appStore => {
+    const defaultParams = {
+      limit: this.maxLimit,
+      offset: 0
+    };
+
+    if (this.searchWord) {
+      defaultParams.search_word = this.searchWord;
+    }
+
     this.isLoading = true;
-    this.categories = [];
-    const result = await this.request.get('categories');
+    const result = await this.request.get('categories', defaultParams);
     this.categories = get(result, 'category_set', []);
+
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.categories.length; i++) {
         await appStore.fetchAll({ category_id: this.categories[i].category_id });
@@ -33,6 +44,22 @@ export default class CategoryStore extends Store {
       }
     }
     this.isLoading = false;
+  };
+
+  @action
+  onSearch = async word => {
+    this.searchWord = word;
+    await this.fetchAll(this.appStore);
+  };
+
+  @action
+  onClearSearch = async () => {
+    await this.onSearch('');
+  };
+
+  @action
+  onRefresh = async () => {
+    await this.fetchAll(this.appStore);
   };
 
   @action
@@ -148,6 +175,7 @@ export default class CategoryStore extends Store {
   reset() {
     this.category = {};
     this.isLoading = false;
+    this.searchWord = '';
     this.name = '';
     this.description = '';
     this.hideModal();

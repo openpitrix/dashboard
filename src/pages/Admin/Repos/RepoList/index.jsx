@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Icon, Popover } from 'components/Base';
-import RepoCard from './RepoCard';
+import RepoCard from '../RepoCard/index';
 import capitalize from 'lodash/capitalize';
 import { I18n } from 'react-i18next';
 
-import styles from './RepoList.scss';
+import styles from './index.scss';
 
 const RepoList = ({ repos, visibility, actionMenu }) => {
   repos = repos.filter(repo => repo.visibility === visibility);

@@ -40,6 +40,17 @@ const Toolbar = ({
             </Button>
           </Link>
         )}
+        {withCreateBtn.onClick && (
+          <Button
+            className={styles.btnRight}
+            type="primary"
+            onClick={() => {
+              withCreateBtn.onClick();
+            }}
+          >
+            {withCreateBtn.name || 'Create'}
+          </Button>
+        )}
         {viewType && (
           <Icon
             name="listview"
@@ -76,7 +87,8 @@ Toolbar.propTypes = {
   inputMaxLen: PropTypes.number,
   children: PropTypes.node,
   withCreateBtn: PropTypes.shape({
-    linkTo: PropTypes.string
+    linkTo: PropTypes.string,
+    onClick: PropTypes.func
   }),
   viewType: PropTypes.string,
   changeView: PropTypes.func
