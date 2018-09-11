@@ -16,13 +16,12 @@ import TimeShow from 'components/TimeShow';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  sessInfo,
-  sock
+  sessInfo
 }))
 @observer
 export default class Apps extends Component {
@@ -31,7 +30,7 @@ export default class Apps extends Component {
     await appStore.appStatistics();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      limit: 99
+      noLimit: true
     });
     await categoryStore.fetchAll();
   }
@@ -301,7 +300,7 @@ export default class Apps extends Component {
                 {this.renderToolbar()}
                 <Table
                   columns={columns}
-                  dataSource={apps.toJSON()}
+                  dataSource={apps.slice(0, 10)}
                   rowSelection={rowSelection}
                   isLoading={isLoading}
                   filterList={filterList}
