@@ -57,9 +57,11 @@
             box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
           }
           & > textarea{
+            box-sizing: border-box;
             padding: 7px 10px;
             width: 400px;
-            height: 100px;
+            max-width: calc(100% - 192px);
+            height: 80px;
             border-radius: 2px;
             border: 1px solid #e7e7e7;
             outline: none;
@@ -83,8 +85,9 @@
         .textareaItem{
           height: 88px;
           & > label {
+            float: left;
             position: relative;
-            bottom: 80px;
+            top: 10px;
           }
         }
         .selectItem{

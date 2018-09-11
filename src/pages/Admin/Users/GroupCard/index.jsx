@@ -18,15 +18,15 @@ export default class GroupCard extends PureComponent {
         {groups &&
           groups.map((data, index) => (
             <li
-              key={data.role_id || data.group_id}
+              key={data.id}
               onClick={() => {
-                selectCard(index);
+                selectCard(index, name);
               }}
               className={classnames({ [styles.current]: selectItem === index })}
             >
               <div className={styles.name}>{data.name}</div>
-              <div className={styles.id}>id:{data.role_id || data.group_id}</div>
-              {data.description && <div className={styles.description}>{data.description}</div>}
+              <div className={styles.id}>id:{data.id}</div>
+              <div className={styles.description}>{data.description}</div>
             </li>
           ))}
       </ul>

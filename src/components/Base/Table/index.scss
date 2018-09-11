@@ -26,7 +26,8 @@
         max-width: 120px;
         [class*='target']{
           height: auto;
-          width: 60px;
+          //width: 60px;
+          width: 68px;
           border: 0 none;
           box-shadow: none;
           &:hover{
@@ -36,7 +37,8 @@
         }
         :global{
           .pi-popover-popper{
-            margin-left: -52px;
+            //margin-left: -52px;
+            margin-left: -42px;
           }
           .filterContent{
             li{
