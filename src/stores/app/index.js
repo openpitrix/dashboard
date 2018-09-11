@@ -108,7 +108,7 @@ export default class AppStore extends Store {
   };
 
   @action
-  appStatistics = async () => {
+  fetchStatistics = async () => {
     //this.isLoading = true;
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {

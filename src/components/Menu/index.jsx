@@ -233,9 +233,6 @@ class Menu extends React.Component {
     return (
       <ul className={styles.operateItems}>
         <li>
-          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
-        </li>
-        <li>
           <NavLink to="/profile">{t('Profile')}</NavLink>
         </li>
         <li>

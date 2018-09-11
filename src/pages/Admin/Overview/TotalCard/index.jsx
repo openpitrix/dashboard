@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { I18n } from 'react-i18next';
 
 import { Icon } from 'components/Base';
-import {Panel} from 'components/Layout';
+import { Panel } from 'components/Layout';
 
 import styles from './index.scss';
 

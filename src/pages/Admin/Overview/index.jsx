@@ -3,19 +3,18 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import UserInfo from 'components/UserInfo';
-import TotalCard from 'components/UserInfo/TotalCard';
-import Panel from './Panel';
-import AppList from './AppList';
-import ClusterList from './ClusterList';
-import RepoList from './RepoList';
-
-import Layout, { Grid, Section, Row } from 'components/Layout';
+import Layout, { Grid, Section, Row, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
 import { formatTime, getSessInfo, getObjName, getPastTime } from 'src/utils';
-import resourceStatus from 'utils/resource-status';
+
+import UserInfo from './UserInfo';
+import TotalCard from './TotalCard';
+import Panel from './Panel';
+import AppList from './AppList';
+import RepoList from './RepoList';
+import ClusterList from './ClusterList';
 
 import styles from './index.scss';
 
@@ -80,6 +79,8 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading}>
+        <NavLink>Dashboard / Overview</NavLink>
+
         <Row>
           <Grid>
             <Section>
@@ -103,17 +104,6 @@ export default class Overview extends React.Component {
           <Grid>
             <Section>
               <Panel
-                title={t('Top Apps')}
-                linkTo="/dashboard/apps"
-                len={appList.length}
-                iconName="appcenter"
-              >
-                <AppList apps={appList} isAdmin />
-              </Panel>
-            </Section>
-
-            <Section>
-              <Panel
                 title={t('Top Repos')}
                 linkTo="/dashboard/repos"
                 len={repoList.length}
@@ -121,6 +111,17 @@ export default class Overview extends React.Component {
               >
                 <RepoList repos={repoList} type="public" limit={4} />
                 <RepoList repos={repoList} type="private" limit={4} />
+              </Panel>
+            </Section>
+
+            <Section>
+              <Panel
+                title={t('Top Apps')}
+                linkTo="/dashboard/apps"
+                len={appList.length}
+                iconName="appcenter"
+              >
+                <AppList apps={appList} isAdmin />
               </Panel>
             </Section>
 
@@ -274,6 +275,8 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading}>
+        <NavLink>Dashboard / Overview</NavLink>
+
         <Row>
           <Grid>
             <Section>

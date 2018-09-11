@@ -1,43 +1,44 @@
 @import '~scss/vars';
 
 .detailCard {
-  .icon{
+  .icon {
     float: left;
     display: inline-block;
     width: 24px;
     height: 24px;
     line-height: 24px;
     border-radius: 2px;
-    img{
+    img {
       max-width: 100%;
       max-height: 100%;
       vertical-align: middle;
     }
   }
-  .title{
+  .title {
     margin-bottom: 20px;
     padding-left: 36px;
     padding-bottom: 24px;
     border-bottom: 1px solid $N10;
-    .name{
+    .name {
       margin-bottom: 4px;
       line-height: 24px;
-      font-size : 20px;
+      font-size: 20px;
       font-weight: 500;
       color: $N500;
-      max-width: 230px;
+      max-width: calc(100% - 50px);
       @include textCut;
     }
-    .id, .caId{
+    .id,
+    .caId {
       margin-bottom: 20px;
       font-size: 12px;
-      line-height: 1.17;
+      line-height: 14px;
       color: $N75;
     }
-    .caId{
+    .caId {
       margin-bottom: 0;
     }
-    .description{
+    .description {
       margin: 8px 0 -2px;
       line-height: 17px;
       font-size: 12px;
@@ -45,22 +46,23 @@
       word-break: break-all;
       word-wrap: break-word;
     }
-    .preview{
+    .preview {
       line-height: 17px;
       font-size: 14px;
       color: $P75;
       margin-top: 10px;
-      a, a:active{
-       color: $P75;
+      a,
+      a:active {
+        color: $P75;
       }
     }
   }
-  .noImg{
+  .noImg {
     padding-left: 0;
   }
-  .detail{
+  .detail {
     margin-top: 32px;
-    li{
+    li {
       margin-bottom: 8px;
       font-size: 14px;
       line-height: 24px;
@@ -68,24 +70,23 @@
       color: $N300;
       list-style: none;
       @include textCut;
-      &:last-child{
+      &:last-child {
         margin-bottom: 0;
       }
-      a{
+      a {
         color: $N300;
       }
-      a:hover{
+      a:hover {
         color: $P75;
-        [class*='repoName']{
+        [class*='repoName'] {
           color: $P75;
         }
       }
-
     }
     .id {
       @include idText;
     }
-    .name{
+    .name {
       float: left;
       display: inline-block;
       width: 120px;
@@ -95,19 +96,19 @@
       color: $N75;
       text-align: right;
     }
-    .labels{
+    .labels {
       margin-top: 0px;
       margin-left: 144px;
     }
   }
 }
-.copyOuter{
+.copyOuter {
   position: relative;
   display: inline-block;
   //margin-bottom: 10px;
   @include idText;
-  :global{
-    .copyId{
+  :global {
+    .copyId {
       display: none;
       position: absolute;
       top: 0px;
@@ -115,7 +116,7 @@
       cursor: pointer;
     }
   }
-  &:hover{
+  &:hover {
     :global {
       .copyId {
         display: inline-block;
@@ -123,4 +124,3 @@
     }
   }
 }
-

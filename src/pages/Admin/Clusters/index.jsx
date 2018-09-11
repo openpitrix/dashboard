@@ -25,13 +25,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore, sessInfo }) {
+  static async onEnter({ clusterStore, appStore, runtimeStore }) {
     await clusterStore.fetchAll();
-
-    const role = getSessInfo('role', sessInfo);
-    if (role === 'admin') {
-      await clusterStore.fetchStatistics();
-    }
 
     await appStore.fetchApps({
       status: ['active', 'deleted']
@@ -49,6 +44,15 @@ export default class Clusters extends Component {
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     this.store = clusterStore;
+  }
+
+  componentDidMount() {
+    const { clusterStore, sessInfo } = this.props;
+    const role = getSessInfo('role', sessInfo);
+
+    if (role === 'admin') {
+      clusterStore.fetchStatistics();
+    }
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -314,11 +318,13 @@ export default class Clusters extends Component {
 
     return (
       <Layout listenToJob={this.listenToJob}>
-        {!isNormal && (
+        {role === 'developer' && (
           <NavLink>
             <Link to="/dashboard/apps">My Apps</Link> / Test / Clusters
           </NavLink>
         )}
+
+        {role === 'admin' && <NavLink>Store / All Clusters</NavLink>}
 
         {role === 'admin' && (
           <Row>

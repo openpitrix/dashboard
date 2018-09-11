@@ -20,7 +20,9 @@ export default class TimeShow extends Component {
     return (
       <Fragment>
         <div className={styles[type]}>{formatTime(time)}</div>
-        <div className={styles[type]}>{formatTime(time, 'HH:mm:ss')}</div>
+        {type !== 'detailTime' && (
+          <div className={styles[type]}>{formatTime(time, 'HH:mm:ss')}</div>
+        )}
       </Fragment>
     );
   }
