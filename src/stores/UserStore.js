@@ -16,7 +16,20 @@ export default class UserStore extends Store {
   @observable currentPage = 1; //user table query params
   @observable searchWord = '';
   defaultStatus = ['active'];
+
   @observable selectStatus = '';
+
+  @observable selectValue = 'roles';
+  @observable showAuthorityModal = false;
+  @observable treeFlag = false;
+  @observable selectItem = 0;
+  @observable selectName = 'Administrator';
+  @observable organizations = [];
+
+  @observable summaryInfo = {};
+
+  @observable isCreateOpen = false;
+  @observable isDeleteOpen = false;
 
   @action
   fetchAll = async (params = {}) => {
@@ -39,7 +52,23 @@ export default class UserStore extends Store {
   };
 
   @action
-  fetchUsersDetail = async userId => {
+  fetchStatistics = async () => {
+    //this.isLoading = true;
+    const result = await this.request.get('users/statistics');
+    this.summaryInfo = {
+      name: 'Users',
+      iconName: 'group',
+      centerName: 'Roles',
+      total: get(result, 'app_count', 0),
+      progressTotal: get(result, 'repo_count', 0),
+      progress: get(result, 'top_ten_repos', {}),
+      histograms: get(result, 'last_two_week_created', {})
+    };
+    //this.isLoading = false;
+  };
+
+  @action
+  fetchDetail = async userId => {
     this.isLoading = true;
     const result = await this.request.get(`users`, { user_id: userId });
     this.userDetail = get(result, 'app_set[0]', {});
@@ -106,6 +135,17 @@ export default class UserStore extends Store {
     this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
     await this.fetchAll();
+  };
+
+  @action
+  showCreateUser = () => {
+    this.isCreateOpen = true;
+  };
+
+  @action.bound
+  hideModal = () => {
+    this.isCreateOpen = false;
+    this.isDeleteOpen = false;
   };
 
   @action

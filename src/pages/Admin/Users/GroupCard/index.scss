@@ -1,38 +1,52 @@
 @import '~scss/vars';
 
-.groupCard{
-  li{
-    margin-bottom: 13px;
-    width: 310px;
-    padding: 20px;
+.groupCard {
+  li {
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    min-height: 142px;
+    padding: 24px;
     border-radius: 3px;
-    border: 1px solid $N10;
-    background-color: $N0;
+    background-color: $N10;
+    border: solid 1px $N10;
     cursor: pointer;
-    &.current, &:hover{
-      border: 1px solid $P75;
+
+    &.current {
+      background-color: $P75;
+      border: solid 1px $P75;
+      .name,
+      .id,
+      .description{
+        color: $N0;
+      }
     }
-    &.current:hover{
+
+    &.current:hover {
       cursor: default;
     }
-    .name{
-      margin-bottom: 3px;
-      line-height: 16px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #7749ac;
-    }
-    .id{
-      line-height: 14px;
-      font-size: 12px;
-      text-align: left;
-      color: #a6a1ab;
-    }
-    .description{
-      margin-top: 8px;
-      font-size: 12px;
-      line-height: 1.42;
-      color: #a6a1ab;
-    }
+  }
+
+  .name {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: $N500;
+  }
+
+  .id {
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: 0;
+    color: $N75;
+  }
+
+  .description {
+    height: 40px;
+    font-size: 12px;
+    line-height: 20px;
+    color: $N100;
+    overflow-y: hidden;
   }
 }
