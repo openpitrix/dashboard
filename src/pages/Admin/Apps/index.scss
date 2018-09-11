@@ -1,6 +1,6 @@
 @import '~scss/vars';
 .apps{
-  width: 1000px !important;
+  min-width: 1000px !important;
 }
 .appCardContent {
   >a{
