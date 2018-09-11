@@ -71,7 +71,7 @@ export default class RepoStore extends Store {
   onSearch = async word => {
     this.searchWord = word;
     this.currentPage = 1;
-    await this.fetchAll();
+    await this.fetchAll({}, this.appStore);
   };
 
   @action
@@ -81,7 +81,7 @@ export default class RepoStore extends Store {
 
   @action
   onRefresh = async () => {
-    await this.fetchAll();
+    await this.fetchAll({}, this.appStore);
   };
 
   @action

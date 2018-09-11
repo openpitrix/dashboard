@@ -208,14 +208,16 @@ export default class RepoAdd extends Component {
     const { t } = this.props;
     const { repoId } = this.store;
     const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
 
     return (
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
         {!isNormal && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> /
-            <Link to="/dashboard/repos">Repos</Link> / {title}
+            {role === 'developer' && <Link to="/dashboard/apps">My Apps</Link>}
+            {role === 'admin' && <label>Platform</label>}
+            &nbsp;/ <Link to="/dashboard/repos">Repos</Link> / {title}
           </NavLink>
         )}
 

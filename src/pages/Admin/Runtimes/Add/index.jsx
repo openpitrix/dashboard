@@ -231,17 +231,24 @@ export default class RuntimeAdd extends Component {
     const { sessInfo, t } = this.props;
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
       >
-        {!isNormal && (
+        {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test /
+            <Link to="/dashboard/apps">My Apps</Link> / Test /&nbsp;
             <Link to="/runtimes">Runtimes</Link> / {title}
+          </NavLink>
+        )}
+
+        {role === 'admin' && (
+          <NavLink>
+            Platform / <Link to="/dashboard/runtimes">Runtimes</Link> / {title}
           </NavLink>
         )}
 

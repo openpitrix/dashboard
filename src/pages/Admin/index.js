@@ -16,6 +16,5 @@ export OverviewClusterList from './Overview/ClusterList';
 export OverviewRepoList from './Overview/RepoList';
 export Categories from './Categories';
 export CategoryDetail from './Categories/Detail';
-export Roles from './Roles';
 export Users from './Users';
 export UserDetail from './Users/Detail';

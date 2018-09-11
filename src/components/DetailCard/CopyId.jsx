@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
+import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -12,7 +13,8 @@ import styles from './index.scss';
 @observer
 export default class CopyId extends React.Component {
   static propTypes = {
-    id: PropTypes.string
+    id: PropTypes.string,
+    className: PropTypes.string
   };
 
   componentDidMount() {
@@ -31,10 +33,10 @@ export default class CopyId extends React.Component {
   }
 
   render() {
-    const { id } = this.props;
+    const { id, className } = this.props;
 
     return (
-      <div className={styles.copyOuter}>
+      <div className={classnames(styles.copyOuter, className)}>
         id: {id}
         <span className="copyId" data-clipboard-text={id} ref="copyBtn">
           <Icon name="copy" type="dark" />

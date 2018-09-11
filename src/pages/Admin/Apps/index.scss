@@ -1,5 +1,7 @@
 @import '~scss/vars';
-
+.apps{
+  width: 1000px !important;
+}
 .appCardContent {
   >a{
     display: inline-block;
@@ -58,14 +60,6 @@
     color: $N100;
     overflow: hidden;
     word-break: break-all;
-  }
-}
-
-.appTable {
-  :global {
-    .pi-table-content {
-      min-width: 850px;
-    }
   }
 }
 

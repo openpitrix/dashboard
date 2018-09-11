@@ -326,7 +326,8 @@ export default class ClusterDetail extends Component {
       current: 1
     };
 
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
 
     return (
       <Layout
@@ -336,10 +337,16 @@ export default class ClusterDetail extends Component {
         listenToJob={this.listenToJob}
         title="Purchased"
       >
-        {!isNormal && (
+        {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test /
+            <Link to="/dashboard/apps">My Apps</Link> / Test /&nbsp;
             <Link to="/dashboard/clusters">Clusters</Link> / {detail.name}
+          </NavLink>
+        )}
+
+        {role === 'admin' && (
+          <NavLink>
+            Store / <Link to="/dashboard/clusters">All Clusters</Link> / {detail.name}
           </NavLink>
         )}
 

@@ -5,12 +5,11 @@
   li{
     box-sizing: border-box;
     margin-bottom: 8px;
-    width: 312px;
     height: 60px;
     line-height: 24px;
     border-radius: 2px;
-    background-color: $N0;
-    border: solid 1px $N10;
+    background-color: $N10;
+    border: solid 1px $N30;
     a{
       display: block;
       padding: 17px 16px;
@@ -21,7 +20,7 @@
     }
     .name{
       display: inline-block;
-      max-width: 170px;
+      max-width: calc(100% - 96px);
       font-weight: 500;
       font-size: $font14;
       color: $N500;
@@ -51,5 +50,6 @@
 .reposBg{
   li {
     background-color: $N0;
+    border-color: $N10;
   }
 }

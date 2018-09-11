@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import Layout, { Dialog, NavLink } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
-import RepoList from './RepoList';
+import RepoList from './RepoList/index';
 import { getScrollTop, getSessInfo } from 'utils';
 
 import styles from './index.scss';
@@ -29,6 +29,7 @@ export default class Repos extends Component {
   constructor(props) {
     super(props);
     const { repoStore, appStore } = this.props;
+    repoStore.appStore = appStore;
     repoStore.loadPageInit();
     appStore.loadPageInit();
   }
@@ -130,8 +131,22 @@ export default class Repos extends Component {
     );
   };
 
+  renderNavLink = () => {
+    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
+
+    if (isAdmin) {
+      return <NavLink>Platform / Repos</NavLink>;
+    }
+
+    return (
+      <NavLink>
+        <Link to="/dashboard/apps">All Apps</Link> / Repos
+      </NavLink>
+    );
+  };
+
   render() {
-    const { sessInfo, t } = this.props;
+    const { t } = this.props;
     const {
       repos,
       isLoading,
@@ -140,39 +155,29 @@ export default class Repos extends Component {
       onClearSearch,
       onRefresh
     } = this.props.repoStore;
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
 
     return (
       <Layout listenToJob={this.listenToJob}>
-        <div className={styles.container}>
-          {!isNormal && (
-            <NavLink>
-              <Link to="/dashboard/apps">My Apps</Link> / Repos
-            </NavLink>
-          )}
+        {this.renderNavLink()}
 
-          <Toolbar
-            placeholder={t('Search Repo')}
-            searchWord={searchWord}
-            onSearch={onSearch}
-            onClear={onClearSearch}
-            onRefresh={onRefresh}
-            withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
+        <Toolbar
+          placeholder={t('Search Repo')}
+          searchWord={searchWord}
+          onSearch={onSearch}
+          onClear={onClearSearch}
+          onRefresh={onRefresh}
+          withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
+        />
+
+        <Loading isLoading={isLoading}>
+          <RepoList visibility="public" repos={repos.toJSON()} actionMenu={this.renderHandleMenu} />
+          <RepoList
+            visibility="private"
+            repos={repos.toJSON()}
+            actionMenu={this.renderHandleMenu}
           />
+        </Loading>
 
-          <Loading isLoading={isLoading}>
-            <RepoList
-              visibility="public"
-              repos={repos.toJSON()}
-              actionMenu={this.renderHandleMenu}
-            />
-            <RepoList
-              visibility="private"
-              repos={repos.toJSON()}
-              actionMenu={this.renderHandleMenu}
-            />
-          </Loading>
-        </div>
         {this.deleteRepoModal()}
       </Layout>
     );
