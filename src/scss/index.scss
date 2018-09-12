@@ -134,4 +134,26 @@
     overflow: hidden;
     _zoom: 1;
   }
+
+  // textarea style
+  textarea {
+    box-sizing: border-box;
+    padding: 7px 10px;
+    width: 400px;
+    height: 88px;
+    border-radius: 2px;
+    background-color: $N0;
+    border: 1px solid $N30;
+    outline: none;
+    //resize: none;
+
+    &:hover{
+      border-color: $N45;
+    }
+
+    &:focus{
+      box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
+      border-color: $P75;
+    }
+  }
 }

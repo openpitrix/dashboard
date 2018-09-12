@@ -2,12 +2,12 @@
 
 form.createForm {
   display: block;
-  //padding: 36px 0 0 36px;
 
-  &>div{
+  & > div {
     margin-bottom: 24px;
   }
-  .name{
+
+  .name {
     display: inline-block;
     margin-right: 24px;
     width: 168px;
@@ -17,39 +17,56 @@ form.createForm {
     color: $N500;
     text-align: right;
   }
-  .selectName{
+
+  .selectName {
     float: left;
     line-height: 32px;
   }
-  .input{
+
+  input {
     width: 256px;
   }
-  .radio,.checkbox{
+
+  .radio,
+  .checkbox {
     margin-right: 30px;
   }
-  .select{
+
+  .select {
     width: 256px;
     margin-right: 12px;
   }
-  .rightShow{
+
+  textarea {
+    max-width: calc(100% - 192px);
+  }
+
+  .textareaItem >label {
+    float: left;
+    position: relative;
+    top: 10px;
+  }
+
+  .rightShow {
     margin-top: 8px;
     margin-left: 192px;
     font-size: 12px;
     line-height: 1.67;
     color: $N100;
   }
-  .submitBtnGroup{
+
+  .submitBtnGroup {
     margin: 0 -32px;
     padding: 16px 0 16px 224px;
     border-top: 1px solid $N10;
     margin-bottom: 0;
-    button{
+    button {
       margin-right: 12px;
     }
   }
 }
 
-.sshTitle{
+.sshTitle {
   margin: 0 auto 20px;
   width: $content-width;
   font-size: 24px;
@@ -68,25 +85,36 @@ form.createForm {
     max-width: 230px;
     @include textCut;
   }
-  .item {
-    margin-bottom: 12px;
+
+  .pubKey,
+  .time {
+    height: 20px;
     line-height: 20px;
     font-size: 12px;
     color: $N75;
     word-break: break-all;
     word-wrap: break-word;
-    @include textCut;
+    overflow: hidden;
+  }
+
+  .pubKey{
+    margin-bottom: 12px;
+    height: 40px;
   }
 }
 
 .sshCardOuter {
+  margin-bottom: 12px;
   border: 1px solid transparent;
   cursor: pointer;
-  &.active{
+
+  &.active {
     border: 1px solid $P75;
+    cursor: auto;
   }
-  :global{
-    .operation{
+
+  :global {
+    .operation {
       top: 16px;
       right: 16px;
     }
