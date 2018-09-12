@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -36,10 +36,18 @@ export default class SSHKeys extends Component {
     clusterStore.loadNodeInit();
   }
 
+  goBack = () => {
+    history.back();
+  };
+
   onClickPair = item => {
     const { clusterStore } = this.props;
-    clusterStore.currentPairId = item.key_pair_id;
-    clusterStore.fetchNodes({ node_id: item.node_id });
+    const { currentPairId, fetchNodes } = clusterStore;
+
+    if (currentPairId !== item.key_pair_id) {
+      clusterStore.currentPairId = item.key_pair_id;
+      fetchNodes({ node_id: item.node_id });
+    }
   };
 
   showDeleteModal = (e, pairId) => {
@@ -51,11 +59,13 @@ export default class SSHKeys extends Component {
 
   showCreateModal = () => {
     const { clusterStore } = this.props;
+    clusterStore.keyPairReset();
     clusterStore.showModal('addKey');
   };
 
   renderOperateMenu = pairId => {
     const { t } = this.props;
+
     return (
       <div className="operate-menu">
         <span onClick={e => this.showDeleteModal(e, pairId)}>{t('Delete SSH Key')}</span>
@@ -85,7 +95,7 @@ export default class SSHKeys extends Component {
 
     return (
       <Modal title={t('Add SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
-        {this.renderForm()}
+        {this.renderForm(hideModal)}
       </Modal>
     );
   };
@@ -110,40 +120,37 @@ export default class SSHKeys extends Component {
     );
   };
 
-  renderForm() {
-    const { t } = this.props;
+  renderForm(cancelFun) {
+    const { clusterStore, t } = this.props;
+    const { addKeyPairs, changeName, changePubKey, changeDescription } = clusterStore;
 
     return (
       <form className={styles.createForm}>
         <div>
           <label className={styles.name}>{t('Name')}</label>
-          <Input className={styles.input} name="name" maxLength="50" required />
-          <p className={classNames(styles.rightShow, styles.note)}>
-            {t('The name of the SSH key')}
+          <Input name="name" value={clusterStore.name} onChange={changeName} maxLength="50" />
+        </div>
+        <div className={styles.textareaItem}>
+          <label className={styles.name}>{t('Public Key')}</label>
+          <textarea name="pub_key" value={clusterStore.pub_key} onChange={changePubKey} />
+          <p className={styles.rightShow}>
+            {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrqwerJAsdfdgjUTEEHh...
           </p>
         </div>
-        <div>
-          <label className={styles.name}>{t('Model')}</label>
-          <Radio.Group className={styles.radioGroup}>
-            <Radio value="1">Create a new keypair</Radio>
-            <Radio value="2">Use the existing public key</Radio>
-          </Radio.Group>
+        <div className={styles.textareaItem}>
+          <label className={styles.name}>{t('Descripition')}</label>
+          <textarea
+            name="description"
+            value={clusterStore.description}
+            onChange={changeDescription}
+          />
         </div>
-        <div>
-          <label className={classNames(styles.name, styles.selectName)}>
-            {t('Encrypt Method')}
-          </label>
-          <Select className={styles.select}>
-            <Select.Option key="test" value="test">
-              test
-            </Select.Option>
-          </Select>
-        </div>
+
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit">
+          <Button type={`primary`} className={`primary`} onClick={addKeyPairs}>
             {t('Confirm')}
           </Button>
-          <Button>{t('Cancel')}</Button>
+          <Button onClick={cancelFun || this.goBack}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -163,8 +170,8 @@ export default class SSHKeys extends Component {
     return (
       <div className={styles.sshCard}>
         <div className={styles.title}>{pair.name}</div>
-        <div className={styles.item}>{pair.pub_key}</div>
-        <div className={styles.item}>
+        <div className={styles.pubKey}>{pair.pub_key}</div>
+        <div className={styles.time}>
           Created on: {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
         </div>
       </div>
@@ -230,8 +237,8 @@ export default class SSHKeys extends Component {
         key: 'configuration',
         width: '100px',
         render: item => <Configuration configuration={item.cluster_role || {}} />
-      },
-      {
+      }
+      /*{
         title: t('Actions'),
         key: 'actions',
         width: '84px',
@@ -242,8 +249,9 @@ export default class SSHKeys extends Component {
             </Popover>
           </div>
         )
-      }
+      }*/
     ];
+
     const filterList = [
       {
         key: 'status',
@@ -259,6 +267,7 @@ export default class SSHKeys extends Component {
         selectValue: selectNodeStatus
       }
     ];
+
     const pagination = {
       tableType: 'Clusters',
       onChange: () => {},
