@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
+import _, { get, assign } from 'lodash';
+
 import Store from '../Store';
-import { get, assign } from 'lodash';
-import _ from 'lodash';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
@@ -39,6 +39,9 @@ export default class ClusterStore extends Store {
   @observable keyPairs = [];
   @observable pairId = '';
   @observable currentPairId = '';
+  @observable name = '';
+  @observable pub_key = '';
+  @observable description = '';
 
   // cluster job queue
   @observable
@@ -315,10 +318,11 @@ export default class ClusterStore extends Store {
   @action
   fetchKeyPairs = async (params = {}) => {
     let defaultParams = {
-      limit: 200
+      limit: this.maxLimit
     };
     const result = await this.request.get('clusters/key_pairs', assign(defaultParams, params));
     this.keyPairs = get(result, 'key_pair_set', []);
+
     if (!this.currentPairId || this.currentPairId === this.pairId) {
       const nodeIds = get(this.keyPairs[0], 'node_id', '');
       this.currentPairId = get(this.keyPairs[0], 'key_pair_id', '');
@@ -328,19 +332,26 @@ export default class ClusterStore extends Store {
 
   @action
   addKeyPairs = async (params = {}) => {
-    if (!this.pairName) {
-      this.showMsg('Please input Name!');
+    if (!this.name) {
+      this.error('Please input Name!');
+    } else if (!this.pub_key) {
+      this.error('Please input public key!');
     } else {
       const data = {
-        name: this.pairName,
-        mode: this.pairMode,
-        pub_key: this.pubKey
+        name: this.name,
+        pub_key: this.pub_key,
+        description: this.description
       };
       const result = await this.request.post('clusters/key_pairs', data);
-      this.apiMsg(result, 'Create SSH Key successful!', async () => {
+
+      if (_.get(result, 'key_pair_id')) {
         this.hideModal();
         await this.fetchKeyPairs();
-      });
+        this.success('Create SSH Key successful!');
+      } else {
+        const { err, errDetail } = result;
+        this.error(errDetail || err || 'Create SSH key fail!');
+      }
     }
   };
 
@@ -350,11 +361,34 @@ export default class ClusterStore extends Store {
     this.hideModal();
 
     if (_.get(result, 'key_pair_id')) {
+      this.hideModal();
       await this.fetchKeyPairs();
-      this.showMsg('Delete SSH Key successfully.', 'success');
+      this.success('Delete SSH Key successfully.');
     } else {
-      let { err, errDetail } = result;
-      this.showMsg(errDetail || err);
+      const { err, errDetail } = result;
+      this.error(errDetail || err);
     }
+  };
+
+  @action
+  changeName = e => {
+    this.name = e.target.value;
+  };
+
+  @action
+  changePubKey = e => {
+    this.pub_key = e.target.value;
+  };
+
+  @action
+  changeDescription = e => {
+    this.description = e.target.value;
+  };
+
+  @action
+  keyPairReset = () => {
+    this.name = '';
+    this.pub_key = '';
+    this.description = '';
   };
 }

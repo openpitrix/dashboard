@@ -48,11 +48,11 @@ export default class AppDetail extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  /* shouldComponentUpdate(nextProps, nextState) {
     return (
       nextState.version !== this.state.version || nextState.createStep !== this.state.createStep
     );
-  }
+  }*/
 
   selectVersion = version => {
     const { versions } = this.props.appVersionStore;

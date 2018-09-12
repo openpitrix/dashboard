@@ -147,7 +147,7 @@ class Menu extends React.Component {
     if (path === '/dashboard') {
       return (
         <div className={styles.subNav}>
-          <div className={styles.title}>My Apps</div>
+          <div className={styles.title}>Dashboard</div>
           <Link
             className={classnames(styles.link, { [styles.active]: path.indexOf('dashboard') > -1 })}
             to="/dashboard"
