@@ -89,7 +89,7 @@ export default class Select extends React.Component {
 
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
-        <div className={styles.controlLabel}>{value}</div>
+        <div className={styles.controlLabel}>{this.currentLabel}</div>
         <Icon name={isOpen && !disabled ? 'caret-up' : 'caret-down'} type="dark" />
       </div>
     );

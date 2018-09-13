@@ -29,15 +29,15 @@ export default class YamlCell extends PureComponent {
   render() {
     const { name, value, className } = this.props;
     const isRadio = typeof value === 'boolean';
-
+    const showName = name.replace(/>>>/g, '.');
     if (value === null) {
       return null;
     }
 
     return (
       <div className={classNames(styles.cell, className)}>
-        <label className={classNames(styles.name, styles.inputName)} title={name}>
-          {name}
+        <label className={classNames(styles.name, styles.inputName)} title={showName}>
+          {showName}
         </label>
 
         {!isRadio && (

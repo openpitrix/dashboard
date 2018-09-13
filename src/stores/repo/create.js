@@ -44,7 +44,7 @@ export default class RepoCreateStore extends Store {
     const len = providers.length;
     if (len > 1 && providers.includes('kubernetes')) {
       providers = providers.filter(data => data !== 'kubernetes');
-      return this.info("Kubernetes can't be selected with others");
+      this.info("Kubernetes can't be selected with others");
     }
     this.providers = providers;
   };
@@ -136,7 +136,10 @@ export default class RepoCreateStore extends Store {
   };
 
   toQueryString(items) {
-    return items.map(item => [item.label_key, item.label_value].join('=')).join('&');
+    return items
+      .filter(label => label.label_key)
+      .map(item => [item.label_key, item.label_value].join('='))
+      .join('&');
   }
 
   @action
@@ -202,8 +205,8 @@ export default class RepoCreateStore extends Store {
       data.credential = '{}';
     }
 
-    // fixme: both labels and selectors pass as query string
-    data.selectors = selectors.map(selector => ({
+    // fixme: both labels and selectors pass as queryString
+    /* data.selectors = selectors.map(selector => ({
       selector_key: selector.label_key,
       selector_value: selector.label_value
     }));
@@ -211,10 +214,10 @@ export default class RepoCreateStore extends Store {
     data.labels = labels.map(label => ({
       label_key: label.label_key,
       label_value: label.label_value
-    }));
+    }));*/
 
-    // data.selectors = this.toQueryString(selectors);
-    // data.labels = this.toQueryString(labels);
+    data.selectors = this.toQueryString(selectors);
+    data.labels = this.toQueryString(labels);
 
     // fix: provider is mobx array
     let flatProviders = providers.toJSON();

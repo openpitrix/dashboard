@@ -64,7 +64,10 @@ export default class AppDeployStore extends Store {
   @action
   changeRuntime = async runtimeId => {
     this.runtimeId = runtimeId;
-    await this.fetchSubnets(runtimeId);
+
+    if (!this.isKubernetes) {
+      await this.fetchSubnets(runtimeId);
+    }
   };
 
   @action
@@ -88,7 +91,7 @@ export default class AppDeployStore extends Store {
 
     if (this.isKubernetes) {
       const yamlObj = unflattenObject(this.yamlObj);
-      yamlObj.name = this.name;
+      yamlObj.Name = this.name; // ymal config api need Name
       conf = yaml.safeDump(yamlObj);
     } else {
       this.getConfigData();
@@ -96,13 +99,13 @@ export default class AppDeployStore extends Store {
     }
 
     if (this.checkResult === 'ok') {
+      //fix config key contains '.'
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
         runtime_id: this.runtimeId,
-        conf: conf
+        conf: conf.replace(/>>>/g, '.')
       };
-
       const res = await this.create(params);
 
       if (!res.err && _.get(this.appDeployed, 'cluster_id')) {
