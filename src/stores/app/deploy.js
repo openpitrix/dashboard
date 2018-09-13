@@ -99,14 +99,13 @@ export default class AppDeployStore extends Store {
     }
 
     if (this.checkResult === 'ok') {
-      //fix key contains '.'
+      //fix config key contains '.'
       let params = {
         app_id: this.appId,
         version_id: this.versionId,
         runtime_id: this.runtimeId,
         conf: conf.replace(/>>>/g, '.')
       };
-      console.log(conf.replace(/>>>/g, '.'));
       const res = await this.create(params);
 
       if (!res.err && _.get(this.appDeployed, 'cluster_id')) {
