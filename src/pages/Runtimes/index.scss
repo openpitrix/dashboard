@@ -27,7 +27,7 @@
   height: 189px;
   background-color: $N0;
   box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-  &:nth-child(3n+2) {
+  &:nth-child(3n+3) {
     margin-right: 0;
   }
 }

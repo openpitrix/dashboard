@@ -58,30 +58,30 @@ class Menu extends React.Component {
       app: {
         title: 'Store',
         links: [
-          { name: 'All Apps', link: '/dashboard/apps', active: 'apps' },
-          { name: 'App Reviews', link: '/', active: 'review' },
+          { name: 'All Apps', link: '/dashboard/apps', active: 'app' },
+          { name: 'App Reviews', link: '#', active: 'review' },
           { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' },
           { name: 'Categroies', link: '/dashboard/categories', active: 'categor' },
-          { name: 'Appearance', link: '/', active: 'appearance' }
+          { name: 'Appearance', link: '#', active: 'appearance' }
         ]
       },
       user: {
         title: 'Users',
         links: [
           { name: 'All Users', link: '/dashboard/users', active: 'user' },
-          { name: 'User Groups', link: '/', active: 'group' },
-          { name: 'Roles', link: '/', active: 'role' },
-          { name: 'Policy', link: '/', active: 'policy' }
+          { name: 'User Groups', link: '#', active: 'group' },
+          { name: 'Roles', link: '#', active: 'role' },
+          { name: 'Policy', link: '#', active: 'policy' }
         ]
       },
       repo: {
         title: 'Platform',
         links: [
-          { name: 'Tickets', link: '/', active: 'ticket' },
-          { name: 'Notifications', link: '/', active: 'notification' },
+          { name: 'Tickets', link: '#', active: 'ticket' },
+          { name: 'Notifications', link: '#', active: 'notification' },
           { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
           { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
-          { name: 'Service Status', link: '/', active: 'service' }
+          { name: 'Service Status', link: '#', active: 'service' }
         ]
       }
     };

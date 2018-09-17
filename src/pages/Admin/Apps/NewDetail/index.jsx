@@ -27,6 +27,7 @@ import styles from './index.scss';
 export default class AppDetail extends Component {
   static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
     await appStore.fetch(appId);
+    appVersionStore.appId = appId;
     await appVersionStore.fetchAll({ app_id: appId });
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
@@ -41,11 +42,8 @@ export default class AppDetail extends Component {
     appVersionStore.currentPage = 1;
     appVersionStore.searchWord = '';
     this.appId = props.match.params.appId;
+    appVersionStore.appId = this.appId;
     this.loginUser = getSessInfo('user', props.sessInfo);
-    this.state = {
-      createStep: 1,
-      version: {}
-    };
   }
 
   /* shouldComponentUpdate(nextProps, nextState) {
@@ -55,27 +53,56 @@ export default class AppDetail extends Component {
   }*/
 
   selectVersion = version => {
-    const { versions } = this.props.appVersionStore;
-    versions.map(item => {
-      delete item.selected;
-    });
-    version.selected = true;
-    this.setState({
-      version: version
-    });
+    const { appVersionStore } = this.props;
+    appVersionStore.currentVersion = version;
   };
 
-  createVersion = () => {
-    this.setState({
-      createStep: 1,
-      version: ''
-    });
+  createVersionShow = () => {
+    const { appVersionStore } = this.props;
+    appVersionStore.currentVersion = {};
+    appVersionStore.createStep = 1;
+  };
+
+  checkFile = file => {
+    let result = true;
+    const { appVersionStore } = this.props;
+    const maxsize = 2 * 1024 * 1024;
+    appVersionStore.createError = '';
+
+    if (!/\.(tar|tar\.gz|tra\.bz|zip|tgz)$/.test(file.name.toLocaleLowerCase())) {
+      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ,TGZ and ZIP';
+      return false;
+    } else if (file.size > maxsize) {
+      appVersionStore.createError = 'The file size cannot exceed 2M';
+      return false;
+    }
+
+    return result;
+  };
+
+  uploadFile = base64Str => {
+    const { appVersionStore } = this.props;
+    appVersionStore.uploadFile = base64Str;
+    appVersionStore.createOrModify({ app_id: this.appId });
   };
 
   setCreateStep = step => {
-    this.setState({
-      createStep: step
-    });
+    const { appVersionStore } = this.props;
+    appVersionStore.createStep = step;
+  };
+
+  handleVersion = (version, handleType) => {
+    const { handle } = this.props.appVersionStore;
+    const handleMap = {
+      draft: 'submit',
+      submitted: 'pass',
+      passed: 'release',
+      active: 'suspend',
+      suspended: 'recover',
+      rejected: 'submit'
+    };
+    handleType = handleType ? handleType : handleMap[version.status];
+    handle(handleType, version.version_id);
   };
 
   renderHandleMenu = () => {
@@ -146,11 +173,10 @@ export default class AppDetail extends Component {
 
     switch (tab) {
       case 'Information':
-        const { versions } = appVersionStore;
-        this.setState({
-          version: versions[0]
-        });
-        versions[0].selected = true;
+        const { versions, currentVersion } = appVersionStore;
+        if (versions[0] && !currentVersion.version_id) {
+          appVersionStore.currentVersion = versions[0];
+        }
         break;
       case 'Clusters':
         clusterStore.appId = appId;
@@ -187,7 +213,14 @@ export default class AppDetail extends Component {
 
   renderVersions = () => {
     const { appVersionStore } = this.props;
-    const { versions } = appVersionStore;
+    const { versions, currentVersion } = appVersionStore;
+    const statusMap = {
+      draft: 'To be submitted',
+      submitted: 'In Review',
+      passed: 'Approved',
+      active: 'Published',
+      suspended: 'Suspend'
+    };
 
     return (
       <div className={styles.versionList}>
@@ -196,16 +229,18 @@ export default class AppDetail extends Component {
           {versions.map(version => (
             <li
               key={version.version_id}
-              className={classNames({ [styles.selected]: version.selected })}
+              className={classNames(version.status, {
+                selected: version.version_id === currentVersion.version_id
+              })}
               onClick={() => this.selectVersion(version)}
             >
-              <label className={styles.dot} />
+              <label className="dot" />
               {version.name}
-              <span className={styles.status}>To be submitted</span>
+              <span className="status">{statusMap[version.status]}</span>
             </li>
           ))}
         </ul>
-        <div className={styles.addVersion} onClick={() => this.createVersion()}>
+        <div className={styles.addVersion} onClick={() => this.createVersionShow()}>
           + Create version
         </div>
       </div>
@@ -213,19 +248,19 @@ export default class AppDetail extends Component {
   };
 
   renderCreateVersion = () => {
-    const { isLoading, errorMsg } = this.props.appVersionStore;
-    const name = 'Create New Application';
+    const { isLoading, createError } = this.props.appVersionStore;
+    const name = 'Create New Version';
     const explain = 'Upload Package';
 
     return (
       <StepContent name={name} explain={explain}>
         <div className={styles.createVersion}>
-          <Upload>
+          <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
             <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
               <Icon name="upload" size={48} type="dark" />
               <p className={styles.word}>Please click to select file upload</p>
               <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
-              {loading && <div className={styles.loading} />}
+              {isLoading && <div className={styles.loading} />}
             </div>
           </Upload>
 
@@ -236,10 +271,10 @@ export default class AppDetail extends Component {
             </span>
             and learn how to make config files
           </div>
-          {errorMsg && (
+          {createError && (
             <div className={styles.errorNote}>
               <Icon name="error" size={24} />
-              {errorMsg}
+              {createError}
             </div>
           )}
         </div>
@@ -271,13 +306,13 @@ export default class AppDetail extends Component {
   };
 
   renderInformation = () => {
-    const { version } = this.state;
-    if (!version) {
+    const { currentVersion } = this.props.appVersionStore;
+    if (!currentVersion.version_id) {
       return null;
     }
-    const packageName = version.package_name && version.package_name.split('/');
+    const packageName = currentVersion.package_name && currentVersion.package_name.split('/');
     const packageShow = packageName ? packageName[packageName.length - 1] : '';
-    const { version_id, name, description } = version;
+    const { version_id, name, description } = currentVersion;
 
     return (
       <div className={styles.versionInfo}>
@@ -295,7 +330,7 @@ export default class AppDetail extends Component {
             </p>
           </dt>
           <dd>
-            <Input className={styles.input} value={name} onChange={() => {}} />
+            <Input className={styles.input} value={name} disabled />
           </dd>
         </dl>
         <dl>
@@ -304,11 +339,13 @@ export default class AppDetail extends Component {
             <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
           </dt>
           <dd>
-            <div className={styles.fileName}>
-              <Icon name="file" size={32} type="dark" />
-              <span className={styles.name}>{packageShow}</span>
-              <span className={styles.delete}>Delete</span>
-            </div>
+            <Upload disabled>
+              <div className={styles.fileName}>
+                <Icon name="file" size={32} type="dark" />
+                <span className={styles.name}>{packageShow}</span>
+                <span className={styles.delete}>Delete</span>
+              </div>
+            </Upload>
             <div className={styles.viewGuide}>
               View the<span className={styles.link}>《Openpitrix Develop Guide》</span> and learn
               how to make config files
@@ -324,13 +361,15 @@ export default class AppDetail extends Component {
             </p>
           </dt>
           <dd>
-            <textarea className={styles.textarea} value={description} />
+            <textarea className={styles.textarea} defaultValue={description} />
           </dd>
         </dl>
         <dl>
           <dt>Operations</dt>
           <dd>
-            <Button type="primary">Submiit</Button>
+            <Button type="primary" onClick={() => this.handleVersion(currentVersion)}>
+              Submiit
+            </Button>
           </dd>
         </dl>
       </div>
@@ -357,9 +396,9 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
+    const { appVersionStore, appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
     const { appDetail, detailTab } = appStore;
-    const { version, createStep } = this.state;
+    const { currentVersion, createStep } = appVersionStore;
 
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
@@ -421,9 +460,9 @@ export default class AppDetail extends Component {
           </Section>
 
           <Section size={8} className={styles.rightInfo}>
-            {!version &&
+            {!currentVersion.version_id &&
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
-            {version && (
+            {currentVersion.version_id && (
               <TagNav tags={['Information', 'Clusters', 'Logs']} changeTag={this.changeDetailTab} />
             )}
             {detailTab === 'Information' ? (

@@ -1,41 +1,41 @@
 @import '~scss/vars';
 
-.appDetail{
+.appDetail {
   min-width: 950px !important;
 }
 
-.appInfo{
+.appInfo {
   position: relative;
 
-  .operation{
+  .operation {
     position: absolute;
     top: 34px;
     right: 32px;
 
-    :global{
-      .pi-popover-popper{
+    :global {
+      .pi-popover-popper {
         margin-right: 60px;
       }
     }
   }
 }
 
-.appVersion{
+.appVersion {
   background-color: $N0;
   @include bg-panel();
 
-  .rightInfo{
+  .rightInfo {
     width: calc((#{$grid-width} + #{$grid-gap}) * 8);
     border-left: 1px solid $N10;
   }
 
-  .noShadow{
+  .noShadow {
     box-shadow: none;
   }
 }
 
-.versionList{
-  .title{
+.versionList {
+  .title {
     margin-bottom: 12px;
     font-size: 16px;
     font-weight: 500;
@@ -43,7 +43,7 @@
     color: $N500;
   }
 
-  li{
+  li {
     margin-bottom: 4px;
     //padding: 0 20px 0 26px;
     padding: 0 10px;
@@ -53,8 +53,10 @@
     color: $N300;
     font-size: 14px;
     cursor: pointer;
+  }
 
-    .dot{
+  :global{
+    .dot {
       display: inline-block;
       margin-right: 8px;
       width: 12px;
@@ -63,41 +65,41 @@
       border-radius: 50%;
     }
 
-    .status{
+    .status {
       float: right;
       font-size: 12px;
       color: $B75;
     }
 
-    &.submitted{
-      .dot{
+    .draft {
+      .dot {
         background-color: $B75;
       }
-      .status{
+      .status {
         color: $B75;
       }
-      &.selected{
+      &.selected {
         background-color: $B75;
       }
     }
 
-    &.review{
-      .dot{
+    .submitted {
+      .dot {
         background-color: $Y300;
       }
-      .status{
+      .status {
         color: $Y300;
       }
-      &.selected{
+      &.selected {
         background-color: $Y300;
       }
     }
 
-    &.approved{
-      .dot{
+    .passed {
+      .dot {
         background-color: $G75;
       }
-      .status{
+      .status {
         color: $G75;
       }
       &.selected {
@@ -105,11 +107,11 @@
       }
     }
 
-    &.published{
-      .dot{
+    .active {
+      .dot {
         background-color: $P75;
       }
-      .status{
+      .status {
         color: $P75;
       }
       &.selected {
@@ -117,20 +119,32 @@
       }
     }
 
-    &.selected{
+    .suspended {
+      .dot {
+        background-color: $B75;
+      }
+      .status {
+        color: $B75;
+      }
+      &.selected {
+        background-color: $B75;
+      }
+    }
+
+    .selected {
       background-color: $B75;
-      color: $N0;
+      color: $N0 !important;
       cursor: auto;
       .dot{
-        background-color: $N0;
+        background-color: $N0 !important;
       }
       .status{
-        color: $N0;
+        color: $N0 !important;
       }
     }
   }
 
-  .addVersion{
+  .addVersion {
     //padding: 0 24px;
     padding: 0 10px;
     line-height: 40px;
@@ -140,13 +154,13 @@
   }
 }
 
-.versionInfo{
+.versionInfo {
   padding: 24px 24px 48px;
 
-  dl{
+  dl {
     margin-bottom: 24px;
 
-    dt{
+    dt {
       display: inline-block;
       //width: 264px;
       width: calc(35% - 12px);
@@ -158,7 +172,7 @@
       color: $N500;
     }
 
-    dd{
+    dd {
       display: inline-block;
       //width: 430px;
       width: calc(65% - 12px);
@@ -166,7 +180,7 @@
     }
   }
 
-  .fileName{
+  .fileName {
     display: inline-block;
     box-sizing: border-box;
     margin-bottom: 8px;
@@ -180,38 +194,38 @@
     background-color: $N0;
     border: solid 1px $N30;
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 8px;
       }
     }
 
-    .name{
+    .name {
       display: inline-block;
       width: 240px;
       @include textCut;
     }
 
-    .delete{
+    .delete {
       float: right;
       color: $P75;
       cursor: pointer;
     }
   }
 
-  .viewGuide{
+  .viewGuide {
     display: inline-block;
     line-height: 20px;
     font-size: 12px;
 
-    .link{
+    .link {
       color: $P75;
       cursor: pointer;
     }
   }
 
-  .note{
+  .note {
     margin-top: 8px;
     font-weight: normal;
     font-size: 12px;
@@ -219,11 +233,11 @@
     color: $N100;
   }
 
-  .input{
+  .input {
     width: 256px;
   }
 
-  .textarea{
+  .textarea {
     width: 400px;
     height: 88px;
     padding: 7px 10px;
@@ -234,24 +248,27 @@
   }
 }
 
-
 @mixin load-frames() {
   0% {
-    -webkit-transform:rotate(0deg);
-    transform:rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform:rotate(360deg);
-    transform:rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-@-webkit-keyframes load {@include load-frames;}
-@keyframes load {@include load-frames;}
+@-webkit-keyframes load {
+  @include load-frames;
+}
+@keyframes load {
+  @include load-frames;
+}
 
-.createVersion{
+.createVersion {
   //margin-bottom: 150px;
 
-  .upload{
+  .upload {
     position: relative;
     display: inline-block;
     box-sizing: border-box;
@@ -265,58 +282,59 @@
     text-align: left;
     cursor: pointer;
 
-    .word{
+    .word {
       margin-bottom: 4px;
       font-size: 14px;
       line-height: 24px;
       color: $N300;
     }
 
-    .note{
+    .note {
       font-size: 12px;
       line-height: 20px;
       color: $N100;
     }
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 12px;
       }
     }
   }
 
-  .uploading{
+  .uploading {
     opacity: 0.3;
     cursor: not-allowed;
-    .loading{
+    .loading {
       position: absolute;
       top: 28px;
       left: 244px;
       z-index: 2;
       width: 64px;
       height: 64px;
-      border-radius:50%;
+      border-radius: 50%;
       &:after {
         width: 64px;
         height: 64px;
-        border-radius:50%;
+        border-radius: 50%;
       }
       border-top: 2px solid $P300;
-      border-right: 2px solid  $P300;
+      border-right: 2px solid $P300;
       border-bottom: 2px solid $P10;
       border-left: 2px solid $P10;
-      animation:load 1s infinite linear;
+      animation: load 1s infinite linear;
       opacity: 3.33;
     }
   }
 
-  .errorNote{
+  .errorNote {
     display: inline-block;
+    position: relative;
     box-sizing: border-box;
     width: 552px;
-    height: 40px;
-    padding: 7px 15px;
+    //height: 40px;
+    padding: 7px 15px 7px 44px;
     font-size: 14px;
     line-height: 24px;
     color: $R300;
@@ -326,10 +344,13 @@
     border: solid 1px $R45;
     text-align: left;
 
-    :global{
-      .icon{
-        float: left;
-        margin-right: 12px;
+    :global {
+      .icon {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+
         svg {
           --primary-color: #{$N0};
           --secondary-color: #{$R300};
@@ -338,15 +359,15 @@
     }
   }
 
-  .checkImg{
+  .checkImg {
     margin: 48px 0 40px;
-    >label{
+    > label {
       display: inline-block;
       width: 48px;
       height: 48px;
       border-radius: 50%;
       background-color: $G300;
-      :global{
+      :global {
         svg {
           --primary-color: #{$N0};
           --secondary-color: #{$N0};
@@ -355,54 +376,52 @@
     }
   }
 
-  .operateBtn{
+  .operateBtn {
     margin-bottom: 12px;
-    button{
+    button {
       margin: 0 6px;
     }
   }
 
-  .operateWord{
+  .operateWord {
     margin-bottom: 16px;
     font-size: 12px;
     line-height: 20px;
     color: $N100;
-    .link{
+    .link {
       color: $P75;
       cursor: pointer;
     }
   }
 }
 
-.tipsContent{
+.tipsContent {
   padding: 24px;
   text-align: center;
-  .icon{
+  .icon {
     display: inline-block;
     width: 48px;
     height: 48px;
     background-color: $G300;
     border-radius: 50%;
-    :global{
-      .icon svg{
+    :global {
+      .icon svg {
         --primary-color: #{$N0};
         --secondary-color: #{$N0};
       }
     }
   }
-  .note{
+  .note {
     margin-bottom: 12px;
     font-size: 24px;
     font-weight: 500;
     line-height: 28px;
     color: $N500;
   }
-  .explain{
+  .explain {
     padding: 0 24px;
     line-height: 24px;
     text-align: center;
     color: $N300;
   }
 }
-
-

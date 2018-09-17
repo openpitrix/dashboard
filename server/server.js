@@ -60,8 +60,8 @@ app.use(favicon(root(favIconPath)));
 
 app.use(
   bodyParser({
-    formLimit: '200kb',
-    jsonLimit: '200kb',
+    formLimit: '2000kb',
+    jsonLimit: '2000kb',
     bufferLimit: '4mb'
   })
 );
