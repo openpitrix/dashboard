@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { noop } from 'lodash';
 
-import defaultRequest from './utils/request';
 import attrAccept from './utils/attr-accept';
 import traverseFileTree from './utils/traverseFileTree';
+
+import styles from './index.scss';
 
 const now = Date.now();
 let index = 0;
@@ -19,42 +20,29 @@ export default class Upload extends Component {
   reqs = {};
 
   static propTypes = {
-    name: PropTypes.string,
     disabled: PropTypes.bool,
-    action: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     directory: PropTypes.bool,
-    onError: PropTypes.func,
-    onSuccess: PropTypes.func,
-    onProgress: PropTypes.func,
-    onStart: PropTypes.func,
-    data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     headers: PropTypes.object,
+    uploadFile: PropTypes.func,
+    checkFile: PropTypes.func,
     accept: PropTypes.string,
     multiple: PropTypes.bool,
-    beforeUpload: PropTypes.func,
-    customRequest: PropTypes.func,
     children: PropTypes.node,
-    withCredentials: PropTypes.bool,
     style: PropTypes.object,
     className: PropTypes.string
   };
 
   static defaultProps = {
-    data: {},
+    disabled: false,
     headers: {},
-    name: 'file',
-    onStart: noop,
-    onError: noop,
-    onSuccess: noop,
-    multiple: false,
-    beforeUpload: null,
-    customRequest: null,
-    withCredentials: false
+    uploadFile: noop,
+    checkFile: noop,
+    multiple: false
   };
 
   state = {
     uid: getUid(),
-    isDraging: false
+    isDraging: true
   };
 
   componentDidMount() {
@@ -113,86 +101,24 @@ export default class Upload extends Component {
     const postFiles = [...files];
     postFiles.forEach(file => {
       const fileWithId = Object.assign(file, { uid: getUid() });
-      this.upload(fileWithId, postFiles);
+      this.upload(fileWithId);
     });
   };
 
-  upload(file, fileList) {
-    const { beforeUpload } = this.props;
-    if (!beforeUpload) {
-      // always async in case use react state to keep fileList
-      return setTimeout(() => this.post(file), 0);
+  upload(file) {
+    const { checkFile, uploadFile } = this.props;
+    if (checkFile !== noop && checkFile(file)) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file, 'UTF-8');
+      reader.onload = function() {
+        let fileStringBase64 = this.result;
+        fileStringBase64 = fileStringBase64.substring(
+          fileStringBase64.indexOf(',') + 1,
+          fileStringBase64.length
+        );
+        uploadFile(fileStringBase64, file);
+      };
     }
-
-    const before = beforeUpload(file, fileList);
-
-    if (before && before.then) {
-      before.then(processedFile => {
-        const processedFileType = Object.prototype.toString.call(processedFile);
-        if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
-          return this.post(processedFile);
-        }
-        return this.post(file);
-      });
-    } else if (before !== false) {
-      setTimeout(() => this.post(file), 0);
-    }
-
-    return true;
-  }
-
-  post(file) {
-    if (!this.uploaderMounted) return;
-
-    const {
-      data,
-      onStart,
-      onProgress,
-      onSuccess,
-      onError,
-      action,
-      customRequest,
-      name,
-      headers,
-      withCredentials
-    } = this.props;
-
-    let currentData = data;
-
-    if (typeof currentData === 'function') {
-      currentData = currentData(file);
-    }
-    new Promise(resolve => {
-      if (typeof action === 'function') {
-        return resolve(action(file));
-      }
-      return resolve(action);
-    }).then(currentAction => {
-      const { uid } = file;
-      const request = customRequest || defaultRequest;
-      this.reqs[uid] = request({
-        file,
-        headers,
-        withCredentials,
-        action: currentAction,
-        filename: name,
-        data: currentData,
-        onProgress: onProgress
-          ? e => {
-              onProgress(e, file);
-            }
-          : null,
-        onSuccess: (res, xhr) => {
-          delete this.reqs[uid];
-          onSuccess(res, file, xhr);
-        },
-        onError: (err, res) => {
-          delete this.reqs[uid];
-          onError(err, res, file);
-        }
-      });
-      onStart(file);
-    });
   }
 
   reset() {

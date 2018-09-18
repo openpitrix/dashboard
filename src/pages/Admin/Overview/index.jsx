@@ -120,8 +120,9 @@ export default class Overview extends React.Component {
                 linkTo="/dashboard/apps"
                 len={appList.length}
                 iconName="appcenter"
+                isAdmin
               >
-                <AppList apps={appList} isAdmin />
+                <AppList apps={appList} />
               </Panel>
             </Section>
 

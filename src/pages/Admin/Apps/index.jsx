@@ -17,13 +17,12 @@ import { getSessInfo, getObjName } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  sessInfo,
-  sock
+  sessInfo
 }))
 @observer
 export default class Apps extends Component {
@@ -170,6 +169,7 @@ export default class Apps extends Component {
     }
 
     const type = hasViewType ? viewType : '';
+    const withCreateBtn = hasViewType ? { name: t('Create'), linkTo: `/dashboard/app/create` } : {};
 
     return (
       <Toolbar
@@ -178,7 +178,7 @@ export default class Apps extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-        withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/app/create` }}
+        withCreateBtn={withCreateBtn}
         viewType={type}
         changeView={this.changeView}
       />

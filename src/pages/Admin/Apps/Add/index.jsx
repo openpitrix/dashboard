@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
@@ -12,57 +13,20 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  repoStore: rootStore.repoStore,
-  appCreateStore: rootStore.appCreateStore
+  appStore: rootStore.appStore,
+  repoStore: rootStore.repoStore
 }))
 @observer
 export default class AppAdd extends Component {
   static async onEnter({ repoStore }) {
-    await repoStore.fetchAll();
+    await repoStore.fetchAll({ noLimit: true });
   }
 
   constructor(props) {
     super(props);
-
-    const setFileStatus = (file, fileStatus) => {
-      const fileId = file.uid;
-      const currentFile = this.state.files[fileId];
-      this.setState({
-        files: Object.assign({}, this.state.files, {
-          [fileId]: Object.assign({}, currentFile, fileStatus)
-        })
-      });
-    };
-
-    this.uploaderProps = {
-      name: 'foo',
-      action: '/api/upload',
-      data: { a: 1, b: 2 },
-      multiple: true,
-      headers: {
-        authorization: 'authorization-text'
-      },
-      beforeUpload(file) {},
-      onSuccess(res, file) {
-        setFileStatus(file, {
-          showProgress: false,
-          showFile: true,
-          percentage: 100,
-          status: 'active'
-        });
-      },
-      onError(err, res, file) {
-        setFileStatus(file, {
-          showProgress: true,
-          showFile: false,
-          status: 'exception'
-        });
-      }
-    };
-
-    this.state = {
-      files: {}
-    };
+    const { appStore } = this.props;
+    appStore.createStep;
+    appStore.createError = '';
   }
 
   componentWillUnmount() {
@@ -72,8 +36,10 @@ export default class AppAdd extends Component {
 
   setCreateStep = step => {
     window.scroll({ top: 0, behavior: 'smooth' });
-    const { setCreateStep, createStep } = this.props.appCreateStore;
+    const { appStore } = this.props;
+    const { setCreateStep, createStep, createError } = appStore;
     step = step ? step : createStep - 1;
+    appStore.createError = '';
     if (step) {
       setCreateStep(step);
     } else {
@@ -86,20 +52,39 @@ export default class AppAdd extends Component {
   };
 
   onChange = repoId => {
-    const { repoStore } = this.props;
+    const { repoStore, appStore } = this.props;
     const { repos } = repoStore;
-    for (let i = 0; i < repos.length; i++) {
-      if (repos[i].repo_id === repoId) {
-        repos[i].active = !repos[i].active;
-        repoStore.repos[i] = { ...repos[i] };
-        break;
+
+    appStore.createReopId = repoId;
+    repos.forEach(repo => {
+      if (repo.repo_id === repoId) {
+        repo.active = true;
+      } else {
+        repo.active = false;
       }
-    }
+    });
   };
 
-  uploadFile = () => {
-    const { appCreateStore } = this.props;
-    appCreateStore.isLoading = !appCreateStore.isLoading;
+  checkFile = file => {
+    let result = true;
+    const { appStore } = this.props;
+    const maxsize = 2 * 1024 * 1024;
+
+    if (!/\.(tar|tar\.gz|tra\.bz|zip|tgz)$/.test(file.name.toLocaleLowerCase())) {
+      appStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ,TGZ and ZIP';
+      return false;
+    } else if (file.size > maxsize) {
+      appStore.createError = 'The file size cannot exceed 2M';
+      return false;
+    }
+
+    return result;
+  };
+
+  uploadFile = (base64Str, file) => {
+    const { appStore } = this.props;
+    appStore.uploadFile = base64Str;
+    appStore.createOrModify();
   };
 
   renderSelectRepo() {
@@ -127,32 +112,30 @@ export default class AppAdd extends Component {
   }
 
   renderUploadPackage() {
-    const { isLoading, errorMsg } = this.props.appCreateStore;
+    const { isLoading, createError } = this.props.appStore;
     const name = 'Create New Application';
     const explain = 'Upload Package';
 
     return (
       <StepContent name={name} explain={explain} className={styles.createVersion}>
-        <Upload {...this.uploaderProps}>
+        <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
           <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
             <Icon name="upload" size={48} type="dark" />
             <p className={styles.word}>Please click to select file upload</p>
             <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
-            {loading && <div className={styles.loading} />}
+            {isLoading && <div className={styles.loading} />}
           </div>
         </Upload>
 
         <div className={styles.operateWord}>
           View the
-          <span onClick={() => this.setCreateStep(3)} className={styles.link}>
-            《Openpitrix Develop Guide》
-          </span>
+          <span className={styles.link}>《Openpitrix Develop Guide》</span>
           and learn how to make config files
         </div>
-        {errorMsg && (
+        {createError && (
           <div className={styles.errorNote}>
             <Icon name="error" size={24} />
-            {errorMsg}
+            {createError}
           </div>
         )}
       </StepContent>
@@ -160,6 +143,7 @@ export default class AppAdd extends Component {
   }
 
   renderCreatedApp() {
+    const { createAppId } = this.props.appStore;
     const name = 'Congratulations';
     const explain = 'Your application has been created.';
 
@@ -171,13 +155,17 @@ export default class AppAdd extends Component {
           </label>
         </div>
         <div className={styles.operateBtn}>
-          <Button type="primary">Deploy & Test</Button>
-          <Button>View in Store</Button>
+          <Link to={`/dashboard/store/${createAppId}/deploy`}>
+            <Button type="primary">Deploy & Test</Button>
+          </Link>
+          <Link to={`/store/${createAppId}`}>
+            <Button>View in Store</Button>
+          </Link>
         </div>
         <div className={styles.operateWord}>
           Also you can
           <span onClick={() => this.setCreateStep(2)} className={styles.link}>
-            go back
+            &nbsp;go back&nbsp;
           </span>
           and reload application package.
         </div>
@@ -186,14 +174,14 @@ export default class AppAdd extends Component {
   }
 
   render() {
-    const { createStep } = this.props.appCreateStore;
+    const { createStep } = this.props.appStore;
 
     return (
       <div className={styles.createApp}>
         <div className={styles.operate}>
-          <label onClick={() => this.setCreateStep()}>Back</label>
+          <label onClick={() => this.setCreateStep()}>←&nbsp;Back</label>
           <label className="pull-right" onClick={() => history.back()}>
-            Esc
+            <Icon name="close" size={24} type="dark" />&nbsp;Esc
           </label>
         </div>
         {createStep === 1 && this.renderSelectRepo()}

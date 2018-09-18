@@ -159,11 +159,13 @@ export default class Runtimes extends Component {
           ))}
         </div>
 
-        {runtimes.map(runtime => (
-          <div key={runtime.runtime_id} className={styles.cardContent}>
-            {this.renderRuntimeCard(runtime)}
-          </div>
-        ))}
+        <div>
+          {runtimes.map(runtime => (
+            <div key={runtime.runtime_id} className={styles.cardContent}>
+              {this.renderRuntimeCard(runtime)}
+            </div>
+          ))}
+        </div>
 
         <Link className={styles.addRuntime} to="/dashboard/runtime/create">
           <Icon name="add" size={32} />

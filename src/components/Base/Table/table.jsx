@@ -2,16 +2,13 @@ import React from 'react';
 import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { isEqual } from 'lodash';
+import { isEqual, noop } from 'lodash';
 
-// import Status from 'components/Status';
-import { Checkbox, Radio, Popover, Tooltip, Icon, Pagination } from 'components/Base';
+import { Checkbox, Radio, Popover, Icon, Pagination } from 'components/Base';
 import Loading from 'components/Loading';
 import NoData from './noData';
 
 import styles from './index.scss';
-
-const noop = () => {};
 
 export default class Table extends React.Component {
   static propTypes = {
@@ -340,14 +337,17 @@ export default class Table extends React.Component {
   render() {
     const { className, style, pagination, isLoading, rowSelection } = this.props;
     const { selectedRowKeys } = this.state;
-    const onSelectRow = rowSelection.onChange || noop;
 
     return (
       <Loading className="loadTable" isLoading={isLoading}>
         {pagination.total > 0 ? (
           <div className={classNames(styles.table, className)} style={style}>
             {this.renderTable()}
-            <Pagination {...pagination} selectedRows={selectedRowKeys} onSelectRow={onSelectRow} />
+            <Pagination
+              {...pagination}
+              selectedRows={selectedRowKeys}
+              onSelectRow={rowSelection.onChange || noop}
+            />
           </div>
         ) : (
           <NoData type={pagination.tableType} />

@@ -17,11 +17,12 @@ export default class DetailBlock extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
     repoName: PropTypes.string,
-    repoProvider: PropTypes.string
+    repoProvider: PropTypes.string,
+    noDeploy: PropTypes.bool
   };
 
   render() {
-    const { appDetail, repoName, repoProvider, t } = this.props;
+    const { appDetail, repoName, repoProvider, noDeploy, t } = this.props;
 
     return (
       <div className={styles.detailBlock}>
@@ -63,9 +64,11 @@ export default class DetailBlock extends React.Component {
             </dd>
           </dl>
         </div>
-        <Link className={styles.deploy} to={`/store/${appDetail.app_id}/deploy`}>
-          <Button type="primary">Deploy</Button>
-        </Link>
+        {!noDeploy && (
+          <Link className={styles.deploy} to={`/store/${appDetail.app_id}/deploy`}>
+            <Button type="primary">Deploy</Button>
+          </Link>
+        )}
       </div>
     );
   }
