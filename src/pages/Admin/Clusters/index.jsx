@@ -26,6 +26,7 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
+    clusterStore.clusters = [];
     await clusterStore.fetchAll();
 
     await appStore.fetchApps({
@@ -53,6 +54,11 @@ export default class Clusters extends Component {
     if (role === 'admin') {
       clusterStore.fetchStatistics();
     }
+  }
+
+  componentWillUnmount() {
+    const { appStore } = this.props;
+    appStore.apps = [];
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {

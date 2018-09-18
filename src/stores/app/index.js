@@ -6,8 +6,10 @@ const defaultStatus = ['active'];
 
 export default class AppStore extends Store {
   @observable apps = [];
-  @observable homeApps = []; //home page category apps
+  @observable homeApps = []; //menu apps
   @observable storeApps = []; //store page category apps
+  @observable menuApps = [];
+  @observable updateMeunApps = true;
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable categoryTitle = '';
@@ -65,6 +67,10 @@ export default class AppStore extends Store {
 
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
+    if (this.updateMeunApps) {
+      this.menuApps = this.apps.slice(0, 5);
+      this.updateMeunApps = false;
+    }
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -109,6 +115,10 @@ export default class AppStore extends Store {
     this.totalCount = get(result, 'total_count', 0);
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
+    }
+    if (this.updateMeunApps) {
+      this.menuApps = this.apps.slice(0, 5);
+      this.updateMeunApps = false;
     }
     this.isLoading = false;
     this.isProgressive = false;
@@ -156,6 +166,7 @@ export default class AppStore extends Store {
     if (get(this.createResult, 'app_id')) {
       this.createAppId = get(this.createResult, 'app_id');
       this.createStep = 3; //show application has been created page
+      this.updateMeunApps = true;
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;
@@ -189,6 +200,7 @@ export default class AppStore extends Store {
         await this.fetch(this.appId);
       } else {
         this.hideModal();
+        this.updateMeunApps = true;
         await this.fetchAll();
         this.cancelSelected();
       }

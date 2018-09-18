@@ -50,8 +50,39 @@
     color: $N0;
   }
 
-  .app {
+  .apps {
     margin: 0 24px 12px;
+
+    .app {
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      width: 100%;
+      height: 32px;
+      padding: 8px 12px;
+      opacity: 0.5;
+      border-radius: 2px;
+      background-color: $N400;
+      border: 1px solid $N400;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      color: $N0;
+      cursor: pointer;
+      text-align: left;
+      @include textCut;
+
+      img {
+        margin-right: 4px;
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+      }
+
+      &.active {
+        border-color: $Y300;
+        opacity: 1;
+      }
+    }
 
     >a {
       display: inline-block;

@@ -338,21 +338,21 @@ export default class Table extends React.Component {
     const { className, style, pagination, isLoading, rowSelection } = this.props;
     const { selectedRowKeys } = this.state;
 
-    return (
-      <Loading className="loadTable" isLoading={isLoading}>
-        {pagination.total > 0 ? (
-          <div className={classNames(styles.table, className)} style={style}>
-            {this.renderTable()}
-            <Pagination
-              {...pagination}
-              selectedRows={selectedRowKeys}
-              onSelectRow={rowSelection.onChange || noop}
-            />
-          </div>
-        ) : (
-          <NoData type={pagination.tableType} />
-        )}
-      </Loading>
+    if (isLoading) {
+      return <Loading className="loadTable" isLoading={isLoading} />;
+    }
+
+    return pagination.total > 0 ? (
+      <div className={classNames(styles.table, className)} style={style}>
+        {this.renderTable()}
+        <Pagination
+          {...pagination}
+          selectedRows={selectedRowKeys}
+          onSelectRow={rowSelection.onChange || noop}
+        />
+      </div>
+    ) : (
+      <NoData type={pagination.tableType} />
     );
   }
 }

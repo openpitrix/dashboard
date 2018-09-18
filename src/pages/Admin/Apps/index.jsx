@@ -373,6 +373,7 @@ export default class Apps extends Component {
                     rowSelection={rowSelection}
                     filterList={filterList}
                     pagination={pagination}
+                    isLoading={isLoading}
                   />
                 </Card>
               )}
