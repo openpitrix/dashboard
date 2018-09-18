@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react/index';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Popover } from 'components/Base';
+import { Icon, Popover, Image } from 'components/Base';
 import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
@@ -142,14 +142,14 @@ class Menu extends React.Component {
   }
 
   renderSubDev() {
-    const { path } = this.props.match;
+    const { url } = this.props.match;
 
-    if (path === '/dashboard') {
+    if (url === '/dashboard') {
       return (
         <div className={styles.subNav}>
           <div className={styles.title}>Dashboard</div>
           <Link
-            className={classnames(styles.link, { [styles.active]: path.indexOf('dashboard') > -1 })}
+            className={classnames(styles.link, { [styles.active]: url.indexOf('dashboard') > -1 })}
             to="/dashboard"
           >
             Dashboard
@@ -158,19 +158,32 @@ class Menu extends React.Component {
       );
     }
 
+    const { menuApps } = this.props.rootStore.appStore;
+
     return (
       <div className={styles.subNav}>
         <div className={styles.title}>My Apps</div>
-        <div className={styles.app}>
+        <div className={styles.apps}>
+          {menuApps.map(app => (
+            <Link
+              key={app.app_id}
+              className={classnames(styles.app, { [styles.active]: url.indexOf(app.app_id) > -1 })}
+              title={app.name}
+              to={`/dashboard/app/${app.app_id}`}
+            >
+              <Image src={app.icon} iconSize={16} />
+              {app.name}
+            </Link>
+          ))}
           <Link className={styles.plus} to="/dashboard/app/create">
-            <Icon name="add" />
+            <Icon name="add" type="dark" />
           </Link>
           <Link className={styles.more} to="/dashboard/apps">
-            <Icon name="more" />
+            <Icon name="more" type="dark" />
           </Link>
         </div>
         <Link
-          className={classnames(styles.link, { [styles.active]: path.indexOf('repo') > -1 })}
+          className={classnames(styles.link, { [styles.active]: url.indexOf('repo') > -1 })}
           to="/dashboard/repos"
         >
           Repos
@@ -179,13 +192,13 @@ class Menu extends React.Component {
           <span className={styles.word}>Test</span>
         </div>
         <Link
-          className={classnames(styles.link, { [styles.active]: path.indexOf('cluster') > -1 })}
+          className={classnames(styles.link, { [styles.active]: url.indexOf('cluster') > -1 })}
           to="/dashboard/clusters"
         >
           Clusters
         </Link>
         <Link
-          className={classnames(styles.link, { [styles.active]: path.indexOf('runtime') > -1 })}
+          className={classnames(styles.link, { [styles.active]: url.indexOf('runtime') > -1 })}
           to="/runtimes"
         >
           Runtimes

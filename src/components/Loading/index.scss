@@ -48,19 +48,10 @@
 }
 
 :global {
-  .loadTable{
-    position: fixed;
-    background-color: #fff;
-    opacity: 0.5;
-    margin-top: $header-height + $tabNavs-height + 5px;
-
-    .loadOuter{
-      position: relative;
-      padding: 30px 0 50px;
-      .loader {
-        margin: 0 auto;
-      }
-    }
+  .loadTable {
+    position: static;
+    background: $N0;
+    height: 150px;
   }
 }
 

@@ -45,8 +45,16 @@ export default class AppDetail extends Component {
     this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.currentVersion !== this.props.currentVersion;
+  async componentWillReceiveProps({ match, rootStore }) {
+    const { appStore, appVersionStore, repoStore } = rootStore;
+    const { appId } = match.params;
+    await appStore.fetch(appId);
+    appVersionStore.appId = appId;
+    appVersionStore.currentVersion = {};
+    await appVersionStore.fetchAll({ app_id: appId });
+    if (appStore.appDetail.repo_id) {
+      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+    }
   }
 
   selectVersion = version => {

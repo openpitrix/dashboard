@@ -54,9 +54,9 @@ export default class Store extends Component {
   }
 
   componentWillUnmount() {
-    if (window.onscroll) {
-      window.onscroll = null;
-    }
+    const { appStore } = this.props;
+    appStore.apps = [];
+    window.onscroll = null;
   }
 
   //load app data progressive by window scroll
