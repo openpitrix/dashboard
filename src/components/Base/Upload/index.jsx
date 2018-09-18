@@ -6,6 +6,8 @@ import { noop } from 'lodash';
 import attrAccept from './utils/attr-accept';
 import traverseFileTree from './utils/traverseFileTree';
 
+import styles from './index.scss';
+
 const now = Date.now();
 let index = 0;
 
@@ -114,7 +116,7 @@ export default class Upload extends Component {
           fileStringBase64.indexOf(',') + 1,
           fileStringBase64.length
         );
-        uploadFile(fileStringBase64);
+        uploadFile(fileStringBase64, file);
       };
     }
   }

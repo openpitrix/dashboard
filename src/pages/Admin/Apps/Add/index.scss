@@ -36,6 +36,12 @@
       color: $N100;
       cursor: pointer;
     }
+
+    :global {
+      .icon{
+        margin-right: 4px;
+      }
+    }
   }
 }
 

@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { pick, assign, get } from 'lodash';
+import { pick, assign, get, capitalize } from 'lodash';
 import classNames from 'classnames';
 
 import { Icon, Input, Table, Popover, Modal, Button, Upload } from 'components/Base';
+import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
-import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import StepContent from 'StepContent';
 import clusterColumns from './tabs/cluster-columns';
-
 import { getSessInfo } from 'utils';
+
 import styles from './index.scss';
 
 @translate()
@@ -28,6 +28,7 @@ export default class AppDetail extends Component {
   static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
     await appStore.fetch(appId);
     appVersionStore.appId = appId;
+    appVersionStore.currentVersion = {};
     await appVersionStore.fetchAll({ app_id: appId });
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
@@ -36,31 +37,38 @@ export default class AppDetail extends Component {
 
   constructor(props) {
     super(props);
-    const { clusterStore, runtimeStore, appVersionStore } = this.props;
+    const { clusterStore, runtimeStore, appVersionStore, match } = this.props;
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
-    appVersionStore.currentPage = 1;
-    appVersionStore.searchWord = '';
-    this.appId = props.match.params.appId;
-    appVersionStore.appId = this.appId;
+    appVersionStore.loadPageInit();
+    appVersionStore.appId = match.params.appId;
     this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
-  /* shouldComponentUpdate(nextProps, nextState) {
-    return (
-      nextState.version !== this.state.version || nextState.createStep !== this.state.createStep
-    );
-  }*/
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.currentVersion !== this.props.currentVersion;
+  }
 
   selectVersion = version => {
     const { appVersionStore } = this.props;
     appVersionStore.currentVersion = version;
+    appVersionStore.name = version.name;
+    appVersionStore.packageName = version.package_name;
+    appVersionStore.description = version.description;
+    appVersionStore.uploadFile = '';
+    appVersionStore.createError = '';
+    appVersionStore.createStep = 1;
   };
 
   createVersionShow = () => {
     const { appVersionStore } = this.props;
-    appVersionStore.currentVersion = {};
+    const newVersion = { name: 'New version', status: 'create' };
+
+    appVersionStore.currentVersion = newVersion;
     appVersionStore.createStep = 1;
+    if (get(appVersionStore.versions[0], 'name') !== 'New version') {
+      appVersionStore.versions.unshift(newVersion);
+    }
   };
 
   checkFile = file => {
@@ -80,10 +88,29 @@ export default class AppDetail extends Component {
     return result;
   };
 
-  uploadFile = base64Str => {
+  uploadFile = (base64Str, file) => {
     const { appVersionStore } = this.props;
+    appVersionStore.isLoading = true;
     appVersionStore.uploadFile = base64Str;
-    appVersionStore.createOrModify({ app_id: this.appId });
+    appVersionStore.packageName = file.name;
+    setTimeout(() => {
+      appVersionStore.isLoading = false;
+    }, 1000);
+  };
+
+  createVersion = (base64Str, file) => {
+    const { appVersionStore } = this.props;
+    appVersionStore.currentVersion = {};
+    appVersionStore.uploadFile = base64Str;
+    appVersionStore.createOrModify();
+  };
+
+  deleteFile = isDisabled => {
+    if (!isDisabled) {
+      const { appVersionStore } = this.props;
+      appVersionStore.uploadFile = '';
+      appVersionStore.packageName = '';
+    }
   };
 
   setCreateStep = step => {
@@ -91,73 +118,69 @@ export default class AppDetail extends Component {
     appVersionStore.createStep = step;
   };
 
-  handleVersion = (version, handleType) => {
-    const { handle } = this.props.appVersionStore;
-    const handleMap = {
-      draft: 'submit',
-      submitted: 'pass',
-      passed: 'release',
-      active: 'suspend',
-      suspended: 'recover',
-      rejected: 'submit'
-    };
-    handleType = handleType ? handleType : handleMap[version.status];
-    handle(handleType, version.version_id);
+  handleVersion = async (version, handleType) => {
+    const { appVersionStore } = this.props;
+
+    if (handleType === 'delete') {
+      appVersionStore.showDelete('deleteVersion');
+    } else {
+      await appVersionStore.handle(handleType, version.version_id);
+      const newVersion = appVersionStore.versions.filter(
+        item => item.version_id === version.version_id
+      );
+      appVersionStore.currentVersion = newVersion[0];
+    }
   };
 
   renderHandleMenu = () => {
     const { t } = this.props;
-    const { showDeleteApp } = this.props.appVersionStore;
+    const { showDelete } = this.props.appVersionStore;
 
     return (
       <div className="operate-menu">
-        <span onClick={showDeleteApp}>{t('Delete App')}</span>
+        <span onClick={() => showDelete('deleteApp')}>{t('Delete App')}</span>
       </div>
     );
   };
 
-  deleteApp = () => {
+  delete = () => {
     const { appStore, appVersionStore } = this.props;
-    appStore.appId = this.appId;
-    appStore.operateType = 'detailDelete';
-    appStore.remove();
+    if (appVersionStore.dialogType === 'deleteVersion') {
+      appVersionStore.handle('delete', appVersionStore.currentVersion.version_id);
+    } else {
+      appStore.operateType = 'detailDelete';
+      appStore.remove();
+    }
     appVersionStore.hideModal();
   };
 
   renderDialog = () => {
     const { t } = this.props;
     const { isDialogOpen, hideModal, dialogType } = this.props.appVersionStore;
-    let title = '',
-      modalBody = t('Delete App desc'),
-      hideFooter = false;
+    let title = t('Delete App'),
+      modalBody = t('Delete App desc');
 
-    if (dialogType === 'delete') {
+    if (dialogType === 'deleteVersion') {
       title = t('Delete Version');
       modalBody = t('Delete Version desc');
     }
 
     return (
-      <Dialog
-        title={title}
-        isOpen={isDialogOpen}
-        onSubmit={this.deleteApp}
-        onCancel={hideModal}
-        hideFooter={hideFooter}
-      >
+      <Dialog title={title} isOpen={isDialogOpen} onSubmit={this.delete} onCancel={hideModal}>
         {modalBody}
       </Dialog>
     );
   };
 
   renderTipsDialog = () => {
-    const { isTipsOpen, hideModal } = this.props.appVersionStore;
+    const { isTipsOpen, hideModal, name } = this.props.appVersionStore;
     return (
-      <Dialog title="Tips" isOpen={isTipsOpen} onSubmit={hideModal} onCancel={hideModal}>
+      <Dialog title="Tips" isOpen={isTipsOpen} onCancel={hideModal} hideFooter>
         <div className={styles.tipsContent}>
           <span className={styles.icon}>
             <Icon name="check" size={48} />
           </span>
-          <p className={styles.note}>Version 0.0.2 has been submiited.</p>
+          <p className={styles.note}>Version {name} has been submiited.</p>
           <p className={styles.explain}>
             The review process usually takes 2-3 business days, please be patient.
           </p>
@@ -212,15 +235,9 @@ export default class AppDetail extends Component {
   }
 
   renderVersions = () => {
-    const { appVersionStore } = this.props;
+    const { appVersionStore, appStore, sessInfo } = this.props;
     const { versions, currentVersion } = appVersionStore;
-    const statusMap = {
-      draft: 'To be submitted',
-      submitted: 'In Review',
-      passed: 'Approved',
-      active: 'Published',
-      suspended: 'Suspend'
-    };
+    const role = getSessInfo('role', sessInfo);
 
     return (
       <div className={styles.versionList}>
@@ -228,7 +245,7 @@ export default class AppDetail extends Component {
         <ul>
           {versions.map(version => (
             <li
-              key={version.version_id}
+              key={version.version_id || version.name}
               className={classNames(version.status, {
                 selected: version.version_id === currentVersion.version_id
               })}
@@ -236,13 +253,16 @@ export default class AppDetail extends Component {
             >
               <label className="dot" />
               {version.name}
-              <span className="status">{statusMap[version.status]}</span>
+              <span className="status">{capitalize(version.status)}</span>
             </li>
           ))}
         </ul>
-        <div className={styles.addVersion} onClick={() => this.createVersionShow()}>
-          + Create version
-        </div>
+        {role === 'developer' &&
+          appStore.appDetail.status !== 'deleted' && (
+            <div className={styles.addVersion} onClick={() => this.createVersionShow()}>
+              + Create version
+            </div>
+          )}
       </div>
     );
   };
@@ -255,7 +275,7 @@ export default class AppDetail extends Component {
     return (
       <StepContent name={name} explain={explain}>
         <div className={styles.createVersion}>
-          <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
+          <Upload checkFile={this.checkFile} uploadFile={this.createVersion}>
             <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
               <Icon name="upload" size={48} type="dark" />
               <p className={styles.word}>Please click to select file upload</p>
@@ -283,8 +303,9 @@ export default class AppDetail extends Component {
   };
 
   renderCreateSuccess = () => {
+    const { currentVersion } = this.props.appVersionStore;
     const name = 'Congratulations';
-    const explain = 'Your application has been created.';
+    const explain = 'New version has been created.';
 
     return (
       <StepContent className={styles.createVersion} name={name} explain={explain}>
@@ -294,32 +315,58 @@ export default class AppDetail extends Component {
           </label>
         </div>
         <div className={styles.operateBtn}>
-          <Button type="primary">Deploy & Test</Button>
+          <Link to={`/store/${currentVersion.app_id}/deploy`}>
+            <Button type="primary">Deploy & Test</Button>
+          </Link>
         </div>
         <div className={styles.operateWord}>
-          Also you can
-          <span className={styles.link}>edit</span>
-          more information for this version
+          Also you can &nbsp;
+          <span className={styles.link} onClick={() => this.selectVersion(currentVersion)}>
+            edit
+          </span>&nbsp; more information for this version
         </div>
       </StepContent>
     );
   };
 
   renderInformation = () => {
-    const { currentVersion } = this.props.appVersionStore;
-    if (!currentVersion.version_id) {
+    const { appVersionStore, appStore, sessInfo } = this.props;
+    const { currentVersion, createStep, createError, isLoading } = appVersionStore;
+    if (!currentVersion.version_id || createStep === 2) {
       return null;
     }
-    const packageName = currentVersion.package_name && currentVersion.package_name.split('/');
-    const packageShow = packageName ? packageName[packageName.length - 1] : '';
-    const { version_id, name, description } = currentVersion;
+
+    const { appDetail } = appStore;
+    const role = getSessInfo('role', sessInfo);
+    const editStatus = ['draft', 'rejected'];
+    const isDisabled =
+      !editStatus.includes(currentVersion.status) ||
+      role !== 'developer' ||
+      appDetail.status === 'deleted';
+    const handleMap = {
+      developer: {
+        draft: 'submit',
+        submitted: 'cancel',
+        passed: 'release',
+        suspended: 'delete',
+        rejected: 'submit'
+      },
+      admin: {
+        rejected: 'pass',
+        submitted: 'pass', // or action 'reject'
+        active: 'suspend',
+        suspended: 'recover'
+      }
+    };
+
+    const hanleType = handleMap[role] && handleMap[role][currentVersion.status];
 
     return (
       <div className={styles.versionInfo}>
         <dl>
           <dt>ID</dt>
           <dd>
-            <Input className={styles.input} value={version_id} disabled />
+            <Input className={styles.input} value={currentVersion.version_id} disabled readOnly />
           </dd>
         </dl>
         <dl>
@@ -330,7 +377,12 @@ export default class AppDetail extends Component {
             </p>
           </dt>
           <dd>
-            <Input className={styles.input} value={name} disabled />
+            <Input
+              className={styles.input}
+              value={appVersionStore.name}
+              onChange={appVersionStore.changeName}
+              disabled={isDisabled}
+            />
           </dd>
         </dl>
         <dl>
@@ -338,18 +390,42 @@ export default class AppDetail extends Component {
             Package
             <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
           </dt>
-          <dd>
-            <Upload disabled>
-              <div className={styles.fileName}>
+          <dd className={styles.createVersion}>
+            {appVersionStore.packageName && (
+              <div className={classNames(styles.fileName, { [styles.disabledFile]: isDisabled })}>
                 <Icon name="file" size={32} type="dark" />
-                <span className={styles.name}>{packageShow}</span>
-                <span className={styles.delete}>Delete</span>
+                <span className={styles.name}>{appVersionStore.packageName}</span>
+                <span className={styles.delete} onClick={() => this.deleteFile(isDisabled)}>
+                  Delete
+                </span>
               </div>
-            </Upload>
+            )}
+            {!appVersionStore.packageName && (
+              <Upload checkFile={this.checkFile} uploadFile={this.uploadFile} disabled={isDisabled}>
+                <div
+                  className={classNames(styles.upload, styles.editFile, {
+                    [styles.uploading]: isLoading
+                  })}
+                >
+                  <Icon name="upload" size={48} type="dark" />
+                  <p className={styles.word}>Please click to select file upload</p>
+                  <p className={styles.note}>
+                    The file format supports TAR, TAR.GZ, TAR.BZ and ZIP
+                  </p>
+                  {isLoading && <div className={styles.loading} />}
+                </div>
+              </Upload>
+            )}
             <div className={styles.viewGuide}>
               View the<span className={styles.link}>《Openpitrix Develop Guide》</span> and learn
               how to make config files
             </div>
+            {createError && (
+              <div className={classNames(styles.errorNote, styles.editError)}>
+                <Icon name="error" size={24} />
+                {createError}
+              </div>
+            )}
           </dd>
         </dl>
         <dl>
@@ -361,17 +437,35 @@ export default class AppDetail extends Component {
             </p>
           </dt>
           <dd>
-            <textarea className={styles.textarea} defaultValue={description} />
+            <textarea
+              className={styles.textarea}
+              defaultValue={appVersionStore.description}
+              disabled={isDisabled}
+              onChange={appVersionStore.changeDescription}
+            />
           </dd>
         </dl>
-        <dl>
-          <dt>Operations</dt>
-          <dd>
-            <Button type="primary" onClick={() => this.handleVersion(currentVersion)}>
-              Submiit
-            </Button>
-          </dd>
-        </dl>
+        {hanleType &&
+          appDetail.status !== 'deleted' && (
+            <dl>
+              <dt>Operations</dt>
+              <dd>
+                <Button
+                  type="primary"
+                  onClick={() => this.handleVersion(currentVersion, hanleType)}
+                >
+                  {capitalize(hanleType)}
+                </Button>
+
+                {currentVersion.status === 'submitted' &&
+                  role === 'admin' && (
+                    <Button onClick={() => this.handleVersion(currentVersion, 'reject')}>
+                      {capitalize('reject')}
+                    </Button>
+                  )}
+              </dd>
+            </dl>
+          )}
       </div>
     );
   };
@@ -441,12 +535,19 @@ export default class AppDetail extends Component {
       };
     }
 
+    const isShowCreate = !currentVersion.version_id || createStep === 2;
+
     return (
-      <Layout className={styles.appDetail}>
+      <Layout className={styles.appDetail} noNotification={isShowCreate}>
         {this.renderNavLink()}
 
         <Grid className={styles.appInfo}>
-          <DetailBlock appDetail={appDetail} repoName={repoName} repoProvider={repoProvider} />
+          <DetailBlock
+            appDetail={appDetail}
+            repoName={repoName}
+            repoProvider={repoProvider}
+            noDeploy={appDetail.status === 'deleted'}
+          />
           {appDetail.status !== 'deleted' && (
             <Popover className={styles.operation} content={this.renderHandleMenu(appDetail.app_id)}>
               <Icon name="more" />
@@ -460,18 +561,23 @@ export default class AppDetail extends Component {
           </Section>
 
           <Section size={8} className={styles.rightInfo}>
-            {!currentVersion.version_id &&
+            {isShowCreate &&
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
-            {currentVersion.version_id && (
-              <TagNav tags={['Information', 'Clusters', 'Logs']} changeTag={this.changeDetailTab} />
-            )}
-            {detailTab === 'Information' ? (
-              this.renderInformation()
-            ) : (
-              <Card className={styles.noShadow}>
-                {this.renderToolbar(toolbarOptions)}
-                {this.renderTable(tableOptions)}
-              </Card>
+            {!isShowCreate && (
+              <Fragment>
+                <TagNav
+                  tags={['Information', 'Clusters', 'Logs']}
+                  changeTag={this.changeDetailTab}
+                />
+                {detailTab === 'Information' ? (
+                  this.renderInformation()
+                ) : (
+                  <Card className={styles.noShadow}>
+                    {this.renderToolbar(toolbarOptions)}
+                    {this.renderTable(tableOptions)}
+                  </Card>
+                )}
+              </Fragment>
             )}
             {this.renderDialog()}
             {this.renderTipsDialog()}

@@ -156,4 +156,10 @@
       border-color: $P75;
     }
   }
+
+  textarea[disabled]{
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }

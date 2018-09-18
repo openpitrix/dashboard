@@ -34,7 +34,7 @@ export default class AppStore extends Store {
 
   @observable deleteResult = {};
 
-  @observable detailTab = '';
+  @observable detailTab = 'Information';
 
   @observable currentPic = 1;
 

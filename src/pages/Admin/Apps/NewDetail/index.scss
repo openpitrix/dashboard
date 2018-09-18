@@ -121,13 +121,13 @@
 
     .suspended {
       .dot {
-        background-color: $B75;
+        background-color: $N75;
       }
       .status {
-        color: $B75;
+        color: $N75;
       }
       &.selected {
-        background-color: $B75;
+        background-color: $N75;
       }
     }
 
@@ -177,6 +177,10 @@
       //width: 430px;
       width: calc(65% - 12px);
       vertical-align: top;
+
+      button {
+        margin-right: 12px;
+      }
     }
   }
 
@@ -212,6 +216,12 @@
       color: $P75;
       cursor: pointer;
     }
+  }
+
+  .disabledFile{
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
   .viewGuide {
@@ -359,6 +369,16 @@
     }
   }
 
+  .editError {
+    width: 400px;
+  }
+
+  .editFile{
+    width: 400px;
+    height: auto;
+    padding: 24px 12px 24px 30px;
+  }
+
   .checkImg {
     margin: 48px 0 40px;
     > label {
@@ -400,6 +420,7 @@
   text-align: center;
   .icon {
     display: inline-block;
+    margin-bottom: 12px;
     width: 48px;
     height: 48px;
     background-color: $G300;

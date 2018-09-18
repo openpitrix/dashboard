@@ -81,7 +81,7 @@ export default class AppAdd extends Component {
     return result;
   };
 
-  uploadFile = base64Str => {
+  uploadFile = (base64Str, file) => {
     const { appStore } = this.props;
     appStore.uploadFile = base64Str;
     appStore.createOrModify();
@@ -155,7 +155,7 @@ export default class AppAdd extends Component {
           </label>
         </div>
         <div className={styles.operateBtn}>
-          <Link to={`/dashboard/app/${createAppId}/deploy`}>
+          <Link to={`/dashboard/store/${createAppId}/deploy`}>
             <Button type="primary">Deploy & Test</Button>
           </Link>
           <Link to={`/store/${createAppId}`}>
@@ -179,9 +179,9 @@ export default class AppAdd extends Component {
     return (
       <div className={styles.createApp}>
         <div className={styles.operate}>
-          <label onClick={() => this.setCreateStep()}>Back</label>
+          <label onClick={() => this.setCreateStep()}>←&nbsp;Back</label>
           <label className="pull-right" onClick={() => history.back()}>
-            Esc
+            <Icon name="close" size={24} type="dark" />&nbsp;Esc
           </label>
         </div>
         {createStep === 1 && this.renderSelectRepo()}

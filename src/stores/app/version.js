@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import Store from '../Store';
-import { get, assign } from 'lodash';
+import { get, assign, capitalize } from 'lodash';
 import { getFormData } from 'utils';
 import { Base64 } from 'js-base64';
 
@@ -12,6 +12,7 @@ export default class AppVersionStore extends Store {
   @observable isLoading = false;
   @observable isModalOpen = false;
   @observable isDialogOpen = false;
+  @observable isTipsOpen = false;
   @observable dialogType = ''; // delete, show_all
   @observable readme = '';
   @observable totalCount = 0;
@@ -24,8 +25,6 @@ export default class AppVersionStore extends Store {
   @observable name = '';
   @observable packageName = '';
   @observable description = '';
-
-  @observable isTipsOpen = false;
 
   @observable currentVersion = {};
   @observable uploadFile = '';
@@ -53,8 +52,14 @@ export default class AppVersionStore extends Store {
     const result = await this.request.get('app_versions', assign(defaultParams, params));
     this.versions = get(result, 'app_version_set', []);
     this.totalCount = get(result, 'total_count', 0);
-    if (this.versions[0] && !this.currentVersion.version_id) {
-      this.currentVersion = { ...this.versions[0] };
+    const version = this.versions[0];
+    if (version && !this.currentVersion.version_id) {
+      this.currentVersion = version;
+      this.name = version.name;
+      this.packageName = version.package_name;
+      this.description = version.description;
+    } else {
+      this.currentVersion = { ...this.currentVersion };
     }
     this.isLoading = false;
   };
@@ -65,8 +70,15 @@ export default class AppVersionStore extends Store {
       package: this.uploadFile
     };
 
-    if (this.currentVersion.versionId) {
-      defaultParams.version_id = this.currentVersion.versionId;
+    const versionId = this.currentVersion.version_id;
+    if (versionId) {
+      defaultParams.version_id = versionId;
+      defaultParams.name = this.name;
+      defaultParams.package_name = this.packageName;
+      defaultParams.description = this.description;
+      if (!this.uploadFile) {
+        delete defaultParams.package;
+      }
       await this.modify(assign(defaultParams, params));
     } else {
       defaultParams.app_id = this.appId;
@@ -74,13 +86,16 @@ export default class AppVersionStore extends Store {
       await this.create(assign(defaultParams, params));
     }
 
-    if (get(this.createResult, 'app_id')) {
-      this.createAppId = get(this.createResult, 'app_id');
-      this.createStep = 2; //show application has been created page
-      await this.fetchAll();
+    if (get(this.createResult, 'version_id')) {
+      if (!versionId) {
+        await this.fetchAll();
+        this.createStep = 2; //show application has been created page
+      }
+      return true;
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;
+      return false;
     }
   };
 
@@ -108,12 +123,35 @@ export default class AppVersionStore extends Store {
   //handleType value is: submit、reject、pass、release、suspend、recover、delete
   @action
   handle = async (handleType, versionId) => {
+    let isHandle = true;
+    if (handleType === 'submit') {
+      if (!this.name) {
+        return this.error('Please input version name!');
+      }
+      if (!this.packageName) {
+        return this.error('Please upload package!');
+      }
+      isHandle = await this.createOrModify();
+    }
+
+    if (!isHandle) {
+      return;
+    }
+
     this.isLoading = true;
     const result = await this.request.post('app_version/action/' + handleType, {
       version_id: versionId
     });
+
     if (get(result, 'version_id')) {
-      this.success('Handle version successfully.');
+      if (handleType === 'submit') {
+        this.isTipsOpen = true;
+      } else {
+        this.success(capitalize(handleType) + ' this version successfully.');
+      }
+      if (handleType === 'delete') {
+        this.currentVersion = {};
+      }
       await this.fetchAll();
     } else {
       const { err, errDetail } = this.createResult;
@@ -155,22 +193,11 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  showAllVersions = () => {
-    this.setDialogType('show_all');
+  showDelete = type => {
+    this.setDialogType(type);
     this.showDialog();
   };
 
-  @action
-  showDeleteVersion = () => {
-    this.setDialogType('delete');
-    this.showDialog();
-  };
-
-  @action
-  showDeleteApp = () => {
-    this.setDialogType('deleteApp');
-    this.showDialog();
-  };
   @action
   changeName = event => {
     this.name = event.target.value;
@@ -258,7 +285,7 @@ export default class AppVersionStore extends Store {
     this.appId = '';
     this.createError = '';
     this.createResult = null;
-    this.currentVersion = {};
+    //this.currentVersion = {};
     this.uploadFile = '';
   };
 }
