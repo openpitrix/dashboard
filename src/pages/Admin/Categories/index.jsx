@@ -149,7 +149,9 @@ export default class Categories extends Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <NavLink>Store / Categories</NavLink>
+        <NavLink>
+          {t('Store')} / t{'Categories'}
+        </NavLink>
 
         <Toolbar
           placeholder={t('Search Categories')}

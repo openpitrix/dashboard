@@ -339,14 +339,14 @@ export default class ClusterDetail extends Component {
       >
         {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test /&nbsp;
-            <Link to="/dashboard/clusters">Clusters</Link> / {detail.name}
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
+            <Link to="/dashboard/clusters">{t('Clusters')}</Link> / {detail.name}
           </NavLink>
         )}
 
         {role === 'admin' && (
           <NavLink>
-            Store / <Link to="/dashboard/clusters">All Clusters</Link> / {detail.name}
+            {t('Store')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> / {detail.name}
           </NavLink>
         )}
 

@@ -13,6 +13,7 @@ export default class Status extends PureComponent {
     className: PropTypes.string,
     name: PropTypes.string,
     type: PropTypes.oneOf([
+      'draft',
       'running',
       'active',
       'stopped',

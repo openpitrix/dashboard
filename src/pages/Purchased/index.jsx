@@ -207,17 +207,17 @@ export default class Purchased extends Component {
       <Layout title="Purchased" listenToJob={this.listenToJob}>
         <Grid>
           <Section size={3}>
-            <div className={styles.title}>Apps</div>
+            <div className={styles.title}>{t('Apps')}</div>
             <div
               className={classNames(styles.all, { [styles.active]: !appId })}
               onClick={() => this.selectClusters('')}
             >
-              All Apps
+              {t('All Apps')}
             </div>
             {this.renderApps()}
           </Section>
           <Section size={9}>
-            <div className={styles.title}>Clusters</div>
+            <div className={styles.title}>{t('Clusters')}</div>
             <Card>
               {this.renderToolbar()}
               <Table

@@ -325,7 +325,9 @@ export default class Apps extends Component {
       {
         key: 'status',
         conditions: [
+          { name: t('Draft'), value: 'draft' },
           { name: t('Active'), value: 'active' },
+          { name: t('Suspended'), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: onChangeStatus,
@@ -341,9 +343,9 @@ export default class Apps extends Component {
       noCancel: false
     };
 
-    let navLinkShow = 'My Apps / All';
+    let navLinkShow = t('My Apps') + ' / ' + t('All');
     if (this.role === 'admin') {
-      navLinkShow = 'Store / All Apps';
+      navLinkShow = t('Store') + ' / ' + t('All Apps');
     }
 
     return (

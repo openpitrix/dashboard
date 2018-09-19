@@ -39,7 +39,7 @@ class TitleBanner extends Component {
     return (
       <div className={styles.titleBanner}>
         <div className={styles.wrapper}>
-          <span className={styles.name}>{title}</span>
+          <span className={styles.name}>{t(title)}</span>
           {hasSearch && (
             <Input.Search
               className={styles.search}

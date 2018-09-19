@@ -323,14 +323,18 @@ export default class Clusters extends Component {
     const isNormal = role === 'normal';
 
     return (
-      <Layout listenToJob={this.listenToJob}>
+      <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
         {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test / Clusters
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Clusters')}
           </NavLink>
         )}
 
-        {role === 'admin' && <NavLink>Store / All Clusters</NavLink>}
+        {role === 'admin' && (
+          <NavLink>
+            {t('Store')} / {t('All Clusters')}
+          </NavLink>
+        )}
 
         {role === 'admin' && (
           <Row>

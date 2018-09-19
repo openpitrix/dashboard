@@ -312,9 +312,9 @@ export default class RepoDetail extends Component {
       >
         {!isNormal && (
           <NavLink>
-            {role === 'developer' && <Link to="/dashboard/apps">My Apps</Link>}
-            {role === 'admin' && <label>Platform</label>}
-            &nbsp;/ <Link to="/dashboard/repos">Repos</Link> / {repoDetail.name}
+            {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
+            {role === 'admin' && <label>{t('Platform')}</label>}
+            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {repoDetail.name}
           </NavLink>
         )}
 

@@ -91,7 +91,8 @@ export default class Runtimes extends Component {
   };
 
   renderRuntimeCard(runtime) {
-    const clusters = this.props.clusterStore.clusters.toJSON();
+    const { clusterStore, t } = this.props;
+    const clusters = clusterStore.clusters.toJSON();
 
     return (
       <div className={styles.runtimeCard}>
@@ -101,17 +102,17 @@ export default class Runtimes extends Component {
         <div className={styles.description}>{runtime.description}</div>
         <div className={styles.others}>
           <dl>
-            <dt>Cloud Provider</dt>
+            <dt>{t('Cloud Provider')}</dt>
             <dd className={styles.provider}>
               <ProviderName name={runtime.provider} provider={runtime.provider} />
             </dd>
           </dl>
           <dl>
-            <dt>Region</dt>
+            <dt>{t('Region')}</dt>
             <dd>{runtime.zone}</dd>
           </dl>
           <dl>
-            <dt>Clusters</dt>
+            <dt>{t('Clusters')}</dt>
             <dd>{clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length}</dd>
           </dl>
         </div>
@@ -143,7 +144,7 @@ export default class Runtimes extends Component {
       <Layout title="My Runtimes" className="clearfix">
         {!isNormal && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test / Runtimes
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Runtimes')}
           </NavLink>
         )}
 

@@ -104,7 +104,7 @@ export default class AppDeployStore extends Store {
         app_id: this.appId,
         version_id: this.versionId,
         runtime_id: this.runtimeId,
-        conf: conf.replace(/>>>/g, '.')
+        conf: conf.replace(/>>>>>>/g, '.')
       };
       const res = await this.create(params);
 

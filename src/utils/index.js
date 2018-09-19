@@ -149,7 +149,7 @@ export function flattenObject(obj) {
       cur.forEach((item, index) => recurse(item, `${prop}[${index}]`));
     } else {
       Object.entries(cur).forEach(([key, value]) => {
-        key = key.replace(/\./g, '>>>'); //fix key contains '.'
+        key = key.replace(/\./g, '>>>>>>'); //fix key contains '.'
         recurse(value, prop ? `${prop}.${key}` : key);
       });
     }

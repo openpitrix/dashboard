@@ -215,9 +215,9 @@ export default class RepoAdd extends Component {
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
         {!isNormal && (
           <NavLink>
-            {role === 'developer' && <Link to="/dashboard/apps">My Apps</Link>}
-            {role === 'admin' && <label>Platform</label>}
-            &nbsp;/ <Link to="/dashboard/repos">Repos</Link> / {title}
+            {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
+            {role === 'admin' && <label>{t('Platform')}</label>}
+            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {title}
           </NavLink>
         )}
 

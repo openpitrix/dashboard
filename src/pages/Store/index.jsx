@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { get, find, throttle } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { getScrollBottom } from 'src/utils';
 import Nav from 'components/Nav';
@@ -11,6 +12,7 @@ import Layout from 'components/Layout';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   rootStore: rootStore,
   categoryStore: rootStore.categoryStore,
@@ -106,7 +108,7 @@ export default class Store extends Component {
   };
 
   render() {
-    const { appStore, categoryStore, match } = this.props;
+    const { appStore, categoryStore, match, t } = this.props;
     const { storeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
     const categoryId = match.params.category;
@@ -115,7 +117,7 @@ export default class Store extends Component {
     const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
 
     return (
-      <Layout title="Store" hasSearch>
+      <Layout title={t('Store')} hasSearch>
         <div className={styles.storeContent}>
           <Nav className={styles.nav} navs={categories.toJSON()} skipLink="store" />
           <Loading isLoading={isLoading} className={styles.homeLoad}>

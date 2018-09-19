@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
 
-const defaultStatus = ['active'];
+const defaultStatus = ['draft', 'active', 'suspended'];
 
 export default class AppStore extends Store {
   @observable apps = [];
@@ -116,7 +116,7 @@ export default class AppStore extends Store {
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }
-    if (this.updateMeunApps) {
+    if (!this.updateMeunApps) {
       this.menuApps = this.apps.slice(0, 5);
       this.updateMeunApps = false;
     }

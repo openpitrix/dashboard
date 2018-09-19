@@ -79,7 +79,9 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <NavLink>Dashboard / Overview</NavLink>
+        <NavLink>
+          {t('Dashboard')} / {t('Overview')}
+        </NavLink>
 
         <Row>
           <Grid>
@@ -276,7 +278,9 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <NavLink>Dashboard / Overview</NavLink>
+        <NavLink>
+          {t('Dashboard')} / {t('Overview')}
+        </NavLink>
 
         <Row>
           <Grid>

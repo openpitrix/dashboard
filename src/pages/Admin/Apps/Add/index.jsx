@@ -25,7 +25,7 @@ export default class AppAdd extends Component {
   constructor(props) {
     super(props);
     const { appStore } = this.props;
-    appStore.createStep;
+    appStore.createStep = 1;
     appStore.createError = '';
   }
 
@@ -88,49 +88,51 @@ export default class AppAdd extends Component {
   };
 
   renderSelectRepo() {
+    const { t } = this.props;
     const { repos } = this.props.repoStore;
     const publicRepos = repos.filter(repo => repo.visibility === 'public');
     const privateRepos = repos.filter(repo => repo.visibility === 'private');
     const selectRepos = repos.filter(repo => repo.active);
-    const name = 'Create New Application';
-    const explain = 'Select a Repo to store your application';
+    const name = t('creat_new_app');
+    const explain = t('select_repo_app');
 
     return (
       <StepContent name={name} explain={explain} className={styles.createVersion}>
         <div>
-          <RepoList type="public" repos={publicRepos} onChange={this.onChange} />
-          <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
+          <RepoList type={t('public')} repos={publicRepos} onChange={this.onChange} />
+          <RepoList type={t('private')} repos={privateRepos} onChange={this.onChange} />
         </div>
         <div
           onClick={() => this.selectRepoNext(selectRepos.length)}
           className={classNames(styles.stepOperate, { [styles.noClick]: !selectRepos.length })}
         >
-          Next →
+          {t('Next')} →
         </div>
       </StepContent>
     );
   }
 
   renderUploadPackage() {
+    const { t } = this.props;
     const { isLoading, createError } = this.props.appStore;
-    const name = 'Create New Application';
-    const explain = 'Upload Package';
+    const name = t('creat_new_app');
+    const explain = t('Upload Package');
 
     return (
       <StepContent name={name} explain={explain} className={styles.createVersion}>
         <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
           <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
             <Icon name="upload" size={48} type="dark" />
-            <p className={styles.word}>Please click to select file upload</p>
-            <p className={styles.note}>The file format supports TAR, TAR.GZ, TAR.BZ and ZIP</p>
+            <p className={styles.word}>{t('click_upload')}</p>
+            <p className={styles.note}>{t('file_format_note')}</p>
             {isLoading && <div className={styles.loading} />}
           </div>
         </Upload>
 
         <div className={styles.operateWord}>
-          View the
-          <span className={styles.link}>《Openpitrix Develop Guide》</span>
-          and learn how to make config files
+          {t('view_guide_1')}
+          <span className={styles.link}>{t('view_guide_2')}</span>
+          {t('view_guide_3')}
         </div>
         {createError && (
           <div className={styles.errorNote}>
@@ -143,9 +145,10 @@ export default class AppAdd extends Component {
   }
 
   renderCreatedApp() {
+    const { t } = this.props;
     const { createAppId } = this.props.appStore;
-    const name = 'Congratulations';
-    const explain = 'Your application has been created.';
+    const name = t('Congratulations');
+    const explain = t('app_created');
 
     return (
       <StepContent name={name} explain={explain} className={styles.createVersion}>
@@ -155,33 +158,34 @@ export default class AppAdd extends Component {
           </label>
         </div>
         <div className={styles.operateBtn}>
-          <Link to={`/dashboard/store/${createAppId}/deploy`}>
-            <Button type="primary">Deploy & Test</Button>
+          <Link to={`/store/${createAppId}/deploy`}>
+            <Button type="primary">{t('Deploy & Test')}</Button>
           </Link>
           <Link to={`/store/${createAppId}`}>
-            <Button>View in Store</Button>
+            <Button>{t('View in Store')}</Button>
           </Link>
         </div>
         <div className={styles.operateWord}>
-          Also you can
+          {t('go_back_app_1')}
           <span onClick={() => this.setCreateStep(2)} className={styles.link}>
-            &nbsp;go back&nbsp;
+            {t('go_back_app_2')}
           </span>
-          and reload application package.
+          {t('go_back_app_3')}
         </div>
       </StepContent>
     );
   }
 
   render() {
+    const { t } = this.props;
     const { createStep } = this.props.appStore;
 
     return (
       <div className={styles.createApp}>
         <div className={styles.operate}>
-          <label onClick={() => this.setCreateStep()}>←&nbsp;Back</label>
+          <label onClick={() => this.setCreateStep()}>←&nbsp;{t('Back')}</label>
           <label className="pull-right" onClick={() => history.back()}>
-            <Icon name="close" size={24} type="dark" />&nbsp;Esc
+            <Icon name="close" size={24} type="dark" />&nbsp;{t('Esc')}
           </label>
         </div>
         {createStep === 1 && this.renderSelectRepo()}
