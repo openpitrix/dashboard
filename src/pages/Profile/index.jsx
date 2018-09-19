@@ -87,25 +87,26 @@ export default class Profile extends Component {
   }
 
   render() {
+    const { t } = this.props;
     const { currentForm } = this.state;
 
     return (
       <Layout title="Profile">
         <Grid>
           <Section size={3}>
-            <div className={styles.title}>Settings</div>
+            <div className={styles.title}>{t('Settings')}</div>
             <div className={styles.items}>
               <p
                 className={classNames({ [styles.active]: currentForm === 'basic' })}
                 onClick={() => this.changeForm('basic', currentForm === 'basic')}
               >
-                Basic
+                {t('Basic setting')}
               </p>
               <p
                 className={classNames({ [styles.active]: currentForm === 'password' })}
                 onClick={() => this.changeForm('password', currentForm === 'password')}
               >
-                Change Password
+                {t('Change Password')}
               </p>
             </div>
           </Section>

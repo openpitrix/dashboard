@@ -84,7 +84,7 @@ export default class SSHKeys extends Component {
         onSubmit={removeKeyPairs}
         onCancel={hideModal}
       >
-        Are you sure delete this SSH Key?
+        {t('delete_key_desc')}
       </Dialog>
     );
   };
@@ -115,7 +115,7 @@ export default class SSHKeys extends Component {
           Click "Download" button to get the private key. Its download link will be kept for 10
           minutes.
         </p>
-        <Button type="primary">Download</Button>
+        <Button type="primary">{t('Download')}</Button>
       </Dialog>
     );
   };
@@ -134,11 +134,11 @@ export default class SSHKeys extends Component {
           <label className={styles.name}>{t('Public Key')}</label>
           <textarea name="pub_key" value={clusterStore.pub_key} onChange={changePubKey} />
           <p className={styles.rightShow}>
-            {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrqwerJAsdfdgjUTEEHh...
+            {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrdgjUTEEHh...
           </p>
         </div>
         <div className={styles.textareaItem}>
-          <label className={styles.name}>{t('Descripition')}</label>
+          <label className={styles.name}>{t('Description')}</label>
           <textarea
             name="description"
             value={clusterStore.description}
@@ -157,11 +157,9 @@ export default class SSHKeys extends Component {
   }
 
   renderAside() {
-    return (
-      <p>
-        SSH keys allow you to establish a secure connection between your computer and Cluster Nodes.
-      </p>
-    );
+    const { t } = this.props;
+
+    return <p>{t('ssh_key_guide')}</p>;
   }
 
   renderCard(pair) {
@@ -172,7 +170,7 @@ export default class SSHKeys extends Component {
         <div className={styles.title}>{pair.name}</div>
         <div className={styles.pubKey}>{pair.pub_key}</div>
         <div className={styles.time}>
-          Created on: {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
+          {t('Created on')}: {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
         </div>
       </div>
     );
@@ -297,7 +295,7 @@ export default class SSHKeys extends Component {
             className={styles.addButton}
             type="primary"
           >
-            Add
+            {t('Add')}
           </Button>
         </Section>
 
@@ -326,14 +324,15 @@ export default class SSHKeys extends Component {
   }
 
   render() {
+    const { t } = this.props;
     const { keyPairs, modalType } = this.props.clusterStore;
 
     return (
-      <Layout title="SSH Keys">
+      <Layout title={t('SSH Keys')}>
         {keyPairs.length > 0 ? (
           this.renderDetail()
         ) : (
-          <CreateResource title="Create SSH Key" aside={this.renderAside()} asideTitle="SSH Keys">
+          <CreateResource title={'Create SSH Key'} aside={this.renderAside()} asideTitle="SSH Keys">
             {this.renderForm()}
           </CreateResource>
         )}

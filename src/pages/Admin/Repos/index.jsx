@@ -132,15 +132,20 @@ export default class Repos extends Component {
   };
 
   renderNavLink = () => {
+    const { t } = this.props;
     const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
 
     if (isAdmin) {
-      return <NavLink>Platform / Repos</NavLink>;
+      return (
+        <NavLink>
+          {t('Platform')} / {t('Repos')}
+        </NavLink>
+      );
     }
 
     return (
       <NavLink>
-        <Link to="/dashboard/apps">All Apps</Link> / Repos
+        <Link to="/dashboard/apps">{t('All Apps')}</Link> / {t('Repos')}
       </NavLink>
     );
   };

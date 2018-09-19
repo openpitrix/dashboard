@@ -8,7 +8,7 @@ import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import { ProviderName } from 'components/TdName';
 
-export default function(runtimes) {
+export default function(runtimes, versions) {
   return [
     {
       title: <I18n>{t => <span>{t('Cluster Name')}</span>}</I18n>,
@@ -28,6 +28,17 @@ export default function(runtimes) {
       render: obj => <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
     },
     {
+      title: <I18n>{t => <span>{t('App Version')}</span>}</I18n>,
+      key: 'version_id',
+      width: '100px',
+      render: obj => getObjName(versions, 'version_id', obj.version_id, 'name')
+    },
+    {
+      title: <I18n>{t => <span>{t('Node Count')}</span>}</I18n>,
+      key: 'cluster_node_set',
+      render: ({ cluster_node_set }) => cluster_node_set && cluster_node_set.length
+    },
+    {
       title: <I18n>{t => <span>{t('Runtime')}</span>}</I18n>,
       key: 'runtime_id',
       width: '100px',
@@ -41,9 +52,9 @@ export default function(runtimes) {
       )
     },
     {
-      title: <I18n>{t => <span>{t('Node Count')}</span>}</I18n>,
-      key: 'cluster_node_set',
-      render: ({ cluster_node_set }) => cluster_node_set && cluster_node_set.length
+      title: <I18n>{t => <span>{t('User')}</span>}</I18n>,
+      key: 'owner',
+      dataIndex: 'owner'
     },
     {
       title: <I18n>{t => <span>{t('Date Created')}</span>}</I18n>,

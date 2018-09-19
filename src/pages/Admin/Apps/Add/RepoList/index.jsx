@@ -23,7 +23,7 @@ export default class RepoList extends PureComponent {
   };
 
   render() {
-    const { repos, type, onChange } = this.props;
+    const { repos, type, onChange, t } = this.props;
 
     return (
       <div className={classNames(styles.repoList, { [styles.publicBg]: type === 'private' })}>
@@ -40,7 +40,7 @@ export default class RepoList extends PureComponent {
             </li>
           ))}
         </ul>
-        <div className={styles.explain}> * Difference between public repo and private repo.</div>
+        <div className={styles.explain}> * {t('diff_repo')}</div>
       </div>
     );
   }

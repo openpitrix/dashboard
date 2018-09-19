@@ -14,6 +14,9 @@
   border-radius: 50%;
   font-style: normal;
 
+  &.draft {
+    background-color: $B75;
+  }
   &.ceased {
     background-color: $Y100;
   }
@@ -21,7 +24,7 @@
     background-color: $N30;
   }
   &.suspended {
-    background-color: $Y100;
+    background-color: $N75;
   }
   &.active, &.successful {
     background-color: $G75;
@@ -33,7 +36,7 @@
     background-color: $G65;
   }
   &.disabled {
-    background-color: $N65;
+    background-color: $N75;
   }
 
   &.running,

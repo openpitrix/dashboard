@@ -199,7 +199,7 @@ export default class CategoryDetail extends Component {
     return (
       <Layout className={styles.categoryDetail}>
         <NavLink>
-          Store / <Link to="/dashboard/categories">Categories</Link> / {category.name}
+          {t('Store')} / <Link to="/dashboard/categories">{t('Categories')}</Link> / {category.name}
         </NavLink>
         <Grid>
           <Section>

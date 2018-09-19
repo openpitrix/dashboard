@@ -59,29 +59,29 @@ class Menu extends React.Component {
         title: 'Store',
         links: [
           { name: 'All Apps', link: '/dashboard/apps', active: 'app' },
-          { name: 'App Reviews', link: '#', active: 'review' },
+          /*{ name: 'App Reviews', link: '#', active: 'review' },*/
           { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' },
-          { name: 'Categroies', link: '/dashboard/categories', active: 'categor' },
-          { name: 'Appearance', link: '#', active: 'appearance' }
+          { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
+          /*{ name: 'Appearance', link: '#', active: 'appearance' }*/
         ]
       },
       user: {
         title: 'Users',
         links: [
-          { name: 'All Users', link: '/dashboard/users', active: 'user' },
-          { name: 'User Groups', link: '#', active: 'group' },
+          { name: 'All Users', link: '/dashboard/users', active: 'user' }
+          /* { name: 'User Groups', link: '#', active: 'group' },
           { name: 'Roles', link: '#', active: 'role' },
-          { name: 'Policy', link: '#', active: 'policy' }
+          { name: 'Policy', link: '#', active: 'policy' }*/
         ]
       },
       repo: {
         title: 'Platform',
         links: [
-          { name: 'Tickets', link: '#', active: 'ticket' },
-          { name: 'Notifications', link: '#', active: 'notification' },
+          /*{ name: 'Tickets', link: '#', active: 'ticket' },
+          { name: 'Notifications', link: '#', active: 'notification' },*/
           { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
-          { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
-          { name: 'Service Status', link: '#', active: 'service' }
+          { name: 'Repos', link: '/dashboard/repos', active: 'repo' }
+          /* { name: 'Service Status', link: '#', active: 'service' }*/
         ]
       }
     };
@@ -91,31 +91,37 @@ class Menu extends React.Component {
   };
 
   renderNav(role) {
+    const { t } = this.props;
     let navs = [
       {
         link: '/',
         iconName: 'home',
-        active: ''
+        active: '',
+        title: t('Home')
       },
       {
         link: '/dashboard',
         iconName: 'dashboard',
-        active: 'dashboard'
+        active: 'dashboard',
+        title: t('Dashboard')
       },
       {
         link: '/dashboard/apps',
         iconName: 'components',
-        active: 'app'
+        active: 'app',
+        title: role === 'developer' ? t('My apps') : t('Store')
       },
       {
         link: '/dashboard/repos',
         iconName: 'shield',
-        active: 'repo'
+        active: 'repo',
+        title: t('Platform')
       },
       {
         link: '/dashboard/users',
         iconName: 'group',
-        active: 'user'
+        active: 'user',
+        title: t('Users')
       }
     ];
 
@@ -126,7 +132,7 @@ class Menu extends React.Component {
     return (
       <ul className={styles.nav}>
         {navs.map(nav => (
-          <li key={nav.iconName}>
+          <li key={nav.iconName} title={nav.title}>
             <NavLink
               exact
               to={nav.link}
@@ -142,17 +148,18 @@ class Menu extends React.Component {
   }
 
   renderSubDev() {
+    const { t } = this.props;
     const { url } = this.props.match;
 
     if (url === '/dashboard') {
       return (
         <div className={styles.subNav}>
-          <div className={styles.title}>Dashboard</div>
+          <div className={styles.title}>{t('Dashboard')}</div>
           <Link
             className={classnames(styles.link, { [styles.active]: url.indexOf('dashboard') > -1 })}
             to="/dashboard"
           >
-            Dashboard
+            {t('Dashboard')}
           </Link>
         </div>
       );
@@ -162,7 +169,7 @@ class Menu extends React.Component {
 
     return (
       <div className={styles.subNav}>
-        <div className={styles.title}>My Apps</div>
+        <div className={styles.title}>{t('My Apps')}</div>
         <div className={styles.apps}>
           {menuApps.map(app => (
             <Link
@@ -186,41 +193,42 @@ class Menu extends React.Component {
           className={classnames(styles.link, { [styles.active]: url.indexOf('repo') > -1 })}
           to="/dashboard/repos"
         >
-          Repos
+          {t('Repos')}
         </Link>
         <div className={styles.test}>
-          <span className={styles.word}>Test</span>
+          <span className={styles.word}>{t('Test')}</span>
         </div>
         <Link
           className={classnames(styles.link, { [styles.active]: url.indexOf('cluster') > -1 })}
           to="/dashboard/clusters"
         >
-          Clusters
+          {t('Clusters')}
         </Link>
         <Link
           className={classnames(styles.link, { [styles.active]: url.indexOf('runtime') > -1 })}
           to="/runtimes"
         >
-          Runtimes
+          {t('Runtimes')}
         </Link>
       </div>
     );
   }
 
   renderSubAdmin() {
+    const { t } = this.props;
     const subNavData = this.getSudNavData();
     const { path } = this.props.match;
 
     return (
       <div className={styles.subNav}>
-        <div className={styles.title}>{subNavData.title}</div>
+        <div className={styles.title}>{t(subNavData.title)}</div>
         {subNavData.links.map(link => (
           <Link
             key={link.name}
             className={classnames(styles.link, { [styles.active]: path.indexOf(link.active) > -1 })}
             to={link.link}
           >
-            {link.name}
+            {t(link.name)}
           </Link>
         ))}
       </div>

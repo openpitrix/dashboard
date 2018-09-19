@@ -1,6 +1,6 @@
 export Apps from './Apps';
 export AppAdd from './Apps/Add';
-export AppDetail from './Apps/NewDetail';
+export AppDetail from './Apps/Detail';
 export AppDeploy from './Apps/Deploy';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';

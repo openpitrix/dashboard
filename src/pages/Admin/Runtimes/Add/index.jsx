@@ -241,14 +241,14 @@ export default class RuntimeAdd extends Component {
       >
         {role === 'developer' && (
           <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test /&nbsp;
-            <Link to="/runtimes">Runtimes</Link> / {title}
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
+            <Link to="/runtimes">{t('Runtimes')}</Link> / {title}
           </NavLink>
         )}
 
         {role === 'admin' && (
           <NavLink>
-            Platform / <Link to="/dashboard/runtimes">Runtimes</Link> / {title}
+            {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> / {title}
           </NavLink>
         )}
 

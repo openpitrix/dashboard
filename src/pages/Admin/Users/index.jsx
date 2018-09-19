@@ -241,7 +241,7 @@ export default class Users extends Component {
   }
 
   render() {
-    const { userStore } = this.props;
+    const { userStore, t } = this.props;
     const {
       summaryInfo,
       users,
@@ -331,7 +331,9 @@ export default class Users extends Component {
 
     return (
       <Layout className={styles.usersContent}>
-        <NavLink>Users / All Users</NavLink>
+        <NavLink>
+          {t('Users')} / {t('All Users')}
+        </NavLink>
 
         <Row>
           <Statistics {...summaryInfo} objs={users.toJSON()} />
@@ -375,7 +377,7 @@ export default class Users extends Component {
 
             <Section size={8} className={styles.table}>
               <Card className={styles.noShadow}>
-                <div className={styles.selectInfo}>{selectName}</div>
+                <div className={styles.selectInfo}>{t(selectName)}</div>
 
                 {this.renderToolbar()}
 

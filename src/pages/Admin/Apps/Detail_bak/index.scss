@@ -1,0 +1,47 @@
+@import '~scss/vars';
+
+.inputItem{
+  margin-bottom: 20px;
+  &>label{
+    margin-right: 20px;
+    width: 100px;
+    text-align: right;
+    color: $title-color;
+    font-weight: bold;
+  }
+  .input{
+    width: 400px;
+  }
+  .textarea{
+    padding: 7px 10px;
+    width: 400px;
+    height: 72px;
+    border-radius: 2px;
+    border: 1px solid $N30;
+    outline: none;
+    resize: none;
+    &:focus{
+      border: 1px solid $border-dark;
+    }
+  }
+  .textareaName{
+    position: relative;
+    bottom: 60px;
+  }
+}
+
+.versionCard {
+  .title{
+    //line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $title-color;
+
+    .all{
+      float: right;
+      font-size: 14px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+  }
+}

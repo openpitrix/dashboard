@@ -37,11 +37,16 @@
   display: inline-block;
   width: calc(33.33% - 16px);
   height: 189px;
-  line-height: 189px;
   background-color: $N0;
   border: dashed 1px $P30;
   text-align: center;
   cursor: pointer;
+
+  :global{
+    .icon{
+      margin-top: 78px;
+    }
+  }
 }
 
 .runtimeCard{
