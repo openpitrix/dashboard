@@ -15,11 +15,11 @@
     //--secondary-opacity: 0.4;
   }
 
-  .#{$icon-prefix}-coloured {
-    --primary-color: #{$P100};
-    --secondary-color: #{$P30};
-    //--primary-opacity: 0.9;
-    //--secondary-opacity: 0.4;
+  .#{$icon-prefix}-white {
+    --primary-color: #{$N0};
+    --secondary-color: #{$N0};
+    --primary-opacity: 0.9;
+    --secondary-opacity: 0.4;
   }
 
   .icon {
