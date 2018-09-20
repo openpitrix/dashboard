@@ -371,7 +371,7 @@ export default class Apps extends Component {
 
                   <Table
                     columns={columns}
-                    dataSource={apps.toJSON()}
+                    dataSource={apps.slice(0, 10)}
                     rowSelection={rowSelection}
                     filterList={filterList}
                     pagination={pagination}
