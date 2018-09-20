@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 
-import { Checkbox, Input, Button, Select, Table, Pagination, Modal } from 'components/Base';
-import Layout, {
-  BackBtn,
-  Grid,
-  Row,
-  Section,
-  Panel,
-  Card,
-  Dialog,
-  NavLink
-} from 'components/Layout';
+import {
+  Checkbox,
+  Input,
+  Button,
+  Select,
+  Table,
+  Pagination,
+  Modal,
+  Icon,
+  Popover
+} from 'components/Base';
+import Layout, { Grid, Row, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
 import Statistics from 'components/Statistics';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -32,13 +34,14 @@ import styles from './index.scss';
 @observer
 export default class Users extends Component {
   static async onEnter({ userStore }) {
-    // todo: api 404
-    // await userStore.fetchAll();
+    await userStore.fetchAll();
     await userStore.fetchStatistics();
   }
 
   constructor(props) {
     super(props);
+    const { userStore } = this.props;
+    userStore.loadPageInit();
   }
 
   componentWillMount = () => {
@@ -70,10 +73,25 @@ export default class Users extends Component {
     userStore.treeFlag = temp;
   };
 
-  selectCard = (index, name) => {
+  selectGroup = item => {
     const { userStore } = this.props;
-    userStore.selectItem = index;
-    userStore.selectName = name;
+
+    if (item.value !== userStore.selectGroupId) {
+      userStore.selectGroupId = item.value;
+      userStore.selectName = item.name;
+      userStore.fetchAll();
+    }
+  };
+
+  selectRole = item => {
+    const { userStore } = this.props;
+
+    if (item.value !== userStore.selectRoleId) {
+      userStore.selectRoleId = item.value;
+      userStore.selectName = item.name;
+      userStore.currentPage = 1;
+      userStore.fetchAll();
+    }
   };
 
   openAuthorityModal = () => {
@@ -84,6 +102,19 @@ export default class Users extends Component {
   closeAuthorityModal = () => {
     const { userStore } = this.props;
     userStore.showAuthorityModal = false;
+  };
+
+  renderHandleMenu = user => {
+    const { userStore, t } = this.props;
+    const { showDeleteUser, showModifyUser } = userStore;
+
+    return (
+      <div className="operate-menu">
+        <Link to={`/dashboard/user/${user.user_id}`}>{t('View detail')}</Link>
+        <span onClick={() => showModifyUser(user)}>{t('Modify User')}</span>
+        <span onClick={() => showDeleteUser(user.user_id)}>{t('Delete User')}</span>
+      </div>
+    );
   };
 
   /*renderAuthorityModal = () => {
@@ -191,36 +222,100 @@ export default class Users extends Component {
     );
   };*/
 
-  renderCreateModal = () => {
+  renderOperateModal = () => {
     const { userStore, t } = this.props;
-    const { isCreateOpen, hideModal } = userStore;
+    const { userDetail, operateType, changeUser, changeUserRole } = userStore;
+
+    let title = t('Create New User');
+    if (operateType === 'modify') {
+      title = t('Modify User');
+    }
 
     return (
       <Modal
-        title={t('Create New User')}
-        visible={isCreateOpen}
-        onCancel={hideModal}
-        onOk={hideModal}
+        title={title}
+        visible={userStore.isCreateOpen}
+        onCancel={userStore.hideModal}
+        onOk={userStore.createOrModify}
       >
-        <div className="formContent">
-          <div className="inputItem">
-            <label>{t('Name')}</label>
-            <Input name="name" autoFocus maxLength="50" />
-          </div>
+        <form className="formContent">
+          {userDetail.user_id && (
+            <div className="inputItem">
+              <label>{t('Name')}</label>
+              <Input
+                name="name"
+                maxLength="50"
+                value={userDetail.username}
+                onChange={e => {
+                  changeUser(e, 'username');
+                }}
+                required
+              />
+            </div>
+          )}
           <div className="inputItem">
             <label>{t('Email')}</label>
-            <Input name="name" autoFocus maxLength="50" />
+            <Input
+              name="email"
+              maxLength="50"
+              placeholer="username@example.com"
+              value={userDetail.email}
+              onChange={e => {
+                changeUser(e, 'email');
+              }}
+              pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+              required
+            />
+          </div>
+          <div className="selectItem">
+            <label>{t('Role')}</label>
+            <Select onChange={changeUserRole} value={userDetail.role}>
+              <Select.Option value="user">{t('Normal User')}</Select.Option>
+              <Select.Option value="developer">{t('Developer')}</Select.Option>
+              <Select.Option value="global_admin">{t('Administrator')}</Select.Option>
+            </Select>
           </div>
           <div className="inputItem">
-            <label>{t('Role')}</label>
-            <Input name="name" autoFocus maxLength="50" />
+            <label>{t('Password')}</label>
+            <Input
+              name="password"
+              type="password"
+              maxLength="50"
+              value={userDetail.password}
+              onChange={e => {
+                changeUser(e, 'password');
+              }}
+            />
           </div>
-          <div className="inputItem textareaItem">
+          <div className="textareaItem">
             <label>{t('Description')}</label>
-            <textarea name="description" maxLength="2000" />
+            <textarea
+              name="description"
+              maxLength="500"
+              value={userDetail.description}
+              onChange={e => {
+                changeUser(e, 'description');
+              }}
+            />
           </div>
-        </div>
+        </form>
       </Modal>
+    );
+  };
+
+  renderDeleteDialog = () => {
+    const { userStore, t } = this.props;
+    const { isDeleteOpen, hideModal, remove } = userStore;
+
+    return (
+      <Dialog
+        title={t('Delete User')}
+        visible={isDeleteOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('delete_user_desc')}
+      </Dialog>
     );
   };
 
@@ -248,27 +343,28 @@ export default class Users extends Component {
       treeFlag,
       organizations,
       selectValue,
-      selectItem,
+      selectGroupId,
+      selectRoleId,
       selectName
     } = userStore;
     const groups = userStore.groups.toJSON();
-    //const roles = userStore.roles.toJSON();
+
     const roles = [
       {
-        id: 'd522859-4824-beb9',
         name: 'Administrator',
+        value: 'global_admin',
         description:
           'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
       },
       {
-        id: 'd549a285-3859-4824-bds3',
         name: 'Developer',
+        value: 'developer',
         description:
           'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
       },
       {
-        id: 'd549a285-3859-4824-as21',
         name: 'Normal User',
+        value: 'user',
         description:
           'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
       }
@@ -280,7 +376,7 @@ export default class Users extends Component {
       {
         title: 'UserName',
         key: 'username',
-        render: item => item.name
+        render: item => <Link to={`/dashboard/user/${item.user_id}`}>{item.username}</Link>
       },
       {
         title: 'Status',
@@ -305,10 +401,11 @@ export default class Users extends Component {
       {
         title: 'Actions',
         key: 'actions',
+        width: '84px',
         render: item => (
-          <div>
+          <Popover content={this.renderHandleMenu(item)} className="actions">
             <Icon name="more" />
-          </div>
+          </Popover>
         )
       }
     ];
@@ -344,9 +441,9 @@ export default class Users extends Component {
             <Section>
               <Card className={classnames(styles.noShadow, styles.selectInfo)}>
                 <Select className={styles.select} value={selectValue} onChange={this.changeSelect}>
-                  <Select.Option value="organization">Organization</Select.Option>
-                  <Select.Option value="group">Group</Select.Option>
-                  <Select.Option value="roles">Roles</Select.Option>
+                  <Select.Option value="organization">{t('Organization')}</Select.Option>
+                  <Select.Option value="group">{t('Group')}</Select.Option>
+                  <Select.Option value="roles">{t('Roles')}</Select.Option>
                 </Select>
                 {selectValue === 'organization' && (
                   <OrgTree
@@ -359,17 +456,15 @@ export default class Users extends Component {
                 {selectValue === 'group' && (
                   <GroupCard
                     groups={groups}
-                    selectCard={this.selectCard}
-                    selectValue={selectValue}
-                    selectItem={selectItem}
+                    selectCard={this.selectGroup}
+                    selectValue={selectGroupId}
                   />
                 )}
                 {selectValue === 'roles' && (
                   <GroupCard
                     groups={roles}
-                    selectCard={this.selectCard}
-                    selectValue={selectValue}
-                    selectItem={selectItem}
+                    selectCard={this.selectRole}
+                    selectValue={selectRoleId}
                   />
                 )}
               </Card>
@@ -385,14 +480,14 @@ export default class Users extends Component {
                   columns={columns}
                   dataSource={data}
                   isLoading={userStore.isLoading}
-                  filterList={filterList}
                   pagination={pagination}
                 />
               </Card>
             </Section>
           </Grid>
         </Panel>
-        {this.renderCreateModal()}
+        {this.renderOperateModal()}
+        {this.renderDeleteDialog()}
       </Layout>
     );
   }

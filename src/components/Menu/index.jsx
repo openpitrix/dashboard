@@ -182,11 +182,11 @@ class Menu extends React.Component {
               {app.name}
             </Link>
           ))}
-          <Link className={styles.plus} to="/dashboard/app/create">
-            <Icon name="add" type="dark" />
+          <Link className={styles.plus} to="/dashboard/app/create" title={t('Create')}>
+            <Icon name="add" type="white" />
           </Link>
-          <Link className={styles.more} to="/dashboard/apps">
-            <Icon name="more" type="dark" />
+          <Link className={styles.more} to="/dashboard/apps" title={t('All Apps')}>
+            <Icon name="more" type="white" />
           </Link>
         </div>
         <Link

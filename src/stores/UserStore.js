@@ -1,35 +1,47 @@
 import { observable, action } from 'mobx';
-import { get, assign } from 'lodash';
+import { get, pick, assign } from 'lodash';
 import Store from './Store';
+
+const defaultStatus = ['active'];
 
 export default class UserStore extends Store {
   @observable users = [];
-  @observable userDetail = {};
-  @observable isLoading = false;
-  @observable totalCount = 0;
-  @observable organizations = [];
   @observable groups = [];
   @observable roles = [];
   @observable authorities = [];
   @observable currentTag = '';
+  @observable isLoading = false;
 
   @observable currentPage = 1; //user table query params
   @observable searchWord = '';
-  defaultStatus = ['active'];
-
   @observable selectStatus = '';
+  @observable totalCount = 0;
+
+  @observable selectGroupId = '';
+  @observable selectRoleId = '';
+  @observable selectName = 'Administrator';
 
   @observable selectValue = 'roles';
   @observable showAuthorityModal = false;
   @observable treeFlag = false;
-  @observable selectItem = 0;
-  @observable selectName = 'Administrator';
   @observable organizations = [];
 
   @observable summaryInfo = {};
 
+  @observable operateType = '';
   @observable isCreateOpen = false;
   @observable isDeleteOpen = false;
+
+  @observable
+  userDetail = {
+    username: '',
+    email: '',
+    password: '',
+    role: 'user',
+    description: ''
+  };
+  @observable userId = '';
+  @observable operateResult = null;
 
   @action
   fetchAll = async (params = {}) => {
@@ -37,11 +49,14 @@ export default class UserStore extends Store {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : this.defaultStatus
+      status: this.selectStatus ? this.selectStatus : defaultStatus
     };
 
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
+    }
+    if (this.selectRoleId) {
+      defaultParams.role = this.selectRoleId;
     }
 
     this.isLoading = true;
@@ -71,8 +86,65 @@ export default class UserStore extends Store {
   fetchDetail = async userId => {
     this.isLoading = true;
     const result = await this.request.get(`users`, { user_id: userId });
-    this.userDetail = get(result, 'app_set[0]', {});
+    this.userDetail = get(result, 'user_set[0]', {});
     this.isLoading = false;
+  };
+
+  @action
+  createOrModify = async () => {
+    const params = pick({ ...this.userDetail }, [
+      'user_id',
+      'username',
+      'email',
+      'password',
+      'role',
+      'description'
+    ]);
+
+    if (params.user_id) {
+      if (!params.password) {
+        delete params.password;
+      }
+      await this.modify(params);
+    } else {
+      delete params.username;
+      await this.create(params);
+    }
+
+    if (get(this.operateResult, 'user_id')) {
+      this.hideModal();
+      await this.fetchAll();
+    } else {
+      const { err, errDetail } = this.operateResult;
+      this.error(errDetail || err);
+    }
+  };
+
+  @action
+  create = async (params = {}) => {
+    this.isLoading = true;
+    this.operateResult = await this.request.post('users', params);
+    this.isLoading = false;
+  };
+
+  @action
+  modify = async (params = {}) => {
+    this.isLoading = true;
+    this.operateResult = await this.request.patch('users', params);
+    this.isLoading = false;
+  };
+
+  @action
+  remove = async () => {
+    const result = await this.request.delete('users', { user_id: [this.userId] });
+
+    if (get(result, 'user_id')) {
+      this.hideModal();
+      await this.fetchAll();
+    } else {
+      const { err, errDetail } = result;
+      this.error(errDetail || err);
+    }
   };
 
   @action
@@ -139,13 +211,45 @@ export default class UserStore extends Store {
 
   @action
   showCreateUser = () => {
+    this.operateType = 'create';
     this.isCreateOpen = true;
+    this.userDetail = {
+      username: '',
+      email: '',
+      password: '',
+      role: 'user',
+      description: ''
+    };
   };
 
-  @action.bound
+  @action
+  showModifyUser = user => {
+    this.operateType = 'modify';
+    this.isCreateOpen = true;
+    this.userDetail = user;
+    this.userDetail.password = '';
+  };
+
+  @action
+  showDeleteUser = userId => {
+    this.userId = userId;
+    this.isDeleteOpen = true;
+  };
+
+  @action
   hideModal = () => {
     this.isCreateOpen = false;
     this.isDeleteOpen = false;
+  };
+
+  @action
+  changeUser = (event, type) => {
+    this.userDetail[type] = event.target.value;
+  };
+
+  @action
+  changeUserRole = role => {
+    this.userDetail.role = role;
   };
 
   @action
@@ -153,5 +257,12 @@ export default class UserStore extends Store {
     this.currentPage = 1;
     this.selectStatus = '';
     this.searchWord = '';
+    this.userDetail = {
+      username: '',
+      email: '',
+      password: '',
+      role: 'user',
+      description: ''
+    };
   };
 }
