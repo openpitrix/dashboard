@@ -2,8 +2,7 @@ import React from 'react';
 import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
-import noop from 'lodash/noop';
+import { isEqual } from 'lodash';
 
 import { Checkbox, Radio, Popover, Icon, Pagination } from 'components/Base';
 import Loading from 'components/Loading';
@@ -350,7 +349,7 @@ export default class Table extends React.Component {
         <Pagination
           {...pagination}
           selectedRows={selectedRowKeys}
-          onSelectRow={rowSelection.onChange || noop}
+          onSelectRow={rowSelection.onChange}
         />
       </div>
     );
