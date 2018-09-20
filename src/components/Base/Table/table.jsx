@@ -2,7 +2,7 @@ import React from 'react';
 import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { isEqual, noop } from 'lodash';
+import { isEqual } from 'lodash';
 
 import { Checkbox, Radio, Popover, Icon, Pagination } from 'components/Base';
 import Loading from 'components/Loading';
@@ -281,7 +281,7 @@ export default class Table extends React.Component {
   };
 
   renderTable = () => {
-    const { ...restProps } = this.props;
+    const { pagination, ...restProps } = this.props;
     const data = this.getTableData();
     let columns = this.renderRowSelection();
     columns = this.renderFilterColumn(columns);
@@ -315,6 +315,7 @@ export default class Table extends React.Component {
         key="table"
         data={data}
         columns={columns}
+        emptyText={<NoData type={pagination.tableType} />}
         rowClassName={this.rowClassName}
       />
     );
@@ -340,18 +341,14 @@ export default class Table extends React.Component {
 
     return (
       <Loading className="loadTable" isLoading={isLoading}>
-        {pagination.total > 0 ? (
-          <div className={classNames(styles.table, className)} style={style}>
-            {this.renderTable()}
-            <Pagination
-              {...pagination}
-              selectedRows={selectedRowKeys}
-              onSelectRow={rowSelection.onChange || noop}
-            />
-          </div>
-        ) : (
-          <NoData type={pagination.tableType} />
-        )}
+        <div className={classNames(styles.table, className)} style={style}>
+          {this.renderTable()}
+          <Pagination
+            {...pagination}
+            selectedRows={selectedRowKeys}
+            onSelectRow={rowSelection.onChange}
+          />
+        </div>
       </Loading>
     );
   }
