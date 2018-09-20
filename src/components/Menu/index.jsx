@@ -139,7 +139,7 @@ class Menu extends React.Component {
               activeClassName={styles.active}
               isActive={() => this.isLinkActive(nav.active, role)}
             >
-              <Icon name={nav.iconName} size={24} />
+              <Icon name={nav.iconName} size={24} type="white" />
             </NavLink>
           </li>
         ))}

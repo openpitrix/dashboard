@@ -38,7 +38,7 @@ class Icon extends React.PureComponent {
   static propTypes = {
     prefix: PropTypes.string,
     name: PropTypes.string.isRequired,
-    type: PropTypes.string,
+    type: PropTypes.oneOf(['light', 'dark', 'white']),
     size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     className: PropTypes.string,
     style: PropTypes.object,
