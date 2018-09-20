@@ -6,9 +6,10 @@ import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
-import Rectangle from 'components/Rectangle';
-import AppImages from 'components/Rectangle/AppImages';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, Grid, Section, NavLink } from 'components/Layout';
+import AppImages from 'components/AppImages';
+import Toolbar from 'components/Toolbar';
+import CategoryCard from './CategoryCard';
 import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
@@ -28,6 +29,7 @@ export default class Categories extends Component {
   constructor(props) {
     super(props);
     const { categoryStore, appStore } = this.props;
+    categoryStore.appStore = appStore;
     categoryStore.isDetailPage = false;
     categoryStore.reset();
     appStore.loadPageInit();
@@ -139,7 +141,7 @@ export default class Categories extends Component {
 
   render() {
     const { categoryStore, t } = this.props;
-    const { isLoading, showCreateCategory, getCategoryApps } = categoryStore;
+    const { isLoading, searchWord, showCreateCategory } = categoryStore;
 
     const categories = categoryStore.categories;
     const defaultCategories = categories.filter(cate => cate.category_id !== 'ctg-uncategorized');
@@ -147,24 +149,31 @@ export default class Categories extends Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <div className={styles.container}>
-          <div className={styles.pageTitle}>
-            {t('Categories')}
-            <Button className="pull-right" type="primary" onClick={showCreateCategory}>
-              {t('Create')}
-            </Button>
-          </div>
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>
-                {t('Default')} ({defaultCategories.length})
-              </div>
+        <NavLink>
+          {t('Store')} / {t('Categories')}
+        </NavLink>
+
+        <Toolbar
+          placeholder={t('Search Categories')}
+          searchWord={searchWord}
+          onSearch={categoryStore.onSearch}
+          onClear={categoryStore.onClearSearch}
+          onRefresh={categoryStore.onRefresh}
+          withCreateBtn={{ name: t('Create'), onClick: showCreateCategory }}
+        />
+
+        <div className={styles.categories}>
+          <div className={styles.line}>
+            <div className={styles.word}>
+              {t('Default')} ({defaultCategories.length})
             </div>
           </div>
+        </div>
 
-          {defaultCategories.map(data => (
+        <div>
+          {defaultCategories.map((data, index) => (
             <div key={data.category_id} className={styles.categoryContent}>
-              <Rectangle
+              <CategoryCard
                 id={data.category_id}
                 title={data.name}
                 idNo={data.idNo}
@@ -179,25 +188,26 @@ export default class Categories extends Component {
               </div>
             </div>
           ))}
+        </div>
 
-          <div className={styles.categories}>
-            <div className={styles.line}>
-              <div className={styles.word}>{t('Uncategories')}</div>
+        <div className={styles.categories}>
+          <div className={styles.line}>
+            <div className={styles.word}>{t('Uncategories')}</div>
+          </div>
+        </div>
+
+        {uncategorized.category_id && (
+          <div className={classnames(styles.categoryContent, styles.unCategorized)}>
+            <div className={styles.rectangle}>
+              <div className={styles.title} title={uncategorized.name}>
+                <Link to={`/dashboard/category/${uncategorized.category_id}`}>
+                  {t(uncategorized.name)}
+                </Link>
+              </div>
+              <AppImages apps={uncategorized.apps} total={uncategorized.total} />
             </div>
           </div>
-          {uncategorized.category_id && (
-            <div className={styles.categoryContent}>
-              <div className={styles.rectangle}>
-                <div className={styles.title} title={uncategorized.name}>
-                  <Link to={`/dashboard/category/${uncategorized.category_id}`}>
-                    {t(uncategorized.name)}
-                  </Link>
-                </div>
-                <AppImages apps={uncategorized.apps} total={uncategorized.total} />
-              </div>
-            </div>
-          )}
-        </div>
+        )}
         {this.renderOpsModal()}
         {this.renderDeleteModal()}
       </Layout>

@@ -4,19 +4,20 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
 
-import { getScrollTop } from 'utils';
-import Layout, { Dialog } from 'components/Layout';
+import Layout, { Dialog, NavLink } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
-import RepoList from './RepoList';
 import Loading from 'components/Loading';
+import RepoList from './RepoList/index';
+import { getScrollTop, getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore,
   repoStore: rootStore.repoStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  sessInfo
 }))
 @observer
 export default class Repos extends Component {
@@ -28,6 +29,7 @@ export default class Repos extends Component {
   constructor(props) {
     super(props);
     const { repoStore, appStore } = this.props;
+    repoStore.appStore = appStore;
     repoStore.loadPageInit();
     appStore.loadPageInit();
   }
@@ -129,6 +131,25 @@ export default class Repos extends Component {
     );
   };
 
+  renderNavLink = () => {
+    const { t } = this.props;
+    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
+
+    if (isAdmin) {
+      return (
+        <NavLink>
+          {t('Platform')} / {t('Repos')}
+        </NavLink>
+      );
+    }
+
+    return (
+      <NavLink>
+        <Link to="/dashboard/apps">{t('All Apps')}</Link> / {t('Repos')}
+      </NavLink>
+    );
+  };
+
   render() {
     const { t } = this.props;
     const {
@@ -142,31 +163,26 @@ export default class Repos extends Component {
 
     return (
       <Layout listenToJob={this.listenToJob}>
-        <div className={styles.container}>
-          <div className={styles.title}>{t('Repos')}</div>
+        {this.renderNavLink()}
 
-          <Toolbar
-            placeholder={t('Search Repo')}
-            searchWord={searchWord}
-            onSearch={onSearch}
-            onClear={onClearSearch}
-            onRefresh={onRefresh}
-            withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
+        <Toolbar
+          placeholder={t('Search Repo')}
+          searchWord={searchWord}
+          onSearch={onSearch}
+          onClear={onClearSearch}
+          onRefresh={onRefresh}
+          withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
+        />
+
+        <Loading isLoading={isLoading}>
+          <RepoList visibility="public" repos={repos.toJSON()} actionMenu={this.renderHandleMenu} />
+          <RepoList
+            visibility="private"
+            repos={repos.toJSON()}
+            actionMenu={this.renderHandleMenu}
           />
+        </Loading>
 
-          <Loading isLoading={isLoading}>
-            <RepoList
-              visibility="public"
-              repos={repos.toJSON()}
-              actionMenu={this.renderHandleMenu}
-            />
-            <RepoList
-              visibility="private"
-              repos={repos.toJSON()}
-              actionMenu={this.renderHandleMenu}
-            />
-          </Loading>
-        </div>
         {this.deleteRepoModal()}
       </Layout>
     );

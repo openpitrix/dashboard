@@ -21,32 +21,30 @@ $profile-hover-color: #efe6f8;
   z-index: 999;
   background: none;
 
+  &.deep {
+    background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
+  }
+
   &.deep, &.deepHome {
     position: fixed;
-    .menus {
-      a {
-        color: $N0;
-      }
-      .role{
-        [class*='target']{
-          color: $N0;
 
-          :global{
-            .icon-caret-down{
-              svg {
-                --primary-color: #{$N0};
-                --secondary-color: #{$N0};
-              }
-            }
-          }
+    .login{
+      color: $N0;
+    }
+
+    .user [class*='target']{
+      color: $N0;
+
+      :global{
+        .icon-caret-down svg{
+          --primary-color: #{$N0};
+          --secondary-color: #{$N0};
         }
       }
     }
   }
 
-  &.deep {
-    background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
-  }
+
   &.deepHome {
     animation-duration: 0.5s;
     animation-name: deepHeader;
@@ -57,10 +55,12 @@ $profile-hover-color: #efe6f8;
 
   .wrapper {
     width: $content-width;
+    height: $header-height;
     margin: 0 auto;
   }
 
   .logo {
+    float: left;
     width: auto;
     height: $logo-height;
     display: inline-block;
@@ -128,67 +128,94 @@ $profile-hover-color: #efe6f8;
     }
   }
 
-}
-
-.menus {
-  float: right;
-  line-height: $header-height;
-  a {
-    opacity: 0.9;
+  .login{
+    float: right;
+    display: inline-block;
+    margin: 14px 0;
+    line-height: 20px;
     color: $N500;
     font-weight: 500;
-    &:hover {
+    opacity: 0.9;
+
+    &:hover{
       opacity: 1;
     }
   }
-  .role{
-    [class*='target']{
-      margin: 14px 0;
-      width: auto;
-      height: auto;
-      line-height: 20px;
-      opacity: 0.9;
-      color: $N500;
-      font-weight: 500;
+
+  .user [class*='target']{
+    float: right;
+    margin: 12px 24px;
+    height: 20px;
+    width: auto;
+    line-height: 20px;
+    opacity: 0.9;
+    color: $N500;
+    font-weight: 500;
+    border: 0 none;
+
+    &:hover{
       border: 0 none;
-      &:hover{
-        box-shadow: none;
-        opacity: 1;
-      }
-      :global{
-        .icon-caret-down{
-          position: relative;
-          top: 3px;
-          left: 2px;
-          svg {
-            --primary-color: #{$N500};
-            --secondary-color: #{$N500};
-          }
-        }
-      }
+      box-shadow: none;
+      opacity: 1;
     }
+
     :global{
-      .pi-popover-popper{
-        margin-left: -69px;
-        margin-top: 6px;
+      .icon-caret-down{
+        position: relative;
+        top: 3px;
+        left: 2px;
+        svg {
+          --primary-color: #{$N500};
+          --secondary-color: #{$N500};
+        }
       }
     }
-    .operateItems{
-      min-width: 120px;
-      li a{
-        display: block;
-        height: 32px;
-        padding: 0 12px;
-        //width: 100%;
-        line-height: 32px;
-        font-size: $font14;
-        font-weight: normal;
-        color: $N300;
-        border-radius: 0;
-        &:hover {
-          background-color: $N10;
-          color: $N500;
-        }
+  }
+
+  .operateItems{
+    min-width: 120px;
+    li a{
+      display: block;
+      height: 32px;
+      padding: 0 12px;
+      //width: 100%;
+      line-height: 32px;
+      font-size: $font14;
+      font-weight: normal;
+      color: $N300;
+      border-radius: 0;
+      &:hover {
+        background-color: $N10;
+        color: $N500;
+      }
+      &.line{
+        border-bottom: 1px solid $N10;
+      }
+    }
+  }
+
+  :global{
+    .pi-popover-popper{
+      margin-left: -62px !important;
+      margin-top: 6px !important;
+    }
+  }
+}
+
+.menuOuter {
+  .menus{
+    float: left;
+    margin-left: 50px;
+    a{
+      display: inline-block;
+      margin: 0 12px;
+      padding: 13px 0;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      color: $N0;
+      &.active{
+        border-bottom: 2px solid $Y200;
       }
     }
   }

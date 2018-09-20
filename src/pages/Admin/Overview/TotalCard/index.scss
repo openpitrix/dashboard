@@ -1,0 +1,32 @@
+@import "~scss/vars";
+
+.totalCard {
+  box-sizing: border-box;
+  padding: 16px 15px;
+  height: 120px;
+  text-align: right;
+  cursor: pointer;
+
+  :global{
+    .icon{
+      float: left;
+    }
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+  .name {
+    line-height: 32px;
+    font-size: 14px;
+    color: $P75;
+  }
+  .number {
+    margin-top: 16px;
+    font-size: $font40;
+    font-weight: 500;
+    line-height: 44px;
+    color: $N500;
+  }
+}
+
+

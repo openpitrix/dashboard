@@ -39,7 +39,7 @@
       font-weight: 500;
       text-align: left;
       color: $N500;
-      width: 126px;
+      width: 110px;
       @include textCut;
       &:hover{
         color: $link-hover;
@@ -47,7 +47,7 @@
     }
     .description{
       display: inline-block;
-      width: 120px;
+      width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -91,10 +91,10 @@
   }
   .largeShow{
     [class*='name'] {
-      width: 240px !important;
+      //width: 240px !important;
     }
     [class*='description'] {
-      width: 240px !important;
+      //width: 240px !important;
     }
   }
 }

@@ -18,6 +18,8 @@ const Toolbar = ({
   inputMaxLen,
   children,
   withCreateBtn,
+  viewType,
+  changeView,
   t
 }) => (
   <div className={classnames(styles.toolbar, className)}>
@@ -38,6 +40,35 @@ const Toolbar = ({
             </Button>
           </Link>
         )}
+        {withCreateBtn.onClick && (
+          <Button
+            className={styles.btnRight}
+            type="primary"
+            onClick={() => {
+              withCreateBtn.onClick();
+            }}
+          >
+            {withCreateBtn.name || 'Create'}
+          </Button>
+        )}
+        {viewType && (
+          <Icon
+            name="listview"
+            size={24}
+            className={styles.viewIcon}
+            type={viewType === 'list' ? 'light' : 'dark'}
+            onClick={() => changeView('list')}
+          />
+        )}
+        {viewType && (
+          <Icon
+            name="cardview"
+            size={24}
+            className={styles.viewIcon}
+            type={viewType === 'card' ? 'light' : 'dark'}
+            onClick={() => changeView('card')}
+          />
+        )}
         <Button className={styles.refreshBtn} onClick={onRefresh}>
           <Icon name="refresh" size="mini" />
         </Button>
@@ -56,8 +87,11 @@ Toolbar.propTypes = {
   inputMaxLen: PropTypes.number,
   children: PropTypes.node,
   withCreateBtn: PropTypes.shape({
-    linkTo: PropTypes.string
-  })
+    linkTo: PropTypes.string,
+    onClick: PropTypes.func
+  }),
+  viewType: PropTypes.string,
+  changeView: PropTypes.func
 };
 
 Toolbar.defaultProps = {
@@ -67,7 +101,9 @@ Toolbar.defaultProps = {
   onRefresh: noop,
   inputMaxLen: 50,
   placeholder: '',
-  withCreateBtn: {}
+  withCreateBtn: {},
+  viewType: '',
+  changeView: noop
 };
 
 export default Toolbar;

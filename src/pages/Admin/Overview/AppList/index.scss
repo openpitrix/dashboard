@@ -16,10 +16,11 @@
   .order{
     display: inline-block;
     float: left;
+    margin-top: 8px;
     margin-right: 18px;
     font-size: $font16;
     font-weight: 500;
-    line-height: 1.25;
+    line-height: 20px;
     color: $N500;
   }
   .total{

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Popover, Icon } from 'components/Base';
+import { Popover, Icon, Input } from 'components/Base';
 import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
-import Input from '../Base/Input';
 
 import styles from './index.scss';
 
@@ -23,7 +22,7 @@ class Header extends Component {
 
   onSearch = async value => {
     const { appStore } = this.props.rootStore;
-    this.props.history.push('/apps/search/' + value);
+    this.props.history.push('/store/search/' + value);
     await appStore.fetchAll({ search_word: value });
     appStore.homeApps = appStore.apps;
   };
@@ -32,16 +31,57 @@ class Header extends Component {
     this.props.history.push('/');
   };
 
+  isLinkActive = (curLink, match, location) => {
+    const { pathname } = location;
+    return pathname.indexOf(curLink) > -1;
+  };
+
+  renderMenus = () => {
+    const { t } = this.props;
+
+    return (
+      <div className={styles.menus}>
+        <NavLink
+          to="/store"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'store')}
+        >
+          {t('Store')}
+        </NavLink>
+        <NavLink
+          to="/purchased"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'purchased')}
+        >
+          {t('Purchased')}
+        </NavLink>
+        <NavLink
+          to="/runtimes"
+          exact
+          activeClassName={styles.active}
+          isActive={this.isLinkActive.bind(null, 'runtime')}
+        >
+          {t('My runtimes')}
+        </NavLink>
+      </div>
+    );
+  };
+
   renderOperateMenu = () => {
     const { t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
         <li>
-          <NavLink to="/dashboard">{t('Dashboard')}</NavLink>
+          <Link to="/dashboard">{t('Dashboard')}</Link>
         </li>
         <li>
-          <NavLink to="/profile">{t('Profile')}</NavLink>
+          <Link to="/profile">{t('Profile')}</Link>
+        </li>
+        <li>
+          <Link to="/ssh_keys">{t('SSH Keys')}</Link>
         </li>
         <li>
           <a href="/logout">{t('Log out')}</a>
@@ -51,18 +91,24 @@ class Header extends Component {
   };
 
   renderMenuBtns() {
-    const loggedInUser = getSessInfo('user', this.props.sessInfo);
     const { t } = this.props;
+    const loggedInUser = getSessInfo('user', this.props.sessInfo);
 
     if (!loggedInUser) {
-      return <NavLink to="/login">{t('Sign In')}</NavLink>;
+      return (
+        <NavLink to="/login" className={styles.login}>
+          {t('Sign In')}
+        </NavLink>
+      );
     }
 
     return (
-      <Popover content={this.renderOperateMenu()} className={styles.role}>
-        {loggedInUser}
-        <Icon name="caret-down" className={styles.iconDark} />
-      </Popover>
+      <div className={styles.user}>
+        <Popover content={this.renderOperateMenu()}>
+          {loggedInUser}
+          <Icon name="caret-down" className={styles.iconDark} type="dark" />
+        </Popover>
+      </div>
     );
   }
 
@@ -74,6 +120,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
 
+    const hasMenu = getSessInfo('role', this.props.sessInfo) === 'normal';
     const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;
@@ -87,7 +134,10 @@ class Header extends Component {
       >
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
-          <div className={styles.menus}>{this.renderMenuBtns()}</div>
+          <div className={styles.menuOuter}>
+            {hasMenu && this.renderMenus()}
+            {this.renderMenuBtns()}
+          </div>
           {needShowSearch && (
             <Input.Search
               className={styles.search}

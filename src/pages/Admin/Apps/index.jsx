@@ -3,15 +3,16 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import { filter, get, orderBy } from 'lodash';
+import classnames from 'classnames';
 
-import { Icon, Button, Table, Popover, Select, Modal } from 'components/Base';
+import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
+import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
-import { getSessInfo, getObjName } from 'utils';
 import TimeShow from 'components/TimeShow';
+import { getSessInfo, getObjName } from 'utils';
 
 import styles from './index.scss';
 
@@ -25,9 +26,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore }) {
+  static async onEnter({ appStore, categoryStore, repoStore, sessInfo }) {
     await appStore.fetchAll();
-    await appStore.appStatistics();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true
@@ -43,13 +43,29 @@ export default class Apps extends Component {
     this.role = getSessInfo('role', sessInfo);
   }
 
+  componentDidMount() {
+    const { appStore, sessInfo } = this.props;
+    const role = getSessInfo('role', sessInfo);
+
+    if (role === 'admin') {
+      appStore.fetchStatistics();
+    }
+  }
+
   onChangeSort = (params = {}) => {
     const { appStore } = this.props;
     const order = params.reverse ? 'asc' : 'desc';
     appStore.apps = orderBy(appStore.apps, params.sort_key, order);
   };
 
-  renderDeleteModal = () => {
+  changeView = type => {
+    const { appStore } = this.props;
+    if (appStore.viewType !== type) {
+      appStore.viewType = type;
+    }
+  };
+
+  renderDeleteDialog = () => {
     const { appStore, t } = this.props;
     const { isDeleteOpen, remove, hideModal } = appStore;
 
@@ -101,7 +117,7 @@ export default class Apps extends Component {
       deployEntry = null;
 
     if (item.status !== 'deleted') {
-      deployEntry = <Link to={`/dashboard/app/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
+      deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
       if (this.role === 'developer') {
         itemMenu = (
           <Fragment>
@@ -130,7 +146,7 @@ export default class Apps extends Component {
     );
   };
 
-  renderToolbar() {
+  renderToolbar(hasViewType) {
     const { t } = this.props;
     const {
       searchWord,
@@ -138,7 +154,8 @@ export default class Apps extends Component {
       onClearSearch,
       onRefresh,
       showDeleteApp,
-      appIds
+      appIds,
+      viewType
     } = this.props.appStore;
 
     if (appIds.length) {
@@ -151,6 +168,9 @@ export default class Apps extends Component {
       );
     }
 
+    const type = hasViewType ? viewType : '';
+    const withCreateBtn = hasViewType ? { name: t('Create'), linkTo: `/dashboard/app/create` } : {};
+
     return (
       <Toolbar
         placeholder={t('Search App')}
@@ -158,7 +178,32 @@ export default class Apps extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
+        withCreateBtn={withCreateBtn}
+        viewType={type}
+        changeView={this.changeView}
       />
+    );
+  }
+
+  renderCardApps() {
+    const { apps } = this.props.appStore;
+
+    return (
+      <div className={styles.appCardContent}>
+        {apps.map(app => (
+          <Link key={app.app_id} to={`/dashboard/app/${app.app_id}`}>
+            <div className={styles.appCard}>
+              <span className={styles.icon}>
+                <Image src={app.icon} iconSize={48} />
+              </span>
+              <p className={styles.name}>{app.name}</p>
+              <p className={styles.description} title={app.description}>
+                {app.description}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
     );
   }
 
@@ -174,16 +219,17 @@ export default class Apps extends Component {
       selectedRowKeys,
       onChangeSelect,
       onChangeStatus,
-      selectStatus
+      selectStatus,
+      viewType
     } = appStore;
 
     const { repos } = repoStore;
 
-    const columns = [
+    let columns = [
       {
         title: t('App Name'),
         key: 'name',
-        width: '190px',
+        width: '175px',
         render: item => (
           <TdName
             name={item.name}
@@ -208,7 +254,7 @@ export default class Apps extends Component {
       {
         title: t('Categories'),
         key: 'category',
-        width: '150px',
+        width: '120px',
         render: item =>
           t(
             get(item, 'category_set', [])
@@ -220,14 +266,17 @@ export default class Apps extends Component {
       {
         title: t('Visibility'),
         key: 'visibility',
+        width: '65px',
         render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
       },
       {
         title: t('Repo'),
         key: 'repo_id',
+        width: '125px',
         render: item => (
           <Link to={`/dashboard/repo/${item.repo_id}`}>
             <ProviderName
+              className={styles.provider}
               name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
               provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
             />
@@ -236,14 +285,15 @@ export default class Apps extends Component {
       },
       {
         title: t('Developer'),
-        key: 'owner',
+        key: 'developer',
+        width: '80px',
         render: item => item.owner
       },
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '108px',
-        sorter: true,
+        width: '112px',
+        sorter: this.role === 'admin',
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
       },
@@ -261,17 +311,23 @@ export default class Apps extends Component {
       }
     ];
 
+    if (this.role === 'developer') {
+      columns = columns.filter(item => item.key !== 'developer');
+    }
+
     const rowSelection = {
       type: 'checkbox',
-      selectedRowKeys: selectedRowKeys,
-      onChange: onChangeSelect
+      selectedRowKeys: appStore.selectedRowKeys,
+      onChange: appStore.onChangeSelect
     };
 
     const filterList = [
       {
         key: 'status',
         conditions: [
+          { name: t('Draft'), value: 'draft' },
           { name: t('Active'), value: 'active' },
+          { name: t('Suspended'), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: onChangeStatus,
@@ -281,34 +337,51 @@ export default class Apps extends Component {
 
     const pagination = {
       tableType: 'Apps',
-      onChange: changePagination,
-      total: totalCount,
-      current: currentPage,
+      onChange: appStore.changePagination,
+      total: appStore.totalCount,
+      current: appStore.currentPage,
       noCancel: false
     };
 
+    let navLinkShow = t('My Apps') + ' / ' + t('All');
+    if (this.role === 'admin') {
+      navLinkShow = t('Store') + ' / ' + t('All Apps');
+    }
+
     return (
-      <Layout>
-        <Row>
-          <Statistics {...summaryInfo} objs={repos.slice()} />
-        </Row>
+      <Layout className={styles.apps}>
+        <NavLink>{navLinkShow}</NavLink>
+
+        {this.role === 'admin' && (
+          <Row>
+            <Statistics {...summaryInfo} objs={repos.slice()} />
+          </Row>
+        )}
 
         <Row>
           <Grid>
             <Section size={12}>
-              <Card>
-                {this.renderToolbar()}
-                <Table
-                  columns={columns}
-                  dataSource={apps.slice(0, 10)}
-                  rowSelection={rowSelection}
-                  isLoading={isLoading}
-                  filterList={filterList}
-                  pagination={pagination}
-                />
-              </Card>
+              {this.role === 'developer' && this.renderToolbar(true)}
+
+              {viewType === 'card' ? (
+                this.renderCardApps()
+              ) : (
+                <Card>
+                  {this.role === 'admin' && this.renderToolbar()}
+
+                  <Table
+                    columns={columns}
+                    dataSource={apps.slice(0, 10)}
+                    rowSelection={rowSelection}
+                    filterList={filterList}
+                    pagination={pagination}
+                    isLoading={isLoading}
+                  />
+                </Card>
+              )}
+
               {this.renderOpsModal()}
-              {this.renderDeleteModal()}
+              {this.renderDeleteDialog()}
             </Section>
           </Grid>
         </Row>

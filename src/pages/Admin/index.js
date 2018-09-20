@@ -1,5 +1,5 @@
 export Apps from './Apps';
-export AppsInstalled from './Apps/Installed';
+export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';
 export AppDeploy from './Apps/Deploy';
 export Clusters from './Clusters';
@@ -16,6 +16,5 @@ export OverviewClusterList from './Overview/ClusterList';
 export OverviewRepoList from './Overview/RepoList';
 export Categories from './Categories';
 export CategoryDetail from './Categories/Detail';
-export Roles from './Roles';
 export Users from './Users';
 export UserDetail from './Users/Detail';

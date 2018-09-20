@@ -2,9 +2,14 @@ import { observable, action } from 'mobx';
 import Store from '../Store';
 import { get, assign } from 'lodash';
 
+const defaultStatus = ['draft', 'active', 'suspended'];
+
 export default class AppStore extends Store {
   @observable apps = [];
-  @observable homeApps = []; //home page category apps
+  @observable homeApps = []; //menu apps
+  @observable storeApps = []; //store page category apps
+  @observable menuApps = [];
+  @observable updateMeunApps = true;
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable categoryTitle = '';
@@ -16,7 +21,6 @@ export default class AppStore extends Store {
 
   @observable currentPage = 1; //app table query params
   @observable searchWord = '';
-  defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable repoId = '';
   @observable categoryId = '';
@@ -32,9 +36,17 @@ export default class AppStore extends Store {
 
   @observable deleteResult = {};
 
-  @observable detailTab = '';
+  @observable detailTab = 'Information';
 
   @observable currentPic = 1;
+
+  @observable viewType = 'list';
+
+  @observable createStep = 1;
+  @observable createReopId = '';
+  @observable uploadFile = '';
+  @observable createError = '';
+  @observable createResult = null;
 
   // menu actions logic
   @observable
@@ -55,6 +67,10 @@ export default class AppStore extends Store {
 
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
+    if (this.updateMeunApps) {
+      this.menuApps = this.apps.slice(0, 5);
+      this.updateMeunApps = false;
+    }
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -65,7 +81,7 @@ export default class AppStore extends Store {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : this.defaultStatus
+      status: this.selectStatus ? this.selectStatus : defaultStatus
     };
 
     if (params.noLimit) {
@@ -100,12 +116,16 @@ export default class AppStore extends Store {
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }
+    if (!this.updateMeunApps) {
+      this.menuApps = this.apps.slice(0, 5);
+      this.updateMeunApps = false;
+    }
     this.isLoading = false;
     this.isProgressive = false;
   };
 
   @action
-  appStatistics = async () => {
+  fetchStatistics = async () => {
     //this.isLoading = true;
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
@@ -121,26 +141,50 @@ export default class AppStore extends Store {
   };
 
   @action
-  async fetch(appId = '') {
+  fetch = async (appId = '') => {
     this.isLoading = true;
     const result = await this.request.get(`apps`, { app_id: appId });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
     this.pageInitMap = { app: true };
-  }
+  };
+
+  @action
+  createOrModify = async (params = {}) => {
+    const defaultParams = {
+      repo_id: this.createReopId,
+      package: this.uploadFile
+    };
+
+    if (this.createAppId) {
+      defaultParams.app_id = this.createAppId;
+      await this.modify(assign(defaultParams, params));
+    } else {
+      await this.create(assign(defaultParams, params));
+    }
+
+    if (get(this.createResult, 'app_id')) {
+      this.createAppId = get(this.createResult, 'app_id');
+      this.createStep = 3; //show application has been created page
+      this.updateMeunApps = true;
+    } else {
+      const { err, errDetail } = this.createResult;
+      this.createError = errDetail || err;
+    }
+  };
 
   @action
   create = async (params = {}) => {
     this.isLoading = true;
-    await this.request.post('apps', params);
+    this.createResult = await this.request.post('apps', params);
     this.isLoading = false;
   };
 
   @action
   modify = async (params = {}) => {
-    // this.isLoading = true;
-    return await this.request.patch('apps', params);
-    // this.isLoading = false;
+    this.isLoading = true;
+    this.createResult = await this.request.patch('apps', params);
+    this.isLoading = false;
   };
 
   @action
@@ -156,6 +200,7 @@ export default class AppStore extends Store {
         await this.fetch(this.appId);
       } else {
         this.hideModal();
+        this.updateMeunApps = true;
         await this.fetchAll();
         this.cancelSelected();
       }
@@ -269,7 +314,22 @@ export default class AppStore extends Store {
     this.appIds = [];
     this.pageInitMap = {};
   };
+
+  createReset = () => {
+    this.createStep = 1;
+    this.createReopId = '';
+    this.uploadFile = '';
+    this.createError = '';
+    this.createAppId = '';
+    this.createResult = null;
+  };
+
+  @action
+  setCreateStep = step => {
+    this.createStep = step;
+  };
 }
 
 export Deploy from './deploy';
 export Version from './version';
+export Create from './create';

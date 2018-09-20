@@ -1,0 +1,12 @@
+@import '~scss/vars';
+
+:global {
+  .upload {
+    display: inline-block;
+    &.upload-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}

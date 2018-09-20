@@ -5,13 +5,13 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
+import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
-import CategoryCard from 'components/DetailCard/CategoryCard';
-import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
+import CategoryCard from 'components/DetailCard/CategoryCard';
 import { getObjName } from 'utils';
 
 import styles from './index.scss';
@@ -147,11 +147,11 @@ export default class CategoryDetail extends Component {
         width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
-      {
+      /* {
         title: t('Visibility'),
         key: 'visibility',
         render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
-      },
+      },*/
       {
         title: t('Repo'),
         key: 'repo_id',
@@ -164,11 +164,11 @@ export default class CategoryDetail extends Component {
           </Link>
         )
       },
-      {
+      /* {
         title: t('Developer'),
         key: 'owner',
         render: item => item.owner
-      },
+      },*/
       {
         title: t('Updated At'),
         key: 'status_time',
@@ -197,7 +197,10 @@ export default class CategoryDetail extends Component {
     };
 
     return (
-      <Layout backBtn={<BackBtn label="categories" link="/dashboard/categories" />}>
+      <Layout className={styles.categoryDetail}>
+        <NavLink>
+          {t('Store')} / <Link to="/dashboard/categories">{t('Categories')}</Link> / {category.name}
+        </NavLink>
         <Grid>
           <Section>
             <Card>

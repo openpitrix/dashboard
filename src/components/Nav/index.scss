@@ -20,11 +20,10 @@
     }
 
     li {
-      margin: 12px 0;
+      margin-bottom: 12px;
       height: 20px;
       line-height: 20px;
       list-style: none;
-      //cursor: pointer;
       a {
         @include textCut;
         display:inline-block;
@@ -39,6 +38,7 @@
         .active{
           color: $P75;
           font-weight: bold;
+          cursor: auto;
         }
       }
     }

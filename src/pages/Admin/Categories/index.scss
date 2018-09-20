@@ -1,35 +1,32 @@
 @import '~scss/vars';
 
-.container {
-  width: $content-width;
-  margin: 0 auto;
-
-  .pageTitle{
-    height: 24px;
-    font-size: 20px;
-    font-weight: 500;
-    text-align: left;
-    color: $N500;
-  }
+.pageTitle{
+  height: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  color: $N500;
 }
+
 .categories{
   text-align: center;
   padding: 12px 24px;
+
   .line{
     display: inline-block;
     width: 330px;
     height: 1px;
-    border-bottom: 1px solid $N10;
+    border-bottom: 1px solid $N30;
   }
+
   .word{
     display: inline-block;
     position: relative;
-    bottom: 11px;
+    bottom: 10px;
     padding: 0 7px;
-    line-height: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: $P75;
+    line-height:20px;
+    font-size: 12px;
+    color: $N100;
     background: $background-color;
   }
 }
@@ -37,39 +34,48 @@
 .categoryContent {
   display: inline-block;
   position: relative;
+  width: calc(33.333% - 16px);
   margin: 0 24px 24px 0;
-  &:nth-child(3n+2) {
+
+  &:nth-child(3n+3) {
     margin-right: 0;
   }
+
   .handlePop {
     position: absolute;
     right: 24px;
     top: 24px;
+
     :global {
       .pi-popover-popper {
         margin-left: -90px !important;
       }
     }
   }
+
   .rectangle{
     display: inline-block;
     box-sizing: border-box;
+    width: 100%;
     padding: 24px;
-    width: 1128px;
     height: 140px;
     background-color: $N0;
     box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+
     .title a{
       display: block;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       font-size: 20px;
-      line-height: 1.6;
+      line-height: 24px;
       font-weight: 500;
       color: $N500;
-      max-width: 300px;
       @include textCut;
     }
   }
+}
+
+.unCategorized{
+  width: 100%;
 }
 
 

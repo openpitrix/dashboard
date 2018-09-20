@@ -3,21 +3,20 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
-
 import get from 'lodash/get';
-import Radio from 'components/Base/Radio';
-import Button from 'components/Base/Button';
-import Input from 'components/Base/Input';
-import Select from 'components/Base/Select';
+
+import { Radio, Button, Input, Select } from 'components/Base';
+import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'components/Layout';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   runtimeStore: rootStore.runtimeStore,
-  runtimeCreateStore: rootStore.runtimeCreateStore
+  runtimeCreateStore: rootStore.runtimeCreateStore,
+  sessInfo
 }))
 @observer
 export default class RuntimeAdd extends Component {
@@ -45,22 +44,6 @@ export default class RuntimeAdd extends Component {
   componentWillUnmount() {
     const { runtimeCreateStore } = this.props;
     runtimeCreateStore.reset();
-  }
-
-  render() {
-    const { t } = this.props;
-    const { runtimeId } = this.store;
-    let title = t('Create Runtime');
-    if (runtimeId) title = t('Modify Runtime');
-
-    return (
-      <Layout>
-        <BackBtn label="runtime" link="/dashboard/runtimes" />
-        <CreateResource title={title} aside={this.renderAside()}>
-          {this.renderForm()}
-        </CreateResource>
-      </Layout>
-    );
   }
 
   renderUrlAndZone() {
@@ -228,9 +211,7 @@ export default class RuntimeAdd extends Component {
           <Button type={`primary`} disabled={isLoading} className={`primary`} htmlType="submit">
             {t('Confirm')}
           </Button>
-          <Link to="/dashboard/runtimes">
-            <Button>{t('Cancel')}</Button>
-          </Link>
+          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -243,6 +224,38 @@ export default class RuntimeAdd extends Component {
       <Fragment>
         <p>{t('Create Runtime explain')}</p>
       </Fragment>
+    );
+  }
+
+  render() {
+    const { sessInfo, t } = this.props;
+    const { runtimeId } = this.store;
+    const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
+
+    return (
+      <Layout
+        title="My Runtimes"
+        backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
+      >
+        {role === 'developer' && (
+          <NavLink>
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
+            <Link to="/runtimes">{t('Runtimes')}</Link> / {title}
+          </NavLink>
+        )}
+
+        {role === 'admin' && (
+          <NavLink>
+            {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> / {title}
+          </NavLink>
+        )}
+
+        <CreateResource title={title} aside={this.renderAside()}>
+          {this.renderForm()}
+        </CreateResource>
+      </Layout>
     );
   }
 }

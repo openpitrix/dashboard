@@ -3,24 +3,25 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
-import { formatTime } from 'utils';
-import { versionCompare } from 'utils/string';
 
-import Layout, { Grid, Section, BackBtn, Panel, Card } from 'components/Layout';
+import Layout, { Grid, Section, BackBtn, Panel, Card, NavLink } from 'components/Layout';
 import Button from 'components/Base/Button';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
 import VersionItem from './versionItem';
+import { getSessInfo, formatTime } from 'utils';
+import { versionCompare } from 'utils/string';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   rootStore: rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
-  repoStore: rootStore.repoStore
+  repoStore: rootStore.repoStore,
+  sessInfo
 }))
 @observer
 export default class AppDetail extends Component {
@@ -92,26 +93,6 @@ export default class AppDetail extends Component {
     );
   }
 
-  render() {
-    const { appStore, appVersionStore } = this.props;
-    const { isLoading } = appVersionStore;
-    const appDetail = appStore.appDetail;
-
-    return (
-      <Layout noTabs isLoading={isLoading} backBtn={<BackBtn label="catalog" link="/" />}>
-        <Grid>
-          <Section size={8}>
-            <Panel className={styles.introCard}>
-              <Meta app={appDetail} />
-              {this.renderBody()}
-            </Panel>
-          </Section>
-          {this.renderVersions()}
-        </Grid>
-      </Layout>
-    );
-  }
-
   renderVersions() {
     const { appStore, appVersionStore, t } = this.props;
     const appDetail = appStore.appDetail;
@@ -120,7 +101,7 @@ export default class AppDetail extends Component {
     return (
       <Section>
         <Card className={styles.detailCard}>
-          <Link to={`/dashboard/app/${appDetail.app_id}/deploy`}>
+          <Link to={`/store/${appDetail.app_id}/deploy`}>
             <Button
               className={styles.deployBtn}
               type="primary"
@@ -159,6 +140,39 @@ export default class AppDetail extends Component {
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>
+    );
+  }
+
+  render() {
+    const { appStore, appVersionStore, sessInfo } = this.props;
+    const { isLoading } = appVersionStore;
+    const appDetail = appStore.appDetail;
+    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+
+    return (
+      <Layout
+        isLoading={isLoading}
+        title="Store"
+        hasSearch
+        backBtn={isNormal && <BackBtn label="Store" link="/store" />}
+      >
+        {!isNormal && (
+          <NavLink>
+            <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
+          </NavLink>
+        )}
+
+        <Grid>
+          <Section size={8}>
+            <Panel className={styles.introCard}>
+              <Meta app={appDetail} />
+              {this.renderBody()}
+            </Panel>
+          </Section>
+
+          {this.renderVersions()}
+        </Grid>
+      </Layout>
     );
   }
 }

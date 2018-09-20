@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react/index';
 import { translate } from 'react-i18next';
-import { get, pick } from 'lodash';
+import { pick } from 'lodash';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
 import UserCard from 'components/DetailCard/UserCard';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
+
 import appColumns from 'utils/columns/app-columns';
 import clusterColumns from 'utils/columns/cluster-columns';
 import runtimesColumns from 'utils/columns/runtime-columns';
 import repoColumns from 'utils/columns/repo-columns';
+
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
@@ -25,7 +28,7 @@ import styles from './index.scss';
 @observer
 export default class Detail extends Component {
   static async onEnter({ userStore }, { userId }) {
-    //await userStore.fetchUsersDetail(userId);
+    //await userStore.fetchDetail(userId);
   }
 
   constructor(props) {
@@ -239,7 +242,11 @@ export default class Detail extends Component {
     }
 
     return (
-      <Layout backBtn={<BackBtn label="users" link="/dashboard/users" />}>
+      <Layout className={styles.userDetail}>
+        <NavLink>
+          {t('Users')} / <Link to="/dashboard/users">{t('All Users')}</Link> / {userDetail.name}
+        </NavLink>
+
         <Grid>
           <Section>
             <Card>

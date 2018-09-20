@@ -59,6 +59,8 @@ export default class Home extends Component {
   }
 
   componentWillUnmount() {
+    const { appStore } = this.props;
+    appStore.apps = [];
     window.onscroll = null;
   }
 

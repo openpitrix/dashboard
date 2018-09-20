@@ -1,82 +1,32 @@
 @import '~scss/vars';
 
-.container {
-  width: $content-width;
-  margin: 0 auto 24px;
-  border-radius: 3px;
-  background-color: #fff;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-  .leftNav{
-    float: left;
-    width: 360px;
-    height: 100vh;
-    padding: 24px;
-    border-right: 2px solid #e8e8e8;
-    background-color: #fff;
-    .select{
-      width: 310px;
-      margin-bottom: 22px;
-    }
+.usersContent {
+  .selectInfo {
+    padding-right: 0;
   }
-  .rightTab{
-    margin-left:358px;
-    width: 770px;
-    border-left: 2px solid #e8e8e8;
-  }
-  .wrapper {
-    margin: 0 0 25px 0;
-    border-radius: 3px;
-    background-color: #fff;
-    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-  }
-}
 
-.selectedInfo{
-  padding: 32px 24px 8px;
-  .selected{
-    display: inline-block;
-    line-height: 16px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #7749ac;
-  }
-  .action{
-    float: right;
-    cursor: pointer;
-  }
-}
-.toolbar {
-  padding: 24px;
   .select {
-    width: 176px;
-    vertical-align: top;
-    div {
-      box-shadow: none !important;
-    }
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .table {
+    border-left: 1px solid $N10;
+  }
+
+  .noShadow {
+    box-shadow: none;
+  }
+
+  .selectInfo {
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    color: $N500;
   }
 }
 
-.search {
-  display: inline-block;
-  width: 337px;
-  border-color: $border-lighter;
-  box-shadow: none;
-
-  :global {
-    .fa {
-      color: $placeholder-color;
-    }
-  }
-
-  input::placeholder {
-    font-weight: 400;
-    color: $placeholder-color;
-  }
-}
-
-.ml12{
-  margin-left: 12px;
-}
 .list {
   padding: 0 24px;
   margin: 0;
@@ -122,9 +72,6 @@
   }
 }
 
-.page{
-  margin: 0 24px;
-}
 
 .authorityModal{
   overflow: auto;

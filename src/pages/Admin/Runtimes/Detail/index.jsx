@@ -5,22 +5,23 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
+import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel } from 'components/Layout';
 import TimeShow from 'components/TimeShow';
-import { getObjName } from 'utils';
+import RuntimeCard from 'components/DetailCard/RuntimeCard';
+import { getObjName, getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  sessInfo
 }))
 @observer
 export default class RuntimeDetail extends Component {
@@ -77,7 +78,7 @@ export default class RuntimeDetail extends Component {
   };
 
   render() {
-    const { runtimeStore, clusterStore, t } = this.props;
+    const { runtimeStore, clusterStore, sessInfo, t } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -161,8 +162,27 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
+
     return (
-      <Layout backBtn={<BackBtn label="runtimes" link="/dashboard/runtimes" />}>
+      <Layout
+        title="My Runtimes"
+        backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
+      >
+        {role === 'developer' && (
+          <NavLink>
+            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
+            <Link to="/runtimes">{t('Runtimes')}</Link> / {runtimeDetail.name}
+          </NavLink>
+        )}
+        {role === 'admin' && (
+          <NavLink>
+            {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> /{' '}
+            {runtimeDetail.name}
+          </NavLink>
+        )}
+
         <Grid>
           <Section>
             <Card>

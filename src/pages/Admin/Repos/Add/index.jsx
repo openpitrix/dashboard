@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -6,15 +6,17 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
+import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import TodoList from 'components/TodoList';
-import Layout, { BackBtn, CreateResource } from 'components/Layout';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   repoStore: rootStore.repoStore,
-  repoCreateStore: rootStore.repoCreateStore
+  repoCreateStore: rootStore.repoCreateStore,
+  sessInfo
 }))
 @observer
 export default class RepoAdd extends Component {
@@ -37,22 +39,6 @@ export default class RepoAdd extends Component {
     if (get(this.store, 'repoCreated.repo_id') && !this.store.isLoading) {
       history.back();
     }
-  }
-
-  render() {
-    const { t } = this.props;
-    const { repoId } = this.store;
-    let title = t('Create Repo');
-    if (repoId) title = t('Modify Repo');
-
-    return (
-      <Layout>
-        <BackBtn label="repos" link="/dashboard/repos" />
-        <CreateResource title={title} aside={this.renderAside()}>
-          {this.renderForm()}
-        </CreateResource>
-      </Layout>
-    );
   }
 
   renderForm() {
@@ -215,5 +201,30 @@ export default class RepoAdd extends Component {
     const { t } = this.props;
 
     return <p>{t('Create Repo explain')}</p>;
+  }
+
+  render() {
+    const { sessInfo } = this.props;
+    const { t } = this.props;
+    const { repoId } = this.store;
+    const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'normal';
+
+    return (
+      <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
+        {!isNormal && (
+          <NavLink>
+            {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
+            {role === 'admin' && <label>{t('Platform')}</label>}
+            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {title}
+          </NavLink>
+        )}
+
+        <CreateResource title={title} aside={this.renderAside()}>
+          {this.renderForm()}
+        </CreateResource>
+      </Layout>
+    );
   }
 }

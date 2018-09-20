@@ -1,23 +1,28 @@
 @import "~scss/vars";
 
 .statistics{
-  margin: 0 auto 24px;
-  width: $content-width;
-  .wrap{
-    padding: 26px 24px;
-    height: 120px;
-    border-radius: 3px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-  }
+  //margin: 0 auto 24px;
+  //width: $content-width;
+  padding: 26px 24px;
+  height: 120px;
+  border-radius: 3px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
   .module{
     float: left;
     display: inline-block;
     position: relative;
-    margin: 0 48px 0 0;
+    width: 35%;
     height: 68px;
-    &:last-child{
-      margin-right: 24px;
+
+    &:first-child{
+      width: 30%;
+
+      .word{
+        float: right;
+        margin-right: 48px;
+      }
     }
   }
 
@@ -25,7 +30,6 @@
     float: left;
     display: inline-block;
     margin-top: 18px;
-    width: 240px;
     font-size: 24px;
     font-weight: 500;
     line-height: 1.17;
@@ -34,13 +38,13 @@
       .icon{
         float: left;
         display: inline-block;
-        margin-left: 24px;
+        margin-left: 12px;
       }
     }
   }
   .word{
     display: inline-block;
-    width: 120px;
+    //width: 120px;
     .name{
       margin-bottom: 4px;
       font-size: 12px;
