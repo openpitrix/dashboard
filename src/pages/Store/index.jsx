@@ -23,8 +23,7 @@ export default class Store extends Component {
   static async onEnter({ categoryStore, appStore }, { category, search }) {
     appStore.loadPageInit();
     await categoryStore.fetchAll();
-
-    const params = { status: 'active' };
+    let params = {};
     if (category) {
       params.category_id = category;
     }
@@ -32,7 +31,6 @@ export default class Store extends Component {
       params.search_word = search;
     }
     await appStore.fetchApps(params);
-
     appStore.storeApps = appStore.apps;
   }
 

@@ -83,7 +83,7 @@
           }
         }
         .textareaItem{
-          height: 80px;
+          height: 88px;
           & > label {
             float: left;
             position: relative;
@@ -94,14 +94,6 @@
           & > label{
             float: left;
             line-height: 32px;
-          }
-        }
-
-        .operationBtn {
-          margin-left: 192px;
-
-          button {
-            margin-right: 12px;
           }
         }
       }

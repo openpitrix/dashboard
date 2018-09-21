@@ -19,17 +19,16 @@ import styles from './index.scss';
 @observer
 export default class Home extends Component {
   static async onEnter({ categoryStore, appStore }, { category, search }) {
-    const params = { status: 'active' };
-
-    appStore.loadPageInit();
-    await categoryStore.fetchAll();
-
+    const params = {};
     if (category) {
       params.category_id = category;
     }
     if (search) {
       params.search_word = search;
     }
+
+    appStore.loadPageInit();
+    await categoryStore.fetchAll();
     await appStore.fetchApps(params);
     appStore.homeApps = appStore.apps;
   }

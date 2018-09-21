@@ -27,7 +27,7 @@ export default class UserCard extends React.Component {
           <div className={styles.name} title={userDetail.name}>
             {userDetail.name}
           </div>
-          <CopyId id={userDetail.user_id} />
+          <CopyId id={userDetail.app_id} />
         </div>
         <ul className={styles.detail}>
           <li>
@@ -41,6 +41,10 @@ export default class UserCard extends React.Component {
           <li>
             <span className={styles.name}>{t('Email')}</span>
             {userDetail.email}
+          </li>
+          <li>
+            <span className={styles.name}>{t('Org')}</span>
+            {userDetail.org}
           </li>
           <li>
             <span className={styles.name}>{t('Date Updated')}</span>

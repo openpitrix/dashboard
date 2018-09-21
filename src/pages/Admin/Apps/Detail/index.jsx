@@ -392,7 +392,6 @@ export default class AppDetail extends Component {
               value={appVersionStore.name}
               onChange={appVersionStore.changeName}
               disabled={isDisabled}
-              maxLength={50}
             />
           </dd>
         </dl>
@@ -449,7 +448,6 @@ export default class AppDetail extends Component {
               defaultValue={appVersionStore.description}
               disabled={isDisabled}
               onChange={appVersionStore.changeDescription}
-              maxLength={500}
             />
           </dd>
         </dl>
@@ -557,7 +555,7 @@ export default class AppDetail extends Component {
             repoProvider={repoProvider}
             noDeploy={appDetail.status === 'deleted'}
           />
-          {appDetail.status === 'suspended' && (
+          {appDetail.status !== 'deleted' && (
             <Popover className={styles.operation} content={this.renderHandleMenu(appDetail.app_id)}>
               <Icon name="more" />
             </Popover>

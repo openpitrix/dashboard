@@ -28,7 +28,7 @@ import styles from './index.scss';
 @observer
 export default class Detail extends Component {
   static async onEnter({ userStore }, { userId }) {
-    await userStore.fetchDetail(userId);
+    //await userStore.fetchDetail(userId);
   }
 
   constructor(props) {
