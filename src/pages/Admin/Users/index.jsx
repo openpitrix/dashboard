@@ -230,15 +230,17 @@ export default class Users extends Component {
     if (operateType === 'modify') {
       title = t('Modify User');
     }
+    const emailRegexp =
+      "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)[\\w](?:[\\w-]*[\\w])?";
 
     return (
       <Modal
         title={title}
         visible={userStore.isCreateOpen}
         onCancel={userStore.hideModal}
-        onOk={userStore.createOrModify}
+        hideFooter
       >
-        <form className="formContent">
+        <form className="formContent" onSubmit={userStore.createOrModify}>
           {userDetail.user_id && (
             <div className="inputItem">
               <label>{t('Name')}</label>
@@ -257,13 +259,13 @@ export default class Users extends Component {
             <label>{t('Email')}</label>
             <Input
               name="email"
-              maxLength="50"
+              maxLength={50}
               placeholer="username@example.com"
               value={userDetail.email}
               onChange={e => {
                 changeUser(e, 'email');
               }}
-              pattern="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+              pattern={emailRegexp}
               required
             />
           </div>
@@ -280,23 +282,30 @@ export default class Users extends Component {
             <Input
               name="password"
               type="password"
-              maxLength="50"
+              maxLength={50}
               value={userDetail.password}
               onChange={e => {
                 changeUser(e, 'password');
               }}
+              required
             />
           </div>
           <div className="textareaItem">
             <label>{t('Description')}</label>
             <textarea
               name="description"
-              maxLength="500"
+              maxLength={500}
               value={userDetail.description}
               onChange={e => {
                 changeUser(e, 'description');
               }}
             />
+          </div>
+          <div className="operationBtn">
+            <Button type="primary" htmlType="submit">
+              {t('Confirm')}
+            </Button>
+            <Button>{t('Cancel')}</Button>
           </div>
         </form>
       </Modal>

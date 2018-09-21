@@ -13,6 +13,11 @@ export default class GroupCard extends PureComponent {
     selectCard: PropTypes.func
   };
 
+  static defaultProps = {
+    groups: [],
+    selectValue: ''
+  };
+
   render() {
     const { groups, selectCard, selectValue, t } = this.props;
     return (

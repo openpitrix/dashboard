@@ -161,8 +161,8 @@ export default class AppAdd extends Component {
           <Link to={`/store/${createAppId}/deploy`}>
             <Button type="primary">{t('Deploy & Test')}</Button>
           </Link>
-          <Link to={`/store/${createAppId}`}>
-            <Button>{t('View in Store')}</Button>
+          <Link to={`/dashboard/app/${createAppId}`}>
+            <Button>{t('View detail')}</Button>
           </Link>
         </div>
         <div className={styles.operateWord}>
