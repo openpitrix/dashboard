@@ -26,7 +26,7 @@ import styles from './index.scss';
 export default class Purchased extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
     await clusterStore.fetchAll();
-    await appStore.fetchAll({ noLimit: true });
+    await appStore.fetchAll({ status: 'active', noLimit: true });
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
