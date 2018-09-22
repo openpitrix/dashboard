@@ -15,8 +15,7 @@ import styles from './index.scss';
 @observer
 export default class Profile extends Component {
   static async onEnter({ userStore }) {
-    // todo: api 404
-    // await userStore.fetchUser();
+    await userStore.fetchDetail();
   }
 
   constructor(props) {
@@ -35,33 +34,51 @@ export default class Profile extends Component {
   };
 
   renderBasic() {
-    const { t } = this.props;
+    const { userStore, t } = this.props;
+    const { userDetail, changeUser, changeUserRole } = userStore;
 
     return (
-      <form className={styles.form}>
+      <div className={styles.form}>
         <div>
           <label className={styles.name}>{t('ID')}</label>
-          <Input className={styles.input} name="id" disabled />
+          <Input className={styles.input} name="id" value={userDetail.user_id} disabled readOnly />
         </div>
         <div>
           <label className={styles.name}>{t('User Name')}</label>
-          <Input className={styles.input} name="name" />
+          <Input
+            className={styles.input}
+            name="name"
+            maxLength="50"
+            value={userDetail.username}
+            onChange={e => {
+              changeUser(e, 'username');
+            }}
+          />
         </div>
         <div>
           <label className={styles.name}>{t('Email')}</label>
-          <Input className={styles.input} name="email" />
+          <Input
+            className={styles.input}
+            name="email"
+            value={userDetail.email}
+            onChange={e => {
+              changeUser(e, 'email');
+            }}
+            required
+          />
         </div>
         <div className={styles.submitBtn}>
-          <Button type={`primary`} htmlType="submit">
+          <Button type={`primary`} onClick={changeUserRole}>
             {t('Modify')}
           </Button>
+          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
         </div>
-      </form>
+      </div>
     );
   }
 
   renderPassword() {
-    const { t } = this.props;
+    const { userStore, t } = this.props;
 
     return (
       <form className={styles.form}>
@@ -81,6 +98,7 @@ export default class Profile extends Component {
           <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
+          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
         </div>
       </form>
     );

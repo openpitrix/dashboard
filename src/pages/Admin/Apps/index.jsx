@@ -118,17 +118,12 @@ export default class Apps extends Component {
 
     if (item.status !== 'deleted') {
       deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
-      if (this.role === 'developer') {
-        itemMenu = (
-          <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
-          </Fragment>
-        );
-      }
       if (this.role === 'admin') {
         itemMenu = (
           <Fragment>
-            <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
+            {item.status === 'suspended' && (
+              <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
+            )}
             <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
               {t('Modify category')}
             </span>
