@@ -1,5 +1,5 @@
 import { set, decorate, observable } from 'mobx';
-import request from 'lib/request';
+import agent from 'lib/request';
 
 export default class Store {
   constructor(initialState, branch) {
@@ -26,8 +26,6 @@ decorate(Store, {
   pageInitMap: observable
 });
 
-const allowMethods = ['get', 'post', 'put', 'delete', 'patch'];
-
 Store.prototype = {
   pageSize: 10,
   maxLimit: 200, // fixme: api max returned data count
@@ -42,27 +40,17 @@ Store.prototype = {
     this.notify(message, 'error');
   },
   get request() {
-    return new Proxy(request, {
+    return new Proxy(agent, {
       get: (target, method) => {
         return async (...args) => {
-          let url = args[0];
-          let params = args[1];
-          let res;
+          const url = args[0] || '';
+          const params = args[1];
 
-          if (allowMethods.includes(method)) {
-            // decorate url
-            if (typeof url === 'string') {
-              if (!/^\/?api\//.test(url)) {
-                url = '/api/' + url;
-              }
-              res = await target.post(url, { ...params, method });
-            }
-          } else if (typeof target[method] === 'function') {
-            res = target[method].apply(args);
-          }
+          // forward to node backend
+          const res = await target.post(url, { ...params, method });
 
           // error handling
-          if (res.err && res.status >= 400) {
+          if (res && res.err && res.status >= 400) {
             this.error(res.errDetail || res.err || 'internal error');
             return res;
           }

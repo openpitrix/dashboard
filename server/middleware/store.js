@@ -15,17 +15,20 @@ rootStore.registerStores();
  */
 module.exports = async (ctx, next) => {
   try {
+    const config = getServerConfig();
+
     // Create state for SSR
     ctx.store = rootStore;
-    ctx.store.config = getServerConfig('app');
+
+    ctx.store.config = config;
 
     // attach api server to ctx
-    let serverUrl = process.env.serverUrl || getServerConfig('serverUrl');
+    let serverUrl = process.env.serverUrl || config.serverUrl;
 
-    let apiVer = process.env.apiVersion || getServerConfig('apiVersion') || 'v1';
+    let apiVer = process.env.apiVersion || config.apiVersion || 'v1';
 
     // attach socket server
-    let socketUrl = process.env.socketUrl || getServerConfig('socketUrl');
+    let socketUrl = process.env.socketUrl || config.socketUrl;
 
     if (!serverUrl.startsWith('http')) {
       serverUrl = 'http://' + serverUrl;

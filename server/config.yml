@@ -25,3 +25,10 @@ socketUrl: ''
 # client side config
 app:
   title: 'OpenPitrix Dashboard'
+
+# authorization config
+clientId: ''
+clientSecret: ''
+
+# saved access_token
+accessToken: ''

@@ -2,22 +2,139 @@
 
 exports[`Base/Table basic render 1`] = `
 <div
-  class="noData"
+  class="table"
 >
-  <span
-    class="icon icon-appcenter"
-    style="width:120px;height:120px"
-  >
-    <svg
-      class="qicon qicon-appcenter qicon-light"
-    >
-      <use
-        href="#appcenter"
-      />
-    </svg>
-  </span>
   <div
-    class="word"
-  />
+    class="pi-table pi-table-scroll-position-left"
+  >
+    <div
+      class="pi-table-content"
+    >
+      <div
+        class="pi-table-body"
+      >
+        <table
+          class=""
+        >
+          <colgroup>
+            <col
+              style="width:50%;min-width:50%"
+            />
+            <col
+              style="width:50%;min-width:50%"
+            />
+          </colgroup>
+          <thead
+            class="pi-table-thead"
+          >
+            <tr>
+              <th
+                class=""
+              >
+                Name
+              </th>
+              <th
+                class=""
+              >
+                Age
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="pi-table-tbody"
+          >
+            <tr
+              class="pi-table-row  pi-table-row-level-0"
+            >
+              <td
+                class=""
+              >
+                <span
+                  class="pi-table-row-indent indent-level-0"
+                  style="padding-left:0px"
+                />
+                zhangsan
+              </td>
+              <td
+                class=""
+              >
+                20
+              </td>
+            </tr>
+            <tr
+              class="pi-table-row  pi-table-row-level-0"
+            >
+              <td
+                class=""
+              >
+                <span
+                  class="pi-table-row-indent indent-level-0"
+                  style="padding-left:0px"
+                />
+                lisi
+              </td>
+              <td
+                class=""
+              >
+                22
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div
+    class="pagination"
+  >
+    <div
+      class="total"
+    >
+      : 100
+    </div>
+    <div
+      class="pageItems"
+    >
+      <span
+        aria-disabled="true"
+        class="btn btn-disabled"
+      >
+        <span
+          class="icon icon-previous"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-previous qicon-light"
+          >
+            <use
+              href="#previous"
+            />
+          </svg>
+        </span>
+      </span>
+      <span
+        class="current"
+      >
+        1 / 10
+      </span>
+      <span
+        aria-disabled="false"
+        class="btn"
+      >
+        <span
+          class="icon icon-next"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-next qicon-light"
+          >
+            <use
+              href="#next"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+  </div>
 </div>
 `;
