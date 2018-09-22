@@ -29,6 +29,7 @@ const config = getServerConfig();
 
 // mount err report function to app instance
 app.reportErr = reportErr;
+app.config = config;
 
 debug(`server config: %O`, config);
 

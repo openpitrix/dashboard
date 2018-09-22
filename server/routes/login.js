@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const Router = require('koa-router');
-const log = require('../../lib/log');
 const userModel = require('../models/users.json');
 const sessConfig = require('../session-config');
 
@@ -12,8 +11,6 @@ router.post('/login', async ctx => {
   if (username && password) {
     let foundUser = _.find(userModel, { name: username, password });
     if (foundUser) {
-      // log('found user: ', foundUser);
-
       ctx.cookies.set('user', username, sessConfig);
       ctx.cookies.set('role', foundUser.role, sessConfig);
       ctx.cookies.set('last_login', Date.now(), sessConfig);
