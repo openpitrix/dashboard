@@ -152,7 +152,7 @@ export default class Apps extends Component {
 
     if (appIds.length) {
       return (
-        <Toolbar>
+        <Toolbar noRefreshBtn noSearchBox>
           <Button type="delete" onClick={() => showDeleteApp(appIds)} className="btn-handle">
             {t('Delete')}
           </Button>

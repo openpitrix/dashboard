@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import { pick, assign, get } from 'lodash';
 
 import { Icon, Input, Table, Popover, Modal } from 'components/Base';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import AppCard from 'components/DetailCard/AppCard';
 import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel } from 'components/Layout';
@@ -276,7 +276,7 @@ export default class AppDetail extends Component {
 
           <Section size={8}>
             <Panel>
-              <TagNav tags={['Clusters', 'Versions']} changeTag={this.changeDetailTab} />
+              <DetailTabs tabs={['Clusters', 'Versions']} changeTab={this.changeDetailTab} />
 
               <Card hasTable>
                 {this.renderToolbar(toolbarOptions)}

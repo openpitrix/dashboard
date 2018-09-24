@@ -95,7 +95,7 @@ export default class Runtimes extends Component {
 
     if (runtimeIds.length) {
       return (
-        <Toolbar>
+        <Toolbar noRefreshBtn noSearchBox>
           <Button
             type="delete"
             onClick={() => showDeleteRuntime(runtimeIds)}

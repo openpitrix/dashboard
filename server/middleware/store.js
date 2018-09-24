@@ -46,18 +46,6 @@ module.exports = async (ctx, next) => {
     ctx.store.clientId = clientId;
     ctx.store.clientSecret = clientSecret;
 
-    // attach login user info to store
-    const user = decodeURIComponent(ctx.cookies.get('user') || '{}');
-    const role = decodeURIComponent(ctx.cookies.get('role') || '');
-    try{
-      ctx.store.user = JSON.parse(user);
-    }catch(err){}
-
-    if (role === 'user') {
-      ctx.store.user.isDev = false;
-      ctx.store.user.isNormal = true;
-    }
-
     await next();
   } catch (err) {
     ctx.app.reportErr(err, ctx);

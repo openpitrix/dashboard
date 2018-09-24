@@ -4,41 +4,119 @@ import YAML from 'json2yaml';
 
 import Store from 'stores/Store';
 
+// separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
+  @observable isLoading = false;
+  @observable cluster = {};
+  @observable clusterNodes = [];
+  @observable clusterJobs = [];
+
   @observable extendedRowKeys = [];
-  @observable isLoading = true;
 
   @observable currentNodePage = 1;
   @observable selectNodeStatus = '';
 
   @observable nodeType = '';
 
+  @observable selectedNodeKeys = [];
+
+  @observable selectedNodeIds = [];
+
+  @observable selectedNodeRole = '';
+
   @action
-  fetchPage = async ({ clusterId, clusterStore, runtimeStore, appStore, userStore }) => {
+  fetch = async clusterId => {
     this.isLoading = true;
-    await clusterStore.fetch(clusterId);
-    await clusterStore.fetchJobs(clusterId);
-    const { cluster } = clusterStore;
-    const { runtime_id, app_id } = cluster;
-    if (runtime_id) {
-      await runtimeStore.fetch(runtime_id);
-    }
-    if (app_id) {
-      await appStore.fetch(app_id);
-    }
-    if (!runtimeStore.isKubernetes) {
-      await clusterStore.fetchNodes({ cluster_id: clusterId });
-      this.isLoading = false;
-    } else {
-      this.isLoading = false;
-      this.formatClusterNodes({
-        clusterStore,
-        type: 'Deployment'
-      });
-    }
-    clusterStore.cluster_id = clusterId;
-    await userStore.fetchDetail(cluster.owner);
+    const result = await this.request.get(`clusters`, { cluster_id: clusterId });
+    this.cluster = get(result, 'cluster_set[0]', {});
+    this.versionId = this.cluster.version_id;
+    this.isLoading = false;
+    this.pageInitMap = { cluster: true };
   };
+
+  @action
+  fetchNodes = async (params = {}) => {
+    this.isLoading = true;
+    let pageOffset = params.page || this.currentNodePage;
+    let defaultParams = {
+      sort_key: 'create_time',
+      limit: this.pageSize,
+      offset: (pageOffset - 1) * this.pageSize
+    };
+
+    if (this.searchNode) {
+      params.search_word = this.searchNode;
+    }
+    if (!params.status) {
+      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
+    }
+    
+//    if (!runtimeStore.isKubernetes) {
+//      await clusterStore.fetchNodes({ cluster_id: clusterId });
+//      this.isLoading = false;
+//    } else {
+//      this.isLoading = false;
+//      this.formatClusterNodes({
+//        clusterStore,
+//        type: 'Deployment'
+//      });
+//    }
+//    clusterStore.cluster_id = clusterId;
+//    await userStore.fetchDetail(cluster.owner);
+
+    const result = await this.request.get(`clusters/nodes`, assign(defaultParams, params));
+    this.clusterNodes = get(result, 'cluster_node_set', []);
+    this.totalNodeCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  };
+
+  @action
+  fetchJobs = async clusterId => {
+    this.isLoading = true;
+    const result = await this.request.get(`jobs`, { cluster_id: clusterId });
+    this.clusterJobs = get(result, 'job_set', []);
+    this.isLoading = false;
+  };
+
+  @action
+  addNodes = async params => {
+    // todo
+    const res = await this.request.post('clusters/add_nodes', params);
+  };
+
+  @action
+  onChangeNodeRole = role => {
+    this.selectedNodeRole = role;
+>>>>>>> feat: VM based cluster support addNodes, resizeCluster, deleteNodes
+  };
+
+  @action
+  hideAddNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeRole = '';
+  };
+
+  @action
+  hideDeleteNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeIds = [];
+    this.selectedNodeKeys = [];
+  };
+
+  @action
+  deleteNodes = async params => {
+    const res = await this.request.post('clusters/delete_nodes', params);
+    console.log('delete nodes: ', res);
+  };
+
+  // resize cluster
+  @action
+  hideResizeClusterModal = () => {
+    this.hideModal();
+  };
+
+
+  /////
 
   @action
   onChangeExtend = e => {
@@ -126,7 +204,7 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  onChangeKubespacesTag = ({ isKubernetes, clusterStore }) => name => {
+  onChangeK8sTag = ({ isKubernetes, clusterStore }) => name => {
     if (!isKubernetes || !name) return;
 
     this.extendedRowKeys = [];

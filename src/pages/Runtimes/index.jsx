@@ -150,8 +150,8 @@ export default class Runtimes extends Component {
           {types.map(type => (
             <label
               key={type.value}
-              className={classNames({ [styles.active]: type.value == currentType })}
-              onClick={() => this.selectType(type.value, type.value == currentType)}
+              className={classNames({ [styles.active]: type.value === currentType })}
+              onClick={() => this.selectType(type.value, type.value === currentType)}
             >
               {type.name}
             </label>
