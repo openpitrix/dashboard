@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
 import Layout, { Dialog, Grid, Section, Card, NavLink } from 'components/Layout';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
 import StepContent from '../Add/StepContent';
@@ -580,7 +580,10 @@ export default class AppDetail extends Component {
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
-                <TagNav tags={['Information', 'Clusters']} changeTag={this.changeDetailTab} />
+                <DetailTabs
+                  tabs={['Information', 'Clusters']}
+                  changeTab={this.changeDetailTab}
+                />
                 {detailTab === 'Information' ? (
                   this.renderInformation()
                 ) : (
