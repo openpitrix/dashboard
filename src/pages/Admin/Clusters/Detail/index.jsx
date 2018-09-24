@@ -370,8 +370,8 @@ export default class ClusterDetail extends Component {
                 appName={_.get(appStore.appDetail, 'name', '')}
                 runtimeName={_.get(runtimeDetail, 'name', '')}
                 provider={_.get(runtimeDetail, 'provider', '')}
+                userName={_.get(userStore.userDetail, 'username', '')}
               />
-
               <Popover className="operation" content={this.renderHandleMenu()}>
                 <Icon name="more" />
               </Popover>

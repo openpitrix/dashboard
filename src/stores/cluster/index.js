@@ -34,8 +34,7 @@ export default class ClusterStore extends Store {
   @observable versionId = '';
 
   // cluster job queue
-  @observable
-  jobs = {
+  @observable jobs = {
     // job_id=> cluster_id
   };
 

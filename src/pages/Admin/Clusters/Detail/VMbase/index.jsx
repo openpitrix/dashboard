@@ -9,7 +9,6 @@ import { Button, Icon, Table, Radio, Input } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import TimeAxis from 'components/TimeAxis';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
 
