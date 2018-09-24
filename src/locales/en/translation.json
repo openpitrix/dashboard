@@ -70,6 +70,8 @@
 
   "NORMAL_GUIDING_WORDS": "Welcome to OpenPitirx, What would you like to do?",
 
-  "search_results": "Results"
+  "search_results": "Results",
+
+  "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?"
 
 }

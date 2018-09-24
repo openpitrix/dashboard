@@ -49,13 +49,19 @@ export default class ClusterStore extends Store {
     // job_id=> cluster_id
   };
 
-  @action.bound
+  @observable selectedNodeKeys = [];
+
+  @observable selectedNodeIds = [];
+
+  @observable selectedNodeRole = '';
+
+  @action
   showModal = type => {
     this.modalType = type;
     this.isModalOpen = true;
   };
 
-  @action.bound
+  @action
   hideModal = () => {
     this.isModalOpen = false;
   };
@@ -266,14 +272,19 @@ export default class ClusterStore extends Store {
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {
     this.selectedRowKeys = selectedRowKeys;
-    this.clusterIds = [];
-    selectedRows.map(row => this.clusterIds.push(row.cluster_id));
+    this.clusterIds = selectedRows.map(row => row.cluster_id);
   };
 
   @action
   cancelSelected = () => {
     this.selectedRowKeys = [];
     this.clusterIds = [];
+  };
+
+  @action
+  onChangeSelectNodes = (rowKeys, rows) => {
+    this.selectedNodeKeys = rowKeys;
+    this.selectedNodeIds = rows.map(row => row.node_id);
   };
 
   @action
@@ -390,5 +401,41 @@ export default class ClusterStore extends Store {
     this.name = '';
     this.pub_key = '';
     this.description = '';
+  };
+
+  @action
+  addNodes = async params => {
+    // todo
+    const res = await this.request.post('clusters/add_nodes', params);
+  };
+
+  @action
+  onChangeNodeRole = role => {
+    this.selectedNodeRole = role;
+  };
+
+  @action
+  hideAddNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeRole = '';
+  };
+
+  @action
+  hideDeleteNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeIds = [];
+    this.selectedNodeKeys = [];
+  };
+
+  @action
+  deleteNodes = async params => {
+    const res = await this.request.post('clusters/delete_nodes', params);
+    console.log('delete nodes: ', res);
+  };
+
+  // resize cluster
+  @action
+  hideResizeClusterModal = () => {
+    this.hideModal();
   };
 }

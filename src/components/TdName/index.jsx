@@ -73,21 +73,16 @@ export default class TdName extends React.Component {
   }
 
   render() {
-    const { name, description, linkUrl, noCopy, className } = this.props;
+    const { name, description, linkUrl = '', noCopy, className } = this.props;
 
     return (
       <span className={classnames(styles.tdName, className)}>
         {this.renderIcon()}
         <span className={styles.info}>
-          {linkUrl && (
+          {name && (
             <Link className={styles.name} to={linkUrl} title={name}>
               {name}&nbsp;
             </Link>
-          )}
-          {!linkUrl && (
-            <span className={styles.name} title={name}>
-              {name}&nbsp;
-            </span>
           )}
           <span className={styles.description} title={description}>
             {description}&nbsp;

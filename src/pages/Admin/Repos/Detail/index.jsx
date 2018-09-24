@@ -19,13 +19,12 @@ import { getSessInfo } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
-  sessInfo,
-  sock
+  sessInfo
 }))
 @observer
 export default class RepoDetail extends Component {
