@@ -7,7 +7,7 @@ import { pick } from 'lodash';
 import { Icon, Table, Popover } from 'components/Base';
 import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
 import UserCard from 'components/DetailCard/UserCard';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 
 import appColumns from 'utils/columns/app-columns';
@@ -260,9 +260,9 @@ export default class Detail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav
-                tags={['Apps', 'Clusters', 'Runtimes', 'Repos']}
-                changeTag={this.changeDetailTab}
+              <DetailTabs
+                tabs={['Apps', 'Clusters', 'Runtimes', 'Repos']}
+                changeTab={this.changeDetailTab}
               />
               <Card>
                 {this.renderToolbar(toolbarOptions)}

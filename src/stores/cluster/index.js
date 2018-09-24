@@ -5,26 +5,30 @@ import Store from '../Store';
 import { getProgress } from 'utils';
 
 export default class ClusterStore extends Store {
-  @observable clusters = [];
-  @observable cluster = {};
+  sortKey = 'create_time';
+  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  @observable currentPage = 1;
 
-  @observable clusterNodes = [];
-  @observable clusterJobs = [];
+  @observable clusters = [];
+
+  @observable cluster = {};
+  // @observable clusterNodes = [];
+  // @observable clusterJobs = [];
 
   @observable summaryInfo = {};
   @observable isLoading = false;
+
   @observable totalCount = 0;
   @observable clusterCount = 0;
   @observable totalNodeCount = 0;
+
   @observable isModalOpen = false;
   @observable modalType = '';
 
-  @observable clusterId; // current delete cluster_id
+  // @observable clusterId; // current delete cluster_id
   @observable operateType = '';
 
-  @observable currentPage = 1; // cluster table query params
   @observable searchWord = '';
-  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
   @observable selectStatus = '';
   @observable appId = '';
   @observable runtimeId = '';
@@ -46,56 +50,42 @@ export default class ClusterStore extends Store {
   @observable env = '';
   @observable versionId = '';
 
-  page = 'index';
 
   // cluster job queue
-  @observable
-  jobs = {
+  @observable jobs = {
     // job_id=> cluster_id
   };
   store = {};
 
-  @action.bound
+  @action
   showModal = type => {
     this.modalType = type;
     this.isModalOpen = true;
   };
 
-  @action.bound
+  @action
   hideModal = () => {
     this.isModalOpen = false;
   };
 
   @action
   fetchAll = async (params = {}) => {
-    let defaultParams = {
-      sort_key: 'create_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : this.defaultStatus
-    };
-
-    if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
-      delete params.noLimit;
-    }
-
+    params = this.normalizeParams(params);
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
     if (this.appId) {
-      defaultParams.app_id = this.appId;
+      params.app_id = this.appId;
     }
     if (this.runtimeId) {
-      defaultParams.runtime_id = this.runtimeId;
+      params.runtime_id = this.runtimeId;
     }
     if (this.userId) {
-      defaultParams.owner = this.userId;
+      params.owner = this.userId;
     }
 
     this.isLoading = true;
-    const result = await this.request.get('clusters', assign(defaultParams, params));
+    const result = await this.request.get('clusters', params);
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
@@ -133,51 +123,11 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  fetch = async clusterId => {
-    this.isLoading = true;
-    const result = await this.request.get(`clusters`, { cluster_id: clusterId });
-    this.cluster = get(result, 'cluster_set[0]', {});
-    this.versionId = this.cluster.version_id;
-    this.isLoading = false;
-    this.pageInitMap = { cluster: true };
-  };
-
-  @action
-  fetchNodes = async (params = {}) => {
-    this.isLoading = true;
-    let pageOffset = params.page || this.currentNodePage;
-    let defaultParams = {
-      sort_key: 'create_time',
-      limit: this.pageSize,
-      offset: (pageOffset - 1) * this.pageSize
-    };
-
-    if (this.searchNode) {
-      params.search_word = this.searchNode;
-    }
-    if (!params.status) {
-      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
-    }
-    const result = await this.request.get(`clusters/nodes`, assign(defaultParams, params));
-    this.clusterNodes = get(result, 'cluster_node_set', []);
-    this.totalNodeCount = get(result, 'total_count', 0);
-    this.isLoading = false;
-  };
-
-  @action
-  fetchJobs = async clusterId => {
-    this.isLoading = true;
-    const result = await this.request.get(`jobs`, { cluster_id: clusterId });
-    this.clusterJobs = get(result, 'job_set', []);
-    this.isLoading = false;
-  };
-
-  @action
   remove = async clusterIds => {
     const result = await this.request.post('clusters/delete', { cluster_id: clusterIds });
-    this.hideModal();
 
     if (_.get(result, 'cluster_id')) {
+      this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
@@ -210,9 +160,9 @@ export default class ClusterStore extends Store {
   @action
   cease = async clusterIds => {
     const result = await this.request.post('clusters/cease', { cluster_id: clusterIds });
-    this.hideModal();
 
     if (_.get(result, 'cluster_id')) {
+      this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
@@ -339,14 +289,19 @@ export default class ClusterStore extends Store {
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {
     this.selectedRowKeys = selectedRowKeys;
-    this.clusterIds = [];
-    selectedRows.map(row => this.clusterIds.push(row.cluster_id));
+    this.clusterIds = selectedRows.map(row => row.cluster_id);
   };
 
   @action
   cancelSelected = () => {
     this.selectedRowKeys = [];
     this.clusterIds = [];
+  };
+
+  @action
+  onChangeSelectNodes = (rowKeys, rows) => {
+    this.selectedNodeKeys = rowKeys;
+    this.selectedNodeIds = rows.map(row => row.node_id);
   };
 
   @action
@@ -381,12 +336,12 @@ export default class ClusterStore extends Store {
     });
   };
 
-  @action
-  loadNodeInit = () => {
-    this.currentNodePage = 1;
-    this.selectNodeStatus = '';
-    this.searchNode = '';
-  };
+  // @action
+  // loadNodeInit = () => {
+  //   this.currentNodePage = 1;
+  //   this.selectNodeStatus = '';
+  //   this.searchNode = '';
+  // };
 
   @action
   fetchKeyPairs = async (params = {}) => {

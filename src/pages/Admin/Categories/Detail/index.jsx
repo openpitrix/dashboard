@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
@@ -214,7 +214,7 @@ export default class CategoryDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={['Apps']} />
+              <DetailTabs tabs={['Apps']} />
               <Card hasTable>
                 <Toolbar
                   placeholder={t('Search App')}

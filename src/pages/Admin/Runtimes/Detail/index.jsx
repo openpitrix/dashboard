@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { Icon, Table, Popover } from 'components/Base';
 import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import Status from 'components/Status';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
@@ -214,7 +214,7 @@ export default class RuntimeDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={['Clusters']} />
+              <DetailTabs tabs={['Clusters']} />
               <Card hasTable>
                 <Toolbar
                   placeholder={t('Search Clusters')}

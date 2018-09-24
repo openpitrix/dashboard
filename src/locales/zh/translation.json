@@ -165,6 +165,7 @@
   "Delete cluster": "删除集群",
   "Start cluster": "启用集群",
   "Stop cluster": "停用集群",
+  "Resize cluster": "扩容集群",
   "Start": "启用",
   "Stop": "停用",
   "operate cluster desc": "您确定要{{operate}}该集群吗？",
@@ -355,7 +356,10 @@
   "Back to developer": "切换为开发者",
   "Document": "文档",
 
-  "None": "无",
+  "Already create new version": "已创建新版本",
 
-  "Already create new version": "已创建新版本"
+  "None": "无",
+  "Add Nodes": "添加节点",
+  "Node Role": "节点角色",
+  "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?"
 }
