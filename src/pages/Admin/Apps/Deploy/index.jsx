@@ -298,7 +298,7 @@ export default class AppDeploy extends Component {
     const { isKubernetes } = appDeployStore;
     const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appDetail.name}`;
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const isNormal = getSessInfo('role', sessInfo) === 'user';
 
     return (
       <Layout

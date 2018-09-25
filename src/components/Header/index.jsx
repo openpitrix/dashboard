@@ -120,7 +120,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
 
-    const hasMenu = getSessInfo('role', this.props.sessInfo) === 'normal';
+    const hasMenu = getSessInfo('role', this.props.sessInfo) === 'user';
     const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;

@@ -18,6 +18,8 @@
 .titleOuter{
   float: left;
   width: calc(calc(100% + 24px)/12 * 4 - 56px);
+  padding-right: 24px;
+
   .icon{
     float: left;
     display: inline-block;

@@ -163,7 +163,7 @@ export default class RuntimeDetail extends Component {
     };
 
     const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const isNormal = role === 'user';
 
     return (
       <Layout
@@ -176,7 +176,7 @@ export default class RuntimeDetail extends Component {
             <Link to="/runtimes">{t('Runtimes')}</Link> / {runtimeDetail.name}
           </NavLink>
         )}
-        {role === 'admin' && (
+        {role === 'global_admin' && (
           <NavLink>
             {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> /{' '}
             {runtimeDetail.name}

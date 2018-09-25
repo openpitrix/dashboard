@@ -133,7 +133,7 @@ export default class Repos extends Component {
 
   renderNavLink = () => {
     const { t } = this.props;
-    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
+    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'global_admin';
 
     if (isAdmin) {
       return (

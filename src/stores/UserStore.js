@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { get, pick, assign } from 'lodash';
 import Store from './Store';
-
+import { setCookie, getUrlParam } from 'utils';
 const defaultStatus = ['active'];
 
 export default class UserStore extends Store {
@@ -63,6 +63,13 @@ export default class UserStore extends Store {
     const result = await this.request.get('users', assign(defaultParams, params));
     this.users = get(result, 'user_set', []);
     this.totalCount = get(result, 'total_count', 0);
+
+    const user = this.users && this.users[0];
+    if (params.isLogin && user.user_id) {
+      setCookie('user', user.username);
+      setCookie('role', user.role);
+      setCookie('last_login', Date.now());
+    }
     this.isLoading = false;
   };
 
@@ -177,6 +184,32 @@ export default class UserStore extends Store {
     const result = await this.request.get('authorities');
     this.authorities = get(result, 'authority_set', []);
     this.isLoading = false;
+  };
+
+  @action
+  oauth2Check = async params => {
+    const data = {
+      grant_type: 'password',
+      scope: '',
+      username: params.email,
+      password: params.password
+    };
+
+    const result = await this.request.post('oauth2/token', data);
+    const { access_token, token_type, expires_in, refresh_token } = result;
+    if (access_token) {
+      const time = expires_in * 1000;
+      setCookie('access_token', access_token, time);
+      setCookie('token_type', token_type, time);
+      setCookie('refresh_token', refresh_token);
+      //get login user info
+      await this.fetchAll({ search_word: params.email, isLogin: true });
+      const url = getUrlParam('url');
+      location.href = url ? url : '/dashboard';
+    } else {
+      const { err, errDetail } = result;
+      this.error(errDetail || err);
+    }
   };
 
   @action

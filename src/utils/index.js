@@ -21,6 +21,13 @@ export function getScrollBottom() {
   return bodyHeight - docHeight - getScrollTop();
 }
 
+export function setCookie(name, value, time) {
+  const expires = time ? time : 2 * 24 * 60 * 60 * 1000;
+  const exp = new Date();
+  exp.setTime(exp.getTime() + expires);
+  document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString();
+}
+
 export function getCookie(name) {
   let re = new RegExp(name + '=([^;]+)');
   let value = re.exec(document.cookie);
@@ -189,4 +196,19 @@ export function getUrlParam(name) {
   } else {
     return '';
   }
+}
+
+//app page status translate maybe different with other pages
+export function changeStatus(name) {
+  const lang = getCookie('lang');
+  if (lang === 'zh') {
+    const changeMap = {
+      Active: 'Published',
+      Suspended: 'Recalled',
+      active: 'published',
+      suspended: 'recalled'
+    };
+    return changeMap[name] || name;
+  }
+  return name;
 }

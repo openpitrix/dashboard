@@ -232,7 +232,7 @@ export default class RuntimeAdd extends Component {
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
     const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const isNormal = role === 'user';
 
     return (
       <Layout
@@ -246,7 +246,7 @@ export default class RuntimeAdd extends Component {
           </NavLink>
         )}
 
-        {role === 'admin' && (
+        {role === 'global_admin' && (
           <NavLink>
             {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> / {title}
           </NavLink>

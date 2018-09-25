@@ -9,6 +9,7 @@ import { Image, Button } from 'components/Base';
 import Status from 'components/Status';
 import CopyId from 'components/DetailCard/CopyId';
 import { Grid, Section, Card, Panel } from 'components/Layout';
+import { changeStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -39,7 +40,7 @@ export default class DetailBlock extends React.Component {
           <dl>
             <dt>{t('Status')}</dt>
             <dd>
-              <Status name={appDetail.status} type={appDetail.status} />
+              <Status name={appDetail.status} type={changeStatus(appDetail.status)} />
             </dd>
           </dl>
           <dl>

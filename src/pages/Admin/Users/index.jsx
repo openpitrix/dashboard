@@ -240,7 +240,7 @@ export default class Users extends Component {
         onCancel={userStore.hideModal}
         hideFooter
       >
-        <form className="formContent" onSubmit={userStore.createOrModify}>
+        <form className="formContent" onSubmit={userStore.createOrModify} method="post">
           {userDetail.user_id && (
             <div className="inputItem">
               <label>{t('Name')}</label>

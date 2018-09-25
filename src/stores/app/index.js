@@ -59,7 +59,8 @@ export default class AppStore extends Store {
   fetchApps = async (params = {}, title) => {
     this.isLoading = true;
     this.categoryTitle = title;
-    params.limit = 200;
+    params.limit = this.maxLimit;
+    params.sort_key = 'status_time';
 
     if (!params.status) {
       params.status = ['active'];
@@ -116,7 +117,7 @@ export default class AppStore extends Store {
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }
-    if (!this.updateMeunApps) {
+    if (this.updateMeunApps) {
       this.menuApps = this.apps.slice(0, 5);
       this.updateMeunApps = false;
     }
@@ -160,6 +161,7 @@ export default class AppStore extends Store {
       defaultParams.app_id = this.createAppId;
       await this.modify(assign(defaultParams, params));
     } else {
+      defaultParams.status = 'draft';
       await this.create(assign(defaultParams, params));
     }
 

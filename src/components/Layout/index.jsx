@@ -73,12 +73,12 @@ export default class Layout extends React.Component {
     if (isProfile) {
       this.linkPrefix = '/profile';
       this.availableLinks = [{ '': 'profile' }, { ssh_keys: 'SSH Keys' }];
-    } else if (loginRole === 'normal') {
+    } else if (loginRole === 'user') {
       this.availableLinks = [...normalLinks];
       this.availableLinks.splice(1, 1);
     } else if (loginRole === 'developer') {
       this.availableLinks = [...normalLinks, 'repos'];
-    } else if (loginRole === 'admin') {
+    } else if (loginRole === 'global_admin') {
       this.availableLinks = [...normalLinks, 'repos', 'categories', 'users'];
     }
 
@@ -100,8 +100,8 @@ export default class Layout extends React.Component {
       title
     } = this.props;
     const role = getSessInfo('role', this.props.sessInfo);
-    const isNormal = role === 'normal';
-    const hasMenu = ['developer', 'admin'].includes(role);
+    const isNormal = role === 'user';
+    const hasMenu = ['developer', 'global_admin'].includes(role);
 
     return (
       <div

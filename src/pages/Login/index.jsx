@@ -12,13 +12,12 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  store: rootStore.loginStore
+  store: rootStore.userStore
 }))
 @observer
 export default class Login extends Component {
-  handleSubmit = params => {
-    params.url = getUrlParam('url');
-    this.props.store.login(params);
+  handleSubmit = async params => {
+    await this.props.store.oauth2Check(params);
   };
 
   render() {
@@ -39,9 +38,9 @@ export default class Login extends Component {
                   className={styles.formInput}
                   icon="human"
                   iconType="dark"
-                  name="username"
+                  name="email"
                   iconSize={24}
-                  placeholder={t('Username')}
+                  placeholder="username@example.com"
                 />
               </Form.Item>
               <Form.Item className={styles.formItem} noLabel>

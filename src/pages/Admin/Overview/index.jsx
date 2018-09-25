@@ -31,7 +31,7 @@ import styles from './index.scss';
 @observer
 export default class Overview extends React.Component {
   static async onEnter({ appStore, clusterStore, repoStore, runtimeStore, categoryStore }) {
-    await appStore.fetchApps();
+    await appStore.fetchAll({ noLimit: true });
     await clusterStore.fetchAll();
     await repoStore.fetchAll();
     await categoryStore.fetchAll();
@@ -51,6 +51,7 @@ export default class Overview extends React.Component {
       loginInfo: getSessInfo('last_login', props.sessInfo)
     };
   }
+
   handleClickTotalCard = label => {
     this.props.history.push(`/dashboard/${label.toLowerCase()}`);
   };
@@ -341,7 +342,7 @@ export default class Overview extends React.Component {
   render() {
     const role = getSessInfo('role', this.props.sessInfo);
 
-    if (role === 'admin') {
+    if (role === 'global_admin') {
       return this.adminView();
     }
     if (role === 'developer') {
