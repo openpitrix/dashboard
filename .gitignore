@@ -30,3 +30,8 @@ reports/
 .cache/
 
 *.tgz
+
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.\#*

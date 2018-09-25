@@ -7,16 +7,13 @@ import classnames from 'classnames';
 
 import { Icon, Table, Popover, Modal } from 'components/Base';
 import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
-import Status from 'components/Status';
 import TagNav from 'components/TagNav';
-import TdName from 'components/TdName';
 import TimeAxis from 'components/TimeAxis';
 import Toolbar from 'components/Toolbar';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import Configuration from './Configuration';
-import TimeShow from 'components/TimeShow';
 import { getSessInfo } from 'utils';
 
+import getColumns from './columns.jsx';
 import styles from './index.scss';
 
 @translate()
@@ -267,42 +264,7 @@ export default class ClusterDetail extends Component {
     const provider = _.get(runtimeStore.runtimeDetail, 'provider', '');
     const { clusterJobsOpen } = clusterStore;
 
-    const columns = [
-      {
-        title: t('Name'),
-        key: 'name',
-        width: '130px',
-        render: item => <TdName name={item.name} description={item.node_id} noIcon />
-      },
-      {
-        title: t('Role'),
-        key: 'role',
-        dataIndex: 'role'
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        render: item => <Status type={item.status} transition={item.transition_status} />
-      },
-      {
-        title: t('Configuration'),
-        key: 'configuration',
-        width: '130px',
-        render: item => <Configuration configuration={item.cluster_role || {}} />
-      },
-      {
-        title: t('Private IP'),
-        key: 'private_ip',
-        dataIndex: 'private_ip',
-        width: '100px'
-      },
-      {
-        title: t('Updated At'),
-        key: 'status_time',
-        width: '95px',
-        render: item => <TimeShow time={item.status_time} />
-      }
-    ];
+    const columns = getColumns({ provider, t });
     const filterList = [
       {
         key: 'status',
