@@ -98,6 +98,7 @@ export default class AppDeployStore extends Store {
     if (this.isKubernetes) {
       conf = `Name: ${this.name}
 ${this.yamlStr}`;
+      conf = conf.replace(/#.*/g, '');
     } else {
       this.getConfigData();
       conf = JSON.stringify(this.configData);
