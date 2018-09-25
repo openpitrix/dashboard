@@ -53,7 +53,7 @@ class Menu extends React.Component {
     const subNavMap = {
       dashboard: {
         title: 'Dashboard',
-        links: [{ name: 'Dashboard', link: '/dashboard', active: 'dashboard' }]
+        links: [{ name: 'Overview', link: '/dashboard', active: 'dashboard' }]
       },
       app: {
         title: 'Store',
@@ -159,7 +159,7 @@ class Menu extends React.Component {
             className={classnames(styles.link, { [styles.active]: url.indexOf('dashboard') > -1 })}
             to="/dashboard"
           >
-            {t('Dashboard')}
+            {t('Overview')}
           </Link>
         </div>
       );
