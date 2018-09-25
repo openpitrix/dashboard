@@ -43,7 +43,7 @@
           "css-modules-transform",
           {
             "generateScopedName": "[folder]__[local]--[hash:base64:5]",
-            "extensions": [".scss"]
+            "extensions": [".css", ".scss"]
           }
         ]
       ]

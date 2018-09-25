@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
-import { Radio, Button, Input, Select, Image } from 'components/Base';
+import { Radio, Button, Input, Select, CodeMirror, Image } from 'components/Base';
 import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
@@ -210,7 +210,9 @@ export default class AppDeploy extends Component {
     const { appDeployStore, t } = this.props;
     const {
       yamlConfig,
+      yamlStr,
       changeYmalCell,
+      changeYamlStr,
       handleSubmit,
       isLoading,
       runtimes,
@@ -221,7 +223,7 @@ export default class AppDeploy extends Component {
       changeRuntime,
       changeVersion
     } = appDeployStore;
-    const btnDisabled = isLoading || !yamlConfig.length || !runtimes.length;
+    const btnDisabled = isLoading || yamlStr === '' || !yamlConfig.length || !runtimes.length;
 
     return (
       <form
@@ -264,16 +266,9 @@ export default class AppDeploy extends Component {
         </div>
 
         <div className={styles.moduleTitle}>2. {t('Deploy Settings')}</div>
-        {yamlConfig.map((conf, index) => (
-          <YamlCell
-            key={conf.name}
-            name={conf.name}
-            value={conf.value}
-            index={index}
-            className={styles.cellModule}
-            changeCell={changeYmalCell}
-          />
-        ))}
+        {yamlStr && (
+          <CodeMirror code={yamlStr} onChange={changeYamlStr} options={{ mode: 'yaml' }} />
+        )}
 
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={btnDisabled}>

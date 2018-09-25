@@ -23,6 +23,7 @@ export default class AppDeployStore extends Store {
   @observable configNodes = [];
   @observable configEnvs = [];
   @observable yamlConfig = [];
+  @observable yamlStr = '';
   @observable appId = '';
   @observable versionId = '';
   @observable runtimeId = '';
@@ -48,6 +49,11 @@ export default class AppDeployStore extends Store {
     } else if (params.type === 'env') {
       this.configEnvs[params.index1].properties.splice(params.index2, 1, item);
     }
+  };
+
+  @action
+  changeYamlStr = value => {
+    this.yamlStr = value;
   };
 
   @action
@@ -90,9 +96,9 @@ export default class AppDeployStore extends Store {
     let conf = null;
 
     if (this.isKubernetes) {
-      const yamlObj = unflattenObject(this.yamlObj);
-      yamlObj.Name = this.name; // ymal config api need Name
-      conf = yaml.safeDump(yamlObj);
+      conf = `Name: ${this.name}
+${this.yamlStr}`;
+      conf = conf.replace(/#.*/g, '');
     } else {
       this.getConfigData();
       conf = JSON.stringify(this.configData);
@@ -217,11 +223,13 @@ export default class AppDeployStore extends Store {
       });
     } else if (this.files['values.yaml']) {
       const yamlStr = Base64.decode(this.files['values.yaml']);
+      this.yamlStr = yamlStr;
       this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
       this.yamlConfig = getYamlList(this.yamlObj);
     } else {
       this.info('Not find config file!');
       this.yamlConfig = [];
+      this.yamlStr = '';
       this.configBasics = [];
       this.configNodes = [];
       this.configEnvs = [];
