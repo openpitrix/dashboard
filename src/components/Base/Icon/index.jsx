@@ -115,7 +115,7 @@ class Icon extends React.PureComponent {
         {...rest}
       >
         <svg className={`${prefix} ${prefix}-${name} ${prefix}-${type}`} style={colorStyles}>
-          <use xlinkHref={`#${name}`} />
+          <use xlinkHref={`#qui-${name}`} />
         </svg>
       </span>
     );
