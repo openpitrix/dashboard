@@ -51,7 +51,7 @@ export default class Clusters extends Component {
     const { clusterStore, sessInfo } = this.props;
     const role = getSessInfo('role', sessInfo);
 
-    if (role === 'admin') {
+    if (role === 'global_admin') {
       clusterStore.fetchStatistics();
     }
   }
@@ -320,7 +320,7 @@ export default class Clusters extends Component {
     };
 
     const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const isNormal = role === 'user';
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
@@ -330,13 +330,13 @@ export default class Clusters extends Component {
           </NavLink>
         )}
 
-        {role === 'admin' && (
+        {role === 'global_admin' && (
           <NavLink>
             {t('Store')} / {t('All Clusters')}
           </NavLink>
         )}
 
-        {role === 'admin' && (
+        {role === 'global_admin' && (
           <Row>
             <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
           </Row>

@@ -181,7 +181,9 @@ export default class CategoryDetail extends Component {
       {
         key: 'status',
         conditions: [
-          { name: t('Active'), value: 'active' },
+          { name: t('Draft'), value: 'draft' },
+          { name: t(changeStatus('Active')), value: 'active' },
+          { name: t(changeStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: appStore.changePagination,

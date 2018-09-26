@@ -327,7 +327,7 @@ export default class ClusterDetail extends Component {
     };
 
     const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const isNormal = role === 'user';
 
     return (
       <Layout
@@ -344,7 +344,7 @@ export default class ClusterDetail extends Component {
           </NavLink>
         )}
 
-        {role === 'admin' && (
+        {role === 'global_admin' && (
           <NavLink>
             {t('Store')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> / {detail.name}
           </NavLink>

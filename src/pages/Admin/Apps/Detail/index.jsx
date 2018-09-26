@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
 import StepContent from 'StepContent';
 import clusterColumns from './tabs/cluster-columns';
-import { getSessInfo } from 'utils';
+import { getSessInfo, changeStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -261,7 +261,7 @@ export default class AppDetail extends Component {
             >
               <label className="dot" />
               {version.name}
-              <span className="status">{t(capitalize(version.status))}</span>
+              <span className="status">{t(changeStatus(capitalize(version.status)))}</span>
             </li>
           ))}
         </ul>
@@ -466,7 +466,7 @@ export default class AppDetail extends Component {
                 </Button>
 
                 {currentVersion.status === 'submitted' &&
-                  role === 'admin' && (
+                  role === 'global_admin' && (
                     <Button onClick={() => this.handleVersion(currentVersion, 'reject')}>
                       {t(capitalize('reject'))}
                     </Button>
@@ -480,7 +480,7 @@ export default class AppDetail extends Component {
 
   renderNavLink = () => {
     const { t } = this.props;
-    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'admin';
+    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'global_admin';
     const { appDetail } = this.props.appStore;
 
     if (isAdmin) {

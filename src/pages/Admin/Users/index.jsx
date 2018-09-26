@@ -35,7 +35,7 @@ import styles from './index.scss';
 export default class Users extends Component {
   static async onEnter({ userStore }) {
     await userStore.fetchAll();
-    await userStore.fetchStatistics();
+    //await userStore.fetchStatistics();
   }
 
   constructor(props) {
@@ -240,7 +240,7 @@ export default class Users extends Component {
         onCancel={userStore.hideModal}
         hideFooter
       >
-        <form className="formContent" onSubmit={userStore.createOrModify}>
+        <form className="formContent" onSubmit={userStore.createOrModify} method="post">
           {userDetail.user_id && (
             <div className="inputItem">
               <label>{t('Name')}</label>
@@ -441,9 +441,9 @@ export default class Users extends Component {
           {t('Users')} / {t('All Users')}
         </NavLink>
 
-        <Row>
+        {/* <Row>
           <Statistics {...summaryInfo} objs={users.toJSON()} />
-        </Row>
+        </Row>*/}
 
         <Panel>
           <Grid>

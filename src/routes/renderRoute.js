@@ -8,7 +8,7 @@ import RouteWrapper from './wrapper';
 import { getCookie } from '../utils';
 
 const hasLoggedIn = () => !!getCookie('user');
-const hasHeader = getCookie('role') === 'normal' || !getCookie('role');
+const hasHeader = getCookie('role') === 'user' || !getCookie('role');
 
 const renderRoute = (match, route, store) => {
   if (route.needAuth && !hasLoggedIn()) {

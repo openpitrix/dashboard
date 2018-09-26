@@ -138,7 +138,7 @@ export default class Runtimes extends Component {
     ];
 
     const { currentType } = this.state;
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const isNormal = getSessInfo('role', sessInfo) === 'user';
 
     return (
       <Layout title="My Runtimes" className="clearfix">

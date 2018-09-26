@@ -14,7 +14,7 @@ import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
-import { getSessInfo } from 'utils';
+import { getSessInfo, changeStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -240,7 +240,9 @@ export default class RepoDetail extends Component {
             {
               key: 'status',
               conditions: [
-                { name: t('Active'), value: 'active' },
+                { name: t('Draft'), value: 'draft' },
+                { name: t(changeStatus('Active')), value: 'active' },
+                { name: t(changeStatus('Suspended')), value: 'suspended' },
                 { name: t('Deleted'), value: 'deleted' }
               ],
               onChangeFilter: appStore.onChangeStatus,
@@ -302,7 +304,7 @@ export default class RepoDetail extends Component {
         break;
     }
     const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const isNormal = role === 'user';
 
     return (
       <Layout
@@ -313,7 +315,7 @@ export default class RepoDetail extends Component {
         {!isNormal && (
           <NavLink>
             {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {role === 'admin' && <label>{t('Platform')}</label>}
+            {role === 'global_admin' && <label>{t('Platform')}</label>}
             &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {repoDetail.name}
           </NavLink>
         )}

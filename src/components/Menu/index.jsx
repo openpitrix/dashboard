@@ -79,8 +79,8 @@ class Menu extends React.Component {
         links: [
           /*{ name: 'Tickets', link: '#', active: 'ticket' },
           { name: 'Notifications', link: '#', active: 'notification' },*/
-          { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
-          { name: 'Repos', link: '/dashboard/repos', active: 'repo' }
+          { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
+          { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' }
           /* { name: 'Service Status', link: '#', active: 'service' }*/
         ]
       }
@@ -274,7 +274,7 @@ class Menu extends React.Component {
         <div className={styles.menu}>
           {this.renderNav(role)}
           {role === 'developer' && this.renderSubDev()}
-          {role === 'admin' && this.renderSubAdmin()}
+          {role === 'global_admin' && this.renderSubAdmin()}
         </div>
 
         {this.renderHeader()}

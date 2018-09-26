@@ -147,7 +147,7 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, sessInfo } = this.props;
     const { isLoading } = appVersionStore;
     const appDetail = appStore.appDetail;
-    const isNormal = getSessInfo('role', sessInfo) === 'normal';
+    const isNormal = getSessInfo('role', sessInfo) === 'user';
 
     return (
       <Layout

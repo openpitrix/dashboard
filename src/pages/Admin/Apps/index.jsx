@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { filter, get, orderBy } from 'lodash';
+import { filter, get, orderBy, capitalize } from 'lodash';
 import classnames from 'classnames';
 
 import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName } from 'utils';
+import { getSessInfo, getObjName, changeStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -47,7 +47,7 @@ export default class Apps extends Component {
     const { appStore, sessInfo } = this.props;
     const role = getSessInfo('role', sessInfo);
 
-    if (role === 'admin') {
+    if (role === 'global_admin') {
       appStore.fetchStatistics();
     }
   }
@@ -118,7 +118,7 @@ export default class Apps extends Component {
 
     if (item.status !== 'deleted') {
       deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
-      if (this.role === 'admin') {
+      if (this.role === 'global_admin') {
         itemMenu = (
           <Fragment>
             {item.status === 'suspended' && (
@@ -244,7 +244,7 @@ export default class Apps extends Component {
         title: t('Status'),
         key: 'status',
         width: '90px',
-        render: item => <Status type={item.status} name={item.status} />
+        render: item => <Status type={item.status} name={changeStatus(item.status)} />
       },
       {
         title: t('Categories'),
@@ -288,7 +288,7 @@ export default class Apps extends Component {
         title: t('Updated At'),
         key: 'status_time',
         width: '112px',
-        sorter: this.role === 'admin',
+        sorter: this.role === 'global_admin',
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
       },
@@ -321,8 +321,8 @@ export default class Apps extends Component {
         key: 'status',
         conditions: [
           { name: t('Draft'), value: 'draft' },
-          { name: t('Active'), value: 'active' },
-          { name: t('Suspended'), value: 'suspended' },
+          { name: t(changeStatus('Active')), value: 'active' },
+          { name: t(changeStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: onChangeStatus,
@@ -339,7 +339,7 @@ export default class Apps extends Component {
     };
 
     let navLinkShow = t('My Apps') + ' / ' + t('All');
-    if (this.role === 'admin') {
+    if (this.role === 'global_admin') {
       navLinkShow = t('Store') + ' / ' + t('All Apps');
     }
 
@@ -347,7 +347,7 @@ export default class Apps extends Component {
       <Layout className={styles.apps}>
         <NavLink>{navLinkShow}</NavLink>
 
-        {this.role === 'admin' && (
+        {this.role === 'global_admin' && (
           <Row>
             <Statistics {...summaryInfo} objs={repos.slice()} />
           </Row>
@@ -362,7 +362,7 @@ export default class Apps extends Component {
                 this.renderCardApps()
               ) : (
                 <Card>
-                  {this.role === 'admin' && this.renderToolbar()}
+                  {this.role === 'global_admin' && this.renderToolbar()}
 
                   <Table
                     columns={columns}

@@ -4,21 +4,23 @@ import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { getUrlParam } from 'utils';
 import Logo from 'components/Logo';
 import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
+import { getUrlParam } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  store: rootStore.loginStore
+  store: rootStore.userStore
 }))
 @observer
 export default class Login extends Component {
-  handleSubmit = params => {
-    params.url = getUrlParam('url');
-    this.props.store.login(params);
+  handleSubmit = async params => {
+    await this.props.store.oauth2Check(params);
+    const url = getUrlParam('url');
+    const path = url ? url : '/dashboard';
+    this.props.history.push(path);
   };
 
   render() {
@@ -39,9 +41,9 @@ export default class Login extends Component {
                   className={styles.formInput}
                   icon="human"
                   iconType="dark"
-                  name="username"
+                  name="email"
                   iconSize={24}
-                  placeholder={t('Username')}
+                  placeholder="username@example.com"
                 />
               </Form.Item>
               <Form.Item className={styles.formItem} noLabel>
