@@ -65,7 +65,7 @@ export default class RepoAdd extends Component {
           <Input
             className={styles.input}
             name="name"
-            maxLength="50"
+            maxLength={50}
             required
             onChange={this.store.changeName}
             value={name}

@@ -38,7 +38,6 @@
 
   "Back to link": "← 返回{{link}}",
   "Deploy": "部署",
-  "Versions": "版本",
   "Application Version": "应用版本",
   "Home": "首页",
   "Source repository": "代码仓库",
@@ -83,11 +82,9 @@
   "Status": "状态",
   "Visibility": "可见性",
   "Repo": "仓库",
-  "Developer": "开发者",
   "Updated At": "更新时间",
   "Actions": "操作",
 
-  "Create version": "创建版本",
   "Create App Version": "创建应用版本",
   "Name": "名称",
   "Package address": "程序包地址",
@@ -119,7 +116,6 @@
   "View in Store": "在商店中查看",
   "Tips": "提示",
   "Operations": "操作",
-  "New version": "新版本",
 
 
   "Preview in Catalog": "在目录中预览",
@@ -164,6 +160,7 @@
   "Delete cluster": "删除集群",
   "Start cluster": "启用集群",
   "Stop cluster": "停用集群",
+  "Resize cluster": "扩容集群",
   "Start": "启用",
   "Stop": "停用",
   "operate cluster desc": "您确定要{{operate}}该集群吗？",
@@ -337,5 +334,8 @@
 
   "search_results": "搜索结果",
 
-  "None": "无"
+  "None": "无",
+  "Add Nodes": "添加节点",
+  "Node Role": "节点角色",
+  "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?"
 }

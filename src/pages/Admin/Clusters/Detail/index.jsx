@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Table, Popover, Modal } from 'components/Base';
+import { Icon, Table, Popover, Modal, Button, Input, Radio } from 'components/Base';
 import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TagNav from 'components/TagNav';
@@ -20,13 +20,12 @@ import { getSessInfo } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sessInfo }) => ({
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
   rootStore,
-  sessInfo,
-  sock
+  sessInfo
 }))
 @observer
 export default class ClusterDetail extends Component {
@@ -45,7 +44,8 @@ export default class ClusterDetail extends Component {
 
   constructor(props) {
     super(props);
-    props.clusterStore.loadNodeInit();
+    this.clusterId = _.get(props.match, 'params.clusterId');
+    this.props.clusterStore.loadNodeInit();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -94,26 +94,66 @@ export default class ClusterDetail extends Component {
     }
   };
 
+  handleOperateCluster = () => {
+    const { clusterStore } = this.props;
+    const { clusterId, modalType } = clusterStore;
+
+    try {
+      clusterStore[modalType === 'delete' ? 'remove' : modalType]([clusterId]);
+    } catch (err) {}
+  };
+
+  handleClickAddNodes = () => {
+    this.props.clusterStore.showModal('addNodes');
+  };
+
+  handleClickDeleteNodes = () => {
+    this.props.clusterStore.showModal('deleteNodes');
+  };
+
+  handleAddNodes = async (e, formData) => {
+    const { selectedNodeRole, addNodes } = this.props.clusterStore;
+
+    formData = _.extend(_.pick(formData, ['node_count', 'advanced_params']), {
+      cluster_id: this.clusterId,
+      role: selectedNodeRole
+    });
+
+    formData.node_count = parseInt(formData.node_count);
+
+    await addNodes(formData);
+  };
+
+  handleDeleteNodes = async () => {
+    const { deleteNodes, selectedNodeIds } = this.props.clusterStore;
+
+    await deleteNodes({
+      cluster_id: this.clusterId,
+      node_id: selectedNodeIds,
+      advanced_params: [] // todo
+    });
+  };
+
   renderHandleMenu = item => {
     const { t } = this.props;
-    const { clusterParametersOpen, showOperateCluster } = this.props.clusterStore;
+    const { showOperateCluster } = this.props.clusterStore;
     const { cluster_id, status } = item;
 
     return (
       <div className="operate-menu">
-        {/* <span onClick={clusterParametersOpen}>View Parameters</span>*/}
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
         )}
         {status !== 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
         )}
+        <span onClick={() => showOperateCluster(cluster_id, 'resize')}>{t('Resize cluster')}</span>
         <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete cluster')}</span>
       </div>
     );
   };
 
-  renderDeleteModal = () => {
+  renderOperationModal = () => {
     const { t } = this.props;
     const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
@@ -122,31 +162,14 @@ export default class ClusterDetail extends Component {
         title={t(`${_.capitalize(modalType)} cluster`)}
         isOpen={isModalOpen}
         onCancel={hideModal}
-        onSubmit={this.handleCluster}
+        onSubmit={this.handleOperateCluster}
       >
         {t('operate cluster desc', { operate: t(_.capitalize(modalType)) })}
       </Dialog>
     );
   };
 
-  handleCluster = () => {
-    const { clusterStore } = this.props;
-    const { clusterId, modalType } = clusterStore;
-    let ids = [clusterId];
-    switch (modalType) {
-      case 'delete':
-        clusterStore.remove(ids);
-        break;
-      case 'start':
-        clusterStore.start(ids);
-        break;
-      case 'stop':
-        clusterStore.stop(ids);
-        break;
-    }
-  };
-
-  clusterJobsModal = () => {
+  renderJobsModal = () => {
     const { t } = this.props;
     const { isModalOpen, hideModal } = this.props.clusterStore;
     const clusterJobs = this.props.clusterStore.clusterJobs.toJSON();
@@ -158,7 +181,7 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  clusterParametersModal = () => {
+  renderParametersModal = () => {
     const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
 
     return (
@@ -169,95 +192,163 @@ export default class ClusterDetail extends Component {
         hideFooter
       >
         <ul className={styles.parameters}>
-          <li>
-            <div className={styles.name}>Port</div>
-            <div className={styles.info}>
-              <p className={styles.value}>3306</p>
-              <p className={styles.explain}>
-                Range: 3306－65535, The Esgyn will restart if modified.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Character_set_server</div>
-            <div className={styles.info}>
-              <p className={styles.value}>utf8</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Intractive_timeout</div>
-            <div className={styles.info}>
-              <p className={styles.value}>3600</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Back_log</div>
-            <div className={styles.info}>
-              <p className={styles.value}>3600</p>
-              <p className={styles.explain}>
-                Range: 50－4096, The EsgynDB will restart if modified.
-              </p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Expire_logs_days</div>
-            <div className={styles.info}>
-              <p className={styles.value}>1</p>
-              <p className={styles.explain}>Range: 0－14</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>FT_min_word_len</div>
-            <div className={styles.info}>
-              <p className={styles.value}>4</p>
-              <p className={styles.explain}>Range: 0－14, The EsgynDB will restart if modified.</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Key_buffer_size</div>
-            <div className={styles.info}>
-              <p className={styles.value}>33554432</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Log_bin_function_trust_creators</div>
-            <div className={styles.info}>
-              <p className={styles.value}>1</p>
-              <p className={styles.explain}>Range: 0－1</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Long_query_time</div>
-            <div className={styles.info}>
-              <p className={styles.value}>3</p>
-              <p className={styles.explain}>Range: 0－300</p>
-            </div>
-          </li>
-          <li>
-            <div className={styles.name}>Lower_case_table_names</div>
-            <div className={styles.info}>
-              <p className={styles.value}>1</p>
-              <p className={styles.explain}>Range: 0－1, The EsgynDB will restart if modified.</p>
-            </div>
-          </li>
+          {/*<li>*/}
+          {/*<div className={styles.name}>Port</div>*/}
+          {/*<div className={styles.info}>*/}
+          {/*<p className={styles.value}>3306</p>*/}
+          {/*<p className={styles.explain}>*/}
+          {/*Range: 3306－65535, The Esgyn will restart if modified.*/}
+          {/*</p>*/}
+          {/*</div>*/}
+          {/*</li>*/}
         </ul>
       </Modal>
     );
   };
 
+  renderResizeClusterModal = () => {
+    const { clusterStore, t } = this.props;
+    const { isModalOpen, hideResizeClusterModal } = clusterStore;
+
+    // todo
+    return (
+      <Dialog
+        title={t(`Resize cluster`)}
+        isOpen={isModalOpen}
+        onCancel={hideResizeClusterModal}
+        onSubmit={_.noop}
+      >
+        <p>resize cluster</p>
+      </Dialog>
+    );
+  };
+
+  renderAddNodesModal = () => {
+    const { clusterStore, t } = this.props;
+    const { hideAddNodesModal, isModalOpen, selectedNodeRole, onChangeNodeRole } = clusterStore;
+    const roles = this.getClusterRoles();
+    const hideRoles = roles.length === 1 && roles[0] === '';
+
+    return (
+      <Dialog
+        title={t(`Add Nodes`)}
+        isOpen={isModalOpen}
+        onCancel={hideAddNodesModal}
+        onSubmit={this.handleAddNodes}
+      >
+        <div className={styles.wrapAddNodes}>
+          <div className={classnames(styles.formControl, { [styles.hide]: hideRoles })}>
+            <label>{t('Node Role')}</label>
+            <Radio.Group value={selectedNodeRole || roles[0]} onChange={onChangeNodeRole}>
+              {roles.map((role, idx) => (
+                <Radio value={role} key={idx} className={styles.radio}>
+                  {role}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </div>
+          <div className={styles.formControl}>
+            <label>{t('Node Count')}</label>
+            <Input
+              name="node_count"
+              type="number"
+              className={styles.input}
+              defaultValue={1}
+              required
+            />
+          </div>
+        </div>
+      </Dialog>
+    );
+  };
+
+  renderDeleteNodesModal = () => {
+    const { clusterStore, t } = this.props;
+    const { hideDeleteNodesModal, isModalOpen, selectedNodeIds } = clusterStore;
+
+    return (
+      <Dialog
+        title={t('Delete Nodes')}
+        isOpen={isModalOpen}
+        onCancel={hideDeleteNodesModal}
+        onSubmit={this.handleDeleteNodes}
+      >
+        {t('DEL_RESOURCE_TIPS', { resource_ids: selectedNodeIds.join(', ') })}
+      </Dialog>
+    );
+  };
+
+  renderModals = () => {
+    const { modalType, isModalOpen } = this.props.clusterStore;
+
+    if (!isModalOpen) {
+      return null;
+    }
+
+    if (modalType === 'jobs') {
+      return this.renderJobsModal();
+    }
+
+    if (modalType === 'parameters') {
+      return this.renderParametersModal();
+    }
+
+    if (['delete', 'start', 'stop'].includes(modalType)) {
+      return this.renderOperationModal();
+    }
+
+    if (modalType === 'addNodes') {
+      return this.renderAddNodesModal();
+    }
+
+    if (modalType === 'deleteNodes') {
+      return this.renderDeleteNodesModal();
+    }
+
+    if (modalType === 'resize') {
+      return this.renderResizeClusterModal();
+    }
+  };
+
+  getClusterRoles() {
+    const { cluster } = this.props.clusterStore;
+    return _.uniq(_.get(cluster, 'cluster_role_set', []).map(cl => cl.role));
+  }
+
+  renderToolbar() {
+    const { clusterStore, t } = this.props;
+    const { searchNode, onSearchNode, onClearNode, onRefreshNode, selectedNodeIds } = clusterStore;
+
+    if (selectedNodeIds.length) {
+      return (
+        <Toolbar noRefreshBtn noSearchBox>
+          <Button type="delete" onClick={this.handleClickDeleteNodes} className="btn-handle">
+            {t('Delete')}
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder={t('Search Node')}
+        searchWord={searchNode}
+        onSearch={onSearchNode}
+        onClear={onClearNode}
+        onRefresh={onRefreshNode}
+      >
+        <Button type="primary" className={styles.addNodesBtn} onClick={this.handleClickAddNodes}>
+          <Icon name="add" size="mini" type="white" />
+          <span className={styles.addNodeTxt}>{t('Add Nodes')}</span>
+        </Button>
+      </Toolbar>
+    );
+  }
+
   render() {
     const { clusterStore, appStore, runtimeStore, sessInfo, t } = this.props;
 
-    const {
-      isLoading,
-      searchNode,
-      onSearchNode,
-      onClearNode,
-      onRefreshNode,
-      onChangeNodeStatus,
-      selectNodeStatus,
-      modalType
-    } = clusterStore;
+    const { isLoading, onChangeNodeStatus, selectNodeStatus } = clusterStore;
 
     const detail = clusterStore.cluster;
     const clusterJobs = clusterStore.clusterJobs.toJSON();
@@ -277,7 +368,7 @@ export default class ClusterDetail extends Component {
       {
         title: t('Role'),
         key: 'role',
-        dataIndex: 'role'
+        render: item => item.role || t('None')
       },
       {
         title: t('Status'),
@@ -323,7 +414,8 @@ export default class ClusterDetail extends Component {
       tableType: 'Clusters',
       onChange: () => {},
       total: clusterNodes.length,
-      current: 1
+      current: 1, // todo
+      noCancel: false
     };
 
     const role = getSessInfo('role', sessInfo);
@@ -380,24 +472,22 @@ export default class ClusterDetail extends Component {
             <Panel>
               <TagNav tags={['Nodes']} />
               <Card hasTable>
-                <Toolbar
-                  placeholder={t('Search Node')}
-                  searchWord={searchNode}
-                  onSearch={onSearchNode}
-                  onClear={onClearNode}
-                  onRefresh={onRefreshNode}
-                />
+                {this.renderToolbar()}
                 <Table
                   columns={columns}
                   dataSource={clusterNodes}
                   isLoading={isLoading}
                   filterList={filterList}
                   pagination={pagination}
+                  rowSelection={{
+                    type: 'checkbox',
+                    selectType: 'onSelect',
+                    selectedRowKeys: clusterStore.selectedNodeKeys,
+                    onChange: clusterStore.onChangeSelectNodes
+                  }}
                 />
               </Card>
-              {modalType === 'jobs' && this.clusterJobsModal()}
-              {modalType === 'parameters' && this.clusterParametersModal()}
-              {['delete', 'start', 'stop'].includes(modalType) && this.renderDeleteModal()}
+              {this.renderModals()}
             </Panel>
           </Section>
         </Grid>
