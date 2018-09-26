@@ -7,7 +7,7 @@ const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 const resolveModules = {
-  extensions: ['.js', '.jsx', '.scss'],
+  extensions: ['.js', '.jsx', '.scss', '.css'],
   alias: {
     scss: resolve(__dirname, 'src/scss')
   },
@@ -51,6 +51,10 @@ const clientConfig = {
         test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
         use: 'file-loader',
         include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
@@ -150,10 +154,6 @@ const serverConfig = {
         options: {
           emit: false
         }
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
