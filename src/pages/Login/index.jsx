@@ -24,7 +24,6 @@ export default class Login extends Component {
       location.href = url ? url : '/dashboard';
       // this.props.history.push(path);
     }
-
   };
 
   render() {
