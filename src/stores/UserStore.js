@@ -197,6 +197,7 @@ export default class UserStore extends Store {
 
     const result = await this.request.post('oauth2/token', data);
     const { access_token, token_type, expires_in, refresh_token, id_token } = result;
+
     if (access_token) {
       this.cookieTime = expires_in * 1000;
       setCookie('access_token', access_token, this.cookieTime);
@@ -206,13 +207,13 @@ export default class UserStore extends Store {
       //get login user info
       const idToken = id_token.split('.');
       const user = idToken[1] ? JSON.parse(Base64.decode(idToken[1])) : {};
+
       setCookie('userId', user.sub, this.cookieTime);
       setCookie('role', user.role, this.cookieTime);
       setCookie('last_login', Date.now(), this.cookieTime);
       await this.fetchDetail(user.sub, true);
     } else {
-      const { err, errDetail } = result;
-      this.error(errDetail || err);
+      return result;
     }
   };
 
