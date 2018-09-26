@@ -240,7 +240,7 @@ export default class Users extends Component {
         onCancel={userStore.hideModal}
         hideFooter
       >
-        <form className="formContent" onSubmit={userStore.createOrModify} method="post">
+        <form className="formContent" onSubmit={e => userStore.createOrModify(e)} method="post">
           {userDetail.user_id && (
             <div className="inputItem">
               <label>{t('Name')}</label>
@@ -287,7 +287,7 @@ export default class Users extends Component {
               onChange={e => {
                 changeUser(e, 'password');
               }}
-              required
+              required={!Boolean(userDetail.user_id)}
             />
           </div>
           <div className="textareaItem">
@@ -305,7 +305,7 @@ export default class Users extends Component {
             <Button type="primary" htmlType="submit">
               {t('Confirm')}
             </Button>
-            <Button>{t('Cancel')}</Button>
+            <Button onClick={userStore.hideModal}>{t('Cancel')}</Button>
           </div>
         </form>
       </Modal>
@@ -379,6 +379,12 @@ export default class Users extends Component {
       }
     ];
 
+    const roleMap = {
+      global_admin: 'Administrator',
+      developer: 'Developer',
+      user: 'Normal User'
+    };
+
     const data = userStore.users.toJSON();
 
     const columns = [
@@ -400,7 +406,7 @@ export default class Users extends Component {
       {
         title: 'Role',
         key: 'role',
-        render: item => item.role
+        render: item => t(roleMap[item.role])
       },
       {
         title: 'Updated At',

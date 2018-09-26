@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import { Button, Input } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
+import { getCookie } from 'utils';
 
 import styles from './index.scss';
 
@@ -14,15 +15,17 @@ import styles from './index.scss';
 }))
 @observer
 export default class Profile extends Component {
-  static async onEnter({ userStore }) {
-    await userStore.fetchDetail();
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       currentForm: 'basic'
     };
+  }
+
+  componentDidMount() {
+    const { fetchDetail } = this.props.userStore;
+    const userId = getCookie('userId');
+    fetchDetail(userId);
   }
 
   changeForm = (name, flag) => {
@@ -35,24 +38,33 @@ export default class Profile extends Component {
 
   renderBasic() {
     const { userStore, t } = this.props;
-    const { userDetail, changeUser, changeUserRole } = userStore;
+    const { userDetail, changeUser, modifyUser } = userStore;
+    const emailRegexp =
+      "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)[\\w](?:[\\w-]*[\\w])?";
 
     return (
-      <div className={styles.form}>
+      <form className={styles.form} onSubmit={e => modifyUser(e)} method="post">
         <div>
           <label className={styles.name}>{t('ID')}</label>
-          <Input className={styles.input} name="id" value={userDetail.user_id} disabled readOnly />
+          <Input
+            className={styles.input}
+            name="user_id"
+            value={userDetail.user_id}
+            disabled
+            readOnly
+          />
         </div>
         <div>
           <label className={styles.name}>{t('User Name')}</label>
           <Input
             className={styles.input}
             name="name"
-            maxLength="50"
+            maxLength={50}
             value={userDetail.username}
             onChange={e => {
               changeUser(e, 'username');
             }}
+            required
           />
         </div>
         <div>
@@ -60,39 +72,63 @@ export default class Profile extends Component {
           <Input
             className={styles.input}
             name="email"
+            maxLength={50}
             value={userDetail.email}
             onChange={e => {
               changeUser(e, 'email');
             }}
+            pattern={emailRegexp}
             required
           />
         </div>
         <div className={styles.submitBtn}>
-          <Button type={`primary`} onClick={changeUserRole}>
+          <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
           <Button onClick={() => history.back()}>{t('Cancel')}</Button>
         </div>
-      </div>
+      </form>
     );
   }
 
   renderPassword() {
     const { userStore, t } = this.props;
+    const { modifyPassword, changeUser } = userStore;
 
     return (
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={e => modifyPassword(e)} method="post">
         <div>
           <label className={styles.name}>{t('Current Password')}</label>
-          <Input className={styles.input} name="current" type="password" />
+          <Input
+            className={styles.input}
+            name="password"
+            type="password"
+            maxLength={50}
+            required
+            ref={input => (this.input = input)}
+          />
         </div>
         <div>
           <label className={styles.name}>{t('New Password')}</label>
-          <Input className={styles.input} name="new" type="password" />
+          <Input
+            className={styles.input}
+            name="new_password"
+            type="password"
+            maxLength={50}
+            required
+            ref={input => (this.input = input)}
+          />
         </div>
         <div>
           <label className={styles.name}>{t('Confirm New Password')}</label>
-          <Input className={styles.input} name="confirm" type="password" />
+          <Input
+            className={styles.input}
+            name="confirm_password"
+            type="password"
+            maxLength={50}
+            required
+            ref={input => (this.input = input)}
+          />
         </div>
         <div className={styles.submitBtn}>
           <Button type={`primary`} htmlType="submit">
