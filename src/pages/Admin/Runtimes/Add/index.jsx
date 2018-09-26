@@ -138,6 +138,7 @@ export default class RuntimeAdd extends Component {
             maxLength="20"
             onChange={this.store.changeInputZone}
             value={zone}
+            disabled={Boolean(runtimeId)}
           />
         </div>
       </Fragment>
