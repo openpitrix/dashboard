@@ -20,9 +20,6 @@ module.exports = {
     hints: 'warning'
   },
   module: {
-    // noParse: function(content){
-    //   return /lodash/.test(content);
-    // },
     rules: [
       {
         test: /\.jsx?$/,
@@ -65,7 +62,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.scss'],
+    extensions: ['.js', '.jsx', '.scss', '.css'],
     alias: {
       scss: resolve(__dirname, 'src/scss')
     },
