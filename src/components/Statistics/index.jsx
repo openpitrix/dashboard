@@ -6,8 +6,9 @@ import { translate } from 'react-i18next';
 import { Icon } from 'components/Base';
 import Histogram from './Histogram';
 import Progress from './Progress';
-import styles from './index.scss';
 import { getStasTotal, getTopTotal, getProgress, getHistograms } from 'utils';
+
+import styles from './index.scss';
 
 @translate()
 export default class Statistics extends PureComponent {

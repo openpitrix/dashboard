@@ -49,7 +49,7 @@ export default class Detail extends Component {
 
     return (
       <div className="operate-menu">
-        <span onClick={() => this.deleteUser(id)}>{t('Delete user')}</span>
+        <span onClick={() => this.deleteUser(id)}>{t('Delete')}</span>
       </div>
     );
   };

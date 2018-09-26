@@ -56,7 +56,7 @@ export default class CategoryDetail extends Component {
     return (
       <div className="operate-menu">
         <span onClick={() => showModifyCategory(category)}>{t('Modify Category')}</span>
-        <span onClick={() => showDeleteCategory(category)}>{t('Delete Category')}</span>
+        <span onClick={() => showDeleteCategory(category)}>{t('Delete')}</span>
       </div>
     );
   };
@@ -182,8 +182,8 @@ export default class CategoryDetail extends Component {
         key: 'status',
         conditions: [
           { name: t('Draft'), value: 'draft' },
-          { name: t(changeStatus('Active')), value: 'active' },
-          { name: t(changeStatus('Suspended')), value: 'suspended' },
+          { name: t(mappingStatus('Active')), value: 'active' },
+          { name: t(mappingStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: appStore.changePagination,

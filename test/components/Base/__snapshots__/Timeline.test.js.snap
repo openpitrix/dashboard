@@ -19,7 +19,7 @@ exports[`Base/Timeline basic render 1`] = `
             class="qicon qicon-stop qicon-light"
           >
             <use
-              href="#stop"
+              href="#qui-stop"
             />
           </svg>
         </span>
@@ -42,7 +42,7 @@ exports[`Base/Timeline basic render 1`] = `
             class="qicon qicon-refresh qicon-light"
           >
             <use
-              href="#refresh"
+              href="#qui-refresh"
             />
           </svg>
         </span>

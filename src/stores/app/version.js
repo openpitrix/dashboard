@@ -1,8 +1,8 @@
 import { observable, action } from 'mobx';
-import Store from '../Store';
 import { get, assign, capitalize } from 'lodash';
-import { getFormData } from 'utils';
 import { Base64 } from 'js-base64';
+
+import Store from '../Store';
 
 const defaultStatus = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
 

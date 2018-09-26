@@ -12,18 +12,17 @@ export default class Popover extends React.Component {
     trigger: PropTypes.string,
     placement: PropTypes.string,
     title: PropTypes.string,
-    content: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.element,
-    ]),
+    content: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
     visible: PropTypes.bool,
-    onVisibleChange: PropTypes.func,
+    showBorder: PropTypes.bool,
+    onVisibleChange: PropTypes.func
   };
 
   static defaultProps = {
     prefixCls: 'pi-popover',
     trigger: 'click',
     placement: 'bottom',
+    showBorder: false
   };
 
   getOverlay = () => {
@@ -32,15 +31,13 @@ export default class Popover extends React.Component {
     return (
       <div>
         {title && <div className={`${prefixCls}-title`}>{title}</div>}
-        <div className={`${prefixCls}-content`}>
-          {content}
-        </div>
+        <div className={`${prefixCls}-content`}>{content}</div>
       </div>
     );
-  }
+  };
 
   render() {
-    const { className, title, children, ...others } = this.props;
+    const { className, children, ...others } = this.props;
 
     return (
       <Tooltip

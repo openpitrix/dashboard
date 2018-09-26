@@ -82,9 +82,7 @@ export default class Categories extends Component {
         <span onClick={showModifyCategory.bind(categoryStore, category)}>
           {t('Modify Category')}
         </span>
-        <span onClick={showDeleteCategory.bind(categoryStore, category)}>
-          {t('Delete Category')}
-        </span>
+        <span onClick={showDeleteCategory.bind(categoryStore, category)}>{t('Delete')}</span>
       </div>
     );
   };

@@ -27,7 +27,7 @@ exports[`Base/Checkbox group render 1`] = `
         class="qicon qicon-check qicon-light"
       >
         <use
-          href="#check"
+          href="#qui-check"
         />
       </svg>
     </span>
@@ -58,7 +58,7 @@ exports[`Base/Checkbox group render 1`] = `
         class="qicon qicon-check qicon-light"
       >
         <use
-          href="#check"
+          href="#qui-check"
         />
       </svg>
     </span>

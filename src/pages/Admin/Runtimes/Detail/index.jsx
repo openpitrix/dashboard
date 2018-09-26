@@ -56,7 +56,7 @@ export default class RuntimeDetail extends Component {
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/runtime/edit/${id}`}>{t('Modify Runtime')}</Link>
-        <span onClick={() => showDeleteRuntime(id)}>{t('Delete Runtime')}</span>
+        <span onClick={() => showDeleteRuntime(id)}>{t('Delete')}</span>
       </div>
     );
   };
