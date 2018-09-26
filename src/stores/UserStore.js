@@ -1,7 +1,9 @@
 import { observable, action } from 'mobx';
 import { get, pick, assign } from 'lodash';
+import { Base64 } from 'js-base64';
 import Store from './Store';
 import { setCookie, getUrlParam } from 'utils';
+
 const defaultStatus = ['active'];
 
 export default class UserStore extends Store {
@@ -31,6 +33,8 @@ export default class UserStore extends Store {
   @observable operateType = '';
   @observable isCreateOpen = false;
   @observable isDeleteOpen = false;
+
+  @observable cookieTime = 2 * 60 * 60 * 1000;
 
   @observable
   userDetail = {
@@ -63,13 +67,6 @@ export default class UserStore extends Store {
     const result = await this.request.get('users', assign(defaultParams, params));
     this.users = get(result, 'user_set', []);
     this.totalCount = get(result, 'total_count', 0);
-
-    const user = this.users && this.users[0];
-    if (params.isLogin && user.user_id) {
-      setCookie('user', user.username);
-      setCookie('role', user.role);
-      setCookie('last_login', Date.now());
-    }
     this.isLoading = false;
   };
 
@@ -90,10 +87,13 @@ export default class UserStore extends Store {
   };
 
   @action
-  fetchDetail = async userId => {
+  fetchDetail = async (userId, isLogin) => {
     this.isLoading = true;
     const result = await this.request.get(`users`, { user_id: userId });
     this.userDetail = get(result, 'user_set[0]', {});
+    if (isLogin) {
+      setCookie('user', this.userDetail.username, this.cookieTime);
+    }
     this.isLoading = false;
   };
 
@@ -196,16 +196,20 @@ export default class UserStore extends Store {
     };
 
     const result = await this.request.post('oauth2/token', data);
-    const { access_token, token_type, expires_in, refresh_token } = result;
+    const { access_token, token_type, expires_in, refresh_token, id_token } = result;
     if (access_token) {
-      const time = expires_in * 1000;
-      setCookie('access_token', access_token, time);
-      setCookie('token_type', token_type, time);
+      this.cookieTime = expires_in * 1000;
+      setCookie('access_token', access_token, this.cookieTime);
+      setCookie('token_type', token_type, this.cookieTime);
       setCookie('refresh_token', refresh_token);
+
       //get login user info
-      await this.fetchAll({ search_word: params.email, isLogin: true });
-      const url = getUrlParam('url');
-      location.href = url ? url : '/dashboard';
+      const idToken = id_token.split('.');
+      const user = idToken[1] ? JSON.parse(Base64.decode(idToken[1])) : {};
+      setCookie('userId', user.sub, this.cookieTime);
+      setCookie('role', user.role, this.cookieTime);
+      setCookie('last_login', Date.now(), this.cookieTime);
+      await this.fetchDetail(user.sub, true);
     } else {
       const { err, errDetail } = result;
       this.error(errDetail || err);

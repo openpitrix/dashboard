@@ -5,6 +5,7 @@ const sessConfig = require('../session-config');
 const _ = require('lodash');
 
 const router = new Router();
+const header = {};
 
 router.post('/api/*', async ctx => {
   let endpoint = ctx.url.replace(/^\/api\//, '');
@@ -27,7 +28,6 @@ router.post('/api/*', async ctx => {
   let forwardMethod = body.method || 'get';
   delete body.method;
 
-  const header = {};
   if (endpoint === 'oauth2/token') {
     body.client_id = ctx.store.clientId;
     body.client_secret = ctx.store.clientSecret;
