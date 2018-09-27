@@ -130,9 +130,9 @@ export default class RepoAdd extends Component {
             className={styles.input}
             placeholder="www.example.com/path/point/"
             maxLength="100"
-            required
             name="url"
             title={url}
+            required={!Boolean(repoId)}
             disabled={Boolean(repoId)}
           />
 
@@ -144,13 +144,13 @@ export default class RepoAdd extends Component {
               </p>
               <Input
                 className={styles.inputMiddle}
-                required
+                required={!Boolean(repoId)}
                 value={accessKey}
                 onChange={this.store.changeAccessKey}
               />
               <Input
                 className={styles.inputMiddle}
-                required
+                required={!Boolean(repoId)}
                 value={secretKey}
                 onChange={this.store.changeSecretKey}
               />

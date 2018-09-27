@@ -235,6 +235,8 @@ export default class AppDetail extends Component {
     const appDetail = appStore.appDetail;
     const role = getSessInfo('role', sessInfo);
     const isNormal = role === 'user';
+    const { path } = this.props.match;
+    const isShowReview = role === 'global_admin' && path.indexOf('review') > -1;
 
     return (
       <Layout
@@ -259,7 +261,7 @@ export default class AppDetail extends Component {
 
           {this.renderVersions()}
         </Grid>
-        {role === 'global_admin' && this.renderAdminReview()}
+        {isShowReview && this.renderAdminReview()}
         {this.renderReasonDialog()}
       </Layout>
     );

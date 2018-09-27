@@ -70,11 +70,7 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   handleValidateCredential = () => {
-    if (this.runtimeUrl && this.accessKey && this.secretKey) {
-      this.getRuntimeZone();
-    } else {
-      this.error('Incomplete credential information!');
-    }
+    this.getRuntimeZone();
   };
 
   @action
@@ -239,8 +235,6 @@ export default class RuntimeCreateStore extends Store {
     this.runtimeZones = _.get(result, 'zone', []);
     if (this.runtimeZones.length > 0) {
       this.success('Get zone data success!');
-    } else {
-      this.error('Get zone data fail!');
     }
   }
 

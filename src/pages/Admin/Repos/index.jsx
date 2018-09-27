@@ -14,16 +14,21 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore, sessInfo }) => ({
-  rootStore,
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   sessInfo
 }))
 @observer
 export default class Repos extends Component {
-  static async onEnter({ repoStore, appStore }) {
+  static async onEnter({ repoStore, appStore, loginUser }) {
     repoStore.appStore = appStore;
-    await repoStore.fetchAll({ noLimit: true }, appStore);
+    await repoStore.fetchAll(
+      {
+        noLimit: true,
+        isQueryPublic: loginUser.isDev
+      },
+      appStore
+    );
   }
 
   constructor(props) {

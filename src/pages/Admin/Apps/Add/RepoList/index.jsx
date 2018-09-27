@@ -27,7 +27,7 @@ export default class RepoList extends PureComponent {
 
     return (
       <div className={classNames(styles.repoList, { [styles.publicBg]: type === 'private' })}>
-        <div className={styles.title}>{capitalize(type)}</div>
+        <div className={styles.title}>{t(capitalize(type))}</div>
         <ul>
           {repos.map(repo => (
             <li
