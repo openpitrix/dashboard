@@ -26,7 +26,9 @@ export default class Status extends PureComponent {
       'working', // job status
 
       'enabled',
-      'disabled'
+      'disabled',
+
+      'published'
     ]),
     transition: PropTypes.oneOf([
       '',

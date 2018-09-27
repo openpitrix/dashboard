@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName, changeStatus } from 'utils';
+import { getSessInfo, getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -89,7 +89,7 @@ export default class Review extends Component {
         title: t('Status'),
         key: 'status',
         width: '90px',
-        render: item => <Status type={item.status} name={changeStatus(item.status)} />
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
       },
       {
         title: t('Categories'),

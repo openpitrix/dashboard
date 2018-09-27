@@ -5,14 +5,15 @@ import { translate } from 'react-i18next';
 import { pick, assign, get, capitalize } from 'lodash';
 import classNames from 'classnames';
 
-import { Icon, Input, Table, Popover, Modal, Button, Upload } from 'components/Base';
-import Layout, { BackBtn, Dialog, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
+import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
+import Layout, { Dialog, Grid, Section, Card, NavLink } from 'components/Layout';
 import TagNav from 'components/TagNav';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
-import StepContent from 'StepContent';
+import StepContent from '../Add/StepContent';
+import VersionList from './VersionList';
 import clusterColumns from './tabs/cluster-columns';
-import { getSessInfo, changeStatus } from 'utils';
+import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
@@ -59,6 +60,7 @@ export default class AppDetail extends Component {
 
   selectVersion = version => {
     const { appVersionStore } = this.props;
+
     appVersionStore.currentVersion = version;
     appVersionStore.name = version.name;
     appVersionStore.packageName = version.package_name;
@@ -146,7 +148,7 @@ export default class AppDetail extends Component {
 
     return (
       <div className="operate-menu">
-        <span onClick={() => showDelete('deleteApp')}>{t('Delete App')}</span>
+        <span onClick={() => showDelete('deleteApp')}>{t('Delete')}</span>
       </div>
     );
   };
@@ -226,21 +228,15 @@ export default class AppDetail extends Component {
     }
   };
 
-  renderToolbar(options = {}) {
-    return (
-      <Toolbar
-        {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
-      />
-    );
-  }
+  renderToolbar = (options = {}) => (
+    <Toolbar
+      {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+    />
+  );
 
-  renderTable(options = {}) {
-    return (
-      <Table
-        {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
-      />
-    );
-  }
+  renderTable = (options = {}) => (
+    <Table {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])} />
+  );
 
   renderVersions = () => {
     const { appVersionStore, appStore, sessInfo, t } = this.props;
@@ -248,30 +244,18 @@ export default class AppDetail extends Component {
     const role = getSessInfo('role', sessInfo);
 
     return (
-      <div className={styles.versionList}>
-        <div className={styles.title}>{t('Versions')}</div>
-        <ul>
-          {versions.map(version => (
-            <li
-              key={version.version_id || version.name}
-              className={classNames(version.status, {
-                selected: version.version_id === currentVersion.version_id
-              })}
-              onClick={() => this.selectVersion(version)}
-            >
-              <label className="dot" />
-              {version.name}
-              <span className="status">{t(changeStatus(capitalize(version.status)))}</span>
-            </li>
-          ))}
-        </ul>
+      <VersionList
+        versions={versions}
+        currentVersion={currentVersion}
+        onSelect={this.selectVersion}
+      >
         {role === 'developer' &&
           appStore.appDetail.status !== 'deleted' && (
-            <div className={styles.addVersion} onClick={() => this.createVersionShow()}>
+            <div className={styles.addVersion} onClick={this.createVersionShow}>
               + {t('Create version')}
             </div>
           )}
-      </div>
+      </VersionList>
     );
   };
 
@@ -558,7 +542,11 @@ export default class AppDetail extends Component {
             noDeploy={appDetail.status === 'deleted'}
           />
           {appDetail.status === 'suspended' && (
-            <Popover className={styles.operation} content={this.renderHandleMenu(appDetail.app_id)}>
+            <Popover
+              className={styles.operation}
+              content={this.renderHandleMenu(appDetail.app_id)}
+              showBorder
+            >
               <Icon name="more" />
             </Popover>
           )}

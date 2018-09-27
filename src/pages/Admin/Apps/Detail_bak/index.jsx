@@ -74,7 +74,7 @@ export default class AppDetail extends Component {
       <div className="operate-menu">
         <Link to={`/store/${appId}/deploy`}>{t('Deploy App')}</Link>
         <span onClick={showCreateVersion}>{t('Create version')}</span>
-        <span onClick={showDeleteApp}>{t('Delete App')}</span>
+        <span onClick={showDeleteApp}>{t('Delete')}</span>
       </div>
     );
   };

@@ -11,7 +11,7 @@ import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
 import VersionItem from './versionItem';
-import { getSessInfo, formatTime, changeStatus } from 'utils';
+import { getSessInfo, formatTime, mappingStatus } from 'utils';
 import { versionCompare } from 'utils/string';
 
 import styles from './index.scss';
@@ -212,7 +212,7 @@ export default class AppDetail extends Component {
     return (
       <div className={classnames(styles.reviewContent, styles[version.status])}>
         <label className={styles.dot} />
-        {t('app_review_desc', { status: t(changeStatus(capitalize(version.status))) })}
+        {t('app_review_desc', { status: t(mappingStatus(capitalize(version.status))) })}
         {Boolean(handle) && (
           <div className={styles.operateBtns}>
             <Button type="primary" onClick={() => this.handleVersion(handle, version.version_id)}>

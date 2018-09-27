@@ -110,7 +110,7 @@ export default class Repos extends Component {
       <div id={id} className="operate-menu">
         <Link to={`/dashboard/repo/${id}`}>{t('View detail')}</Link>
         <Link to={`/dashboard/repo/edit/${id}`}>{t('Modify Repo')}</Link>
-        <span onClick={() => deleteRepoOpen(id)}>{t('Delete Repo')}</span>
+        <span onClick={() => deleteRepoOpen(id)}>{t('Delete')}</span>
       </div>
     );
   };

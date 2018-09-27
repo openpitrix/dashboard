@@ -67,7 +67,7 @@ export default class Runtimes extends Component {
         {detail.status !== 'deleted' && (
           <Fragment>
             <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>{t('Modify Runtime')}</Link>
-            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>{t('Delete Runtime')}</span>
+            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>{t('Delete')}</span>
           </Fragment>
         )}
       </div>

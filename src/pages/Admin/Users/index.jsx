@@ -112,7 +112,7 @@ export default class Users extends Component {
       <div className="operate-menu">
         <Link to={`/dashboard/user/${user.user_id}`}>{t('View detail')}</Link>
         <span onClick={() => showModifyUser(user)}>{t('Modify User')}</span>
-        <span onClick={() => showDeleteUser(user.user_id)}>{t('Delete User')}</span>
+        <span onClick={() => showDeleteUser(user.user_id)}>{t('Delete')}</span>
       </div>
     );
   };

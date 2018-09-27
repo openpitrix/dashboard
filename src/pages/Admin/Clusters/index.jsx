@@ -123,9 +123,7 @@ export default class Clusters extends Component {
           <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
         )}
         {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
-            {t('Delete cluster')}
-          </span>
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete')}</span>
         )}
       </div>
     );

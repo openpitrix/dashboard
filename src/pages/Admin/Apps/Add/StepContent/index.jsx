@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Icon } from 'components/Base';
+// import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 

@@ -12,7 +12,7 @@ import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
 import CategoryCard from 'components/DetailCard/CategoryCard';
-import { getObjName, changeStatus } from 'utils';
+import { getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -182,8 +182,8 @@ export default class CategoryDetail extends Component {
         key: 'status',
         conditions: [
           { name: t('Draft'), value: 'draft' },
-          { name: t(changeStatus('Active')), value: 'active' },
-          { name: t(changeStatus('Suspended')), value: 'suspended' },
+          { name: t(mappingStatus('Active')), value: 'active' },
+          { name: t(mappingStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: appStore.changePagination,
