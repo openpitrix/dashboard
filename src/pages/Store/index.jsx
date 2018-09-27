@@ -86,6 +86,7 @@ export default class Store extends Component {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
         await appStore.fetchAll({
+          status: 'active',
           category_id: categories[i].category_id,
           noLoading: true
         });

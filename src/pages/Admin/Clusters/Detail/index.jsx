@@ -346,7 +346,8 @@ export default class ClusterDetail extends Component {
 
         {role === 'global_admin' && (
           <NavLink>
-            {t('Store')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> / {detail.name}
+            {t('Platform')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> /{' '}
+            {detail.name}
           </NavLink>
         )}
 

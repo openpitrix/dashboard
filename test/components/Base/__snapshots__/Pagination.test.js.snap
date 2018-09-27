@@ -24,7 +24,7 @@ exports[`Base/Pagination basic render 1`] = `
           class="qicon qicon-previous qicon-light"
         >
           <use
-            href="#previous"
+            href="#qui-previous"
           />
         </svg>
       </span>
@@ -46,7 +46,7 @@ exports[`Base/Pagination basic render 1`] = `
           class="qicon qicon-next qicon-light"
         >
           <use
-            href="#next"
+            href="#qui-next"
           />
         </svg>
       </span>

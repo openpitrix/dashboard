@@ -363,7 +363,7 @@ export default class AppDetail extends Component {
         suspended: 'delete',
         rejected: 'submit'
       },
-      admin: {
+      global_admin: {
         rejected: 'pass',
         submitted: 'pass', // or action 'reject'
         active: 'suspend',

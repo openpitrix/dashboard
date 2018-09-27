@@ -104,8 +104,6 @@
 
   "My Apps": "我的应用",
   "All": "所有",
-  "Versions": "版本列表",
-  "Create version": "创建版本",
   "Logs": "日志",
   "New version": "新版本",
   "Package": "压缩包",
@@ -119,7 +117,6 @@
   "View in Store": "在商店中查看",
   "Tips": "提示",
   "Operations": "操作",
-  "New version": "新版本",
 
 
   "Preview in Catalog": "在目录中预览",
@@ -130,7 +127,7 @@
 
   "Passed": "已通过",
   "Rejected": "已拒绝",
-  "Draft": "待上架",
+  "Draft": "待提交",
   "Creating": "创建中",
   "Pending": "等待中",
   "Active": "活跃",
@@ -150,7 +147,7 @@
   "Release": "发布",
   "Suspend": "暂停",
   "Recover": "恢复",
-  "Published": "已上线",
+  "Published": "已上架",
   "Recalled": "已下架",
 
   "public": "公共",
@@ -277,7 +274,6 @@
   "Modify User" : "修改用户",
   "Delete User" : "删除用户",
   "Administrator": "管理员",
-  "Developer": "开发者",
   "Normal User": "普通用户",
   "Email": "邮箱",
   "delete_user_desc": "您确定要删除该用户吗?",
@@ -306,7 +302,7 @@
   "creat_new_app": "创建新应用程序",
   "creat_new_version": "创建新版本",
   "select_repo_app": "选择一个仓库来存储您的应用程序",
-  "diff_repo": "公共仓库和私人仓库之间的区别.",
+  "diff_repo": "公共仓库和私人仓库之间的区别。",
   "click_upload": "请单击以选择文件上载",
   "file_format_note": "文件格式支持TAR，TAR.GZ，TAR.BZ和ZIP",
   "view_guide_1": "查看",
@@ -320,11 +316,13 @@
   "edit_version_2": "编辑",
   "edit_version_3": "此版本的更多信息",
   "version_created": "新版本已创建。",
-  "version_submiited": "版本{{name}}已经被提交.",
+  "version_submiited": "版本{{name}}已经被提交。",
   "review_process_info": "审核过程通常需要2-3个工作日，请耐心等待。",
   "version_name_tips": "使用该数字表示应用程序的版本号",
   "version_desc_tips": "版本说明将显示在应用详细信息页面上，字数不应超过300字",
   "ssh_key_guide": "SSH密钥允许您在计算机和群集节点之间建立安全连接。",
+  "app_review_desc": "此应用版本{{status}}。",
+
 
 
   "EMPTY_APP_TIPS": "如果OpenPitrix管理员设置完毕仓库，所有的应用会自动导入。作为OpenPitrix用户，可以浏览所有公有应用，可以通过标签和类别来过滤应用。",

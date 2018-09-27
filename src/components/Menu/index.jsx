@@ -22,9 +22,10 @@ class Menu extends React.Component {
 
   getMatchKey = () => {
     const { path } = this.props.match;
-    const keys = ['app', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
+    const keys = ['app', 'review', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
     const changeKey = {
-      cluster: 'app',
+      review: 'app',
+      cluster: 'repo',
       runtime: 'repo',
       categories: 'app',
       category: 'app'
@@ -58,9 +59,8 @@ class Menu extends React.Component {
       app: {
         title: 'Store',
         links: [
-          { name: 'All Apps', link: '/dashboard/apps', active: 'app' },
-          /*{ name: 'App Reviews', link: '#', active: 'review' },*/
-          { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' },
+          { name: 'All Apps', link: '/dashboard/apps', active: '/app' },
+          { name: 'App Reviews', link: '/dashboard/reviews', active: 'review' },
           { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
           /*{ name: 'Appearance', link: '#', active: 'appearance' }*/
         ]
@@ -80,7 +80,8 @@ class Menu extends React.Component {
           /*{ name: 'Tickets', link: '#', active: 'ticket' },
           { name: 'Notifications', link: '#', active: 'notification' },*/
           { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
-          { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' }
+          { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
+          { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' }
           /* { name: 'Service Status', link: '#', active: 'service' }*/
         ]
       }

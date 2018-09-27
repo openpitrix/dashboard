@@ -61,7 +61,10 @@ export default class Categories extends Component {
     for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
-        await appStore.fetchAll({ category_id: categories[i].category_id });
+        await appStore.fetchAll({
+          status: 'active',
+          category_id: categories[i].category_id
+        });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
           total: appStore.totalCount,

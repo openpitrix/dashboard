@@ -32,6 +32,8 @@ export default class AppVersionStore extends Store {
   @observable createError = '';
   @observable createResult = null;
 
+  @observable reason = '';
+
   @action
   fetchAll = async (params = {}) => {
     let defaultParams = {
@@ -139,9 +141,12 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.post('app_version/action/' + handleType, {
-      version_id: versionId
-    });
+    const params = { version_id: versionId };
+    if (handleType === 'reject') {
+      params.message = this.reason;
+    }
+
+    const result = await this.request.post('app_version/action/' + handleType, params);
 
     if (get(result, 'version_id')) {
       if (handleType === 'submit') {
@@ -152,10 +157,8 @@ export default class AppVersionStore extends Store {
       if (handleType === 'delete') {
         this.currentVersion = {};
       }
+      this.hideModal();
       await this.fetchAll();
-    } else {
-      const { err, errDetail } = this.createResult;
-      this.createError = errDetail || err;
     }
     this.isLoading = false;
   };
@@ -276,6 +279,11 @@ export default class AppVersionStore extends Store {
     this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
     await this.fetchAll();
+  };
+
+  @action
+  changeReason = event => {
+    this.reason = event.target.value;
   };
 
   loadPageInit = () => {
