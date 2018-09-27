@@ -25,13 +25,13 @@ export function setCookie(name, value, time) {
   const expires = time ? time : 2 * 24 * 60 * 60 * 1000;
   const exp = new Date();
   exp.setTime(exp.getTime() + expires);
-  document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString();
+  document.cookie = name + '=' + encodeURIComponent(value) + ';expires=' + exp.toGMTString();
 }
 
 export function getCookie(name) {
   let re = new RegExp(name + '=([^;]+)');
   let value = re.exec(document.cookie);
-  return value !== null ? unescape(value[1]) : null;
+  return value !== null ? decodeURIComponent(value[1]) : null;
 }
 
 export function getPastTime(time) {

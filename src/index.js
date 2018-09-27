@@ -10,6 +10,7 @@ import App from './App';
 import RootStore from './stores/RootStore';
 import renderRoute from './routes/renderRoute';
 import SockClient from './utils/sock-client';
+import { getCookie } from './utils';
 import i18n from './i18n';
 
 const store = new RootStore(window.__INITIAL_STATE__);
@@ -20,7 +21,7 @@ if (typeof window !== 'undefined') {
 
   import('./routes').then(({ default: routes }) => {
     let sc = null;
-    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl);
+    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, getCookie('access_token'));
     try {
       sc = new SockClient(sockEndpoint);
       sc.setUp();

@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import { get, pick, assign } from 'lodash';
 import { Base64 } from 'js-base64';
 import Store from './Store';
-import { setCookie, getUrlParam } from 'utils';
+import { setCookie, getUrlParam, getFormData } from 'utils';
 
 const defaultStatus = ['active'];
 
@@ -38,6 +38,7 @@ export default class UserStore extends Store {
 
   @observable
   userDetail = {
+    user_id: '',
     username: '',
     email: '',
     password: '',
@@ -60,7 +61,7 @@ export default class UserStore extends Store {
       defaultParams.search_word = this.searchWord;
     }
     if (this.selectRoleId) {
-      defaultParams.role = this.selectRoleId;
+      defaultParams.role = [this.selectRoleId];
     }
 
     this.isLoading = true;
@@ -98,7 +99,8 @@ export default class UserStore extends Store {
   };
 
   @action
-  createOrModify = async () => {
+  createOrModify = async e => {
+    e.preventDefault();
     const params = pick({ ...this.userDetail }, [
       'user_id',
       'username',
@@ -121,9 +123,6 @@ export default class UserStore extends Store {
     if (get(this.operateResult, 'user_id')) {
       this.hideModal();
       await this.fetchAll();
-    } else {
-      const { err, errDetail } = this.operateResult;
-      this.error(errDetail || err);
     }
   };
 
@@ -137,8 +136,10 @@ export default class UserStore extends Store {
   @action
   modify = async (params = {}) => {
     this.isLoading = true;
-    this.operateResult = await this.request.patch('users', params);
+    const result = await this.request.patch('users', params);
     this.isLoading = false;
+    this.operateResult = result;
+    return result;
   };
 
   @action
@@ -187,7 +188,7 @@ export default class UserStore extends Store {
   };
 
   @action
-  oauth2Check = async params => {
+  oauth2Check = async (params = {}) => {
     const data = {
       grant_type: 'password',
       scope: '',
@@ -215,6 +216,59 @@ export default class UserStore extends Store {
     } else {
       return result;
     }
+  };
+
+  @action
+  modifyUser = async e => {
+    e.preventDefault();
+
+    const data = getFormData(e.target);
+    data.user_id = this.userDetail.user_id;
+    const result = await this.modify(data);
+
+    if (get(result, 'user_id')) {
+      this.success('Modify user successful.');
+    }
+  };
+
+  @action
+  modifyPassword = async e => {
+    e.preventDefault();
+
+    const data = getFormData(e.target);
+    if (data.new_password !== data.confirm_password) {
+      this.error('New password is different entered twice.');
+      return;
+    }
+
+    const resetResult = this.resetPassword({
+      user_id: this.userDetail.user_id,
+      password: data.password
+    });
+
+    const resetId = get(resetResult, 'reset_id');
+    if (resetId) {
+      const result = this.changePassword({
+        new_password: data.new_password,
+        reset_id: resetId
+      });
+
+      if (get(result, 'user_id')) {
+        this.success('Change password successful.');
+      }
+    }
+  };
+
+  @action
+  resetPassword = async (params = {}) => {
+    return await this.request.post('users/password:reset', params);
+  };
+
+  @action
+  changePassword = async (params = {}) => {
+    this.isLoading = true;
+    await this.request.post('users/password:change', params);
+    this.isLoading = false;
   };
 
   @action
