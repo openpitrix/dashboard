@@ -13,9 +13,9 @@ const defaultOptions = {
 let reopenCount = 0;
 
 class SockClient extends EventEmitter {
-  static composeEndpoint = socketUrl => {
+  static composeEndpoint = (socketUrl, accessToken = '') => {
     const re = /(\w+?:\/\/)?([^\\?]+)/;
-    const suffix = '?uid=system'; // todo: suffix is hard coded
+    const suffix = `?sid=${accessToken}`;
     const matchParts = (socketUrl + '').match(re);
     let wsPrefix = 'ws://';
     if (typeof window === 'object' && window.location.protocol === 'https:') {
@@ -60,7 +60,7 @@ class SockClient extends EventEmitter {
   attachEvents() {
     // todo
     if (!this.client.onopen) {
-      this.client.onopen = ev => console.log('sock open: ', ev);
+      this.client.onopen = ev => console.log('open socket: ', ev);
     }
 
     if (!this.client.onmessage) {
@@ -72,17 +72,15 @@ class SockClient extends EventEmitter {
           } catch (err) {}
         }
 
-        console.log('sock message: ', data);
+        // console.log('sock message: ', data);
         this.emit(`ops-resource`, data);
       };
     }
 
     if (!this.client.onclose) {
       this.client.onclose = ev => {
-        console.log('sock closing: ', ev);
         // if sock will close, try to keep alive
         if (reopenCount < this.options.reopenLimit) {
-          console.log('reopen socket..');
           setTimeout(this.setUp.bind(this), 1500);
           reopenCount++;
         }
