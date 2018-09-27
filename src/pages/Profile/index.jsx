@@ -39,8 +39,7 @@ export default class Profile extends Component {
   renderBasic() {
     const { userStore, t } = this.props;
     const { userDetail, changeUser, modifyUser } = userStore;
-    const emailRegexp =
-      "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)[\\w](?:[\\w-]*[\\w])?";
+    const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
     return (
       <form className={styles.form} onSubmit={e => modifyUser(e)} method="post">
