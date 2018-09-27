@@ -38,7 +38,6 @@
 
   "Back to link": "← 返回{{link}}",
   "Deploy": "部署",
-  "Versions": "版本",
   "Application Version": "应用版本",
   "Home": "首页",
   "Source repository": "代码仓库",
@@ -70,7 +69,7 @@
 
   "Delete App": "删除应用",
   "Delete App desc": "您确定要删除该应用吗?",
-  "Modify App Category": "修改应用分类",
+  "Choose App Category": "选择应用分类",
   "Category": "分类",
   "View detail": "查看详情",
   "Deploy App": "部署应用",
@@ -83,11 +82,9 @@
   "Status": "状态",
   "Visibility": "可见性",
   "Repo": "仓库",
-  "Developer": "开发者",
   "Updated At": "更新时间",
   "Actions": "操作",
 
-  "Create version": "创建版本",
   "Create App Version": "创建应用版本",
   "Name": "名称",
   "Package address": "程序包地址",
@@ -119,7 +116,6 @@
   "View in Store": "在商店中查看",
   "Tips": "提示",
   "Operations": "操作",
-  "New version": "新版本",
 
 
   "Preview in Catalog": "在目录中预览",
@@ -339,5 +335,7 @@
 
   "search_results": "搜索结果",
 
-  "None": "无"
+  "None": "无",
+
+  "Choose category": "选择分类"
 }

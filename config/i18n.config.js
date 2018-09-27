@@ -14,7 +14,7 @@ module.exports = {
   // init common resource
   resources: translations,
 
-  // lng: 'en',
+  lng: 'zh',
   fallbackLng: 'en',
   // debug: process.env.NODE_ENV !== 'production',
 

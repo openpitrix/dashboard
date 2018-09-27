@@ -85,7 +85,7 @@ export default class Apps extends Component {
 
     return (
       <Modal
-        title={t('Modify App Category')}
+        title={t('Choose App Category')}
         visible={isModalOpen}
         onCancel={hideModal}
         onOk={modifyCategoryById}
@@ -121,12 +121,12 @@ export default class Apps extends Component {
       if (this.role === 'global_admin') {
         itemMenu = (
           <Fragment>
+            <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
+              {t('Choose category')}
+            </span>
             {item.status === 'suspended' && (
               <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete')}</span>
             )}
-            <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
-              {t('Modify category')}
-            </span>
           </Fragment>
         );
       }
@@ -204,19 +204,7 @@ export default class Apps extends Component {
 
   render() {
     const { appStore, repoStore, t } = this.props;
-    const {
-      apps,
-      summaryInfo,
-      totalCount,
-      isLoading,
-      currentPage,
-      changePagination,
-      selectedRowKeys,
-      onChangeSelect,
-      onChangeStatus,
-      selectStatus,
-      viewType
-    } = appStore;
+    const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
 
     const { repos } = repoStore;
 
