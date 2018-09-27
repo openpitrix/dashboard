@@ -39,7 +39,8 @@ router.post('/api/*', async ctx => {
     if (access_token) {
       header.Authorization = token_type + ' ' + access_token;
     } else if (refresh_token) {
-      const res = await agent.post([apiServer, 'oauth2/token'].join('/')).send({
+      const refreshUrl = [apiServer, 'oauth2/token'].join('/');
+      const res = await agent.post(refreshUrl).send({
         grant_type: 'refresh_token',
         client_id: ctx.store.clientId,
         client_secret: ctx.store.clientSecret,
