@@ -62,14 +62,17 @@
       opacity: 0.5;
       border-radius: 2px;
       background-color: $N400;
-      border: 1px solid $N400;
       font-size: 12px;
       font-weight: 500;
       line-height: 16px;
       color: $N0;
       cursor: pointer;
       text-align: left;
-      @include textCut;
+      //@include textCut;
+
+      .appName {
+        vertical-align: middle;
+      }
 
       img {
         margin-right: 4px;
@@ -77,6 +80,7 @@
         max-width: 100%;
         max-height: 100%;
         vertical-align: middle;
+        border-radius: 50%;
       }
 
       &.active {
@@ -98,12 +102,18 @@
     .plus {
       width: 104px;
       opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
     }
 
     .more {
       float: right;
       width: 40px;
       opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
     }
 
     :global {
@@ -142,9 +152,13 @@
     font-size: 14px;
     color: $N30;
 
+    &:hover {
+      color: $N0;
+    }
     &.active {
       font-weight: 500;
       border-right: 2px solid $Y200;
+      color: $N0;
     }
   }
 
