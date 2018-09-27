@@ -44,6 +44,7 @@ export default class Clusters extends Component {
     const { clusterStore, runtimeStore } = this.props;
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
+    clusterStore.page = 'index';
     this.store = clusterStore;
   }
 

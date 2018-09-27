@@ -123,3 +123,40 @@
     }
   }
 }
+
+.foldCheckbox {
+  position: relative;
+  display: inline-block;
+  margin-right: 8px;
+  padding-left: 22px;
+  color: $N300;
+  transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+
+  input[type="checkbox"] {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    user-select: none;
+    outline: none;
+  }
+  :global {
+    .icon {
+      display: block;
+      z-index: 3;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      margin: 0 !important;
+      left: 0;
+      top: 50%;
+      font-size: $size-small;
+      color: #fff;
+      transform: translate(0 ,-50%) scale(0.7);
+      cursor: pointer;
+      svg {
+        --primary-color: #{$N0};
+        --secondary-color: #{$N0};
+      }
+    }
+  }
+}

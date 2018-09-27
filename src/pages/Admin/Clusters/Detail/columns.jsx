@@ -1,13 +1,17 @@
 import React from 'react';
+
+import { Icon, Popover } from 'components/Base';
 import TdName from 'components/TdName';
 import Status from 'components/Status';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
-export default function GetColumns({ t, provider }) {
+/* import styles from 'index.scss'; */
+
+export default function GetColumns({ t, clusterStore, clusterDetailStore, isKubernetes }) {
   let columns = null;
 
-  if (provider !== 'kubernetes') {
+  if (!isKubernetes) {
     columns = [
       {
         title: t('Name'),
@@ -45,12 +49,45 @@ export default function GetColumns({ t, provider }) {
       }
     ];
   } else {
+    const { onChangeExtend, extendedRowKeys } = clusterDetailStore;
     return [
       {
         title: t('Name'),
         key: 'name',
-        width: '130px',
-        render: item => <TdName name={item.name} description={item.node_id} noIcon />
+        width: '220px',
+        render: (item, row, index) => (
+          <TdName
+            name={item.name}
+            noIcon={true}
+            noCopy={true}
+            noDescription={true}
+            onExtendedChange={onChangeExtend}
+            rowKey={index.toString()}
+            isFold={true}
+            fold={extendedRowKeys.includes(index.toString())}
+            linkUrl={`/dashboard/app/${item.app_id}`}
+          />
+        )
+      },
+      {
+        title: t('Status'),
+        key: 'status',
+        width: '400px',
+        render: item => (
+          <Status type={item.status.toLowerCase()} name={`${t(item.status)} ${item.statusText}`} />
+        )
+      },
+      {
+        title: t('Updated At'),
+        key: 'status_time',
+        width: '400px',
+        render: item => <TimeShow time={item.status_time} />
+      },
+      {
+        title: t(''),
+        key: 'action',
+        width: '0px',
+        render: null
       }
     ];
   }

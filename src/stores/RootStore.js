@@ -5,7 +5,7 @@ import Store from './Store';
 
 import App, { Deploy as AppDeploy, Version as AppVersion, Create as AppCreate } from './app';
 import Category from './category';
-import Cluster from './cluster';
+import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
 import Runtime, { Create as RuntimeCreate } from './runtime';
 
@@ -78,6 +78,7 @@ export default class RootStore extends Store {
 
     // cluster
     this.register('cluster', Cluster);
+    this.register('clusterDetail', ClusterDetail);
 
     // runtime
     this.register('runtime', Runtime);

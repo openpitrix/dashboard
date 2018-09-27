@@ -45,18 +45,21 @@ export default class Checkbox extends Component {
   }
 
   render() {
-    const { style, className, disabled, children, value } = this.props;
+    const { style, className, disabled, children, isFold, fold, value } = this.props;
     const isChecked = this.state.isChecked;
+    const labelClass = isFold ? styles.foldCheckbox : styles.checkbox;
 
     return (
       <label
-        className={classNames(styles.checkbox, className, {
+        className={classNames(labelClass, className, {
           [styles.checked]: isChecked
         })}
         disabled={disabled}
         style={style}
       >
         {isChecked && <Icon name="check" />}
+        {isFold && fold && <Icon name="check-fold" size={28} />}
+        {isFold && !fold && <Icon name="check-unfold" size={28} />}
         <input
           type="checkbox"
           value={value}

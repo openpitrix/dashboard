@@ -334,7 +334,15 @@
 
   "search_results": "搜索结果",
 
-  "None": "无",
+  "Choose category": "选择分类",
+  "Deployment Name": "部署名称",
+  "Deployment Node": "部署节点",
+  "StatefulSet Node": "状态节点",
+  "DaemonSet Node": "守护节点",
+  "Rollback cluster": "回滚集群",
+  "Update_env cluster": "修改集群环境",
+  "Update cluster env": "修改集群环境",
+  "Upgrade cluster": "升级集群版本",
 
-  "Choose category": "选择分类"
+  "None": "无"
 }

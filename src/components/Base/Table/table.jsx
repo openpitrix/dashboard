@@ -103,6 +103,10 @@ export default class Table extends React.Component {
     }
   };
 
+  setExtendRowKeys = (selectedRowKeys, { selectType, item, checked, changeRowKeys }) => {
+    const { extendRowSelection } = this.props;
+  };
+
   handleCheckboxSelect = (value, index, e) => {
     const { rowKey } = this.props;
     const checked = e.target.checked;
@@ -208,6 +212,7 @@ export default class Table extends React.Component {
       const data = this.getTableData();
       const selectionColumn = {
         key: 'selection-column',
+        width: '20px',
         render: this.renderSelectionBox(rowSelection.type),
         className: styles.selectionColumn,
         fixed: rowSelection.fixed
