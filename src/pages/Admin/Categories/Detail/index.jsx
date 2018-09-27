@@ -12,7 +12,7 @@ import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
 import CategoryCard from 'components/DetailCard/CategoryCard';
-import { getObjName } from 'utils';
+import { getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
