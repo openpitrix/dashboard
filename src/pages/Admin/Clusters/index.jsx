@@ -330,7 +330,7 @@ export default class Clusters extends Component {
 
         {role === 'global_admin' && (
           <NavLink>
-            {t('Store')} / {t('All Clusters')}
+            {t('Platform')} / {t('All Clusters')}
           </NavLink>
         )}
 

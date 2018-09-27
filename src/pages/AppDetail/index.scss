@@ -67,18 +67,127 @@
     letter-spacing: 0;
     color: $N500;
   }
-  li{
+  li {
     line-height: 30px;
     font-size: 14px;
     color: $P75;
-    .name{
+    .name {
       display: inline-block;
       max-width: 200px;
       @include textCut;
     }
-    .time{
+    .time {
       float: right;
-      color: $N300;
+    }
+
+    &.draft {
+      color: $B75;
+    }
+
+    &.submitted {
+      color: $Y300;
+    }
+
+    &.passed {
+      color: $G75;
+    }
+
+    &.active {
+      color: $P75;
+      .time {
+        color: $N300;;
+      }
+    }
+
+    &.suspended, &.deleted {
+      color: $N500;
+    }
+
+    &.rejected {
+      color: $R200;
     }
   }
+}
+
+.reviewContent {
+  position: fixed;
+  left: 248px;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  height: 72px;
+  padding: 20px;
+  background-color: $B10;
+  color: $B75;
+  line-height: 32px;
+
+  .dot {
+    float: left;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 8px 8px;
+    background-color: $B75;
+  }
+
+  &.draft {
+    background-color: $B10;
+    color: $B75;
+    .dot {
+      background-color: $B75;
+    }
+  }
+
+  &.submitted {
+    background-color: $Y10;
+    color: $Y300;
+    .dot {
+      background-color: $Y300;
+    }
+  }
+
+  &.passed {
+    background-color: $G10;
+    color: $G75;
+    .dot {
+      background-color: $G75;
+    }
+  }
+
+  &.active {
+    background-color: $P10;
+    color: $P75;
+    .dot {
+      background-color: $P75;
+    }
+  }
+
+  &.suspended, &.deleted {
+    background-color: $N10;
+    color: $N500;
+    .dot {
+      background-color: $N500;
+    }
+  }
+
+  &.rejected {
+    background-color: $R10;
+    color: $R200;
+    .dot {
+      background-color: $R200;
+    }
+  }
+
+  .operateBtns {
+    float: right;
+
+    button {
+      margin-left: 12px;
+    }
+  }
+}
+
+.reason{
+ width: 100%;
 }

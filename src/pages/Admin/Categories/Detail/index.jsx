@@ -56,7 +56,7 @@ export default class CategoryDetail extends Component {
     return (
       <div className="operate-menu">
         <span onClick={() => showModifyCategory(category)}>{t('Modify Category')}</span>
-        <span onClick={() => showDeleteCategory(category)}>{t('Delete')}</span>
+        <span onClick={() => showDeleteCategory(category)}>{t('Delete Category')}</span>
       </div>
     );
   };

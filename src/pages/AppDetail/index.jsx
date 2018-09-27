@@ -1,16 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, capitalize } from 'lodash';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 
-import Layout, { Grid, Section, BackBtn, Panel, Card, NavLink } from 'components/Layout';
-import Button from 'components/Base/Button';
+import Layout, { Grid, Section, BackBtn, Panel, Card, NavLink, Dialog } from 'components/Layout';
+import { Button, Icon } from 'components/Base';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
 import VersionItem from './versionItem';
-import { getSessInfo, formatTime } from 'utils';
+import { getSessInfo, formatTime, mappingStatus } from 'utils';
 import { versionCompare } from 'utils/string';
 
 import styles from './index.scss';
@@ -26,25 +27,34 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
-    // firstly fetch app version data, because `isLoading` is belong appVersion store
-    // this will prevent page flashing
-    await appVersionStore.fetchAll({ app_id: appId });
-
+    appVersionStore.appId = appId;
     appStore.currentPic = 1;
+
     await appStore.fetch(appId);
+  }
+
+  async componentDidMount() {
+    this.props.rootStore.setNavFix(true);
+    const { appStore, repoStore, appVersionStore, sessInfo, match } = this.props;
+
+    const role = getSessInfo('role', sessInfo);
+    const params = { app_id: match.params.appId };
+    //normal user or not login only query 'active' versions
+    if (role === 'user' || !Boolean(role)) {
+      params.status = ['active'];
+    }
+    await appVersionStore.fetchAll(params);
 
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(get(appStore, 'appDetail.repo_id', ''));
     }
-    if (appStore.appDetail.latest_app_version) {
+
+    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
+    if (providerName === 'kubernetes' && appStore.appDetail.latest_app_version) {
       await appVersionStore.fetchPackageFiles(
         get(appStore, 'appDetail.latest_app_version.version_id', '')
       );
     }
-  }
-
-  componentDidMount() {
-    this.props.rootStore.setNavFix(true);
   }
 
   changePicture = (type, number, pictures) => {
@@ -61,6 +71,30 @@ export default class AppDetail extends Component {
     }
     appStore.currentPic = currentPic;
     return currentPic;
+  };
+
+  handleVersion = async (handleType, versionId) => {
+    const { appStore, appVersionStore } = this.props;
+    const { appDetail } = appStore;
+
+    await appVersionStore.handle(handleType, versionId);
+  };
+
+  showReasonDialog = () => {
+    const { appVersionStore } = this.props;
+    appVersionStore.reason = '';
+    appVersionStore.isDialogOpen = true;
+  };
+
+  submitReason = async () => {
+    const { appVersionStore } = this.props;
+    const { handle, version, reason } = appVersionStore;
+
+    if (!reason) {
+      appVersionStore.error('Please input Reject Reason');
+    } else {
+      await handle('reject', version.version_id);
+    }
   };
 
   renderBody() {
@@ -116,7 +150,7 @@ export default class AppDetail extends Component {
               {appVersions
                 .sort((verA, verB) => versionCompare(verA.name, verB.name) < 0)
                 .map(version => (
-                  <li key={version.version_id}>
+                  <li key={version.version_id} className={classnames(styles[version.status])}>
                     <span className={styles.name} title={version.name}>
                       {version.name}
                     </span>
@@ -143,11 +177,64 @@ export default class AppDetail extends Component {
     );
   }
 
+  renderReasonDialog = () => {
+    const { appVersionStore, t } = this.props;
+    const { isDialogOpen, hideModal, changeReason, reason } = appVersionStore;
+
+    return (
+      <Dialog
+        title={t('Reject Reason')}
+        isOpen={isDialogOpen}
+        onCancel={hideModal}
+        onSubmit={this.submitReason}
+      >
+        <textarea className={styles.reason} onChange={changeReason}>
+          {reason}
+        </textarea>
+      </Dialog>
+    );
+  };
+
+  renderAdminReview = () => {
+    const { appVersionStore, t } = this.props;
+    const { versions } = appVersionStore;
+    const version = versions[0] || {};
+    appVersionStore.version = version;
+    const status = version.status;
+    const handleMap = {
+      // rejected: 'pass',
+      submitted: 'pass', // or action 'reject'
+      active: 'suspend',
+      suspended: 'recover'
+    };
+    const handle = handleMap[status];
+
+    return (
+      <div className={classnames(styles.reviewContent, styles[version.status])}>
+        <label className={styles.dot} />
+        {t('app_review_desc', { status: t(mappingStatus(capitalize(version.status))) })}
+        {Boolean(handle) && (
+          <div className={styles.operateBtns}>
+            <Button type="primary" onClick={() => this.handleVersion(handle, version.version_id)}>
+              {t(capitalize(handle))}
+            </Button>
+            {status === 'submitted' && (
+              <Button type="delete" onClick={this.showReasonDialog}>
+                {t('Reject')}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   render() {
     const { appStore, appVersionStore, sessInfo } = this.props;
-    const { isLoading } = appVersionStore;
+    const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
-    const isNormal = getSessInfo('role', sessInfo) === 'user';
+    const role = getSessInfo('role', sessInfo);
+    const isNormal = role === 'user';
 
     return (
       <Layout
@@ -172,6 +259,8 @@ export default class AppDetail extends Component {
 
           {this.renderVersions()}
         </Grid>
+        {role === 'global_admin' && this.renderAdminReview()}
+        {this.renderReasonDialog()}
       </Layout>
     );
   }
