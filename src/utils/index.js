@@ -187,7 +187,7 @@ export function getYamlList(yamlObj) {
   return results;
 }
 
-//get url param by name
+// get url param by name
 export function getUrlParam(name) {
   const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
   const result = window.location.search.substr(1).match(reg);
@@ -198,17 +198,18 @@ export function getUrlParam(name) {
   }
 }
 
-//app page status translate maybe different with other pages
-export function changeStatus(name) {
+// app page status translate maybe different with other pages
+const statusTransMap = {
+  Active: 'Published',
+  Suspended: 'Recalled',
+  active: 'published',
+  suspended: 'recalled'
+};
+
+export function mappingStatus(status) {
   const lang = getCookie('lang');
   if (lang === 'zh') {
-    const changeMap = {
-      Active: 'Published',
-      Suspended: 'Recalled',
-      active: 'published',
-      suspended: 'recalled'
-    };
-    return changeMap[name] || name;
+    return statusTransMap[status] || status;
   }
-  return name;
+  return status;
 }

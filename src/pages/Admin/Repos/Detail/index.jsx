@@ -14,7 +14,7 @@ import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
-import { getSessInfo, changeStatus } from 'utils';
+import { getSessInfo, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -100,7 +100,7 @@ export default class RepoDetail extends Component {
       <div className="operate-menu">
         <Link to={`/dashboard/repo/edit/${id}`}>{t('Modify Repo')}</Link>
         <span onClick={() => startIndexer(id)}>{t('Trigger indexer')}</span>
-        <span onClick={() => deleteRepoOpen(id)}>{t('Delete Repo')}</span>
+        <span onClick={() => deleteRepoOpen(id)}>{t('Delete')}</span>
       </div>
     );
   };
@@ -241,8 +241,8 @@ export default class RepoDetail extends Component {
               key: 'status',
               conditions: [
                 { name: t('Draft'), value: 'draft' },
-                { name: t(changeStatus('Active')), value: 'active' },
-                { name: t(changeStatus('Suspended')), value: 'suspended' },
+                { name: t(mappingStatus('Active')), value: 'active' },
+                { name: t(mappingStatus('Suspended')), value: 'suspended' },
                 { name: t('Deleted'), value: 'deleted' }
               ],
               onChangeFilter: appStore.onChangeStatus,

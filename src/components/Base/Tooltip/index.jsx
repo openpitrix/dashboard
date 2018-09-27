@@ -15,7 +15,8 @@ export default class Tooltip extends React.Component {
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
     visible: PropTypes.bool,
     onVisibleChange: PropTypes.func,
-    isShowArrow: PropTypes.bool
+    isShowArrow: PropTypes.bool,
+    showBorder: PropTypes.bool
   };
 
   static defaultProps = {
@@ -23,6 +24,7 @@ export default class Tooltip extends React.Component {
     trigger: 'hover',
     placement: 'bottom',
     visible: false,
+    showBorder: false,
     onVisibleChange() {}
   };
 
@@ -115,13 +117,21 @@ export default class Tooltip extends React.Component {
   }
 
   render() {
-    const { prefixCls, className, content, placement, children, isShowArrow } = this.props;
+    const {
+      prefixCls,
+      className,
+      content,
+      placement,
+      children,
+      isShowArrow,
+      showBorder
+    } = this.props;
     const visible = this.state.visible;
 
     return (
       <Manager className={classNames(styles.tooltip, className)}>
         <Target
-          className={classNames(styles.target, { [styles.active]: visible })}
+          className={classNames(styles.target, { [styles.active]: visible || showBorder })}
           innerRef={c => {
             this.target = c;
           }}

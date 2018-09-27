@@ -68,7 +68,7 @@ export default class SSHKeys extends Component {
 
     return (
       <div className="operate-menu">
-        <span onClick={e => this.showDeleteModal(e, pairId)}>{t('Delete SSH Key')}</span>
+        <span onClick={e => this.showDeleteModal(e, pairId)}>{t('Delete')}</span>
       </div>
     );
   };

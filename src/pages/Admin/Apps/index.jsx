@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName, changeStatus } from 'utils';
+import { getSessInfo, getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -122,7 +122,7 @@ export default class Apps extends Component {
         itemMenu = (
           <Fragment>
             {item.status === 'suspended' && (
-              <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete App')}</span>
+              <span onClick={showDeleteApp.bind(null, item.app_id)}>{t('Delete')}</span>
             )}
             <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
               {t('Modify category')}
@@ -244,7 +244,7 @@ export default class Apps extends Component {
         title: t('Status'),
         key: 'status',
         width: '90px',
-        render: item => <Status type={item.status} name={changeStatus(item.status)} />
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
       },
       {
         title: t('Categories'),
@@ -321,8 +321,8 @@ export default class Apps extends Component {
         key: 'status',
         conditions: [
           { name: t('Draft'), value: 'draft' },
-          { name: t(changeStatus('Active')), value: 'active' },
-          { name: t(changeStatus('Suspended')), value: 'suspended' },
+          { name: t(mappingStatus('Active')), value: 'active' },
+          { name: t(mappingStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: onChangeStatus,
