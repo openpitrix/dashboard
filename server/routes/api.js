@@ -39,16 +39,14 @@ router.post('/api/*', async ctx => {
     if (access_token) {
       header.Authorization = token_type + ' ' + access_token;
     } else if (refresh_token) {
-      const res = await agent
-        .post([apiServer, 'oauth2/token'].join('/'))
-        .set(header)
-        .send({
-          grant_type: 'refresh_token',
-          client_id: ctx.store.clientId,
-          client_secret: ctx.store.clientSecret,
-          scope: '',
-          refresh_token: refresh_token
-        });
+      const refreshUrl = [apiServer, 'oauth2/token'].join('/');
+      const res = await agent.post(refreshUrl).send({
+        grant_type: 'refresh_token',
+        client_id: ctx.store.clientId,
+        client_secret: ctx.store.clientSecret,
+        scope: '',
+        refresh_token: refresh_token
+      });
       const result = (res && res.body) || {};
 
       if (result.access_token) {
@@ -67,14 +65,6 @@ router.post('/api/*', async ctx => {
   ctx.body = await agent.send(forwardMethod, url, body, {
     header: header
   });
-
-  if (endpoint === 'oauth2/token' && ctx.body.access_token) {
-    const { access_token, token_type, refresh_token, expires_in } = ctx.body;
-    sessConfig.maxAge = expires_in * 1000;
-    ctx.cookies.set('access_token', access_token, sessConfig);
-    ctx.cookies.set('token_type', token_type, sessConfig);
-    ctx.cookies.set('refresh_token', refresh_token);
-  }
 });
 
 module.exports = router;
