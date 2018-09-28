@@ -19,7 +19,7 @@ export default class Login extends Component {
   handleSubmit = async params => {
     const res = await this.props.store.oauth2Check(params);
 
-    if(!(res && res.err)){
+    if (!(res && res.err)) {
       const url = getUrlParam('url');
       location.href = url ? url : '/dashboard';
       // this.props.history.push(path);
@@ -27,7 +27,8 @@ export default class Login extends Component {
   };
 
   render() {
-    const { t } = this.props;
+    const { t, store } = this.props;
+    const { rememberMe, toggleRememberMe } = store;
 
     return (
       <div className={styles.login}>
@@ -61,7 +62,13 @@ export default class Login extends Component {
                 />
               </Form.Item>
               <Form.Item className={styles.formItem} noLabel>
-                <Checkbox className={styles.checkbox}>{t('Remember me')}</Checkbox>
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={toggleRememberMe}
+                  className={styles.checkbox}
+                >
+                  {t('Remember me')}
+                </Checkbox>
               </Form.Item>
               <Form.Item className={styles.formItem} noLabel>
                 <Button htmlType="submit" className={styles.submitBtn}>
