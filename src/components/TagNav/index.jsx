@@ -34,7 +34,7 @@ export default class TagNav extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextState.curTag !== this.state.curTag || nextProps.tags !== this.props.tags;
+    return nextState.curTag !== this.state.curTag;
   }
 
   handleChange = tag => {

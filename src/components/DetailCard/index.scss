@@ -70,6 +70,11 @@
       color: $N300;
       list-style: none;
       @include textCut;
+
+      &.setHeight {
+        height: 24px;
+      }
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -96,6 +101,12 @@
       color: $N75;
       text-align: right;
     }
+
+    .value {
+      display: inline-block;
+      width: calc(100% - 144px)
+    }
+
     .labels {
       margin-top: 0px;
       margin-left: 144px;

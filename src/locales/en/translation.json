@@ -68,7 +68,7 @@
   "EMPTY_APP_TIPS": "If OpenPitrix administrator setting repo done, all applications can imported automatically. As OpenPitrix user, can browse all public applications. and browse by label or categories",
   "EMPTY_REPO_TIPS": "Application developer create OpenPitrix packaged apps very easy, it's used yaml or json format for description language, and upload to http server or object storage",
   "EMPTY_CLUSTER_TIPS": "OpenPitrix managing application lifecycle ,both day1 and day2 , the status of application (as normal run as cluster )like : pending, active, shutdown, deleted. If admin want to stop clusters, just tell OpenPitrix, it will help cloud administrator finished the rest steps",
-
+  "EMPTY_RUNTIME_TIPS": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud.",
   "NORMAL_GUIDING_WORDS": "Welcome to OpenPitirx, What would you like to do?",
 
   "search_results": "Results"

@@ -30,12 +30,29 @@ import styles from './index.scss';
 }))
 @observer
 export default class Overview extends React.Component {
-  static async onEnter({ appStore, clusterStore, repoStore, runtimeStore, categoryStore }) {
+  static async onEnter({
+    appStore,
+    clusterStore,
+    repoStore,
+    runtimeStore,
+    categoryStore,
+    userStore,
+    loginUser
+  }) {
     await appStore.fetchAll({ noLimit: true });
     await clusterStore.fetchAll();
-    await repoStore.fetchAll();
-    await categoryStore.fetchAll();
     await runtimeStore.fetchAll();
+
+    //fixme developer user query public repos
+    if (loginUser.isDev || loginUser.isAdmin) {
+      const params = loginUser.isDev ? { visibility: ['private'] } : {};
+      await repoStore.fetchAll(params);
+    }
+
+    if (loginUser.isAdmin) {
+      await categoryStore.fetchAll();
+      await userStore.fetchAll();
+    }
   }
 
   constructor(props) {
@@ -107,10 +124,11 @@ export default class Overview extends React.Component {
           <Grid>
             <Section>
               <Panel
-                title={t('Top Repos')}
+                type="repo"
+                title="Top Repos"
                 linkTo="/dashboard/repos"
+                buttonTo="/dashboard/repo/create"
                 len={repoList.length}
-                iconName="stateful-set"
               >
                 <RepoList repos={repoList} type="public" limit={4} />
                 <RepoList repos={repoList} type="private" limit={4} />
@@ -119,10 +137,10 @@ export default class Overview extends React.Component {
 
             <Section>
               <Panel
-                title={t('Top Apps')}
+                type="app"
+                title="Top Apps"
                 linkTo="/dashboard/apps"
                 len={appList.length}
-                iconName="appcenter"
                 isAdmin
               >
                 <AppList apps={appList} />
@@ -131,10 +149,10 @@ export default class Overview extends React.Component {
 
             <Section>
               <Panel
-                title={t('Latest Clusters')}
+                type="cluster"
+                title="Latest Clusters"
                 linkTo="/dashboard/clusters"
                 len={clusterList.length}
-                iconName="cluster"
               >
                 <ClusterList clusters={clusterList} />
               </Panel>
@@ -146,13 +164,13 @@ export default class Overview extends React.Component {
   };
 
   normalView = () => {
-    const { sessInfo, appStore, repoStore, clusterStore, t } = this.props;
+    const { sessInfo, appStore, runtimeStore, clusterStore, t } = this.props;
     const countLimit = 5;
     const { isLoading } = appStore;
 
     const name = getSessInfo('user', sessInfo);
     const appList = appStore.apps.slice(0, countLimit);
-    const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
+    const runtimteList = runtimeStore.runtimes.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
 
     return (
@@ -165,29 +183,29 @@ export default class Overview extends React.Component {
         </Row>
         <Grid>
           <Section>
-            <Panel title={t('Top Apps')} linkTo="/apps" len={appList.length} iconName="appcenter">
+            <Panel type="app" title="Top Apps" linkTo="/apps" len={appList.length}>
               <AppList apps={appList} />
             </Panel>
           </Section>
 
           <Section>
             <Panel
-              title={t('Top Repos')}
-              linkTo="/dashboard/repos"
-              len={repoList.length}
-              iconName="stateful-set"
+              type="runtime"
+              title="Top Runtimes"
+              linkTo="/runtimes"
+              buttonTo="/dashboard/runtime/create"
+              len={runtimteList.length}
             >
-              <RepoList repos={repoList} type="public" limit={4} />
-              {/*<RepoList repos={repoList} type="private" limit={2} />*/}
+              <RepoList type="runtime" runtimes={runtimteList} clusters={clusterStore.clusters} />
             </Panel>
           </Section>
 
           <Section>
             <Panel
-              title={t('Latest Clusters')}
+              type="cluster"
+              title="Latest Clusters"
               linkTo="/dashboard/clusters"
               len={clusterList.length}
-              iconName="cluster"
             >
               <ClusterList clusters={clusterList} />
             </Panel>
@@ -198,16 +216,7 @@ export default class Overview extends React.Component {
   };
 
   developerView = () => {
-    const {
-      appStore,
-      clusterStore,
-      repoStore,
-      runtimeStore,
-      categoryStore,
-      userStore,
-      sessInfo,
-      t
-    } = this.props;
+    const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
     const countLimit = 5;
     const { isLoading } = appStore;
 
@@ -234,6 +243,7 @@ export default class Overview extends React.Component {
       {
         title: 'App',
         key: 'app_id',
+        width: '100px',
         render: item => (
           <Link to={`/dashboard/app/${item.app_id}`}>
             {getObjName(appStore.apps, 'app_id', item.app_id, 'name')}
@@ -313,19 +323,15 @@ export default class Overview extends React.Component {
         <Row>
           <Grid>
             <Section>
-              <Panel
-                title={t('Top Apps')}
-                linkTo="/dashboard/apps"
-                len={appList.length}
-                iconName="appcenter"
-              >
+              <Panel type="app" title="Top Apps" linkTo="/dashboard/apps" len={appList.length}>
                 <AppList apps={appList} />
               </Panel>
             </Section>
 
             <Section size={8}>
               <Panel
-                title={t('Latest Clusters')}
+                type="cluster"
+                title="Latest Clusters"
                 linkTo="/dashboard/clusters"
                 len={clusterList.length}
                 iconName="cluster"

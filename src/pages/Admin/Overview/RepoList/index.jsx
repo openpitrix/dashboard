@@ -11,50 +11,52 @@ import styles from './index.scss';
 @translate()
 export default class RepoList extends PureComponent {
   static propTypes = {
-    repos: PropTypes.array,
     type: PropTypes.oneOf(['public', 'private', 'runtime']),
+    repos: PropTypes.array,
+    runtimes: PropTypes.array,
+    clusters: PropTypes.array,
     limit: PropTypes.number
   };
 
   static defaultProps = {
-    limit: 2,
     type: 'public',
-    repos: []
+    repos: [],
+    runtimes: [],
+    clusters: [],
+    limit: 2
   };
 
   render() {
-    const { repos, type, limit, t } = this.props;
-    let filterRepos = repos,
+    const { repos, runtimes, clusters, type, limit, t } = this.props;
+    let filterItems = runtimes,
       totalName = 'Clusters';
 
     if (type !== 'runtime') {
-      filterRepos = repos.slice(0, limit).filter(repo => repo.visibility === type);
+      filterItems = repos.slice(0, limit).filter(repo => repo.visibility === type);
       totalName = 'Apps';
     }
 
+    const isRepoList = type !== 'runtime' && filterItems.length > 0;
+
     return (
       <Fragment>
-        {type !== 'runtime' &&
-          filterRepos.length > 0 && <div className={styles.type}>{t(ucfirst(type))}</div>}
-        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'private' })}>
-          {filterRepos.map(item => {
-            let link = `/dashboard/repo/${item.repo_id}`;
-            let total = item.clusters && item.clusters.length;
+        {isRepoList && <div className={styles.type}>{t(ucfirst(type))}</div>}
+        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'public' })}>
+          {filterItems.map(item => {
+            let link = `/dashboard/runtime/${item.runtime_id}`;
+            let provider = item.provider;
+            let total = clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length;
+
             if (type !== 'runtime') {
               link = `/dashboard/repo/${item.repo_id}`;
+              provider = item.providers && item.providers[0];
               total = item.apps && item.apps.length;
             }
+
             return (
               <li key={item.repo_id || item.runtime_id}>
                 <Link to={link}>
-                  {item.repo_id && (
-                    <Icon
-                      name={item.providers && item.providers[0]}
-                      size={24}
-                      className={styles.icon}
-                      type="dark"
-                    />
-                  )}
+                  <Icon name={provider} size={24} className={styles.icon} type="dark" />
                   <span className={styles.name}>{item.name}</span>
                   <span className={styles.total}>
                     <span className={styles.number}>{total || 0}</span>

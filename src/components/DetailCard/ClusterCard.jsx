@@ -40,9 +40,9 @@ export default class ClusterCard extends Component {
             <span className={styles.name}>{t('Status')}</span>
             <Status type={detail.status} transition={detail.transition_status} />
           </li>
-          <li>
+          <li className={styles.setHeight}>
             <span className={styles.name}>{t('Runtime')}</span>
-            <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
+            <Link className={styles.value} to={`/dashboard/runtime/${detail.runtime_id}`}>
               <ProviderName provider={provider} name={runtimeName} />
             </Link>
           </li>
