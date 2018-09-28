@@ -212,10 +212,11 @@ export default class RepoStore extends Store {
     }
 
     const itemKey = type === 'selectors' ? 'selector_key' : 'label_key';
+    const itemValue = type === 'selectors' ? 'selector_value' : 'label_value';
 
     return get(this.repoDetail, type, [])
       .filter(item => Boolean(item[itemKey]))
-      .map(item => values(item).join('='))
+      .map(item => item[itemKey] + '=' + item[itemValue])
       .join('&');
   };
 }

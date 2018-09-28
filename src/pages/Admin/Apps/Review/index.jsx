@@ -67,6 +67,12 @@ export default class Review extends Component {
 
     let columns = [
       {
+        title: t('Status'),
+        key: 'status',
+        width: '110px',
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
+      },
+      {
         title: t('App Name'),
         key: 'name',
         width: '175px',
@@ -86,12 +92,6 @@ export default class Review extends Component {
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
-        title: t('Status'),
-        key: 'status',
-        width: '90px',
-        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
-      },
-      {
         title: t('Categories'),
         key: 'category',
         width: '120px',
@@ -102,12 +102,6 @@ export default class Review extends Component {
               .map(cate => cate.name)
               .join(', ')
           )
-      },
-      {
-        title: t('Visibility'),
-        key: 'visibility',
-        width: '65px',
-        render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
       },
       {
         title: t('Repo'),
@@ -132,7 +126,7 @@ export default class Review extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '112px',
+        width: '92px',
         sorter: this.role === 'global_admin',
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
