@@ -894,5 +894,23 @@ const svgSprites = `
     <path d="M14.8824215,2.33679674 L13.1126776,5.40208296 L14.3447285,7.26810837 L16.5767793,7.40208296 L18.3465231,4.33679674 C19.2902044,5.73754138 19.4162604,7.60997489 18.5149056,9.17116721 C17.2548655,11.3536206 14.4641731,12.1013844 12.2817197,10.8413443 C10.0992663,9.58130426 9.35150252,6.79061189 10.6115426,4.60815847 C11.5128974,3.04696615 13.1975004,2.21991708 14.8824215,2.33679674 Z" style="fill: var(--secondary-color); opacity: var(--secondary-opacity);"/>
   </g>
 </symbol>
+<symbol id="qui-check-fold" viewBox="0 0 24 24">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#D3C4ED" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm12 8H7v2h10v-2z"/>
+    <path fill="#6D35C3" d="M17 11v2H7v-2z"/>
+  </g>
+</symbol>
+<symbol id="qui-check-unfold" viewBox="0 0 24 24">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#D3C4ED" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm6 8H7v2h4v4h2v-4h4v-2h-4V7h-2v4z"/>
+    <path fill="#6D35C3" d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2z"/>
+  </g>
+</symbol>
+<symbol id="qui-pods-icon" viewBox="0 0 24 24">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#A2A9BE" d="M20.644 6.001L16.336 8l.004 8.007-4.343 1.996.007 3.997-8.661-3.998V10L7.68 8V4l4.324-2 8.64 4.001zM7.64 12v4L12 14v-4l-4.36 2z"/>
+    <path fill="#343945" d="M16.336 8l4.308-1.999v12.001L12.004 22l-.007-3.997 4.343-1.996zM7.64 12v4L12 14v-4z"/>
+  </g>
+</symbol>
 </svg>`;
 export default svgSprites;

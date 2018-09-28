@@ -21,7 +21,7 @@ export default class ClusterStore extends Store {
   @observable clusterId; // current delete cluster_id
   @observable operateType = '';
 
-  @observable currentPage = 1; //cluster table query params
+  @observable currentPage = 1; // cluster table query params
   @observable searchWord = '';
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
   @observable selectStatus = '';
@@ -42,6 +42,10 @@ export default class ClusterStore extends Store {
   @observable name = '';
   @observable pub_key = '';
   @observable description = '';
+  @observable env = '';
+  @observable versionId = '';
+
+  page = 'index';
 
   // cluster job queue
   @observable
@@ -119,6 +123,7 @@ export default class ClusterStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });
     this.cluster = get(result, 'cluster_set[0]', {});
+    this.versionId = this.cluster.version_id;
     this.isLoading = false;
     this.pageInitMap = { cluster: true };
   };
@@ -160,6 +165,7 @@ export default class ClusterStore extends Store {
 
     if (_.get(result, 'cluster_id')) {
       await this.fetchAll();
+      await this.fetchJobs();
       this.cancelSelected();
       this.success('Delete cluster successfully.');
     }
@@ -184,6 +190,58 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       this.cancelSelected();
       this.success('Stop cluster successfully.');
+    }
+  };
+
+  @action
+  cease = async clusterIds => {
+    const result = await this.request.post('clusters/cease', { cluster_id: clusterIds });
+    this.hideModal();
+
+    if (_.get(result, 'cluster_id')) {
+      await this.fetchAll();
+      await this.fetchJobs();
+      this.cancelSelected();
+      this.success('Cease cluster successfully.');
+    }
+  };
+
+  @action
+  rollback = async clusterIds => {
+    const result = await this.request.post('clusters/rollback', { cluster_id: clusterIds[0] });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      await this.fetchJobs();
+      this.success('Rollback cluster successfully.');
+    }
+  };
+
+  @action
+  updateEnv = async clusterIds => {
+    const result = await this.request.patch('clusters/update_env', {
+      cluster_id: clusterIds[0],
+      env: this.env
+    });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      await this.fetchJobs();
+      this.success('Rollback cluster successfully.');
+    }
+  };
+
+  @action
+  upgradeVersion = async clusterIds => {
+    const result = await this.request.post('clusters/upgrade', {
+      cluster_id: clusterIds[0],
+      version_id: this.versionId
+    });
+    if (_.get(result, 'cluster_id')) {
+      this.hideModal();
+      await this.fetchAll();
+      await this.fetchJobs();
+      this.success('Rollback cluster successfully.');
     }
   };
 
@@ -317,7 +375,7 @@ export default class ClusterStore extends Store {
 
   @action
   fetchKeyPairs = async (params = {}) => {
-    let defaultParams = {
+    const defaultParams = {
       limit: this.maxLimit
     };
     const result = await this.request.get('clusters/key_pairs', assign(defaultParams, params));
@@ -331,7 +389,7 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  addKeyPairs = async (params = {}) => {
+  addKeyPairs = async () => {
     if (!this.name) {
       this.error('Please input Name!');
     } else if (!this.pub_key) {
@@ -376,7 +434,7 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changePubKey = e => {
+  changepubkey = e => {
     this.pub_key = e.target.value;
   };
 
@@ -386,9 +444,21 @@ export default class ClusterStore extends Store {
   };
 
   @action
+  changeEnv = str => {
+    this.env = str;
+  };
+
+  @action
+  changeAppVersion = type => {
+    this.versionId = type;
+  };
+
+  @action
   keyPairReset = () => {
     this.name = '';
     this.pub_key = '';
     this.description = '';
   };
 }
+
+export Detail from './detail';

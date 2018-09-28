@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Icon, Image } from 'components/Base';
+import { Checkbox, Icon, Image } from 'components/Base';
 import styles from './index.scss';
 
 @translate()
@@ -21,10 +21,13 @@ export default class TdName extends React.Component {
     linkUrl: PropTypes.string,
     noCopy: PropTypes.bool,
     className: PropTypes.string,
+    onExtendedChange: PropTypes.func,
+    hasChild: PropTypes.bool,
     noIcon: PropTypes.bool
   };
 
   static defaultProps = {
+    onExtendedChange: () => {},
     noIcon: false,
     noCopy: false
   };
@@ -73,25 +76,42 @@ export default class TdName extends React.Component {
   }
 
   render() {
-    const { name, description, linkUrl, noCopy, className } = this.props;
+    const {
+      name,
+      description,
+      linkUrl,
+      noCopy,
+      noDescription,
+      className,
+      rowKey,
+      isFold,
+      fold,
+      onExtendedChange
+    } = this.props;
+    const nameClass = isFold ? styles.foldName : styles.name;
 
     return (
       <span className={classnames(styles.tdName, className)}>
         {this.renderIcon()}
+        {isFold && (
+          <Checkbox isFold={true} fold={fold} value={rowKey} onChange={onExtendedChange} />
+        )}
         <span className={styles.info}>
           {linkUrl && (
-            <Link className={styles.name} to={linkUrl} title={name}>
+            <Link className={nameClass} to={linkUrl} title={name}>
               {name}&nbsp;
             </Link>
           )}
           {!linkUrl && (
-            <span className={styles.name} title={name}>
+            <span className={nameClass} title={name}>
               {name}&nbsp;
             </span>
           )}
-          <span className={styles.description} title={description}>
-            {description}&nbsp;
-          </span>
+          {!noDescription && (
+            <span className={styles.description} title={description}>
+              {description}&nbsp;
+            </span>
+          )}
           {!noCopy && (
             <span className="copy" data-clipboard-text={description} ref="copyBtn">
               <Icon name="copy" type="dark" />

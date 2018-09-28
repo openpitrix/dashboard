@@ -14,6 +14,7 @@ export default class RuntimeStore extends Store {
   @observable totalCount = 0;
   @observable runtimeId = '';
   @observable isModalOpen = false;
+  @observable isKubernetes = false;
 
   @observable currentPage = 1; //runtime table query params
   @observable searchWord = '';
@@ -102,7 +103,10 @@ export default class RuntimeStore extends Store {
   fetch = async runtimeId => {
     this.isLoading = true;
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
-    this.runtimeDetail = get(result, 'runtime_set[0]', {});
+    const runtimeDetail = get(result, 'runtime_set[0]', {});
+    const provider = get(runtimeDetail, 'provider', '');
+    this.isKubernetes = provider === 'kubernetes';
+    this.runtimeDetail = runtimeDetail;
     this.isLoading = false;
     this.pageInitMap = { runtime: true };
   };
@@ -184,6 +188,19 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
     this.pageInitMap = {};
     this.runtimeDeleted = null;
+  };
+
+  checkKubernetes = runtimeId => {
+    if (!runtimeId) return false;
+    if (!this.runtimes) return false;
+
+    let isKubernetes = false;
+    this.runtimes.forEach(runtime => {
+      if (runtime.runtime_id === runtimeId) {
+        isKubernetes = runtime.provider === 'kubernetes';
+      }
+    });
+    return isKubernetes;
   };
 }
 

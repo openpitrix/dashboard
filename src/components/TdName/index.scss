@@ -1,7 +1,7 @@
 @import "~scss/vars";
 
 .tdName {
-  display: inline-block;
+  display: flex;
   :global{
    .icon{
       float: left;
@@ -24,7 +24,7 @@
       vertical-align: middle;
     }
   }
-  .info{
+  .info {
     display: inline-block;
     &:hover {
       :global {
@@ -33,13 +33,25 @@
         }
       }
     }
-    .name{
+    .name {
       display: block;
       line-height: 20px;
       font-weight: 500;
       text-align: left;
       color: $N500;
       width: 110px;
+      @include textCut;
+      &:hover{
+        color: $link-hover;
+      }
+    }
+    .foldName {
+      display: block;
+      line-height: 20px;
+      font-weight: 500;
+      text-align: left;
+      color: $N500;
+      width: 180px;
       @include textCut;
       &:hover{
         color: $link-hover;

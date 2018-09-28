@@ -12,24 +12,25 @@ export default class Status extends PureComponent {
     style: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
-    type: PropTypes.oneOf([
-      'draft',
-      'running',
-      'active',
-      'stopped',
-      'ceased',
-      'pending',
-      'suspended',
-      'successful',
-      'failed',
-      'deleted',
-      'working', // job status
+    type: PropTypes.string,
+    /* type: PropTypes.oneOf([
+     *   'draft',
+     *   'running',
+     *   'active',
+     *   'stopped',
+     *   'ceased',
+     *   'pending',
+     *   'suspended',
+     *   'successful',
+     *   'failed',
+     *   'deleted',
+     *   'working', // job status
 
-      'enabled',
-      'disabled',
+     *   'enabled',
+     *   'disabled',
 
-      'published'
-    ]),
+     *   'published'
+     * ]), */
     transition: PropTypes.oneOf([
       '',
       'starting',
@@ -53,7 +54,7 @@ export default class Status extends PureComponent {
 
   render() {
     const { style, className, name, type, transition, t } = this.props;
-    let status = String(transition || type).toLowerCase();
+    const status = String(transition || type).toLowerCase();
 
     const normalizeName = t(capitalize(name || status));
 
