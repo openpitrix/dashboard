@@ -58,12 +58,22 @@ export default class RepoStore extends Store {
     const result = await this.request.get('repos', assign(defaultParams, params));
     this.repos = get(result, 'repo_set', []);
     this.totalCount = get(result, 'total_count', 0);
+
+    if (params.isQueryPublic) {
+      delete params.isQueryPublic;
+      params.visibility = ['public'];
+      const pubResult = await this.request.get('repos', assign(defaultParams, params));
+      const pubRepos = get(pubResult, 'repo_set', []);
+      this.repos = [...pubRepos, ...this.repos];
+    }
+
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.repos.length; i++) {
         await appStore.fetchAll({ repo_id: this.repos[i].repo_id });
         this.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...this.repos[i] };
       }
     }
+
     this.isLoading = false;
   };
 
@@ -202,10 +212,11 @@ export default class RepoStore extends Store {
     }
 
     const itemKey = type === 'selectors' ? 'selector_key' : 'label_key';
+    const itemValue = type === 'selectors' ? 'selector_value' : 'label_value';
 
     return get(this.repoDetail, type, [])
       .filter(item => Boolean(item[itemKey]))
-      .map(item => values(item).join('='))
+      .map(item => item[itemKey] + '=' + item[itemValue])
       .join('&');
   };
 }

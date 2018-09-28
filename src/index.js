@@ -18,6 +18,9 @@ store.registerStores();
 
 if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
+  try {
+    store.loginUser = JSON.parse(getCookie('loginUser') || '{}');
+  } catch (err) {}
 
   import('./routes').then(({ default: routes }) => {
     let sc = null;

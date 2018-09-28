@@ -26,11 +26,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore, sessInfo }) {
+  static async onEnter({ appStore, categoryStore, repoStore, loginUser }) {
     await appStore.fetchAll();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      noLimit: true
+      noLimit: true,
+      isQueryPublic: loginUser.isDev
     });
     await categoryStore.fetchAll();
   }
@@ -205,8 +206,14 @@ export default class Apps extends Component {
   render() {
     const { appStore, repoStore, t } = this.props;
     const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
-
     const { repos } = repoStore;
+
+    let navLinkShow = t('My Apps') + ' / ' + t('All');
+    let urlFront = '/dashboard/app/';
+    if (this.role === 'global_admin') {
+      navLinkShow = t('Store') + ' / ' + t('All Apps');
+      urlFront = '/store/';
+    }
 
     let columns = [
       {
@@ -218,7 +225,7 @@ export default class Apps extends Component {
             name={item.name}
             description={item.app_id}
             image={item.icon || 'appcenter'}
-            linkUrl={`/dashboard/app/${item.app_id}`}
+            linkUrl={urlFront + item.app_id}
           />
         )
       },
@@ -325,11 +332,6 @@ export default class Apps extends Component {
       current: appStore.currentPage,
       noCancel: false
     };
-
-    let navLinkShow = t('My Apps') + ' / ' + t('All');
-    if (this.role === 'global_admin') {
-      navLinkShow = t('Store') + ' / ' + t('All Apps');
-    }
 
     return (
       <Layout className={styles.apps}>

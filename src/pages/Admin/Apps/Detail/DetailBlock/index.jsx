@@ -40,7 +40,7 @@ export default class DetailBlock extends React.Component {
           <dl>
             <dt>{t('Status')}</dt>
             <dd>
-              <Status name={appDetail.status} type={mappingStatus(appDetail.status)} />
+              <Status name={mappingStatus(appDetail.status)} type={appDetail.status} />
             </dd>
           </dl>
           <dl>

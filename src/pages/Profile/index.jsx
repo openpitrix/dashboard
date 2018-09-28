@@ -57,7 +57,7 @@ export default class Profile extends Component {
           <label className={styles.name}>{t('User Name')}</label>
           <Input
             className={styles.input}
-            name="name"
+            name="username"
             maxLength={50}
             value={userDetail.username}
             onChange={e => {

@@ -18,6 +18,7 @@ const defaultNotifyOption = { title: '', message: '', type: 'info' };
 export default class RootStore extends Store {
   @observable fixNav = false;
   @observable notifications = [];
+  @observable loginUser = {};
 
   constructor(initialState) {
     super(initialState);

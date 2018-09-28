@@ -169,17 +169,8 @@ export default class RepoCreateStore extends Store {
         return this.info('Labels missing key');
       }
     }
-    /* if (_.isEmpty(selectors)) {
-      this.isLoading = false;
-      return this.info('missing selectors');
-    }
 
-    if (_.isEmpty(labels)) {
-      this.isLoading = false;
-      return this.info('missing labels');
-    }*/
-
-    if (protocolType === 's3') {
+    if (data.url && protocolType === 's3') {
       data.credential = JSON.stringify({
         access_key_id: accessKey,
         secret_access_key: secretKey
@@ -205,21 +196,11 @@ export default class RepoCreateStore extends Store {
       data.credential = '{}';
     }
 
-    // fixme: both labels and selectors pass as queryString
-    /* data.selectors = selectors.map(selector => ({
-      selector_key: selector.label_key,
-      selector_value: selector.label_value
-    }));
-
-    data.labels = labels.map(label => ({
-      label_key: label.label_key,
-      label_value: label.label_value
-    }));*/
-
+    // fixed: both labels and selectors pass as queryString
     data.selectors = this.toQueryString(selectors);
     data.labels = this.toQueryString(labels);
 
-    // fix: provider is mobx array
+    // fixed: provider is mobx array
     let flatProviders = providers.toJSON();
     if (typeof flatProviders[0] !== 'string' && flatProviders[0].toJSON) {
       flatProviders = flatProviders[0].toJSON();
@@ -234,6 +215,9 @@ export default class RepoCreateStore extends Store {
     this.isLoading = true;
     if (this.repoId) {
       delete data.url;
+      if (!accessKey) {
+        delete data.credential;
+      }
       _.extend(data, { repo_id: this.repoId });
       await this.modifyRepo(data);
     } else {
@@ -246,7 +230,7 @@ export default class RepoCreateStore extends Store {
       this.success('Create repo successfully');
     }
 
-    // disable re-submit form in 2 sec
+    // disable re-submit form in 1 sec
     setTimeout(() => {
       this.isLoading = false;
     }, 1000);

@@ -18,8 +18,11 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppAdd extends Component {
-  static async onEnter({ repoStore }) {
-    await repoStore.fetchAll({ noLimit: true });
+  static async onEnter({ repoStore, loginUser }) {
+    await repoStore.fetchAll({
+      noLimit: true,
+      isQueryPublic: loginUser.isDev
+    });
   }
 
   constructor(props) {
@@ -99,8 +102,8 @@ export default class AppAdd extends Component {
     return (
       <StepContent name={name} explain={explain} className={styles.createVersion}>
         <div>
-          <RepoList type={t('public')} repos={publicRepos} onChange={this.onChange} />
-          <RepoList type={t('private')} repos={privateRepos} onChange={this.onChange} />
+          <RepoList type="public" repos={publicRepos} onChange={this.onChange} />
+          <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
         </div>
         <div
           onClick={() => this.selectRepoNext(selectRepos.length)}
