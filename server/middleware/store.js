@@ -38,8 +38,8 @@ module.exports = async (ctx, next) => {
       socketUrl = 'ws://' + socketUrl;
     }
 
-    const clientId = config.clientId;
-    const clientSecret = config.clientSecret;
+    const clientId = process.env.clientId || config.clientId;
+    const clientSecret = process.env.clientSecret || config.clientSecret;
     // url.resolve need first string starts with http
     ctx.store.apiServer = url.resolve(serverUrl, apiVer);
     ctx.store.socketUrl = socketUrl;
