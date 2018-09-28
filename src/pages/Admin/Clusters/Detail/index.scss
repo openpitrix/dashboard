@@ -123,3 +123,15 @@
     // }
   }
 }
+
+:global {
+  .ipShow {
+    font-size: 12px;
+    line-height: 20px;
+
+    .eip {
+      color: $N100;
+    }
+  }
+}
+

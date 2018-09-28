@@ -33,7 +33,7 @@
   &.active, &.successful {
     background-color: $G75;
   }
-  &.deleted, &.failed {
+  &.deleted, &.failed, &.rejected {
     background-color: $R300;
   }
   &.enabled {

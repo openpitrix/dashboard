@@ -12,41 +12,44 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName, mappingStatus } from 'utils';
+import { getSessInfo, getObjName, mappingStatus, getFilterObjs } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   rootStore,
+  appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  sessInfo
+  userStore: rootStore.userStore
 }))
 @observer
 export default class Review extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore, sessInfo }) {
-    await appStore.fetchAll({
-      status: ['draft']
-    });
+  static async onEnter({ appVersionStore, appStore, categoryStore, repoStore, userStore }) {
+    appVersionStore.registerStore('app', appStore);
+    appVersionStore.registerStore('user', userStore);
+    await appVersionStore.fetchAll();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true
     });
-    await categoryStore.fetchAll();
+    //await categoryStore.fetchAll();
   }
 
   constructor(props) {
     super(props);
-    const { appStore, repoStore, sessInfo } = this.props;
-    appStore.loadPageInit();
+    const { appVersionStore, appStore, repoStore, userStore } = this.props;
+    appVersionStore.loadPageInit();
     repoStore.loadPageInit();
+    appVersionStore.registerStore('app', appStore);
+    appVersionStore.registerStore('user', userStore);
   }
 
   renderToolbar() {
     const { t } = this.props;
-    const { searchWord, onSearch, onClearSearch, onRefresh } = this.props.appStore;
+    const { searchWord, onSearch, onClearSearch, onRefresh } = this.props.appVersionStore;
 
     return (
       <Toolbar
@@ -60,12 +63,13 @@ export default class Review extends Component {
   }
 
   render() {
-    const { appStore, repoStore, t } = this.props;
-    const { apps, isLoading } = appStore;
-
+    const { appVersionStore, appStore, repoStore, userStore, t } = this.props;
+    const { versions, isLoading } = appVersionStore;
+    const { apps } = appStore;
     const { repos } = repoStore;
+    const { users } = userStore;
 
-    let columns = [
+    const columns = [
       {
         title: t('Status'),
         key: 'status',
@@ -78,7 +82,7 @@ export default class Review extends Component {
         width: '175px',
         render: item => (
           <TdName
-            name={item.name}
+            name={getObjName(apps, 'app_id', item.app_id, 'name')}
             description={item.app_id}
             image={item.icon || 'appcenter'}
             linkUrl={`/dashboard/review/${item.app_id}`}
@@ -86,12 +90,12 @@ export default class Review extends Component {
         )
       },
       {
-        title: t('Latest Version'),
+        title: t('Version'),
         key: 'latest_version',
         width: '120px',
-        render: item => get(item, 'latest_app_version.name', '')
+        render: item => item.name
       },
-      {
+      /* {
         title: t('Categories'),
         key: 'category',
         width: '120px',
@@ -102,26 +106,34 @@ export default class Review extends Component {
               .map(cate => cate.name)
               .join(', ')
           )
-      },
+      },*/
       {
         title: t('Repo'),
         key: 'repo_id',
         width: '125px',
         render: item => (
-          <Link to={`/dashboard/repo/${item.repo_id}`}>
-            <ProviderName
-              className={styles.provider}
-              name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
-              provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
-            />
-          </Link>
+          <ProviderName
+            className={styles.provider}
+            name={getObjName(
+              repos,
+              'repo_id',
+              getFilterObjs(apps, 'app_id', item.app_id).repo_id,
+              'name'
+            )}
+            provider={getObjName(
+              repos,
+              'repo_id',
+              getFilterObjs(apps, 'app_id', item.app_id).repo_id,
+              'providers[0]'
+            )}
+          />
         )
       },
       {
         title: t('Developer'),
         key: 'developer',
         width: '80px',
-        render: item => item.owner
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Updated At'),
@@ -135,9 +147,9 @@ export default class Review extends Component {
 
     const pagination = {
       tableType: 'Apps',
-      onChange: appStore.changePagination,
-      total: appStore.totalCount,
-      current: appStore.currentPage,
+      onChange: appVersionStore.changePagination,
+      total: appVersionStore.totalCount,
+      current: appVersionStore.currentPage,
       noCancel: false
     };
 
@@ -155,12 +167,11 @@ export default class Review extends Component {
 
                 <Table
                   columns={columns}
-                  dataSource={apps.slice(0, 10)}
+                  dataSource={versions.toJSON()}
                   pagination={pagination}
                   isLoading={isLoading}
                 />
               </Card>
-              }
             </Section>
           </Grid>
         </Row>

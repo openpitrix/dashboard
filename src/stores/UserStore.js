@@ -57,6 +57,12 @@ export default class UserStore extends Store {
       status: this.selectStatus ? this.selectStatus : defaultStatus
     };
 
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
     }

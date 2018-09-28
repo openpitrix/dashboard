@@ -34,6 +34,8 @@ export default class AppVersionStore extends Store {
 
   @observable reason = '';
 
+  @observable store = {};
+
   @action
   fetchAll = async (params = {}) => {
     let defaultParams = {
@@ -63,6 +65,18 @@ export default class AppVersionStore extends Store {
     } else {
       this.currentVersion = { ...this.currentVersion };
     }
+
+    const appStore = this.store.app;
+    const appIds = this.versions.map(item => item.app_id);
+    if (appStore && appIds.length > 1) {
+      appStore.fetchAll({ app_id: appIds });
+    }
+    const userStore = this.store.user;
+    const userIds = this.versions.map(item => item.owner);
+    if (userStore && userIds.length > 1) {
+      userStore.fetchAll({ user_id: userIds });
+    }
+
     this.isLoading = false;
   };
 
@@ -295,5 +309,11 @@ export default class AppVersionStore extends Store {
     this.createResult = null;
     //this.currentVersion = {};
     this.uploadFile = '';
+    this.store = {};
+  };
+
+  @action
+  registerStore = (name, store) => {
+    this.store[name] = store;
   };
 }

@@ -85,6 +85,10 @@ export function getFormData(form) {
 export function getObjName(datas, key, value, name) {
   return get(filter(datas, { [key]: value })[0], name, '');
 }
+export function getFilterObjs(datas, key, value) {
+  const result = datas.filter(data => data[key] === value);
+  return result[0] || {};
+}
 
 export function getStasTotal(obj) {
   let total = 0;
