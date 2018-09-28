@@ -11,42 +11,53 @@ import styles from './index.scss';
 @translate()
 export default class Panel extends PureComponent {
   static propTypes = {
+    type: PropTypes.string,
     title: PropTypes.string,
     linkTo: PropTypes.string,
+    buttonTo: PropTypes.string,
     children: PropTypes.node,
-    iconName: PropTypes.string,
     len: PropTypes.number
   };
 
   renderNoDataWelcome() {
-    const { iconName, linkTo, t } = this.props;
+    const { type, linkTo, buttonTo, t } = this.props;
 
-    const btnObj = {
-      appcenter: 'Browse',
-      'stateful-set': 'Create',
-      cluster: 'Manage'
+    const iconMap = {
+      app: 'appcenter',
+      repo: 'stateful-set',
+      runtime: 'stateful-set',
+      cluster: 'cluster'
+    };
+    const titleMap = {
+      app: 'Browse Apps',
+      repo: 'Create Repo',
+      runtime: 'Create Runtime',
+      cluster: 'Manage Clusters'
     };
     const descMap = {
-      appcenter: t('EMPTY_APP_TIPS'),
-      'stateful-set': t('EMPTY_REPO_TIPS'),
-      cluster: t('EMPTY_CLUSTER_TIPS')
+      app: 'EMPTY_APP_TIPS',
+      repo: 'EMPTY_REPO_TIPS',
+      runtime: 'EMPTY_REPO_TIPS',
+      cluster: 'EMPTY_CLUSTER_TIPS'
+    };
+    const btnMap = {
+      app: 'Browse',
+      repo: 'Create',
+      runtime: 'Create',
+      cluster: 'Manage'
     };
 
     return (
       <div className={styles.blankList}>
         <div className={styles.iconName}>
-          <Icon name={iconName} size={64} />
+          <Icon name={iconMap[type]} size={64} />
         </div>
-        <div className={styles.title}>
-          {iconName === 'appcenter' && t('Browse Apps')}
-          {iconName === 'stateful-set' && t('Create Repo')}
-          {iconName === 'cluster' && t('Manage Clusters')}
+        <div className={styles.title}>{t(titleMap[type])}</div>
+        <div className={styles.description} title={descMap[type]}>
+          {t(descMap[type])}
         </div>
-        <div className={styles.description} title={descMap[iconName]}>
-          {descMap[iconName]}
-        </div>
-        <Link className={styles.button} to={linkTo}>
-          <Button type="default">{t(btnObj[iconName])}</Button>
+        <Link className={styles.button} to={buttonTo || linkTo}>
+          <Button type="default">{t(btnMap[type])}</Button>
         </Link>
       </div>
     );

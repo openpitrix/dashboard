@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
+import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
 import { Icon, Button, Table, Popover, Image } from 'components/Base';
+import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
 import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
@@ -25,8 +25,10 @@ import styles from './index.scss';
 @observer
 export default class Purchased extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
+    clusterStore.registerStore('app', appStore);
     await clusterStore.fetchAll();
     await appStore.fetchAll({ status: 'active', noLimit: true });
+    appStore.storeApps = appStore.apps;
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
@@ -40,6 +42,7 @@ export default class Purchased extends Component {
     clusterStore.loadPageInit();
     appStore.loadPageInit();
     runtimeStore.loadPageInit();
+    clusterStore.registerStore('app', appStore);
     this.store = clusterStore;
   }
 
@@ -87,13 +90,89 @@ export default class Purchased extends Component {
     clusterStore.fetchAll();
   };
 
+  handleCluster = () => {
+    const { clusterId, clusterIds, modalType, operateType } = this.store;
+    let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+    switch (modalType) {
+      case 'delete':
+        this.store.remove(ids);
+        break;
+      case 'start':
+        this.store.start(ids);
+        break;
+      case 'stop':
+        this.store.stop(ids);
+        break;
+    }
+  };
+
+  getAppTdShow = (appId, apps) => {
+    const app = apps.find(item => item.app_id === appId);
+
+    return app ? (
+      <TdName
+        noCopy
+        className="smallId"
+        name={app.name}
+        description={_.get(app, 'latest_app_version.name')}
+        image={app.icon || 'appcenter'}
+        linkUrl={`/store/${appId}`}
+      />
+    ) : null;
+  };
+
+  renderHandleMenu = item => {
+    const { clusterStore, runtimeStore, t } = this.props;
+    const { runtimes } = runtimeStore;
+    const { showOperateCluster } = clusterStore;
+    const { cluster_id, status, runtime_id } = item;
+    const provider = getObjName(runtimes, 'runtime_id', runtime_id, 'provider');
+
+    return (
+      <div id={cluster_id} className="operate-menu">
+        <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
+        {provider !== 'kubernetes' &&
+          status === 'stopped' && (
+            <span onClick={() => showOperateCluster(cluster_id, 'start')}>
+              {t('Start cluster')}
+            </span>
+          )}
+        {provider !== 'kubernetes' &&
+          status === 'active' && (
+            <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
+          )}
+        {status !== 'deleted' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete')}</span>
+        )}
+      </div>
+    );
+  };
+
+  renderDeleteModal = () => {
+    const { t } = this.props;
+    const { hideModal, isModalOpen, modalType } = this.store;
+
+    return (
+      <Dialog
+        title={t(`${capitalize(modalType)} cluster`)}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleCluster}
+      >
+        <div className={styles.noteWord}>
+          {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
+        </div>
+      </Dialog>
+    );
+  };
+
   renderApps() {
-    const { apps } = this.props.appStore;
+    const { storeApps } = this.props.appStore;
     const { appId } = this.props.clusterStore;
 
     return (
       <ul className={styles.appList}>
-        {apps.slice(0, 10).map(app => (
+        {storeApps.slice(0, 10).map(app => (
           <li
             key={app.app_id}
             className={classNames({ [styles.active]: app.app_id === appId })}
@@ -128,9 +207,10 @@ export default class Purchased extends Component {
   }
 
   render() {
-    const { clusterStore, t } = this.props;
+    const { clusterStore, appStore, t } = this.props;
     const { clusters, appId, isLoading } = clusterStore;
     const runtimes = this.props.runtimeStore.allRuntimes;
+    const { apps } = appStore;
 
     const columns = [
       {
@@ -151,6 +231,12 @@ export default class Purchased extends Component {
         key: 'status',
         width: '102px',
         render: item => <Status type={item.status} transition={item.transition_status} />
+      },
+      {
+        title: t('App'),
+        key: 'app_id',
+        width: '150px',
+        render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
         title: t('Runtime'),
@@ -176,6 +262,16 @@ export default class Purchased extends Component {
         sorter: true,
         onChangeSort: this.onChangeSort,
         render: item => formatTime(item.create_time, 'YYYY/MM/DD HH:mm:ss')
+      },
+      {
+        title: t('Actions'),
+        key: 'actions',
+        width: '84px',
+        render: item => (
+          <Popover content={this.renderHandleMenu(item)} className="actions">
+            <Icon name="more" />
+          </Popover>
+        )
       }
     ];
 
@@ -230,6 +326,8 @@ export default class Purchased extends Component {
             </Card>
           </Section>
         </Grid>
+
+        {this.renderDeleteModal()}
       </Layout>
     );
   }

@@ -27,11 +27,9 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
     clusterStore.clusters = [];
-    await clusterStore.fetchAll();
+    clusterStore.registerStore('app', appStore);
 
-    await appStore.fetchApps({
-      status: ['active', 'deleted']
-    });
+    await clusterStore.fetchAll();
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
@@ -41,9 +39,10 @@ export default class Clusters extends Component {
 
   constructor(props) {
     super(props);
-    const { clusterStore, runtimeStore } = this.props;
+    const { clusterStore, runtimeStore, appStore } = this.props;
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
+    clusterStore.registerStore('app', appStore);
     clusterStore.page = 'index';
     this.store = clusterStore;
   }

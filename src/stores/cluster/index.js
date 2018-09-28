@@ -52,6 +52,7 @@ export default class ClusterStore extends Store {
   jobs = {
     // job_id=> cluster_id
   };
+  store = {};
 
   @action.bound
   showModal = type => {
@@ -96,9 +97,17 @@ export default class ClusterStore extends Store {
     const result = await this.request.get('clusters', assign(defaultParams, params));
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
+
     if (!this.searchWord && !this.selectStatus) {
       this.clusterCount = this.totalCount;
     }
+
+    const appStore = this.store.app;
+    const appIds = this.clusters.map(cluster => cluster.app_id);
+    if (appStore && appIds.length > 1) {
+      appStore.fetchAll({ app_id: appIds });
+    }
+
     this.isLoading = false;
   };
 
@@ -319,6 +328,7 @@ export default class ClusterStore extends Store {
     this.selectedRowKeys = [];
     this.clusterIds = [];
     this.pageInitMap = {};
+    this.store = {};
   };
 
   @action
@@ -458,6 +468,11 @@ export default class ClusterStore extends Store {
     this.name = '';
     this.pub_key = '';
     this.description = '';
+  };
+
+  @action
+  registerStore = (name, store) => {
+    this.store[name] = store;
   };
 }
 

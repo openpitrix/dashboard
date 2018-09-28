@@ -24,7 +24,7 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, repoStore, appDeployStore }, { appId }) {
+  static async onEnter({ appStore, repoStore, appDeployStore, loginUser }, { appId }) {
     appDeployStore.appId = appId;
     appStore.isLoading = true;
     await appStore.fetch(appId);
@@ -42,7 +42,8 @@ export default class AppDeploy extends Component {
     await appDeployStore.fetchRuntimes({
       status: 'active',
       label: querySelector,
-      provider: repoProviders
+      provider: repoProviders,
+      owner: loginUser.userId
     });
     appStore.isLoading = false;
   }

@@ -61,25 +61,37 @@
   .apps {
     margin: 0 24px 12px;
 
-    .app {
+    >a {
+      display: inline-block;
       box-sizing: border-box;
+      height: 32px;
+      border-radius: 2px;
+      border: 1px solid $N400;
+      background-color: $N400;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .app {
       margin-bottom: 8px;
       width: 100%;
       height: 32px;
-      padding: 8px 12px;
-      opacity: 0.5;
-      border-radius: 2px;
-      background-color: $N400;
+      padding: 6px 12px;
       font-size: 12px;
       font-weight: 500;
       line-height: 16px;
       color: $N0;
-      cursor: pointer;
       text-align: left;
-      //@include textCut;
+      @include textCut;
 
-      .appName {
-        vertical-align: middle;
+      &.active {
+        border-color: $Y300;
+        opacity: 1;
       }
 
       img {
@@ -91,47 +103,20 @@
         border-radius: 50%;
       }
 
-      &.active {
-        border-color: $Y300;
-        opacity: 1;
+      .appName {
+        vertical-align: middle;
       }
-    }
-
-    >a {
-      display: inline-block;
-      height: 32px;
-      //opacity: 0.5;
-      border-radius: 2px;
-      background-color: rgba($N400, 0.5);
-      text-align: center;
-      cursor: pointer;
     }
 
     .plus {
       width: 104px;
-      opacity: 0.5;
-      &:hover {
-        opacity: 1;
-      }
+      line-height: 32px;
     }
 
     .more {
       float: right;
       width: 40px;
-      opacity: 0.5;
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    :global {
-      .icon {
-        margin: 8px 0;
-        /*svg{
-          --primary-color: rgba($N0, 0.9);
-          --secondary-color: rgba($N0, 0.9);
-        }*/
-      }
+      line-height: 32px;
     }
   }
 

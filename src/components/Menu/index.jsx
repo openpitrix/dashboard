@@ -179,7 +179,7 @@ class Menu extends React.Component {
               title={app.name}
               to={`/dashboard/app/${app.app_id}`}
             >
-              <Image src={app.icon} iconSize={16} />
+              <Image src={app.icon} iconSize={16} className={styles.icon} />
               <span className={styles.appName}>{app.name}</span>
             </Link>
           ))}
