@@ -8,7 +8,7 @@ export default function ExtendedRow({ name, status, host_id, host_ip, private_ip
     <div className={styles.extendedTr}>
       <div className={styles.extendedFirstChild} />
       <div className={styles.extendedIcon}>
-        <Icon name="pods" />
+        <Icon name="pods-icon" />
       </div>
       <div>
         <div>Pods:</div>

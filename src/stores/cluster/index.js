@@ -123,6 +123,7 @@ export default class ClusterStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });
     this.cluster = get(result, 'cluster_set[0]', {});
+    this.versionId = this.cluster.version_id;
     this.isLoading = false;
     this.pageInitMap = { cluster: true };
   };
@@ -218,7 +219,7 @@ export default class ClusterStore extends Store {
 
   @action
   updateEnv = async clusterIds => {
-    const result = await this.request.post('clusters/update_env', {
+    const result = await this.request.patch('clusters/update_env', {
       cluster_id: clusterIds[0],
       env: this.env
     });
@@ -443,8 +444,8 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changeEnv = e => {
-    this.env = e.target.value;
+  changeEnv = str => {
+    this.env = str;
   };
 
   @action

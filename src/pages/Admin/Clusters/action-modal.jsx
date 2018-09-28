@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { capitalize } from 'lodash';
 import { Dialog } from 'components/Layout';
-import { Input, Select, Modal } from 'components/Base';
+import { Select, CodeMirror, Modal } from 'components/Base';
 
 @observer
 export default class ClusterActionModal extends Component {
@@ -73,8 +73,7 @@ export default class ClusterActionModal extends Component {
       >
         <div className="formContent">
           <div className="inputItem">
-            <label>{t('Env')}</label>
-            <Input name="env" onChange={changeEnv} defaultValue={env} maxLength="50" autoFocus />
+            <CodeMirror code={env} onChange={changeEnv} options={{ mode: 'yaml' }} />
           </div>
         </div>
       </Modal>
@@ -82,7 +81,7 @@ export default class ClusterActionModal extends Component {
   }
   renderUpgradeModal() {
     const { t, clusterStore, appVersionStore } = this.props;
-    const { cluster, isModalOpen, hideModal, modalType, changeAppVersion } = clusterStore;
+    const { isModalOpen, hideModal, modalType, changeAppVersion } = clusterStore;
     const { versions } = appVersionStore;
     if (versions.length === 0) {
       return null;
@@ -96,8 +95,7 @@ export default class ClusterActionModal extends Component {
         onOk={this.handleCluster}
       >
         <div className="formContent">
-          <label>{t('Version')}</label>
-          <Select value={cluster.version_id} onChange={changeAppVersion}>
+          <Select value={clusterStore.versionId} onChange={changeAppVersion}>
             {versions.map(({ version_id, name }) => (
               <Select.Option key={version_id} value={version_id}>
                 {name}

@@ -24,8 +24,8 @@
       vertical-align: middle;
     }
   }
-  .info{
-    display: flex;
+  .info {
+    display: inline-block;
     &:hover {
       :global {
         .copy {
@@ -33,7 +33,7 @@
         }
       }
     }
-    .name{
+    .name {
       display: block;
       line-height: 20px;
       font-weight: 500;

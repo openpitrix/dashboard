@@ -306,9 +306,9 @@ export default class ClusterDetail extends Component {
                   <Toolbar
                     placeholder={t('Search Node')}
                     searchWord={searchNode}
-                    onSearch={onSearchNode}
-                    onClear={onClearNode}
-                    onRefresh={onRefreshNode}
+                    onSearch={onSearchNode(isKubernetes, clusterStore)}
+                    onClear={onClearNode(isKubernetes, clusterStore)}
+                    onRefresh={onRefreshNode(isKubernetes, clusterStore)}
                   />
                   <ClusterNodesTable {...tableProps} />
                 </Card>

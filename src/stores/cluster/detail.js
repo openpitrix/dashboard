@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
-import { get, union } from 'lodash';
+import { get, some, union } from 'lodash';
+import YAML from 'json2yaml';
 
 import Store from 'stores/Store';
 
@@ -8,8 +9,9 @@ export default class ClusterDetailStore extends Store {
   @observable isLoading = true;
 
   @observable currentNodePage = 1;
-  @observable searchNode = '';
   @observable selectNodeStatus = '';
+
+  @observable nodeType = '';
 
   @action
   fetchPage = async ({ clusterId, clusterStore, runtimeStore, appStore }) => {
@@ -34,6 +36,7 @@ export default class ClusterDetailStore extends Store {
         type: 'Deployment'
       });
     }
+    clusterStore.cluster_id = clusterId;
   };
 
   @action
@@ -51,16 +54,25 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  formatClusterNodes = ({ type, clusterStore }) => {
+  json2Yaml = str => {
+    let yamlStr = YAML.stringify(JSON.parse(str));
+    yamlStr = yamlStr.replace(/^---\n/, '');
+    yamlStr = yamlStr.replace(/  (.*)/g, '$1');
+    return yamlStr;
+  };
+
+  @action
+  formatClusterNodes = ({ type, clusterStore, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = clusterStore.cluster;
     if (!cluster_role_set) {
       return false;
     }
     const clusterNodes = [];
+    const keys = ['name', 'host_id', 'host_ip', 'instance_id', 'private_ip'];
 
     cluster_role_set.forEach(roleItem => {
       if (!roleItem.role) {
-        clusterStore.env = roleItem.env;
+        clusterStore.env = this.json2Yaml(roleItem.env);
         return false;
       }
 
@@ -74,23 +86,30 @@ export default class ClusterDetailStore extends Store {
 
       if (cluster_node_set) {
         cluster_node_set.forEach(nodeItem => {
-          if (nodeItem.role === roleItem.role) {
-            nodes.push(nodeItem);
-            const nodeStatus = get(status, nodeItem.status);
-            let number = 0;
-            if (!nodeStatus) {
-              number = 1;
-            } else {
-              number = nodeStatus + 1;
-            }
-            status[nodeItem.status] = number;
-            if (status.maxStatus === '') {
-              status.maxStatus = nodeItem.status;
-              status.maxNumber = number;
-            } else if (status.maxNumber < number) {
-              status.maxStatus = nodeItem.status;
-              status.maxNumber = number;
-            }
+          if (nodeItem.role !== roleItem.role) {
+            return;
+          }
+
+          const hasWord = some(keys, key => nodeItem[key].includes(searchWord));
+          if (!hasWord) {
+            return;
+          }
+
+          nodes.push(nodeItem);
+          const nodeStatus = get(status, nodeItem.status);
+          let number = 0;
+          if (!nodeStatus) {
+            number = 1;
+          } else {
+            number = nodeStatus + 1;
+          }
+          status[nodeItem.status] = number;
+          if (status.maxStatus === '') {
+            status.maxStatus = nodeItem.status;
+            status.maxNumber = number;
+          } else if (status.maxNumber < number) {
+            status.maxStatus = nodeItem.status;
+            status.maxNumber = number;
           }
         });
       }
@@ -98,7 +117,9 @@ export default class ClusterDetailStore extends Store {
       roleItem.name = get(roleItem.role.split(`-${type}`), '[0]');
       roleItem.status = status.maxStatus;
       roleItem.statusText = `(${status.maxNumber}/${nodes.length})`;
-      clusterNodes.push(roleItem);
+      if (nodes.length > 0) {
+        clusterNodes.push(roleItem);
+      }
     });
     clusterStore.clusterNodes = clusterNodes;
   };
@@ -109,23 +130,36 @@ export default class ClusterDetailStore extends Store {
 
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
+    this.nodeType = type;
     this.formatClusterNodes({ clusterStore, type });
   };
 
   @action
-  onSearchNode = () => async word => {
-    this.searchNode = word;
+  onSearchNode = (isKubernetes, clusterStore) => async word => {
+    clusterStore.searchNode = word;
     this.currentNodePage = 1;
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    const { cluster } = clusterStore;
+    const { cluster_id } = cluster;
+    if (!isKubernetes) {
+      await clusterStore.fetchNodes({ cluster_id, search_word: word });
+    } else {
+      await clusterStore.fetch(cluster_id);
+      this.formatClusterNodes({
+        clusterStore,
+        type: this.nodeType,
+        searchWord: word
+      });
+    }
   };
 
   @action
-  onClearNode = async () => {
-    await this.onSearchNode('');
+  onClearNode = (isKubernetes, clusterStore) => async () => {
+    await this.onSearchNode(isKubernetes, clusterStore)('');
   };
 
   @action
-  onRefreshNode = async () => {
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  onRefreshNode = (isKubernetes, clusterStore) => async () => {
+    clusterStore.searchNode = '';
+    await this.onSearchNode(isKubernetes, clusterStore)('');
   };
 }

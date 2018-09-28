@@ -189,6 +189,19 @@ export default class RuntimeStore extends Store {
     this.pageInitMap = {};
     this.runtimeDeleted = null;
   };
+
+  checkKubernetes = runtimeId => {
+    if (!runtimeId) return false;
+    if (!this.runtimes) return false;
+
+    let isKubernetes = false;
+    this.runtimes.forEach(runtime => {
+      if (runtime.runtime_id === runtimeId) {
+        isKubernetes = runtime.provider === 'kubernetes';
+      }
+    });
+    return isKubernetes;
+  };
 }
 
 export Create from './create';
