@@ -39,6 +39,8 @@ export default class Overview extends React.Component {
     userStore,
     loginUser
   }) {
+    appStore.updateMeunApps = true;
+
     await appStore.fetchAll({ noLimit: true });
     await clusterStore.fetchAll();
     await runtimeStore.fetchAll();
@@ -51,7 +53,7 @@ export default class Overview extends React.Component {
 
     if (loginUser.isAdmin) {
       await categoryStore.fetchAll();
-      await userStore.fetchAll();
+      await userStore.fetchAll({ limit: 1 });
     }
   }
 

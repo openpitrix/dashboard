@@ -13,6 +13,22 @@
     width: $menu-nav-width;
     height: 100vh;
     background-image: linear-gradient(to top, $P75, #854fb9 32%, #484999);
+
+    .item {
+      [class*='target'] {
+        width: auto;
+        height: auto;
+        border: 0 none;
+      }
+
+      [class*='popper']{
+        border: 0 none;
+        &:active, &:hover {
+          border: 0 none;
+        }
+      }
+    }
+
     li{
       height: 48px;
 
@@ -25,11 +41,11 @@
       }
 
       .active {
-        background-color: $N400;
+        background-color: #343945;
         cursor: auto;
       }
       &:hover {
-        background-color: $N400;
+        background-color: #343945;
         cursor: auto;
       }
       transition: all .3s ease-in-out;

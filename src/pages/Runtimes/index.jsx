@@ -166,11 +166,11 @@ export default class Runtimes extends Component {
               {this.renderRuntimeCard(runtime)}
             </div>
           ))}
-        </div>
 
-        <Link className={styles.addRuntime} to="/dashboard/runtime/create">
-          <Icon name="add" size={32} />
-        </Link>
+          <Link className={styles.addRuntime} to="/dashboard/runtime/create">
+            <Icon name="add" size={32} />
+          </Link>
+        </div>
 
         {this.renderDeleteModal()}
       </Layout>
