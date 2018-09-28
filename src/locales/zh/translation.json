@@ -343,6 +343,7 @@
   "Update_env cluster": "修改集群环境",
   "Update cluster env": "修改集群环境",
   "Upgrade cluster": "升级集群版本",
+  "Rollback": "回滚",
 
   "None": "无"
 }

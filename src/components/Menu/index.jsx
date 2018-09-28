@@ -96,7 +96,7 @@ class Menu extends React.Component {
     let navs = [
       {
         link: '/',
-        iconName: 'home',
+        iconName: 'op-logo',
         active: '',
         title: t('Home')
       },
@@ -140,7 +140,7 @@ class Menu extends React.Component {
               activeClassName={styles.active}
               isActive={() => this.isLinkActive(nav.active, role)}
             >
-              <Icon name={nav.iconName} size={24} type="white" />
+              <Icon name={nav.iconName} size={nav.iconName === 'op-logo' ? 16 : 24} type="white" />
             </NavLink>
           </li>
         ))}

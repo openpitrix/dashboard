@@ -17,14 +17,22 @@
       height: 48px;
 
       >a {
+        background-color: rgba($N0, 0.08);
         display: inline-block;
         height: 48px;
+        width: 100%;
+        text-align: center;
       }
 
       .active {
-        background-color: rgba($Y300, 0.08);
+        background-color: $N400;
         cursor: auto;
       }
+      &:hover {
+        background-color: $N400;
+        cursor: auto;
+      }
+      transition: all .3s ease-in-out;
 
       :global {
         .icon{

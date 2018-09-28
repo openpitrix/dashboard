@@ -65,7 +65,6 @@ export default function GetColumns({ t, clusterStore, clusterDetailStore, isKube
             rowKey={index.toString()}
             isFold={true}
             fold={extendedRowKeys.includes(index.toString())}
-            linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
       },
