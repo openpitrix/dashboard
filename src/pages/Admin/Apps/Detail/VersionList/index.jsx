@@ -13,7 +13,6 @@ const versionStatus = [
   'submitted', // in review
   'passed', // approved
   'active', // published
-
   'deleted',
   'suspended',
   'rejected'

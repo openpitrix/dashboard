@@ -6,7 +6,7 @@ import Status from 'components/Status';
 import Configuration from './Configuration';
 import TimeShow from 'components/TimeShow';
 
-/* import styles from 'index.scss'; */
+import styles from 'index.scss';
 
 export default function GetColumns({ t, clusterStore, clusterDetailStore, isKubernetes }) {
   let columns = null;
@@ -36,10 +36,15 @@ export default function GetColumns({ t, clusterStore, clusterDetailStore, isKube
         render: item => <Configuration configuration={item.cluster_role || {}} />
       },
       {
-        title: t('Private IP'),
+        title: t('IP'),
         key: 'private_ip',
-        dataIndex: 'private_ip',
-        width: '100px'
+        width: '100px',
+        render: item => (
+          <div className="ipShow">
+            {item.private_ip}
+            <div className="eip"> {item.eip}</div>
+          </div>
+        )
       },
       {
         title: t('Updated At'),

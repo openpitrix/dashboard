@@ -105,7 +105,7 @@ export default class ClusterStore extends Store {
     const appStore = this.store.app;
     const appIds = this.clusters.map(cluster => cluster.app_id);
     if (appStore && appIds.length > 1) {
-      appStore.fetchAll({ app_id: appIds });
+      await appStore.fetchAll({ app_id: appIds });
     }
 
     this.isLoading = false;
