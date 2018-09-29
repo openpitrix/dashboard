@@ -27,6 +27,7 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
+    appVersionStore.loadPageInit();
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
 
@@ -38,7 +39,8 @@ export default class AppDetail extends Component {
     const { appStore, repoStore, appVersionStore, user, match } = this.props;
 
     const { isNormal, role } = user;
-    const params = { app_id: match.params.appId };
+    const appId = match.params.appId.split('?');
+    const params = { app_id: appId[0] };
     //normal user or not login only query 'active' versions
     if (isNormal || !Boolean(role)) {
       params.status = ['active'];
@@ -183,12 +185,12 @@ export default class AppDetail extends Component {
 
     return (
       <Dialog
-        title={t('Reject Reason')}
+        title={t('Reject reason')}
         isOpen={isDialogOpen}
         onCancel={hideModal}
         onSubmit={this.submitReason}
       >
-        <textarea className={styles.reason} onChange={changeReason}>
+        <textarea className={styles.reason} onChange={changeReason} maxLength={500}>
           {reason}
         </textarea>
       </Dialog>
@@ -196,9 +198,17 @@ export default class AppDetail extends Component {
   };
 
   renderAdminReview = () => {
-    const { appVersionStore, t } = this.props;
+    const { appVersionStore, history, t } = this.props;
     const { versions } = appVersionStore;
-    const version = versions[0] || {};
+    const search = history.location.search.split('=');
+    const versionId = search[1];
+    const result = versions.filter(item => item.version_id === versionId);
+    const version = result[0] || versions[0];
+
+    if (!Boolean(version)) {
+      return null;
+    }
+
     appVersionStore.version = version;
     const status = version.status;
     const handleMap = {
@@ -212,7 +222,15 @@ export default class AppDetail extends Component {
     return (
       <div className={classnames(styles.reviewContent, styles[version.status])}>
         <label className={styles.dot} />
-        {t('app_review_desc', { status: t(mappingStatus(capitalize(version.status))) })}
+        {t('app_review_desc', { version: version.name })}
+        {t(mappingStatus(capitalize(version.status)))}
+        {version.status === 'rejected' &&
+          version.message && (
+            <div className={styles.message}>
+              {t('Reject reason')}: {version.message}
+            </div>
+          )}
+
         {Boolean(handle) && (
           <div className={styles.operateBtns}>
             <Button type="primary" onClick={() => this.handleVersion(handle, version.version_id)}>

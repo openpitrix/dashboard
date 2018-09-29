@@ -101,7 +101,7 @@ export default class AppStore extends Store {
       defaultParams.repo_id = this.repoId;
     }
     if (this.userId) {
-      defaultParams.user_id = this.userId;
+      defaultParams.owner = this.userId;
     }
 
     if (!params.noLoading) {

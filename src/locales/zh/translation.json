@@ -100,6 +100,7 @@
   "Download": "下载",
   "Date Created": "创建时间",
   "Create version": "创建版本",
+  "Reject reason": "拒绝原因",
 
 
   "My Apps": "我的应用",
@@ -321,7 +322,7 @@
   "version_name_tips": "使用该数字表示应用程序的版本号",
   "version_desc_tips": "版本说明将显示在应用详细信息页面上，字数不应超过300字",
   "ssh_key_guide": "SSH密钥允许您在计算机和群集节点之间建立安全连接。",
-  "app_review_desc": "此应用版本{{status}}。",
+  "app_review_desc": "此应用版本{{version}}",
 
 
 

@@ -116,7 +116,8 @@ ${this.yamlStr}`;
 
       if (!res.err && _.get(this.appDeployed, 'cluster_id')) {
         this.success('Deploy app successfully');
-        location.href = '/dashboard/clusters';
+      } else {
+        return res;
       }
     } else {
       this.info('Please input or select ' + this.checkResult + '!');

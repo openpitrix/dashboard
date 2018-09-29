@@ -86,7 +86,7 @@ export default class Review extends Component {
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
             description={item.app_id}
             image={item.icon || 'appcenter'}
-            linkUrl={`/dashboard/review/${item.app_id}`}
+            linkUrl={`/dashboard/review/${item.app_id}?versionId=${item.version_id}`}
           />
         )
       },

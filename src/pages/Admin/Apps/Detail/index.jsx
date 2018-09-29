@@ -438,6 +438,13 @@ export default class AppDetail extends Component {
             />
           </dd>
         </dl>
+        {currentVersion.status === 'rejected' && (
+          <dl>
+            <dt>{t('Reject reason')}</dt>
+            <dd className={styles.message}>{currentVersion.message}</dd>
+          </dl>
+        )}
+
         {hanleType &&
           appDetail.status !== 'deleted' && (
             <dl>
