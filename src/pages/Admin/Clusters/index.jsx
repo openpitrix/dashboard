@@ -333,7 +333,7 @@ export default class Clusters extends Component {
           </NavLink>
         )}
 
-        {role === 'global_admin' && (
+        {isDev && (
           <Row>
             <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
           </Row>

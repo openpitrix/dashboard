@@ -336,7 +336,7 @@ export default class Apps extends Component {
 
     return (
       <Layout className={styles.apps}>
-        <NavLink>navLinkShow</NavLink>
+        <NavLink>{navLinkShow}</NavLink>
 
         {isAdmin && (
           <Row>
