@@ -35,6 +35,7 @@ export default class UserStore extends Store {
   @observable isDeleteOpen = false;
 
   @observable cookieTime = 2 * 60 * 60 * 1000;
+  @observable rememberMe = false;
 
   @observable
   userDetail = {
@@ -354,6 +355,11 @@ export default class UserStore extends Store {
   @action
   changeUserRole = role => {
     this.userDetail.role = role;
+  };
+
+  @action
+  toggleRememberMe = () => {
+    this.rememberMe = !this.rememberMe;
   };
 
   @action
