@@ -23,7 +23,7 @@ import styles from './index.scss';
 export default class Categories extends Component {
   static async onEnter({ categoryStore, appStore }) {
     categoryStore.appStore = appStore;
-    await categoryStore.fetchAll(categoryStore.appStore);
+    await categoryStore.fetchAll({}, categoryStore.appStore);
   }
 
   constructor(props) {

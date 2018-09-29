@@ -61,6 +61,7 @@
   "Top Apps": "人气最佳的应用",
   "Top Runtimes": "人气最佳的运行环境",
   "Latest Clusters": "最新创建的集群",
+  "Latest Apps": "最新创建的应用",
   "My Runtimes": "我的环境",
   "Recently Viewed Apps": "最近查看的应用",
 
@@ -274,6 +275,7 @@
   "Modify User" : "修改用户",
   "Delete User" : "删除用户",
   "Administrator": "管理员",
+  "Developer": "开发者",
   "Normal User": "普通用户",
   "Email": "邮箱",
   "delete_user_desc": "您确定要删除该用户吗?",

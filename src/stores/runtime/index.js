@@ -1,7 +1,8 @@
 import { observable, action } from 'mobx';
+import _, { assign, get } from 'lodash';
+
 import Store from '../Store';
-import { assign, get } from 'lodash';
-import _ from 'lodash';
+import { getProgress } from 'utils';
 
 const defaultStatus = ['active'];
 
@@ -94,7 +95,10 @@ export default class RuntimeStore extends Store {
       total: get(result, 'runtime_count', 0),
       progressTotal: get(result, 'provider_count', 0),
       progress: get(result, 'top_ten_providers', {}),
-      histograms: get(result, 'last_two_week_created', {})
+      histograms: get(result, 'last_two_week_created', {}),
+      topProviders: getProgress(get(result, 'top_ten_providers', {})),
+      runtimeCount: get(result, 'runtime_count', 0),
+      providerount: get(result, 'provider_count', 0)
     };
     //this.isLoading = false;
   };

@@ -53,6 +53,9 @@ export default class RepoStore extends Store {
     if (this.userId) {
       defaultParams.user_id = this.userId;
     }
+    if (params.isQueryPublic) {
+      params.visibility = ['private'];
+    }
 
     this.isLoading = true;
     const result = await this.request.get('repos', assign(defaultParams, params));

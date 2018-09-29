@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
 import Store from '../Store';
+import { getProgress } from 'utils';
 
 export default class ClusterStore extends Store {
   @observable clusters = [];
@@ -122,7 +123,11 @@ export default class ClusterStore extends Store {
       total: get(result, 'cluster_count', 0),
       progressTotal: get(result, 'runtime_count', 0),
       progress: get(result, 'top_ten_runtimes', {}),
-      histograms: get(result, 'last_two_week_created', {})
+      histograms: get(result, 'last_two_week_created', {}),
+      topRuntimes: getProgress(get(result, 'top_ten_runtimes', {})),
+      topApps: getProgress(get(result, 'top_ten_apps', {})),
+      clusterCount: get(result, 'cluster_count', 0),
+      runtimeCount: get(result, 'runtime_count', 0)
     };
     //this.isLoading = false;
   };

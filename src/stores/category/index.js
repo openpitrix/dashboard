@@ -4,6 +4,7 @@ import Store from '../Store';
 
 export default class CategoryStore extends Store {
   @observable categories = [];
+  @observable totalCount = 0;
   @observable category = {};
   @observable isLoading = false;
 
@@ -19,7 +20,7 @@ export default class CategoryStore extends Store {
   @observable searchWord = '';
 
   @action
-  fetchAll = async appStore => {
+  fetchAll = async (params = {}, appStore) => {
     const defaultParams = {
       limit: this.maxLimit,
       offset: 0
@@ -30,8 +31,9 @@ export default class CategoryStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('categories', defaultParams);
+    const result = await this.request.get('categories', assign(defaultParams, params));
     this.categories = get(result, 'category_set', []);
+    this.totalCount = get(result, 'total_count', 0);
 
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.categories.length; i++) {

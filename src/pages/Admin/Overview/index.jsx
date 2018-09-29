@@ -40,20 +40,43 @@ export default class Overview extends React.Component {
     user
   }) {
     appStore.updateMeunApps = true;
-
-    await appStore.fetchAll({ noLimit: true });
-    await clusterStore.fetchAll({ cluster_type: 0 });
-    await runtimeStore.fetchAll();
-
-    //fixme developer user query public repos
-    if (user.isDev || user.isAdmin) {
-      const params = user.isDev ? { visibility: ['private'] } : {};
-      await repoStore.fetchAll(params);
+    if (user.isAdmin) {
+      // query top repos
+      await appStore.fetchStatistics();
+      const topRepoIds = appStore.summaryInfo.topRepos.map(item => item.id);
+      // query top apps, cluster number
+      await clusterStore.fetchStatistics();
+      const topAppIds = clusterStore.summaryInfo.topApps.map(item => item.id);
+      // query latest clusters
+      await clusterStore.fetchAll({
+        cluster_type: 0,
+        limit: 5
+      });
+      // query app total, top apps name
+      await appStore.fetchAll({ app_id: topAppIds });
+      // query app total, top repos name
+      await repoStore.fetchAll({
+        repo_id: topRepoIds,
+        status: ['active', 'deleted']
+      });
+      // query category total
+      await categoryStore.fetchAll({ limit: 1 });
+      // query user total
+      await userStore.fetchAll({ limit: 1 });
     }
 
-    if (user.isAdmin) {
-      await categoryStore.fetchAll();
-      await userStore.fetchAll({ limit: 1 });
+    if (user.isNormal) {
+      await appStore.fetchAll({ limit: 5 });
+      await runtimeStore.fetchAll({ limit: 5 });
+      await clusterStore.fetchAll({ noLimit: true });
+    }
+
+    //fixme developer user query public repos
+    if (user.isDev) {
+      await appStore.fetchAll({ limit: 5 });
+      await clusterStore.fetchAll({ limit: 5 });
+      await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
+      await runtimeStore.fetchAll({ noLimit: true });
     }
   }
 
@@ -72,22 +95,23 @@ export default class Overview extends React.Component {
   }
 
   handleClickTotalCard = label => {
-    this.props.history.push(`/dashboard/${label.toLowerCase()}`);
+    const { user } = this.props;
+
+    if (user.isDev && label === 'runtimes') {
+      this.props.history.push('/runtimes');
+    } else {
+      this.props.history.push(`/dashboard/${label.toLowerCase()}`);
+    }
   };
 
   adminView = () => {
     const { appStore, clusterStore, repoStore, categoryStore, userStore, t } = this.props;
-    const countLimit = 5;
-
     const { isLoading } = appStore;
-    const appList = appStore.apps.slice(0, countLimit);
-    const repoList = repoStore.getRepoApps(repoStore.repos, appStore.apps);
-    const clusterList = clusterStore.clusters.slice(0, countLimit);
 
     const summary = {
-      Apps: appStore.totalCount,
-      Clusters: clusterStore.totalCount,
-      Categories: categoryStore.categories.length,
+      Apps: appStore.summaryInfo.appCount,
+      Clusters: clusterStore.summaryInfo.clusterCount,
+      Categories: categoryStore.totalCount,
       Users: userStore.totalCount
     };
     const iconName = {
@@ -97,8 +121,12 @@ export default class Overview extends React.Component {
       Users: 'group'
     };
 
+    const topRepos = appStore.summaryInfo.topRepos;
+    const topApps = clusterStore.summaryInfo.topApps;
+    const latestClusters = clusterStore.clusters.slice(0, 5);
+
     return (
-      <Layout isLoading={isLoading}>
+      <Layout isLoading={isLoading} className={styles.overview}>
         <NavLink>
           {t('Dashboard')} / {t('Overview')}
         </NavLink>
@@ -130,10 +158,9 @@ export default class Overview extends React.Component {
                 title="Top Repos"
                 linkTo="/dashboard/repos"
                 buttonTo="/dashboard/repo/create"
-                len={repoList.length}
+                len={topRepos.length}
               >
-                <RepoList repos={repoList} type="public" limit={4} />
-                <RepoList repos={repoList} type="private" limit={4} />
+                <RepoList topRepos={topRepos} repos={repoStore.repos} type="repo" />
               </Panel>
             </Section>
 
@@ -142,10 +169,10 @@ export default class Overview extends React.Component {
                 type="app"
                 title="Top Apps"
                 linkTo="/dashboard/apps"
-                len={appList.length}
+                len={topApps.length}
                 isAdmin
               >
-                <AppList apps={appList} />
+                <AppList topApps={topApps} apps={appStore.apps} />
               </Panel>
             </Section>
 
@@ -154,9 +181,9 @@ export default class Overview extends React.Component {
                 type="cluster"
                 title="Latest Clusters"
                 linkTo="/dashboard/clusters"
-                len={clusterList.length}
+                len={latestClusters.length}
               >
-                <ClusterList clusters={clusterList} />
+                <ClusterList clusters={latestClusters} />
               </Panel>
             </Section>
           </Grid>
@@ -167,13 +194,12 @@ export default class Overview extends React.Component {
 
   normalView = () => {
     const { appStore, runtimeStore, clusterStore, user, t } = this.props;
-    const countLimit = 5;
     const { isLoading } = appStore;
 
     const name = user.username;
-    const appList = appStore.apps.slice(0, countLimit);
-    const runtimteList = runtimeStore.runtimes.slice(0, countLimit);
-    const clusterList = clusterStore.clusters.slice(0, countLimit);
+    const appList = appStore.apps;
+    const runtimteList = runtimeStore.runtimes;
+    const clusterList = clusterStore.clusters.slice(0, 5);
 
     return (
       <Layout isLoading={isLoading}>
@@ -185,7 +211,7 @@ export default class Overview extends React.Component {
         </Row>
         <Grid>
           <Section>
-            <Panel type="app" title="Top Apps" linkTo="/apps" len={appList.length}>
+            <Panel type="app" title="Latest Apps" linkTo="/apps" len={appList.length}>
               <AppList apps={appList} />
             </Panel>
           </Section>
@@ -193,7 +219,7 @@ export default class Overview extends React.Component {
           <Section>
             <Panel
               type="runtime"
-              title="Top Runtimes"
+              title="My Runtimes"
               linkTo="/runtimes"
               buttonTo="/dashboard/runtime/create"
               len={runtimteList.length}
@@ -219,11 +245,10 @@ export default class Overview extends React.Component {
 
   developerView = () => {
     const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
-    const countLimit = 5;
     const { isLoading } = appStore;
 
-    const appList = appStore.apps.slice(0, countLimit);
-    const clusterList = clusterStore.clusters.slice(0, countLimit);
+    const appList = appStore.apps;
+    const clusterList = clusterStore.clusters;
 
     const columns = [
       {
@@ -285,12 +310,12 @@ export default class Overview extends React.Component {
     const pagination = {
       tableType: 'Clusters',
       onChange: () => {},
-      total: countLimit,
+      total: 5,
       current: 1
     };
 
     return (
-      <Layout isLoading={isLoading}>
+      <Layout isLoading={isLoading} className={styles.overview}>
         <NavLink>
           {t('Dashboard')} / {t('Overview')}
         </NavLink>
@@ -306,7 +331,7 @@ export default class Overview extends React.Component {
                 name={`Private Repo`}
                 iconName={`cloud`}
                 iconSize={64}
-                total={repoStore.repos.length}
+                total={repoStore.totalCount}
                 onClick={this.handleClickTotalCard.bind(this, 'repos')}
               />
             </Section>
@@ -325,7 +350,7 @@ export default class Overview extends React.Component {
         <Row>
           <Grid>
             <Section>
-              <Panel type="app" title="Top Apps" linkTo="/dashboard/apps" len={appList.length}>
+              <Panel type="app" title="Latest Apps" linkTo="/dashboard/apps" len={appList.length}>
                 <AppList apps={appList} />
               </Panel>
             </Section>

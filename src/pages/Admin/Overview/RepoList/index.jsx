@@ -6,12 +6,14 @@ import { translate } from 'react-i18next';
 
 import { ucfirst } from 'utils/string';
 import { Icon } from 'components/Base';
+import { getFilterObj } from 'utils';
 import styles from './index.scss';
 
 @translate()
 export default class RepoList extends PureComponent {
   static propTypes = {
-    type: PropTypes.oneOf(['public', 'private', 'runtime']),
+    type: PropTypes.oneOf(['repo', 'runtime']),
+    topRepos: PropTypes.array,
     repos: PropTypes.array,
     runtimes: PropTypes.array,
     clusters: PropTypes.array,
@@ -20,46 +22,43 @@ export default class RepoList extends PureComponent {
 
   static defaultProps = {
     type: 'public',
+    topRepos: [],
     repos: [],
     runtimes: [],
-    clusters: [],
-    limit: 2
+    clusters: []
   };
 
   render() {
-    const { repos, runtimes, clusters, type, limit, t } = this.props;
-    let filterItems = runtimes,
+    const { topRepos, repos, runtimes, clusters, type, t } = this.props;
+    let items = runtimes,
       totalName = 'Clusters';
 
-    if (type !== 'runtime') {
-      filterItems = repos.slice(0, limit).filter(repo => repo.visibility === type);
-      totalName = 'Apps';
+    if (type === 'repo') {
+      items = topRepos;
     }
-
-    const isRepoList = type !== 'runtime' && filterItems.length > 0;
-
     return (
       <Fragment>
-        {isRepoList && <div className={styles.type}>{t(ucfirst(type))}</div>}
-        <ul className={classNames(styles.reposList, { [styles.reposBg]: type === 'public' })}>
-          {filterItems.map(item => {
+        <ul className={classNames(styles.reposList)}>
+          {items.map(item => {
             let link = `/dashboard/runtime/${item.runtime_id}`;
             let provider = item.provider;
-            let total = clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length;
+            let number =
+              clusters.filter(cluster => cluster.runtime_id === item.runtime_id).length || 0;
 
-            if (type !== 'runtime') {
-              link = `/dashboard/repo/${item.repo_id}`;
-              provider = item.providers && item.providers[0];
-              total = item.apps && item.apps.length;
+            let repo = getFilterObj(repos, 'repo_id', item.id);
+            if (type === 'repo') {
+              number = item.number;
+              link = `/dashboard/repo/${item.id}`;
+              provider = repo.providers && repo.providers[0];
             }
 
             return (
-              <li key={item.repo_id || item.runtime_id}>
+              <li key={item.id || item.runtime_id}>
                 <Link to={link}>
                   <Icon name={provider} size={24} className={styles.icon} type="dark" />
-                  <span className={styles.name}>{item.name}</span>
+                  <span className={styles.name}>{item.name || repo.name}</span>
                   <span className={styles.total}>
-                    <span className={styles.number}>{total || 0}</span>
+                    <span className={styles.number}>{number}</span>
                     {t(totalName)}
                   </span>
                 </Link>
