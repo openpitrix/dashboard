@@ -30,9 +30,6 @@ router.get('/logout', ctx => {
     httpOnly: false
   };
   ctx.session = null;
-  ctx.cookies.set('user', '', cookieOptions);
-  ctx.cookies.set('role', '', cookieOptions);
-  ctx.cookies.set('last_login', '', cookieOptions);
   ctx.cookies.set('access_token', '', cookieOptions);
   ctx.cookies.set('token_type', '', cookieOptions);
   ctx.cookies.set('refresh_token', '', cookieOptions);
