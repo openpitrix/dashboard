@@ -122,7 +122,7 @@ export default class SSHKeys extends Component {
 
   renderForm(cancelFun) {
     const { clusterStore, t } = this.props;
-    const { addKeyPairs, changeName, changePubKey, changeDescription } = clusterStore;
+    const { addKeyPairs, changeName, changePubkey, changeDescription } = clusterStore;
 
     return (
       <form className={styles.createForm}>
