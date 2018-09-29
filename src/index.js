@@ -1,4 +1,5 @@
 import 'promise-polyfill/src/polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
@@ -18,6 +19,7 @@ store.registerStores();
 
 if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
+
   try {
     store.user = JSON.parse(getCookie('user') || '{}');
     const role = getCookie('role');
@@ -27,16 +29,20 @@ if (typeof window !== 'undefined') {
     }
   } catch (err) {}
 
-  import('./routes').then(({ default: routes }) => {
-    let sc = null;
-    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, getCookie('access_token'));
+  let sc = null;
+  const accessToken = getCookie('access_token');
+  // when logged in, setup socket client
+  if(accessToken){
+    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, accessToken);
     try {
       sc = new SockClient(sockEndpoint);
       sc.setUp();
     } catch (err) {
       console.warn(err);
     }
+  }
 
+  import('./routes').then(({ default: routes }) => {
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
         <Provider rootStore={store} sock={sc}>

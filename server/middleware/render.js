@@ -35,28 +35,23 @@ module.exports = async (ctx, next) => {
   await Promise.all(promises);
 
   const context = {};
-  const cookies = ctx.cookies;
 
   try {
-    const user = decodeURIComponent(cookies.get('user') || '{}');
-    ctx.store.user = JSON.parse(user);
-    const role = decodeURIComponent(cookies.get('role'));
-    if (role === 'user') {
-      ctx.store.user.isDev = false;
-      ctx.store.user.isNormal = true;
-    }
+    // const components = isProd
+    //   ? renderToString(
+    //       <I18nextProvider i18n={i18n}>
+    //         <Provider rootStore={ctx.store} sock={null}>
+    //           <StaticRouter location={ctx.url} context={context}>
+    //             <App>{renderRoutes(routes)}</App>
+    //           </StaticRouter>
+    //         </Provider>
+    //       </I18nextProvider>
+    //     )
+    //   : null;
 
-    const components = isProd
-      ? renderToString(
-          <I18nextProvider i18n={i18n}>
-            <Provider rootStore={ctx.store} sock={null}>
-              <StaticRouter location={ctx.url} context={context}>
-                <App>{renderRoutes(routes)}</App>
-              </StaticRouter>
-            </Provider>
-          </I18nextProvider>
-        )
-      : null;
+    // disable ssr
+    const components = null;
+
 
     if (context.url) {
       ctx.redirect(context.url);
