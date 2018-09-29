@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react/index';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Popover, Image } from 'components/Base';
+import { Icon, Popover, Image, Tooltip } from 'components/Base';
 import { getSessInfo } from 'src/utils';
 
 import styles from './index.scss';
@@ -110,7 +110,7 @@ class Menu extends React.Component {
         link: '/dashboard/apps',
         iconName: 'components',
         active: 'app',
-        title: role === 'developer' ? t('My apps') : t('Store')
+        title: role === 'developer' ? t('My Apps') : t('Store')
       },
       {
         link: '/dashboard/repos',
@@ -133,16 +133,28 @@ class Menu extends React.Component {
     return (
       <ul className={styles.nav}>
         {navs.map(nav => (
-          <li key={nav.iconName} title={nav.title}>
-            <NavLink
-              exact
-              to={nav.link}
-              activeClassName={styles.active}
-              isActive={() => this.isLinkActive(nav.active, role)}
-            >
-              <Icon name={nav.iconName} size={nav.iconName === 'op-logo' ? 16 : 24} type="white" />
-            </NavLink>
-          </li>
+          <Tooltip
+            key={nav.iconName}
+            className={styles.item}
+            content={nav.title}
+            isShowArrow
+            placement="right"
+          >
+            <li>
+              <NavLink
+                exact
+                to={nav.link}
+                activeClassName={styles.active}
+                isActive={() => this.isLinkActive(nav.active, role)}
+              >
+                <Icon
+                  name={nav.iconName}
+                  size={nav.iconName === 'op-logo' ? 16 : 24}
+                  type="white"
+                />
+              </NavLink>
+            </li>
+          </Tooltip>
         ))}
       </ul>
     );

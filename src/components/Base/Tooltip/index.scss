@@ -34,7 +34,8 @@ $bgcolor: $text-color;
 }
 
 .popper {
-  padding: 8px 0;
+  //padding: 8px 0;
+  padding: 8px 12px;
   border-radius: 3px;
   font-size: $size-small;
   line-height: 1.5;

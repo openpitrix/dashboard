@@ -456,8 +456,8 @@ export default class Users extends Component {
             <Section>
               <Card className={classnames(styles.noShadow, styles.selectInfo)}>
                 <Select className={styles.select} value={selectValue} onChange={this.changeSelect}>
-                  <Select.Option value="organization">{t('Organization')}</Select.Option>
-                  <Select.Option value="group">{t('Group')}</Select.Option>
+                  {/* <Select.Option value="organization">{t('Organization')}</Select.Option>
+                  <Select.Option value="group">{t('Group')}</Select.Option>*/}
                   <Select.Option value="roles">{t('Roles')}</Select.Option>
                 </Select>
                 {selectValue === 'organization' && (

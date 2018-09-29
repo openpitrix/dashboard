@@ -68,7 +68,7 @@ export default class AppStore extends Store {
 
     const result = await this.request.get('apps', params);
     this.apps = get(result, 'app_set', []);
-    if (this.updateMeunApps) {
+    if (this.updateMeunApps && this.apps.length > 0) {
       this.menuApps = this.apps.slice(0, 5);
       this.updateMeunApps = false;
     }
@@ -117,7 +117,7 @@ export default class AppStore extends Store {
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }
-    if (this.updateMeunApps) {
+    if (this.updateMeunApps && this.apps.length > 0) {
       this.menuApps = this.apps.slice(0, 5);
       this.updateMeunApps = false;
     }

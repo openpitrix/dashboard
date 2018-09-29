@@ -71,8 +71,8 @@ export default class AppDetail extends Component {
   };
 
   createVersionShow = () => {
-    const { appVersionStore } = this.props;
-    const newVersion = { name: 'New version', status: 'Creating' };
+    const { appVersionStore, t } = this.props;
+    const newVersion = { name: t('New version'), status: 'Creating' };
 
     appVersionStore.currentVersion = newVersion;
     appVersionStore.createStep = 1;

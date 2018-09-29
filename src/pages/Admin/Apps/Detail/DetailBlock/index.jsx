@@ -50,10 +50,12 @@ export default class DetailBlock extends React.Component {
           <dl>
             <dt>{t('Category')}</dt>
             <dd>
-              {get(appDetail, 'category_set', [])
-                .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => cate.name)
-                .join(', ')}
+              {t(
+                get(appDetail, 'category_set', [])
+                  .filter(cate => cate.category_id && cate.status === 'enabled')
+                  .map(cate => cate.name)
+                  .join(', ')
+              )}
             </dd>
           </dl>
           <dl>
