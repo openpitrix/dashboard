@@ -8,24 +8,24 @@ import Layout, { Dialog, NavLink } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
 import RepoList from './RepoList/index';
-import { getScrollTop, getSessInfo } from 'utils';
+import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
-  sessInfo
+  user: rootStore.user
 }))
 @observer
 export default class Repos extends Component {
-  static async onEnter({ repoStore, appStore, loginUser }) {
+  static async onEnter({ repoStore, appStore, user }) {
     repoStore.appStore = appStore;
     await repoStore.fetchAll(
       {
         noLimit: true,
-        isQueryPublic: loginUser.isDev
+        isQueryPublic: user.isDev
       },
       appStore
     );
@@ -137,8 +137,8 @@ export default class Repos extends Component {
   };
 
   renderNavLink = () => {
-    const { t } = this.props;
-    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'global_admin';
+    const { user, t } = this.props;
+    const { isDev, isAdmin } = user;
 
     if (isAdmin) {
       return (

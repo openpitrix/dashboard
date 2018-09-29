@@ -7,7 +7,7 @@ import Layout, { Grid, Section, Row, NavLink } from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
-import { formatTime, getSessInfo, getObjName, getPastTime } from 'src/utils';
+import { formatTime, getObjName, getPastTime } from 'src/utils';
 
 import UserInfo from './UserInfo';
 import TotalCard from './TotalCard';
@@ -19,14 +19,14 @@ import ClusterList from './ClusterList';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   repoStore: rootStore.repoStore,
   categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore,
   runtimeStore: rootStore.runtimeStore,
-  sessInfo
+  user: rootStore.user
 }))
 @observer
 export default class Overview extends React.Component {
@@ -37,21 +37,21 @@ export default class Overview extends React.Component {
     runtimeStore,
     categoryStore,
     userStore,
-    loginUser
+    user
   }) {
     appStore.updateMeunApps = true;
 
     await appStore.fetchAll({ noLimit: true });
-    await clusterStore.fetchAll();
+    await clusterStore.fetchAll({ cluster_type: 0 });
     await runtimeStore.fetchAll();
 
     //fixme developer user query public repos
-    if (loginUser.isDev || loginUser.isAdmin) {
-      const params = loginUser.isDev ? { visibility: ['private'] } : {};
+    if (user.isDev || user.isAdmin) {
+      const params = user.isDev ? { visibility: ['private'] } : {};
       await repoStore.fetchAll(params);
     }
 
-    if (loginUser.isAdmin) {
+    if (user.isAdmin) {
       await categoryStore.fetchAll();
       await userStore.fetchAll({ limit: 1 });
     }
@@ -59,15 +59,15 @@ export default class Overview extends React.Component {
 
   constructor(props) {
     super(props);
-    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+    const { appStore, clusterStore, runtimeStore, repoStore, user } = this.props;
     appStore.loadPageInit();
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     repoStore.loadPageInit();
     this.userInfo = {
-      name: getSessInfo('user', props.sessInfo),
-      role: getSessInfo('role', props.sessInfo),
-      loginInfo: getSessInfo('last_login', props.sessInfo)
+      username: user.username,
+      role: user.role,
+      loginInfo: user.loginTime
     };
   }
 
@@ -166,11 +166,11 @@ export default class Overview extends React.Component {
   };
 
   normalView = () => {
-    const { sessInfo, appStore, runtimeStore, clusterStore, t } = this.props;
+    const { appStore, runtimeStore, clusterStore, user, t } = this.props;
     const countLimit = 5;
     const { isLoading } = appStore;
 
-    const name = getSessInfo('user', sessInfo);
+    const name = user.username;
     const appList = appStore.apps.slice(0, countLimit);
     const runtimteList = runtimeStore.runtimes.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
@@ -348,12 +348,12 @@ export default class Overview extends React.Component {
   };
 
   render() {
-    const role = getSessInfo('role', this.props.sessInfo);
+    const { isAdmin, isDev } = this.props.user;
 
-    if (role === 'global_admin') {
+    if (isAdmin) {
       return this.adminView();
     }
-    if (role === 'developer') {
+    if (isDev) {
       return this.developerView();
     }
     return this.normalView();

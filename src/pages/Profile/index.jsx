@@ -5,13 +5,13 @@ import classNames from 'classnames';
 
 import { Button, Input } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
-import { getCookie } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  userStore: rootStore.userStore
+  userStore: rootStore.userStore,
+  user: rootStore.user
 }))
 @observer
 export default class Profile extends Component {
@@ -22,10 +22,11 @@ export default class Profile extends Component {
     };
   }
 
-  componentDidMount() {
-    const { fetchDetail } = this.props.userStore;
-    const userId = getCookie('userId');
-    fetchDetail(userId);
+  async componentDidMount() {
+    const { userStore, user } = this.props;
+    const { fetchDetail } = userStore;
+    const { user_id } = user;
+    await fetchDetail(user_id);
   }
 
   changeForm = (name, flag) => {

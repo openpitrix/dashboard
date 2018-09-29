@@ -10,17 +10,17 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import { formatTime, getObjName, getSessInfo } from 'utils';
+import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sock }) => ({
   rootStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
-  sessInfo,
+  user: rootStore.user,
   sock
 }))
 @observer
@@ -48,10 +48,10 @@ export default class Clusters extends Component {
   }
 
   componentDidMount() {
-    const { clusterStore, sessInfo } = this.props;
-    const role = getSessInfo('role', sessInfo);
+    const { clusterStore, user } = this.props;
+    const { isAdmin } = user;
 
-    if (role === 'global_admin') {
+    if (isAdmin) {
       clusterStore.fetchStatistics();
     }
   }
@@ -210,7 +210,7 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, sessInfo, t } = this.props;
+    const { clusterStore, user, t } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
@@ -317,24 +317,23 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
-        {role === 'developer' && (
+        {isDev && (
           <NavLink>
             <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Clusters')}
           </NavLink>
         )}
 
-        {role === 'global_admin' && (
+        {isAdmin && (
           <NavLink>
             {t('Platform')} / {t('All Clusters')}
           </NavLink>
         )}
 
-        {role === 'global_admin' && (
+        {isAdmin && (
           <Row>
             <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
           </Row>

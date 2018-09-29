@@ -18,10 +18,10 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppAdd extends Component {
-  static async onEnter({ repoStore, loginUser }) {
+  static async onEnter({ repoStore, user }) {
     await repoStore.fetchAll({
       noLimit: true,
-      isQueryPublic: loginUser.isDev
+      isQueryPublic: user.isDev
     });
   }
 

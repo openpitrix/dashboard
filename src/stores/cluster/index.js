@@ -444,7 +444,7 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changepubkey = e => {
+  changePubkey = e => {
     this.pub_key = e.target.value;
   };
 

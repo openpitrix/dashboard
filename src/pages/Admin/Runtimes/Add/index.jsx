@@ -8,15 +8,14 @@ import get from 'lodash/get';
 import { Radio, Button, Input, Select } from 'components/Base';
 import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import TodoList from 'components/TodoList';
-import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   runtimeCreateStore: rootStore.runtimeCreateStore,
-  sessInfo
+  user: rootStore.user
 }))
 @observer
 export default class RuntimeAdd extends Component {
@@ -229,25 +228,24 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { sessInfo, t } = this.props;
+    const { user, t } = this.props;
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
       >
-        {role === 'developer' && (
+        {isDev && (
           <NavLink>
             <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
             <Link to="/runtimes">{t('Runtimes')}</Link> / {title}
           </NavLink>
         )}
 
-        {role === 'global_admin' && (
+        {isAdmin && (
           <NavLink>
             {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> / {title}
           </NavLink>

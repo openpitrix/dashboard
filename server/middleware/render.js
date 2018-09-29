@@ -8,6 +8,7 @@ const { StaticRouter } = require('react-router-dom');
 const { matchRoutes, renderRoutes } = require('react-router-config');
 const { Provider } = require('mobx-react');
 const get = require('lodash/get');
+
 const renderPage = require('../render-page');
 
 const App = require('src/App').default;
@@ -34,19 +35,21 @@ module.exports = async (ctx, next) => {
   await Promise.all(promises);
 
   const context = {};
-
   const cookies = ctx.cookies;
-  const sessInfo = {
-    user: cookies.get('user'),
-    role: cookies.get('role'),
-    lastLogin: cookies.get('last_login')
-  };
 
   try {
+    const user = decodeURIComponent(cookies.get('user') || '{}');
+    ctx.store.user = JSON.parse(user);
+    const role = decodeURIComponent(cookies.get('role'));
+    if (role === 'user') {
+      ctx.store.user.isDev = false;
+      ctx.store.user.isNormal = true;
+    }
+
     const components = isProd
       ? renderToString(
           <I18nextProvider i18n={i18n}>
-            <Provider rootStore={ctx.store} sessInfo={sessInfo} sock={null}>
+            <Provider rootStore={ctx.store} sock={null}>
               <StaticRouter location={ctx.url} context={context}>
                 <App>{renderRoutes(routes)}</App>
               </StaticRouter>

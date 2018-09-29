@@ -172,22 +172,28 @@ $profile-hover-color: #efe6f8;
     }
   }
 
-  .operateItems{
+  .operateItems {
     min-width: 120px;
-    li a{
-      display: block;
-      height: 32px;
-      padding: 0 12px;
-      //width: 100%;
-      line-height: 32px;
-      font-size: $font14;
-      font-weight: normal;
-      color: $N300;
-      border-radius: 0;
-      &:hover {
-        background-color: $N10;
-        color: $N500;
+    li {
+      > a,
+      > label {
+        display: block;
+        height: 32px;
+        padding: 0 12px;
+        //width: 100%;
+        line-height: 32px;
+        font-size: $font14;
+        font-weight: normal;
+        color: $N300;
+        border-radius: 0;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $N10;
+          color: $N500;
+        }
       }
+
       &.line{
         border-bottom: 1px solid $N10;
       }

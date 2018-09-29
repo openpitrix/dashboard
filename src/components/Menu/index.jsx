@@ -6,12 +6,15 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
-import { getSessInfo } from 'src/utils';
+import { setCookie } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject('rootStore', 'sessInfo')
+@inject(({ rootStore }) => ({
+  appStore: rootStore.appStore,
+  user: rootStore.user
+}))
 @observer
 class Menu extends React.Component {
   static propTypes = {
@@ -19,6 +22,11 @@ class Menu extends React.Component {
   };
 
   static defaultProps = {};
+
+  becomeUser = () => {
+    setCookie('role', 'user');
+    location.href = '/dashboard';
+  };
 
   getMatchKey = () => {
     const { path } = this.props.match;
@@ -178,7 +186,7 @@ class Menu extends React.Component {
       );
     }
 
-    const { menuApps } = this.props.rootStore.appStore;
+    const { menuApps } = this.props.appStore;
 
     return (
       <div className={styles.subNav}>
@@ -249,12 +257,12 @@ class Menu extends React.Component {
   }
 
   renderHeader() {
-    const loggedInUser = getSessInfo('user', this.props.sessInfo);
+    const { username } = this.props.user;
 
     return (
       <div className={styles.header}>
         <Popover content={this.renderOperateMenu()} className={styles.user}>
-          {loggedInUser}
+          {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
@@ -262,10 +270,15 @@ class Menu extends React.Component {
   }
 
   renderOperateMenu = () => {
-    const { t } = this.props;
+    const { user, t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
+        {user.isDev && (
+          <li onClick={this.becomeUser} className={styles.line}>
+            <label>{t('Back to user')}</label>
+          </li>
+        )}
         <li>
           <NavLink to="/profile">{t('Profile')}</NavLink>
         </li>
@@ -280,14 +293,14 @@ class Menu extends React.Component {
   };
 
   render() {
-    const role = getSessInfo('role', this.props.sessInfo);
+    const { isDev, isAdmin, role } = this.props.user;
 
     return (
       <Fragment>
         <div className={styles.menu}>
           {this.renderNav(role)}
-          {role === 'developer' && this.renderSubDev()}
-          {role === 'global_admin' && this.renderSubAdmin()}
+          {isDev && this.renderSubDev()}
+          {isAdmin && this.renderSubAdmin()}
         </div>
 
         {this.renderHeader()}

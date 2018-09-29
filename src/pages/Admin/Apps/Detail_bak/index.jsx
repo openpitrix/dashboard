@@ -15,10 +15,16 @@ import versionColumns from './tabs/version-columns';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) =>
+@inject(({ rootStore }) =>
   assign(
-    pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore', 'runtimeStore']),
-    sessInfo
+    pick(rootStore, [
+      'appStore',
+      'clusterStore',
+      'appVersionStore',
+      'repoStore',
+      'runtimeStore',
+      'user'
+    ])
   )
 )
 @observer
