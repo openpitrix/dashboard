@@ -13,15 +13,20 @@ import DetailBlock from './DetailBlock';
 import StepContent from '../Add/StepContent';
 import VersionList from './VersionList';
 import clusterColumns from './tabs/cluster-columns';
-import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) =>
+@inject(({ rootStore }) =>
   assign(
-    pick(rootStore, ['appStore', 'clusterStore', 'appVersionStore', 'repoStore', 'runtimeStore']),
-    sessInfo
+    pick(rootStore, [
+      'appStore',
+      'clusterStore',
+      'appVersionStore',
+      'repoStore',
+      'runtimeStore',
+      'loginUser'
+    ])
   )
 )
 @observer
@@ -43,7 +48,6 @@ export default class AppDetail extends Component {
     runtimeStore.loadPageInit();
     appVersionStore.loadPageInit();
     appVersionStore.appId = match.params.appId;
-    this.loginUser = getSessInfo('user', props.sessInfo);
   }
 
   async componentWillReceiveProps({ match, rootStore }) {
@@ -239,9 +243,8 @@ export default class AppDetail extends Component {
   );
 
   renderVersions = () => {
-    const { appVersionStore, appStore, sessInfo, t } = this.props;
+    const { appVersionStore, appStore, t } = this.props;
     const { versions, currentVersion } = appVersionStore;
-    const role = getSessInfo('role', sessInfo);
 
     return (
       <VersionList
@@ -249,12 +252,11 @@ export default class AppDetail extends Component {
         currentVersion={currentVersion}
         onSelect={this.selectVersion}
       >
-        {role === 'developer' &&
-          appStore.appDetail.status !== 'deleted' && (
-            <div className={styles.addVersion} onClick={this.createVersionShow}>
-              + {t('Create version')}
-            </div>
-          )}
+        {appStore.appDetail.status !== 'deleted' && (
+          <div className={styles.addVersion} onClick={this.createVersionShow}>
+            + {t('Create version')}
+          </div>
+        )}
       </VersionList>
     );
   };
@@ -326,19 +328,18 @@ export default class AppDetail extends Component {
 
   renderInformation = () => {
     const { t } = this.props;
-    const { appVersionStore, appStore, sessInfo } = this.props;
+    const { appVersionStore, appStore, loginUser } = this.props;
     const { currentVersion, createStep, createError, isLoading } = appVersionStore;
     if (!currentVersion.version_id || createStep === 2) {
       return null;
     }
 
     const { appDetail } = appStore;
-    const role = getSessInfo('role', sessInfo);
+    const { isNormal, isDev, isAdmin, role } = loginUser;
     const editStatus = ['draft', 'rejected'];
     const isDisabled =
-      !editStatus.includes(currentVersion.status) ||
-      role !== 'developer' ||
-      appDetail.status === 'deleted';
+      !editStatus.includes(currentVersion.status) || !isDev || appDetail.status === 'deleted';
+
     const handleMap = {
       developer: {
         draft: 'submit',
@@ -463,8 +464,8 @@ export default class AppDetail extends Component {
   };
 
   renderNavLink = () => {
-    const { t } = this.props;
-    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'global_admin';
+    const { loginUser, t } = this.props;
+    const { isNormal, isDev, isAdmin } = loginUser;
     const { appDetail } = this.props.appStore;
 
     if (isAdmin) {

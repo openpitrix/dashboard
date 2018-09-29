@@ -12,17 +12,17 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName, mappingStatus } from 'utils';
+import { getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class Apps extends Component {
@@ -38,17 +38,16 @@ export default class Apps extends Component {
 
   constructor(props) {
     super(props);
-    const { appStore, repoStore, sessInfo } = this.props;
+    const { appStore, repoStore, loginUser } = this.props;
     appStore.loadPageInit();
     repoStore.loadPageInit();
-    this.role = getSessInfo('role', sessInfo);
   }
 
   componentDidMount() {
-    const { appStore, sessInfo } = this.props;
-    const role = getSessInfo('role', sessInfo);
+    const { appStore, loginUser } = this.props;
+    const { isAdmin } = loginUser;
 
-    if (role === 'global_admin') {
+    if (isAdmin) {
       appStore.fetchStatistics();
     }
   }
@@ -112,14 +111,15 @@ export default class Apps extends Component {
   };
 
   renderHandleMenu = item => {
-    const { t } = this.props;
+    const { loginUser, t } = this.props;
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
+    const { isAdmin } = loginUser;
     let itemMenu = null,
       deployEntry = null;
 
     if (item.status !== 'deleted') {
       deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
-      if (this.role === 'global_admin') {
+      if (isAdmin) {
         itemMenu = (
           <Fragment>
             <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
@@ -204,13 +204,14 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { appStore, repoStore, t } = this.props;
+    const { appStore, repoStore, loginUser, t } = this.props;
     const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
     const { repos } = repoStore;
+    const { isNormal, isDev, isAdmin } = loginUser;
 
     let navLinkShow = t('My Apps') + ' / ' + t('All');
     let urlFront = '/dashboard/app/';
-    if (this.role === 'global_admin') {
+    if (isAdmin) {
       navLinkShow = t('Store') + ' / ' + t('All Apps');
       urlFront = '/store/';
     }
@@ -283,7 +284,7 @@ export default class Apps extends Component {
         title: t('Updated At'),
         key: 'status_time',
         width: '112px',
-        sorter: this.role === 'global_admin',
+        sorter: isAdmin,
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />
       },
@@ -301,7 +302,7 @@ export default class Apps extends Component {
       }
     ];
 
-    if (this.role === 'developer') {
+    if (isDev) {
       columns = columns.filter(item => item.key !== 'developer');
     }
 
@@ -337,7 +338,7 @@ export default class Apps extends Component {
       <Layout className={styles.apps}>
         <NavLink>{navLinkShow}</NavLink>
 
-        {this.role === 'global_admin' && (
+        {isAdmin && (
           <Row>
             <Statistics {...summaryInfo} objs={repos.slice()} />
           </Row>
@@ -346,13 +347,13 @@ export default class Apps extends Component {
         <Row>
           <Grid>
             <Section size={12}>
-              {this.role === 'developer' && this.renderToolbar(true)}
+              {isDev && this.renderToolbar(true)}
 
               {viewType === 'card' ? (
                 this.renderCardApps()
               ) : (
                 <Card>
-                  {this.role === 'global_admin' && this.renderToolbar()}
+                  {isAdmin && this.renderToolbar()}
 
                   <Table
                     columns={columns}

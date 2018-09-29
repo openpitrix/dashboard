@@ -8,15 +8,15 @@ import Layout, { Dialog, NavLink } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
 import RepoList from './RepoList/index';
-import { getScrollTop, getSessInfo } from 'utils';
+import { getScrollTop } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class Repos extends Component {
@@ -137,8 +137,8 @@ export default class Repos extends Component {
   };
 
   renderNavLink = () => {
-    const { t } = this.props;
-    const isAdmin = getSessInfo('role', this.props.sessInfo) === 'global_admin';
+    const { loginUser, t } = this.props;
+    const { isDev, isAdmin } = loginUser;
 
     if (isAdmin) {
       return (

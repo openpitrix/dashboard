@@ -11,7 +11,6 @@ import TagNav from 'components/TagNav';
 import TimeAxis from 'components/TimeAxis';
 import Toolbar from 'components/Toolbar';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-import { getSessInfo } from 'utils';
 import ClusterNodesTable from './TableNodes';
 import renderHandleMenu from '../action-buttons.jsx';
 import ActionModal from '../action-modal';
@@ -19,14 +18,13 @@ import ActionModal from '../action-modal';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sock }) => ({
   clusterStore: rootStore.clusterStore,
   clusterDetailStore: rootStore.clusterDetailStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
-  rootStore,
-  sessInfo,
+  loginUser: rootStore.loginUser,
   sock
 }))
 @observer
@@ -196,7 +194,7 @@ export default class ClusterDetail extends Component {
       clusterStore,
       clusterDetailStore,
       runtimeStore,
-      sessInfo,
+      loginUser,
       t
     } = this.props;
 
@@ -217,8 +215,8 @@ export default class ClusterDetail extends Component {
     const runtimeName = _.get(runtimeDetail, 'name', '');
     const provider = _.get(runtimeDetail, 'provider', '');
 
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'normal';
+    const { isNormal, isDev, isAdmin } = loginUser;
+
     const tableProps = {
       runtimeStore,
       clusterStore,
@@ -245,14 +243,14 @@ export default class ClusterDetail extends Component {
         listenToJob={this.listenToJob}
         title="Purchased"
       >
-        {role === 'developer' && (
+        {isDev && (
           <NavLink>
             <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
             <Link to="/dashboard/clusters">{t('Clusters')}</Link> / {detail.name}
           </NavLink>
         )}
 
-        {role === 'global_admin' && (
+        {isAdmin && (
           <NavLink>
             {t('Platform')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> /{' '}
             {detail.name}

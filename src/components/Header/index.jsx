@@ -6,14 +6,18 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Popover, Icon, Input } from 'components/Base';
-import { getSessInfo } from 'src/utils';
 import Logo from '../Logo';
+import { setCookie } from 'utils';
 
 import styles from './index.scss';
 
 // translate hoc should place before mobx
 @translate()
-@inject('rootStore', 'sessInfo')
+@inject(({ rootStore }) => ({
+  rootStore,
+  appStore: rootStore.appStore,
+  loginUser: rootStore.loginUser
+}))
 @observer
 class Header extends Component {
   static propTypes = {
@@ -21,7 +25,7 @@ class Header extends Component {
   };
 
   onSearch = async value => {
-    const { appStore } = this.props.rootStore;
+    const { appStore } = this.props;
     this.props.history.push('/store/search/' + value);
     await appStore.fetchAll({ search_word: value });
     appStore.homeApps = appStore.apps;
@@ -34,6 +38,11 @@ class Header extends Component {
   isLinkActive = (curLink, match, location) => {
     const { pathname } = location;
     return pathname.indexOf(curLink) > -1;
+  };
+
+  becomeDeveloper = () => {
+    setCookie('changeDev', '', -1);
+    location.href = '/dashboard';
   };
 
   renderMenus = () => {
@@ -70,10 +79,15 @@ class Header extends Component {
   };
 
   renderOperateMenu = () => {
-    const { t } = this.props;
+    const { loginUser, t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
+        {loginUser.role === 'developer' && (
+          <li onClick={this.becomeDeveloper} className={styles.line}>
+            <label>{t('Back to developer')}</label>
+          </li>
+        )}
         <li>
           <Link to="/dashboard">{t('Dashboard')}</Link>
         </li>
@@ -92,9 +106,9 @@ class Header extends Component {
 
   renderMenuBtns() {
     const { t } = this.props;
-    const loggedInUser = getSessInfo('user', this.props.sessInfo);
+    const { username } = this.props.loginUser;
 
-    if (!loggedInUser) {
+    if (!username) {
       return (
         <NavLink to="/login" className={styles.login}>
           {t('Sign In')}
@@ -105,7 +119,7 @@ class Header extends Component {
     return (
       <div className={styles.user}>
         <Popover content={this.renderOperateMenu()}>
-          {loggedInUser}
+          {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
@@ -120,7 +134,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
 
-    const hasMenu = getSessInfo('role', this.props.sessInfo) === 'user';
+    const { isNormal } = this.props.loginUser;
     const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;
@@ -135,7 +149,7 @@ class Header extends Component {
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           <div className={styles.menuOuter}>
-            {hasMenu && this.renderMenus()}
+            {isNormal && this.renderMenus()}
             {this.renderMenuBtns()}
           </div>
           {needShowSearch && (

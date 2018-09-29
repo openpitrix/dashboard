@@ -8,12 +8,14 @@ import { Notification } from 'components/Base';
 import TabsNav from 'components/TabsNav';
 import Menu from 'components/Menu';
 import Loading from 'components/Loading';
-import { getSessInfo } from 'src/utils';
 import TitleBanner from './TitleBanner';
 
 import styles from './index.scss';
 
-@inject('sessInfo', 'sock')
+@inject(({ rootStore, sock }) => ({
+  loginUser: rootStore.loginUser,
+  sock
+}))
 export default class Layout extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -66,28 +68,6 @@ export default class Layout extends React.Component {
     }
   }
 
-  /*
-  renderTabs(isProfile) {
-    const loginRole = getSessInfo('role', this.props.sessInfo);
-    const normalLinks = [{ '': 'overview' }, 'apps', 'clusters', 'runtimes'];
-    if (isProfile) {
-      this.linkPrefix = '/profile';
-      this.availableLinks = [{ '': 'profile' }, { ssh_keys: 'SSH Keys' }];
-    } else if (loginRole === 'user') {
-      this.availableLinks = [...normalLinks];
-      this.availableLinks.splice(1, 1);
-    } else if (loginRole === 'developer') {
-      this.availableLinks = [...normalLinks, 'repos'];
-    } else if (loginRole === 'global_admin') {
-      this.availableLinks = [...normalLinks, 'repos', 'categories', 'users'];
-    }
-
-    const options = { prefix: this.linkPrefix };
-
-    return <TabsNav links={this.availableLinks} options={options} />;
-  }
-*/
-
   render() {
     const {
       className,
@@ -99,9 +79,9 @@ export default class Layout extends React.Component {
       hasSearch,
       title
     } = this.props;
-    const role = getSessInfo('role', this.props.sessInfo);
-    const isNormal = role === 'user';
-    const hasMenu = ['developer', 'global_admin'].includes(role);
+
+    const { isNormal, isDev, isAdmin } = this.props.loginUser;
+    const hasMenu = isDev || isAdmin;
 
     return (
       <div

@@ -43,7 +43,7 @@ describe('<App/>', () => {
   });
 
   const renderPage = (location, store) => (
-    <Provider rootStore={store} sessInfo={null}>
+    <Provider rootStore={store}>
       <BrowserRouter>
         <App location={location}>
           <Switch>

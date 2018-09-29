@@ -7,16 +7,14 @@ import classNames from 'classnames';
 import { Icon, Button, Popover } from 'components/Base';
 import Layout, { Dialog, NavLink } from 'components/Layout';
 import { ProviderName } from 'components/TdName';
-import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  rootStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class Runtimes extends Component {
@@ -127,7 +125,7 @@ export default class Runtimes extends Component {
   }
 
   render() {
-    const { runtimeStore, sessInfo, t } = this.props;
+    const { runtimeStore, loginUser, t } = this.props;
     const { runtimes } = runtimeStore;
 
     const types = [
@@ -138,7 +136,7 @@ export default class Runtimes extends Component {
     ];
 
     const { currentType } = this.state;
-    const isNormal = getSessInfo('role', sessInfo) === 'user';
+    const { isNormal, isDev, isAdmin } = loginUser;
 
     return (
       <Layout title="My Runtimes" className="clearfix">

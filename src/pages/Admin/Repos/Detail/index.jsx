@@ -14,17 +14,17 @@ import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
-import { getSessInfo, mappingStatus } from 'utils';
+import { mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo, sock }) => ({
+@inject(({ rootStore, sock }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
-  sessInfo,
+  loginUser: rootStore.loginUser,
   sock
 }))
 @observer
@@ -216,7 +216,7 @@ export default class RepoDetail extends Component {
   }
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore, sessInfo, t } = this.props;
+    const { repoStore, appStore, runtimeStore, clusterStore, loginUser, t } = this.props;
     const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
 
@@ -303,8 +303,7 @@ export default class RepoDetail extends Component {
         };
         break;
     }
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isDev, isAdmin } = loginUser;
 
     return (
       <Layout
@@ -314,8 +313,8 @@ export default class RepoDetail extends Component {
       >
         {!isNormal && (
           <NavLink>
-            {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {role === 'global_admin' && <label>{t('Platform')}</label>}
+            {isDev && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
+            {isAdmin && <label>{t('Platform')}</label>}
             &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {repoDetail.name}
           </NavLink>
         )}

@@ -9,18 +9,17 @@ import { Radio, Button, Input, Select, CodeMirror, Image } from 'components/Base
 import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
-import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
   repoStore: rootStore.repoStore,
   appDeployStore: rootStore.appDeployStore,
   runtimeStore: rootStore.runtimeStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class AppDeploy extends Component {
@@ -288,13 +287,13 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore, sessInfo, t } = this.props;
+    const { appDeployStore, appStore, loginUser, t } = this.props;
     const appName = appStore.appDetail.name;
     const { appDetail } = appStore;
     const { isKubernetes } = appDeployStore;
     const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appDetail.name}`;
-    const isNormal = getSessInfo('role', sessInfo) === 'user';
+    const { isNormal } = loginUser;
 
     return (
       <Layout

@@ -348,5 +348,8 @@
   "Upgrade cluster": "升级集群版本",
   "Rollback": "回滚",
 
+  "Back to user": "返回普通用户",
+  "Back to developer": "返回开发者",
+
   "None": "无"
 }

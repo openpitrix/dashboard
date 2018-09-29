@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getSessInfo, getObjName, mappingStatus, getFilterObjs } from 'utils';
+import { getObjName, mappingStatus, getFilterObjs } from 'utils';
 
 import styles from './index.scss';
 
@@ -23,7 +23,8 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  userStore: rootStore.userStore
+  userStore: rootStore.userStore,
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class Review extends Component {

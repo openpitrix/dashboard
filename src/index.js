@@ -20,6 +20,11 @@ if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
   try {
     store.loginUser = JSON.parse(getCookie('loginUser') || '{}');
+    const changeDev = getCookie('changeDev');
+    if (changeDev === 'user') {
+      store.loginUser.isDev = false;
+      store.loginUser.isNormal = true;
+    }
   } catch (err) {}
 
   import('./routes').then(({ default: routes }) => {
@@ -34,7 +39,7 @@ if (typeof window !== 'undefined') {
 
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
-        <Provider rootStore={store} sessInfo={null} sock={sc}>
+        <Provider rootStore={store} sock={sc}>
           <BrowserRouter>
             <AppWithRouter>
               <Switch>

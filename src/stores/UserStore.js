@@ -105,9 +105,9 @@ export default class UserStore extends Store {
         ...userInfo,
         isAdmin: userInfo.role === 'global_admin',
         isDev: userInfo.role === 'developer',
-        isUser: userInfo.role === 'user'
+        isNormal: userInfo.role === 'user',
+        loginTime: new Date()
       };
-      setCookie('user', this.userDetail.username, this.cookieTime);
       setCookie('loginUser', JSON.stringify(loginUser), this.cookieTime);
     }
 
@@ -224,10 +224,6 @@ export default class UserStore extends Store {
       //get login user info
       const idToken = id_token.split('.');
       const user = idToken[1] ? JSON.parse(Base64.decode(idToken[1])) : {};
-
-      setCookie('userId', user.sub, this.cookieTime);
-      setCookie('role', user.role, this.cookieTime);
-      setCookie('last_login', Date.now(), this.cookieTime);
       await this.fetchDetail(user.sub, true);
     } else {
       return result;

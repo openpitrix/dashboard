@@ -27,9 +27,8 @@ import { formatTime } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
-  userStore: rootStore.userStore,
-  sessInfo
+@inject(({ rootStore }) => ({
+  userStore: rootStore.userStore
 }))
 @observer
 export default class Users extends Component {

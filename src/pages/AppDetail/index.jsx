@@ -11,18 +11,18 @@ import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
 import VersionItem from './versionItem';
-import { getSessInfo, formatTime, mappingStatus } from 'utils';
+import { formatTime, mappingStatus } from 'utils';
 import { versionCompare } from 'utils/string';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   rootStore: rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   repoStore: rootStore.repoStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class AppDetail extends Component {
@@ -35,12 +35,12 @@ export default class AppDetail extends Component {
 
   async componentDidMount() {
     this.props.rootStore.setNavFix(true);
-    const { appStore, repoStore, appVersionStore, sessInfo, match } = this.props;
+    const { appStore, repoStore, appVersionStore, loginUser, match } = this.props;
 
-    const role = getSessInfo('role', sessInfo);
+    const { isNormal, role } = loginUser;
     const params = { app_id: match.params.appId };
     //normal user or not login only query 'active' versions
-    if (role === 'user' || !Boolean(role)) {
+    if (isNormal || !Boolean(role)) {
       params.status = ['active'];
     }
     await appVersionStore.fetchAll(params);
@@ -230,13 +230,12 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, appVersionStore, sessInfo } = this.props;
+    const { appStore, appVersionStore, loginUser } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isAdmin, role } = loginUser;
     const { path } = this.props.match;
-    const isShowReview = role === 'global_admin' && path.indexOf('review') > -1;
+    const isShowReview = isAdmin && path.indexOf('review') > -1;
 
     return (
       <Layout

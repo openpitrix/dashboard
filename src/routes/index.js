@@ -70,6 +70,19 @@ const routes = {
   '*': Home
 };
 
+const judgeNeedAuth = route => {
+  if (route.startsWith('/:dash')) {
+    return true;
+  }
+
+  const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys'];
+  if (paths.includes(route)) {
+    return true;
+  }
+
+  return false;
+};
+
 export default Object.keys(routes).map(route => {
   const routeDefinition = Object.assign(
     {},
@@ -77,7 +90,7 @@ export default Object.keys(routes).map(route => {
       path: dashUrl(route),
       exact: useExactRoute,
       component: routes[route],
-      needAuth: route.startsWith('/:dash')
+      needAuth: judgeNeedAuth(route)
     }
   );
   if (route === '*') {

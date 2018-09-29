@@ -12,16 +12,16 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
-import { getObjName, getSessInfo } from 'utils';
+import { getObjName } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class RuntimeDetail extends Component {
@@ -78,7 +78,7 @@ export default class RuntimeDetail extends Component {
   };
 
   render() {
-    const { runtimeStore, clusterStore, sessInfo, t } = this.props;
+    const { runtimeStore, clusterStore, loginUser, t } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -162,21 +162,20 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isDev, isAdmin } = loginUser;
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
       >
-        {role === 'developer' && (
+        {isDev && (
           <NavLink>
             <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
             <Link to="/runtimes">{t('Runtimes')}</Link> / {runtimeDetail.name}
           </NavLink>
         )}
-        {role === 'global_admin' && (
+        {isAdmin && (
           <NavLink>
             {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> /{' '}
             {runtimeDetail.name}

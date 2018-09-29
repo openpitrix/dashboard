@@ -8,15 +8,14 @@ import { translate } from 'react-i18next';
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
 import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
 import TodoList from 'components/TodoList';
-import { getSessInfo } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sessInfo }) => ({
+@inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   repoCreateStore: rootStore.repoCreateStore,
-  sessInfo
+  loginUser: rootStore.loginUser
 }))
 @observer
 export default class RepoAdd extends Component {
@@ -204,19 +203,17 @@ export default class RepoAdd extends Component {
   }
 
   render() {
-    const { sessInfo } = this.props;
-    const { t } = this.props;
+    const { loginUser, t } = this.props;
     const { repoId } = this.store;
     const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
-    const role = getSessInfo('role', sessInfo);
-    const isNormal = role === 'user';
+    const { isNormal, isDev, isAdmin } = loginUser;
 
     return (
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
         {!isNormal && (
           <NavLink>
-            {role === 'developer' && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {role === 'global_admin' && <label>{t('Platform')}</label>}
+            {isDev && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
+            {isAdmin && <label>{t('Platform')}</label>}
             &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {title}
           </NavLink>
         )}
