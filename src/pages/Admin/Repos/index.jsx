@@ -16,16 +16,16 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Repos extends Component {
-  static async onEnter({ repoStore, appStore, loginUser }) {
+  static async onEnter({ repoStore, appStore, user }) {
     repoStore.appStore = appStore;
     await repoStore.fetchAll(
       {
         noLimit: true,
-        isQueryPublic: loginUser.isDev
+        isQueryPublic: user.isDev
       },
       appStore
     );
@@ -137,8 +137,8 @@ export default class Repos extends Component {
   };
 
   renderNavLink = () => {
-    const { loginUser, t } = this.props;
-    const { isDev, isAdmin } = loginUser;
+    const { user, t } = this.props;
+    const { isDev, isAdmin } = user;
 
     if (isAdmin) {
       return (

@@ -15,7 +15,7 @@ module.exports = async (ctx, next) => {
 
   const brokenCookie = () => {
     let cookies = ctx.cookies;
-    return !(cookies.get('loginUser') && cookies.get('access_token'));
+    return !(cookies.get('user') && cookies.get('access_token'));
   };
 
   if (needAuth && brokenCookie()) {

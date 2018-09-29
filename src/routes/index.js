@@ -76,11 +76,7 @@ const judgeNeedAuth = route => {
   }
 
   const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys'];
-  if (paths.includes(route)) {
-    return true;
-  }
-
-  return false;
+  return paths.includes(route);
 };
 
 export default Object.keys(routes).map(route => {

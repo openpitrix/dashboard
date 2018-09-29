@@ -24,7 +24,7 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
-  loginUser: rootStore.loginUser,
+  user: rootStore.user,
   sock
 }))
 @observer
@@ -194,7 +194,7 @@ export default class ClusterDetail extends Component {
       clusterStore,
       clusterDetailStore,
       runtimeStore,
-      loginUser,
+      user,
       t
     } = this.props;
 
@@ -215,7 +215,7 @@ export default class ClusterDetail extends Component {
     const runtimeName = _.get(runtimeDetail, 'name', '');
     const provider = _.get(runtimeDetail, 'provider', '');
 
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     const tableProps = {
       runtimeStore,

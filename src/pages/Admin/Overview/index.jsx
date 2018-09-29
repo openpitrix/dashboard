@@ -26,7 +26,7 @@ import styles from './index.scss';
   categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore,
   runtimeStore: rootStore.runtimeStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Overview extends React.Component {
@@ -37,7 +37,7 @@ export default class Overview extends React.Component {
     runtimeStore,
     categoryStore,
     userStore,
-    loginUser
+    user
   }) {
     appStore.updateMeunApps = true;
 
@@ -46,12 +46,12 @@ export default class Overview extends React.Component {
     await runtimeStore.fetchAll();
 
     //fixme developer user query public repos
-    if (loginUser.isDev || loginUser.isAdmin) {
-      const params = loginUser.isDev ? { visibility: ['private'] } : {};
+    if (user.isDev || user.isAdmin) {
+      const params = user.isDev ? { visibility: ['private'] } : {};
       await repoStore.fetchAll(params);
     }
 
-    if (loginUser.isAdmin) {
+    if (user.isAdmin) {
       await categoryStore.fetchAll();
       await userStore.fetchAll({ limit: 1 });
     }
@@ -59,15 +59,15 @@ export default class Overview extends React.Component {
 
   constructor(props) {
     super(props);
-    const { appStore, clusterStore, runtimeStore, repoStore, loginUser } = this.props;
+    const { appStore, clusterStore, runtimeStore, repoStore, user } = this.props;
     appStore.loadPageInit();
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     repoStore.loadPageInit();
     this.userInfo = {
-      username: loginUser.username,
-      role: loginUser.loginUser,
-      loginInfo: loginUser.loginTime
+      username: user.username,
+      role: user.role,
+      loginInfo: user.loginTime
     };
   }
 
@@ -166,11 +166,11 @@ export default class Overview extends React.Component {
   };
 
   normalView = () => {
-    const { appStore, runtimeStore, clusterStore, loginUser, t } = this.props;
+    const { appStore, runtimeStore, clusterStore, user, t } = this.props;
     const countLimit = 5;
     const { isLoading } = appStore;
 
-    const name = loginUser.username;
+    const name = user.username;
     const appList = appStore.apps.slice(0, countLimit);
     const runtimteList = runtimeStore.runtimes.slice(0, countLimit);
     const clusterList = clusterStore.clusters.slice(0, countLimit);
@@ -348,7 +348,7 @@ export default class Overview extends React.Component {
   };
 
   render() {
-    const { isAdmin, isDev } = this.props.loginUser;
+    const { isAdmin, isDev } = this.props.user;
 
     if (isAdmin) {
       return this.adminView();

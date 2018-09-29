@@ -24,7 +24,7 @@ import styles from './index.scss';
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
   userStore: rootStore.userStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Review extends Component {

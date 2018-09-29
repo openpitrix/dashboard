@@ -19,11 +19,11 @@ import styles from './index.scss';
   repoStore: rootStore.repoStore,
   appDeployStore: rootStore.appDeployStore,
   runtimeStore: rootStore.runtimeStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, repoStore, appDeployStore, loginUser }, { appId }) {
+  static async onEnter({ appStore, repoStore, appDeployStore, user }, { appId }) {
     appDeployStore.appId = appId;
     appStore.isLoading = true;
     await appStore.fetch(appId);
@@ -42,7 +42,7 @@ export default class AppDeploy extends Component {
       status: 'active',
       label: querySelector,
       provider: repoProviders,
-      owner: loginUser.userId
+      owner: user.userId
     });
     appStore.isLoading = false;
   }
@@ -287,13 +287,13 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore, loginUser, t } = this.props;
+    const { appDeployStore, appStore, user, t } = this.props;
     const appName = appStore.appDetail.name;
     const { appDetail } = appStore;
     const { isKubernetes } = appDeployStore;
     const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appDetail.name}`;
-    const { isNormal } = loginUser;
+    const { isNormal } = user;
 
     return (
       <Layout

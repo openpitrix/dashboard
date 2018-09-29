@@ -22,7 +22,7 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   repoStore: rootStore.repoStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class AppDetail extends Component {
@@ -35,9 +35,9 @@ export default class AppDetail extends Component {
 
   async componentDidMount() {
     this.props.rootStore.setNavFix(true);
-    const { appStore, repoStore, appVersionStore, loginUser, match } = this.props;
+    const { appStore, repoStore, appVersionStore, user, match } = this.props;
 
-    const { isNormal, role } = loginUser;
+    const { isNormal, role } = user;
     const params = { app_id: match.params.appId };
     //normal user or not login only query 'active' versions
     if (isNormal || !Boolean(role)) {
@@ -230,10 +230,10 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, appVersionStore, loginUser } = this.props;
+    const { appStore, appVersionStore, user } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
-    const { isNormal, isAdmin, role } = loginUser;
+    const { isNormal, isAdmin, role } = user;
     const { path } = this.props.match;
     const isShowReview = isAdmin && path.indexOf('review') > -1;
 

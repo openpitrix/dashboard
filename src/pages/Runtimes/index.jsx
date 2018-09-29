@@ -14,7 +14,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Runtimes extends Component {
@@ -125,7 +125,7 @@ export default class Runtimes extends Component {
   }
 
   render() {
-    const { runtimeStore, loginUser, t } = this.props;
+    const { runtimeStore, user, t } = this.props;
     const { runtimes } = runtimeStore;
 
     const types = [
@@ -136,7 +136,7 @@ export default class Runtimes extends Component {
     ];
 
     const { currentType } = this.state;
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout title="My Runtimes" className="clearfix">

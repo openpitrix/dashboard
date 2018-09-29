@@ -24,7 +24,7 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
-  loginUser: rootStore.loginUser,
+  user: rootStore.user,
   sock
 }))
 @observer
@@ -216,7 +216,7 @@ export default class RepoDetail extends Component {
   }
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore, loginUser, t } = this.props;
+    const { repoStore, appStore, runtimeStore, clusterStore, user, t } = this.props;
     const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
 
@@ -303,7 +303,7 @@ export default class RepoDetail extends Component {
         };
         break;
     }
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout

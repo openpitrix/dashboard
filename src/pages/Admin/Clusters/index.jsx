@@ -20,7 +20,7 @@ import styles from './index.scss';
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
-  loginUser: rootStore.loginUser,
+  user: rootStore.user,
   sock
 }))
 @observer
@@ -48,8 +48,8 @@ export default class Clusters extends Component {
   }
 
   componentDidMount() {
-    const { clusterStore, loginUser } = this.props;
-    const { isAdmin } = loginUser;
+    const { clusterStore, user } = this.props;
+    const { isAdmin } = user;
 
     if (isAdmin) {
       clusterStore.fetchStatistics();
@@ -210,7 +210,7 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, loginUser, t } = this.props;
+    const { clusterStore, user, t } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
@@ -317,7 +317,7 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>

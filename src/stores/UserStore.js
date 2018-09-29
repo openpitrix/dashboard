@@ -101,14 +101,14 @@ export default class UserStore extends Store {
 
     if (isLogin) {
       const userInfo = pick({ ...this.userDetail }, ['user_id', 'username', 'email', 'role']);
-      const loginUser = {
+      const user = {
         ...userInfo,
         isAdmin: userInfo.role === 'global_admin',
         isDev: userInfo.role === 'developer',
         isNormal: userInfo.role === 'user',
         loginTime: new Date()
       };
-      setCookie('loginUser', JSON.stringify(loginUser), this.cookieTime);
+      setCookie('user', JSON.stringify(user), this.cookieTime);
     }
 
     this.isLoading = false;

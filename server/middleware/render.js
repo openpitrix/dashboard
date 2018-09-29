@@ -38,12 +38,12 @@ module.exports = async (ctx, next) => {
   const cookies = ctx.cookies;
 
   try {
-    const loginUser = decodeURIComponent(cookies.get('loginUser') || '{}');
-    ctx.store.loginUser = JSON.parse(loginUser);
-    const changeDev = decodeURIComponent(cookies.get('changeDev'));
-    if (changeDev === 'user') {
-      ctx.store.loginUser.isDev = false;
-      ctx.store.loginUser.isNormal = true;
+    const user = decodeURIComponent(cookies.get('user') || '{}');
+    ctx.store.user = JSON.parse(user);
+    const role = decodeURIComponent(cookies.get('role'));
+    if (role === 'user') {
+      ctx.store.user.isDev = false;
+      ctx.store.user.isNormal = true;
     }
 
     const components = isProd

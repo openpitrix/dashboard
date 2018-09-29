@@ -15,7 +15,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   repoCreateStore: rootStore.repoCreateStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class RepoAdd extends Component {
@@ -203,10 +203,10 @@ export default class RepoAdd extends Component {
   }
 
   render() {
-    const { loginUser, t } = this.props;
+    const { user, t } = this.props;
     const { repoId } = this.store;
     const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>

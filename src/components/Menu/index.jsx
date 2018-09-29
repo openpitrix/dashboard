@@ -13,7 +13,7 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 class Menu extends React.Component {
@@ -24,7 +24,7 @@ class Menu extends React.Component {
   static defaultProps = {};
 
   becomeUser = () => {
-    setCookie('changeDev', 'user');
+    setCookie('role', 'user');
     location.href = '/dashboard';
   };
 
@@ -257,7 +257,7 @@ class Menu extends React.Component {
   }
 
   renderHeader() {
-    const { username } = this.props.loginUser;
+    const { username } = this.props.user;
 
     return (
       <div className={styles.header}>
@@ -270,11 +270,11 @@ class Menu extends React.Component {
   }
 
   renderOperateMenu = () => {
-    const { loginUser, t } = this.props;
+    const { user, t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
-        {loginUser.isDev && (
+        {user.isDev && (
           <li onClick={this.becomeUser} className={styles.line}>
             <label>{t('Back to user')}</label>
           </li>
@@ -293,7 +293,7 @@ class Menu extends React.Component {
   };
 
   render() {
-    const { isDev, isAdmin, role } = this.props.loginUser;
+    const { isDev, isAdmin, role } = this.props.user;
 
     return (
       <Fragment>

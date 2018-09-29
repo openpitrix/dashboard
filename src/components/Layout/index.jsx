@@ -13,7 +13,7 @@ import TitleBanner from './TitleBanner';
 import styles from './index.scss';
 
 @inject(({ rootStore, sock }) => ({
-  loginUser: rootStore.loginUser,
+  user: rootStore.user,
   sock
 }))
 export default class Layout extends React.Component {
@@ -80,7 +80,7 @@ export default class Layout extends React.Component {
       title
     } = this.props;
 
-    const { isNormal, isDev, isAdmin } = this.props.loginUser;
+    const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = isDev || isAdmin;
 
     return (

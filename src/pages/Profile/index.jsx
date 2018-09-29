@@ -11,7 +11,7 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Profile extends Component {
@@ -22,11 +22,11 @@ export default class Profile extends Component {
     };
   }
 
-  componentDidMount() {
-    const { userStore, loginUser } = this.props;
+  async componentDidMount() {
+    const { userStore, user } = this.props;
     const { fetchDetail } = userStore;
-    const { user_id } = loginUser;
-    fetchDetail(user_id);
+    const { user_id } = user;
+    await fetchDetail(user_id);
   }
 
   changeForm = (name, flag) => {

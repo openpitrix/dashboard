@@ -132,7 +132,7 @@ export default class SSHKeys extends Component {
         </div>
         <div className={styles.textareaItem}>
           <label className={styles.name}>{t('Public Key')}</label>
-          <textarea name="pub_key" value={clusterStore.pub_key} onChange={changePubKey} />
+          <textarea name="pub_key" value={clusterStore.pub_key} onChange={changePubkey} />
           <p className={styles.rightShow}>
             {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrdgjUTEEHh...
           </p>

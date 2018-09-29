@@ -22,30 +22,30 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore, loginUser }) {
+  static async onEnter({ appStore, categoryStore, repoStore, user }) {
     await appStore.fetchAll();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
-      isQueryPublic: loginUser.isDev
+      isQueryPublic: user.isDev
     });
     await categoryStore.fetchAll();
   }
 
   constructor(props) {
     super(props);
-    const { appStore, repoStore, loginUser } = this.props;
+    const { appStore, repoStore, user } = this.props;
     appStore.loadPageInit();
     repoStore.loadPageInit();
   }
 
   componentDidMount() {
-    const { appStore, loginUser } = this.props;
-    const { isAdmin } = loginUser;
+    const { appStore, user } = this.props;
+    const { isAdmin } = user;
 
     if (isAdmin) {
       appStore.fetchStatistics();
@@ -111,9 +111,9 @@ export default class Apps extends Component {
   };
 
   renderHandleMenu = item => {
-    const { loginUser, t } = this.props;
+    const { user, t } = this.props;
     const { showDeleteApp, showModifyAppCate } = this.props.appStore;
-    const { isAdmin } = loginUser;
+    const { isAdmin } = user;
     let itemMenu = null,
       deployEntry = null;
 
@@ -204,10 +204,10 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { appStore, repoStore, loginUser, t } = this.props;
+    const { appStore, repoStore, user, t } = this.props;
     const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
     const { repos } = repoStore;
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     let navLinkShow = t('My Apps') + ' / ' + t('All');
     let urlFront = '/dashboard/app/';
@@ -336,7 +336,7 @@ export default class Apps extends Component {
 
     return (
       <Layout className={styles.apps}>
-        <NavLink>{navLinkShow}</NavLink>
+        <NavLink>navLinkShow</NavLink>
 
         {isAdmin && (
           <Row>

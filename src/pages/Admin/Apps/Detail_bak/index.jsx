@@ -23,7 +23,7 @@ import styles from './index.scss';
       'appVersionStore',
       'repoStore',
       'runtimeStore',
-      'loginUser'
+      'user'
     ])
   )
 )

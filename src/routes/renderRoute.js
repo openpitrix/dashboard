@@ -9,15 +9,15 @@ import { getCookie, setCookie } from '../utils';
 
 const renderRoute = (match, route, store) => {
   if (route.path === 'login') {
-    setCookie('loginUser', '', -1);
-    setCookie('changeDev', '', -1);
+    setCookie('user', '', -1);
+    setCookie('role', '', -1);
   }
 
-  const loginUser = JSON.parse(getCookie('loginUser') || '{}');
-  const changeDev = getCookie('changeDev');
-  const hasHeader = loginUser.isNormal || !loginUser.username || changeDev === 'user';
+  const user = JSON.parse(getCookie('user') || '{}');
+  const role = getCookie('role');
+  const hasHeader = user.isNormal || !user.username || role === 'user';
 
-  if (route.needAuth && !Boolean(loginUser.username)) {
+  if (route.needAuth && !Boolean(user.username)) {
     return <Redirect to={`/login?url=${match.url}`} />;
   }
 

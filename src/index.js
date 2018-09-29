@@ -19,11 +19,11 @@ store.registerStores();
 if (typeof window !== 'undefined') {
   const AppWithRouter = withRouter(App);
   try {
-    store.loginUser = JSON.parse(getCookie('loginUser') || '{}');
-    const changeDev = getCookie('changeDev');
-    if (changeDev === 'user') {
-      store.loginUser.isDev = false;
-      store.loginUser.isNormal = true;
+    store.user = JSON.parse(getCookie('user') || '{}');
+    const role = getCookie('role');
+    if (role === 'user') {
+      store.user.isDev = false;
+      store.user.isNormal = true;
     }
   } catch (err) {}
 

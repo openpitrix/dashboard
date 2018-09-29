@@ -16,7 +16,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 class Header extends Component {
@@ -41,7 +41,7 @@ class Header extends Component {
   };
 
   becomeDeveloper = () => {
-    setCookie('changeDev', '', -1);
+    setCookie('role', '', -1);
     location.href = '/dashboard';
   };
 
@@ -79,11 +79,11 @@ class Header extends Component {
   };
 
   renderOperateMenu = () => {
-    const { loginUser, t } = this.props;
+    const { user, t } = this.props;
 
     return (
       <ul className={styles.operateItems}>
-        {loginUser.role === 'developer' && (
+        {user.role === 'developer' && (
           <li onClick={this.becomeDeveloper} className={styles.line}>
             <label>{t('Back to developer')}</label>
           </li>
@@ -106,7 +106,7 @@ class Header extends Component {
 
   renderMenuBtns() {
     const { t } = this.props;
-    const { username } = this.props.loginUser;
+    const { username } = this.props.user;
 
     if (!username) {
       return (
@@ -134,7 +134,7 @@ class Header extends Component {
       rootStore: { fixNav }
     } = this.props;
 
-    const { isNormal } = this.props.loginUser;
+    const { isNormal } = this.props.user;
     const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const needShowSearch = isHome && fixNav;
     const appSearch = match.params.search;

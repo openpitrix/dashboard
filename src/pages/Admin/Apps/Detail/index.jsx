@@ -25,7 +25,7 @@ import styles from './index.scss';
       'appVersionStore',
       'repoStore',
       'runtimeStore',
-      'loginUser'
+      'user'
     ])
   )
 )
@@ -328,14 +328,14 @@ export default class AppDetail extends Component {
 
   renderInformation = () => {
     const { t } = this.props;
-    const { appVersionStore, appStore, loginUser } = this.props;
+    const { appVersionStore, appStore, user } = this.props;
     const { currentVersion, createStep, createError, isLoading } = appVersionStore;
     if (!currentVersion.version_id || createStep === 2) {
       return null;
     }
 
     const { appDetail } = appStore;
-    const { isNormal, isDev, isAdmin, role } = loginUser;
+    const { isNormal, isDev, isAdmin, role } = user;
     const editStatus = ['draft', 'rejected'];
     const isDisabled =
       !editStatus.includes(currentVersion.status) || !isDev || appDetail.status === 'deleted';
@@ -464,8 +464,8 @@ export default class AppDetail extends Component {
   };
 
   renderNavLink = () => {
-    const { loginUser, t } = this.props;
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { user, t } = this.props;
+    const { isNormal, isDev, isAdmin } = user;
     const { appDetail } = this.props.appStore;
 
     if (isAdmin) {

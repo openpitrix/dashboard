@@ -21,7 +21,7 @@ import styles from './index.scss';
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class RuntimeDetail extends Component {
@@ -78,7 +78,7 @@ export default class RuntimeDetail extends Component {
   };
 
   render() {
-    const { runtimeStore, clusterStore, loginUser, t } = this.props;
+    const { runtimeStore, clusterStore, user, t } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -162,7 +162,7 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout

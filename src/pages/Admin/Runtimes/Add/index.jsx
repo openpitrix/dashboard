@@ -15,7 +15,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   runtimeCreateStore: rootStore.runtimeCreateStore,
-  loginUser: rootStore.loginUser
+  user: rootStore.user
 }))
 @observer
 export default class RuntimeAdd extends Component {
@@ -228,10 +228,10 @@ export default class RuntimeAdd extends Component {
   }
 
   render() {
-    const { loginUser, t } = this.props;
+    const { user, t } = this.props;
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
-    const { isNormal, isDev, isAdmin } = loginUser;
+    const { isNormal, isDev, isAdmin } = user;
 
     return (
       <Layout
