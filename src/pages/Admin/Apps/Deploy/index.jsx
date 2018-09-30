@@ -42,10 +42,20 @@ export default class AppDeploy extends Component {
       status: 'active',
       label: querySelector,
       provider: repoProviders,
-      owner: user.userId
+      owner: user.user_id
     });
     appStore.isLoading = false;
   }
+
+  deploySubmit = async event => {
+    const { appDeployStore, user, history } = this.props;
+    const result = await appDeployStore.handleSubmit(event);
+
+    if (!(result && result.err)) {
+      const path = user.isNormal ? '/purchased' : '/dashboard/clusters';
+      history.push(path);
+    }
+  };
 
   renderAside() {
     const { appStore, t } = this.props;
@@ -69,7 +79,6 @@ export default class AppDeploy extends Component {
       configNodes,
       configEnvs,
       changeCell,
-      handleSubmit,
       isLoading,
       runtimes,
       versions,
@@ -84,11 +93,7 @@ export default class AppDeploy extends Component {
     const btnDisabled = isLoading || !configBasics.length || !runtimes.length;
 
     return (
-      <form
-        className={styles.createForm}
-        method="post"
-        onSubmit={handleSubmit.bind(appDeployStore)}
-      >
+      <form className={styles.createForm} method="post" onSubmit={this.deploySubmit}>
         <div className={styles.moduleTitle}>1. {t('Basic Settings')}</div>
         {configBasics.map(
           (basic, index) =>
@@ -213,7 +218,6 @@ export default class AppDeploy extends Component {
       yamlStr,
       changeYmalCell,
       changeYamlStr,
-      handleSubmit,
       isLoading,
       runtimes,
       versions,
@@ -226,11 +230,7 @@ export default class AppDeploy extends Component {
     const btnDisabled = isLoading || yamlStr === '' || !yamlConfig.length || !runtimes.length;
 
     return (
-      <form
-        className={styles.createForm}
-        method="post"
-        onSubmit={handleSubmit.bind(appDeployStore)}
-      >
+      <form className={styles.createForm} method="post" onSubmit={this.deploySubmit}>
         <div className={styles.moduleTitle}>1. {t('Basic Settings')}</div>
         <div className={styles.cellModule}>
           <label className={styles.name}>Name</label>

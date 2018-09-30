@@ -51,7 +51,7 @@ export default class RepoStore extends Store {
       defaultParams.search_word = this.searchWord;
     }
     if (this.userId) {
-      defaultParams.user_id = this.userId;
+      defaultParams.owner = this.userId;
     }
     if (params.isQueryPublic) {
       params.visibility = ['private'];

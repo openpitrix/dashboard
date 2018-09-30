@@ -63,7 +63,7 @@ export default class RuntimeStore extends Store {
       defaultParams.search_word = this.searchWord;
     }
     if (this.userId) {
-      defaultParams.user_id = this.userId;
+      defaultParams.owner = this.userId;
     }
 
     this.isLoading = true;

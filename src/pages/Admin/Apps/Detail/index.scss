@@ -66,6 +66,10 @@
       width: calc(65% - 12px);
       vertical-align: top;
 
+      &.message {
+        margin-top: 8px;
+      }
+
       button {
         margin-right: 12px;
       }

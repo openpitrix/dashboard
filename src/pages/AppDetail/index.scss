@@ -115,11 +115,15 @@
   right: 0;
   bottom: 0;
   box-sizing: border-box;
-  height: 72px;
+  //height: 72px;
   padding: 20px;
   background-color: $B10;
   color: $B75;
   line-height: 32px;
+
+  .message {
+    padding-left: 30px;
+  }
 
   .dot {
     float: left;

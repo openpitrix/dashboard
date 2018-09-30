@@ -91,7 +91,7 @@ export default class ClusterStore extends Store {
       defaultParams.runtime_id = this.runtimeId;
     }
     if (this.userId) {
-      defaultParams.user_id = this.userId;
+      defaultParams.owner = this.userId;
     }
 
     this.isLoading = true;
