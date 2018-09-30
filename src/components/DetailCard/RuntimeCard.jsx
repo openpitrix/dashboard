@@ -62,7 +62,7 @@ export default class RuntimeCard extends Component {
           )}
           <li>
             <span className={styles.name}>{t('Creator')}</span>
-            <span className={styles.val}>{userName}/span>
+            <span className={styles.val}>{userName}</span>
           </li>
           <li>
             <span className={styles.name}>
