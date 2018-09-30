@@ -16,11 +16,12 @@ export default class RuntimeCard extends Component {
   static propTypes = {
     detail: PropTypes.object.isRequired,
     appCount: PropTypes.number,
-    clusterCount: PropTypes.number
+    clusterCount: PropTypes.number,
+    userName: PropTypes.string
   };
 
   render() {
-    const { detail, appCount, clusterCount, t } = this.props;
+    const { detail, appCount, clusterCount, userName, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -61,7 +62,7 @@ export default class RuntimeCard extends Component {
           )}
           <li>
             <span className={styles.name}>{t('Creator')}</span>
-            {detail.owner}
+            {userName}
           </li>
           <li>
             <span className={styles.name}>

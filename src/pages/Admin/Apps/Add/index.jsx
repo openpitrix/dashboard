@@ -134,7 +134,13 @@ export default class AppAdd extends Component {
 
         <div className={styles.operateWord}>
           {t('view_guide_1')}
-          <span className={styles.link}>{t('view_guide_2')}</span>
+          <a
+            className={styles.link}
+            target="_blank"
+            href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+          >
+            {t('view_guide_2')}
+          </a>
           {t('view_guide_3')}
         </div>
         {createError && (

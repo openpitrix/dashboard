@@ -37,6 +37,7 @@ export default class ClusterDetailStore extends Store {
       });
     }
     clusterStore.cluster_id = clusterId;
+    await userStore.fetchDetail(cluster.owner);
   };
 
   @action

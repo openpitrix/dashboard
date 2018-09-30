@@ -281,9 +281,13 @@ export default class AppDetail extends Component {
 
           <div className={styles.operateWord}>
             {t('view_guide_1')}
-            <span className={styles.link} onClick={() => this.setCreateStep(2)}>
+            <a
+              className={styles.link}
+              target="_blank"
+              href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+            >
               {t('view_guide_2')}
-            </span>
+            </a>
             {t('view_guide_3')}
           </div>
           {createError && (
@@ -412,7 +416,13 @@ export default class AppDetail extends Component {
             )}
             <div className={styles.viewGuide}>
               {t('view_guide_1')}
-              <span className={styles.link}>{t('view_guide_2')}</span>
+              <a
+                className={styles.link}
+                target="_blank"
+                href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+              >
+                {t('view_guide_2')}
+              </a>
               {t('view_guide_3')}
             </div>
             {createError && (
@@ -570,10 +580,7 @@ export default class AppDetail extends Component {
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
-                <TagNav
-                  tags={['Information', 'Clusters', 'Logs']}
-                  changeTag={this.changeDetailTab}
-                />
+                <TagNav tags={['Information', 'Clusters']} changeTag={this.changeDetailTab} />
                 {detailTab === 'Information' ? (
                   this.renderInformation()
                 ) : (

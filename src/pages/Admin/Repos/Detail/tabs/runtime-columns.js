@@ -5,13 +5,14 @@ import TdName from 'components/TdName';
 import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import { getObjName } from 'utils';
 
-export default function(clusters) {
+export default function(clusters, users) {
   return [
     {
       title: <I18n>{t => <span>{t('Runtime Name')}</span>}</I18n>,
       key: 'name',
-      width: '155px',
+      width: '130px',
       render: item => (
         <TdName
           name={item.name}
@@ -43,7 +44,7 @@ export default function(clusters) {
     {
       title: <I18n>{t => <span>{t('User')}</span>}</I18n>,
       key: 'owner',
-      render: item => item.owner
+      render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
     },
     {
       title: <I18n>{t => <span>{t('Updated At')}</span>}</I18n>,

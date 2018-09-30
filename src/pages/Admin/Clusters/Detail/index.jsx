@@ -24,6 +24,7 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
+  userStore: rootStore.userStore,
   user: rootStore.user,
   sock
 }))
@@ -37,9 +38,16 @@ export default class ClusterDetail extends Component {
   }
 
   componentDidMount() {
-    const { clusterStore, clusterDetailStore, runtimeStore, appStore, match } = this.props;
+    const {
+      clusterStore,
+      clusterDetailStore,
+      runtimeStore,
+      appStore,
+      userStore,
+      match
+    } = this.props;
     const clusterId = get(match, 'params.clusterId');
-    clusterDetailStore.fetchPage({ clusterId, clusterStore, runtimeStore, appStore });
+    clusterDetailStore.fetchPage({ clusterId, clusterStore, runtimeStore, appStore, userStore });
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -194,6 +202,7 @@ export default class ClusterDetail extends Component {
       clusterStore,
       clusterDetailStore,
       runtimeStore,
+      userStore,
       user,
       t
     } = this.props;
@@ -214,6 +223,7 @@ export default class ClusterDetail extends Component {
     const appName = _.get(appStore.appDetail, 'name', '');
     const runtimeName = _.get(runtimeDetail, 'name', '');
     const provider = _.get(runtimeDetail, 'provider', '');
+    const userName = _.get(userStore.userDetail, 'name', '');
 
     const { isNormal, isDev, isAdmin } = user;
 
@@ -265,6 +275,7 @@ export default class ClusterDetail extends Component {
                 appName={appName}
                 runtimeName={runtimeName}
                 provider={provider}
+                userName={userName}
               />
               <Popover
                 className="operation"

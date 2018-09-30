@@ -36,7 +36,7 @@ export default class AppList extends PureComponent {
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}
-                linkUrl={isAdmin ? `/dashboard/app/${item.id}` : `/app/${item.app_id}`}
+                linkUrl={isAdmin ? `/app/${item.id}` : `/dashboard/app/${item.app_id}`}
                 noCopy={true}
               />
             </li>

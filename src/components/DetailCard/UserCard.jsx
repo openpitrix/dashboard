@@ -24,8 +24,8 @@ export default class UserCard extends React.Component {
     return (
       <div className={styles.detailCard}>
         <div className={styles.title}>
-          <div className={styles.name} title={userDetail.name}>
-            {userDetail.name}
+          <div className={styles.name} title={userDetail.username}>
+            {userDetail.username}
           </div>
           <CopyId id={userDetail.user_id} />
         </div>
