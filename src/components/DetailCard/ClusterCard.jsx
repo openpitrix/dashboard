@@ -17,7 +17,8 @@ export default class ClusterCard extends Component {
     detail: PropTypes.object.isRequired,
     appName: PropTypes.string,
     runtimeName: PropTypes.string,
-    provider: PropTypes.string
+    provider: PropTypes.string,
+    userName: PropTypes.string
   };
 
   render() {

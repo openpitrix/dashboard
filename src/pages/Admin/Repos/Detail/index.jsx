@@ -14,7 +14,7 @@ import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
-import { mappingStatus } from 'utils';
+import { mappingStatus, getObjName } from 'utils';
 
 import styles from './index.scss';
 
@@ -24,13 +24,21 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
+  userStore: rootStore.userStore,
   user: rootStore.user,
   sock
 }))
 @observer
 export default class RepoDetail extends Component {
-  static async onEnter({ repoStore }, { repoId }) {
+  static async onEnter({ repoStore, userStore, user }, { repoId }) {
     await repoStore.fetchRepoDetail(repoId);
+
+    if (user.isAdmin) {
+      await userStore.fetchAll({ noLimit: true });
+    } else {
+      const { repoDetail } = repoStore;
+      await userStore.fetchDetail(repoDetail.owner);
+    }
   }
 
   constructor(props) {
@@ -216,9 +224,27 @@ export default class RepoDetail extends Component {
   }
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore, user, t } = this.props;
+    const { repoStore, appStore, runtimeStore, clusterStore, userStore, user, t } = this.props;
     const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
+
+    const { users, userDetail } = userStore;
+    let userName = getObjName(users, 'user_id', repoDetail.owner, 'username');
+    if (!isAdmin) {
+      userName = userDetail.username;
+    }
+
+    let columns = [];
+    if (curTagName === 'Apps') {
+      columns = appColumns(users);
+    } else if (curTagName === 'Runtimes') {
+      columns = runtimesColumns(clusters, users);
+    } else if (curTagName === 'Events') {
+      columns = eventsColumns;
+    }
+    if (!user.isAdmin) {
+      columns = columns.filter(item => item.key !== 'owner');
+    }
 
     let selectors = [];
     let toolbarOptions, tableOptions;
@@ -233,7 +259,7 @@ export default class RepoDetail extends Component {
           onRefresh: appStore.onRefresh
         };
         tableOptions = {
-          columns: appColumns,
+          columns: columns,
           dataSource: appStore.apps.toJSON(),
           isLoading: appStore.isLoading,
           filterList: [
@@ -267,7 +293,7 @@ export default class RepoDetail extends Component {
           onRefresh: this.onRefresh
         };
         tableOptions = {
-          columns: runtimesColumns(clusters),
+          columns: columns,
           dataSource: runtimeStore.runtimes.toJSON(),
           isLoading: runtimeStore.isLoading,
           filterList: [
@@ -291,7 +317,7 @@ export default class RepoDetail extends Component {
         break;
       case 'Events':
         tableOptions = {
-          columns: eventsColumns,
+          columns: columns,
           dataSource: repoStore.repoEvents.toJSON(),
           isLoading: repoStore.isLoading,
           pagination: {
@@ -322,7 +348,7 @@ export default class RepoDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <RuntimeCard detail={repoDetail} appCount={appStore.appCount} />
+              <RuntimeCard detail={repoDetail} appCount={appStore.appCount} userName={userName} />
               {repoDetail.status !== 'deleted' && (
                 <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
                   <Icon name="more" />

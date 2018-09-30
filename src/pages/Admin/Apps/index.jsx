@@ -22,6 +22,7 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
   repoStore: rootStore.repoStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
@@ -43,12 +44,13 @@ export default class Apps extends Component {
     repoStore.loadPageInit();
   }
 
-  componentDidMount() {
-    const { appStore, user } = this.props;
+  async componentDidMount() {
+    const { appStore, userStore, user } = this.props;
     const { isAdmin } = user;
 
     if (isAdmin) {
-      appStore.fetchStatistics();
+      await appStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
     }
   }
 
@@ -80,7 +82,6 @@ export default class Apps extends Component {
     const { appStore, categoryStore, t } = this.props;
     const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
     const categories = categoryStore.categories.toJSON();
-
     const { selectedCategory } = handleApp;
 
     return (
@@ -204,9 +205,10 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { appStore, repoStore, user, t } = this.props;
+    const { appStore, repoStore, userStore, user, t } = this.props;
     const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
     const { repos } = repoStore;
+    const { users } = userStore;
     const { isNormal, isDev, isAdmin } = user;
 
     let navLinkShow = t('My Apps') + ' / ' + t('All');
@@ -276,9 +278,9 @@ export default class Apps extends Component {
       },
       {
         title: t('Developer'),
-        key: 'developer',
+        key: 'owner',
         width: '80px',
-        render: item => item.owner
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Updated At'),
@@ -302,8 +304,8 @@ export default class Apps extends Component {
       }
     ];
 
-    if (isDev) {
-      columns = columns.filter(item => item.key !== 'developer');
+    if (!isAdmin) {
+      columns = columns.filter(item => item.key !== 'owner');
     }
 
     const rowSelection = {

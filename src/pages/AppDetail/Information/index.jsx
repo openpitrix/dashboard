@@ -23,10 +23,12 @@ const Information = ({ app, repo }) => {
           <dl>
             <dt>{t('Category')}</dt>
             <dd>
-              {get(app, 'category_set', [])
-                .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => cate.name)
-                .join(', ')}
+              {t(
+                get(app, 'category_set', [])
+                  .filter(cate => cate.category_id && cate.status === 'enabled')
+                  .map(cate => cate.name)
+                  .join(', ')
+              )}
             </dd>
           </dl>
           <dl>

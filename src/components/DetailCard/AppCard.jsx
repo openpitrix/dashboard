@@ -17,7 +17,8 @@ export default class AppCard extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
     repoName: PropTypes.string,
-    repoProvider: PropTypes.string
+    repoProvider: PropTypes.string,
+    userName: PropTypes.string
   };
 
   /*shouldComponentUpdate(nextProps) {
@@ -26,7 +27,7 @@ export default class AppCard extends React.Component {
   }*/
 
   render() {
-    const { appDetail, repoName, repoProvider, t } = this.props;
+    const { appDetail, repoName, repoProvider, userName, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -66,7 +67,7 @@ export default class AppCard extends React.Component {
           </li>
           <li>
             <span className={styles.name}>{t('Developer')}</span>
-            {appDetail.owner}
+            {userName}
           </li>
           <li>
             <span className={styles.name}>{t('Date Updated')}</span>

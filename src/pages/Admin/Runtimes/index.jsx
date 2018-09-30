@@ -10,23 +10,25 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
-import { formatTime } from 'utils';
+import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  userStore: rootStore.userStore
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore, clusterStore }) {
+  static async onEnter({ runtimeStore, clusterStore, userStore }) {
     await runtimeStore.fetchAll();
     await runtimeStore.fetchStatistics();
     await clusterStore.fetchAll({
       noLimit: true
     });
+    await userStore.fetchAll({ noLimit: true });
   }
 
   constructor(props) {
@@ -118,9 +120,10 @@ export default class Runtimes extends Component {
   }
 
   render() {
-    const { runtimeStore, clusterStore, t } = this.props;
+    const { runtimeStore, clusterStore, userStore, t } = this.props;
     const data = runtimeStore.runtimes.toJSON();
     const clusters = clusterStore.clusters.toJSON();
+    const { users } = userStore;
 
     const {
       summaryInfo,
@@ -168,18 +171,20 @@ export default class Runtimes extends Component {
       {
         title: t('Cluster Count'),
         key: 'node_count',
+        width: '100px',
         render: runtime =>
           clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length
       },
       {
         title: t('User'),
-        dataIndex: 'owner',
-        key: 'owner'
+        key: 'owner',
+        width: '100px',
+        render: runtime => getObjName(users, 'user_id', runtime.owner, 'username') || runtime.owner
       },
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '150px',
+        width: '100px',
         sorter: true,
         onChangeSort: this.onChangeSort,
         render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
