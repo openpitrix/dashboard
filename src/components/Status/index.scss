@@ -21,19 +21,28 @@
   &.draft {
     background-color: $B75;
   }
+  &.submitted {
+    background-color: $Y300;
+  }
+  &.passed {
+    background-color: $G75;
+  }
+  &.rejected {
+    background-color: $R200;
+  }
+  &.suspended {
+    background-color: #343945;
+  }
   &.ceased {
     background-color: $Y100;
   }
   &.stopped {
     background-color: $N30;
   }
-  &.suspended {
-    background-color: $N75;
-  }
   &.active, &.successful {
     background-color: $G75;
   }
-  &.deleted, &.failed, &.rejected {
+  &.deleted, &.failed {
     background-color: $R300;
   }
   &.enabled {

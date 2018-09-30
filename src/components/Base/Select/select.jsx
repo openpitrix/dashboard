@@ -63,6 +63,7 @@ export default class Select extends React.Component {
   setChildNodes = () => {
     const { children, value } = this.props;
 
+    this.currentLabel = '';
     this.childNodes = React.Children.map(children, child => {
       let checked = String(value) === child.props.value;
       if (checked) {

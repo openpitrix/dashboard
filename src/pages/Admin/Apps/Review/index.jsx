@@ -31,6 +31,8 @@ export default class Review extends Component {
   static async onEnter({ appVersionStore, appStore, categoryStore, repoStore, userStore }) {
     appVersionStore.registerStore('app', appStore);
     appVersionStore.registerStore('user', userStore);
+    appVersionStore.isReview = true;
+
     await appVersionStore.fetchAll();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
@@ -44,6 +46,7 @@ export default class Review extends Component {
     const { appVersionStore, appStore, repoStore, userStore } = this.props;
     appVersionStore.loadPageInit();
     repoStore.loadPageInit();
+    appVersionStore.isReview = true;
     appVersionStore.registerStore('app', appStore);
     appVersionStore.registerStore('user', userStore);
   }
@@ -146,6 +149,19 @@ export default class Review extends Component {
       }
     ];
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: t('Submitted'), value: 'submitted' },
+          { name: t('Passed'), value: 'passed' },
+          { name: t('Rejected'), value: 'rejected' }
+        ],
+        onChangeFilter: appVersionStore.onChangeStatus,
+        selectValue: appVersionStore.selectStatus
+      }
+    ];
+
     const pagination = {
       tableType: 'Apps',
       onChange: appVersionStore.changePagination,
@@ -169,6 +185,7 @@ export default class Review extends Component {
                 <Table
                   columns={columns}
                   dataSource={versions.toJSON()}
+                  filterList={filterList}
                   pagination={pagination}
                   isLoading={isLoading}
                 />

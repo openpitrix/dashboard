@@ -5,6 +5,7 @@ import { Base64 } from 'js-base64';
 import Store from '../Store';
 
 const defaultStatus = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
+const reviwStatus = ['submitted', 'passed', 'rejected'];
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
@@ -36,13 +37,16 @@ export default class AppVersionStore extends Store {
 
   @observable store = {};
 
+  @observable isReview = false;
+
   @action
   fetchAll = async (params = {}) => {
+    const status = this.isReview ? reviwStatus : defaultStatus;
     let defaultParams = {
       sort_key: 'create_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
+      status: this.selectStatus ? this.selectStatus : status
     };
 
     if (this.searchWord) {
@@ -310,6 +314,7 @@ export default class AppVersionStore extends Store {
     //this.currentVersion = {};
     this.uploadFile = '';
     this.store = {};
+    this.isReview = false;
   };
 
   @action
