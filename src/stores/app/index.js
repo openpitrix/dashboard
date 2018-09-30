@@ -1,14 +1,16 @@
 import { observable, action } from 'mobx';
-import Store from '../Store';
 import { get, assign } from 'lodash';
+
+import Store from '../Store';
+import { getProgress } from 'utils';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
 
 export default class AppStore extends Store {
   @observable apps = [];
-  @observable homeApps = []; //menu apps
+  @observable homeApps = [];
   @observable storeApps = []; //store page category apps
-  @observable menuApps = [];
+  @observable menuApps = []; //menu apps
   @observable updateMeunApps = true;
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
@@ -136,7 +138,10 @@ export default class AppStore extends Store {
       total: get(result, 'app_count', 0),
       progressTotal: get(result, 'repo_count', 0),
       progress: get(result, 'top_ten_repos', {}),
-      histograms: get(result, 'last_two_week_created', {})
+      histograms: get(result, 'last_two_week_created', {}),
+      topRepos: getProgress(this.summaryInfo.progress), //top repos
+      appCount: get(result, 'app_count', 0),
+      repoCount: get(result, 'repo_count', 0)
     };
     //this.isLoading = false;
   };

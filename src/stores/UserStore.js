@@ -107,7 +107,7 @@ export default class UserStore extends Store {
         isAdmin: userInfo.role === 'global_admin',
         isDev: userInfo.role === 'developer',
         isNormal: userInfo.role === 'user',
-        loginTime: new Date()
+        loginTime: Date.parse(new Date())
       };
       setCookie('user', JSON.stringify(user), this.cookieTime);
     }

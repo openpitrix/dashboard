@@ -86,7 +86,8 @@ export function getFormData(form) {
 export function getObjName(datas, key, value, name) {
   return get(filter(datas, { [key]: value })[0], name, '');
 }
-export function getFilterObjs(datas, key, value) {
+
+export function getFilterObj(datas, key, value) {
   const result = datas.filter(data => data[key] === value);
   return result[0] || {};
 }

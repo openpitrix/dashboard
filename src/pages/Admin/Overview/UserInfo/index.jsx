@@ -12,12 +12,17 @@ export default class UserInfo extends PureComponent {
   static propTypes = {
     username: PropTypes.string,
     role: PropTypes.string,
-    loginInfo: PropTypes.string
+    loginInfo: PropTypes.number
   };
 
   render() {
     const { username, role, loginInfo, t, i18n } = this.props;
     const lng = i18n.language || 'en';
+    const roleMap = {
+      user: 'Normal User',
+      developer: 'Developer',
+      global_admin: 'Administrator'
+    };
 
     return (
       <div className={styles.userInfo}>
@@ -26,8 +31,8 @@ export default class UserInfo extends PureComponent {
             <Icon name="human" type={'light'} size={24} />
           </div>
           <div className={styles.user}>
-            <div className={styles.name}>{t('greet words', { username })}</div>
-            <div className={styles.role}>{t('role', { context: role })}</div>
+            <div className={styles.name}>{t('greet words', { name: t(username) })}</div>
+            <div className={styles.role}>{t(roleMap[role])}</div>
           </div>
         </div>
         <div className={styles.loginInfo}>

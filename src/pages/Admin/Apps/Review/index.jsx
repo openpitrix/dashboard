@@ -12,7 +12,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { getObjName, mappingStatus, getFilterObjs } from 'utils';
+import { getObjName, mappingStatus, getFilterObj } from 'utils';
 
 import styles from './index.scss';
 
@@ -118,13 +118,13 @@ export default class Review extends Component {
             name={getObjName(
               repos,
               'repo_id',
-              getFilterObjs(apps, 'app_id', item.app_id).repo_id,
+              getFilterObj(apps, 'app_id', item.app_id).repo_id,
               'name'
             )}
             provider={getObjName(
               repos,
               'repo_id',
-              getFilterObjs(apps, 'app_id', item.app_id).repo_id,
+              getFilterObj(apps, 'app_id', item.app_id).repo_id,
               'providers[0]'
             )}
           />

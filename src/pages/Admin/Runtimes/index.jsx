@@ -17,8 +17,7 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore,
-  rootStore
+  clusterStore: rootStore.clusterStore
 }))
 @observer
 export default class Runtimes extends Component {
