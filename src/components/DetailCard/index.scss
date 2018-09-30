@@ -61,15 +61,18 @@
     padding-left: 0;
   }
   .detail {
+    display: table;
     margin-top: 32px;
+
     li {
+      display: table-row;
       margin-bottom: 8px;
       font-size: 14px;
       line-height: 24px;
       vertical-align: middle;
       color: $N300;
       list-style: none;
-      @include textCut;
+      //@include textCut;
 
       &.setHeight {
         height: 24px;
@@ -100,15 +103,20 @@
       line-height: 24px;
       color: $N75;
       text-align: right;
+      padding-bottom: 8px;
     }
-
+    .val {
+      display: inline-block;
+      word-break: break-word;
+      max-width: 50%;
+    }
     .value {
       display: inline-block;
       width: calc(100% - 144px)
     }
 
     .labels {
-      margin-top: 0px;
+      margin-top: 0;
       margin-left: 144px;
     }
   }

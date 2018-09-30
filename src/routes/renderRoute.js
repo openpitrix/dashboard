@@ -13,7 +13,7 @@ const renderRoute = (match, route, store) => {
     setCookie('role', '', -1);
   }
 
-  const user = JSON.parse(getCookie('user') || '{}');
+  const user = store.user || {};
   const role = getCookie('role');
   const hasHeader = user.isNormal || !user.username || role === 'user';
 
