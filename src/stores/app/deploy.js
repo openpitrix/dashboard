@@ -171,6 +171,11 @@ ${this.yamlStr}`;
 
   @action
   fetchVersions = async (params = {}, flag) => {
+    const status = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
+    if(!params.status) {
+      params.status = status;
+    }
+
     const result = await this.request.get('app_versions', params);
     this.versions = get(result, 'app_version_set', []);
     this.versionId = get(this.versions[0], 'version_id');

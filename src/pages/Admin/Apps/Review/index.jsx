@@ -82,7 +82,7 @@ export default class Review extends Component {
       },
       {
         title: t('App Name'),
-        key: 'name',
+        key: 'appName',
         width: '175px',
         render: item => (
           <TdName
@@ -94,8 +94,8 @@ export default class Review extends Component {
         )
       },
       {
-        title: t('Version'),
-        key: 'latest_version',
+        title: t('Version Name'),
+        key: 'name',
         width: '120px',
         render: item => item.name
       },
