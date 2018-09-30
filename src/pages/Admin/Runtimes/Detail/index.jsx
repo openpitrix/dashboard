@@ -21,11 +21,12 @@ import styles from './index.scss';
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  static async onEnter({ runtimeStore, clusterStore, appStore }, { runtimeId }) {
+  static async onEnter({ runtimeStore, clusterStore, appStore, userStore, user }, { runtimeId }) {
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
       runtime_id: runtimeId
@@ -33,6 +34,13 @@ export default class RuntimeDetail extends Component {
     await appStore.fetchApps({
       status: ['active', 'deleted']
     });
+
+    if (user.isAdmin) {
+      await userStore.fetchAll({ noLimit: true });
+    } else {
+      const { runtimeDetail } = runtimeStore;
+      await userStore.fetchDetail(runtimeDetail.owner);
+    }
   }
 
   constructor(props) {
@@ -78,7 +86,7 @@ export default class RuntimeDetail extends Component {
   };
 
   render() {
-    const { runtimeStore, clusterStore, user, t } = this.props;
+    const { runtimeStore, clusterStore, userStore, user, t } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -92,12 +100,14 @@ export default class RuntimeDetail extends Component {
     } = clusterStore;
 
     const { apps } = this.props.appStore;
+    const { isNormal, isDev, isAdmin } = user;
+    const { users, userDetail } = userStore;
 
-    const columns = [
+    let columns = [
       {
         title: t('Cluster Name'),
         key: 'name',
-        width: '155px',
+        width: '135px',
         render: item => (
           <TdName
             name={item.name}
@@ -115,6 +125,7 @@ export default class RuntimeDetail extends Component {
       {
         title: t('App'),
         key: 'app_id',
+        width: '100px',
         render: item => (
           <Link to={`/dashboard/app/${item.app_id}`}>
             {getObjName(apps, 'app_id', item.app_id, 'name')}
@@ -124,12 +135,13 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
+        width: '70px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('User'),
         key: 'owner',
-        dataIndex: 'owner'
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Updated At'),
@@ -162,7 +174,11 @@ export default class RuntimeDetail extends Component {
       current: currentPage
     };
 
-    const { isNormal, isDev, isAdmin } = user;
+    let userName = getObjName(users, 'user_id', runtimeDetail.owner, 'username');
+    if (!isAdmin) {
+      userName = userDetail.username;
+      columns = columns.filter(item => item.key !== 'owner');
+    }
 
     return (
       <Layout
@@ -185,7 +201,7 @@ export default class RuntimeDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} />
+              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} userName={userName} />
               {runtimeDetail.status !== 'deleted' && (
                 <Popover
                   className="operation"

@@ -55,7 +55,12 @@ export default class RepoList extends PureComponent {
             return (
               <li key={item.id || item.runtime_id}>
                 <Link to={link}>
-                  <Icon name={provider} size={24} className={styles.icon} type="dark" />
+                  <Icon
+                    name={provider || 'stateful-set'}
+                    size={24}
+                    className={styles.icon}
+                    type="dark"
+                  />
                   <span className={styles.name}>{item.name || repo.name}</span>
                   <span className={styles.total}>
                     <span className={styles.number}>{number}</span>

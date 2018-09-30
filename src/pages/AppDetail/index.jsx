@@ -26,7 +26,7 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
+  static async onEnter({ appStore, appVersionStore, repoStore }, { appId, versionId }) {
     appVersionStore.loadPageInit();
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
@@ -39,8 +39,7 @@ export default class AppDetail extends Component {
     const { appStore, repoStore, appVersionStore, user, match } = this.props;
 
     const { isNormal, role } = user;
-    const appId = match.params.appId.split('?');
-    const params = { app_id: appId[0] };
+    const params = { app_id: match.params.appId };
     //normal user or not login only query 'active' versions
     if (isNormal || !Boolean(role)) {
       params.status = ['active'];
@@ -77,7 +76,6 @@ export default class AppDetail extends Component {
 
   handleVersion = async (handleType, versionId) => {
     const { appStore, appVersionStore } = this.props;
-    const { appDetail } = appStore;
 
     await appVersionStore.handle(handleType, versionId);
   };
@@ -198,10 +196,9 @@ export default class AppDetail extends Component {
   };
 
   renderAdminReview = () => {
-    const { appVersionStore, history, t } = this.props;
+    const { appVersionStore, match, t } = this.props;
     const { versions } = appVersionStore;
-    const search = history.location.search.split('=');
-    const versionId = search[1];
+    const versionId = match.params.versionId;
     const result = versions.filter(item => item.version_id === versionId);
     const version = result[0] || versions[0];
 

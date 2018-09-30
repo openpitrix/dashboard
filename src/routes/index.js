@@ -41,7 +41,7 @@ const routes = {
 
   '/:dash/apps': Dash.Apps,
   '/:dash/reviews': Dash.AppReview,
-  '/:dash/review/:appId': AppDetail,
+  '/:dash/review/:appId/:versionId': AppDetail,
   '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
 

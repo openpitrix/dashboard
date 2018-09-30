@@ -28,6 +28,11 @@ export default class Footer extends PureComponent {
             </span>
             <ul className={styles.terms}>
               <li>
+                <a target="_blank" href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ ">
+                  {t('Docment')}
+                </a>
+              </li>
+              <li>
                 <a target="_blank" href="https://openpitrix.io" rel="noreferrer">
                   {t('About')}
                 </a>

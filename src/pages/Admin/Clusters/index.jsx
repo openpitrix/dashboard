@@ -20,6 +20,7 @@ import styles from './index.scss';
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
+  userStore: rootStore.userStore,
   user: rootStore.user,
   sock
 }))
@@ -47,12 +48,13 @@ export default class Clusters extends Component {
     this.store = clusterStore;
   }
 
-  componentDidMount() {
-    const { clusterStore, user } = this.props;
+  async componentDidMount() {
+    const { clusterStore, userStore, user } = this.props;
     const { isAdmin } = user;
 
     if (isAdmin) {
-      clusterStore.fetchStatistics();
+      await clusterStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
     }
   }
 
@@ -210,13 +212,14 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, user, t } = this.props;
+    const { clusterStore, appStore, userStore, user, t } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
-    const { apps } = this.props.appStore;
+    const { apps } = appStore;
+    const { users } = userStore;
 
-    const columns = [
+    let columns = [
       {
         title: t('Cluster Name'),
         key: 'name',
@@ -257,17 +260,19 @@ export default class Clusters extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
+        width: '80px',
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
         title: t('User'),
         key: 'owner',
-        render: cl => cl.owner
+        width: '100px',
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '150px',
+        width: '100px',
         sorter: true,
         onChangeSort: this.onChangeSort,
         render: cl => formatTime(cl.create_time, 'YYYY/MM/DD HH:mm:ss')
@@ -285,6 +290,10 @@ export default class Clusters extends Component {
         )
       }
     ];
+
+    if (!user.isAdmin) {
+      columns = columns.filter(item => item.key !== 'owner');
+    }
 
     const rowSelection = {
       type: 'checkbox',
