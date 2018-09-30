@@ -50,26 +50,28 @@ export default class RuntimeCard extends Component {
           {detail.repo_id && (
             <li>
               <span className={styles.name}>{t('Visibility')}</span>
-              {detail.visibility}
+              <span className={styles.val}>{detail.visibility}</span>
             </li>
           )}
           {detail.runtime_id && (
             <li>
               <span className={styles.name}>{t('Zone/Namespace')}</span>
-              {detail.zone}
+              <span className={styles.val}>{detail.zone}</span>
             </li>
           )}
           <li>
             <span className={styles.name}>{t('Creator')}</span>
-            {detail.owner}
+            <span className={styles.val}>{detail.owner}</span>
           </li>
           <li>
             <span className={styles.name}>
               {detail.repo_id ? t('App') : t('Cluster')}
               {t('Count')}
             </span>
-            {detail.repo_id && appCount}
-            {detail.runtime_id && clusterCount}
+            <span className={styles.val}>
+              {detail.repo_id && appCount}
+              {detail.runtime_id && clusterCount}
+            </span>
           </li>
           <li>
             <span className={styles.name}>{t('Labels')}</span>
