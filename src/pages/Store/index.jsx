@@ -44,7 +44,7 @@ export default class Store extends Component {
     window.scroll({ top: 0, behavior: 'smooth' });
     if (!params.category && !params.search) {
       window.onscroll = throttle(this.handleScroll, 200);
-      const initLoadNumber = parseInt((document.documentElement.clientHeight - 200) / 250);
+      const initLoadNumber = parseInt((document.documentElement.clientHeight - 200) / 250) + 2;
       this.loadAppData(0, initLoadNumber);
     }
   }
@@ -132,13 +132,14 @@ export default class Store extends Component {
               appSearch={appSearch}
               skipLink="store"
             />
-            {isProgressive && (
-              <div className={styles.loading}>
-                <div className={styles.loadOuter}>
-                  <div className={styles.loader} />
+            {isLoading &&
+              isProgressive && (
+                <div className={styles.loading}>
+                  <div className={styles.loadOuter}>
+                    <div className={styles.loader} />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </Loading>
         </div>
       </Layout>
