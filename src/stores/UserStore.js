@@ -254,7 +254,7 @@ export default class UserStore extends Store {
       return;
     }
 
-    const resetResult = this.resetPassword({
+    const resetResult = await this.resetPassword({
       user_id: this.userDetail.user_id,
       password: data.password
     });
