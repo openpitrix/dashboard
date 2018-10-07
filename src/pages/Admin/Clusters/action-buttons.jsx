@@ -4,8 +4,9 @@ export default function renderHandleMenu({ item, t, clusterStore, runtimeStore, 
   const { showOperateCluster } = clusterStore;
   const { cluster_id, status, runtime_id } = item;
   let { isKubernetes } = runtimeStore;
+
   if (page === 'index') {
-    isKubernetes = runtimeStore.checkKubernetes(runtime_id);
+    isKubernetes = runtimeStore.checkK8s(runtime_id);
   }
   const renderBtn = (type, text) => (
     <span onClick={() => showOperateCluster(cluster_id, type)}>{text}</span>

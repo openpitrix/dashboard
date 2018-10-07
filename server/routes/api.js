@@ -1,17 +1,13 @@
 const Router = require('koa-router');
 const agent = require('lib/request').default;
-const debug = require('debug')('op-dash');
+const debug = require('debug')('app');
 const sessConfig = require('../session-config');
-const _ = require('lodash');
 
 const router = new Router();
 const header = {};
 
 router.post('/api/*', async ctx => {
-  let endpoint = ctx.url.replace(/^\/api\//, '');
-  // strip query string
-  const idxQuery = endpoint.indexOf('?') > -1 ? endpoint.indexOf('?') : endpoint.length;
-  endpoint = endpoint.substring(0, idxQuery);
+  let endpoint = ctx.path.replace(/^\/?api\//, '');
 
   if (endpoint.startsWith('/')) {
     endpoint = endpoint.substring(1);
@@ -33,14 +29,19 @@ router.post('/api/*', async ctx => {
   const access_token_home = ctx.cookies.get('access_token_home');
   const refresh_token = ctx.cookies.get('refresh_token');
 
+  debug('api: %s %s', forwardMethod.toUpperCase(), url);
+
   if (endpoint === 'oauth2/token') {
     body.client_id = ctx.store.clientId;
     body.client_secret = ctx.store.clientSecret;
-  } else if (access_token && !body.noLogin) {
+  }
+  else if (access_token && !body.noLogin) {
     header.Authorization = token_type + ' ' + access_token;
-  } else if (access_token_home && body.noLogin) {
+  }
+  else if (access_token_home && body.noLogin) {
     header.Authorization = token_type + ' ' + access_token_home;
-  } else if (body.noLogin || refresh_token) {
+  }
+  else if (body.noLogin || refresh_token) {
     const refreshUrl = [apiServer, 'oauth2/token'].join('/');
     const tokenData = {
       grant_type: 'refresh_token',
@@ -57,6 +58,7 @@ router.post('/api/*', async ctx => {
     }
 
     const result = await agent.send('post', refreshUrl, tokenData);
+
     if (result.access_token) {
       sessConfig.maxAge = result.expires_in * 1000;
       const tokenName = body.noLogin ? 'access_token_home' : 'access_token';
@@ -64,13 +66,14 @@ router.post('/api/*', async ctx => {
       ctx.cookies.set('token_type', result.token_type, sessConfig);
       header.Authorization = result.token_type + ' ' + result.access_token;
     } else {
-      ctx.redirect('/login');
+      ctx.throw(401, 'Unauthorized request');
+      // ctx.status=301;
+      // ctx.body = '/login';
     }
   }
 
-  debug('%s %s', forwardMethod.toUpperCase(), url);
-
   delete body.noLogin;
+
   ctx.body = await agent.send(forwardMethod, url, body, {
     header: header
   });

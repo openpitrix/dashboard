@@ -19,19 +19,22 @@ import styles from './index.scss';
 }))
 @observer
 export default class RepoAdd extends Component {
-  static async onEnter({ repoStore, repoCreateStore }, { repoId }) {
+  constructor(props) {
+    super(props);
+    this.store = this.props.repoCreateStore;
+    this.store.repoCreated = null;
+  }
+
+  async componentDidMount() {
+    const { repoStore, repoCreateStore, match } = this.props;
+    const { repoId } = match.params;
+
     if (repoId) {
       await repoStore.fetchRepoDetail(repoId);
       repoCreateStore.setRepo(repoStore.repoDetail);
     } else {
       repoCreateStore.reset();
     }
-  }
-
-  constructor(props) {
-    super(props);
-    this.store = this.props.repoCreateStore;
-    this.store.repoCreated = null;
   }
 
   componentDidUpdate() {

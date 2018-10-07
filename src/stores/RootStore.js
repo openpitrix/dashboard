@@ -8,10 +8,8 @@ import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
 import Runtime, { Create as RuntimeCreate } from './runtime';
-
-import LoginStore from './LoginStore';
-import UserStore from './UserStore';
-import RoleStore from './RoleStore';
+import User, { Role } from './user';
+import sshKey from './key_pair';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -91,10 +89,10 @@ export default class RootStore extends Store {
     // category
     this.register('category', Category);
 
-    this.register('login', LoginStore, false);
-
     // user, role
-    this.register('user', UserStore);
-    this.register('role', RoleStore);
+    this.register('user', User);
+    this.register('role', Role);
+
+    this.register('sshKey', sshKey);
   }
 }

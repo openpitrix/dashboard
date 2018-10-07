@@ -90,7 +90,7 @@ const renderPage = (options = {}) => {
     <noscript>You need to enable JavaScript to run this app</noscript>
 
     <div id="root">
-      ${options.children ? `<div id="root">${options.children}</div>` : `<div id="root"></div>`}
+      ${options.children ? options.children : ''}
     </div>
     
     <script>

@@ -20,8 +20,13 @@ import styles from './index.scss';
 }))
 @observer
 export default class Store extends Component {
-  static async onEnter({ categoryStore, appStore }, { category, search }) {
-    appStore.loadPageInit();
+  async componentDidMount() {
+    const { appStore, categoryStore, match } = this.props;
+    const { category, search } = match.params;
+
+    window.scroll({ top: 0, behavior: 'smooth' });
+
+    // appStore.loadPageInit();
     await categoryStore.fetchAll({ noLogin: true });
 
     const params = {
@@ -37,15 +42,8 @@ export default class Store extends Component {
     await appStore.fetchApps(params);
 
     appStore.storeApps = appStore.apps;
-  }
 
-  async componentDidMount() {
-    window.scroll({ top: 0, behavior: 'smooth' });
-    const { match } = this.props;
-    const { params } = match;
-
-    window.scroll({ top: 0, behavior: 'smooth' });
-    if (!params.category && !params.search) {
+    if (!category && !search) {
       const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
       await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);

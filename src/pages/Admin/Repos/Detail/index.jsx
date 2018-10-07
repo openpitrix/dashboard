@@ -25,11 +25,24 @@ import styles from './index.scss';
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
-  user: rootStore.user,
+  user: rootStore.user
 }))
 @observer
 export default class RepoDetail extends Component {
-  static async onEnter({ repoStore, userStore, user }, { repoId }) {
+  constructor(props) {
+    super(props);
+    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
+    repoStore.curTagName = 'Apps';
+
+    // appStore.loadPageInit();
+    // runtimeStore.loadPageInit();
+    // clusterStore.loadPageInit();
+  }
+
+  async componentDidMount() {
+    const { repoStore, userStore, user, match } = this.props;
+    const { repoId } = match.params;
+
     await repoStore.fetchRepoDetail(repoId);
 
     if (user.isAdmin) {
@@ -38,15 +51,6 @@ export default class RepoDetail extends Component {
       const { repoDetail } = repoStore;
       await userStore.fetchDetail(repoDetail.owner);
     }
-  }
-
-  constructor(props) {
-    super(props);
-    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    repoStore.curTagName = 'Apps';
-    appStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
   }
 
   listenToJob = async ({ op, rid, values = {} }) => {
