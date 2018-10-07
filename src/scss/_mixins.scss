@@ -6,11 +6,18 @@
     //width: (#{$grid-width} + $grid-gap) * $size - $grid-gap;
     width: calc(#{$grid-width} * #{$size} - #{$grid-gap});
   }
+
+  .section-size-dev-#{$size} {
+    width: calc(#{$grid-width-dev} * #{$size} - #{$grid-gap-dev});
+  }
 }
 
 @mixin calc-section-offset($offset: 0){
   .section-offset-#{$offset} {
     margin-left: calc((#{$grid-width} + #{$grid-gap}) * #{$offset});
+  }
+  .section-offset-dev-#{$offset} {
+    margin-left: calc((#{$grid-width-dev} + #{$grid-gap-dev}) * #{$offset});
   }
 }
 

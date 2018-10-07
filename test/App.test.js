@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import App from 'src/App';
 // import routes from 'src/routes';
-import renderRoute from 'src/routes/renderRoute';
+import renderRoute from 'routes/renderRoute';
 
 import Home from 'pages/Home';
 import Login from 'pages/Login';
