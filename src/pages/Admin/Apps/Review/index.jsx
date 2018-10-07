@@ -172,9 +172,7 @@ export default class Review extends Component {
 
     return (
       <Layout className={styles.apps}>
-        <NavLink>
-          {t('Store')} / {t('App Reviews')}
-        </NavLink>
+        <NavLink linkPath="Store>App Reviews" />
 
         <Row>
           <Grid>

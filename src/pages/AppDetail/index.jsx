@@ -254,8 +254,11 @@ export default class AppDetail extends Component {
     const appDetail = appStore.appDetail;
     const { isNormal, isDev, isAdmin, role } = user;
     const { path } = this.props.match;
+
     const isShowReview = isAdmin && path.indexOf('review') > -1;
     const noLogin = path === '/apps/:appId';
+    const backPath = isShowReview ? 'App Reviews' : 'All Apps';
+    const linkPath = isDev ? `My Apps>${appDetail.name}` : `Store>${backPath}>${appDetail.name}`;
 
     return (
       <Layout
@@ -266,13 +269,7 @@ export default class AppDetail extends Component {
         noLogin={noLogin}
         backBtn={isNormal && <BackBtn label="Store" link="/store" />}
       >
-        {(isAdmin || isDev) &&
-          !noLogin && (
-            <NavLink>
-              <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
-            </NavLink>
-          )}
-
+        {(isAdmin || isDev) && !noLogin && <NavLink linkPath={linkPath} />}
         <Grid>
           <Section size={8}>
             <Panel className={styles.introCard}>

@@ -299,30 +299,6 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  renderBreadcrumb() {
-    const { clusterDetailStore, user, t } = this.props;
-    const { isDev, isAdmin } = user;
-    const { cluster } = clusterDetailStore;
-
-    return (
-      <Fragment>
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
-            <Link to="/dashboard/clusters">{t('Clusters')}</Link> / {cluster.name}
-          </NavLink>
-        )}
-
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> /{' '}
-            {cluster.name}
-          </NavLink>
-        )}
-      </Fragment>
-    );
-  }
-
   render() {
     const {
       appStore,
@@ -352,6 +328,10 @@ export default class ClusterDetail extends Component {
     //   t
     // };
 
+    const linkPath = isDev
+      ? `My Apps>Test>Clusters>${detail.name}`
+      : `Platform>All Clusters>${detail.name}`;
+
     return (
       <Layout
         className={classnames({ [styles.clusterDetail]: !isNormal })}
@@ -359,7 +339,8 @@ export default class ClusterDetail extends Component {
         listenToJob={this.listenToJob}
         title="Purchased"
       >
-        {this.renderBreadcrumb()}
+
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         <Grid>
           <Section>

@@ -8,7 +8,9 @@ import { inject } from 'mobx-react/index';
 import styles from './index.scss';
 
 @translate()
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  user: rootStore.user
+}))
 @observer
 export default class NavLink extends Component {
   static propTypes = {
@@ -21,12 +23,24 @@ export default class NavLink extends Component {
   };
 
   render() {
-    const { children, linkPath, t } = this.props;
+    const { children, linkPath, user, t } = this.props;
     const paths = linkPath.split('>');
     const linkLen = paths.length - 1;
 
     const pathToLink = {
-      Dashboard: '/dashboard'
+      Dashboard: '/dashboard',
+      Store: '/dashboard/apps',
+      'All Apps': '/dashboard/apps',
+      'App Reviews': '/dashboard/reviews',
+      Categories: '/dashboard/categories',
+      Platform: '/dashboard/repos',
+      Repos: '/dashboard/repos',
+      Runtimes: user.isDev ? '/runtimes' : '/dashboard/runtimes',
+      'All Clusters': '/dashboard/clusters',
+      Users: ' /dashboard/users',
+      'All Users': '/dashboard/users',
+      'My Apps': '/dashboard/apps',
+      Test: '/dashboard/clusters'
     };
 
     return (
@@ -35,7 +49,7 @@ export default class NavLink extends Component {
           <Fragment key={path}>
             {index !== linkLen && (
               <label>
-                <Link to={pathToLink[path]}>{t(path)}</Link> /
+                <Link to={pathToLink[path] || '/'}>{t(path)}</Link>&nbsp;/&nbsp;
               </label>
             )}
             {index === linkLen && <label>{t(path)}</label>}

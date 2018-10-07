@@ -233,7 +233,7 @@ export default class Runtimes extends Component {
 
     return (
       <Layout>
-        <NavLink>Platform / Runtimes</NavLink>
+        <NavLink linkPath="Platform>Runtimes" />
 
         <Row>
           <Statistics {...summaryInfo} />

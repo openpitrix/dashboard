@@ -245,9 +245,7 @@ export default class Detail extends Component {
 
     return (
       <Layout className={styles.userDetail}>
-        <NavLink>
-          {t('Users')} / <Link to="/dashboard/users">{t('All Users')}</Link> / {userDetail.name}
-        </NavLink>
+        <NavLink linkPath={`Users>All Users>${userDetail.username}`} />
 
         <Grid>
           <Section>

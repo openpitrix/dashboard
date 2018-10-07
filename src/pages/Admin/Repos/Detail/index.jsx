@@ -327,6 +327,9 @@ export default class RepoDetail extends Component {
         break;
     }
     const { isNormal, isDev, isAdmin } = user;
+    const linkPath = isDev
+      ? `My Apps>Repos>${repoDetail.name}`
+      : `Platform>Repos>${repoDetail.name}`;
 
     return (
       <Layout
@@ -334,13 +337,7 @@ export default class RepoDetail extends Component {
         backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}
         listenToJob={this.listenToJob}
       >
-        {!isNormal && (
-          <NavLink>
-            {isDev && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {isAdmin && <label>{t('Platform')}</label>}
-            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {repoDetail.name}
-          </NavLink>
-        )}
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         <Grid>
           <Section>

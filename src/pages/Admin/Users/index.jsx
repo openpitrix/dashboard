@@ -440,9 +440,7 @@ export default class Users extends Component {
 
     return (
       <Layout className={styles.usersContent}>
-        <NavLink>
-          {t('Users')} / {t('All Users')}
-        </NavLink>
+        <NavLink linkPath="Users>All Users" />
 
         {/* <Row>
           <Statistics {...summaryInfo} objs={users.toJSON()} />

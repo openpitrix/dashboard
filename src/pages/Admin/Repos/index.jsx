@@ -131,27 +131,8 @@ export default class Repos extends Component {
     );
   };
 
-  renderNavLink = () => {
-    const { user, t } = this.props;
-    const { isDev, isAdmin } = user;
-
-    if (isAdmin) {
-      return (
-        <NavLink>
-          {t('Platform')} / {t('Repos')}
-        </NavLink>
-      );
-    }
-
-    return (
-      <NavLink>
-        <Link to="/dashboard/apps">{t('All Apps')}</Link> / {t('Repos')}
-      </NavLink>
-    );
-  };
-
   render() {
-    const { t } = this.props;
+    const { user, t } = this.props;
     const {
       repos,
       isLoading,
@@ -160,10 +141,12 @@ export default class Repos extends Component {
       onClearSearch,
       onRefresh
     } = this.props.repoStore;
+    const { isDev, isNormal } = user;
+    const linkPath = isDev ? 'My Apps>Repos' : 'Platform>Repos';
 
     return (
       <Layout listenToJob={this.listenToJob}>
-        {this.renderNavLink()}
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         <Toolbar
           placeholder={t('Search Repo')}

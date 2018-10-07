@@ -137,15 +137,11 @@ export default class Runtimes extends Component {
     ];
 
     const { currentType } = this.state;
-    const { isNormal, isDev, isAdmin } = user;
+    const { isNormal } = user;
 
     return (
       <Layout title="My Runtimes" className="clearfix">
-        {!isNormal && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Runtimes')}
-          </NavLink>
-        )}
+        {!isNormal && <NavLink linkPath="My Apps>Test>Runtimes" />}
 
         <div className={styles.types}>
           {types.map(type => (

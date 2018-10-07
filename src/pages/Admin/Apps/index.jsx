@@ -202,13 +202,7 @@ export default class Apps extends Component {
     const { repos } = repoStore;
     const { users } = userStore;
     const { isNormal, isDev, isAdmin } = user;
-
-    let navLinkShow = t('My Apps') + ' / ' + t('All');
-    let urlFront = '/dashboard/app/';
-    if (isAdmin) {
-      navLinkShow = t('Store') + ' / ' + t('All Apps');
-      urlFront = '/store/';
-    }
+    const urlFront = isAdmin ? '/store/' : '/dashboard/app/';
 
     let columns = [
       {
@@ -328,9 +322,11 @@ export default class Apps extends Component {
       noCancel: false
     };
 
+    const linkPath = isAdmin ? 'Store>All Apps' : 'My Apps>All';
+
     return (
       <Layout className={styles.apps}>
-        <NavLink>{navLinkShow}</NavLink>
+        <NavLink linkPath={linkPath} />
 
         {isAdmin && (
           <Row>

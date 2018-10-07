@@ -325,20 +325,11 @@ export default class Clusters extends Component {
     };
 
     const { isDev, isAdmin } = user;
+    const linkPath = isDev ? 'My Apps>Test>Clusters' : 'Platform>All Clusters';
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Clusters')}
-          </NavLink>
-        )}
-
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / {t('All Clusters')}
-          </NavLink>
-        )}
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         {isAdmin && (
           <Row>

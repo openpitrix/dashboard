@@ -483,26 +483,6 @@ export default class AppDetail extends Component {
     );
   };
 
-  renderNavLink = () => {
-    const { user, t } = this.props;
-    const { isNormal, isDev, isAdmin } = user;
-    const { appDetail } = this.props.appStore;
-
-    if (isAdmin) {
-      return (
-        <NavLink>
-          {t('Store')} / <Link to="/dashboard/apps">{t('All Apps')}</Link> / {appDetail.name}
-        </NavLink>
-      );
-    }
-
-    return (
-      <NavLink>
-        <Link to="/dashboard/apps">{t('My Apps')}</Link> / {appDetail.name}
-      </NavLink>
-    );
-  };
-
   render() {
     const { appVersionStore, appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
     const { appDetail, detailTab } = appStore;
@@ -552,8 +532,8 @@ export default class AppDetail extends Component {
     const isShowCreate = !currentVersion.version_id || createStep === 2;
 
     return (
-      <Layout className={styles.appDetail}>
-        {this.renderNavLink()}
+      <Layout className={styles.appDetail} noNotification={isShowCreate}>
+        <NavLink linkPath={`My Apps>${appDetail.name}`} />
 
         <Grid className={styles.appInfo}>
           <DetailBlock

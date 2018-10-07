@@ -236,24 +236,14 @@ export default class RuntimeAdd extends Component {
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
     const { isNormal, isDev, isAdmin } = user;
+    const linkPath = isDev ? `My Apps>Runtimes>${title}` : `Platform>Runtimes>${title}`;
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
       >
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
-            <Link to="/runtimes">{t('Runtimes')}</Link> / {title}
-          </NavLink>
-        )}
-
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> / {title}
-          </NavLink>
-        )}
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}

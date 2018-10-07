@@ -209,17 +209,12 @@ export default class RepoAdd extends Component {
     const { user, t } = this.props;
     const { repoId } = this.store;
     const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
-    const { isNormal, isDev, isAdmin } = user;
+    const { isNormal, isDev } = user;
+    const linkPath = isDev ? `My Apps>Repos>${title}` : `Platform>Repos>${title}`;
 
     return (
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
-        {!isNormal && (
-          <NavLink>
-            {isDev && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {isAdmin && <label>{t('Platform')}</label>}
-            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {title}
-          </NavLink>
-        )}
+        {!isNormal && <NavLink linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}
