@@ -239,7 +239,7 @@ export default class ClusterDetail extends Component {
     if (!isKubernetes) {
       tags = ['Nodes'];
     } else {
-      tags = ['Deployment Node', 'StatefulSet Node', 'DaemonSet Node'];
+      tags = ['Deployments', 'StatefulSets', 'DaemonSets'];
     }
 
     return (

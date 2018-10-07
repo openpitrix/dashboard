@@ -256,10 +256,11 @@ export default class AppVersionStore extends Store {
   }
 
   @action
-  async fetchPackageFiles(versionId) {
+  async fetchPackageFiles(versionId, noLogin) {
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId,
-      files: ['README.md']
+      files: ['README.md'],
+      noLogin: true
     });
     const files = get(result, 'files', {});
     if (files['README.md']) {

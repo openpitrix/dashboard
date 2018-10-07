@@ -1,6 +1,6 @@
 const debug = require('debug')('op-dash');
 
-const authPages = ['dashboard', 'runtimes', 'purchased', 'profile', 'ssh_keys'];
+const authPages = ['dashboard', 'runtimes', 'purchased', 'profile', 'ssh_keys', 'store'];
 
 module.exports = async (ctx, next) => {
   // filter non-asset types

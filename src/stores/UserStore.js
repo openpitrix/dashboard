@@ -241,6 +241,7 @@ export default class UserStore extends Store {
 
     if (get(result, 'user_id')) {
       this.success('Modify user successful.');
+      return { username: data.username };
     }
   };
 
@@ -261,7 +262,7 @@ export default class UserStore extends Store {
 
     const resetId = get(resetResult, 'reset_id');
     if (resetId) {
-      const result = this.changePassword({
+      const result = await this.changePassword({
         new_password: data.new_password,
         reset_id: resetId
       });
@@ -279,9 +280,7 @@ export default class UserStore extends Store {
 
   @action
   changePassword = async (params = {}) => {
-    this.isLoading = true;
-    await this.request.post('users/password:change', params);
-    this.isLoading = false;
+    return await this.request.post('users/password:change', params);
   };
 
   @action

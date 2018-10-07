@@ -36,16 +36,16 @@ export default class Store extends Component {
     appStore.storeApps = appStore.apps;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     window.scroll({ top: 0, behavior: 'smooth' });
     const { match } = this.props;
     const { params } = match;
 
     window.scroll({ top: 0, behavior: 'smooth' });
     if (!params.category && !params.search) {
+      const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
+      await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);
-      const initLoadNumber = parseInt((document.documentElement.clientHeight - 200) / 250) + 2;
-      this.loadAppData(0, initLoadNumber);
     }
   }
 
