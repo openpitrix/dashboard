@@ -34,7 +34,8 @@ export default class ClusterStore extends Store {
   @observable versionId = '';
 
   // cluster job queue
-  @observable jobs = {
+  @observable
+  jobs = {
     // job_id=> cluster_id
   };
 
@@ -77,7 +78,6 @@ export default class ClusterStore extends Store {
       this.clusterCount = this.totalCount;
     }
 
-    // fixme
     const appStore = this.store.app;
 
     const appIds = this.clusters.map(cluster => cluster.app_id);
@@ -236,21 +236,21 @@ export default class ClusterStore extends Store {
     await this.fetchAll();
   };
 
-  @action
-  loadPageInit = () => {
-    if (!this.pageInitMap.cluster) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
-    }
-    this.appId = '';
-    this.runtimeId = '';
-    this.userId = '';
-    this.selectedRowKeys = [];
-    this.clusterIds = [];
-    this.pageInitMap = {};
-    this.store = {};
-  };
+   @action
+   loadPageInit = () => {
+     if (!this.pageInitMap.cluster) {
+       this.currentPage = 1;
+       this.selectStatus = '';
+       this.searchWord = '';
+     }
+     this.appId = '';
+     this.runtimeId = '';
+     this.userId = '';
+     this.selectedRowKeys = [];
+     this.clusterIds = [];
+     this.pageInitMap = {};
+     this.store = {};
+   };
 
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {

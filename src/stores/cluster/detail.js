@@ -51,6 +51,17 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
+  showModal = type => {
+    this.modalType = type;
+    this.isModalOpen = true;
+  };
+
+  @action
+  hideModal = () => {
+    this.isModalOpen = false;
+  };
+
+  @action
   fetch = async clusterId => {
     this.isLoading = true;
     const result = await this.request.get(`clusters`, { cluster_id: clusterId });

@@ -9,6 +9,8 @@ import SockClient from './utils/sock-client';
 import i18n from './i18n';
 import UserProvider from 'providers/user';
 
+import { getCookie } from './utils';
+
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
 

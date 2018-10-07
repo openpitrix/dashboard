@@ -42,6 +42,16 @@ export default class Clusters extends Component {
       await clusterStore.fetchStatistics();
       await userStore.fetchAll({ noLimit: true });
     }
+
+    // clusterStore.clusters = [];
+    // clusterStore.registerStore('app', appStore);
+
+    await clusterStore.fetchAll();
+    await runtimeStore.fetchAll({
+      status: ['active', 'deleted'],
+      noLimit: true,
+      simpleQuery: true
+    });
   }
 
   componentWillUnmount() {
