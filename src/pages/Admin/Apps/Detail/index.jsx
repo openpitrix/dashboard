@@ -95,7 +95,7 @@ export default class AppDetail extends Component {
     const maxsize = 2 * 1024 * 1024;
     appVersionStore.createError = '';
 
-    if (!/\.(tar|tar\.gz|tra\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
+    if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
       appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ and TGZ';
       return false;
     } else if (file.size > maxsize) {
