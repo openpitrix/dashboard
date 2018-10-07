@@ -75,17 +75,15 @@ export default class Repos extends Component {
     const repoIds = repoStore.repos.map(repo => repo.repo_id);
 
     const status = _.pick(values, ['status', 'transition_status']);
-    const logJobs = () => repoStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+    // const logJobs = () => repoStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
 
     if (op === 'create:repo') {
       // rid is repo_id
       jobs[rid] = status;
-      logJobs();
     }
 
     if (op === 'update:repo' && repoIds.includes(rid)) {
       await repoStore.fetchAll();
-      logJobs();
     }
 
     if (op === 'create:repo_event') {
@@ -103,7 +101,6 @@ export default class Repos extends Component {
       if (['successful', 'deleted'].includes(status.status)) {
         delete jobs[repoId];
         await repoStore.fetchAll();
-        logJobs();
       }
     }
   };
