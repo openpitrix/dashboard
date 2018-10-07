@@ -3,11 +3,12 @@ import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { get, find } from 'lodash';
 
-import { getScrollTop, getScrollBottom } from 'src/utils';
+import { Notification } from 'components/Base';
 import Nav from 'components/Nav';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
+import { getScrollTop, getScrollBottom } from 'src/utils';
 
 import styles from './index.scss';
 
@@ -18,29 +19,27 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
-  static async onEnter({ categoryStore, appStore }, { category, search }) {
-    const params = { status: 'active', noLimit: true, noLogin: true };
-    appStore.loadPageInit();
+  async componentDidMount() {
+    const { rootStore, appStore, categoryStore, match } = this.props;
+    const { category, search } = match;
 
+    const filterParams = { status: 'active', noLimit: true, noLogin: true };
+
+    // appStore.loadPageInit();
     await categoryStore.fetchAll({ noLogin: true });
 
     if (category) {
-      params.category_id = category;
+      filterParams.category_id = category;
     }
     if (search) {
-      params.search_word = search;
+      filterParams.search_word = search;
     }
-    await appStore.fetchAll(params);
+    await appStore.fetchAll(filterParams);
     appStore.homeApps = appStore.apps;
-  }
-
-  componentDidMount() {
-    const { rootStore, match } = this.props;
-    const { params } = match;
 
     window.scroll({ top: 0, behavior: 'smooth' });
 
-    if (params.category || params.search) {
+    if (category || search) {
       // search or category filter page
       rootStore.setNavFix(true);
     } else {
@@ -158,6 +157,7 @@ export default class Home extends Component {
     return (
       <Fragment>
         {isHomePage && <Banner />}
+        <Notification />
         <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
           <Nav className={styles.nav} navs={categories.toJSON()} />
           <Loading isLoading={isLoading} className={styles.homeLoad}>

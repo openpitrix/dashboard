@@ -6,7 +6,7 @@ import { getProgress } from 'utils';
 
 export default class RuntimeStore extends Store {
   sortKey = 'status_time';
-  defaultStatus=['active'];
+  defaultStatus = ['active'];
 
   @observable runtimes = []; // current runtimes
   @observable runtimeDetail = {};
@@ -16,7 +16,7 @@ export default class RuntimeStore extends Store {
   @observable totalCount = 0;
   @observable runtimeId = '';
   @observable isModalOpen = false;
-  @observable isKubernetes = false;
+  @observable isK8s = false;
 
   @observable currentPage = 1;
   @observable searchWord = '';
@@ -96,12 +96,9 @@ export default class RuntimeStore extends Store {
   fetch = async runtimeId => {
     this.isLoading = true;
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
-    const runtimeDetail = get(result, 'runtime_set[0]', {});
-    const provider = get(runtimeDetail, 'provider', '');
-    this.isKubernetes = provider === 'kubernetes';
-    this.runtimeDetail = runtimeDetail;
+    this.runtimeDetail = get(result, 'runtime_set[0]', {});
+    this.isK8s = get(this.runtimeDetail, 'provider') === 'kubernetes';
     this.isLoading = false;
-    this.pageInitMap = { runtime: true };
   };
 
   @action
@@ -170,30 +167,24 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
   };
 
-  loadPageInit = () => {
-    if (!this.pageInitMap.runtime) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
+  // loadPageInit = () => {
+  //   if (!this.pageInitMap.runtime) {
+  //     this.currentPage = 1;
+  //     this.selectStatus = '';
+  //     this.searchWord = '';
+  //   }
+  //   this.userId = '';
+  //   this.selectedRowKeys = [];
+  //   this.runtimeIds = [];
+  //   this.pageInitMap = {};
+  //   this.runtimeDeleted = null;
+  // };
+
+  checkK8s = runtimeId => {
+    if (!runtimeId || _.isEmpty(this.runtimes)) {
+      return false;
     }
-    this.userId = '';
-    this.selectedRowKeys = [];
-    this.runtimeIds = [];
-    this.pageInitMap = {};
-    this.runtimeDeleted = null;
-  };
-
-  checkKubernetes = runtimeId => {
-    if (!runtimeId) return false;
-    if (!this.runtimes) return false;
-
-    let isKubernetes = false;
-    this.runtimes.forEach(runtime => {
-      if (runtime.runtime_id === runtimeId) {
-        isKubernetes = runtime.provider === 'kubernetes';
-      }
-    });
-    return isKubernetes;
+    return _.some(this.runtimes, rt => rt.runtime_id === runtimeId && rt.provider === 'kubernetes');
   };
 }
 

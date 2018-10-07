@@ -70,11 +70,14 @@ export default class AppVersionStore extends Store {
       this.currentVersion = { ...this.currentVersion };
     }
 
+    // todo
     const appStore = this.store.app;
     const appIds = this.versions.map(item => item.app_id);
     if (appStore && appIds.length > 1) {
       appStore.fetchAll({ app_id: appIds });
     }
+
+    // todo
     const userStore = this.store.user;
     const userIds = this.versions.map(item => item.owner);
     if (userStore && userIds.length > 1) {

@@ -119,6 +119,7 @@ export default class AppStore extends Store {
     const result = await this.request.get('apps', assign(defaultParams, params));
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
+
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
     }

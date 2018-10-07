@@ -26,7 +26,17 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  static async onEnter({ runtimeStore, clusterStore, appStore, userStore, user }, { runtimeId }) {
+  constructor(props) {
+    super(props);
+    const { clusterStore, match } = this.props;
+    // clusterStore.loadPageInit();
+    clusterStore.runtimeId = match.params.runtimeId;
+  }
+
+  async componentDidMount() {
+    const { runtimeStore, clusterStore, appStore, userStore, user, match } = this.props;
+    const { runtimeId } = match.params;
+
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
       runtime_id: runtimeId
@@ -41,13 +51,6 @@ export default class RuntimeDetail extends Component {
       const { runtimeDetail } = runtimeStore;
       await userStore.fetchDetail(runtimeDetail.owner);
     }
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, match } = this.props;
-    clusterStore.loadPageInit();
-    clusterStore.runtimeId = match.params.runtimeId;
   }
 
   componentDidUpdate() {
