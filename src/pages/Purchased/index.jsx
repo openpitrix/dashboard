@@ -50,13 +50,12 @@ export default class Purchased extends Component {
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
     const status = _.pick(values, ['status', 'transition_status']);
-    const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+    // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
     const clusterIds = clusterStore.clusters.map(cl => cl.cluster_id);
 
     if (op === 'create:job' && clusterIds.includes(values.cluster_id)) {
       // new job
       jobs[rid] = values.cluster_id;
-      logJobs();
     }
 
     // job updated
@@ -65,7 +64,6 @@ export default class Purchased extends Component {
         delete jobs[rid];
         await clusterStore.fetchAll();
       }
-      logJobs();
     }
 
     if (rtype === 'cluster' && clusterIds.includes(rid)) {

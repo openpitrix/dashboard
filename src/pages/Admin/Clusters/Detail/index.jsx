@@ -56,13 +56,12 @@ export default class ClusterDetail extends Component {
     const { jobs } = clusterStore;
 
     const status = _.pick(values, ['status', 'transition_status']);
-    const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+    // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
 
     if (op === 'create:job' && values.cluster_id === clusterId) {
       // new job
       jobs[rid] = clusterId;
       await clusterStore.fetchJobs(clusterId);
-      logJobs();
     }
 
     // job updated
@@ -74,8 +73,6 @@ export default class ClusterDetail extends Component {
         await clusterStore.fetchNodes({ cluster_id: clusterId });
         delete jobs[rid];
       }
-
-      logJobs();
     }
 
     if (rtype === 'cluster' && rid === clusterId) {
