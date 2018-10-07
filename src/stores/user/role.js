@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
-import Store from './Store';
 import { get } from 'lodash';
+import Store from '../Store';
 
 export default class RoleStoreStore extends Store {
   @observable roles = [];

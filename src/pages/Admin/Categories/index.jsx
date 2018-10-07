@@ -21,11 +21,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class Categories extends Component {
-  static async onEnter({ categoryStore, appStore }) {
-    categoryStore.appStore = appStore;
-    await categoryStore.fetchAll({}, categoryStore.appStore);
-  }
-
   constructor(props) {
     super(props);
     const { categoryStore, appStore } = this.props;
@@ -35,15 +30,18 @@ export default class Categories extends Component {
     appStore.loadPageInit();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { categoryStore, appStore } = this.props;
+
     window.scroll({ top: 0, behavior: 'auto' });
     window.onscroll = throttle(this.handleScroll, 200);
+
+    categoryStore.appStore = appStore;
+    await categoryStore.fetchAll({}, categoryStore.appStore);
   }
 
   componentWillUnmount() {
-    if (window.onscroll) {
-      window.onscroll = null;
-    }
+    window.onscroll = null;
   }
 
   handleScroll = async () => {

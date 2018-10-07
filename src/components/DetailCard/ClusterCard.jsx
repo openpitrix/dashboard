@@ -21,6 +21,10 @@ export default class ClusterCard extends Component {
     userName: PropTypes.string
   };
 
+  static defaultProps = {
+    detail: {}
+  };
+
   render() {
     const { detail, appName, runtimeName, provider, t } = this.props;
 

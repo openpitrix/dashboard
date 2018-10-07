@@ -1,42 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {translate} from 'react-i18next';
+import { translate } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
+import classnames from 'classnames';
+import _ from 'lodash';
 
-import {Button, Icon, Table} from 'components/Base';
-import {Card, Dialog} from 'components/Layout';
+import { Button, Icon, Table, Radio, Input } from 'components/Base';
+import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import TimeAxis from 'components/TimeAxis';
 import columns from './columns';
-import {getFilterOptions} from '../utils';
+import { getFilterOptions } from '../utils';
 
 import styles from '../index.scss';
 
 @translate()
-@inject(({rootStore}) => ({
-  clusterStore: rootStore.clusterStore,
+@inject(({ rootStore }) => ({
   store: rootStore.clusterDetailStore
+  // clusterStore: rootStore.clusterStore
 }))
 @observer
 export default class VMbasedCluster extends React.Component {
-  static propTypes={
+  static propTypes = {
     cluster: PropTypes.object.isRequired
-  }
-  static defaultProps={
+  };
+  static defaultProps = {
     cluster: {}
-  }
+  };
 
   onClickAddNodes = () => {
-    this.props.clusterStore.showModal('addNodes');
+    this.props.store.showModal('addNodes');
   };
 
   onClickDeleteNodes = () => {
-    this.props.clusterStore.showModal('deleteNodes');
+    this.props.store.showModal('deleteNodes');
   };
 
   handleAddNodes = async (e, formData) => {
-    const { selectedNodeRole, addNodes } = this.props.clusterStore;
+    const { selectedNodeRole, addNodes } = this.props.store;
 
     formData = _.extend(_.pick(formData, ['node_count', 'advanced_params']), {
       cluster_id: this.clusterId,
@@ -49,7 +51,7 @@ export default class VMbasedCluster extends React.Component {
   };
 
   handleDeleteNodes = async () => {
-    const { deleteNodes, selectedNodeIds } = this.props.clusterStore;
+    const { deleteNodes, selectedNodeIds } = this.props.store;
 
     await deleteNodes({
       cluster_id: this.clusterId,
@@ -58,12 +60,12 @@ export default class VMbasedCluster extends React.Component {
     });
   };
 
-  handleResizeCluster=()=>{
+  handleResizeCluster = () => {
     // todo
   };
 
   getClusterRoles() {
-    const { cluster } = this.props.clusterStore;
+    const { cluster } = this.props.store;
     return _.uniq(_.get(cluster, 'cluster_role_set', []).map(cl => cl.role));
   }
 
@@ -72,8 +74,8 @@ export default class VMbasedCluster extends React.Component {
   }
 
   renderToolbar() {
-    const { clusterStore, t } = this.props;
-    const { searchNode, onSearchNode, onClearNode, onRefreshNode, selectedNodeIds } = clusterStore;
+    const { store, t } = this.props;
+    const { searchNode, onSearchNode, onClearNode, onRefreshNode, selectedNodeIds } = store;
 
     if (selectedNodeIds.length) {
       return (
@@ -102,7 +104,7 @@ export default class VMbasedCluster extends React.Component {
   }
 
   renderTable() {
-    const {store, t}=this.props;
+    const { store, t } = this.props;
 
     const {
       isLoading,
@@ -137,22 +139,14 @@ export default class VMbasedCluster extends React.Component {
           onChange: onChangeSelectNodes
         }}
       />
-    )
+    );
   }
 
   renderModals = () => {
-    const { modalType, isModalOpen } = this.props.clusterStore;
+    const { modalType, isModalOpen } = this.props.store;
 
     if (!isModalOpen) {
       return null;
-    }
-
-    if (modalType === 'jobs') {
-      return this.renderJobsModal();
-    }
-
-    if (modalType === 'parameters') {
-      return this.renderParametersModal();
     }
 
     if (['delete', 'start', 'stop'].includes(modalType)) {
@@ -174,7 +168,7 @@ export default class VMbasedCluster extends React.Component {
 
   renderOperationModal = () => {
     const { t } = this.props;
-    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
+    const { hideModal, isModalOpen, modalType } = this.props.store;
 
     return (
       <Dialog
@@ -188,46 +182,9 @@ export default class VMbasedCluster extends React.Component {
     );
   };
 
-  renderJobsModal = () => {
-    const { t } = this.props;
-    const { isModalOpen, hideModal, clusterJobs } = this.props.clusterStore;
-    const jobs = clusterJobs.toJSON();
-
-    return (
-      <Dialog title={t('Activities')} isOpen={isModalOpen} onCancel={hideModal} noActions>
-        <TimeAxis timeList={jobs} />
-      </Dialog>
-    );
-  };
-
-  renderParametersModal = () => {
-    const { isModalOpen, hideModal, modalType } = this.props.clusterStore;
-
-    return (
-      <Modal
-        title="Parameters"
-        visible={isModalOpen && modalType === 'parameters'}
-        onCancel={hideModal}
-        hideFooter
-      >
-        <ul className={styles.parameters}>
-          {/*<li>*/}
-          {/*<div className={styles.name}>Port</div>*/}
-          {/*<div className={styles.info}>*/}
-          {/*<p className={styles.value}>3306</p>*/}
-          {/*<p className={styles.explain}>*/}
-          {/*Range: 3306－65535, The Esgyn will restart if modified.*/}
-          {/*</p>*/}
-          {/*</div>*/}
-          {/*</li>*/}
-        </ul>
-      </Modal>
-    );
-  };
-
   renderResizeClusterModal = () => {
-    const { clusterStore, t } = this.props;
-    const { isModalOpen, hideResizeClusterModal } = clusterStore;
+    const { store, t } = this.props;
+    const { isModalOpen, hideResizeClusterModal } = store;
 
     // todo
     return (
@@ -243,8 +200,8 @@ export default class VMbasedCluster extends React.Component {
   };
 
   renderAddNodesModal = () => {
-    const { clusterStore, t } = this.props;
-    const { hideAddNodesModal, isModalOpen, selectedNodeRole, onChangeNodeRole } = clusterStore;
+    const { store, t } = this.props;
+    const { hideAddNodesModal, isModalOpen, selectedNodeRole, onChangeNodeRole } = store;
     const roles = this.getClusterRoles();
     const hideRoles = roles.length === 1 && roles[0] === '';
 
@@ -282,8 +239,8 @@ export default class VMbasedCluster extends React.Component {
   };
 
   renderDeleteNodesModal = () => {
-    const { clusterStore, t } = this.props;
-    const { hideDeleteNodesModal, isModalOpen, selectedNodeIds } = clusterStore;
+    const { store, t } = this.props;
+    const { hideDeleteNodesModal, isModalOpen, selectedNodeIds } = store;
 
     return (
       <Dialog
@@ -297,7 +254,7 @@ export default class VMbasedCluster extends React.Component {
     );
   };
 
-  render(){
+  render() {
     return (
       <div>
         {this.renderDetailTabs()}
@@ -307,6 +264,6 @@ export default class VMbasedCluster extends React.Component {
         </Card>
         {this.renderModals()}
       </div>
-    )
+    );
   }
 }

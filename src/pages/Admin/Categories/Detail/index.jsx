@@ -24,21 +24,24 @@ import styles from './index.scss';
 }))
 @observer
 export default class CategoryDetail extends Component {
-  static async onEnter({ categoryStore, appStore, repoStore }, { categoryId }) {
-    await categoryStore.fetch(categoryId);
-    await appStore.fetchAll({ category_id: categoryId });
-    await repoStore.fetchAll({
-      status: ['active', 'deleted'],
-      noLimit: true
-    });
-  }
-
   constructor(props) {
     super(props);
     const { categoryStore, appStore, match } = this.props;
     categoryStore.isDetailPage = true;
     appStore.loadPageInit();
     appStore.categoryId = match.params.categoryId;
+  }
+
+  async componentDidMount() {
+    const { categoryStore, appStore, repoStore, match } = this.props;
+    const { categoryId } = match.params;
+
+    await categoryStore.fetch(categoryId);
+    await appStore.fetchAll({ category_id: categoryId });
+    await repoStore.fetchAll({
+      status: ['active', 'deleted'],
+      noLimit: true
+    });
   }
 
   componentDidUpdate() {

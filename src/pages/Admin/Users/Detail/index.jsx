@@ -27,18 +27,21 @@ import styles from './index.scss';
 @translate()
 @observer
 export default class Detail extends Component {
-  static async onEnter({ userStore }, { userId }) {
+  // constructor(props) {
+  //   super(props);
+  //   const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+  //
+  //   appStore.loadPageInit();
+  //   clusterStore.loadPageInit();
+  //   runtimeStore.loadPageInit();
+  //   repoStore.loadPageInit();
+  // }
+
+  async componentDidMount() {
+    const { userStore, match } = this.props;
+    const { userId } = match.params;
+
     await userStore.fetchDetail(userId);
-  }
-
-  constructor(props) {
-    super(props);
-    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
-
-    appStore.loadPageInit();
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    repoStore.loadPageInit();
   }
 
   //todo

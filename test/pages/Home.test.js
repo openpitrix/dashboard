@@ -13,6 +13,7 @@ describe('Home', () => {
   beforeEach(() => {
     rootStore = observable.object({
       config: {},
+      notifications: [],
       appStore: {
         homeApps: [],
         appSearch: ''

@@ -20,7 +20,21 @@ import styles from './index.scss';
 }))
 @observer
 export default class Repos extends Component {
-  static async onEnter({ repoStore, appStore, user }) {
+  constructor(props) {
+    super(props);
+    const { repoStore, appStore } = this.props;
+    repoStore.appStore = appStore;
+
+    // repoStore.loadPageInit();
+    // appStore.loadPageInit();
+  }
+
+  async componentDidMount() {
+    const { repoStore, appStore, user } = this.props;
+
+    window.scroll({ top: 0, behavior: 'auto' });
+    window.onscroll = _.throttle(this.handleScroll, 200);
+
     repoStore.appStore = appStore;
     await repoStore.fetchAll(
       {
@@ -29,19 +43,6 @@ export default class Repos extends Component {
       },
       appStore
     );
-  }
-
-  constructor(props) {
-    super(props);
-    const { repoStore, appStore } = this.props;
-    repoStore.appStore = appStore;
-    repoStore.loadPageInit();
-    appStore.loadPageInit();
-  }
-
-  componentDidMount() {
-    window.scroll({ top: 0, behavior: 'auto' });
-    window.onscroll = _.throttle(this.handleScroll, 200);
   }
 
   componentWillUnmount() {

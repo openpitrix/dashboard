@@ -2,13 +2,13 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
 import * as Dash from 'pages/Admin';
+
 import Profile from 'pages/Profile';
 import SSHKeys from 'pages/SSHKeys';
 import Store from 'pages/Store';
 import Purchased from 'pages/Purchased';
 import Runtimes from 'pages/Runtimes';
 
-const useExactRoute = true;
 const dashboardPrefix = '/dashboard';
 
 const dashUrl = path => {
@@ -84,7 +84,7 @@ export default Object.keys(routes).map(route => {
     {},
     {
       path: dashUrl(route),
-      exact: useExactRoute,
+      exact: route !== '/login',
       component: routes[route],
       needAuth: judgeNeedAuth(route)
     }

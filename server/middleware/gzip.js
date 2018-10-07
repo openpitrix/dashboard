@@ -1,4 +1,4 @@
-const debug = require('debug')('op-dash');
+const debug = require('debug')('app');
 
 module.exports = async (ctx, next) => {
   if (ctx.url.endsWith('.js') || ctx.url.endsWith('.css')) {

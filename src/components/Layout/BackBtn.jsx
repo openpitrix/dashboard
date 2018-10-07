@@ -23,4 +23,9 @@ BackBtn.propTypes = {
   link: PropTypes.string.isRequired
 };
 
+BackBtn.defaultProps = {
+  label: '',
+  link: ''
+};
+
 export default BackBtn;

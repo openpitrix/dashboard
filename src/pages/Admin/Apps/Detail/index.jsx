@@ -31,7 +31,21 @@ import styles from './index.scss';
 )
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
+  constructor(props) {
+    super(props);
+    const { clusterStore, runtimeStore, appVersionStore, match } = this.props;
+
+    // clusterStore.loadPageInit();
+    // runtimeStore.loadPageInit();
+    // appVersionStore.loadPageInit();
+
+    appVersionStore.appId = match.params.appId;
+  }
+
+  async componentDidMount() {
+    const { appStore, appVersionStore, repoStore, match } = this.props;
+    const { appId } = match.params;
+
     await appStore.fetch(appId);
     appVersionStore.appId = appId;
     appVersionStore.currentVersion = {};
@@ -39,15 +53,6 @@ export default class AppDetail extends Component {
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appVersionStore, match } = this.props;
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    appVersionStore.loadPageInit();
-    appVersionStore.appId = match.params.appId;
   }
 
   async componentWillReceiveProps({ match, rootStore }) {
@@ -580,10 +585,7 @@ export default class AppDetail extends Component {
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
-                <DetailTabs
-                  tabs={['Information', 'Clusters']}
-                  changeTab={this.changeDetailTab}
-                />
+                <DetailTabs tabs={['Information', 'Clusters']} changeTab={this.changeDetailTab} />
                 {detailTab === 'Information' ? (
                   this.renderInformation()
                 ) : (

@@ -24,26 +24,16 @@ import styles from './index.scss';
 }))
 @observer
 export default class Purchased extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }) {
-    clusterStore.registerStore('app', appStore);
-    await clusterStore.fetchAll();
+  async componentDidMount() {
+    const { clusterStore, appStore, runtimeStore } = this.props;
+
     await appStore.fetchAll({ status: 'active', noLimit: true });
-    appStore.storeApps = appStore.apps;
+    await clusterStore.fetchAll();
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
       simpleQuery: true
     });
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, appStore, runtimeStore } = this.props;
-    clusterStore.loadPageInit();
-    appStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.registerStore('app', appStore);
-    this.store = clusterStore;
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -91,17 +81,18 @@ export default class Purchased extends Component {
   };
 
   handleCluster = () => {
-    const { clusterId, clusterIds, modalType, operateType } = this.store;
+    const { clusterStore } = this.props;
+    const { clusterId, clusterIds, modalType, operateType } = clusterStore;
     let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
     switch (modalType) {
       case 'delete':
-        this.store.remove(ids);
+        clusterStore.remove(ids);
         break;
       case 'start':
-        this.store.start(ids);
+        clusterStore.start(ids);
         break;
       case 'stop':
-        this.store.stop(ids);
+        clusterStore.stop(ids);
         break;
     }
   };
@@ -150,7 +141,7 @@ export default class Purchased extends Component {
 
   renderDeleteModal = () => {
     const { t } = this.props;
-    const { hideModal, isModalOpen, modalType } = this.store;
+    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
     return (
       <Dialog
@@ -167,12 +158,12 @@ export default class Purchased extends Component {
   };
 
   renderApps() {
-    const { storeApps } = this.props.appStore;
+    const { apps } = this.props.appStore;
     const { appId } = this.props.clusterStore;
 
     return (
       <ul className={styles.appList}>
-        {storeApps.slice(0, 10).map(app => (
+        {apps.slice(0, 10).map(app => (
           <li
             key={app.app_id}
             className={classNames({ [styles.active]: app.app_id === appId })}

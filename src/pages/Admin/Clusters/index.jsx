@@ -21,13 +21,33 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
-  user: rootStore.user,
+  user: rootStore.user
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }) {
-    clusterStore.clusters = [];
-    clusterStore.registerStore('app', appStore);
+  constructor(props) {
+    super(props);
+    const { clusterStore, runtimeStore, appStore } = this.props;
+    // clusterStore.loadPageInit();
+    // runtimeStore.loadPageInit();
+    // clusterStore.registerStore('app', appStore);
+
+    clusterStore.page = 'index';
+    this.store = clusterStore;
+  }
+
+  async componentDidMount() {
+    const { clusterStore, appStore, runtimeStore, userStore, user } = this.props;
+
+    const { isAdmin } = user;
+
+    if (isAdmin) {
+      await clusterStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
+    }
+
+    // clusterStore.clusters = [];
+    // clusterStore.registerStore('app', appStore);
 
     await clusterStore.fetchAll();
     await runtimeStore.fetchAll({
@@ -35,26 +55,6 @@ export default class Clusters extends Component {
       noLimit: true,
       simpleQuery: true
     });
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appStore } = this.props;
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.registerStore('app', appStore);
-    clusterStore.page = 'index';
-    this.store = clusterStore;
-  }
-
-  async componentDidMount() {
-    const { clusterStore, userStore, user } = this.props;
-    const { isAdmin } = user;
-
-    if (isAdmin) {
-      await clusterStore.fetchStatistics();
-      await userStore.fetchAll({ noLimit: true });
-    }
   }
 
   componentWillUnmount() {

@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import _, { get } from 'lodash';
+import _ from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
+import { Icon, Popover, Modal } from 'components/Base';
+import Layout, { BackBtn, Grid, Section, Card, Panel, NavLink, Dialog } from 'components/Layout';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 
@@ -26,29 +26,18 @@ import styles from './index.scss';
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
   user: rootStore.user,
-  rootStore,
+  rootStore
 }))
 @observer
 export default class ClusterDetail extends Component {
-  constructor(props) {
-    super(props);
-    const { clusterStore } = props;
-    clusterStore.page = 'detail';
-    clusterStore.loadNodeInit();
-  }
+  async componentDidMount() {
+    const { clusterDetailStore, clusterStore, runtimeStore, appStore, match } = this.props;
+    const { clusterId } = match.params;
 
-  async componentDidMount()  {
-    const { clusterStore, clusterDetailStore, runtimeStore, appStore, match } = this.props;
-    const clusterId = get(match, 'params.clusterId');
-    clusterDetailStore.fetchPage({ clusterId, clusterStore, runtimeStore, appStore, userStore });
+    await clusterDetailStore.fetch(clusterId);
+    await clusterDetailStore.fetchJobs(clusterId);
 
-    // reset
-    // clusterStore.loadNodeInit();
-
-    await clusterStore.fetch(clusterId);
-    await clusterStore.fetchJobs(clusterId);
-
-    const { cluster } = clusterStore;
+    const { cluster } = clusterDetailStore;
 
     if (cluster.app_id) {
       await appStore.fetch(cluster.app_id);
@@ -57,8 +46,9 @@ export default class ClusterDetail extends Component {
       await runtimeStore.fetch(cluster.runtime_id);
     }
 
-    if (!runtimeStore.isKubernetes) {
-      await clusterStore.fetchNodes({ cluster_id: clusterId });
+    if (!runtimeStore.isK8s) {
+      // vmbase
+      await clusterDetailStore.fetchNodes({ cluster_id: clusterId });
     } else {
       clusterDetailStore.formatClusterNodes({
         clusterStore,
@@ -122,6 +112,48 @@ export default class ClusterDetail extends Component {
     } catch (err) {}
   };
 
+  showClusterJobs = () => {
+    this.props.clusterDetailStore.showModal('jobs');
+  };
+
+  showClusterParameters = () => {
+    this.props.clusterDetailStore.showModal('parameters');
+  };
+
+  renderModals() {
+    const { t } = this.props;
+    const { modalType, isModalOpen, hideModal, clusterJobs } = this.props.clusterDetailStore;
+
+    if (!isModalOpen) {
+      return null;
+    }
+
+    if (modalType === 'jobs') {
+      return (
+        <Dialog title={t('Activities')} isOpen={isModalOpen} onCancel={hideModal} noActions>
+          <TimeAxis timeList={clusterJobs.toJSON()} />
+        </Dialog>
+      );
+    }
+
+    if (modalType === 'parameters') {
+      return (
+        <Modal title="Parameters" visible={isModalOpen} onCancel={hideModal} hideFooter>
+          <ul className={styles.parameters}>
+            {/*<li>*/}
+            {/*<div className={styles.name}>Port</div>*/}
+            {/*<div className={styles.info}>*/}
+            {/*<p className={styles.value}>3306</p>*/}
+            {/*<p className={styles.explain}>*/}
+            {/*Range: 3306－65535, The Esgyn will restart if modified.*/}
+            {/*</p>*/}
+            {/*</div>*/}
+            {/*</li>*/}
+          </ul>
+        </Modal>
+      );
+    }
+  }
 
   renderHandleMenu = item => {
     const { t } = this.props;
@@ -142,8 +174,8 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  renderBreadcrumb(cluster){
-    const {user, t}=this.props;
+  renderBreadcrumb(cluster) {
+    const { user, t } = this.props;
     const { isDev, isAdmin } = user;
 
     return (
@@ -162,7 +194,7 @@ export default class ClusterDetail extends Component {
           </NavLink>
         )}
       </Fragment>
-    )
+    );
   }
 
   render() {
@@ -177,16 +209,13 @@ export default class ClusterDetail extends Component {
       t
     } = this.props;
 
-    const { runtimeDetail, isKubernetes } = runtimeStore;
+    const { cluster, isLoading } = clusterDetailStore;
+    const { runtimeDetail, isK8s } = runtimeStore;
 
-    const { cluster, isLoading, clusterJobsOpen } = clusterStore;
-
-    const clusterJobs = clusterStore.clusterJobs.toJSON();
     const appName = _.get(appStore.appDetail, 'name', '');
     const runtimeName = _.get(runtimeDetail, 'name', '');
     const provider = _.get(runtimeDetail, 'provider', '');
     const userName = _.get(userStore.userDetail, 'name', '');
-
 
     return (
       <Layout
@@ -226,23 +255,20 @@ export default class ClusterDetail extends Component {
             <Card className={styles.activities}>
               <div className={styles.title}>
                 {t('Activities')}
-                <div className={styles.more} onClick={clusterJobsOpen}>
+                <div className={styles.more} onClick={this.showClusterJobs}>
                   {t('More')} →
                 </div>
               </div>
-              <TimeAxis timeList={clusterJobs.splice(0, 4)} />
+              <TimeAxis timeList={clusterDetailStore.clusterJobs.toJSON().splice(0, 4)} />
             </Card>
           </Section>
 
           <Section size={8}>
-            <Panel>
-              {
-                isKubernetes ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />
-              }
-            </Panel>
+            <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
           </Section>
-
         </Grid>
+
+        {this.renderModals()}
       </Layout>
     );
   }
