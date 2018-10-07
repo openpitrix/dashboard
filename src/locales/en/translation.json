@@ -45,7 +45,7 @@
   "select_repo_app": "Select a Repo to store your application",
   "diff_repo": "Difference between public repo and private repo.",
   "click_upload": "Please click to select file upload",
-  "file_format_note": "The file format supports TAR, TAR.GZ and TAR.BZ",
+  "file_format_note": "The file format supports TAR, TAR.GZ and TGZ",
   "view_guide_1": "View the",
   "view_guide_2": "《Openpitrix Develop Guide》",
   "view_guide_3": "and learn how to make config files",

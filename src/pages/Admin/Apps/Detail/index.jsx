@@ -95,8 +95,8 @@ export default class AppDetail extends Component {
     const maxsize = 2 * 1024 * 1024;
     appVersionStore.createError = '';
 
-    if (!/\.(tar|tar\.gz|tar\.bz)$/.test(file.name.toLocaleLowerCase())) {
-      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ';
+    if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
+      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ and TGZ';
       return false;
     } else if (file.size > maxsize) {
       appVersionStore.createError = 'The file size cannot exceed 2M';
@@ -288,7 +288,7 @@ export default class AppDetail extends Component {
             <a
               className={styles.link}
               target="_blank"
-              href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+              href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
             >
               {t('view_guide_2')}
             </a>
@@ -425,7 +425,7 @@ export default class AppDetail extends Component {
               <a
                 className={styles.link}
                 target="_blank"
-                href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+                href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
               >
                 {t('view_guide_2')}
               </a>
