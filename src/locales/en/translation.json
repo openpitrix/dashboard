@@ -71,6 +71,8 @@
   "EMPTY_RUNTIME_TIPS": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud.",
   "NORMAL_GUIDING_WORDS": "Welcome to OpenPitirx, What would you like to do?",
 
-  "search_results": "Results"
+  "search_results": "Results",
+
+  "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?"
 
 }

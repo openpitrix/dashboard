@@ -26,17 +26,16 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore, repoStore }, { appId, versionId }) {
-    appVersionStore.loadPageInit();
+  async componentDidMount() {
+    this.props.rootStore.setNavFix(true);
+    const { appStore, repoStore, appVersionStore, user, match } = this.props;
+    const { appId, versionId } = match.params;
+
+    // appVersionStore.loadPageInit();
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
 
     await appStore.fetch(appId);
-  }
-
-  async componentDidMount() {
-    this.props.rootStore.setNavFix(true);
-    const { appStore, repoStore, appVersionStore, user, match } = this.props;
 
     const { isNormal, role } = user;
     const params = { app_id: match.params.appId };
@@ -149,8 +148,8 @@ export default class AppDetail extends Component {
             <ul>
               {appVersions
                 .sort((verA, verB) => versionCompare(verA.name, verB.name) < 0)
-                .map(version => (
-                  <li key={version.version_id} className={classnames(styles[version.status])}>
+                .map((version, idx) => (
+                  <li key={idx} className={classnames(styles[version.status])}>
                     <span className={styles.name} title={version.name}>
                       {version.name}
                     </span>

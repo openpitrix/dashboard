@@ -27,7 +27,18 @@ import styles from './index.scss';
 }))
 @observer
 export default class Apps extends Component {
-  static async onEnter({ appStore, categoryStore, repoStore, user }) {
+  // constructor(props) {
+  //   super(props);
+  //   const { appStore, repoStore, user } = this.props;
+  //
+  //   appStore.loadPageInit();
+  //   repoStore.loadPageInit();
+  // }
+
+  async componentDidMount() {
+    const { appStore, userStore, user, categoryStore, repoStore } = this.props;
+    const { isAdmin } = user;
+
     await appStore.fetchAll();
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
@@ -35,18 +46,6 @@ export default class Apps extends Component {
       isQueryPublic: user.isDev
     });
     await categoryStore.fetchAll();
-  }
-
-  constructor(props) {
-    super(props);
-    const { appStore, repoStore, user } = this.props;
-    appStore.loadPageInit();
-    repoStore.loadPageInit();
-  }
-
-  async componentDidMount() {
-    const { appStore, userStore, user } = this.props;
-    const { isAdmin } = user;
 
     if (isAdmin) {
       await appStore.fetchStatistics();
@@ -157,7 +156,7 @@ export default class Apps extends Component {
 
     if (appIds.length) {
       return (
-        <Toolbar>
+        <Toolbar noRefreshBtn noSearchBox>
           <Button type="delete" onClick={() => showDeleteApp(appIds)} className="btn-handle">
             {t('Delete')}
           </Button>

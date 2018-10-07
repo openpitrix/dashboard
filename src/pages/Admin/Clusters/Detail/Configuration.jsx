@@ -1,40 +1,61 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Configuration extends Component {
+import styles from './index.scss';
+
+const numericConf = [
+  'cpu',
+  'gpu',
+  'memory',
+  'instance_size',
+  'storage_size',
+  'ready_replicas',
+  'replicas'
+];
+
+export default class Configuration extends React.PureComponent {
   static propTypes = {
     configuration: PropTypes.object
   };
 
-  getName = (key, value) => {
-    let name = '';
-    if (value || value === 0) {
-      switch (key) {
-        case 'cpu':
-          name = value + '-Core';
-          break;
-        case 'memory':
-          name = value / 1024 + ' GB';
-          break;
-        case 'gpu':
-          name = value / 1024 + ' GB';
-          break;
-        default:
-          name = value.toString();
-          break;
-      }
-    }
-    return name + ' ';
-  };
+  calcNumericItem(num, type = 'memory') {
+    let label = '';
 
-  render() {
+    switch (type) {
+      case 'cpu':
+        label = num + '-Core';
+        break;
+      case 'memory':
+        label = (parseFloat(num) / 1024).toFixed(0) + 'GB';
+        break;
+      case 'storage_size':
+      case 'instance_size':
+        label = parseFloat(num) + 'GB';
+        break;
+      default:
+        label = num;
+        break;
+    }
+
+    return label;
+  }
+
+  getConfItem(confKey) {
     const { configuration } = this.props;
 
+    if (numericConf.includes(confKey)) {
+      return this.calcNumericItem(configuration[confKey], confKey);
+    }
+
+    return configuration[confKey];
+  }
+
+  render() {
     return (
       <div>
-        {this.getName('cpu', configuration.cpu)}
-        {this.getName('memory', configuration.memory)}
-        {this.getName('gpu', configuration.gpu)}
+        <span className={styles.nodeConfKey}>{this.getConfItem('cpu')}</span>
+        <span className={styles.nodeConfKey}>{this.getConfItem('memory')}</span>
+        <span className={styles.nodeConfKey}>{this.getConfItem('storage_size')}</span>
       </div>
     );
   }

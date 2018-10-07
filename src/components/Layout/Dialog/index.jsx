@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Modal } from 'components/Base';
 
+import { getFormData } from 'utils';
+
 import styles from './index.scss';
 
 export default class Dialog extends React.PureComponent {
@@ -21,7 +23,7 @@ export default class Dialog extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(e);
+    this.props.onSubmit(e, getFormData(this.form));
   };
 
   render() {
@@ -40,7 +42,9 @@ export default class Dialog extends React.PureComponent {
         {...rest}
       >
         <div className={styles.content}>
-          <form method="post">{children}</form>
+          <form method="post" ref={node => (this.form = node)}>
+            {children}
+          </form>
         </div>
       </Modal>
     );

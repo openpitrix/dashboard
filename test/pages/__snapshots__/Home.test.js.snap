@@ -1,28 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home basic render 1`] = `
-<div
-  class="content"
->
+Array [
   <div
-    class="nav nav"
-  >
-    <p
-      class="caption"
-    />
-    <ul
-      class="subNav"
-    />
-  </div>
+    class="wrapper"
+  />,
   <div
-    class="appList apps"
+    class="content"
   >
     <div
-      class="title"
-    />
+      class="nav nav"
+    >
+      <p
+        class="caption"
+      />
+      <ul
+        class="subNav"
+      />
+    </div>
     <div
-      class="noData"
-    />
-  </div>
-</div>
+      class="appList apps"
+    >
+      <div
+        class="title"
+      />
+      <div
+        class="noData"
+      />
+    </div>
+  </div>,
+]
 `;

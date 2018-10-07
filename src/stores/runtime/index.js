@@ -4,9 +4,10 @@ import _, { assign, get } from 'lodash';
 import Store from '../Store';
 import { getProgress } from 'utils';
 
-const defaultStatus = ['active'];
-
 export default class RuntimeStore extends Store {
+  sortKey = 'status_time';
+  defaultStatus = ['active'];
+
   @observable runtimes = []; // current runtimes
   @observable runtimeDetail = {};
   @observable summaryInfo = {}; // replace original statistic
@@ -15,9 +16,9 @@ export default class RuntimeStore extends Store {
   @observable totalCount = 0;
   @observable runtimeId = '';
   @observable isModalOpen = false;
-  @observable isKubernetes = false;
+  @observable isK8s = false;
 
-  @observable currentPage = 1; //runtime table query params
+  @observable currentPage = 1;
   @observable searchWord = '';
   @observable selectStatus = '';
   @observable userId = '';
@@ -46,38 +47,26 @@ export default class RuntimeStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let defaultParams = {
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
-    };
-
-    if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
-      delete params.noLimit;
-    }
+    params = this.normalizeParams(params);
 
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
     if (this.userId) {
-      defaultParams.owner = this.userId;
+      params.owner = this.userId;
     }
 
     this.isLoading = true;
-    let finalParams = assign(defaultParams, params);
 
     if (!params.simpleQuery) {
-      let result = await this.request.get('runtimes', finalParams);
+      let result = await this.request.get('runtimes', params);
       this.runtimes = get(result, 'runtime_set', []);
       this.totalCount = get(result, 'total_count', 0);
     } else {
       // simple query: just fetch runtime data used in other pages
       // no need to set totalCount
-      delete finalParams.simpleQuery;
-      let result = await this.request.get('runtimes', finalParams);
+      delete params.simpleQuery;
+      let result = await this.request.get('runtimes', params);
       this.allRuntimes = get(result, 'runtime_set', []);
     }
 
@@ -107,12 +96,9 @@ export default class RuntimeStore extends Store {
   fetch = async runtimeId => {
     this.isLoading = true;
     const result = await this.request.get(`runtimes`, { runtime_id: runtimeId });
-    const runtimeDetail = get(result, 'runtime_set[0]', {});
-    const provider = get(runtimeDetail, 'provider', '');
-    this.isKubernetes = provider === 'kubernetes';
-    this.runtimeDetail = runtimeDetail;
+    this.runtimeDetail = get(result, 'runtime_set[0]', {});
+    this.isK8s = get(this.runtimeDetail, 'provider') === 'kubernetes';
     this.isLoading = false;
-    this.pageInitMap = { runtime: true };
   };
 
   @action
@@ -181,30 +167,24 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
   };
 
-  loadPageInit = () => {
-    if (!this.pageInitMap.runtime) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
+  // loadPageInit = () => {
+  //   if (!this.pageInitMap.runtime) {
+  //     this.currentPage = 1;
+  //     this.selectStatus = '';
+  //     this.searchWord = '';
+  //   }
+  //   this.userId = '';
+  //   this.selectedRowKeys = [];
+  //   this.runtimeIds = [];
+  //   this.pageInitMap = {};
+  //   this.runtimeDeleted = null;
+  // };
+
+  checkK8s = runtimeId => {
+    if (!runtimeId || _.isEmpty(this.runtimes)) {
+      return false;
     }
-    this.userId = '';
-    this.selectedRowKeys = [];
-    this.runtimeIds = [];
-    this.pageInitMap = {};
-    this.runtimeDeleted = null;
-  };
-
-  checkKubernetes = runtimeId => {
-    if (!runtimeId) return false;
-    if (!this.runtimes) return false;
-
-    let isKubernetes = false;
-    this.runtimes.forEach(runtime => {
-      if (runtime.runtime_id === runtimeId) {
-        isKubernetes = runtime.provider === 'kubernetes';
-      }
-    });
-    return isKubernetes;
+    return _.some(this.runtimes, rt => rt.runtime_id === runtimeId && rt.provider === 'kubernetes');
   };
 }
 

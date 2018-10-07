@@ -18,21 +18,24 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore, clusterStore }) {
+  constructor(props) {
+    super(props);
+    const { runtimeStore, clusterStore } = this.props;
+
+    // runtimeStore.loadPageInit();
+    // clusterStore.loadPageInit();
+    this.state = {
+      currentType: 'all'
+    };
+  }
+
+  async componentDidMount() {
+    const { runtimeStore, clusterStore } = this.props;
+
     await runtimeStore.fetchAll();
     await clusterStore.fetchAll({
       noLimit: true
     });
-  }
-
-  constructor(props) {
-    super(props);
-    const { runtimeStore, clusterStore } = this.props;
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
-    this.state = {
-      currentType: 'all'
-    };
   }
 
   componentWillMount() {
@@ -40,7 +43,7 @@ export default class Runtimes extends Component {
     runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
   }
 
-  selectType = (value, flag) => {
+  selectType = async (value, flag) => {
     if (flag) {
       return;
     }
@@ -50,7 +53,8 @@ export default class Runtimes extends Component {
       currentType: value
     });
     value = value === 'all' ? '' : value;
-    runtimeStore.fetchAll({
+
+    await runtimeStore.fetchAll({
       provider: value
     });
   };
@@ -150,8 +154,8 @@ export default class Runtimes extends Component {
           {types.map(type => (
             <label
               key={type.value}
-              className={classNames({ [styles.active]: type.value == currentType })}
-              onClick={() => this.selectType(type.value, type.value == currentType)}
+              className={classNames({ [styles.active]: type.value === currentType })}
+              onClick={() => this.selectType(type.value, type.value === currentType)}
             >
               {type.name}
             </label>

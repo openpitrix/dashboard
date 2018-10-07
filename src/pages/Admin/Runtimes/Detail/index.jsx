@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { Icon, Table, Popover } from 'components/Base';
 import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
 import Status from 'components/Status';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
@@ -26,7 +26,17 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  static async onEnter({ runtimeStore, clusterStore, appStore, userStore, user }, { runtimeId }) {
+  constructor(props) {
+    super(props);
+    const { clusterStore, match } = this.props;
+    // clusterStore.loadPageInit();
+    clusterStore.runtimeId = match.params.runtimeId;
+  }
+
+  async componentDidMount() {
+    const { runtimeStore, clusterStore, appStore, userStore, user, match } = this.props;
+    const { runtimeId } = match.params;
+
     await runtimeStore.fetch(runtimeId);
     await clusterStore.fetchAll({
       runtime_id: runtimeId
@@ -41,13 +51,6 @@ export default class RuntimeDetail extends Component {
       const { runtimeDetail } = runtimeStore;
       await userStore.fetchDetail(runtimeDetail.owner);
     }
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, match } = this.props;
-    clusterStore.loadPageInit();
-    clusterStore.runtimeId = match.params.runtimeId;
   }
 
   componentDidUpdate() {
@@ -214,7 +217,7 @@ export default class RuntimeDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={['Clusters']} />
+              <DetailTabs tabs={['Clusters']} />
               <Card hasTable>
                 <Toolbar
                   placeholder={t('Search Clusters')}

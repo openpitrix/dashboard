@@ -19,19 +19,22 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeAdd extends Component {
-  static async onEnter({ runtimeStore, runtimeCreateStore }, { runtimeId }) {
+  constructor(props) {
+    super(props);
+    this.store = this.props.runtimeCreateStore;
+    this.store.runtimeCreated = null;
+  }
+
+  async componentDidMount() {
+    const { runtimeStore, runtimeCreateStore, match } = this.props;
+    const { runtimeId } = match.params;
+
     if (runtimeId) {
       await runtimeStore.fetch(runtimeId);
       runtimeCreateStore.setRuntime(runtimeStore.runtimeDetail);
     } else {
       runtimeCreateStore.reset();
     }
-  }
-
-  constructor(props) {
-    super(props);
-    this.store = this.props.runtimeCreateStore;
-    this.store.runtimeCreated = null;
   }
 
   componentDidUpdate() {

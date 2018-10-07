@@ -7,33 +7,32 @@ import { translate } from 'react-i18next';
 import { Table, Popover, Radio, Button, Input, Select, Icon, Modal } from 'components/Base';
 import Layout, { CreateResource, Dialog, Panel, Grid, Row, Section, Card } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
-import Status from 'components/Status';
-import TdName from 'components/TdName';
-import Configuration from 'pages/Admin/Clusters/Detail/Configuration';
-import { getObjName, formatTime } from 'utils';
+import { formatTime } from 'utils';
+
+import { clusterStatus } from 'config/resource-status';
+import columns from './columns';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
-  clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  clusterDetailStore: rootStore.clusterDetailStore,
+  sshKeyStore: rootStore.sshKeyStore
 }))
 @observer
 export default class SSHKeys extends Component {
-  static async onEnter({ clusterStore }) {
-    await clusterStore.fetchKeyPairs();
+  async componentDidMount() {
+    const { clusterStore, clusterDetailStore, sshKeyStore } = this.props;
+
+    await sshKeyStore.fetchKeyPairs();
+
     await clusterStore.fetchAll({
       noLimit: true,
-      active: ['active', 'stopped', 'ceased', 'pending', 'suspended', 'deleted']
+      active: clusterStatus
     });
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore } = this.props;
-    clusterStore.currentPairId = '';
-    clusterStore.loadNodeInit();
+    await clusterDetailStore.fetchNodes();
   }
 
   goBack = () => {
@@ -41,26 +40,27 @@ export default class SSHKeys extends Component {
   };
 
   onClickPair = item => {
-    const { clusterStore } = this.props;
-    const { currentPairId, fetchNodes } = clusterStore;
+    const { clusterDetailStore, sshKeyStore } = this.props;
+    const { currentPairId } = sshKeyStore;
+    const { fetchNodes } = clusterDetailStore;
 
     if (currentPairId !== item.key_pair_id) {
-      clusterStore.currentPairId = item.key_pair_id;
+      sshKeyStore.currentPairId = item.key_pair_id;
       fetchNodes({ node_id: item.node_id });
     }
   };
 
   showDeleteModal = (e, pairId) => {
     e.stopPropagation();
-    const { clusterStore } = this.props;
-    clusterStore.pairId = pairId;
-    clusterStore.showModal('deleteKey');
+    const { sshKeyStore } = this.props;
+    sshKeyStore.pairId = pairId;
+    sshKeyStore.showModal('deleteKey');
   };
 
   showCreateModal = () => {
-    const { clusterStore } = this.props;
-    clusterStore.keyPairReset();
-    clusterStore.showModal('addKey');
+    const { sshKeyStore } = this.props;
+    sshKeyStore.resetKeyPair();
+    sshKeyStore.showModal('addKey');
   };
 
   renderOperateMenu = pairId => {
@@ -74,8 +74,8 @@ export default class SSHKeys extends Component {
   };
 
   renderDeleteModal = () => {
-    const { clusterStore, t } = this.props;
-    const { isModalOpen, removeKeyPairs, hideModal } = clusterStore;
+    const { sshKeyStore, t } = this.props;
+    const { isModalOpen, removeKeyPairs, hideModal } = sshKeyStore;
 
     return (
       <Dialog
@@ -90,8 +90,8 @@ export default class SSHKeys extends Component {
   };
 
   renderAddModal = () => {
-    const { clusterStore, t } = this.props;
-    const { isModalOpen, hideModal } = clusterStore;
+    const { sshKeyStore, t } = this.props;
+    const { isModalOpen, hideModal } = sshKeyStore;
 
     return (
       <Modal title={t('Add SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
@@ -101,8 +101,8 @@ export default class SSHKeys extends Component {
   };
 
   renderDownloadModal = () => {
-    const { clusterStore, t } = this.props;
-    const { isModalOpen, hideModal } = clusterStore;
+    const { sshKeyStore, t } = this.props;
+    const { isModalOpen, hideModal } = sshKeyStore;
 
     return (
       <Dialog
@@ -121,29 +121,33 @@ export default class SSHKeys extends Component {
   };
 
   renderForm(cancelFun) {
-    const { clusterStore, t } = this.props;
-    const { addKeyPairs, changeName, changePubkey, changeDescription } = clusterStore;
+    const { sshKeyStore, t } = this.props;
+    const {
+      name,
+      pub_key,
+      description,
+      addKeyPairs,
+      changeName,
+      changePubkey,
+      changeDescription
+    } = sshKeyStore;
 
     return (
       <form className={styles.createForm}>
         <div>
           <label className={styles.name}>{t('Name')}</label>
-          <Input name="name" value={clusterStore.name} onChange={changeName} maxLength="50" />
+          <Input name="name" value={name} onChange={changeName} maxLength="50" />
         </div>
         <div className={styles.textareaItem}>
           <label className={styles.name}>{t('Public Key')}</label>
-          <textarea name="pub_key" value={clusterStore.pub_key} onChange={changePubkey} />
+          <textarea name="pub_key" value={pub_key} onChange={changePubkey} />
           <p className={styles.rightShow}>
             {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrdgjUTEEHh...
           </p>
         </div>
         <div className={styles.textareaItem}>
           <label className={styles.name}>{t('Description')}</label>
-          <textarea
-            name="description"
-            value={clusterStore.description}
-            onChange={changeDescription}
-          />
+          <textarea name="description" value={description} onChange={changeDescription} />
         </div>
 
         <div className={styles.submitBtnGroup}>
@@ -177,7 +181,8 @@ export default class SSHKeys extends Component {
   }
 
   renderDetail() {
-    const { clusterStore, t } = this.props;
+    const { clusterStore, clusterDetailStore, sshKeyStore, t } = this.props;
+    const { keyPairs, currentPairId } = sshKeyStore;
     const {
       isLoading,
       searchNode,
@@ -187,68 +192,10 @@ export default class SSHKeys extends Component {
       onChangeNodeStatus,
       selectNodeStatus,
       totalNodeCount,
-      clusters,
-      keyPairs,
-      currentPairId
-    } = clusterStore;
-    const clusterNodes = clusterStore.clusterNodes.toJSON();
+      clusterNodes
+    } = clusterDetailStore;
 
-    const columns = [
-      {
-        title: t('Name'),
-        key: 'name',
-        width: '155px',
-        render: item => <TdName name={item.name} description={item.node_id} noIcon />
-      },
-      {
-        title: t('Cluster Name'),
-        key: 'cluster_id',
-        render: item => (
-          <TdName
-            name={getObjName(clusters, 'cluster_id', item.cluster_id, 'name')}
-            description={item.cluster_id}
-            linkUrl={`/dashboard/cluster/${item.cluster_id}`}
-            noIcon
-          />
-        )
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        width: '102px',
-        // fixme: prop type check case sensitive
-        render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
-      },
-      {
-        title: t('Role'),
-        key: 'role',
-        dataIndex: 'role'
-      },
-      {
-        title: t('Private IP'),
-        key: 'private_ip',
-        dataIndex: 'private_ip',
-        width: '100px'
-      },
-      {
-        title: t('Configuration'),
-        key: 'configuration',
-        width: '100px',
-        render: item => <Configuration configuration={item.cluster_role || {}} />
-      }
-      /*{
-        title: t('Actions'),
-        key: 'actions',
-        width: '84px',
-        render: item => (
-          <div className={styles.actions}>
-            <Popover className="actions">
-              <Icon name="more" />
-            </Popover>
-          </div>
-        )
-      }*/
-    ];
+    const { clusters } = clusterStore;
 
     const filterList = [
       {
@@ -300,45 +247,55 @@ export default class SSHKeys extends Component {
         </Section>
 
         <Section size={9}>
-          <Panel>
-            <Card>
-              <Toolbar
-                placeholder={t('Search Node')}
-                searchWord={searchNode}
-                onSearch={onSearchNode}
-                onClear={onClearNode}
-                onRefresh={onRefreshNode}
-              />
-              <Table
-                columns={columns}
-                dataSource={clusterNodes}
-                isLoading={isLoading}
-                filterList={filterList}
-                pagination={pagination}
-              />
-            </Card>
-          </Panel>
+          <Card>
+            <Toolbar
+              placeholder={t('Search Node')}
+              searchWord={searchNode}
+              onSearch={onSearchNode}
+              onClear={onClearNode}
+              onRefresh={onRefreshNode}
+            />
+            <Table
+              columns={columns(clusters, t)}
+              dataSource={clusterNodes.toJSON()}
+              isLoading={isLoading}
+              filterList={filterList}
+              pagination={pagination}
+            />
+          </Card>
         </Section>
       </Grid>
     );
   }
 
+  renderModals() {
+    const { modalType } = this.props.sshKeyStore;
+
+    if (modalType === 'addKey') {
+      return this.renderAddModal();
+    }
+    if (modalType === 'deleteKey') {
+      return this.renderDeleteModal();
+    }
+    if (modalType === 'download') {
+      return this.renderDownloadModal();
+    }
+  }
+
   render() {
     const { t } = this.props;
-    const { keyPairs, modalType } = this.props.clusterStore;
+    const { keyPairs } = this.props.sshKeyStore;
 
     return (
       <Layout title={t('SSH Keys')}>
-        {keyPairs.length > 0 ? (
+        {keyPairs.length ? (
           this.renderDetail()
         ) : (
           <CreateResource title={'Create SSH Key'} aside={this.renderAside()} asideTitle="SSH Keys">
             {this.renderForm()}
           </CreateResource>
         )}
-        {modalType === 'deleteKey' && this.renderDeleteModal()}
-        {modalType === 'addKey' && this.renderAddModal()}
-        {modalType === 'download' && this.renderDownloadModal()}
+        {this.renderModals()}
       </Layout>
     );
   }

@@ -1,5 +1,0 @@
-[
-  {"name": "admin", "password": "passw0rd", "role": "admin"},
-  {"name": "dev", "password": "passw0rd", "role": "developer"},
-  {"name": "normal", "password": "passw0rd", "role": "normal"}
-]

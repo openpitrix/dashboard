@@ -20,32 +20,31 @@ import styles from './index.scss';
 }))
 @observer
 export default class Store extends Component {
-  static async onEnter({ categoryStore, appStore }, { category, search }) {
-    appStore.loadPageInit();
+  async componentDidMount() {
+    window.scroll({ top: 0, behavior: 'smooth' });
+
+    const { appStore, categoryStore, match } = this.props;
+    const { category, search } = match.params;
+
+    // appStore.loadPageInit();
     await categoryStore.fetchAll();
 
-    const params = { status: 'active' };
-    if (category) {
-      params.category_id = category;
-    }
-    if (search) {
-      params.search_word = search;
-    }
-    await appStore.fetchApps(params);
+    await appStore.fetchApps(
+      Object.assign(
+        { status: 'active' },
+        {
+          category_id: category,
+          search_word: search
+        }
+      )
+    );
 
     appStore.storeApps = appStore.apps;
-  }
 
-  componentDidMount() {
-    window.scroll({ top: 0, behavior: 'smooth' });
-    const { match } = this.props;
-    const { params } = match;
-
-    window.scroll({ top: 0, behavior: 'smooth' });
-    if (!params.category && !params.search) {
+    if (!category && !search) {
       window.onscroll = throttle(this.handleScroll, 200);
       const initLoadNumber = parseInt((document.documentElement.clientHeight - 200) / 250) + 2;
-      this.loadAppData(0, initLoadNumber);
+      await this.loadAppData(0, initLoadNumber);
     }
   }
 

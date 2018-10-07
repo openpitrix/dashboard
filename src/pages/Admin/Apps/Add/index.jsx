@@ -14,22 +14,25 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  repoStore: rootStore.repoStore
+  repoStore: rootStore.repoStore,
+  user: rootStore.user
 }))
 @observer
 export default class AppAdd extends Component {
-  static async onEnter({ repoStore, user }) {
-    await repoStore.fetchAll({
-      noLimit: true,
-      isQueryPublic: user.isDev
-    });
-  }
-
   constructor(props) {
     super(props);
     const { appStore } = this.props;
     appStore.createStep = 1;
     appStore.createError = '';
+  }
+
+  async componentDidMount() {
+    const { repoStore, user } = this.props;
+
+    await repoStore.fetchAll({
+      noLimit: true,
+      isQueryPublic: user.isDev
+    });
   }
 
   componentWillUnmount() {

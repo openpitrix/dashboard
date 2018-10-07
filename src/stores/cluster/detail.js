@@ -1,73 +1,89 @@
 import { observable, action } from 'mobx';
-import { get, some, union } from 'lodash';
+import _ from 'lodash';
 import YAML from 'json2yaml';
 
 import Store from 'stores/Store';
 
+// separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
+  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  @observable currentPage = 1;
+
+  @observable isLoading = false;
+  @observable cluster = {};
+
+  // vmbase
+  @observable clusterNodes = [];
+
+  // helm
+  @observable helmClusterNodes = [];
+
+  @observable clusterJobs = [];
+
+  @observable modalType = '';
+  @observable isModalOpen = false;
+
   @observable extendedRowKeys = [];
-  @observable isLoading = true;
 
   @observable currentNodePage = 1;
   @observable selectNodeStatus = '';
 
   @observable nodeType = '';
 
+  @observable selectedNodeKeys = [];
+
+  @observable selectedNodeIds = [];
+
+  @observable selectedNodeRole = '';
+
   @action
-  fetchPage = async ({ clusterId, clusterStore, runtimeStore, appStore }) => {
+  showModal = type => {
+    this.modalType = type;
+    this.isModalOpen = true;
+  };
+
+  @action
+  hideModal = () => {
+    this.isModalOpen = false;
+  };
+
+  @action
+  fetch = async clusterId => {
     this.isLoading = true;
-    await clusterStore.fetch(clusterId);
-    await clusterStore.fetchJobs(clusterId);
-    const { cluster } = clusterStore;
-    const { runtime_id, app_id } = cluster;
-    if (runtime_id) {
-      await runtimeStore.fetch(runtime_id);
-    }
-    if (app_id) {
-      await appStore.fetch(app_id);
-    }
-    if (!runtimeStore.isKubernetes) {
-      await clusterStore.fetchNodes({ cluster_id: clusterId });
-      this.isLoading = false;
-    } else {
-      this.isLoading = false;
-      this.formatClusterNodes({
-        clusterStore,
-        type: 'Deployment'
-      });
-    }
-    clusterStore.cluster_id = clusterId;
-    await userStore.fetchDetail(cluster.owner);
+    const result = await this.request.get(`clusters`, { cluster_id: clusterId });
+    this.cluster = _.get(result, 'cluster_set[0]', {});
+    this.isLoading = false;
   };
 
   @action
-  onChangeExtend = e => {
-    const { value } = e.target;
-    const { extendedRowKeys } = this;
-    const index = extendedRowKeys.indexOf(value);
+  fetchNodes = async (params = {}) => {
+    this.isLoading = true;
+    params = this.normalizeParams(params);
 
-    if (index === -1) {
-      extendedRowKeys.push(value);
-    } else {
-      extendedRowKeys.splice(index, 1);
+    if (this.searchNode) {
+      params.search_word = this.searchNode;
     }
-    this.extendedRowKeys = union([], this.extendedRowKeys);
-  };
+    if (!params.status) {
+      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
+    }
 
-  @action
-  json2Yaml = str => {
-    let yamlStr = YAML.stringify(JSON.parse(str));
-    yamlStr = yamlStr.replace(/^---\n/, '');
-    yamlStr = yamlStr.replace(/  (.*)/g, '$1');
-    return yamlStr;
+    //    clusterStore.cluster_id = clusterId;
+    //    await userStore.fetchDetail(cluster.owner);
+
+    const result = await this.request.get(`clusters/nodes`, params);
+    this.clusterNodes = _.get(result, 'cluster_node_set', []);
+    this.totalNodeCount = _.get(result, 'total_count', 0);
+    this.isLoading = false;
   };
 
   @action
   formatClusterNodes = ({ type, clusterStore, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = clusterStore.cluster;
-    if (!cluster_role_set) {
+
+    if (_.isEmpty(cluster_role_set)) {
       return false;
     }
+
     const clusterNodes = [];
     const keys = ['name', 'host_id', 'host_ip', 'instance_id', 'private_ip'];
 
@@ -91,13 +107,13 @@ export default class ClusterDetailStore extends Store {
             return;
           }
 
-          const hasWord = some(keys, key => nodeItem[key].includes(searchWord));
+          const hasWord = _.some(keys, key => nodeItem[key].includes(searchWord));
           if (!hasWord) {
             return;
           }
 
           nodes.push(nodeItem);
-          const nodeStatus = get(status, nodeItem.status);
+          const nodeStatus = _.get(status, nodeItem.status);
           let number = 0;
           if (!nodeStatus) {
             number = 1;
@@ -115,37 +131,107 @@ export default class ClusterDetailStore extends Store {
         });
       }
       roleItem.nodes = nodes;
-      roleItem.name = get(roleItem.role.split(`-${type}`), '[0]');
+      roleItem.name = _.get(roleItem.role.split(`-${type}`), '[0]');
       roleItem.status = status.maxStatus;
       roleItem.statusText = `(${status.maxNumber}/${nodes.length})`;
       if (nodes.length > 0) {
         clusterNodes.push(roleItem);
       }
     });
-    clusterStore.clusterNodes = clusterNodes;
+
+    this.helmClusterNodes = clusterNodes;
   };
 
   @action
-  onChangeKubespacesTag = ({ isKubernetes, clusterStore }) => name => {
+  fetchJobs = async clusterId => {
+    this.isLoading = true;
+    const result = await this.request.get(`jobs`, { cluster_id: clusterId });
+    this.clusterJobs = _.get(result, 'job_set', []);
+    this.isLoading = false;
+  };
+
+  @action
+  addNodes = async params => {
+    // todo
+    const res = await this.request.post('clusters/add_nodes', params);
+  };
+
+  @action
+  onChangeNodeRole = role => {
+    this.selectedNodeRole = role;
+  };
+
+  @action
+  hideAddNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeRole = '';
+  };
+
+  @action
+  hideDeleteNodesModal = () => {
+    this.hideModal();
+    this.selectedNodeIds = [];
+    this.selectedNodeKeys = [];
+  };
+
+  @action
+  deleteNodes = async params => {
+    const res = await this.request.post('clusters/delete_nodes', params);
+    console.log('delete nodes: ', res);
+  };
+
+  // resize cluster
+  @action
+  hideResizeClusterModal = () => {
+    this.hideModal();
+  };
+
+  /////
+
+  @action
+  onChangeExtend = e => {
+    const { value } = e.target;
+    const { extendedRowKeys } = this;
+    const index = extendedRowKeys.indexOf(value);
+
+    if (index === -1) {
+      extendedRowKeys.push(value);
+    } else {
+      extendedRowKeys.splice(index, 1);
+    }
+    this.extendedRowKeys = _.union([], this.extendedRowKeys);
+  };
+
+  @action
+  json2Yaml = str => {
+    let yamlStr = YAML.stringify(JSON.parse(str));
+    yamlStr = yamlStr.replace(/^---\n/, '');
+    yamlStr = yamlStr.replace(/  (.*)/g, '$1');
+    return yamlStr;
+  };
+
+  @action
+  onChangeK8sTag = ({ isKubernetes, clusterStore }) => name => {
     if (!isKubernetes || !name) return;
 
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
     this.nodeType = type;
-    this.formatClusterNodes({ clusterStore, type });
+    this.fetchHelmNodes({ clusterStore, type });
   };
 
   @action
   onSearchNode = (isKubernetes, clusterStore) => async word => {
     clusterStore.searchNode = word;
     this.currentNodePage = 1;
+
     const { cluster } = clusterStore;
     const { cluster_id } = cluster;
     if (!isKubernetes) {
       await clusterStore.fetchNodes({ cluster_id, search_word: word });
     } else {
       await clusterStore.fetch(cluster_id);
-      this.formatClusterNodes({
+      this.fetchHelmNodes({
         clusterStore,
         type: this.nodeType,
         searchWord: word
