@@ -73,11 +73,11 @@ export default class AppAdd extends Component {
     const { appStore } = this.props;
     const maxsize = 2 * 1024 * 1024;
 
-    if (!/\.(tar|tar\.gz|tar\.bz)$/.test(file.name.toLocaleLowerCase())) {
-      appStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ';
+    if (!/\.(tar|tar\.gz|tra\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
+      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ and TGZ';
       return false;
     } else if (file.size > maxsize) {
-      appStore.createError = 'The file size cannot exceed 2M';
+      appVersionStore.createError = 'The file size cannot exceed 2M';
       return false;
     }
 
@@ -137,7 +137,7 @@ export default class AppAdd extends Component {
           <a
             className={styles.link}
             target="_blank"
-            href="https://docs.openpitrix.io/v1.0/zh-CN/developer-guide/ "
+            href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
           >
             {t('view_guide_2')}
           </a>

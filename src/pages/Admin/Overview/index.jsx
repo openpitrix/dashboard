@@ -40,6 +40,7 @@ export default class Overview extends React.Component {
     user
   }) {
     appStore.updateMeunApps = true;
+    appStore.menuApps = [];
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();

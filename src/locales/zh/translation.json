@@ -307,7 +307,7 @@
   "select_repo_app": "选择一个仓库来存储您的应用程序",
   "diff_repo": "公共仓库和私人仓库之间的区别。",
   "click_upload": "请单击以选择文件上载",
-  "file_format_note": "文件格式支持TAR，TAR.GZ 和 TAR.BZ",
+  "file_format_note": "文件格式支持TAR，TAR.GZ 和 TGZ",
   "view_guide_1": "查看",
   "view_guide_2": " <<Openpitrix开发指南>> ",
   "view_guide_3": "并了解如何制作配置文件",
