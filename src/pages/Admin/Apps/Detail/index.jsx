@@ -76,13 +76,17 @@ export default class AppDetail extends Component {
 
   createVersionShow = () => {
     const { appVersionStore, t } = this.props;
-    const newVersion = { name: t('New version'), status: 'Creating' };
+    const { versions } = appVersionStore;
+
+    if (!get(versions[0], 'version_id')) {
+      return appVersionStore.info(t('Already create new version'));
+    }
+
+    const newVersion = { name: t('New version'), status: 'Creating', version_id: '' };
+    versions.unshift(newVersion);
 
     appVersionStore.currentVersion = newVersion;
     appVersionStore.createStep = 1;
-    if (get(appVersionStore.versions[0], 'name') !== 'New version') {
-      appVersionStore.versions.unshift(newVersion);
-    }
   };
 
   checkFile = file => {
@@ -549,7 +553,7 @@ export default class AppDetail extends Component {
     const isShowCreate = !currentVersion.version_id || createStep === 2;
 
     return (
-      <Layout className={styles.appDetail} noNotification={isShowCreate}>
+      <Layout className={styles.appDetail}>
         {this.renderNavLink()}
 
         <Grid className={styles.appInfo}>
