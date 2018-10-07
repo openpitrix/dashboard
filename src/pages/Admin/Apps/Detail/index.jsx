@@ -80,7 +80,7 @@ export default class AppDetail extends Component {
 
     appVersionStore.currentVersion = newVersion;
     appVersionStore.createStep = 1;
-    if (get(appVersionStore.versions[0], 'name') !== 'New version') {
+    if (get(appVersionStore.versions[0], 'name') !== t('New version')) {
       appVersionStore.versions.unshift(newVersion);
     }
   };
@@ -91,8 +91,8 @@ export default class AppDetail extends Component {
     const maxsize = 2 * 1024 * 1024;
     appVersionStore.createError = '';
 
-    if (!/\.(tar|tar\.gz|tra\.bz|zip|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ,TGZ and ZIP';
+    if (!/\.(tar|tar\.gz|tar\.bz)$/.test(file.name.toLocaleLowerCase())) {
+      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ';
       return false;
     } else if (file.size > maxsize) {
       appVersionStore.createError = 'The file size cannot exceed 2M';
@@ -343,6 +343,8 @@ export default class AppDetail extends Component {
     const editStatus = ['draft', 'rejected'];
     const isDisabled =
       !editStatus.includes(currentVersion.status) || !isDev || appDetail.status === 'deleted';
+    const deleteStatus = ['draft', 'rejected', 'passed', 'suspended'];
+    const hasDelete = deleteStatus.includes(currentVersion.status);
 
     const handleMap = {
       developer: {
@@ -467,10 +469,13 @@ export default class AppDetail extends Component {
                   {t(capitalize(hanleType))}
                 </Button>
 
-                {currentVersion.status === 'submitted' &&
-                  role === 'global_admin' && (
-                    <Button onClick={() => this.handleVersion(currentVersion, 'reject')}>
-                      {t(capitalize('reject'))}
+                {hasDelete &&
+                  isDev && (
+                    <Button
+                      type="delete"
+                      onClick={() => this.handleVersion(currentVersion, 'delete')}
+                    >
+                      {t(capitalize('delete'))}
                     </Button>
                   )}
               </dd>
@@ -503,7 +508,7 @@ export default class AppDetail extends Component {
   render() {
     const { appVersionStore, appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
     const { appDetail, detailTab } = appStore;
-    const { currentVersion, createStep } = appVersionStore;
+    const { currentVersion, createStep, versions } = appVersionStore;
 
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
@@ -559,7 +564,7 @@ export default class AppDetail extends Component {
             repoProvider={repoProvider}
             noDeploy={appDetail.status === 'deleted'}
           />
-          {appDetail.status === 'suspended' && (
+          {versions.length === 0 && (
             <Popover
               className={styles.operation}
               content={this.renderHandleMenu(appDetail.app_id)}

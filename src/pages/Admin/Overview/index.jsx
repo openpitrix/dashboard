@@ -211,7 +211,7 @@ export default class Overview extends React.Component {
         </Row>
         <Grid>
           <Section>
-            <Panel type="app" title="Latest Apps" linkTo="/apps" len={appList.length}>
+            <Panel type="app" title="Latest Apps" linkTo="/store" len={appList.length}>
               <AppList apps={appList} />
             </Panel>
           </Section>
@@ -232,10 +232,10 @@ export default class Overview extends React.Component {
             <Panel
               type="cluster"
               title="Latest Clusters"
-              linkTo="/dashboard/clusters"
+              linkTo="/purchased"
               len={clusterList.length}
             >
-              <ClusterList clusters={clusterList} />
+              <ClusterList clusters={clusterList} isNormal />
             </Panel>
           </Section>
         </Grid>
@@ -351,7 +351,7 @@ export default class Overview extends React.Component {
           <Grid>
             <Section>
               <Panel type="app" title="Latest Apps" linkTo="/dashboard/apps" len={appList.length}>
-                <AppList apps={appList} />
+                <AppList apps={appList} isDev />
               </Panel>
             </Section>
 

@@ -12,11 +12,12 @@ import styles from './index.scss';
 export default class ClusterList extends PureComponent {
   static propTypes = {
     clusters: PropTypes.array,
-    isAdmin: PropTypes.bool
+    isAdmin: PropTypes.bool,
+    isNormal: PropTypes.bool
   };
 
   render() {
-    const { clusters, t } = this.props;
+    const { clusters, isNormal, t } = this.props;
 
     return (
       <ul className={styles.clusterList}>
@@ -24,7 +25,14 @@ export default class ClusterList extends PureComponent {
           <li key={cluster.cluster_id}>
             <div className={styles.dot}>{this.renderStatusDot(cluster.status)}</div>
             <div className={styles.word}>
-              <Link className={styles.name} to={`/dashboard/cluster/${cluster.cluster_id}`}>
+              <Link
+                className={styles.name}
+                to={
+                  isNormal
+                    ? `/purchased/${cluster.cluster_id}`
+                    : `/dashboard/cluster/${cluster.cluster_id}`
+                }
+              >
                 {cluster.name}
               </Link>
               <div className={styles.description} title={cluster.description}>

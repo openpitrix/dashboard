@@ -19,10 +19,10 @@ import styles from './index.scss';
 @observer
 export default class Home extends Component {
   static async onEnter({ categoryStore, appStore }, { category, search }) {
-    const params = { status: 'active', noLimit: true };
-
+    const params = { status: 'active', noLimit: true, noLogin: true };
     appStore.loadPageInit();
-    await categoryStore.fetchAll();
+
+    await categoryStore.fetchAll({ noLogin: true });
 
     if (category) {
       params.category_id = category;
@@ -55,9 +55,10 @@ export default class Home extends Component {
     const { params } = match;
     if (params.category) {
       await rootStore.appStore.fetchAll({
+        category_id: params.category,
         status: 'active',
         noLimit: true,
-        category_id: params.category
+        noLogin: true
       });
       rootStore.appStore.homeApps = rootStore.appStore.apps;
     }
@@ -122,7 +123,8 @@ export default class Home extends Component {
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id,
-          noLoading: true
+          noLoading: true,
+          noLogin: true
         });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
