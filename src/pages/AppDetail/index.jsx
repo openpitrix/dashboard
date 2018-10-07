@@ -31,7 +31,7 @@ export default class AppDetail extends Component {
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
 
-    await appStore.fetch(appId);
+    await appStore.fetch(appId, true);
   }
 
   async componentDidMount() {
@@ -39,7 +39,7 @@ export default class AppDetail extends Component {
     const { appStore, repoStore, appVersionStore, user, match } = this.props;
 
     const { isNormal, role } = user;
-    const params = { app_id: match.params.appId };
+    const params = { app_id: match.params.appId, noLogin: true };
     //normal user or not login only query 'active' versions
     if (isNormal || !Boolean(role)) {
       params.status = ['active'];
@@ -47,13 +47,14 @@ export default class AppDetail extends Component {
     await appVersionStore.fetchAll(params);
 
     if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(get(appStore, 'appDetail.repo_id', ''));
+      await repoStore.fetchRepoDetail(get(appStore, 'appDetail.repo_id', ''), true);
     }
 
     const providerName = get(repoStore.repoDetail, 'providers[0]', '');
     if (providerName === 'kubernetes' && appStore.appDetail.latest_app_version) {
       await appVersionStore.fetchPackageFiles(
-        get(appStore, 'appDetail.latest_app_version.version_id', '')
+        get(appStore, 'appDetail.latest_app_version.version_id', ''),
+        true
       );
     }
   }
@@ -248,22 +249,26 @@ export default class AppDetail extends Component {
     const { appStore, appVersionStore, user } = this.props;
     const { isLoading } = appStore;
     const appDetail = appStore.appDetail;
-    const { isNormal, isAdmin, role } = user;
+    const { isNormal, isDev, isAdmin, role } = user;
     const { path } = this.props.match;
     const isShowReview = isAdmin && path.indexOf('review') > -1;
+    const noLogin = path === '/apps/:appId';
 
     return (
       <Layout
+        className={classnames({ [styles.appDetail]: noLogin })}
         isLoading={isLoading}
         title="Store"
         hasSearch
+        noLogin={noLogin}
         backBtn={isNormal && <BackBtn label="Store" link="/store" />}
       >
-        {!isNormal && (
-          <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
-          </NavLink>
-        )}
+        {(isAdmin || isDev) &&
+          !noLogin && (
+            <NavLink>
+              <Link to="/dashboard/apps">My Apps</Link> / {appDetail.name}
+            </NavLink>
+          )}
 
         <Grid>
           <Section size={8}>

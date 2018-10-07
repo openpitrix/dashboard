@@ -239,6 +239,7 @@ export default class Purchased extends Component {
       {
         title: t('Runtime'),
         key: 'runtime_id',
+        width: '130px',
         render: item => (
           <Link to={`/dashboard/runtime/${item.runtime_id}`}>
             <ProviderName
@@ -251,14 +252,13 @@ export default class Purchased extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
+        width: '90px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '150px',
-        sorter: true,
-        onChangeSort: this.onChangeSort,
+        width: '90px',
         render: item => formatTime(item.create_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {

@@ -24,7 +24,7 @@ const routes = {
   '/login': Login,
   '/apps/search/:search': Home,
   '/apps/category/:category': Home,
-  '/app/:appId': AppDetail,
+  '/apps/:appId': AppDetail,
 
   '/store': Store,
   '/store/search/:search': Store,
@@ -75,7 +75,11 @@ const judgeNeedAuth = route => {
     return true;
   }
 
-  const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys'];
+  if (route.startsWith('/store/:appId/deploy')) {
+    return true;
+  }
+
+  const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys', '/store'];
   return paths.includes(route);
 };
 

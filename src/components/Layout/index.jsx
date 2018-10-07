@@ -26,7 +26,8 @@ export default class Layout extends React.Component {
     loadClass: PropTypes.string,
     listenToJob: PropTypes.func,
     title: PropTypes.string,
-    hasSearch: PropTypes.bool
+    hasSearch: PropTypes.bool,
+    noLogin: PropTypes.bool
   };
 
   static defaultProps = {
@@ -35,7 +36,8 @@ export default class Layout extends React.Component {
     backBtn: null,
     listenToJob: noop,
     title: '',
-    hasSearch: false
+    hasSearch: false,
+    noLogin: false
   };
 
   constructor(props) {
@@ -77,11 +79,12 @@ export default class Layout extends React.Component {
       loadClass,
       backBtn,
       hasSearch,
-      title
+      title,
+      noLogin
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
-    const hasMenu = isDev || isAdmin;
+    const hasMenu = (isDev || isAdmin) && !noLogin;
 
     return (
       <div

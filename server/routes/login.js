@@ -30,7 +30,7 @@ router.get('/logout', ctx => {
     httpOnly: false
   };
   ctx.session = null;
-  const names = ['access_token', 'token_type', 'refresh_token', 'user', 'changeUser'];
+  const names = ['access_token', 'token_type', 'access_token_home', 'refresh_token', 'user', 'role'];
   names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
   ctx.redirect('/login');
 });

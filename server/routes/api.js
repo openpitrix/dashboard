@@ -28,43 +28,53 @@ router.post('/api/*', async ctx => {
   let forwardMethod = body.method || 'get';
   delete body.method;
 
+  const token_type = ctx.cookies.get('token_type');
+  const access_token = ctx.cookies.get('access_token');
+  const access_token_home = ctx.cookies.get('access_token_home');
+  const refresh_token = ctx.cookies.get('refresh_token');
+
   if (endpoint === 'oauth2/token') {
     body.client_id = ctx.store.clientId;
     body.client_secret = ctx.store.clientSecret;
-  } else {
-    const token_type = ctx.cookies.get('token_type');
-    const access_token = ctx.cookies.get('access_token');
-    const refresh_token = ctx.cookies.get('refresh_token');
+  } else if (access_token && !body.noLogin) {
+    header.Authorization = token_type + ' ' + access_token;
+  } else if (access_token_home && body.noLogin) {
+    header.Authorization = token_type + ' ' + access_token_home;
+  } else if (body.noLogin || refresh_token) {
+    const refreshUrl = [apiServer, 'oauth2/token'].join('/');
+    const tokenData = {
+      grant_type: 'refresh_token',
+      client_id: ctx.store.clientId,
+      client_secret: ctx.store.clientSecret,
+      scope: ''
+    };
+    const accessUrls = ['categories', 'apps', 'repos', 'app_versions', 'app_version/package/files'];
 
-    if (access_token) {
-      header.Authorization = token_type + ' ' + access_token;
-    } else if (refresh_token) {
-      const refreshUrl = [apiServer, 'oauth2/token'].join('/');
-      const res = await agent.post(refreshUrl).send({
-        grant_type: 'refresh_token',
-        client_id: ctx.store.clientId,
-        client_secret: ctx.store.clientSecret,
-        scope: '',
-        refresh_token: refresh_token
-      });
-      const result = (res && res.body) || {};
+    if (refresh_token) {
+      tokenData.refresh_token = refresh_token;
+    } else if (body.noLogin && accessUrls.includes(endpoint) ) {
+      tokenData.grant_type = 'client_credentials';
+    }
 
-      if (result.access_token) {
-        sessConfig.maxAge = result.expires_in * 1000;
-        ctx.cookies.set('access_token', result.access_token, sessConfig);
-        ctx.cookies.set('token_type', result.token_type, sessConfig);
-        header.Authorization = result.token_type + ' ' + result.access_token;
-      } else {
-        ctx.redirect('/login');
-      }
+    const result = await agent.send('post', refreshUrl, tokenData);
+    if (result.access_token) {
+      sessConfig.maxAge = result.expires_in * 1000;
+      const tokenName = body.noLogin ? 'access_token_home' : 'access_token';
+      ctx.cookies.set(tokenName, result.access_token, sessConfig);
+      ctx.cookies.set('token_type', result.token_type, sessConfig);
+      header.Authorization = result.token_type + ' ' + result.access_token;
+    } else {
+      ctx.redirect('/login');
     }
   }
 
   debug('%s %s', forwardMethod.toUpperCase(), url);
 
+  delete body.noLogin;
   ctx.body = await agent.send(forwardMethod, url, body, {
     header: header
   });
+
 });
 
 module.exports = router;

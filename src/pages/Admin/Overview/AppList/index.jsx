@@ -11,22 +11,28 @@ export default class AppList extends PureComponent {
   static propTypes = {
     topApps: PropTypes.array,
     apps: PropTypes.array,
-    isAdmin: PropTypes.bool
+    isAdmin: PropTypes.bool,
+    isDev: PropTypes.bool
   };
 
   static defaultProps = {
     topApps: [],
     apps: [],
-    isAdmin: false
+    isAdmin: false,
+    isDev: false
   };
 
   render() {
-    const { topApps, apps, isAdmin } = this.props;
+    const { topApps, apps, isAdmin, isDev } = this.props;
     const items = isAdmin ? topApps : apps;
     return (
       <ul className={styles.appList}>
         {items.map((item, index) => {
           const app = getFilterObj(apps, 'app_id', item.id);
+          if (isAdmin) {
+            item.app_id = item.id;
+          }
+
           return (
             <li key={item.id || item.app_id}>
               {isAdmin && <span className={styles.order}>{index + 1}</span>}
@@ -36,7 +42,7 @@ export default class AppList extends PureComponent {
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}
-                linkUrl={isAdmin ? `/app/${item.id}` : `/dashboard/app/${item.app_id}`}
+                linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`}
                 noCopy={true}
               />
             </li>
