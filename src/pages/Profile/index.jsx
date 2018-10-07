@@ -10,6 +10,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
@@ -37,13 +38,22 @@ export default class Profile extends Component {
     }
   };
 
+  modifyUser = async e => {
+    const { userStore, rootStore } = this.props;
+    const result = await userStore.modifyUser(e);
+
+    if (result && result.username) {
+      rootStore.user.username = result.username;
+    }
+  };
+
   renderBasic() {
     const { userStore, t } = this.props;
-    const { userDetail, changeUser, modifyUser } = userStore;
-    const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
+    const { userDetail, changeUser } = userStore;
+    //const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
     return (
-      <form className={styles.form} onSubmit={e => modifyUser(e)} method="post">
+      <form className={styles.form} onSubmit={this.modifyUser} method="post">
         <div>
           <label className={styles.name}>{t('ID')}</label>
           <Input
@@ -69,17 +79,7 @@ export default class Profile extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Email')}</label>
-          <Input
-            className={styles.input}
-            name="email"
-            maxLength={50}
-            value={userDetail.email}
-            onChange={e => {
-              changeUser(e, 'email');
-            }}
-            pattern={emailRegexp}
-            required
-          />
+          <Input className={styles.input} name="email" value={userDetail.email} disabled readOnly />
         </div>
         <div className={styles.submitBtn}>
           <Button type={`primary`} htmlType="submit">
@@ -93,10 +93,10 @@ export default class Profile extends Component {
 
   renderPassword() {
     const { userStore, t } = this.props;
-    const { modifyPassword, changeUser } = userStore;
+    const { modifyPassword } = userStore;
 
     return (
-      <form className={styles.form} onSubmit={e => modifyPassword(e)} method="post">
+      <form className={styles.form} onSubmit={modifyPassword} method="post">
         <div>
           <label className={styles.name}>{t('Current Password')}</label>
           <Input
