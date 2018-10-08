@@ -285,11 +285,7 @@ export default class AppDetail extends Component {
 
           <div className={styles.operateWord}>
             {t('view_guide_1')}
-            <a
-              className={styles.link}
-              target="_blank"
-              href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
-            >
+            <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/">
               {t('view_guide_2')}
             </a>
             {t('view_guide_3')}
@@ -422,11 +418,7 @@ export default class AppDetail extends Component {
             )}
             <div className={styles.viewGuide}>
               {t('view_guide_1')}
-              <a
-                className={styles.link}
-                target="_blank"
-                href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
-              >
+              <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/">
                 {t('view_guide_2')}
               </a>
               {t('view_guide_3')}

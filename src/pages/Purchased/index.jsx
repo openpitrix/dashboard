@@ -27,7 +27,10 @@ export default class Purchased extends Component {
   static async onEnter({ clusterStore, appStore, runtimeStore }) {
     clusterStore.registerStore('app', appStore);
     await clusterStore.fetchAll();
-    await appStore.fetchAll({ status: 'active', noLimit: true });
+    await appStore.fetchAll({
+      status: 'active',
+      noLogin: true
+    });
     appStore.storeApps = appStore.apps;
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],

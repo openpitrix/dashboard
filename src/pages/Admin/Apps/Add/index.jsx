@@ -18,7 +18,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppAdd extends Component {
-  static async onEnter({ repoStore, user }) {
+  static async onEnter({ appStore, repoStore, user }) {
+    appStore.createReset();
     await repoStore.fetchAll({
       noLimit: true,
       isQueryPublic: user.isDev
@@ -134,11 +135,7 @@ export default class AppAdd extends Component {
 
         <div className={styles.operateWord}>
           {t('view_guide_1')}
-          <a
-            className={styles.link}
-            target="_blank"
-            href="https://docs.openpitrix.io/v3.0/zh-CN/developer-guide/ "
-          >
+          <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/">
             {t('view_guide_2')}
           </a>
           {t('view_guide_3')}

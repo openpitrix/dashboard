@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64';
 import Store from '../Store';
 
 const defaultStatus = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
-const reviwStatus = ['submitted', 'passed', 'rejected'];
+const reviwStatus = ['submitted', 'passed', 'rejected', 'active', 'suspended'];
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
