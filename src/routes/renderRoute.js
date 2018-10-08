@@ -9,8 +9,15 @@ import { getCookie, setCookie } from '../utils';
 
 const renderRoute = (match, route, store) => {
   if (route.path === 'login') {
-    setCookie('user', '', -1);
-    setCookie('role', '', -1);
+    const names = [
+      'access_token',
+      'token_type',
+      'access_token_home',
+      'refresh_token',
+      'user',
+      'role'
+    ];
+    names.forEach(name => setCookie(name, '', -1));
   }
 
   const user = store.user || {};
@@ -29,7 +36,7 @@ const renderRoute = (match, route, store) => {
   const component = withRouter(route.component);
 
   if (route.path !== '/login') {
-    const isHome = route.path === '/' || route.path === '/apps/:appId';
+    const isHome = route.path === '/' || route.path.startsWith('/apps/');
 
     return (
       <Fragment>
