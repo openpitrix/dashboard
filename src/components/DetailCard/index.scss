@@ -107,8 +107,8 @@
     }
     .val {
       display: inline-block;
-      word-break: break-word;
-      max-width: 50%;
+      width: calc(100% - 144px);
+      @include textCut;
     }
     .value {
       display: inline-block;

@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
 import { Icon, Button, Popover } from 'components/Base';
-import Layout, { Dialog, NavLink } from 'components/Layout';
+import Layout, { Dialog, BreadCrumb } from 'components/Layout';
 import { ProviderName } from 'components/TdName';
 
 import styles from './index.scss';
@@ -141,7 +141,7 @@ export default class Runtimes extends Component {
 
     return (
       <Layout title="My Runtimes" className="clearfix">
-        {!isNormal && <NavLink linkPath="My Apps>Test>Runtimes" />}
+        {!isNormal && <BreadCrumb linkPath="My Apps>Test>Runtimes" />}
 
         <div className={styles.types}>
           {types.map(type => (

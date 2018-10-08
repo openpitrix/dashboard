@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import { filter, get, orderBy, capitalize } from 'lodash';
 
 import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -326,7 +326,7 @@ export default class Apps extends Component {
 
     return (
       <Layout className={styles.apps}>
-        <NavLink linkPath={linkPath} />
+        <BreadCrumb linkPath={linkPath} />
 
         {isAdmin && (
           <Row>

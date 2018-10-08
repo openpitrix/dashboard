@@ -6,7 +6,7 @@ import _, { pick, assign, get, capitalize } from 'lodash';
 import classNames from 'classnames';
 
 import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
-import Layout, { Dialog, Grid, Section, Card, NavLink } from 'components/Layout';
+import Layout, { Dialog, Grid, Section, Card, BreadCrumb } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
@@ -533,7 +533,7 @@ export default class AppDetail extends Component {
 
     return (
       <Layout className={styles.appDetail} noNotification={isShowCreate}>
-        <NavLink linkPath={`My Apps>${appDetail.name}`} />
+        <BreadCrumb linkPath={`My Apps>${appDetail.name}`} />
 
         <Grid className={styles.appInfo}>
           <DetailBlock

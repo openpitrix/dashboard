@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import Layout, { Grid, Section, Row, NavLink } from 'components/Layout';
+import Layout, { Grid, Section, Row, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
@@ -135,7 +135,7 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading} className={styles.overview}>
-        <NavLink linkPath="Dashboard>Overview" />
+        <BreadCrumb linkPath="Dashboard>Overview" />
 
         <Row>
           <Grid>
@@ -322,7 +322,7 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading} className={styles.overview}>
-        <NavLink linkPath="Dashboard/Overview" />
+        <BreadCrumb linkPath="Dashboard>Overview" />
 
         <Row>
           <Grid>

@@ -5,7 +5,7 @@ import { get, capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import Layout, { Grid, Section, BackBtn, Panel, Card, NavLink, Dialog } from 'components/Layout';
+import Layout, { Grid, Section, BackBtn, Panel, Card, BreadCrumb, Dialog } from 'components/Layout';
 import { Button, Icon } from 'components/Base';
 import Meta from './Meta';
 import Information from './Information';
@@ -269,7 +269,7 @@ export default class AppDetail extends Component {
         noLogin={noLogin}
         backBtn={isNormal && <BackBtn label="Store" link="/store" />}
       >
-        {(isAdmin || isDev) && !noLogin && <NavLink linkPath={linkPath} />}
+        {(isAdmin || isDev) && !noLogin && <BreadCrumb linkPath={linkPath} />}
         <Grid>
           <Section size={8}>
             <Panel className={styles.introCard}>

@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
 import { Radio, Button, Input, Select, CodeMirror, Image } from 'components/Base';
-import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
+import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
 
@@ -307,7 +307,7 @@ export default class AppDeploy extends Component {
         isLoading={isLoading}
         backBtn={isNormal && <BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
       >
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()} asideTitle="">
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}

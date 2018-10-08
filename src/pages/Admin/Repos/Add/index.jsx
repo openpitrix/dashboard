@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
-import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
+import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
 
 import styles from './index.scss';
@@ -214,7 +214,7 @@ export default class RepoAdd extends Component {
 
     return (
       <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}

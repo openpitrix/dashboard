@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import get from 'lodash/get';
 
 import { Radio, Button, Input, Select } from 'components/Base';
-import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
+import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
 
 import styles from './index.scss';
@@ -243,7 +243,7 @@ export default class RuntimeAdd extends Component {
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtime" link="/runtimes" />}
       >
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()}>
           {this.renderForm()}

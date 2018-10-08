@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
+import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
@@ -194,7 +194,7 @@ export default class RuntimeDetail extends Component {
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
       >
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>

@@ -1,15 +1,16 @@
 @import '~scss/vars';
 
-.navLink {
+.breadCrumb {
   margin-bottom: 12px;
   height: 20px;
   line-height: 20px;
   font-size: 12px;
   color: $N100;
 
-  a{
+  a {
     color: $N100;
-    &:hover{
+
+    &:hover {
       color: $P75;
     }
   }

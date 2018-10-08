@@ -6,8 +6,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
+
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
@@ -337,7 +338,7 @@ export default class RepoDetail extends Component {
         backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}
         listenToJob={this.listenToJob}
       >
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>

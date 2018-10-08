@@ -6,10 +6,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Popover, Modal, Select, CodeMirror } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Card, Panel, NavLink, Dialog } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Card, Panel, BreadCrumb, Dialog } from 'components/Layout';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-
 import Helm from './Helm';
 import VMbase from './VMbase';
 
@@ -339,8 +338,7 @@ export default class ClusterDetail extends Component {
         listenToJob={this.listenToJob}
         title="Purchased"
       >
-
-        {!isNormal && <NavLink linkPath={linkPath} />}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>

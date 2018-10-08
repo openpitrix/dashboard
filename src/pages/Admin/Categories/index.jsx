@@ -6,7 +6,7 @@ import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Input, Button, Popover, Icon, Modal } from 'components/Base';
-import Layout, { Dialog, Grid, Section, NavLink } from 'components/Layout';
+import Layout, { Dialog, Grid, Section, BreadCrumb } from 'components/Layout';
 import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
 import CategoryCard from './CategoryCard';
@@ -145,7 +145,7 @@ export default class Categories extends Component {
 
     return (
       <Layout isLoading={isLoading}>
-        <NavLink linkPath="Store>Categories" />
+        <BreadCrumb linkPath="Store>Categories" />
 
         <Toolbar
           placeholder={t('Search Categories')}

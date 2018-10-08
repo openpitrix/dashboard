@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
-import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card, NavLink } from 'components/Layout';
+import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import TdName, { ProviderName } from 'components/TdName';
@@ -203,7 +203,7 @@ export default class CategoryDetail extends Component {
 
     return (
       <Layout className={styles.categoryDetail}>
-        <NavLink linkPath={`Store>Categories>${category.name}`} />
+        <BreadCrumb linkPath={`Store>Categories>${category.name}`} />
 
         <Grid>
           <Section>

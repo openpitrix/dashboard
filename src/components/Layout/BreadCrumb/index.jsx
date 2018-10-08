@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-
 import { inject } from 'mobx-react/index';
+
+import topLink from 'utils/top-link';
+
 import styles from './index.scss';
 
 @translate()
@@ -12,7 +14,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-export default class NavLink extends Component {
+export default class BreadCrumb extends Component {
   static propTypes = {
     children: PropTypes.node,
     linkPath: PropTypes.string
@@ -26,25 +28,10 @@ export default class NavLink extends Component {
     const { children, linkPath, user, t } = this.props;
     const paths = linkPath.split('>');
     const linkLen = paths.length - 1;
-
-    const pathToLink = {
-      Dashboard: '/dashboard',
-      Store: '/dashboard/apps',
-      'All Apps': '/dashboard/apps',
-      'App Reviews': '/dashboard/reviews',
-      Categories: '/dashboard/categories',
-      Platform: '/dashboard/repos',
-      Repos: '/dashboard/repos',
-      Runtimes: user.isDev ? '/runtimes' : '/dashboard/runtimes',
-      'All Clusters': '/dashboard/clusters',
-      Users: ' /dashboard/users',
-      'All Users': '/dashboard/users',
-      'My Apps': '/dashboard/apps',
-      Test: '/dashboard/clusters'
-    };
+    const pathToLink = topLink(user.isDev);
 
     return (
-      <div className={styles.navLink}>
+      <div className={styles.breadCrumb}>
         {paths.map((path, index) => (
           <Fragment key={path}>
             {index !== linkLen && (

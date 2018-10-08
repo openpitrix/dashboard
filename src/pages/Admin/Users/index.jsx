@@ -15,7 +15,7 @@ import {
   Icon,
   Popover
 } from 'components/Base';
-import Layout, { Grid, Row, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
+import Layout, { Grid, Row, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
 import Statistics from 'components/Statistics';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -440,7 +440,7 @@ export default class Users extends Component {
 
     return (
       <Layout className={styles.usersContent}>
-        <NavLink linkPath="Users>All Users" />
+        <BreadCrumb linkPath="Users>All Users" />
 
         {/* <Row>
           <Statistics {...summaryInfo} objs={users.toJSON()} />
