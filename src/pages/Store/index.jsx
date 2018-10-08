@@ -22,9 +22,12 @@ import styles from './index.scss';
 export default class Store extends Component {
   static async onEnter({ categoryStore, appStore }, { category, search }) {
     appStore.loadPageInit();
-    await categoryStore.fetchAll();
+    await categoryStore.fetchAll({ noLogin: true });
 
-    const params = { status: 'active' };
+    const params = {
+      status: 'active',
+      noLogin: true
+    };
     if (category) {
       params.category_id = category;
     }
@@ -52,7 +55,10 @@ export default class Store extends Component {
   async componentWillReceiveProps({ match, rootStore }) {
     const { params } = match;
     if (params.category) {
-      await rootStore.appStore.fetchApps({ category_id: params.category });
+      await rootStore.appStore.fetchApps({
+        category_id: params.category,
+        noLogin: true
+      });
       rootStore.appStore.storeApps = rootStore.appStore.apps;
     }
   }
@@ -88,7 +94,8 @@ export default class Store extends Component {
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id,
-          noLoading: true
+          noLoading: true,
+          noLogin: true
         });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {

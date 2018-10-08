@@ -166,7 +166,7 @@ export default class AppStore extends Store {
     };
 
     if (this.createAppId) {
-      defaultParams.app_id = this.createAppId;
+      //defaultParams.app_id = this.createAppId;
       await this.modify(assign(defaultParams, params));
     } else {
       defaultParams.status = 'draft';
