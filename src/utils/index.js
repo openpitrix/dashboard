@@ -142,7 +142,7 @@ export function getHistograms(histograms) {
         number = value;
       }
     });
-    twoWeekDays.push({
+    twoWeekDays.unshift({
       date: dateStr,
       number: number
     });
@@ -208,8 +208,10 @@ export function getUrlParam(name) {
 const statusTransMap = {
   Active: 'Published',
   Suspended: 'Recalled',
+  Suspend: 'Recall',
   active: 'published',
-  suspended: 'recalled'
+  suspended: 'recalled',
+  suspend: 'Recall'
 };
 
 export function mappingStatus(status) {

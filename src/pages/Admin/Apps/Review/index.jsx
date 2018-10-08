@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { filter, get, orderBy, capitalize } from 'lodash';
 import classnames from 'classnames';
 
 import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
@@ -10,7 +9,6 @@ import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/La
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
 import { getObjName, mappingStatus, getFilterObj } from 'utils';
 
@@ -155,7 +153,9 @@ export default class Review extends Component {
         conditions: [
           { name: t('Submitted'), value: 'submitted' },
           { name: t('Passed'), value: 'passed' },
-          { name: t('Rejected'), value: 'rejected' }
+          { name: t('Rejected'), value: 'rejected' },
+          { name: t(mappingStatus('Active')), value: 'active' },
+          { name: t(mappingStatus('Suspended')), value: 'suspended' }
         ],
         onChangeFilter: appVersionStore.onChangeStatus,
         selectValue: appVersionStore.selectStatus
