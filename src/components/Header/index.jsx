@@ -25,8 +25,9 @@ class Header extends Component {
   };
 
   onSearch = async value => {
-    const { appStore } = this.props;
-    this.props.history.push('/store/search/' + value);
+    const { appStore, history, isHome } = this.props;
+    const pushUrl = isHome ? `/apps/search/${value}` : `/store/search/${value}`;
+    this.props.history.push(pushUrl);
     await appStore.fetchAll({ search_word: value });
     appStore.homeApps = appStore.apps;
   };
@@ -149,7 +150,7 @@ class Header extends Component {
         <div className={styles.wrapper}>
           <Logo className={styles.logo} url={logoUrl} />
           <div className={styles.menuOuter}>
-            {isNormal && this.renderMenus()}
+            {isNormal && !isHome && this.renderMenus()}
             {this.renderMenuBtns()}
           </div>
           {needShowSearch && (
