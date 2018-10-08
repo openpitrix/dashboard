@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { pick, assign, get, capitalize } from 'lodash';
+import _, { pick, assign, get, capitalize } from 'lodash';
 import classNames from 'classnames';
 
 import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
@@ -79,11 +79,12 @@ export default class AppDetail extends Component {
     const { appVersionStore, t } = this.props;
     const { versions } = appVersionStore;
 
-    if (!get(versions[0], 'version_id')) {
+    const newVersion = { name: t('New version'), status: 'Creating', version_id: '' };
+
+    if (_.find(versions, _.pick(newVersion, ['status', 'version_id']))) {
       return appVersionStore.info(t('Already create new version'));
     }
 
-    const newVersion = { name: t('New version'), status: 'Creating', version_id: '' };
     versions.unshift(newVersion);
 
     appVersionStore.currentVersion = newVersion;
