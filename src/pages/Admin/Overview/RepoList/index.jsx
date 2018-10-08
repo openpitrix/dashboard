@@ -35,6 +35,7 @@ export default class RepoList extends PureComponent {
 
     if (type === 'repo') {
       items = topRepos;
+      totalName = 'Apps';
     }
     return (
       <Fragment>

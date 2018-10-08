@@ -92,6 +92,9 @@ export default class AppStore extends Store {
       defaultParams.offset = 0;
       delete params.noLimit;
     }
+    if (params.app_id) {
+      delete defaultParams.status;
+    }
 
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
@@ -177,6 +180,7 @@ export default class AppStore extends Store {
       this.createAppId = get(this.createResult, 'app_id');
       this.createStep = 3; //show application has been created page
       this.updateMeunApps = true;
+      await this.fetchAll();
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;

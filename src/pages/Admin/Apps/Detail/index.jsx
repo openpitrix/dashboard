@@ -13,6 +13,7 @@ import DetailBlock from './DetailBlock';
 import StepContent from '../Add/StepContent';
 import VersionList from './VersionList';
 import clusterColumns from './tabs/cluster-columns';
+import { mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -285,7 +286,11 @@ export default class AppDetail extends Component {
 
           <div className={styles.operateWord}>
             {t('view_guide_1')}
-            <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/">
+            <a
+              className={styles.link}
+              target="_blank"
+              href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
+            >
               {t('view_guide_2')}
             </a>
             {t('view_guide_3')}
@@ -343,7 +348,7 @@ export default class AppDetail extends Component {
     const editStatus = ['draft', 'rejected'];
     const isDisabled =
       !editStatus.includes(currentVersion.status) || !isDev || appDetail.status === 'deleted';
-    const deleteStatus = ['draft', 'rejected', 'passed', 'suspended'];
+    const deleteStatus = ['draft', 'rejected', 'passed'];
     const hasDelete = deleteStatus.includes(currentVersion.status);
 
     const handleMap = {
@@ -418,7 +423,11 @@ export default class AppDetail extends Component {
             )}
             <div className={styles.viewGuide}>
               {t('view_guide_1')}
-              <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/">
+              <a
+                className={styles.link}
+                target="_blank"
+                href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
+              >
                 {t('view_guide_2')}
               </a>
               {t('view_guide_3')}
@@ -459,7 +468,7 @@ export default class AppDetail extends Component {
               <dt>{t('Operations')}</dt>
               <dd>
                 <Button
-                  type="primary"
+                  type={hanleType === 'delete' ? 'delete' : 'primary'}
                   onClick={() => this.handleVersion(currentVersion, hanleType)}
                 >
                   {t(capitalize(hanleType))}

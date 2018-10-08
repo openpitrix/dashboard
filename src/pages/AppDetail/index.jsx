@@ -232,7 +232,7 @@ export default class AppDetail extends Component {
         {Boolean(handle) && (
           <div className={styles.operateBtns}>
             <Button type="primary" onClick={() => this.handleVersion(handle, version.version_id)}>
-              {t(capitalize(handle))}
+              {t(mappingStatus(capitalize(handle)))}
             </Button>
             {status === 'submitted' && (
               <Button type="delete" onClick={this.showReasonDialog}>
