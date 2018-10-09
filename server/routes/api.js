@@ -34,14 +34,11 @@ router.post('/api/*', async ctx => {
   if (endpoint === 'oauth2/token') {
     body.client_id = ctx.store.clientId;
     body.client_secret = ctx.store.clientSecret;
-  }
-  else if (access_token && !body.noLogin) {
+  } else if (access_token && !body.noLogin) {
     header.Authorization = token_type + ' ' + access_token;
-  }
-  else if (access_token_home && body.noLogin) {
+  } else if (access_token_home && body.noLogin) {
     header.Authorization = token_type + ' ' + access_token_home;
-  }
-  else if (body.noLogin || refresh_token) {
+  } else if (body.noLogin || refresh_token) {
     const refreshUrl = [apiServer, 'oauth2/token'].join('/');
     const tokenData = {
       grant_type: 'refresh_token',
