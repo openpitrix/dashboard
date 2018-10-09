@@ -7,8 +7,7 @@ import App from './App';
 import RootStore from './stores/RootStore';
 import SockClient from './utils/sock-client';
 import i18n from './i18n';
-
-import { getCookie } from './utils';
+import UserProvider from 'providers/user';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
@@ -17,24 +16,21 @@ store.registerStores();
 store.notifications = [];
 
 if (typeof window !== 'undefined') {
-  try {
-    store.user = JSON.parse(getCookie('user') || '{}');
-    const role = getCookie('role');
-    if (role === 'user') {
-      store.user.isDev = false;
-      store.user.isNormal = true;
-    }
-  } catch (err) {}
+  const user = new UserProvider();
 
   let sc = null;
-  const accessToken = getCookie('access_token');
-
   // when logged in, setup socket client
-  if (accessToken) {
-    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, accessToken);
+  if (user.isLoggedIn()) {
+    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, user.accessToken);
     sc = new SockClient(sockEndpoint);
     sc.setUp();
   }
+
+  store.setUser(user);
+
+  // todo:  in dev mode
+  window._user = user;
+  window._store = store;
 
   import('./routes').then(({ default: routes }) => {
     ReactDOM.render(

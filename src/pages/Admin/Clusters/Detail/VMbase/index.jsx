@@ -39,9 +39,10 @@ export default class VMbasedCluster extends React.Component {
 
   handleAddNodes = async (e, formData) => {
     const { selectedNodeRole, addNodes } = this.props.store;
+    const { cluster } = this.props;
 
     formData = _.extend(_.pick(formData, ['node_count', 'advanced_params']), {
-      cluster_id: this.clusterId,
+      cluster_id: cluster.clusterId,
       role: selectedNodeRole
     });
 
@@ -95,10 +96,10 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>
-          <Icon name="add" size="mini" type="white" />
-          <span className={styles.addNodeTxt}>{t('Add Nodes')}</span>
-        </Button>
+        {/*<Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>*/}
+        {/*<Icon name="add" size="mini" type="white" />*/}
+        {/*<span className={styles.addNodeTxt}>{t('Add Nodes')}</span>*/}
+        {/*</Button>*/}
       </Toolbar>
     );
   }

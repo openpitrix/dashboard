@@ -21,27 +21,24 @@ import styles from './index.scss';
 }))
 @observer
 export default class Categories extends Component {
-  constructor(props) {
-    super(props);
-    const { categoryStore, appStore } = this.props;
-    categoryStore.appStore = appStore;
-    categoryStore.isDetailPage = false;
-    categoryStore.reset();
-    appStore.loadPageInit();
-  }
-
   async componentDidMount() {
     const { categoryStore, appStore } = this.props;
 
     window.scroll({ top: 0, behavior: 'auto' });
     window.onscroll = throttle(this.handleScroll, 200);
 
+    categoryStore.isDetailPage = false;
     categoryStore.appStore = appStore;
     await categoryStore.fetchAll({}, categoryStore.appStore);
   }
 
   componentWillUnmount() {
+    const { categoryStore, appStore } = this.props;
+
     window.onscroll = null;
+
+    categoryStore.reset();
+    appStore.loadPageInit();
   }
 
   handleScroll = async () => {

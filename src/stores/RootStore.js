@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, pick } from 'lodash';
+import _, { get, pick } from 'lodash';
 
 import Store from './Store';
 
@@ -26,6 +26,15 @@ export default class RootStore extends Store {
   @action
   setNavFix(fixNav) {
     this.fixNav = !!fixNav;
+  }
+
+  @action
+  setUser(user) {
+    this.user = user;
+  }
+
+  updateUser(props) {
+    _.isFunction(this.user.update) && this.user.update(props);
   }
 
   @action
@@ -65,6 +74,7 @@ export default class RootStore extends Store {
     }
     this[name] = new store(withState ? this.state : '', name);
     this[name].notify = this.notify.bind(this);
+    this[name].updateUser = this.updateUser.bind(this);
   }
 
   registerStores() {

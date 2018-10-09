@@ -32,12 +32,7 @@ import styles from './index.scss';
 }))
 @observer
 export default class Users extends Component {
-  constructor(props) {
-    super(props);
-    props.userStore.loadPageInit();
-  }
-
-  async componentWillMount() {
+  async componentDidMount() {
     const { userStore } = this.props;
 
     await userStore.fetchAll();
@@ -48,6 +43,10 @@ export default class Users extends Component {
     // await userStore.fetchGroups();
     // await userStore.fetchRoles();
     // await userStore.fetchAuthorities();
+  }
+
+  componentWillUnmount() {
+    this.props.userStore.loadPageInit();
   }
 
   changeSelect = value => {

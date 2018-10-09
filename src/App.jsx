@@ -11,8 +11,6 @@ import Footer from 'components/Footer';
 
 import WrapComp from './routes/wrapper';
 
-import { getCookie, setCookie } from 'utils';
-
 import './scss/index.scss';
 
 class App extends React.Component {
@@ -31,16 +29,11 @@ class App extends React.Component {
   };
 
   renderRoute(match, route, store) {
-    if (route.path === 'login') {
-      setCookie('user', '', -1);
-      setCookie('role', '', -1);
-    }
-
     const user = store.user || {};
-    const role = getCookie('role');
-    const hasHeader = user.isNormal || !user.username || role === 'user';
+    // todo
+    const hasHeader = user.isNormal || !user.accessToken || user.role === 'user';
 
-    if (route.needAuth && !Boolean(user.username)) {
+    if (route.needAuth && !user.accessToken) {
       return <Redirect to={`/login?url=${match.url}`} />;
     }
 
@@ -55,7 +48,7 @@ class App extends React.Component {
     };
 
     if (route.path !== '/login') {
-      const isHome = route.path === '/' || route.path.toString().startsWith('/app');
+      const isHome = route.path === '/' || route.path.startsWith('/apps');
 
       return (
         <Fragment>

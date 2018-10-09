@@ -25,29 +25,11 @@ import styles from './index.scss';
 }))
 @observer
 export default class Clusters extends Component {
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appStore } = this.props;
-    // clusterStore.loadPageInit();
-    // runtimeStore.loadPageInit();
-    // clusterStore.registerStore('app', appStore);
-
-    clusterStore.page = 'index';
-    this.store = clusterStore;
-  }
-
   async componentDidMount() {
     const { clusterStore, appStore, runtimeStore, userStore, user } = this.props;
-
     const { isAdmin } = user;
 
-    if (isAdmin) {
-      await clusterStore.fetchStatistics();
-      await userStore.fetchAll({ noLimit: true });
-    }
-
-    // clusterStore.clusters = [];
-    // clusterStore.registerStore('app', appStore);
+    clusterStore.registerStore('app', appStore);
 
     await clusterStore.fetchAll();
     await runtimeStore.fetchAll({
@@ -55,11 +37,18 @@ export default class Clusters extends Component {
       noLimit: true,
       simpleQuery: true
     });
+
+    if (isAdmin) {
+      await clusterStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
+    }
   }
 
   componentWillUnmount() {
-    const { appStore } = this.props;
-    appStore.apps = [];
+    const { clusterStore, runtimeStore } = this.props;
+
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -129,17 +118,26 @@ export default class Clusters extends Component {
   };
 
   handleCluster = () => {
-    const { clusterId, clusterIds, modalType, operateType } = this.store;
+    const {
+      clusterId,
+      clusterIds,
+      modalType,
+      operateType,
+      remove,
+      start,
+      stop
+    } = this.props.clusterStore;
     let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+
     switch (modalType) {
       case 'delete':
-        this.store.remove(ids);
+        remove(ids);
         break;
       case 'start':
-        this.store.start(ids);
+        start(ids);
         break;
       case 'stop':
-        this.store.stop(ids);
+        stop(ids);
         break;
     }
   };
@@ -157,7 +155,7 @@ export default class Clusters extends Component {
 
   renderDeleteModal = () => {
     const { t } = this.props;
-    const { hideModal, isModalOpen, modalType } = this.store;
+    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
     return (
       <Dialog

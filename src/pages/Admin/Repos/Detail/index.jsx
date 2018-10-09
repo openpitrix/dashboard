@@ -29,16 +29,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class RepoDetail extends Component {
-  constructor(props) {
-    super(props);
-    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    repoStore.curTagName = 'Apps';
-
-    // appStore.loadPageInit();
-    // runtimeStore.loadPageInit();
-    // clusterStore.loadPageInit();
-  }
-
   async componentDidMount() {
     const { repoStore, userStore, user, match } = this.props;
     const { repoId } = match.params;
@@ -48,9 +38,16 @@ export default class RepoDetail extends Component {
     if (user.isAdmin) {
       await userStore.fetchAll({ noLimit: true });
     } else {
-      const { repoDetail } = repoStore;
-      await userStore.fetchDetail(repoDetail.owner);
+      await userStore.fetchDetail(repoStore.repoDetail.owner);
     }
+  }
+
+  componentWillUnmount() {
+    const { appStore, runtimeStore, clusterStore } = this.props;
+
+    appStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
   }
 
   listenToJob = async ({ op, rid, values = {} }) => {
@@ -358,11 +355,7 @@ export default class RepoDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <DetailTabs
-                tabs={['Apps', 'Runtimes', 'Events']}
-                defaultTas={curTagName}
-                changeTab={this.changeDetailTab}
-              />
+              <DetailTabs tabs={['Apps', 'Runtimes', 'Events']} changeTab={this.changeDetailTab} />
               <Card hasTable>
                 {curTagName === 'Runtimes' &&
                   selectors.length > 0 && (

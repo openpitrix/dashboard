@@ -24,19 +24,15 @@ import styles from './index.scss';
 }))
 @observer
 export default class CategoryDetail extends Component {
-  constructor(props) {
-    super(props);
-    const { categoryStore, appStore, match } = this.props;
-    categoryStore.isDetailPage = true;
-    appStore.loadPageInit();
-    appStore.categoryId = match.params.categoryId;
-  }
-
   async componentDidMount() {
     const { categoryStore, appStore, repoStore, match } = this.props;
     const { categoryId } = match.params;
 
+    appStore.categoryId = categoryId;
+
+    categoryStore.isDetailPage = true;
     await categoryStore.fetch(categoryId);
+
     await appStore.fetchAll({ category_id: categoryId });
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
@@ -44,14 +40,18 @@ export default class CategoryDetail extends Component {
     });
   }
 
-  componentDidUpdate() {
-    const { category } = this.props.categoryStore;
-    if (!category.category_id) {
-      setTimeout(() => {
-        location.href = '/dashboard/categories';
-      }, 2000);
-    }
+  componentWillUnmount() {
+    this.props.appStore.loadPageInit();
   }
+
+  // componentDidUpdate() {
+  //   const { category } = this.props.categoryStore;
+  //   if (!category.category_id) {
+  //     setTimeout(() => {
+  //       location.href = '/dashboard/categories';
+  //     }, 2000);
+  //   }
+  // }
 
   renderHandleMenu = category => {
     const { t } = this.props;

@@ -26,23 +26,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class Review extends Component {
-  constructor(props) {
-    super(props);
-    const { appVersionStore, appStore, repoStore, userStore } = this.props;
-
-    // appVersionStore.loadPageInit();
-    // repoStore.loadPageInit();
-
-    appVersionStore.isReview = true;
-    // appVersionStore.registerStore('app', appStore);
-    // appVersionStore.registerStore('user', userStore);
-  }
-
   async componentDidMount() {
     const { appVersionStore, appStore, categoryStore, repoStore, userStore } = this.props;
 
-    // appVersionStore.registerStore('app', appStore);
-    // appVersionStore.registerStore('user', userStore);
+    appVersionStore.registerStore('app', appStore);
+    appVersionStore.registerStore('user', userStore);
+
     appVersionStore.isReview = true;
 
     await appVersionStore.fetchAll();
@@ -51,6 +40,13 @@ export default class Review extends Component {
       noLimit: true
     });
     //await categoryStore.fetchAll();
+  }
+
+  componentWillUnmount() {
+    const { appVersionStore, appStore, repoStore, userStore } = this.props;
+
+    appVersionStore.loadPageInit();
+    repoStore.loadPageInit();
   }
 
   renderToolbar() {

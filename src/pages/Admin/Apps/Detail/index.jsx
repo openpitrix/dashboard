@@ -32,40 +32,27 @@ import styles from './index.scss';
 )
 @observer
 export default class AppDetail extends Component {
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appVersionStore, match } = this.props;
-
-    // clusterStore.loadPageInit();
-    // runtimeStore.loadPageInit();
-    // appVersionStore.loadPageInit();
-
-    appVersionStore.appId = match.params.appId;
-  }
-
   async componentDidMount() {
     const { appStore, appVersionStore, repoStore, match } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
+
     appVersionStore.appId = appId;
     appVersionStore.currentVersion = {};
     await appVersionStore.fetchAll({ app_id: appId });
+
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
   }
 
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { appStore, appVersionStore, repoStore } = rootStore;
-    const { appId } = match.params;
-    await appStore.fetch(appId);
-    appVersionStore.appId = appId;
-    appVersionStore.currentVersion = {};
-    await appVersionStore.fetchAll({ app_id: appId });
-    if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
-    }
+  componentWillUnmount() {
+    const { clusterStore, runtimeStore, appVersionStore } = this.props;
+
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    appVersionStore.loadPageInit();
   }
 
   selectVersion = version => {

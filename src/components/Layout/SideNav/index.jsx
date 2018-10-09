@@ -4,11 +4,23 @@ import { Link, NavLink, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react/index';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
 import { setCookie } from 'utils';
 
+import { subNavMap, getNavs } from './navMap';
+
 import styles from './index.scss';
+
+const keys = ['app', 'review', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
+const changeKey = {
+  review: 'app',
+  cluster: 'repo',
+  runtime: 'repo',
+  categories: 'app',
+  category: 'app'
+};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -16,12 +28,20 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class Menu extends React.Component {
+class SideNav extends React.Component {
   static propTypes = {
     className: PropTypes.string
   };
 
   static defaultProps = {};
+
+  async componentDidMount() {
+    const { isDev } = this.props.user;
+
+    if (isDev) {
+      await this.props.appStore.fetchAll({ menuApps: true });
+    }
+  }
 
   becomeUser = () => {
     setCookie('role', 'user');
@@ -30,23 +50,9 @@ class Menu extends React.Component {
 
   getMatchKey = () => {
     const { path } = this.props.match;
-    const keys = ['app', 'review', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
-    const changeKey = {
-      review: 'app',
-      cluster: 'repo',
-      runtime: 'repo',
-      categories: 'app',
-      category: 'app'
-    };
-    let key = 'dashboard';
+    const key = _.find(keys, k => path.indexOf(k) > -1) || 'dashboard';
 
-    for (let i = 0; i < keys.length; i++) {
-      if (path.indexOf(keys[i]) > -1) {
-        key = changeKey[keys[i]] ? changeKey[keys[i]] : keys[i];
-        break;
-      }
-    }
-    return key;
+    return changeKey[key] || key;
   };
 
   isLinkActive = (activeName, role) => {
@@ -59,80 +65,14 @@ class Menu extends React.Component {
   };
 
   getSudNavData = () => {
-    const subNavMap = {
-      dashboard: {
-        title: 'Dashboard',
-        links: [{ name: 'Overview', link: '/dashboard', active: 'dashboard' }]
-      },
-      app: {
-        title: 'Store',
-        links: [
-          { name: 'All Apps', link: '/dashboard/apps', active: '/app' },
-          { name: 'App Reviews', link: '/dashboard/reviews', active: 'review' },
-          { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
-          /*{ name: 'Appearance', link: '#', active: 'appearance' }*/
-        ]
-      },
-      user: {
-        title: 'Users',
-        links: [
-          { name: 'All Users', link: '/dashboard/users', active: 'user' }
-          /* { name: 'User Groups', link: '#', active: 'group' },
-          { name: 'Roles', link: '#', active: 'role' },
-          { name: 'Policy', link: '#', active: 'policy' }*/
-        ]
-      },
-      repo: {
-        title: 'Platform',
-        links: [
-          /*{ name: 'Tickets', link: '#', active: 'ticket' },
-          { name: 'Notifications', link: '#', active: 'notification' },*/
-          { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
-          { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
-          { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' }
-          /* { name: 'Service Status', link: '#', active: 'service' }*/
-        ]
-      }
-    };
     const key = this.getMatchKey();
-
     return subNavMap[key];
   };
 
   renderNav(role) {
     const { t } = this.props;
-    let navs = [
-      {
-        link: '/',
-        iconName: 'op-logo',
-        active: '',
-        title: t('Home')
-      },
-      {
-        link: '/dashboard',
-        iconName: 'dashboard',
-        active: 'dashboard',
-        title: t('Dashboard')
-      },
-      {
-        link: '/dashboard/apps',
-        iconName: 'components',
-        active: 'app',
-        title: role === 'developer' ? t('My Apps') : t('Store')
-      },
-      {
-        link: '/dashboard/repos',
-        iconName: 'shield',
-        active: 'repo',
-        title: t('Platform')
-      },
-      {
-        link: '/dashboard/users',
-        iconName: 'group',
-        active: 'user',
-        title: t('Users')
-      }
-    ];
+
+    let navs = getNavs(role);
 
     if (role === 'developer') {
       navs = navs.slice(0, 3);
@@ -144,7 +84,7 @@ class Menu extends React.Component {
           <Tooltip
             key={nav.iconName}
             className={styles.item}
-            content={nav.title}
+            content={t(nav.title)}
             isShowArrow
             placement="right"
           >
@@ -309,4 +249,4 @@ class Menu extends React.Component {
   }
 }
 
-export default withRouter(Menu);
+export default withRouter(SideNav);

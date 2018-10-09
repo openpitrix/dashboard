@@ -27,13 +27,11 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   async componentDidMount() {
-    this.props.rootStore.setNavFix(true);
-    const { appStore, repoStore, appVersionStore, user, match } = this.props;
+    const { rootStore, appStore, repoStore, appVersionStore, user, match } = this.props;
     const { appId, versionId } = match.params;
 
-    this.props.rootStore.setNavFix(true);
+    rootStore.setNavFix(true);
 
-    // appVersionStore.loadPageInit();
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
 
@@ -58,6 +56,10 @@ export default class AppDetail extends Component {
         true
       );
     }
+  }
+
+  componentWillUnmount() {
+    this.props.appVersionStore.loadPageInit();
   }
 
   changePicture = (type, number, pictures) => {

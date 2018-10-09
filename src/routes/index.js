@@ -46,6 +46,8 @@ const routes = {
   '/:dash/app/:appId': Dash.AppDetail,
 
   '/:dash/clusters': Dash.Clusters,
+
+  // todo
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
 
   '/:dash/runtimes': Dash.Runtimes,

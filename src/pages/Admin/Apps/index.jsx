@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import { filter, get, orderBy, capitalize } from 'lodash';
-import classnames from 'classnames';
 
 import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
 import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
@@ -27,14 +26,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class Apps extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   const { appStore, repoStore, user } = this.props;
-  //
-  //   appStore.loadPageInit();
-  //   repoStore.loadPageInit();
-  // }
-
   async componentDidMount() {
     const { appStore, userStore, user, categoryStore, repoStore } = this.props;
     const { isAdmin } = user;
@@ -51,6 +42,13 @@ export default class Apps extends Component {
       await appStore.fetchStatistics();
       await userStore.fetchAll({ noLimit: true });
     }
+  }
+
+  componentWillUnmount() {
+    const { appStore, repoStore, user } = this.props;
+
+    appStore.loadPageInit();
+    repoStore.loadPageInit();
   }
 
   onChangeSort = (params = {}) => {

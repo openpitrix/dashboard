@@ -28,6 +28,7 @@ export default class Purchased extends Component {
     const { clusterStore, appStore, runtimeStore } = this.props;
 
     clusterStore.registerStore('app', appStore);
+
     await appStore.fetchAll({ status: 'active', noLogin: true });
     await clusterStore.fetchAll();
     await runtimeStore.fetchAll({
@@ -35,6 +36,16 @@ export default class Purchased extends Component {
       noLimit: true,
       simpleQuery: true
     });
+
+    appStore.storeApps = appStore.apps.slice();
+  }
+
+  componentWillUnmount() {
+    const { clusterStore, appStore, runtimeStore } = this.props;
+
+    clusterStore.loadPageInit();
+    appStore.loadPageInit();
+    runtimeStore.loadPageInit();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
