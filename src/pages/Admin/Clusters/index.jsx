@@ -324,7 +324,7 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isDev, isAdmin } = user;
+    const { isDev, isAdmin, isNormal } = user;
     const linkPath = isDev ? 'My Apps>Test>Clusters' : 'Platform>All Clusters';
 
     return (

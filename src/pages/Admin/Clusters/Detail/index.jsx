@@ -328,8 +328,8 @@ export default class ClusterDetail extends Component {
     // };
 
     const linkPath = isDev
-      ? `My Apps>Test>Clusters>${detail.name}`
-      : `Platform>All Clusters>${detail.name}`;
+      ? `My Apps>Test>Clusters>${cluster.name}`
+      : `Platform>All Clusters>${cluster.name}`;
 
     return (
       <Layout

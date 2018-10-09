@@ -5,8 +5,7 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { inject } from 'mobx-react/index';
 
-import topLink from 'utils/top-link';
-
+import pathLink from './path-link';
 import styles from './index.scss';
 
 @translate()
@@ -28,7 +27,7 @@ export default class BreadCrumb extends Component {
     const { children, linkPath, user, t } = this.props;
     const paths = linkPath.split('>');
     const linkLen = paths.length - 1;
-    const pathToLink = topLink(user.isDev);
+    const pathToLink = pathLink(user.isDev);
 
     return (
       <div className={styles.breadCrumb}>
