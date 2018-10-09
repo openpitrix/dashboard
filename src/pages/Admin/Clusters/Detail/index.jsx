@@ -37,7 +37,7 @@ export default class ClusterDetail extends Component {
     clusterStore.loadNodeInit();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       clusterStore,
       clusterDetailStore,
@@ -47,7 +47,8 @@ export default class ClusterDetail extends Component {
       match
     } = this.props;
     const clusterId = get(match, 'params.clusterId');
-    clusterDetailStore.fetchPage({ clusterId, clusterStore, runtimeStore, appStore, userStore });
+
+    await clusterDetailStore.fetchPage({ clusterId, clusterStore, runtimeStore, appStore, userStore });
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -220,7 +221,7 @@ export default class ClusterDetail extends Component {
     const appName = _.get(appStore.appDetail, 'name', '');
     const runtimeName = _.get(runtimeDetail, 'name', '');
     const provider = _.get(runtimeDetail, 'provider', '');
-    const userName = _.get(userStore.userDetail, 'name', '');
+    const userName = _.get(userStore.userDetail, 'username', '');
 
     const { isNormal, isDev, isAdmin } = user;
 
@@ -246,7 +247,7 @@ export default class ClusterDetail extends Component {
       <Layout
         className={classnames({ [styles.clusterDetail]: !isNormal })}
         backBtn={isNormal && <BackBtn label="purchased" link="/purchased" />}
-        isloading={isLoading}
+        isLoading={isLoading}
         listenToJob={this.listenToJob}
         title="Purchased"
       >
