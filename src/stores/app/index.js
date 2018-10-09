@@ -58,27 +58,6 @@ export default class AppStore extends Store {
   };
 
   @action
-  fetchApps = async (params = {}, title) => {
-    this.isLoading = true;
-    this.categoryTitle = title;
-    params.limit = this.maxLimit;
-    params.sort_key = 'status_time';
-
-    if (!params.status) {
-      params.status = ['active'];
-    }
-
-    const result = await this.request.get('apps', params);
-    this.apps = get(result, 'app_set', []);
-    if (this.updateMeunApps && this.apps.length > 0) {
-      this.menuApps = this.apps.slice(0, 5);
-      this.updateMeunApps = false;
-    }
-    this.totalCount = get(result, 'total_count', 0);
-    this.isLoading = false;
-  };
-
-  @action
   fetchAll = async (params = {}) => {
     let defaultParams = {
       sort_key: 'status_time',
@@ -114,16 +93,23 @@ export default class AppStore extends Store {
     }
 
     const result = await this.request.get('apps', assign(defaultParams, params));
-    this.apps = get(result, 'app_set', []);
-    this.totalCount = get(result, 'total_count', 0);
 
-    if (!this.searchWord && !this.selectStatus) {
-      this.appCount = this.totalCount;
+    if (!params.menuApps) {
+      this.apps = get(result, 'app_set', []);
+      this.totalCount = get(result, 'total_count', 0);
+
+      if (!this.searchWord && !this.selectStatus) {
+        this.appCount = this.totalCount;
+      }
+
+      // if (this.updateMeunApps && this.apps.length > 0) {
+      //   this.menuApps = this.apps.slice(0, 5);
+      //   this.updateMeunApps = false;
+      // }
+    } else {
+      this.menuApps = get(result, 'app_set', []).slice(0, 5);
     }
-    if (this.updateMeunApps && this.apps.length > 0) {
-      this.menuApps = this.apps.slice(0, 5);
-      this.updateMeunApps = false;
-    }
+
     this.isLoading = false;
     this.isProgressive = false;
   };
@@ -152,7 +138,7 @@ export default class AppStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`apps`, {
       app_id: appId,
-      noLogin: true
+      noLogin
     });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
@@ -177,7 +163,7 @@ export default class AppStore extends Store {
     if (get(this.createResult, 'app_id')) {
       this.createAppId = get(this.createResult, 'app_id');
       this.createStep = 3; //show application has been created page
-      this.updateMeunApps = true;
+      // this.updateMeunApps = true;
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;
@@ -211,7 +197,7 @@ export default class AppStore extends Store {
         await this.fetch(this.appId);
       } else {
         this.hideModal();
-        this.updateMeunApps = true;
+        // this.updateMeunApps = true;
         await this.fetchAll();
         this.cancelSelected();
       }

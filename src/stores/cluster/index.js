@@ -10,15 +10,15 @@ export default class ClusterStore extends Store {
   @observable currentPage = 1;
   @observable clusters = [];
   @observable isLoading = false;
+
   @observable modalType = '';
   @observable isModalOpen = false;
 
   @observable summaryInfo = {};
   @observable totalCount = 0;
   @observable clusterCount = 0;
-  @observable totalNodeCount = 0;
 
-  // @observable clusterId; // current delete cluster_id
+  @observable clusterId = '';
   @observable operateType = '';
 
   @observable searchWord = '';
@@ -30,10 +30,6 @@ export default class ClusterStore extends Store {
   @observable selectedRowKeys = [];
   @observable clusterIds = [];
 
-  @observable currentNodePage = 1;
-  @observable searchNode = '';
-  @observable selectNodeStatus = '';
-
   @observable env = '';
   @observable versionId = '';
 
@@ -42,6 +38,7 @@ export default class ClusterStore extends Store {
   jobs = {
     // job_id=> cluster_id
   };
+
   store = {};
 
   @action
@@ -81,7 +78,7 @@ export default class ClusterStore extends Store {
       this.clusterCount = this.totalCount;
     }
 
-    // todo
+    // fixme
     const appStore = this.store.app;
 
     const appIds = this.clusters.map(cluster => cluster.app_id);
@@ -240,21 +237,21 @@ export default class ClusterStore extends Store {
     await this.fetchAll();
   };
 
-  // @action
-  // loadPageInit = () => {
-  //   if (!this.pageInitMap.cluster) {
-  //     this.currentPage = 1;
-  //     this.selectStatus = '';
-  //     this.searchWord = '';
-  //   }
-  //   this.appId = '';
-  //   this.runtimeId = '';
-  //   this.userId = '';
-  //   this.selectedRowKeys = [];
-  //   this.clusterIds = [];
-  //   this.pageInitMap = {};
-  //   this.store = {};
-  // };
+  @action
+  loadPageInit = () => {
+    if (!this.pageInitMap.cluster) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
+    this.appId = '';
+    this.runtimeId = '';
+    this.userId = '';
+    this.selectedRowKeys = [];
+    this.clusterIds = [];
+    this.pageInitMap = {};
+    this.store = {};
+  };
 
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {
@@ -268,51 +265,6 @@ export default class ClusterStore extends Store {
     this.clusterIds = [];
   };
 
-  // @action
-  // onChangeSelectNodes = (rowKeys, rows) => {
-  //   this.selectedNodeKeys = rowKeys;
-  //   this.selectedNodeIds = rows.map(row => row.node_id);
-  // };
-  //
-  // @action
-  // onSearchNode = async word => {
-  //   this.searchNode = word;
-  //   this.currentNodePage = 1;
-  //   await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
-  // };
-  //
-  // @action
-  // onClearNode = async () => {
-  //   await this.onSearchNode('');
-  // };
-  //
-  // @action
-  // onRefreshNode = async () => {
-  //   await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
-  // };
-  //
-  // @action
-  // changePaginationNode = async page => {
-  //   this.currentNodePage = page;
-  //   await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
-  // };
-  //
-  // @action
-  // onChangeNodeStatus = async status => {
-  //   this.currentNodePage = 1;
-  //   this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
-  //   await this.fetchNodes({
-  //     cluster_id: this.cluster.cluster_id
-  //   });
-  // };
-  //
-  // @action
-  // loadNodeInit = () => {
-  //   this.currentNodePage = 1;
-  //   this.selectNodeStatus = '';
-  //   this.searchNode = '';
-  // };
-
   @action
   changeEnv = str => {
     this.env = str;
@@ -323,10 +275,10 @@ export default class ClusterStore extends Store {
     this.versionId = type;
   };
 
-  // @action
-  // registerStore = (name, store) => {
-  //   this.store[name] = store;
-  // };
+  @action
+  registerStore = (name, store) => {
+    this.store[name] = store;
+  };
 }
 
 export Detail from './detail';

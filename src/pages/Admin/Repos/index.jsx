@@ -20,15 +20,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class Repos extends Component {
-  constructor(props) {
-    super(props);
-    const { repoStore, appStore } = this.props;
-    repoStore.appStore = appStore;
-
-    // repoStore.loadPageInit();
-    // appStore.loadPageInit();
-  }
-
   async componentDidMount() {
     const { repoStore, appStore, user } = this.props;
 
@@ -47,6 +38,12 @@ export default class Repos extends Component {
 
   componentWillUnmount() {
     window.onscroll = null;
+
+    const { repoStore, appStore } = this.props;
+    repoStore.appStore = appStore;
+
+    repoStore.loadPageInit();
+    appStore.loadPageInit();
   }
 
   handleScroll = async () => {

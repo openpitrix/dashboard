@@ -110,7 +110,9 @@ export default class UserStore extends Store {
         isNormal: userInfo.role === 'user',
         loginTime: Date.parse(new Date())
       };
+
       setCookie('user', JSON.stringify(user), this.cookieTime);
+      this.updateUser(user);
     }
 
     this.isLoading = false;

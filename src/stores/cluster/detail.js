@@ -7,8 +7,8 @@ import Store from 'stores/Store';
 // separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
-  @observable currentPage = 1;
 
+  @observable currentPage = 1;
   @observable isLoading = false;
   @observable cluster = {};
 
@@ -18,15 +18,14 @@ export default class ClusterDetailStore extends Store {
   // helm
   @observable helmClusterNodes = [];
 
+  @observable totalNodeCount = 0;
+
   @observable clusterJobs = [];
 
   @observable modalType = '';
   @observable isModalOpen = false;
 
   @observable extendedRowKeys = [];
-
-  @observable currentNodePage = 1;
-  @observable selectNodeStatus = '';
 
   @observable nodeType = '';
 
@@ -35,6 +34,10 @@ export default class ClusterDetailStore extends Store {
   @observable selectedNodeIds = [];
 
   @observable selectedNodeRole = '';
+
+  @observable currentNodePage = 1;
+  @observable searchNode = '';
+  @observable selectNodeStatus = '';
 
   @action
   showModal = type => {
@@ -67,11 +70,18 @@ export default class ClusterDetailStore extends Store {
       params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
     }
 
-    //    clusterStore.cluster_id = clusterId;
-    //    await userStore.fetchDetail(cluster.owner);
+    // clusterStore.cluster_id = clusterId;
+    // await userStore.fetchDetail(cluster.owner);
 
     const result = await this.request.get(`clusters/nodes`, params);
-    this.clusterNodes = _.get(result, 'cluster_node_set', []);
+    const nodes = _.get(result, 'cluster_node_set', []);
+
+    if (params.isHelm) {
+      this.helmClusterNodes = nodes;
+    } else {
+      this.clusterNodes = nodes;
+    }
+
     this.totalNodeCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -220,33 +230,80 @@ export default class ClusterDetailStore extends Store {
     this.fetchHelmNodes({ clusterStore, type });
   };
 
+  // @action
+  // onSearchNode = (isKubernetes, clusterStore) => async word => {
+  //   clusterStore.searchNode = word;
+  //   this.currentNodePage = 1;
+  //
+  //   const { cluster } = clusterStore;
+  //   const { cluster_id } = cluster;
+  //   if (!isKubernetes) {
+  //     await clusterStore.fetchNodes({ cluster_id, search_word: word });
+  //   } else {
+  //     await clusterStore.fetch(cluster_id);
+  //     this.fetchHelmNodes({
+  //       clusterStore,
+  //       type: this.nodeType,
+  //       searchWord: word
+  //     });
+  //   }
+  // };
+  //
+  // @action
+  // onClearNode = (isKubernetes, clusterStore) => async () => {
+  //   await this.onSearchNode(isKubernetes, clusterStore)('');
+  // };
+  //
+  // @action
+  // onRefreshNode = (isKubernetes, clusterStore) => async () => {
+  //   clusterStore.searchNode = '';
+  //   await this.onSearchNode(isKubernetes, clusterStore)('');
+  // };
+
+  ///
+
   @action
-  onSearchNode = (isKubernetes, clusterStore) => async word => {
-    clusterStore.searchNode = word;
+  onChangeSelectNodes = (rowKeys, rows) => {
+    this.selectedNodeKeys = rowKeys;
+    this.selectedNodeIds = rows.map(row => row.node_id);
+  };
+
+  @action
+  onSearchNode = async word => {
+    this.searchNode = word;
     this.currentNodePage = 1;
-
-    const { cluster } = clusterStore;
-    const { cluster_id } = cluster;
-    if (!isKubernetes) {
-      await clusterStore.fetchNodes({ cluster_id, search_word: word });
-    } else {
-      await clusterStore.fetch(cluster_id);
-      this.fetchHelmNodes({
-        clusterStore,
-        type: this.nodeType,
-        searchWord: word
-      });
-    }
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
   @action
-  onClearNode = (isKubernetes, clusterStore) => async () => {
-    await this.onSearchNode(isKubernetes, clusterStore)('');
+  onClearNode = async () => {
+    await this.onSearchNode('');
   };
 
   @action
-  onRefreshNode = (isKubernetes, clusterStore) => async () => {
-    clusterStore.searchNode = '';
-    await this.onSearchNode(isKubernetes, clusterStore)('');
+  onRefreshNode = async () => {
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  };
+
+  // @action
+  // changePaginationNode = async page => {
+  //   this.currentNodePage = page;
+  //   await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  // };
+  //
+  // @action
+  // onChangeNodeStatus = async status => {
+  //   this.currentNodePage = 1;
+  //   this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
+  //   await this.fetchNodes({
+  //     cluster_id: this.cluster.cluster_id
+  //   });
+  // };
+
+  @action
+  loadNodeInit = () => {
+    this.currentNodePage = 1;
+    this.selectNodeStatus = '';
+    this.searchNode = '';
   };
 }

@@ -29,19 +29,16 @@ router.post('/api/*', async ctx => {
   const access_token_home = ctx.cookies.get('access_token_home');
   const refresh_token = ctx.cookies.get('refresh_token');
 
-  debug('api: %s %s', forwardMethod.toUpperCase(), url);
+  debug('api: %s %s %s -- %o', new Date().toLocaleString(), forwardMethod.toUpperCase(), url, body);
 
   if (endpoint === 'oauth2/token') {
     body.client_id = ctx.store.clientId;
     body.client_secret = ctx.store.clientSecret;
-  }
-  else if (access_token && !body.noLogin) {
+  } else if (access_token && !body.noLogin) {
     header.Authorization = token_type + ' ' + access_token;
-  }
-  else if (access_token_home && body.noLogin) {
+  } else if (access_token_home && body.noLogin) {
     header.Authorization = token_type + ' ' + access_token_home;
-  }
-  else if (body.noLogin || refresh_token) {
+  } else if (body.noLogin || refresh_token) {
     const refreshUrl = [apiServer, 'oauth2/token'].join('/');
     const tokenData = {
       grant_type: 'refresh_token',
@@ -53,7 +50,7 @@ router.post('/api/*', async ctx => {
 
     if (refresh_token) {
       tokenData.refresh_token = refresh_token;
-    } else if (body.noLogin && accessUrls.includes(endpoint) ) {
+    } else if (body.noLogin && accessUrls.includes(endpoint)) {
       tokenData.grant_type = 'client_credentials';
     }
 
@@ -77,7 +74,6 @@ router.post('/api/*', async ctx => {
   ctx.body = await agent.send(forwardMethod, url, body, {
     header: header
   });
-
 });
 
 module.exports = router;

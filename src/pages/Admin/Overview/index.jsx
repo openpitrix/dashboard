@@ -33,12 +33,7 @@ import styles from './index.scss';
 export default class Overview extends React.Component {
   constructor(props) {
     super(props);
-    const { appStore, clusterStore, runtimeStore, repoStore, user } = this.props;
-
-    // appStore.loadPageInit();
-    // clusterStore.loadPageInit();
-    // runtimeStore.loadPageInit();
-    // repoStore.loadPageInit();
+    const { user } = this.props;
 
     this.userInfo = {
       username: user.username,
@@ -57,9 +52,6 @@ export default class Overview extends React.Component {
       userStore,
       user
     } = this.props;
-
-    appStore.updateMeunApps = true;
-    appStore.menuApps = [];
 
     if (user.isAdmin) {
       // query top repos
@@ -99,6 +91,15 @@ export default class Overview extends React.Component {
       await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
       await runtimeStore.fetchAll({ noLimit: true });
     }
+  }
+
+  componentWillUnmount() {
+    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+
+    appStore.loadPageInit();
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
+    repoStore.loadPageInit();
   }
 
   handleClickTotalCard = label => {

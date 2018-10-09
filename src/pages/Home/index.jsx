@@ -22,20 +22,7 @@ export default class Home extends Component {
   async componentDidMount() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { category, search } = match;
-
     const filterParams = { status: 'active', noLimit: true, noLogin: true };
-
-    // appStore.loadPageInit();
-    await categoryStore.fetchAll({ noLogin: true });
-
-    if (category) {
-      filterParams.category_id = category;
-    }
-    if (search) {
-      filterParams.search_word = search;
-    }
-    await appStore.fetchAll(filterParams);
-    appStore.homeApps = appStore.apps;
 
     window.scroll({ top: 0, behavior: 'smooth' });
 
@@ -48,6 +35,18 @@ export default class Home extends Component {
       this.threshold = this.getThreshold();
       window.onscroll = this.handleScroll;
     }
+
+    await categoryStore.fetchAll({ noLogin: true });
+
+    if (category) {
+      filterParams.category_id = category;
+    }
+    if (search) {
+      filterParams.search_word = search;
+    }
+    await appStore.fetchAll(filterParams);
+
+    appStore.homeApps = appStore.apps.slice();
   }
 
   async componentWillReceiveProps({ match, rootStore }) {
@@ -65,8 +64,10 @@ export default class Home extends Component {
 
   componentWillUnmount() {
     const { appStore } = this.props;
-    appStore.apps = [];
+
     window.onscroll = null;
+    appStore.apps = [];
+    appStore.loadPageInit();
   }
 
   getThreshold() {

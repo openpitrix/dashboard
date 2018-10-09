@@ -167,18 +167,18 @@ export default class RuntimeStore extends Store {
     this.runtimeIds = [];
   };
 
-  // loadPageInit = () => {
-  //   if (!this.pageInitMap.runtime) {
-  //     this.currentPage = 1;
-  //     this.selectStatus = '';
-  //     this.searchWord = '';
-  //   }
-  //   this.userId = '';
-  //   this.selectedRowKeys = [];
-  //   this.runtimeIds = [];
-  //   this.pageInitMap = {};
-  //   this.runtimeDeleted = null;
-  // };
+  loadPageInit = () => {
+    if (!this.pageInitMap.runtime) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
+    this.userId = '';
+    this.selectedRowKeys = [];
+    this.runtimeIds = [];
+    this.pageInitMap = {};
+    this.runtimeDeleted = null;
+  };
 
   checkK8s = runtimeId => {
     if (!runtimeId || _.isEmpty(this.runtimes)) {

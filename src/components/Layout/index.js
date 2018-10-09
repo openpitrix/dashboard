@@ -11,5 +11,6 @@ export Panel from './Panel';
 export Card from './Card';
 
 export NavLink from './NavLink';
+export SideNav from './SideNav';
 
 export default Layout;

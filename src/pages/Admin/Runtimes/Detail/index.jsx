@@ -26,23 +26,20 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeDetail extends Component {
-  constructor(props) {
-    super(props);
-    const { clusterStore, match } = this.props;
-    // clusterStore.loadPageInit();
-    clusterStore.runtimeId = match.params.runtimeId;
-  }
-
   async componentDidMount() {
     const { runtimeStore, clusterStore, appStore, userStore, user, match } = this.props;
     const { runtimeId } = match.params;
 
     await runtimeStore.fetch(runtimeId);
+
+    clusterStore.runtimeId = runtimeId;
     await clusterStore.fetchAll({
       runtime_id: runtimeId
     });
-    await appStore.fetchApps({
-      status: ['active', 'deleted']
+
+    await appStore.fetchAll({
+      status: ['active', 'deleted'],
+      noLimit: true
     });
 
     if (user.isAdmin) {
@@ -51,6 +48,12 @@ export default class RuntimeDetail extends Component {
       const { runtimeDetail } = runtimeStore;
       await userStore.fetchDetail(runtimeDetail.owner);
     }
+  }
+
+  componentWillUnmount() {
+    const { clusterStore } = this.props;
+
+    clusterStore.loadPageInit();
   }
 
   componentDidUpdate() {

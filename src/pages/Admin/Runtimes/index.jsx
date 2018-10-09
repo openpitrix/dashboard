@@ -22,13 +22,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   const { runtimeStore, clusterStore } = this.props;
-  //   runtimeStore.loadPageInit();
-  //   clusterStore.loadPageInit();
-  // }
-
   async componentDidMount() {
     const { runtimeStore, clusterStore, userStore } = this.props;
 
@@ -43,6 +36,12 @@ export default class Runtimes extends Component {
   componentWillMount() {
     const { runtimeStore } = this.props;
     runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
+  }
+
+  componentWillUnmount() {
+    const { runtimeStore, clusterStore } = this.props;
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
   }
 
   onChangeSort = (params = {}) => {

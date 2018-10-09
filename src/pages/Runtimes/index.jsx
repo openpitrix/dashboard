@@ -18,16 +18,9 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  constructor(props) {
-    super(props);
-    const { runtimeStore, clusterStore } = this.props;
-
-    // runtimeStore.loadPageInit();
-    // clusterStore.loadPageInit();
-    this.state = {
-      currentType: 'all'
-    };
-  }
+  state = {
+    currentType: 'all'
+  };
 
   async componentDidMount() {
     const { runtimeStore, clusterStore } = this.props;
@@ -39,8 +32,12 @@ export default class Runtimes extends Component {
   }
 
   componentWillMount() {
-    const { runtimeStore } = this.props;
+    const { runtimeStore, clusterStore } = this.props;
+
     runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
+
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
   }
 
   selectType = async (value, flag) => {

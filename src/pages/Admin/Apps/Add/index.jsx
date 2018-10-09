@@ -19,16 +19,9 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppAdd extends Component {
-  constructor(props) {
-    super(props);
-    const { appStore } = this.props;
-    appStore.createStep = 1;
-    appStore.createError = '';
-  }
-
   async componentDidMount() {
-    const { appStore, repoStore, user } = this.props;
-    appStore.createReset();
+    const { repoStore, user } = this.props;
+
     await repoStore.fetchAll({
       noLimit: true,
       isQueryPublic: user.isDev
@@ -36,7 +29,9 @@ export default class AppAdd extends Component {
   }
 
   componentWillUnmount() {
-    const { repoStore } = this.props;
+    const { appStore, repoStore } = this.props;
+
+    appStore.createReset();
     repoStore.loadPageInit();
   }
 
@@ -137,7 +132,11 @@ export default class AppAdd extends Component {
 
         <div className={styles.operateWord}>
           {t('view_guide_1')}
-          <a className={styles.link} target="_blank" href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/">
+          <a
+            className={styles.link}
+            target="_blank"
+            href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
+          >
             {t('view_guide_2')}
           </a>
           {t('view_guide_3')}

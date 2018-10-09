@@ -16,18 +16,14 @@ import styles from './index.scss';
 }))
 @observer
 export default class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentForm: 'basic'
-    };
-  }
+  state = {
+    currentForm: 'basic'
+  };
 
   async componentDidMount() {
     const { userStore, user } = this.props;
-    const { fetchDetail } = userStore;
-    const { user_id } = user;
-    await fetchDetail(user_id);
+
+    await userStore.fetchDetail(user.user_id);
   }
 
   changeForm = (name, flag) => {

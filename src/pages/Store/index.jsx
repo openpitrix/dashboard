@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { get, find, throttle } from 'lodash';
 import { translate } from 'react-i18next';
@@ -26,7 +25,6 @@ export default class Store extends Component {
 
     window.scroll({ top: 0, behavior: 'smooth' });
 
-    // appStore.loadPageInit();
     await categoryStore.fetchAll({ noLogin: true });
 
     const params = {
@@ -39,7 +37,7 @@ export default class Store extends Component {
     if (search) {
       params.search_word = search;
     }
-    await appStore.fetchApps(params);
+    await appStore.fetchAll(params);
 
     appStore.storeApps = appStore.apps;
 
@@ -53,7 +51,7 @@ export default class Store extends Component {
   async componentWillReceiveProps({ match, rootStore }) {
     const { params } = match;
     if (params.category) {
-      await rootStore.appStore.fetchApps({
+      await rootStore.appStore.fetchAll({
         category_id: params.category,
         noLogin: true
       });
@@ -63,8 +61,10 @@ export default class Store extends Component {
 
   componentWillUnmount() {
     const { appStore } = this.props;
-    appStore.apps = [];
+
     window.onscroll = null;
+    appStore.apps = [];
+    appStore.loadPageInit();
   }
 
   //load app data progressive by window scroll
