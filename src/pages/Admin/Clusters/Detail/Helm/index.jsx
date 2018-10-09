@@ -28,37 +28,46 @@ export default class HelmCluster extends React.Component {
     cluster: {}
   };
 
+  constructor(props) {
+    super(props);
+
+    props.clusterDetailStore.clusterStore = props.clusterStore;
+  }
+
   renderDetailTabs() {
     const { onChangeK8sTag } = this.props.clusterDetailStore;
 
     return (
-      <DetailTabs
-        tabs={['Deployments', 'StatefulSets', 'DaemonSets']}
-        changeTab={onChangeK8sTag({
-          clusterStore,
-          isKubernetes
-        })}
-      />
+      <DetailTabs tabs={['Deployments', 'StatefulSets', 'DaemonSets']} changeTab={onChangeK8sTag} />
     );
   }
 
   renderToolbar() {
+    const { clusterDetailStore, t } = this.props;
+    const { searchNode, onSearchNode, onClearNode, onRefreshNode } = clusterDetailStore;
+
     return (
       <Toolbar
         placeholder={t('Search Node')}
         searchWord={searchNode}
-        onSearch={onSearchNode(isKubernetes, clusterStore)}
-        onClear={onClearNode(isKubernetes, clusterStore)}
-        onRefresh={onRefreshNode(isKubernetes, clusterStore)}
+        onSearch={onSearchNode}
+        onClear={onClearNode}
+        onRefresh={onRefreshNode}
       />
     );
   }
 
   renderTable() {
-    const { clusterDetailStore, clusterStore, t } = this.props;
-    const clusterNodes = clusterStore.clusterNodes.toJSON();
-    const { onChangeNodeStatus, selectNodeStatus, isLoading } = clusterStore;
-    const { extendedRowKeys, onChangeExtend } = clusterDetailStore;
+    const { clusterDetailStore, t } = this.props;
+    const clusterNodes = clusterDetailStore.helmClusterNodes.toJSON();
+
+    const {
+      onChangeNodeStatus,
+      selectNodeStatus,
+      isLoading,
+      extendedRowKeys,
+      onChangeExtend
+    } = clusterDetailStore;
 
     const props = {
       isLoading,
@@ -120,7 +129,7 @@ export default class HelmCluster extends React.Component {
         {this.renderDetailTabs()}
         <Card hasTable>
           {this.renderToolbar()}
-          {this.renderTable}
+          {this.renderTable()}
         </Card>
         {this.renderModals()}
       </div>

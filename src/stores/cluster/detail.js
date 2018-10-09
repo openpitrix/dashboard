@@ -39,16 +39,7 @@ export default class ClusterDetailStore extends Store {
   @observable searchNode = '';
   @observable selectNodeStatus = '';
 
-  @action
-  showModal = type => {
-    this.modalType = type;
-    this.isModalOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isModalOpen = false;
-  };
+  @observable isHelm = false;
 
   @action
   showModal = type => {
@@ -97,9 +88,10 @@ export default class ClusterDetailStore extends Store {
     this.isLoading = false;
   };
 
+  // todo: inject clusterStore
   @action
-  formatClusterNodes = ({ type, clusterStore, searchWord = '' }) => {
-    const { cluster_role_set, cluster_node_set } = clusterStore.cluster;
+  formatClusterNodes = ({ type, clusterStore = this.clusterStore, searchWord = '' }) => {
+    const { cluster_role_set, cluster_node_set } = this.cluster;
 
     if (_.isEmpty(cluster_role_set)) {
       return false;
@@ -160,6 +152,7 @@ export default class ClusterDetailStore extends Store {
       }
     });
 
+    console.log('helm cluster nodes; ', clusterNodes);
     this.helmClusterNodes = clusterNodes;
   };
 
@@ -232,13 +225,11 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  onChangeK8sTag = ({ isKubernetes, clusterStore }) => name => {
-    if (!isKubernetes || !name) return;
-
+  onChangeK8sTag = name => {
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
     this.nodeType = type;
-    this.fetchHelmNodes({ clusterStore, type });
+    this.formatClusterNodes({ type });
   };
 
   // @action
@@ -296,20 +287,20 @@ export default class ClusterDetailStore extends Store {
     await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
-  // @action
-  // changePaginationNode = async page => {
-  //   this.currentNodePage = page;
-  //   await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
-  // };
-  //
-  // @action
-  // onChangeNodeStatus = async status => {
-  //   this.currentNodePage = 1;
-  //   this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
-  //   await this.fetchNodes({
-  //     cluster_id: this.cluster.cluster_id
-  //   });
-  // };
+  @action
+  changePaginationNode = async page => {
+    this.currentNodePage = page;
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+  };
+
+  @action
+  onChangeNodeStatus = async status => {
+    this.currentNodePage = 1;
+    this.selectNodeStatus = this.selectNodeStatus === status ? '' : status;
+    await this.fetchNodes({
+      cluster_id: this.cluster.cluster_id
+    });
+  };
 
   @action
   loadNodeInit = () => {

@@ -338,7 +338,7 @@ export default class ClusterDetail extends Component {
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
 
-    // const { isNormal, isDev, isAdmin } = user;
+    const { isNormal, isDev, isAdmin } = user;
     //
     // const tableProps = {
     //   runtimeStore,
@@ -356,7 +356,6 @@ export default class ClusterDetail extends Component {
       <Layout
         className={classnames({ [styles.clusterDetail]: !isNormal })}
         backBtn={isNormal && <BackBtn label="purchased" link="/purchased" />}
-        isLoading={isLoading}
         listenToJob={this.listenToJob}
         title="Purchased"
       >
