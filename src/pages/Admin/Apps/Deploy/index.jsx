@@ -23,7 +23,10 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppDeploy extends Component {
-  static async onEnter({ appStore, repoStore, appDeployStore, user }, { appId }) {
+  async componentDidMount() {
+    const { appStore, repoStore, appDeployStore, user, match } = this.props;
+    const { appId } = match.params;
+
     appDeployStore.appId = appId;
     appStore.isLoading = true;
     await appStore.fetch(appId);

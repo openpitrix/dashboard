@@ -32,24 +32,22 @@ import styles from './index.scss';
 }))
 @observer
 export default class Users extends Component {
-  static async onEnter({ userStore }) {
+  async componentDidMount() {
+    const { userStore } = this.props;
+
     await userStore.fetchAll();
     //await userStore.fetchStatistics();
-  }
 
-  constructor(props) {
-    super(props);
-    const { userStore } = this.props;
-    userStore.loadPageInit();
-  }
-
-  componentWillMount = () => {
     // todo: api 404
     // await userStore.fetchOrganizations();
     // await userStore.fetchGroups();
     // await userStore.fetchRoles();
     // await userStore.fetchAuthorities();
-  };
+  }
+
+  componentWillUnmount() {
+    this.props.userStore.loadPageInit();
+  }
 
   changeSelect = value => {
     const { userStore } = this.props;

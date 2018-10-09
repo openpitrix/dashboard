@@ -26,9 +26,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class Review extends Component {
-  static async onEnter({ appVersionStore, appStore, categoryStore, repoStore, userStore }) {
+  async componentDidMount() {
+    const { appVersionStore, appStore, categoryStore, repoStore, userStore } = this.props;
+
     appVersionStore.registerStore('app', appStore);
     appVersionStore.registerStore('user', userStore);
+
     appVersionStore.isReview = true;
 
     await appVersionStore.fetchAll();
@@ -39,14 +42,11 @@ export default class Review extends Component {
     //await categoryStore.fetchAll();
   }
 
-  constructor(props) {
-    super(props);
+  componentWillUnmount() {
     const { appVersionStore, appStore, repoStore, userStore } = this.props;
+
     appVersionStore.loadPageInit();
     repoStore.loadPageInit();
-    appVersionStore.isReview = true;
-    appVersionStore.registerStore('app', appStore);
-    appVersionStore.registerStore('user', userStore);
   }
 
   renderToolbar() {

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
 import Layout, { Dialog, Grid, Section, Card, NavLink } from 'components/Layout';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
 import StepContent from '../Add/StepContent';
@@ -32,35 +32,27 @@ import styles from './index.scss';
 )
 @observer
 export default class AppDetail extends Component {
-  static async onEnter({ appStore, appVersionStore, repoStore }, { appId }) {
+  async componentDidMount() {
+    const { appStore, appVersionStore, repoStore, match } = this.props;
+    const { appId } = match.params;
+
     await appStore.fetch(appId);
+
     appVersionStore.appId = appId;
     appVersionStore.currentVersion = {};
     await appVersionStore.fetchAll({ app_id: appId });
+
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
     }
   }
 
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appVersionStore, match } = this.props;
+  componentWillUnmount() {
+    const { clusterStore, runtimeStore, appVersionStore } = this.props;
+
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     appVersionStore.loadPageInit();
-    appVersionStore.appId = match.params.appId;
-  }
-
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { appStore, appVersionStore, repoStore } = rootStore;
-    const { appId } = match.params;
-    await appStore.fetch(appId);
-    appVersionStore.appId = appId;
-    appVersionStore.currentVersion = {};
-    await appVersionStore.fetchAll({ app_id: appId });
-    if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
-    }
   }
 
   selectVersion = version => {
@@ -591,7 +583,7 @@ export default class AppDetail extends Component {
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
-                <TagNav tags={['Information', 'Clusters']} changeTag={this.changeDetailTab} />
+                <DetailTabs tabs={['Information', 'Clusters']} changeTab={this.changeDetailTab} />
                 {detailTab === 'Information' ? (
                   this.renderInformation()
                 ) : (

@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx';
 import { get, pick, assign } from 'lodash';
 import { Base64 } from 'js-base64';
-import Store from './Store';
 import { setCookie, getUrlParam, getFormData } from 'utils';
+
+import Store from '../Store';
 
 const defaultStatus = ['active'];
 
@@ -109,7 +110,9 @@ export default class UserStore extends Store {
         isNormal: userInfo.role === 'user',
         loginTime: Date.parse(new Date())
       };
+
       setCookie('user', JSON.stringify(user), this.cookieTime);
+      this.updateUser(user);
     }
 
     this.isLoading = false;
@@ -375,3 +378,5 @@ export default class UserStore extends Store {
     };
   };
 }
+
+export Role from './role';

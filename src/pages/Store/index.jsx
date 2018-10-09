@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { get, find, throttle } from 'lodash';
 import { translate } from 'react-i18next';
@@ -20,8 +19,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class Store extends Component {
-  static async onEnter({ categoryStore, appStore }, { category, search }) {
-    appStore.loadPageInit();
+  async componentDidMount() {
+    const { appStore, categoryStore, match } = this.props;
+    const { category, search } = match.params;
+
+    window.scroll({ top: 0, behavior: 'smooth' });
+
     await categoryStore.fetchAll({ noLogin: true });
 
     const params = {
@@ -34,18 +37,11 @@ export default class Store extends Component {
     if (search) {
       params.search_word = search;
     }
-    await appStore.fetchApps(params);
+    await appStore.fetchAll(params);
 
     appStore.storeApps = appStore.apps;
-  }
 
-  async componentDidMount() {
-    window.scroll({ top: 0, behavior: 'smooth' });
-    const { match } = this.props;
-    const { params } = match;
-
-    window.scroll({ top: 0, behavior: 'smooth' });
-    if (!params.category && !params.search) {
+    if (!category && !search) {
       const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
       await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);
@@ -55,7 +51,7 @@ export default class Store extends Component {
   async componentWillReceiveProps({ match, rootStore }) {
     const { params } = match;
     if (params.category) {
-      await rootStore.appStore.fetchApps({
+      await rootStore.appStore.fetchAll({
         category_id: params.category,
         noLogin: true
       });
@@ -65,8 +61,10 @@ export default class Store extends Component {
 
   componentWillUnmount() {
     const { appStore } = this.props;
-    appStore.apps = [];
+
     window.onscroll = null;
+    appStore.apps = [];
+    appStore.loadPageInit();
   }
 
   //load app data progressive by window scroll

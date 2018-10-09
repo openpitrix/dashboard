@@ -5,10 +5,9 @@ import { inject } from 'mobx-react';
 import { noop, clone, isEmpty, get } from 'lodash';
 
 import { Notification } from 'components/Base';
-import TabsNav from 'components/TabsNav';
-import Menu from 'components/Menu';
 import Loading from 'components/Loading';
 import TitleBanner from './TitleBanner';
+import SideNav from './SideNav';
 
 import styles from './index.scss';
 
@@ -31,7 +30,6 @@ export default class Layout extends React.Component {
   };
 
   static defaultProps = {
-    msg: '',
     noNotification: false,
     backBtn: null,
     listenToJob: noop,
@@ -39,12 +37,6 @@ export default class Layout extends React.Component {
     hasSearch: false,
     noLogin: false
   };
-
-  constructor(props) {
-    super(props);
-    this.availableLinks = [];
-    this.linkPrefix = '/dashboard';
-  }
 
   componentDidMount() {
     const { sock, listenToJob } = this.props;
@@ -96,7 +88,7 @@ export default class Layout extends React.Component {
         )}
       >
         {isNormal && <TitleBanner title={title} hasSearch={hasSearch} />}
-        {hasMenu && <Menu />}
+        {hasMenu && <SideNav />}
         {noNotification ? null : <Notification />}
         {backBtn}
         <Loading isLoading={isLoading} className={styles[loadClass]}>

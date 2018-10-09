@@ -21,13 +21,17 @@ export default class ClusterCard extends Component {
     userName: PropTypes.string
   };
 
+  static defaultProps = {
+    detail: {}
+  };
+
   render() {
     const { detail, appName, runtimeName, provider, userName, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
         <div className={classnames(styles.title, styles.noImg)}>
-          <div className={styles.name}>{detail.name}</div>
+          <div className={styles.name}>{detail.name || t('None')}</div>
           <CopyId id={detail.cluster_id} />
         </div>
         <ul className={styles.detail}>
@@ -49,7 +53,7 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('App')}</span>
-            <Link to={`/dashboard/app/${detail.app_id}`}>{appName}</Link>
+            <Link to={`/dashboard/app/${detail.app_id}`}>{appName || t('None')}</Link>
           </li>
           <li>
             <span className={styles.name}>{t('User')}</span>

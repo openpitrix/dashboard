@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { Icon, Input, Table, Pagination, Popover, Modal } from 'components/Base';
 import Layout, { BackBtn, Dialog, Grid, Section, Panel, Card, NavLink } from 'components/Layout';
 import Status from 'components/Status';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import TdName, { ProviderName } from 'components/TdName';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
@@ -24,8 +24,15 @@ import styles from './index.scss';
 }))
 @observer
 export default class CategoryDetail extends Component {
-  static async onEnter({ categoryStore, appStore, repoStore }, { categoryId }) {
+  async componentDidMount() {
+    const { categoryStore, appStore, repoStore, match } = this.props;
+    const { categoryId } = match.params;
+
+    appStore.categoryId = categoryId;
+
+    categoryStore.isDetailPage = true;
     await categoryStore.fetch(categoryId);
+
     await appStore.fetchAll({ category_id: categoryId });
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
@@ -33,22 +40,18 @@ export default class CategoryDetail extends Component {
     });
   }
 
-  constructor(props) {
-    super(props);
-    const { categoryStore, appStore, match } = this.props;
-    categoryStore.isDetailPage = true;
-    appStore.loadPageInit();
-    appStore.categoryId = match.params.categoryId;
+  componentWillUnmount() {
+    this.props.appStore.loadPageInit();
   }
 
-  componentDidUpdate() {
-    const { category } = this.props.categoryStore;
-    if (!category.category_id) {
-      setTimeout(() => {
-        location.href = '/dashboard/categories';
-      }, 2000);
-    }
-  }
+  // componentDidUpdate() {
+  //   const { category } = this.props.categoryStore;
+  //   if (!category.category_id) {
+  //     setTimeout(() => {
+  //       location.href = '/dashboard/categories';
+  //     }, 2000);
+  //   }
+  // }
 
   renderHandleMenu = category => {
     const { t } = this.props;
@@ -214,7 +217,7 @@ export default class CategoryDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav tags={['Apps']} />
+              <DetailTabs tabs={['Apps']} />
               <Card hasTable>
                 <Toolbar
                   placeholder={t('Search App')}

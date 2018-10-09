@@ -2,6 +2,7 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import Layout, { Grid, Section, Row, NavLink } from 'components/Layout';
 import Status from 'components/Status';
@@ -30,17 +31,28 @@ import styles from './index.scss';
 }))
 @observer
 export default class Overview extends React.Component {
-  static async onEnter({
-    appStore,
-    clusterStore,
-    repoStore,
-    runtimeStore,
-    categoryStore,
-    userStore,
-    user
-  }) {
-    appStore.updateMeunApps = true;
-    appStore.menuApps = [];
+  constructor(props) {
+    super(props);
+    const { user } = this.props;
+
+    this.userInfo = {
+      username: user.username,
+      role: user.role,
+      loginInfo: user.loginTime
+    };
+  }
+
+  async componentDidMount() {
+    const {
+      appStore,
+      clusterStore,
+      repoStore,
+      runtimeStore,
+      categoryStore,
+      userStore,
+      user
+    } = this.props;
+
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();
@@ -81,18 +93,13 @@ export default class Overview extends React.Component {
     }
   }
 
-  constructor(props) {
-    super(props);
-    const { appStore, clusterStore, runtimeStore, repoStore, user } = this.props;
+  componentWillUnmount() {
+    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+
     appStore.loadPageInit();
     clusterStore.loadPageInit();
     runtimeStore.loadPageInit();
     repoStore.loadPageInit();
-    this.userInfo = {
-      username: user.username,
-      role: user.role,
-      loginInfo: user.loginTime
-    };
   }
 
   handleClickTotalCard = label => {
@@ -122,8 +129,8 @@ export default class Overview extends React.Component {
       Users: 'group'
     };
 
-    const topRepos = appStore.summaryInfo.topRepos;
-    const topApps = clusterStore.summaryInfo.topApps;
+    const topRepos = _.get(appStore, 'summaryInfo.topRepos', []);
+    const topApps = _.get(clusterStore, 'summaryInfo.topApps', []);
     const latestClusters = clusterStore.clusters.slice(0, 5);
 
     return (

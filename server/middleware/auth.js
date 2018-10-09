@@ -1,8 +1,10 @@
-const debug = require('debug')('op-dash');
+const debug = require('debug')('app');
 
 const authPages = ['dashboard', 'runtimes', 'purchased', 'profile', 'ssh_keys', 'store'];
 
 module.exports = async (ctx, next) => {
+  const { cookies } = ctx;
+
   // filter non-asset types
   if (ctx.url.endsWith('.map')) {
     return;
@@ -13,12 +15,7 @@ module.exports = async (ctx, next) => {
   const page = (ctx.params.page || '').split('/')[0];
   const needAuth = authPages.indexOf(page) > -1;
 
-  const brokenCookie = () => {
-    let cookies = ctx.cookies;
-    return !(cookies.get('user') && cookies.get('access_token'));
-  };
-
-  if (needAuth && brokenCookie()) {
+  if (needAuth && !(cookies.get('user') && cookies.get('access_token'))) {
     // not login
     ctx.redirect('/login?url=' + ctx.params.page);
   }

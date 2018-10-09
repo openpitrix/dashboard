@@ -22,7 +22,9 @@ import styles from './index.scss';
 }))
 @observer
 export default class Runtimes extends Component {
-  static async onEnter({ runtimeStore, clusterStore, userStore }) {
+  async componentDidMount() {
+    const { runtimeStore, clusterStore, userStore } = this.props;
+
     await runtimeStore.fetchAll();
     await runtimeStore.fetchStatistics();
     await clusterStore.fetchAll({
@@ -31,16 +33,15 @@ export default class Runtimes extends Component {
     await userStore.fetchAll({ noLimit: true });
   }
 
-  constructor(props) {
-    super(props);
-    const { runtimeStore, clusterStore } = this.props;
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
-  }
-
   componentWillMount() {
     const { runtimeStore } = this.props;
     runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
+  }
+
+  componentWillUnmount() {
+    const { runtimeStore, clusterStore } = this.props;
+    runtimeStore.loadPageInit();
+    clusterStore.loadPageInit();
   }
 
   onChangeSort = (params = {}) => {
@@ -95,7 +96,7 @@ export default class Runtimes extends Component {
 
     if (runtimeIds.length) {
       return (
-        <Toolbar>
+        <Toolbar noRefreshBtn noSearchBox>
           <Button
             type="delete"
             onClick={() => showDeleteRuntime(runtimeIds)}

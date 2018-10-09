@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, pick } from 'lodash';
+import _, { get, pick } from 'lodash';
 
 import Store from './Store';
 
@@ -8,10 +8,8 @@ import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
 import Runtime, { Create as RuntimeCreate } from './runtime';
-
-import LoginStore from './LoginStore';
-import UserStore from './UserStore';
-import RoleStore from './RoleStore';
+import User, { Role } from './user';
+import sshKey from './key_pair';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -28,6 +26,15 @@ export default class RootStore extends Store {
   @action
   setNavFix(fixNav) {
     this.fixNav = !!fixNav;
+  }
+
+  @action
+  setUser(user) {
+    this.user = user;
+  }
+
+  updateUser(props) {
+    _.isFunction(this.user.update) && this.user.update(props);
   }
 
   @action
@@ -67,6 +74,7 @@ export default class RootStore extends Store {
     }
     this[name] = new store(withState ? this.state : '', name);
     this[name].notify = this.notify.bind(this);
+    this[name].updateUser = this.updateUser.bind(this);
   }
 
   registerStores() {
@@ -91,10 +99,10 @@ export default class RootStore extends Store {
     // category
     this.register('category', Category);
 
-    this.register('login', LoginStore, false);
-
     // user, role
-    this.register('user', UserStore);
-    this.register('role', RoleStore);
+    this.register('user', User);
+    this.register('role', Role);
+
+    this.register('sshKey', sshKey);
   }
 }

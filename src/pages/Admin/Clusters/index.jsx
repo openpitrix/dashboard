@@ -15,19 +15,20 @@ import { formatTime, getObjName } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore }) => ({
   rootStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
-  user: rootStore.user,
-  sock
+  user: rootStore.user
 }))
 @observer
 export default class Clusters extends Component {
-  static async onEnter({ clusterStore, appStore, runtimeStore }) {
-    clusterStore.clusters = [];
+  async componentDidMount() {
+    const { clusterStore, appStore, runtimeStore, userStore, user } = this.props;
+    const { isAdmin } = user;
+
     clusterStore.registerStore('app', appStore);
 
     await clusterStore.fetchAll();
@@ -36,31 +37,21 @@ export default class Clusters extends Component {
       noLimit: true,
       simpleQuery: true
     });
-  }
-
-  constructor(props) {
-    super(props);
-    const { clusterStore, runtimeStore, appStore } = this.props;
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.registerStore('app', appStore);
-    clusterStore.page = 'index';
-    this.store = clusterStore;
-  }
-
-  async componentDidMount() {
-    const { clusterStore, userStore, user } = this.props;
-    const { isAdmin } = user;
 
     if (isAdmin) {
       await clusterStore.fetchStatistics();
       await userStore.fetchAll({ noLimit: true });
     }
+
+    // clusterStore.clusters = [];
+    // clusterStore.registerStore('app', appStore);
   }
 
   componentWillUnmount() {
-    const { appStore } = this.props;
-    appStore.apps = [];
+    const { clusterStore, runtimeStore } = this.props;
+
+    clusterStore.loadPageInit();
+    runtimeStore.loadPageInit();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -130,22 +121,31 @@ export default class Clusters extends Component {
   };
 
   handleCluster = () => {
-    const { clusterId, clusterIds, modalType, operateType } = this.store;
+    const {
+      clusterId,
+      clusterIds,
+      modalType,
+      operateType,
+      remove,
+      start,
+      stop
+    } = this.props.clusterStore;
     let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+
     switch (modalType) {
       case 'delete':
-        this.store.remove(ids);
+        remove(ids);
         break;
       case 'start':
-        this.store.start(ids);
+        start(ids);
         break;
       case 'stop':
-        this.store.stop(ids);
+        stop(ids);
         break;
     }
   };
 
-  oprateSelected = type => {
+  operateSelected = type => {
     const { showOperateCluster, clusterIds } = this.props.clusterStore;
     showOperateCluster(clusterIds, type);
   };
@@ -158,7 +158,7 @@ export default class Clusters extends Component {
 
   renderDeleteModal = () => {
     const { t } = this.props;
-    const { hideModal, isModalOpen, modalType } = this.store;
+    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
     return (
       <Dialog
@@ -180,18 +180,18 @@ export default class Clusters extends Component {
 
     if (clusterIds.length) {
       return (
-        <Toolbar>
+        <Toolbar noRefreshBtn noSearchBox>
           <Button
             type="delete"
-            onClick={() => this.oprateSelected('delete')}
+            onClick={() => this.operateSelected('delete')}
             className="btn-handle"
           >
             {t('Delete')}
           </Button>
-          <Button type="default" onClick={() => this.oprateSelected('start')}>
+          <Button type="default" onClick={() => this.operateSelected('start')}>
             {t('Start')}
           </Button>
-          <Button type="delete" onClick={() => this.oprateSelected('stop')}>
+          <Button type="delete" onClick={() => this.operateSelected('stop')}>
             {t('Stop')}
           </Button>
         </Toolbar>
@@ -324,7 +324,7 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isNormal, isDev, isAdmin } = user;
+    const { isDev, isAdmin } = user;
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>

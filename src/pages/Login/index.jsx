@@ -20,9 +20,7 @@ export default class Login extends Component {
     const res = await this.props.store.oauth2Check(params);
 
     if (!(res && res.err)) {
-      const url = getUrlParam('url');
-      location.href = url ? url : '/dashboard';
-      // this.props.history.push(path);
+      location.href = getUrlParam('url') || '/dashboard';
     }
   };
 

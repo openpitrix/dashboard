@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
 import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
-import TagNav from 'components/TagNav';
+import DetailTabs from 'components/DetailTabs';
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
@@ -19,32 +19,32 @@ import { mappingStatus, getObjName } from 'utils';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
+@inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
-  user: rootStore.user,
-  sock
+  user: rootStore.user
 }))
 @observer
 export default class RepoDetail extends Component {
-  static async onEnter({ repoStore, userStore, user }, { repoId }) {
+  async componentDidMount() {
+    const { repoStore, userStore, user, match } = this.props;
+    const { repoId } = match.params;
+
     await repoStore.fetchRepoDetail(repoId);
 
     if (user.isAdmin) {
       await userStore.fetchAll({ noLimit: true });
     } else {
-      const { repoDetail } = repoStore;
-      await userStore.fetchDetail(repoDetail.owner);
+      await userStore.fetchDetail(repoStore.repoDetail.owner);
     }
   }
 
-  constructor(props) {
-    super(props);
-    const { repoStore, appStore, runtimeStore, clusterStore } = this.props;
-    repoStore.curTagName = 'Apps';
+  componentWillUnmount() {
+    const { appStore, runtimeStore, clusterStore } = this.props;
+
     appStore.loadPageInit();
     runtimeStore.loadPageInit();
     clusterStore.loadPageInit();
@@ -355,11 +355,7 @@ export default class RepoDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <TagNav
-                tags={['Apps', 'Runtimes', 'Events']}
-                defaultTag={curTagName}
-                changeTag={this.changeDetailTab}
-              />
+              <DetailTabs tabs={['Apps', 'Runtimes', 'Events']} changeTab={this.changeDetailTab} />
               <Card hasTable>
                 {curTagName === 'Runtimes' &&
                   selectors.length > 0 && (
