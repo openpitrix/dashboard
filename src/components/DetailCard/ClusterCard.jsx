@@ -22,7 +22,7 @@ export default class ClusterCard extends Component {
   };
 
   render() {
-    const { detail, appName, runtimeName, provider, t } = this.props;
+    const { detail, appName, runtimeName, provider, userName, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -53,7 +53,7 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('User')}</span>
-            {detail.owner}
+            {userName}
           </li>
           <li>
             <span className={styles.name}>{t('Node Count')}</span>

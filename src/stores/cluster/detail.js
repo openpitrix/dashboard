@@ -14,7 +14,7 @@ export default class ClusterDetailStore extends Store {
   @observable nodeType = '';
 
   @action
-  fetchPage = async ({ clusterId, clusterStore, runtimeStore, appStore }) => {
+  fetchPage = async ({ clusterId, clusterStore, runtimeStore, appStore, userStore }) => {
     this.isLoading = true;
     await clusterStore.fetch(clusterId);
     await clusterStore.fetchJobs(clusterId);
