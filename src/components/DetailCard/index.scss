@@ -112,7 +112,9 @@
     }
     .value {
       display: inline-block;
-      width: calc(100% - 144px)
+      word-break: break-word;
+      word-wrap: break-word;
+      width: calc(100% - 144px);
     }
 
     .labels {
