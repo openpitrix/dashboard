@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import { pick } from 'lodash';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
 import UserCard from 'components/DetailCard/UserCard';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
@@ -245,9 +245,7 @@ export default class Detail extends Component {
 
     return (
       <Layout className={styles.userDetail}>
-        <NavLink>
-          {t('Users')} / <Link to="/dashboard/users">{t('All Users')}</Link> / {userDetail.name}
-        </NavLink>
+        <BreadCrumb linkPath={`Users>All Users>${userDetail.username}`} />
 
         <Grid>
           <Section>

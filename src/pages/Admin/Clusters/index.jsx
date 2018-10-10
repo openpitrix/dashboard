@@ -5,7 +5,7 @@ import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Button, Table, Popover } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, NavLink } from 'components/Layout';
+import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -324,21 +324,12 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isDev, isAdmin } = user;
+    const { isDev, isAdmin, isNormal } = user;
+    const linkPath = isDev ? 'My Apps>Test>Clusters' : 'Platform>All Clusters';
 
     return (
       <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} / {t('Clusters')}
-          </NavLink>
-        )}
-
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / {t('All Clusters')}
-          </NavLink>
-        )}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         {isAdmin && (
           <Row>

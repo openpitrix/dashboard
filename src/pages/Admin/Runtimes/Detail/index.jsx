@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, NavLink } from 'components/Layout';
+import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
@@ -185,24 +185,16 @@ export default class RuntimeDetail extends Component {
       userName = userDetail.username;
       columns = columns.filter(item => item.key !== 'owner');
     }
+    const linkPath = isDev
+      ? `My Apps>Runtimes>${runtimeDetail.name}`
+      : `Platform>Runtimes>${runtimeDetail.name}`;
 
     return (
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
       >
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
-            <Link to="/runtimes">{t('Runtimes')}</Link> / {runtimeDetail.name}
-          </NavLink>
-        )}
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / <Link to="/dashboard/runtimes">{t('Runtimes')}</Link> /{' '}
-            {runtimeDetail.name}
-          </NavLink>
-        )}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>

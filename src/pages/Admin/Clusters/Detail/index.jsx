@@ -6,10 +6,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Popover, Modal, Select, CodeMirror } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Card, Panel, NavLink, Dialog } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Card, Panel, BreadCrumb, Dialog } from 'components/Layout';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
-
 import Helm from './Helm';
 import VMbase from './VMbase';
 
@@ -299,30 +298,6 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  renderBreadcrumb() {
-    const { clusterDetailStore, user, t } = this.props;
-    const { isDev, isAdmin } = user;
-    const { cluster } = clusterDetailStore;
-
-    return (
-      <Fragment>
-        {isDev && (
-          <NavLink>
-            <Link to="/dashboard/apps">{t('My Apps')}</Link> / {t('Test')} /&nbsp;
-            <Link to="/dashboard/clusters">{t('Clusters')}</Link> / {cluster.name}
-          </NavLink>
-        )}
-
-        {isAdmin && (
-          <NavLink>
-            {t('Platform')} / <Link to="/dashboard/clusters">{t('All Clusters')}</Link> /{' '}
-            {cluster.name}
-          </NavLink>
-        )}
-      </Fragment>
-    );
-  }
-
   render() {
     const {
       appStore,
@@ -352,6 +327,10 @@ export default class ClusterDetail extends Component {
     //   t
     // };
 
+    const linkPath = isDev
+      ? `My Apps>Test>Clusters>${cluster.name}`
+      : `Platform>All Clusters>${cluster.name}`;
+
     return (
       <Layout
         className={classnames({ [styles.clusterDetail]: !isNormal })}
@@ -359,7 +338,7 @@ export default class ClusterDetail extends Component {
         listenToJob={this.listenToJob}
         title="Purchased"
       >
-        {this.renderBreadcrumb()}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>

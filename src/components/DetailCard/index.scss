@@ -107,12 +107,13 @@
     }
     .val {
       display: inline-block;
+      width: calc(100% - 144px);
       word-break: break-word;
-      max-width: 50%;
+      word-wrap: break-word;
     }
     .value {
       display: inline-block;
-      width: calc(100% - 144px)
+      width: calc(100% - 144px);
     }
 
     .labels {

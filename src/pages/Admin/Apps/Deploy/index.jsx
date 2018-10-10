@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
 import { Radio, Button, Input, Select, CodeMirror, Image } from 'components/Base';
-import Layout, { BackBtn, CreateResource, NavLink } from 'components/Layout';
+import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import Cell from './Cell/index.jsx';
 import YamlCell from './Cell/YamlCell.jsx';
 
@@ -296,7 +296,8 @@ export default class AppDeploy extends Component {
     const { isKubernetes } = appDeployStore;
     const { isLoading } = appStore;
     const title = `${t('Deploy')} ${appDetail.name}`;
-    const { isNormal } = user;
+    const { isNormal, isDev } = user;
+    const linkPath = isDev ? 'My Apps>Test>Deploy' : 'Store>All Apps>Deploy';
 
     return (
       <Layout
@@ -306,11 +307,7 @@ export default class AppDeploy extends Component {
         isLoading={isLoading}
         backBtn={isNormal && <BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
       >
-        {!isNormal && (
-          <NavLink>
-            <Link to="/dashboard/apps">My Apps</Link> / Test / Deploy
-          </NavLink>
-        )}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()} asideTitle="">
           {isKubernetes ? this.renderYamlForm() : this.renderForm()}

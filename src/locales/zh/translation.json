@@ -352,6 +352,9 @@
   "Update cluster env": "修改集群环境",
   "Upgrade cluster": "升级集群版本",
   "Rollback": "回滚",
+  "Deployments": "部署",
+  "StatefulSets": "有状态副本集",
+  "DaemonSets": "守护进程集",
 
   "Back to user": "切换为普通用户",
   "Back to developer": "切换为开发者",

@@ -6,8 +6,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, NavLink } from 'components/Layout';
+import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
+
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
@@ -327,6 +328,9 @@ export default class RepoDetail extends Component {
         break;
     }
     const { isNormal, isDev, isAdmin } = user;
+    const linkPath = isDev
+      ? `My Apps>Repos>${repoDetail.name}`
+      : `Platform>Repos>${repoDetail.name}`;
 
     return (
       <Layout
@@ -334,13 +338,7 @@ export default class RepoDetail extends Component {
         backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}
         listenToJob={this.listenToJob}
       >
-        {!isNormal && (
-          <NavLink>
-            {isDev && <Link to="/dashboard/apps">{t('My Apps')}</Link>}
-            {isAdmin && <label>{t('Platform')}</label>}
-            &nbsp;/ <Link to="/dashboard/repos">{t('Repos')}</Link> / {repoDetail.name}
-          </NavLink>
-        )}
+        {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <Grid>
           <Section>
