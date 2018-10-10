@@ -15,7 +15,7 @@ describe('Home', () => {
       config: {},
       notifications: [],
       appStore: {
-        homeApps: [],
+        apps: [],
         appSearch: ''
       },
       categoryStore: {

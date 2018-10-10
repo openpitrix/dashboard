@@ -137,11 +137,10 @@ export default class AppStore extends Store {
   };
 
   @action
-  fetch = async (appId = '', noLogin) => {
+  fetch = async (appId = '') => {
     this.isLoading = true;
     const result = await this.request.get(`apps`, {
-      app_id: appId,
-      noLogin
+      app_id: appId
     });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;

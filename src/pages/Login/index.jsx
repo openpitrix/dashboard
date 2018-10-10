@@ -17,10 +17,16 @@ import styles from './index.scss';
 @observer
 export default class Login extends Component {
   handleSubmit = async params => {
-    const res = await this.props.store.oauth2Check(params);
+    const { store, history } = this.props;
+    const res = await store.oauth2Check(params);
+
+    if (res && res.user) {
+      await store.fetchDetail(res.user.sub, true);
+    }
 
     if (!(res && res.err)) {
-      location.href = getUrlParam('url') || '/dashboard';
+      history.push(getUrlParam('url') || '/dashboard');
+      // location.href = getUrlParam('url') || '/dashboard';
     }
   };
 

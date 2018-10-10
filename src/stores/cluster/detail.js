@@ -151,7 +151,6 @@ export default class ClusterDetailStore extends Store {
       }
     });
 
-    console.log('helm cluster nodes; ', clusterNodes);
     this.helmClusterNodes = clusterNodes;
   };
 

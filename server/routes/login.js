@@ -8,7 +8,17 @@ router.get('/logout', ctx => {
     httpOnly: false
   };
   ctx.session = null;
-  const names = ['access_token', 'token_type', 'access_token_home', 'refresh_token', 'user', 'role'];
+  const names = [
+    'access_token',
+    'token_type',
+    'user',
+    'role',
+    'expires_in',
+
+    'un_auth_access_token',
+    'un_auth_expires_in',
+    'un_auth_token_type'
+  ];
   names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
   ctx.redirect('/login');
 });

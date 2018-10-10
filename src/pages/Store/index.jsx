@@ -25,11 +25,10 @@ export default class Store extends Component {
 
     window.scroll({ top: 0, behavior: 'smooth' });
 
-    await categoryStore.fetchAll({ noLogin: true });
+    await categoryStore.fetchAll();
 
     const params = {
-      status: 'active',
-      noLogin: true
+      status: 'active'
     };
     if (category) {
       params.category_id = category;
@@ -52,8 +51,7 @@ export default class Store extends Component {
     const { params } = match;
     if (params.category) {
       await rootStore.appStore.fetchAll({
-        category_id: params.category,
-        noLogin: true
+        category_id: params.category
       });
       rootStore.appStore.storeApps = rootStore.appStore.apps;
     }
@@ -92,8 +90,7 @@ export default class Store extends Component {
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id,
-          noLoading: true,
-          noLogin: true
+          noLoading: true
         });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
