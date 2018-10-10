@@ -108,12 +108,11 @@
     .val {
       display: inline-block;
       width: calc(100% - 144px);
-      @include textCut;
+      word-break: break-word;
+      word-wrap: break-word;
     }
     .value {
       display: inline-block;
-      word-break: break-word;
-      word-wrap: break-word;
       width: calc(100% - 144px);
     }
 
