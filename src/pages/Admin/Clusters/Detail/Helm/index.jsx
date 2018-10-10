@@ -38,7 +38,10 @@ export default class HelmCluster extends React.Component {
     const { onChangeK8sTag } = this.props.clusterDetailStore;
 
     return (
-      <DetailTabs tabs={['Deployments', 'StatefulSets', 'DaemonSets']} changeTab={onChangeK8sTag} />
+      <DetailTabs
+        tabs={['Deployment Pods', 'StatefulSet Pods', 'DaemonSet Pods']}
+        changeTab={onChangeK8sTag}
+      />
     );
   }
 
@@ -71,11 +74,11 @@ export default class HelmCluster extends React.Component {
 
     const props = {
       isLoading,
-      columns: columns(t, onChangeNodeStatus, extendedRowKeys),
+      columns: columns(t, onChangeExtend, extendedRowKeys),
       dataSource: clusterNodes,
       filterList: getFilterOptions({
         trans: t,
-        onChange: onChangeExtend,
+        onChange: onChangeNodeStatus,
         selectValue: selectNodeStatus
       }),
       pagination: {
@@ -124,6 +127,10 @@ export default class HelmCluster extends React.Component {
   }
 
   render() {
+    const { clusterDetailStore } = this.props;
+    const { isLoading } = clusterDetailStore;
+    if (isLoading) return null;
+
     return (
       <div>
         {this.renderDetailTabs()}
