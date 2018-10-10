@@ -41,8 +41,12 @@ class Header extends Component {
     return pathname.indexOf(curLink) > -1;
   };
 
-  becomeDeveloper = () => {
-    setCookie('role', '', -1);
+  becomeDeveloper = isNormal => {
+    if (isNormal) {
+      setCookie('role', '', -1);
+    } else {
+      setCookie('role', 'user');
+    }
     location.href = '/dashboard';
   };
 
@@ -81,12 +85,14 @@ class Header extends Component {
 
   renderOperateMenu = () => {
     const { user, t } = this.props;
+    const { role, isNormal } = user;
+    const changeWord = isNormal ? t('Back to developer') : t('Back to user');
 
     return (
       <ul className={styles.operateItems}>
-        {user.role === 'developer' && (
-          <li onClick={this.becomeDeveloper} className={styles.line}>
-            <label>{t('Back to developer')}</label>
+        {role === 'developer' && (
+          <li onClick={() => this.becomeDeveloper(isNormal)} className={styles.line}>
+            <label>{changeWord}</label>
           </li>
         )}
         <li>

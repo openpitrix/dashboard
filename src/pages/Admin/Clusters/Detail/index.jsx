@@ -22,6 +22,7 @@ import styles from './index.scss';
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
+  sshKeyStore: rootStore.sshKeyStore,
   user: rootStore.user,
   rootStore
 }))
@@ -34,6 +35,8 @@ export default class ClusterDetail extends Component {
       runtimeStore,
       appStore,
       appVersionStore,
+      sshKeyStore,
+      user,
       match
     } = this.props;
     const { clusterId } = match.params;
@@ -54,6 +57,10 @@ export default class ClusterDetail extends Component {
       cluster_id: clusterId,
       isHelm: runtimeStore.isK8s
     });
+
+    if (!runtimeStore.isK8s) {
+      await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
+    }
 
     // if (!runtimeStore.isK8s) {
     //   // vmbase

@@ -26,16 +26,23 @@ export default class UserProvider {
      dev => normal
      normal => dev
 
-
-     if `this.changedRole` is set, changedRole will override `this.role`
+     if getCookie('role') not null, canChangeRole will change isNormal, isDev
      */
+
     this.changedRole = '';
+    try {
+      this.changedRole = getCookie('role');
+      if (this.changedRole === ROLE_NORMAL) {
+        this.canChangeRole();
+      }
+    } catch (err) {}
 
     this.accessToken = getCookie('access_token');
   }
 
   canChangeRole() {
-    return this.isDev;
+    this.isNormal = true;
+    this.isDev = false;
   }
 
   isLoggedIn() {

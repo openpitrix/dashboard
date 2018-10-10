@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { get } from 'lodash';
 
 import { Table, Popover, Radio, Button, Input, Select, Icon, Modal } from 'components/Base';
 import Layout, { CreateResource, Dialog, Panel, Grid, Row, Section, Card } from 'components/Layout';
@@ -19,20 +19,24 @@ import styles from './index.scss';
   userStore: rootStore.userStore,
   clusterStore: rootStore.clusterStore,
   clusterDetailStore: rootStore.clusterDetailStore,
-  sshKeyStore: rootStore.sshKeyStore
+  sshKeyStore: rootStore.sshKeyStore,
+  user: rootStore.user
 }))
 @observer
 export default class SSHKeys extends Component {
   async componentDidMount() {
-    const { clusterStore, clusterDetailStore, sshKeyStore } = this.props;
+    const { clusterStore, clusterDetailStore, sshKeyStore, user } = this.props;
 
-    await sshKeyStore.fetchKeyPairs();
+    await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
 
-    await clusterStore.fetchAll({
-      noLimit: true,
-      active: clusterStatus
-    });
-    await clusterDetailStore.fetchNodes();
+    const nodeIds = get(sshKeyStore.keyPairs[0], 'node_id', '');
+    if (nodeIds) {
+      await clusterStore.fetchAll({
+        noLimit: true,
+        active: clusterStatus
+      });
+      await clusterDetailStore.fetchNodes({ node_id: nodeIds });
+    }
   }
 
   goBack = () => {
@@ -42,11 +46,27 @@ export default class SSHKeys extends Component {
   onClickPair = item => {
     const { clusterDetailStore, sshKeyStore } = this.props;
     const { currentPairId } = sshKeyStore;
-    const { fetchNodes } = clusterDetailStore;
+    const { cancelSelectNodes, fetchNodes } = clusterDetailStore;
 
     if (currentPairId !== item.key_pair_id) {
+      cancelSelectNodes();
       sshKeyStore.currentPairId = item.key_pair_id;
-      fetchNodes({ node_id: item.node_id });
+      fetchNodes({ node_id: item.node_id || 0 });
+    }
+  };
+
+  detachKeyPairs = async () => {
+    const { clusterDetailStore, sshKeyStore, user } = this.props;
+    const { detachKeyPairs, currentPairId } = sshKeyStore;
+    const { selectedNodeIds, cancelSelectNodes, fetchNodes } = clusterDetailStore;
+
+    const result = await detachKeyPairs([currentPairId], selectedNodeIds);
+    if (!(result && result.err)) {
+      cancelSelectNodes();
+      await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
+      const keyPairs = sshKeyStore.keyPairs.filter(item => item.key_pair_id === currentPairId);
+      const nodeIds = get(keyPairs[0], 'node_id', '');
+      await fetchNodes({ node_id: nodeIds || 0 });
     }
   };
 
@@ -75,16 +95,19 @@ export default class SSHKeys extends Component {
 
   renderDeleteModal = () => {
     const { sshKeyStore, t } = this.props;
-    const { isModalOpen, removeKeyPairs, hideModal } = sshKeyStore;
+    const { isModalOpen, hideModal, modalType, removeKeyPairs } = sshKeyStore;
+    let title = t('Delete SSH Key'),
+      desc = t('delete_key_desc'),
+      submit = removeKeyPairs;
+    if (modalType === 'detachKey') {
+      title = t('Detach SSH Key');
+      desc = t('detach_key_desc');
+      submit = this.detachKeyPairs;
+    }
 
     return (
-      <Dialog
-        title={t('Delete SSH Key')}
-        visible={isModalOpen}
-        onSubmit={removeKeyPairs}
-        onCancel={hideModal}
-      >
-        {t('delete_key_desc')}
+      <Dialog title={title} visible={isModalOpen} onSubmit={submit} onCancel={hideModal}>
+        {desc}
       </Dialog>
     );
   };
@@ -94,7 +117,7 @@ export default class SSHKeys extends Component {
     const { isModalOpen, hideModal } = sshKeyStore;
 
     return (
-      <Modal title={t('Add SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
+      <Modal title={t('Create SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
         {this.renderForm(hideModal)}
       </Modal>
     );
@@ -180,17 +203,47 @@ export default class SSHKeys extends Component {
     );
   }
 
+  renderToolbar() {
+    const { clusterDetailStore, sshKeyStore, t } = this.props;
+    const {
+      searchNode,
+      onSearchNode,
+      onClearNode,
+      onRefreshNode,
+      selectedNodeIds
+    } = clusterDetailStore;
+
+    if (selectedNodeIds.length) {
+      return (
+        <Toolbar noRefreshBtn noSearchBox>
+          <Button onClick={() => sshKeyStore.showModal('detachKey')} className="btn-handle">
+            {t('Detach')}
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder={t('Search Node')}
+        searchWord={searchNode}
+        onSearch={onSearchNode}
+        onClear={onClearNode}
+        onRefresh={onRefreshNode}
+      />
+    );
+  }
+
   renderDetail() {
     const { clusterStore, clusterDetailStore, sshKeyStore, t } = this.props;
     const { keyPairs, currentPairId } = sshKeyStore;
     const {
       isLoading,
-      searchNode,
-      onSearchNode,
-      onClearNode,
-      onRefreshNode,
       onChangeNodeStatus,
       selectNodeStatus,
+      selectedNodeKeys,
+      onChangeSelectNodes,
+      changePaginationNode,
       totalNodeCount,
       clusterNodes
     } = clusterDetailStore;
@@ -213,11 +266,19 @@ export default class SSHKeys extends Component {
       }
     ];
 
+    const rowSelection = {
+      type: 'checkbox',
+      selectType: 'onSelect',
+      selectedRowKeys: selectedNodeKeys,
+      onChange: onChangeSelectNodes
+    };
+
     const pagination = {
       tableType: 'Clusters',
-      onChange: () => {},
+      onChange: changePaginationNode,
       total: totalNodeCount,
-      current: 1
+      current: 1,
+      noCancel: false
     };
 
     return (
@@ -227,7 +288,7 @@ export default class SSHKeys extends Component {
             <Card
               key={pair.key_pair_id}
               onClick={() => this.onClickPair(pair)}
-              className={classNames(styles.sshCardOuter, {
+              className={classnames(styles.sshCardOuter, {
                 [styles.active]: pair.key_pair_id === currentPairId
               })}
             >
@@ -248,17 +309,13 @@ export default class SSHKeys extends Component {
 
         <Section size={9}>
           <Card>
-            <Toolbar
-              placeholder={t('Search Node')}
-              searchWord={searchNode}
-              onSearch={onSearchNode}
-              onClear={onClearNode}
-              onRefresh={onRefreshNode}
-            />
+            {this.renderToolbar()}
+
             <Table
               columns={columns(clusters, t)}
               dataSource={clusterNodes.toJSON()}
               isLoading={isLoading}
+              rowSelection={rowSelection}
               filterList={filterList}
               pagination={pagination}
             />
@@ -274,7 +331,7 @@ export default class SSHKeys extends Component {
     if (modalType === 'addKey') {
       return this.renderAddModal();
     }
-    if (modalType === 'deleteKey') {
+    if (modalType === 'deleteKey' || modalType === 'detachKey') {
       return this.renderDeleteModal();
     }
     if (modalType === 'download') {

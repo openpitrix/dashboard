@@ -249,27 +249,29 @@ export default class AppDetail extends Component {
   };
 
   render() {
-    const { appStore, appVersionStore, user } = this.props;
-    const { isLoading } = appStore;
-    const appDetail = appStore.appDetail;
-    const { isNormal, isDev, isAdmin, role } = user;
+    const { appStore, user } = this.props;
+    const { appDetail, isLoading } = appStore;
+    const { isNormal, isDev, isAdmin } = user;
     const { path } = this.props.match;
 
     const isShowReview = isAdmin && path.indexOf('review') > -1;
-    const noLogin = path === '/apps/:appId';
     const backPath = isShowReview ? 'App Reviews' : 'All Apps';
     const linkPath = isDev ? `My Apps>${appDetail.name}` : `Store>${backPath}>${appDetail.name}`;
+    const isHome = path.startsWith('/apps/');
+    const backLabel = isHome ? 'Home' : 'Store';
+    const backLink = isHome ? '/' : '/store';
 
     return (
       <Layout
-        className={classnames({ [styles.appDetail]: noLogin })}
+        className={classnames({ [styles.appDetail]: isHome })}
         isLoading={isLoading}
         title="Store"
         hasSearch
-        noLogin={noLogin}
-        backBtn={isNormal && <BackBtn label="Store" link="/store" />}
+        isHome={isHome}
+        backBtn={(isNormal || isHome) && <BackBtn label={backLabel} link={backLink} />}
       >
-        {(isAdmin || isDev) && !noLogin && <BreadCrumb linkPath={linkPath} />}
+        {(isAdmin || isDev) && !isHome && <BreadCrumb linkPath={linkPath} />}
+
         <Grid>
           <Section size={8}>
             <Panel className={styles.introCard}>

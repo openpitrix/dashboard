@@ -212,7 +212,7 @@ export default class Table extends React.Component {
       const data = this.getTableData();
       const selectionColumn = {
         key: 'selection-column',
-        width: '20px',
+        width: '30px',
         render: this.renderSelectionBox(rowSelection.type),
         className: styles.selectionColumn,
         fixed: rowSelection.fixed

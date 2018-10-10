@@ -5,18 +5,20 @@ import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Button, Icon, Table, Radio, Input } from 'components/Base';
+import { Button, Icon, Table, Radio, Input, Modal } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
+import { formatTime } from 'utils';
 
 import styles from '../index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  store: rootStore.clusterDetailStore
+  store: rootStore.clusterDetailStore,
+  sshKeyStore: rootStore.sshKeyStore
   // clusterStore: rootStore.clusterStore
 }))
 @observer
@@ -34,6 +36,28 @@ export default class VMbasedCluster extends React.Component {
 
   onClickDeleteNodes = () => {
     this.props.store.showModal('deleteNodes');
+  };
+
+  attachKeyPairsShow = () => {
+    const { sshKeyStore } = this.props;
+    sshKeyStore.pairId = '';
+    this.props.store.showModal('attachKeyPairs');
+  };
+
+  attachKeyPairs = async () => {
+    const { store, sshKeyStore } = this.props;
+    const { selectedNodeIds, hideModal, cancelSelectNodes } = store;
+    const { pairId, attachKeyPairs } = sshKeyStore;
+
+    if (pairId) {
+      const result = await attachKeyPairs([pairId], selectedNodeIds);
+      if (!(result && result.err)) {
+        hideModal();
+        cancelSelectNodes();
+      }
+    } else {
+      sshKeyStore.error('Please select SSH key!');
+    }
   };
 
   handleAddNodes = async (e, formData) => {
@@ -69,6 +93,15 @@ export default class VMbasedCluster extends React.Component {
     return _.uniq(_.get(cluster, 'cluster_role_set', []).map(cl => cl.role));
   }
 
+  onSelectKey = item => {
+    const { sshKeyStore } = this.props;
+    const { pairId } = sshKeyStore;
+
+    if (pairId !== item.key_pair_id) {
+      sshKeyStore.pairId = item.key_pair_id;
+    }
+  };
+
   renderDetailTabs() {
     return <DetailTabs tabs={['Nodes']} />;
   }
@@ -83,6 +116,7 @@ export default class VMbasedCluster extends React.Component {
           <Button type="delete" onClick={this.onClickDeleteNodes} className="btn-handle">
             {t('Delete')}
           </Button>
+          <Button onClick={this.attachKeyPairsShow}>{t('Attach')}</Button>
         </Toolbar>
       );
     }
@@ -112,6 +146,7 @@ export default class VMbasedCluster extends React.Component {
       selectedNodeKeys,
       selectNodeStatus,
       onChangeSelectNodes,
+      changePaginationNode,
       onChangeNodeStatus
     } = store;
 
@@ -127,8 +162,8 @@ export default class VMbasedCluster extends React.Component {
         })}
         pagination={{
           tableType: 'Clusters',
-          onChange: () => {},
-          total: clusterNodes.length,
+          onChange: changePaginationNode,
+          total: clusterNodes.totalNodeCount,
           current: 1,
           noCancel: false
         }}
@@ -159,6 +194,10 @@ export default class VMbasedCluster extends React.Component {
 
     if (modalType === 'deleteNodes') {
       return this.renderDeleteNodesModal();
+    }
+
+    if (modalType === 'attachKeyPairs') {
+      return this.renderAttachModal();
     }
 
     if (modalType === 'resize') {
@@ -251,6 +290,47 @@ export default class VMbasedCluster extends React.Component {
       >
         {t('DEL_RESOURCE_TIPS', { resource_ids: selectedNodeIds.join(', ') })}
       </Dialog>
+    );
+  };
+
+  renderKeyCard(pair) {
+    return (
+      <div className={styles.sshCard}>
+        <div className={styles.title}>{pair.name}</div>
+        <div className={styles.pubKey}>{pair.pub_key}</div>
+      </div>
+    );
+  }
+
+  renderAttachModal = () => {
+    const { store, sshKeyStore, t } = this.props;
+    const { isModalOpen, hideModal } = store;
+    const { keyPairs, pairId } = sshKeyStore;
+
+    return (
+      <Modal title={t('Attach SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
+        <div className={styles.attachContent}>
+          {keyPairs.map(pair => (
+            <div
+              key={pair.key_pair_id}
+              onClick={() => this.onSelectKey(pair)}
+              className={classnames(styles.sshCardOuter, {
+                [styles.active]: pair.key_pair_id === pairId
+              })}
+            >
+              {this.renderKeyCard(pair)}
+            </div>
+          ))}
+        </div>
+        <div className={styles.operateBtns}>
+          <Button type="primary" onClick={this.attachKeyPairs}>
+            {t('Confirm')}
+          </Button>
+          <Button type="default" onClick={hideModal}>
+            {t('Cancel')}
+          </Button>
+        </div>
+      </Modal>
     );
   };
 

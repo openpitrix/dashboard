@@ -21,11 +21,10 @@ import styles from './index.scss';
 export default class Home extends Component {
   async componentDidMount() {
     const { rootStore, appStore, categoryStore, match } = this.props;
-    const { category, search } = match;
+    const { category, search } = match.params;
     const filterParams = { status: 'active', noLimit: true, noLogin: true };
 
     window.scroll({ top: 0, behavior: 'smooth' });
-
     if (category || search) {
       // search or category filter page
       rootStore.setNavFix(true);
