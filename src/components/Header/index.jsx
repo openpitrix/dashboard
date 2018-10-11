@@ -42,11 +42,10 @@ class Header extends Component {
   };
 
   becomeDeveloper = isNormal => {
-    if (isNormal) {
-      setCookie('role', '', -1);
-    } else {
-      setCookie('role', 'user');
-    }
+    const { rootStore } = this.props;
+    rootStore.updateUser({
+      changedRole: isNormal ? '' : 'user'
+    });
     location.href = '/dashboard';
   };
 
