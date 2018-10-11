@@ -66,9 +66,6 @@ export default class KeyPairStore extends Store {
         this.hideModal();
         await this.fetchKeyPairs();
         this.success('Create SSH Key successful!');
-      } else {
-        const { err, errDetail } = result;
-        this.error(errDetail || err || 'Create SSH key fail!');
       }
     }
   };
@@ -79,12 +76,38 @@ export default class KeyPairStore extends Store {
     this.hideModal();
 
     if (_.get(result, 'key_pair_id')) {
-      this.hideModal();
       await this.fetchKeyPairs();
       this.success('Delete SSH Key successfully.');
+    }
+  };
+
+  @action
+  attachKeyPairs = async (keyPairIds, nodeIds) => {
+    const result = await this.request.post('clusters/key_pair/attach', {
+      key_pair_id: keyPairIds,
+      node_id: nodeIds
+    });
+
+    if (_.get(result, 'job_id')) {
+      this.hideModal();
+      this.success('Attach SSH Key successfully.');
     } else {
-      const { err, errDetail } = result;
-      this.error(errDetail || err);
+      return result;
+    }
+  };
+
+  @action
+  detachKeyPairs = async (keyPairIds, nodeIds) => {
+    const result = await this.request.post('clusters/key_pair/detach', {
+      key_pair_id: keyPairIds,
+      node_id: nodeIds
+    });
+
+    if (_.get(result, 'job_id')) {
+      this.hideModal();
+      this.success('Detach SSH Key successfully.');
+    } else {
+      return result;
     }
   };
 

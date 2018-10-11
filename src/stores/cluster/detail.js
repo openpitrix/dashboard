@@ -30,7 +30,6 @@ export default class ClusterDetailStore extends Store {
   @observable nodeType = '';
 
   @observable selectedNodeKeys = [];
-
   @observable selectedNodeIds = [];
 
   @observable selectedNodeRole = '';
@@ -271,6 +270,12 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
+  cancelSelectNodes = () => {
+    this.selectedNodeKeys = [];
+    this.selectedNodeIds = [];
+  };
+
+  @action
   onSearchNode = async word => {
     this.searchNode = word;
     this.currentNodePage = 1;
@@ -307,5 +312,7 @@ export default class ClusterDetailStore extends Store {
     this.currentNodePage = 1;
     this.selectNodeStatus = '';
     this.searchNode = '';
+    this.selectedRowKeys = [];
+    this.nodeIds = [];
   };
 }

@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import { getCookie } from 'utils';
+import { getCookie, setCookie } from 'utils';
 
 const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'developer';
@@ -7,29 +6,20 @@ const ROLE_NORMAL = 'user';
 
 export default class UserProvider {
   constructor() {
-    this.info = {};
+    this.role = '';
+    this.username = '';
+    this.user_id = '';
+    this.email = '';
+    this.changedRole = '';
 
+    let user = {};
+
+    // read user from cookie
     try {
-      this.info = JSON.parse(getCookie('user') || '{}');
+      user = JSON.parse(getCookie('user') || '{}');
     } catch (err) {}
 
-    this.role = this.info.role;
-
-    // derived prop
-    this.isAdmin = this.role === ROLE_ADMIN;
-    this.isDev = this.role === ROLE_DEV;
-    this.isNormal = this.role === ROLE_NORMAL;
-
-    /*
-     changed to role
-
-     dev => normal
-     normal => dev
-
-
-     if `this.changedRole` is set, changedRole will override `this.role`
-     */
-    this.changedRole = '';
+    Object.assign(this, user);
 
     this.accessToken = getCookie('access_token');
   }
@@ -39,22 +29,32 @@ export default class UserProvider {
   }
 
   isLoggedIn() {
-    return Boolean(this.accessToken) && this.info.username;
+    return Boolean(this.accessToken) && this.username;
   }
 
   update(props = {}) {
-    _.extend(this, props);
+    Object.assign(this, props);
+    this.accessToken = getCookie('access_token');
+
+    // save own props to cookie
+    setCookie('user', JSON.stringify(this), getCookie('expires_in'));
   }
 
-  get username() {
-    return this.info.username;
+  get isAdmin() {
+    return this.role === ROLE_ADMIN;
   }
 
-  get email() {
-    return this.info.email;
+  get isDev() {
+    return this.changedRole !== ROLE_NORMAL && this.role === ROLE_DEV;
   }
 
-  get user_id() {
-    return this.info.user_id;
+  get isNormal() {
+    return this.changedRole === ROLE_NORMAL || this.role === ROLE_NORMAL;
   }
+
+  set isAdmin(boolen) {}
+
+  set isDev(boolen) {}
+
+  set isNormal(boolen) {}
 }

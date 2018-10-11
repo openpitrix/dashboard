@@ -271,6 +271,7 @@ export default class Overview extends React.Component {
       {
         title: 'Status',
         key: 'status',
+        width: '80px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {

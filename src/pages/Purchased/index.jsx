@@ -26,18 +26,21 @@ import styles from './index.scss';
 export default class Purchased extends Component {
   async componentDidMount() {
     const { clusterStore, appStore, runtimeStore } = this.props;
+    //clusterStore.registerStore('app', appStore);
 
-    clusterStore.registerStore('app', appStore);
-
-    await appStore.fetchAll({ status: 'active', noLogin: true });
-    await clusterStore.fetchAll();
-    await runtimeStore.fetchAll({
-      status: ['active', 'deleted'],
-      noLimit: true,
-      simpleQuery: true
-    });
-
-    appStore.storeApps = appStore.apps.slice();
+    await clusterStore.fetchAll({ noLimit: true });
+    const appIds = clusterStore.clusters.map(cluster => cluster.app_id);
+    if (appIds.length) {
+      await appStore.fetchAll({ app_id: appIds });
+      appStore.storeApps = appStore.apps.slice();
+      await runtimeStore.fetchAll({
+        status: ['active', 'deleted'],
+        noLimit: true,
+        simpleQuery: true
+      });
+    } else {
+      appStore.storeApps = [];
+    }
   }
 
   componentWillUnmount() {
@@ -168,12 +171,12 @@ export default class Purchased extends Component {
   };
 
   renderApps() {
-    const { apps } = this.props.appStore;
+    const { storeApps } = this.props.appStore;
     const { appId } = this.props.clusterStore;
 
     return (
       <ul className={styles.appList}>
-        {apps.slice(0, 10).map(app => (
+        {storeApps.slice(0, 10).map(app => (
           <li
             key={app.app_id}
             className={classNames({ [styles.active]: app.app_id === appId })}
@@ -217,7 +220,7 @@ export default class Purchased extends Component {
       {
         title: t('Cluster Name'),
         key: 'name',
-        width: '155px',
+        width: '130px',
         render: item => (
           <TdName
             name={item.name}
@@ -236,7 +239,7 @@ export default class Purchased extends Component {
       {
         title: t('App'),
         key: 'app_id',
-        width: '150px',
+        width: '130px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
@@ -255,7 +258,7 @@ export default class Purchased extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '90px',
+        width: '85px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
@@ -319,7 +322,7 @@ export default class Purchased extends Component {
               {this.renderToolbar()}
               <Table
                 columns={columns}
-                dataSource={clusters.toJSON()}
+                dataSource={clusters.slice(0, 10)}
                 isLoading={isLoading}
                 filterList={filterList}
                 pagination={pagination}

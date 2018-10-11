@@ -5,16 +5,19 @@ import Status from 'components/Status';
 import Configuration from 'pages/Admin/Clusters/Detail/Configuration';
 import { getObjName } from 'utils';
 
+import styles from './index.scss';
+
 export default (clusters, t) => [
   {
     title: t('Name'),
     key: 'name',
-    width: '155px',
+    width: '130px',
     render: item => <TdName name={item.name} description={item.node_id} noIcon />
   },
   {
     title: t('Cluster Name'),
     key: 'cluster_id',
+    width: '130px',
     render: item => (
       <TdName
         name={getObjName(clusters, 'cluster_id', item.cluster_id, 'name')}
@@ -34,18 +37,24 @@ export default (clusters, t) => [
   {
     title: t('Role'),
     key: 'role',
+    width: '80px',
     dataIndex: 'role'
   },
   {
-    title: t('Private IP'),
+    title: t('IP'),
     key: 'private_ip',
-    dataIndex: 'private_ip',
-    width: '100px'
+    width: '90px',
+    render: item => (
+      <div className={styles.ipShow}>
+        {item.private_ip}
+        <div className="eip"> {item.eip}</div>
+      </div>
+    )
   },
   {
     title: t('Configuration'),
     key: 'configuration',
-    width: '100px',
+    width: '120px',
     render: item => <Configuration configuration={item.cluster_role || {}} />
   }
   // {

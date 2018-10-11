@@ -24,6 +24,7 @@ const changeKey = {
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   appStore: rootStore.appStore,
   user: rootStore.user
 }))
@@ -44,7 +45,10 @@ class SideNav extends React.Component {
   }
 
   becomeUser = () => {
-    setCookie('role', 'user');
+    const { rootStore } = this.props;
+    rootStore.updateUser({
+      changedRole: 'user'
+    });
     location.href = '/dashboard';
   };
 

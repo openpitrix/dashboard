@@ -26,7 +26,7 @@ export default class Layout extends React.Component {
     listenToJob: PropTypes.func,
     title: PropTypes.string,
     hasSearch: PropTypes.bool,
-    noLogin: PropTypes.bool
+    isHome: PropTypes.bool
   };
 
   static defaultProps = {
@@ -35,7 +35,7 @@ export default class Layout extends React.Component {
     listenToJob: noop,
     title: '',
     hasSearch: false,
-    noLogin: false
+    isHome: false
   };
 
   componentDidMount() {
@@ -72,11 +72,11 @@ export default class Layout extends React.Component {
       backBtn,
       hasSearch,
       title,
-      noLogin
+      isHome
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
-    const hasMenu = (isDev || isAdmin) && !noLogin;
+    const hasMenu = (isDev || isAdmin) && !isHome;
 
     return (
       <div
@@ -87,7 +87,7 @@ export default class Layout extends React.Component {
           { [styles.hasBack]: Boolean(backBtn) }
         )}
       >
-        {isNormal && <TitleBanner title={title} hasSearch={hasSearch} />}
+        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
         {hasMenu && <SideNav />}
         {noNotification ? null : <Notification />}
         {backBtn}
