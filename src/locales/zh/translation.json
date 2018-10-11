@@ -365,5 +365,7 @@
   "None": "无",
   "Add Nodes": "添加节点",
   "Node Role": "节点角色",
-  "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?"
+  "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?",
+
+  "kubeconfig desc": "用于配置集群间访问的文件，在 Kubernetes 环境 “~/.kube/config” 查看"
 }
