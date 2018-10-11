@@ -125,14 +125,14 @@ export default class RuntimeAdd extends Component {
     return (
       <Fragment>
         <div>
-          <label className={classNames(styles.name, styles.textareaName)}>{t('Credential')}</label>
+          <label className={classNames(styles.name, styles.textareaName)}>{t('kubeconfig')}</label>
           <textarea
             className={styles.textarea}
             name="runtime_credential"
             onChange={this.store.changeCredential}
             value={credential}
           />
-          <p className={styles.credentialTip}>{t('The Credential of provider')}</p>
+          <p className={styles.credentialTip}>{t('kubeconfig desc')}</p>
         </div>
         <div className={classNames({ [styles.showDiv]: !!runtimeId })}>
           <label className={styles.name}>{t('Namespace')}</label>

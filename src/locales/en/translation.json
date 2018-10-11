@@ -73,6 +73,7 @@
 
   "search_results": "Results",
 
-  "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?"
+  "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?",
 
+  "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' "
 }
