@@ -22,8 +22,14 @@ export function getScrollBottom() {
 }
 
 export function setCookie(name, value, time) {
-  const expires = time ? parseInt(time) : 2 * 24 * 60 * 60 * 1000; // 2 days
-  const dt = new Date(Date.now() + expires);
+  let dt;
+  if (time instanceof Date) {
+    dt = time;
+  } else {
+    const expires = time ? parseInt(time) : 2 * 24 * 60 * 60 * 1000; // 2 days
+    dt = new Date(Date.now() + expires);
+  }
+
   document.cookie =
     name + '=' + encodeURIComponent(value) + ';expires=' + dt.toGMTString() + ';path=/;';
 }

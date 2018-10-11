@@ -29,34 +29,21 @@ export default class Home extends Component {
     await categoryStore.fetchAll();
 
     if (category || search) {
-      // search or category filter page
       rootStore.setNavFix(true);
     } else {
       // home page
       rootStore.setNavFix(false);
       this.threshold = this.getThreshold();
       window.onscroll = this.handleScroll;
-
-      if (category) {
-        filterParams.category_id = category;
-      }
-      if (search) {
-        filterParams.search_word = search;
-      }
-      await appStore.fetchAll(filterParams);
     }
-  }
-
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { category } = match.params;
 
     if (category) {
-      await rootStore.appStore.fetchAll({
-        category_id: category,
-        status: 'active',
-        noLimit: true
-      });
+      filterParams.category_id = category;
     }
+    if (search) {
+      filterParams.search_word = search;
+    }
+    await appStore.fetchAll(filterParams);
   }
 
   componentWillUnmount() {

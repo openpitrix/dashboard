@@ -38,22 +38,12 @@ export default class Store extends Component {
     }
     await appStore.fetchAll(params);
 
-    appStore.storeApps = appStore.apps;
+    appStore.storeApps = appStore.apps.slice();
 
     if (!category && !search) {
       const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
       await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);
-    }
-  }
-
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { params } = match;
-    if (params.category) {
-      await rootStore.appStore.fetchAll({
-        category_id: params.category
-      });
-      rootStore.appStore.storeApps = rootStore.appStore.apps;
     }
   }
 

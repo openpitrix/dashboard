@@ -45,7 +45,8 @@ export default class UserProvider {
     this.accessToken = getCookie('access_token');
 
     // save own props to cookie
-    setCookie('user', JSON.stringify(this), getCookie('expires_in'));
+    const expires_in = parseInt(getCookie('expires_in'));
+    setCookie('user', JSON.stringify(this), new Date(expires_in));
   }
 
   get isAdmin() {
