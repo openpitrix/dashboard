@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
-import { setCookie } from 'utils';
 
 import { subNavMap, getNavs } from './navMap';
 
@@ -61,8 +60,8 @@ class SideNav extends React.Component {
 
   isLinkActive = (activeName, role) => {
     let key = this.getMatchKey();
-    if (role === 'developer' && key === 'repo') {
-      key = 'app';
+    if (role === 'developer' && key === 'app') {
+      key = 'repo';
     }
 
     return activeName === key;
