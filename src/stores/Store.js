@@ -1,6 +1,8 @@
-import { set, decorate, observable, action } from 'mobx';
+import { set, decorate, observable } from 'mobx';
 import agent from 'lib/request';
 import _ from 'lodash';
+
+import { getCookie } from 'utils';
 
 const debug = require('debug')('app');
 
@@ -74,6 +76,11 @@ Store.prototype = {
           const params = _.omitBy(args[1], val => {
             return val === undefined || val === null;
           });
+
+          // when refresh_token missing, redirect to login
+          // if(!(getCookie('refresh_token') || getCookie('un_auth_refresh_token'))){
+          //   location.href = '/login';
+          // }
 
           // forward to node backend
           const res = await target.post(url, { method, ...params });

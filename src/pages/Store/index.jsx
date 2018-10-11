@@ -25,11 +25,10 @@ export default class Store extends Component {
 
     window.scroll({ top: 0, behavior: 'smooth' });
 
-    await categoryStore.fetchAll({ noLogin: true });
+    await categoryStore.fetchAll();
 
     const params = {
-      status: 'active',
-      noLogin: true
+      status: 'active'
     };
     if (category) {
       params.category_id = category;
@@ -39,23 +38,12 @@ export default class Store extends Component {
     }
     await appStore.fetchAll(params);
 
-    appStore.storeApps = appStore.apps;
+    appStore.storeApps = appStore.apps.slice();
 
     if (!category && !search) {
       const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
       await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);
-    }
-  }
-
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { params } = match;
-    if (params.category) {
-      await rootStore.appStore.fetchAll({
-        category_id: params.category,
-        noLogin: true
-      });
-      rootStore.appStore.storeApps = rootStore.appStore.apps;
     }
   }
 
@@ -92,8 +80,7 @@ export default class Store extends Component {
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id,
-          noLoading: true,
-          noLogin: true
+          noLoading: true
         });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
@@ -119,10 +106,10 @@ export default class Store extends Component {
     const { appStore, categoryStore, match, t } = this.props;
     const { storeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
-    const categoryId = match.params.category;
-    const appSearch = match.params.search;
-    const showApps = appSearch || Boolean(categoryId) ? storeApps.slice() : storeApps.slice(0, 3);
-    const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
+
+    const { category, search } = match.params;
+    const showApps = category || search ? storeApps.slice() : storeApps.slice(0, 3);
+    const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
 
     return (
       <Layout title={t('Store')} hasSearch>
@@ -134,7 +121,7 @@ export default class Store extends Component {
               apps={showApps}
               categoryApps={categories.toJSON()}
               categoryTitle={categoryTitle}
-              appSearch={appSearch}
+              appSearch={search}
               skipLink="store"
             />
             {isLoading &&

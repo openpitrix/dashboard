@@ -38,7 +38,7 @@ export default class AppDetail extends Component {
     await appStore.fetch(appId, true);
 
     const { isNormal, role } = user;
-    const params = { app_id: match.params.appId, noLogin: true };
+    const params = { app_id: match.params.appId };
     //normal user or not login only query 'active' versions
     if (isNormal || !Boolean(role)) {
       params.status = ['active'];

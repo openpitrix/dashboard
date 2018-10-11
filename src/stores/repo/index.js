@@ -111,11 +111,10 @@ export default class RepoStore extends Store {
   };
 
   @action
-  fetchRepoDetail = async (repoId, noLogin) => {
+  fetchRepoDetail = async repoId => {
     this.isLoading = true;
     const result = await this.request.get(`repos`, {
-      repo_id: repoId,
-      noLogin: noLogin
+      repo_id: repoId
     });
     this.repoDetail = get(result, 'repo_set[0]', {});
     this.isLoading = false;

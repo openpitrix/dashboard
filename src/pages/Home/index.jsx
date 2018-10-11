@@ -22,11 +22,13 @@ export default class Home extends Component {
   async componentDidMount() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { category, search } = match.params;
-    const filterParams = { status: 'active', noLimit: true, noLogin: true };
+    const filterParams = { status: 'active', noLimit: true };
 
     window.scroll({ top: 0, behavior: 'smooth' });
+
+    await categoryStore.fetchAll();
+
     if (category || search) {
-      // search or category filter page
       rootStore.setNavFix(true);
     } else {
       // home page
@@ -34,8 +36,6 @@ export default class Home extends Component {
       this.threshold = this.getThreshold();
       window.onscroll = this.handleScroll;
     }
-
-    await categoryStore.fetchAll({ noLogin: true });
 
     if (category) {
       filterParams.category_id = category;
@@ -46,19 +46,6 @@ export default class Home extends Component {
     await appStore.fetchAll(filterParams);
 
     appStore.homeApps = appStore.apps.slice();
-  }
-
-  async componentWillReceiveProps({ match, rootStore }) {
-    const { params } = match;
-    if (params.category) {
-      await rootStore.appStore.fetchAll({
-        category_id: params.category,
-        status: 'active',
-        noLimit: true,
-        noLogin: true
-      });
-      rootStore.appStore.homeApps = rootStore.appStore.apps;
-    }
   }
 
   componentWillUnmount() {
@@ -122,8 +109,7 @@ export default class Home extends Component {
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id,
-          noLoading: true,
-          noLogin: true
+          noLoading: true
         });
         let temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
@@ -148,11 +134,11 @@ export default class Home extends Component {
     const { fixNav } = rootStore;
     const { homeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
-    const categoryId = match.params.category;
-    const appSearch = match.params.search;
-    const showApps = appSearch || Boolean(categoryId) ? homeApps.slice() : homeApps.slice(0, 3);
+
+    const { category, search } = match.params;
+    const showApps = category || search ? homeApps.slice() : homeApps.slice(0, 3);
     const isHomePage = match.path === '/';
-    const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
+    const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
 
     return (
       <Fragment>
@@ -166,7 +152,7 @@ export default class Home extends Component {
               apps={showApps}
               categoryApps={categories.toJSON()}
               categoryTitle={categoryTitle}
-              appSearch={appSearch}
+              appSearch={search}
             />
             {isProgressive && (
               <div className={styles.loading}>

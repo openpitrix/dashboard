@@ -10,16 +10,24 @@ export default class UserProvider {
     this.username = '';
     this.user_id = '';
     this.email = '';
-    this.changedRole = '';
 
     let user = {};
 
-    // read user from cookie
     try {
       user = JSON.parse(getCookie('user') || '{}');
     } catch (err) {}
 
     Object.assign(this, user);
+
+    /*
+     changed to role
+
+     dev => normal
+     normal => dev
+
+     if `this.changedRole` is set, changedRole will override `this.role`
+     */
+    this.changedRole = '';
 
     this.accessToken = getCookie('access_token');
   }
@@ -37,7 +45,8 @@ export default class UserProvider {
     this.accessToken = getCookie('access_token');
 
     // save own props to cookie
-    setCookie('user', JSON.stringify(this), getCookie('expires_in'));
+    const expires_in = parseInt(getCookie('expires_in'));
+    setCookie('user', JSON.stringify(this), new Date(expires_in));
   }
 
   get isAdmin() {

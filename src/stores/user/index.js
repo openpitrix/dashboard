@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
-import { get, pick, assign } from 'lodash';
-import { Base64 } from 'js-base64';
-import { setCookie, getUrlParam, getFormData } from 'utils';
+import _, { get, pick, assign } from 'lodash';
+import { getFormData } from 'utils';
 
 import Store from '../Store';
 
@@ -102,17 +101,7 @@ export default class UserStore extends Store {
     this.userDetail = get(result, 'user_set[0]', {});
 
     if (isLogin) {
-      const userInfo = pick({ ...this.userDetail }, ['user_id', 'username', 'email', 'role']);
-      const user = {
-        ...userInfo,
-        isAdmin: userInfo.role === 'global_admin',
-        isDev: userInfo.role === 'developer',
-        isNormal: userInfo.role === 'user',
-        loginTime: Date.parse(new Date())
-      };
-
-      setCookie('user', JSON.stringify(user), this.cookieTime);
-      this.updateUser(user);
+      this.updateUser(pick(this.userDetail, ['user_id', 'username', 'email', 'role']));
     }
 
     this.isLoading = false;
@@ -209,29 +198,12 @@ export default class UserStore extends Store {
 
   @action
   oauth2Check = async (params = {}) => {
-    const data = {
+    return await this.request.post('oauth2/token', {
       grant_type: 'password',
       scope: '',
       username: params.email,
       password: params.password
-    };
-
-    const result = await this.request.post('oauth2/token', data);
-    const { access_token, token_type, expires_in, refresh_token, id_token } = result;
-
-    if (access_token) {
-      this.cookieTime = expires_in * 1000;
-      setCookie('access_token', access_token, this.cookieTime);
-      setCookie('token_type', token_type, this.cookieTime);
-      setCookie('refresh_token', refresh_token);
-
-      //get login user info
-      const idToken = id_token.split('.');
-      const user = idToken[1] ? JSON.parse(Base64.decode(idToken[1])) : {};
-      await this.fetchDetail(user.sub, true);
-    } else {
-      return result;
-    }
+    });
   };
 
   @action

@@ -38,8 +38,6 @@ app.on('error', (err, ctx) => {
 
 app.use(helmet());
 
-// debug(`server config: %O`, config);
-
 // serve static files
 const serveStatic = (mount_points = {}) => {
   let opt = { index: false, maxage: 3600 * 24 * 1000 };
@@ -65,13 +63,17 @@ app.use(
 
 // handle session
 app.use(require('./middleware/session')(app));
+
+// attach store to ctx
 app.use(require('./middleware/store'));
 
 // add routes
+app.use(require('./routes/auth-token').routes());
 app.use(require('./routes/login').routes());
 app.use(require('./routes/api').routes());
 app.use(require('./routes/page').routes());
 
+// render page
 app.use(require('./middleware/render'));
 
 app.listen(PORT, err => {

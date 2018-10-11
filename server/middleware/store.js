@@ -26,10 +26,15 @@ module.exports = async (ctx, next) => {
   }
 
   // url.resolve need first string starts with http
+  let apiServer = url.resolve(serverUrl, apiVer);
+  if (apiServer.endsWith('/')) {
+    apiServer = apiServer.substring(0, apiServer.length - 1);
+  }
+
   Object.assign(store, {
     config,
     socketUrl,
-    apiServer: url.resolve(serverUrl, apiVer),
+    apiServer,
     clientId: process.env.clientId || config.clientId,
     clientSecret: process.env.clientSecret || config.clientSecret
   });
