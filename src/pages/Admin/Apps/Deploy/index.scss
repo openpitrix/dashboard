@@ -133,3 +133,13 @@
     }
   }
 }
+
+.editorWrap {
+  display: flex;
+  .fileName{
+    color: $N500;
+  }
+  .editor{
+    width: 90%;
+  }
+}

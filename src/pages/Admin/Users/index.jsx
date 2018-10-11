@@ -4,25 +4,15 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import {
-  Checkbox,
-  Input,
-  Button,
-  Select,
-  Table,
-  Pagination,
-  Modal,
-  Icon,
-  Popover
-} from 'components/Base';
+import { Input, Button, Select, Table, Modal, Icon, Popover } from 'components/Base';
 import Layout, { Grid, Row, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
-import Statistics from 'components/Statistics';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
-import OrgTree from './OrgTree';
+// import OrgTree from './OrgTree';
 import GroupCard from './GroupCard';
-import { formatTime } from 'utils';
+
+import roles, { roleMap } from 'config/roles';
 
 import styles from './index.scss';
 
@@ -35,7 +25,7 @@ export default class Users extends Component {
   async componentDidMount() {
     const { userStore } = this.props;
 
-    await userStore.fetchAll();
+    // await userStore.fetchAll();
     //await userStore.fetchStatistics();
 
     // todo: api 404
@@ -80,15 +70,14 @@ export default class Users extends Component {
     }
   };
 
-  selectRole = item => {
+  selectRole = async item => {
     const { userStore } = this.props;
 
-    if (item.value !== userStore.selectRoleId) {
-      userStore.selectRoleId = item.value;
-      userStore.selectName = item.name;
-      userStore.currentPage = 1;
-      userStore.fetchAll();
-    }
+    userStore.selectRoleId = item.value;
+    userStore.selectName = item.name;
+    userStore.currentPage = 1;
+
+    await userStore.fetchAll();
   };
 
   openAuthorityModal = () => {
@@ -113,111 +102,6 @@ export default class Users extends Component {
       </div>
     );
   };
-
-  /*renderAuthorityModal = () => {
-    const { userStore } = this.props;
-
-    return (
-      <Modal
-        width={744}
-        title="Edit Administrator Policies"
-        visible={userStore.showAuthorityModal}
-        hideFooter
-        onCancel={this.closeAuthorityModal}
-      >
-        <div className={styles.authorityModal}>
-          <section className={styles.category}>
-            <div className={styles.title}>
-              <Checkbox>Repos</Checkbox>
-            </div>
-            <p className={styles.description}>
-              Provides full access to Openpitrix services and resources.
-            </p>
-            <ul className={styles.authorityList}>
-              <li>
-                <Checkbox>All Operations</Checkbox>
-              </li>
-              <li>
-                <div>
-                  <Checkbox>List</Checkbox>
-                </div>
-                <ul className={styles.innerList}>
-                  <li>
-                    <Checkbox>GetConsoleOutput</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>DescribeElasticGpus</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>GetConsoleScreenshot</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>DescribeScheduledInstanceAvailability</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>GetConsoleOutput</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>DescribeElasticGpus</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>GetConsoleScreenshot</Checkbox>
-                  </li>
-                  <li>
-                    <Checkbox>DescribeScheduledInstanceAvailability</Checkbox>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <div>
-                  <Checkbox>Read</Checkbox>
-                </div>
-                <ul>
-                  <li/>
-                </ul>
-              </li>
-              <li>
-                <div>
-                  <Checkbox>Write</Checkbox>
-                </div>
-                <ul>
-                  <li/>
-                </ul>
-              </li>
-            </ul>
-          </section>
-          <section className={styles.category}>
-            <div className={styles.title}>
-              <Checkbox>Runtimes</Checkbox>
-            </div>
-            <p className={styles.description}>
-              Grants full access to AlexaForBusiness resources and access to related AWS Services.
-            </p>
-          </section>
-          <section className={styles.category}>
-            <div className={styles.title}>
-              <Checkbox>Apps</Checkbox>
-            </div>
-            <p className={styles.description}>
-              Provide gateway execution access to AlexaForBusiness services
-            </p>
-          </section>
-          <section className={styles.category}>
-            <div className={styles.title}>
-              <Checkbox>Clusters</Checkbox>
-            </div>
-            <p className={styles.description}>Allows API Gateway to push logs to user's account.</p>
-          </section>
-          <div className={styles.operation}>
-            <Button type="primary">Confirm</Button>
-            <Button type="default" onClick={this.closeAuthorityModal}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    );
-  };*/
 
   renderOperateModal = () => {
     const { userStore, t } = this.props;
@@ -344,8 +228,6 @@ export default class Users extends Component {
   render() {
     const { userStore, t } = this.props;
     const {
-      summaryInfo,
-      users,
       treeFlag,
       organizations,
       selectValue,
@@ -353,65 +235,37 @@ export default class Users extends Component {
       selectRoleId,
       selectName
     } = userStore;
-    const groups = userStore.groups.toJSON();
-
-    const roles = [
-      {
-        name: 'Administrator',
-        value: 'global_admin',
-        description:
-          'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
-      },
-      {
-        name: 'Developer',
-        value: 'developer',
-        description:
-          'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
-      },
-      {
-        name: 'Normal User',
-        value: 'user',
-        description:
-          'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
-      }
-    ];
-
-    const roleMap = {
-      global_admin: 'Administrator',
-      developer: 'Developer',
-      user: 'Normal User'
-    };
 
     const data = userStore.users.toJSON();
 
     const columns = [
       {
-        title: 'UserName',
+        title: t('Username'),
         key: 'username',
         render: item => <Link to={`/dashboard/user/${item.user_id}`}>{item.username}</Link>
       },
       {
-        title: 'Status',
+        title: t('Status'),
         key: 'status',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: 'Email',
+        title: t('Email'),
         key: 'email',
         render: item => item.email
       },
       {
-        title: 'Role',
+        title: t('Role'),
         key: 'role',
         render: item => t(roleMap[item.role])
       },
       {
-        title: 'Updated At',
+        title: t('Updated At'),
         key: 'status_time',
         render: item => <TimeShow time={item.status_time} />
       },
       {
-        title: 'Actions',
+        title: t('Actions'),
         key: 'actions',
         width: '84px',
         render: item => (
@@ -455,27 +309,23 @@ export default class Users extends Component {
                   <Select.Option value="group">{t('Group')}</Select.Option>*/}
                   <Select.Option value="roles">{t('Roles')}</Select.Option>
                 </Select>
-                {selectValue === 'organization' && (
-                  <OrgTree
-                    treeFlag={treeFlag}
-                    organizations={organizations}
-                    clickCompany={this.clickCompany}
-                    clickDep={this.clickDep}
-                  />
-                )}
-                {selectValue === 'group' && (
-                  <GroupCard
-                    groups={groups}
-                    selectCard={this.selectGroup}
-                    selectValue={selectGroupId}
-                  />
-                )}
+                {/*{selectValue === 'organization' && (*/}
+                {/*<OrgTree*/}
+                {/*treeFlag={treeFlag}*/}
+                {/*organizations={organizations}*/}
+                {/*clickCompany={this.clickCompany}*/}
+                {/*clickDep={this.clickDep}*/}
+                {/*/>*/}
+                {/*)}*/}
+                {/*{selectValue === 'group' && (*/}
+                {/*<GroupCard*/}
+                {/*groups={groups}*/}
+                {/*selectCard={this.selectGroup}*/}
+                {/*selectValue={selectGroupId}*/}
+                {/*/>*/}
+                {/*)}*/}
                 {selectValue === 'roles' && (
-                  <GroupCard
-                    groups={roles}
-                    selectCard={this.selectRole}
-                    selectValue={selectRoleId}
-                  />
+                  <GroupCard groups={roles} selectCard={this.selectRole} />
                 )}
               </Card>
             </Section>
