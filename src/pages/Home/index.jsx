@@ -44,6 +44,8 @@ export default class Home extends Component {
       filterParams.search_word = search;
     }
     await appStore.fetchAll(filterParams);
+
+    appStore.homeApps = appStore.apps.slice();
   }
 
   componentWillUnmount() {
@@ -130,11 +132,11 @@ export default class Home extends Component {
   render() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { fixNav } = rootStore;
-    const { apps, isLoading, isProgressive } = appStore;
+    const { homeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
 
     const { category, search } = match.params;
-    const showApps = category || search ? apps : apps.slice(0, 3);
+    const showApps = category || search ? homeApps.slice() : homeApps.slice(0, 3);
     const isHomePage = match.path === '/';
     const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
 

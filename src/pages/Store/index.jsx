@@ -106,10 +106,10 @@ export default class Store extends Component {
     const { appStore, categoryStore, match, t } = this.props;
     const { storeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
-    const categoryId = match.params.category;
-    const appSearch = match.params.search;
-    const showApps = appSearch || Boolean(categoryId) ? storeApps.slice() : storeApps.slice(0, 3);
-    const categoryTitle = get(find(categories, { category_id: categoryId }), 'name', '');
+
+    const { category, search } = match.params;
+    const showApps = category || search ? storeApps.slice() : storeApps.slice(0, 3);
+    const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
 
     return (
       <Layout title={t('Store')} hasSearch>
@@ -121,7 +121,7 @@ export default class Store extends Component {
               apps={showApps}
               categoryApps={categories.toJSON()}
               categoryTitle={categoryTitle}
-              appSearch={appSearch}
+              appSearch={search}
               skipLink="store"
             />
             {isLoading &&
