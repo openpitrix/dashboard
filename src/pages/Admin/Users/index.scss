@@ -3,6 +3,9 @@
 .usersContent {
   .selectInfo {
     padding-right: 0;
+    margin-bottom: 24px;
+    line-height: 20px;
+    color: $N500;
   }
 
   .select {
@@ -16,14 +19,6 @@
 
   .noShadow {
     box-shadow: none;
-  }
-
-  .selectInfo {
-    margin-bottom: 24px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 20px;
-    color: $N500;
   }
 }
 

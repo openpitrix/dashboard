@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
+import { inject, observer } from 'mobx-react';
 
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 
+import { roleMap } from 'config/roles';
+
 import styles from './index.scss';
 
 @translate()
+@inject(({ rootStore }) => ({
+  user: rootStore.user
+}))
+@observer
 export default class UserCard extends React.Component {
   static propTypes = {
     userDetail: PropTypes.object.isRequired
@@ -19,13 +26,13 @@ export default class UserCard extends React.Component {
   };
 
   render() {
-    const { userDetail, t } = this.props;
+    const { userDetail, user, t } = this.props;
 
     return (
       <div className={styles.detailCard}>
         <div className={styles.title}>
           <div className={styles.name} title={userDetail.username}>
-            {userDetail.username}
+            {user.username}
           </div>
           <CopyId id={userDetail.user_id} />
         </div>
@@ -36,7 +43,7 @@ export default class UserCard extends React.Component {
           </li>
           <li>
             <span className={styles.name}>{t('Role')}</span>
-            {userDetail.role}
+            {t(roleMap[userDetail.role] || 'None')}
           </li>
           <li>
             <span className={styles.name}>{t('Email')}</span>

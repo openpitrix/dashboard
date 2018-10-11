@@ -208,7 +208,7 @@ export default class ClusterDetail extends Component {
         >
           <div className="formContent">
             <div className="inputItem">
-              <CodeMirror code={env} onChange={changeEnv} options={{ mode: 'yaml' }} />
+              <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
             </div>
           </div>
         </Modal>

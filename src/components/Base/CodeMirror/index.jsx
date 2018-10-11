@@ -14,15 +14,27 @@ export default class CodeMirrorX extends React.Component {
     onChange: PropTypes.func,
     mode: PropTypes.string
   };
+
   static defaultProps = {
     code: '',
     onChange: () => {},
     mode: 'yaml'
   };
 
-  render() {
-    const { onChange, code, mode } = this.props;
+  componentDidMount() {
+    this.refs.editor.getCodeMirror().refresh();
+  }
 
-    return <CodeMirror value={code} onChange={onChange} options={{ mode }} />;
+  render() {
+    const { onChange, code, mode, ...rest } = this.props;
+
+    return (
+      <CodeMirror
+        value={code}
+        onChange={onChange}
+        options={{ mode, lineNumbers: true }}
+        ref="editor"
+      />
+    );
   }
 }

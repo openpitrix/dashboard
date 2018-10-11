@@ -269,9 +269,13 @@ export default class AppDeploy extends Component {
         </div>
 
         <div className={styles.moduleTitle}>2. {t('Deploy Settings')}</div>
-        {yamlStr && (
-          <CodeMirror code={yamlStr} onChange={changeYamlStr} options={{ mode: 'yaml' }} />
-        )}
+
+        <div className={styles.editorWrap}>
+          <div className={styles.fileName}>values.yaml</div>
+          <div className={styles.editor}>
+            {yamlStr && <CodeMirror code={yamlStr} onChange={changeYamlStr} />}
+          </div>
+        </div>
 
         <div className={styles.submitBtnGroup}>
           <Button type={`primary`} className={`primary`} htmlType="submit" disabled={btnDisabled}>
