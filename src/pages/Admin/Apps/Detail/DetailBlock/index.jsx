@@ -69,7 +69,7 @@ export default class DetailBlock extends React.Component {
         </div>
         {!noDeploy && (
           <Link className={styles.deploy} to={`/store/${appDetail.app_id}/deploy`}>
-            <Button type="primary">Deploy</Button>
+            <Button type="primary">{t('Deploy')}</Button>
           </Link>
         )}
       </div>

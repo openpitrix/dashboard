@@ -63,10 +63,13 @@ export default class SSHKeys extends Component {
     const result = await detachKeyPairs([currentPairId], selectedNodeIds);
     if (!(result && result.err)) {
       cancelSelectNodes();
-      await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
-      const keyPairs = sshKeyStore.keyPairs.filter(item => item.key_pair_id === currentPairId);
-      const nodeIds = get(keyPairs[0], 'node_id', '');
-      await fetchNodes({ node_id: nodeIds || 0 });
+      // fix api refresh data has delay
+      setTimeout(async () => {
+        await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
+        const keyPairs = sshKeyStore.keyPairs.filter(item => item.key_pair_id === currentPairId);
+        const nodeIds = get(keyPairs[0], 'node_id', '');
+        await fetchNodes({ node_id: nodeIds || 0 });
+      }, 3000);
     }
   };
 

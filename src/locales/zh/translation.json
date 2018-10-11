@@ -303,6 +303,9 @@
   "Detach SSH Key": "解绑SSH密钥",
   "detach_key_desc": "您确定要解绑该SSH密钥与所选节点的绑定吗?",
 
+  "Attach": "绑定",
+  "Detach": "解绑",
+
   "Purchased": "已购应用",
   "My runtimes": "我的环境",
 
