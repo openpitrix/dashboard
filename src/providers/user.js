@@ -35,7 +35,6 @@ export default class UserProvider {
   update(props = {}) {
     Object.assign(this, props);
     this.accessToken = getCookie('access_token');
-    console.log({ ...props });
 
     // save own props to cookie
     setCookie('user', JSON.stringify(this), getCookie('expires_in'));
