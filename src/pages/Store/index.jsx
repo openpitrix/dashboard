@@ -28,7 +28,8 @@ export default class Store extends Component {
     await categoryStore.fetchAll();
 
     const params = {
-      status: 'active'
+      status: 'active',
+      noLimit: true
     };
     if (category) {
       params.category_id = category;
@@ -78,6 +79,7 @@ export default class Store extends Component {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
         await appStore.fetchAll({
+          limit: 6,
           status: 'active',
           category_id: categories[i].category_id,
           noLoading: true
@@ -123,6 +125,7 @@ export default class Store extends Component {
               categoryTitle={categoryTitle}
               appSearch={search}
               skipLink="store"
+              isLoading={isLoading}
             />
             {isLoading &&
               isProgressive && (

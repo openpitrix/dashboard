@@ -76,10 +76,15 @@ class Toolbar extends React.Component {
         )}
         {withCreateBtn.linkTo && (
           <Link to={withCreateBtn.linkTo}>
-            <Button className={styles.btnRight} type="primary" onClick={withCreateBtn.onClick}>
+            <Button className={styles.btnRight} type="primary">
               {withCreateBtn.name || 'Create'}
             </Button>
           </Link>
+        )}
+        {withCreateBtn.onClick && (
+          <Button className={styles.btnRight} type="primary" onClick={withCreateBtn.onClick}>
+            {withCreateBtn.name || 'Create'}
+          </Button>
         )}
         {viewType && (
           <Fragment>

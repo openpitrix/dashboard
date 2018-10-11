@@ -10,24 +10,16 @@ export default class UserProvider {
     this.username = '';
     this.user_id = '';
     this.email = '';
+    this.changedRole = '';
 
     let user = {};
 
+    // read user from cookie
     try {
       user = JSON.parse(getCookie('user') || '{}');
     } catch (err) {}
 
     Object.assign(this, user);
-
-    /*
-     changed to role
-
-     dev => normal
-     normal => dev
-
-     if `this.changedRole` is set, changedRole will override `this.role`
-     */
-    this.changedRole = '';
 
     this.accessToken = getCookie('access_token');
   }

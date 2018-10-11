@@ -17,11 +17,15 @@ export default class AppList extends PureComponent {
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
     appSearch: PropTypes.string,
-    skipLink: PropTypes.string
+    skipLink: PropTypes.string,
+    isLoading: PropTypes.bool
   };
 
   static defaultProps = {
-    skipLink: 'apps'
+    apps: [],
+    categoryApps: [],
+    skipLink: 'apps',
+    isLoading: false
   };
 
   renderCategoryApps() {
@@ -59,7 +63,7 @@ export default class AppList extends PureComponent {
   }
 
   render() {
-    const { apps, className, skipLink, t } = this.props;
+    const { apps, className, skipLink, isLoading, t } = this.props;
 
     return (
       <div className={classnames(styles.appList, className)}>
@@ -71,7 +75,7 @@ export default class AppList extends PureComponent {
           </Link>
         ))}
 
-        {!apps.length && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
+        {!apps.length && !isLoading && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
 
         {this.renderCategoryApps()}
       </div>

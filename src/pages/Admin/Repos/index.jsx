@@ -40,7 +40,7 @@ export default class Repos extends Component {
     window.onscroll = null;
 
     const { repoStore, appStore } = this.props;
-    repoStore.appStore = appStore;
+    repoStore.appStore = {};
 
     repoStore.loadPageInit();
     appStore.loadPageInit();

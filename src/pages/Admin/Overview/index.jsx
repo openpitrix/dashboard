@@ -52,7 +52,6 @@ export default class Overview extends React.Component {
       userStore,
       user
     } = this.props;
-
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();
@@ -250,8 +249,9 @@ export default class Overview extends React.Component {
   };
 
   developerView = () => {
-    const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
+    const { appStore, clusterStore, repoStore, runtimeStore, t, i18n } = this.props;
     const { isLoading } = appStore;
+    const lng = i18n.language || 'zh';
 
     const appList = appStore.apps;
     const clusterList = clusterStore.clusters;
@@ -311,7 +311,9 @@ export default class Overview extends React.Component {
         title: 'Updated At',
         key: 'status_time',
         width: '100px',
-        render: item => <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
+        render: item => (
+          <div className={styles.statusTime}>{getPastTime(item.status_time, lng)}</div>
+        )
       }
     ];
     const pagination = {

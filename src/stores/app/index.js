@@ -11,7 +11,7 @@ export default class AppStore extends Store {
   @observable homeApps = [];
   @observable storeApps = []; //store page category apps
   @observable menuApps = []; //menu apps
-  @observable updateMeunApps = true;
+  @observable hasMeunApps = false; // judje query menu apps
   @observable appDetail = {};
   @observable summaryInfo = {}; // replace original statistic
   @observable categoryTitle = '';
@@ -36,8 +36,6 @@ export default class AppStore extends Store {
   @observable appIds = [];
   @observable selectedRowKeys = [];
 
-  @observable deleteResult = {};
-
   @observable detailTab = 'Information';
 
   @observable currentPic = 1;
@@ -55,6 +53,18 @@ export default class AppStore extends Store {
   handleApp = {
     action: '', // delete, modify
     selectedCategory: '' // category id
+  };
+
+  @action
+  fetchMenuApps = async () => {
+    const params = {
+      sort_key: 'status_time',
+      limit: 5,
+      status: defaultStatus
+    };
+    const result = await this.request.get('apps', params);
+    this.menuApps = get(result, 'app_set', []);
+    this.hasMeunApps = true;
   };
 
   @action
@@ -97,20 +107,12 @@ export default class AppStore extends Store {
 
     const result = await this.request.get('apps', assign(defaultParams, params));
 
-    if (!params.menuApps) {
-      this.apps = get(result, 'app_set', []);
-      this.totalCount = get(result, 'total_count', 0);
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
 
-      if (!this.searchWord && !this.selectStatus) {
-        this.appCount = this.totalCount;
-      }
-
-      // if (this.updateMeunApps && this.apps.length > 0) {
-      //   this.menuApps = this.apps.slice(0, 5);
-      //   this.updateMeunApps = false;
-      // }
-    } else {
-      this.menuApps = get(result, 'app_set', []).slice(0, 5);
+    // appCount for show repo datail page "App Count"
+    if (!this.searchWord && !this.selectStatus) {
+      this.appCount = this.totalCount;
     }
 
     this.isLoading = false;
@@ -155,7 +157,7 @@ export default class AppStore extends Store {
     };
 
     if (this.createAppId) {
-      //defaultParams.app_id = this.createAppId;
+      defaultParams.app_id = this.createAppId;
       await this.modify(assign(defaultParams, params));
     } else {
       defaultParams.status = 'draft';
@@ -165,7 +167,7 @@ export default class AppStore extends Store {
     if (get(this.createResult, 'app_id')) {
       this.createAppId = get(this.createResult, 'app_id');
       this.createStep = 3; //show application has been created page
-      // this.updateMeunApps = true;
+      await this.fetchMenuApps();
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;
@@ -193,17 +195,15 @@ export default class AppStore extends Store {
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {
-      if (this.operateType === 'detailDelete') {
-        this.appDetail = {};
-        this.deleteResult = result;
-        await this.fetch(this.appId);
-      } else {
-        this.hideModal();
-        // this.updateMeunApps = true;
+      await this.fetchMenuApps();
+      if (this.operateType !== 'detailDelete') {
         await this.fetchAll();
         this.cancelSelected();
+        this.hideModal();
       }
       this.success('Delete app successfully.');
+    } else {
+      return result;
     }
   };
 

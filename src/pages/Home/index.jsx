@@ -107,6 +107,7 @@ export default class Home extends Component {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
         await appStore.fetchAll({
+          limit: 6,
           status: 'active',
           category_id: categories[i].category_id,
           noLoading: true
@@ -153,6 +154,7 @@ export default class Home extends Component {
               categoryApps={categories.toJSON()}
               categoryTitle={categoryTitle}
               appSearch={search}
+              isLoading={isLoading}
             />
             {isProgressive && (
               <div className={styles.loading}>

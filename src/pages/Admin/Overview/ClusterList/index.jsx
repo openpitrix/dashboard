@@ -17,7 +17,8 @@ export default class ClusterList extends PureComponent {
   };
 
   render() {
-    const { clusters, isNormal, t } = this.props;
+    const { clusters, isNormal, t, i18n } = this.props;
+    const lng = i18n.language || 'zh';
 
     return (
       <ul className={styles.clusterList}>
@@ -43,7 +44,7 @@ export default class ClusterList extends PureComponent {
               <div className={styles.nodes}>
                 {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {t('Nodes')}
               </div>
-              <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
+              <span className={styles.time}>{getPastTime(cluster.status_time, lng)}</span>
             </div>
           </li>
         ))}

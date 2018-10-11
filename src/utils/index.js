@@ -40,11 +40,17 @@ export function getCookie(name) {
   return value !== null ? decodeURIComponent(value[1]) : null;
 }
 
-export function getPastTime(time) {
+export function getPastTime(time, locale = 'zh') {
   const now = new Date();
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
-  return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
+  let daysago = ' 天前',
+    hoursago = ' 小时前';
+  if (locale === 'en') {
+    daysago = ' days ago';
+    hoursago = ' hours ago';
+  }
+  return diff / 24 > 1 ? parseInt(diff / 24) + daysago : parseInt(diff) + hoursago;
 }
 
 export function toQueryString(params) {
@@ -67,7 +73,7 @@ export function getSessInfo(key, store) {
   return typeof store === 'object' ? get(store, key) : null;
 }
 
-export function getLoginDate(timestamp = Date.now(), locale = 'en') {
+export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
   let ts = day(parseInt(timestamp));
   if (locale === 'en') {
     return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
