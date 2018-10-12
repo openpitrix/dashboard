@@ -249,9 +249,8 @@ export default class Overview extends React.Component {
   };
 
   developerView = () => {
-    const { appStore, clusterStore, repoStore, runtimeStore, t, i18n } = this.props;
+    const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
     const { isLoading } = appStore;
-    const lng = i18n.language || 'zh';
 
     const appList = appStore.apps;
     const clusterList = clusterStore.clusters;
@@ -312,7 +311,7 @@ export default class Overview extends React.Component {
         key: 'status_time',
         width: '100px',
         render: item => (
-          <div className={styles.statusTime}>{getPastTime(item.status_time, lng)}</div>
+          <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
         )
       }
     ];

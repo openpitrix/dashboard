@@ -80,9 +80,8 @@ router.post('/api/*', async ctx => {
     Object.assign(chooseToken, res);
   }
 
-  // todo: redirect is no effect
   if (!chooseToken.access_token) {
-    ctx.redirect('/login?url=' + endUrl);
+    ctx.throw(401, 'Unauthorized: invalid access token');
   }
 
   header.Authorization = `${chooseToken.token_type} ${chooseToken.access_token}`;
@@ -92,6 +91,7 @@ router.post('/api/*', async ctx => {
   ctx.body = await agent.send(method, url, body, {
     header: header
   });
+
 });
 
 module.exports = router;
