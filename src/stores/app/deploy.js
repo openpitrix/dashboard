@@ -172,9 +172,10 @@ ${this.yamlStr}`;
   @action
   fetchVersions = async (params = {}, flag) => {
     const status = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
-    if(!params.status) {
+    if (!params.status) {
       params.status = status;
     }
+    params.isGlobalQuery = true;
 
     const result = await this.request.get('app_versions', params);
     this.versions = get(result, 'app_version_set', []);

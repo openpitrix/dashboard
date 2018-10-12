@@ -142,7 +142,8 @@ export default class AppStore extends Store {
   fetch = async (appId = '') => {
     this.isLoading = true;
     const result = await this.request.get(`apps`, {
-      app_id: appId
+      app_id: appId,
+      isGlobalQuery: true
     });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;

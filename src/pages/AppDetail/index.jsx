@@ -159,7 +159,7 @@ export default class AppDetail extends Component {
                       {version.name}
                     </span>
                     <span className={styles.time}>
-                      {formatTime(version.create_time, 'MMM D, YYYY')}
+                      {formatTime(version.create_time, 'YYYY/MM/DD')}
                     </span>
                   </li>
                 ))}

@@ -32,11 +32,8 @@ router.post('/api/*', async ctx => {
     .split('/')
     .slice(3)
     .join('/');
-  const usingNoAuthToken =
-    endUrl === '' ||
-    endUrl.startsWith('apps') ||
-    endUrl.startsWith('store') ||
-    endUrl.endsWith('deploy');
+  const usingNoAuthToken = endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
+  delete body.isGlobalQuery;
 
   // defalut special token params
   const tokenData = {
@@ -91,7 +88,6 @@ router.post('/api/*', async ctx => {
   ctx.body = await agent.send(method, url, body, {
     header: header
   });
-
 });
 
 module.exports = router;
