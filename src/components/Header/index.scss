@@ -173,7 +173,8 @@ $profile-hover-color: #efe6f8;
   }
 
   .operateItems {
-    min-width: 120px;
+    min-width: 130px;
+
     li {
       > a,
       > label {
@@ -197,12 +198,19 @@ $profile-hover-color: #efe6f8;
       &.line{
         border-bottom: 1px solid $N10;
       }
+
+      .icon {
+        float: left;
+        position: relative;
+        top: 7px;
+        margin-right: 4px;
+      }
     }
   }
 
   :global{
     .pi-popover-popper{
-      margin-left: -62px !important;
+      margin-left: -40px !important;
       margin-top: 6px !important;
     }
   }

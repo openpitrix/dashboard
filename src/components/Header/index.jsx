@@ -76,7 +76,7 @@ class Header extends Component {
           activeClassName={styles.active}
           isActive={this.isLinkActive.bind(null, 'runtime')}
         >
-          {t('My runtimes')}
+          {t('My Runtimes')}
         </NavLink>
       </div>
     );
@@ -91,20 +91,35 @@ class Header extends Component {
       <ul className={styles.operateItems}>
         {role === 'developer' && (
           <li onClick={() => this.becomeDeveloper(isNormal)} className={styles.line}>
-            <label>{changeWord}</label>
+            <label>
+              <Icon name="backup" type="dark" size={18} className={styles.icon} />
+              {changeWord}
+            </label>
           </li>
         )}
         <li>
-          <Link to="/dashboard">{t('Dashboard')}</Link>
+          <Link to="/dashboard">
+            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
+            {t('Dashboard')}
+          </Link>
         </li>
         <li>
-          <Link to="/profile">{t('Profile')}</Link>
+          <Link to="/profile">
+            <Icon name="ssh" type="dark" size={18} className={styles.icon} />
+            {t('Profile')}
+          </Link>
         </li>
         <li>
-          <Link to="/ssh_keys">{t('SSH Keys')}</Link>
+          <Link to="/ssh_keys">
+            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
+            {t('SSH Keys')}
+          </Link>
         </li>
         <li>
-          <a href="/logout">{t('Log out')}</a>
+          <a href="/logout">
+            <Icon name="logout" type="dark" size={18} className={styles.icon} />
+            {t('Log out')}
+          </a>
         </li>
       </ul>
     );

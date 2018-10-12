@@ -130,7 +130,7 @@ export default class Runtimes extends Component {
     const { runtimes } = runtimeStore;
 
     const types = [
-      { name: 'All', value: 'all' },
+      { name: t('All'), value: 'all' },
       { name: 'QingCloud', value: 'qingcloud' },
       { name: 'AWS', value: 'aws' },
       { name: 'Kubernetes', value: 'kubernetes' }

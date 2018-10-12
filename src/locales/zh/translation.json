@@ -307,9 +307,8 @@
   "Attach": "绑定",
   "Detach": "解绑",
 
-  "Purchased": "已购应用",
+  "Purchased": "已部署应用",
   "My runtimes": "我的环境",
-
 
   "creat_new_app": "创建新应用程序",
   "creat_new_version": "创建新版本",

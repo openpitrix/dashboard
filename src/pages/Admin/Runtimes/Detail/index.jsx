@@ -192,7 +192,7 @@ export default class RuntimeDetail extends Component {
     return (
       <Layout
         title="My Runtimes"
-        backBtn={isNormal && <BackBtn label="runtimes" link="/runtimes" />}
+        backBtn={isNormal && <BackBtn label="My Runtimes" link="/runtimes" />}
       >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
