@@ -74,7 +74,8 @@ export default class AppDetail extends Component {
     const newVersion = { name: t('New version'), status: 'Creating', version_id: '' };
 
     if (_.find(versions, _.pick(newVersion, ['status', 'version_id']))) {
-      return appVersionStore.info(t('Already create new version'));
+      appVersionStore.info(t('Already create new version'));
+      return;
     }
 
     versions.unshift(newVersion);
@@ -532,7 +533,7 @@ export default class AppDetail extends Component {
     const isShowCreate = !currentVersion.version_id || createStep === 2;
 
     return (
-      <Layout className={styles.appDetail} noNotification={isShowCreate}>
+      <Layout className={styles.appDetail}>
         <BreadCrumb linkPath={`My Apps>${appDetail.name}`} />
 
         <Grid className={styles.appInfo}>
