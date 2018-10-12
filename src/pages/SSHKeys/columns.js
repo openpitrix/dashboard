@@ -37,7 +37,7 @@ export default (clusters, t) => [
   {
     title: t('Role'),
     key: 'role',
-    width: '80px',
+    width: '70px',
     dataIndex: 'role'
   },
   {
@@ -54,7 +54,7 @@ export default (clusters, t) => [
   {
     title: t('Configuration'),
     key: 'configuration',
-    width: '120px',
+    width: '110px',
     render: item => <Configuration configuration={item.cluster_role || {}} />
   }
   // {

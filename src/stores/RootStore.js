@@ -16,7 +16,10 @@ const defaultNotifyOption = { title: '', message: '', type: 'info' };
 export default class RootStore extends Store {
   @observable fixNav = false;
   @observable notifications = [];
-  @observable user = {};
+  @observable
+  user = {
+    username: ''
+  };
 
   constructor(initialState) {
     super(initialState);
@@ -33,6 +36,7 @@ export default class RootStore extends Store {
     this.user = user;
   }
 
+  @action
   updateUser(props) {
     _.isFunction(this.user.update) && this.user.update(props);
   }

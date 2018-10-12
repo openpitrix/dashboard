@@ -198,7 +198,9 @@ export default class SSHKeys extends Component {
     return (
       <div className={styles.sshCard}>
         <div className={styles.title}>{pair.name}</div>
-        <div className={styles.pubKey}>{pair.pub_key}</div>
+        <div className={styles.pubKey} title={pair.pub_key}>
+          {pair.pub_key}
+        </div>
         <div className={styles.time}>
           {t('Created on')}: {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
         </div>

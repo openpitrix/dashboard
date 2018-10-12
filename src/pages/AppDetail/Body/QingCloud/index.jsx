@@ -33,6 +33,7 @@ export default class QingCloud extends React.Component {
     const { pic } = e.currentTarget.dataset;
 
     this.setState({
+      currentNum: 1,
       showOverlay: true,
       currentPic: pic
     });
@@ -40,8 +41,28 @@ export default class QingCloud extends React.Component {
 
   closeOverlay = () => {
     this.setState({
+      currentNum: 1,
       showOverlay: false,
       currentPic: ''
+    });
+  };
+
+  changeOverlayPic = num => {
+    const { pictures } = this.props;
+    const { currentNum } = this.state;
+
+    let number = currentNum + num;
+    if (number < 1) {
+      number = 1;
+    }
+    if (number > pictures.length) {
+      number = pictures.length;
+    }
+
+    this.setState({
+      currentNum: number,
+      showOverlay: true,
+      currentPic: pictures[number - 1]
     });
   };
 
@@ -105,7 +126,7 @@ export default class QingCloud extends React.Component {
   renderOverlay() {
     const { showOverlay, currentPic } = this.state;
 
-    if(!showOverlay){
+    if (!showOverlay) {
       return null;
     }
 
@@ -115,11 +136,11 @@ export default class QingCloud extends React.Component {
           <Icon name="close" size={32} />
         </div>
         <div className={styles.viewCont}>
-          <label className={styles.pre}>
+          <label className={styles.pre} onClick={() => this.changeOverlayPic(-1)}>
             <Icon name="chevron-left" size={36} />
           </label>
           <label className={styles.next}>
-            <Icon name="chevron-right" size={36} />
+            <Icon name="chevron-right" size={36} onClick={() => this.changeOverlayPic(1)} />
           </label>
           <img src={currentPic} alt="overlay picture" className={styles.overlayPic} />
         </div>

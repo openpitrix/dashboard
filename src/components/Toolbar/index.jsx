@@ -20,7 +20,7 @@ class Toolbar extends React.Component {
     children: PropTypes.node,
     withCreateBtn: PropTypes.shape({
       linkTo: PropTypes.string,
-      onClick: PropTypes.func
+      onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
     }),
     viewType: PropTypes.string,
     changeView: PropTypes.func,
@@ -37,7 +37,7 @@ class Toolbar extends React.Component {
     placeholder: '',
     withCreateBtn: {
       linkTo: '',
-      onClick: noop
+      onClick: ''
     },
     noSearchBox: false,
     noRefreshBtn: false,
