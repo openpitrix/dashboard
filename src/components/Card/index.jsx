@@ -1,17 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { withRouter } from 'react-router';
 
 import { Icon, Image } from 'components/Base';
 
 import styles from './index.scss';
 
-export default class Card extends PureComponent {
+class Card extends PureComponent {
   static propTypes = {
     icon: PropTypes.string,
     name: PropTypes.string,
     desc: PropTypes.string,
-    fold: PropTypes.bool
+    fold: PropTypes.bool,
+    link: PropTypes.string
+  };
+
+  handleClick = () => {
+    const { history, link } = this.props;
+
+    history.push(link);
   };
 
   render() {
@@ -20,7 +28,10 @@ export default class Card extends PureComponent {
     const noneIcon = '/none.svg';
 
     return (
-      <div className={classnames(styles.card, { [styles.foldCard]: fold })}>
+      <div
+        className={classnames(styles.card, { [styles.foldCard]: fold })}
+        onClick={this.handleClick}
+      >
         <div className={styles.title}>
           <span className={styles.icon}>
             <Image src={icon || noneIcon} alt="Icon" iconSize={iconSize} />
@@ -38,3 +49,5 @@ export default class Card extends PureComponent {
     );
   }
 }
+
+export default withRouter(Card);

@@ -69,11 +69,17 @@ export default class AppList extends PureComponent {
       <div className={classnames(styles.appList, className)}>
         {<CardTitle title={this.getSearchTitle()} more={false} />}
 
-        {apps.map(app => (
-          <Link key={app.app_id} to={`/${skipLink}/${app.app_id}`}>
-            <Card icon={app.icon} name={app.name} desc={app.description} />
-          </Link>
-        ))}
+        <div className={styles.appsRow}>
+          {apps.map((app, idx) => (
+            <Card
+              icon={app.icon}
+              name={app.name}
+              desc={app.description}
+              key={idx}
+              link={`/${skipLink}/${app.app_id}`}
+            />
+          ))}
+        </div>
 
         {!apps.length && !isLoading && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
 
