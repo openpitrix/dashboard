@@ -57,7 +57,7 @@ form.createForm {
 
   .submitBtnGroup {
     margin: 0 -32px;
-    padding: 16px 0 16px 224px;
+    padding: 20px 0 0 224px;
     border-top: 1px solid $N10;
     margin-bottom: 0;
     button {
@@ -77,7 +77,7 @@ form.createForm {
 
 .sshCard {
   .title {
-    margin-bottom: 18px;
+    margin: 8px 0 12px;
     line-height: 16px;
     font-size: 14px;
     font-weight: 500;
@@ -88,8 +88,6 @@ form.createForm {
 
   .pubKey,
   .time {
-    height: 20px;
-    line-height: 20px;
     font-size: 12px;
     color: $N75;
     word-break: break-all;
@@ -97,14 +95,21 @@ form.createForm {
     overflow: hidden;
   }
 
-  .pubKey{
+  .pubKey {
     margin-bottom: 12px;
-    height: 40px;
+    height: 32px;
+    line-height: 16px
+  }
+
+  .time {
+    height: 20px;
+    line-height: 20px;
   }
 }
 
 .sshCardOuter {
   margin-bottom: 12px;
+  padding: 12px;
   border: 1px solid transparent;
   cursor: pointer;
 

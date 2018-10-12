@@ -303,16 +303,14 @@ export default class Overview extends React.Component {
       {
         title: 'Node Count',
         key: 'node_count',
-        width: '60px',
+        width: '50px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: 'Updated At',
         key: 'status_time',
-        width: '100px',
-        render: item => (
-          <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
-        )
+        width: '80px',
+        render: item => <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
       }
     ];
     const pagination = {

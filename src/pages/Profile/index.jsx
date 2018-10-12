@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classNames from 'classnames';
+import { extend } from 'lodash';
 
 import { Button, Input } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
@@ -39,6 +40,10 @@ export default class Profile extends Component {
     const result = await userStore.modifyUser(e);
 
     if (result && result.username) {
+      rootStore.updateUser({
+        username: result.username
+      });
+
       rootStore.user.username = result.username;
     }
   };

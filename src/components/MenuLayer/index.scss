@@ -1,0 +1,38 @@
+@import "~scss/vars";
+
+.menuLayer {
+  min-width: 130px;
+
+  li {
+    > a,
+    > label {
+      display: block;
+      height: 32px;
+      padding: 0 12px;
+      //width: 100%;
+      line-height: 32px;
+      font-size: $font14;
+      font-weight: normal;
+      color: $N300;
+      border-radius: 0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $N10;
+        color: $N500;
+      }
+    }
+
+    &.line{
+      border-bottom: 1px solid $N10;
+    }
+
+    .icon {
+      float: left;
+      position: relative;
+      top: 4px;
+      margin-right: 4px;
+    }
+  }
+}
+

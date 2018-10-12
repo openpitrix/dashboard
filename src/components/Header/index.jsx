@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Popover, Icon, Input } from 'components/Base';
+import MenuLayer from 'components/MenuLayer';
 import Logo from '../Logo';
-import { setCookie } from 'utils';
 
 import styles from './index.scss';
 
@@ -39,14 +39,6 @@ class Header extends Component {
   isLinkActive = (curLink, match, location) => {
     const { pathname } = location;
     return pathname.indexOf(curLink) > -1;
-  };
-
-  becomeDeveloper = isNormal => {
-    const { rootStore } = this.props;
-    rootStore.updateUser({
-      changedRole: isNormal ? '' : 'user'
-    });
-    location.href = '/dashboard';
   };
 
   renderMenus = () => {
@@ -82,49 +74,6 @@ class Header extends Component {
     );
   };
 
-  renderOperateMenu = () => {
-    const { user, t } = this.props;
-    const { role, isNormal } = user;
-    const changeWord = isNormal ? t('Back to developer') : t('Back to user');
-
-    return (
-      <ul className={styles.operateItems}>
-        {role === 'developer' && (
-          <li onClick={() => this.becomeDeveloper(isNormal)} className={styles.line}>
-            <label>
-              <Icon name="backup" type="dark" size={18} className={styles.icon} />
-              {changeWord}
-            </label>
-          </li>
-        )}
-        <li>
-          <Link to="/dashboard">
-            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
-            {t('Dashboard')}
-          </Link>
-        </li>
-        <li>
-          <Link to="/profile">
-            <Icon name="ssh" type="dark" size={18} className={styles.icon} />
-            {t('Profile')}
-          </Link>
-        </li>
-        <li>
-          <Link to="/ssh_keys">
-            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
-            {t('SSH Keys')}
-          </Link>
-        </li>
-        <li>
-          <a href="/logout">
-            <Icon name="logout" type="dark" size={18} className={styles.icon} />
-            {t('Log out')}
-          </a>
-        </li>
-      </ul>
-    );
-  };
-
   renderMenuBtns() {
     const { t } = this.props;
     const { username } = this.props.user;
@@ -139,7 +88,7 @@ class Header extends Component {
 
     return (
       <div className={styles.user}>
-        <Popover content={this.renderOperateMenu()}>
+        <Popover content={<MenuLayer />}>
           {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>

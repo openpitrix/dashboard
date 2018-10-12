@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
+import MenuLayer from 'components/MenuLayer';
 
 import { subNavMap, getNavs } from './navMap';
 
@@ -43,14 +44,6 @@ class SideNav extends React.Component {
       await fetchMenuApps();
     }
   }
-
-  becomeUser = () => {
-    const { rootStore } = this.props;
-    rootStore.updateUser({
-      changedRole: 'user'
-    });
-    location.href = '/dashboard';
-  };
 
   getMatchKey = () => {
     const { path } = this.props.match;
@@ -205,36 +198,13 @@ class SideNav extends React.Component {
 
     return (
       <div className={styles.header}>
-        <Popover content={this.renderOperateMenu()} className={styles.user}>
+        <Popover content={<MenuLayer />} className={styles.user}>
           {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
     );
   }
-
-  renderOperateMenu = () => {
-    const { user, t } = this.props;
-
-    return (
-      <ul className={styles.operateItems}>
-        {user.isDev && (
-          <li onClick={this.becomeUser} className={styles.line}>
-            <label>{t('Back to user')}</label>
-          </li>
-        )}
-        <li>
-          <NavLink to="/profile">{t('Profile')}</NavLink>
-        </li>
-        <li>
-          <NavLink to="/ssh_keys">{t('SSH Keys')}</NavLink>
-        </li>
-        <li>
-          <a href="/logout">{t('Log out')}</a>
-        </li>
-      </ul>
-    );
-  };
 
   render() {
     const { isDev, isAdmin, role } = this.props.user;
