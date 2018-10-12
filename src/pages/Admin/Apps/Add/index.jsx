@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Icon, Button, Upload } from 'components/Base';
+import { Icon, Button, Upload, Notification } from 'components/Base';
 import Layout, { Grid } from 'components/Layout';
 import RepoList from './RepoList';
 import StepContent from './StepContent';
@@ -48,8 +48,15 @@ export default class AppAdd extends Component {
     }
   };
 
-  selectRepoNext = length => {
-    length > 0 ? this.setCreateStep(2) : null;
+  selectRepoNext = repos => {
+    const { repoStore, t } = this.props;
+
+    if (!repos.length) {
+      repoStore.info(t('Please select one repo'));
+      return;
+    }
+
+    this.setCreateStep(2);
   };
 
   onChange = repoId => {
@@ -91,9 +98,12 @@ export default class AppAdd extends Component {
   renderSelectRepo() {
     const { t } = this.props;
     const { repos } = this.props.repoStore;
-    const publicRepos = repos.filter(repo => repo.visibility === 'public');
-    const privateRepos = repos.filter(repo => repo.visibility === 'private');
-    const selectRepos = repos.filter(repo => repo.active);
+
+    // filter s3 repos support upload package
+    const filterRepos = repos.filter(rp => rp.type.toLowerCase() === 's3');
+    const publicRepos = filterRepos.filter(repo => repo.visibility === 'public');
+    const privateRepos = filterRepos.filter(repo => repo.visibility === 'private');
+    const selectRepos = repos.filter(repo => repo.active && repo.type.toLowerCase() === 's3');
     const name = t('creat_new_app');
     const explain = t('select_repo_app');
 
@@ -104,7 +114,7 @@ export default class AppAdd extends Component {
           <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
         </div>
         <div
-          onClick={() => this.selectRepoNext(selectRepos.length)}
+          onClick={() => this.selectRepoNext(selectRepos)}
           className={classNames(styles.stepOperate, { [styles.noClick]: !selectRepos.length })}
         >
           {t('Next')} →
@@ -198,6 +208,7 @@ export default class AppAdd extends Component {
         {createStep === 1 && this.renderSelectRepo()}
         {createStep === 2 && this.renderUploadPackage()}
         {createStep === 3 && this.renderCreatedApp()}
+        <Notification />
       </div>
     );
   }

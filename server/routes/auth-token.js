@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const { Base64 } = require('js-base64');
-const { isObject } = require('lodash');
+const { has } = require('lodash');
 
 const agent = require('lib/request').default;
 const debug = require('debug')('app');
@@ -28,11 +28,12 @@ router.post(`/api/${authEndpoint}`, async ctx => {
 
   const res = await agent.send(method, url, body);
 
-  if (!isObject(res) || !res.access_token) {
-    // ctx.throw(401, 'login failed');
+  if (has(res, 'err')) {
     ctx.body = res;
-    ctx.res.end();
+    return;
   }
+
+  // debug(`res: %O`, res);
 
   // extract user info
   const idToken = res.id_token.split('.');
