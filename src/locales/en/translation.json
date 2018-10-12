@@ -80,5 +80,7 @@
   "DEVELOPER_DESC": "The developer creates the application test application through the developer portal and submits the application, which is run and maintained by authorization",
   "NORMAL_DESC": "The normal users access different operating environments to browse and buy applications through the service portal, and monitor and control and statistical analysis of deployed instances",
 
-  "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' "
+  "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' ",
+
+  "HELM_APP_NAME_TIP": "Start with [a-z], with '-', 0~9, lowercase letter in the middle, no more than 14 characters in length."
 }
