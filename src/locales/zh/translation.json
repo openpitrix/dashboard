@@ -378,5 +378,6 @@
   "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?",
 
   "kubeconfig desc": "用于配置集群间访问的文件，在 Kubernetes 环境 “~/.kube/config” 查看",
-  "Please select one repo": "请选择一个仓库"
+  "Please select one repo": "请选择一个仓库",
+  "HELM_APP_NAME_TIP": "以小写字母开头，中间为 -, 0~9，小写字母, 长度不超过14个字符."
 }

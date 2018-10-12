@@ -143,3 +143,17 @@
     width: 90%;
   }
 }
+
+.helmNameWrap {
+  display: inline;
+
+  .helmAppNameTip {
+    font-size: 12px;
+    color: $N100;
+    display: inline-block;
+    margin-left: 190px;
+    margin-top: 5px;
+    width: 360px;
+    word-break: break-word;
+  }
+}

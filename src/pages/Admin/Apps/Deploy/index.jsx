@@ -237,14 +237,17 @@ export default class AppDeploy extends Component {
         <div className={styles.moduleTitle}>1. {t('Basic Settings')}</div>
         <div className={styles.cellModule}>
           <label className={styles.name}>Name</label>
-          <Input
-            className={styles.input}
-            name="name"
-            type="text"
-            maxLength="50"
-            onChange={changeName}
-            required
-          />
+          <div className={styles.helmNameWrap}>
+            <Input
+              className={styles.input}
+              name="name"
+              type="text"
+              maxLength="50"
+              onChange={changeName}
+              required
+            />
+            <p className={styles.helmAppNameTip}>{t('HELM_APP_NAME_TIP')}</p>
+          </div>
         </div>
         <div className={styles.cellModule}>
           <label className={styles.name}>Runtime</label>
