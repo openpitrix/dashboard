@@ -25,6 +25,9 @@ Array [
         class="title"
       />
       <div
+        class="appsRow"
+      />
+      <div
         class="noData"
       />
     </div>
