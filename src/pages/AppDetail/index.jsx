@@ -132,7 +132,7 @@ export default class AppDetail extends Component {
   }
 
   renderVersions() {
-    const { appStore, appVersionStore, t } = this.props;
+    const { appStore, appVersionStore, user, t } = this.props;
     const appDetail = appStore.appDetail;
     const appVersions = appVersionStore.versions.toJSON();
 
@@ -143,7 +143,7 @@ export default class AppDetail extends Component {
             <Button
               className={styles.deployBtn}
               type="primary"
-              disabled={appDetail.status === 'deleted'}
+              disabled={appDetail.status === 'deleted' || !user.user_id}
             >
               {t('Deploy')}
             </Button>

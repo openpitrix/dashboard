@@ -314,7 +314,7 @@ export default class AppVersionStore extends Store {
     this.appId = '';
     this.createError = '';
     this.createResult = null;
-    //this.currentVersion = {};
+    this.currentVersion = {};
     this.uploadFile = '';
     this.store = {};
     this.isReview = false;

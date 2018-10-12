@@ -1,5 +1,6 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
+import ts from  '../config/translation'
 
 export function formatTime(ts, format = 'YYYY/MM/DD') {
   const parsedTs = day(ts);
@@ -44,7 +45,7 @@ export function getPastTime(time) {
   const now = new Date();
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
-  return diff / 24 > 1 ? parseInt(diff / 24) + ' days ago' : parseInt(diff) + ' hours ago';
+  return diff / 24 > 1 ? parseInt(diff / 24) + ts(' days ago') : parseInt(diff)  + ts(' hours ago');
 }
 
 export function toQueryString(params) {
@@ -67,7 +68,7 @@ export function getSessInfo(key, store) {
   return typeof store === 'object' ? get(store, key) : null;
 }
 
-export function getLoginDate(timestamp = Date.now(), locale = 'en') {
+export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
   let ts = day(parseInt(timestamp));
   if (locale === 'en') {
     return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;

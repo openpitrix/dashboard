@@ -17,7 +17,7 @@ export default class UserInfo extends PureComponent {
 
   render() {
     const { username, role, loginInfo, t, i18n } = this.props;
-    const lng = i18n.language || 'en';
+    const lng = i18n.language || 'zh';
     const roleMap = {
       user: 'Normal User',
       developer: 'Developer',

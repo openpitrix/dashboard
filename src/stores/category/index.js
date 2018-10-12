@@ -51,7 +51,7 @@ export default class CategoryStore extends Store {
   @action
   onSearch = async word => {
     this.searchWord = word;
-    await this.fetchAll(this.appStore);
+    await this.fetchAll({}, this.appStore);
   };
 
   @action
@@ -61,7 +61,7 @@ export default class CategoryStore extends Store {
 
   @action
   onRefresh = async () => {
-    await this.fetchAll(this.appStore);
+    await this.fetchAll({}, this.appStore);
   };
 
   @action
@@ -82,7 +82,7 @@ export default class CategoryStore extends Store {
       if (this.isDetailPage) {
         await this.fetch(this.category.category_id);
       } else {
-        await this.fetchAll(this.appStore);
+        await this.fetchAll({}, this.appStore);
       }
       this.success(msg);
     }

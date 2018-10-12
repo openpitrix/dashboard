@@ -156,13 +156,16 @@ export default class AppDetail extends Component {
     );
   };
 
-  delete = () => {
-    const { appStore, appVersionStore } = this.props;
+  delete = async () => {
+    const { appStore, appVersionStore, history } = this.props;
     if (appVersionStore.dialogType === 'deleteVersion') {
-      appVersionStore.handle('delete', appVersionStore.currentVersion.version_id);
+      await appVersionStore.handle('delete', appVersionStore.currentVersion.version_id);
     } else {
       appStore.operateType = 'detailDelete';
-      appStore.remove();
+      const result = await appStore.remove();
+      if (!(result && result.err)) {
+        history.push('/dashboard/apps');
+      }
     }
     appVersionStore.hideModal();
   };
@@ -442,7 +445,7 @@ export default class AppDetail extends Component {
           <dd>
             <textarea
               className={styles.textarea}
-              defaultValue={appVersionStore.description}
+              value={appVersionStore.description}
               disabled={isDisabled}
               onChange={appVersionStore.changeDescription}
               maxLength={500}
@@ -530,7 +533,9 @@ export default class AppDetail extends Component {
       };
     }
 
-    const isShowCreate = !currentVersion.version_id || createStep === 2;
+    const isShowCreate =
+      (!currentVersion.version_id || createStep === 2) && appDetail.status !== 'deleted';
+    const tags = appDetail.status === 'deleted' ? ['Clusters'] : ['Information', 'Clusters'];
 
     return (
       <Layout className={styles.appDetail}>
@@ -564,7 +569,7 @@ export default class AppDetail extends Component {
               (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
-                <DetailTabs tabs={['Information', 'Clusters']} changeTab={this.changeDetailTab} />
+                <DetailTabs tabs={tags} changeTab={this.changeDetailTab} />
                 {detailTab === 'Information' ? (
                   this.renderInformation()
                 ) : (

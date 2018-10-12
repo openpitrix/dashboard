@@ -76,5 +76,9 @@
 
   "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?",
 
+  "ADMINISTRATOR_DESC": "The platform administrator provides the system global management and is mainly responsible for setting up the platform, user management application approval, financial reconciliation store operation and other work",
+  "DEVELOPER_DESC": "The developer creates the application test application through the developer portal and submits the application, which is run and maintained by authorization",
+  "NORMAL_DESC": "The normal users access different operating environments to browse and buy applications through the service portal, and monitor and control and statistical analysis of deployed instances",
+
   "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' "
 }

@@ -12,6 +12,7 @@
   "Users": "用户",
   "Roles": "角色",
   "Categories": "分类",
+  "Search Categories": "搜索分类",
 
   "Catalog": "目录",
   "Deployment": "部署",
@@ -342,7 +343,11 @@
   "EMPTY_RUNTIME_TIPS": "在组织中部署为一站式应用程序管理平台，以支持包括混合云在内的多个云系统。",
   "Private Repo": "私有仓库",
 
-  "NORMAL_GUIDING_WORDS": "欢迎来到OpenPitrix, 接下来你想做什么?..",
+  "NORMAL_GUIDING_WORDS": "欢迎来到OpenPitrix, 接下来你想做什么?",
+
+  "ADMINISTRATOR_DESC": "平台管理员提供系统全局管理，主要负责平台的设置、用户管理、应用审批、财务对账、商店运营等工作",
+  "DEVELOPER_DESC": "开发人员通过开发者门户创建应用、测试应用、提交应用，根据授权对所提供应用进行运维",
+  "NORMAL_DESC": "普通用户通过服务门户，对应用进行浏览、购买应用、接入不同的运行环境，对已部署实例进行监控、控制和统计分析",
 
   "Copy success": "复制成功",
 

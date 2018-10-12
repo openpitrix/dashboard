@@ -37,9 +37,10 @@ class SideNav extends React.Component {
 
   async componentDidMount() {
     const { isDev } = this.props.user;
+    const { hasMeunApps, fetchMenuApps } = this.props.appStore;
 
-    if (isDev) {
-      await this.props.appStore.fetchAll({ menuApps: true });
+    if (isDev && !hasMeunApps) {
+      await fetchMenuApps();
     }
   }
 

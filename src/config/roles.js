@@ -2,20 +2,17 @@ const roles = [
   {
     name: 'Administrator',
     value: 'global_admin',
-    description:
-      'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
+    description: 'ADMINISTRATOR_DESC'
   },
   {
     name: 'Developer',
     value: 'developer',
-    description:
-      'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
+    description: 'DEVELOPER_DESC'
   },
   {
     name: 'Normal User',
     value: 'user',
-    description:
-      'Software developer, one who programs computers or designs the system to match the requirements of a systems analyst'
+    description: 'NORMAL_DESC'
   }
 ];
 

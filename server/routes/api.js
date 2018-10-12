@@ -10,17 +10,6 @@ const header = {};
 
 const authEndpoint = 'oauth2/token';
 
-/*
- whitelist to bypass auth
- */
-const bypassAuthRoutes = [
-  'apps',
-  'repos',
-  'categories',
-  'app_versions',
-  'app_version/package/files'
-];
-
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
 
@@ -33,56 +22,55 @@ router.post('/api/*', async ctx => {
   const { method } = body;
   const url = [apiServer, endpoint].join('/');
 
+  logger({ method, url, body });
+
   const authToken = utils.getTokenGroupFromCtx(ctx);
   const unAuthToken = utils.getTokenGroupFromCtx(ctx, 'un_auth');
 
-  logger({ method, url, body });
+  const browserUrl = ctx.headers.referer;
+  const endUrl = browserUrl
+    .split('/')
+    .slice(3)
+    .join('/');
+  const usingNoAuthToken =
+    endUrl === '' ||
+    endUrl.startsWith('apps') ||
+    endUrl.startsWith('store') ||
+    endUrl.endsWith('deploy');
 
-  let usingNoAuthToken = false;
+  // defalut special token params
+  const tokenData = {
+    grant_type: 'client_credentials',
+    client_id: clientId,
+    client_secret: clientSecret,
+    scope: ''
+  };
 
-  try {
-    // use normal token when logged in
-    if (!authToken.access_token) {
-      ctx.throw(401, 'Unauthorized: invalid access token');
+  // retrieve special token
+  if (usingNoAuthToken && !unAuthToken.access_token) {
+    const res = await agent.send('post', [apiServer, authEndpoint].join('/'), tokenData);
+
+    if (!res || !res.access_token) {
+      ctx.throw(401, 'Retrieve token failed');
     }
-  } catch (err) {
-    if (bypassAuthRoutes.includes(endpoint)) {
-      usingNoAuthToken = true;
 
-      if (!unAuthToken.access_token) {
-        // retrieve special token
-        const res = await agent.send('post', [apiServer, authEndpoint].join('/'), {
-          grant_type: 'client_credentials',
-          client_id: clientId,
-          client_secret: clientSecret,
-          scope: ''
-        });
+    utils.saveTokenResponseToCookie(ctx, res, 'un_auth');
 
-        if (!res || !res.access_token) {
-          ctx.throw(401, 'Retrieve token failed');
-        }
-
-        utils.saveTokenResponseToCookie(ctx, res, 'un_auth');
-
-        Object.assign(unAuthToken, res);
-      }
-    }
+    Object.assign(unAuthToken, res);
   }
 
   const chooseToken = usingNoAuthToken ? unAuthToken : authToken;
 
-  // check if token expired
+  // check if token expired, retrieve refresh token or special token
   const { expires_in } = chooseToken;
-
   if (Date.now() > expires_in) {
-    // retrieve refresh token
-    const res = await agent.send('post', [apiServer, authEndpoint].join('/'), {
-      grant_type: 'refresh_token',
-      client_id: clientId,
-      client_secret: clientSecret,
-      scope: '',
-      refresh_token: chooseToken.refresh_token
-    });
+    // refresh token params
+    if (!usingNoAuthToken) {
+      tokenData.grant_type = 'refresh_token';
+      tokenData.refresh_token = chooseToken.refresh_token;
+    }
+
+    const res = await agent.send('post', [apiServer, authEndpoint].join('/'), tokenData);
 
     if (!res || !res.access_token) {
       ctx.throw(401, 'Refresh token failed');
@@ -92,6 +80,10 @@ router.post('/api/*', async ctx => {
     Object.assign(chooseToken, res);
   }
 
+  if (!chooseToken.access_token) {
+    ctx.throw(401, 'Unauthorized: invalid access token');
+  }
+
   header.Authorization = `${chooseToken.token_type} ${chooseToken.access_token}`;
 
   delete body.method;
@@ -99,6 +91,7 @@ router.post('/api/*', async ctx => {
   ctx.body = await agent.send(method, url, body, {
     header: header
   });
+
 });
 
 module.exports = router;
