@@ -208,7 +208,7 @@ export default class Apps extends Component {
       {
         title: t('App Name'),
         key: 'name',
-        width: '175px',
+        width: '165px',
         render: item => (
           <TdName
             name={item.name}
@@ -221,7 +221,7 @@ export default class Apps extends Component {
       {
         title: t('Latest Version'),
         key: 'latest_version',
-        width: '120px',
+        width: '110px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
@@ -233,7 +233,7 @@ export default class Apps extends Component {
       {
         title: t('Categories'),
         key: 'category',
-        width: '120px',
+        width: '100px',
         render: item =>
           t(
             get(item, 'category_set', [])
@@ -271,7 +271,7 @@ export default class Apps extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '112px',
+        width: '102px',
         sorter: isAdmin,
         onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} />

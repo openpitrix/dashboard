@@ -121,7 +121,7 @@ export default class Detail extends Component {
           onRefresh: appStore.onRefresh
         };
         tableOptions = {
-          columns: appColumns,
+          columns: appColumns.filter(item => item.key !== 'owner'),
           dataSource: appStore.apps.toJSON(),
           isLoading: appStore.isLoading,
           filterList: [
@@ -152,7 +152,7 @@ export default class Detail extends Component {
           onRefresh: clusterStore.onRefresh
         };
         tableOptions = {
-          columns: clusterColumns([], []),
+          columns: clusterColumns([], []).filter(item => item.key !== 'owner'),
           dataSource: clusterStore.clusters.toJSON(),
           isLoading: clusterStore.isLoading,
           filterList: [
@@ -187,7 +187,7 @@ export default class Detail extends Component {
           onRefresh: runtimeStore.onRefresh
         };
         tableOptions = {
-          columns: runtimesColumns(clusters),
+          columns: runtimesColumns(clusters).filter(item => item.key !== 'owner'),
           dataSource: runtimeStore.runtimes.toJSON(),
           isLoading: runtimeStore.isLoading,
           filterList: [
@@ -219,7 +219,7 @@ export default class Detail extends Component {
         };
 
         tableOptions = {
-          columns: repoColumns,
+          columns: repoColumns.filter(item => item.key !== 'owner'),
           dataSource: repoStore.repos.toJSON(),
           isLoading: repoStore.isLoading,
           filterList: [

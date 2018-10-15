@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
@@ -30,7 +31,7 @@ export default class UserCard extends React.Component {
 
     return (
       <div className={styles.detailCard}>
-        <div className={styles.title}>
+        <div className={classnames(styles.title, styles.noImg)}>
           <div className={styles.name} title={userDetail.username}>
             {user.username}
           </div>

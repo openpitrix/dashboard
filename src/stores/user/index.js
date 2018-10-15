@@ -21,7 +21,7 @@ export default class UserStore extends Store {
 
   @observable selectGroupId = '';
   @observable selectRoleId = '';
-  @observable selectName = 'Administrator';
+  @observable selectName = '';
 
   @observable selectValue = 'roles';
   @observable showAuthorityModal = false;
@@ -341,6 +341,7 @@ export default class UserStore extends Store {
     this.currentPage = 1;
     this.selectStatus = '';
     this.searchWord = '';
+    this.selectRoleId = '';
     this.userDetail = {
       username: '',
       email: '',

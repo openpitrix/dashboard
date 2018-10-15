@@ -110,6 +110,7 @@
           float: left;
           top: 50%;
           left: 10px;
+          cursor: pointer;
         }
       }
     }
@@ -121,20 +122,23 @@
           float: right;
           top: 50%;
           right: 10px;
+          cursor: pointer;
         }
       }
     }
   }
 
   .closeOverlay {
-    position: fixed;
     float: right;
+    position: fixed;
+    top: $header-height + 10px;
+    right: 20px;
+    z-index: 2;
     width: 35px;
     height: 35px;
     background: #c1c0c0;
     border-radius: 50%;
-    top: $header-height + 10px;
-    right: 20px;
+
     :global {
       .icon-close {
         right: 3px;

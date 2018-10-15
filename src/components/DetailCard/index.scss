@@ -1,4 +1,5 @@
 @import '~scss/vars';
+$value-left: 134px;
 
 .detailCard {
   .icon {
@@ -97,7 +98,7 @@
     .name {
       float: left;
       display: inline-block;
-      width: 120px;
+      width: 110px;
       margin-right: 24px;
       font-size: 14px;
       line-height: 24px;
@@ -107,18 +108,18 @@
     }
     .val {
       display: inline-block;
-      width: calc(100% - 144px);
+      width: calc(100% - #{$value-left});
       word-break: break-word;
       word-wrap: break-word;
     }
     .value {
       display: inline-block;
-      width: calc(100% - 144px);
+      width: calc(100% - #{$value-left});
     }
 
     .labels {
       margin-top: 0;
-      margin-left: 144px;
+      margin-left: $value-left;
     }
   }
 }

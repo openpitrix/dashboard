@@ -131,7 +131,7 @@ export default class AppStore extends Store {
       progressTotal: get(result, 'repo_count', 0),
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {}),
-      topRepos: getProgress(this.summaryInfo.progress), //top repos
+      topRepos: getProgress(get(result, 'top_ten_repos', {})), //top repos
       appCount: get(result, 'app_count', 0),
       repoCount: get(result, 'repo_count', 0)
     };

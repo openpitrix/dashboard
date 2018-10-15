@@ -10,6 +10,7 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
+import TimeShow from 'components/TimeShow';
 import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
@@ -185,10 +186,10 @@ export default class Runtimes extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '100px',
+        width: '102px',
         sorter: true,
         onChangeSort: this.onChangeSort,
-        render: runtime => formatTime(runtime.status_time, 'YYYY/MM/DD HH:mm:ss')
+        render: runtime => <TimeShow time={runtime.status_time} />
       },
       {
         title: t('Actions'),

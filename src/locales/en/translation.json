@@ -82,5 +82,7 @@
 
   "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' ",
 
+  "DEPLOY_NO_RUNTIME_NOTE": "There is currently no available runtime, please go to ",
+
   "HELM_APP_NAME_TIP": "Start with [a-z], with '-', 0~9, lowercase letter in the middle, no more than 14 characters in length."
 }

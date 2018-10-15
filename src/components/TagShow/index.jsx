@@ -23,8 +23,12 @@ export default class TagShow extends Component {
         tag.label_value && (
           <div className={classnames(styles.tagShow, styles[tagStyle])} key={index}>
             <div className={styles.inner}>
-              <span className={styles.name}>{tag.label_key}</span>
-              <span className={styles.content}>{tag.label_value}</span>
+              <span className={styles.name} title={tag.label_key}>
+                {tag.label_key}
+              </span>
+              <span className={styles.content} title={tag.label_value}>
+                {tag.label_value}
+              </span>
             </div>
           </div>
         )

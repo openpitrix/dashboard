@@ -51,7 +51,7 @@ Store.prototype = {
    * @returns {*}
    */
   normalizeParams(params = {}) {
-    const sortKey = this.sortKey || 'create_time';
+    const sortKey = this.sortKey || 'update_time';
     const currentPage = this.currentPage || 1;
     const defaultParams = {
       sort_key: sortKey,
