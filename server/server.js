@@ -40,8 +40,8 @@ app.use(helmet());
 
 // serve static files
 const serveStatic = (mount_points = {}) => {
-  let opt = { index: false, maxage: 3600 * 24 * 1000 };
-  for (let [k, v] of Object.entries(mount_points)) {
+  const opt = { index: false, maxage: 3600 * 24 * 1000 };
+  for (const [k, v] of Object.entries(mount_points)) {
     if (typeof v === 'string') {
       app.use(mount(k, serve(root(v), opt)));
     } else if (typeof v === 'object' && k === env) {

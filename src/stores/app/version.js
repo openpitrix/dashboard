@@ -19,7 +19,7 @@ export default class AppVersionStore extends Store {
   @observable readme = '';
   @observable totalCount = 0;
 
-  @observable currentPage = 1; //version table query params
+  @observable currentPage = 1; // version table query params
   @observable searchWord = '';
   @observable selectStatus = '';
   @observable appId = '';
@@ -113,14 +113,13 @@ export default class AppVersionStore extends Store {
     if (get(this.createResult, 'version_id')) {
       if (!versionId) {
         await this.fetchAll();
-        this.createStep = 2; //show application has been created page
+        this.createStep = 2; // show application has been created page
       }
       return true;
-    } else {
-      const { err, errDetail } = this.createResult;
-      this.createError = errDetail || err;
-      return false;
     }
+    const { err, errDetail } = this.createResult;
+    this.createError = errDetail || err;
+    return false;
   };
 
   @action
@@ -144,7 +143,7 @@ export default class AppVersionStore extends Store {
     this.isLoading = false;
   };
 
-  //handleType value is: submit、reject、pass、release、suspend、recover、delete
+  // handleType value is: submit、reject、pass、release、suspend、recover、delete
   @action
   handle = async (handleType, versionId) => {
     let isHandle = true;
@@ -168,7 +167,7 @@ export default class AppVersionStore extends Store {
       params.message = this.reason;
     }
 
-    const result = await this.request.post('app_version/action/' + handleType, params);
+    const result = await this.request.post(`app_version/action/${handleType}`, params);
 
     if (get(result, 'version_id')) {
       this.hideModal();

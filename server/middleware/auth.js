@@ -17,7 +17,7 @@ module.exports = async (ctx, next) => {
 
   if (needAuth && !(cookies.get('user') && cookies.get('access_token'))) {
     // not login
-    ctx.redirect('/login?url=' + ctx.params.page);
+    ctx.redirect(`/login?url=${ctx.params.page}`);
   }
 
   await next();

@@ -27,10 +27,10 @@ Store.prototype = {
   pageSize: 10,
   maxLimit: 200, // fixme: api max returned data count
 
-  info: function(message) {
+  info(message) {
     this.notify(message, 'info');
   },
-  success: function(message) {
+  success(message) {
     this.notify(message, 'success');
   },
   error: function(message) {
@@ -91,7 +91,7 @@ Store.prototype = {
           }
 
           return res;
-        };
+        }
       }
     });
   }

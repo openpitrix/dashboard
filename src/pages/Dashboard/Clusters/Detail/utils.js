@@ -15,3 +15,4 @@ export const getFilterOptions = ({ trans, onChange, selectValue }) => {
     }
   ];
 };
+

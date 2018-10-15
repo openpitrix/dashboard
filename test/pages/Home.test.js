@@ -31,7 +31,7 @@ describe('Home', () => {
     rootStore = null;
   });
 
-  let match = { path: '/apps/ctg-zlMzkwYWWW8j', params: {} };
+  const match = { path: '/apps/ctg-zlMzkwYWWW8j', params: {} };
 
   it('basic render', () => {
     const wrapper = render(

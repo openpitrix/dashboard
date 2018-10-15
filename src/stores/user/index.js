@@ -15,7 +15,7 @@ export default class UserStore extends Store {
   @observable currentTag = '';
   @observable isLoading = false;
 
-  @observable currentPage = 1; //user table query params
+  @observable currentPage = 1; // user table query params
   @observable searchWord = '';
   @observable selectStatus = '';
   @observable totalCount = 0;
@@ -52,7 +52,7 @@ export default class UserStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let defaultParams = {
+    const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
@@ -81,7 +81,7 @@ export default class UserStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.get('users/statistics');
     this.summaryInfo = {
       name: 'Users',
@@ -92,7 +92,7 @@ export default class UserStore extends Store {
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    //this.isLoading = false;
+    // this.isLoading = false;
   };
 
   @action
@@ -198,14 +198,13 @@ export default class UserStore extends Store {
   };
 
   @action
-  oauth2Check = async (params = {}) => {
-    return await this.request.post('oauth2/token', {
+  oauth2Check = async (params = {}) =>
+    await this.request.post('oauth2/token', {
       grant_type: 'password',
       scope: '',
       username: params.email,
       password: params.password
     });
-  };
 
   @action
   modifyUser = async e => {
@@ -250,14 +249,10 @@ export default class UserStore extends Store {
   };
 
   @action
-  resetPassword = async (params = {}) => {
-    return await this.request.post('users/password:reset', params);
-  };
+  resetPassword = async (params = {}) => await this.request.post('users/password:reset', params);
 
   @action
-  changePassword = async (params = {}) => {
-    return await this.request.post('users/password:change', params);
-  };
+  changePassword = async (params = {}) => await this.request.post('users/password:change', params);
 
   @action
   onSearch = async word => {

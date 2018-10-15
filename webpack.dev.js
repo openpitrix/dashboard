@@ -16,7 +16,6 @@ module.exports = {
     publicPath: '/build/',
     pathinfo: false
   },
-  // profile: true,
   performance: {
     hints: 'warning'
   },
@@ -33,6 +32,11 @@ module.exports = {
           }
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: ['eslint-loader']
       },
       {
         test: /\.css$/,

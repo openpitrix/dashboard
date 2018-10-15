@@ -16,14 +16,27 @@ module.exports = {
     browser: true,
     jest: true
   },
-  extends: ['airbnb-base', 'plugin:prettier/recommended'],
+  extends: [
+    'airbnb-base',
+    'plugin:react/recommended',
+    'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings'
+  ],
   plugins: ['react'],
   // add your custom rules here
   rules: {
     // allow paren-less arrow functions
     'arrow-parens': 0,
+
+    // import
     'import/no-extraneous-dependencies': [2, { devDependencies: true }],
-    'import/no-dynamic-require': 0,
+    'import/no-dynamic-require': 1,
+    'import/no-unresolved': 0,
+    'import/extensions': 0,
+    'import/prefer-default-export': 0,
+    'import/first': 1,
+
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development
@@ -54,9 +67,10 @@ module.exports = {
           "^(\\s*[a-zA-Z_]+: '[^']+'[,;]*)|(.*gettext.*)|(.*interpolate.*)|(.*require.*)|(.*_\\.template.*)$"
       }
     ],
-    'import/prefer-default-export': 1,
-    'no-eval': 0,
+    'no-eval': 1,
     'no-plusplus': 0,
+    'no-empty': 0,
+    'no-empty-function': 0,
     'func-names': 0,
     'consistent-return': 0,
     'react/jsx-uses-react': 2,
@@ -64,6 +78,13 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-use-before-define': 0,
     'comma-dangle': 0,
-    'no-unused-vars': 1
+    'no-unused-vars': 1,
+    'react/prop-types': 1,
+    'react/sort-comp': 2,
+    'react/sort-prop-types': 1,
+    'react/display-name': 0,
+    radix: 0,
+    'one-var': 1,
+    'prefer-const': 1
   }
 };

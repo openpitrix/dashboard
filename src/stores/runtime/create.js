@@ -95,10 +95,10 @@ export default class RuntimeCreateStore extends Store {
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
-      this.labels[index]['label_' + type] = value;
+      this.labels[index][`label_${type}`] = value;
       this.labels = [...this.labels];
     } else if (labelType === 'selector') {
-      this.selectors[index]['label_' + type] = value;
+      this.selectors[index][`label_${type}`] = value;
       this.selectors = [...this.selectors];
     }
   };
@@ -157,7 +157,7 @@ export default class RuntimeCreateStore extends Store {
       }
     }
     for (let i = 0; i < labels.length; i++) {
-      let item = labels[i];
+      const item = labels[i];
       if (keys.find(key => key === item.label_key)) {
         result = ts('Labels has repeat key');
       } else if (item.label_key) {

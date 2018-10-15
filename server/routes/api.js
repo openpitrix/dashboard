@@ -84,10 +84,9 @@ router.post('/api/*', async ctx => {
 
     delete body.method;
 
-    ctx.body = await agent.send(method, url, body, {
-      header: header
-    });
-  }
+  ctx.body = await agent.send(method, url, body, {
+    header
+  });
 });
 
 module.exports = router;

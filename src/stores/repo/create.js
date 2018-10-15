@@ -119,10 +119,10 @@ export default class RepoCreateStore extends Store {
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
-      this.labels[index]['label_' + type] = value;
+      this.labels[index][`label_${type}`] = value;
       this.labels = [...this.labels];
     } else if (labelType === 'selector') {
-      this.selectors[index]['label_' + type] = value;
+      this.selectors[index][`label_${type}`] = value;
       this.selectors = [...this.selectors];
     }
   };
@@ -184,7 +184,7 @@ export default class RepoCreateStore extends Store {
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
-      let item = this.selectors[i];
+      const item = this.selectors[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
         return this.info(ts('Runtime Selector missing value'));
       } else if (item.label_value && _.isEmpty(item.label_key)) {
@@ -192,7 +192,7 @@ export default class RepoCreateStore extends Store {
       }
     }
     for (let i = 0; i < this.labels.length; i++) {
-      let item = this.labels[i];
+      const item = this.labels[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
         return this.info(ts('Labels missing value'));
       } else if (item.label_value && _.isEmpty(item.label_key)) {
@@ -208,18 +208,18 @@ export default class RepoCreateStore extends Store {
 
       // format s3 url
       if (!data.url.startsWith('s3://')) {
-        data.url = 's3://' + data.url;
+        data.url = `s3://${data.url}`;
       }
 
       if (!s3UrlPattern.test(data.url)) {
         return this.info(ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'));
       }
     } else {
-      let url = data.url;
+      const url = data.url;
       if (/^https?:\/\//.test(url)) {
-        data.url = protocolType + '://' + url.match(/https?:\/\/(.+)/)[1];
+        data.url = `${protocolType}://${url.match(/https?:\/\/(.+)/)[1]}`;
       } else {
-        data.url = protocolType + '://' + url;
+        data.url = `${protocolType}://${url}`;
       }
 
       // fixme: compat with http, https credential

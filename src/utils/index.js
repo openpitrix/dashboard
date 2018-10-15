@@ -1,6 +1,6 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
-import ts from  '../config/translation'
+import ts from '../config/translation';
 
 export function formatTime(ts, format = 'YYYY/MM/DD') {
   const parsedTs = day(ts);
@@ -31,13 +31,12 @@ export function setCookie(name, value, time) {
     dt = new Date(Date.now() + expires);
   }
 
-  document.cookie =
-    name + '=' + encodeURIComponent(value) + ';expires=' + dt.toGMTString() + ';path=/;';
+  document.cookie = `${name}=${encodeURIComponent(value)};expires=${dt.toGMTString()};path=/;`;
 }
 
 export function getCookie(name) {
-  let re = new RegExp(name + '=([^;]+)');
-  let value = re.exec(document.cookie);
+  const re = new RegExp(`${name}=([^;]+)`);
+  const value = re.exec(document.cookie);
   return value !== null ? decodeURIComponent(value[1]) : null;
 }
 
@@ -45,7 +44,7 @@ export function getPastTime(time) {
   const now = new Date();
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
-  return diff / 24 > 1 ? parseInt(diff / 24) + ts(' days ago') : parseInt(diff)  + ts(' hours ago');
+  return diff / 24 > 1 ? parseInt(diff / 24) + ts(' days ago') : parseInt(diff) + ts(' hours ago');
 }
 
 export function toQueryString(params) {
@@ -69,12 +68,12 @@ export function getSessInfo(key, store) {
 }
 
 export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
-  let ts = day(parseInt(timestamp));
+  const ts = day(parseInt(timestamp));
   if (locale === 'en') {
     return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
   }
   if (locale === 'zh' || locale === 'zh-cn') {
-    let am = ts.format('a') === 'am' ? '上午' : '下午';
+    const am = ts.format('a') === 'am' ? '上午' : '下午';
     return `${ts.format('M月D日')} ${am} ${ts.format('HH:mm:ss')}`;
   }
 }
@@ -82,7 +81,7 @@ export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
 export function getFormData(form) {
   const data = {};
   const fd = new FormData(form);
-  for (let p of fd.entries()) {
+  for (const p of fd.entries()) {
     data[p[0]] = p[1];
   }
 
@@ -122,15 +121,13 @@ export function getProgress(progress) {
       number: value
     });
   });
-  results = _.sortBy(results, function(o) {
-    return o.number;
-  });
+  results = _.sortBy(results, o => o.number);
   return results.slice(-5).reverse();
 }
 
 export function getHistograms(histograms) {
-  let now = new Date();
-  let nowTime = now.getTime();
+  const now = new Date();
+  const nowTime = now.getTime();
   let time,
     date,
     dateStr,
@@ -150,7 +147,7 @@ export function getHistograms(histograms) {
     });
     twoWeekDays.unshift({
       date: dateStr,
-      number: number
+      number
     });
   }
   return twoWeekDays;
@@ -168,7 +165,7 @@ export function flattenObject(obj) {
       cur.forEach((item, index) => recurse(item, `${prop}[${index}]`));
     } else {
       Object.entries(cur).forEach(([key, value]) => {
-        key = key.replace(/\./g, '>>>>>>'); //fix key contains '.'
+        key = key.replace(/\./g, '>>>>>>'); // fix key contains '.'
         recurse(value, prop ? `${prop}.${key}` : key);
       });
     }
@@ -189,11 +186,11 @@ export function unflattenObject(data) {
 }
 
 export function getYamlList(yamlObj) {
-  let results = [];
+  const results = [];
   _.forIn(yamlObj, (value, key) => {
     results.push({
       name: key,
-      value: value
+      value
     });
   });
   return results;
@@ -201,13 +198,12 @@ export function getYamlList(yamlObj) {
 
 // get url param by name
 export function getUrlParam(name) {
-  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i');
   const result = window.location.search.substr(1).match(reg);
   if (result !== null) {
     return decodeURIComponent(result[2]);
-  } else {
-    return '';
   }
+  return '';
 }
 
 // app page status translate maybe different with other pages

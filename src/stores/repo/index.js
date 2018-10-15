@@ -16,14 +16,14 @@ export default class RepoStore extends Store {
   @observable queryProviders = '';
   @observable querySelector = '';
 
-  @observable currentPage = 1; //app table query params
+  @observable currentPage = 1; // app table query params
   @observable searchWord = '';
   defaultStatus = ['active'];
   @observable selectStatus = '';
   @observable userId = '';
   @observable totalCount = 0;
 
-  @observable currentEventPage = 1; //events table query params
+  @observable currentEventPage = 1; // events table query params
   @observable totalEventCount = 0;
 
   initLoadNumber = 3;
@@ -115,7 +115,7 @@ export default class RepoStore extends Store {
   @action
   fetchRepoEvents = async (params = {}) => {
     this.isLoading = true;
-    let defaultParams = {
+    const defaultParams = {
       limit: this.pageSize,
       offset: (this.currentEventPage - 1) * this.pageSize
     };
@@ -181,7 +181,7 @@ export default class RepoStore extends Store {
 
   @action
   startIndexer = async repoId => {
-    let repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
+    const repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
     if (repoEvent.repo_id) {
       this.success(`${ts('Started repo indexer:')} ${repoEvent.repo_id}`);
     } else {
@@ -221,7 +221,7 @@ export default class RepoStore extends Store {
 
     return get(this.repoDetail, type, [])
       .filter(item => Boolean(item[itemKey]))
-      .map(item => item[itemKey] + '=' + item[itemValue])
+      .map(item => `${item[itemKey]}=${item[itemValue]}`)
       .join('&');
   };
 }

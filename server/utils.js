@@ -3,8 +3,8 @@ const sessConfig = require('./session-config');
 
 const oauthResFields = ['access_token', 'refresh_token', 'token_type', 'expires_in', 'id_token'];
 
-const getTokenGroupFromCtx = (ctx, group = '') => {
-  return oauthResFields.reduce((obj, prop) => {
+const getTokenGroupFromCtx = (ctx, group = '') =>
+  oauthResFields.reduce((obj, prop) => {
     if (group) {
       prop = [group, prop].join('_');
     }
@@ -12,7 +12,6 @@ const getTokenGroupFromCtx = (ctx, group = '') => {
     obj[prop] = ctx.cookies.get(prop);
     return obj;
   }, {});
-};
 
 const saveTokenResponseToCookie = (ctx, token_res, prefix = '', additional = {}) => {
   const { expires_in } = token_res;

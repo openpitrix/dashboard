@@ -24,7 +24,7 @@ const renderRoute = (match, route, store) => {
   const role = getCookie('role');
   const hasHeader = user.isNormal || !user.username || role === 'user';
 
-  if (route.needAuth && !Boolean(user.username)) {
+  if (route.needAuth && !user.username) {
     return <Redirect to={`/login?url=${match.url}`} />;
   }
 

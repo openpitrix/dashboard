@@ -1,6 +1,4 @@
-export const ucfirst = str => {
-  return str[0].toUpperCase() + str.substring(1);
-};
+export const ucfirst = str => str[0].toUpperCase() + str.substring(1);
 
 export const versionCompare = (left, right) => {
   if (typeof left + typeof right !== 'stringstring') {
