@@ -27,6 +27,7 @@ export default class TimeShow extends Component {
     return (
       <Fragment>
         <div className={styles[type]}>{formatTime(time, trans[type])}</div>
+        {type === 'listTime' && <div className={styles[type]}>{formatTime(time, 'HH:mm:ss')}</div>}
       </Fragment>
     );
   }

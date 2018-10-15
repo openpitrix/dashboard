@@ -25,7 +25,7 @@ export default class Users extends Component {
   async componentDidMount() {
     const { userStore } = this.props;
 
-    // await userStore.fetchAll();
+    await userStore.fetchAll();
     //await userStore.fetchStatistics();
 
     // todo: api 404
@@ -261,7 +261,7 @@ export default class Users extends Component {
       },
       {
         title: t('Updated At'),
-        key: 'status_time',
+        key: 'update_time',
         render: item => <TimeShow time={item.status_time} />
       },
       {
@@ -332,7 +332,7 @@ export default class Users extends Component {
 
             <Section size={8} className={styles.table}>
               <Card className={styles.noShadow}>
-                <div className={styles.selectInfo}>{t(selectName)}</div>
+                {Boolean(selectName) && <div className={styles.selectInfo}>{t(selectName)}</div>}
 
                 {this.renderToolbar()}
 

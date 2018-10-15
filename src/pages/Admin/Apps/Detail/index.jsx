@@ -548,15 +548,16 @@ export default class AppDetail extends Component {
             repoProvider={repoProvider}
             noDeploy={appDetail.status === 'deleted'}
           />
-          {versions.length === 0 && (
-            <Popover
-              className={styles.operation}
-              content={this.renderHandleMenu(appDetail.app_id)}
-              showBorder
-            >
-              <Icon name="more" />
-            </Popover>
-          )}
+          {versions.length === 0 &&
+            appDetail.status !== 'deleted' && (
+              <Popover
+                className={styles.operation}
+                content={this.renderHandleMenu(appDetail.app_id)}
+                showBorder
+              >
+                <Icon name="more" />
+              </Popover>
+            )}
         </Grid>
 
         <Grid className={styles.appVersion}>

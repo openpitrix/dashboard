@@ -195,8 +195,6 @@ ${this.yamlStr}`;
       if (!this.isKubernetes) {
         await this.fetchSubnets(this.runtimeId);
       }
-    } else {
-      this.info('Not find Runtime data!');
     }
     this.isLoading = false;
   };

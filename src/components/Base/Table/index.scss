@@ -155,7 +155,11 @@
 
       &:last-child {
         //border-right: 48px solid #fff;
+        [class*='TimeShow'] {
+          text-align: center;
+        }
       }
+
     }
 
     &-placeholder {

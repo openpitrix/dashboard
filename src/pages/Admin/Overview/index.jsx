@@ -55,10 +55,10 @@ export default class Overview extends React.Component {
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();
-      const topRepoIds = appStore.summaryInfo.topRepos.map(item => item.id);
+      const topRepoIds = _.get(appStore, 'summaryInfo.topRepos', []).map(item => item.id);
       // query top apps, cluster number
       await clusterStore.fetchStatistics();
-      const topAppIds = clusterStore.summaryInfo.topApps.map(item => item.id);
+      const topAppIds = _.get(clusterStore, 'summaryInfo.topApps', []).map(item => item.id);
       // query latest clusters
       await clusterStore.fetchAll({
         cluster_type: 0,

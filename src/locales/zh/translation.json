@@ -215,6 +215,8 @@
   "successful": "已成功",
   "Successful": "已成功",
   "The name of the repo": "仓库的名称",
+  "Repo Name": "仓库名称",
+  "Search Repos": "搜索仓库",
 
   "Runtime Name": "环境名称",
   "Cluster Count": "集群数量",
@@ -285,6 +287,7 @@
   "delete_user_desc": "您确定要删除该用户吗?",
   "Organization": "机构",
   "Group": "团队",
+  "Search users": "搜索用户",
 
   "Settings": "设置",
   "Basic setting": "基本设置",
@@ -365,6 +368,8 @@
   "Deployments": "部署",
   "StatefulSets": "有状态副本集",
   "DaemonSets": "守护进程集",
+  "DEPLOY_NO_RUNTIME_NOTE": "当前无可用环境，请前往",
+  "create": "创建",
 
   "Back to user": "普通用户",
   "Back to developer": "开发中心",

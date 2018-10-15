@@ -60,6 +60,36 @@ export default class AppDeploy extends Component {
     }
   };
 
+  renderRuntimeItem() {
+    const { appDeployStore, t } = this.props;
+    const { runtimes, runtimeId, changeRuntime } = appDeployStore;
+
+    if (runtimes.length) {
+      return (
+        <div className={styles.cellModule}>
+          <label className={classnames(styles.name, styles.radioName)}>Runtime</label>
+          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
+            {runtimes.map(({ runtime_id, name }) => (
+              <Radio key={runtime_id} value={runtime_id}>
+                {name}
+              </Radio>
+            ))}
+          </Radio.Group>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.cellModule}>
+        <label className={classnames(styles.name, styles.radioName)}>Runtime</label>
+        <span className={styles.createRuntime}>
+          {t('DEPLOY_NO_RUNTIME_NOTE')}
+          <Link to={'/dashboard/runtime/create'}>{t('create')}</Link>
+        </span>
+      </div>
+    );
+  }
+
   renderAside() {
     const { appStore, t } = this.props;
     const { appDetail } = appStore;
@@ -87,9 +117,7 @@ export default class AppDeploy extends Component {
       versions,
       subnets,
       versionId,
-      runtimeId,
       subnetId,
-      changeRuntime,
       changeVersion,
       changeSubnet
     } = appDeployStore;
@@ -112,17 +140,7 @@ export default class AppDeploy extends Component {
               />
             )
         )}
-        <div className={styles.cellModule}>
-          <label className={classnames(styles.name, styles.radioName)}>Runtime</label>
-          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
-            {runtimes &&
-              runtimes.map(({ runtime_id, name }) => (
-                <Radio key={runtime_id} value={runtime_id}>
-                  {name}
-                </Radio>
-              ))}
-          </Radio.Group>
-        </div>
+        {!isLoading && this.renderRuntimeItem()}
         <div className={styles.cellModule}>
           <label className={classnames(styles.name, styles.selectName)}>Version</label>
           <Select
@@ -219,15 +237,12 @@ export default class AppDeploy extends Component {
     const {
       yamlConfig,
       yamlStr,
-      changeYmalCell,
       changeYamlStr,
       isLoading,
       runtimes,
       versions,
       versionId,
-      runtimeId,
       changeName,
-      changeRuntime,
       changeVersion
     } = appDeployStore;
     const btnDisabled = isLoading || yamlStr === '' || !yamlConfig.length || !runtimes.length;
@@ -249,17 +264,7 @@ export default class AppDeploy extends Component {
             <p className={styles.helmAppNameTip}>{t('HELM_APP_NAME_TIP')}</p>
           </div>
         </div>
-        <div className={styles.cellModule}>
-          <label className={styles.name}>Runtime</label>
-          <Radio.Group className={styles.showWord} value={runtimeId} onChange={changeRuntime}>
-            {runtimes &&
-              runtimes.map(({ runtime_id, name }) => (
-                <Radio key={runtime_id} value={runtime_id}>
-                  {name}
-                </Radio>
-              ))}
-          </Radio.Group>
-        </div>
+        {!isLoading && this.renderRuntimeItem()}
         <div className={styles.cellModule}>
           <label className={classnames(styles.name, styles.selectName)}>Version</label>
           <Select className={styles.select} value={versionId} onChange={changeVersion}>

@@ -24,15 +24,15 @@ export default class GroupCard extends Component {
     super(props);
 
     this.state = {
-      curVal: props.selectValue || props.groups[0].value
+      curVal: props.selectValue
     };
   }
 
   componentDidMount() {
-    const { groups } = this.props;
+    /*const { groups } = this.props;
     const { curVal } = this.state;
 
-    this.props.selectCard(find(groups, { value: curVal }));
+    this.props.selectCard(find(groups, { value: curVal }));*/
   }
 
   shouldComponentUpdate(nextProps, nextState) {
