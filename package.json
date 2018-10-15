@@ -1,6 +1,6 @@
 {
   "name": "openpitrix-dashboard",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "app-root-path": "^2.0.1",
@@ -64,7 +64,7 @@
     "prod-client": "node build.js --prod-client",
     "prod-server": "node build.js --prod-server",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
-    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0 -n ./config/changelog.config.js"
+    "release": "standard-version -i CHANGELOG.md -n"
   },
   "lint-staged": {
     "*.{js,jsx,md,test.js.snap}": [
@@ -91,7 +91,6 @@
     "babel-register": "^6.26.0",
     "codecov": "^3.0.2",
     "compression-webpack-plugin": "^1.1.11",
-    "conventional-changelog-cli": "^2.0.5",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -118,6 +117,7 @@
     "react-test-renderer": "^16.2.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
+    "standard-version": "^4.4.0",
     "style-loader": "^0.19.1",
     "testcafe": "^0.20.4",
     "testcafe-react-selectors": "^2.1.0",

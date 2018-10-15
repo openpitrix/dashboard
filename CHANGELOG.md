@@ -1,3 +1,69 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/openpitrix/dashboard/compare/v0.1.0...v0.3.0) (2018-10-15)
+
+
+### Bug Fixes
+
+* Add menu op logo ([#386](https://github.com/openpitrix/dashboard/issues/386)) ([#426](https://github.com/openpitrix/dashboard/issues/426)) ([9d63fb5](https://github.com/openpitrix/dashboard/commit/9d63fb5))
+* Admin related styles issues ([#485](https://github.com/openpitrix/dashboard/issues/485)) ([9bf5dc3](https://github.com/openpitrix/dashboard/commit/9bf5dc3)), closes [#436](https://github.com/openpitrix/dashboard/issues/436)
+* App create file check bug ([#459](https://github.com/openpitrix/dashboard/issues/459)) ([a406a44](https://github.com/openpitrix/dashboard/commit/a406a44))
+* App detail create new version ([#463](https://github.com/openpitrix/dashboard/issues/463)) ([eb56624](https://github.com/openpitrix/dashboard/commit/eb56624))
+* Cluster detail card hide long namespace txt ([#448](https://github.com/openpitrix/dashboard/issues/448)) ([432ab76](https://github.com/openpitrix/dashboard/commit/432ab76))
+* Cluster detail card show username ([#470](https://github.com/openpitrix/dashboard/issues/470)) ([7e1ff11](https://github.com/openpitrix/dashboard/commit/7e1ff11))
+* Cluster detail fetch sort_key ([#310](https://github.com/openpitrix/dashboard/issues/310)) ([63b90c1](https://github.com/openpitrix/dashboard/commit/63b90c1))
+* Create app error ([#461](https://github.com/openpitrix/dashboard/issues/461)) ([45cc086](https://github.com/openpitrix/dashboard/commit/45cc086))
+* Deploy app click submit button throw error when config file is empty ([#324](https://github.com/openpitrix/dashboard/issues/324)) ([55629dd](https://github.com/openpitrix/dashboard/commit/55629dd))
+* Deploy app select vxnet ([#314](https://github.com/openpitrix/dashboard/issues/314)) ([b92504d](https://github.com/openpitrix/dashboard/commit/b92504d))
+* Deploy app version filter bug ([#449](https://github.com/openpitrix/dashboard/issues/449)) ([d448693](https://github.com/openpitrix/dashboard/commit/d448693))
+* Deploy page token auth error ([#489](https://github.com/openpitrix/dashboard/issues/489)) ([b0639af](https://github.com/openpitrix/dashboard/commit/b0639af))
+* Developer menu apps refresh bug ([#488](https://github.com/openpitrix/dashboard/issues/488)) ([575891c](https://github.com/openpitrix/dashboard/commit/575891c))
+* Developer related style issues ([#487](https://github.com/openpitrix/dashboard/issues/487)) ([4a6f79e](https://github.com/openpitrix/dashboard/commit/4a6f79e)), closes [#434](https://github.com/openpitrix/dashboard/issues/434)
+* Fetch data entangle with cluster and runtime ([#329](https://github.com/openpitrix/dashboard/issues/329)) ([7fc8cde](https://github.com/openpitrix/dashboard/commit/7fc8cde))
+* Get clientId/clientSecret from env ([#432](https://github.com/openpitrix/dashboard/issues/432)) ([01482e7](https://github.com/openpitrix/dashboard/commit/01482e7))
+* Header animation more smoothly when scroll ([#332](https://github.com/openpitrix/dashboard/issues/332)) ([ffebe0c](https://github.com/openpitrix/dashboard/commit/ffebe0c))
+* Home page card position bug in safari ([#492](https://github.com/openpitrix/dashboard/issues/492)) ([78c14bf](https://github.com/openpitrix/dashboard/commit/78c14bf))
+* I18n default lang zh not set in safari ([#407](https://github.com/openpitrix/dashboard/issues/407)) ([7545ce3](https://github.com/openpitrix/dashboard/commit/7545ce3))
+* Icon svg sprite symbols override global vars ([#392](https://github.com/openpitrix/dashboard/issues/392)) ([9e28b58](https://github.com/openpitrix/dashboard/commit/9e28b58))
+* Login oAuth error handle ([#396](https://github.com/openpitrix/dashboard/issues/396)) ([d552e10](https://github.com/openpitrix/dashboard/commit/d552e10))
+* Modify app reviews page data ([#431](https://github.com/openpitrix/dashboard/issues/431)) ([aaa36ff](https://github.com/openpitrix/dashboard/commit/aaa36ff))
+* Modify header show condition ([#464](https://github.com/openpitrix/dashboard/issues/464)) ([53de6e8](https://github.com/openpitrix/dashboard/commit/53de6e8))
+* Modify overview query for different role ([#438](https://github.com/openpitrix/dashboard/issues/438)) ([2e2f175](https://github.com/openpitrix/dashboard/commit/2e2f175))
+* Modify repo query for public ([#414](https://github.com/openpitrix/dashboard/issues/414)) ([1457f90](https://github.com/openpitrix/dashboard/commit/1457f90))
+* No data when change pods of helm cluster ([#472](https://github.com/openpitrix/dashboard/issues/472)) ([7e782cd](https://github.com/openpitrix/dashboard/commit/7e782cd))
+* Normal user related bugs ([#493](https://github.com/openpitrix/dashboard/issues/493)) ([f2d02ab](https://github.com/openpitrix/dashboard/commit/f2d02ab))
+* Overview app query remove status filter ([#462](https://github.com/openpitrix/dashboard/issues/462)) ([443ebe8](https://github.com/openpitrix/dashboard/commit/443ebe8))
+* Overview normal user show runtime list ([#429](https://github.com/openpitrix/dashboard/issues/429)) ([b10cde4](https://github.com/openpitrix/dashboard/commit/b10cde4))
+* Pages show  userid change username ([#447](https://github.com/openpitrix/dashboard/issues/447)) ([1b66bdf](https://github.com/openpitrix/dashboard/commit/1b66bdf))
+* Password modify failed ([#450](https://github.com/openpitrix/dashboard/issues/450)) ([86eafd3](https://github.com/openpitrix/dashboard/commit/86eafd3))
+* Remember me button in login ([#422](https://github.com/openpitrix/dashboard/issues/422)) ([#430](https://github.com/openpitrix/dashboard/issues/430)) ([5a7d418](https://github.com/openpitrix/dashboard/commit/5a7d418))
+* Repo create provider select error ([#354](https://github.com/openpitrix/dashboard/issues/354)) ([5e6b6d1](https://github.com/openpitrix/dashboard/commit/5e6b6d1))
+* Switch to App list, ui thread blocked ([#345](https://github.com/openpitrix/dashboard/issues/345)) ([c5f2e81](https://github.com/openpitrix/dashboard/commit/c5f2e81))
+* Table filter condition can not be clear when data source is empty ([#366](https://github.com/openpitrix/dashboard/issues/366)) ([c06dc2e](https://github.com/openpitrix/dashboard/commit/c06dc2e)), closes [#316](https://github.com/openpitrix/dashboard/issues/316)
+* Table sort by `update_time` only sort in-page data ([#312](https://github.com/openpitrix/dashboard/issues/312)) ([e1a4089](https://github.com/openpitrix/dashboard/commit/e1a4089))
+* Webpack config when handle css file ([#397](https://github.com/openpitrix/dashboard/issues/397)) ([0c358e2](https://github.com/openpitrix/dashboard/commit/0c358e2))
+* Websocket auth failed ([#404](https://github.com/openpitrix/dashboard/issues/404)) ([211d0ac](https://github.com/openpitrix/dashboard/commit/211d0ac))
+
+
+### Features
+
+* Add app reviews page  ([#408](https://github.com/openpitrix/dashboard/issues/408)) ([8fdf8b7](https://github.com/openpitrix/dashboard/commit/8fdf8b7))
+* Add cluster attach or detach key pairs ([#474](https://github.com/openpitrix/dashboard/issues/474)) ([b5a6301](https://github.com/openpitrix/dashboard/commit/b5a6301))
+* Add Cluster Details(Helm) page ([#347](https://github.com/openpitrix/dashboard/issues/347)) ([#424](https://github.com/openpitrix/dashboard/issues/424)) ([a82c2c3](https://github.com/openpitrix/dashboard/commit/a82c2c3))
+* Add login auth token ([#390](https://github.com/openpitrix/dashboard/issues/390)) ([48c09a9](https://github.com/openpitrix/dashboard/commit/48c09a9))
+* Add profile ssh_key pages ([#287](https://github.com/openpitrix/dashboard/issues/287)) ([bad206c](https://github.com/openpitrix/dashboard/commit/bad206c))
+* Add user detail page ([#317](https://github.com/openpitrix/dashboard/issues/317)) ([5be7c33](https://github.com/openpitrix/dashboard/commit/5be7c33))
+* Api request add auth token ([#378](https://github.com/openpitrix/dashboard/issues/378)) ([479dc1a](https://github.com/openpitrix/dashboard/commit/479dc1a))
+* Cluster and repo pages can listen to websocket messages ([#315](https://github.com/openpitrix/dashboard/issues/315)) ([d9f3ec1](https://github.com/openpitrix/dashboard/commit/d9f3ec1))
+* Profile page integrate API ([#401](https://github.com/openpitrix/dashboard/issues/401)) ([ab484c0](https://github.com/openpitrix/dashboard/commit/ab484c0))
+* Remove all `onEnter` preload on server side, using client side fetch ([#473](https://github.com/openpitrix/dashboard/issues/473)) ([ebc5ac7](https://github.com/openpitrix/dashboard/commit/ebc5ac7))
+* User pages integrate API ([#364](https://github.com/openpitrix/dashboard/issues/364)) ([#377](https://github.com/openpitrix/dashboard/issues/377)) ([72111b8](https://github.com/openpitrix/dashboard/commit/72111b8))
+
+
+
 ## 0.1.0 (2018-08-27)
 
 * fix: server side auth middleware (#59) ([4903518](https://github.com/openpitrix/dashboard/commit/4903518)), closes [#59](https://github.com/openpitrix/dashboard/issues/59)
