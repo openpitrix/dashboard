@@ -10,6 +10,7 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
+import TimeShow from 'components/TimeShow';
 import { formatTime, getObjName } from 'utils';
 
 import styles from './index.scss';
@@ -273,7 +274,7 @@ export default class Clusters extends Component {
         width: '100px',
         sorter: true,
         onChangeSort: this.onChangeSort,
-        render: cl => formatTime(cl.create_time, 'YYYY/MM/DD HH:mm:ss')
+        render: cl => <TimeShow time={cl.create_time} />
       },
       {
         title: t('Actions'),
