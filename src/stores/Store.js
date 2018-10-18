@@ -44,14 +44,8 @@ Store.prototype = {
   error: function(message) {
     // Can't get token will skip to the login page
     if (message === 'Unauthorized') {
-      let url = location.href;
-      url =
-        '/' +
-        url
-          .split('/')
-          .slice(3)
-          .join('/');
-      location.href = '/login?url=' + url;
+      const skipUrl = location.href.split('/').slice(3).join('/');
+      location.href = `/login?url=/${skipUrl}`;
     } else {
       this.notify(message, 'error');
     }
