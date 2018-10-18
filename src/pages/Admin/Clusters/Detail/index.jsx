@@ -53,6 +53,7 @@ export default class ClusterDetail extends Component {
     if (cluster.runtime_id) {
       await runtimeStore.fetch(cluster.runtime_id);
     }
+    clusterDetailStore.isHelm = runtimeStore.isK8s;
     await clusterDetailStore.fetchNodes({
       cluster_id: clusterId,
       isHelm: runtimeStore.isK8s
@@ -70,6 +71,11 @@ export default class ClusterDetail extends Component {
     //     type: 'Deployment'
     //   });
     // }
+  }
+
+  componentWillUnmount() {
+    const { clusterDetailStore } = this.props;
+    clusterDetailStore.loadNodeInit();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {

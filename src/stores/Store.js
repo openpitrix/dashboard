@@ -42,7 +42,19 @@ Store.prototype = {
     this.notify(message, 'success');
   },
   error: function(message) {
-    this.notify(message, 'error');
+    // Can't get token will skip to the login page
+    if (message === 'Unauthorized') {
+      let url = location.href;
+      url =
+        '/' +
+        url
+          .split('/')
+          .slice(3)
+          .join('/');
+      location.href = '/login?url=' + url;
+    } else {
+      this.notify(message, 'error');
+    }
   },
   /**
    * used in list page fetch all data

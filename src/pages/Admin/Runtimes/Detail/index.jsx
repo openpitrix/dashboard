@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Table, Popover } from 'components/Base';
+import { Icon, Table, Popover, Button } from 'components/Base';
 import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
@@ -63,6 +63,66 @@ export default class RuntimeDetail extends Component {
     }
   }
 
+  listenToJob = async ({ op, rtype, rid, values = {} }) => {
+    const { clusterStore } = this.props;
+    const { jobs } = clusterStore;
+    const status = _.pick(values, ['status', 'transition_status']);
+    // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
+    const clusterIds = clusterStore.clusters.map(cl => cl.cluster_id);
+
+    if (op === 'create:job' && clusterIds.includes(values.cluster_id)) {
+      // new job
+      jobs[rid] = values.cluster_id;
+    }
+
+    // job updated
+    if (op === 'update:job' && clusterIds.includes(jobs[rid])) {
+      if (['successful', 'failed'].includes(status.status)) {
+        delete jobs[rid];
+        await clusterStore.fetchAll();
+      }
+    }
+
+    if (rtype === 'cluster' && clusterIds.includes(rid)) {
+      clusterStore.clusters = clusterStore.clusters.map(cl => {
+        if (cl.cluster_id === rid) {
+          Object.assign(cl, status);
+        }
+        return cl;
+      });
+    }
+  };
+
+  handleCluster = () => {
+    const {
+      clusterId,
+      clusterIds,
+      modalType,
+      operateType,
+      remove,
+      start,
+      stop
+    } = this.props.clusterStore;
+    let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+
+    switch (modalType) {
+      case 'delete':
+        remove(ids);
+        break;
+      case 'start':
+        start(ids);
+        break;
+      case 'stop':
+        stop(ids);
+        break;
+    }
+  };
+
+  operateSelected = type => {
+    const { showOperateCluster, clusterIds } = this.props.clusterStore;
+    showOperateCluster(clusterIds, type);
+  };
+
   renderHandleMenu = id => {
     const { runtimeStore, t } = this.props;
     const { showDeleteRuntime } = runtimeStore;
@@ -72,6 +132,45 @@ export default class RuntimeDetail extends Component {
         <Link to={`/dashboard/runtime/edit/${id}`}>{t('Modify Runtime')}</Link>
         <span onClick={() => showDeleteRuntime(id)}>{t('Delete')}</span>
       </div>
+    );
+  };
+
+  renderClusterHandle = item => {
+    const { t } = this.props;
+    const { showOperateCluster } = this.props.clusterStore;
+    const { cluster_id, status } = item;
+
+    return (
+      <div className="operate-menu">
+        <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
+        {status === 'stopped' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
+        )}
+        {status === 'active' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
+        )}
+        {status !== 'deleted' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete')}</span>
+        )}
+      </div>
+    );
+  };
+
+  renderClusterModal = () => {
+    const { t } = this.props;
+    const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
+
+    return (
+      <Dialog
+        title={t(`${capitalize(modalType)} cluster`)}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleCluster}
+      >
+        <div className={styles.noteWord}>
+          {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
+        </div>
+      </Dialog>
     );
   };
 
@@ -90,6 +189,41 @@ export default class RuntimeDetail extends Component {
       </Dialog>
     );
   };
+
+  renderToolbar() {
+    const { t } = this.props;
+    const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
+
+    if (clusterIds.length) {
+      return (
+        <Toolbar noRefreshBtn noSearchBox>
+          <Button
+            type="delete"
+            onClick={() => this.operateSelected('delete')}
+            className="btn-handle"
+          >
+            {t('Delete')}
+          </Button>
+          <Button type="default" onClick={() => this.operateSelected('start')}>
+            {t('Start')}
+          </Button>
+          <Button type="delete" onClick={() => this.operateSelected('stop')}>
+            {t('Stop')}
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder={t('Search Clusters')}
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+      />
+    );
+  }
 
   render() {
     const { runtimeStore, clusterStore, userStore, user, t } = this.props;
@@ -113,7 +247,7 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Cluster Name'),
         key: 'name',
-        width: '135px',
+        width: '130px',
         render: item => (
           <TdName
             name={item.name}
@@ -152,10 +286,27 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '95px',
+        width: '80px',
         render: item => <TimeShow time={item.status_time} />
+      },
+      {
+        title: t('Actions'),
+        key: 'actions',
+        width: '84px',
+        render: item => (
+          <Popover content={this.renderClusterHandle(item)} className="actions">
+            <Icon name="more" />
+          </Popover>
+        )
       }
     ];
+
+    const rowSelection = {
+      type: 'checkbox',
+      selectType: 'onSelect',
+      selectedRowKeys: clusterStore.selectedRowKeys,
+      onChange: clusterStore.onChangeSelect
+    };
 
     const filterList = [
       {
@@ -177,7 +328,8 @@ export default class RuntimeDetail extends Component {
       tableType: 'Clusters',
       onChange: clusterStore.changePagination,
       total: totalCount,
-      current: currentPage
+      current: currentPage,
+      noCancel: false
     };
 
     let userName = getObjName(users, 'user_id', runtimeDetail.owner, 'username');
@@ -214,17 +366,12 @@ export default class RuntimeDetail extends Component {
             <Panel>
               <DetailTabs tabs={['Clusters']} />
               <Card hasTable>
-                <Toolbar
-                  placeholder={t('Search Clusters')}
-                  searchWord={searchWord}
-                  onSearch={clusterStore.onSearch}
-                  onClear={clusterStore.onClearSearch}
-                  onRefresh={clusterStore.onRefresh}
-                />
+                {this.renderToolbar()}
                 <Table
                   columns={columns}
                   dataSource={clusters.toJSON()}
                   isLoading={isLoading}
+                  rowSelection={rowSelection}
                   filterList={filterList}
                   pagination={pagination}
                 />
@@ -233,6 +380,7 @@ export default class RuntimeDetail extends Component {
           </Section>
         </Grid>
         {this.renderDeleteModal()}
+        {this.renderClusterModal()}
       </Layout>
     );
   }

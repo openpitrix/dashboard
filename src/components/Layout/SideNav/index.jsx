@@ -31,6 +31,7 @@ const changeKey = {
 @observer
 class SideNav extends React.Component {
   static propTypes = {
+    isScroll: PropTypes.bool,
     className: PropTypes.string
   };
 
@@ -194,10 +195,11 @@ class SideNav extends React.Component {
   }
 
   renderHeader() {
+    const { isScroll } = this.props;
     const { username } = this.props.user;
 
     return (
-      <div className={styles.header}>
+      <div className={classnames(styles.header, { [styles.headerShadow]: isScroll })}>
         <Popover content={<MenuLayer />} className={styles.user}>
           {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />

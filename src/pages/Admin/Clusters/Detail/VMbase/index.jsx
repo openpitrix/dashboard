@@ -147,7 +147,8 @@ export default class VMbasedCluster extends React.Component {
       selectNodeStatus,
       onChangeSelectNodes,
       changePaginationNode,
-      onChangeNodeStatus
+      onChangeNodeStatus,
+      totalNodeCount
     } = store;
 
     return (
@@ -163,7 +164,7 @@ export default class VMbasedCluster extends React.Component {
         pagination={{
           tableType: 'Clusters',
           onChange: changePaginationNode,
-          total: clusterNodes.totalNodeCount,
+          total: totalNodeCount,
           current: 1,
           noCancel: false
         }}

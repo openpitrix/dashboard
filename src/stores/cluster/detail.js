@@ -18,8 +18,6 @@ export default class ClusterDetailStore extends Store {
   // helm
   @observable helmClusterNodes = [];
 
-  @observable totalNodeCount = 0;
-
   @observable clusterJobs = [];
 
   @observable modalType = '';
@@ -35,6 +33,7 @@ export default class ClusterDetailStore extends Store {
   @observable selectedNodeRole = '';
 
   @observable currentNodePage = 1;
+  @observable totalNodeCount = 0;
   @observable searchNode = '';
   @observable selectNodeStatus = '';
 
@@ -77,7 +76,7 @@ export default class ClusterDetailStore extends Store {
     const result = await this.request.get(`clusters/nodes`, params);
     const nodes = _.get(result, 'cluster_node_set', []);
 
-    if (params.isHelm) {
+    if (params.isHelm || this.isHelm) {
       this.helmClusterNodes = nodes;
     } else {
       this.clusterNodes = nodes;
@@ -88,6 +87,7 @@ export default class ClusterDetailStore extends Store {
   };
 
   // todo: inject clusterStore
+  // fixme: table search, filter no effect
   @action
   formatClusterNodes = ({ type, clusterStore = this.clusterStore, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = this.cluster;
@@ -313,5 +313,6 @@ export default class ClusterDetailStore extends Store {
     this.searchNode = '';
     this.selectedRowKeys = [];
     this.nodeIds = [];
+    this.isHelm = false;
   };
 }
