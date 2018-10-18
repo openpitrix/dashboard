@@ -8,27 +8,27 @@ import styles from './index.scss';
 
 export default class Button extends PureComponent {
   static propTypes = {
-    type: PropTypes.string,
+    type: PropTypes.oneOf(['default', 'primary', 'delete']),
     htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
     className: PropTypes.string,
     style: PropTypes.object,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func
   };
 
   static defaultProps = {
     type: 'default',
-    htmlType: 'button',
+    htmlType: 'button'
   };
 
-  handleClick = (e) => {
+  handleClick = e => {
     const isDisabled = this.props.disabled;
 
     if (!isDisabled && isFunction(this.props.onClick)) {
       this.props.onClick(e);
     }
-  }
+  };
 
   render() {
     const { children, type, htmlType, className, loading, ...others } = this.props;
@@ -37,7 +37,7 @@ export default class Button extends PureComponent {
       <button
         className={classNames(styles.button, styles[type], {
           [styles.loading]: loading,
-          [className]: className,
+          [className]: className
         })}
         type={htmlType}
         onClick={this.handleClick}
