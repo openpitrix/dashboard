@@ -259,13 +259,13 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
+        width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
         title: t('App'),
         key: 'app_id',
-        width: '100px',
+        width: '90px',
         render: item => (
           <Link to={`/dashboard/app/${item.app_id}`}>
             {getObjName(apps, 'app_id', item.app_id, 'name')}
@@ -275,18 +275,19 @@ export default class RuntimeDetail extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '70px',
+        width: '68px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('User'),
         key: 'owner',
+        width: '80px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Updated At'),
         key: 'status_time',
-        width: '80px',
+        width: '75px',
         render: item => <TimeShow time={item.status_time} />
       },
       {
@@ -345,6 +346,7 @@ export default class RuntimeDetail extends Component {
       <Layout
         title="My Runtimes"
         backBtn={isNormal && <BackBtn label="My Runtimes" link="/runtimes" />}
+        listenToJob={this.listenToJob}
       >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 

@@ -37,8 +37,6 @@ export default class ClusterDetailStore extends Store {
   @observable searchNode = '';
   @observable selectNodeStatus = '';
 
-  @observable isHelm = false;
-
   @action
   showModal = type => {
     this.modalType = type;
@@ -76,7 +74,7 @@ export default class ClusterDetailStore extends Store {
     const result = await this.request.get(`clusters/nodes`, params);
     const nodes = _.get(result, 'cluster_node_set', []);
 
-    if (params.isHelm || this.isHelm) {
+    if (params.isHelm) {
       this.helmClusterNodes = nodes;
     } else {
       this.clusterNodes = nodes;
@@ -313,6 +311,5 @@ export default class ClusterDetailStore extends Store {
     this.searchNode = '';
     this.selectedRowKeys = [];
     this.nodeIds = [];
-    this.isHelm = false;
   };
 }

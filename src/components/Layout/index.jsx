@@ -67,6 +67,8 @@ export default class Layout extends React.Component {
     if (sock && !isEmpty(sock._events)) {
       sock._events = {};
     }
+
+    window.onscroll = null;
   }
 
   handleScroll = async () => {
