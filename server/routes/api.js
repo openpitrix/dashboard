@@ -59,8 +59,8 @@ router.post('/api/*', async ctx => {
   const chooseToken = usingNoAuthToken ? unAuthToken : authToken;
 
   // check if token expired, retrieve refresh token or special token
-  const { expires_in } = chooseToken;
-  if (Date.now() > expires_in) {
+  const { access_token, refresh_token } = chooseToken;
+  if (!access_token && refresh_token) {
     // refresh token params
     if (!usingNoAuthToken) {
       tokenData.grant_type = 'refresh_token';
@@ -79,15 +79,15 @@ router.post('/api/*', async ctx => {
 
   if (!chooseToken.access_token) {
     ctx.throw(401, 'Unauthorized: invalid access token');
+  } else {
+    header.Authorization = `${chooseToken.token_type} ${chooseToken.access_token}`;
+
+    delete body.method;
+
+    ctx.body = await agent.send(method, url, body, {
+      header: header
+    });
   }
-
-  header.Authorization = `${chooseToken.token_type} ${chooseToken.access_token}`;
-
-  delete body.method;
-
-  ctx.body = await agent.send(method, url, body, {
-    header: header
-  });
 });
 
 module.exports = router;

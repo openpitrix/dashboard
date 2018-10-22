@@ -21,6 +21,13 @@ const saveTokenResponseToCookie = (ctx, token_res, prefix = '', additional = {})
 
   without(oauthResFields, 'id_token').forEach(prop => {
     const val = prop === 'expires_in' ? Date.now() + msExpireIn : token_res[prop];
+    // refresh_token cookie expires after 2 days
+    if (prop === 'refresh_token') {
+      cookieOption.maxAge = 2 * 24 * 60 * 60 * 1000;
+    } else {
+      cookieOption.maxAge = msExpireIn;
+    }
+
     ctx.cookies.set(prefix ? [prefix, prop].join('_') : prop, val, cookieOption);
   });
 

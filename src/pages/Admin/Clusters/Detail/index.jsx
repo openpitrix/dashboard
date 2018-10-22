@@ -72,6 +72,11 @@ export default class ClusterDetail extends Component {
     // }
   }
 
+  componentWillUnmount() {
+    const { clusterDetailStore } = this.props;
+    clusterDetailStore.loadNodeInit();
+  }
+
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
     const { clusterStore, clusterDetailStore, match } = this.props;
     const { clusterId } = match.params;

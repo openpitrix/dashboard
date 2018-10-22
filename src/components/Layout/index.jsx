@@ -8,6 +8,7 @@ import { Notification } from 'components/Base';
 import Loading from 'components/Loading';
 import TitleBanner from './TitleBanner';
 import SideNav from './SideNav';
+import { getScrollTop } from 'src/utils';
 
 import styles from './index.scss';
 
@@ -38,6 +39,10 @@ export default class Layout extends React.Component {
     isHome: false
   };
 
+  state = {
+    isScroll: false
+  };
+
   componentDidMount() {
     const { sock, listenToJob } = this.props;
 
@@ -52,6 +57,8 @@ export default class Layout extends React.Component {
           ...resource
         });
       });
+
+    window.onscroll = this.handleScroll;
   }
 
   componentWillUnmount() {
@@ -60,7 +67,14 @@ export default class Layout extends React.Component {
     if (sock && !isEmpty(sock._events)) {
       sock._events = {};
     }
+
+    window.onscroll = null;
   }
+
+  handleScroll = async () => {
+    const scrollTop = getScrollTop();
+    scrollTop > 0 ? this.setState({ isScroll: true }) : this.setState({ isScroll: false });
+  };
 
   render() {
     const {
@@ -77,6 +91,7 @@ export default class Layout extends React.Component {
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
+    const { isScroll } = this.state;
 
     return (
       <div
@@ -88,7 +103,7 @@ export default class Layout extends React.Component {
         )}
       >
         {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
-        {hasMenu && <SideNav />}
+        {hasMenu && <SideNav isScroll={isScroll} />}
         {noNotification ? null : <Notification />}
         {backBtn}
         <Loading isLoading={isLoading} className={styles[loadClass]}>

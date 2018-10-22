@@ -18,8 +18,6 @@ export default class ClusterDetailStore extends Store {
   // helm
   @observable helmClusterNodes = [];
 
-  @observable totalNodeCount = 0;
-
   @observable clusterJobs = [];
 
   @observable modalType = '';
@@ -35,10 +33,9 @@ export default class ClusterDetailStore extends Store {
   @observable selectedNodeRole = '';
 
   @observable currentNodePage = 1;
+  @observable totalNodeCount = 0;
   @observable searchNode = '';
   @observable selectNodeStatus = '';
-
-  @observable isHelm = false;
 
   @action
   showModal = type => {
@@ -88,6 +85,7 @@ export default class ClusterDetailStore extends Store {
   };
 
   // todo: inject clusterStore
+  // fixme: table search, filter no effect
   @action
   formatClusterNodes = ({ type, clusterStore = this.clusterStore, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = this.cluster;

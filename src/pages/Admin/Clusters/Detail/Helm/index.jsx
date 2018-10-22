@@ -69,7 +69,9 @@ export default class HelmCluster extends React.Component {
       selectNodeStatus,
       isLoading,
       extendedRowKeys,
-      onChangeExtend
+      onChangeExtend,
+      changePaginationNode,
+      totalNodeCount
     } = clusterDetailStore;
 
     const props = {
@@ -83,8 +85,8 @@ export default class HelmCluster extends React.Component {
       }),
       pagination: {
         tableType: 'Clusters',
-        onChange: () => {},
-        total: clusterNodes.length,
+        onChange: changePaginationNode,
+        total: totalNodeCount,
         current: 1
       }
     };
