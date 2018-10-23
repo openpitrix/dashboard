@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx';
 import _, { get, pick, assign } from 'lodash';
-import { getFormData } from 'utils';
 
 import Store from '../Store';
+import { getFormData } from 'utils';
+import ts from 'config/translation';
 
 const defaultStatus = ['active'];
 
@@ -215,7 +216,7 @@ export default class UserStore extends Store {
     const result = await this.modify(data);
 
     if (get(result, 'user_id')) {
-      this.success('Modify user successful.');
+      this.success(ts('Modify user successful.'));
       return { username: data.username };
     }
   };
@@ -226,7 +227,7 @@ export default class UserStore extends Store {
 
     const data = getFormData(e.target);
     if (data.new_password !== data.confirm_password) {
-      this.error('New password is different entered twice.');
+      this.error(ts('New password is different entered twice.'));
       return;
     }
 
@@ -243,7 +244,7 @@ export default class UserStore extends Store {
       });
 
       if (get(result, 'user_id')) {
-        this.success('Change password successful.');
+        this.success(ts('Change password successful.'));
       }
     }
   };

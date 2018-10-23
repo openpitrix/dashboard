@@ -3,6 +3,7 @@ import { get, assign, capitalize } from 'lodash';
 import { Base64 } from 'js-base64';
 
 import Store from '../Store';
+import ts from 'config/translation';
 
 const defaultStatus = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
 const reviwStatus = ['submitted', 'passed', 'rejected', 'active', 'suspended'];
@@ -149,10 +150,10 @@ export default class AppVersionStore extends Store {
     let isHandle = true;
     if (handleType === 'submit') {
       if (!this.name) {
-        return this.error('Please input version name!');
+        return this.error(ts('Please input version name'));
       }
       if (!this.packageName) {
-        return this.error('Please upload package!');
+        return this.error(ts('Please upload package'));
       }
       isHandle = await this.createOrModify();
     }
@@ -170,16 +171,20 @@ export default class AppVersionStore extends Store {
     const result = await this.request.post('app_version/action/' + handleType, params);
 
     if (get(result, 'version_id')) {
+      this.hideModal();
       if (handleType === 'submit') {
         this.isTipsOpen = true;
       } else {
-        this.success(capitalize(handleType) + ' this version successfully.');
+        this.success(ts(`${capitalize(handleType)} this version successfully.`));
       }
+
       if (handleType === 'delete') {
         this.currentVersion = {};
       }
-      this.hideModal();
+
       await this.fetchAll();
+    } else {
+      return result;
     }
     this.isLoading = false;
   };
@@ -238,9 +243,9 @@ export default class AppVersionStore extends Store {
   @action
   async handleCreateVersion(appId) {
     if (!this.name) {
-      this.info('Please input Name!');
+      this.info(ts('Please input Name!'));
     } else if (!/https?:\/\/.+/.test(this.packageName)) {
-      this.info('Package url is empty or invalid!');
+      this.info(ts('Package url is empty or invalid!'));
     } else {
       const data = {
         app_id: appId,
@@ -251,7 +256,7 @@ export default class AppVersionStore extends Store {
       const result = await this.create(data);
 
       if (!result.err) {
-        this.success('Create App Version successful');
+        this.success(ts('Create App Version successful.'));
         this.hideModal();
         await this.fetchAll({ app_id: appId });
       }

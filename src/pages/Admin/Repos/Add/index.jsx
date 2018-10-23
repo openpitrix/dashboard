@@ -141,8 +141,8 @@ export default class RepoAdd extends Component {
           {protocolType === 's3' ? (
             <div className={styles.rightShow}>
               <p>
-                <label className={styles.inputTitle}>Access Key ID</label>
-                <label className={styles.inputTitle}>Secret Access Key</label>
+                <label className={styles.inputTitle}>{t('Access Key ID')}</label>
+                <label className={styles.inputTitle}>{t('Secret Access Key')}</label>
               </p>
               <Input
                 className={styles.inputMiddle}
@@ -157,7 +157,7 @@ export default class RepoAdd extends Component {
                 onChange={this.store.changeSecretKey}
               />
               <Button className={styles.add} onClick={this.store.handleValidateCredential}>
-                Validate
+                {t('Validate')}
               </Button>
             </div>
           ) : null}

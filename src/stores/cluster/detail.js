@@ -187,7 +187,6 @@ export default class ClusterDetailStore extends Store {
   @action
   deleteNodes = async params => {
     const res = await this.request.post('clusters/delete_nodes', params);
-    console.log('delete nodes: ', res);
   };
 
   // resize cluster

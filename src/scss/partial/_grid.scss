@@ -5,7 +5,7 @@ $menu-sub-nav-width: 200px;
 $columns: 12;
 
 $grid-gap: 24px;  // gap for normal layout
-$grid-gap-dev: 20px;  // gap for dev/admin layout
+$grid-gap-dev: 24px;  // gap for dev/admin layout
 //$grid-width: 72px;
 $grid-width: calc(100% + #{$grid-gap}) / 12;
 $grid-width-dev: calc(100% + #{$grid-gap-dev}) / 12;

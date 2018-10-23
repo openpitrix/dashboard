@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
+import { get, assign } from 'lodash';
+
 import Store from '../Store';
-import { get, assign, values } from 'lodash';
+import ts from 'config/translation';
 
 export default class RepoStore extends Store {
   @observable repos = [];
@@ -137,10 +139,16 @@ export default class RepoStore extends Store {
   @action
   deleteRepo = async () => {
     const result = await this.request.delete('repos', { repo_id: [this.repoId] });
+
     if (get(result, 'repo_id')) {
       this.deleteRepoClose();
-      this.fetchAll({}, this.appStore);
-      this.success('Delete repo successfully.');
+      this.success(ts('Delete repo successfully.'));
+
+      if (this.repos.length) {
+        await this.fetchAll({}, this.appStore);
+      }
+    } else {
+      return result;
     }
   };
 
@@ -186,9 +194,9 @@ export default class RepoStore extends Store {
   startIndexer = async repoId => {
     let repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
     if (repoEvent.repo_id) {
-      this.success(`Started repo indexer: ${repoEvent.repo_id}`);
+      this.success(`${ts('Started repo indexer:')} ${repoEvent.repo_id}`);
     } else {
-      this.error(`Start repo indexer failed: ${repoEvent.errDetail}`);
+      this.error(`${ts('Start repo indexer failed:')} ${repoEvent.errDetail}`);
     }
   };
 
@@ -202,6 +210,7 @@ export default class RepoStore extends Store {
       this.searchWord = '';
     }
     this.userId = '';
+    this.repos = [];
     this.pageInitMap = {};
   };
 

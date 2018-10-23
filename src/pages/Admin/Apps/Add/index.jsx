@@ -75,14 +75,14 @@ export default class AppAdd extends Component {
 
   checkFile = file => {
     let result = true;
-    const { appStore } = this.props;
+    const { appStore, t } = this.props;
     const maxsize = 2 * 1024 * 1024;
 
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ and TGZ';
+      appVersionStore.createError = t('file_format_note');
       return false;
     } else if (file.size > maxsize) {
-      appVersionStore.createError = 'The file size cannot exceed 2M';
+      appVersionStore.createError = t('The file size cannot exceed 2M');
       return false;
     }
 

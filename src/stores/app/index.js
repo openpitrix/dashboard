@@ -3,6 +3,7 @@ import { get, assign } from 'lodash';
 
 import Store from '../Store';
 import { getProgress } from 'utils';
+import ts from 'config/translation';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
 
@@ -202,7 +203,7 @@ export default class AppStore extends Store {
         this.cancelSelected();
         this.hideModal();
       }
-      this.success('Delete app successfully.');
+      this.success(ts('Delete app successfully.'));
     } else {
       return result;
     }
@@ -216,7 +217,7 @@ export default class AppStore extends Store {
   @action
   modifyCategoryById = async () => {
     if (!this.handleApp.selectedCategory) {
-      this.info('please select a category');
+      this.info(ts('Please select a category'));
       return;
     }
     const result = await this.modify({
@@ -226,7 +227,7 @@ export default class AppStore extends Store {
     this.hideModal();
 
     if (!result.err) {
-      this.success('Modify category successfully');
+      this.success(ts('Modify category successfully'));
       await this.fetchAll();
     }
   };

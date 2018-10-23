@@ -238,6 +238,8 @@
   "Remove": "移除",
   "Add": "添加",
   "Validate": "验证",
+  "Key": "键",
+  "Value": "值",
 
   "Confirm": "确定",
   "Cancel": "取消",
@@ -319,6 +321,7 @@
   "diff_repo": "公共仓库和私人仓库之间的区别。",
   "click_upload": "请单击以选择文件上载",
   "file_format_note": "文件格式支持TAR，TAR.GZ 和 TGZ",
+  "The file size cannot exceed 2M": "文件大小不能超过2M",
   "view_guide_1": "查看",
   "view_guide_2": "《Openpitrix开发指南》",
   "view_guide_3": "并了解如何制作配置文件",
@@ -384,5 +387,7 @@
 
   "kubeconfig desc": "用于配置集群间访问的文件，在 Kubernetes 环境 “~/.kube/config” 查看",
   "Please select one repo": "请选择一个仓库",
+  "Please input reject Reason": "请输入拒绝原因",
+  "Please select SSH key": "请选择SSH密钥",
   "HELM_APP_NAME_TIP": "小写字母开头，最长14个字符（支持数字/小写字母/连字符）"
 }

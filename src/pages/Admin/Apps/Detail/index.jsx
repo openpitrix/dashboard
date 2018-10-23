@@ -86,15 +86,15 @@ export default class AppDetail extends Component {
 
   checkFile = file => {
     let result = true;
-    const { appVersionStore } = this.props;
+    const { appVersionStore, t } = this.props;
     const maxsize = 2 * 1024 * 1024;
     appVersionStore.createError = '';
 
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      appVersionStore.createError = 'The file format supports TAR, TAR.GZ, TAR.BZ and TGZ';
+      appVersionStore.createError = t('file_format_note');
       return false;
     } else if (file.size > maxsize) {
-      appVersionStore.createError = 'The file size cannot exceed 2M';
+      appVersionStore.createError = t('The file size cannot exceed 2M');
       return false;
     }
 
@@ -106,9 +106,7 @@ export default class AppDetail extends Component {
     appVersionStore.isLoading = true;
     appVersionStore.uploadFile = base64Str;
     appVersionStore.packageName = file.name;
-    setTimeout(() => {
-      appVersionStore.isLoading = false;
-    }, 1000);
+    setTimeout(() => (appVersionStore.isLoading = false), 1000);
   };
 
   createVersion = (base64Str, file) => {
@@ -132,16 +130,21 @@ export default class AppDetail extends Component {
   };
 
   handleVersion = async (version, handleType) => {
-    const { appVersionStore } = this.props;
+    const { appVersionStore, appStore } = this.props;
 
     if (handleType === 'delete') {
       appVersionStore.showDelete('deleteVersion');
     } else {
-      await appVersionStore.handle(handleType, version.version_id);
+      const result = await appVersionStore.handle(handleType, version.version_id);
       const newVersion = appVersionStore.versions.filter(
         item => item.version_id === version.version_id
       );
       appVersionStore.currentVersion = newVersion[0];
+
+      // update app detail info
+      if (handleType === 'submit' && !(result && result.err)) {
+        await appStore.fetch(appVersionStore.appId);
+      }
     }
   };
 
@@ -163,8 +166,9 @@ export default class AppDetail extends Component {
     } else {
       appStore.operateType = 'detailDelete';
       const result = await appStore.remove();
+
       if (!(result && result.err)) {
-        history.push('/dashboard/apps');
+        setTimeout(() => history.push('/dashboard/apps'), 1000);
       }
     }
     appVersionStore.hideModal();
@@ -189,8 +193,8 @@ export default class AppDetail extends Component {
   };
 
   renderTipsDialog = () => {
-    const { t } = this.props;
-    const { isTipsOpen, hideModal, name } = this.props.appVersionStore;
+    const { appVersionStore, t } = this.props;
+    const { isTipsOpen, hideModal, name } = appVersionStore;
 
     return (
       <Dialog title={t('Tips')} isOpen={isTipsOpen} onCancel={hideModal} hideFooter>

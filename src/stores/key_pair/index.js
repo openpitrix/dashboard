@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 import Store from '../Store';
+import ts from 'config/translation';
 
 export default class KeyPairStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
@@ -51,9 +52,9 @@ export default class KeyPairStore extends Store {
   @action
   addKeyPairs = async () => {
     if (!this.name) {
-      this.error('Please input Name!');
+      this.error(ts('Please input Name!'));
     } else if (!this.pub_key) {
-      this.error('Please input public key!');
+      this.error(ts('Please input public key!'));
     } else {
       const data = {
         name: this.name,
@@ -65,7 +66,7 @@ export default class KeyPairStore extends Store {
       if (_.get(result, 'key_pair_id')) {
         this.hideModal();
         await this.fetchKeyPairs();
-        this.success('Create SSH Key successful!');
+        this.success(ts('Create SSH Key successful!'));
       }
     }
   };
@@ -77,7 +78,7 @@ export default class KeyPairStore extends Store {
 
     if (_.get(result, 'key_pair_id')) {
       await this.fetchKeyPairs();
-      this.success('Delete SSH Key successfully.');
+      this.success(ts('Delete SSH Key successfully.'));
     }
   };
 
@@ -90,7 +91,7 @@ export default class KeyPairStore extends Store {
 
     if (_.get(result, 'job_id')) {
       this.hideModal();
-      this.success('Attach SSH Key successfully.');
+      this.success(ts('Attach SSH Key successfully.'));
     } else {
       return result;
     }
@@ -105,7 +106,7 @@ export default class KeyPairStore extends Store {
 
     if (_.get(result, 'job_id')) {
       this.hideModal();
-      this.success('Detach SSH Key successfully.');
+      this.success(ts('Detach SSH Key successfully.'));
     } else {
       return result;
     }

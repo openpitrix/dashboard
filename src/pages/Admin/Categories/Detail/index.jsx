@@ -44,14 +44,14 @@ export default class CategoryDetail extends Component {
     this.props.appStore.loadPageInit();
   }
 
-  // componentDidUpdate() {
-  //   const { category } = this.props.categoryStore;
-  //   if (!category.category_id) {
-  //     setTimeout(() => {
-  //       location.href = '/dashboard/categories';
-  //     }, 2000);
-  //   }
-  // }
+  deleteCategory = async () => {
+    const { categoryStore, history } = this.props;
+    const result = await categoryStore.remove();
+
+    if (!(result && result.err)) {
+      setTimeout(() => history.push('/dashboard/categories'), 1000);
+    }
+  };
 
   renderHandleMenu = category => {
     const { t } = this.props;
@@ -102,13 +102,13 @@ export default class CategoryDetail extends Component {
 
   renderDeleteModal = () => {
     const { t } = this.props;
-    const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
+    const { isDeleteOpen, hideModal } = this.props.categoryStore;
 
     return (
       <Dialog
         title={t('Delete Category')}
         visible={isDeleteOpen}
-        onSubmit={remove}
+        onSubmit={this.deleteCategory}
         onCancel={hideModal}
       >
         {t('Delete Category desc')}
