@@ -46,11 +46,18 @@ export default class AppList extends PureComponent {
               <CardTitle skipLink={skipLink} categoryId={category_id} title={name} more />
             )}
 
-            {apps.slice(0, 6).map(app => (
-              <Link key={app.app_id} to={`/${skipLink}/${app.app_id}`}>
-                <Card icon={app.icon} name={app.name} desc={app.description} fold />
-              </Link>
-            ))}
+            {apps
+              .slice(0, 6)
+              .map(app => (
+                <Card
+                  key={app.app_id}
+                  icon={app.icon}
+                  name={app.name}
+                  desc={app.description}
+                  link={`/${skipLink}/${app.app_id}`}
+                  fold
+                />
+              ))}
           </div>
         );
       });
@@ -66,10 +73,10 @@ export default class AppList extends PureComponent {
     const { apps, className, skipLink, isLoading, t } = this.props;
 
     return (
-      <div className={classnames(styles.appList, className)}>
-        {<CardTitle title={this.getSearchTitle()} more={false} />}
+      <div className={classnames(className)}>
+        <div className={styles.appList}>
+          {<CardTitle title={this.getSearchTitle()} more={false} />}
 
-        <div className={styles.appsRow}>
           {apps.map((app, idx) => (
             <Card
               icon={app.icon}
@@ -79,9 +86,9 @@ export default class AppList extends PureComponent {
               link={`/${skipLink}/${app.app_id}`}
             />
           ))}
-        </div>
 
-        {!apps.length && !isLoading && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
+          {!apps.length && !isLoading && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
+        </div>
 
         {this.renderCategoryApps()}
       </div>

@@ -19,20 +19,27 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
+  async componentWillMount() {
+    const { rootStore, match } = this.props;
+    const { category, search } = match.params;
+
+    if (category || search) {
+      rootStore.setNavFix(true);
+    } else {
+      rootStore.setNavFix(false);
+    }
+
+    window.scroll({ top: 0 });
+  }
+
   async componentDidMount() {
     const { rootStore, appStore, categoryStore, match } = this.props;
     const { category, search } = match.params;
     const filterParams = { status: 'active', noLimit: true };
 
-    window.scroll({ top: 0, behavior: 'smooth' });
-
     await categoryStore.fetchAll();
 
-    if (category || search) {
-      rootStore.setNavFix(true);
-    } else {
-      // home page
-      rootStore.setNavFix(false);
+    if (!(category || search)) {
       this.threshold = this.getThreshold();
       window.onscroll = this.handleScroll;
     }

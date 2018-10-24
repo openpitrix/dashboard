@@ -1,11 +1,12 @@
 @import '~scss/vars';
 
 .card {
+   float: left;
    display: inline-block;
    width: $app-card-width;
    height: $app-card-height;
    padding: 40px 20px 20px;
-   //margin: 0 24px 24px 0;
+   margin: 0 24px 24px 0;
    border-radius: 2px;
    //border: 1px solid $border-light;
    background-color: $N0;
