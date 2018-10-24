@@ -10,13 +10,22 @@
     padding-top: $layout-top - 20px;
   }
 
-  &.hasMenu{
+  &.hasMenu,
+  &.hasNav {
     margin: 56px 20px 32px $menu-width+20px;
-    width: calc(100% - #{$menu-width} - 40px);
     //min-width: 950px;
     min-width: 992px;
     min-height: calc(100vh - 100px);
     padding-top: 0;
+  }
+
+  &.hasMenu {
+    width: calc(100% - #{$menu-width} - 40px);
+  }
+
+  &.hasNav {
+    width: calc(100% - #{$menu-nav-width} - 40px);
+    margin-left: $menu-nav-width + 20px;
   }
 
   .backBtn{
@@ -57,20 +66,26 @@
   z-index: 3;
   width: 100%;
   height: $title-banner-height;
-  background-color: $N0;
-  box-shadow: 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  background-color: $N500;
 
-  .wrapper{
+  .wrapper {
     width: $content-width;
-    margin: 20px auto;
+    margin: 30px auto;
   }
 
-  .name{
-    font-size: 28px;
+  .name {
+    margin-bottom: 4px;
+    font-size: 20px;
     font-weight: 500;
-    line-height: 32px;
+    line-height: 24px;
     letter-spacing: 0;
-    color: #343945;
+    color: $N0;
+  }
+
+  .desc {
+    line-height: 20px;
+    font-size: 12px;
+    color: $N65;
   }
 
   .search {

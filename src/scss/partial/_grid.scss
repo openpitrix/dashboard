@@ -1,7 +1,7 @@
 $content-width: 1128px;
-$menu-width: 248px;
-$menu-nav-width: 48px;
-$menu-sub-nav-width: 200px;
+$menu-nav-width: 64px;
+$menu-sub-nav-width: 192px;
+$menu-width: $menu-nav-width + $menu-sub-nav-width;
 $columns: 12;
 
 $grid-gap: 24px;  // gap for normal layout
@@ -15,7 +15,7 @@ $layout-margin: 156px;
 // basic
 $nav-width: 264px;
 $header-height: 48px;
-$title-banner-height: 72px;
+$title-banner-height: 108px;
 $layout-top: $header-height + $title-banner-height + 40px;
 $tabNavs-height: 48px;
 $banner-height: 400px;
