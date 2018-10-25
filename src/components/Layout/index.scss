@@ -6,13 +6,13 @@
   width: $content-width;
   margin: 0 auto;
 
-  &.hasBack{
+  &.hasBack {
     padding-top: $layout-top - 20px;
   }
 
   &.hasMenu,
   &.hasNav {
-    margin: 56px 20px 32px $menu-width+20px;
+    margin: 56px 20px 32px $menu-width + 20px;
     //min-width: 950px;
     min-width: 992px;
     min-height: calc(100vh - 100px);
@@ -28,21 +28,21 @@
     margin-left: $menu-nav-width + 20px;
   }
 
-  .backBtn{
+  .backBtn {
     //width: $content-width;
     margin: 0 auto 20px;
     font-size: $size-normal;
     line-height: 1.43;
-    a{
+    a {
       color: $P75;
     }
   }
 
-  &.noTabs{
-    padding-top: $header-height+32px;
+  &.noTabs {
+    padding-top: $header-height + 32px;
   }
 
-  .detailTab{
+  .detailTab {
     position: absolute;
     top: 150px;
     left: 384px;
@@ -59,7 +59,7 @@
   }
 }
 
-.titleBanner{
+.titleBanner {
   position: fixed;
   top: 48px;
   left: 0;
@@ -73,6 +73,31 @@
     margin: 30px auto;
   }
 
+  .image,
+  .icon {
+    float: left;
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .image {
+    line-height: 48px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .icon {
+    box-sizing: border-box;
+    padding: 12px;
+    background-color: $N400;
+    border-radius: 3px;
+  }
+
   .name {
     margin-bottom: 4px;
     font-size: 20px;
@@ -83,9 +108,11 @@
   }
 
   .desc {
+    height: 20px;
     line-height: 20px;
     font-size: 12px;
     color: $N65;
+    overflow: hidden;
   }
 
   .search {
@@ -105,11 +132,11 @@
       border-radius: 16px;
       border: 1px solid transparent;
       background-color: $N10;
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       &::placeholder {
         font-size: 14px;
         color: $N45;
-        line-height: 1.0;
+        line-height: 1;
         letter-spacing: 0;
       }
       &:focus {
@@ -124,12 +151,11 @@
       .icon {
         color: $N65;
         opacity: 0.5;
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           opacity: 1;
         }
       }
     }
   }
 }
-
-

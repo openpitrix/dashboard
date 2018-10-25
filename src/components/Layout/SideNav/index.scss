@@ -1,133 +1,88 @@
 @import '~scss/vars';
 
-.menu {
-  display: inline-block;
+.nav {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 4;
-  // width: $menu-width;
+  z-index: 3;
+  width: $menu-nav-width;
+  height: 100vh;
   background-color: $N0;
+  border-right: 1px solid $N10;
+  transition: all 0.3s ease-out 0s;
 
-  .nav {
-    float: left;
-    width: $menu-nav-width;
-    height: 100vh;
+  &:hover {
+    width: $menu-width;
 
-    li {
-      height: 40px;
-      text-align: center;
-
-      >a {
-        display: inline-block;
-        width: 100%;
-      }
-
-      &:hover {
-       /* .icon svg {
-          --primary-color: #{$P100};
-          --secondary-color: #{$P30};
-        }*/
-
-        .hoverNav {
-          display: block;
-        }
-      }
-
-      .icon {
-        margin: 8px 0;
-      }
-
-      :global {
-        .icon-more{
-          transform: rotate(90deg);
-        }
-      }
-    }
-
-    ul:nth-child(1) > li:nth-child(1) {
-      margin-bottom: 10px;
-      height: 63px;
-      border-bottom: 1px solid $N10;
-
-      .icon {
-        margin: 23px 0 16px 8px;
-      }
-    }
-  }
-
-  @media screen and (min-height: 550px) {
     .bottomNav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: $menu-nav-width;
+      width: $menu-width;
     }
   }
 
-  .hoverNav {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: $menu-nav-width - 3px;
-    width: $menu-sub-nav-width + 3px;
-    height: 100vh;
-    /*left: 0;
-    width: $menu-width;*/
-    background-color: $N0;
-    border-right: 1px solid $N10;
+  li {
+    height: 40px;
+    overflow: hidden;
 
-    li {
-      height: 40px;
-      font-size: 16px;
+    >a {
       color: $N300;
-      text-align: left;
-      overflow: hidden;
+    }
 
-      >a {
-        //margin-left: 10px;
-        line-height: 40px;
-        color: $N300;
-        text-align: left;
+    .icon {
+      float: left;
+      margin: 8px 20px;
+    }
 
-        &:hover, &.active {
-          color: $P75;
-        }
+    .title {
+      line-height: 40px;
+      cursor: pointer;
+    }
+
+    &:hover {
+      > a {
+        color: $P75;
+      }
+
+      .icon svg {
+        --primary-color: #{$P100};
+        --secondary-color: #{$P30};
       }
     }
 
-    ul:nth-child(1) > li:nth-child(1) {
-      margin-bottom: 10px;
-      height: 63px;
-      border-bottom: 1px solid $N10;
-      font-size: 16px;
-      font-weight: 500;
-      color: $N500;
-
-      >a {
-        line-height: 64px;
+    :global {
+      .icon-more{
+        transform: rotate(90deg);
       }
+    }
+  }
 
-      /*.iconOuter {
-        .icon {
-          margin: 23px 0 16px 8px;
-        }
-      }*/
+  ul:nth-child(1) > li:nth-child(1) {
+    margin-bottom: 10px;
+    height: 63px;
+    border-bottom: 1px solid $N10;
+
+    .icon {
+      margin: 23px 24px 16px 24px;
     }
 
-    @media screen and (min-height: 550px) {
-      .bottomNav {
-        position: fixed;
-        bottom: 0;
-        left: $menu-nav-width - 3px;
-        width: $menu-sub-nav-width + 3px;
-      }
+    .title {
+      line-height: 64px;
     }
   }
 }
 
+@media screen and (min-height: 550px) {
+  .bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: $menu-nav-width;
+  }
+}
 .subNav {
-  float: left;
+  position: fixed;
+  left: $menu-nav-width;
+  top: 0;
+  z-index: 2;
   height: 100vh;
   width: $menu-sub-nav-width;
   background-color: $N0;

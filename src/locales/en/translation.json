@@ -84,5 +84,10 @@
 
   "DEPLOY_NO_RUNTIME_NOTE": "There is currently no available runtime, please go to ",
 
-  "HELM_APP_NAME_TIP": "Start with [a-z], with '-', 0~9, lowercase letter in the middle, no more than 14 characters in length."
+  "HELM_APP_NAME_TIP": "Start with [a-z], with '-', 0~9, lowercase letter in the middle, no more than 14 characters in length.",
+
+  "APP_STORE_DESC": "Openpitrix official store has {{total}} apps",
+  "PURCHASED_DESC": "All the apps you have purchased will be shown here, including the corresponding instance of the app.",
+  "MY_RUNTIMES_DESC": "The platform supports multiple cloud environments, at the same time and can be managed here.",
+  "UPGRADE_PROVIDER": "Upgrade to an「application provider」"
 }

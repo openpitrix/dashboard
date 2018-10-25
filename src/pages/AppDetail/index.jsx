@@ -271,7 +271,7 @@ export default class AppDetail extends Component {
       <Layout
         className={classnames({ [styles.appDetail]: isHome })}
         isLoading={isLoading}
-        title="Store"
+        title="appDetail"
         hasSearch
         isHome={isHome}
         backBtn={(isNormal || isHome) && <BackBtn label={backLabel} link={backLink} />}

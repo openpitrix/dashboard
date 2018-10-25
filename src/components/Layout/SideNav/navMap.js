@@ -15,10 +15,9 @@ export const subNavMap = {
   user: {
     title: 'Users',
     links: [
-      { name: 'All Users', link: '/dashboard/users', active: 'user' }
-      /* { name: 'User Groups', link: '#', active: 'group' },
-       { name: 'Roles', link: '#', active: 'role' },
-       { name: 'Policy', link: '#', active: 'policy' }*/
+      { name: 'All Users', link: '/dashboard/users', active: 'user' },
+      { name: 'Roles', link: '#', active: 'role' },
+      { name: 'Permission and Policy', link: '#', active: 'policy' }
     ]
   },
   repo: {
@@ -35,7 +34,7 @@ export const subNavMap = {
 };
 
 export const getNavs = {
-  'global_admin':  [
+  global_admin: [
     {
       link: '/',
       iconName: 'op-logo',
@@ -91,7 +90,7 @@ export const getNavs = {
       title: '设置'
     }
   ],
-  'developer': [
+  developer: [
     {
       link: '/',
       iconName: 'op-logo',
@@ -150,28 +149,19 @@ export const getDevSubNavs = [
     ]
   },
   {
-   title: '运维',
-     items: [
-     { name: '监控', link: '#' },
-     { name: '事件', link: '#' },
-     { name: '应用信息', link: '#' }
-   ]
+    title: '运维',
+    items: [
+      { name: '监控', link: '#' },
+      { name: '事件', link: '#' },
+      { name: '应用信息', link: '#' }
+    ]
   },
   {
     title: '客户',
-    items: [
-      { name: '实例', link: '#' },
-      { name: '工单', link: '#' },
-      { name: '消息', link: '#' }
-    ]
+    items: [{ name: '实例', link: '#' }, { name: '工单', link: '#' }, { name: '消息', link: '#' }]
   },
   {
     title: '沙盒',
-    items: [
-      { name: '实例', link: '#' },
-      { name: '环境', link: '#' },
-    ]
+    items: [{ name: '实例', link: '#' }, { name: '环境', link: '#' }]
   }
-]
-
-
+];

@@ -90,7 +90,7 @@ class Header extends Component {
       <div className={styles.user}>
         <Popover content={<MenuLayer />}>
           {username}
-          <Icon name="caret-down" className={styles.iconDark} type="dark" />
+          <Icon name="caret-down" className={styles.icon} type="dark" />
         </Popover>
       </div>
     );
@@ -115,9 +115,7 @@ class Header extends Component {
         >
           <div className={styles.wrapper}>
             <Logo className={styles.logo} url={logoUrl} />
-            <div className={styles.menuOuter}>
-              {this.renderMenuBtns()}
-            </div>
+            {this.renderMenuBtns()}
             {fixNav && (
               <Input.Search
                 className={styles.search}
@@ -129,17 +127,22 @@ class Header extends Component {
             )}
           </div>
         </div>
-      )
+      );
     }
 
     return (
       <div className={classnames(styles.header, styles.deepInner)}>
         <div className={styles.wrapper}>
-          <Link className={styles.logoIcon} to='/'>
-            <Icon className={styles.icon} name='op-logo' type='white' size={16}/>
+          <Link className={styles.logoIcon} to="/">
+            <Icon className={styles.icon} name="op-logo" type="white" size={16} />
           </Link>
           {this.renderMenus()}
           {this.renderMenuBtns()}
+          <Icon name="mail" size={20} type="white" className={styles.mail} />
+          <Link to="#" className={styles.upgrade}>
+            <Icon name="shield" size={16} type="white" className={styles.shield} />
+            {t('UPGRADE_PROVIDER')}
+          </Link>
         </div>
       </div>
     );

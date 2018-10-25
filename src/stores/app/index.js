@@ -11,6 +11,7 @@ export default class AppStore extends Store {
   @observable apps = [];
   @observable homeApps = [];
   @observable storeApps = []; //store page category apps
+  @observable storeTotal = 0; // normal user store page app total
   @observable menuApps = []; //menu apps
   @observable hasMeunApps = false; // judje query menu apps
   @observable appDetail = {};

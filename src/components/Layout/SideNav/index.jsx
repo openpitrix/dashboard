@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
-import Status from 'components/Status'
+import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 
 import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
@@ -76,7 +76,7 @@ class SideNav extends React.Component {
     const { menuApps } = appStore;
     let bottomNavs = getBottomNavs;
 
-    if (isDev ) {
+    if (isDev) {
       const topNav = navs[0];
       navs = menuApps.concat(navs.slice(1));
       navs.unshift(topNav);
@@ -88,84 +88,40 @@ class SideNav extends React.Component {
         <ul>
           {navs.map(nav => (
             <li key={nav.iconName || nav.app_id}>
-              {/*<NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>*/}
-                {
-                  nav.app_id &&
-                  <Image src={nav.icon} iconSize={24} className={styles.icon} />
-                }
-                {
-                  nav.iconName &&
+              <a href={nav.link || `/dashboard/app/${nav.app_id}`}>
+                {nav.app_id && <Image src={nav.icon} iconSize={24} className={styles.icon} />}
+                {nav.iconName && (
                   <Icon
                     className={styles.icon}
                     size={nav.iconName === 'more' ? 20 : 24}
                     name={nav.iconName}
                     type={this.isLinkActive(nav.active, role) ? 'light' : 'dark'}
                   />
-                }
-              {/*</NavLink>*/}
-              {this.renderHoverNav(navs, bottomNavs, role)}
+                )}
+              </a>
+              <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
+                <label className={styles.title}>{nav.title}</label>
+              </NavLink>
             </li>
           ))}
         </ul>
         <ul className={styles.bottomNav}>
           {bottomNavs.map(nav => (
             <li key={nav.iconName}>
-             {/* <NavLink exact to={nav.link}>*/}
+              <NavLink exact to={nav.link}>
                 <Icon
                   className={styles.icon}
                   size={24}
                   name={nav.iconName}
                   type={this.isLinkActive(nav.active, role) ? 'light' : 'dark'}
                 />
-             {/* </NavLink>*/}
-              {this.renderHoverNav(navs, bottomNavs, role)}
+                <label className={styles.title}>{nav.title}</label>
+              </NavLink>
             </li>
           ))}
         </ul>
       </div>
     );
-  }
-
-  renderHoverNav = (navs ,bottomNavs, role) => {
-    const { t } = this.props;
-
-    return (
-      <div className={styles.hoverNav}>
-        <ul>
-          {navs.map(nav => (
-            <li
-              key={nav.iconName || nav.app_id}
-            >
-              <NavLink
-                exact
-                to={nav.link || `/dashboard/app/${nav.app_id}`}
-                activeClassName={styles.active}
-                isActive={() => this.isLinkActive(nav.active, role)}
-              >
-                {t(nav.title) || nav.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-        <ul className={styles.bottomNav}>
-          {bottomNavs.map(nav => (
-            <li
-              key={nav.iconName}
-              className={classnames({[styles.active]: this.isLinkActive(nav.active, role)})}
-            >
-              <NavLink
-                exact
-                to={nav.link}
-                activeClassName={styles.active}
-                isActive={() => this.isLinkActive(nav.active, role)}
-              >
-                {t(nav.title)}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
   }
 
   renderSubDev() {
@@ -191,31 +147,25 @@ class SideNav extends React.Component {
     return (
       <div className={styles.subNav}>
         <div className={styles.title}>
-          <div className={styles.name}>
-            {appDetail.name}
-          </div>
+          <div className={styles.name}>{appDetail.name}</div>
           <Status className={styles.status} name={appDetail.status} type={appDetail.status} />
         </div>
 
-        {
-          getDevSubNavs.map(nav =>
-            <div  key={nav.title} className={styles.subContent}>
-              <div className={styles.subTitle}>
-                {nav.title}
-              </div>
-              {
-                nav.items.map( item =>
-                  <Link
-                    className={classnames(styles.link, { [styles.active]: url.indexOf(item.active) > -1 })}
-                    to={item.link}
-                  >
-                    {item.name}
-                  </Link>
-                )
-              }
-            </div>
-          )
-        }
+        {getDevSubNavs.map(nav => (
+          <div key={nav.title} className={styles.subContent}>
+            <div className={styles.subTitle}>{nav.title}</div>
+            {nav.items.map(item => (
+              <Link
+                className={classnames(styles.link, {
+                  [styles.active]: url.indexOf(item.active) > -1
+                })}
+                to={item.link}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        ))}
       </div>
     );
   }
@@ -263,11 +213,9 @@ class SideNav extends React.Component {
 
     return (
       <Fragment>
-        <div className={styles.menu}>
-          {this.renderNav()}
-          {hasSubNav && isDev && this.renderSubDev()}
-          {hasSubNav && isAdmin && this.renderSubAdmin()}
-        </div>
+        {this.renderNav()}
+        {hasSubNav && isDev && this.renderSubDev()}
+        {hasSubNav && isAdmin && this.renderSubAdmin()}
       </Fragment>
     );
   }
