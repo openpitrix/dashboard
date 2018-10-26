@@ -14,7 +14,17 @@ import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
 
 import styles from './index.scss';
 
-const keys = ['app', 'review', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
+const keys = [
+  'app',
+  'review',
+  'cluster',
+  'runtime',
+  'repo',
+  'categories',
+  'category',
+  'user',
+  'create'
+];
 const changeKey = {
   review: 'app',
   cluster: 'repo',
@@ -55,12 +65,8 @@ class SideNav extends React.Component {
     return changeKey[key] || key;
   };
 
-  isLinkActive = (activeName, role) => {
-    let key = this.getMatchKey();
-    if (role === 'developer' && key === 'app') {
-      key = 'repo';
-    }
-
+  isLinkActive = activeName => {
+    const key = this.getMatchKey();
     return activeName === key;
   };
 
@@ -70,11 +76,12 @@ class SideNav extends React.Component {
   };
 
   renderNav() {
-    const { user, appStore } = this.props;
+    const { user, appStore, history, t } = this.props;
     const { role, isDev } = user;
     let navs = getNavs[role];
     const { menuApps } = appStore;
     let bottomNavs = getBottomNavs;
+    const { pathname } = history.location;
 
     if (isDev) {
       const topNav = navs[0];
@@ -85,40 +92,61 @@ class SideNav extends React.Component {
 
     return (
       <div className={styles.nav}>
-        <ul>
+        <ul className={styles.topNav}>
           {navs.map(nav => (
             <li key={nav.iconName || nav.app_id}>
               <a href={nav.link || `/dashboard/app/${nav.app_id}`}>
-                {nav.app_id && <Image src={nav.icon} iconSize={24} className={styles.icon} />}
+                {nav.app_id && (
+                  <span
+                    className={classnames(styles.imageOuter, {
+                      [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
+                    })}
+                  >
+                    <Image src={nav.icon} iconSize={16} className={styles.image} />
+                  </span>
+                )}
                 {nav.iconName && (
                   <Icon
                     className={styles.icon}
                     size={nav.iconName === 'more' ? 20 : 24}
                     name={nav.iconName}
-                    type={this.isLinkActive(nav.active, role) ? 'light' : 'dark'}
+                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
                 )}
               </a>
               <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
-                <label className={styles.title}>{nav.title}</label>
+                <label className={styles.title}>{t(nav.title || nav.name)}</label>
               </NavLink>
             </li>
           ))}
         </ul>
         <ul className={styles.bottomNav}>
-          {bottomNavs.map(nav => (
-            <li key={nav.iconName}>
-              <NavLink exact to={nav.link}>
-                <Icon
-                  className={styles.icon}
-                  size={24}
-                  name={nav.iconName}
-                  type={this.isLinkActive(nav.active, role) ? 'light' : 'dark'}
-                />
-                <label className={styles.title}>{nav.title}</label>
-              </NavLink>
-            </li>
-          ))}
+          {bottomNavs.map(
+            nav =>
+              nav.iconName === 'human' ? (
+                <li key={nav.iconName}>
+                  <Popover content={this.renderUserMenus()} className={styles.iconOuter}>
+                    <Icon
+                      className={styles.icon}
+                      size={24}
+                      name={nav.iconName}
+                      type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                    />
+                    <label className={styles.title}>{t(nav.title)}</label>
+                  </Popover>
+                </li>
+              ) : (
+                <li key={nav.iconName}>
+                  <Icon
+                    className={styles.icon}
+                    size={24}
+                    name={nav.iconName}
+                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                  />
+                  <label className={styles.title}>{t(nav.title)}</label>
+                </li>
+              )
+          )}
         </ul>
       </div>
     );
@@ -204,6 +232,39 @@ class SideNav extends React.Component {
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
+    );
+  }
+
+  renderUserMenus() {
+    const { user, t } = this.props;
+
+    return (
+      <ul className={styles.userMenus}>
+        <li>
+          <span className={styles.userIcon}>
+            <Icon name="human" size={24} type="dark" className={styles.icon} />
+          </span>
+          {user.username}
+        </li>
+        <li>
+          <Link to="/profile">基本信息</Link>
+        </li>
+        <li>
+          <Link to="/profile">修改密码</Link>
+        </li>
+        <li>
+          <Link to="#">支付</Link>
+        </li>
+        <li>
+          <Link to="#">通知</Link>
+        </li>
+        <li>
+          <Link to="/ssh_keys">{t('SSH Keys')}</Link>
+        </li>
+        <li>
+          <a href="/logout">{t('Log out')}</a>
+        </li>
+      </ul>
     );
   }
 

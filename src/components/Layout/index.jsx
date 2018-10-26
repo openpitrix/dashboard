@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop, clone, isEmpty, get } from 'lodash';
@@ -94,7 +94,7 @@ export default class Layout extends Component {
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
     const { isScroll } = this.state;
-    const paths = ['/dashboard', '/profile'];
+    const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
     const hasSubNav = hasMenu && !paths.includes(match.path);
 
     return (

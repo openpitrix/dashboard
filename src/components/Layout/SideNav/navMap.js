@@ -100,11 +100,11 @@ export const getNavs = {
     {
       link: '/dashboard/app/create',
       iconName: 'plus-square',
-      active: 'app',
+      active: 'create',
       title: '创建新应用'
     },
     {
-      link: '/dashboard/apps',
+      link: '/dev/apps',
       iconName: 'more',
       active: 'app',
       title: '查看全部'

@@ -12,7 +12,7 @@
   transition: all 0.3s ease-out 0s;
 
   &:hover {
-    width: $menu-width;
+    width: $menu-width;;
 
     .bottomNav {
       width: $menu-width;
@@ -36,6 +36,41 @@
       line-height: 40px;
       cursor: pointer;
     }
+  }
+}
+
+.topNav {
+  >li {
+    .imageOuter {
+      float: left;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 8px 20px;
+      border: 1px solid $N30;
+
+      &:hover, &.activeApp {
+        border-color: $P75;
+      }
+
+      .image {
+        margin: 4px;
+      }
+    }
+
+    &:nth-child(1) {
+      margin-bottom: 10px;
+      height: 63px;
+      border-bottom: 1px solid $N10;
+
+      .icon {
+        margin: 23px 16px 16px 24px;
+      }
+
+      .title {
+        line-height: 64px;
+      }
+    }
 
     &:hover {
       > a {
@@ -47,25 +82,36 @@
         --secondary-color: #{$P30};
       }
     }
-
-    :global {
-      .icon-more{
-        transform: rotate(90deg);
-      }
-    }
   }
 
-  ul:nth-child(1) > li:nth-child(1) {
-    margin-bottom: 10px;
-    height: 63px;
-    border-bottom: 1px solid $N10;
+  :global {
+    .icon-more{
+      transform: rotate(90deg);
+    }
+  }
+}
 
-    .icon {
-      margin: 23px 24px 16px 24px;
+
+.bottomNav {
+  li {
+    .iconOuter {
+      [class*='target'] {
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        border: 0 none;
+      }
+
+      :global{
+        .pi-popover-popper{
+          margin-left: 2px !important;
+          margin-bottom: -30px !important;
+        }
+      }
     }
 
-    .title {
-      line-height: 64px;
+    .icon svg {
+      opacity: 0.5;
     }
   }
 }
@@ -75,9 +121,12 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 4;
     width: $menu-nav-width;
   }
 }
+
+
 .subNav {
   position: fixed;
   left: $menu-nav-width;
@@ -209,6 +258,60 @@
 
 .headerShadow {
   box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04)
+}
+
+.userMenus {
+  min-width: 150px;
+
+  li {
+    height: 32px !important;
+
+    > a,
+    > label {
+      display: block;
+      height: 32px;
+      padding: 0 12px;
+      //width: 100%;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: normal;
+      color: $N300;
+      border-radius: 0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $N10;
+        color: $N500;
+      }
+    }
+
+    &:first-child {
+      padding: 12px 12px 16px;
+      font-size: 16px;
+      line-height: 32px;
+      font-weight: 500;
+      color: $N500;
+      border-bottom: 1px solid $N10;
+
+      .userIcon {
+        float: left;
+        display: inline-block;
+        margin-right: 8px;
+        width: 32px;
+        height: 32px;
+        background-color: $N10;
+        border-radius: 50%;
+
+        .icon {
+          margin: 4px;
+        }
+      }
+    }
+
+    &:last-child{
+      border-top: 1px solid $N10;
+    }
+  }
 }
 
 
