@@ -36,12 +36,6 @@ export const subNavMap = {
 export const getNavs = {
   global_admin: [
     {
-      link: '/',
-      iconName: 'op-logo',
-      active: '',
-      title: 'QingCloud 应用中心'
-    },
-    {
       link: '/dashboard',
       iconName: 'dashboard',
       active: 'dashboard',
@@ -91,12 +85,6 @@ export const getNavs = {
     }
   ],
   developer: [
-    {
-      link: '/',
-      iconName: 'op-logo',
-      active: '',
-      title: '应用开发中心'
-    },
     {
       link: '/dashboard/app/create',
       iconName: 'plus-square',

@@ -23,18 +23,30 @@
     height: 40px;
     overflow: hidden;
 
-    >a {
+    a {
       color: $N300;
     }
 
     .icon {
       float: left;
-      margin: 8px 20px;
+      margin: 10px 22px;
     }
 
     .title {
+      margin-left: -4px;
       line-height: 40px;
       cursor: pointer;
+    }
+
+    &:hover {
+      a {
+        color: $P75;
+      }
+
+      .icon svg {
+        --primary-color: #{$N300};
+        --secondary-color: #{$P30};
+      }
     }
   }
 }
@@ -44,9 +56,9 @@
     .imageOuter {
       float: left;
       display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 8px 20px;
+      width: 20px;
+      height: 20px;
+      margin: 9px 22px;
       border: 1px solid $N30;
 
       &:hover, &.activeApp {
@@ -54,32 +66,25 @@
       }
 
       .image {
-        margin: 4px;
+        margin: 2px;
       }
     }
 
     &:nth-child(1) {
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       height: 63px;
       border-bottom: 1px solid $N10;
 
       .icon {
-        margin: 23px 16px 16px 24px;
+        margin: 23px 24px 16px 24px;
       }
 
       .title {
         line-height: 64px;
-      }
-    }
-
-    &:hover {
-      > a {
-        color: $P75;
-      }
-
-      .icon svg {
-        --primary-color: #{$P100};
-        --secondary-color: #{$P30};
+        font-size: 16px;
+        color: $N500;
+        font-weight: 500;
+        cursor: default;
       }
     }
   }
@@ -93,7 +98,7 @@
 
 
 .bottomNav {
-  li {
+  >li {
     .iconOuter {
       [class*='target'] {
         width: auto;
@@ -104,14 +109,18 @@
 
       :global{
         .pi-popover-popper{
-          margin-left: 2px !important;
+          margin-left: -10px !important;
           margin-bottom: -30px !important;
         }
       }
     }
 
     .icon svg {
-      opacity: 0.5;
+      opacity: 0.6;
+    }
+
+    &:last-child {
+      margin-bottom: 14px;
     }
   }
 }
@@ -249,6 +258,7 @@
         background-color: $N10;
         color: $N500;
       }
+
       &.line{
         border-bottom: 1px solid $N10;
       }
@@ -261,21 +271,18 @@
 }
 
 .userMenus {
-  min-width: 150px;
+  min-width: 140px;
 
   li {
-    height: 32px !important;
+    height: 32px;
 
     > a,
     > label {
       display: block;
-      height: 32px;
-      padding: 0 12px;
-      //width: 100%;
       line-height: 32px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: normal;
-      color: $N300;
+      color: $N300 !important;
       border-radius: 0;
       cursor: pointer;
 
@@ -285,8 +292,19 @@
       }
     }
 
+    .iconImg {
+      float: left;
+      margin: 8px 8px 8px 15px;
+    }
+
+    &:hover {
+      a {
+        color: $N500;
+      }
+    }
+
     &:first-child {
-      padding: 12px 12px 16px;
+      padding: 15px 15px 16px;
       font-size: 16px;
       line-height: 32px;
       font-weight: 500;
@@ -302,9 +320,51 @@
         background-color: $N10;
         border-radius: 50%;
 
-        .icon {
-          margin: 4px;
+        .iconImg {
+          margin: 0;
+          svg {
+            --primary-color: #{$N300};
+            --secondary-color: #{$N45};
+          }
         }
+      }
+
+      .devIconOuter {
+        display: inline-block;
+        position: relative;
+        margin-left: 4px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: $P75;
+
+        .devIcon {
+          position: absolute;
+          left: 2px;
+          top: 2px;
+          line-height: 0px;
+          svg {
+            --primary-color: #{$N0};
+            --secondary-color: #{$N0};
+            --primary-opacity: 0.9;
+            --secondary-opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    &.dev {
+      height: 40px;
+      > label {
+        line-height: 40px;
+      }
+     /* font-size: 12px;
+      color: $N300 !important;
+      cursor: pointer;*/
+      border-bottom: 1px solid $N10;
+
+      .iconImg {
+        margin: 12px 8px 12px 15px;
       }
     }
 

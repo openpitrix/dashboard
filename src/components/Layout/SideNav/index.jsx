@@ -58,6 +58,14 @@ class SideNav extends React.Component {
     }
   }
 
+  becomeDeveloper = isNormal => {
+    const { rootStore } = this.props;
+    rootStore.updateUser({
+      changedRole: isNormal ? '' : 'user'
+    });
+    location.href = '/dashboard';
+  };
+
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'dashboard';
@@ -84,15 +92,19 @@ class SideNav extends React.Component {
     const { pathname } = history.location;
 
     if (isDev) {
-      const topNav = navs[0];
-      navs = menuApps.concat(navs.slice(1));
-      navs.unshift(topNav);
+      navs = menuApps.concat(navs);
       bottomNavs = bottomNavs.slice(2);
     }
 
     return (
       <div className={styles.nav}>
         <ul className={styles.topNav}>
+          <li>
+            <Link to="/">
+              <img src="/logo_icon.svg" className={styles.icon} />
+            </Link>
+            <label className={styles.title}>QingCloud 应用中心</label>
+          </li>
           {navs.map(nav => (
             <li key={nav.iconName || nav.app_id}>
               <a href={nav.link || `/dashboard/app/${nav.app_id}`}>
@@ -108,7 +120,7 @@ class SideNav extends React.Component {
                 {nav.iconName && (
                   <Icon
                     className={styles.icon}
-                    size={nav.iconName === 'more' ? 20 : 24}
+                    size={nav.iconName === 'more' ? 16 : 20}
                     name={nav.iconName}
                     type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
@@ -128,22 +140,26 @@ class SideNav extends React.Component {
                   <Popover content={this.renderUserMenus()} className={styles.iconOuter}>
                     <Icon
                       className={styles.icon}
-                      size={24}
+                      size={20}
                       name={nav.iconName}
                       type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                     />
-                    <label className={styles.title}>{t(nav.title)}</label>
+                    <Link to="#">
+                      <label className={styles.title}>{t(nav.title)}</label>
+                    </Link>
                   </Popover>
                 </li>
               ) : (
                 <li key={nav.iconName}>
                   <Icon
                     className={styles.icon}
-                    size={24}
+                    size={20}
                     name={nav.iconName}
                     type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
-                  <label className={styles.title}>{t(nav.title)}</label>
+                  <Link to="#">
+                    <label className={styles.title}>{t(nav.title)}</label>
+                  </Link>
                 </li>
               )
           )}
@@ -237,31 +253,51 @@ class SideNav extends React.Component {
 
   renderUserMenus() {
     const { user, t } = this.props;
+    const { role, isNormal } = user;
+    const changeWord = isNormal ? t('Back to developer') : t('Back to user');
+    const isDeveloper = user.role === 'developer';
 
     return (
       <ul className={styles.userMenus}>
         <li>
           <span className={styles.userIcon}>
-            <Icon name="human" size={24} type="dark" className={styles.icon} />
+            <Icon name="human" size={32} type="dark" className={styles.iconImg} />
           </span>
           {user.username}
+          {isDeveloper && (
+            <span className={styles.devIconOuter}>
+              <Icon name="wrench" type="white" size={8} className={styles.devIcon} />
+            </span>
+          )}
+        </li>
+        {isDeveloper && (
+          <li className={styles.dev} onClick={() => this.becomeDeveloper(isNormal)}>
+            <Icon name="appcenter" type="dark" size={16} className={styles.iconImg} />
+            <label>{changeWord}</label>
+          </li>
+        )}
+        <li>
+          <Icon name="folder" type="dark" size={16} className={styles.iconImg} />
+          <Link to="/profile">账户信息</Link>
         </li>
         <li>
-          <Link to="/profile">基本信息</Link>
-        </li>
-        <li>
+          <Icon name="lock" type="dark" size={16} className={styles.iconImg} />
           <Link to="/profile">修改密码</Link>
         </li>
         <li>
+          <Icon name="loudspeaker" type="dark" size={16} className={styles.iconImg} />
+          <Link to="#">通知设置</Link>
+        </li>
+        <li>
+          <Icon name="creditcard" type="dark" size={16} className={styles.iconImg} />
           <Link to="#">支付</Link>
         </li>
         <li>
-          <Link to="#">通知</Link>
-        </li>
-        <li>
+          <Icon name="ssh" type="dark" size={16} className={styles.iconImg} />
           <Link to="/ssh_keys">{t('SSH Keys')}</Link>
         </li>
         <li>
+          <Icon name="logout" type="dark" size={16} className={styles.iconImg} />
           <a href="/logout">{t('Log out')}</a>
         </li>
       </ul>
