@@ -28,8 +28,6 @@ export default class Home extends Component {
     } else {
       rootStore.setNavFix(false);
     }
-
-    window.scroll({ top: 0 });
   }
 
   async componentDidMount() {
@@ -37,6 +35,7 @@ export default class Home extends Component {
     const { category, search } = match.params;
     const filterParams = { status: 'active', noLimit: true };
 
+    window.scroll({ top: 0 });
     await categoryStore.fetchAll();
 
     if (!(category || search)) {

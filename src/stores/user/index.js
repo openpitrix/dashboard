@@ -44,7 +44,7 @@ export default class UserStore extends Store {
     username: '',
     email: '',
     password: '',
-    role: 'user',
+    role: '',
     description: ''
   };
   @observable userId = '';
@@ -297,7 +297,7 @@ export default class UserStore extends Store {
       username: '',
       email: '',
       password: '',
-      role: 'user',
+      role: '',
       description: ''
     };
   };
@@ -347,7 +347,7 @@ export default class UserStore extends Store {
       username: '',
       email: '',
       password: '',
-      role: 'user',
+      role: '',
       description: ''
     };
   };
