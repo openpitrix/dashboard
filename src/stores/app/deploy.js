@@ -203,7 +203,10 @@ ${this.yamlStr}`;
 
   @action
   async fetchSubnets(runtimeId) {
-    const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
+    const result = await this.request.get(`clusters/subnets`, {
+      runtime_id: runtimeId,
+      limit: this.maxLimit
+    });
     this.subnets = get(result, 'subnet_set', []);
     this.subnetId = this.subnets[0] ? this.subnets[0].subnet_id : '';
   }

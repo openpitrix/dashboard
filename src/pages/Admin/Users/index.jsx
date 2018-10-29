@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
@@ -111,8 +112,7 @@ export default class Users extends Component {
     if (operateType === 'modify') {
       title = t('Modify User');
     }
-    const emailRegexp =
-      "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)[\\w](?:[\\w-]*[\\w])?";
+    const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
     return (
       <Modal
@@ -236,7 +236,7 @@ export default class Users extends Component {
       selectName
     } = userStore;
 
-    const data = userStore.users.toJSON();
+    const data = toJS(userStore.users);
 
     const columns = [
       {
