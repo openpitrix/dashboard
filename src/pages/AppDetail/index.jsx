@@ -91,11 +91,11 @@ export default class AppDetail extends Component {
   };
 
   submitReason = async () => {
-    const { appVersionStore } = this.props;
+    const { appVersionStore, t } = this.props;
     const { handle, version, reason } = appVersionStore;
 
     if (!reason) {
-      appVersionStore.error('Please input Reject Reason');
+      appVersionStore.error(t('Please input reject Reason'));
     } else {
       await handle('reject', version.version_id);
     }

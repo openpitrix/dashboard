@@ -362,9 +362,11 @@ export default class ClusterDetail extends Component {
                 provider={_.get(runtimeDetail, 'provider', '')}
                 userName={_.get(userStore.userDetail, 'username', '')}
               />
-              <Popover className="operation" content={this.renderHandleMenu()}>
-                <Icon name="more" />
-              </Popover>
+              {cluster.status !== 'deleted' && (
+                <Popover className="operation" content={this.renderHandleMenu()}>
+                  <Icon name="more" />
+                </Popover>
+              )}
             </Card>
 
             <Card className={styles.activities}>

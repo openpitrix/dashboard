@@ -1,9 +1,11 @@
 import { observable, action } from 'mobx';
-import Store from '../Store';
-import { getFormData, flattenObject, unflattenObject, getYamlList } from 'utils';
-import _, { assign, get } from 'lodash';
+import _, { get } from 'lodash';
 import { Base64 } from 'js-base64';
 import yaml from 'js-yaml';
+
+import Store from '../Store';
+import { getFormData, flattenObject, unflattenObject, getYamlList } from 'utils';
+import ts from 'config/translation';
 
 export default class AppDeployStore extends Store {
   @observable versions = [];
@@ -115,12 +117,12 @@ ${this.yamlStr}`;
       const res = await this.create(params);
 
       if (!res.err && _.get(this.appDeployed, 'cluster_id')) {
-        this.success('Deploy app successfully');
+        this.success(ts('Deploy app successfully.'));
       } else {
         return res;
       }
     } else {
-      this.info('Please input or select ' + this.checkResult + '!');
+      this.info(`ts('Please input or select: ')${this.checkResult}`);
     }
   };
 
@@ -232,7 +234,6 @@ ${this.yamlStr}`;
       this.yamlObj = flattenObject(yaml.safeLoad(yamlStr));
       this.yamlConfig = getYamlList(this.yamlObj);
     } else {
-      this.info('Not find config file!');
       this.yamlConfig = [];
       this.yamlStr = '';
       this.configBasics = [];

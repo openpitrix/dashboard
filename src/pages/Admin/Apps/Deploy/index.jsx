@@ -56,7 +56,7 @@ export default class AppDeploy extends Component {
 
     if (!(result && result.err)) {
       const path = user.isNormal ? '/purchased' : '/dashboard/clusters';
-      history.push(path);
+      setTimeout(() => history.push(path), 1000);
     }
   };
 

@@ -38,7 +38,7 @@ export default class TodoList extends PureComponent {
             <li className={styles.item} key={index}>
               <Input
                 className={styles.inputSmall}
-                placeholder="Key"
+                placeholder={t('Key')}
                 value={label.label_key}
                 maxLength="30"
                 onChange={e => {
@@ -47,7 +47,7 @@ export default class TodoList extends PureComponent {
               />
               <Input
                 className={styles.inputSmall}
-                placeholder="Value"
+                placeholder={t('Value')}
                 value={label.label_value}
                 maxLength="30"
                 onChange={e => {

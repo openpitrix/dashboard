@@ -91,6 +91,15 @@ export default class RepoDetail extends Component {
     }
   };
 
+  deleteRepo = async () => {
+    const { repoStore, history } = this.props;
+    const result = await repoStore.deleteRepo();
+
+    if (!(result && result.err)) {
+      setTimeout(() => history.push('/dashboard/repos'), 1000);
+    }
+  };
+
   filterSelectors = items => {
     return items.filter(item => item.selector_key).map(item => ({
       label_key: item.selector_key,
@@ -113,14 +122,14 @@ export default class RepoDetail extends Component {
 
   deleteRepoModal = () => {
     const { t } = this.props;
-    const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
+    const { showDeleteRepo, deleteRepoClose } = this.props.repoStore;
 
     return (
       <Dialog
         title={t('Delete Repo')}
         isOpen={showDeleteRepo}
         onCancel={deleteRepoClose}
-        onSubmit={deleteRepo}
+        onSubmit={this.deleteRepo}
       >
         {t('Delete Repo desc')}
       </Dialog>

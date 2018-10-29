@@ -3,6 +3,7 @@ import _, { get, assign } from 'lodash';
 
 import Store from '../Store';
 import { getProgress } from 'utils';
+import ts from 'config/translation';
 
 export default class ClusterStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
@@ -117,7 +118,9 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
-      this.success('Delete cluster successfully.');
+      this.success(ts('Delete cluster successfully.'));
+    } else {
+      return result;
     }
   };
 
@@ -128,7 +131,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.success('Start cluster successfully.');
+      this.success(ts('Start cluster successfully.'));
     }
   };
 
@@ -139,7 +142,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.success('Stop cluster successfully.');
+      this.success(ts('Stop cluster successfully.'));
     }
   };
 
@@ -152,7 +155,7 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
-      this.success('Cease cluster successfully.');
+      this.success(ts('Cease cluster successfully.'));
     }
   };
 
@@ -163,7 +166,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
-      this.success('Rollback cluster successfully.');
+      this.success(ts('Rollback cluster successfully.'));
     }
   };
 
@@ -177,7 +180,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
-      this.success('Rollback cluster successfully.');
+      this.success(ts('Update cluster environment successfully.'));
     }
   };
 
@@ -191,7 +194,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
-      this.success('Rollback cluster successfully.');
+      this.success(ts('Upgrade cluster successfully.'));
     }
   };
 
@@ -236,21 +239,21 @@ export default class ClusterStore extends Store {
     await this.fetchAll();
   };
 
-   @action
-   loadPageInit = () => {
-     if (!this.pageInitMap.cluster) {
-       this.currentPage = 1;
-       this.selectStatus = '';
-       this.searchWord = '';
-     }
-     this.appId = '';
-     this.runtimeId = '';
-     this.userId = '';
-     this.selectedRowKeys = [];
-     this.clusterIds = [];
-     this.pageInitMap = {};
-     this.store = {};
-   };
+  @action
+  loadPageInit = () => {
+    if (!this.pageInitMap.cluster) {
+      this.currentPage = 1;
+      this.selectStatus = '';
+      this.searchWord = '';
+    }
+    this.appId = '';
+    this.runtimeId = '';
+    this.userId = '';
+    this.selectedRowKeys = [];
+    this.clusterIds = [];
+    this.pageInitMap = {};
+    this.store = {};
+  };
 
   @action
   onChangeSelect = (selectedRowKeys, selectedRows) => {

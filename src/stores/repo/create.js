@@ -1,7 +1,9 @@
 import { observable, action } from 'mobx';
-import Store from '../Store';
 import _ from 'lodash';
+
+import Store from '../Store';
 import { getFormData } from 'utils';
+import ts from 'config/translation';
 
 const s3UrlPattern = /^s3:\/\/s3\.(.+)\.(.+)\/(.+)\/?$/; // s3.<zone>.<host>/<bucket>
 
@@ -44,7 +46,7 @@ export default class RepoCreateStore extends Store {
     const len = providers.length;
     if (len > 1 && providers.includes('kubernetes')) {
       providers = providers.filter(data => data !== 'kubernetes');
-      this.info("Kubernetes can't be selected with others");
+      this.info(ts("Kubernetes can't be selected with others"));
     }
     this.providers = providers;
   };
@@ -67,9 +69,9 @@ export default class RepoCreateStore extends Store {
   @action
   handleValidateCredential = () => {
     if (this.accessKey && this.secretKey) {
-      this.success('valid credential');
+      this.success(ts('Validate successfully'));
     } else {
-      this.error('invalid credential');
+      this.error(ts('Validate fail'));
     }
   };
 
@@ -150,23 +152,23 @@ export default class RepoCreateStore extends Store {
     const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
-      return this.info('Please select at least one Runtime Provider');
+      return this.info(ts('Please select at least one Runtime Provider'));
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
       let item = this.selectors[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.info('Runtime Selector missing value');
+        return this.info(ts('Runtime Selector missing value'));
       } else if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.info('Runtime Selector missing key');
+        return this.info(ts('Runtime Selector missing key'));
       }
     }
     for (let i = 0; i < this.labels.length; i++) {
       let item = this.labels[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.info('Labels missing value');
+        return this.info(ts('Labels missing value'));
       } else if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.info('Labels missing key');
+        return this.info(ts('Labels missing key'));
       }
     }
 
@@ -182,7 +184,7 @@ export default class RepoCreateStore extends Store {
       }
 
       if (!s3UrlPattern.test(data.url)) {
-        return this.info('invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo');
+        return this.info(ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'));
       }
     } else {
       let url = data.url;
@@ -225,9 +227,9 @@ export default class RepoCreateStore extends Store {
     }
 
     if (this.repoId && _.get(this, 'repoCreated.repo_id')) {
-      this.success('Modify repo successfully');
+      this.success(ts('Modify repo successfully'));
     } else if (_.get(this, 'repoCreated.repo_id')) {
-      this.success('Create repo successfully');
+      this.success(ts('Create repo successfully'));
     }
 
     // disable re-submit form in 1 sec

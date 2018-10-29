@@ -45,7 +45,7 @@ export default class VMbasedCluster extends React.Component {
   };
 
   attachKeyPairs = async () => {
-    const { store, sshKeyStore } = this.props;
+    const { store, sshKeyStore, t } = this.props;
     const { selectedNodeIds, hideModal, cancelSelectNodes } = store;
     const { pairId, attachKeyPairs } = sshKeyStore;
 
@@ -56,7 +56,7 @@ export default class VMbasedCluster extends React.Component {
         cancelSelectNodes();
       }
     } else {
-      sshKeyStore.error('Please select SSH key!');
+      sshKeyStore.error(t('Please select SSH key'));
     }
   };
 

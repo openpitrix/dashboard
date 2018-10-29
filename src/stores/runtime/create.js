@@ -1,7 +1,9 @@
 import { observable, action } from 'mobx';
-import Store from '../Store';
 import _ from 'lodash';
+
+import Store from '../Store';
 import { getFormData } from 'utils';
+import ts from 'config/translation';
 
 export default class RuntimeCreateStore extends Store {
   @observable runtimeId = '';
@@ -121,6 +123,7 @@ export default class RuntimeCreateStore extends Store {
       await this.fetchRuntimeZones(params);
     } else {
       this.runtimeZones = [];
+      this.zone = '';
     }
   };
 
@@ -129,37 +132,37 @@ export default class RuntimeCreateStore extends Store {
       keys = [];
     const { name, zone, provider, labels, runtimeId } = this;
     if (_.isEmpty(name)) {
-      result = 'Please input Name!';
+      result = ts('Please input Name!');
     }
     if (!runtimeId && provider !== 'kubernetes') {
       if (_.isEmpty(this.runtimeUrl)) {
-        result = 'Please input URL!';
+        result = ts('Please input URL!');
       }
       if (_.isEmpty(this.accessKey)) {
-        result = 'Please input Access Key ID!';
+        result = ts('Please input Access Key ID!');
       }
       if (_.isEmpty(this.secretKey)) {
-        result = 'Please input Secret Access Key!';
+        result = ts('Please input Secret Access Key!');
       }
       if (_.isEmpty(zone)) {
-        result = 'Please select Zone!';
+        result = ts('Please select Zone!');
       }
     } else if (!runtimeId) {
       if (_.isEmpty(this.credential)) {
-        result = 'Please input Credential!';
+        result = ts('Please input kubeconfig!');
       }
     }
     for (let i = 0; i < labels.length; i++) {
       let item = labels[i];
       if (keys.find(key => key === item.label_key)) {
-        result = 'Labels has repeat key!';
+        result = ts('Labels has repeat key');
       } else if (item.label_key) {
         keys.push(item.label_key);
       }
       if (item.label_value && _.isEmpty(item.label_key)) {
-        result = 'Labels missing key!';
+        result = ts('Labels missing key');
       } else if (item.label_key && _.isEmpty(item.label_value)) {
-        result = 'Labels missing value!';
+        result = ts('Labels missing value');
       }
     }
     return result;
@@ -205,9 +208,9 @@ export default class RuntimeCreateStore extends Store {
 
     if (_.get(this, 'runtimeCreated.runtime_id')) {
       if (this.runtimeId) {
-        this.success('Modify runtime successfully');
+        this.success(ts('Modify runtime successfully.'));
       } else {
-        this.success('Create runtime successfully');
+        this.success(ts('Create runtime successfully.'));
       }
     }
 
@@ -233,8 +236,8 @@ export default class RuntimeCreateStore extends Store {
   async fetchRuntimeZones(params) {
     const result = await this.request.get(`runtimes/zones`, params);
     this.runtimeZones = _.get(result, 'zone', []);
-    if (this.runtimeZones.length > 0) {
-      this.success('Get zone data success!');
+    if (this.runtimeZones.length === 0) {
+      this.zone = '';
     }
   }
 

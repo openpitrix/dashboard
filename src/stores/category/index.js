@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
 import _, { get, assign, isObject, isArray, isEmpty, find } from 'lodash';
+
 import Store from '../Store';
+import ts from 'config/translation';
 
 export default class CategoryStore extends Store {
   @observable categories = [];
@@ -73,18 +75,18 @@ export default class CategoryStore extends Store {
   };
 
   postHandleResult = async (result, type) => {
-    let msg = type + ' category successfully.';
-    if (!result.category_id) {
-      msg = result.errDetail || result.err || 'Operation fail!';
-      this.error(msg);
-    } else {
+    if (get(result, 'category_id', '')) {
+      const msg = type + ' category successfully.';
       this.hideModal();
-      if (this.isDetailPage) {
+
+      if (this.isDetailPage && type !== 'Delete') {
         await this.fetch(this.category.category_id);
-      } else {
+      } else if (type !== 'Delete') {
         await this.fetchAll({}, this.appStore);
       }
-      this.success(msg);
+      this.success(ts(msg));
+    } else {
+      return result;
     }
   };
 
@@ -107,10 +109,7 @@ export default class CategoryStore extends Store {
   @action
   remove = async () => {
     const categoryIds = [this.category.category_id];
-    //this.isLoading = true;
     const result = await this.request.delete('categories', { category_id: categoryIds });
-    this.category = {};
-    //this.isLoading = false;
     await this.postHandleResult(result, 'Delete');
   };
 
@@ -146,7 +145,7 @@ export default class CategoryStore extends Store {
       this.category = {};
     }
     if (!this.name) {
-      this.info('Please input category name!');
+      this.info(ts('Please input category name!'));
     } else {
       this[method](params);
     }
@@ -164,6 +163,8 @@ export default class CategoryStore extends Store {
   @action
   showModifyCategory = category => {
     this.category = category;
+    this.name = category.name;
+    this.description = category.description;
     this.isModalOpen = true;
   };
 
