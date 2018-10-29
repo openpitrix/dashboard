@@ -147,7 +147,7 @@ export default class RepoCreateStore extends Store {
   @action
   validateRepoCredential = async () => {
     if (!this.url || !this.accessKey || !this.secretKey) {
-      return this.info(ts('Verify that the information requested is incomplete!'));
+      return this.info(ts('Information to be verified is incomplete!'));
     }
 
     // format s3 url

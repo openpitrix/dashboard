@@ -118,7 +118,7 @@ export default class RepoAdd extends Component {
           </Button>
         </div>
         <div className={styles.urlItem}>
-          <label className={styles.name}>{t('URL')}</label>
+          <label className={styles.name}>URL</label>
           <Select
             value={protocolType}
             onChange={this.store.changeProtocolType}
