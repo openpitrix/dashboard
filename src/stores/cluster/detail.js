@@ -10,6 +10,7 @@ export default class ClusterDetailStore extends Store {
 
   @observable currentPage = 1;
   @observable isLoading = false;
+  @observable isHelmLoading = true;
   @observable cluster = {};
 
   // vmbase
@@ -150,6 +151,7 @@ export default class ClusterDetailStore extends Store {
     });
 
     this.helmClusterNodes = clusterNodes;
+    this.isHelmLoading = false;
   };
 
   @action
@@ -194,8 +196,6 @@ export default class ClusterDetailStore extends Store {
   hideResizeClusterModal = () => {
     this.hideModal();
   };
-
-  /////
 
   @action
   onChangeExtend = e => {
@@ -275,7 +275,12 @@ export default class ClusterDetailStore extends Store {
   onSearchNode = async word => {
     this.searchNode = word;
     this.currentNodePage = 1;
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    const { isHelm } = this;
+    if (isHelm) {
+      this.formatClusterNodes({ type: this.nodeType, searchWord: word });
+    } else {
+      await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    }
   };
 
   @action
@@ -285,7 +290,13 @@ export default class ClusterDetailStore extends Store {
 
   @action
   onRefreshNode = async () => {
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    const { isHelm, cluster } = this;
+    if (isHelm) {
+      await this.fetch(cluster.cluster_id);
+      this.formatClusterNodes({ type: this.nodeType });
+    } else {
+      await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+    }
   };
 
   @action
