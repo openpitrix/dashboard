@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import Section from './section';
-import factory from 'lib/config-parser/section';
+import factory from 'lib/config-parser/factory';
 
 import styles from './index.scss';
 
 export default class DeployGroup extends React.Component {
   static propTypes = {
     detail: PropTypes.object,
-    seq: PropTypes.number
+    seq: PropTypes.number,
+    onChange: PropTypes.func,
+    onEmpty: PropTypes.func
   };
 
   static defaultProps = {
     detail: {},
-    seq: 0
+    seq: 0,
+    onChange: _.noop,
+    onEmpty: _.noop
   };
 
   renderSingle = item => {
@@ -22,7 +27,7 @@ export default class DeployGroup extends React.Component {
       item = item.toJSON();
     }
 
-    return <Section detail={item} />;
+    return <Section detail={item} onChange={this.props.onChange} onEmpty={this.props.onEmpty} />;
   };
 
   render() {
@@ -31,9 +36,15 @@ export default class DeployGroup extends React.Component {
     const title = isNormalGroup ? detail.title : detail.label || detail.key;
     const items = isNormalGroup ? detail.items : factory(detail.properties);
 
+    // inject label prefix
+    let titlePrefix = '';
+    if (detail.labelPrefix) {
+      titlePrefix += _.capitalize(detail.labelPrefix) + ': ';
+    }
+
     return (
       <div className={styles.group}>
-        <h2 className={styles.title}>{`${seq + 1}. ${title}`}</h2>
+        <h2 className={styles.title}>{`${seq + 1}. ${titlePrefix}${title}`}</h2>
         {items.map((item, idx) => {
           return <div key={idx}>{this.renderSingle(item)}</div>;
         })}

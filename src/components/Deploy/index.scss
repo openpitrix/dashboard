@@ -27,7 +27,6 @@
     color: $N500;
     text-align: right;
     word-break: break-word;
-    @include textCut;
   }
 
   .item {
@@ -35,7 +34,12 @@
   }
 
   .tips{
-
+    font-size: 12px;
+    color: $N100;
+    display: inline-block;
+    margin-top: 6px;
+    width: 360px;
+    word-break: break-word;
   }
   .radio {
 
@@ -66,4 +70,15 @@
 // fix
 .isRadio {
   margin-top: 0 !important;
+}
+
+.editorWrap {
+  width: 90%;
+  max-width: 95% !important;
+}
+
+.isYamlLabel {
+  width: auto;
+  word-break: normal !important;
+  color: $N500;
 }

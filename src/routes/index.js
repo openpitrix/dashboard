@@ -9,8 +9,6 @@ import Store from 'pages/Store';
 import Purchased from 'pages/Purchased';
 import Runtimes from 'pages/Runtimes';
 
-import TestDeploy from 'pages/TestDeploy';
-
 const dashboardPrefix = '/dashboard';
 
 const dashUrl = path => {
@@ -69,9 +67,6 @@ const routes = {
 
   '/profile': Profile,
   '/ssh_keys': SSHKeys,
-
-  // fixme: test deploy
-  '/test-deploy': TestDeploy,
 
   '*': Home
 };

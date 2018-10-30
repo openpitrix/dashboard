@@ -138,26 +138,20 @@
   }
 }
 
-.editorWrap {
-  display: flex;
-  .fileName{
-    color: $N500;
-  }
-  .editor{
-    width: 90%;
+.actionBtnGroup {
+  padding-left: 220px;
+
+  &>.btn {
+    margin-right: 9px;
   }
 }
 
-.helmNameWrap {
-  display: inline;
-
-  .helmAppNameTip {
-    font-size: 12px;
-    color: $N100;
-    display: inline-block;
-    margin-left: 190px;
-    margin-top: 5px;
-    width: 360px;
-    word-break: break-word;
-  }
+.errMsg {
+  max-width: 80%;
+  border-radius: 2px;
+  background-color: $R10;
+  box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
+  line-height: 1.71;
+  color: $R300;
+  padding-left: 10px;
 }

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Radio, Input, Select, Slider } from 'components/Base';
+import { Radio, Input, Select, Slider, CodeMirror } from 'components/Base';
 
 import styles from './index.scss';
 
 export default class Section extends React.Component {
   static propTypes = {
     detail: PropTypes.shape({
-      defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
       description: PropTypes.string,
       keyName: PropTypes.string.isRequired, // key is reserved by react
       label: PropTypes.string,
@@ -19,18 +19,23 @@ export default class Section extends React.Component {
       renderType: PropTypes.string,
       items: PropTypes.array
     }),
-    className: PropTypes.string
+    className: PropTypes.string,
+    onChange: PropTypes.func,
+    onEmpty: PropTypes.func
   };
 
   static defaultProps = {
     detail: {
-      defaultValue: '',
       description: '',
       keyName: '',
       label: '',
       required: false,
       type: 'string'
     }
+  };
+
+  state = {
+    value: null
   };
 
   handleChange = val => {
@@ -41,8 +46,56 @@ export default class Section extends React.Component {
       val = val.currentTarget.value;
     }
 
+    this.setState({ value: val });
+
     // todo: unify onChange
-    console.log(`change ${renderType}- ${keyName}: `, val);
+    // console.log(`change [${renderType}] ${keyName}: `, val);
+    this.props.onChange(keyName, val);
+  };
+
+  getDefaultValue() {
+    const { defaultValue, ...rest } = this.props.detail;
+
+    if (!defaultValue) {
+      if (Array.isArray(rest.range)) {
+        return _.isObject(rest.range[0]) ? _.get(rest.range[0], 'value') : rest.range[0];
+      }
+      if (Array.isArray(rest.items)) {
+        return _.get(rest.items[0], 'value');
+      }
+    }
+
+    return defaultValue;
+  }
+
+  getValue() {
+    const { value } = this.state;
+
+    return value !== null ? value : this.getDefaultValue();
+  }
+
+  getNumbericValue() {
+    const val = parseInt(this.getValue());
+    return Number.isNaN(val) ? 0 : val;
+  }
+
+  formatLabel = (value, key) => {
+    let name = '';
+    switch (key) {
+      case 'cpu':
+        name = value + ' Core';
+        break;
+      case 'memory':
+        name = value / 1024 + ' GB';
+        break;
+      case 'instance_class':
+        name = value === 0 ? 'High Performance' : 'Super-high Performance';
+        break;
+      default:
+        name = value.toString();
+        break;
+    }
+    return name;
   };
 
   renderLabel() {
@@ -51,10 +104,11 @@ export default class Section extends React.Component {
     return (
       <label
         className={classnames(styles.label, {
-          [styles.isRadio]: renderType === 'radio'
+          [styles.isRadio]: renderType === 'radio',
+          [styles.isYamlLabel]: renderType === 'yaml'
         })}
       >
-        {_.capitalize(label || keyName)}
+        {label || keyName}
       </label>
     );
   }
@@ -65,10 +119,16 @@ export default class Section extends React.Component {
       description,
       defaultValue,
       keyName,
+      originKey,
       items,
       required,
       ...rest
     } = this.props.detail;
+
+    // hook: render content for empty items
+    if (renderType === 'radio' && _.isEmpty(rest.range)) {
+      return this.props.onEmpty(keyName);
+    }
 
     let content = null;
 
@@ -114,31 +174,42 @@ export default class Section extends React.Component {
         content = (
           <Radio.Group
             className={styles.radio}
-            value={defaultValue === undefined ? rest.range[0] : defaultValue}
+            defaultValue={this.getDefaultValue()}
             onChange={this.handleChange}
             name={keyName}
+            value={this.getValue()}
           >
-            {rest.range.map((item, idx) => (
-              <Radio value={item} key={idx}>
-                {item}
-              </Radio>
-            ))}
+            {rest.range.map((item, idx) => {
+              let value = '';
+              if (_.isObject(item)) {
+                value = item.value;
+              } else {
+                value = item;
+              }
+
+              return (
+                <Radio value={value} key={idx}>
+                  {this.formatLabel(value, originKey)}
+                </Radio>
+              );
+            })}
           </Radio.Group>
         );
         break;
 
       case 'select':
-        // todo
         content = (
           <Select
             className={styles.select}
-            value={defaultValue}
+            defaultValue={this.getDefaultValue()}
             onChange={this.handleChange}
             disabled={items.length === 0}
+            name={keyName}
+            value={this.getValue()}
           >
-            {items.map(({ version_id, name }) => (
-              <Select.Option key={version_id} value={version_id}>
-                {name}
+            {items.map(({ name, value }, idx) => (
+              <Select.Option key={idx} value={value}>
+                {name + ''}
               </Select.Option>
             ))}
           </Select>
@@ -164,7 +235,7 @@ export default class Section extends React.Component {
               min={rest.min}
               max={rest.max}
               step={rest.step}
-              defaultValue={defaultValue}
+              value={this.getNumbericValue()}
               onChange={this.handleChange}
               className={styles.slider}
             />
@@ -173,7 +244,7 @@ export default class Section extends React.Component {
                 className={styles.inputSmall}
                 type="number"
                 name={keyName}
-                defaultValue={defaultValue}
+                value={this.getValue()}
                 min={rest.min}
                 max={rest.max}
                 onChange={this.handleChange}
@@ -187,6 +258,12 @@ export default class Section extends React.Component {
         );
         break;
 
+      case 'yaml':
+        content = rest.yaml && (
+          <CodeMirror code={rest.yaml} onChange={this.handleChange} name={keyName} />
+        );
+        break;
+
       default:
         break;
     }
@@ -195,12 +272,18 @@ export default class Section extends React.Component {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, detail } = this.props;
 
     return (
       <div className={classnames(styles.row, className)}>
         {this.renderLabel()}
-        <div className={styles.item}>{this.renderItem()}</div>
+        <div
+          className={classnames(styles.item, {
+            [styles.editorWrap]: detail.renderType === 'yaml'
+          })}
+        >
+          {this.renderItem()}
+        </div>
       </div>
     );
   }
