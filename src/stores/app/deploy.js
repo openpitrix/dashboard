@@ -92,7 +92,10 @@ export default class AppDeployStore extends Store {
   @action
   fetchSubnetsByRuntime = async runtimeId => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters/subnets`, { runtime_id: runtimeId });
+    const result = await this.request.get(`clusters/subnets`, { 
+      runtime_id: runtimeId,
+      limit: this.maxLimit
+    });
     this.subnets = get(result, 'subnet_set', []);
     this.isLoading = false;
   };

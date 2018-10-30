@@ -37,11 +37,14 @@ export default class RepoAdd extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (get(this.store, 'repoCreated.repo_id') && !this.store.isLoading) {
-      history.back();
+  handleSubmit = async e => {
+    const { repoCreateStore } = this.props;
+    const result = await repoCreateStore.handleSubmit(e);
+
+    if (!(result && result.err)) {
+      setTimeout(() => history.back(), 1000);
     }
-  }
+  };
 
   renderForm() {
     const { t } = this.props;
@@ -61,7 +64,7 @@ export default class RepoAdd extends Component {
     } = this.store;
 
     return (
-      <form className={styles.createForm} onSubmit={this.store.handleSubmit}>
+      <form className={styles.createForm} onSubmit={this.handleSubmit}>
         <div>
           <label className={styles.name}>{t('Name')}</label>
           <Input
@@ -156,7 +159,7 @@ export default class RepoAdd extends Component {
                 value={secretKey}
                 onChange={this.store.changeSecretKey}
               />
-              <Button className={styles.add} onClick={this.store.handleValidateCredential}>
+              <Button className={styles.add} onClick={this.store.validateRepoCredential}>
                 {t('Validate')}
               </Button>
             </div>

@@ -22,7 +22,8 @@ describe('Home', () => {
       categoryStore: {
         getCategoryApps: () => {},
         categories: []
-      }
+      },
+      setNavFix: () => {}
     });
   });
 

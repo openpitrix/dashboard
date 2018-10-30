@@ -48,6 +48,9 @@ const tsObj = {
     'Runtime Selector missing value': '环境选择器缺失值',
     'Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo':
       '无效的s3网址，应该是这样: s3://s3.pek3a.qingstor.com/op-repo',
+    'Information to be verified is incomplete!': '验证要求输入的信息不完整！',
+    'Access key verification successfully': '访问密钥验证成功',
+    'Access key verification fail': '访问密钥验证失败',
     'Create repo successfully': '创建仓库成功',
     'Modify repo successfully': '修改仓库成功',
     'Delete repo successfully.': '删除仓库成功',

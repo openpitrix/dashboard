@@ -145,6 +145,34 @@ export default class RepoCreateStore extends Store {
   }
 
   @action
+  validateRepoCredential = async () => {
+    if (!this.url || !this.accessKey || !this.secretKey) {
+      return this.info(ts('Information to be verified is incomplete!'));
+    }
+
+    // format s3 url
+    const url = this.url.startsWith('s3://') ? this.url : `s3://${this.url}`;
+    if (!s3UrlPattern.test(url)) {
+      return this.info(ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'));
+    }
+
+    const params = {
+      type: this.protocolType,
+      url: url,
+      credential: JSON.stringify({
+        access_key_id: this.accessKey,
+        secret_access_key: this.secretKey
+      })
+    };
+    const result = await this.request.get('repos/validate', params);
+    if (result && result.ok) {
+      this.success(ts('Access key verification successfully'));
+    } else {
+      this.error(ts('Access key verification fail'));
+    }
+  };
+
+  @action
   handleSubmit = async e => {
     e.preventDefault();
     const { providers, visibility, protocolType, accessKey, secretKey, labels, selectors } = this;
@@ -216,10 +244,17 @@ export default class RepoCreateStore extends Store {
 
     this.isLoading = true;
     if (this.repoId) {
-      delete data.url;
-      if (!accessKey) {
+      if (!accessKey || !secretKey) {
+        delete data.url;
         delete data.credential;
+      } else {
+        data.url = this.url;
+        data.credential = JSON.stringify({
+          access_key_id: accessKey,
+          secret_access_key: secretKey
+        });
       }
+
       _.extend(data, { repo_id: this.repoId });
       await this.modifyRepo(data);
     } else {
@@ -230,24 +265,23 @@ export default class RepoCreateStore extends Store {
       this.success(ts('Modify repo successfully'));
     } else if (_.get(this, 'repoCreated.repo_id')) {
       this.success(ts('Create repo successfully'));
+    } else {
+      return this.repoCreated;
     }
-
-    // disable re-submit form in 1 sec
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
   };
 
   @action
   async create(params) {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.repoCreated = await this.request.post('repos', params);
+    this.isLoading = false;
   }
 
   @action
   async modifyRepo(params) {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.repoCreated = await this.request.patch('repos', params);
+    this.isLoading = false;
   }
 
   @action
@@ -273,12 +307,16 @@ export default class RepoCreateStore extends Store {
 
   @action
   setRepo = detail => {
+    this.repoCreated = null;
+
     if (detail) {
       this.repoId = detail.repo_id;
       this.name = detail.name;
       this.description = detail.description;
       this.url = detail.url;
       this.protocolType = detail.type;
+      this.accessKey = '';
+      this.secretKey = '';
       this.providers = detail.providers;
       this.visibility = detail.visibility;
       this.labels = detail.labels || [{ label_key: '', label_value: '' }];
