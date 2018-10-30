@@ -7,6 +7,7 @@ import classnames from 'classnames';
 
 import { Icon, Popover, Modal, Select, CodeMirror } from 'components/Base';
 import Layout, { BackBtn, Grid, Section, Card, Panel, BreadCrumb, Dialog } from 'components/Layout';
+import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 import Helm from './Helm';
@@ -28,8 +29,13 @@ import styles from './index.scss';
 }))
 @observer
 export default class ClusterDetail extends Component {
+  state = {
+    isLoading: true
+  };
+
   async componentDidMount() {
     const {
+      rootStore,
       clusterDetailStore,
       clusterStore,
       runtimeStore,
@@ -61,7 +67,7 @@ export default class ClusterDetail extends Component {
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
-
+    this.setState({isLoading: false});
     // if (!runtimeStore.isK8s) {
     //   // vmbase
     // } else {
@@ -74,7 +80,7 @@ export default class ClusterDetail extends Component {
 
   componentWillUnmount() {
     const { clusterDetailStore } = this.props;
-    clusterDetailStore.loadNodeInit();
+    clusterDetailStore.reset();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -322,10 +328,11 @@ export default class ClusterDetail extends Component {
       t
     } = this.props;
 
+    const { isLoading } = this.state;
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
 
-    const { isNormal, isDev, isAdmin } = user;
+    const { isNormal, isDev } = user;
     //
     // const tableProps = {
     //   runtimeStore,
@@ -380,9 +387,13 @@ export default class ClusterDetail extends Component {
             </Card>
           </Section>
 
+
           <Section size={8}>
-            <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
+            <Loading isLoading={isLoading}>
+              {!isLoading && <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>}
+            </Loading>
           </Section>
+
         </Grid>
 
         {this.renderModals()}

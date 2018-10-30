@@ -8,7 +8,7 @@ import Layout, { Grid, Section, Row, BreadCrumb } from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
-import { formatTime, getObjName, getPastTime } from 'src/utils';
+import { getObjName, getPastTime } from 'src/utils';
 
 import UserInfo from './UserInfo';
 import TotalCard from './TotalCard';
@@ -31,6 +31,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Overview extends React.Component {
+
+
   constructor(props) {
     super(props);
     const { user } = this.props;
@@ -39,6 +41,9 @@ export default class Overview extends React.Component {
       username: user.username,
       role: user.role,
       loginInfo: user.loginTime
+    };
+    this.state = {
+      isLoading: true
     };
   }
 
@@ -90,15 +95,16 @@ export default class Overview extends React.Component {
       await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
       await runtimeStore.fetchAll({ noLimit: true });
     }
+    this.setState({isLoading: false});
   }
 
   componentWillUnmount() {
     const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
 
-    appStore.loadPageInit();
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    repoStore.loadPageInit();
+    appStore.reset();
+    clusterStore.reset();
+    runtimeStore.reset();
+    repoStore.reset();
   }
 
   handleClickTotalCard = label => {
@@ -113,7 +119,7 @@ export default class Overview extends React.Component {
 
   adminView = () => {
     const { appStore, clusterStore, repoStore, categoryStore, userStore, t } = this.props;
-    const { isLoading } = appStore;
+    const { isLoading } = this.state;
 
     const summary = {
       Apps: appStore.summaryInfo.appCount,

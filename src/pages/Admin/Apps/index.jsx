@@ -31,6 +31,10 @@ export default class Apps extends Component {
     const { isAdmin } = user;
 
     await appStore.fetchAll();
+    if (isAdmin) {
+      await appStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
+    }
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
@@ -38,17 +42,11 @@ export default class Apps extends Component {
     });
     await categoryStore.fetchAll();
 
-    if (isAdmin) {
-      await appStore.fetchStatistics();
-      await userStore.fetchAll({ noLimit: true });
-    }
   }
 
   componentWillUnmount() {
-    const { appStore, repoStore, user } = this.props;
-
-    appStore.loadPageInit();
-    repoStore.loadPageInit();
+    const { appStore } = this.props;
+    appStore.reset();
   }
 
   onChangeSort = (params = {}) => {

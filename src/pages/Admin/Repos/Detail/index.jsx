@@ -44,11 +44,9 @@ export default class RepoDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore, runtimeStore, clusterStore } = this.props;
-
-    appStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
+    const { appStore, runtimeStore } = this.props;
+    appStore.reset();
+    runtimeStore.reset();
   }
 
   listenToJob = async ({ op, rid, values = {} }) => {

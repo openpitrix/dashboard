@@ -338,7 +338,7 @@ export default class UserStore extends Store {
   };
 
   @action
-  loadPageInit = () => {
+  reset = () => {
     this.currentPage = 1;
     this.selectStatus = '';
     this.searchWord = '';

@@ -37,7 +37,8 @@ export default class Users extends Component {
   }
 
   componentWillUnmount() {
-    this.props.userStore.loadPageInit();
+    const { userStore } = this.props;
+    userStore.reset();
   }
 
   changeSelect = value => {

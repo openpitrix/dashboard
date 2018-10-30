@@ -48,16 +48,16 @@ export const getNavs = role => [
     title: 'Dashboard'
   },
   {
-    link: '/dashboard/repos',
-    iconName: 'appcenter',
-    active: 'repo',
-    title: 'Platform'
-  },
-  {
     link: '/dashboard/apps',
-    iconName: 'components',
+    iconName: 'appcenter',
     active: 'app',
     title: role === 'developer' ? 'My Apps' : 'Store'
+  },
+  {
+    link: '/dashboard/repos',
+    iconName: 'components',
+    active: 'repo',
+    title: 'Platform'
   },
   {
     link: '/dashboard/users',

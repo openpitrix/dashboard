@@ -36,8 +36,8 @@ export default class Runtimes extends Component {
 
     runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
 
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
+    runtimeStore.reset();
+    clusterStore.reset();
   }
 
   selectType = async (value, flag) => {
@@ -127,7 +127,7 @@ export default class Runtimes extends Component {
 
   render() {
     const { runtimeStore, user, t } = this.props;
-    const { runtimes } = runtimeStore;
+    const { runtimes, isLoading } = runtimeStore;
 
     const types = [
       { name: t('All'), value: 'all' },
@@ -140,7 +140,7 @@ export default class Runtimes extends Component {
     const { isNormal } = user;
 
     return (
-      <Layout title="My Runtimes" className="clearfix">
+      <Layout isLoading={isLoading} title="My Runtimes" className="clearfix">
         {!isNormal && <BreadCrumb linkPath="My Apps>Test>Runtimes" />}
 
         <div className={styles.types}>

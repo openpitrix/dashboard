@@ -27,7 +27,7 @@ import styles from './index.scss';
 @observer
 export default class Review extends Component {
   async componentDidMount() {
-    const { appVersionStore, appStore, categoryStore, repoStore, userStore } = this.props;
+    const { appVersionStore, appStore, repoStore, userStore } = this.props;
 
     appVersionStore.registerStore('app', appStore);
     appVersionStore.registerStore('user', userStore);
@@ -39,14 +39,11 @@ export default class Review extends Component {
       status: ['active', 'deleted'],
       noLimit: true
     });
-    //await categoryStore.fetchAll();
   }
 
   componentWillUnmount() {
-    const { appVersionStore, appStore, repoStore, userStore } = this.props;
-
-    appVersionStore.loadPageInit();
-    repoStore.loadPageInit();
+    const { appVersionStore } = this.props;
+    appVersionStore.reset();
   }
 
   renderToolbar() {

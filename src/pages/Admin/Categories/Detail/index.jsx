@@ -41,7 +41,10 @@ export default class CategoryDetail extends Component {
   }
 
   componentWillUnmount() {
-    this.props.appStore.loadPageInit();
+    const { categoryStore, appStore } = this.props;
+
+    categoryStore.reset();
+    appStore.reset();
   }
 
   deleteCategory = async () => {
@@ -202,7 +205,7 @@ export default class CategoryDetail extends Component {
     };
 
     return (
-      <Layout className={styles.categoryDetail}>
+      <Layout>
         <BreadCrumb linkPath={`Store>Categories>${category.name}`} />
 
         <Grid>

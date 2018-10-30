@@ -41,7 +41,7 @@ export default class RepoAdd extends Component {
     const { repoCreateStore } = this.props;
     const result = await repoCreateStore.handleSubmit(e);
 
-    if (!(result && result.err)) {
+    if (result && result.repo_id) {
       setTimeout(() => history.back(), 1000);
     }
   };

@@ -33,12 +33,10 @@ export default class Categories extends Component {
   }
 
   componentWillUnmount() {
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore } = this.props;
 
     window.onscroll = null;
-
     categoryStore.reset();
-    appStore.loadPageInit();
   }
 
   handleScroll = async () => {
@@ -52,7 +50,7 @@ export default class Categories extends Component {
     }
 
     let scrollTop = getScrollTop();
-    let loadNumber = parseInt(scrollTop / loadDataHeight);
+    let loadNumber = parseInt(scrollTop / loadDataHeight) + 1;
     for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;

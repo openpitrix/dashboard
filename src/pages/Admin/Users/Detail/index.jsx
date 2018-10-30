@@ -37,10 +37,10 @@ export default class Detail extends Component {
   componentWillUnmount() {
     const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
 
-    appStore.loadPageInit();
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    repoStore.loadPageInit();
+    appStore.reset();
+    clusterStore.reset();
+    runtimeStore.reset();
+    repoStore.reset();
   }
 
   //todo

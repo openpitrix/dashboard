@@ -5,12 +5,11 @@ import styles from './index.scss';
 
 export default class Histogram extends PureComponent {
   static propTypes = {
-    histograms: PropTypes.array,
-    total: PropTypes.number
+    histograms: PropTypes.array
   };
 
   render() {
-    const { histograms, total } = this.props;
+    const { histograms } = this.props;
     const numbers = histograms.map(item => item.number);
     const max = Math.max(...numbers) * 1.25;
     return (

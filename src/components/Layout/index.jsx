@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
@@ -16,7 +16,7 @@ import styles from './index.scss';
   user: rootStore.user,
   sock
 }))
-export default class Layout extends React.Component {
+export default class Layout extends Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
@@ -102,12 +102,16 @@ export default class Layout extends React.Component {
           { [styles.hasBack]: Boolean(backBtn) }
         )}
       >
-        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
         {hasMenu && <SideNav isScroll={isScroll} />}
         {noNotification ? null : <Notification />}
-        {backBtn}
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {children}
+          {!isLoading &&
+            <Fragment>
+              {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
+              {backBtn}
+              {children}
+            </Fragment>
+          }
         </Loading>
       </div>
     );

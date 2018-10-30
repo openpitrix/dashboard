@@ -72,7 +72,11 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   handleValidateCredential = () => {
-    this.getRuntimeZone();
+    if (this.runtimeUrl && this.accessKey && this.secretKey) {
+      this.getRuntimeZone();
+    }else {
+      this.info(ts('Information to be verified is incomplete!'));
+    }
   };
 
   @action
@@ -205,6 +209,7 @@ export default class RuntimeCreateStore extends Store {
     } else {
       await this.create(data);
     }
+    this.isLoading = false;
 
     if (_.get(this, 'runtimeCreated.runtime_id')) {
       if (this.runtimeId) {
@@ -212,12 +217,8 @@ export default class RuntimeCreateStore extends Store {
       } else {
         this.success(ts('Create runtime successfully.'));
       }
+      return this.runtimeCreated;
     }
-
-    // disable re-submit form in 2 sec
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
   };
 
   @action
@@ -260,6 +261,8 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   setRuntime = detail => {
+    this.runtimeCreated = null;
+
     if (detail) {
       this.runtimeId = detail.runtime_id;
       this.name = detail.name;

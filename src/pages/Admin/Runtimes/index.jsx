@@ -34,15 +34,9 @@ export default class Runtimes extends Component {
     await userStore.fetchAll({ noLimit: true });
   }
 
-  componentWillMount() {
-    const { runtimeStore } = this.props;
-    runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
-  }
-
   componentWillUnmount() {
-    const { runtimeStore, clusterStore } = this.props;
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
+    const { runtimeStore } = this.props;
+    runtimeStore.reset();
   }
 
   onChangeSort = (params = {}) => {

@@ -34,16 +34,16 @@ export default class AppVersionStore extends Store {
   @observable createError = '';
   @observable createResult = null;
 
-  @observable reason = '';
+  @observable reason = ''; // version reject reason
 
   @observable store = {};
 
-  @observable isReview = false;
+  @observable isReview = false; // judge review apps list or app version list
 
   @action
   fetchAll = async (params = {}) => {
     const status = this.isReview ? reviwStatus : defaultStatus;
-    let defaultParams = {
+    const defaultParams = {
       sort_key: 'create_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
@@ -312,17 +312,21 @@ export default class AppVersionStore extends Store {
     this.reason = event.target.value;
   };
 
-  loadPageInit = () => {
+  reset = () => {
     this.currentPage = 1;
     this.selectStatus = '';
     this.searchWord = '';
     this.appId = '';
+
     this.createError = '';
     this.createResult = null;
-    this.currentVersion = {};
+
     this.uploadFile = '';
     this.store = {};
     this.isReview = false;
+
+    this.versions = [];
+    this.currentVersion = {};
   };
 
   @action

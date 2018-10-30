@@ -148,7 +148,6 @@ export default class AppStore extends Store {
     });
     this.appDetail = get(result, 'app_set[0]', {});
     this.isLoading = false;
-    this.pageInitMap = { app: true };
   };
 
   @action
@@ -302,18 +301,19 @@ export default class AppStore extends Store {
     this.appIds = [];
   };
 
-  loadPageInit = () => {
-    if (!this.pageInitMap.app) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
-    }
+  reset = () => {
+    this.currentPage = 1;
+    this.selectStatus = '';
+    this.searchWord = '';
     this.categoryId = '';
     this.repoId = '';
     this.userId = '';
+
     this.selectedRowKeys = [];
     this.appIds = [];
-    this.pageInitMap = {};
+
+    this.apps = [];
+    this.appDetail = {};
   };
 
   createReset = () => {
