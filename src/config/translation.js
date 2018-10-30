@@ -31,8 +31,6 @@ const tsObj = {
     'Rollback cluster successfully.': '回滚集群成功。',
     'Update cluster environment successfully.': '更新集群环境成功。',
     'Upgrade cluster successfully.': '升级集群成功。',
-    'Please input version name': '请输入版本名称',
-    'Please upload package': '请上传压缩包',
     'Package url is empty or invalid!': '压缩包的URL为空或是无效的',
     'Create App Version successful.': '创建应用版本成功。',
 
@@ -56,7 +54,6 @@ const tsObj = {
     'Started repo indexer:': '已启动的仓库索引:',
     'Start repo indexer failed:': '启动仓库索引失败:',
 
-    'Please input Name!': '请输入名称！',
     'Please input URL!': '请输入URL！',
     'Please input Access Key ID!': '请输入访问密钥ID！',
     'Please input Secret Access Key!': '请输入访问密钥私钥！',

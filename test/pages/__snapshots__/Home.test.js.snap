@@ -19,17 +19,18 @@ Array [
       />
     </div>
     <div
-      class="appList apps"
+      class="apps"
     >
       <div
-        class="title"
-      />
-      <div
-        class="appsRow"
-      />
-      <div
-        class="noData"
-      />
+        class="appList"
+      >
+        <div
+          class="title"
+        />
+        <div
+          class="noData"
+        />
+      </div>
     </div>
   </div>,
 ]

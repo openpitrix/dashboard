@@ -44,8 +44,6 @@ export default class AppDeploy extends Component {
     const { appStore, repoStore, appDeployStore, user, match } = this.props;
     const { appId } = match.params;
 
-    appDeployStore.loading = true;
-
     await appStore.fetch(appId);
     if (appStore.appDetail.repo_id) {
       await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
@@ -63,30 +61,19 @@ export default class AppDeploy extends Component {
     });
 
     if (!isK8s) {
-      await appDeployStore.fetchSubnets(_.get(appDeployStore.runtimes[0], 'runtime_id'));
+      appDeployStore.runtimeId = _.get(appDeployStore.runtimes[0], 'runtime_id');
+      await appDeployStore.fetchSubnetsByRuntime(appDeployStore.runtimeId);
     }
 
     // fetch versions
     await appDeployStore.fetchVersions({ app_id: [appId] });
-    await appDeployStore.fetchFilesByVersion(
-      _.get(appDeployStore.versions[0], 'version_id'),
-      isK8s
-    );
+    appDeployStore.versionId = _.get(appDeployStore.versions[0], 'version_id');
+    await appDeployStore.fetchFilesByVersion(appDeployStore.versionId, isK8s);
 
-    if (!isK8s) {
-      console.log('config.json: ', appDeployStore.configJson);
-
-      if (!_.isEmpty(appDeployStore.configJson)) {
-        this.vmParser.setConfig(appDeployStore.configJson);
-        this.vmParser.setSubnets(appDeployStore.normalizeSubnets());
-      }
+    if (!isK8s && !_.isEmpty(appDeployStore.configJson)) {
+      this.vmParser.setConfig(appDeployStore.configJson);
+      this.forceUpdate();
     }
-
-    // always set runtimes and versions
-    this.vmParser.setRuntimes(appDeployStore.normalizeRuntime());
-    this.vmParser.setVersions(appDeployStore.normalizeVersions());
-
-    appDeployStore.loading = false;
   }
 
   componentWillUnmount() {
@@ -96,23 +83,51 @@ export default class AppDeploy extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { appDeployStore, user, history } = this.props;
-
-    if (appDeployStore.isK8s) {
-    } else {
-      const clusterConf = _.extend({}, this.getFormDataByKey('cluster'), this.getNodesConf());
-      const envConf = this.getFormDataByKey('env');
-    }
-
-    // const result = await appDeployStore.handleSubmit(event);
-    //
-    // if (!(result && result.err)) {
-    //   const path = user.isNormal ? '/purchased' : '/dashboard/clusters';
-    //   setTimeout(() => history.push(path), 1000);
-    // }
+    const { appDeployStore, user, history, match, t } = this.props;
+    const { isK8s, create } = appDeployStore;
 
     const formData = this.getFormDataByKey();
-    console.log('submit form: ', formData);
+    const name = _.get(formData, 'cluster.name', '');
+    if (!name) {
+      return appDeployStore.error(t('Name should not be empty'));
+    }
+
+    let conf;
+    if (isK8s) {
+      const yamlStr = _.get(formData, 'values.yaml', '');
+      if (!yamlStr) {
+        return appDeployStore.error(t('Invalid yaml'));
+      }
+      conf = [`Name: ${name}`, yamlStr].join('\n').replace(/#.*/g, '');
+    } else {
+      conf = JSON.stringify({
+        cluster: _.extend({}, this.getFormDataByKey('cluster'), this.getNodesConf()),
+        env: this.getFormDataByKey('env')
+      });
+    }
+
+    const versionId = formData['cluster.version'] || '';
+    const runtimeId = formData['cluster.runtime'] || '';
+
+    if (!versionId) {
+      return appDeployStore.info(t('Version should not be empty'));
+    }
+    if (!runtimeId) {
+      return appDeployStore.info(t('Runtime should not be empty'));
+    }
+
+    const res = await create({
+      app_id: match.params.appId,
+      version_id: versionId,
+      runtime_id: runtimeId,
+      conf: conf.replace(/>>>>>>/g, '.')
+    });
+
+    if (res && _.get(res, 'cluster_id')) {
+      appDeployStore.success(t('Deploy app successfully'));
+      const path = user.isNormal ? '/purchased' : '/dashboard/clusters';
+      setTimeout(() => history.push(path), 1000);
+    }
   };
 
   handleCancel = () => {
@@ -190,21 +205,47 @@ export default class AppDeploy extends Component {
   };
 
   renderBody() {
+    if (!this.isDeployReady()) {
+      return null;
+    }
+
     const { appDeployStore, t } = this.props;
-    const { isK8s, onChangeFormField, yamlStr } = appDeployStore;
+    const {
+      isK8s,
+      yamlStr,
+      normalizeRuntime,
+      normalizeVersions,
+      normalizeSubnets,
+      onChangeFormField,
+      runtimeId,
+      versionId
+    } = appDeployStore;
+
     let groups = [];
+
+    if (!isK8s) {
+      if (!this.vmParser.isReady()) {
+        return null;
+      }
+
+      this.vmParser.setSubnets(normalizeSubnets());
+    }
+
+    // always set runtimes and versions
+    this.vmParser.setRuntimes(normalizeRuntime(), { default: runtimeId });
+    this.vmParser.setVersions(normalizeVersions(), { default: versionId });
 
     if (isK8s) {
       groups = [].concat(
         {
-          title: 'Basic settings',
+          title: t('Basic settings'),
           items: this.vmParser.getDefaultBasicSetting({
             key: 'name',
             description: t('HELM_APP_NAME_TIP')
           })
         },
         {
-          title: 'Deploy settings',
+          title: t('Deploy settings'),
           items: [
             {
               type: 'string',
@@ -216,19 +257,15 @@ export default class AppDeploy extends Component {
         }
       );
     } else {
-      if (_.isEmpty(this.vmParser.config)) {
-        return null;
-      }
-
       const basicSetting = this.vmParser.getBasicSetting();
       const nodeSetting = this.vmParser.getNodeSetting();
       const envSetting = this.vmParser.getEnvSetting();
       const vxnetSetting = this.vmParser.getVxnetSetting();
 
       groups = [].concat(
-        { title: 'Basic settings', items: basicSetting },
+        { title: t('Basic settings'), items: basicSetting },
         nodeSetting,
-        { title: 'Vxnet settings', items: vxnetSetting },
+        { title: t('Vxnet settings'), items: vxnetSetting },
         envSetting
       );
     }
@@ -248,20 +285,21 @@ export default class AppDeploy extends Component {
 
   isDeployReady() {
     const { configJson, yamlStr } = this.props.appDeployStore;
-
     return !_.isEmpty(configJson) || yamlStr + '';
   }
 
   renderFooter() {
-    const { runtimes, versions, subnets } = this.props.appDeployStore;
+    const { isLoading, isK8s, runtimes, versions, subnets } = this.props.appDeployStore;
 
     if (!this.isDeployReady()) {
       return null;
     }
 
-    // const canSubmit = runtimes.length && versions.length && subnets.length;
-    // fixme
-    const canSubmit = true;
+    let canSubmit = runtimes.length && versions.length;
+
+    if (!isK8s) {
+      canSubmit = canSubmit && subnets.length;
+    }
 
     return (
       <div className={styles.actionBtnGroup}>
@@ -269,7 +307,7 @@ export default class AppDeploy extends Component {
           type="primary"
           onClick={this.handleSubmit}
           className={styles.btn}
-          disabled={!canSubmit}
+          disabled={isLoading || !canSubmit}
         >
           Confirm
         </Button>
@@ -283,7 +321,7 @@ export default class AppDeploy extends Component {
   render() {
     const { appDeployStore, appStore, user, t } = this.props;
     const { appDetail } = appStore;
-    const { loading, errMsg } = appDeployStore;
+    const { isLoading, errMsg } = appDeployStore;
 
     const title = `${t('Deploy')} ${appDetail.name}`;
     const { isNormal, isDev } = user;
@@ -294,7 +332,7 @@ export default class AppDeploy extends Component {
         className={classnames({ [styles.deployApp]: !isNormal })}
         title="Store"
         hasSearch
-        isLoading={loading}
+        isLoading={isLoading}
         backBtn={isNormal && <BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
       >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}

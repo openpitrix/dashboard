@@ -39,17 +39,14 @@ export default class Section extends React.Component {
   };
 
   handleChange = val => {
-    const { keyName, renderType } = this.props.detail;
+    const { keyName } = this.props.detail;
 
     if (typeof val === 'object' && val.nativeEvent) {
-      // react event object
       val = val.currentTarget.value;
     }
 
     this.setState({ value: val });
 
-    // todo: unify onChange
-    // console.log(`change [${renderType}] ${keyName}: `, val);
     this.props.onChange(keyName, val);
   };
 
@@ -70,7 +67,6 @@ export default class Section extends React.Component {
 
   getValue() {
     const { value } = this.state;
-
     return value !== null ? value : this.getDefaultValue();
   }
 
@@ -174,7 +170,6 @@ export default class Section extends React.Component {
         content = (
           <Radio.Group
             className={styles.radio}
-            defaultValue={this.getDefaultValue()}
             onChange={this.handleChange}
             name={keyName}
             value={this.getValue()}
@@ -186,10 +181,12 @@ export default class Section extends React.Component {
               } else {
                 value = item;
               }
+              const name =
+                keyName === 'cluster.runtime' ? item.name : this.formatLabel(value, originKey);
 
               return (
                 <Radio value={value} key={idx}>
-                  {this.formatLabel(value, originKey)}
+                  {name}
                 </Radio>
               );
             })}
@@ -201,7 +198,6 @@ export default class Section extends React.Component {
         content = (
           <Select
             className={styles.select}
-            defaultValue={this.getDefaultValue()}
             onChange={this.handleChange}
             disabled={items.length === 0}
             name={keyName}
