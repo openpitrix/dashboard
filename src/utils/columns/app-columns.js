@@ -16,7 +16,7 @@ export default [
         name={item.name}
         description={item.app_id}
         image={item.icon || 'appcenter'}
-        linkUrl={`/dashboard/app/${item.app_id}`}
+        linkUrl={`/store/${item.app_id}`}
       />
     )
   },

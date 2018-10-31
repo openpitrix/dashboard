@@ -41,6 +41,6 @@ export default [
     title: <I18n>{t => <span>{t('Updated At')}</span>}</I18n>,
     key: 'status_time',
     width: '95px',
-    render: item => <TimeShow time={item.status_time} type="lineTime" />
+    render: item => <TimeShow time={item.status_time} />
   }
 ];

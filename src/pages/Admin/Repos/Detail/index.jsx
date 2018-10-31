@@ -44,11 +44,9 @@ export default class RepoDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore, runtimeStore, clusterStore } = this.props;
-
-    appStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    clusterStore.loadPageInit();
+    const { appStore, runtimeStore } = this.props;
+    appStore.reset();
+    runtimeStore.reset();
   }
 
   listenToJob = async ({ op, rid, values = {} }) => {
@@ -243,7 +241,7 @@ export default class RepoDetail extends Component {
 
     let columns = [];
     if (curTagName === 'Apps') {
-      columns = appColumns(users);
+      columns = appColumns(users, user.isDev);
     } else if (curTagName === 'Runtimes') {
       columns = runtimesColumns(clusters, users);
     } else if (curTagName === 'Events') {

@@ -33,26 +33,20 @@ export default class Clusters extends Component {
     clusterStore.registerStore('app', appStore);
 
     await clusterStore.fetchAll();
+    if (isAdmin) {
+      await clusterStore.fetchStatistics();
+      await userStore.fetchAll({ noLimit: true });
+    }
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true,
       simpleQuery: true
     });
-
-    if (isAdmin) {
-      await clusterStore.fetchStatistics();
-      await userStore.fetchAll({ noLimit: true });
-    }
-
-    // clusterStore.clusters = [];
-    // clusterStore.registerStore('app', appStore);
   }
 
   componentWillUnmount() {
-    const { clusterStore, runtimeStore } = this.props;
-
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
+    const { clusterStore } = this.props;
+    clusterStore.reset();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {
@@ -86,6 +80,7 @@ export default class Clusters extends Component {
   };
 
   getAppTdShow = (appId, apps) => {
+    const { isDev } = this.props.user;
     const app = apps.find(item => item.app_id === appId);
 
     return app ? (
@@ -95,7 +90,7 @@ export default class Clusters extends Component {
         name={app.name}
         description={_.get(app, 'latest_app_version.name')}
         image={app.icon || 'appcenter'}
-        linkUrl={`/dashboard/app/${appId}`}
+        linkUrl={isDev ? `/dashboard/app/${appId}` : `/store/${appId}`}
       />
     ) : null;
   };
@@ -329,7 +324,7 @@ export default class Clusters extends Component {
     const linkPath = isDev ? 'My Apps>Test>Clusters' : 'Platform>All Clusters';
 
     return (
-      <Layout listenToJob={this.listenToJob} className={styles.clusterDetail}>
+      <Layout listenToJob={this.listenToJob}>
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         {isAdmin && (

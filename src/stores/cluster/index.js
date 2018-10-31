@@ -240,19 +240,19 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  loadPageInit = () => {
-    if (!this.pageInitMap.cluster) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
-    }
+  reset = () => {
+    this.currentPage = 1;
+    this.selectStatus = '';
+    this.searchWord = '';
     this.appId = '';
     this.runtimeId = '';
     this.userId = '';
+
     this.selectedRowKeys = [];
     this.clusterIds = [];
-    this.pageInitMap = {};
     this.store = {};
+
+    this.clusters = [];
   };
 
   @action

@@ -24,6 +24,12 @@
         margin-right: 48px;
       }
     }
+
+    &:last-child {
+      .word {
+        margin-left: 10%;
+      }
+    }
   }
 
   .apps{

@@ -44,11 +44,9 @@ export default class Purchased extends Component {
   }
 
   componentWillUnmount() {
-    const { clusterStore, appStore, runtimeStore } = this.props;
-
-    clusterStore.loadPageInit();
-    appStore.loadPageInit();
-    runtimeStore.loadPageInit();
+    const { clusterStore, appStore } = this.props;
+    clusterStore.reset();
+    appStore.reset();
   }
 
   listenToJob = async ({ op, rtype, rid, values = {} }) => {

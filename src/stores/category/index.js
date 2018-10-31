@@ -81,7 +81,7 @@ export default class CategoryStore extends Store {
 
       if (this.isDetailPage && type !== 'Delete') {
         await this.fetch(this.category.category_id);
-      } else if (type !== 'Delete') {
+      } else if (!this.isDetailPage) {
         await this.fetchAll({}, this.appStore);
       }
       this.success(ts(msg));
@@ -176,32 +176,14 @@ export default class CategoryStore extends Store {
 
   @action
   reset() {
-    this.category = {};
-    this.isLoading = false;
     this.searchWord = '';
     this.name = '';
     this.description = '';
+    this.isLoading = false;
+    this.isDetailPage = false;
     this.hideModal();
+
+    this.categories = [];
+    this.category = {};
   }
-
-  getCategoryApps = (categories = [], apps = []) => {
-    if (categories.toJSON) {
-      categories = categories.toJSON();
-    }
-    if (apps.toJSON) {
-      apps = apps.toJSON();
-    }
-
-    categories = categories.map(cate => {
-      cate = _.pick(cate, ['category_id', 'name', 'description']);
-
-      let cate_apps = apps.filter(app => {
-        return _.find(app.category_set, { category_id: cate.category_id });
-      });
-
-      return { apps: cate_apps, ...cate };
-    });
-
-    return categories;
-  };
 }

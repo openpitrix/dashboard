@@ -6,8 +6,6 @@ const debug = require('debug')('app');
 
 export default class Store {
   constructor(initialState, branch) {
-    this.pageInitMap = {};
-
     if (initialState) {
       if (branch) {
         set(this, initialState[branch]);
@@ -24,10 +22,6 @@ export default class Store {
     }
   }
 }
-
-decorate(Store, {
-  pageInitMap: observable
-});
 
 Store.prototype = {
   pageSize: 10,

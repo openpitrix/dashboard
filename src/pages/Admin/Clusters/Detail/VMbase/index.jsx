@@ -141,7 +141,6 @@ export default class VMbasedCluster extends React.Component {
     const { store, t } = this.props;
 
     const {
-      isLoading,
       clusterNodes,
       selectedNodeKeys,
       selectNodeStatus,
@@ -155,7 +154,6 @@ export default class VMbasedCluster extends React.Component {
       <Table
         columns={columns(t)}
         dataSource={clusterNodes}
-        isLoading={isLoading}
         filterList={getFilterOptions({
           trans: t,
           onChange: onChangeNodeStatus,

@@ -42,7 +42,7 @@ export default class Store extends Component {
     appStore.storeApps = appStore.apps.slice();
 
     if (!category && !search) {
-      const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 1;
+      const initLoadNumber = parseInt((document.documentElement.clientHeight - 450) / 250) + 2;
       await this.loadAppData(initLoadNumber);
       window.onscroll = throttle(this.handleScroll, 200);
     }
@@ -53,7 +53,7 @@ export default class Store extends Component {
 
     window.onscroll = null;
     appStore.apps = [];
-    appStore.loadPageInit();
+    appStore.reset();
   }
 
   //load app data progressive by window scroll

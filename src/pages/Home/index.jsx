@@ -58,8 +58,7 @@ export default class Home extends Component {
     const { appStore } = this.props;
 
     window.onscroll = null;
-    appStore.apps = [];
-    appStore.loadPageInit();
+    appStore.reset();
   }
 
   getThreshold() {

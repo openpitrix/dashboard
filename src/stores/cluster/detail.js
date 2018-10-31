@@ -214,7 +214,7 @@ export default class ClusterDetailStore extends Store {
 
   @action
   json2Yaml = str => {
-    let yamlStr = YAML.stringify(JSON.parse(str));
+    let yamlStr = YAML.stringify(JSON.parse(str || '{}'));
     yamlStr = yamlStr.replace(/^---\n/, '');
     yamlStr = yamlStr.replace(/  (.*)/g, '$1');
     return yamlStr;
@@ -311,11 +311,15 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  loadNodeInit = () => {
+  reset = () => {
     this.currentNodePage = 1;
     this.selectNodeStatus = '';
     this.searchNode = '';
     this.selectedRowKeys = [];
     this.nodeIds = [];
+
+    this.cluster = {};
+    this.helmClusterNodes = [];
+    this.clusterNodes = []
   };
 }

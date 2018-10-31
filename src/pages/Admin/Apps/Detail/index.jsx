@@ -39,7 +39,6 @@ export default class AppDetail extends Component {
     await appStore.fetch(appId);
 
     appVersionStore.appId = appId;
-    appVersionStore.currentVersion = {};
     await appVersionStore.fetchAll({ app_id: appId });
 
     if (appStore.appDetail.repo_id) {
@@ -48,11 +47,9 @@ export default class AppDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { clusterStore, runtimeStore, appVersionStore } = this.props;
-
-    clusterStore.loadPageInit();
-    runtimeStore.loadPageInit();
-    appVersionStore.loadPageInit();
+    const { appVersionStore, clusterStore } = this.props;
+    appVersionStore.reset();
+    clusterStore.reset();
   }
 
   selectVersion = version => {

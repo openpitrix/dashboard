@@ -38,12 +38,8 @@ export default class Repos extends Component {
 
   componentWillUnmount() {
     window.onscroll = null;
-
-    const { repoStore, appStore } = this.props;
-    repoStore.appStore = {};
-
-    repoStore.loadPageInit();
-    appStore.loadPageInit();
+    const { repoStore } = this.props;
+    repoStore.reset();
   }
 
   handleScroll = async () => {

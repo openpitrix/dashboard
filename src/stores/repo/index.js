@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, assign } from 'lodash';
+import { get, assign, orderBy } from 'lodash';
 
 import Store from '../Store';
 import ts from 'config/translation';
@@ -36,7 +36,7 @@ export default class RepoStore extends Store {
 
   @action
   fetchAll = async (params = {}, appStore) => {
-    let defaultParams = {
+    const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
@@ -61,7 +61,7 @@ export default class RepoStore extends Store {
 
     this.isLoading = true;
     const result = await this.request.get('repos', assign(defaultParams, params));
-    this.repos = get(result, 'repo_set', []);
+    let repos = get(result, 'repo_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
     if (params.isQueryPublic) {
@@ -69,8 +69,10 @@ export default class RepoStore extends Store {
       params.visibility = ['public'];
       const pubResult = await this.request.get('repos', assign(defaultParams, params));
       const pubRepos = get(pubResult, 'repo_set', []);
-      this.repos = [...pubRepos, ...this.repos];
+      repos = [...pubRepos, ...repos];
     }
+
+    this.repos = orderBy(repos, ['visibility', 'status_time'], ['desc', 'desc']);
 
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.repos.length; i++) {
@@ -120,7 +122,6 @@ export default class RepoStore extends Store {
     });
     this.repoDetail = get(result, 'repo_set[0]', {});
     this.isLoading = false;
-    this.pageInitMap = { repo: true };
   };
 
   @action
@@ -201,17 +202,20 @@ export default class RepoStore extends Store {
   };
 
   @action
-  loadPageInit = () => {
+  reset = () => {
     this.queryProviders = '';
     this.querySelector = '';
-    if (!this.pageInitMap.repo) {
-      this.currentPage = 1;
-      this.selectStatus = '';
-      this.searchWord = '';
-    }
+
+    this.currentPage = 1;
+    this.selectStatus = '';
+    this.searchWord = '';
     this.userId = '';
+
+    this.appStore = null;
+
     this.repos = [];
-    this.pageInitMap = {};
+    this.repoDetail = {};
+
   };
 
   @action

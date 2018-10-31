@@ -52,8 +52,7 @@ export default class RuntimeDetail extends Component {
 
   componentWillUnmount() {
     const { clusterStore } = this.props;
-
-    clusterStore.loadPageInit();
+    clusterStore.reset();
   }
 
   componentDidUpdate() {

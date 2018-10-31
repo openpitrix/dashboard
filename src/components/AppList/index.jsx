@@ -39,6 +39,9 @@ export default class AppList extends PureComponent {
     if (categoryShow) {
       return categoryApps.map(({ category_id, name, apps }) => {
         apps = apps || [];
+        if(apps.length === 0) {
+          return null;
+        }
 
         return (
           <div key={category_id} className={styles.categoryApps}>

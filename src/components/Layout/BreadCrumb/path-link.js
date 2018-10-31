@@ -9,7 +9,7 @@ export default isDev => {
     Repos: '/dashboard/repos',
     Runtimes: isDev ? '/runtimes' : '/dashboard/runtimes',
     'All Clusters': '/dashboard/clusters',
-    Users: ' /dashboard/users',
+    Users: '/dashboard/users',
     'All Users': '/dashboard/users',
     'My Apps': '/dashboard/apps',
     Test: '/dashboard/clusters'

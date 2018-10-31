@@ -67,7 +67,6 @@ export default class HelmCluster extends React.Component {
     const {
       onChangeNodeStatus,
       selectNodeStatus,
-      isLoading,
       extendedRowKeys,
       onChangeExtend,
       changePaginationNode,
@@ -75,7 +74,6 @@ export default class HelmCluster extends React.Component {
     } = clusterDetailStore;
 
     const props = {
-      isLoading,
       columns: columns(t, onChangeExtend, extendedRowKeys),
       dataSource: clusterNodes,
       filterList: getFilterOptions({

@@ -29,10 +29,8 @@ export default class AppAdd extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore, repoStore } = this.props;
-
+    const { appStore } = this.props;
     appStore.createReset();
-    repoStore.loadPageInit();
   }
 
   setCreateStep = step => {

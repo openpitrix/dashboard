@@ -39,6 +39,11 @@ export default class SSHKeys extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { clusterDetailStore } = this.props;
+    clusterDetailStore.reset();
+  }
+
   goBack = () => {
     history.back();
   };

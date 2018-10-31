@@ -24,7 +24,11 @@ export default class Statistics extends PureComponent {
   };
 
   static defaultProps = {
-    iconName: 'appcenter'
+    name: 'Apps',
+    iconName: 'appcenter',
+    total: 0,
+    centerName: 'Repos',
+    progressTotal: 0
   };
 
   render() {
@@ -63,15 +67,15 @@ export default class Statistics extends PureComponent {
             <div className={styles.name}>{t(centerName)}</div>
             <div className={styles.number}>{progressTotal}</div>
           </div>
-          {topList && <Progress progress={topList} total={topTotal} type={name} objs={objs} />}
+          <Progress progress={topList} total={topTotal} type={name} objs={objs} />
         </div>
 
         <div className={styles.module}>
           <div className={styles.word}>
             <div className={styles.name}>{t('Lasted 2 Weeks')}</div>
-            <div className={styles.number}>{lastedTotal}</div>
+            <div className={styles.number}>{lastedTotal || 0}</div>
           </div>
-          {lastList && <Histogram histograms={lastList} total={lastedTotal} />}
+          <Histogram histograms={lastList} />
         </div>
       </div>
     );

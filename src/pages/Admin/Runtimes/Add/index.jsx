@@ -33,7 +33,7 @@ export default class RuntimeAdd extends Component {
       await runtimeStore.fetch(runtimeId);
       runtimeCreateStore.setRuntime(runtimeStore.runtimeDetail);
     } else {
-      runtimeCreateStore.reset();
+      //runtimeCreateStore.reset();
     }
   }
 
@@ -45,9 +45,17 @@ export default class RuntimeAdd extends Component {
 
   componentWillUnmount() {
     const { runtimeCreateStore } = this.props;
-
     runtimeCreateStore.reset();
   }
+
+  handleSubmit = async e => {
+    const { runtimeCreateStore } = this.props;
+    const result = await runtimeCreateStore.handleSubmit(e);
+
+    if (result && result.runtime_id) {
+      setTimeout(() => history.back(), 1000);
+    }
+  };
 
   renderUrlAndZone() {
     const { t } = this.props;
@@ -153,7 +161,7 @@ export default class RuntimeAdd extends Component {
     const { runtimeId, name, provider, labels, description, isLoading } = this.store;
 
     return (
-      <form onSubmit={this.store.handleSubmit} className={styles.createForm}>
+      <form onSubmit={this.handleSubmit} className={styles.createForm}>
         <div>
           <label className={styles.name}>{t('Name')}</label>
           <Input
