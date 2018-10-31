@@ -30,7 +30,7 @@ import styles from './index.scss';
 @observer
 export default class ClusterDetail extends Component {
   state = {
-    isLoading: true
+    isLoading: false
   };
 
   async componentDidMount() {
@@ -46,6 +46,7 @@ export default class ClusterDetail extends Component {
       match
     } = this.props;
     const { clusterId } = match.params;
+    this.setState({ isLoading: true });
 
     await clusterDetailStore.fetch(clusterId);
     await clusterDetailStore.fetchJobs(clusterId);
@@ -68,7 +69,7 @@ export default class ClusterDetail extends Component {
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
-    this.setState({isLoading: false});
+    this.setState({ isLoading: false });
     // if (!runtimeStore.isK8s) {
     //   // vmbase
     // } else {
@@ -388,13 +389,11 @@ export default class ClusterDetail extends Component {
             </Card>
           </Section>
 
-
           <Section size={8}>
             <Loading isLoading={isLoading}>
-              {!isLoading && <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>}
+              <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
             </Loading>
           </Section>
-
         </Grid>
 
         {this.renderModals()}

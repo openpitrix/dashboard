@@ -109,7 +109,7 @@ export default class Layout extends Component {
         {backBtn}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {!isLoading && children}
+          {children}
         </Loading>
       </div>
     );
