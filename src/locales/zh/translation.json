@@ -399,5 +399,6 @@
   "Invalid yaml": "非法的 yaml",
   "Version should not be empty": "版本不能为空",
   "Runtime should not be empty": "运行环境不能为空",
-  "Deploy app successfully": "部署应用成功"
+  "Deploy app successfully": "部署应用成功",
+  "Invalid config file, failed to render page": "无效的配置文件，无法渲染页面"
 }

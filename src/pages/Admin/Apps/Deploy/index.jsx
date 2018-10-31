@@ -343,7 +343,7 @@ export default class AppDeploy extends Component {
           asideTitle=""
           footer={this.renderFooter()}
         >
-          {errMsg && <p className={styles.errMsg}>{errMsg}</p>}
+          {errMsg && <p className={styles.errMsg}>{t(errMsg)}</p>}
           <form
             className={styles.createForm}
             method="post"
