@@ -12,12 +12,14 @@ export default class Select extends React.Component {
     children: PropTypes.any,
     onChange: PropTypes.func,
     value: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    name: PropTypes.string
   };
 
   static defaultProps = {
     className: '',
-    disabled: false
+    disabled: false,
+    name: ''
   };
 
   state = {
@@ -39,8 +41,12 @@ export default class Select extends React.Component {
   }
 
   handleOptionClick = e => {
-    const value = e.currentTarget.getAttribute('value');
-    isFunction(this.props.onChange) && this.props.onChange(value);
+    const { onChange, value } = this.props;
+    const curVal = e.currentTarget.getAttribute('value');
+
+    if (isFunction(onChange) && value !== curVal) {
+      onChange(curVal);
+    }
     this.setState({ isOpen: false });
   };
 
@@ -108,7 +114,7 @@ export default class Select extends React.Component {
   }
 
   render() {
-    const { className, disabled } = this.props;
+    const { className, disabled, name, value } = this.props;
 
     this.setChildNodes();
 
@@ -120,6 +126,7 @@ export default class Select extends React.Component {
           this.wrapper = ref;
         }}
       >
+        <input name={name} value={value} type="hidden" />
         {this.renderControl()}
         {this.renderOptions()}
       </div>

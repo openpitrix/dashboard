@@ -9,15 +9,17 @@ export default class Group extends React.Component {
     className: PropTypes.string,
     onChange: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool])
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+    name: PropTypes.string
   };
 
   static defaultProps = {
-    className: ''
+    className: '',
+    name: ''
   };
 
   render() {
-    const { className, value, children, onChange, ...others } = this.props;
+    const { className, value, children, onChange, name, ...others } = this.props;
     const classNames = classnames(styles.group, className);
 
     const childNodes = React.Children.map(children, child =>
@@ -30,6 +32,7 @@ export default class Group extends React.Component {
 
     return (
       <div {...others} className={classNames}>
+        <input type="hidden" name={name} value={value} />
         {childNodes}
       </div>
     );

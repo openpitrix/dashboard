@@ -14,6 +14,7 @@ describe('Home', () => {
     rootStore = observable.object({
       config: {},
       notifications: [],
+      setNavFix: () => {},
       appStore: {
         homeApps: [],
         appSearch: ''

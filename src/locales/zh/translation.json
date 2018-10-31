@@ -389,5 +389,16 @@
   "Please select one repo": "请选择一个仓库",
   "Please input reject Reason": "请输入拒绝原因",
   "Please select SSH key": "请选择SSH密钥",
-  "HELM_APP_NAME_TIP": "小写字母开头，最长14个字符（支持数字/小写字母/连字符）"
+  "HELM_APP_NAME_TIP": "小写字母开头，最长14个字符（支持数字/小写字母/连字符）",
+
+  "Basic settings": "基础设置",
+  "Vxnet settings": "网络设置",
+  "Deploy settings": "部署设置",
+
+  "Name should not be empty": "名称不能为空",
+  "Invalid yaml": "非法的 yaml",
+  "Version should not be empty": "版本不能为空",
+  "Runtime should not be empty": "运行环境不能为空",
+  "Deploy app successfully": "部署应用成功",
+  "Invalid config file, failed to render page": "无效的配置文件，无法渲染页面"
 }

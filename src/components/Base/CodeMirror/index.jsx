@@ -34,6 +34,7 @@ export default class CodeMirrorX extends React.Component {
         onChange={onChange}
         options={{ mode, lineNumbers: true }}
         ref="editor"
+        {...rest}
       />
     );
   }

@@ -4,14 +4,16 @@ import classnames from 'classnames';
 import { I18n } from 'react-i18next';
 
 import { Grid, Section, Panel, Card } from 'components/Layout';
+
 import styles from './index.scss';
 
-const CreateResource = ({ className, children, title, aside, asideTitle, ...rest }) => (
+const CreateResource = ({ className, children, title, footer, aside, asideTitle, ...rest }) => (
   <Grid className={classnames(styles.wrapper, className)} {...rest}>
     <Section size={8}>
       <Panel className={styles.main}>
         <div className={styles.title}>{title}</div>
         <Card className={styles.card}>{children}</Card>
+        <div className={styles.footer}>{footer}</div>
       </Panel>
     </Section>
 
@@ -31,12 +33,14 @@ CreateResource.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string,
   aside: PropTypes.node,
-  asideTitle: PropTypes.string
+  asideTitle: PropTypes.string,
+  footer: PropTypes.node
 };
 
 CreateResource.defaultProps = {
   asideTitle: 'Guide',
-  aside: PropTypes.node
+  aside: null,
+  footer: null
 };
 
 export default CreateResource;
