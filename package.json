@@ -45,29 +45,28 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "dev:client": "rimraf build && NODE_ENV=development webpack --config webpack.dev.js --progress",
-    "pack:server": "webpack --config webpack.server.js --progress",
-    "server": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "dev:watch": "npm run dev:client -- --watch",
-    "dev": "rimraf build && npm run dev:client && npm run server",
-    "prod:build": "rimraf dist && NODE_ENV=production webpack -p --config webpack.prod.js",
+    "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "dev:serve": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
+    "dev": "npm run clean:dev && npm-run-all -p dev:serve 'dev:client -- --watch'",
+    "clean:dev": "rimraf build",
+    "clean:prod": "rimraf dist",
+    "prod:build": "npm run clean:prod && NODE_ENV=production webpack -p --config webpack.prod.js",
     "prod:serve": "NODE_ENV=production DEBUG=app node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
-    "lint": "eslint . --fix",
-    "test:single": "NODE_ENV=testing jest --config jest.config.json -u",
-    "test": "npm run test:single -- --coverage",
+    "build:prod-client": "node build.js --prod-client",
+    "build:prod-server": "node build.js --prod-server",
+    "lint-fix": "eslint . --fix",
+    "test": "NODE_ENV=testing jest --config jest.config.json -u",
     "precommit": "yarn test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "e2e": "testcafe chrome test/e2e/*.spec.js --debug-on-fail --page-load-timeout 5000",
-    "prod-client": "node build.js --prod-client",
-    "prod-server": "node build.js --prod-server",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n"
   },
   "lint-staged": {
-    "*.{js,jsx,md,test.js.snap}": [
+    "*.{js,jsx,md}": [
       "prettier --write",
       "git add"
     ]
@@ -106,10 +105,10 @@
     "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23",
-    "koa-webpack": "^2.0.3",
     "lint-staged": "^7.0.4",
     "node-sass": "^4.5.3",
     "nodemon": "^1.18.4",
+    "npm-run-all": "^4.1.3",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
