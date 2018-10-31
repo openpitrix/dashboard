@@ -18,7 +18,7 @@ install:
   - yarn
 
 script:
-  - yarn test
+  - yarn test -- --coverage
 
 after_success:
   - yarn report-cov

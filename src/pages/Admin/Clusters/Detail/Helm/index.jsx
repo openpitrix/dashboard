@@ -129,10 +129,6 @@ export default class HelmCluster extends React.Component {
   }
 
   render() {
-    const { clusterDetailStore } = this.props;
-    const { isLoading } = clusterDetailStore;
-    if (isLoading) return null;
-
     return (
       <div>
         {this.renderDetailTabs()}

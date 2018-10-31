@@ -57,6 +57,7 @@ export default class ClusterDetail extends Component {
       cluster_id: clusterId,
       isHelm: runtimeStore.isK8s
     });
+    clusterDetailStore.isHelm = runtimeStore.isK8s;
 
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
