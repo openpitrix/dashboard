@@ -27,13 +27,14 @@ import styles from './index.scss';
 @observer
 export default class AppDetail extends Component {
   state = {
-    isLoading: true
+    isLoading: false
   };
 
   async componentDidMount() {
     const { rootStore, appStore, repoStore, appVersionStore, user, match } = this.props;
     const { appId, versionId } = match.params;
 
+    this.setState({ isLoading: true });
     rootStore.setNavFix(true);
     appVersionStore.appId = appId;
     appStore.currentPic = 1;
@@ -57,7 +58,7 @@ export default class AppDetail extends Component {
     if (providerName === 'kubernetes' && version_id) {
       await appVersionStore.fetchPackageFiles(version_id);
     }
-    this.setState({isLoading: false});
+    this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {

@@ -289,6 +289,7 @@ export default class AppDeploy extends Component {
   }
 
   renderFooter() {
+    const { t } = this.props;
     const { isLoading, isK8s, runtimes, versions, subnets } = this.props.appDeployStore;
 
     if (!this.isDeployReady()) {
@@ -309,10 +310,10 @@ export default class AppDeploy extends Component {
           className={styles.btn}
           disabled={isLoading || !canSubmit}
         >
-          Confirm
+          {t('Confirm')}
         </Button>
         <Button onClick={this.handleCancel} className={styles.btn}>
-          Cancel
+          {t('Cancel')}
         </Button>
       </div>
     );
