@@ -241,7 +241,7 @@ export default class RepoDetail extends Component {
 
     let columns = [];
     if (curTagName === 'Apps') {
-      columns = appColumns(users);
+      columns = appColumns(users, user.isDev);
     } else if (curTagName === 'Runtimes') {
       columns = runtimesColumns(clusters, users);
     } else if (curTagName === 'Events') {

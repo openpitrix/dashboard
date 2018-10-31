@@ -71,6 +71,12 @@
       color: $N500;
       @include textCut;
     }
+
+    &:hover {
+      .title a {
+        color: $P75;
+      }
+    }
   }
 }
 

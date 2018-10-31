@@ -29,8 +29,10 @@ export default class AppList extends PureComponent {
       <ul className={styles.appList}>
         {items.map((item, index) => {
           const app = getFilterObj(apps, 'app_id', item.id);
+          let linkUrl = isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`;
           if (isAdmin) {
             item.app_id = item.id;
+            linkUrl = `/apps/${item.app_id}`;
           }
 
           return (
@@ -42,7 +44,7 @@ export default class AppList extends PureComponent {
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}
-                linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`}
+                linkUrl={linkUrl}
                 noCopy={true}
               />
             </li>

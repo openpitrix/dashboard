@@ -219,7 +219,7 @@ export default class Apps extends Component {
       {
         title: t('Latest Version'),
         key: 'latest_version',
-        width: '110px',
+        width: '90px',
         render: item => get(item, 'latest_app_version.name', '')
       },
       {
@@ -323,7 +323,7 @@ export default class Apps extends Component {
     const linkPath = isAdmin ? 'Store>All Apps' : 'My Apps>All';
 
     return (
-      <Layout className={styles.apps}>
+      <Layout>
         <BreadCrumb linkPath={linkPath} />
 
         {isAdmin && (

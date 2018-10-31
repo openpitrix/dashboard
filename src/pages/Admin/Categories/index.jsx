@@ -33,10 +33,11 @@ export default class Categories extends Component {
   }
 
   componentWillUnmount() {
-    const { categoryStore } = this.props;
+    const { categoryStore, appStore } = this.props;
 
     window.onscroll = null;
     categoryStore.reset();
+    appStore.reset();
   }
 
   handleScroll = async () => {

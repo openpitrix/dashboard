@@ -151,7 +151,7 @@ export default class CategoryDetail extends Component {
         title: t('Status'),
         key: 'status',
         width: '90px',
-        render: item => <Status type={item.status} name={item.status} />
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
       },
       /* {
         title: t('Visibility'),
@@ -192,7 +192,7 @@ export default class CategoryDetail extends Component {
           { name: t(mappingStatus('Suspended')), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' }
         ],
-        onChangeFilter: appStore.changePagination,
+        onChangeFilter: appStore.onChangeStatus,
         selectValue: selectStatus
       }
     ];

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
@@ -104,14 +104,12 @@ export default class Layout extends Component {
       >
         {hasMenu && <SideNav isScroll={isScroll} />}
         {noNotification ? null : <Notification />}
+
+        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
+        {backBtn}
+
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {!isLoading &&
-            <Fragment>
-              {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
-              {backBtn}
-              {children}
-            </Fragment>
-          }
+          {!isLoading && children}
         </Loading>
       </div>
     );
