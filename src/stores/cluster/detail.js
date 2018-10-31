@@ -10,7 +10,6 @@ export default class ClusterDetailStore extends Store {
 
   @observable currentPage = 1;
   @observable isLoading = false;
-  @observable isHelmLoading = true;
   @observable cluster = {};
 
   // vmbase
@@ -72,16 +71,19 @@ export default class ClusterDetailStore extends Store {
     // clusterStore.cluster_id = clusterId;
     // await userStore.fetchDetail(cluster.owner);
 
-    const result = await this.request.get(`clusters/nodes`, params);
-    const nodes = _.get(result, 'cluster_node_set', []);
-
     if (params.isHelm) {
-      this.helmClusterNodes = nodes;
+      this.formatClusterNodes({
+        type: this.nodeType || 'Deployment',
+        searchWord: this.searchNode
+      });
+      this.totalNodeCount = _.get(this.helmClusterNodes, 'length', 0);
     } else {
+      const result = await this.request.get(`clusters/nodes`, params);
+      const nodes = _.get(result, 'cluster_node_set', []);
       this.clusterNodes = nodes;
+      this.totalNodeCount = _.get(result, 'total_count', 0);
     }
 
-    this.totalNodeCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
@@ -94,7 +96,6 @@ export default class ClusterDetailStore extends Store {
     if (_.isEmpty(cluster_role_set)) {
       return false;
     }
-
     const clusterNodes = [];
     const keys = ['name', 'host_id', 'host_ip', 'instance_id', 'private_ip'];
 
@@ -151,7 +152,7 @@ export default class ClusterDetailStore extends Store {
     });
 
     this.helmClusterNodes = clusterNodes;
-    this.isHelmLoading = false;
+    return clusterNodes;
   };
 
   @action
@@ -223,8 +224,10 @@ export default class ClusterDetailStore extends Store {
   onChangeK8sTag = name => {
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
-    this.nodeType = type;
-    this.formatClusterNodes({ type });
+    if (this.nodeType !== type) {
+      this.nodeType = type;
+      this.formatClusterNodes({ type });
+    }
   };
 
   // @action
@@ -275,12 +278,7 @@ export default class ClusterDetailStore extends Store {
   onSearchNode = async word => {
     this.searchNode = word;
     this.currentNodePage = 1;
-    const { isHelm } = this;
-    if (isHelm) {
-      this.formatClusterNodes({ type: this.nodeType, searchWord: word });
-    } else {
-      await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
-    }
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
   @action
@@ -293,10 +291,8 @@ export default class ClusterDetailStore extends Store {
     const { isHelm, cluster } = this;
     if (isHelm) {
       await this.fetch(cluster.cluster_id);
-      this.formatClusterNodes({ type: this.nodeType });
-    } else {
-      await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
     }
+    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
   };
 
   @action

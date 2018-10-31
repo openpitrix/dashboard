@@ -39,8 +39,6 @@ export default class ClusterDetail extends Component {
       user,
       match
     } = this.props;
-    clusterDetailStore.isHelmLoading = true;
-
     const { clusterId } = match.params;
 
     await clusterDetailStore.fetch(clusterId);
@@ -64,7 +62,6 @@ export default class ClusterDetail extends Component {
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
-    clusterDetailStore.isHelmLoading = false;
 
     // if (!runtimeStore.isK8s) {
     //   // vmbase
@@ -326,7 +323,7 @@ export default class ClusterDetail extends Component {
       t
     } = this.props;
 
-    const { cluster, clusterJobs, isHelmLoading } = clusterDetailStore;
+    const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
 
     const { isNormal, isDev, isAdmin } = user;
@@ -385,9 +382,7 @@ export default class ClusterDetail extends Component {
           </Section>
 
           <Section size={8}>
-            <Panel>
-              {isK8s && !isHelmLoading ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}
-            </Panel>
+            <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
           </Section>
         </Grid>
 
