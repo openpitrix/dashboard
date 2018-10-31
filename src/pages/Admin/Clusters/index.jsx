@@ -90,7 +90,7 @@ export default class Clusters extends Component {
         name={app.name}
         description={_.get(app, 'latest_app_version.name')}
         image={app.icon || 'appcenter'}
-        linkUrl={isDev ? `/dashboard/app/${appId}` : `/apps/${appId}`}
+        linkUrl={isDev ? `/dashboard/app/${appId}` : `/store/${appId}`}
       />
     ) : null;
   };

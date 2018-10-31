@@ -18,7 +18,7 @@ export default function(users, isDev) {
           name={item.name}
           description={item.app_id}
           image={item.icon || 'appcenter'}
-          linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/apps/${item.app_id}`}
+          linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`}
         />
       )
     },

@@ -68,7 +68,7 @@ const tsObj = {
     'Labels has repeat key': '标签有重复的键',
     'Labels missing key': '有标签对缺失键',
     'Labels missing value': '有标签对缺失值',
-    'Create runtime successfully.': '创建环境成。',
+    'Create runtime successfully.': '创建环境成功。',
     'Modify runtime successfully.': '修改环境成功。',
     'Delete runtime successfully.': '删除环境成功。',
 
