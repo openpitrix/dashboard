@@ -1,7 +1,7 @@
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import AppDetail from 'pages/AppDetail';
-import * as Dash from 'pages/Admin';
+import * as Dash from 'pages/Dashboard';
 
 import Profile from 'pages/Profile';
 import SSHKeys from 'pages/SSHKeys';

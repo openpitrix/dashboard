@@ -9,7 +9,7 @@ import TimeShow from 'components/TimeShow';
  *
  * @param t | i18n trans
  */
-export default (t) =>  [
+export default t => [
   {
     title: t('Name'),
     key: 'name',

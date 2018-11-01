@@ -1,4 +1,4 @@
-export const getFilterOptions = ({trans, onChange, selectValue})=> {
+export const getFilterOptions = ({ trans, onChange, selectValue }) => {
   return [
     {
       key: 'status',
@@ -14,4 +14,4 @@ export const getFilterOptions = ({trans, onChange, selectValue})=> {
       selectValue: selectValue
     }
   ];
-}
+};

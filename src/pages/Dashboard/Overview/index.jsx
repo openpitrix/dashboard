@@ -31,8 +31,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class Overview extends React.Component {
-
-
   constructor(props) {
     super(props);
     const { user } = this.props;
@@ -95,7 +93,7 @@ export default class Overview extends React.Component {
       await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
       await runtimeStore.fetchAll({ noLimit: true });
     }
-    this.setState({isLoading: false});
+    this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {

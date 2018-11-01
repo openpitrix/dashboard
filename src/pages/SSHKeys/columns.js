@@ -2,7 +2,7 @@ import React from 'react';
 
 import TdName from 'components/TdName';
 import Status from 'components/Status';
-import Configuration from 'pages/Admin/Clusters/Detail/Configuration';
+import Configuration from 'pages/Dashboard/Clusters/Detail/Configuration';
 import { getObjName } from 'utils';
 
 import styles from './index.scss';
