@@ -137,7 +137,7 @@ class SideNav extends React.Component {
             nav =>
               nav.iconName === 'human' ? (
                 <li key={nav.iconName}>
-                  <Popover content={this.renderUserMenus()} className={styles.iconOuter}>
+                  <Popover content={<MenuLayer />} className={styles.iconOuter}>
                     <Icon
                       className={styles.icon}
                       size={20}
@@ -171,6 +171,7 @@ class SideNav extends React.Component {
   renderSubDev() {
     const { t } = this.props;
     const { url } = this.props.match;
+    const { appDetail } = this.props.appStore;
 
     if (url === '/dashboard') {
       return (
@@ -186,8 +187,6 @@ class SideNav extends React.Component {
       );
     }
 
-    const { appDetail } = this.props.appStore;
-
     return (
       <div className={styles.subNav}>
         <div className={styles.title}>
@@ -197,7 +196,7 @@ class SideNav extends React.Component {
 
         {getDevSubNavs.map(nav => (
           <div key={nav.title} className={styles.subContent}>
-            <div className={styles.subTitle}>{nav.title}</div>
+            <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
               <Link
                 className={classnames(styles.link, {
@@ -205,7 +204,7 @@ class SideNav extends React.Component {
                 })}
                 to={item.link}
               >
-                {item.name}
+                {t(item.name)}
               </Link>
             ))}
           </div>
@@ -248,59 +247,6 @@ class SideNav extends React.Component {
           <Icon name="caret-down" className={styles.iconDark} type="dark" />
         </Popover>
       </div>
-    );
-  }
-
-  renderUserMenus() {
-    const { user, t } = this.props;
-    const { role, isNormal } = user;
-    const changeWord = isNormal ? t('Back to developer') : t('Back to user');
-    const isDeveloper = user.role === 'developer';
-
-    return (
-      <ul className={styles.userMenus}>
-        <li>
-          <span className={styles.userIcon}>
-            <Icon name="human" size={32} type="dark" className={styles.iconImg} />
-          </span>
-          {user.username}
-          {isDeveloper && (
-            <span className={styles.devIconOuter}>
-              <Icon name="wrench" type="white" size={8} className={styles.devIcon} />
-            </span>
-          )}
-        </li>
-        {isDeveloper && (
-          <li className={styles.dev} onClick={() => this.becomeDeveloper(isNormal)}>
-            <Icon name="appcenter" type="dark" size={16} className={styles.iconImg} />
-            <label>{changeWord}</label>
-          </li>
-        )}
-        <li>
-          <Icon name="folder" type="dark" size={16} className={styles.iconImg} />
-          <Link to="/profile">账户信息</Link>
-        </li>
-        <li>
-          <Icon name="lock" type="dark" size={16} className={styles.iconImg} />
-          <Link to="/profile">修改密码</Link>
-        </li>
-        <li>
-          <Icon name="loudspeaker" type="dark" size={16} className={styles.iconImg} />
-          <Link to="#">通知设置</Link>
-        </li>
-        <li>
-          <Icon name="creditcard" type="dark" size={16} className={styles.iconImg} />
-          <Link to="#">支付</Link>
-        </li>
-        <li>
-          <Icon name="ssh" type="dark" size={16} className={styles.iconImg} />
-          <Link to="/ssh_keys">{t('SSH Keys')}</Link>
-        </li>
-        <li>
-          <Icon name="logout" type="dark" size={16} className={styles.iconImg} />
-          <a href="/logout">{t('Log out')}</a>
-        </li>
-      </ul>
     );
   }
 

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Popover, Icon } from 'components/Base';
 
 import styles from './index.scss';
+import { userMeuns } from 'components/Layout/SideNav/navMap';
 
 // translate hoc should place before mobx
 @translate()
@@ -30,44 +31,44 @@ export default class MenuLayer extends Component {
   };
 
   render() {
-    const { className, user, t } = this.props;
-    const { role, isNormal } = user;
-    const changeWord = isNormal ? t('Back to developer') : t('Back to user');
+    const { user, className, t } = this.props;
+    const { isNormal } = user;
+    const changeWord = isNormal ? t('Develop Center') : t('App Center');
+    const isDeveloper = user.role === 'developer';
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>
-        {role === 'developer' && (
-          <li onClick={() => this.becomeDeveloper(isNormal)} className={styles.line}>
-            <label>
-              <Icon name="backup" type="dark" size={18} className={styles.icon} />
-              {changeWord}
-            </label>
+        <li>
+          <span className={styles.userIcon}>
+            <Icon name="human" size={32} type="dark" className={styles.iconImg} />
+          </span>
+          {user.username}
+          {isDeveloper && (
+            <span className={styles.devIconOuter}>
+              <Icon name="wrench" type="white" size={8} className={styles.devIcon} />
+            </span>
+          )}
+        </li>
+
+        {isDeveloper && (
+          <li className={styles.dev} onClick={() => this.becomeDeveloper(isNormal)}>
+            <Icon
+              name={isNormal ? 'wrench' : 'appcenter'}
+              type="dark"
+              size={16}
+              className={styles.iconImg}
+            />
+            <label>{changeWord}</label>
           </li>
         )}
-        <li>
-          <Link to="/dashboard">
-            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
-            {t('Dashboard')}
-          </Link>
-        </li>
-        <li>
-          <Link to="/profile">
-            <Icon name="ssh" type="dark" size={18} className={styles.icon} />
-            {t('Profile')}
-          </Link>
-        </li>
-        <li>
-          <Link to="/ssh_keys">
-            <Icon name="dashboard" type="dark" size={18} className={styles.icon} />
-            {t('SSH Keys')}
-          </Link>
-        </li>
-        <li>
-          <a href="/logout">
-            <Icon name="logout" type="dark" size={18} className={styles.icon} />
-            {t('Log out')}
-          </a>
-        </li>
+
+        {userMeuns.map(item => (
+          <li key={item.name}>
+            <Icon name={item.iconName} type="dark" size={16} className={styles.iconImg} />
+            {item.name === 'Log out' && <a href={item.link}>{t(item.name)}</a>}
+            {item.name !== 'Log out' && <Link to={item.link}>{t(item.name)}</Link>}
+          </li>
+        ))}
       </ul>
     );
   }

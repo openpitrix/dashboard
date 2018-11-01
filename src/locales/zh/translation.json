@@ -382,6 +382,8 @@
 
   "Back to user": "普通用户",
   "Back to developer": "开发中心",
+  "App Center": "应用中心",
+  "Develop Center": "开发中心",
   "Document": "文档",
 
   "Already create new version": "已创建新版本",
@@ -406,5 +408,33 @@
   "Version should not be empty": "版本不能为空",
   "Runtime should not be empty": "运行环境不能为空",
   "Deploy app successfully": "部署应用成功",
-  "Invalid config file, failed to render page": "无效的配置文件，无法渲染页面"
+  "Invalid config file, failed to render page": "无效的配置文件，无法渲染页面",
+
+  "My dashboard": "我的工作台",
+  "App service provider ISV": "应用服务商ISV",
+  "Work list": "工单",
+  "Financial Center": "财务中心",
+  "Message and monitoring": "消息与监控",
+  "Settings": "设置",
+  "Create app": "创建新应用",
+  "View all": "查看全部",
+  "Global search": "全局搜索",
+  "Alarms": "告警",
+  "My news": "我的消息",
+  "My account": "我的帐户",
+  "Version management": "版本管理",
+  "Audit record": "审核记录",
+  "App information": "应用信息",
+  "Operation and maintenance": "运维",
+  "Monitor": "监控",
+  "Event": "事件",
+  "Customer": "客户",
+  "News": "消息",
+  "Sandbox": "沙盒",
+  "Example": "实例",
+  "Environment": "环境",
+  "Account info": "账户信息",
+  "Change Password": "修改密码",
+  "Notice settings": "通知设置",
+  "Payment": "支付"
 }

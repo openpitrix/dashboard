@@ -39,37 +39,37 @@ export const getNavs = {
       link: '/dashboard',
       iconName: 'dashboard',
       active: 'dashboard',
-      title: '我的工作台'
+      title: 'My dashboard'
     },
     {
       link: '/dashboard/apps',
       iconName: 'components',
       active: 'app',
-      title: '应用商店'
+      title: 'App Store'
     },
     {
       link: '/dashboard/repos',
       iconName: 'shield',
       active: 'repo',
-      title: '应用服务商ISV'
+      title: 'App service provider ISV'
     },
     {
       link: '#',
       iconName: 'ticket',
       active: '',
-      title: '工单'
+      title: 'Work list'
     },
     {
       link: '#',
       iconName: 'wallet',
       active: '',
-      title: '财务中心'
+      title: 'Financial Center'
     },
     {
       link: '#',
       iconName: 'linechart',
       active: '',
-      title: '消息与监控'
+      title: 'Message and monitoring'
     },
     {
       link: '/dashboard/users',
@@ -81,7 +81,7 @@ export const getNavs = {
       link: '#',
       iconName: 'cogwheel',
       active: '',
-      title: '设置'
+      title: 'Settings'
     }
   ],
   developer: [
@@ -89,13 +89,13 @@ export const getNavs = {
       link: '/dashboard/app/create',
       iconName: 'plus-square',
       active: 'create',
-      title: '创建新应用'
+      title: 'Create app'
     },
     {
       link: '/dev/apps',
       iconName: 'more',
       active: 'app',
-      title: '查看全部'
+      title: 'View all'
     }
   ]
 };
@@ -105,51 +105,88 @@ export const getBottomNavs = [
     link: '#',
     iconName: 'magnifier',
     active: '',
-    title: '全局搜索'
+    title: 'Global search'
   },
   {
     link: '#',
     iconName: 'bell',
     active: '',
-    title: '告警'
+    title: 'Alarms'
   },
   {
     link: '#',
     iconName: 'mail',
     active: '',
-    title: '我的消息'
+    title: 'My news'
   },
   {
     link: '/profile',
     iconName: 'human',
     active: 'profile',
-    title: '我的帐户'
+    title: 'My account'
   }
 ];
 
 export const getDevSubNavs = [
   {
-    title: '开发',
+    title: 'Development',
     items: [
-      { name: '版本管理', link: '#' },
-      { name: '审核记录', link: '#' },
-      { name: '应用信息', link: '#' }
+      { name: 'Version management', link: '#' },
+      { name: 'Audit record', link: '#' },
+      { name: 'App information', link: '#' }
     ]
   },
   {
-    title: '运维',
+    title: 'Operation and maintenance',
     items: [
-      { name: '监控', link: '#' },
-      { name: '事件', link: '#' },
-      { name: '应用信息', link: '#' }
+      { name: 'Monitor', link: '#' },
+      { name: 'Event', link: '#' },
+      { name: 'App information', link: '#' }
     ]
   },
   {
-    title: '客户',
-    items: [{ name: '实例', link: '#' }, { name: '工单', link: '#' }, { name: '消息', link: '#' }]
+    title: 'Customer',
+    items: [
+      { name: 'Example', link: '#' },
+      { name: 'Work list', link: '#' },
+      { name: 'News', link: '#' }
+    ]
   },
   {
-    title: '沙盒',
-    items: [{ name: '实例', link: '#' }, { name: '环境', link: '#' }]
+    title: 'Sandbox',
+    items: [{ name: 'Example', link: '#' }, { name: 'Environment', link: '#' }]
+  }
+];
+
+export const userMeuns = [
+  {
+    name: 'Account info',
+    link: '/profile',
+    iconName: 'folder'
+  },
+  {
+    name: 'Change Password',
+    link: '/profile',
+    iconName: 'lock'
+  },
+  {
+    name: 'Notice settings',
+    link: '#',
+    iconName: 'loudspeaker'
+  },
+  {
+    name: 'Payment',
+    link: '#',
+    iconName: 'creditcard'
+  },
+  {
+    name: 'SSH Keys',
+    link: '/ssh_keys',
+    iconName: 'ssh'
+  },
+  {
+    name: 'Log out',
+    link: '/logout',
+    iconName: 'logout'
   }
 ];

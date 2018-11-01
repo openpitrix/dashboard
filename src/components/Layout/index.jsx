@@ -17,7 +17,7 @@ import styles from './index.scss';
   user: rootStore.user,
   sock
 }))
-export default class Layout extends Component {
+class Layout extends Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
