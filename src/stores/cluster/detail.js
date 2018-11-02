@@ -67,7 +67,7 @@ export default class ClusterDetailStore extends Store {
     if (!params.status) {
       params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
     }
-    if (this.nodeIds.length) {
+    if (this.nodeIds && this.nodeIds.length) {
       params.node_id = params.node_id || this.nodeIds;
     }
 

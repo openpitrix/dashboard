@@ -31,6 +31,7 @@ export default class SSHKeys extends Component {
     await sshKeyStore.fetchKeyPairs();
 
     const nodeIds = get(sshKeyStore.keyPairs[0], 'node_id', '');
+    clusterDetailStore.nodeIds = nodeIds || ['0'];
     if (nodeIds) {
       await clusterStore.fetchAll({
         noLimit: true,
