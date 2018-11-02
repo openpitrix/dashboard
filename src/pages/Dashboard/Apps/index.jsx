@@ -41,7 +41,6 @@ export default class Apps extends Component {
       isQueryPublic: user.isDev
     });
     await categoryStore.fetchAll();
-
   }
 
   componentWillUnmount() {
