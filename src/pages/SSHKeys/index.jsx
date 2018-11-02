@@ -27,7 +27,8 @@ export default class SSHKeys extends Component {
   async componentDidMount() {
     const { clusterStore, clusterDetailStore, sshKeyStore, user } = this.props;
 
-    await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
+    sshKeyStore.userId = user.user_id;
+    await sshKeyStore.fetchKeyPairs();
 
     const nodeIds = get(sshKeyStore.keyPairs[0], 'node_id', '');
     if (nodeIds) {
@@ -35,6 +36,7 @@ export default class SSHKeys extends Component {
         noLimit: true,
         active: clusterStatus
       });
+      clusterDetailStore.nodeIds = nodeIds;
       await clusterDetailStore.fetchNodes({ node_id: nodeIds });
     }
   }
@@ -56,7 +58,8 @@ export default class SSHKeys extends Component {
     if (currentPairId !== item.key_pair_id) {
       cancelSelectNodes();
       sshKeyStore.currentPairId = item.key_pair_id;
-      fetchNodes({ node_id: item.node_id || 0 });
+      clusterDetailStore.nodeIds = item.node_id || ['0'];
+      fetchNodes();
     }
   };
 
