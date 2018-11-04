@@ -20,3 +20,5 @@ tests/
 .eslintrc.js
 .prettierrc
 jest.config.json
+
+.cache/

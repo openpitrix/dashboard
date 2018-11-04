@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense, lazy } from 'react';
 import PropTypes from 'prop-types';
 
 import { Provider } from 'mobx-react';
@@ -12,6 +12,8 @@ import Footer from 'components/Footer';
 import WrapComp from './routes/wrapper';
 
 import './scss/index.scss';
+
+const LazyLoad = ({ children }) => <Suspense fallback={<div>Loading..</div>}>{children}</Suspense>;
 
 class App extends React.Component {
   static propTypes = {
@@ -51,11 +53,11 @@ class App extends React.Component {
       const isHome = route.path === '/' || route.path.startsWith('/apps');
 
       return (
-        <Fragment>
+        <LazyLoad>
           {(hasHeader || isHome) && <Header isHome={isHome} />}
           <WrapComp {...props} />
           {(hasHeader || isHome) && <Footer />}
-        </Fragment>
+        </LazyLoad>
       );
     }
 
@@ -70,16 +72,18 @@ class App extends React.Component {
         <Provider rootStore={store} sock={sock}>
           <BrowserRouter>
             <div className="main">
-              <Switch>
-                {routes.map((route, i) => (
-                  <Route
-                    key={i}
-                    exact={route.exact}
-                    path={route.path}
-                    render={({ match }) => this.renderRoute(match, route, store)}
-                  />
-                ))}
-              </Switch>
+              <LazyLoad>
+                <Switch>
+                  {routes.map((route, i) => (
+                    <Route
+                      key={i}
+                      exact={route.exact}
+                      path={route.path}
+                      render={({ match }) => this.renderRoute(match, route, store)}
+                    />
+                  ))}
+                </Switch>
+              </LazyLoad>>
             </div>
           </BrowserRouter>
         </Provider>
