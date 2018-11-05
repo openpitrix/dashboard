@@ -5,12 +5,12 @@ import Home from 'pages/Home';
 
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
-const AppDetail = lazy(() => import('pages/AppDetail'));
-const Profile = lazy(() => import('pages/Profile'));
-const SSHKeys = lazy(() => import('pages/SSHKeys'));
-const Store = lazy(() => import('pages/Store'));
-const Purchased = lazy(() => import('pages/Purchased'));
-const Runtimes = lazy(() => import('pages/Runtimes'));
+const AppDetail = lazy(() => import('../pages/AppDetail'));
+const Profile = lazy(() => import('../pages/Profile'));
+const SSHKeys = lazy(() => import('../pages/SSHKeys'));
+const Store = lazy(() => import('../pages/Store'));
+const Purchased = lazy(() => import('../pages/Purchased'));
+const Runtimes = lazy(() => import('../pages/Runtimes'));
 
 import * as Dash from 'pages/Dashboard';
 
