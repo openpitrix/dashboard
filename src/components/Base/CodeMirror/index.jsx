@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CodeMirror from 'react-codemirror';
 
 if (process.browser) {
   require('codemirror/mode/yaml/yaml');
@@ -21,21 +20,31 @@ export default class CodeMirrorX extends React.Component {
     mode: 'yaml'
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { module: null };
+  }
+
   componentDidMount() {
-    this.refs.editor.getCodeMirror().refresh();
+    import('react-codemirror').then(module => this.setState({ module: module.default }));
   }
 
   render() {
     const { onChange, code, mode, ...rest } = this.props;
+    const { module: CodeMirror } = this.state;
 
     return (
-      <CodeMirror
-        value={code}
-        onChange={onChange}
-        options={{ mode, lineNumbers: true }}
-        ref="editor"
-        {...rest}
-      />
+      <div>
+        {CodeMirror && (
+          <CodeMirror
+            value={code}
+            onChange={onChange}
+            options={{ mode, lineNumbers: true }}
+            ref="editor"
+            {...rest}
+          />
+        )}
+      </div>
     );
   }
 }

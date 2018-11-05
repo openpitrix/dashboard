@@ -12,6 +12,7 @@
   "plugins": [
     "transform-runtime",
     "transform-decorators-legacy",
+    "syntax-dynamic-import",
     "lodash",
     [
       "module-resolver",
@@ -46,6 +47,11 @@
             "extensions": [".css", ".scss"]
           }
         ]
+      ]
+    },
+    "test": {
+      "plugins": [
+        "dynamic-import-node"
       ]
     }
   }

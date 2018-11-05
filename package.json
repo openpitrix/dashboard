@@ -56,7 +56,7 @@
     "build:prod-client": "node build.js --prod-client",
     "build:prod-server": "node build.js --prod-server",
     "lint-fix": "eslint . --fix",
-    "test": "NODE_ENV=testing jest --config jest.config.json -u",
+    "test": "NODE_ENV=test jest --config jest.config.json -u",
     "precommit": "yarn test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
@@ -72,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@commitlint/cli": "^7.0.0",
     "autoprefixer": "7.1.2",
     "babel-core": "^6.26.3",
@@ -79,6 +80,7 @@
     "babel-jest": "^22.0.6",
     "babel-loader": "7.1.1",
     "babel-plugin-css-modules-transform": "^1.5.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
