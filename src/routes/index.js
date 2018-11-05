@@ -1,13 +1,18 @@
-import Home from 'pages/Home';
-import Login from 'pages/Login';
-import AppDetail from 'pages/AppDetail';
-import * as Dash from 'pages/Dashboard';
+import React, { lazy } from 'react';
 
-import Profile from 'pages/Profile';
-import SSHKeys from 'pages/SSHKeys';
-import Store from 'pages/Store';
-import Purchased from 'pages/Purchased';
-import Runtimes from 'pages/Runtimes';
+// views without lazy load
+import Home from 'pages/Home';
+
+// views using lazy load
+const Login = lazy(() => import('../pages/Login'));
+const AppDetail = lazy(() => import('../pages/AppDetail'));
+const Profile = lazy(() => import('../pages/Profile'));
+const SSHKeys = lazy(() => import('../pages/SSHKeys'));
+const Store = lazy(() => import('../pages/Store'));
+const Purchased = lazy(() => import('../pages/Purchased'));
+const Runtimes = lazy(() => import('../pages/Runtimes'));
+
+import * as Dash from 'pages/Dashboard';
 
 const dashboardPrefix = '/dashboard';
 
