@@ -28,6 +28,10 @@
     margin-left: $menu-nav-width + 20px;
   }
 
+  &.detailPage {
+    margin-top: 88px;
+  }
+  
   .backBtn {
     //width: $content-width;
     margin: 0 auto 20px;
@@ -159,3 +163,20 @@
     }
   }
 }
+
+.detailTitle {
+  position: fixed;
+  left: $menu-width;
+  top: 0;
+  z-index: 4;
+  padding: 0 24px;
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $N500;
+  box-shadow: inset 0 -1px 0 0 $N10;
+  background-color: $N0;
+}
+

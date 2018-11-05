@@ -50,6 +50,7 @@ const routes = {
   '/:dash/review/:appId/:versionId': AppDetail,
   '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
+  '/:dash/auditrecord/:appId': Dash.AuditRecord,
 
   '/:dash/clusters': Dash.Clusters,
 

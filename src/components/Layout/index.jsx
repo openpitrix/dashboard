@@ -27,6 +27,7 @@ class Layout extends Component {
     loadClass: PropTypes.string,
     listenToJob: PropTypes.func,
     title: PropTypes.string,
+    detailTitle: PropTypes.string,
     hasSearch: PropTypes.bool,
     isHome: PropTypes.bool
   };
@@ -36,6 +37,7 @@ class Layout extends Component {
     backBtn: null,
     listenToJob: noop,
     title: '',
+    detailTitle: '',
     hasSearch: false,
     isHome: false
   };
@@ -88,7 +90,8 @@ class Layout extends Component {
       hasSearch,
       title,
       isHome,
-      match
+      match,
+      detailTitle,
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
@@ -104,7 +107,8 @@ class Layout extends Component {
           className,
           { [styles.hasMenu]: hasSubNav },
           { [styles.hasNav]: hasMenu && !hasSubNav },
-          { [styles.hasBack]: Boolean(backBtn) }
+          { [styles.hasBack]: Boolean(backBtn) },
+          { [styles.detailPage]: Boolean(detailTitle) }
         )}
       >
         {noNotification ? null : <Notification />}
@@ -112,6 +116,8 @@ class Layout extends Component {
 
         {hasMenu && <SideNav isScroll={isScroll} hasSubNav={hasSubNav} />}
         {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
+
+        {Boolean(detailTitle) && <div className={styles.detailTitle}>{detailTitle}</div>}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {children}
