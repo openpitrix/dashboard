@@ -5,6 +5,8 @@ import toJson from 'enzyme-to-json';
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
 
+jest.mock('CodeMirror', () => <div />);
+
 import Home from 'pages/Home';
 
 describe('Home', () => {

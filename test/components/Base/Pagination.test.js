@@ -4,6 +4,8 @@ import toJson from 'enzyme-to-json';
 
 import Pagination from 'components/Base/Pagination';
 
+jest.mock('CodeMirror', () => <div />);
+
 describe('Base/Pagination', () => {
   it('basic render', () => {
     const wrapper = render(<Pagination className="test" defaultCurrent={2} pageSize={20} />);

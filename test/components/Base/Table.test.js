@@ -4,6 +4,8 @@ import toJson from 'enzyme-to-json';
 
 import Table from 'components/Base/Table';
 
+jest.mock('CodeMirror', () => <div />);
+
 const setup = (type, props = {}) =>
   type === 'render' ? render(<Table {...props} />) : mount(<Table {...props} />);
 
