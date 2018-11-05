@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
-import CodeMirror from 'react-codemirror';
+const CodeMirror = lazy(() => import('react-codemirror'));
 
 if (process.browser) {
   require('codemirror/mode/yaml/yaml');
@@ -21,21 +21,24 @@ export default class CodeMirrorX extends React.Component {
     mode: 'yaml'
   };
 
-  componentDidMount() {
-    this.refs.editor.getCodeMirror().refresh();
+  constructor(props) {
+    super(props);
+    this.state = { module: null };
   }
 
   render() {
     const { onChange, code, mode, ...rest } = this.props;
 
     return (
-      <CodeMirror
-        value={code}
-        onChange={onChange}
-        options={{ mode, lineNumbers: true }}
-        ref="editor"
-        {...rest}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CodeMirror
+          value={code}
+          onChange={onChange}
+          options={{ mode, lineNumbers: true }}
+          ref="editor"
+          {...rest}
+        />
+      </Suspense>
     );
   }
 }
