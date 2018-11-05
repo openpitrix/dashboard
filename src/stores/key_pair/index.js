@@ -14,6 +14,7 @@ export default class KeyPairStore extends Store {
   @observable keyPairs = [];
   @observable pairId = '';
   @observable currentPairId = '';
+  @observable userId = '';
 
   @observable name = '';
   @observable pub_key = '';
@@ -37,7 +38,7 @@ export default class KeyPairStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(
       'clusters/key_pairs',
-      Object.assign({ noLimit: true }, params)
+      Object.assign({ noLimit: true,  owner: this.userId }, params)
     );
     this.keyPairs = _.get(result, 'key_pair_set', []);
 
