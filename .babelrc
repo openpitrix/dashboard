@@ -12,7 +12,6 @@
   "plugins": [
     "transform-runtime",
     "transform-decorators-legacy",
-    "syntax-dynamic-import",
     "lodash",
     [
       "module-resolver",

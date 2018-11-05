@@ -10,8 +10,6 @@ import Login from 'pages/Login';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-jest.mock('CodeMirror', () => <div />);
-
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
