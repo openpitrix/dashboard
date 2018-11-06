@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { inject } from 'mobx-react/index';
+import { inject } from 'mobx-react';
 
 import { Image, Icon, Input } from 'components/Base';
 import styles from './index.scss';
 
 // translate hoc should place before mobx
-@translate()
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -55,6 +54,8 @@ class TitleBanner extends Component {
       case 'runtimeDetail':
         detail = runtimeStore.runtimeDetail;
         break;
+      default:
+        detail = {};
     }
 
     if (detail.name) {

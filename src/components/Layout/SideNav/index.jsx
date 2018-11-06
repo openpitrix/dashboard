@@ -103,11 +103,11 @@ class SideNav extends React.Component {
             <Link to="/">
               <img src="/logo_icon.svg" className={styles.icon} />
             </Link>
-            <label className={styles.title}>QingCloud 应用中心</label>
+            <label className={styles.title}>{t('QingCloud App Center')}</label>
           </li>
           {navs.map(nav => (
             <li key={nav.iconName || nav.app_id}>
-              <a href={nav.link || `/dashboard/app/${nav.app_id}`}>
+              <Link to={nav.link || `/dashboard/app/${nav.app_id}`}>
                 {nav.app_id && (
                   <span
                     className={classnames(styles.imageOuter, {
@@ -125,7 +125,7 @@ class SideNav extends React.Component {
                     type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
                 )}
-              </a>
+              </Link>
               <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
                 <label className={styles.title}>{t(nav.title || nav.name)}</label>
               </NavLink>
@@ -199,6 +199,7 @@ class SideNav extends React.Component {
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
               <Link
+                key={item.name}
                 className={classnames(styles.link, {
                   [styles.active]: url.indexOf(item.active) > -1
                 })}
