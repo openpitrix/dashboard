@@ -343,7 +343,7 @@ export default class RuntimeDetail extends Component {
 
     return (
       <Layout
-        title="My Runtimes"
+        title="runtimeDetail"
         backBtn={isNormal && <BackBtn label="My Runtimes" link="/runtimes" />}
         listenToJob={this.listenToJob}
       >

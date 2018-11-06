@@ -2,15 +2,15 @@
 
 :global {
   .#{$icon-prefix}-light {
-    --primary-color: #{$P100};
-    --secondary-color: #{$P30};
+    --primary-color: #{$P300};
+    --secondary-color: #{$P45};
     //--primary-opacity: 0.9;
     //--secondary-opacity: 0.4;
   }
 
   .#{$icon-prefix}-dark {
-    --primary-color: #{$N500};
-    --secondary-color: #{$N65};
+    --primary-color: #{$N300};
+    --secondary-color: #{$N45};
     //--primary-opacity: 0.9;
     //--secondary-opacity: 0.4;
   }

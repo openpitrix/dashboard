@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter, Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -52,7 +52,7 @@ class Header extends Component {
           activeClassName={styles.active}
           isActive={this.isLinkActive.bind(null, 'store')}
         >
-          {t('Store')}
+          {t('App Store')}
         </NavLink>
         <NavLink
           to="/purchased"
@@ -90,7 +90,7 @@ class Header extends Component {
       <div className={styles.user}>
         <Popover content={<MenuLayer />}>
           {username}
-          <Icon name="caret-down" className={styles.iconDark} type="dark" />
+          <Icon name="caret-down" className={styles.icon} type="dark" />
         </Popover>
       </div>
     );
@@ -103,34 +103,46 @@ class Header extends Component {
       match,
       rootStore: { fixNav }
     } = this.props;
-
-    const { isNormal } = this.props.user;
-    const logoUrl = !isHome || fixNav ? '/logo_light.svg' : '/logo_dark.svg';
-    const needShowSearch = isHome && fixNav;
+    const logoUrl = fixNav ? '/logo_light.svg' : '/logo_dark.svg';
     const appSearch = match.params.search;
 
-    return (
-      <div
-        className={classnames('header', styles.header, {
-          [styles.deep]: !isHome,
-          [styles.deepHome]: isHome && fixNav
-        })}
-      >
-        <div className={styles.wrapper}>
-          <Logo className={styles.logo} url={logoUrl} />
-          <div className={styles.menuOuter}>
-            {isNormal && !isHome && this.renderMenus()}
+    if (isHome) {
+      return (
+        <div
+          className={classnames('header', styles.header, {
+            [styles.deepHome]: fixNav
+          })}
+        >
+          <div className={styles.wrapper}>
+            <Logo className={styles.logo} url={logoUrl} />
             {this.renderMenuBtns()}
+            {fixNav && (
+              <Input.Search
+                className={styles.search}
+                placeholder={t('search.placeholder')}
+                value={appSearch}
+                onSearch={this.onSearch}
+                onClear={this.onClearSearch}
+              />
+            )}
           </div>
-          {needShowSearch && (
-            <Input.Search
-              className={styles.search}
-              placeholder={t('search.placeholder')}
-              value={appSearch}
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-            />
-          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className={classnames(styles.header, styles.deepInner)}>
+        <div className={styles.wrapper}>
+          <Link className={styles.logoIcon} to="/">
+            <Icon className={styles.icon} name="op-logo" type="white" size={16} />
+          </Link>
+          {this.renderMenus()}
+          {this.renderMenuBtns()}
+          <Icon name="mail" size={20} type="white" className={styles.mail} />
+          <Link to="#" className={styles.upgrade}>
+            <Icon name="shield" size={16} type="white" className={styles.shield} />
+            {t('UPGRADE_PROVIDER')}
+          </Link>
         </div>
       </div>
     );

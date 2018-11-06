@@ -6,34 +6,43 @@
   width: $content-width;
   margin: 0 auto;
 
-  &.hasBack{
+  &.hasBack {
     padding-top: $layout-top - 20px;
   }
 
-  &.hasMenu{
-    margin: 56px 20px 32px $menu-width+20px;
-    width: calc(100% - #{$menu-width} - 40px);
+  &.hasMenu,
+  &.hasNav {
+    margin: 56px 20px 32px $menu-width + 20px;
     //min-width: 950px;
     min-width: 992px;
     min-height: calc(100vh - 100px);
     padding-top: 0;
   }
 
-  .backBtn{
+  &.hasMenu {
+    width: calc(100% - #{$menu-width} - 40px);
+  }
+
+  &.hasNav {
+    width: calc(100% - #{$menu-nav-width} - 40px);
+    margin-left: $menu-nav-width + 20px;
+  }
+
+  .backBtn {
     //width: $content-width;
     margin: 0 auto 20px;
     font-size: $size-normal;
     line-height: 1.43;
-    a{
+    a {
       color: $P75;
     }
   }
 
-  &.noTabs{
-    padding-top: $header-height+32px;
+  &.noTabs {
+    padding-top: $header-height + 32px;
   }
 
-  .detailTab{
+  .detailTab {
     position: absolute;
     top: 150px;
     left: 384px;
@@ -50,27 +59,60 @@
   }
 }
 
-.titleBanner{
+.titleBanner {
   position: fixed;
   top: 48px;
   left: 0;
   z-index: 3;
   width: 100%;
   height: $title-banner-height;
-  background-color: $N0;
-  box-shadow: 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  background-color: $N500;
 
-  .wrapper{
+  .wrapper {
     width: $content-width;
-    margin: 20px auto;
+    margin: 30px auto;
   }
 
-  .name{
-    font-size: 28px;
+  .image,
+  .icon {
+    float: left;
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .image {
+    line-height: 48px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .icon {
+    box-sizing: border-box;
+    padding: 12px;
+    background-color: $N400;
+    border-radius: 3px;
+  }
+
+  .name {
+    margin-bottom: 4px;
+    font-size: 20px;
     font-weight: 500;
-    line-height: 32px;
+    line-height: 24px;
     letter-spacing: 0;
-    color: #343945;
+    color: $N0;
+  }
+
+  .desc {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N65;
+    overflow: hidden;
   }
 
   .search {
@@ -90,11 +132,11 @@
       border-radius: 16px;
       border: 1px solid transparent;
       background-color: $N10;
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       &::placeholder {
         font-size: 14px;
         color: $N45;
-        line-height: 1.0;
+        line-height: 1;
         letter-spacing: 0;
       }
       &:focus {
@@ -109,12 +151,11 @@
       .icon {
         color: $N65;
         opacity: 0.5;
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           opacity: 1;
         }
       }
     }
   }
 }
-
-

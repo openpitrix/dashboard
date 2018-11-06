@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop, clone, isEmpty, get } from 'lodash';
@@ -16,7 +17,7 @@ import styles from './index.scss';
   user: rootStore.user,
   sock
 }))
-export default class Layout extends Component {
+class Layout extends Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
@@ -86,27 +87,31 @@ export default class Layout extends Component {
       backBtn,
       hasSearch,
       title,
-      isHome
+      isHome,
+      match
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
     const { isScroll } = this.state;
+    const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
+    const hasSubNav = hasMenu && !paths.includes(match.path);
 
     return (
       <div
         className={classnames(
           styles.layout,
           className,
-          { [styles.hasMenu]: hasMenu },
+          { [styles.hasMenu]: hasSubNav },
+          { [styles.hasNav]: hasMenu && !hasSubNav },
           { [styles.hasBack]: Boolean(backBtn) }
         )}
       >
-        {hasMenu && <SideNav isScroll={isScroll} />}
         {noNotification ? null : <Notification />}
-
-        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
         {backBtn}
+
+        {hasMenu && <SideNav isScroll={isScroll} hasSubNav={hasSubNav} />}
+        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {children}
@@ -115,3 +120,5 @@ export default class Layout extends Component {
     );
   }
 }
+
+export default withRouter(Layout);

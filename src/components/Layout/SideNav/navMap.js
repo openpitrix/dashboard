@@ -15,10 +15,9 @@ export const subNavMap = {
   user: {
     title: 'Users',
     links: [
-      { name: 'All Users', link: '/dashboard/users', active: 'user' }
-      /* { name: 'User Groups', link: '#', active: 'group' },
-       { name: 'Roles', link: '#', active: 'role' },
-       { name: 'Policy', link: '#', active: 'policy' }*/
+      { name: 'All Users', link: '/dashboard/users', active: 'user' },
+      { name: 'Roles', link: '#', active: 'role' },
+      { name: 'Permission and Policy', link: '#', active: 'policy' }
     ]
   },
   repo: {
@@ -34,35 +33,160 @@ export const subNavMap = {
   }
 };
 
-export const getNavs = role => [
+export const getNavs = {
+  global_admin: [
+    {
+      link: '/dashboard',
+      iconName: 'dashboard',
+      active: 'dashboard',
+      title: 'My dashboard'
+    },
+    {
+      link: '/dashboard/apps',
+      iconName: 'components',
+      active: 'app',
+      title: 'App Store'
+    },
+    {
+      link: '/dashboard/repos',
+      iconName: 'shield',
+      active: 'repo',
+      title: 'App service provider ISV'
+    },
+    {
+      link: '#',
+      iconName: 'ticket',
+      active: '',
+      title: 'Work list'
+    },
+    {
+      link: '#',
+      iconName: 'wallet',
+      active: '',
+      title: 'Financial Center'
+    },
+    {
+      link: '#',
+      iconName: 'linechart',
+      active: '',
+      title: 'Message and monitoring'
+    },
+    {
+      link: '/dashboard/users',
+      iconName: 'group',
+      active: 'user',
+      title: 'Users'
+    },
+    {
+      link: '#',
+      iconName: 'cogwheel',
+      active: '',
+      title: 'Settings'
+    }
+  ],
+  developer: [
+    {
+      link: '/dashboard/app/create',
+      iconName: 'plus-square',
+      active: 'create',
+      title: 'Create app'
+    },
+    {
+      link: '/dev/apps',
+      iconName: 'more',
+      active: 'app',
+      title: 'View all'
+    }
+  ]
+};
+
+export const getBottomNavs = [
   {
-    link: '/',
-    iconName: 'op-logo',
+    link: '#',
+    iconName: 'magnifier',
     active: '',
-    title: 'Home'
+    title: 'Global search'
   },
   {
-    link: '/dashboard',
-    iconName: 'dashboard',
-    active: 'dashboard',
-    title: 'Dashboard'
+    link: '#',
+    iconName: 'bell',
+    active: '',
+    title: 'Alarms'
   },
   {
-    link: '/dashboard/repos',
-    iconName: 'appcenter',
-    active: 'repo',
-    title: 'Platform'
+    link: '#',
+    iconName: 'mail',
+    active: '',
+    title: 'My news'
   },
   {
-    link: '/dashboard/apps',
-    iconName: 'components',
-    active: 'app',
-    title: role === 'developer' ? 'My Apps' : 'Store'
+    link: '/profile',
+    iconName: 'human',
+    active: 'profile',
+    title: 'My account'
+  }
+];
+
+export const getDevSubNavs = [
+  {
+    title: 'Development',
+    items: [
+      { name: 'Version management', link: '#' },
+      { name: 'Audit record', link: '#' },
+      { name: 'App information', link: '#' }
+    ]
   },
   {
-    link: '/dashboard/users',
-    iconName: 'group',
-    active: 'user',
-    title: 'Users'
+    title: 'Operation and maintenance',
+    items: [
+      { name: 'Monitor', link: '#' },
+      { name: 'Event', link: '#' },
+      { name: 'App information', link: '#' }
+    ]
+  },
+  {
+    title: 'Customer',
+    items: [
+      { name: 'Example', link: '#' },
+      { name: 'Work list', link: '#' },
+      { name: 'News', link: '#' }
+    ]
+  },
+  {
+    title: 'Sandbox',
+    items: [{ name: 'Example', link: '#' }, { name: 'Environment', link: '#' }]
+  }
+];
+
+export const userMeuns = [
+  {
+    name: 'Account info',
+    link: '/profile',
+    iconName: 'folder'
+  },
+  {
+    name: 'Change Password',
+    link: '/profile',
+    iconName: 'lock'
+  },
+  {
+    name: 'Notice settings',
+    link: '#',
+    iconName: 'loudspeaker'
+  },
+  {
+    name: 'Payment',
+    link: '#',
+    iconName: 'creditcard'
+  },
+  {
+    name: 'SSH Keys',
+    link: '/ssh_keys',
+    iconName: 'ssh'
+  },
+  {
+    name: 'Log out',
+    link: '/logout',
+    iconName: 'logout'
   }
 ];

@@ -39,6 +39,7 @@ export default class Store extends Component {
     }
     await appStore.fetchAll(params);
 
+    appStore.storeTotal = appStore.totalCount;
     appStore.storeApps = appStore.apps.slice();
 
     if (!category && !search) {
@@ -114,7 +115,7 @@ export default class Store extends Component {
     const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
 
     return (
-      <Layout title={t('Store')} hasSearch>
+      <Layout title="App Store" hasSearch>
         <div className={styles.storeContent}>
           <Nav className={styles.nav} navs={categories.toJSON()} skipLink="store" />
           <Loading isLoading={isLoading} className={styles.homeLoad}>

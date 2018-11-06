@@ -21,38 +21,6 @@ $profile-hover-color: #efe6f8;
   z-index: 99;
   background: none;
 
-  &.deep {
-    background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
-  }
-
-  &.deep, &.deepHome {
-    position: fixed;
-
-    .login{
-      color: $N0;
-    }
-
-    .user [class*='target']{
-      color: $N0;
-
-      :global{
-        .icon-caret-down svg{
-          --primary-color: #{$N0};
-          --secondary-color: #{$N0};
-        }
-      }
-    }
-  }
-
-
-  &.deepHome {
-    animation-duration: 0.5s;
-    animation-name: deepHeader;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
   .wrapper {
     width: $content-width;
     height: $header-height;
@@ -142,60 +110,156 @@ $profile-hover-color: #efe6f8;
     }
   }
 
-  .user [class*='target']{
+  .user {
     float: right;
-    margin: 12px 24px;
-    height: 20px;
-    width: auto;
-    line-height: 20px;
-    opacity: 0.9;
-    color: $N500;
-    font-weight: 500;
-    border: 0 none;
 
-    &:hover{
+    [class*='target'] {
+      margin: 16px 0 16px 8px;
+      height: 16px;
+      width: auto;
+      line-height: 16px;
+      font-size: 14px;
+      opacity: 0.9;
+      color: $N500;
+      font-weight: 500;
       border: 0 none;
-      box-shadow: none;
-      opacity: 1;
-    }
 
-    :global{
-      .icon-caret-down{
-        position: relative;
-        top: 3px;
-        left: 2px;
+      .icon {
+        float: right;
+        margin-left: 2px;
         svg {
           --primary-color: #{$N500};
           --secondary-color: #{$N500};
         }
       }
+
+      &:hover{
+        border: 0 none;
+        box-shadow: none;
+        opacity: 1;
+      }
     }
   }
 
-
   :global{
     .pi-popover-popper{
-      margin-left: -40px !important;
+      margin-left: -95px !important;
       margin-top: 6px !important;
     }
   }
 }
 
-.menuOuter {
-  .menus{
-    float: left;
-    margin-left: 50px;
-    a{
-      display: inline-block;
-      margin: 0 12px;
-      padding: 13px 0;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 20px;
-      color: $N0;
-      &.active{
-        border-bottom: 2px solid $Y200;
-      }
+.deepInner,
+.deepHome {
+  position: fixed;
+}
+
+.deepHome {
+  background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
+  animation-duration: 0.5s;
+  animation-name: deepHeader;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+
+  .login {
+    color: $N0;
+  }
+
+  .user [class*='target']{
+    color: $N0;
+
+    .icon svg{
+      --primary-color: #{$N0};
+      --secondary-color: #{$N0};
     }
   }
 }
+
+.deepInner {
+  background-color: $N400;
+
+  .logoIcon {
+    float: left;
+    display: inline-block;
+    margin-top: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: $N500;
+
+    .icon {
+      margin: 7px;
+    }
+  }
+
+  .menus {
+    display: inline-block;
+    margin-left: 8px;
+    a {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 16px 0;
+      font-size: 12px;
+      line-height: 16px;
+      color: $N65;
+
+      &:hover {
+        color: $N30;
+      }
+
+      &.active {
+        font-weight: 500;
+        color: $N10;
+      }
+    }
+  }
+
+  .user [class*='target'] {
+    font-size: 12px;
+    color: $N65;
+    opacity: 1;
+
+    .icon svg{
+      --primary-color: #{$N65};
+      --secondary-color: #{$N65};
+    }
+
+    &:hover {
+      color: $N30;
+
+      .icon svg {
+        --primary-color: #{$N30};
+        --secondary-color: #{$N30};
+      }
+    }
+  }
+
+  .mail {
+    float: right;
+    margin: 14px 8px;
+  }
+
+  .upgrade {
+    float: right;
+    margin: 16px 8px;
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: $Y100;
+
+    .shield {
+      float: left;
+      margin-right: 4px;
+      svg {
+        --primary-color: #{$Y100};
+        --secondary-color: #{$Y100};
+      }
+    }
+
+    &:hover {
+      color: $Y65;
+    }
+  }
+}
+

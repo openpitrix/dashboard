@@ -7,13 +7,24 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Icon, Popover, Image, Tooltip } from 'components/Base';
+import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 
-import { subNavMap, getNavs } from './navMap';
+import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
 
 import styles from './index.scss';
 
-const keys = ['app', 'review', 'cluster', 'runtime', 'repo', 'categories', 'category', 'user'];
+const keys = [
+  'app',
+  'review',
+  'cluster',
+  'runtime',
+  'repo',
+  'categories',
+  'category',
+  'user',
+  'create'
+];
 const changeKey = {
   review: 'app',
   cluster: 'repo',
@@ -32,6 +43,7 @@ const changeKey = {
 class SideNav extends React.Component {
   static propTypes = {
     isScroll: PropTypes.bool,
+    hasSubNav: PropTypes.bool,
     className: PropTypes.string
   };
 
@@ -46,6 +58,14 @@ class SideNav extends React.Component {
     }
   }
 
+  becomeDeveloper = isNormal => {
+    const { rootStore } = this.props;
+    rootStore.updateUser({
+      changedRole: isNormal ? '' : 'user'
+    });
+    location.href = '/dashboard';
+  };
+
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'dashboard';
@@ -53,12 +73,8 @@ class SideNav extends React.Component {
     return changeKey[key] || key;
   };
 
-  isLinkActive = (activeName, role) => {
-    let key = this.getMatchKey();
-    if (role === 'developer' && key === 'app') {
-      key = 'repo';
-    }
-
+  isLinkActive = activeName => {
+    const key = this.getMatchKey();
     return activeName === key;
   };
 
@@ -67,48 +83,95 @@ class SideNav extends React.Component {
     return subNavMap[key];
   };
 
-  renderNav(role) {
-    const { t } = this.props;
+  renderNav() {
+    const { user, appStore, history, t } = this.props;
+    const { role, isDev } = user;
+    let navs = getNavs[role];
+    const { menuApps } = appStore;
+    let bottomNavs = getBottomNavs;
+    const { pathname } = history.location;
 
-    let navs = getNavs(role);
-
-    if (role === 'developer') {
-      navs = navs.slice(0, 3);
+    if (isDev) {
+      navs = menuApps.concat(navs);
+      bottomNavs = bottomNavs.slice(2);
     }
 
     return (
-      <ul className={styles.nav}>
-        {navs.map(nav => (
-          <Tooltip
-            key={nav.iconName}
-            className={styles.item}
-            content={t(nav.title)}
-            isShowArrow
-            placement="right"
-          >
-            <li>
-              <NavLink
-                exact
-                to={nav.link}
-                activeClassName={styles.active}
-                isActive={() => this.isLinkActive(nav.active, role)}
-              >
-                <Icon
-                  name={nav.iconName}
-                  size={nav.iconName === 'op-logo' ? 16 : 24}
-                  type="white"
-                />
+      <div className={styles.nav}>
+        <ul className={styles.topNav}>
+          <li>
+            <Link to="/">
+              <img src="/logo_icon.svg" className={styles.icon} />
+            </Link>
+            <label className={styles.title}>{t('QingCloud App Center')}</label>
+          </li>
+          {navs.map(nav => (
+            <li key={nav.iconName || nav.app_id}>
+              <Link to={nav.link || `/dashboard/app/${nav.app_id}`}>
+                {nav.app_id && (
+                  <span
+                    className={classnames(styles.imageOuter, {
+                      [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
+                    })}
+                  >
+                    <Image src={nav.icon} iconSize={16} className={styles.image} />
+                  </span>
+                )}
+                {nav.iconName && (
+                  <Icon
+                    className={styles.icon}
+                    size={nav.iconName === 'more' ? 16 : 20}
+                    name={nav.iconName}
+                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                  />
+                )}
+              </Link>
+              <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
+                <label className={styles.title}>{t(nav.title || nav.name)}</label>
               </NavLink>
             </li>
-          </Tooltip>
-        ))}
-      </ul>
+          ))}
+        </ul>
+        <ul className={styles.bottomNav}>
+          {bottomNavs.map(
+            nav =>
+              nav.iconName === 'human' ? (
+                <li key={nav.iconName}>
+                  <Popover content={<MenuLayer />} className={styles.iconOuter}>
+                    <Icon
+                      className={styles.icon}
+                      size={20}
+                      name={nav.iconName}
+                      type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                    />
+                    <Link to="#">
+                      <label className={styles.title}>{t(nav.title)}</label>
+                    </Link>
+                  </Popover>
+                </li>
+              ) : (
+                <li key={nav.iconName}>
+                  <Icon
+                    className={styles.icon}
+                    size={20}
+                    name={nav.iconName}
+                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                  />
+                  <Link to="#">
+                    <label className={styles.title}>{t(nav.title)}</label>
+                  </Link>
+                </li>
+              )
+          )}
+        </ul>
+      </div>
     );
   }
 
   renderSubDev() {
     const { t } = this.props;
     const { url } = this.props.match;
+    const { appDetail } = this.props.appStore;
 
     if (url === '/dashboard') {
       return (
@@ -124,51 +187,29 @@ class SideNav extends React.Component {
       );
     }
 
-    const { menuApps } = this.props.appStore;
-
     return (
       <div className={styles.subNav}>
-        <div className={styles.title}>{t('My Apps')}</div>
-        <div className={styles.apps}>
-          {menuApps.map(app => (
-            <Link
-              key={app.app_id}
-              className={classnames(styles.app, { [styles.active]: url.indexOf(app.app_id) > -1 })}
-              title={app.name}
-              to={`/dashboard/app/${app.app_id}`}
-            >
-              <Image src={app.icon} iconSize={16} className={styles.icon} />
-              <span className={styles.appName}>{app.name}</span>
-            </Link>
-          ))}
-          <Link className={styles.plus} to="/dashboard/app/create" title={t('Create')}>
-            <Icon name="add" type="white" />
-          </Link>
-          <Link className={styles.more} to="/dashboard/apps" title={t('All Apps')}>
-            <Icon name="more" type="white" />
-          </Link>
+        <div className={styles.title}>
+          <div className={styles.name}>{appDetail.name}</div>
+          <Status className={styles.status} name={appDetail.status} type={appDetail.status} />
         </div>
-        <Link
-          className={classnames(styles.link, { [styles.active]: url.indexOf('repo') > -1 })}
-          to="/dashboard/repos"
-        >
-          {t('Repos')}
-        </Link>
-        <div className={styles.test}>
-          <span className={styles.word}>{t('Test')}</span>
-        </div>
-        <Link
-          className={classnames(styles.link, { [styles.active]: url.indexOf('cluster') > -1 })}
-          to="/dashboard/clusters"
-        >
-          {t('Clusters')}
-        </Link>
-        <Link
-          className={classnames(styles.link, { [styles.active]: url.indexOf('runtime') > -1 })}
-          to="/runtimes"
-        >
-          {t('Runtimes')}
-        </Link>
+
+        {getDevSubNavs.map(nav => (
+          <div key={nav.title} className={styles.subContent}>
+            <div className={styles.subTitle}>{t(nav.title)}</div>
+            {nav.items.map(item => (
+              <Link
+                key={item.name}
+                className={classnames(styles.link, {
+                  [styles.active]: url.indexOf(item.active) > -1
+                })}
+                to={item.link}
+              >
+                {t(item.name)}
+              </Link>
+            ))}
+          </div>
+        ))}
       </div>
     );
   }
@@ -180,7 +221,9 @@ class SideNav extends React.Component {
 
     return (
       <div className={styles.subNav}>
-        <div className={styles.title}>{t(subNavData.title)}</div>
+        <div className={styles.title}>
+          <div className={styles.name}>{t(subNavData.title)}</div>
+        </div>
         {subNavData.links.map(link => (
           <Link
             key={link.name}
@@ -209,17 +252,14 @@ class SideNav extends React.Component {
   }
 
   render() {
-    const { isDev, isAdmin, role } = this.props.user;
+    const { hasSubNav, user } = this.props;
+    const { isDev, isAdmin } = user;
 
     return (
       <Fragment>
-        <div className={styles.menu}>
-          {this.renderNav(role)}
-          {isDev && this.renderSubDev()}
-          {isAdmin && this.renderSubAdmin()}
-        </div>
-
-        {this.renderHeader()}
+        {this.renderNav()}
+        {hasSubNav && isDev && this.renderSubDev()}
+        {hasSubNav && isAdmin && this.renderSubAdmin()}
       </Fragment>
     );
   }

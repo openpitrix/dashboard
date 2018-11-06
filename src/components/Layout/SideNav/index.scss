@@ -1,179 +1,195 @@
 @import '~scss/vars';
 
-.menu {
-  display: inline-block;
+.nav {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 4;
-  width: $menu-width;
+  z-index: 3;
+  width: $menu-nav-width;
+  height: 100vh;
+  background-color: $N0;
+  border-right: 1px solid $N10;
+  transition: all 0.3s ease-out 0s;
 
-  .nav {
-    float: left;
-    width: $menu-nav-width;
-    height: 100vh;
-    background-image: linear-gradient(to top, $P75, #854fb9 32%, #484999);
+  &:hover {
+    width: $menu-width;;
 
-    .item {
-      [class*='target'] {
-        width: auto;
-        height: auto;
-        border: 0 none;
-      }
+    .bottomNav {
+      width: $menu-width;
+    }
+  }
 
-      [class*='popper']{
-        border: 0 none;
-        &:active, &:hover {
-          border: 0 none;
-        }
-      }
+  li {
+    height: 40px;
+    overflow: hidden;
+
+    a {
+      color: $N300;
     }
 
-    li{
-      height: 48px;
+    .icon {
+      float: left;
+      margin: 10px 22px;
+    }
 
-      >a {
-        display: inline-block;
-        height: 48px;
-        width: 100%;
-        text-align: center;
+    .title {
+      margin-left: -4px;
+      line-height: 40px;
+      cursor: pointer;
+    }
+
+    &:hover {
+      a {
+        color: $P75;
       }
 
-      .active {
-        background-color: #343945;
-        cursor: auto;
-      }
-      &:hover {
-        background-color: #343945;
-        cursor: auto;
-      }
-      transition: all .3s ease-in-out;
-
-      :global {
-        .icon {
-          margin: 12px;
-        }
-
-        .icon-op-logo{
-          margin: 16px;
-        }
+      .icon svg {
+        --primary-color: #{$N300};
+        --secondary-color: #{$P30};
       }
     }
   }
 }
 
+.topNav {
+  >li {
+    .imageOuter {
+      float: left;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin: 9px 22px;
+      border: 1px solid $N30;
+
+      &:hover, &.activeApp {
+        border-color: $P75;
+      }
+
+      .image {
+        margin: 2px;
+      }
+    }
+
+    &:nth-child(1) {
+      margin-bottom: 14px;
+      height: 63px;
+      border-bottom: 1px solid $N10;
+
+      .icon {
+        margin: 23px 24px 16px 24px;
+      }
+
+      .title {
+        line-height: 64px;
+        font-size: 16px;
+        color: $N500;
+        font-weight: 500;
+        cursor: default;
+      }
+    }
+  }
+
+  :global {
+    .icon-more{
+      transform: rotate(90deg);
+    }
+  }
+}
+
+
+.bottomNav {
+  >li {
+    .iconOuter {
+      [class*='target'] {
+        width: auto;
+        height: auto;
+        border-radius: 0;
+        border: 0 none;
+      }
+
+      :global{
+        .pi-popover-popper{
+          margin-left: -10px !important;
+          margin-bottom: -30px !important;
+        }
+      }
+    }
+
+    .icon svg {
+      opacity: 0.6;
+    }
+
+    &:last-child {
+      margin-bottom: 14px;
+    }
+  }
+}
+
+@media screen and (min-height: 550px) {
+  .bottomNav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    width: $menu-nav-width;
+  }
+}
+
+
 .subNav {
-  float: left;
+  position: fixed;
+  left: $menu-nav-width;
+  top: 0;
+  z-index: 2;
   height: 100vh;
   width: $menu-sub-nav-width;
-  background-color: #343945;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.07);
+  background-color: $N0;
+  box-shadow: 0 1px 7px 0 rgba(71, 78, 93, 0.1);
 
   .title {
-    margin: 0 24px;
-    font-size: 16px;
-    font-weight: 900;
-    line-height: 48px;
-    color: $N0;
-  }
+    margin: 24px 0;
+    padding-left: 20px;
 
-  .apps {
-    margin: 0 24px 12px;
-
-    >a {
-      display: inline-block;
-      box-sizing: border-box;
-      height: 32px;
-      border-radius: 2px;
-      border: 1px solid $N400;
-      background-color: $N400;
-      text-align: center;
-      cursor: pointer;
-      opacity: 0.5;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    .app {
-      margin-bottom: 8px;
-      width: 100%;
-      height: 32px;
-      padding: 6px 12px;
-      font-size: 12px;
+    .name {
+      line-height: 16px;
+      font-size: 16px;
       font-weight: 500;
-      //line-height: 16px;
-      color: $N0;
-      text-align: left;
-      @include textCut;
-
-      &.active {
-        border-color: $Y300;
-        opacity: 1;
-      }
-
-      img {
-        margin-right: 4px;
-        width: 16px;
-        max-width: 100%;
-        max-height: 100%;
-        vertical-align: middle;
-        border-radius: 50%;
-      }
-
-      .appName {
-        vertical-align: middle;
-      }
+      color: $N500;
     }
 
-    .plus {
-      width: 104px;
-      line-height: 36px;
-    }
-
-    .more {
-      float: right;
-      width: 40px;
-      line-height: 36px;
-    }
-  }
-
-  .test {
-    margin: 5px 0 16px;
-    height: 32px;
-    border-bottom: 1px solid rgba($N400, 0.4);
-
-    .word {
-      display: inline-block;
-      position: relative;
-      bottom: -16px;
-      left: 22px;
-      padding: 0 3px;
-      line-height: 32px;
+    .status {
+      display: block;
+      margin-top: 8px;
       font-size: 12px;
-      color: #69748c;
-      background-color: #343945;
+      color: $N75;
     }
   }
 
+
+  .subContent {
+    margin-bottom: 28px;
+  }
+  .subTitle {
+    padding-left:20px;
+    line-height: 24px;
+    font-size: 12px;
+    color: $N65;
+  }
   .link {
     display: block;
-    padding: 9px 24px;
-    line-height: 14px;
+    padding: 0 20px;
+    line-height: 32px;
     font-size: 14px;
-    color: $N30;
+    color: $N300;
 
     &:hover {
-      color: $N0;
+      color: $P75;
     }
     &.active {
       font-weight: 500;
-      border-right: 2px solid $Y200;
-      color: $N0;
+      color: $P75;
     }
   }
-
 }
 
 .header{
@@ -193,7 +209,6 @@
     height: 20px;
     width: auto;
     line-height: 20px;
-    opacity: 0.9;
     color: $N500;
     font-weight: 500;
     border: 0 none;
@@ -243,6 +258,7 @@
         background-color: $N10;
         color: $N500;
       }
+
       &.line{
         border-bottom: 1px solid $N10;
       }
