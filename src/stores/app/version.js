@@ -74,17 +74,27 @@ export default class AppVersionStore extends Store {
     // todo
     const appStore = this.store.app;
     const appIds = this.versions.map(item => item.app_id);
-    if (appStore && appIds.length > 1) {
+    if (appStore && appIds.length > 0) {
       appStore.fetchAll({ app_id: appIds });
     }
 
     // todo
     const userStore = this.store.user;
     const userIds = this.versions.map(item => item.owner);
-    if (userStore && userIds.length > 1) {
+    if (userStore && userIds.length > 0) {
       userStore.fetchAll({ user_id: userIds });
     }
 
+    this.isLoading = false;
+  };
+
+  @action
+  fetch = async (versionId = '') => {
+    this.isLoading = true;
+    const result = await this.request.get(`app_versions`, {
+      version_id: versionId
+    });
+    this.version = get(result, 'app_version_set[0]', {});
     this.isLoading = false;
   };
 

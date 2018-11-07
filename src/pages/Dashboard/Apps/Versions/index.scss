@@ -64,6 +64,7 @@
         font-weight: 500;
         color: $N500;
         cursor: pointer;
+        @include textCut;
 
         .dot {
           float: left;
