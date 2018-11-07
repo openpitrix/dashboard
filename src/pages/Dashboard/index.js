@@ -1,9 +1,13 @@
+import Versions from './Apps/Versions';
+
 export Apps from './Apps';
 export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';
 export AppReview from './Apps/Review';
 export AppDeploy from './Apps/Deploy';
 export AuditRecord from './Audit/Record';
+export Versions from './Apps/Versions';
+export VersionDetail from './Apps/Versions/Detail';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 export Runtimes from './Runtimes';
