@@ -258,7 +258,7 @@ export default class Apps extends Component {
     const { repos } = repoStore;
     const { users } = userStore;
     const { isDev, isAdmin } = user;
-    const urlFront = isAdmin ? '/store/' : '/dashboard/app/';
+    const urlFront = isAdmin ? '/store/' : '/dashboard/versions/';
 
     let columns = [
       {

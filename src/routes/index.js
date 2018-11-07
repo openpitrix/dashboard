@@ -54,6 +54,8 @@ const routes = {
   '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/audit/record/:appId': Dash.AuditRecord,
   '/:dash/app/audits/:appId': Dash.Audits,
+  '/:dash/versions/:appId': Dash.Versions,
+  '/:dash/version/:versionId': Dash.VersionDetail,
 
   '/:dash/clusters': Dash.Clusters,
 

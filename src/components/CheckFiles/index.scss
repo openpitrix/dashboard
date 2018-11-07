@@ -1,0 +1,27 @@
+@import "~scss/vars";
+
+.checkFiles {
+  li {
+    margin-bottom: 8px;
+    line-height: 32px;
+    box-shadow: 0 1px 0 0 $N10;
+    font-size: 12px;
+
+    &.none {
+      opacity: 0.5;
+    }
+  }
+
+  .name {
+    float: left;
+    display: inline-block;
+    height: 32px;
+    width: 30%;
+    color: $N300;
+  }
+
+  .description {
+    width: 70%;
+    color: $N75;
+  }
+}

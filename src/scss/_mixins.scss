@@ -74,3 +74,17 @@
     transform: scale(0.8);
   }
 }
+
+
+@mixin rotate-frames() {
+  0% {
+    -webkit-transform:rotate(0deg);
+    transform:rotate(0deg);
+  }
+  100% {
+    -webkit-transform:rotate(360deg);
+    transform:rotate(360deg);
+  }
+}
+@-webkit-keyframes rotate {@include rotate-frames;}
+@keyframes rotate {@include rotate-frames;}
