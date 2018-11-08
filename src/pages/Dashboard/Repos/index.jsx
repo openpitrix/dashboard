@@ -27,13 +27,7 @@ export default class Repos extends Component {
     window.onscroll = _.throttle(this.handleScroll, 200);
 
     repoStore.appStore = appStore;
-    await repoStore.fetchAll(
-      {
-        noLimit: true,
-        isQueryPublic: user.isDev
-      },
-      appStore
-    );
+    await repoStore.fetchAll({ noLimit: true }, appStore);
   }
 
   componentWillUnmount() {

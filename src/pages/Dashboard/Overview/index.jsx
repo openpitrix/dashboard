@@ -86,12 +86,11 @@ export default class Overview extends React.Component {
       await clusterStore.fetchAll({ noLimit: true });
     }
 
-    //fixme developer user query public repos
     if (user.isDev) {
-      await appStore.fetchAll({ limit: 5 });
-      await clusterStore.fetchAll({ limit: 5 });
       await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
       await runtimeStore.fetchAll({ noLimit: true });
+      await appStore.fetchAll({ limit: 5 });
+      await clusterStore.fetchAll({ limit: 5 });
     }
     this.setState({ isLoading: false });
   }
