@@ -55,23 +55,11 @@ export default class RepoStore extends Store {
     if (this.userId) {
       defaultParams.owner = this.userId;
     }
-    if (params.isQueryPublic) {
-      params.visibility = ['private'];
-    }
 
     this.isLoading = true;
     const result = await this.request.get('repos', assign(defaultParams, params));
     let repos = get(result, 'repo_set', []);
     this.totalCount = get(result, 'total_count', 0);
-
-    if (params.isQueryPublic) {
-      delete params.isQueryPublic;
-      params.visibility = ['public'];
-      const pubResult = await this.request.get('repos', assign(defaultParams, params));
-      const pubRepos = get(pubResult, 'repo_set', []);
-      repos = [...pubRepos, ...repos];
-    }
-
     this.repos = orderBy(repos, ['visibility', 'status_time'], ['desc', 'desc']);
 
     if (appStore) {
@@ -88,7 +76,7 @@ export default class RepoStore extends Store {
   onSearch = async word => {
     this.searchWord = word;
     this.currentPage = 1;
-    await this.fetchAll({}, this.appStore);
+    await this.fetchAll({ noLimit: true }, this.appStore);
   };
 
   @action
@@ -98,7 +86,7 @@ export default class RepoStore extends Store {
 
   @action
   onRefresh = async () => {
-    await this.fetchAll({}, this.appStore);
+    await this.fetchAll({ noLimit: true }, this.appStore);
   };
 
   @action
@@ -215,7 +203,6 @@ export default class RepoStore extends Store {
 
     this.repos = [];
     this.repoDetail = {};
-
   };
 
   @action

@@ -20,11 +20,10 @@ import styles from './index.scss';
 @observer
 export default class AppAdd extends Component {
   async componentDidMount() {
-    const { repoStore, user } = this.props;
+    const { repoStore } = this.props;
 
     await repoStore.fetchAll({
-      noLimit: true,
-      isQueryPublic: user.isDev
+      noLimit: true
     });
   }
 

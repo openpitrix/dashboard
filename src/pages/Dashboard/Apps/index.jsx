@@ -37,8 +37,7 @@ export default class Apps extends Component {
     }
     await repoStore.fetchAll({
       status: ['active', 'deleted'],
-      noLimit: true,
-      isQueryPublic: user.isDev
+      noLimit: true
     });
     await categoryStore.fetchAll();
   }
