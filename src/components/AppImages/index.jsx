@@ -37,7 +37,7 @@ export default class AppImages extends Component {
               to={user.isDev ? `/dashboard/app/${app_id}` : `/store/${app_id}`}
               title={name}
             >
-              <Image src={icon} iconLetter={name} iconSize={24} className={styles.img} />
+              <Image src={icon} iconLetter={name} className={styles.img} />
             </Link>
           ))}
           <span className={styles.totalNum}>{total}</span>

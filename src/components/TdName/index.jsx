@@ -58,7 +58,7 @@ export default class TdName extends React.Component {
 
     return (
       <span className={styles.image}>
-        <Image src={image} iconLetter={name} iconSize={24} />
+        <Image src={image} iconLetter={name} />
       </span>
     );
   }
