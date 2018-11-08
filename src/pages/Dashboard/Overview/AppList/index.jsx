@@ -38,7 +38,7 @@ export default class AppList extends PureComponent {
               {isAdmin && <span className={styles.order}>{index + 1}</span>}
               <TdName
                 className="largeShow"
-                image={app.icon || item.icon || 'appcenter'}
+                image={app.icon || item.icon}
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}

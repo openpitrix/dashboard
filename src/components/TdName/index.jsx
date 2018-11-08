@@ -50,29 +50,17 @@ export default class TdName extends React.Component {
   }
 
   renderIcon() {
-    const { noIcon, image } = this.props;
-    const isIcon = ['appcenter', 'cluster'].includes(image);
-    const nonIcon = '/none.svg';
+    const { noIcon, image, name } = this.props;
 
     if (noIcon) {
       return null;
     }
 
-    if (isIcon) {
-      return (
-        <span className={styles.image}>
-          <img src={nonIcon} />
-        </span>
-      );
-    }
-
-    if (!isIcon && image) {
-      return (
-        <span className={styles.image}>
-          <Image src={image} />
-        </span>
-      );
-    }
+    return (
+      <span className={styles.image}>
+        <Image src={image} iconLetter={name} />
+      </span>
+    );
   }
 
   render() {
