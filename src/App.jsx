@@ -83,7 +83,7 @@ class App extends React.Component {
                     />
                   ))}
                 </Switch>
-              </LazyLoad>>
+              </LazyLoad>
             </div>
           </BrowserRouter>
         </Provider>

@@ -47,7 +47,7 @@
   "scripts": {
     "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
     "dev:serve": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "dev": "npm-run-all -p dev:serve 'dev:client --watch'",
+    "dev": "npm-run-all -p dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
     "prod:build": "npm run clean:prod && NODE_ENV=production webpack -p --config webpack.prod.js",
@@ -57,7 +57,7 @@
     "build:prod-server": "node build.js --prod-server",
     "lint-fix": "eslint . --fix",
     "test": "NODE_ENV=testing jest --config jest.config.json -u",
-    "precommit": "yarn test && lint-staged",
+    "precommit": "npm test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
