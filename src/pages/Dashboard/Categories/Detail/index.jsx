@@ -136,7 +136,7 @@ export default class CategoryDetail extends Component {
             className="smallId"
             name={item.name}
             description={item.app_id}
-            image={item.icon || 'appcenter'}
+            image={item.icon}
             linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )

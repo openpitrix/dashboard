@@ -86,15 +86,10 @@ class SideNav extends React.Component {
   renderNav() {
     const { user, appStore, history, t } = this.props;
     const { role, isDev } = user;
-    let navs = getNavs[role];
-    const { menuApps } = appStore;
-    let bottomNavs = getBottomNavs;
     const { pathname } = history.location;
-
-    if (isDev) {
-      navs = menuApps.concat(navs);
-      bottomNavs = bottomNavs.slice(2);
-    }
+    const { menuApps } = appStore;
+    const navs = isDev ? menuApps : getNavs[role];
+    const bottomNavs = isDev ? getBottomNavs.slice(2) : getBottomNavs;
 
     return (
       <div className={styles.nav}>
@@ -106,7 +101,10 @@ class SideNav extends React.Component {
             <label className={styles.title}>{t('QingCloud App Center')}</label>
           </li>
           {navs.map(nav => (
-            <li key={nav.iconName || nav.app_id}>
+            <li
+              key={nav.iconName || nav.app_id}
+              className={classnames({ [styles.devItem]: isDev })}
+            >
               <Link to={nav.link || `/dashboard/app/${nav.app_id}`}>
                 {nav.app_id && (
                   <span
@@ -114,13 +112,18 @@ class SideNav extends React.Component {
                       [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
                     })}
                   >
-                    <Image src={nav.icon} iconSize={16} className={styles.image} />
+                    <Image
+                      src={nav.icon}
+                      iconLetter={t(nav.name)}
+                      iconSize={32}
+                      className={styles.image}
+                    />
                   </span>
                 )}
                 {nav.iconName && (
                   <Icon
                     className={styles.icon}
-                    size={nav.iconName === 'more' ? 16 : 20}
+                    size={20}
                     name={nav.iconName}
                     type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
@@ -131,6 +134,31 @@ class SideNav extends React.Component {
               </NavLink>
             </li>
           ))}
+          {isDev && (
+            <Fragment>
+              <li className={styles.devItem}>
+                <NavLink className={styles.addOuter} exact to="/dashboard/app/create">
+                  <Icon name="add" size={20} type="dark" className={styles.icon} />
+                </NavLink>
+                <NavLink exact to="/dashboard/app/create" className={styles.title}>
+                  {t('Create app')}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact to="/dev/apps">
+                  <Icon
+                    name="more"
+                    size={20}
+                    className={styles.icon}
+                    type={pathname.indexOf('/dev/apps') > -1 ? 'light' : 'dark'}
+                  />
+                </NavLink>
+                <NavLink exact to="/dev/apps" className={styles.title}>
+                  {t('View all')}
+                </NavLink>
+              </li>
+            </Fragment>
+          )}
         </ul>
         <ul className={styles.bottomNav}>
           {bottomNavs.map(

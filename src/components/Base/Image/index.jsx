@@ -9,13 +9,15 @@ import styles from './index.scss';
 export default class Image extends React.Component {
   static propTypes = {
     src: PropTypes.string,
+    iconLetter: PropTypes.string,
     iconSize: PropTypes.number,
     className: PropTypes.string
   };
 
   static defaultProps = {
     iconSize: 24,
-    src: ''
+    src: '',
+    iconLetter: ''
   };
 
   state = {
@@ -39,21 +41,33 @@ export default class Image extends React.Component {
   }
 
   render() {
-    const { src, className, iconSize, ...rest } = this.props;
+    const { src, iconLetter, className, iconSize, ...rest } = this.props;
     const { failed } = this.state;
 
     if (failed) {
       const nonIcon = '/none.svg';
-      const sizeStyle = {
+      const style = {
         width: iconSize + 'px',
         height: iconSize + 'px'
       };
+      const letter = iconLetter.substr(0, 1).toLocaleUpperCase();
+
+      if (letter) {
+        style.fontSize = iconSize / 2 + 'px';
+        style.padding = iconSize / 4 - 1 + 'px';
+        return (
+          <span className={classnames(styles.letter, className)} style={style} {...rest}>
+            {letter}
+          </span>
+        );
+      }
+
       return (
         <img
           src={nonIcon}
           data-origin-url={src}
-          style={sizeStyle}
-          className={className}
+          style={style}
+          className={classnames(styles.img, className)}
           {...rest}
         />
       );
@@ -63,7 +77,7 @@ export default class Image extends React.Component {
       <img
         src={src}
         data-origin-url={src}
-        className={classnames(className)}
+        className={classnames(styles.img, className)}
         ref={c => (this.img = c)}
         {...rest}
       />

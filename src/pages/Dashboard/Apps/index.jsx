@@ -218,7 +218,7 @@ export default class Apps extends Component {
           <TdName
             name={item.name}
             description={item.app_id}
-            image={item.icon || 'appcenter'}
+            image={item.icon}
             linkUrl={urlFront + item.app_id}
           />
         )

@@ -83,7 +83,7 @@ export default class Review extends Component {
           <TdName
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
             description={item.app_id}
-            image={item.icon || 'appcenter'}
+            image={item.icon}
             linkUrl={`/dashboard/review/${item.app_id}/${item.version_id}`}
           />
         )

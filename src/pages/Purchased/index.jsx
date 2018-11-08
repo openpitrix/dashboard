@@ -117,7 +117,7 @@ export default class Purchased extends Component {
         className="smallId"
         name={app.name}
         description={_.get(app, 'latest_app_version.name')}
-        image={app.icon || 'appcenter'}
+        image={app.icon}
         linkUrl={`/store/${appId}`}
       />
     ) : null;

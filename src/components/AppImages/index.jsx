@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { Image } from 'components/Base';
 
 import styles from './index.scss';
-import { inject } from "mobx-react/index";
+import { inject } from 'mobx-react/index';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -25,22 +25,21 @@ export default class AppImages extends Component {
 
   render() {
     const { apps, total, user, t } = this.props;
-    const nonIcon = '/none.svg';
 
     return (
       <div className={styles.appImages}>
         <div className={styles.name}>{t('Apps')}</div>
         <div className={styles.images}>
           {apps.slice(0, 10).map(({ app_id, icon, name }) => (
-              <Link
-                className={styles.image}
-                key={app_id}
-                to={user.isDev ? `/dashboard/app/${app_id}` : `/store/${app_id}`}
-                title={name}
-              >
-                <Image src={icon || nonIcon} />
-              </Link>
-            ))}
+            <Link
+              className={styles.image}
+              key={app_id}
+              to={user.isDev ? `/dashboard/app/${app_id}` : `/store/${app_id}`}
+              title={name}
+            >
+              <Image src={icon} iconLetter={name} iconSize={24} className={styles.img} />
+            </Link>
+          ))}
           <span className={styles.totalNum}>{total}</span>
         </div>
       </div>

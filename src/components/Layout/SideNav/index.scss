@@ -47,6 +47,12 @@
         --primary-color: #{$N300};
         --secondary-color: #{$P30};
       }
+
+      :global {
+        .icon-more svg {
+          --primary-color: #{$P30};
+        }
+      }
     }
   }
 }
@@ -56,17 +62,61 @@
     .imageOuter {
       float: left;
       display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin: 9px 22px;
-      border: 1px solid $N30;
+      width: 32px;
+      height: 32px;
+      margin: 10px 16px;
+      opacity: 0.5;
 
-      &:hover, &.activeApp {
-        border-color: $P75;
+      &.activeApp {
+        opacity: 1;
+        .image {
+          border-color: $P75;
+        }
+      }
+    }
+
+    &:hover {
+      .imageOuter {
+        opacity: 1;
+        .image {
+          border-color: $N30;
+        }
+      }
+    }
+
+    :global {
+      .icon-more {
+        float: left;
+        margin: 10px 22px;
+        transform: rotate(90deg);
+      }
+    }
+
+    &.devItem {
+      height: 52px;
+
+      .icon {
+        margin: 10px 16px;
       }
 
-      .image {
-        margin: 2px;
+      .title {
+        line-height: 52px;
+      }
+
+      .addOuter {
+        float: left;
+        display: inline-block;
+        box-sizing: border-box;
+        margin: 10px 16px;
+        width: 32px;
+        height: 32px;
+
+        border-radius: 2px;
+        background-color: $N10;
+
+        .icon {
+          margin: 6px;
+        }
       }
     }
 
@@ -86,12 +136,6 @@
         font-weight: 500;
         cursor: default;
       }
-    }
-  }
-
-  :global {
-    .icon-more{
-      transform: rotate(90deg);
     }
   }
 }
