@@ -11,6 +11,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
+import Loading from 'components/Loading';
 import { getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
@@ -55,8 +56,14 @@ export default class Apps extends Component {
 
   changeView = type => {
     const { appStore } = this.props;
+
     if (appStore.viewType !== type) {
+      appStore.isLoading = true;
       appStore.viewType = type;
+      // mimic loading
+      setTimeout(() => {
+        appStore.isLoading = false;
+      }, 200);
     }
   };
 
@@ -171,24 +178,26 @@ export default class Apps extends Component {
   }
 
   renderCardApps() {
-    const { apps } = this.props.appStore;
+    const { apps, isLoading } = this.props.appStore;
 
     return (
-      <div className={styles.appCardContent}>
-        {apps.map(app => (
-          <Link key={app.app_id} to={`/dashboard/app/${app.app_id}`}>
-            <div className={styles.appCard}>
-              <span className={styles.icon}>
-                <Image src={app.icon} iconSize={48} />
-              </span>
-              <p className={styles.name}>{app.name}</p>
-              <p className={styles.description} title={app.description}>
-                {app.description}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <Loading isLoading={isLoading}>
+        <div className={styles.appCardContent}>
+          {apps.map(app => (
+            <Link key={app.app_id} to={`/dashboard/app/${app.app_id}`}>
+              <div className={styles.appCard}>
+                <span className={styles.icon}>
+                  <Image src={app.icon} iconSize={48} />
+                </span>
+                <p className={styles.name}>{app.name}</p>
+                <p className={styles.description} title={app.description}>
+                  {app.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Loading>
     );
   }
 
