@@ -179,7 +179,7 @@ export default class AppDeploy extends Component {
     return (
       <div className={styles.aside}>
         <div className={styles.appIntro}>
-          <Image src={appDetail.icon} className={styles.icon} />
+          <Image src={appDetail.icon} className={styles.icon} iconLetter={appDetail.name} />
           <span className={styles.name}>{appDetail.name}</span>
         </div>
         <p>{t('Deploy App explain')}</p>

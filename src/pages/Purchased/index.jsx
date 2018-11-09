@@ -181,7 +181,7 @@ export default class Purchased extends Component {
             onClick={() => this.selectClusters(app.app_id)}
           >
             <span className={styles.image}>
-              <Image src={app.icon} iconSize={36} />
+              <Image src={app.icon} iconSize={36} iconLetter={app.name} />
             </span>
             <div className={styles.word}>
               <div className={styles.name}>{app.name}</div>
@@ -269,6 +269,7 @@ export default class Purchased extends Component {
         title: t('Actions'),
         key: 'actions',
         width: '84px',
+        className: 'actions',
         render: item => (
           <Popover content={this.renderHandleMenu(item)} className="actions">
             <Icon name="more" />

@@ -50,7 +50,7 @@ export default class Image extends React.Component {
         width: iconSize + 'px',
         height: iconSize + 'px'
       };
-      const letter = iconLetter[0].toLocaleUpperCase();
+      const letter = iconLetter.substr(0, 1).toLocaleUpperCase();
 
       if (letter) {
         style.fontSize = iconSize / 2 + 'px';

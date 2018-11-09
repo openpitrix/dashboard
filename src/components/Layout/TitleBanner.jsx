@@ -63,7 +63,7 @@ class TitleBanner extends Component {
         <div className={styles.wrapper}>
           {hasImage && (
             <span className={styles.image}>
-              <Image src={detail.icon} iconSize={48} />
+              <Image src={detail.icon} iconSize={48} iconLetter={detail.name} />
             </span>
           )}
           {type === 'runtimeDetail' && (

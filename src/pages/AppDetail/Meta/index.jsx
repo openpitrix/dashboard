@@ -7,12 +7,10 @@ import { get } from 'lodash';
 import styles from './index.scss';
 
 const Meta = ({ app }) => {
-  const iconSrc = '/none.svg';
-
   return (
     <div className={styles.meta}>
       <span className={styles.icon}>
-        <Image src={app.icon || iconSrc} iconSize={48} />
+        <Image src={app.icon} iconSize={48} iconLetter={app.name} />
       </span>
       <div className={styles.title}>
         {app.name}

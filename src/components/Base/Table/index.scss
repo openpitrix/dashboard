@@ -90,9 +90,10 @@
       letter-spacing: 0;
       background-color: $N10;
 
-      &:last-child{
+      &.actions {
         text-align: center;
       }
+
       &::before {
         content: "";
         position: absolute;
@@ -155,9 +156,6 @@
 
       &:last-child {
         //border-right: 48px solid #fff;
-        [class*='TimeShow'] {
-          text-align: center;
-        }
       }
 
     }

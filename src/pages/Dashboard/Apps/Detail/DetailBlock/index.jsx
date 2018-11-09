@@ -29,7 +29,7 @@ export default class DetailBlock extends React.Component {
       <div className={styles.detailBlock}>
         <div className={styles.titleOuter}>
           <span className={styles.icon}>
-            <Image src={appDetail.icon} alt="Icon" iconSize={32} />
+            <Image src={appDetail.icon} alt="Icon" iconSize={32} iconLetter={appDetail.name} />
           </span>
           <div className={styles.title}>
             <div className={styles.name}>{appDetail.name}</div>

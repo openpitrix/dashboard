@@ -285,12 +285,11 @@ export default class Apps extends Component {
         title: t('Actions'),
         key: 'actions',
         width: '84px',
+        className: 'actions',
         render: item => (
-          <div className={styles.actions}>
-            <Popover content={this.renderHandleMenu(item)} className="actions">
-              <Icon name="more" />
-            </Popover>
-          </div>
+          <Popover content={this.renderHandleMenu(item)} className="actions">
+            <Icon name="more" />
+          </Popover>
         )
       }
     ];
