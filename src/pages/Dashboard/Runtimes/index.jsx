@@ -189,12 +189,11 @@ export default class Runtimes extends Component {
         title: t('Actions'),
         key: 'actions',
         width: '84px',
-        render: (text, item) => (
-          <div className={styles.actions}>
-            <Popover content={this.renderHandleMenu(item)} className="actions">
-              <Icon name="more" />
-            </Popover>
-          </div>
+        className: 'actions',
+        render: runtime => (
+          <Popover content={this.renderHandleMenu(runtime)} className="actions">
+            <Icon name="more" />
+          </Popover>
         )
       }
     ];

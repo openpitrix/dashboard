@@ -17,6 +17,7 @@ export default clusters => {
           name={item.name}
           description={item.runtime_id}
           linkUrl={`/dashboard/runtime/${item.runtime_id}`}
+          noIcon
         />
       )
     },

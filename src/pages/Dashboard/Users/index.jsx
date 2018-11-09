@@ -269,6 +269,7 @@ export default class Users extends Component {
         title: t('Actions'),
         key: 'actions',
         width: '84px',
+        className: 'actions',
         render: item => (
           <Popover content={this.renderHandleMenu(item)} className="actions">
             <Icon name="more" />

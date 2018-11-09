@@ -25,7 +25,6 @@ class Card extends PureComponent {
   render() {
     const { icon, name, desc, fold } = this.props;
     const iconSize = fold ? 36 : 48;
-    const noneIcon = '/none.svg';
 
     return (
       <div
@@ -34,7 +33,7 @@ class Card extends PureComponent {
       >
         <div className={styles.title}>
           <span className={styles.icon}>
-            <Image src={icon || noneIcon} alt="Icon" iconSize={iconSize} />
+            <Image src={icon} alt="Icon" iconSize={iconSize} iconLetter={name} />
           </span>
           <p className={styles.name}>{name}</p>
           <p className={classnames(styles.desc, { [styles.hide]: !fold })} title={desc}>
