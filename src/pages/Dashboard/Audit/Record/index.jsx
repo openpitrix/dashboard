@@ -42,11 +42,13 @@ export default class AuditRecord extends Component {
     };
 
     return (
-      <Layout className={styles.auditRecord} detailTitle="审核记录详情">
+      <Layout className={styles.auditRecord} pageTitle="审核记录详情">
         <Row>
           <Card className={styles.baseInfo}>
             <div className={styles.main}>
-              <Image className={styles.image} iconSize={48} src={appDetail.icon} />
+              <span className={styles.image}>
+                <Image iconLetter={appDetail.name} iconSize={48} src={appDetail.icon} />
+              </span>
               <div className={styles.title}>{appDetail.name}</div>
               <div className={styles.word}>
                 交付方式：<label className={styles.value}>Helm</label>

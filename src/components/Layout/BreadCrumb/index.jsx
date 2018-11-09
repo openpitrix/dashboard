@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { inject } from 'mobx-react/index';
+import { inject } from 'mobx-react';
 
 import pathLink from './path-link';
 import styles from './index.scss';

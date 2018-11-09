@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop, clone, isEmpty, get } from 'lodash';
 
-import { Notification } from 'components/Base';
+import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';
 import TitleBanner from './TitleBanner';
 import SideNav from './SideNav';
@@ -27,7 +27,7 @@ class Layout extends Component {
     loadClass: PropTypes.string,
     listenToJob: PropTypes.func,
     title: PropTypes.string,
-    detailTitle: PropTypes.string,
+    pageTitle: PropTypes.string,
     hasSearch: PropTypes.bool,
     isHome: PropTypes.bool
   };
@@ -37,7 +37,7 @@ class Layout extends Component {
     backBtn: null,
     listenToJob: noop,
     title: '',
-    detailTitle: '',
+    pageTitle: '',
     hasSearch: false,
     isHome: false
   };
@@ -79,6 +79,11 @@ class Layout extends Component {
     scrollTop > 0 ? this.setState({ isScroll: true }) : this.setState({ isScroll: false });
   };
 
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
+  };
+
   render() {
     const {
       className,
@@ -91,14 +96,15 @@ class Layout extends Component {
       title,
       isHome,
       match,
-      detailTitle,
+      pageTitle
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
     const { isScroll } = this.state;
     const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
-    const hasSubNav = hasMenu && !paths.includes(match.path);
+    const isCenterPage = Boolean(pageTitle); // detail page, only one level menu
+    const hasSubNav = hasMenu && !isCenterPage && !paths.includes(match.path);
 
     return (
       <div
@@ -108,7 +114,7 @@ class Layout extends Component {
           { [styles.hasMenu]: hasSubNav },
           { [styles.hasNav]: hasMenu && !hasSubNav },
           { [styles.hasBack]: Boolean(backBtn) },
-          { [styles.detailPage]: Boolean(detailTitle) }
+          { [styles.detailPage]: isCenterPage }
         )}
       >
         {noNotification ? null : <Notification />}
@@ -117,10 +123,23 @@ class Layout extends Component {
         {hasMenu && <SideNav isScroll={isScroll} hasSubNav={hasSubNav} />}
         {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 
-        {Boolean(detailTitle) && <div className={styles.detailTitle}>{detailTitle}</div>}
+        {isCenterPage && (
+          <div className={styles.pageTitle}>
+            <div className={styles.title}>
+              <Icon
+                onClick={this.goBack}
+                name="previous"
+                size={20}
+                type="dark"
+                className={styles.icon}
+              />
+              {pageTitle}
+            </div>
+          </div>
+        )}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {children}
+          {isCenterPage ? <div className={styles.centerPage}>{children}</div> : children}
         </Loading>
       </div>
     );

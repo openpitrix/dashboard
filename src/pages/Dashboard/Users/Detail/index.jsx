@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { inject, observer } from 'mobx-react/index';
+import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { pick } from 'lodash';
 

@@ -29,9 +29,11 @@
   }
 
   &.detailPage {
+    width: calc(100% - #{$menu-nav-width});
+    margin-left: $menu-nav-width;
     margin-top: 88px;
   }
-  
+
   .backBtn {
     //width: $content-width;
     margin: 0 auto 20px;
@@ -164,19 +166,37 @@
   }
 }
 
-.detailTitle {
+.pageTitle {
   position: fixed;
-  left: $menu-width;
+  left: $menu-nav-width;
   top: 0;
-  z-index: 4;
-  padding: 0 24px;
+  z-index: 2;
   width: 100%;
   height: 64px;
-  line-height: 64px;
-  font-size: 16px;
-  font-weight: 500;
-  color: $N500;
   box-shadow: inset 0 -1px 0 0 $N10;
   background-color: $N0;
+
+  .title {
+    margin: 0 auto;
+    width: calc(100% - #{$min-center-page-margin}*2);
+    max-width: $max-center-page-width;
+    line-height: 64px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .icon {
+    float: left;
+    margin-top: 22px;
+    margin-left: -40px;
+    line-height: 20px;
+    cursor: pointer;
+  }
 }
 
+.centerPage {
+  margin: 0 auto;
+  width: calc(100% - #{$min-center-page-margin}*2);
+  max-width: $max-center-page-width;
+}

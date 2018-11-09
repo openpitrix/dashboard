@@ -2,6 +2,7 @@ $card-padding: 24px;
 
 .card {
   position: relative;
+  box-sizing: border-box;
   padding: $card-padding;
   margin-bottom: 24px;
 
