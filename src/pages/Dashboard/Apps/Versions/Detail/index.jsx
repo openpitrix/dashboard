@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
@@ -32,9 +32,45 @@ export default class VersionDetail extends Component {
     appVersionStore.reset();
   }
 
+  state = {
+    checkList: [
+      {
+        name: '应用信息',
+        description: '应用的描述、截图、分类等在商店中展示的重要信息。',
+        status: ''
+      },
+      { name: '版本信息', description: '应用版本名称、更新日志。', status: '' },
+      { name: '版本定价', description: '完整的定价方案。', status: '' },
+      {
+        name: '服务商认证',
+        description: '只有认证的服务商才可以将自己的应用上架到官方的商店进行售卖。',
+        status: ''
+      },
+      {
+        name: '服务商合约',
+        description: '同时服务商需要与平台签署服务合约与协议。',
+        status: ''
+      }
+    ]
+  };
+
   submitAudit = () => {
     const { appVersionStore } = this.props;
     appVersionStore.isDialogOpen = true;
+    let { checkList } = this.state;
+
+    // simulation info check process
+    for (let i = 0; i < checkList.length; i++) {
+      checkList[i].status = '';
+      setTimeout(() => {
+        checkList[i].status = 'start';
+        this.setState({ checkList: checkList });
+      }, i * 800);
+      setTimeout(() => {
+        checkList[i].status = 'success';
+        this.setState({ checkList: checkList });
+      }, i * 800 + 500);
+    }
   };
 
   renderHandleMenu() {
@@ -50,30 +86,16 @@ export default class VersionDetail extends Component {
   renderSubmitCheck() {
     const { appVersionStore, t } = this.props;
     const { isDialogOpen, hideModal } = appVersionStore;
-    const checkList = [
-      {
-        name: '应用信息',
-        description: '应用的描述、截图、分类等在商店中展示的重要信息。',
-        status: 'success'
-      },
-      { name: '版本信息', description: '应用版本名称、更新日志。', status: 'success' },
-      { name: '版本定价', description: '完整的定价方案。', status: 'info' },
-      {
-        name: '服务商认证',
-        description: '只有认证的服务商才可以将自己的应用上架到官方的商店进行售卖。',
-        status: 'start'
-      },
-      {
-        name: '服务商合约',
-        description: '同时服务商需要与平台签署服务合约与协议。',
-        status: 'start'
-      }
-    ];
+    const { checkList } = this.state;
+    const isDisabled =
+      checkList.filter(item => item.status !== 'success').length === 0 ? false : true;
 
     return (
       <Dialog title="提示" width={680} isOpen={isDialogOpen} onCancel={hideModal} noActions>
         <div className={styles.submitCheck}>
-          <div className={styles.title}>正在检查以下信息的完整性，请稍待…</div>
+          <div className={styles.title}>
+            {isDisabled ? '正在检查以下信息的完整性，请稍待…' : '检查的所有结果都成功'}
+          </div>
           <ul>
             {checkList.map(check => (
               <li key={check.name} className={classnames([styles[check.status]])}>
@@ -84,7 +106,9 @@ export default class VersionDetail extends Component {
             ))}
           </ul>
           <div className={styles.operateBtns}>
-            <Button type="primary">提交审核</Button>
+            <Button type="primary" disabled={isDisabled}>
+              预览应用
+            </Button>
             <Button onClick={hideModal}>稍后再说</Button>
           </div>
         </div>
@@ -150,7 +174,7 @@ export default class VersionDetail extends Component {
     const tags = ['配置文件', '定价', '更新日志', '审核记录'];
 
     return (
-      <Layout className={styles.versionDetail} detailTitle="版本详情">
+      <Layout className={styles.versionDetail} detailPage="版本详情">
         <Card>
           <div className={styles.topInfo}>
             <div className={styles.main}>

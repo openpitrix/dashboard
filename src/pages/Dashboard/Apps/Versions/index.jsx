@@ -79,7 +79,7 @@ export default class Versions extends Component {
     ];
 
     return (
-      <Layout className={styles.versions} detailTitle="版本">
+      <Layout className={styles.versions} detailPage="版本">
         <div>
           <div className={styles.title}>已添加的交付方式(2)</div>
           {addMethods.map(method => (

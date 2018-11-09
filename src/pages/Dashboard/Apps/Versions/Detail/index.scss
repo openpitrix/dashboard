@@ -2,12 +2,12 @@
 
 .versionDetail {
   .topInfo {
-   display: inline-block;
+    display: inline-block;
   }
 
   .main {
     margin-bottom: 4px;
-    >label {
+    > label {
       line-height: 24px;
       font-size: 14px;
       color: $N100;
@@ -22,7 +22,7 @@
   }
 
   .secondary {
-    >label {
+    > label {
       display: inline-block;
       margin-right: 40px;
       line-height: 20px;
@@ -95,7 +95,6 @@
         color: $N100;
         text-align: center;
       }
-
     }
   }
 }
@@ -137,7 +136,14 @@
     }
 
     &.start {
-      background-image: conic-gradient(rgba(255, 255, 255, 0), $N300, rgba(255, 255, 255, 0));
+      .status {
+        width: 8px;
+        height: 8px;
+        background-color: $N0;
+        border: 2px solid $N300;
+        border-left-color: $N0;
+        animation: rotate 1s infinite linear;
+      }
     }
 
     &.info {
