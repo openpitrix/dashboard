@@ -12,7 +12,7 @@ const Section = ({ size, offset, className, children, ...rest }) => {
   const offsetCls = `section-offset-${isDev ? `dev-${offset}` : offset}`;
 
   return (
-    <div className={classnames(styles.section, sizeCls, offsetCls, className, ...rest)}>
+    <div className={classnames(styles.section, sizeCls, offsetCls, className)} {...rest}>
       {children}
     </div>
   );
