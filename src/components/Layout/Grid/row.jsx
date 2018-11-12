@@ -5,7 +5,11 @@ import classnames from 'classnames';
 import styles from './index.scss';
 
 const Row = ({ className, children, ...rest }) => {
-  return <div className={classnames(styles.row, className, ...rest)}>{children}</div>;
+  return (
+    <div className={classnames(styles.row, className)} {...rest}>
+      {children}
+    </div>
+  );
 };
 
 Row.propTypes = {

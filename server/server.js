@@ -6,7 +6,7 @@ if (require('semver').lt(process.version, '7.6.0')) {
 const env = process.env.NODE_ENV || 'development';
 
 if (env === 'development') {
-  require('babel-register')();
+  require('@babel/register');
 }
 
 const Koa = require('koa');
