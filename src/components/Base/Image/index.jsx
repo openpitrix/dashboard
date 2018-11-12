@@ -25,12 +25,18 @@ export default class Image extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.src !== this.props.src || Boolean(nextState.failed);
+    return (
+      nextProps.src !== this.props.src || Boolean(nextState.failed) || Boolean(nextProps.iconLetter)
+    );
   }
 
   componentDidMount() {
     this.img.onerror = () => {
       this.setState({ failed: true });
+    };
+
+    this.img.onload = () => {
+      this.setState({ failed: false });
     };
   }
 
@@ -45,7 +51,6 @@ export default class Image extends React.Component {
     const { failed } = this.state;
 
     if (failed) {
-      const nonIcon = '/none.svg';
       const style = {
         width: iconSize + 'px',
         height: iconSize + 'px'
@@ -55,6 +60,7 @@ export default class Image extends React.Component {
       if (letter) {
         style.fontSize = iconSize / 2 + 'px';
         style.padding = iconSize / 4 - 1 + 'px';
+
         return (
           <span className={classnames(styles.letter, className)} style={style} {...rest}>
             {letter}
@@ -64,7 +70,7 @@ export default class Image extends React.Component {
 
       return (
         <img
-          src={nonIcon}
+          src="/none.svg"
           data-origin-url={src}
           style={style}
           className={classnames(styles.img, className)}

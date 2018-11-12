@@ -1,0 +1,250 @@
+@import '~scss/vars';
+
+.auditRecord {
+  .baseInfo {
+    height: 96px;
+
+    .main {
+      display: inline-block;
+      width: 70%;
+    }
+
+    .image {
+      float: left;
+      margin-right: 12px;
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+      border: 1px solid $N10;
+    }
+
+    .title {
+      margin-bottom: 4px;
+      height: 24px;
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .word {
+      margin-left: 60px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N65;
+
+      .value {
+        display: inline-block;
+        margin-right: 20px;
+        font-weight: 500;
+        color: $N500;
+      }
+
+    }
+
+    .secondary {
+      float: right;
+      line-height: 20px;
+      > p {
+        font-size: 12px;
+        color: $N65;
+        text-align: right;
+
+        &:first-child {
+          margin-bottom: 8px;
+        }
+      }
+
+    }
+  }
+
+  .moduleOuter {
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color: $N0;
+  }
+
+  .module {
+    float: left;
+    box-sizing: border-box;
+    width: 25%;
+    min-height: 496px;
+    padding: 24px;
+    background-color: $N0;
+    border-radius: 2px;
+
+    .status {
+      margin-bottom: 20px;
+      >label{
+        display: inline-block;
+        line-height: 20px;
+        padding: 4px;
+        border-radius: 2px;
+        background-color: $B30;
+        font-size: 12px;
+        color: $B300;
+      }
+    }
+
+    .title {
+      margin-bottom: 12px;
+      line-height: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .description {
+      margin-bottom: 32px;
+      min-height: 60px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N65;
+    }
+
+    .steps {
+      margin-bottom: 72px;
+      height: 156px;
+
+      >li {
+        margin-bottom: 20px;
+        line-height: 24px;
+        font-size: 14px;
+        color: $N300;
+
+        &.error {
+          color: $R300;
+          .dot {
+            background-color: $R75;
+          }
+        }
+
+        &.process {
+          .dot {
+            background-color: $B45;
+          }
+        }
+
+        &.passed:hover {
+          color: $P75;
+          .arrow {
+            display: inline-block;
+          }
+        }
+      }
+
+      .dot {
+        float: left;
+        display: inline-block;
+        margin: 6px 8px 6px 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: $G75;
+      }
+
+      .arrow {
+        display: none;
+      }
+    }
+
+    .info {
+      height: 48px;
+      >p {
+        margin-bottom: 8px;
+        line-height: 20px;
+        font-size: 12px;
+        color: $N65;
+      }
+    }
+
+    &.processing {
+      background-color: $B10;
+    }
+
+    &.notStarted {
+      .status {
+        label{
+          background-color: $N10;
+          color: $N45;
+        }
+      }
+
+      .steps {
+        li {
+          color: $N65;
+        }
+
+        .dot {
+          background-color: $N10;
+        }
+
+        .arrow {
+         display: none;
+        }
+      }
+    }
+
+    &.passed {
+      .status {
+        label{
+          background-color: $G30;
+          color: $G100;
+        }
+      }
+
+      .steps {
+        li {
+          color: $N65;
+          cursor: pointer;
+        }
+
+        .dot {
+          background-color: $G65;
+        }
+      }
+    }
+
+    &.notPassed {
+      .status {
+        label{
+          background-color: $G30;
+          color: $G100;
+        }
+      }
+    }
+
+    &:last-child {
+      border-left: 1px solid $N10;
+      text-align: center;
+
+      .result {
+        margin-top: 130px;
+      }
+
+      :global{
+        .icon {
+          margin-bottom: 20px;
+        }
+
+        .icon-error {
+          svg {
+            --primary-color: #{$R30};
+            --secondary-color: #{$R200};
+          }
+        }
+      }
+
+      .reason {
+        margin-bottom: 12px;
+        font-size: 12px;
+        line-height: 20px;
+        color: $N65;
+      }
+
+      .view {
+        color: $N300;
+      }
+
+    }
+
+  }
+}

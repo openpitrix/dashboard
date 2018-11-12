@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink, withRouter } from 'react-router-dom';
-import { inject, observer } from 'mobx-react/index';
+import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';

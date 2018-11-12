@@ -4,6 +4,9 @@ $menu-sub-nav-width: 192px;
 $menu-width: $menu-nav-width + $menu-sub-nav-width;
 $columns: 12;
 
+$max-center-page-width: 1200px;
+$min-center-page-margin: 50px;
+
 $grid-gap: 24px;  // gap for normal layout
 $grid-gap-dev: 20px;  // gap for dev/admin layout
 //$grid-width: 72px;
