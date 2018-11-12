@@ -3,11 +3,12 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
-import get from 'lodash/get';
+import _ from 'lodash';
 
 import { Radio, Button, Input, Select } from 'components/Base';
 import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
+import providers from '../providers';
 
 import styles from './index.scss';
 
@@ -38,7 +39,7 @@ export default class RuntimeAdd extends Component {
   }
 
   componentDidUpdate() {
-    if (get(this.store, 'runtimeCreated.runtime_id') && !this.store.isLoading) {
+    if (_.get(this.store, 'runtimeCreated.runtime_id') && !this.store.isLoading) {
       history.back();
     }
   }
@@ -182,15 +183,11 @@ export default class RuntimeAdd extends Component {
             onChange={this.store.changeProvider}
             className={styles.radioGroup}
           >
-            <Radio value="qingcloud" disabled={Boolean(runtimeId)}>
-              QingCloud
-            </Radio>
-            <Radio value="aws" disabled={Boolean(runtimeId)}>
-              AWS
-            </Radio>
-            <Radio value="kubernetes" disabled={Boolean(runtimeId)}>
-              Kubernetes
-            </Radio>
+            {_.map(providers, (label, key) => (
+              <Radio value={key} disabled={Boolean(runtimeId)} key={key}>
+                {label}
+              </Radio>
+            ))}
           </Radio.Group>
         </div>
         {provider !== 'kubernetes' ? this.renderUrlAndZone() : this.renderCredential()}
