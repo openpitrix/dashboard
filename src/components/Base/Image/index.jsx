@@ -34,10 +34,6 @@ export default class Image extends React.Component {
     this.img.onerror = () => {
       this.setState({ failed: true });
     };
-
-    this.img.onload = () => {
-      this.setState({ failed: false });
-    };
   }
 
   componentWillUnmount() {
