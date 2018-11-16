@@ -369,6 +369,7 @@
   "Deployment Pods": "部署",
   "StatefulSet Pods": "有状态副本集",
   "DaemonSet Pods": "守护进程集",
+  "Additional Info": "附加信息",
   "Rollback cluster": "回滚集群",
   "Update_env cluster": "修改集群环境",
   "Update cluster env": "修改集群环境",
