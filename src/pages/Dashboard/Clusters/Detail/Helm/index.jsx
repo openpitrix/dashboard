@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
-import { get, keys, reduce, first } from 'lodash';
+import _ from 'lodash';
 
 import { Button, Icon, Table } from 'components/Base';
 import { Card } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
+import NoData from 'components/base/Table/noData';
 
 import columns from './columns';
 import { getFilterOptions } from '../utils';
@@ -56,7 +57,7 @@ export default class HelmCluster extends React.Component {
 
     return (
       <Toolbar
-        placeholder={t('Search Node')}
+        placeholder={t('Search Pods')}
         searchWord={searchNode}
         onSearch={onSearchNode}
         onClear={onClearNode}
@@ -134,16 +135,16 @@ export default class HelmCluster extends React.Component {
 
   renderAdditionInfo() {
     const { clusterDetailStore, t } = this.props;
-    const additionalInfo = get(clusterDetailStore, 'cluster.additional_info');
-    if (!additionalInfo) return null;
+    const additionalInfo = _.get(clusterDetailStore, 'cluster.additional_info');
+    if (!additionalInfo) return <NoData type="Clusters" />;
 
     const info = JSON.parse(additionalInfo);
 
     const renderTable = key => {
-      if (get(info, `${key}.length`) === 0) {
+      if (_.get(info, `${key}.length`) === 0) {
         return null;
       }
-      const columns = keys(first(info[key])).map(tableKey => ({
+      const columns = _.keys(_.first(info[key])).map(tableKey => ({
         title: t(tableKey),
         key: tableKey,
         render: item => <div>{item[tableKey]}</div>
@@ -163,7 +164,7 @@ export default class HelmCluster extends React.Component {
       );
     };
 
-    return keys(info).map(key => renderTable(key));
+    return _.keys(info).map(key => renderTable(key));
   }
 
   renderModals() {
