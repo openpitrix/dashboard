@@ -9,7 +9,7 @@ import { Card } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import NoData from 'components/base/Table/noData';
+import NoData from 'components/Base/Table/noData';
 
 import columns from './columns';
 import { getFilterOptions } from '../utils';
