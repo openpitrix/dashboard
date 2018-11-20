@@ -82,8 +82,7 @@ export default class ClusterDetailStore extends Store {
       this.totalNodeCount = _.get(this.helmClusterNodes, 'length', 0);
     } else {
       const result = await this.request.get(`clusters/nodes`, params);
-      const nodes = _.get(result, 'cluster_node_set', []);
-      this.clusterNodes = nodes;
+      this.clusterNodes = _.get(result, 'cluster_node_set', []);
       this.totalNodeCount = _.get(result, 'total_count', 0);
     }
 
@@ -108,7 +107,9 @@ export default class ClusterDetailStore extends Store {
         return false;
       }
 
-      if (!roleItem.role.includes(`-${type}`)) return false;
+      if (!roleItem.role.includes(`-${type}`)) {
+        return false;
+      }
 
       const nodes = [];
       const status = {
@@ -116,7 +117,7 @@ export default class ClusterDetailStore extends Store {
         maxNumber: 0
       };
 
-      if (cluster_node_set) {
+      if (Array.isArray(cluster_node_set)) {
         cluster_node_set.forEach(nodeItem => {
           if (nodeItem.role !== roleItem.role) {
             return;
@@ -128,6 +129,7 @@ export default class ClusterDetailStore extends Store {
           }
 
           nodes.push(nodeItem);
+
           const nodeStatus = _.get(status, nodeItem.status);
           let number = 0;
           if (!nodeStatus) {
@@ -135,7 +137,9 @@ export default class ClusterDetailStore extends Store {
           } else {
             number = nodeStatus + 1;
           }
+
           status[nodeItem.status] = number;
+
           if (status.maxStatus === '') {
             status.maxStatus = nodeItem.status;
             status.maxNumber = number;
@@ -145,6 +149,7 @@ export default class ClusterDetailStore extends Store {
           }
         });
       }
+
       roleItem.nodes = nodes;
       roleItem.name = _.get(roleItem.role.split(`-${type}`), '[0]');
       roleItem.status = status.maxStatus;
@@ -218,9 +223,8 @@ export default class ClusterDetailStore extends Store {
   @action
   json2Yaml = str => {
     let yamlStr = YAML.stringify(JSON.parse(str || '{}'));
-    yamlStr = yamlStr.replace(/^---\n/, '');
-    yamlStr = yamlStr.replace(/  (.*)/g, '$1');
-    return yamlStr;
+    // fixme : some helm app with leading strings will cause deploy error
+    return yamlStr.replace(/^---\n/, '').replace(/\s+(.*)/g, '$1');
   };
 
   @action
@@ -232,38 +236,6 @@ export default class ClusterDetailStore extends Store {
       this.formatClusterNodes({ type });
     }
   };
-
-  // @action
-  // onSearchNode = (isKubernetes, clusterStore) => async word => {
-  //   clusterStore.searchNode = word;
-  //   this.currentNodePage = 1;
-  //
-  //   const { cluster } = clusterStore;
-  //   const { cluster_id } = cluster;
-  //   if (!isKubernetes) {
-  //     await clusterStore.fetchNodes({ cluster_id, search_word: word });
-  //   } else {
-  //     await clusterStore.fetch(cluster_id);
-  //     this.fetchHelmNodes({
-  //       clusterStore,
-  //       type: this.nodeType,
-  //       searchWord: word
-  //     });
-  //   }
-  // };
-  //
-  // @action
-  // onClearNode = (isKubernetes, clusterStore) => async () => {
-  //   await this.onSearchNode(isKubernetes, clusterStore)('');
-  // };
-  //
-  // @action
-  // onRefreshNode = (isKubernetes, clusterStore) => async () => {
-  //   clusterStore.searchNode = '';
-  //   await this.onSearchNode(isKubernetes, clusterStore)('');
-  // };
-
-  ///
 
   @action
   onChangeSelectNodes = (rowKeys, rows) => {
@@ -291,11 +263,17 @@ export default class ClusterDetailStore extends Store {
 
   @action
   onRefreshNode = async () => {
-    const { isHelm, cluster } = this;
-    if (isHelm) {
-      await this.fetch(cluster.cluster_id);
+    const { cluster_id } = this.cluster;
+
+    this.isLoading = true;
+
+    if (this.isHelm) {
+      await this.fetch(cluster_id);
+    } else {
+      await this.fetchNodes({ cluster_id });
     }
-    await this.fetchNodes({ cluster_id: this.cluster.cluster_id });
+
+    this.isLoading = false;
   };
 
   @action
@@ -323,6 +301,6 @@ export default class ClusterDetailStore extends Store {
 
     this.cluster = {};
     this.helmClusterNodes = [];
-    this.clusterNodes = []
+    this.clusterNodes = [];
   };
 }

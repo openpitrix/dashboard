@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
+const webpackNotifier = require('webpack-notifier');
 const postCssOptions = require('./config/postcss.options');
 
 module.exports = {
@@ -70,6 +71,11 @@ module.exports = {
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
+    new webpackNotifier({
+      title: `Openpitrix dashboard`,
+      alwaysNotify: true,
+      excludeWarnings: true
+    }),
     new webpack.DefinePlugin({
       'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
