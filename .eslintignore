@@ -7,5 +7,3 @@ public/
 .cache/
 
 coverage/
-
-test/e2e/

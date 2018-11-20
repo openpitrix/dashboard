@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 
 const agent = require('lib/request').default;
-const debug = require('debug')('app');
 const logger = require('../logger');
 const utils = require('../utils');
 
@@ -84,9 +83,10 @@ router.post('/api/*', async ctx => {
 
     delete body.method;
 
-  ctx.body = await agent.send(method, url, body, {
-    header
-  });
+    ctx.body = await agent.send(method, url, body, {
+      header
+    });
+  }
 });
 
 module.exports = router;
