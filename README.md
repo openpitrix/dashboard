@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/openpitrix/openpitrix/master/docs/images/logo.png" alt="OpenPitrix Dashboard"></p>
 
-# OpenPitrix Dashboard
+# Dashboard
 
 [![Build Status](https://travis-ci.org/openpitrix/dashboard.svg)](https://travis-ci.org/openpitrix/dashboard)
 [![docker build status](https://img.shields.io/docker/build/openpitrix/dashboard.svg)](https://cloud.docker.com/swarm/openpitrix/repository/docker/openpitrix/dashboard/tags)
@@ -8,17 +8,18 @@
 [![codecov](https://codecov.io/gh/openpitrix/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/openpitrix/dashboard)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](./LICENSE)
 
-## Usage
+## Installation
 
-If you prefer to use `git`:
+Using `git`:
 
 ```
-git clone --depth 1 https://github.com/openpitrix/dashboard.git
+git clone https://github.com/openpitrix/dashboard.git
 cd dashboard
-yarn && yarn dev
+npm install
+npm run dev
 ```
 
-If you prefer to use `docker`:
+Using `docker`:
 
 ```
 docker pull openpitrix/dashboard
@@ -27,34 +28,19 @@ docker run -d --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
 
 Then open your browser: `http://localhost:8000`
 
-**See how to install requisites:** [installation details](./docs/install.md)
-
 ## Quick start
 
-**See:** [quick-start.md](./docs/quick-start.md)
+* [Deploy wordpress on QingCloud using openpitrix](./docs/quick-start.md)
 
-## Develop
+## Documentation
 
-For `development` mode:
+* [How to install requsites](./docs/install.md)
 
-```
-yarn dev
-```
+## Contributing
 
-For `production` mode:
+* [Code of Conduct](./CODE_OF_CONDUCT.md)
+* [Contributing Guide](./CONTRIBUTING.md)
 
-```
-yarn prod
-```
+## License
 
-## Test
-
-```
-yarn test
-```
-
-## Contribute
-
-For bug reporting, [open an issue](https://github.com/openpitrix/dashboard/issues/new)
-
-If you want help us to improve this project. Fork this repo, send your awesome _PR_ :smiley:
+Apache v2
