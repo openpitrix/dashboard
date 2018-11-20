@@ -26,14 +26,10 @@ export default class Loading extends Component {
               <div className={styles.loader} />
             </div>
           </div>
-          {children}
         </Fragment>
       );
     }
 
-    if (!children) {
-      return null;
-    }
     return <Fragment>{children}</Fragment>;
   }
 }

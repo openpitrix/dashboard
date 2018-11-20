@@ -6,14 +6,13 @@ import { withRouter } from 'react-router';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
+import LazyLoad from 'components/LazyLoad';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
 import WrapComp from './routes/wrapper';
 
 import './scss/index.scss';
-
-const LazyLoad = ({ children }) => <Suspense fallback={<div>Loading..</div>}>{children}</Suspense>;
 
 class App extends React.Component {
   static propTypes = {

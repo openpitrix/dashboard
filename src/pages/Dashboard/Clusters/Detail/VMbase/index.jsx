@@ -147,11 +147,13 @@ export default class VMbasedCluster extends React.Component {
       onChangeSelectNodes,
       changePaginationNode,
       onChangeNodeStatus,
-      totalNodeCount
+      totalNodeCount,
+      isLoading
     } = store;
 
     return (
       <Table
+        isLoading={isLoading}
         columns={columns(t)}
         dataSource={clusterNodes}
         filterList={getFilterOptions({

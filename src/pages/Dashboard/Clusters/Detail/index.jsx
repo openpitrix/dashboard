@@ -10,6 +10,7 @@ import Layout, { BackBtn, Grid, Section, Card, Panel, BreadCrumb, Dialog } from 
 import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
+
 import Helm from './Helm';
 import VMbase from './VMbase';
 
@@ -30,7 +31,7 @@ import styles from './index.scss';
 @observer
 export default class ClusterDetail extends Component {
   state = {
-    isLoading: false
+    isRuntimeTypeFetched: false
   };
 
   async componentDidMount() {
@@ -46,7 +47,6 @@ export default class ClusterDetail extends Component {
       match
     } = this.props;
     const { clusterId } = match.params;
-    this.setState({ isLoading: true });
 
     await clusterDetailStore.fetch(clusterId);
     await clusterDetailStore.fetchJobs(clusterId);
@@ -57,27 +57,22 @@ export default class ClusterDetail extends Component {
       await appStore.fetch(cluster.app_id);
       await appVersionStore.fetchAll({ app_id: cluster.app_id });
     }
+
     if (cluster.runtime_id) {
       await runtimeStore.fetch(cluster.runtime_id);
     }
+    this.setState({ isRuntimeTypeFetched: true });
+
     await clusterDetailStore.fetchNodes({
       cluster_id: clusterId,
       isHelm: runtimeStore.isK8s
     });
+
     clusterDetailStore.isHelm = runtimeStore.isK8s;
 
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
-    this.setState({ isLoading: false });
-    // if (!runtimeStore.isK8s) {
-    //   // vmbase
-    // } else {
-    //   clusterDetailStore.formatClusterNodes({
-    //     clusterStore,
-    //     type: 'Deployment'
-    //   });
-    // }
   }
 
   componentWillUnmount() {
@@ -330,23 +325,11 @@ export default class ClusterDetail extends Component {
       t
     } = this.props;
 
-    const { isLoading } = this.state;
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
-
     const { isNormal, isDev } = user;
-    //
-    // const tableProps = {
-    //   runtimeStore,
-    //   clusterStore,
-    //   clusterDetailStore,
-    //   t
-    // };
-    // const actionProps = {
-    //   clusterStore,
-    //   appVersionStore,
-    //   t
-    // };
+
+    const { isRuntimeTypeFetched } = this.state;
 
     const linkPath = isDev
       ? `My Apps>Test>Clusters>${cluster.name}`
@@ -390,7 +373,7 @@ export default class ClusterDetail extends Component {
           </Section>
 
           <Section size={8}>
-            <Loading isLoading={isLoading}>
+            <Loading isLoading={!isRuntimeTypeFetched}>
               <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
             </Loading>
           </Section>

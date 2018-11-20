@@ -68,6 +68,7 @@ export default class HelmCluster extends React.Component {
 
   renderTable() {
     const { clusterDetailStore, t } = this.props;
+    const { isLoading } = clusterDetailStore;
     const clusterNodes = clusterDetailStore.helmClusterNodes.toJSON();
 
     const {
@@ -130,7 +131,7 @@ export default class HelmCluster extends React.Component {
     props.expandedRowClassName = () => styles.extendedRow;
     props.className = styles.table;
 
-    return <Table {...props} />;
+    return <Table isLoading={isLoading} {...props} />;
   }
 
   renderAdditionInfo() {
