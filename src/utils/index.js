@@ -132,7 +132,7 @@ export function getProgress(progress) {
   return results.slice(-5).reverse();
 }
 
-export function getHistograms(histograms) {
+export function getHistograms(histograms={}) {
   const nowTime = Date.now();
   const twoWeekDays = [];
 
