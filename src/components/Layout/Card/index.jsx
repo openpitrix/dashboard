@@ -6,9 +6,13 @@ import Panel from '../Panel';
 
 import styles from './index.scss';
 
-const Card = ({ className, children, hasTable = false, ...others }) => (
+const Card = ({
+  className, children, hasTable = false, ...others
+}) => (
   <Panel
-    className={classnames(styles.card, className, { [styles.tableCard]: hasTable })}
+    className={classnames(styles.card, className, {
+      [styles.tableCard]: hasTable
+    })}
     {...others}
   >
     {children}
@@ -16,8 +20,8 @@ const Card = ({ className, children, hasTable = false, ...others }) => (
 );
 
 Card.propTypes = {
-  className: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.string,
   hasTable: PropTypes.bool
 };
 

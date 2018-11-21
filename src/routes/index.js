@@ -1,7 +1,9 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 
 // views without lazy load
 import Home from 'pages/Home';
+
+import * as Dash from 'pages/Dashboard';
 
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
@@ -11,8 +13,6 @@ const SSHKeys = lazy(() => import('../pages/SSHKeys'));
 const Store = lazy(() => import('../pages/Store'));
 const Purchased = lazy(() => import('../pages/Purchased'));
 const Runtimes = lazy(() => import('../pages/Runtimes'));
-
-import * as Dash from 'pages/Dashboard';
 
 const dashboardPrefix = '/dashboard';
 

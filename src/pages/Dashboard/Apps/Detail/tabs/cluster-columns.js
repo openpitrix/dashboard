@@ -1,14 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { I18n } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
-import { ProviderName } from 'components/TdName';
 
-export default function(runtimes) {
+export default function (runtimes) {
   return [
     {
       title: <I18n>{t => <span>{t('Cluster Name')}</span>}</I18n>,
@@ -25,7 +24,9 @@ export default function(runtimes) {
       title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
       key: 'status',
       width: '80px',
-      render: obj => <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
+      render: obj => (
+        <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
+      )
     },
     {
       title: <I18n>{t => <span>{t('Runtime')}</span>}</I18n>,
@@ -35,7 +36,12 @@ export default function(runtimes) {
         <Link to={`/dashboard/runtime/${obj.runtime_id}`}>
           <ProviderName
             name={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'name')}
-            provider={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'provider')}
+            provider={getObjName(
+              runtimes,
+              'runtime_id',
+              obj.runtime_id,
+              'provider'
+            )}
           />
         </Link>
       )

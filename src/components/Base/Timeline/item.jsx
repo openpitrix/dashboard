@@ -6,25 +6,24 @@ import styles from './index.scss';
 
 export default class Item extends React.Component {
   static propTypes = {
-    dot: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.element,
-    ]),
     color: PropTypes.string,
+    dot: PropTypes.oneOfType([PropTypes.node, PropTypes.element])
   };
 
   static defaultProps = {
-    color: 'purple',
-  }
+    color: 'purple'
+  };
 
   render() {
     const { color, dot, children } = this.props;
 
     return (
       <div className={styles.item}>
-        <div className={classnames(styles.line, styles[color], {
-          [styles.dotCustom]: dot,
-        })}>
+        <div
+          className={classnames(styles.line, styles[color], {
+            [styles.dotCustom]: dot
+          })}
+        >
           <span>{dot}</span>
         </div>
         {children}

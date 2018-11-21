@@ -2,10 +2,10 @@ import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import ts from '../config/translation';
 
-export function formatTime(ts, format = 'YYYY/MM/DD') {
-  const parsedTs = day(ts);
+export function formatTime(time, format = 'YYYY/MM/DD') {
+  const parsedTs = day(time);
   if (!parsedTs.isValid()) {
-    throw Error('invalid time: ', ts);
+    throw Error(`invalid time: ${time}`);
   }
   return parsedTs.format(format);
 }
@@ -13,7 +13,8 @@ export function formatTime(ts, format = 'YYYY/MM/DD') {
 export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset
-    : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    : (document.documentElement || document.body.parentNode || document.body)
+      .scrollTop;
 }
 
 export function getScrollBottom() {
@@ -31,7 +32,9 @@ export function setCookie(name, value, time) {
     dt = new Date(Date.now() + expires);
   }
 
-  document.cookie = `${name}=${encodeURIComponent(value)};expires=${dt.toGMTString()};path=/;`;
+  document.cookie = `${name}=${encodeURIComponent(
+    value
+  )};expires=${dt.toGMTString()};path=/;`;
 }
 
 export function getCookie(name) {
@@ -44,7 +47,9 @@ export function getPastTime(time) {
   const now = new Date();
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
-  return diff / 24 > 1 ? parseInt(diff / 24) + ts(' days ago') : parseInt(diff) + ts(' hours ago');
+  return diff / 24 > 1
+    ? parseInt(diff / 24) + ts(' days ago')
+    : parseInt(diff) + ts(' hours ago');
 }
 
 export function toQueryString(params) {
@@ -52,7 +57,9 @@ export function toQueryString(params) {
     .map(k => {
       const name = encodeURIComponent(k);
       if (Array.isArray(params[k])) {
-        return params[k].map(val => `${name}[]=${encodeURIComponent(val)}`).join('&');
+        return params[k]
+          .map(val => `${name}[]=${encodeURIComponent(val)}`)
+          .join('&');
       }
       return `${name}=${encodeURIComponent(params[k])}`;
     })
@@ -68,13 +75,13 @@ export function getSessInfo(key, store) {
 }
 
 export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
-  const ts = day(parseInt(timestamp));
+  const time = day(parseInt(timestamp));
   if (locale === 'en') {
-    return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
+    return `${time.format('MMM DD')} at ${time.format('H:mm:ss A')}`;
   }
   if (locale === 'zh' || locale === 'zh-cn') {
-    const am = ts.format('a') === 'am' ? '上午' : '下午';
-    return `${ts.format('M月D日')} ${am} ${ts.format('HH:mm:ss')}`;
+    const am = time.format('a') === 'am' ? '上午' : '下午';
+    return `${time.format('M月D日')} ${am} ${time.format('HH:mm:ss')}`;
   }
 }
 
@@ -126,28 +133,19 @@ export function getProgress(progress) {
 }
 
 export function getHistograms(histograms) {
-  const now = new Date();
-  const nowTime = now.getTime();
-  let time,
-    date,
-    dateStr,
-    number = 0,
-    twoWeekDays = [];
+  const nowTime = Date.now();
+  const twoWeekDays = [];
+
   for (let i = 0; i < 14; i++) {
-    number = 0;
-    time = nowTime - i * 24 * 3600 * 1000;
-    date = new Date(time);
-    dateStr = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
+    const time = nowTime - i * 24 * 3600 * 1000;
+    const date = new Date(time);
+    const dateStr = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
       -2
     )}-${`0${date.getDate()}`.slice(-2)}`;
-    _.forIn(histograms, (value, key) => {
-      if (dateStr === key) {
-        number = value;
-      }
-    });
+
     twoWeekDays.unshift({
       date: dateStr,
-      number
+      number: histograms[dateStr] || 0
     });
   }
   return twoWeekDays;

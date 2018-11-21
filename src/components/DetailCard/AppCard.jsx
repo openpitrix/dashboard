@@ -21,13 +21,15 @@ export default class AppCard extends React.Component {
     userName: PropTypes.string
   };
 
-  /*shouldComponentUpdate(nextProps) {
+  /* shouldComponentUpdate(nextProps) {
     const { appDetail} = nextProps;
     return appDetail.app_id !== this.props.appDetail.app_id;
-  }*/
+  } */
 
   render() {
-    const { appDetail, repoName, repoProvider, userName, t } = this.props;
+    const {
+      appDetail, repoName, repoProvider, userName, t
+    } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -40,7 +42,9 @@ export default class AppCard extends React.Component {
           </div>
           <CopyId id={appDetail.app_id} />
           <div className={styles.preview}>
-            <Link to={`/app/${appDetail.app_id}`}>{t('Preview in Catalog')} →</Link>
+            <Link to={`/app/${appDetail.app_id}`}>
+              {t('Preview in Catalog')} →
+            </Link>
           </div>
         </div>
         <ul className={styles.detail}>

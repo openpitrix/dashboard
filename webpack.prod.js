@@ -2,16 +2,20 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+const CompressionPlugin = require('compression-webpack-plugin');
 const postCssOptions = require('./config/postcss.options');
 const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss', '.css'],
   alias: {
     scss: resolve(__dirname, 'src/scss')
   },
-  modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+  modules: [
+    resolve(__dirname, 'src'),
+    resolve(__dirname, 'lib'),
+    'node_modules'
+  ]
 };
 
 const distDir = resolve(__dirname, 'dist');
@@ -45,12 +49,18 @@ const clientConfig = {
       {
         test: /\.(jpg|png|svg)(\?.+)?$/,
         use: 'url-loader?limit=100000',
-        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
+        include: [
+          resolve(__dirname, 'public'),
+          resolve(__dirname, 'src/components')
+        ]
       },
       {
         test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
         use: 'file-loader',
-        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
+        include: [
+          resolve(__dirname, 'public'),
+          resolve(__dirname, 'src/components')
+        ]
       },
       {
         test: /\.css$/,
@@ -142,7 +152,10 @@ const serverConfig = {
       {
         test: /\.(jpg|png|svg)(\?.+)?$/,
         loader: 'url-loader?limit=100000',
-        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')],
+        include: [
+          resolve(__dirname, 'public'),
+          resolve(__dirname, 'src/components')
+        ],
         options: {
           emit: false // don't copy the files
         }
@@ -150,7 +163,10 @@ const serverConfig = {
       {
         test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
         loader: 'file-loader',
-        include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')],
+        include: [
+          resolve(__dirname, 'public'),
+          resolve(__dirname, 'src/components')
+        ],
         options: {
           emit: false
         }

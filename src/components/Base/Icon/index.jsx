@@ -36,17 +36,17 @@ const iconNameMap = {
 
 class Icon extends React.PureComponent {
   static propTypes = {
-    prefix: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(['light', 'dark', 'white']),
-    size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    className: PropTypes.string,
-    style: PropTypes.object,
     changeable: PropTypes.bool,
+    className: PropTypes.string,
     clickable: PropTypes.bool,
-    onClick: PropTypes.func,
+    color: PropTypes.object,
     disabled: PropTypes.bool,
-    color: PropTypes.object
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+    prefix: PropTypes.string,
+    size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    style: PropTypes.object,
+    type: PropTypes.oneOf(['light', 'dark', 'white'])
   };
 
   static defaultProps = {
@@ -87,7 +87,10 @@ class Icon extends React.PureComponent {
     let colorStyles = {};
 
     if (isNumber(size)) {
-      styles = Object.assign({}, style, { width: `${size}px`, height: `${size}px` });
+      styles = Object.assign({}, style, {
+        width: `${size}px`,
+        height: `${size}px`
+      });
     }
 
     if (color) {
@@ -114,7 +117,10 @@ class Icon extends React.PureComponent {
         onClick={onClick}
         {...rest}
       >
-        <svg className={`${prefix} ${prefix}-${name} ${prefix}-${type}`} style={colorStyles}>
+        <svg
+          className={`${prefix} ${prefix}-${name} ${prefix}-${type}`}
+          style={colorStyles}
+        >
           <use xlinkHref={`#qui-${name}`} />
         </svg>
       </span>

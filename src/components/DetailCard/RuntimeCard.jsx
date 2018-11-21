@@ -3,25 +3,27 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
+import TimeShow from 'components/TimeShow';
+import { ProviderName } from 'components/TdName';
 import Status from '../Status';
 import TagShow from '../TagShow';
-import TimeShow from 'components/TimeShow';
 
-import { ProviderName } from 'components/TdName';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
 @translate()
 export default class RuntimeCard extends Component {
   static propTypes = {
-    detail: PropTypes.object.isRequired,
     appCount: PropTypes.number,
     clusterCount: PropTypes.number,
+    detail: PropTypes.object.isRequired,
     userName: PropTypes.string
   };
 
   render() {
-    const { detail, appCount, clusterCount, userName, t } = this.props;
+    const {
+      detail, appCount, clusterCount, userName, t
+    } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -77,7 +79,9 @@ export default class RuntimeCard extends Component {
           <li>
             <span className={styles.name}>{t('Labels')}</span>
             <div className={styles.labels}>
-              {detail.labels && <TagShow tags={detail.labels.slice()} tagStyle="purple" />}
+              {detail.labels && (
+                <TagShow tags={detail.labels.slice()} tagStyle="purple" />
+              )}
             </div>
           </li>
           <li>

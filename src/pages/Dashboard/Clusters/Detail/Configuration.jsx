@@ -23,14 +23,14 @@ export default class Configuration extends React.PureComponent {
 
     switch (type) {
       case 'cpu':
-        label = num + '-Core';
+        label = `${num}-Core`;
         break;
       case 'memory':
-        label = (parseFloat(num) / 1024).toFixed(0) + 'GB';
+        label = `${(parseFloat(num) / 1024).toFixed(0)}GB`;
         break;
       case 'storage_size':
       case 'instance_size':
-        label = parseFloat(num) + 'GB';
+        label = `${parseFloat(num)}GB`;
         break;
       default:
         label = num;
@@ -55,7 +55,9 @@ export default class Configuration extends React.PureComponent {
       <div>
         <span className={styles.nodeConfKey}>{this.getConfItem('cpu')}</span>
         <span className={styles.nodeConfKey}>{this.getConfItem('memory')}</span>
-        <span className={styles.nodeConfKey}>{this.getConfItem('storage_size')}</span>
+        <span className={styles.nodeConfKey}>
+          {this.getConfItem('storage_size')}
+        </span>
       </div>
     );
   }

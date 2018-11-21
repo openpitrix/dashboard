@@ -12,17 +12,26 @@ import styles from './index.scss';
 @translate()
 export default class RepoCard extends PureComponent {
   static propTypes = {
-    repoId: PropTypes.string,
-    name: PropTypes.string,
-    description: PropTypes.string,
-    providers: PropTypes.array,
     apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    tags: PropTypes.array
+    description: PropTypes.string,
+    name: PropTypes.string,
+    providers: PropTypes.array,
+    repoId: PropTypes.string,
+    tags: PropTypes.array,
+    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
 
   render() {
-    const { repoId, name, description, providers, apps, total, tags, t } = this.props;
+    const {
+      repoId,
+      name,
+      description,
+      providers,
+      apps,
+      total,
+      tags,
+      t
+    } = this.props;
 
     return (
       <div className={styles.repoCard}>
@@ -37,7 +46,11 @@ export default class RepoCard extends PureComponent {
             <div className={styles.title}>{t('Runtime Provider')}</div>
             <div className={styles.providerImg}>
               {providers.map(provider => (
-                <ProviderName key={provider} name={provider} provider={provider} />
+                <ProviderName
+                  key={provider}
+                  name={provider}
+                  provider={provider}
+                />
               ))}
             </div>
           </div>

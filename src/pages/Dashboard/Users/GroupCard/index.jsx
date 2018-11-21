@@ -11,8 +11,8 @@ import styles from './index.scss';
 export default class GroupCard extends Component {
   static propTypes = {
     groups: PropTypes.array,
-    selectValue: PropTypes.string,
-    selectCard: PropTypes.func
+    selectCard: PropTypes.func,
+    selectValue: PropTypes.string
   };
 
   static defaultProps = {
@@ -29,10 +29,10 @@ export default class GroupCard extends Component {
   }
 
   componentDidMount() {
-    /*const { groups } = this.props;
+    /* const { groups } = this.props;
     const { curVal } = this.state;
 
-    this.props.selectCard(find(groups, { value: curVal }));*/
+    this.props.selectCard(find(groups, { value: curVal })); */
   }
 
   shouldComponentUpdate(nextProps, nextState) {

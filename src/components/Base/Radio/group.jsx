@@ -6,11 +6,18 @@ import styles from './index.scss';
 
 export default class Group extends React.Component {
   static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node)
+    ]),
     className: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func,
-    children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-    name: PropTypes.string
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool
+    ])
   };
 
   static defaultProps = {
@@ -19,16 +26,21 @@ export default class Group extends React.Component {
   };
 
   render() {
-    const { className, value, children, onChange, name, ...others } = this.props;
+    const {
+      className,
+      value,
+      children,
+      onChange,
+      name,
+      ...others
+    } = this.props;
     const classNames = classnames(styles.group, className);
 
-    const childNodes = React.Children.map(children, child =>
-      React.cloneElement(child, {
-        ...child.props,
-        onChange,
-        checked: child.props.value === value
-      })
-    );
+    const childNodes = React.Children.map(children, child => React.cloneElement(child, {
+      ...child.props,
+      onChange,
+      checked: child.props.value === value
+    }));
 
     return (
       <div {...others} className={classNames}>

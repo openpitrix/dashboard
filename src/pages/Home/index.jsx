@@ -13,7 +13,7 @@ import { getScrollTop, getScrollBottom } from 'src/utils';
 import styles from './index.scss';
 
 @inject(({ rootStore }) => ({
-  rootStore: rootStore,
+  rootStore,
   categoryStore: rootStore.categoryStore,
   appStore: rootStore.appStore
 }))
@@ -31,7 +31,9 @@ export default class Home extends Component {
   }
 
   async componentDidMount() {
-    const { rootStore, appStore, categoryStore, match } = this.props;
+    const {
+      rootStore, appStore, categoryStore, match
+    } = this.props;
     const { category, search } = match.params;
     const filterParams = { status: 'active', noLimit: true };
 
@@ -76,17 +78,17 @@ export default class Home extends Component {
       return;
     }
 
-    //judge header fixed
-    let fixNav = rootStore.fixNav;
-    let scrollTop = getScrollTop();
-    let needFixNav = scrollTop > this.threshold;
+    // judge header fixed
+    const fixNav = rootStore.fixNav;
+    const scrollTop = getScrollTop();
+    const needFixNav = scrollTop > this.threshold;
     if (needFixNav && !fixNav) {
       rootStore.setNavFix(true);
     } else if (!needFixNav && fixNav) {
       rootStore.setNavFix(false);
     }
 
-    //load app data progressive by window scroll
+    // load app data progressive by window scroll
     const { appStore, categoryStore } = this.props;
     const { categories } = categoryStore;
     const len = categories.length;
@@ -99,7 +101,7 @@ export default class Home extends Component {
       await this.loadAppData(categories, initLoadNumber);
     }
 
-    let scrollBottom = getScrollBottom();
+    const scrollBottom = getScrollBottom();
     if (scrollBottom < 100 && !appStore.isProgressive) {
       await this.loadAppData(categories);
     }
@@ -117,7 +119,7 @@ export default class Home extends Component {
           category_id: categories[i].category_id,
           noLoading: true
         });
-        let temp = categoryStore.categories[i];
+        const temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
           apps: appStore.apps,
           ...temp
@@ -136,7 +138,9 @@ export default class Home extends Component {
   };
 
   render() {
-    const { rootStore, appStore, categoryStore, match } = this.props;
+    const {
+      rootStore, appStore, categoryStore, match
+    } = this.props;
     const { fixNav } = rootStore;
     const { homeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
@@ -144,13 +148,19 @@ export default class Home extends Component {
     const { category, search } = match.params;
     const showApps = category || search ? homeApps.slice() : homeApps.slice(0, 3);
     const isHomePage = match.path === '/';
-    const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
+    const categoryTitle = get(
+      find(categories, { category_id: category }),
+      'name',
+      ''
+    );
 
     return (
       <Fragment>
         {isHomePage && <Banner />}
         <Notification />
-        <div className={classnames(styles.content, { [styles.fixNav]: fixNav })}>
+        <div
+          className={classnames(styles.content, { [styles.fixNav]: fixNav })}
+        >
           <Nav className={styles.nav} navs={categories.toJSON()} />
           <Loading isLoading={isLoading} className={styles.homeLoad}>
             <AppList

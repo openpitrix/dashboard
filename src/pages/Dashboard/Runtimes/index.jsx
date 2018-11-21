@@ -4,8 +4,17 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { orderBy } from 'lodash';
 
-import { Icon, Button, Popover, Table } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
+import {
+  Icon, Button, Popover, Table
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  Grid,
+  Row,
+  Section,
+  Card,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -42,7 +51,11 @@ export default class Runtimes extends Component {
   onChangeSort = (params = {}) => {
     const { runtimeStore } = this.props;
     const order = params.reverse ? 'asc' : 'desc';
-    runtimeStore.runtimes = orderBy(runtimeStore.runtimes, params.sort_key, order);
+    runtimeStore.runtimes = orderBy(
+      runtimeStore.runtimes,
+      params.sort_key,
+      order
+    );
   };
 
   renderHandleMenu = detail => {
@@ -51,11 +64,17 @@ export default class Runtimes extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{t('View detail')}</Link>
+        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
+          {t('View detail')}
+        </Link>
         {detail.status !== 'deleted' && (
           <Fragment>
-            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>{t('Modify Runtime')}</Link>
-            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>{t('Delete')}</span>
+            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>
+              {t('Modify Runtime')}
+            </Link>
+            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>
+              {t('Delete')}
+            </span>
           </Fragment>
         )}
       </div>
@@ -110,13 +129,18 @@ export default class Runtimes extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-        withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/runtime/create` }}
+        withCreateBtn={{
+          name: t('Create'),
+          linkTo: `/dashboard/runtime/create`
+        }}
       />
     );
   }
 
   render() {
-    const { runtimeStore, clusterStore, userStore, t } = this.props;
+    const {
+      runtimeStore, clusterStore, userStore, t
+    } = this.props;
     const data = runtimeStore.runtimes.toJSON();
     const clusters = clusterStore.clusters.toJSON();
     const { users } = userStore;
@@ -152,12 +176,14 @@ export default class Runtimes extends Component {
         title: t('Status'),
         dataIndex: 'status',
         key: 'status',
-        render: text => <Status type={(text + '').toLowerCase()} name={text} />
+        render: text => <Status type={`${text}`.toLowerCase()} name={text} />
       },
       {
         title: t('Provider'),
         key: 'provider',
-        render: item => <ProviderName name={item.provider} provider={item.provider} />
+        render: item => (
+          <ProviderName name={item.provider} provider={item.provider} />
+        )
       },
       {
         title: t('Zone/Namespace'),
@@ -168,14 +194,15 @@ export default class Runtimes extends Component {
         title: t('Cluster Count'),
         key: 'node_count',
         width: '100px',
-        render: runtime =>
-          clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length
+        render: runtime => clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id)
+          .length
       },
       {
         title: t('User'),
         key: 'owner',
         width: '100px',
-        render: runtime => getObjName(users, 'user_id', runtime.owner, 'username') || runtime.owner
+        render: runtime => getObjName(users, 'user_id', runtime.owner, 'username')
+          || runtime.owner
       },
       {
         title: t('Updated At'),
@@ -201,7 +228,7 @@ export default class Runtimes extends Component {
     const rowSelection = {
       type: 'checkbox',
       selectType: 'onSelect',
-      selectedRowKeys: selectedRowKeys,
+      selectedRowKeys,
       onChange: onChangeSelect
     };
 

@@ -7,8 +7,8 @@ import { translate } from 'react-i18next';
 import Layout, { Dialog, BreadCrumb } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
-import RepoList from './RepoList/index';
 import { getScrollTop } from 'utils';
+import RepoList from './RepoList/index';
 
 import styles from './index.scss';
 
@@ -46,13 +46,21 @@ export default class Repos extends Component {
       return;
     }
 
-    let scrollTop = getScrollTop();
-    let loadNumber = parseInt(scrollTop / loadDataHeight);
-    for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber; i++) {
+    const scrollTop = getScrollTop();
+    const loadNumber = parseInt(scrollTop / loadDataHeight);
+    for (
+      let i = initLoadNumber;
+      i < len && i < initLoadNumber + loadNumber;
+      i++
+    ) {
       if (!repos[i].appFlag) {
         repoStore.repos[i].appFlag = true;
         await appStore.fetchAll({ repo_id: repos[i].repo_id });
-        repoStore.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...repos[i] };
+        repoStore.repos[i] = {
+          total: appStore.totalCount,
+          apps: appStore.apps,
+          ...repos[i]
+        };
       }
     }
   };
@@ -82,7 +90,7 @@ export default class Repos extends Component {
     }
 
     if (op === 'update:repo_event') {
-      let repoId = _.findKey(jobs, item => item.repo_event === rid);
+      const repoId = _.findKey(jobs, item => item.repo_event === rid);
       if (!repoId) {
         return;
       }
@@ -107,7 +115,11 @@ export default class Repos extends Component {
 
   deleteRepoModal = () => {
     const { t } = this.props;
-    const { showDeleteRepo, deleteRepoClose, deleteRepo } = this.props.repoStore;
+    const {
+      showDeleteRepo,
+      deleteRepoClose,
+      deleteRepo
+    } = this.props.repoStore;
 
     return (
       <Dialog
@@ -144,11 +156,18 @@ export default class Repos extends Component {
           onSearch={onSearch}
           onClear={onClearSearch}
           onRefresh={onRefresh}
-          withCreateBtn={{ name: t('Create'), linkTo: `/dashboard/repo/create` }}
+          withCreateBtn={{
+            name: t('Create'),
+            linkTo: `/dashboard/repo/create`
+          }}
         />
 
         <Loading isLoading={isLoading}>
-          <RepoList visibility="public" repos={repos.toJSON()} actionMenu={this.renderHandleMenu} />
+          <RepoList
+            visibility="public"
+            repos={repos.toJSON()}
+            actionMenu={this.renderHandleMenu}
+          />
           <RepoList
             visibility="private"
             repos={repos.toJSON()}

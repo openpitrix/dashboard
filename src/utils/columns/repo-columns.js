@@ -32,10 +32,9 @@ export default [
   {
     title: <I18n>{t => <span>{t('Provider')}</span>}</I18n>,
     key: 'repo_id',
-    render: item =>
-      item.providers.map(provider => (
+    render: item => item.providers.map(provider => (
         <ProviderName key={provider} name={provider} provider={provider} />
-      ))
+    ))
   },
   {
     title: <I18n>{t => <span>{t('Updated At')}</span>}</I18n>,

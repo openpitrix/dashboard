@@ -2,36 +2,63 @@ import { observable, action } from 'mobx';
 import { get, assign, capitalize } from 'lodash';
 import { Base64 } from 'js-base64';
 
-import Store from '../Store';
 import ts from 'config/translation';
 
-const defaultStatus = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
+import Store from '../Store';
+
+const defaultStatus = [
+  'draft',
+  'submitted',
+  'passed',
+  'rejected',
+  'active',
+  'suspended'
+];
 const reviwStatus = ['submitted', 'passed', 'rejected', 'active', 'suspended'];
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
+
   @observable version = {};
+
   @observable isLoading = false;
+
   @observable isModalOpen = false;
+
   @observable isDialogOpen = false;
+
   @observable isTipsOpen = false;
-  @observable dialogType = ''; // delete, show_all
+
+  @observable dialogType = '';
+
+  // delete, show_all
   @observable readme = '';
+
   @observable totalCount = 0;
 
-  @observable currentPage = 1; // version table query params
+  @observable currentPage = 1;
+
+  // version table query params
   @observable searchWord = '';
+
   @observable selectStatus = '';
+
   @observable appId = '';
 
   @observable name = '';
+
   @observable packageName = '';
+
   @observable description = '';
 
   @observable currentVersion = {};
+
   @observable uploadFile = '';
+
   @observable createStep = 1;
+
   @observable createError = '';
+
   @observable createResult = null;
 
   @observable reason = ''; // version reject reason
@@ -58,7 +85,10 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('app_versions', assign(defaultParams, params));
+    const result = await this.request.get(
+      'app_versions',
+      assign(defaultParams, params)
+    );
     this.versions = get(result, 'app_version_set', []);
     this.totalCount = get(result, 'total_count', 0);
     const version = this.versions[0];
@@ -139,7 +169,9 @@ export default class AppVersionStore extends Store {
   @action
   remove = async versionId => {
     this.isLoading = true;
-    await this.request.delete('app_version/action/delete', { version_id: versionId });
+    await this.request.delete('app_version/action/delete', {
+      version_id: versionId
+    });
     this.isLoading = false;
   };
 
@@ -167,14 +199,19 @@ export default class AppVersionStore extends Store {
       params.message = this.reason;
     }
 
-    const result = await this.request.post(`app_version/action/${handleType}`, params);
+    const result = await this.request.post(
+      `app_version/action/${handleType}`,
+      params
+    );
 
     if (get(result, 'version_id')) {
       this.hideModal();
       if (handleType === 'submit') {
         this.isTipsOpen = true;
       } else {
-        this.success(ts(`${capitalize(handleType)} this version successfully.`));
+        this.success(
+          ts(`${capitalize(handleType)} this version successfully.`)
+        );
       }
 
       if (handleType === 'delete') {
@@ -230,10 +267,12 @@ export default class AppVersionStore extends Store {
   changeName = event => {
     this.name = event.target.value;
   };
+
   @action
   changePackage = event => {
     this.packageName = event.target.value;
   };
+
   @action
   changeDescription = event => {
     this.description = event.target.value;

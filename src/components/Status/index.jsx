@@ -9,10 +9,23 @@ import styles from './index.scss';
 @translate()
 export default class Status extends PureComponent {
   static propTypes = {
-    style: PropTypes.string,
     className: PropTypes.string,
     name: PropTypes.string,
-    type: PropTypes.string,
+    style: PropTypes.string,
+    transition: PropTypes.oneOf([
+      '',
+      'starting',
+      'updating',
+      'stopping',
+      'deleting',
+      'creating',
+      'upgrading',
+      'rollbacking',
+      'recovering',
+      'ceasing',
+      'resizing',
+      'scaling'
+    ]),
     /* type: PropTypes.oneOf([
      *   'draft',
      *   'running',
@@ -31,20 +44,7 @@ export default class Status extends PureComponent {
 
      *   'published'
      * ]), */
-    transition: PropTypes.oneOf([
-      '',
-      'starting',
-      'updating',
-      'stopping',
-      'deleting',
-      'creating',
-      'upgrading',
-      'rollbacking',
-      'recovering',
-      'ceasing',
-      'resizing',
-      'scaling'
-    ])
+    type: PropTypes.string
   };
 
   static defaultProps = {
@@ -53,7 +53,9 @@ export default class Status extends PureComponent {
   };
 
   render() {
-    const { style, className, name, type, transition, t } = this.props;
+    const {
+      style, className, name, type, transition, t
+    } = this.props;
     const status = String(transition || type).toLowerCase();
 
     const normalizeName = t(capitalize(name || status));

@@ -41,7 +41,9 @@ export default class AppDeploy extends Component {
   }
 
   async componentDidMount() {
-    const { appStore, repoStore, appDeployStore, user, match } = this.props;
+    const {
+      appStore, repoStore, appDeployStore, user, match
+    } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
@@ -61,7 +63,10 @@ export default class AppDeploy extends Component {
     });
 
     if (!isK8s) {
-      appDeployStore.runtimeId = _.get(appDeployStore.runtimes[0], 'runtime_id');
+      appDeployStore.runtimeId = _.get(
+        appDeployStore.runtimes[0],
+        'runtime_id'
+      );
       await appDeployStore.fetchSubnetsByRuntime(appDeployStore.runtimeId);
     }
 
@@ -83,7 +88,9 @@ export default class AppDeploy extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    const { appDeployStore, user, history, match, t } = this.props;
+    const {
+      appDeployStore, user, history, match, t
+    } = this.props;
     const { isK8s, create } = appDeployStore;
 
     const formData = this.getFormDataByKey();
@@ -101,7 +108,11 @@ export default class AppDeploy extends Component {
       conf = [`Name: ${name}`, yamlStr].join('\n').replace(/#.*/g, '');
     } else {
       conf = JSON.stringify({
-        cluster: _.extend({}, this.getFormDataByKey('cluster'), this.getNodesConf()),
+        cluster: _.extend(
+          {},
+          this.getFormDataByKey('cluster'),
+          this.getNodesConf()
+        ),
         env: this.getFormDataByKey('env')
       });
     }
@@ -149,13 +160,12 @@ export default class AppDeploy extends Component {
       keyPrefix += '.';
     }
 
-    const dataByPrefix = _.pickBy(formData, (val, key) => {
-      return key.indexOf(keyPrefix) === 0;
-    });
+    const dataByPrefix = _.pickBy(
+      formData,
+      (val, key) => key.indexOf(keyPrefix) === 0
+    );
 
-    return _.mapKeys(dataByPrefix, (val, key) => {
-      return key.substring(keyPrefix.length);
-    });
+    return _.mapKeys(dataByPrefix, (val, key) => key.substring(keyPrefix.length));
   };
 
   getNodesConf = () => {
@@ -165,8 +175,7 @@ export default class AppDeploy extends Component {
       nodesConf,
       (res, val, key) => {
         const [role, meter] = key.split('.');
-        (res[role] || (res[role] = {}))[meter] =
-          keysShouldBeNumber.indexOf(meter) > -1 ? parseInt(val) : val;
+        (res[role] || (res[role] = {}))[meter] = keysShouldBeNumber.indexOf(meter) > -1 ? parseInt(val) : val;
       },
       {}
     );
@@ -179,7 +188,11 @@ export default class AppDeploy extends Component {
     return (
       <div className={styles.aside}>
         <div className={styles.appIntro}>
-          <Image src={appDetail.icon} className={styles.icon} iconLetter={appDetail.name} />
+          <Image
+            src={appDetail.icon}
+            className={styles.icon}
+            iconLetter={appDetail.name}
+          />
           <span className={styles.name}>{appDetail.name}</span>
         </div>
         <p>{t('Deploy App explain')}</p>
@@ -270,27 +283,31 @@ export default class AppDeploy extends Component {
       );
     }
 
-    return groups.map((group, idx) => {
-      return (
-        <DeployGroup
-          detail={group}
-          seq={idx}
-          key={idx}
-          onChange={onChangeFormField}
-          onEmpty={this.renderForEmptyItem}
-        />
-      );
-    });
+    return groups.map((group, idx) => (
+      <DeployGroup
+        detail={group}
+        seq={idx}
+        key={idx}
+        onChange={onChangeFormField}
+        onEmpty={this.renderForEmptyItem}
+      />
+    ));
   }
 
   isDeployReady() {
     const { configJson, yamlStr } = this.props.appDeployStore;
-    return !_.isEmpty(configJson) || yamlStr + '';
+    return !_.isEmpty(configJson) || `${yamlStr}`;
   }
 
   renderFooter() {
     const { t } = this.props;
-    const { isLoading, isK8s, runtimes, versions, subnets } = this.props.appDeployStore;
+    const {
+      isLoading,
+      isK8s,
+      runtimes,
+      versions,
+      subnets
+    } = this.props.appDeployStore;
 
     if (!this.isDeployReady()) {
       return null;
@@ -320,7 +337,9 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore, user, t } = this.props;
+    const {
+      appDeployStore, appStore, user, t
+    } = this.props;
     const { appDetail } = appStore;
     const { isLoading, errMsg } = appDeployStore;
 
@@ -334,7 +353,14 @@ export default class AppDeploy extends Component {
         title="Store"
         hasSearch
         isLoading={isLoading}
-        backBtn={isNormal && <BackBtn label={appDetail.name} link={`/store/${appDetail.app_id}`} />}
+        backBtn={
+          isNormal && (
+            <BackBtn
+              label={appDetail.name}
+              link={`/store/${appDetail.app_id}`}
+            />
+          )
+        }
       >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 

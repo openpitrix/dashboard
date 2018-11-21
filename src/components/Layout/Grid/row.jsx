@@ -4,13 +4,11 @@ import classnames from 'classnames';
 
 import styles from './index.scss';
 
-const Row = ({ className, children, ...rest }) => {
-  return (
-    <div className={classnames(styles.row, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
+const Row = ({ className, children, ...rest }) => (
+  <div className={classnames(styles.row, className)} {...rest}>
+    {children}
+  </div>
+);
 
 Row.propTypes = {
   className: PropTypes.string

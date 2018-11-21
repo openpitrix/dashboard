@@ -7,7 +7,7 @@ import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import { getObjName, mappingStatus } from 'utils';
 
-export default function(users, isDev) {
+export default function (users, isDev) {
   return [
     {
       title: <I18n>{t => <span>{t('App Name')}</span>}</I18n>,
@@ -18,7 +18,9 @@ export default function(users, isDev) {
           name={item.name}
           description={item.app_id}
           image={item.icon || 'appcenter'}
-          linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`}
+          linkUrl={
+            isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`
+          }
         />
       )
     },
@@ -32,20 +34,21 @@ export default function(users, isDev) {
       title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
       key: 'status',
       width: '100px',
-      render: item => <Status type={item.status} name={mappingStatus(item.status)} />
+      render: item => (
+        <Status type={item.status} name={mappingStatus(item.status)} />
+      )
     },
     {
       title: <I18n>{t => <span>{t('Categories')}</span>}</I18n>,
       key: 'category',
       render: item => (
         <I18n>
-          {t =>
-            t(
-              get(item, 'category_set', [])
-                .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => cate.name)
-                .join(', ')
-            )
+          {t => t(
+            get(item, 'category_set', [])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => cate.name)
+              .join(', ')
+          )
           }
         </I18n>
       )

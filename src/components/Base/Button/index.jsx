@@ -8,13 +8,13 @@ import styles from './index.scss';
 
 export default class Button extends PureComponent {
   static propTypes = {
-    type: PropTypes.oneOf(['default', 'primary', 'delete']),
-    htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
     className: PropTypes.string,
-    style: PropTypes.object,
-    loading: PropTypes.bool,
     disabled: PropTypes.bool,
-    onClick: PropTypes.func
+    htmlType: PropTypes.oneOf(['submit', 'button', 'reset']),
+    loading: PropTypes.bool,
+    onClick: PropTypes.func,
+    style: PropTypes.object,
+    type: PropTypes.oneOf(['default', 'primary', 'delete'])
   };
 
   static defaultProps = {
@@ -31,7 +31,14 @@ export default class Button extends PureComponent {
   };
 
   render() {
-    const { children, type, htmlType, className, loading, ...others } = this.props;
+    const {
+      children,
+      type,
+      htmlType,
+      className,
+      loading,
+      ...others
+    } = this.props;
 
     return (
       <button

@@ -7,13 +7,13 @@ import styles from './index.scss';
 export default class Form extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    onSubmit: PropTypes.func,
     data: PropTypes.object,
-  }
+    onSubmit: PropTypes.func
+  };
 
   static defaultProps = {
-    className: '',
-  }
+    className: ''
+  };
 
   constructor(props) {
     super(props);
@@ -26,12 +26,12 @@ export default class Form extends React.Component {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     // validator
 
     this.props.onSubmit(this._formData);
-  }
+  };
 
   getData() {
     return this._formData;
@@ -43,13 +43,12 @@ export default class Form extends React.Component {
     const classNames = classnames(styles.form, className);
 
     const childNodes = React.Children.map(children, child => React.cloneElement(child, {
-      ...child.props, formData: this._formData }));
+      ...child.props,
+      formData: this._formData
+    }));
 
     return (
-      <form
-        className={classNames}
-        onSubmit={this.handleSubmit}
-      >
+      <form className={classNames} onSubmit={this.handleSubmit}>
         {childNodes}
       </form>
     );

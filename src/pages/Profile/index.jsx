@@ -51,7 +51,7 @@ export default class Profile extends Component {
   renderBasic() {
     const { userStore, t } = this.props;
     const { userDetail, changeUser } = userStore;
-    //const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
+    // const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
     return (
       <form className={styles.form} onSubmit={this.modifyUser} method="post">
@@ -80,7 +80,13 @@ export default class Profile extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Email')}</label>
-          <Input className={styles.input} name="email" value={userDetail.email} disabled readOnly />
+          <Input
+            className={styles.input}
+            name="email"
+            value={userDetail.email}
+            disabled
+            readOnly
+          />
         </div>
         <div className={styles.submitBtn}>
           <Button type={`primary`} htmlType="submit">
@@ -152,14 +158,20 @@ export default class Profile extends Component {
             <div className={styles.title}>{t('Settings')}</div>
             <div className={styles.items}>
               <p
-                className={classNames({ [styles.active]: currentForm === 'basic' })}
-                onClick={() => this.changeForm('basic', currentForm === 'basic')}
+                className={classNames({
+                  [styles.active]: currentForm === 'basic'
+                })}
+                onClick={() => this.changeForm('basic', currentForm === 'basic')
+                }
               >
                 {t('Basic setting')}
               </p>
               <p
-                className={classNames({ [styles.active]: currentForm === 'password' })}
-                onClick={() => this.changeForm('password', currentForm === 'password')}
+                className={classNames({
+                  [styles.active]: currentForm === 'password'
+                })}
+                onClick={() => this.changeForm('password', currentForm === 'password')
+                }
               >
                 {t('Change Password')}
               </p>

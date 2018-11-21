@@ -6,9 +6,8 @@ import { inject, observer } from 'mobx-react';
 
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
-import CopyId from './CopyId';
-
 import { roleMap } from 'config/roles';
+import CopyId from './CopyId';
 
 import styles from './index.scss';
 

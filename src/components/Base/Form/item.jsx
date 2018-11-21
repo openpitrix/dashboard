@@ -6,15 +6,15 @@ import styles from './index.scss';
 
 export default class FormItem extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
     children: PropTypes.node,
-    label: PropTypes.string,
-    required: PropTypes.bool,
-    help: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    className: PropTypes.string,
     formData: PropTypes.object,
+    help: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    label: PropTypes.string,
     labelClass: PropTypes.string,
-    wrapperClass: PropTypes.string,
-    noLabel: PropTypes.bool
+    noLabel: PropTypes.bool,
+    required: PropTypes.bool,
+    wrapperClass: PropTypes.string
   };
 
   static defaultProps = {

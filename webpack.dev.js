@@ -33,11 +33,11 @@ module.exports = {
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
       },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: ['eslint-loader']
-      },
+      // {
+      //   test: /\.jsx?$/,
+      //   exclude: /node_modules/,
+      //   use: ['eslint-loader']
+      // },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
@@ -71,7 +71,11 @@ module.exports = {
     alias: {
       scss: resolve(__dirname, 'src/scss')
     },
-    modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+    modules: [
+      resolve(__dirname, 'src'),
+      resolve(__dirname, 'lib'),
+      'node_modules'
+    ]
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),

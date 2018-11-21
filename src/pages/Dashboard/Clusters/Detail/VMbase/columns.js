@@ -2,8 +2,8 @@ import React from 'react';
 
 import TdName from 'components/TdName';
 import Status from 'components/Status';
-import Configuration from '../Configuration';
 import TimeShow from 'components/TimeShow';
+import Configuration from '../Configuration';
 
 /**
  *
@@ -14,7 +14,9 @@ export default t => [
     title: t('Name'),
     key: 'name',
     width: '130px',
-    render: item => <TdName name={item.name} description={item.node_id} noIcon />
+    render: item => (
+      <TdName name={item.name} description={item.node_id} noIcon />
+    )
   },
   {
     title: t('Role'),
@@ -24,7 +26,9 @@ export default t => [
   {
     title: t('Status'),
     key: 'status',
-    render: item => <Status type={item.status} transition={item.transition_status} />
+    render: item => (
+      <Status type={item.status} transition={item.transition_status} />
+    )
   },
   {
     title: t('Configuration'),

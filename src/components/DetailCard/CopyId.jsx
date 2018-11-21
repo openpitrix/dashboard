@@ -13,8 +13,8 @@ import styles from './index.scss';
 @observer
 export default class CopyId extends React.Component {
   static propTypes = {
-    id: PropTypes.string,
-    className: PropTypes.string
+    className: PropTypes.string,
+    id: PropTypes.string
   };
 
   componentDidMount() {
@@ -23,7 +23,10 @@ export default class CopyId extends React.Component {
     this.clipboard = new ClipboardJS(this.refs.copyBtn);
 
     this.clipboard.on('success', e => {
-      this.props.rootStore.notify({ message: t('Copy success'), type: 'success' });
+      this.props.rootStore.notify({
+        message: t('Copy success'),
+        type: 'success'
+      });
       e.clearSelection();
     });
   }

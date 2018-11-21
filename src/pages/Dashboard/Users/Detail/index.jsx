@@ -5,7 +5,15 @@ import { translate } from 'react-i18next';
 import { pick } from 'lodash';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
+import Layout, {
+  BackBtn,
+  Grid,
+  Section,
+  Panel,
+  Card,
+  Dialog,
+  BreadCrumb
+} from 'components/Layout';
 import UserCard from 'components/DetailCard/UserCard';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
@@ -35,7 +43,9 @@ export default class Detail extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+    const {
+      appStore, clusterStore, runtimeStore, repoStore
+    } = this.props;
 
     appStore.reset();
     clusterStore.reset();
@@ -43,7 +53,7 @@ export default class Detail extends Component {
     repoStore.reset();
   }
 
-  //todo
+  // todo
   deleteUser = id => {};
 
   renderHandleMenu = id => {
@@ -57,8 +67,17 @@ export default class Detail extends Component {
   };
 
   changeDetailTab = async tab => {
-    const { userStore, appStore, clusterStore, runtimeStore, repoStore, match } = this.props;
+    const {
+      userStore,
+      appStore,
+      clusterStore,
+      runtimeStore,
+      repoStore,
+      match
+    } = this.props;
     const { userId } = match.params;
+    const { runtimes } = runtimeStore;
+
     userStore.currentTag = tab;
 
     switch (tab) {
@@ -73,7 +92,6 @@ export default class Detail extends Component {
       case 'Runtimes':
         runtimeStore.userId = userId;
         await runtimeStore.fetchAll();
-        const { runtimes } = runtimeStore;
         if (runtimes.length > 0) {
           const runtimeIds = runtimes.map(item => item.runtime_id);
           await clusterStore.fetchAll({
@@ -86,13 +104,21 @@ export default class Detail extends Component {
         repoStore.userId = userId;
         await repoStore.fetchAll();
         break;
+      default:
+        break;
     }
   };
 
   renderToolbar(options = {}) {
     return (
       <Toolbar
-        {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+        {...pick(options, [
+          'searchWord',
+          'onSearch',
+          'onClear',
+          'onRefresh',
+          'placeholder'
+        ])}
       />
     );
   }
@@ -100,16 +126,30 @@ export default class Detail extends Component {
   renderTable(options = {}) {
     return (
       <Table
-        {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
+        {...pick(options, [
+          'columns',
+          'dataSource',
+          'isLoading',
+          'filterList',
+          'pagination'
+        ])}
       />
     );
   }
 
   render() {
-    const { userStore, appStore, runtimeStore, clusterStore, repoStore, t } = this.props;
+    const {
+      userStore,
+      appStore,
+      runtimeStore,
+      clusterStore,
+      repoStore,
+      t
+    } = this.props;
     const { userDetail, currentTag } = userStore;
     const clusters = clusterStore.clusters.toJSON();
-    let toolbarOptions, tableOptions;
+    let toolbarOptions,
+      tableOptions;
 
     switch (currentTag) {
       case 'Apps':
@@ -187,7 +227,9 @@ export default class Detail extends Component {
           onRefresh: runtimeStore.onRefresh
         };
         tableOptions = {
-          columns: runtimesColumns(clusters).filter(item => item.key !== 'owner'),
+          columns: runtimesColumns(clusters).filter(
+            item => item.key !== 'owner'
+          ),
           dataSource: runtimeStore.runtimes.toJSON(),
           isLoading: runtimeStore.isLoading,
           filterList: [
@@ -241,6 +283,8 @@ export default class Detail extends Component {
           }
         };
         break;
+      default:
+        break;
     }
 
     return (
@@ -252,7 +296,10 @@ export default class Detail extends Component {
             <Card>
               <UserCard userDetail={userDetail} />
               {userDetail.status !== 'deleted' && (
-                <Popover className="operation" content={this.renderHandleMenu(userDetail.user_id)}>
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu(userDetail.user_id)}
+                >
                   <Icon name="more" />
                 </Popover>
               )}

@@ -9,16 +9,16 @@ import styles from './index.scss';
 
 export default class NotificationItem extends React.Component {
   static propTypes = {
-    type: PropTypes.oneOf(['info', 'success', 'warning', 'error']),
-    title: PropTypes.string,
-    message: PropTypes.node,
-    timeOut: PropTypes.number,
-    onClick: PropTypes.func,
-    onHide: PropTypes.func,
-    onClosed: PropTypes.func,
     className: PropTypes.string,
     detach: PropTypes.func,
-    ts: PropTypes.number
+    message: PropTypes.node,
+    onClick: PropTypes.func,
+    onClosed: PropTypes.func,
+    onHide: PropTypes.func,
+    timeOut: PropTypes.number,
+    title: PropTypes.string,
+    ts: PropTypes.number,
+    type: PropTypes.oneOf(['info', 'success', 'warning', 'error'])
   };
 
   static defaultProps = {
@@ -83,7 +83,7 @@ export default class NotificationItem extends React.Component {
   };
 
   render() {
-    const { type, message, className, ...rest } = this.props;
+    const { type, message, className } = this.props;
     const { hidden } = this.state;
 
     const colorStyles = {
@@ -97,9 +97,15 @@ export default class NotificationItem extends React.Component {
 
     return (
       <div
-        className={classnames(styles.notification, styles[`notification-${type}`], className)}
+        className={classnames(
+          styles.notification,
+          styles[`notification-${type}`],
+          className
+        )}
         onClick={this.handleClick}
-        ref={c => (this.target = c)}
+        ref={c => {
+          this.target = c;
+        }}
       >
         <Icon name={this.iconMap[type]} size={18} color={colorStyles} />
         {message}

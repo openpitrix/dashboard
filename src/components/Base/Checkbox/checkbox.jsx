@@ -7,12 +7,12 @@ import styles from './index.scss';
 
 export default class Checkbox extends Component {
   static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    value: PropTypes.string,
-    disabled: PropTypes.bool,
     checked: PropTypes.bool,
-    onChange: PropTypes.func
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string
   };
 
   static defaultProps = {
@@ -29,6 +29,12 @@ export default class Checkbox extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.checked !== this.state.isChecked) {
+      this.setState({ isChecked: nextProps.checked });
+    }
+  }
+
   handleToggleCheck = e => {
     const { disabled, onChange } = this.props;
 
@@ -38,15 +44,17 @@ export default class Checkbox extends Component {
     onChange && onChange(e);
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.checked !== this.state.isChecked) {
-      this.setState({ isChecked: nextProps.checked });
-    }
-  }
-
   render() {
-    const { style, className, disabled, children, isFold, fold, value } = this.props;
-    const isChecked = this.state.isChecked;
+    const {
+      style,
+      className,
+      disabled,
+      children,
+      isFold,
+      fold,
+      value
+    } = this.props;
+    const { isChecked } = this.state;
     const labelClass = isFold ? styles.foldCheckbox : styles.checkbox;
 
     return (

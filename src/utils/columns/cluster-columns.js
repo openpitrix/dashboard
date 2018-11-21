@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { I18n } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +23,9 @@ export default (runtimes, versions) => [
     title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
     key: 'status',
     width: '80px',
-    render: obj => <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
+    render: obj => (
+      <Status type={`${obj.status}`.toLowerCase()} name={obj.status} />
+    )
   },
   {
     title: <I18n>{t => <span>{t('App Version')}</span>}</I18n>,
@@ -44,7 +46,12 @@ export default (runtimes, versions) => [
       <Link to={`/dashboard/runtime/${obj.runtime_id}`}>
         <ProviderName
           name={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'name')}
-          provider={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'provider')}
+          provider={getObjName(
+            runtimes,
+            'runtime_id',
+            obj.runtime_id,
+            'provider'
+          )}
         />
       </Link>
     )

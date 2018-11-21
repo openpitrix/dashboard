@@ -4,5 +4,6 @@ import classnames from 'classnames';
 
 export default class DevPortal extends React.Component {
   static propTypes = {};
+
   static defaultProps = {};
 }

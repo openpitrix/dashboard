@@ -1,32 +1,49 @@
 import { observable, action } from 'mobx';
 import { get, assign, orderBy } from 'lodash';
 
-import Store from '../Store';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 export default class RepoStore extends Store {
   @observable repos = [];
+
   @observable repoEvents = [];
+
   @observable repoDetail = {};
+
   @observable isLoading = false;
 
   @observable repoId = '';
+
   @observable showDeleteRepo = false;
+
   @observable curTagName = 'Apps';
+
   @observable queryProviders = '';
+
   @observable querySelector = '';
 
-  @observable currentPage = 1; // app table query params
+  @observable currentPage = 1;
+
+  // app table query params
   @observable searchWord = '';
+
   defaultStatus = ['active'];
+
   @observable selectStatus = '';
+
   @observable userId = '';
+
   @observable totalCount = 0;
 
-  @observable currentEventPage = 1; // events table query params
+  @observable currentEventPage = 1;
+
+  // events table query params
   @observable totalEventCount = 0;
 
   initLoadNumber = 3;
+
   @observable appStore = null;
 
   @observable
@@ -57,15 +74,26 @@ export default class RepoStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('repos', assign(defaultParams, params));
-    let repos = get(result, 'repo_set', []);
+    const result = await this.request.get(
+      'repos',
+      assign(defaultParams, params)
+    );
+    const repos = get(result, 'repo_set', []);
     this.totalCount = get(result, 'total_count', 0);
-    this.repos = orderBy(repos, ['visibility', 'status_time'], ['desc', 'desc']);
+    this.repos = orderBy(
+      repos,
+      ['visibility', 'status_time'],
+      ['desc', 'desc']
+    );
 
     if (appStore) {
       for (let i = 0; i < this.initLoadNumber && i < this.repos.length; i++) {
         await appStore.fetchAll({ repo_id: this.repos[i].repo_id });
-        this.repos[i] = { total: appStore.totalCount, apps: appStore.apps, ...this.repos[i] };
+        this.repos[i] = {
+          total: appStore.totalCount,
+          apps: appStore.apps,
+          ...this.repos[i]
+        };
       }
     }
 
@@ -119,7 +147,10 @@ export default class RepoStore extends Store {
       limit: this.pageSize,
       offset: (this.currentEventPage - 1) * this.pageSize
     };
-    const result = await this.request.get(`repo_events`, assign(defaultParams, params));
+    const result = await this.request.get(
+      `repo_events`,
+      assign(defaultParams, params)
+    );
     this.repoEvents = get(result, 'repo_event_set', []);
     this.totalEventCount = get(result, 'total_count', 0);
     this.isLoading = false;
@@ -127,7 +158,9 @@ export default class RepoStore extends Store {
 
   @action
   deleteRepo = async () => {
-    const result = await this.request.delete('repos', { repo_id: [this.repoId] });
+    const result = await this.request.delete('repos', {
+      repo_id: [this.repoId]
+    });
 
     if (get(result, 'repo_id')) {
       this.deleteRepoClose();
@@ -181,7 +214,9 @@ export default class RepoStore extends Store {
 
   @action
   startIndexer = async repoId => {
-    const repoEvent = await this.request.post(`repos/index`, { repo_id: repoId });
+    const repoEvent = await this.request.post(`repos/index`, {
+      repo_id: repoId
+    });
     if (repoEvent.repo_id) {
       this.success(`${ts('Started repo indexer:')} ${repoEvent.repo_id}`);
     } else {

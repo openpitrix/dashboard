@@ -1,23 +1,31 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import Store from '../Store';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 export default class KeyPairStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 
   @observable isLoading = false;
+
   @observable modalType = '';
+
   @observable isModalOpen = false;
 
   @observable keyPairs = [];
+
   @observable pairId = '';
+
   @observable currentPairId = '';
+
   @observable userId = '';
 
   @observable name = '';
+
   @observable pub_key = '';
+
   @observable description = '';
 
   @observable nodeIds = '';
@@ -38,7 +46,7 @@ export default class KeyPairStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(
       'clusters/key_pairs',
-      Object.assign({ noLimit: true,  owner: this.userId }, params)
+      Object.assign({ noLimit: true, owner: this.userId }, params)
     );
     this.keyPairs = _.get(result, 'key_pair_set', []);
 
@@ -74,7 +82,9 @@ export default class KeyPairStore extends Store {
 
   @action
   removeKeyPairs = async () => {
-    const result = await this.request.delete('clusters/key_pairs', { key_pair_id: [this.pairId] });
+    const result = await this.request.delete('clusters/key_pairs', {
+      key_pair_id: [this.pairId]
+    });
     this.hideModal();
 
     if (_.get(result, 'key_pair_id')) {

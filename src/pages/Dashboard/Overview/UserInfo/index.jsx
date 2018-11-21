@@ -10,13 +10,15 @@ import styles from './index.scss';
 @translate()
 export default class UserInfo extends PureComponent {
   static propTypes = {
-    username: PropTypes.string,
+    loginInfo: PropTypes.number,
     role: PropTypes.string,
-    loginInfo: PropTypes.number
+    username: PropTypes.string
   };
 
   render() {
-    const { username, role, loginInfo, t, i18n } = this.props;
+    const {
+      username, role, loginInfo, t, i18n
+    } = this.props;
     const lng = i18n.language || 'zh';
     const roleMap = {
       user: 'Normal User',
@@ -31,7 +33,9 @@ export default class UserInfo extends PureComponent {
             <Icon name="human" type={'light'} size={24} />
           </div>
           <div className={styles.user}>
-            <div className={styles.name}>{t('greet words', { name: t(username) })}</div>
+            <div className={styles.name}>
+              {t('greet words', { name: t(username) })}
+            </div>
             <div className={styles.role}>{t(roleMap[role])}</div>
           </div>
         </div>

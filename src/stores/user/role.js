@@ -4,7 +4,9 @@ import Store from '../Store';
 
 export default class RoleStoreStore extends Store {
   @observable roles = [];
+
   @observable roleDetail = [];
+
   @observable isLoading = false;
 
   @action

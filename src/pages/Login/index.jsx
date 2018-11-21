@@ -5,7 +5,9 @@ import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
 import Logo from 'components/Logo';
-import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
+import {
+  Form, Input, Button, Checkbox, Notification
+} from 'components/Base';
 import { getUrlParam } from 'utils';
 
 import styles from './index.scss';
@@ -42,7 +44,10 @@ export default class Login extends Component {
           </div>
           <div className={styles.loginForm}>
             <h1>{t('Login OpenPitrix')}</h1>
-            <Notification className={styles.notify} itemClass={styles.notifyItem} />
+            <Notification
+              className={styles.notify}
+              itemClass={styles.notifyItem}
+            />
             <Form onSubmit={throttle(this.handleSubmit, 1000)}>
               <Form.Item className={styles.formItem} noLabel>
                 <Input

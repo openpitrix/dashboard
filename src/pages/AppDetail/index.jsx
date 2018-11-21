@@ -5,20 +5,28 @@ import { get, capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import Layout, { Grid, Section, BackBtn, Panel, Card, BreadCrumb, Dialog } from 'components/Layout';
-import { Button, Icon } from 'components/Base';
+import Layout, {
+  Grid,
+  Section,
+  BackBtn,
+  Panel,
+  Card,
+  BreadCrumb,
+  Dialog
+} from 'components/Layout';
+import { Button } from 'components/Base';
+import { formatTime, mappingStatus } from 'utils';
+import { versionCompare } from 'utils/string';
 import Meta from './Meta';
 import Information from './Information';
 import { QingCloud, Helm } from './Body';
 import VersionItem from './versionItem';
-import { formatTime, mappingStatus } from 'utils';
-import { versionCompare } from 'utils/string';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  rootStore: rootStore,
+  rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   repoStore: rootStore.repoStore,
@@ -31,7 +39,14 @@ export default class AppDetail extends Component {
   };
 
   async componentDidMount() {
-    const { rootStore, appStore, repoStore, appVersionStore, user, match } = this.props;
+    const {
+      rootStore,
+      appStore,
+      repoStore,
+      appVersionStore,
+      user,
+      match
+    } = this.props;
     const { appId, versionId } = match.params;
 
     this.setState({ isLoading: true });
@@ -43,14 +58,17 @@ export default class AppDetail extends Component {
 
     const { isNormal, role } = user;
     const params = { app_id: appId };
-    //normal user or not login only query 'active' versions
-    if (isNormal || !Boolean(role)) {
+    // normal user or not login only query 'active' versions
+    if (isNormal || !role) {
       params.status = ['active'];
     }
     await appVersionStore.fetchAll(params);
 
     if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(get(appStore, 'appDetail.repo_id', ''), true);
+      await repoStore.fetchRepoDetail(
+        get(appStore, 'appDetail.repo_id', ''),
+        true
+      );
     }
 
     const providerName = get(repoStore, 'repoDetail.providers[0]', '');
@@ -137,8 +155,10 @@ export default class AppDetail extends Component {
   }
 
   renderVersions() {
-    const { appStore, appVersionStore, user, t } = this.props;
-    const appDetail = appStore.appDetail;
+    const {
+      appStore, appVersionStore, user, t
+    } = this.props;
+    const { appDetail } = appStore;
     const appVersions = appVersionStore.versions.toJSON();
 
     return (
@@ -178,8 +198,16 @@ export default class AppDetail extends Component {
             value={get(appDetail, 'latest_app_version.name')}
           />
           <VersionItem title={t('Home')} value={appDetail.home} type="link" />
-          <VersionItem title={t('Source repository')} value={appDetail.sources} type="link" />
-          <VersionItem title={t('Maintainers')} value={appDetail.maintainers} type="maintainer" />
+          <VersionItem
+            title={t('Source repository')}
+            value={appDetail.sources}
+            type="link"
+          />
+          <VersionItem
+            title={t('Maintainers')}
+            value={appDetail.maintainers}
+            type="maintainer"
+          />
           <VersionItem title={t('Related')} />
         </Panel>
       </Section>
@@ -188,7 +216,9 @@ export default class AppDetail extends Component {
 
   renderReasonDialog = () => {
     const { appVersionStore, t } = this.props;
-    const { isDialogOpen, hideModal, changeReason, reason } = appVersionStore;
+    const {
+      isDialogOpen, hideModal, changeReason, reason
+    } = appVersionStore;
 
     return (
       <Dialog
@@ -197,7 +227,11 @@ export default class AppDetail extends Component {
         onCancel={hideModal}
         onSubmit={this.submitReason}
       >
-        <textarea className={styles.reason} onChange={changeReason} maxLength={500}>
+        <textarea
+          className={styles.reason}
+          onChange={changeReason}
+          maxLength={500}
+        >
           {reason}
         </textarea>
       </Dialog>
@@ -207,16 +241,16 @@ export default class AppDetail extends Component {
   renderAdminReview = () => {
     const { appVersionStore, match, t } = this.props;
     const { versions } = appVersionStore;
-    const versionId = match.params.versionId;
+    const { versionId } = match.params;
     const result = versions.filter(item => item.version_id === versionId);
     const version = result[0] || versions[0];
 
-    if (!Boolean(version)) {
+    if (!version) {
       return null;
     }
 
     appVersionStore.version = version;
-    const status = version.status;
+    const { status } = version;
     const handleMap = {
       // rejected: 'pass',
       submitted: 'pass', // or action 'reject'
@@ -230,16 +264,19 @@ export default class AppDetail extends Component {
         <label className={styles.dot} />
         {t('app_review_desc', { version: version.name })}
         {t(mappingStatus(capitalize(version.status)))}
-        {version.status === 'rejected' &&
-          version.message && (
+        {version.status === 'rejected'
+          && version.message && (
             <div className={styles.message}>
               {t('Reject reason')}: {version.message}
             </div>
-          )}
+        )}
 
         {Boolean(handle) && (
           <div className={styles.operateBtns}>
-            <Button type="primary" onClick={() => this.handleVersion(handle, version.version_id)}>
+            <Button
+              type="primary"
+              onClick={() => this.handleVersion(handle, version.version_id)}
+            >
               {t(mappingStatus(capitalize(handle)))}
             </Button>
             {status === 'submitted' && (
@@ -262,7 +299,9 @@ export default class AppDetail extends Component {
 
     const isShowReview = isAdmin && path.indexOf('review') > -1 && appDetail.status !== 'deleted';
     const backPath = isShowReview ? 'App Reviews' : 'All Apps';
-    const linkPath = isDev ? `My Apps>${appDetail.name}` : `Store>${backPath}>${appDetail.name}`;
+    const linkPath = isDev
+      ? `My Apps>${appDetail.name}`
+      : `Store>${backPath}>${appDetail.name}`;
     const isHome = path.startsWith('/apps/');
     const backLabel = isHome ? 'Home' : 'Store';
     const backLink = isHome ? '/' : '/store';
@@ -274,7 +313,9 @@ export default class AppDetail extends Component {
         title="appDetail"
         hasSearch
         isHome={isHome}
-        backBtn={(isNormal || isHome) && <BackBtn label={backLabel} link={backLink} />}
+        backBtn={
+          (isNormal || isHome) && <BackBtn label={backLabel} link={backLink} />
+        }
       >
         {(isAdmin || isDev) && !isHome && <BreadCrumb linkPath={linkPath} />}
 

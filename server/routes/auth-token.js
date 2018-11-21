@@ -33,7 +33,7 @@ router.post(`/api/${authEndpoint}`, async ctx => {
     return;
   }
 
-  // debug(`res: %O`, res);
+  debug(`Auth token res: %O`, res);
 
   // extract user info
   const idToken = res.id_token.split('.');

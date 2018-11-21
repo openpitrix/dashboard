@@ -14,16 +14,16 @@ import styles from './index.scss';
 @observer
 export default class TdName extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
+    description: PropTypes.string,
+    hasChild: PropTypes.bool,
     image: PropTypes.string,
     imageSize: PropTypes.number,
-    name: PropTypes.string,
-    description: PropTypes.string,
     linkUrl: PropTypes.string,
+    name: PropTypes.string,
     noCopy: PropTypes.bool,
-    className: PropTypes.string,
-    onExtendedChange: PropTypes.func,
-    hasChild: PropTypes.bool,
-    noIcon: PropTypes.bool
+    noIcon: PropTypes.bool,
+    onExtendedChange: PropTypes.func
   };
 
   static defaultProps = {
@@ -39,7 +39,10 @@ export default class TdName extends React.Component {
       this.clipboard = new ClipboardJS(this.refs.copyBtn);
 
       this.clipboard.on('success', e => {
-        this.props.rootStore.notify({ message: t('Copy success'), type: 'success' });
+        this.props.rootStore.notify({
+          message: t('Copy success'),
+          type: 'success'
+        });
         e.clearSelection();
       });
     }
@@ -82,7 +85,12 @@ export default class TdName extends React.Component {
       <span className={classnames(styles.tdName, className)}>
         {this.renderIcon()}
         {isFold && (
-          <Checkbox isFold={true} fold={fold} value={rowKey} onChange={onExtendedChange} />
+          <Checkbox
+            isFold={true}
+            fold={fold}
+            value={rowKey}
+            onChange={onExtendedChange}
+          />
         )}
         <span className={styles.info}>
           {linkUrl && (
@@ -101,7 +109,11 @@ export default class TdName extends React.Component {
             </span>
           )}
           {!noCopy && (
-            <span className="copy" data-clipboard-text={description} ref="copyBtn">
+            <span
+              className="copy"
+              data-clipboard-text={description}
+              ref="copyBtn"
+            >
               <Icon name="copy" type="dark" />
             </span>
           )}

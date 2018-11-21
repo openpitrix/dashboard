@@ -5,15 +5,30 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Input, Button, Select, Table, Modal, Icon, Popover } from 'components/Base';
-import Layout, { Grid, Row, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
+import {
+  Input,
+  Button,
+  Select,
+  Table,
+  Modal,
+  Icon,
+  Popover
+} from 'components/Base';
+import Layout, {
+  Grid,
+  Row,
+  Section,
+  Panel,
+  Card,
+  Dialog,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
 // import OrgTree from './OrgTree';
-import GroupCard from './GroupCard';
-
 import roles, { roleMap } from 'config/roles';
+import GroupCard from './GroupCard';
 
 import styles from './index.scss';
 
@@ -27,7 +42,7 @@ export default class Users extends Component {
     const { userStore } = this.props;
 
     await userStore.fetchAll();
-    //await userStore.fetchStatistics();
+    // await userStore.fetchStatistics();
 
     // todo: api 404
     // await userStore.fetchOrganizations();
@@ -48,7 +63,7 @@ export default class Users extends Component {
 
   clickCompany = index => {
     const { userStore } = this.props;
-    let temp = userStore.organizations;
+    const temp = userStore.organizations;
     temp[index].depShow = !temp[index].depShow;
     userStore.treeFlag = !userStore.treeFlag;
     userStore.organizations = temp;
@@ -56,8 +71,10 @@ export default class Users extends Component {
 
   clickDep = (index, depIndex) => {
     const { userStore } = this.props;
-    let temp = userStore.organizations;
-    temp[index].department[depIndex].staffShow = !temp[index].department[depIndex].staffShow;
+    const temp = userStore.organizations;
+    temp[index].department[depIndex].staffShow = !temp[index].department[
+      depIndex
+    ].staffShow;
     userStore.treeFlag = !userStore.treeFlag;
     userStore.treeFlag = temp;
   };
@@ -107,7 +124,9 @@ export default class Users extends Component {
 
   renderOperateModal = () => {
     const { userStore, t } = this.props;
-    const { userDetail, operateType, changeUser, changeUserRole } = userStore;
+    const {
+      userDetail, operateType, changeUser, changeUserRole
+    } = userStore;
 
     let title = t('Create New User');
     if (operateType === 'modify') {
@@ -122,7 +141,11 @@ export default class Users extends Component {
         onCancel={userStore.hideModal}
         hideFooter
       >
-        <form className="formContent" onSubmit={e => userStore.createOrModify(e)} method="post">
+        <form
+          className="formContent"
+          onSubmit={e => userStore.createOrModify(e)}
+          method="post"
+        >
           {userDetail.user_id && (
             <div className="inputItem">
               <label>{t('Name')}</label>
@@ -156,7 +179,9 @@ export default class Users extends Component {
             <Select onChange={changeUserRole} value={userDetail.role}>
               <Select.Option value="user">{t('Normal User')}</Select.Option>
               <Select.Option value="developer">{t('Developer')}</Select.Option>
-              <Select.Option value="global_admin">{t('Administrator')}</Select.Option>
+              <Select.Option value="global_admin">
+                {t('Administrator')}
+              </Select.Option>
             </Select>
           </div>
           <div className="inputItem">
@@ -169,7 +194,7 @@ export default class Users extends Component {
               onChange={e => {
                 changeUser(e, 'password');
               }}
-              required={!Boolean(userDetail.user_id)}
+              required={!userDetail.user_id}
             />
           </div>
           <div className="textareaItem">
@@ -212,7 +237,13 @@ export default class Users extends Component {
 
   renderToolbar() {
     const { userStore, t } = this.props;
-    const { searchWord, onSearch, onClearSearch, onRefresh, showCreateUser } = userStore;
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      showCreateUser
+    } = userStore;
 
     return (
       <Toolbar
@@ -243,7 +274,9 @@ export default class Users extends Component {
       {
         title: t('Username'),
         key: 'username',
-        render: item => <Link to={`/dashboard/user/${item.user_id}`}>{item.username}</Link>
+        render: item => (
+          <Link to={`/dashboard/user/${item.user_id}`}>{item.username}</Link>
+        )
       },
       {
         title: t('Status'),
@@ -281,7 +314,10 @@ export default class Users extends Component {
     const filterList = [
       {
         key: 'status',
-        conditions: [{ name: 'Active', value: 'active' }, { name: 'Deleted', value: 'deleted' }],
+        conditions: [
+          { name: 'Active', value: 'active' },
+          { name: 'Deleted', value: 'deleted' }
+        ],
         onChangeFilter: userStore.onChangeStatus,
         selectValue: userStore.selectStatus
       }
@@ -300,32 +336,36 @@ export default class Users extends Component {
 
         {/* <Row>
           <Statistics {...summaryInfo} objs={users.toJSON()} />
-        </Row>*/}
+        </Row> */}
 
         <Panel>
           <Grid>
             <Section>
               <Card className={classnames(styles.noShadow, styles.selectInfo)}>
-                <Select className={styles.select} value={selectValue} onChange={this.changeSelect}>
+                <Select
+                  className={styles.select}
+                  value={selectValue}
+                  onChange={this.changeSelect}
+                >
                   {/* <Select.Option value="organization">{t('Organization')}</Select.Option>
-                  <Select.Option value="group">{t('Group')}</Select.Option>*/}
+                  <Select.Option value="group">{t('Group')}</Select.Option> */}
                   <Select.Option value="roles">{t('Roles')}</Select.Option>
                 </Select>
-                {/*{selectValue === 'organization' && (*/}
-                {/*<OrgTree*/}
-                {/*treeFlag={treeFlag}*/}
-                {/*organizations={organizations}*/}
-                {/*clickCompany={this.clickCompany}*/}
-                {/*clickDep={this.clickDep}*/}
-                {/*/>*/}
-                {/*)}*/}
-                {/*{selectValue === 'group' && (*/}
-                {/*<GroupCard*/}
-                {/*groups={groups}*/}
-                {/*selectCard={this.selectGroup}*/}
-                {/*selectValue={selectGroupId}*/}
-                {/*/>*/}
-                {/*)}*/}
+                {/* {selectValue === 'organization' && ( */}
+                {/* <OrgTree */}
+                {/* treeFlag={treeFlag} */}
+                {/* organizations={organizations} */}
+                {/* clickCompany={this.clickCompany} */}
+                {/* clickDep={this.clickDep} */}
+                {/* /> */}
+                {/* )} */}
+                {/* {selectValue === 'group' && ( */}
+                {/* <GroupCard */}
+                {/* groups={groups} */}
+                {/* selectCard={this.selectGroup} */}
+                {/* selectValue={selectGroupId} */}
+                {/* /> */}
+                {/* )} */}
                 {selectValue === 'roles' && (
                   <GroupCard groups={roles} selectCard={this.selectRole} />
                 )}
@@ -334,7 +374,9 @@ export default class Users extends Component {
 
             <Section size={8} className={styles.table}>
               <Card className={styles.noShadow}>
-                {Boolean(selectName) && <div className={styles.selectInfo}>{t(selectName)}</div>}
+                {Boolean(selectName) && (
+                  <div className={styles.selectInfo}>{t(selectName)}</div>
+                )}
 
                 {this.renderToolbar()}
 

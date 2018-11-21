@@ -1,37 +1,50 @@
 import { observable, action } from 'mobx';
-import _, { get, assign } from 'lodash';
+import { get } from 'lodash';
 
-import Store from '../Store';
 import { getProgress } from 'utils';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 export default class ClusterStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 
   @observable currentPage = 1;
+
   @observable clusters = [];
+
   @observable isLoading = false;
 
   @observable modalType = '';
+
   @observable isModalOpen = false;
 
   @observable summaryInfo = {};
+
   @observable totalCount = 0;
+
   @observable clusterCount = 0;
 
   @observable clusterId = '';
+
   @observable operateType = '';
 
   @observable searchWord = '';
+
   @observable selectStatus = '';
+
   @observable appId = '';
+
   @observable runtimeId = '';
+
   @observable userId = '';
 
   @observable selectedRowKeys = [];
+
   @observable clusterIds = [];
 
   @observable env = '';
+
   @observable versionId = '';
 
   // cluster job queue
@@ -91,7 +104,7 @@ export default class ClusterStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.get('clusters/statistics');
     this.summaryInfo = {
       name: 'Clusters',
@@ -106,14 +119,16 @@ export default class ClusterStore extends Store {
       clusterCount: get(result, 'cluster_count', 0),
       runtimeCount: get(result, 'runtime_count', 0)
     };
-    //this.isLoading = false;
+    // this.isLoading = false;
   };
 
   @action
   remove = async clusterIds => {
-    const result = await this.request.post('clusters/delete', { cluster_id: clusterIds });
+    const result = await this.request.post('clusters/delete', {
+      cluster_id: clusterIds
+    });
 
-    if (_.get(result, 'cluster_id')) {
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
@@ -126,8 +141,10 @@ export default class ClusterStore extends Store {
 
   @action
   start = async clusterIds => {
-    const result = await this.request.post('clusters/start', { cluster_id: clusterIds });
-    if (_.get(result, 'cluster_id')) {
+    const result = await this.request.post('clusters/start', {
+      cluster_id: clusterIds
+    });
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
@@ -137,8 +154,10 @@ export default class ClusterStore extends Store {
 
   @action
   stop = async clusterIds => {
-    const result = await this.request.post('clusters/stop', { cluster_id: clusterIds });
-    if (_.get(result, 'cluster_id')) {
+    const result = await this.request.post('clusters/stop', {
+      cluster_id: clusterIds
+    });
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
@@ -148,9 +167,11 @@ export default class ClusterStore extends Store {
 
   @action
   cease = async clusterIds => {
-    const result = await this.request.post('clusters/cease', { cluster_id: clusterIds });
+    const result = await this.request.post('clusters/cease', {
+      cluster_id: clusterIds
+    });
 
-    if (_.get(result, 'cluster_id')) {
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
@@ -161,8 +182,10 @@ export default class ClusterStore extends Store {
 
   @action
   rollback = async clusterIds => {
-    const result = await this.request.post('clusters/rollback', { cluster_id: clusterIds[0] });
-    if (_.get(result, 'cluster_id')) {
+    const result = await this.request.post('clusters/rollback', {
+      cluster_id: clusterIds[0]
+    });
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
@@ -176,7 +199,7 @@ export default class ClusterStore extends Store {
       cluster_id: clusterIds[0],
       env: this.env
     });
-    if (_.get(result, 'cluster_id')) {
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
@@ -190,7 +213,7 @@ export default class ClusterStore extends Store {
       cluster_id: clusterIds[0],
       version_id: this.versionId
     });
-    if (_.get(result, 'cluster_id')) {
+    if (get(result, 'cluster_id')) {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();

@@ -1,7 +1,3 @@
-import React from 'react';
-import { render, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-
 import Icon from 'components/Base/Icon';
 import Timeline from 'components/Base/Timeline';
 

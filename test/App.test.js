@@ -1,7 +1,7 @@
-import { observable, decorate } from 'mobx';
+import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
 // import { withRouter } from 'react-router';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import App from 'src/App';
 // import routes from 'src/routes';
@@ -19,8 +19,29 @@ global.localStorage = localStorageMock;
 
 const renderRoute = () => {};
 
+const renderPage = (routes, location, store) => (
+  <Provider rootStore={store}>
+    <BrowserRouter>
+      <App location={location}>
+        <Switch>
+          {routes.map((route, i) => (
+            <Route
+              key={i}
+              exact={route.exact}
+              path={route.path}
+              render={({ match }) => renderRoute(match, route, store)}
+            />
+          ))}
+        </Switch>
+      </App>
+    </BrowserRouter>
+  </Provider>
+);
+
 describe('<App/>', () => {
-  let store, location, routes;
+  let store,
+    location,
+    routes;
 
   beforeEach(() => {
     store = observable.object({
@@ -42,28 +63,9 @@ describe('<App/>', () => {
     routes = [];
   });
 
-  const renderPage = (location, store) => (
-    <Provider rootStore={store}>
-      <BrowserRouter>
-        <App location={location}>
-          <Switch>
-            {routes.map((route, i) => (
-              <Route
-                key={i}
-                exact={route.exact}
-                path={route.path}
-                render={({ match }) => renderRoute(match, route, store)}
-              />
-            ))}
-          </Switch>
-        </App>
-      </BrowserRouter>
-    </Provider>
-  );
-
   xit('basic render', () => {
     location = { pathname: '/' };
-    const wrapper = render(renderPage(location, store));
+    const wrapper = render(renderPage(routes, location, store));
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 

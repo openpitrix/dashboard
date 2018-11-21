@@ -14,10 +14,10 @@ import styles from './index.scss';
 @translate()
 export default class ClusterCard extends Component {
   static propTypes = {
-    detail: PropTypes.object.isRequired,
     appName: PropTypes.string,
-    runtimeName: PropTypes.string,
+    detail: PropTypes.object.isRequired,
     provider: PropTypes.string,
+    runtimeName: PropTypes.string,
     userName: PropTypes.string
   };
 
@@ -26,7 +26,9 @@ export default class ClusterCard extends Component {
   };
 
   render() {
-    const { detail, appName, runtimeName, provider, userName, t } = this.props;
+    const {
+      detail, appName, runtimeName, provider, userName, t
+    } = this.props;
 
     return (
       <div className={styles.detailCard}>
@@ -43,17 +45,25 @@ export default class ClusterCard extends Component {
           )}
           <li>
             <span className={styles.name}>{t('Status')}</span>
-            <Status type={detail.status} transition={detail.transition_status} />
+            <Status
+              type={detail.status}
+              transition={detail.transition_status}
+            />
           </li>
           <li className={styles.setHeight}>
             <span className={styles.name}>{t('Runtime')}</span>
-            <Link className={styles.value} to={`/dashboard/runtime/${detail.runtime_id}`}>
+            <Link
+              className={styles.value}
+              to={`/dashboard/runtime/${detail.runtime_id}`}
+            >
               <ProviderName provider={provider} name={runtimeName} />
             </Link>
           </li>
           <li>
             <span className={styles.name}>{t('App')}</span>
-            <Link to={`/dashboard/app/${detail.app_id}`}>{appName || t('None')}</Link>
+            <Link to={`/dashboard/app/${detail.app_id}`}>
+              {appName || t('None')}
+            </Link>
           </li>
           <li>
             <span className={styles.name}>{t('User')}</span>

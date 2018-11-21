@@ -14,8 +14,8 @@ export default class VersionItem extends PureComponent {
 
   static propTypes = {
     title: PropTypes.string,
-    value: PropTypes.node,
-    type: PropTypes.string
+    type: PropTypes.string,
+    value: PropTypes.node
   };
 
   resolveValue(value = []) {
@@ -42,7 +42,7 @@ export default class VersionItem extends PureComponent {
     if (type === 'link') {
       return this.resolveValue(value).map((item, idx) => (
         <div key={idx} className={styles.linkItem}>
-          <a href={item} target="_blank">
+          <a href={item} target="_blank" rel="noopener noreferrer">
             {item}
           </a>
         </div>

@@ -7,17 +7,15 @@ import Row from './row';
 
 import styles from './index.scss';
 
-const Grid = ({ className, children, ...rest }) => {
-  return (
-    <div className={classnames(styles.container, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
+const Grid = ({ className, children, ...rest }) => (
+  <div className={classnames(styles.container, className)} {...rest}>
+    {children}
+  </div>
+);
 
 Grid.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 };
 
 Grid.defaultProps = {};

@@ -20,16 +20,16 @@ export default class Upload extends Component {
   reqs = {};
 
   static propTypes = {
-    disabled: PropTypes.bool,
-    directory: PropTypes.bool,
-    headers: PropTypes.object,
-    uploadFile: PropTypes.func,
-    checkFile: PropTypes.func,
     accept: PropTypes.string,
-    multiple: PropTypes.bool,
+    checkFile: PropTypes.func,
     children: PropTypes.node,
+    className: PropTypes.string,
+    directory: PropTypes.bool,
+    disabled: PropTypes.bool,
+    headers: PropTypes.object,
+    multiple: PropTypes.bool,
     style: PropTypes.object,
-    className: PropTypes.string
+    uploadFile: PropTypes.func
   };
 
   static defaultProps = {
@@ -108,9 +108,9 @@ export default class Upload extends Component {
   upload(file) {
     const { checkFile, uploadFile } = this.props;
     if (checkFile !== noop && checkFile(file)) {
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(file, 'UTF-8');
-      reader.onload = function() {
+      reader.onload = function () {
         let fileStringBase64 = this.result;
         fileStringBase64 = fileStringBase64.substring(
           fileStringBase64.indexOf(',') + 1,
@@ -147,17 +147,25 @@ export default class Upload extends Component {
   }
 
   render() {
-    const { className, disabled, style, multiple, accept, children, directory } = this.props;
+    const {
+      className,
+      disabled,
+      style,
+      multiple,
+      accept,
+      children,
+      directory
+    } = this.props;
 
     const events = disabled
       ? {}
       : {
-          onClick: this.onClick,
-          onKeyDown: this.onKeyDown,
-          onDrop: this.onFileDrop,
-          onDragOver: this.onFileDrop,
-          onDragLeave: this.onFileDrop
-        };
+        onClick: this.onClick,
+        onKeyDown: this.onKeyDown,
+        onDrop: this.onFileDrop,
+        onDragOver: this.onFileDrop,
+        onDragLeave: this.onFileDrop
+      };
 
     return (
       <span

@@ -4,8 +4,25 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
-import { Table, Popover, Radio, Button, Input, Select, Icon, Modal } from 'components/Base';
-import Layout, { CreateResource, Dialog, Panel, Grid, Row, Section, Card } from 'components/Layout';
+import {
+  Table,
+  Popover,
+  Radio,
+  Button,
+  Input,
+  Select,
+  Icon,
+  Modal
+} from 'components/Base';
+import Layout, {
+  CreateResource,
+  Dialog,
+  Panel,
+  Grid,
+  Row,
+  Section,
+  Card
+} from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import { formatTime } from 'utils';
 
@@ -25,7 +42,9 @@ import styles from './index.scss';
 @observer
 export default class SSHKeys extends Component {
   async componentDidMount() {
-    const { clusterStore, clusterDetailStore, sshKeyStore, user } = this.props;
+    const {
+      clusterStore, clusterDetailStore, sshKeyStore, user
+    } = this.props;
 
     sshKeyStore.userId = user.user_id;
     await sshKeyStore.fetchKeyPairs();
@@ -67,7 +86,11 @@ export default class SSHKeys extends Component {
   detachKeyPairs = async () => {
     const { clusterDetailStore, sshKeyStore, user } = this.props;
     const { detachKeyPairs, currentPairId } = sshKeyStore;
-    const { selectedNodeIds, cancelSelectNodes, fetchNodes } = clusterDetailStore;
+    const {
+      selectedNodeIds,
+      cancelSelectNodes,
+      fetchNodes
+    } = clusterDetailStore;
 
     const result = await detachKeyPairs([currentPairId], selectedNodeIds);
     if (!(result && result.err)) {
@@ -75,7 +98,9 @@ export default class SSHKeys extends Component {
       // fix api refresh data has delay
       setTimeout(async () => {
         await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
-        const keyPairs = sshKeyStore.keyPairs.filter(item => item.key_pair_id === currentPairId);
+        const keyPairs = sshKeyStore.keyPairs.filter(
+          item => item.key_pair_id === currentPairId
+        );
         const nodeIds = get(keyPairs[0], 'node_id', '');
         await fetchNodes({ node_id: nodeIds || 0 });
       }, 3000);
@@ -100,14 +125,18 @@ export default class SSHKeys extends Component {
 
     return (
       <div className="operate-menu">
-        <span onClick={e => this.showDeleteModal(e, pairId)}>{t('Delete')}</span>
+        <span onClick={e => this.showDeleteModal(e, pairId)}>
+          {t('Delete')}
+        </span>
       </div>
     );
   };
 
   renderDeleteModal = () => {
     const { sshKeyStore, t } = this.props;
-    const { isModalOpen, hideModal, modalType, removeKeyPairs } = sshKeyStore;
+    const {
+      isModalOpen, hideModal, modalType, removeKeyPairs
+    } = sshKeyStore;
     let title = t('Delete SSH Key'),
       desc = t('delete_key_desc'),
       submit = removeKeyPairs;
@@ -118,7 +147,12 @@ export default class SSHKeys extends Component {
     }
 
     return (
-      <Dialog title={title} visible={isModalOpen} onSubmit={submit} onCancel={hideModal}>
+      <Dialog
+        title={title}
+        visible={isModalOpen}
+        onSubmit={submit}
+        onCancel={hideModal}
+      >
         {desc}
       </Dialog>
     );
@@ -129,7 +163,12 @@ export default class SSHKeys extends Component {
     const { isModalOpen, hideModal } = sshKeyStore;
 
     return (
-      <Modal title={t('Create SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
+      <Modal
+        title={t('Create SSH Key')}
+        visible={isModalOpen}
+        onCancel={hideModal}
+        hideFooter
+      >
         {this.renderForm(hideModal)}
       </Modal>
     );
@@ -147,8 +186,8 @@ export default class SSHKeys extends Component {
         hideFooter
       >
         <p className={styles.downloadWord}>
-          Click "Download" button to get the private key. Its download link will be kept for 10
-          minutes.
+          Click "Download" button to get the private key. Its download link will
+          be kept for 10 minutes.
         </p>
         <Button type="primary">{t('Download')}</Button>
       </Dialog>
@@ -171,7 +210,12 @@ export default class SSHKeys extends Component {
       <form className={styles.createForm}>
         <div>
           <label className={styles.name}>{t('Name')}</label>
-          <Input name="name" value={name} onChange={changeName} maxLength="50" />
+          <Input
+            name="name"
+            value={name}
+            onChange={changeName}
+            maxLength="50"
+          />
         </div>
         <div className={styles.textareaItem}>
           <label className={styles.name}>{t('Public Key')}</label>
@@ -182,7 +226,11 @@ export default class SSHKeys extends Component {
         </div>
         <div className={styles.textareaItem}>
           <label className={styles.name}>{t('Description')}</label>
-          <textarea name="description" value={description} onChange={changeDescription} />
+          <textarea
+            name="description"
+            value={description}
+            onChange={changeDescription}
+          />
         </div>
 
         <div className={styles.submitBtnGroup}>
@@ -211,7 +259,8 @@ export default class SSHKeys extends Component {
           {pair.pub_key}
         </div>
         <div className={styles.time}>
-          {t('Created on')}: {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
+          {t('Created on')}:{' '}
+          {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
         </div>
       </div>
     );
@@ -230,7 +279,10 @@ export default class SSHKeys extends Component {
     if (selectedNodeIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button onClick={() => sshKeyStore.showModal('detachKey')} className="btn-handle">
+          <Button
+            onClick={() => sshKeyStore.showModal('detachKey')}
+            className="btn-handle"
+          >
             {t('Detach')}
           </Button>
         </Toolbar>
@@ -249,7 +301,9 @@ export default class SSHKeys extends Component {
   }
 
   renderDetail() {
-    const { clusterStore, clusterDetailStore, sshKeyStore, t } = this.props;
+    const {
+      clusterStore, clusterDetailStore, sshKeyStore, t
+    } = this.props;
     const { keyPairs, currentPairId } = sshKeyStore;
     const {
       isLoading,
@@ -307,7 +361,10 @@ export default class SSHKeys extends Component {
               })}
             >
               {this.renderCard(pair)}
-              <Popover className="operation" content={this.renderOperateMenu(pair.key_pair_id)}>
+              <Popover
+                className="operation"
+                content={this.renderOperateMenu(pair.key_pair_id)}
+              >
                 <Icon name="more" />
               </Popover>
             </Card>
@@ -362,7 +419,11 @@ export default class SSHKeys extends Component {
         {keyPairs.length ? (
           this.renderDetail()
         ) : (
-          <CreateResource title={'Create SSH Key'} aside={this.renderAside()} asideTitle="SSH Keys">
+          <CreateResource
+            title={'Create SSH Key'}
+            aside={this.renderAside()}
+            asideTitle="SSH Keys"
+          >
             {this.renderForm()}
           </CreateResource>
         )}

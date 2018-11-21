@@ -10,7 +10,7 @@ import styles from './index.scss';
 @translate()
 class Banner extends Component {
   onSearch = value => {
-    this.props.history.push('/apps/search/' + value);
+    this.props.history.push(`/apps/search/${value}`);
   };
 
   onClearSearch = () => {

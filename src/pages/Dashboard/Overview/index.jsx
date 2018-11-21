@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import Layout, { Grid, Section, Row, BreadCrumb } from 'components/Layout';
+import Layout, {
+  Grid, Section, Row, BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
@@ -58,10 +60,14 @@ export default class Overview extends React.Component {
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();
-      const topRepoIds = _.get(appStore, 'summaryInfo.topRepos', []).map(item => item.id);
+      const topRepoIds = _.get(appStore, 'summaryInfo.topRepos', []).map(
+        item => item.id
+      );
       // query top apps, cluster number
       await clusterStore.fetchStatistics();
-      const topAppIds = _.get(clusterStore, 'summaryInfo.topApps', []).map(item => item.id);
+      const topAppIds = _.get(clusterStore, 'summaryInfo.topApps', []).map(
+        item => item.id
+      );
       // query latest clusters
       await clusterStore.fetchAll({
         cluster_type: 0,
@@ -96,7 +102,9 @@ export default class Overview extends React.Component {
   }
 
   componentWillUnmount() {
-    const { appStore, clusterStore, runtimeStore, repoStore } = this.props;
+    const {
+      appStore, clusterStore, runtimeStore, repoStore
+    } = this.props;
 
     appStore.reset();
     clusterStore.reset();
@@ -115,7 +123,14 @@ export default class Overview extends React.Component {
   };
 
   adminView = () => {
-    const { appStore, clusterStore, repoStore, categoryStore, userStore, t } = this.props;
+    const {
+      appStore,
+      clusterStore,
+      repoStore,
+      categoryStore,
+      userStore,
+      t
+    } = this.props;
     const { isLoading } = this.state;
 
     const summary = {
@@ -168,7 +183,11 @@ export default class Overview extends React.Component {
                 buttonTo="/dashboard/repo/create"
                 len={topRepos.length}
               >
-                <RepoList topRepos={topRepos} repos={repoStore.repos} type="repo" />
+                <RepoList
+                  topRepos={topRepos}
+                  repos={repoStore.repos}
+                  type="repo"
+                />
               </Panel>
             </Section>
 
@@ -201,7 +220,9 @@ export default class Overview extends React.Component {
   };
 
   normalView = () => {
-    const { appStore, runtimeStore, clusterStore, user, t } = this.props;
+    const {
+      appStore, runtimeStore, clusterStore, user, t
+    } = this.props;
     const { isLoading } = appStore;
 
     const name = user.username;
@@ -219,7 +240,12 @@ export default class Overview extends React.Component {
         </Row>
         <Grid>
           <Section>
-            <Panel type="app" title="Latest Apps" linkTo="/store" len={appList.length}>
+            <Panel
+              type="app"
+              title="Latest Apps"
+              linkTo="/store"
+              len={appList.length}
+            >
               <AppList apps={appList} />
             </Panel>
           </Section>
@@ -232,7 +258,11 @@ export default class Overview extends React.Component {
               buttonTo="/dashboard/runtime/create"
               len={runtimteList.length}
             >
-              <RepoList type="runtime" runtimes={runtimteList} clusters={clusterStore.clusters} />
+              <RepoList
+                type="runtime"
+                runtimes={runtimteList}
+                clusters={clusterStore.clusters}
+              />
             </Panel>
           </Section>
 
@@ -252,7 +282,9 @@ export default class Overview extends React.Component {
   };
 
   developerView = () => {
-    const { appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
+    const {
+      appStore, clusterStore, repoStore, runtimeStore, t
+    } = this.props;
     const { isLoading } = appStore;
 
     const appList = appStore.apps;
@@ -292,7 +324,12 @@ export default class Overview extends React.Component {
         render: item => (
           <Link to={`/dashboard/runtime/${item.runtime_id}`}>
             <ProviderName
-              name={getObjName(runtimeStore.runtimes, 'runtime_id', item.runtime_id, 'name')}
+              name={getObjName(
+                runtimeStore.runtimes,
+                'runtime_id',
+                item.runtime_id,
+                'name'
+              )}
               provider={getObjName(
                 runtimeStore.runtimes,
                 'runtime_id',
@@ -313,7 +350,11 @@ export default class Overview extends React.Component {
         title: 'Updated At',
         key: 'status_time',
         width: '80px',
-        render: item => <div className={styles.statusTime}>{getPastTime(item.status_time)}</div>
+        render: item => (
+          <div className={styles.statusTime}>
+            {getPastTime(item.status_time)}
+          </div>
+        )
       }
     ];
     const pagination = {
@@ -357,7 +398,12 @@ export default class Overview extends React.Component {
         <Row>
           <Grid>
             <Section>
-              <Panel type="app" title="Latest Apps" linkTo="/dashboard/apps" len={appList.length}>
+              <Panel
+                type="app"
+                title="Latest Apps"
+                linkTo="/dashboard/apps"
+                len={appList.length}
+              >
                 <AppList apps={appList} isDev />
               </Panel>
             </Section>
@@ -370,7 +416,11 @@ export default class Overview extends React.Component {
                 len={clusterList.length}
                 iconName="cluster"
               >
-                <Table columns={columns} dataSource={clusterList} pagination={pagination} />
+                <Table
+                  columns={columns}
+                  dataSource={clusterList}
+                  pagination={pagination}
+                />
               </Panel>
             </Section>
           </Grid>

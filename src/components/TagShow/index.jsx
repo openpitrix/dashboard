@@ -6,8 +6,8 @@ import styles from './index.scss';
 
 export default class TagShow extends Component {
   static propTypes = {
-    tags: PropTypes.array,
-    tagStyle: PropTypes.oneOf(['yellow', 'purple', 'purple2'])
+    tagStyle: PropTypes.oneOf(['yellow', 'purple', 'purple2']),
+    tags: PropTypes.array
   };
 
   static defaultProps = {
@@ -18,10 +18,12 @@ export default class TagShow extends Component {
     const { tags, tagStyle } = this.props;
 
     return tags.map(
-      (tag, index) =>
-        tag.label_key &&
-        tag.label_value && (
-          <div className={classnames(styles.tagShow, styles[tagStyle])} key={index}>
+      (tag, index) => tag.label_key
+        && tag.label_value && (
+          <div
+            className={classnames(styles.tagShow, styles[tagStyle])}
+            key={index}
+          >
             <div className={styles.inner}>
               <span className={styles.name} title={tag.label_key}>
                 {tag.label_key}
@@ -31,7 +33,7 @@ export default class TagShow extends Component {
               </span>
             </div>
           </div>
-        )
+      )
     );
   }
 }

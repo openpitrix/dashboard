@@ -1,24 +1,36 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import Store from '../Store';
 import { getFormData } from 'utils';
 import ts from 'config/translation';
 
+import Store from '../Store';
+
 export default class RuntimeCreateStore extends Store {
   @observable runtimeId = '';
+
   @observable name = '';
+
   @observable provider = 'qingcloud';
+
   @observable zone = '';
+
   @observable credential = '';
+
   @observable description = '';
+
   @observable runtimeUrl = '';
+
   @observable accessKey = '';
+
   @observable secretKey = '';
+
   @observable labels = [{ label_key: '', label_value: '' }];
 
   @observable runtimeCreated = null;
+
   @observable isLoading = false;
+
   @observable runtimeZones = [];
 
   @action
@@ -74,7 +86,7 @@ export default class RuntimeCreateStore extends Store {
   handleValidateCredential = () => {
     if (this.runtimeUrl && this.accessKey && this.secretKey) {
       this.getRuntimeZone();
-    }else {
+    } else {
       this.info(ts('Information to be verified is incomplete!'));
     }
   };
@@ -89,7 +101,7 @@ export default class RuntimeCreateStore extends Store {
 
   @action
   removeLabel = index => {
-    this.labels = this.labels.filter((item, i) => i != index);
+    this.labels = this.labels.filter((item, i) => i !== index);
   };
 
   @action
@@ -132,9 +144,12 @@ export default class RuntimeCreateStore extends Store {
   };
 
   checkSubmitDate = () => {
-    let result = 'ok',
-      keys = [];
-    const { name, zone, provider, labels, runtimeId } = this;
+    let result = 'ok';
+    const keys = [];
+    const {
+      name, zone, provider, labels, runtimeId
+    } = this;
+
     if (_.isEmpty(name)) {
       result = ts('Please input Name!');
     }

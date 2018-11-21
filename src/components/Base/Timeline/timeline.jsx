@@ -6,7 +6,7 @@ import styles from './index.scss';
 
 export default class Timeline extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
+    className: PropTypes.string
   };
 
   render() {

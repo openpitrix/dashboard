@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get, capitalize } from 'lodash';
+import { get, capitalize, pick } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Table, Popover, Button } from 'components/Base';
-import Layout, { Dialog, BackBtn, Grid, Section, Card, Panel, BreadCrumb } from 'components/Layout';
+import {
+  Icon, Table, Popover, Button
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  BackBtn,
+  Grid,
+  Section,
+  Card,
+  Panel,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
@@ -27,7 +37,14 @@ import styles from './index.scss';
 @observer
 export default class RuntimeDetail extends Component {
   async componentDidMount() {
-    const { runtimeStore, clusterStore, appStore, userStore, user, match } = this.props;
+    const {
+      runtimeStore,
+      clusterStore,
+      appStore,
+      userStore,
+      user,
+      match
+    } = this.props;
     const { runtimeId } = match.params;
 
     await runtimeStore.fetch(runtimeId);
@@ -62,10 +79,12 @@ export default class RuntimeDetail extends Component {
     }
   }
 
-  listenToJob = async ({ op, rtype, rid, values = {} }) => {
+  listenToJob = async ({
+    op, rtype, rid, values = {}
+  }) => {
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
-    const status = _.pick(values, ['status', 'transition_status']);
+    const status = pick(values, ['status', 'transition_status']);
     // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
     const clusterIds = clusterStore.clusters.map(cl => cl.cluster_id);
 
@@ -102,7 +121,7 @@ export default class RuntimeDetail extends Component {
       start,
       stop
     } = this.props.clusterStore;
-    let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+    const ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
 
     switch (modalType) {
       case 'delete':
@@ -113,6 +132,8 @@ export default class RuntimeDetail extends Component {
         break;
       case 'stop':
         stop(ids);
+        break;
+      default:
         break;
     }
   };
@@ -143,13 +164,19 @@ export default class RuntimeDetail extends Component {
       <div className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
         {status === 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>
+            {t('Start cluster')}
+          </span>
         )}
         {status === 'active' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>
+            {t('Stop cluster')}
+          </span>
         )}
         {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            {t('Delete')}
+          </span>
         )}
       </div>
     );
@@ -191,7 +218,13 @@ export default class RuntimeDetail extends Component {
 
   renderToolbar() {
     const { t } = this.props;
-    const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      clusterIds
+    } = this.props.clusterStore;
 
     if (clusterIds.length) {
       return (
@@ -225,7 +258,9 @@ export default class RuntimeDetail extends Component {
   }
 
   render() {
-    const { runtimeStore, clusterStore, userStore, user, t } = this.props;
+    const {
+      runtimeStore, clusterStore, userStore, user, t
+    } = this.props;
     const { runtimeDetail } = runtimeStore;
 
     const {
@@ -332,7 +367,12 @@ export default class RuntimeDetail extends Component {
       noCancel: false
     };
 
-    let userName = getObjName(users, 'user_id', runtimeDetail.owner, 'username');
+    let userName = getObjName(
+      users,
+      'user_id',
+      runtimeDetail.owner,
+      'username'
+    );
     if (!isAdmin) {
       userName = userDetail.username;
       columns = columns.filter(item => item.key !== 'owner');
@@ -352,7 +392,11 @@ export default class RuntimeDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <RuntimeCard detail={runtimeDetail} clusterCount={clusterCount} userName={userName} />
+              <RuntimeCard
+                detail={runtimeDetail}
+                clusterCount={clusterCount}
+                userName={userName}
+              />
               {runtimeDetail.status !== 'deleted' && (
                 <Popover
                   className="operation"

@@ -7,8 +7,8 @@ import { translate } from 'react-i18next';
 
 import { Popover, Icon } from 'components/Base';
 
-import styles from './index.scss';
 import { userMeuns } from 'components/Layout/SideNav/navMap';
+import styles from './index.scss';
 
 // translate hoc should place before mobx
 @translate()
@@ -40,18 +40,31 @@ export default class MenuLayer extends Component {
       <ul className={classnames(styles.menuLayer, className)}>
         <li>
           <span className={styles.userIcon}>
-            <Icon name="human" size={32} type="dark" className={styles.iconImg} />
+            <Icon
+              name="human"
+              size={32}
+              type="dark"
+              className={styles.iconImg}
+            />
           </span>
           {user.username}
           {isDeveloper && (
             <span className={styles.devIconOuter}>
-              <Icon name="wrench" type="white" size={8} className={styles.devIcon} />
+              <Icon
+                name="wrench"
+                type="white"
+                size={8}
+                className={styles.devIcon}
+              />
             </span>
           )}
         </li>
 
         {isDeveloper && (
-          <li className={styles.dev} onClick={() => this.becomeDeveloper(isNormal)}>
+          <li
+            className={styles.dev}
+            onClick={() => this.becomeDeveloper(isNormal)}
+          >
             <Icon
               name={isNormal ? 'wrench' : 'appcenter'}
               type="dark"
@@ -64,9 +77,16 @@ export default class MenuLayer extends Component {
 
         {userMeuns.map(item => (
           <li key={item.name}>
-            <Icon name={item.iconName} type="dark" size={16} className={styles.iconImg} />
+            <Icon
+              name={item.iconName}
+              type="dark"
+              size={16}
+              className={styles.iconImg}
+            />
             {item.name === 'Log out' && <a href={item.link}>{t(item.name)}</a>}
-            {item.name !== 'Log out' && <Link to={item.link}>{t(item.name)}</Link>}
+            {item.name !== 'Log out' && (
+              <Link to={item.link}>{t(item.name)}</Link>
+            )}
           </li>
         ))}
       </ul>

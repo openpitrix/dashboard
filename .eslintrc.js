@@ -1,59 +1,98 @@
 // http://eslint.org/docs/user-guide/configuring
+const reactVersion = require('./package.json').dependencies.react;
 
 module.exports = {
   root: true,
   parser: 'babel-eslint',
   parserOptions: {
+    ecmaVersion: 7,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
-      modules: true
+      modules: true,
+      /*
+        prevent:
+        ``
+        Parsing error: Using the export keyword between a decorator and a class is not allowed.
+        Please use `export @dec class` instead.
+        ``
+       */
+      legacyDecorators: true
     }
   },
   env: {
+    browser: true,
+    node: true,
     es6: true,
     commonjs: true,
-    browser: true,
     jest: true
+  },
+  globals: {
+    PORT: true
+  },
+  settings: {
+    react: {
+      // fix Warning: React version not specified in eslint-plugin-react settings
+      // see: https://github.com/yannickcr/eslint-plugin-react/issues/1955
+      version: reactVersion
+    }
   },
   extends: [
     'airbnb-base',
     'plugin:react/recommended',
-    'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/warnings'
   ],
-  plugins: ['react'],
+  plugins: [
+    // 'react'
+  ],
   // add your custom rules here
   rules: {
+    // basic
+    quotes: [
+      'error',
+      'single',
+      {
+        allowTemplateLiterals: true,
+        avoidEscape: true
+      }
+    ],
+    'prefer-destructuring': 'off',
+    'no-restricted-globals': 'warn',
+    'no-unexpected-multiline': 'off',
+    'no-useless-constructor': 'warn',
+    'max-nested-callbacks': ['error', 3],
+    'no-multi-assign': 'warn',
+
     // allow paren-less arrow functions
-    'arrow-parens': 0,
+    'arrow-parens': 'off',
 
     // import
-    'import/no-extraneous-dependencies': [2, { devDependencies: true }],
-    'import/no-dynamic-require': 1,
-    'import/no-unresolved': 0,
-    'import/extensions': 0,
-    'import/prefer-default-export': 0,
-    'import/first': 1,
+    'import/no-extraneous-dependencies': ['warn', { devDependencies: false }],
+    'import/no-dynamic-require': 'warn',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'import/first': 'warn',
+    'import/no-duplicates': 'error',
 
     // allow async-await
-    'generator-star-spacing': 0,
+    'generator-star-spacing': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'global-require': 0,
-    'no-console': 0,
-    'dot-notation': 0,
-    'no-underscore-dangle': 0,
-    'no-param-reassign': 0,
-    'no-unused-expressions': 0,
-    'no-mixed-operators': 0,
-    'no-return-await': 0,
-    'no-restricted-syntax': 0,
-    'no-await-in-loop': 0,
-    camelcase: 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'global-require': 'off',
+    'no-console': 'off',
+    'dot-notation': 'off',
+    'no-underscore-dangle': 'off',
+    'no-param-reassign': 'off',
+    'no-unused-expressions': 'off',
+    'no-mixed-operators': 'off',
+    'no-return-await': 'off',
+    'no-restricted-syntax': 'off',
+    'no-await-in-loop': 'off',
+    camelcase: 'off',
     'max-len': [
-      1,
+      'warn',
       {
         code: 100,
         tabWidth: 2,
@@ -67,24 +106,30 @@ module.exports = {
           "^(\\s*[a-zA-Z_]+: '[^']+'[,;]*)|(.*gettext.*)|(.*interpolate.*)|(.*require.*)|(.*_\\.template.*)$"
       }
     ],
-    'no-eval': 1,
-    'no-plusplus': 0,
-    'no-empty': 0,
-    'no-empty-function': 0,
-    'func-names': 0,
-    'consistent-return': 0,
-    'react/jsx-uses-react': 2,
-    'react/jsx-uses-vars': 2,
-    'class-methods-use-this': 0,
-    'no-use-before-define': 0,
-    'comma-dangle': 0,
-    'no-unused-vars': 1,
-    'react/prop-types': 1,
-    'react/sort-comp': 2,
-    'react/sort-prop-types': 1,
-    'react/display-name': 0,
-    radix: 0,
-    'one-var': 1,
-    'prefer-const': 1
+    'no-eval': 'warn',
+    'no-plusplus': 'off',
+    'no-empty': 'off',
+    'no-empty-function': 'off',
+    'func-names': 'off',
+    'consistent-return': 'off',
+    'class-methods-use-this': 'off',
+    'no-use-before-define': 'off',
+    'comma-dangle': 'off',
+    'no-unused-vars': 'warn',
+    radix: 'off',
+    'one-var': 'off',
+    'prefer-const': 'warn',
+    'no-return-assign': 'warn',
+
+    // react
+    'react/jsx-uses-react': 'error',
+    'react/jsx-uses-vars': 'error',
+    'react/prop-types': 'off', // fixme: off => warn
+    'react/sort-comp': 'warn',
+    'react/sort-prop-types': 'warn',
+    'react/display-name': 'off',
+    'react/no-string-refs': 'warn',
+    'react/no-find-dom-node': 'warn',
+    'react/no-unescaped-entities': ['error', { forbid: ['>', '}'] }]
   }
 };

@@ -1,6 +1,13 @@
 const debug = require('debug')('app');
 
-const authPages = ['dashboard', 'runtimes', 'purchased', 'profile', 'ssh_keys', 'store'];
+const authPages = [
+  'dashboard',
+  'runtimes',
+  'purchased',
+  'profile',
+  'ssh_keys',
+  'store'
+];
 
 module.exports = async (ctx, next) => {
   const { cookies } = ctx;
@@ -12,6 +19,7 @@ module.exports = async (ctx, next) => {
 
   debug('PAGE: %s', ctx.url);
 
+  /* eslint prefer-destructuring: off */
   const page = (ctx.params.page || '').split('/')[0];
   const needAuth = authPages.indexOf(page) > -1;
 

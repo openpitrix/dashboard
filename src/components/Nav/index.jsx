@@ -6,9 +6,7 @@ import { translate } from 'react-i18next';
 
 import styles from './index.scss';
 
-const isNavLinkActive = (cate_id, match, location) => {
-  return location.pathname.indexOf(cate_id) > -1;
-};
+const isNavLinkActive = (cate_id, match, location) => location.pathname.indexOf(cate_id) > -1;
 
 @translate()
 export default class Nav extends PureComponent {
@@ -23,7 +21,9 @@ export default class Nav extends PureComponent {
   };
 
   render() {
-    const { className, navs, skipLink, t } = this.props;
+    const {
+      className, navs, skipLink, t
+    } = this.props;
 
     return (
       <div className={classnames(styles.nav, className)}>

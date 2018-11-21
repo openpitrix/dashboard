@@ -10,14 +10,16 @@ import styles from './index.scss';
 @translate()
 export default class StepContent extends PureComponent {
   static propTypes = {
-    name: PropTypes.string,
-    explain: PropTypes.string,
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    explain: PropTypes.string,
+    name: PropTypes.string
   };
 
   render() {
-    const { name, explain, children, className } = this.props;
+    const {
+      name, explain, children, className
+    } = this.props;
 
     return (
       <div className={classNames(styles.stepContent, className)}>

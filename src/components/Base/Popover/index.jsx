@@ -7,15 +7,15 @@ import styles from './index.scss';
 
 export default class Popover extends React.Component {
   static propTypes = {
-    prefixCls: PropTypes.string,
     className: PropTypes.string,
-    trigger: PropTypes.string,
-    placement: PropTypes.string,
-    title: PropTypes.string,
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
-    visible: PropTypes.bool,
+    onVisibleChange: PropTypes.func,
+    placement: PropTypes.string,
+    prefixCls: PropTypes.string,
     showBorder: PropTypes.bool,
-    onVisibleChange: PropTypes.func
+    title: PropTypes.string,
+    trigger: PropTypes.string,
+    visible: PropTypes.bool
   };
 
   static defaultProps = {

@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { inject } from 'mobx-react';
 
 import pathLink from './path-link';
 import styles from './index.scss';
@@ -24,7 +23,9 @@ export default class BreadCrumb extends Component {
   };
 
   render() {
-    const { children, linkPath, user, t } = this.props;
+    const {
+      children, linkPath, user, t
+    } = this.props;
     const paths = linkPath.split('>');
     const linkLen = paths.length - 1;
     const pathToLink = pathLink(user.isDev);

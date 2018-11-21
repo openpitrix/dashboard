@@ -6,17 +6,17 @@ import { I18n } from 'react-i18next';
 
 import styles from './index.scss';
 
-const BackBtn = ({ label, link }) => {
-  return (
-    <I18n>
-      {t => (
-        <div className={styles.backBtn}>
-          <Link to={link}>{t('Back to link', { link: t(capitalize(label)) })}</Link>
-        </div>
-      )}
-    </I18n>
-  );
-};
+const BackBtn = ({ label, link }) => (
+  <I18n>
+    {t => (
+      <div className={styles.backBtn}>
+        <Link to={link}>
+          {t('Back to link', { link: t(capitalize(label)) })}
+        </Link>
+      </div>
+    )}
+  </I18n>
+);
 
 BackBtn.propTypes = {
   label: PropTypes.string.isRequired,

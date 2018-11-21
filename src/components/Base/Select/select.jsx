@@ -8,12 +8,12 @@ import styles from './index.scss';
 
 export default class Select extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
     children: PropTypes.any,
-    onChange: PropTypes.func,
-    value: PropTypes.string,
+    className: PropTypes.string,
     disabled: PropTypes.bool,
-    name: PropTypes.string
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string
   };
 
   static defaultProps = {
@@ -71,7 +71,7 @@ export default class Select extends React.Component {
 
     this.currentLabel = '';
     this.childNodes = React.Children.map(children, child => {
-      let checked = String(value) === child.props.value;
+      const checked = String(value) === child.props.value;
       if (checked) {
         this.currentLabel = child.props.children.toString();
       }
@@ -97,7 +97,10 @@ export default class Select extends React.Component {
     return (
       <div className={styles.control} onClick={this.handleControlClick}>
         <div className={styles.controlLabel}>{this.currentLabel}</div>
-        <Icon name={isOpen && !disabled ? 'caret-up' : 'caret-down'} type="dark" />
+        <Icon
+          name={isOpen && !disabled ? 'caret-up' : 'caret-down'}
+          type="dark"
+        />
       </div>
     );
   }
@@ -107,14 +110,20 @@ export default class Select extends React.Component {
     const { disabled } = this.props;
 
     return this.childNodes.length > 0 ? (
-      <div className={classnames(styles.options, { [styles.show]: isOpen && !disabled })}>
+      <div
+        className={classnames(styles.options, {
+          [styles.show]: isOpen && !disabled
+        })}
+      >
         {this.childNodes}
       </div>
     ) : null;
   }
 
   render() {
-    const { className, disabled, name, value } = this.props;
+    const {
+      className, disabled, name, value
+    } = this.props;
 
     this.setChildNodes();
 

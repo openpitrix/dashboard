@@ -3,6 +3,7 @@ import Store from '../Store';
 
 export default class AppCreateStore extends Store {
   @observable createStep = 2;
+
   @observable isLoading = false;
 
   @action create = () => null;

@@ -24,7 +24,9 @@ export default class AppImages extends Component {
   };
 
   render() {
-    const { apps, total, user, t } = this.props;
+    const {
+      apps, total, user, t
+    } = this.props;
 
     return (
       <div className={styles.appImages}>

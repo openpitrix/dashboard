@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Popover } from 'components/Base';
 import { getObjName } from 'utils';
 import styles from './index.scss';
 
 export default class Progress extends PureComponent {
   static propTypes = {
+    objs: PropTypes.array,
     progress: PropTypes.array,
     total: PropTypes.number,
-    objs: PropTypes.array,
     type: PropTypes.string
   };
 
@@ -22,7 +21,9 @@ export default class Progress extends PureComponent {
   };
 
   render() {
-    const { progress, total, objs, type } = this.props;
+    const {
+      progress, total, objs, type
+    } = this.props;
 
     return (
       <div className={styles.progress}>
@@ -31,17 +32,19 @@ export default class Progress extends PureComponent {
             key={data.id}
             className={styles.inner}
             style={{
-              width: data.number * 100.0 / total + '%',
-              left: this.calLeft(index, progress, total) + '%'
+              width: `${data.number * 100.0 / total}%`,
+              left: `${this.calLeft(index, progress, total)}%`
             }}
           >
             <div className={styles.tips}>
               <span className={styles.arrow} />
               <div className={styles.number}>{data.number}</div>
               <div className={styles.name}>
-                {type == 'Apps' && getObjName(objs, 'repo_id', data.id, 'name')}
-                {type == 'Clusters' && getObjName(objs, 'runtime_id', data.id, 'name')}
-                {type == 'Runtimes' && data.id}
+                {type === 'Apps'
+                  && getObjName(objs, 'repo_id', data.id, 'name')}
+                {type === 'Clusters'
+                  && getObjName(objs, 'runtime_id', data.id, 'name')}
+                {type === 'Runtimes' && data.id}
               </div>
             </div>
           </div>

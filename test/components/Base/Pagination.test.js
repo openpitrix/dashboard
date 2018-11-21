@@ -1,12 +1,10 @@
-import React from 'react';
-import { render, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-
 import Pagination from 'components/Base/Pagination';
 
 describe('Base/Pagination', () => {
   it('basic render', () => {
-    const wrapper = render(<Pagination className="test" defaultCurrent={2} pageSize={20} />);
+    const wrapper = render(
+      <Pagination className="test" defaultCurrent={2} pageSize={20} />
+    );
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });

@@ -9,15 +9,25 @@ import Icon from '../Icon';
 import Button from '../Button';
 import styles from './index.scss';
 
-ReactModal.defaultStyles.overlay = Object.assign({}, ReactModal.defaultStyles.overlay, {
-  padding: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  zIndex: 2000
-});
+ReactModal.defaultStyles.overlay = Object.assign(
+  {},
+  ReactModal.defaultStyles.overlay,
+  {
+    padding: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    zIndex: 2000
+  }
+);
 
 ReactModal.defaultStyles.content = Object.assign(
   {},
-  omit(ReactModal.defaultStyles.content, ['top', 'left', 'right', 'bottom', 'padding']),
+  omit(ReactModal.defaultStyles.content, [
+    'top',
+    'left',
+    'right',
+    'bottom',
+    'padding'
+  ]),
   {
     width: 744,
     position: 'relative',
@@ -28,19 +38,19 @@ ReactModal.defaultStyles.content = Object.assign(
 @translate()
 export default class Modal extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    width: PropTypes.number,
-    visible: PropTypes.bool,
-    okText: PropTypes.string,
     cancelText: PropTypes.string,
-    onOk: PropTypes.func,
-    onCancel: PropTypes.func,
     children: PropTypes.any,
+    className: PropTypes.string,
     closable: PropTypes.bool,
-    hideHeader: PropTypes.bool,
     hideFooter: PropTypes.bool,
-    isDialog: PropTypes.bool
+    hideHeader: PropTypes.bool,
+    isDialog: PropTypes.bool,
+    okText: PropTypes.string,
+    onCancel: PropTypes.func,
+    onOk: PropTypes.func,
+    title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    visible: PropTypes.bool,
+    width: PropTypes.number
   };
 
   static defaultProps = {

@@ -8,15 +8,15 @@ import styles from './index.scss';
 export default class Search extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
+    onClear: PropTypes.func,
     onSearch: PropTypes.func,
-    onClear: PropTypes.func
+    placeholder: PropTypes.string,
+    value: PropTypes.string
   };
 
   static defaultProps = {
     className: '',
-    onSearch: val => {},
+    onSearch: () => {},
     onClear: () => {},
     value: ''
   };
@@ -55,7 +55,12 @@ export default class Search extends React.Component {
           onKeyDown={this.handleOnKeyDown}
         />
         {value && (
-          <Icon name="close" size={24} className={styles.close} onClick={this.handleClear} />
+          <Icon
+            name="close"
+            size={24}
+            className={styles.close}
+            onClick={this.handleClear}
+          />
         )}
       </div>
     );

@@ -7,10 +7,11 @@ import styles from './index.scss';
 
 export default class ProviderName extends Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
-    provider: PropTypes.string,
-    className: PropTypes.string
+    provider: PropTypes.string
   };
+
   static defaultProps = {
     provider: 'qingcloud'
   };

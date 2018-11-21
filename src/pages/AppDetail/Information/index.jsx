@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { I18n } from 'react-i18next';
 
-import Section from '../section';
 import { formatTime } from 'utils';
 import { ProviderName } from 'components/TdName';
+import Section from '../section';
 import styles from './index.scss';
 
 const Information = ({ app, repo }) => {
@@ -38,7 +38,11 @@ const Information = ({ app, repo }) => {
           <dl>
             <dt>{t('Repo')}</dt>
             <dd>
-              <ProviderName provider={repoProvider} name={repoName} className={styles.repoName} />
+              <ProviderName
+                provider={repoProvider}
+                name={repoName}
+                className={styles.repoName}
+              />
             </dd>
           </dl>
           <dl>

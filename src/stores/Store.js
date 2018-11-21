@@ -1,8 +1,6 @@
-import { set, decorate, observable } from 'mobx';
+import { set } from 'mobx';
 import agent from 'lib/request';
 import _ from 'lodash';
-
-const debug = require('debug')('app');
 
 export default class Store {
   constructor(initialState, branch) {
@@ -13,7 +11,7 @@ export default class Store {
         // set rootStore
         Object.getOwnPropertyNames(initialState)
           .filter(prop => !prop.endsWith('Store'))
-          .map(prop => {
+          .forEach(prop => {
             set(this, {
               [prop]: initialState[prop]
             });
@@ -33,7 +31,7 @@ Store.prototype = {
   success(message) {
     this.notify(message, 'success');
   },
-  error: function(message) {
+  error(message) {
     // Can't get token will skip to the login page
     if (message === 'Unauthorized') {
       const { pathname } = location;
@@ -57,7 +55,9 @@ Store.prototype = {
       sort_key: sortKey,
       limit: this.pageSize,
       offset: (currentPage - 1) * this.pageSize,
-      status: !_.isEmpty(this.selectStatus) ? this.selectStatus : this.defaultStatus || []
+      status: !_.isEmpty(this.selectStatus)
+        ? this.selectStatus
+        : this.defaultStatus || []
     };
 
     if (params.noLimit) {
@@ -70,28 +70,27 @@ Store.prototype = {
   },
   get request() {
     return new Proxy(agent, {
-      get: (target, method) => {
-        return async (...args) => {
-          const url = args[0] || '';
-          const params = _.omitBy(args[1], val => {
-            return val === undefined || val === null;
-          });
+      get: (target, method) => async (...args) => {
+        const url = args[0] || '';
+        const params = _.omitBy(
+          args[1],
+          val => val === undefined || val === null
+        );
 
-          // forward to node backend
-          const res = await target.post(url, { method, ...params });
+        // forward to node backend
+        const res = await target.post(url, { method, ...params });
 
-          if (res && res.status >= 300 && res.status < 400) {
-            location.href = res.message || '/login';
-          }
+        if (res && res.status >= 300 && res.status < 400) {
+          location.href = res.message || '/login';
+        }
 
-          // error handling
-          if (res && res.err && res.status >= 400) {
-            this.error(res.errDetail || res.err || 'internal error');
-            return res;
-          }
-
+        // error handling
+        if (res && res.err && res.status >= 400) {
+          this.error(res.errDetail || res.err || 'internal error');
           return res;
         }
+
+        return res;
       }
     });
   }

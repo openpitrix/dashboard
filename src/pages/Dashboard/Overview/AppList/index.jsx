@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
-import styles from './index.scss';
 import { getFilterObj } from 'utils';
+import styles from './index.scss';
 
 @translate()
 export default class AppList extends PureComponent {
   static propTypes = {
-    topApps: PropTypes.array,
     apps: PropTypes.array,
     isAdmin: PropTypes.bool,
-    isDev: PropTypes.bool
+    isDev: PropTypes.bool,
+    topApps: PropTypes.array
   };
 
   static defaultProps = {
@@ -23,7 +23,9 @@ export default class AppList extends PureComponent {
   };
 
   render() {
-    const { topApps, apps, isAdmin, isDev } = this.props;
+    const {
+      topApps, apps, isAdmin, isDev
+    } = this.props;
     const items = isAdmin ? topApps : apps;
     return (
       <ul className={styles.appList}>
@@ -42,7 +44,11 @@ export default class AppList extends PureComponent {
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}
-                linkUrl={isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`}
+                linkUrl={
+                  isDev
+                    ? `/dashboard/app/${item.app_id}`
+                    : `/store/${item.app_id}`
+                }
                 noCopy={true}
               />
             </li>

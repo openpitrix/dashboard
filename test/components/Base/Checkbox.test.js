@@ -32,7 +32,8 @@ describe('Base/Checkbox', () => {
     const wrapper = mount(<Checkbox onChange={mockChange} checked />);
     wrapper.find('input').simulate('change');
 
-    const isChecked = wrapper.state().isChecked;
+    const { isChecked } = wrapper.state();
+
     expect(isChecked).toBeTruthy();
     expect(mockChange).toHaveBeenCalled();
     expect(mockChange).toHaveBeenCalledTimes(1);
