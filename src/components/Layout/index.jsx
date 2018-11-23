@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import { noop, clone, isEmpty, get } from 'lodash';
+import {
+  noop, clone, isEmpty, get
+} from 'lodash';
 
 import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';
+import { getScrollTop } from 'src/utils';
 import TitleBanner from './TitleBanner';
 import SideNav from './SideNav';
-import { getScrollTop } from 'src/utils';
 
 import styles from './index.scss';
 
@@ -19,17 +21,17 @@ import styles from './index.scss';
 }))
 class Layout extends Component {
   static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    noNotification: PropTypes.bool,
     backBtn: PropTypes.node,
-    isLoading: PropTypes.bool,
-    loadClass: PropTypes.string,
-    listenToJob: PropTypes.func,
-    title: PropTypes.string,
-    pageTitle: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
     hasSearch: PropTypes.bool,
-    isHome: PropTypes.bool
+    isHome: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    listenToJob: PropTypes.func,
+    loadClass: PropTypes.string,
+    noNotification: PropTypes.bool,
+    pageTitle: PropTypes.string,
+    title: PropTypes.string
   };
 
   static defaultProps = {
@@ -49,8 +51,8 @@ class Layout extends Component {
   componentDidMount() {
     const { sock, listenToJob } = this.props;
 
-    sock &&
-      sock.on('ops-resource', (payload = {}) => {
+    sock
+      && sock.on('ops-resource', (payload = {}) => {
         const { type } = payload;
         const { resource = {} } = payload;
 
@@ -76,7 +78,9 @@ class Layout extends Component {
 
   handleScroll = async () => {
     const scrollTop = getScrollTop();
-    scrollTop > 0 ? this.setState({ isScroll: true }) : this.setState({ isScroll: false });
+    scrollTop > 0
+      ? this.setState({ isScroll: true })
+      : this.setState({ isScroll: false });
   };
 
   goBack = () => {
@@ -121,7 +125,8 @@ class Layout extends Component {
         {backBtn}
 
         {hasMenu && <SideNav isScroll={isScroll} hasSubNav={hasSubNav} />}
-        {isNormal && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
+        {isNormal
+          && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 
         {isCenterPage && (
           <div className={styles.pageTitle}>
@@ -139,7 +144,11 @@ class Layout extends Component {
         )}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {isCenterPage ? <div className={styles.centerPage}>{children}</div> : children}
+          {isCenterPage ? (
+            <div className={styles.centerPage}>{children}</div>
+          ) : (
+            children
+          )}
         </Loading>
       </div>
     );

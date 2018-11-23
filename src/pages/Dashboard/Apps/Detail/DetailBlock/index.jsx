@@ -8,7 +8,9 @@ import { ProviderName } from 'components/TdName';
 import { Image, Button } from 'components/Base';
 import Status from 'components/Status';
 import CopyId from 'components/DetailCard/CopyId';
-import { Grid, Section, Card, Panel } from 'components/Layout';
+import {
+  Grid, Section, Card, Panel
+} from 'components/Layout';
 import { mappingStatus } from 'utils';
 
 import styles from './index.scss';
@@ -17,19 +19,26 @@ import styles from './index.scss';
 export default class DetailBlock extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,
+    noDeploy: PropTypes.bool,
     repoName: PropTypes.string,
-    repoProvider: PropTypes.string,
-    noDeploy: PropTypes.bool
+    repoProvider: PropTypes.string
   };
 
   render() {
-    const { appDetail, repoName, repoProvider, noDeploy, t } = this.props;
+    const {
+      appDetail, repoName, repoProvider, noDeploy, t
+    } = this.props;
 
     return (
       <div className={styles.detailBlock}>
         <div className={styles.titleOuter}>
           <span className={styles.icon}>
-            <Image src={appDetail.icon} alt="Icon" iconSize={32} iconLetter={appDetail.name} />
+            <Image
+              src={appDetail.icon}
+              alt="Icon"
+              iconSize={32}
+              iconLetter={appDetail.name}
+            />
           </span>
           <div className={styles.title}>
             <div className={styles.name}>{appDetail.name}</div>
@@ -40,7 +49,10 @@ export default class DetailBlock extends React.Component {
           <dl>
             <dt>{t('Status')}</dt>
             <dd>
-              <Status name={mappingStatus(appDetail.status)} type={appDetail.status} />
+              <Status
+                name={mappingStatus(appDetail.status)}
+                type={appDetail.status}
+              />
             </dd>
           </dl>
           <dl>
@@ -68,7 +80,10 @@ export default class DetailBlock extends React.Component {
           </dl>
         </div>
         {!noDeploy && (
-          <Link className={styles.deploy} to={`/store/${appDetail.app_id}/deploy`}>
+          <Link
+            className={styles.deploy}
+            to={`/store/${appDetail.app_id}/deploy`}
+          >
             <Button type="primary">{t('Deploy')}</Button>
           </Link>
         )}

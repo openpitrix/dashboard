@@ -8,15 +8,17 @@ import styles from './index.scss';
 
 export default class CategoryCard extends PureComponent {
   static propTypes = {
-    title: PropTypes.string,
-    description: PropTypes.string,
     apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    id: PropTypes.string
+    description: PropTypes.string,
+    id: PropTypes.string,
+    title: PropTypes.string,
+    total: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
 
   render() {
-    const { title, description, apps, total, id } = this.props;
+    const {
+      title, description, apps, total, id
+    } = this.props;
 
     return (
       <div className={styles.categoryCard}>

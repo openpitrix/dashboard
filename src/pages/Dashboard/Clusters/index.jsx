@@ -1,17 +1,26 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Button, Table, Popover } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
+import {
+  Icon, Button, Table, Popover
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  Grid,
+  Row,
+  Section,
+  Card,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { formatTime, getObjName } from 'utils';
+import { getObjName } from 'utils';
 
 import styles from './index.scss';
 
@@ -27,7 +36,13 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   async componentDidMount() {
-    const { clusterStore, appStore, runtimeStore, userStore, user } = this.props;
+    const {
+      clusterStore,
+      appStore,
+      runtimeStore,
+      userStore,
+      user
+    } = this.props;
     const { isAdmin } = user;
 
     clusterStore.registerStore('app', appStore);
@@ -49,7 +64,9 @@ export default class Clusters extends Component {
     clusterStore.reset();
   }
 
-  listenToJob = async ({ op, rtype, rid, values = {} }) => {
+  listenToJob = async ({
+    op, rtype, rid, values = {}
+  }) => {
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
     const status = _.pick(values, ['status', 'transition_status']);
@@ -104,13 +121,19 @@ export default class Clusters extends Component {
       <div id={cluster_id} className="operate-menu">
         <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
         {status === 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'start')}>{t('Start cluster')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>
+            {t('Start cluster')}
+          </span>
         )}
         {status === 'active' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>{t('Stop cluster')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>
+            {t('Stop cluster')}
+          </span>
         )}
         {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>{t('Delete')}</span>
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            {t('Delete')}
+          </span>
         )}
       </div>
     );
@@ -126,7 +149,7 @@ export default class Clusters extends Component {
       start,
       stop
     } = this.props.clusterStore;
-    let ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
+    const ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
 
     switch (modalType) {
       case 'delete':
@@ -137,6 +160,8 @@ export default class Clusters extends Component {
         break;
       case 'stop':
         stop(ids);
+        break;
+      default:
         break;
     }
   };
@@ -149,7 +174,11 @@ export default class Clusters extends Component {
   onChangeSort = (params = {}) => {
     const { clusterStore } = this.props;
     const order = params.reverse ? 'asc' : 'desc';
-    clusterStore.clusters = _.orderBy(clusterStore.clusters, params.sort_key, order);
+    clusterStore.clusters = _.orderBy(
+      clusterStore.clusters,
+      params.sort_key,
+      order
+    );
   };
 
   renderDeleteModal = () => {
@@ -172,7 +201,13 @@ export default class Clusters extends Component {
 
   renderToolbar() {
     const { t } = this.props;
-    const { searchWord, onSearch, onClearSearch, onRefresh, clusterIds } = this.props.clusterStore;
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      clusterIds
+    } = this.props.clusterStore;
 
     if (clusterIds.length) {
       return (
@@ -206,7 +241,9 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, appStore, userStore, user, t } = this.props;
+    const {
+      clusterStore, appStore, userStore, user, t
+    } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
@@ -231,7 +268,9 @@ export default class Clusters extends Component {
         title: t('Status'),
         key: 'status',
         width: '102px',
-        render: cl => <Status type={cl.status} transition={cl.transition_status} />
+        render: cl => (
+          <Status type={cl.status} transition={cl.transition_status} />
+        )
       },
       {
         title: t('App'),
@@ -246,7 +285,12 @@ export default class Clusters extends Component {
           <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
             <ProviderName
               name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
-              provider={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'provider')}
+              provider={getObjName(
+                runtimes,
+                'runtime_id',
+                cl.runtime_id,
+                'provider'
+              )}
             />
           </Link>
         )

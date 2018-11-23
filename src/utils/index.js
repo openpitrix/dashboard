@@ -1,11 +1,11 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
-import ts from  '../config/translation'
+import ts from '../config/translation';
 
-export function formatTime(ts, format = 'YYYY/MM/DD') {
-  const parsedTs = day(ts);
+export function formatTime(time, format = 'YYYY/MM/DD') {
+  const parsedTs = day(time);
   if (!parsedTs.isValid()) {
-    throw Error('invalid time: ', ts);
+    throw Error(`invalid time: ${time}`);
   }
   return parsedTs.format(format);
 }
@@ -13,7 +13,8 @@ export function formatTime(ts, format = 'YYYY/MM/DD') {
 export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset
-    : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    : (document.documentElement || document.body.parentNode || document.body)
+      .scrollTop;
 }
 
 export function getScrollBottom() {
@@ -31,13 +32,14 @@ export function setCookie(name, value, time) {
     dt = new Date(Date.now() + expires);
   }
 
-  document.cookie =
-    name + '=' + encodeURIComponent(value) + ';expires=' + dt.toGMTString() + ';path=/;';
+  document.cookie = `${name}=${encodeURIComponent(
+    value
+  )};expires=${dt.toGMTString()};path=/;`;
 }
 
 export function getCookie(name) {
-  let re = new RegExp(name + '=([^;]+)');
-  let value = re.exec(document.cookie);
+  const re = new RegExp(`${name}=([^;]+)`);
+  const value = re.exec(document.cookie);
   return value !== null ? decodeURIComponent(value[1]) : null;
 }
 
@@ -45,7 +47,9 @@ export function getPastTime(time) {
   const now = new Date();
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
-  return diff / 24 > 1 ? parseInt(diff / 24) + ts(' days ago') : parseInt(diff)  + ts(' hours ago');
+  return diff / 24 > 1
+    ? parseInt(diff / 24) + ts(' days ago')
+    : parseInt(diff) + ts(' hours ago');
 }
 
 export function toQueryString(params) {
@@ -53,7 +57,9 @@ export function toQueryString(params) {
     .map(k => {
       const name = encodeURIComponent(k);
       if (Array.isArray(params[k])) {
-        return params[k].map(val => `${name}[]=${encodeURIComponent(val)}`).join('&');
+        return params[k]
+          .map(val => `${name}[]=${encodeURIComponent(val)}`)
+          .join('&');
       }
       return `${name}=${encodeURIComponent(params[k])}`;
     })
@@ -69,20 +75,20 @@ export function getSessInfo(key, store) {
 }
 
 export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
-  let ts = day(parseInt(timestamp));
+  const time = day(parseInt(timestamp));
   if (locale === 'en') {
-    return `${ts.format('MMM DD')} at ${ts.format('H:mm:ss A')}`;
+    return `${time.format('MMM DD')} at ${time.format('H:mm:ss A')}`;
   }
   if (locale === 'zh' || locale === 'zh-cn') {
-    let am = ts.format('a') === 'am' ? '上午' : '下午';
-    return `${ts.format('M月D日')} ${am} ${ts.format('HH:mm:ss')}`;
+    const am = time.format('a') === 'am' ? '上午' : '下午';
+    return `${time.format('M月D日')} ${am} ${time.format('HH:mm:ss')}`;
   }
 }
 
 export function getFormData(form) {
   const data = {};
   const fd = new FormData(form);
-  for (let p of fd.entries()) {
+  for (const p of fd.entries()) {
     data[p[0]] = p[1];
   }
 
@@ -122,35 +128,24 @@ export function getProgress(progress) {
       number: value
     });
   });
-  results = _.sortBy(results, function(o) {
-    return o.number;
-  });
+  results = _.sortBy(results, o => o.number);
   return results.slice(-5).reverse();
 }
 
-export function getHistograms(histograms) {
-  let now = new Date();
-  let nowTime = now.getTime();
-  let time,
-    date,
-    dateStr,
-    number = 0,
-    twoWeekDays = [];
+export function getHistograms(histograms = {}) {
+  const nowTime = Date.now();
+  const twoWeekDays = [];
+
   for (let i = 0; i < 14; i++) {
-    number = 0;
-    time = nowTime - i * 24 * 3600 * 1000;
-    date = new Date(time);
-    dateStr = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
+    const time = nowTime - i * 24 * 3600 * 1000;
+    const date = new Date(time);
+    const dateStr = `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
       -2
     )}-${`0${date.getDate()}`.slice(-2)}`;
-    _.forIn(histograms, (value, key) => {
-      if (dateStr === key) {
-        number = value;
-      }
-    });
+
     twoWeekDays.unshift({
       date: dateStr,
-      number: number
+      number: histograms[dateStr] || 0
     });
   }
   return twoWeekDays;
@@ -168,7 +163,7 @@ export function flattenObject(obj) {
       cur.forEach((item, index) => recurse(item, `${prop}[${index}]`));
     } else {
       Object.entries(cur).forEach(([key, value]) => {
-        key = key.replace(/\./g, '>>>>>>'); //fix key contains '.'
+        key = key.replace(/\./g, '>>>>>>'); // fix key contains '.'
         recurse(value, prop ? `${prop}.${key}` : key);
       });
     }
@@ -189,11 +184,11 @@ export function unflattenObject(data) {
 }
 
 export function getYamlList(yamlObj) {
-  let results = [];
+  const results = [];
   _.forIn(yamlObj, (value, key) => {
     results.push({
       name: key,
-      value: value
+      value
     });
   });
   return results;
@@ -201,13 +196,12 @@ export function getYamlList(yamlObj) {
 
 // get url param by name
 export function getUrlParam(name) {
-  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i');
   const result = window.location.search.substr(1).match(reg);
   if (result !== null) {
     return decodeURIComponent(result[2]);
-  } else {
-    return '';
   }
+  return '';
 }
 
 // app page status translate maybe different with other pages

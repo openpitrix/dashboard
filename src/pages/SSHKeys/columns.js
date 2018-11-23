@@ -32,7 +32,7 @@ export default (clusters, t) => [
     key: 'status',
     width: '102px',
     // fixme: prop type check case sensitive
-    render: item => <Status type={(item.status + '').toLowerCase()} name={item.status} />
+    render: item => <Status type={`${item.status}`.toLowerCase()} name={item.status} />
   },
   {
     title: t('Role'),

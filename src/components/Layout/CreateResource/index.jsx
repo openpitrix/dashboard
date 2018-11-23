@@ -3,11 +3,21 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { I18n } from 'react-i18next';
 
-import { Grid, Section, Panel, Card } from 'components/Layout';
+import {
+  Grid, Section, Panel, Card
+} from 'components/Layout';
 
 import styles from './index.scss';
 
-const CreateResource = ({ className, children, title, footer, aside, asideTitle, ...rest }) => (
+const CreateResource = ({
+  className,
+  children,
+  title,
+  footer,
+  aside,
+  asideTitle,
+  ...rest
+}) => (
   <Grid className={classnames(styles.wrapper, className)} {...rest}>
     <Section size={8}>
       <Panel className={styles.main}>
@@ -29,12 +39,12 @@ const CreateResource = ({ className, children, title, footer, aside, asideTitle,
 );
 
 CreateResource.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-  title: PropTypes.string,
   aside: PropTypes.node,
   asideTitle: PropTypes.string,
-  footer: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string,
+  footer: PropTypes.node,
+  title: PropTypes.string
 };
 
 CreateResource.defaultProps = {

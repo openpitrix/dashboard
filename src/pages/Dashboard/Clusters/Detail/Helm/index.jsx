@@ -26,6 +26,7 @@ export default class HelmCluster extends React.Component {
   static propTypes = {
     cluster: PropTypes.object.isRequired
   };
+
   static defaultProps = {
     cluster: {}
   };
@@ -41,7 +42,12 @@ export default class HelmCluster extends React.Component {
 
     return (
       <DetailTabs
-        tabs={['Deployment Pods', 'StatefulSet Pods', 'DaemonSet Pods', 'Additional Info']}
+        tabs={[
+          'Deployment Pods',
+          'StatefulSet Pods',
+          'DaemonSet Pods',
+          'Additional Info'
+        ]}
         changeTab={onChangeK8sTag}
       />
     );
@@ -49,7 +55,13 @@ export default class HelmCluster extends React.Component {
 
   renderToolbar() {
     const { clusterDetailStore, t } = this.props;
-    const { nodeType, searchNode, onSearchNode, onClearNode, onRefreshNode } = clusterDetailStore;
+    const {
+      nodeType,
+      searchNode,
+      onSearchNode,
+      onClearNode,
+      onRefreshNode
+    } = clusterDetailStore;
 
     if (nodeType === 'Additional') {
       return null;
@@ -102,8 +114,9 @@ export default class HelmCluster extends React.Component {
     }
 
     props.rowKey = '';
-    props.expandedRowRender = record =>
-      record.nodes.map(({ name, status, host_id, host_ip, private_ip }) => (
+    props.expandedRowRender = record => record.nodes.map(({
+      name, status, host_id, host_ip, private_ip
+    }) => (
         <div className={styles.extendedTr} key={name}>
           <div className={styles.extendedFirstChild} />
           <div className={styles.extendedIcon}>
@@ -125,7 +138,7 @@ export default class HelmCluster extends React.Component {
             <div>{private_ip}</div>
           </div>
         </div>
-      ));
+    ));
 
     props.expandedRowKeys = extendedRowKeys.toJSON();
     props.expandedRowClassName = () => styles.extendedRow;
@@ -145,13 +158,12 @@ export default class HelmCluster extends React.Component {
       if (_.get(info, `${key}.length`) === 0) {
         return null;
       }
-      const columns = _.keys(_.first(info[key])).map(tableKey => ({
-        title: t(tableKey),
-        key: tableKey,
-        render: item => <div>{item[tableKey]}</div>
-      }));
       const props = {
-        columns,
+        columns: _.keys(_.first(info[key])).map(tableKey => ({
+          title: t(tableKey),
+          key: tableKey,
+          render: item => <div>{item[tableKey]}</div>
+        })),
         dataSource: info[key],
         pagination: {
           total: 0

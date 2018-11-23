@@ -4,8 +4,9 @@ import toJson from 'enzyme-to-json';
 
 import Table from 'components/Base/Table';
 
-const setup = (type, props = {}) =>
-  type === 'render' ? render(<Table {...props} />) : mount(<Table {...props} />);
+const setup = (type, props = {}) => (type === 'render'
+  ? render(<Table {...props} />)
+  : mount(<Table {...props} />));
 
 describe('Base/Table', () => {
   const columns = [
@@ -53,7 +54,12 @@ describe('Base/Table', () => {
   });
 
   it('call onChange', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -69,7 +75,12 @@ describe('Base/Table', () => {
   });
 
   it('call onSelect', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -85,7 +96,12 @@ describe('Base/Table', () => {
   });
 
   it('call onSelectAll', () => {
-    const wrapper = setup('mount', { columns, dataSource, rowSelection, pagination });
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
     const checkbox = wrapper
       .find('thead th')
       .at(0)

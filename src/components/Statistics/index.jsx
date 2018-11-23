@@ -4,23 +4,25 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
+import {
+  getStasTotal, getTopTotal, getProgress, getHistograms
+} from 'utils';
 import Histogram from './Histogram';
 import Progress from './Progress';
-import { getStasTotal, getTopTotal, getProgress, getHistograms } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
 export default class Statistics extends PureComponent {
   static propTypes = {
-    name: PropTypes.string,
-    iconName: PropTypes.string,
-    total: PropTypes.number,
     centerName: PropTypes.string,
-    progressTotal: PropTypes.number,
-    progress: PropTypes.object,
     histograms: PropTypes.object,
-    objs: PropTypes.array
+    iconName: PropTypes.string,
+    name: PropTypes.string,
+    objs: PropTypes.array,
+    progress: PropTypes.object,
+    progressTotal: PropTypes.number,
+    total: PropTypes.number
   };
 
   static defaultProps = {
@@ -53,7 +55,12 @@ export default class Statistics extends PureComponent {
       <div className={styles.statistics}>
         <div className={styles.module}>
           <div className={styles.apps}>
-            <Icon name={iconName} size="medium" className={styles.icon} type={'light'} />
+            <Icon
+              name={iconName}
+              size="medium"
+              className={styles.icon}
+              type={'light'}
+            />
             {t(name)}
           </div>
           <div className={styles.word}>
@@ -67,7 +74,12 @@ export default class Statistics extends PureComponent {
             <div className={styles.name}>{t(centerName)}</div>
             <div className={styles.number}>{progressTotal}</div>
           </div>
-          <Progress progress={topList} total={topTotal} type={name} objs={objs} />
+          <Progress
+            progress={topList}
+            total={topTotal}
+            type={name}
+            objs={objs}
+          />
         </div>
 
         <div className={styles.module}>

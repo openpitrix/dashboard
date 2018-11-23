@@ -9,10 +9,10 @@ import styles from './index.scss';
 export default class Input extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    disabled: PropTypes.bool,
     icon: PropTypes.string,
-    iconType: PropTypes.string,
     iconSize: PropTypes.number,
-    disabled: PropTypes.bool
+    iconType: PropTypes.string
   };
 
   static defaultProps = {
@@ -24,7 +24,9 @@ export default class Input extends React.Component {
   };
 
   render() {
-    const { className, icon, iconType, iconSize, ...rest } = this.props;
+    const {
+      className, icon, iconType, iconSize, ...rest
+    } = this.props;
 
     if (icon) {
       return (

@@ -10,8 +10,8 @@ import styles from './index.scss';
 @translate()
 export default class CategoryCard extends PureComponent {
   static propTypes = {
-    detail: PropTypes.object,
-    appCount: PropTypes.number
+    appCount: PropTypes.number,
+    detail: PropTypes.object
   };
 
   render() {

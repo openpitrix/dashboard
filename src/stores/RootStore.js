@@ -1,9 +1,13 @@
 import { observable, action } from 'mobx';
-import _, { get, pick } from 'lodash';
+import _, { pick } from 'lodash';
 
 import Store from './Store';
 
-import App, { Deploy as AppDeploy, Version as AppVersion, Create as AppCreate } from './app';
+import App, {
+  Deploy as AppDeploy,
+  Version as AppVersion,
+  Create as AppCreate
+} from './app';
 import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
@@ -15,7 +19,9 @@ const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
 export default class RootStore extends Store {
   @observable fixNav = false;
+
   @observable notifications = [];
+
   @observable
   user = {
     username: ''
@@ -46,7 +52,11 @@ export default class RootStore extends Store {
     let notification = {};
 
     if (typeof msg[0] === 'object') {
-      notification = pick(Object.assign(defaultNotifyOption, msg[0]), ['title', 'message', 'type']);
+      notification = pick(Object.assign(defaultNotifyOption, msg[0]), [
+        'title',
+        'message',
+        'type'
+      ]);
     } else if (typeof msg[0] === 'string') {
       notification = Object.assign(defaultNotifyOption, {
         message: msg[0],
@@ -69,14 +79,14 @@ export default class RootStore extends Store {
     this.notifications = this.notifications.filter(item => item.ts !== ts);
   };
 
-  register(name, store, withState = true) {
-    if (typeof store !== 'function') {
+  register(name, Ctor, withState = true) {
+    if (typeof Ctor !== 'function') {
       throw Error('store should be constructor function');
     }
     if (!name.endsWith('Store')) {
       name += 'Store';
     }
-    this[name] = new store(withState ? this.state : '', name);
+    this[name] = new Ctor(withState ? this.state : '', name);
     this[name].notify = this.notify.bind(this);
     this[name].updateUser = this.updateUser.bind(this);
   }

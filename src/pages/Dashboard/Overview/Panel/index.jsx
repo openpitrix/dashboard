@@ -11,16 +11,18 @@ import styles from './index.scss';
 @translate()
 export default class Panel extends PureComponent {
   static propTypes = {
-    type: PropTypes.string,
-    title: PropTypes.string,
-    linkTo: PropTypes.string,
     buttonTo: PropTypes.string,
     children: PropTypes.node,
-    len: PropTypes.number
+    len: PropTypes.number,
+    linkTo: PropTypes.string,
+    title: PropTypes.string,
+    type: PropTypes.string
   };
 
   renderNoDataWelcome() {
-    const { type, linkTo, buttonTo, t } = this.props;
+    const {
+      type, linkTo, buttonTo, t
+    } = this.props;
 
     const iconMap = {
       app: 'appcenter',
@@ -64,13 +66,13 @@ export default class Panel extends PureComponent {
   }
 
   renderDataList() {
-    const { isAdmin, linkTo, title, children, t } = this.props;
-    const childNodes = React.Children.map(children, child =>
-      React.cloneElement(child, {
-        ...child.props,
-        isAdmin
-      })
-    );
+    const {
+      isAdmin, linkTo, title, children, t
+    } = this.props;
+    const childNodes = React.Children.map(children, child => React.cloneElement(child, {
+      ...child.props,
+      isAdmin
+    }));
 
     return (
       <div className={styles.panel}>

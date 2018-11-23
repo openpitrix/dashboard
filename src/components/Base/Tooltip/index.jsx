@@ -1,6 +1,8 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import { Manager, Target, Popper, Arrow } from 'react-popper';
+import {
+  Manager, Target, Popper, Arrow
+} from 'react-popper';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -8,15 +10,15 @@ import styles from './index.scss';
 
 export default class Tooltip extends React.Component {
   static propTypes = {
-    prefixCls: PropTypes.string,
     className: PropTypes.string,
-    trigger: PropTypes.string,
-    placement: PropTypes.string,
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
-    visible: PropTypes.bool,
-    onVisibleChange: PropTypes.func,
     isShowArrow: PropTypes.bool,
-    showBorder: PropTypes.bool
+    onVisibleChange: PropTypes.func,
+    placement: PropTypes.string,
+    prefixCls: PropTypes.string,
+    showBorder: PropTypes.bool,
+    trigger: PropTypes.string,
+    visible: PropTypes.bool
   };
 
   static defaultProps = {
@@ -38,11 +40,17 @@ export default class Tooltip extends React.Component {
   }
 
   showPopper = () => {
-    this.setState({ visible: true }, this.props.onVisibleChange(true, this.target));
+    this.setState(
+      { visible: true },
+      this.props.onVisibleChange(true, this.target)
+    );
   };
 
   hidePopper = () => {
-    this.setState({ visible: false }, this.props.onVisibleChange(false, this.target));
+    this.setState(
+      { visible: false },
+      this.props.onVisibleChange(false, this.target)
+    );
   };
 
   handleTogglePopper = e => {
@@ -56,12 +64,12 @@ export default class Tooltip extends React.Component {
     const rootNode = findDOMNode(this);
 
     if (
-      !rootNode ||
-      rootNode.contains(e.target) ||
-      !this.target ||
-      this.target.contains(e.target) ||
-      !this.popper ||
-      this.popper.contains(e.target)
+      !rootNode
+      || rootNode.contains(e.target)
+      || !this.target
+      || this.target.contains(e.target)
+      || !this.popper
+      || this.popper.contains(e.target)
     ) {
       return;
     }
@@ -131,7 +139,9 @@ export default class Tooltip extends React.Component {
     return (
       <Manager className={classNames(styles.tooltip, className)}>
         <Target
-          className={classNames(styles.target, { [styles.active]: visible || showBorder })}
+          className={classNames(styles.target, {
+            [styles.active]: visible || showBorder
+          })}
           innerRef={c => {
             this.target = c;
           }}
@@ -149,8 +159,15 @@ export default class Tooltip extends React.Component {
           }}
         >
           {content}
-          {isShowArrow &&
-            content && <Arrow className={classNames(styles.arrow, `${prefixCls}-popper_arrow`)} />}
+          {isShowArrow
+            && content && (
+              <Arrow
+                className={classNames(
+                  styles.arrow,
+                  `${prefixCls}-popper_arrow`
+                )}
+              />
+          )}
         </Popper>
       </Manager>
     );

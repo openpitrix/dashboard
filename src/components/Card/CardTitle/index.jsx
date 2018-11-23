@@ -10,9 +10,9 @@ import styles from './index.scss';
 export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,
-    title: PropTypes.string,
+    more: PropTypes.bool,
     skipLink: PropTypes.string,
-    more: PropTypes.bool
+    title: PropTypes.string
   };
 
   static defaultProps = {
@@ -20,7 +20,9 @@ export default class CardTitle extends PureComponent {
   };
 
   render() {
-    const { categoryId, title, more, skipLink, t } = this.props;
+    const {
+      categoryId, title, more, skipLink, t
+    } = this.props;
 
     return (
       <div className={styles.title}>

@@ -3,14 +3,21 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Radio, Input, Select, Slider, CodeMirror } from 'components/Base';
+import {
+  Radio, Input, Select, Slider, CodeMirror
+} from 'components/Base';
 
 import styles from './index.scss';
 
 export default class Section extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     detail: PropTypes.shape({
-      defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+      defaultValue: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.bool
+      ]),
       description: PropTypes.string,
       keyName: PropTypes.string.isRequired, // key is reserved by react
       label: PropTypes.string,
@@ -19,7 +26,6 @@ export default class Section extends React.Component {
       renderType: PropTypes.string,
       items: PropTypes.array
     }),
-    className: PropTypes.string,
     onChange: PropTypes.func,
     onEmpty: PropTypes.func
   };
@@ -55,7 +61,9 @@ export default class Section extends React.Component {
 
     if (!defaultValue) {
       if (Array.isArray(rest.range)) {
-        return _.isObject(rest.range[0]) ? _.get(rest.range[0], 'value') : rest.range[0];
+        return _.isObject(rest.range[0])
+          ? _.get(rest.range[0], 'value')
+          : rest.range[0];
       }
       if (Array.isArray(rest.items)) {
         return _.get(rest.items[0], 'value');
@@ -79,10 +87,10 @@ export default class Section extends React.Component {
     let name = '';
     switch (key) {
       case 'cpu':
-        name = value + ' Core';
+        name = `${value} Core`;
         break;
       case 'memory':
-        name = value / 1024 + ' GB';
+        name = `${value / 1024} GB`;
         break;
       case 'instance_class':
         name = value === 0 ? 'High Performance' : 'Super-high Performance';
@@ -181,8 +189,9 @@ export default class Section extends React.Component {
               } else {
                 value = item;
               }
-              const name =
-                keyName === 'cluster.runtime' ? item.name : this.formatLabel(value, originKey);
+              const name = keyName === 'cluster.runtime'
+                ? item.name
+                : this.formatLabel(value, originKey);
 
               return (
                 <Radio value={value} key={idx}>
@@ -205,7 +214,7 @@ export default class Section extends React.Component {
           >
             {items.map(({ name, value }, idx) => (
               <Select.Option key={idx} value={value}>
-                {name + ''}
+                {`${name}`}
               </Select.Option>
             ))}
           </Select>
@@ -248,7 +257,9 @@ export default class Section extends React.Component {
               GB
             </span>
             <p className={styles.tips}>
-              {`${rest.min}GB - ${rest.max}GB, The volume size for each instance`}
+              {`${rest.min}GB - ${
+                rest.max
+              }GB, The volume size for each instance`}
             </p>
           </Fragment>
         );
@@ -256,7 +267,11 @@ export default class Section extends React.Component {
 
       case 'yaml':
         content = rest.yaml && (
-          <CodeMirror code={rest.yaml} onChange={this.handleChange} name={keyName} />
+          <CodeMirror
+            code={rest.yaml}
+            onChange={this.handleChange}
+            name={keyName}
+          />
         );
         break;
 

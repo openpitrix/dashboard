@@ -9,7 +9,7 @@ export const subNavMap = {
       { name: 'All Apps', link: '/dashboard/apps', active: '/app' },
       { name: 'App Reviews', link: '/dashboard/reviews', active: 'review' },
       { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
-      /*{ name: 'Appearance', link: '#', active: 'appearance' }*/
+      /* { name: 'Appearance', link: '#', active: 'appearance' } */
     ]
   },
   user: {
@@ -23,12 +23,12 @@ export const subNavMap = {
   repo: {
     title: 'Platform',
     links: [
-      /*{ name: 'Tickets', link: '#', active: 'ticket' },
-       { name: 'Notifications', link: '#', active: 'notification' },*/
+      /* { name: 'Tickets', link: '#', active: 'ticket' },
+       { name: 'Notifications', link: '#', active: 'notification' }, */
       { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
       { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
       { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' }
-      /* { name: 'Service Status', link: '#', active: 'service' }*/
+      /* { name: 'Service Status', link: '#', active: 'service' } */
     ]
   }
 };

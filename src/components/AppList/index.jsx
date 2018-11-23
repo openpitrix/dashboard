@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
 import Card from '../Card';
@@ -12,13 +11,13 @@ import styles from './index.scss';
 @translate()
 export default class AppList extends PureComponent {
   static propTypes = {
-    className: PropTypes.string,
+    appSearch: PropTypes.string,
     apps: PropTypes.array,
     categoryApps: PropTypes.array,
     categoryTitle: PropTypes.string,
-    appSearch: PropTypes.string,
-    skipLink: PropTypes.string,
-    isLoading: PropTypes.bool
+    className: PropTypes.string,
+    isLoading: PropTypes.bool,
+    skipLink: PropTypes.string
   };
 
   static defaultProps = {
@@ -29,7 +28,9 @@ export default class AppList extends PureComponent {
   };
 
   renderCategoryApps() {
-    const { categoryTitle, appSearch, categoryApps, skipLink } = this.props;
+    const {
+      categoryTitle, appSearch, categoryApps, skipLink
+    } = this.props;
     const categoryShow = !categoryTitle && !appSearch && categoryApps;
 
     if (!categoryShow) {
@@ -39,14 +40,19 @@ export default class AppList extends PureComponent {
     if (categoryShow) {
       return categoryApps.map(({ category_id, name, apps }) => {
         apps = apps || [];
-        if(apps.length === 0) {
+        if (apps.length === 0) {
           return null;
         }
 
         return (
           <div key={category_id} className={styles.categoryApps}>
             {apps.length > 0 && (
-              <CardTitle skipLink={skipLink} categoryId={category_id} title={name} more />
+              <CardTitle
+                skipLink={skipLink}
+                categoryId={category_id}
+                title={name}
+                more
+              />
             )}
 
             {apps
@@ -68,12 +74,14 @@ export default class AppList extends PureComponent {
   }
 
   getSearchTitle() {
-    let { appSearch, categoryTitle, t } = this.props;
+    const { appSearch, categoryTitle, t } = this.props;
     return (appSearch && t('search_results')) || categoryTitle || t('Newest');
   }
 
   render() {
-    const { apps, className, skipLink, isLoading, t } = this.props;
+    const {
+      apps, className, skipLink, isLoading, t
+    } = this.props;
 
     return (
       <div className={classnames(className)}>
@@ -90,7 +98,10 @@ export default class AppList extends PureComponent {
             />
           ))}
 
-          {!apps.length && !isLoading && <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>}
+          {!apps.length
+            && !isLoading && (
+              <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
+          )}
         </div>
 
         {this.renderCategoryApps()}

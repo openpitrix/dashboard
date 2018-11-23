@@ -5,8 +5,18 @@ import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Popover, Modal, Select, CodeMirror } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Card, Panel, BreadCrumb, Dialog } from 'components/Layout';
+import {
+  Icon, Popover, Modal, Select, CodeMirror
+} from 'components/Base';
+import Layout, {
+  BackBtn,
+  Grid,
+  Section,
+  Card,
+  Panel,
+  BreadCrumb,
+  Dialog
+} from 'components/Layout';
 import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
@@ -80,7 +90,9 @@ export default class ClusterDetail extends Component {
     clusterDetailStore.reset();
   }
 
-  listenToJob = async ({ op, rtype, rid, values = {} }) => {
+  listenToJob = async ({
+    op, rtype, rid, values = {}
+  }) => {
     const { clusterStore, clusterDetailStore, match } = this.props;
     const { clusterId } = match.params;
     const { jobs } = clusterStore;
@@ -110,15 +122,19 @@ export default class ClusterDetail extends Component {
     }
 
     if (rtype === 'cluster_node') {
-      const curNodes = clusterDetailStore.clusterNodes.toJSON().map(node => node.node_id);
+      const curNodes = clusterDetailStore.clusterNodes
+        .toJSON()
+        .map(node => node.node_id);
 
       if (curNodes.includes(rid)) {
-        clusterDetailStore.clusterNodes = clusterDetailStore.clusterNodes.map(node => {
-          if (node.node_id === rid) {
-            Object.assign(node, status);
+        clusterDetailStore.clusterNodes = clusterDetailStore.clusterNodes.map(
+          node => {
+            if (node.node_id === rid) {
+              Object.assign(node, status);
+            }
+            return node;
           }
-          return node;
-        });
+        );
       }
     }
   };
@@ -141,7 +157,9 @@ export default class ClusterDetail extends Component {
   };
 
   renderModals() {
-    const { t, appVersionStore, clusterStore, clusterDetailStore } = this.props;
+    const {
+      t, appVersionStore, clusterStore, clusterDetailStore
+    } = this.props;
     const { modalType, isModalOpen, hideModal } = clusterStore;
     const handleTypes = ['cease', 'delete', 'start', 'stop', 'rollback'];
 
@@ -153,7 +171,12 @@ export default class ClusterDetail extends Component {
       const { clusterJobs } = clusterDetailStore;
 
       return (
-        <Dialog title={t('Activities')} isOpen={isModalOpen} onCancel={hideModal} noActions>
+        <Dialog
+          title={t('Activities')}
+          isOpen={isModalOpen}
+          onCancel={hideModal}
+          noActions
+        >
           <TimeAxis timeList={clusterJobs.toJSON()} />
         </Dialog>
       );
@@ -161,7 +184,12 @@ export default class ClusterDetail extends Component {
 
     if (modalType === 'parameters') {
       return (
-        <Modal title="Parameters" visible={isModalOpen} onCancel={hideModal} hideFooter>
+        <Modal
+          title="Parameters"
+          visible={isModalOpen}
+          onCancel={hideModal}
+          hideFooter
+        >
           <ul className={styles.parameters}>
             <li>
               <div className={styles.name}>Port</div>
@@ -239,7 +267,9 @@ export default class ClusterDetail extends Component {
 
   handleCluster = () => {
     const { clusterStore } = this.props;
-    const { clusterId, clusterIds, modalType, operateType } = clusterStore;
+    const {
+      clusterId, clusterIds, modalType, operateType
+    } = clusterStore;
     const ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
 
     switch (modalType) {
@@ -270,7 +300,9 @@ export default class ClusterDetail extends Component {
   };
 
   renderHandleMenu = () => {
-    const { clusterStore, clusterDetailStore, runtimeStore, t } = this.props;
+    const {
+      clusterStore, clusterDetailStore, runtimeStore, t
+    } = this.props;
     const { showOperateCluster } = clusterStore;
     const { cluster_id, status } = clusterDetailStore.cluster;
 
@@ -285,8 +317,10 @@ export default class ClusterDetail extends Component {
         return (
           <Fragment>
             {status === 'deleted' && renderBtn('cease', t('Cease cluster'))}
-            {status !== 'deleted' && renderBtn('rollback', t('Rollback cluster'))}
-            {status !== 'deleted' && renderBtn('update_env', t('Update cluster env'))}
+            {status !== 'deleted'
+              && renderBtn('rollback', t('Rollback cluster'))}
+            {status !== 'deleted'
+              && renderBtn('update_env', t('Update cluster env'))}
             {status !== 'deleted' && renderBtn('upgrade', t('Upgrade cluster'))}
           </Fragment>
         );
@@ -303,7 +337,7 @@ export default class ClusterDetail extends Component {
     return (
       <div className="operate-menu">
         {renderMenuBtns()}
-        {/*<span onClick={() => showOperateCluster(cluster_id, 'resize')}>{t('Resize cluster')}</span>*/}
+        {/* <span onClick={() => showOperateCluster(cluster_id, 'resize')}>{t('Resize cluster')}</span> */}
         {status !== 'deleted' && (
           <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
             {t('Delete cluster')}
@@ -355,7 +389,10 @@ export default class ClusterDetail extends Component {
                 userName={_.get(userStore.userDetail, 'username', '')}
               />
               {cluster.status !== 'deleted' && (
-                <Popover className="operation" content={this.renderHandleMenu()}>
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu()}
+                >
                   <Icon name="more" />
                 </Popover>
               )}

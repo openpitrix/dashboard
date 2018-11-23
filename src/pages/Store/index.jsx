@@ -13,7 +13,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  rootStore: rootStore,
+  rootStore,
   categoryStore: rootStore.categoryStore,
   appStore: rootStore.appStore
 }))
@@ -57,7 +57,7 @@ export default class Store extends Component {
     appStore.reset();
   }
 
-  //load app data progressive by window scroll
+  // load app data progressive by window scroll
   handleScroll = async () => {
     const { appStore, categoryStore } = this.props;
     const { categories } = categoryStore;
@@ -85,14 +85,14 @@ export default class Store extends Component {
           category_id: categories[i].category_id,
           noLoading: true
         });
-        let temp = categoryStore.categories[i];
+        const temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
           apps: appStore.apps,
           ...temp
         };
 
         if (number) {
-          //when this category no app data, query next category
+          // when this category no app data, query next category
           if (appStore.apps.length === 0) {
             number++;
           } else if (number === i + 1) {
@@ -106,18 +106,28 @@ export default class Store extends Component {
   };
 
   render() {
-    const { appStore, categoryStore, match, t } = this.props;
+    const {
+      appStore, categoryStore, match, t
+    } = this.props;
     const { storeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
 
     const { category, search } = match.params;
     const showApps = category || search ? storeApps.slice() : storeApps.slice(0, 3);
-    const categoryTitle = get(find(categories, { category_id: category }), 'name', '');
+    const categoryTitle = get(
+      find(categories, { category_id: category }),
+      'name',
+      ''
+    );
 
     return (
       <Layout title="App Store" hasSearch>
         <div className={styles.storeContent}>
-          <Nav className={styles.nav} navs={categories.toJSON()} skipLink="store" />
+          <Nav
+            className={styles.nav}
+            navs={categories.toJSON()}
+            skipLink="store"
+          />
           <Loading isLoading={isLoading} className={styles.homeLoad}>
             <AppList
               className={styles.apps}
@@ -128,14 +138,14 @@ export default class Store extends Component {
               skipLink="store"
               isLoading={isLoading}
             />
-            {isLoading &&
-              isProgressive && (
+            {isLoading
+              && isProgressive && (
                 <div className={styles.loading}>
                   <div className={styles.loadOuter}>
                     <div className={styles.loader} />
                   </div>
                 </div>
-              )}
+            )}
           </Loading>
         </div>
       </Layout>

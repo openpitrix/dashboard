@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const router = new Router();
 
 router.get('/logout', ctx => {
-  let cookieOptions = {
+  const cookieOptions = {
     maxAge: -1,
     httpOnly: false
   };

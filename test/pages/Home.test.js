@@ -1,7 +1,3 @@
-import React from 'react';
-import { render, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
 
@@ -22,8 +18,7 @@ describe('Home', () => {
       categoryStore: {
         getCategoryApps: () => {},
         categories: []
-      },
-      setNavFix: () => {}
+      }
     });
   });
 
@@ -31,7 +26,7 @@ describe('Home', () => {
     rootStore = null;
   });
 
-  let match = { path: '/apps/ctg-zlMzkwYWWW8j', params: {} };
+  const match = { path: '/apps/ctg-zlMzkwYWWW8j', params: {} };
 
   it('basic render', () => {
     const wrapper = render(

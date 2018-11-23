@@ -7,7 +7,7 @@ import App from './App';
 import RootStore from './stores/RootStore';
 import SockClient from './utils/sock-client';
 import i18n from './i18n';
-import UserProvider from 'providers/user';
+import UserProvider from './providers/user';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();

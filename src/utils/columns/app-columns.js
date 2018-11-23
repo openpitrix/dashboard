@@ -37,13 +37,12 @@ export default [
     key: 'category',
     render: item => (
       <I18n>
-        {t =>
-          t(
-            get(item, 'category_set', [])
-              .filter(cate => cate.category_id && cate.status === 'enabled')
-              .map(cate => cate.name)
-              .join(', ')
-          )
+        {t => t(
+          get(item, 'category_set', [])
+            .filter(cate => cate.category_id && cate.status === 'enabled')
+            .map(cate => cate.name)
+            .join(', ')
+        )
         }
       </I18n>
     )

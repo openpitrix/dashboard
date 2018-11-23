@@ -1,20 +1,29 @@
 const { isEmpty, without, map } = require('lodash');
 const sessConfig = require('./session-config');
 
-const oauthResFields = ['access_token', 'refresh_token', 'token_type', 'expires_in', 'id_token'];
+const oauthResFields = [
+  'access_token',
+  'refresh_token',
+  'token_type',
+  'expires_in',
+  'id_token'
+];
 
-const getTokenGroupFromCtx = (ctx, group = '') => {
-  return oauthResFields.reduce((obj, prop) => {
-    if (group) {
-      prop = [group, prop].join('_');
-    }
+const getTokenGroupFromCtx = (ctx, group = '') => oauthResFields.reduce((obj, prop) => {
+  if (group) {
+    prop = [group, prop].join('_');
+  }
 
-    obj[prop] = ctx.cookies.get(prop);
-    return obj;
-  }, {});
-};
+  obj[prop] = ctx.cookies.get(prop);
+  return obj;
+}, {});
 
-const saveTokenResponseToCookie = (ctx, token_res, prefix = '', additional = {}) => {
+const saveTokenResponseToCookie = (
+  ctx,
+  token_res,
+  prefix = '',
+  additional = {}
+) => {
   const { expires_in } = token_res;
   const msExpireIn = parseInt(expires_in) * 1000;
   const cookieOption = Object.assign({}, sessConfig, { maxAge: msExpireIn });
@@ -28,7 +37,11 @@ const saveTokenResponseToCookie = (ctx, token_res, prefix = '', additional = {})
       cookieOption.maxAge = msExpireIn;
     }
 
-    ctx.cookies.set(prefix ? [prefix, prop].join('_') : prop, val, cookieOption);
+    ctx.cookies.set(
+      prefix ? [prefix, prop].join('_') : prop,
+      val,
+      cookieOption
+    );
   });
 
   if (!isEmpty(additional)) {

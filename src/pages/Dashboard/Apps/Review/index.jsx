@@ -4,8 +4,23 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
+import {
+  Icon,
+  Button,
+  Table,
+  Popover,
+  Select,
+  Modal,
+  Image
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  Grid,
+  Row,
+  Section,
+  Card,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -27,7 +42,9 @@ import styles from './index.scss';
 @observer
 export default class Review extends Component {
   async componentDidMount() {
-    const { appVersionStore, appStore, repoStore, userStore } = this.props;
+    const {
+      appVersionStore, appStore, repoStore, userStore
+    } = this.props;
 
     appVersionStore.registerStore('app', appStore);
     appVersionStore.registerStore('user', userStore);
@@ -48,7 +65,12 @@ export default class Review extends Component {
 
   renderToolbar() {
     const { t } = this.props;
-    const { searchWord, onSearch, onClearSearch, onRefresh } = this.props.appVersionStore;
+    const {
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh
+    } = this.props.appVersionStore;
 
     return (
       <Toolbar
@@ -62,7 +84,9 @@ export default class Review extends Component {
   }
 
   render() {
-    const { appVersionStore, appStore, repoStore, userStore, t } = this.props;
+    const {
+      appVersionStore, appStore, repoStore, userStore, t
+    } = this.props;
     const { versions, isLoading } = appVersionStore;
     const { apps } = appStore;
     const { repos } = repoStore;
@@ -73,7 +97,9 @@ export default class Review extends Component {
         title: t('Status'),
         key: 'status',
         width: '110px',
-        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
+        render: item => (
+          <Status type={item.status} name={mappingStatus(item.status)} />
+        )
       },
       {
         title: t('App Name'),
@@ -105,7 +131,7 @@ export default class Review extends Component {
               .map(cate => cate.name)
               .join(', ')
           )
-      },*/
+      }, */
       {
         title: t('Repo'),
         key: 'repo_id',

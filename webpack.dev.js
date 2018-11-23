@@ -16,7 +16,6 @@ module.exports = {
     publicPath: '/build/',
     pathinfo: false
   },
-  // profile: true,
   performance: {
     hints: 'warning'
   },
@@ -33,6 +32,15 @@ module.exports = {
           }
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
+      },
+      {
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          fix: true
+        }
       },
       {
         test: /\.css$/,
@@ -67,7 +75,11 @@ module.exports = {
     alias: {
       scss: resolve(__dirname, 'src/scss')
     },
-    modules: [resolve(__dirname, 'src'), resolve(__dirname, 'lib'), 'node_modules']
+    modules: [
+      resolve(__dirname, 'src'),
+      resolve(__dirname, 'lib'),
+      'node_modules'
+    ]
   },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),

@@ -1,7 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
+
 const CodeMirror = lazy(() => import('react-codemirror'));
 
+// fixme
 if (process.browser) {
   require('codemirror/mode/yaml/yaml');
   require('codemirror/mode/javascript/javascript');
@@ -11,8 +13,8 @@ if (process.browser) {
 export default class CodeMirrorX extends React.Component {
   static propTypes = {
     code: PropTypes.string,
-    onChange: PropTypes.func,
-    mode: PropTypes.string
+    mode: PropTypes.string,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
@@ -27,7 +29,9 @@ export default class CodeMirrorX extends React.Component {
   }
 
   render() {
-    const { onChange, code, mode, ...rest } = this.props;
+    const {
+      onChange, code, mode, ...rest
+    } = this.props;
 
     return (
       <Suspense fallback={<div>Loading...</div>}>
@@ -35,7 +39,6 @@ export default class CodeMirrorX extends React.Component {
           value={code}
           onChange={onChange}
           options={{ mode, lineNumbers: true }}
-          ref="editor"
           {...rest}
         />
       </Suspense>

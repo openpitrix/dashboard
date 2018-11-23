@@ -1,13 +1,14 @@
 import React from 'react';
-import { configure, mount, shallow, render } from 'enzyme';
+import {
+  configure, mount, shallow, render
+} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 
 configure({ adapter: new Adapter() });
 
-global.requestAnimationFrame =
-  global.requestAnimationFrame ||
-  function(cb) {
+global.requestAnimationFrame = global.requestAnimationFrame
+  || function (cb) {
     return setTimeout(cb, 0);
   };
 

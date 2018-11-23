@@ -2,10 +2,27 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { filter, get, orderBy, capitalize } from 'lodash';
+import {
+  filter, get, orderBy, capitalize
+} from 'lodash';
 
-import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card, BreadCrumb } from 'components/Layout';
+import {
+  Icon,
+  Button,
+  Table,
+  Popover,
+  Select,
+  Modal,
+  Image
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  Grid,
+  Row,
+  Section,
+  Card,
+  BreadCrumb
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -28,7 +45,9 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   async componentDidMount() {
-    const { appStore, userStore, user, categoryStore, repoStore } = this.props;
+    const {
+      appStore, userStore, user, categoryStore, repoStore
+    } = this.props;
     const { isAdmin } = user;
 
     await appStore.fetchAll();
@@ -72,7 +91,12 @@ export default class Apps extends Component {
     const { isDeleteOpen, remove, hideModal } = appStore;
 
     return (
-      <Dialog title={t('Delete App')} visible={isDeleteOpen} onSubmit={remove} onCancel={hideModal}>
+      <Dialog
+        title={t('Delete App')}
+        visible={isDeleteOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
         {t('Delete App desc')}
       </Dialog>
     );
@@ -80,7 +104,13 @@ export default class Apps extends Component {
 
   renderOpsModal = () => {
     const { appStore, categoryStore, t } = this.props;
-    const { isModalOpen, hideModal, handleApp, changeAppCate, modifyCategoryById } = appStore;
+    const {
+      isModalOpen,
+      hideModal,
+      handleApp,
+      changeAppCate,
+      modifyCategoryById
+    } = appStore;
     const categories = categoryStore.categories.toJSON();
     const { selectedCategory } = handleApp;
 
@@ -119,10 +149,18 @@ export default class Apps extends Component {
       deployEntry = null;
 
     if (item.status !== 'deleted') {
-      deployEntry = <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>;
+      deployEntry = (
+        <Link to={`/store/${item.app_id}/deploy`}>{t('Deploy App')}</Link>
+      );
       if (isAdmin) {
         itemMenu = (
-          <span onClick={showModifyAppCate.bind(null, item.app_id, item.category_set)}>
+          <span
+            onClick={showModifyAppCate.bind(
+              null,
+              item.app_id,
+              item.category_set
+            )}
+          >
             {t('Choose category')}
           </span>
         );
@@ -153,7 +191,11 @@ export default class Apps extends Component {
     if (appIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button type="delete" onClick={() => showDeleteApp(appIds)} className="btn-handle">
+          <Button
+            type="delete"
+            onClick={() => showDeleteApp(appIds)}
+            className="btn-handle"
+          >
             {t('Delete')}
           </Button>
         </Toolbar>
@@ -161,7 +203,9 @@ export default class Apps extends Component {
     }
 
     const type = hasViewType ? viewType : '';
-    const withCreateBtn = hasViewType ? { name: t('Create'), linkTo: `/dashboard/app/create` } : {};
+    const withCreateBtn = hasViewType
+      ? { name: t('Create'), linkTo: `/dashboard/app/create` }
+      : {};
 
     return (
       <Toolbar
@@ -202,8 +246,17 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { appStore, repoStore, userStore, user, t } = this.props;
-    const { apps, summaryInfo, isLoading, onChangeStatus, selectStatus, viewType } = appStore;
+    const {
+      appStore, repoStore, userStore, user, t
+    } = this.props;
+    const {
+      apps,
+      summaryInfo,
+      isLoading,
+      onChangeStatus,
+      selectStatus,
+      viewType
+    } = appStore;
     const { repos } = repoStore;
     const { users } = userStore;
     const { isNormal, isDev, isAdmin } = user;
@@ -233,19 +286,20 @@ export default class Apps extends Component {
         title: t('Status'),
         key: 'status',
         width: '90px',
-        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
+        render: item => (
+          <Status type={item.status} name={mappingStatus(item.status)} />
+        )
       },
       {
         title: t('Categories'),
         key: 'category',
         width: '100px',
-        render: item =>
-          t(
-            get(item, 'category_set', [])
-              .filter(cate => cate.category_id && cate.status === 'enabled')
-              .map(cate => cate.name)
-              .join(', ')
-          )
+        render: item => t(
+          get(item, 'category_set', [])
+            .filter(cate => cate.category_id && cate.status === 'enabled')
+            .map(cate => cate.name)
+            .join(', ')
+        )
       },
       {
         title: t('Visibility'),
@@ -262,7 +316,12 @@ export default class Apps extends Component {
             <ProviderName
               className={styles.provider}
               name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
-              provider={getObjName(repos, 'repo_id', item.repo_id, 'providers[0]')}
+              provider={getObjName(
+                repos,
+                'repo_id',
+                item.repo_id,
+                'providers[0]'
+              )}
             />
           </Link>
         )

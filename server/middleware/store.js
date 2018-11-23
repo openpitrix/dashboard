@@ -14,15 +14,15 @@ module.exports = async (ctx, next) => {
 
   let serverUrl = process.env.serverUrl || config.serverUrl;
 
-  let apiVer = process.env.apiVersion || config.apiVersion || 'v1';
+  const apiVer = process.env.apiVersion || config.apiVersion || 'v1';
 
   let socketUrl = process.env.socketUrl || config.socketUrl;
 
   if (!serverUrl.startsWith('http')) {
-    serverUrl = 'http://' + serverUrl;
+    serverUrl = `http://${serverUrl}`;
   }
   if (!socketUrl.startsWith('ws://')) {
-    socketUrl = 'ws://' + socketUrl;
+    socketUrl = `ws://${socketUrl}`;
   }
 
   // url.resolve need first string starts with http

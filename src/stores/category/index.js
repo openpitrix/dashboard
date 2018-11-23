@@ -1,22 +1,31 @@
 import { observable, action } from 'mobx';
-import _, { get, assign, isObject, isArray, isEmpty, find } from 'lodash';
+import { get, assign } from 'lodash';
+
+import ts from 'config/translation';
 
 import Store from '../Store';
-import ts from 'config/translation';
 
 export default class CategoryStore extends Store {
   @observable categories = [];
+
   @observable totalCount = 0;
+
   @observable category = {};
+
   @observable isLoading = false;
 
   @observable name = '';
+
   @observable description = '';
+
   @observable isModalOpen = false;
+
   @observable isDeleteOpen = false;
+
   @observable isDetailPage = false;
 
   initLoadNumber = 6;
+
   @observable appStore = null;
 
   @observable searchWord = '';
@@ -33,13 +42,22 @@ export default class CategoryStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('categories', assign(defaultParams, params));
+    const result = await this.request.get(
+      'categories',
+      assign(defaultParams, params)
+    );
     this.categories = get(result, 'category_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
     if (appStore) {
-      for (let i = 0; i < this.initLoadNumber && i < this.categories.length; i++) {
-        await appStore.fetchAll({ category_id: this.categories[i].category_id });
+      for (
+        let i = 0;
+        i < this.initLoadNumber && i < this.categories.length;
+        i++
+      ) {
+        await appStore.fetchAll({
+          category_id: this.categories[i].category_id
+        });
         this.categories[i] = {
           total: appStore.totalCount,
           apps: appStore.apps,
@@ -69,14 +87,14 @@ export default class CategoryStore extends Store {
   @action
   fetch = async category_id => {
     this.isLoading = true;
-    const result = await this.request.get(`categories`, { category_id: category_id });
+    const result = await this.request.get(`categories`, { category_id });
     this.category = get(result, 'category_set[0]', {});
     this.isLoading = false;
   };
 
   postHandleResult = async (result, type) => {
     if (get(result, 'category_id', '')) {
-      const msg = type + ' category successfully.';
+      const msg = `${type} category successfully.`;
       this.hideModal();
 
       if (this.isDetailPage && type !== 'Delete') {
@@ -92,24 +110,26 @@ export default class CategoryStore extends Store {
 
   @action
   create = async params => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.post('categories', params);
-    //this.isLoading = false;
+    // this.isLoading = false;
     await this.postHandleResult(result, 'Create');
   };
 
   @action
   modify = async params => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.patch('categories', params);
-    //this.isLoading = false;
+    // this.isLoading = false;
     await this.postHandleResult(result, 'Modify');
   };
 
   @action
   remove = async () => {
     const categoryIds = [this.category.category_id];
-    const result = await this.request.delete('categories', { category_id: categoryIds });
+    const result = await this.request.delete('categories', {
+      category_id: categoryIds
+    });
     await this.postHandleResult(result, 'Delete');
   };
 
@@ -131,8 +151,8 @@ export default class CategoryStore extends Store {
 
   @action
   createOrModify = ev => {
-    let method = this.category.category_id ? 'modify' : 'create';
-    let params = {
+    const method = this.category.category_id ? 'modify' : 'create';
+    const params = {
       name: this.name,
       description: this.description,
       locale: '{}'

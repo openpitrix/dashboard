@@ -9,7 +9,9 @@ export default class ClusterDetailStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 
   @observable currentPage = 1;
+
   @observable isLoading = false;
+
   @observable cluster = {};
 
   // vmbase
@@ -21,6 +23,7 @@ export default class ClusterDetailStore extends Store {
   @observable clusterJobs = [];
 
   @observable modalType = '';
+
   @observable isModalOpen = false;
 
   @observable extendedRowKeys = [];
@@ -28,13 +31,17 @@ export default class ClusterDetailStore extends Store {
   @observable nodeType = '';
 
   @observable selectedNodeKeys = [];
+
   @observable selectedNodeIds = [];
 
   @observable selectedNodeRole = '';
 
   @observable currentNodePage = 1;
+
   @observable totalNodeCount = 0;
+
   @observable searchNode = '';
+
   @observable selectNodeStatus = '';
 
   @action
@@ -51,7 +58,9 @@ export default class ClusterDetailStore extends Store {
   @action
   fetch = async clusterId => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters`, { cluster_id: clusterId });
+    const result = await this.request.get(`clusters`, {
+      cluster_id: clusterId
+    });
     this.cluster = _.get(result, 'cluster_set[0]', {});
     this.isLoading = false;
   };
@@ -65,7 +74,9 @@ export default class ClusterDetailStore extends Store {
       params.search_word = this.searchNode;
     }
     if (!params.status) {
-      params.status = this.selectNodeStatus ? this.selectNodeStatus : this.defaultStatus;
+      params.status = this.selectNodeStatus
+        ? this.selectNodeStatus
+        : this.defaultStatus;
     }
     if (this.nodeIds && this.nodeIds.length) {
       params.node_id = params.node_id || this.nodeIds;
@@ -92,7 +103,11 @@ export default class ClusterDetailStore extends Store {
   // todo: inject clusterStore
   // fixme: table search, filter no effect
   @action
-  formatClusterNodes = ({ type, clusterStore = this.clusterStore, searchWord = '' }) => {
+  formatClusterNodes = ({
+    type,
+    clusterStore = this.clusterStore,
+    searchWord = ''
+  }) => {
     const { cluster_role_set, cluster_node_set } = this.cluster;
 
     if (_.isEmpty(cluster_role_set)) {
@@ -174,6 +189,7 @@ export default class ClusterDetailStore extends Store {
   @action
   addNodes = async params => {
     // todo
+    // eslint-disable-next-line
     const res = await this.request.post('clusters/add_nodes', params);
   };
 
@@ -197,6 +213,7 @@ export default class ClusterDetailStore extends Store {
 
   @action
   deleteNodes = async params => {
+    // eslint-disable-next-line
     const res = await this.request.post('clusters/delete_nodes', params);
   };
 
@@ -222,7 +239,7 @@ export default class ClusterDetailStore extends Store {
 
   @action
   json2Yaml = str => {
-    let yamlStr = YAML.stringify(JSON.parse(str || '{}'));
+    const yamlStr = YAML.stringify(JSON.parse(str || '{}'));
     // fixme : some helm app with leading strings will cause deploy error
     return yamlStr.replace(/^---\n/, '').replace(/\s+(.*)/g, '$1');
   };

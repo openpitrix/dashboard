@@ -31,15 +31,14 @@ const isLinkActive = (curLink, match, location) => {
   }
   if (curLink === '/profile') {
     return curLink === pathname;
-  } else {
-    let try_match = pathname.indexOf(curLink) === 0;
-    if (!try_match) {
-      let prefix = '/dashboard/';
-      let suffix = curLink.substring(prefix.length);
-      try_match = pathname.indexOf(prefix + plural[suffix]) === 0;
-    }
-    return try_match;
   }
+  let try_match = pathname.indexOf(curLink) === 0;
+  if (!try_match) {
+    const prefix = '/dashboard/';
+    const suffix = curLink.substring(prefix.length);
+    try_match = pathname.indexOf(prefix + plural[suffix]) === 0;
+  }
+  return try_match;
 };
 
 const LinkItem = ({ link, label }) => {
@@ -66,32 +65,40 @@ const LinkItem = ({ link, label }) => {
 };
 
 LinkItem.propTypes = {
-  link: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired
 };
 
 const TabsNav = ({ links, options }) => {
-  let prefix = options.prefix || '';
+  const prefix = options.prefix || '';
 
   return (
     <div className={styles.tabs}>
       <ul className={styles.tabsList}>
         {isArray(links)
           ? links.map(link => {
-              let label;
-              if (typeof link === 'string') {
-                label = link.substring(link.lastIndexOf('/') + 1);
-              } else if (typeof link === 'object') {
-                label = values(link)[0];
-                link = keys(link)[0];
-              }
-              return <LinkItem link={normalizeLink(link, prefix)} label={label} key={label} />;
-            })
-          : Object.keys(links).map(label => {
-              return (
-                <LinkItem link={normalizeLink(links[label], prefix)} label={label} key={label} />
-              );
-            })}
+            let label;
+            if (typeof link === 'string') {
+              label = link.substring(link.lastIndexOf('/') + 1);
+            } else if (typeof link === 'object') {
+              label = values(link)[0];
+              link = keys(link)[0];
+            }
+            return (
+                <LinkItem
+                  link={normalizeLink(link, prefix)}
+                  label={label}
+                  key={label}
+                />
+            );
+          })
+          : Object.keys(links).map(label => (
+              <LinkItem
+                link={normalizeLink(links[label], prefix)}
+                label={label}
+                key={label}
+              />
+          ))}
       </ul>
     </div>
   );

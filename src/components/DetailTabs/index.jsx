@@ -9,9 +9,9 @@ import styles from './index.scss';
 @translate()
 export default class DetailTabs extends Component {
   static propTypes = {
-    tabs: PropTypes.array,
     changeTab: PropTypes.func,
-    defaultTab: PropTypes.string
+    defaultTab: PropTypes.string,
+    tabs: PropTypes.array
   };
 
   static defaultProps = {
@@ -53,7 +53,9 @@ export default class DetailTabs extends Component {
       <div className={styles.detailTabs}>
         {tabs.map((tab, idx) => (
           <div
-            className={classnames(styles.tab, { [styles.active]: tab === curTab })}
+            className={classnames(styles.tab, {
+              [styles.active]: tab === curTab
+            })}
             key={idx}
             onClick={() => this.handleChange(tab)}
           >

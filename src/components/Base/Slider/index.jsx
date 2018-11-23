@@ -7,28 +7,28 @@ import styles from './index.scss';
 
 export default class Slider extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
     children: PropTypes.any,
-    onChange: PropTypes.func,
-    value: PropTypes.number,
-    min: PropTypes.number,
+    className: PropTypes.string,
     max: PropTypes.number,
+    min: PropTypes.number,
+    onChange: PropTypes.func,
     step: PropTypes.number,
-  }
+    value: PropTypes.number
+  };
 
   static defaultProps = {
     className: '',
     min: 0,
     max: 100,
     step: 1,
-    value: 0,
-  }
+    value: 0
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      maxPos: 0,
+      maxPos: 0
     };
   }
 
@@ -39,7 +39,7 @@ export default class Slider extends React.Component {
     const sliderWidth = this.slider.offsetWidth;
     const blockWidth = this.block.offsetWidth;
     this.setState({
-      maxPos: sliderWidth - blockWidth,
+      maxPos: sliderWidth - blockWidth
     });
   }
 
@@ -81,7 +81,7 @@ export default class Slider extends React.Component {
   handleEnd = () => {
     document.removeEventListener('mousemove', this.handleMove);
     document.removeEventListener('mouseup', this.handleEnd);
-  }
+  };
 
   render() {
     const { className, value } = this.props;
@@ -92,17 +92,18 @@ export default class Slider extends React.Component {
 
     return (
       <div
-        ref={(ref) => { this.slider = ref; }}
+        ref={ref => {
+          this.slider = ref;
+        }}
         className={classnames(styles.slider, className)}
         onMouseDown={this.handleMove}
         onMouseUp={this.handleEnd}
       >
+        <div className={styles.bar} style={barStyle} />
         <div
-          className={styles.bar}
-          style={barStyle}
-        />
-        <div
-          ref={(ref) => { this.block = ref; }}
+          ref={ref => {
+            this.block = ref;
+          }}
           className={styles.block}
           style={blockStyle}
           onMouseDown={this.handleStart}

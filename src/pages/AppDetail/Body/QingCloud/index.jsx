@@ -4,8 +4,8 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import Section from '../../section';
 import Icon from 'components/Base/Icon';
+import Section from '../../section';
 
 import styles from './index.scss';
 
@@ -19,9 +19,9 @@ export default class QingCloud extends React.Component {
 
   static propTypes = {
     app: PropTypes.object,
-    pictures: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
+    changePicture: PropTypes.func,
     currentPic: PropTypes.number,
-    changePicture: PropTypes.func
+    pictures: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
   };
 
   state = {
@@ -72,8 +72,7 @@ export default class QingCloud extends React.Component {
   };
 
   renderSlider() {
-    let { currentPic, pictures } = this.props;
-    pictures = pictures || [];
+    let { currentPic, pictures = [] } = this.props;
     if (typeof pictures === 'string') {
       pictures = pictures.split(',').map(v => v.trim());
     }
@@ -89,29 +88,35 @@ export default class QingCloud extends React.Component {
         <label className={styles.pre} onClick={() => this.changePicture('pre')}>
           <Icon name="chevron-left" size={36} />
         </label>
-        <label className={styles.next} onClick={() => this.changePicture('next')}>
+        <label
+          className={styles.next}
+          onClick={() => this.changePicture('next')}
+        >
           <Icon name="chevron-right" size={36} />
         </label>
         <div className={styles.dotList}>
-          {pictures.map((data, index) => {
-            if ((index + 1) % 2 === 0) {
-              return (
-                <label
-                  key={data}
-                  className={classnames(styles.dot, {
-                    [styles.active]: currentPic === index
-                  })}
-                  onClick={() => this.changePicture('dot', index)}
-                />
-              );
-            }
-          })}
+          {pictures.filter((v, idx) => idx % 2 === 1).map((data, index) => (
+            <label
+              key={data}
+              className={classnames(styles.dot, {
+                [styles.active]: currentPic === index
+              })}
+              onClick={() => this.changePicture('dot', index)}
+            />
+          ))}
         </div>
         <div className={styles.listOuter}>
-          <ul className={styles.pictureList} style={{ width: picWidth, left: picLeft }}>
+          <ul
+            className={styles.pictureList}
+            style={{ width: picWidth, left: picLeft }}
+          >
             {pictures.map((pic, idx) => (
               <li className={styles.pictureOuter} key={idx}>
-                <div className={styles.picture} data-pic={pic} onClick={this.handleClickPicture}>
+                <div
+                  className={styles.picture}
+                  data-pic={pic}
+                  onClick={this.handleClickPicture}
+                >
                   <img src={pic} />
                 </div>
               </li>
@@ -136,13 +141,24 @@ export default class QingCloud extends React.Component {
           <Icon name="close" size={32} />
         </div>
         <div className={styles.viewCont}>
-          <label className={styles.pre} onClick={() => this.changeOverlayPic(-1)}>
+          <label
+            className={styles.pre}
+            onClick={() => this.changeOverlayPic(-1)}
+          >
             <Icon name="chevron-left" size={36} />
           </label>
           <label className={styles.next}>
-            <Icon name="chevron-right" size={36} onClick={() => this.changeOverlayPic(1)} />
+            <Icon
+              name="chevron-right"
+              size={36}
+              onClick={() => this.changeOverlayPic(1)}
+            />
           </label>
-          <img src={currentPic} alt="overlay picture" className={styles.overlayPic} />
+          <img
+            src={currentPic}
+            alt="overlay picture"
+            className={styles.overlayPic}
+          />
         </div>
       </div>
     );
@@ -158,9 +174,9 @@ export default class QingCloud extends React.Component {
           contentClass={styles.description}
           style={{ marginLeft: 0 }}
         >
-          {`is the Apache trafodion (the main contribution of the project hatch). Trafodion is the
-          open source release of Apache 2014 and became a Apache project in May 2015. In the past
-          ten years.`}
+          Is the Apache trafodion (the main contribution of the project hatch).
+          Trafodion is the open source release of Apache 2014 and became a
+          Apache project in May 2015. In the past ten years.
         </Section>
         {this.renderSlider()}
         {this.renderOverlay()}

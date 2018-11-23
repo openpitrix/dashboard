@@ -5,13 +5,15 @@ import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Button, Icon, Table, Radio, Input, Modal } from 'components/Base';
+import {
+  Button, Icon, Table, Radio, Input, Modal
+} from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
+import { formatTime } from 'utils';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
-import { formatTime } from 'utils';
 
 import styles from '../index.scss';
 
@@ -26,6 +28,7 @@ export default class VMbasedCluster extends React.Component {
   static propTypes = {
     cluster: PropTypes.object.isRequired
   };
+
   static defaultProps = {
     cluster: {}
   };
@@ -108,12 +111,22 @@ export default class VMbasedCluster extends React.Component {
 
   renderToolbar() {
     const { store, t } = this.props;
-    const { searchNode, onSearchNode, onClearNode, onRefreshNode, selectedNodeIds } = store;
+    const {
+      searchNode,
+      onSearchNode,
+      onClearNode,
+      onRefreshNode,
+      selectedNodeIds
+    } = store;
 
     if (selectedNodeIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button type="delete" onClick={this.onClickDeleteNodes} className="btn-handle">
+          <Button
+            type="delete"
+            onClick={this.onClickDeleteNodes}
+            className="btn-handle"
+          >
             {t('Delete')}
           </Button>
           <Button onClick={this.attachKeyPairsShow}>{t('Attach')}</Button>
@@ -129,10 +142,10 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        {/*<Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>*/}
-        {/*<Icon name="add" size="mini" type="white" />*/}
-        {/*<span className={styles.addNodeTxt}>{t('Add Nodes')}</span>*/}
-        {/*</Button>*/}
+        {/* <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}> */}
+        {/* <Icon name="add" size="mini" type="white" /> */}
+        {/* <span className={styles.addNodeTxt}>{t('Add Nodes')}</span> */}
+        {/* </Button> */}
       </Toolbar>
     );
   }
@@ -241,7 +254,12 @@ export default class VMbasedCluster extends React.Component {
 
   renderAddNodesModal = () => {
     const { store, t } = this.props;
-    const { hideAddNodesModal, isModalOpen, selectedNodeRole, onChangeNodeRole } = store;
+    const {
+      hideAddNodesModal,
+      isModalOpen,
+      selectedNodeRole,
+      onChangeNodeRole
+    } = store;
     const roles = this.getClusterRoles();
     const hideRoles = roles.length === 1 && roles[0] === '';
 
@@ -253,9 +271,16 @@ export default class VMbasedCluster extends React.Component {
         onSubmit={this.handleAddNodes}
       >
         <div className={styles.wrapAddNodes}>
-          <div className={classnames(styles.formControl, { [styles.hide]: hideRoles })}>
+          <div
+            className={classnames(styles.formControl, {
+              [styles.hide]: hideRoles
+            })}
+          >
             <label>{t('Node Role')}</label>
-            <Radio.Group value={selectedNodeRole || roles[0]} onChange={onChangeNodeRole}>
+            <Radio.Group
+              value={selectedNodeRole || roles[0]}
+              onChange={onChangeNodeRole}
+            >
               {roles.map((role, idx) => (
                 <Radio value={role} key={idx} className={styles.radio}>
                   {role}
@@ -309,7 +334,12 @@ export default class VMbasedCluster extends React.Component {
     const { keyPairs, pairId } = sshKeyStore;
 
     return (
-      <Modal title={t('Attach SSH Key')} visible={isModalOpen} onCancel={hideModal} hideFooter>
+      <Modal
+        title={t('Attach SSH Key')}
+        visible={isModalOpen}
+        onCancel={hideModal}
+        hideFooter
+      >
         <div className={styles.attachContent}>
           {keyPairs.map(pair => (
             <div

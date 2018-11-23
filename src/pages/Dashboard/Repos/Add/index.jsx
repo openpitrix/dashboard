@@ -5,7 +5,9 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Checkbox, Radio, Button, Input, Select } from 'components/Base';
+import {
+  Checkbox, Radio, Button, Input, Select
+} from 'components/Base';
 import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
 
@@ -75,11 +77,16 @@ export default class RepoAdd extends Component {
             onChange={this.store.changeName}
             value={name}
           />
-          <p className={classNames(styles.rightShow, styles.note)}>{t('The name of the repo')}</p>
+          <p className={classNames(styles.rightShow, styles.note)}>
+            {t('The name of the repo')}
+          </p>
         </div>
         <div>
           <label className={styles.name}>{t('Visibility')}</label>
-          <Radio.Group value={visibility} onChange={this.store.changeVisibility}>
+          <Radio.Group
+            value={visibility}
+            onChange={this.store.changeVisibility}
+          >
             <Radio value="public" disabled={Boolean(repoId)}>
               {t('Public')}
             </Radio>
@@ -90,7 +97,10 @@ export default class RepoAdd extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Runtime Provider')}</label>
-          <Checkbox.Group values={providers.toJSON()} onChange={this.store.changeProviders}>
+          <Checkbox.Group
+            values={providers.toJSON()}
+            onChange={this.store.changeProviders}
+          >
             <Checkbox value="qingcloud" disabled={Boolean(repoId)}>
               QingCloud
             </Checkbox>
@@ -103,7 +113,9 @@ export default class RepoAdd extends Component {
           </Checkbox.Group>
         </div>
         <div>
-          <label className={classNames(styles.name, styles.fl)}>{t('Runtime Selectors')}</label>
+          <label className={classNames(styles.name, styles.fl)}>
+            {t('Runtime Selectors')}
+          </label>
           <TodoList
             labels={selectors && selectors.slice()}
             onRemove={this.store.removeSelector}
@@ -111,7 +123,9 @@ export default class RepoAdd extends Component {
             labelType="selector"
           />
           <Button
-            className={classNames(styles.add, { [styles.addBottom]: selectors.length })}
+            className={classNames(styles.add, {
+              [styles.addBottom]: selectors.length
+            })}
             onClick={this.store.addSelector}
           >
             {t('Add')}
@@ -137,36 +151,45 @@ export default class RepoAdd extends Component {
             maxLength="100"
             name="url"
             title={url}
-            required={!Boolean(repoId)}
+            required={!repoId}
             disabled={Boolean(repoId)}
           />
 
           {protocolType === 's3' ? (
             <div className={styles.rightShow}>
               <p>
-                <label className={styles.inputTitle}>{t('Access Key ID')}</label>
-                <label className={styles.inputTitle}>{t('Secret Access Key')}</label>
+                <label className={styles.inputTitle}>
+                  {t('Access Key ID')}
+                </label>
+                <label className={styles.inputTitle}>
+                  {t('Secret Access Key')}
+                </label>
               </p>
               <Input
                 className={styles.inputMiddle}
-                required={!Boolean(repoId)}
+                required={!repoId}
                 value={accessKey}
                 onChange={this.store.changeAccessKey}
               />
               <Input
                 className={styles.inputMiddle}
-                required={!Boolean(repoId)}
+                required={!repoId}
                 value={secretKey}
                 onChange={this.store.changeSecretKey}
               />
-              <Button className={styles.add} onClick={this.store.validateRepoCredential}>
+              <Button
+                className={styles.add}
+                onClick={this.store.validateRepoCredential}
+              >
                 {t('Validate')}
               </Button>
             </div>
           ) : null}
         </div>
         <div className={styles.textareaItem}>
-          <label className={classNames(styles.name, styles.textareaName)}>{t('Description')}</label>
+          <label className={classNames(styles.name, styles.textareaName)}>
+            {t('Description')}
+          </label>
           <textarea
             className={styles.textarea}
             name="description"
@@ -176,7 +199,9 @@ export default class RepoAdd extends Component {
           />
         </div>
         <div>
-          <label className={classNames(styles.name, styles.fl)}>{t('Labels')}</label>
+          <label className={classNames(styles.name, styles.fl)}>
+            {t('Labels')}
+          </label>
           <TodoList
             labels={labels && labels.slice()}
             onRemove={this.store.removeLabel}
@@ -184,14 +209,21 @@ export default class RepoAdd extends Component {
             labelType="label"
           />
           <Button
-            className={classNames(styles.add, { [styles.addBottom]: labels.length })}
+            className={classNames(styles.add, {
+              [styles.addBottom]: labels.length
+            })}
             onClick={this.store.addLabel}
           >
             {t('Add')}
           </Button>
         </div>
         <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} htmlType="submit" disabled={isLoading}>
+          <Button
+            type={`primary`}
+            className={`primary`}
+            htmlType="submit"
+            disabled={isLoading}
+          >
             {t('Confirm')}
           </Button>
           <Link to="/dashboard/repos">
@@ -211,12 +243,16 @@ export default class RepoAdd extends Component {
   render() {
     const { user, t } = this.props;
     const { repoId } = this.store;
-    const title = Boolean(repoId) ? t('Modify Repo') : t('Create Repo');
+    const title = repoId ? t('Modify Repo') : t('Create Repo');
     const { isNormal, isDev } = user;
-    const linkPath = isDev ? `My Apps>Repos>${title}` : `Platform>Repos>${title}`;
+    const linkPath = isDev
+      ? `My Apps>Repos>${title}`
+      : `Platform>Repos>${title}`;
 
     return (
-      <Layout backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}>
+      <Layout
+        backBtn={isNormal && <BackBtn label="repos" link="/dashboard/repos" />}
+      >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 
         <CreateResource title={title} aside={this.renderAside()}>

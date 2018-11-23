@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { inject } from 'mobx-react';
 
-import { Image, Icon, Input } from 'components/Base';
+import { Image, Icon } from 'components/Base';
 import styles from './index.scss';
 
 // translate hoc should place before mobx
@@ -21,8 +20,8 @@ import styles from './index.scss';
 class TitleBanner extends Component {
   static propTypes = {
     className: PropTypes.string,
-    title: PropTypes.string,
-    hasSearch: PropTypes.bool
+    hasSearch: PropTypes.bool,
+    title: PropTypes.string
   };
 
   static defaultProps = {
@@ -31,7 +30,7 @@ class TitleBanner extends Component {
   };
 
   onSearch = async value => {
-    this.props.history.push('/store/search/' + value);
+    this.props.history.push(`/store/search/${value}`);
   };
 
   onClearSearch = async () => {
@@ -96,7 +95,7 @@ class TitleBanner extends Component {
             <div className={styles.desc}>{descMap[title]}</div>
           </div>
         )}
-        {!Boolean(descMap[title]) && this.renderContent(title)}
+        {!descMap[title] && this.renderContent(title)}
       </div>
     );
   }

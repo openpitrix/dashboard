@@ -6,21 +6,26 @@ import { getCookie } from 'utils';
 
 import styles from './index.scss';
 
-const Section = ({ size, offset, className, children, ...rest }) => {
+const Section = ({
+  size, offset, className, children, ...rest
+}) => {
   const isDev = getCookie('role') !== 'user';
   const sizeCls = `section-size-${isDev ? `dev-${size}` : size}`;
   const offsetCls = `section-offset-${isDev ? `dev-${offset}` : offset}`;
 
   return (
-    <div className={classnames(styles.section, sizeCls, offsetCls, className)} {...rest}>
+    <div
+      className={classnames(styles.section, sizeCls, offsetCls, className)}
+      {...rest}
+    >
       {children}
     </div>
   );
 };
 
 Section.propTypes = {
-  size: PropTypes.number,
-  offset: PropTypes.number
+  offset: PropTypes.number,
+  size: PropTypes.number
 };
 
 Section.defaultProps = {

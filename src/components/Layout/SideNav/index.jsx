@@ -6,11 +6,13 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Icon, Popover, Image, Tooltip } from 'components/Base';
+import { Icon, Popover, Image } from 'components/Base';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 
-import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
+import {
+  subNavMap, getNavs, getDevSubNavs, getBottomNavs
+} from './navMap';
 
 import styles from './index.scss';
 
@@ -42,9 +44,9 @@ const changeKey = {
 @observer
 class SideNav extends React.Component {
   static propTypes = {
-    isScroll: PropTypes.bool,
+    className: PropTypes.string,
     hasSubNav: PropTypes.bool,
-    className: PropTypes.string
+    isScroll: PropTypes.bool
   };
 
   static defaultProps = {};
@@ -84,7 +86,9 @@ class SideNav extends React.Component {
   };
 
   renderNav() {
-    const { user, appStore, history, t } = this.props;
+    const {
+      user, appStore, history, t
+    } = this.props;
     const { role, isDev } = user;
     const { pathname } = history.location;
     const { menuApps } = appStore;
@@ -130,17 +134,32 @@ class SideNav extends React.Component {
                 )}
               </Link>
               <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
-                <label className={styles.title}>{t(nav.title || nav.name)}</label>
+                <label className={styles.title}>
+                  {t(nav.title || nav.name)}
+                </label>
               </NavLink>
             </li>
           ))}
           {isDev && (
             <Fragment>
               <li className={styles.devItem}>
-                <NavLink className={styles.addOuter} exact to="/dashboard/app/create">
-                  <Icon name="add" size={20} type="dark" className={styles.icon} />
+                <NavLink
+                  className={styles.addOuter}
+                  exact
+                  to="/dashboard/app/create"
+                >
+                  <Icon
+                    name="add"
+                    size={20}
+                    type="dark"
+                    className={styles.icon}
+                  />
                 </NavLink>
-                <NavLink exact to="/dashboard/app/create" className={styles.title}>
+                <NavLink
+                  exact
+                  to="/dashboard/app/create"
+                  className={styles.title}
+                >
                   {t('Create app')}
                 </NavLink>
               </li>
@@ -162,8 +181,7 @@ class SideNav extends React.Component {
         </ul>
         <ul className={styles.bottomNav}>
           {bottomNavs.map(
-            nav =>
-              nav.iconName === 'human' ? (
+            nav => (nav.iconName === 'human' ? (
                 <li key={nav.iconName}>
                   <Popover content={<MenuLayer />} className={styles.iconOuter}>
                     <Icon
@@ -177,7 +195,7 @@ class SideNav extends React.Component {
                     </Link>
                   </Popover>
                 </li>
-              ) : (
+            ) : (
                 <li key={nav.iconName}>
                   <Icon
                     className={styles.icon}
@@ -189,7 +207,7 @@ class SideNav extends React.Component {
                     <label className={styles.title}>{t(nav.title)}</label>
                   </Link>
                 </li>
-              )
+            ))
           )}
         </ul>
       </div>
@@ -206,7 +224,9 @@ class SideNav extends React.Component {
         <div className={styles.subNav}>
           <div className={styles.title}>{t('Dashboard')}</div>
           <Link
-            className={classnames(styles.link, { [styles.active]: url.indexOf('dashboard') > -1 })}
+            className={classnames(styles.link, {
+              [styles.active]: url.indexOf('dashboard') > -1
+            })}
             to="/dashboard"
           >
             {t('Overview')}
@@ -219,7 +239,11 @@ class SideNav extends React.Component {
       <div className={styles.subNav}>
         <div className={styles.title}>
           <div className={styles.name}>{appDetail.name}</div>
-          <Status className={styles.status} name={appDetail.status} type={appDetail.status} />
+          <Status
+            className={styles.status}
+            name={appDetail.status}
+            type={appDetail.status}
+          />
         </div>
 
         {getDevSubNavs.map(nav => (
@@ -255,7 +279,9 @@ class SideNav extends React.Component {
         {subNavData.links.map(link => (
           <Link
             key={link.name}
-            className={classnames(styles.link, { [styles.active]: path.indexOf(link.active) > -1 })}
+            className={classnames(styles.link, {
+              [styles.active]: path.indexOf(link.active) > -1
+            })}
             to={link.link}
           >
             {t(link.name)}
@@ -270,7 +296,11 @@ class SideNav extends React.Component {
     const { username } = this.props.user;
 
     return (
-      <div className={classnames(styles.header, { [styles.headerShadow]: isScroll })}>
+      <div
+        className={classnames(styles.header, {
+          [styles.headerShadow]: isScroll
+        })}
+      >
         <Popover content={<MenuLayer />} className={styles.user}>
           {username}
           <Icon name="caret-down" className={styles.iconDark} type="dark" />

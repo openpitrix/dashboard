@@ -1,11 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Icon, Button, Upload, Notification } from 'components/Base';
-import Layout, { Grid } from 'components/Layout';
+import {
+  Icon, Button, Upload, Notification
+} from 'components/Base';
 import RepoList from './RepoList';
 import StepContent from './StepContent';
 
@@ -33,14 +34,17 @@ export default class AppAdd extends Component {
   }
 
   setCreateStep = step => {
-    window.scroll({ top: 0, behavior: 'smooth' });
     const { appStore } = this.props;
-    const { setCreateStep, createStep, createError } = appStore;
-    step = step ? step : createStep - 1;
+    const { setCreateStep, createStep } = appStore;
+
+    window.scroll({ top: 0, behavior: 'smooth' });
+
+    step = step || createStep - 1;
     appStore.createError = '';
     if (step) {
       setCreateStep(step);
     } else {
+      // eslint-disable-next-line
       history.back();
     }
   };
@@ -71,22 +75,23 @@ export default class AppAdd extends Component {
   };
 
   checkFile = file => {
-    let result = true;
+    const result = true;
     const { appStore, t } = this.props;
     const maxsize = 2 * 1024 * 1024;
 
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      appVersionStore.createError = t('file_format_note');
+      appStore.createError = t('file_format_note');
       return false;
-    } else if (file.size > maxsize) {
-      appVersionStore.createError = t('The file size cannot exceed 2M');
+    }
+    if (file.size > maxsize) {
+      appStore.createError = t('The file size cannot exceed 2M');
       return false;
     }
 
     return result;
   };
 
-  uploadFile = (base64Str, file) => {
+  uploadFile = base64Str => {
     const { appStore } = this.props;
     appStore.uploadFile = base64Str;
     appStore.createOrModify();
@@ -98,21 +103,41 @@ export default class AppAdd extends Component {
 
     // filter s3 repos support upload package
     const filterRepos = repos.filter(rp => rp.type.toLowerCase() === 's3');
-    const publicRepos = filterRepos.filter(repo => repo.visibility === 'public');
-    const privateRepos = filterRepos.filter(repo => repo.visibility === 'private');
-    const selectRepos = repos.filter(repo => repo.active && repo.type.toLowerCase() === 's3');
+    const publicRepos = filterRepos.filter(
+      repo => repo.visibility === 'public'
+    );
+    const privateRepos = filterRepos.filter(
+      repo => repo.visibility === 'private'
+    );
+    const selectRepos = repos.filter(
+      repo => repo.active && repo.type.toLowerCase() === 's3'
+    );
     const name = t('creat_new_app');
     const explain = t('select_repo_app');
 
     return (
-      <StepContent name={name} explain={explain} className={styles.createVersion}>
+      <StepContent
+        name={name}
+        explain={explain}
+        className={styles.createVersion}
+      >
         <div>
-          <RepoList type="public" repos={publicRepos} onChange={this.onChange} />
-          <RepoList type="private" repos={privateRepos} onChange={this.onChange} />
+          <RepoList
+            type="public"
+            repos={publicRepos}
+            onChange={this.onChange}
+          />
+          <RepoList
+            type="private"
+            repos={privateRepos}
+            onChange={this.onChange}
+          />
         </div>
         <div
           onClick={() => this.selectRepoNext(selectRepos)}
-          className={classNames(styles.stepOperate, { [styles.noClick]: !selectRepos.length })}
+          className={classNames(styles.stepOperate, {
+            [styles.noClick]: !selectRepos.length
+          })}
         >
           {t('Next')} →
         </div>
@@ -127,9 +152,17 @@ export default class AppAdd extends Component {
     const explain = t('Upload Package');
 
     return (
-      <StepContent name={name} explain={explain} className={styles.createVersion}>
+      <StepContent
+        name={name}
+        explain={explain}
+        className={styles.createVersion}
+      >
         <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
-          <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
+          <div
+            className={classNames(styles.upload, {
+              [styles.uploading]: isLoading
+            })}
+          >
             <Icon name="upload" size={48} type="dark" />
             <p className={styles.word}>{t('click_upload')}</p>
             <p className={styles.note}>{t('file_format_note')}</p>
@@ -142,6 +175,7 @@ export default class AppAdd extends Component {
           <a
             className={styles.link}
             target="_blank"
+            rel="noopener noreferrer"
             href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
           >
             {t('view_guide_2')}
@@ -165,7 +199,11 @@ export default class AppAdd extends Component {
     const explain = t('app_created');
 
     return (
-      <StepContent name={name} explain={explain} className={styles.createVersion}>
+      <StepContent
+        name={name}
+        explain={explain}
+        className={styles.createVersion}
+      >
         <div className={styles.checkImg}>
           <label>
             <Icon name="check" size={48} />

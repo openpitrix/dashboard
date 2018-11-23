@@ -20,7 +20,9 @@ export default class TotalCard extends PureComponent {
   };
 
   render() {
-    const { iconName, name, total, iconSize, ...rest } = this.props;
+    const {
+      iconName, name, total, iconSize, ...rest
+    } = this.props;
 
     return (
       <I18n>

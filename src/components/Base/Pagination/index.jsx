@@ -12,15 +12,15 @@ import styles from './index.scss';
 export default class Pagination extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    defaultCurrent: PropTypes.number,
     current: PropTypes.number,
+    defaultCurrent: PropTypes.number,
     defaultPageSize: PropTypes.number,
-    pageSize: PropTypes.number,
-    total: PropTypes.number,
+    noCancel: PropTypes.bool,
     onChange: PropTypes.func,
-    selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onSelectRow: PropTypes.func,
-    noCancel: PropTypes.bool
+    pageSize: PropTypes.number,
+    selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    total: PropTypes.number
   };
 
   static defaultProps = {
@@ -64,9 +64,7 @@ export default class Pagination extends React.Component {
     }
   }
 
-  isValid = p => {
-    return typeof p === 'number' && p >= 1 && p !== this.state.current;
-  };
+  isValid = p => typeof p === 'number' && p >= 1 && p !== this.state.current;
 
   handleChange = p => {
     let page = p;
@@ -95,13 +93,9 @@ export default class Pagination extends React.Component {
     }
   };
 
-  hasPrev = () => {
-    return this.state.current > 1;
-  };
+  hasPrev = () => this.state.current > 1;
 
-  hasNext = () => {
-    return this.state.current < this.calculatePage();
-  };
+  hasNext = () => this.state.current < this.calculatePage();
 
   calculatePage = p => {
     let pageSize = p;
@@ -112,7 +106,9 @@ export default class Pagination extends React.Component {
   };
 
   renderTotal() {
-    let { onSelectRow, total, noCancel, t } = this.props;
+    const {
+      onSelectRow, total, noCancel, t
+    } = this.props;
     let { selectedRows } = this.state;
 
     if (!Array.isArray(selectedRows)) {
@@ -126,7 +122,10 @@ export default class Pagination extends React.Component {
             {t('Selected')}: {selectedRows.length}
           </span>
           {!noCancel && (
-            <span className={styles.cancelBtn} onClick={onSelectRow.bind(null, [], [])}>
+            <span
+              className={styles.cancelBtn}
+              onClick={onSelectRow.bind(null, [], [])}
+            >
               {t('Cancel')}
             </span>
           )}
@@ -150,7 +149,10 @@ export default class Pagination extends React.Component {
         <div className={styles.total}>{this.renderTotal()}</div>
         <div className={styles.pageItems}>
           <span
-            className={classnames(styles.btn, `${this.hasPrev() ? '' : 'btn-disabled'}`)}
+            className={classnames(
+              styles.btn,
+              `${this.hasPrev() ? '' : 'btn-disabled'}`
+            )}
             onClick={this.prev}
             aria-disabled={!this.hasPrev()}
           >
@@ -158,7 +160,10 @@ export default class Pagination extends React.Component {
           </span>
           <span className={styles.current}>{`${current} / ${totalPage}`}</span>
           <span
-            className={classnames(styles.btn, `${this.hasNext() ? '' : 'btn-disabled'}`)}
+            className={classnames(
+              styles.btn,
+              `${this.hasNext() ? '' : 'btn-disabled'}`
+            )}
             onClick={this.next}
             aria-disabled={!this.hasNext()}
           >

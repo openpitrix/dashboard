@@ -17,11 +17,13 @@ export default class TimeAxis extends PureComponent {
     return (
       <div className={styles.timeAxis}>
         <ul className={styles.axis}>
-          {timeList &&
-            timeList.map((item, index) => (
+          {timeList
+            && timeList.map((item, index) => (
               <li key={index}>
                 <div className={styles.word}>{item.job_action}</div>
-                <div className={styles.time}>{formatTime(item.create_time)}</div>
+                <div className={styles.time}>
+                  {formatTime(item.create_time)}
+                </div>
                 <span className={classnames(styles.dot, styles[item.status])} />
               </li>
             ))}

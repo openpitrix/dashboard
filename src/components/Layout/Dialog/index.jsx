@@ -14,11 +14,11 @@ export default class Dialog extends React.PureComponent {
   };
 
   static propTypes = {
-    title: PropTypes.string,
     isOpen: PropTypes.bool,
     noActions: PropTypes.bool,
     onCancel: PropTypes.func,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    title: PropTypes.string
   };
 
   handleSubmit = e => {
@@ -27,7 +27,16 @@ export default class Dialog extends React.PureComponent {
   };
 
   render() {
-    const { width, title, isOpen, onCancel, children, className, noActions, ...rest } = this.props;
+    const {
+      width,
+      title,
+      isOpen,
+      onCancel,
+      children,
+      className,
+      noActions,
+      ...rest
+    } = this.props;
 
     return (
       <Modal

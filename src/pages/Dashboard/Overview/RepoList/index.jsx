@@ -12,12 +12,12 @@ import styles from './index.scss';
 @translate()
 export default class RepoList extends PureComponent {
   static propTypes = {
-    type: PropTypes.oneOf(['repo', 'runtime']),
-    topRepos: PropTypes.array,
+    clusters: PropTypes.array,
+    limit: PropTypes.number,
     repos: PropTypes.array,
     runtimes: PropTypes.array,
-    clusters: PropTypes.array,
-    limit: PropTypes.number
+    topRepos: PropTypes.array,
+    type: PropTypes.oneOf(['repo', 'runtime'])
   };
 
   static defaultProps = {
@@ -29,7 +29,9 @@ export default class RepoList extends PureComponent {
   };
 
   render() {
-    const { topRepos, repos, runtimes, clusters, type, t } = this.props;
+    const {
+      topRepos, repos, runtimes, clusters, type, t
+    } = this.props;
     let items = runtimes,
       totalName = 'Clusters';
 
@@ -43,10 +45,10 @@ export default class RepoList extends PureComponent {
           {items.map(item => {
             let link = `/dashboard/runtime/${item.runtime_id}`;
             let provider = item.provider;
-            let number =
-              clusters.filter(cluster => cluster.runtime_id === item.runtime_id).length || 0;
+            let number = clusters.filter(cluster => cluster.runtime_id === item.runtime_id)
+              .length || 0;
 
-            let repo = getFilterObj(repos, 'repo_id', item.id);
+            const repo = getFilterObj(repos, 'repo_id', item.id);
             if (type === 'repo') {
               number = item.number;
               link = `/dashboard/repo/${item.id}`;

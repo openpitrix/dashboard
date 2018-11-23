@@ -8,10 +8,10 @@ import styles from './index.scss';
 
 export default class Option extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
-    value: PropTypes.string,
     children: PropTypes.any,
-    isSelected: PropTypes.bool
+    className: PropTypes.string,
+    isSelected: PropTypes.bool,
+    value: PropTypes.string
   };
 
   static defaultProps = {
@@ -19,7 +19,9 @@ export default class Option extends React.Component {
   };
 
   render() {
-    const { className, children, isSelected, ...rest } = this.props;
+    const {
+      className, children, isSelected, ...rest
+    } = this.props;
 
     const classNames = classnames(styles.option, className);
 

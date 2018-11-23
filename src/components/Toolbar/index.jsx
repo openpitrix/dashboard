@@ -10,22 +10,22 @@ import styles from './index.scss';
 
 class Toolbar extends React.Component {
   static propTypes = {
+    changeView: PropTypes.func,
+    children: PropTypes.node,
     className: PropTypes.string,
-    onSearch: PropTypes.func,
+    inputMaxLen: PropTypes.number,
+    noRefreshBtn: PropTypes.bool,
+    noSearchBox: PropTypes.bool,
     onClear: PropTypes.func,
     onRefresh: PropTypes.func,
-    searchWord: PropTypes.string,
+    onSearch: PropTypes.func,
     placeholder: PropTypes.string,
-    inputMaxLen: PropTypes.number,
-    children: PropTypes.node,
+    searchWord: PropTypes.string,
+    viewType: PropTypes.string,
     withCreateBtn: PropTypes.shape({
       linkTo: PropTypes.string,
       onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
-    }),
-    viewType: PropTypes.string,
-    changeView: PropTypes.func,
-    noSearchBox: PropTypes.bool,
-    noRefreshBtn: PropTypes.bool
+    })
   };
 
   static defaultProps = {
@@ -82,7 +82,11 @@ class Toolbar extends React.Component {
           </Link>
         )}
         {withCreateBtn.onClick && (
-          <Button className={styles.btnRight} type="primary" onClick={withCreateBtn.onClick}>
+          <Button
+            className={styles.btnRight}
+            type="primary"
+            onClick={withCreateBtn.onClick}
+          >
             {withCreateBtn.name || 'Create'}
           </Button>
         )}

@@ -1,41 +1,71 @@
 import { observable, action } from 'mobx';
 import { get, assign } from 'lodash';
 
-import Store from '../Store';
 import { getProgress } from 'utils';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
 
 export default class AppStore extends Store {
   @observable apps = [];
+
   @observable homeApps = [];
-  @observable storeApps = []; //store page category apps
-  @observable storeTotal = 0; // normal user store page app total
-  @observable menuApps = []; //menu apps
-  @observable hasMeunApps = false; // judje query menu apps
+
+  @observable storeApps = [];
+
+  // store page category apps
+  @observable storeTotal = 0;
+
+  // normal user store page app total
+  @observable menuApps = [];
+
+  // menu apps
+  @observable hasMeunApps = false;
+
+  // judje query menu apps
   @observable appDetail = {};
-  @observable summaryInfo = {}; // replace original statistic
+
+  @observable summaryInfo = {};
+
+  // replace original statistic
   @observable categoryTitle = '';
-  @observable appId = ''; // current app_id
+
+  @observable appId = '';
+
+  // current app_id
   @observable isLoading = false;
+
   @observable isProgressive = false;
+
   @observable totalCount = 0;
+
   @observable appCount = 0;
 
-  @observable currentPage = 1; //app table query params
+  @observable currentPage = 1;
+
+  // app table query params
   @observable searchWord = '';
+
   @observable selectStatus = '';
+
   @observable repoId = '';
+
   @observable categoryId = '';
+
   @observable userId = '';
 
   @observable isModalOpen = false;
+
   @observable isDeleteOpen = false;
+
   @observable operateType = '';
 
   @observable appTitle = '';
+
   @observable appIds = [];
+
   @observable selectedRowKeys = [];
 
   @observable detailTab = 'Information';
@@ -45,9 +75,13 @@ export default class AppStore extends Store {
   @observable viewType = 'list';
 
   @observable createStep = 1;
+
   @observable createReopId = '';
+
   @observable uploadFile = '';
+
   @observable createError = '';
+
   @observable createResult = null;
 
   // menu actions logic
@@ -71,7 +105,7 @@ export default class AppStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    let defaultParams = {
+    const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
@@ -107,7 +141,10 @@ export default class AppStore extends Store {
       delete params.noLoading;
     }
 
-    const result = await this.request.get('apps', assign(defaultParams, params));
+    const result = await this.request.get(
+      'apps',
+      assign(defaultParams, params)
+    );
 
     this.apps = get(result, 'app_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -123,7 +160,7 @@ export default class AppStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
       name: 'Apps',
@@ -133,11 +170,11 @@ export default class AppStore extends Store {
       progressTotal: get(result, 'repo_count', 0),
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {}),
-      topRepos: getProgress(get(result, 'top_ten_repos', {})), //top repos
+      topRepos: getProgress(get(result, 'top_ten_repos', {})), // top repos
       appCount: get(result, 'app_count', 0),
       repoCount: get(result, 'repo_count', 0)
     };
-    //this.isLoading = false;
+    // this.isLoading = false;
   };
 
   @action
@@ -168,7 +205,7 @@ export default class AppStore extends Store {
 
     if (get(this.createResult, 'app_id')) {
       this.createAppId = get(this.createResult, 'app_id');
-      this.createStep = 3; //show application has been created page
+      this.createStep = 3; // show application has been created page
       await this.fetchMenuApps();
     } else {
       const { err, errDetail } = this.createResult;
@@ -255,7 +292,9 @@ export default class AppStore extends Store {
     if ('toJSON' in category_set) {
       category_set = category_set.toJSON();
     }
-    let availableCate = category_set.find(cate => cate.category_id && cate.status === 'enabled');
+    const availableCate = category_set.find(
+      cate => cate.category_id && cate.status === 'enabled'
+    );
     this.handleApp.selectedCategory = get(availableCate, 'category_id', '');
     this.isModalOpen = true;
   };

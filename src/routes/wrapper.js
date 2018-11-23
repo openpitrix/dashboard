@@ -1,6 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class RouteWrapper extends React.Component {
+  static propTypes = {
+    component: PropTypes.func,
+    match: PropTypes.shape({
+      url: PropTypes.string.isRequired
+    })
+  };
+
   shouldComponentUpdate(nextProps) {
     const { match } = this.props;
     return match.url !== nextProps.match.url;

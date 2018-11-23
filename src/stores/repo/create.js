@@ -1,29 +1,47 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import Store from '../Store';
 import { getFormData } from 'utils';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 const s3UrlPattern = /^s3:\/\/s3\.(.+)\.(.+)\/(.+)\/?$/; // s3.<zone>.<host>/<bucket>
 
 export default class RepoCreateStore extends Store {
   @observable repoId = '';
+
   @observable name = '';
+
   @observable description = '';
+
   @observable providers = ['qingcloud'];
+
   @observable visibility = 'public';
-  @observable protocolType = 'http'; // http, https, s3
+
+  @observable protocolType = 'http';
+
+  // http, https, s3
   @observable url = '';
+
   @observable accessKey = '';
+
   @observable secretKey = '';
+
   @observable labels = [];
+
   @observable curLabelKey = '';
+
   @observable curLabelValue = '';
+
   @observable selectors = [];
+
   @observable curSelectorKey = '';
+
   @observable curSelectorValue = '';
+
   @observable repoCreated = null;
+
   @observable isLoading = false;
 
   @action
@@ -119,10 +137,10 @@ export default class RepoCreateStore extends Store {
   @action
   changeLabel = (value, index, type, labelType) => {
     if (labelType === 'label') {
-      this.labels[index]['label_' + type] = value;
+      this.labels[index][`label_${type}`] = value;
       this.labels = [...this.labels];
     } else if (labelType === 'selector') {
-      this.selectors[index]['label_' + type] = value;
+      this.selectors[index][`label_${type}`] = value;
       this.selectors = [...this.selectors];
     }
   };
@@ -153,12 +171,14 @@ export default class RepoCreateStore extends Store {
     // format s3 url
     const url = this.url.startsWith('s3://') ? this.url : `s3://${this.url}`;
     if (!s3UrlPattern.test(url)) {
-      return this.info(ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'));
+      return this.info(
+        ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo')
+      );
     }
 
     const params = {
       type: this.protocolType,
-      url: url,
+      url,
       credential: JSON.stringify({
         access_key_id: this.accessKey,
         secret_access_key: this.secretKey
@@ -175,7 +195,15 @@ export default class RepoCreateStore extends Store {
   @action
   handleSubmit = async e => {
     e.preventDefault();
-    const { providers, visibility, protocolType, accessKey, secretKey, labels, selectors } = this;
+    const {
+      providers,
+      visibility,
+      protocolType,
+      accessKey,
+      secretKey,
+      labels,
+      selectors
+    } = this;
 
     const data = getFormData(e.target);
 
@@ -184,18 +212,20 @@ export default class RepoCreateStore extends Store {
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
-      let item = this.selectors[i];
+      const item = this.selectors[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
         return this.info(ts('Runtime Selector missing value'));
-      } else if (item.label_value && _.isEmpty(item.label_key)) {
+      }
+      if (item.label_value && _.isEmpty(item.label_key)) {
         return this.info(ts('Runtime Selector missing key'));
       }
     }
     for (let i = 0; i < this.labels.length; i++) {
-      let item = this.labels[i];
+      const item = this.labels[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
         return this.info(ts('Labels missing value'));
-      } else if (item.label_value && _.isEmpty(item.label_key)) {
+      }
+      if (item.label_value && _.isEmpty(item.label_key)) {
         return this.info(ts('Labels missing key'));
       }
     }
@@ -208,18 +238,22 @@ export default class RepoCreateStore extends Store {
 
       // format s3 url
       if (!data.url.startsWith('s3://')) {
-        data.url = 's3://' + data.url;
+        data.url = `s3://${data.url}`;
       }
 
       if (!s3UrlPattern.test(data.url)) {
-        return this.info(ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'));
+        return this.info(
+          ts(
+            'Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'
+          )
+        );
       }
     } else {
-      let url = data.url;
+      const url = data.url;
       if (/^https?:\/\//.test(url)) {
-        data.url = protocolType + '://' + url.match(/https?:\/\/(.+)/)[1];
+        data.url = `${protocolType}://${url.match(/https?:\/\/(.+)/)[1]}`;
       } else {
-        data.url = protocolType + '://' + url;
+        data.url = `${protocolType}://${url}`;
       }
 
       // fixme: compat with http, https credential
@@ -264,7 +298,8 @@ export default class RepoCreateStore extends Store {
     if (this.repoId && _.get(this, 'repoCreated.repo_id')) {
       this.success(ts('Modify repo successfully'));
       return this.repoCreated;
-    } else if (_.get(this, 'repoCreated.repo_id')) {
+    }
+    if (_.get(this, 'repoCreated.repo_id')) {
       this.success(ts('Create repo successfully'));
       return this.repoCreated;
     }

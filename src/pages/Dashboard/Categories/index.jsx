@@ -5,12 +5,16 @@ import classnames from 'classnames';
 import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Input, Button, Popover, Icon, Modal } from 'components/Base';
-import Layout, { Dialog, Grid, Section, BreadCrumb } from 'components/Layout';
+import {
+  Input, Button, Popover, Icon, Modal
+} from 'components/Base';
+import Layout, {
+  Dialog, Grid, Section, BreadCrumb
+} from 'components/Layout';
 import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
-import CategoryCard from './CategoryCard';
 import { getScrollTop } from 'utils';
+import CategoryCard from './CategoryCard';
 
 import styles from './index.scss';
 
@@ -50,16 +54,20 @@ export default class Categories extends Component {
       return;
     }
 
-    let scrollTop = getScrollTop();
-    let loadNumber = parseInt(scrollTop / loadDataHeight) + 1;
-    for (let i = initLoadNumber; i < len && i < initLoadNumber + loadNumber * 3; i++) {
+    const scrollTop = getScrollTop();
+    const loadNumber = parseInt(scrollTop / loadDataHeight) + 1;
+    for (
+      let i = initLoadNumber;
+      i < len && i < initLoadNumber + loadNumber * 3;
+      i++
+    ) {
       if (!categories[i].appFlag) {
         categoryStore.categories[i].appFlag = true;
         await appStore.fetchAll({
           status: 'active',
           category_id: categories[i].category_id
         });
-        let temp = categoryStore.categories[i];
+        const temp = categoryStore.categories[i];
         categoryStore.categories[i] = {
           total: appStore.totalCount,
           apps: appStore.apps,
@@ -75,24 +83,35 @@ export default class Categories extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/category/${category.category_id}`}>{t('View detail')}</Link>
+        <Link to={`/dashboard/category/${category.category_id}`}>
+          {t('View detail')}
+        </Link>
         <span onClick={showModifyCategory.bind(categoryStore, category)}>
           {t('Modify Category')}
         </span>
-        <span onClick={showDeleteCategory.bind(categoryStore, category)}>{t('Delete')}</span>
+        <span onClick={showDeleteCategory.bind(categoryStore, category)}>
+          {t('Delete')}
+        </span>
       </div>
     );
   };
 
   renderOpsModal = () => {
     const { categoryStore, t } = this.props;
-    const { isModalOpen, hideModal, category, createOrModify } = categoryStore;
+    const {
+      isModalOpen, hideModal, category, createOrModify
+    } = categoryStore;
     let modalTitle = t('Create Category');
     if (category && category.category_id) {
       modalTitle = t('Modify Category');
     }
     return (
-      <Modal title={modalTitle} visible={isModalOpen} onCancel={hideModal} onOk={createOrModify}>
+      <Modal
+        title={modalTitle}
+        visible={isModalOpen}
+        onCancel={hideModal}
+        onOk={createOrModify}
+      >
         <div className="formContent">
           <div>
             <label>{t('Name')}</label>
@@ -139,7 +158,9 @@ export default class Categories extends Component {
     const { isLoading, searchWord, showCreateCategory } = categoryStore;
 
     const categories = categoryStore.categories;
-    const defaultCategories = categories.filter(cate => cate.category_id !== 'ctg-uncategorized');
+    const defaultCategories = categories.filter(
+      cate => cate.category_id !== 'ctg-uncategorized'
+    );
     const uncategorized = categories.find(cate => cate.category_id === 'ctg-uncategorized') || {};
 
     return (
@@ -190,14 +211,19 @@ export default class Categories extends Component {
         </div>
 
         {uncategorized.category_id && (
-          <div className={classnames(styles.categoryContent, styles.unCategorized)}>
+          <div
+            className={classnames(styles.categoryContent, styles.unCategorized)}
+          >
             <div className={styles.rectangle}>
               <div className={styles.title} title={uncategorized.name}>
                 <Link to={`/dashboard/category/${uncategorized.category_id}`}>
                   {t(uncategorized.name)}
                 </Link>
               </div>
-              <AppImages apps={uncategorized.apps} total={uncategorized.total} />
+              <AppImages
+                apps={uncategorized.apps}
+                total={uncategorized.total}
+              />
             </div>
           </div>
         )}

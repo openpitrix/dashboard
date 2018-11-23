@@ -5,3 +5,7 @@ node_modules/
 reports/
 public/
 .cache/
+
+coverage/
+
+webpack*.js

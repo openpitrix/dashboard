@@ -6,16 +6,24 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
-import Layout, { BackBtn, Grid, Section, Panel, Card, Dialog, BreadCrumb } from 'components/Layout';
+import Layout, {
+  BackBtn,
+  Grid,
+  Section,
+  Panel,
+  Card,
+  Dialog,
+  BreadCrumb
+} from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 
 import TagShow from 'components/TagShow';
 import Toolbar from 'components/Toolbar';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
+import { mappingStatus, getObjName } from 'utils';
 import appColumns from './tabs/app-columns';
 import runtimesColumns from './tabs/runtime-columns';
 import eventsColumns from './tabs/event-columns';
-import { mappingStatus, getObjName } from 'utils';
 
 import styles from './index.scss';
 
@@ -31,7 +39,9 @@ import styles from './index.scss';
 @observer
 export default class RepoDetail extends Component {
   async componentDidMount() {
-    const { repoStore, userStore, user, match } = this.props;
+    const {
+      repoStore, userStore, user, match
+    } = this.props;
     const { repoId } = match.params;
 
     await repoStore.fetchRepoDetail(repoId);
@@ -98,12 +108,10 @@ export default class RepoDetail extends Component {
     }
   };
 
-  filterSelectors = items => {
-    return items.filter(item => item.selector_key).map(item => ({
-      label_key: item.selector_key,
-      label_value: item.selector_value
-    }));
-  };
+  filterSelectors = items => items.filter(item => item.selector_key).map(item => ({
+    label_key: item.selector_key,
+    label_value: item.selector_value
+  }));
 
   renderHandleMenu = id => {
     const { t } = this.props;
@@ -144,7 +152,13 @@ export default class RepoDetail extends Component {
   };
 
   changeDetailTab = async tab => {
-    const { appStore, runtimeStore, repoStore, clusterStore, match } = this.props;
+    const {
+      appStore,
+      runtimeStore,
+      repoStore,
+      clusterStore,
+      match
+    } = this.props;
     const { repoId } = match.params;
     repoStore.curTagName = tab;
 
@@ -216,20 +230,41 @@ export default class RepoDetail extends Component {
   renderToolbar(options = {}) {
     return (
       <Toolbar
-        {..._.pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+        {..._.pick(options, [
+          'searchWord',
+          'onSearch',
+          'onClear',
+          'onRefresh',
+          'placeholder'
+        ])}
       />
     );
   }
+
   renderTable(options = {}) {
     return (
       <Table
-        {..._.pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])}
+        {..._.pick(options, [
+          'columns',
+          'dataSource',
+          'isLoading',
+          'filterList',
+          'pagination'
+        ])}
       />
     );
   }
 
   render() {
-    const { repoStore, appStore, runtimeStore, clusterStore, userStore, user, t } = this.props;
+    const {
+      repoStore,
+      appStore,
+      runtimeStore,
+      clusterStore,
+      userStore,
+      user,
+      t
+    } = this.props;
     const { repoDetail, curTagName } = repoStore;
     const clusters = clusterStore.clusters.toJSON();
 
@@ -252,7 +287,8 @@ export default class RepoDetail extends Component {
     }
 
     let selectors = [];
-    let toolbarOptions, tableOptions;
+    let toolbarOptions,
+      tableOptions;
 
     switch (curTagName) {
       case 'Apps':
@@ -264,7 +300,7 @@ export default class RepoDetail extends Component {
           onRefresh: appStore.onRefresh
         };
         tableOptions = {
-          columns: columns,
+          columns,
           dataSource: appStore.apps.toJSON(),
           isLoading: appStore.isLoading,
           filterList: [
@@ -298,7 +334,7 @@ export default class RepoDetail extends Component {
           onRefresh: this.onRefresh
         };
         tableOptions = {
-          columns: columns,
+          columns,
           dataSource: runtimeStore.runtimes.toJSON(),
           isLoading: runtimeStore.isLoading,
           filterList: [
@@ -322,7 +358,7 @@ export default class RepoDetail extends Component {
         break;
       case 'Events':
         tableOptions = {
-          columns: columns,
+          columns,
           dataSource: repoStore.repoEvents.toJSON(),
           isLoading: repoStore.isLoading,
           pagination: {
@@ -332,6 +368,8 @@ export default class RepoDetail extends Component {
             current: repoStore.currentEventPage
           }
         };
+        break;
+      default:
         break;
     }
     const { isNormal, isDev, isAdmin } = user;
@@ -350,9 +388,16 @@ export default class RepoDetail extends Component {
         <Grid>
           <Section>
             <Card>
-              <RuntimeCard detail={repoDetail} appCount={appStore.appCount} userName={userName} />
+              <RuntimeCard
+                detail={repoDetail}
+                appCount={appStore.appCount}
+                userName={userName}
+              />
               {repoDetail.status !== 'deleted' && (
-                <Popover className="operation" content={this.renderHandleMenu(repoDetail.repo_id)}>
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu(repoDetail.repo_id)}
+                >
                   <Icon name="more" />
                 </Popover>
               )}
@@ -360,15 +405,20 @@ export default class RepoDetail extends Component {
           </Section>
           <Section size={8}>
             <Panel>
-              <DetailTabs tabs={['Apps', 'Runtimes', 'Events']} changeTab={this.changeDetailTab} />
+              <DetailTabs
+                tabs={['Apps', 'Runtimes', 'Events']}
+                changeTab={this.changeDetailTab}
+              />
               <Card hasTable>
-                {curTagName === 'Runtimes' &&
-                  selectors.length > 0 && (
+                {curTagName === 'Runtimes'
+                  && selectors.length > 0 && (
                     <div className={styles.selector}>
-                      <div className={styles.title}>{t('Runtime Selectors')}</div>
+                      <div className={styles.title}>
+                        {t('Runtime Selectors')}
+                      </div>
                       <TagShow tags={selectors} tagStyle="yellow" />
                     </div>
-                  )}
+                )}
                 {curTagName !== 'Events' && this.renderToolbar(toolbarOptions)}
                 {this.renderTable(tableOptions)}
               </Card>

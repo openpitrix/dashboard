@@ -12,9 +12,9 @@ import styles from './index.scss';
 @translate()
 export default class RepoList extends PureComponent {
   static propTypes = {
+    onChange: PropTypes.func,
     repos: PropTypes.array,
-    type: PropTypes.oneOf(['public', 'private']),
-    onChange: PropTypes.func
+    type: PropTypes.oneOf(['public', 'private'])
   };
 
   static defaultProps = {
@@ -23,10 +23,16 @@ export default class RepoList extends PureComponent {
   };
 
   render() {
-    const { repos, type, onChange, t } = this.props;
+    const {
+      repos, type, onChange, t
+    } = this.props;
 
     return (
-      <div className={classNames(styles.repoList, { [styles.publicBg]: type === 'private' })}>
+      <div
+        className={classNames(styles.repoList, {
+          [styles.publicBg]: type === 'private'
+        })}
+      >
         <div className={styles.title}>{t(capitalize(type))}</div>
         <ul>
           {repos.map(repo => (
@@ -35,7 +41,11 @@ export default class RepoList extends PureComponent {
               className={classNames({ [styles.active]: repo.active })}
               onClick={() => onChange(repo.repo_id)}
             >
-              <Icon size={24} name={repo.providers && repo.providers[0]} type="dark" />
+              <Icon
+                size={24}
+                name={repo.providers && repo.providers[0]}
+                type="dark"
+              />
               <span className={styles.word}>{repo.name}</span>
             </li>
           ))}

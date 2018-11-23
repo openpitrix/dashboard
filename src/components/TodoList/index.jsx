@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import styles from './index.scss';
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
+import styles from './index.scss';
 
 @translate()
 export default class TodoList extends PureComponent {
   static propTypes = {
+    changeLabel: PropTypes.func,
     labelType: PropTypes.oneOf(['label', 'selector']),
     labels: PropTypes.arrayOf(
       PropTypes.shape({
@@ -16,8 +17,7 @@ export default class TodoList extends PureComponent {
         label_value: PropTypes.string
       })
     ),
-    onRemove: PropTypes.func,
-    changeLabel: PropTypes.func
+    onRemove: PropTypes.func
   };
 
   onRemove = index => {
@@ -33,38 +33,36 @@ export default class TodoList extends PureComponent {
     const { labels, t } = this.props;
     return (
       <ul className={styles.list}>
-        {labels.map((label, index) => {
-          return (
-            <li className={styles.item} key={index}>
-              <Input
-                className={styles.inputSmall}
-                placeholder={t('Key')}
-                value={label.label_key}
-                maxLength="30"
-                onChange={e => {
-                  this.changeLabel(e, index, 'key');
-                }}
-              />
-              <Input
-                className={styles.inputSmall}
-                placeholder={t('Value')}
-                value={label.label_value}
-                maxLength="30"
-                onChange={e => {
-                  this.changeLabel(e, index, 'value');
-                }}
-              />
-              <Button
-                className={styles.removeBtn}
-                onClick={() => {
-                  this.onRemove(index);
-                }}
-              >
-                {t('Remove')}
-              </Button>
-            </li>
-          );
-        })}
+        {labels.map((label, index) => (
+          <li className={styles.item} key={index}>
+            <Input
+              className={styles.inputSmall}
+              placeholder={t('Key')}
+              value={label.label_key}
+              maxLength="30"
+              onChange={e => {
+                this.changeLabel(e, index, 'key');
+              }}
+            />
+            <Input
+              className={styles.inputSmall}
+              placeholder={t('Value')}
+              value={label.label_value}
+              maxLength="30"
+              onChange={e => {
+                this.changeLabel(e, index, 'value');
+              }}
+            />
+            <Button
+              className={styles.removeBtn}
+              onClick={() => {
+                this.onRemove(index);
+              }}
+            >
+              {t('Remove')}
+            </Button>
+          </li>
+        ))}
       </ul>
     );
   }

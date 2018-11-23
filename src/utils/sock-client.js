@@ -2,7 +2,7 @@
 // see compat list: https://caniuse.com/#search=websocket
 
 import EventEmitter from 'events';
-import { get, debounce } from 'lodash';
+import { get } from 'lodash';
 
 let sockInst; // singleton socket client
 
@@ -16,7 +16,7 @@ class SockClient extends EventEmitter {
   static composeEndpoint = (socketUrl, accessToken = '') => {
     const re = /(\w+?:\/\/)?([^\\?]+)/;
     const suffix = `?sid=${accessToken}`;
-    const matchParts = (socketUrl + '').match(re);
+    const matchParts = `${socketUrl}`.match(re);
     let wsPrefix = 'ws://';
     if (typeof window === 'object' && window.location.protocol === 'https:') {
       wsPrefix = 'wss://';
@@ -45,7 +45,7 @@ class SockClient extends EventEmitter {
   }
 
   initClient() {
-    let subProto = get(this.options, 'subProtocol');
+    const subProto = get(this.options, 'subProtocol');
     if (!sockInst) {
       sockInst = new WebSocket(this.endpoint, subProto);
     }
@@ -54,7 +54,8 @@ class SockClient extends EventEmitter {
       sockInst = new WebSocket(this.endpoint, subProto);
     }
 
-    return (this.client = sockInst);
+    this.client = sockInst;
+    return this.client;
   }
 
   attachEvents() {
@@ -67,9 +68,7 @@ class SockClient extends EventEmitter {
       this.client.onmessage = message => {
         let data = message.data || {};
         if (typeof data === 'string') {
-          try {
-            data = JSON.parse(data);
-          } catch (err) {}
+          data = JSON.parse(data);
         }
 
         // console.log('sock message: ', data);
@@ -78,7 +77,7 @@ class SockClient extends EventEmitter {
     }
 
     if (!this.client.onclose) {
-      this.client.onclose = ev => {
+      this.client.onclose = () => {
         // if sock will close, try to keep alive
         if (reopenCount < this.options.reopenLimit) {
           setTimeout(this.setUp.bind(this), 1500);

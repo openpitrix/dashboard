@@ -1,22 +1,26 @@
 import { observable, action } from 'mobx';
-import _, { get } from 'lodash';
+import { get } from 'lodash';
 import { Base64 } from 'js-base64';
 import yamlJs from 'js-yaml';
+import { flattenObject } from 'utils';
 
 import Store from '../Store';
-import { flattenObject, unflattenObject, getYamlList } from 'utils';
 
 export default class AppDeployStore extends Store {
   @observable versions = [];
+
   @observable runtimes = [];
+
   @observable subnets = [];
 
   @observable versionId = '';
+
   @observable runtimeId = '';
 
   @observable isLoading = false;
 
   @observable isK8s = false;
+
   @observable errMsg = '';
 
   @observable yamlStr = '';
@@ -34,23 +38,20 @@ export default class AppDeployStore extends Store {
     this.yamlStr = '';
   }
 
-  normalizeRuntime = () => {
-    return this.runtimes.map(({ runtime_id, name }) => ({
-      name,
-      value: runtime_id
-    }));
-  };
+  normalizeRuntime = () => this.runtimes.map(({ runtime_id, name }) => ({
+    name,
+    value: runtime_id
+  }));
 
-  normalizeVersions = () => {
-    return this.versions.map(({ version_id, name }) => ({
-      name,
-      value: version_id
-    }));
-  };
+  normalizeVersions = () => this.versions.map(({ version_id, name }) => ({
+    name,
+    value: version_id
+  }));
 
-  normalizeSubnets = () => {
-    return this.subnets.map(({ subnet_id }) => ({ name: subnet_id, value: subnet_id }));
-  };
+  normalizeSubnets = () => this.subnets.map(({ subnet_id }) => ({
+    name: subnet_id,
+    value: subnet_id
+  }));
 
   @action
   onChangeFormField = async (fieldName, changedVal) => {
@@ -65,15 +66,20 @@ export default class AppDeployStore extends Store {
     }
   };
 
-  yaml2Json = yaml_str => {
-    return flattenObject(yamlJs.safeLoad(yaml_str));
-  };
+  yaml2Json = yaml_str => flattenObject(yamlJs.safeLoad(yaml_str));
 
   @action
   fetchVersions = async (params = {}) => {
     this.isLoading = true;
     if (!params.status) {
-      params.status = ['draft', 'submitted', 'passed', 'rejected', 'active', 'suspended'];
+      params.status = [
+        'draft',
+        'submitted',
+        'passed',
+        'rejected',
+        'active',
+        'suspended'
+      ];
     }
     params.isGlobalQuery = true;
     const result = await this.request.get('app_versions', params);
@@ -92,7 +98,7 @@ export default class AppDeployStore extends Store {
   @action
   fetchSubnetsByRuntime = async runtimeId => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters/subnets`, { 
+    const result = await this.request.get(`clusters/subnets`, {
       runtime_id: runtimeId,
       limit: this.maxLimit
     });

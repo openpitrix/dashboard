@@ -4,8 +4,18 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Icon, Button, Table, Popover, Select, Modal, Image } from 'components/Base';
-import Layout, { Dialog, Grid, Row, Section, Card } from 'components/Layout';
+import {
+  Icon,
+  Button,
+  Table,
+  Popover,
+  Select,
+  Modal,
+  Image
+} from 'components/Base';
+import Layout, {
+  Dialog, Grid, Row, Section, Card
+} from 'components/Layout';
 import { getObjName, mappingStatus, getFilterObj } from 'utils';
 
 import { records } from './record';
@@ -47,7 +57,11 @@ export default class AuditRecord extends Component {
           <Card className={styles.baseInfo}>
             <div className={styles.main}>
               <span className={styles.image}>
-                <Image iconLetter={appDetail.name} iconSize={48} src={appDetail.icon} />
+                <Image
+                  iconLetter={appDetail.name}
+                  iconSize={48}
+                  src={appDetail.icon}
+                />
               </span>
               <div className={styles.title}>{appDetail.name}</div>
               <div className={styles.word}>
@@ -79,7 +93,10 @@ export default class AuditRecord extends Component {
                   <div className={styles.description}>{record.description}</div>
                   <ul className={styles.steps}>
                     {record.process.map(item => (
-                      <li key={item.name} className={classnames(styles[item.status])}>
+                      <li
+                        key={item.name}
+                        className={classnames(styles[item.status])}
+                      >
                         <label className={styles.dot} />
                         {item.name}
                         <span className={styles.arrow}>&nbsp;→</span>

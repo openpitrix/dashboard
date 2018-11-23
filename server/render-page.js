@@ -10,7 +10,7 @@ const defaultOptions = {
 const readManifest = (file, prefix = '/dist') => {
   let manifest = {};
   try {
-    let manifest_file = path.join(process.cwd(), `${prefix}/${file}`);
+    const manifest_file = path.join(process.cwd(), `${prefix}/${file}`);
     manifest = JSON.parse(fs.readFileSync(manifest_file, 'utf8'));
   } catch (e) {
     throw Error(`parse ${file} err: ${e.message}`);

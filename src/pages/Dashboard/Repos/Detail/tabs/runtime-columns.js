@@ -1,13 +1,12 @@
 import React from 'react';
 import { I18n } from 'react-i18next';
 
-import TdName from 'components/TdName';
+import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
-import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 
-export default function(clusters, users) {
+export default function (clusters, users) {
   return [
     {
       title: <I18n>{t => <span>{t('Runtime Name')}</span>}</I18n>,
@@ -30,7 +29,9 @@ export default function(clusters, users) {
     {
       title: <I18n>{t => <span>{t('Provider')}</span>}</I18n>,
       key: 'provider',
-      render: item => <ProviderName provider={item.provider} name={item.provider} />
+      render: item => (
+        <ProviderName provider={item.provider} name={item.provider} />
+      )
     },
     {
       title: <I18n>{t => <span>{t('Zone')}</span>}</I18n>,
@@ -40,7 +41,8 @@ export default function(clusters, users) {
     {
       title: <I18n>{t => <span>{t('Cluster Count')}</span>}</I18n>,
       key: 'node_count',
-      render: item => clusters.filter(cluster => item.runtime_id === cluster.runtime_id).length
+      render: item => clusters.filter(cluster => item.runtime_id === cluster.runtime_id)
+        .length
     },
     {
       title: <I18n>{t => <span>{t('User')}</span>}</I18n>,

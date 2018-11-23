@@ -5,9 +5,7 @@ import styles from './index.scss';
 
 @translate()
 export default class Footer extends PureComponent {
-  getCurrentLocale = () => {
-    return typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
-  };
+  getCurrentLocale = () => typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
 
   changeLocale = (lang, e) => {
     e.preventDefault();
@@ -28,18 +26,26 @@ export default class Footer extends PureComponent {
             </span>
             <ul className={styles.terms}>
               <li>
-                <a target="_blank" href="https://docs.openpitrix.io/home/">
+                <a
+                  target="_blank"
+                  href="https://docs.openpitrix.io/home/"
+                  rel="noopener noreferrer"
+                >
                   {t('Document')}
                 </a>
               </li>
               <li>
-                <a target="_blank" href="https://openpitrix.io" rel="noreferrer">
+                <a
+                  target="_blank"
+                  href="https://openpitrix.io"
+                  rel="noopener noreferrer"
+                >
                   {t('About')}
                 </a>
                 {/* <span className={styles.dot} />
                  <a href="javascript:void(0)">{t('Help')}</a>
                  <span className={styles.dot} />
-                 <a href="javascript:void(0)">{t('Terms')}</a>*/}
+                 <a href="javascript:void(0)">{t('Terms')}</a> */}
               </li>
               <li>OpenPitrix &copy; 2018</li>
               <li>

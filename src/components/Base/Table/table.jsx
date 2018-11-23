@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Checkbox, Radio, Popover, Icon, Pagination } from 'components/Base';
+import {
+  Checkbox, Radio, Popover, Icon, Pagination
+} from 'components/Base';
 import Loading from 'components/Loading';
 import NoData from './noData';
 
@@ -12,13 +14,13 @@ import styles from './index.scss';
 
 export default class Table extends React.Component {
   static propTypes = {
-    prefixCls: PropTypes.string,
-    dataSource: PropTypes.array,
     columns: PropTypes.array,
-    pagination: PropTypes.object,
-    rowSelection: PropTypes.object,
+    dataSource: PropTypes.array,
+    filterList: PropTypes.array,
     isLoading: PropTypes.bool,
-    filterList: PropTypes.array
+    pagination: PropTypes.object,
+    prefixCls: PropTypes.string,
+    rowSelection: PropTypes.object
   };
 
   static defaultProps = {
@@ -59,12 +61,16 @@ export default class Table extends React.Component {
     return itemKey === undefined ? index : itemKey;
   };
 
-  getDefaultSelection = () =>
-    this.getTableData()
-      .filter(item => item.checked)
-      .map((item, i) => this.getItemKey(item, i));
+  getDefaultSelection = () => this.getTableData()
+    .filter(item => item.checked)
+    .map((item, i) => this.getItemKey(item, i));
 
-  setSelectedRowKeys = (selectedRowKeys, { selectType, item, checked, changeRowKeys }) => {
+  setSelectedRowKeys = (
+    selectedRowKeys,
+    {
+      selectType, item, checked, changeRowKeys
+    }
+  ) => {
     const { rowSelection } = this.props;
     this.setState({
       selectedRowKeys,
@@ -103,14 +109,21 @@ export default class Table extends React.Component {
     }
   };
 
-  setExtendRowKeys = (selectedRowKeys, { selectType, item, checked, changeRowKeys }) => {
+  setExtendRowKeys = (
+    selectedRowKeys,
+    {
+      selectType, item, checked, changeRowKeys
+    }
+  ) => {
     const { extendRowSelection } = this.props;
   };
 
   handleCheckboxSelect = (value, index, e) => {
     const { rowKey } = this.props;
     const checked = e.target.checked;
-    const defaultSelection = this.state.selectionDirty ? [] : this.getDefaultSelection();
+    const defaultSelection = this.state.selectionDirty
+      ? []
+      : this.getDefaultSelection();
     let selectedRowKeys = this.state.selectedRowKeys.concat(defaultSelection);
 
     if (checked) {
@@ -131,7 +144,9 @@ export default class Table extends React.Component {
   handleSelectAll = e => {
     const type = e.target.checked ? 'all' : 'removeAll';
     const data = this.getTableData();
-    const defaultSelection = this.state.selectionDirty ? [] : this.getDefaultSelection();
+    const defaultSelection = this.state.selectionDirty
+      ? []
+      : this.getDefaultSelection();
     const selectedRowKeys = this.state.selectedRowKeys.concat(defaultSelection);
     const changeableRowKeys = data
       .filter(item => !item.disabled)
@@ -198,7 +213,9 @@ export default class Table extends React.Component {
     return (
       <Checkbox
         disabled={value.disabled}
-        checked={this.state.selectedRowKeys.indexOf(value[this.props.rowKey]) !== -1}
+        checked={
+          this.state.selectedRowKeys.indexOf(value[this.props.rowKey]) !== -1
+        }
         onChange={handleChange}
       />
     );
@@ -223,10 +240,13 @@ export default class Table extends React.Component {
       } else {
         const allChecked = data.length
           ? data.every(
-              (item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i)) !== -1
-            )
+            (item, i) => this.state.selectedRowKeys.indexOf(this.getItemKey(item, i))
+                !== -1
+          )
           : false;
-        selectionColumn.title = <Checkbox checked={allChecked} onChange={this.handleSelectAll} />;
+        selectionColumn.title = (
+          <Checkbox checked={allChecked} onChange={this.handleSelectAll} />
+        );
       }
 
       if (tableColumns[0] && tableColumns[0].key === 'selection-column') {
@@ -238,33 +258,41 @@ export default class Table extends React.Component {
     return tableColumns;
   };
 
-  renderFilterContent = filter => {
-    return (
-      <ul className="filterContent">
-        {filter.conditions.map(condition => (
-          <li
-            key={condition.value}
-            onClick={() => filter.onChangeFilter(condition.value)}
-            className={classNames({ active: condition.value === filter.selectValue })}
-          >
-            {condition.name}
-          </li>
-        ))}
-      </ul>
-    );
-  };
+  renderFilterContent = filter => (
+    <ul className="filterContent">
+      {filter.conditions.map(condition => (
+        <li
+          key={condition.value}
+          onClick={() => filter.onChangeFilter(condition.value)}
+          className={classNames({
+            active: condition.value === filter.selectValue
+          })}
+        >
+          {condition.name}
+        </li>
+      ))}
+    </ul>
+  );
 
   renderFilterColumn = columns => {
     const { filterList } = this.props;
     if (filterList) {
       columns = columns.map(column => {
         const newColumn = { ...column };
-        const filter = filterList.find(element => element.key === newColumn.key);
+        const filter = filterList.find(
+          element => element.key === newColumn.key
+        );
         if (filter) {
           newColumn.title = (
-            <Popover content={this.renderFilterContent(filter)} className={styles.filterOuter}>
+            <Popover
+              content={this.renderFilterContent(filter)}
+              className={styles.filterOuter}
+            >
               {newColumn.title}
-              <Icon name="caret-down" type={`${filter.selectValue ? 'light' : 'dark'}`} />
+              <Icon
+                name="caret-down"
+                type={`${filter.selectValue ? 'light' : 'dark'}`}
+              />
             </Popover>
           );
         }
@@ -301,7 +329,7 @@ export default class Table extends React.Component {
           });
           column.onChangeSort({
             sort_key: column.key,
-            reverse: reverse
+            reverse
           });
         };
         newColumn.title = (
@@ -341,7 +369,13 @@ export default class Table extends React.Component {
   }
 
   render() {
-    const { className, style, pagination, isLoading, rowSelection } = this.props;
+    const {
+      className,
+      style,
+      pagination,
+      isLoading,
+      rowSelection
+    } = this.props;
     const { selectedRowKeys } = this.state;
 
     if (isLoading) {

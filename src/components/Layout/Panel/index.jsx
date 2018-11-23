@@ -11,8 +11,8 @@ const Panel = ({ className, children, ...rest }) => (
 );
 
 Panel.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 };
 
 Panel.defaultProps = {};

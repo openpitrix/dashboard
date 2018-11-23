@@ -21,10 +21,10 @@ const versionStatus = [
 @translate()
 export default class VersionList extends React.Component {
   static propTypes = {
-    versions: PropTypes.array.isRequired,
+    children: PropTypes.node,
     currentVersion: PropTypes.object.isRequired,
     onSelect: PropTypes.func,
-    children: PropTypes.node
+    versions: PropTypes.array.isRequired
   };
 
   static defaultProps = {
@@ -42,7 +42,9 @@ export default class VersionList extends React.Component {
   };
 
   render() {
-    const { versions, currentVersion, onSelect, children, t } = this.props;
+    const {
+      versions, currentVersion, onSelect, children, t
+    } = this.props;
 
     return (
       <div className={styles.versionList}>
@@ -51,14 +53,21 @@ export default class VersionList extends React.Component {
           {versions.map((version, idx) => (
             <li
               key={version.version_id || idx}
-              className={classnames(styles.item, this.normalizeStatusToClassName(version.status), {
-                [styles.selected]: version.version_id === currentVersion.version_id
-              })}
+              className={classnames(
+                styles.item,
+                this.normalizeStatusToClassName(version.status),
+                {
+                  [styles.selected]:
+                    version.version_id === currentVersion.version_id
+                }
+              )}
               onClick={() => onSelect(version)}
             >
               <span className={styles.dot} />
               <span className={styles.txt}>{version.name}</span>
-              <span className={styles.status}>{t(mappingStatus(capitalize(version.status)))}</span>
+              <span className={styles.status}>
+                {t(mappingStatus(capitalize(version.status)))}
+              </span>
             </li>
           ))}
         </ul>

@@ -2,38 +2,47 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import _, { pick, assign, get, capitalize } from 'lodash';
+import _, {
+  pick, assign, get, capitalize
+} from 'lodash';
 import classNames from 'classnames';
 
-import { Icon, Input, Table, Popover, Button, Upload } from 'components/Base';
-import Layout, { Dialog, Grid, Section, Card, BreadCrumb } from 'components/Layout';
+import {
+  Icon, Input, Table, Popover, Button, Upload
+} from 'components/Base';
+import Layout, {
+  Dialog,
+  Grid,
+  Section,
+  Card,
+  BreadCrumb
+} from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import DetailBlock from './DetailBlock';
 import StepContent from '../Add/StepContent';
 import VersionList from './VersionList';
 import clusterColumns from './tabs/cluster-columns';
-import { mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) =>
-  assign(
-    pick(rootStore, [
-      'appStore',
-      'clusterStore',
-      'appVersionStore',
-      'repoStore',
-      'runtimeStore',
-      'user'
-    ])
-  )
-)
+@inject(({ rootStore }) => assign(
+  pick(rootStore, [
+    'appStore',
+    'clusterStore',
+    'appVersionStore',
+    'repoStore',
+    'runtimeStore',
+    'user'
+  ])
+))
 @observer
 export default class AppDetail extends Component {
   async componentDidMount() {
-    const { appStore, appVersionStore, repoStore, match } = this.props;
+    const {
+      appStore, appVersionStore, repoStore, match
+    } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
@@ -68,7 +77,11 @@ export default class AppDetail extends Component {
     const { appVersionStore, t } = this.props;
     const { versions } = appVersionStore;
 
-    const newVersion = { name: t('New version'), status: 'Creating', version_id: '' };
+    const newVersion = {
+      name: t('New version'),
+      status: 'Creating',
+      version_id: ''
+    };
 
     if (_.find(versions, _.pick(newVersion, ['status', 'version_id']))) {
       appVersionStore.info(t('Already create new version'));
@@ -82,7 +95,7 @@ export default class AppDetail extends Component {
   };
 
   checkFile = file => {
-    let result = true;
+    const result = true;
     const { appVersionStore, t } = this.props;
     const maxsize = 2 * 1024 * 1024;
     appVersionStore.createError = '';
@@ -90,7 +103,8 @@ export default class AppDetail extends Component {
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
       appVersionStore.createError = t('file_format_note');
       return false;
-    } else if (file.size > maxsize) {
+    }
+    if (file.size > maxsize) {
       appVersionStore.createError = t('The file size cannot exceed 2M');
       return false;
     }
@@ -132,7 +146,10 @@ export default class AppDetail extends Component {
     if (handleType === 'delete') {
       appVersionStore.showDelete('deleteVersion');
     } else {
-      const result = await appVersionStore.handle(handleType, version.version_id);
+      const result = await appVersionStore.handle(
+        handleType,
+        version.version_id
+      );
       const newVersion = appVersionStore.versions.filter(
         item => item.version_id === version.version_id
       );
@@ -159,7 +176,10 @@ export default class AppDetail extends Component {
   delete = async () => {
     const { appStore, appVersionStore, history } = this.props;
     if (appVersionStore.dialogType === 'deleteVersion') {
-      await appVersionStore.handle('delete', appVersionStore.currentVersion.version_id);
+      await appVersionStore.handle(
+        'delete',
+        appVersionStore.currentVersion.version_id
+      );
     } else {
       appStore.operateType = 'detailDelete';
       const result = await appStore.remove();
@@ -183,7 +203,12 @@ export default class AppDetail extends Component {
     }
 
     return (
-      <Dialog title={title} isOpen={isDialogOpen} onSubmit={this.delete} onCancel={hideModal}>
+      <Dialog
+        title={title}
+        isOpen={isDialogOpen}
+        onSubmit={this.delete}
+        onCancel={hideModal}
+      >
         {modalBody}
       </Dialog>
     );
@@ -194,12 +219,17 @@ export default class AppDetail extends Component {
     const { isTipsOpen, hideModal, name } = appVersionStore;
 
     return (
-      <Dialog title={t('Tips')} isOpen={isTipsOpen} onCancel={hideModal} hideFooter>
+      <Dialog
+        title={t('Tips')}
+        isOpen={isTipsOpen}
+        onCancel={hideModal}
+        hideFooter
+      >
         <div className={styles.tipsContent}>
           <span className={styles.icon}>
             <Icon name="check" size={48} />
           </span>
-          <p className={styles.note}>{t('version_submiited', { name: name })} </p>
+          <p className={styles.note}>{t('version_submiited', { name })} </p>
           <p className={styles.explain}>{t('review_process_info')}</p>
         </div>
       </Dialog>
@@ -207,13 +237,21 @@ export default class AppDetail extends Component {
   };
 
   changeDetailTab = async tab => {
-    const { appStore, clusterStore, appVersionStore, runtimeStore, match } = this.props;
+    const {
+      appStore,
+      clusterStore,
+      appVersionStore,
+      runtimeStore,
+      match
+    } = this.props;
     const { appId } = match.params;
+    const { versions, currentVersion } = appVersionStore;
+    const { clusters } = clusterStore;
+
     appStore.detailTab = tab;
 
     switch (tab) {
       case 'Information':
-        const { versions, currentVersion } = appVersionStore;
         if (versions[0] && !currentVersion.version_id) {
           appVersionStore.currentVersion = versions[0];
         }
@@ -221,7 +259,6 @@ export default class AppDetail extends Component {
       case 'Clusters':
         clusterStore.appId = appId;
         await clusterStore.fetchAll();
-        const { clusters } = clusterStore;
         if (clusters.length > 0) {
           const runtimeIds = clusters.map(item => item.runtime_id);
           await runtimeStore.fetchAll({
@@ -232,17 +269,33 @@ export default class AppDetail extends Component {
         break;
       case 'Logs':
         break;
+      default:
+        break;
     }
   };
 
   renderToolbar = (options = {}) => (
     <Toolbar
-      {...pick(options, ['searchWord', 'onSearch', 'onClear', 'onRefresh', 'placeholder'])}
+      {...pick(options, [
+        'searchWord',
+        'onSearch',
+        'onClear',
+        'onRefresh',
+        'placeholder'
+      ])}
     />
   );
 
   renderTable = (options = {}) => (
-    <Table {...pick(options, ['columns', 'dataSource', 'isLoading', 'filterList', 'pagination'])} />
+    <Table
+      {...pick(options, [
+        'columns',
+        'dataSource',
+        'isLoading',
+        'filterList',
+        'pagination'
+      ])}
+    />
   );
 
   renderVersions = () => {
@@ -274,7 +327,11 @@ export default class AppDetail extends Component {
       <StepContent name={name} explain={explain}>
         <div className={styles.createVersion}>
           <Upload checkFile={this.checkFile} uploadFile={this.createVersion}>
-            <div className={classNames(styles.upload, { [styles.uploading]: isLoading })}>
+            <div
+              className={classNames(styles.upload, {
+                [styles.uploading]: isLoading
+              })}
+            >
               <Icon name="upload" size={48} type="dark" />
               <p className={styles.word}>{t('click_upload')}</p>
               <p className={styles.note}>{t('file_format_note')}</p>
@@ -287,6 +344,7 @@ export default class AppDetail extends Component {
             <a
               className={styles.link}
               target="_blank"
+              rel="noopener noreferrer"
               href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
             >
               {t('view_guide_2')}
@@ -311,7 +369,11 @@ export default class AppDetail extends Component {
     const explain = t('version_created');
 
     return (
-      <StepContent className={styles.createVersion} name={name} explain={explain}>
+      <StepContent
+        className={styles.createVersion}
+        name={name}
+        explain={explain}
+      >
         <div className={styles.checkImg}>
           <label>
             <Icon name="check" size={48} />
@@ -324,7 +386,10 @@ export default class AppDetail extends Component {
         </div>
         <div className={styles.operateWord}>
           {t('edit_version_1')}
-          <span className={styles.link} onClick={() => this.selectVersion(currentVersion)}>
+          <span
+            className={styles.link}
+            onClick={() => this.selectVersion(currentVersion)}
+          >
             {t('edit_version_2')}
           </span>
           {t('edit_version_3')}
@@ -336,16 +401,24 @@ export default class AppDetail extends Component {
   renderInformation = () => {
     const { t } = this.props;
     const { appVersionStore, appStore, user } = this.props;
-    const { currentVersion, createStep, createError, isLoading } = appVersionStore;
+    const {
+      currentVersion,
+      createStep,
+      createError,
+      isLoading
+    } = appVersionStore;
     if (!currentVersion.version_id || createStep === 2) {
       return null;
     }
 
     const { appDetail } = appStore;
-    const { isNormal, isDev, isAdmin, role } = user;
+    const {
+      isNormal, isDev, isAdmin, role
+    } = user;
     const editStatus = ['draft', 'rejected'];
-    const isDisabled =
-      !editStatus.includes(currentVersion.status) || !isDev || appDetail.status === 'deleted';
+    const isDisabled = !editStatus.includes(currentVersion.status)
+      || !isDev
+      || appDetail.status === 'deleted';
     const deleteStatus = ['draft', 'rejected', 'passed'];
     const hasDelete = deleteStatus.includes(currentVersion.status);
 
@@ -372,7 +445,12 @@ export default class AppDetail extends Component {
         <dl>
           <dt>ID</dt>
           <dd>
-            <Input className={styles.input} value={currentVersion.version_id} disabled readOnly />
+            <Input
+              className={styles.input}
+              value={currentVersion.version_id}
+              disabled
+              readOnly
+            />
           </dd>
         </dl>
         <dl>
@@ -397,16 +475,29 @@ export default class AppDetail extends Component {
           </dt>
           <dd className={styles.createVersion}>
             {appVersionStore.packageName && (
-              <div className={classNames(styles.fileName, { [styles.disabledFile]: isDisabled })}>
+              <div
+                className={classNames(styles.fileName, {
+                  [styles.disabledFile]: isDisabled
+                })}
+              >
                 <Icon name="file" size={32} type="dark" />
-                <span className={styles.name}>{appVersionStore.packageName}</span>
-                <span className={styles.delete} onClick={() => this.deleteFile(isDisabled)}>
+                <span className={styles.name}>
+                  {appVersionStore.packageName}
+                </span>
+                <span
+                  className={styles.delete}
+                  onClick={() => this.deleteFile(isDisabled)}
+                >
                   {t('Delete')}
                 </span>
               </div>
             )}
             {!appVersionStore.packageName && (
-              <Upload checkFile={this.checkFile} uploadFile={this.uploadFile} disabled={isDisabled}>
+              <Upload
+                checkFile={this.checkFile}
+                uploadFile={this.uploadFile}
+                disabled={isDisabled}
+              >
                 <div
                   className={classNames(styles.upload, styles.editFile, {
                     [styles.uploading]: isLoading
@@ -424,6 +515,7 @@ export default class AppDetail extends Component {
               <a
                 className={styles.link}
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
               >
                 {t('view_guide_2')}
@@ -460,8 +552,8 @@ export default class AppDetail extends Component {
           </dl>
         )}
 
-        {hanleType &&
-          appDetail.status !== 'deleted' && (
+        {hanleType
+          && appDetail.status !== 'deleted' && (
             <dl>
               <dt>{t('Operations')}</dt>
               <dd>
@@ -472,31 +564,40 @@ export default class AppDetail extends Component {
                   {t(capitalize(hanleType))}
                 </Button>
 
-                {hasDelete &&
-                  isDev && (
+                {hasDelete
+                  && isDev && (
                     <Button
                       type="delete"
-                      onClick={() => this.handleVersion(currentVersion, 'delete')}
+                      onClick={() => this.handleVersion(currentVersion, 'delete')
+                      }
                     >
                       {t(capitalize('delete'))}
                     </Button>
-                  )}
+                )}
               </dd>
             </dl>
-          )}
+        )}
       </div>
     );
   };
 
   render() {
-    const { appVersionStore, appStore, clusterStore, repoStore, runtimeStore, t } = this.props;
+    const {
+      appVersionStore,
+      appStore,
+      clusterStore,
+      repoStore,
+      runtimeStore,
+      t
+    } = this.props;
     const { appDetail, detailTab } = appStore;
     const { currentVersion, createStep, versions } = appVersionStore;
 
     const repoName = get(repoStore.repoDetail, 'name', '');
     const repoProvider = get(repoStore.repoDetail, 'providers[0]', '');
 
-    let toolbarOptions, tableOptions;
+    let toolbarOptions,
+      tableOptions;
 
     if (detailTab === 'Clusters') {
       toolbarOptions = {
@@ -534,9 +635,11 @@ export default class AppDetail extends Component {
       };
     }
 
-    const isShowCreate =
-      (!currentVersion.version_id || createStep === 2) && appDetail.status !== 'deleted';
-    const tags = appDetail.status === 'deleted' ? ['Clusters'] : ['Information', 'Clusters'];
+    const isShowCreate = (!currentVersion.version_id || createStep === 2)
+      && appDetail.status !== 'deleted';
+    const tags = appDetail.status === 'deleted'
+      ? ['Clusters']
+      : ['Information', 'Clusters'];
 
     return (
       <Layout className={styles.appDetail}>
@@ -549,8 +652,8 @@ export default class AppDetail extends Component {
             repoProvider={repoProvider}
             noDeploy={appDetail.status === 'deleted'}
           />
-          {versions.length === 0 &&
-            appDetail.status !== 'deleted' && (
+          {versions.length === 0
+            && appDetail.status !== 'deleted' && (
               <Popover
                 className={styles.operation}
                 content={this.renderHandleMenu(appDetail.app_id)}
@@ -558,7 +661,7 @@ export default class AppDetail extends Component {
               >
                 <Icon name="more" />
               </Popover>
-            )}
+          )}
         </Grid>
 
         <Grid className={styles.appVersion}>
@@ -567,8 +670,10 @@ export default class AppDetail extends Component {
           </Section>
 
           <Section size={8} className={styles.rightInfo}>
-            {isShowCreate &&
-              (createStep === 2 ? this.renderCreateSuccess() : this.renderCreateVersion())}
+            {isShowCreate
+              && (createStep === 2
+                ? this.renderCreateSuccess()
+                : this.renderCreateVersion())}
             {!isShowCreate && (
               <Fragment>
                 <DetailTabs tabs={tags} changeTab={this.changeDetailTab} />

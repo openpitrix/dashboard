@@ -1,41 +1,59 @@
 import { observable, action } from 'mobx';
-import _, { get, pick, assign } from 'lodash';
+import { get, pick, assign } from 'lodash';
 
-import Store from '../Store';
 import { getFormData } from 'utils';
 import ts from 'config/translation';
+
+import Store from '../Store';
 
 const defaultStatus = ['active'];
 
 export default class UserStore extends Store {
   @observable users = [];
+
   @observable groups = [];
+
   @observable roles = [];
+
   @observable authorities = [];
+
   @observable currentTag = '';
+
   @observable isLoading = false;
 
-  @observable currentPage = 1; //user table query params
+  @observable currentPage = 1;
+
+  // user table query params
   @observable searchWord = '';
+
   @observable selectStatus = '';
+
   @observable totalCount = 0;
 
   @observable selectGroupId = '';
+
   @observable selectRoleId = '';
+
   @observable selectName = '';
 
   @observable selectValue = 'roles';
+
   @observable showAuthorityModal = false;
+
   @observable treeFlag = false;
+
   @observable organizations = [];
 
   @observable summaryInfo = {};
 
   @observable operateType = '';
+
   @observable isCreateOpen = false;
+
   @observable isDeleteOpen = false;
 
   @observable cookieTime = 2 * 60 * 60 * 1000;
+
   @observable rememberMe = false;
 
   @observable
@@ -47,12 +65,14 @@ export default class UserStore extends Store {
     role: '',
     description: ''
   };
+
   @observable userId = '';
+
   @observable operateResult = null;
 
   @action
   fetchAll = async (params = {}) => {
-    let defaultParams = {
+    const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
@@ -73,7 +93,10 @@ export default class UserStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('users', assign(defaultParams, params));
+    const result = await this.request.get(
+      'users',
+      assign(defaultParams, params)
+    );
     this.users = get(result, 'user_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
@@ -81,7 +104,7 @@ export default class UserStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    //this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.get('users/statistics');
     this.summaryInfo = {
       name: 'Users',
@@ -92,7 +115,7 @@ export default class UserStore extends Store {
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    //this.isLoading = false;
+    // this.isLoading = false;
   };
 
   @action
@@ -102,7 +125,9 @@ export default class UserStore extends Store {
     this.userDetail = get(result, 'user_set[0]', {});
 
     if (isLogin) {
-      this.updateUser(pick(this.userDetail, ['user_id', 'username', 'email', 'role']));
+      this.updateUser(
+        pick(this.userDetail, ['user_id', 'username', 'email', 'role'])
+      );
     }
 
     this.isLoading = false;
@@ -154,7 +179,9 @@ export default class UserStore extends Store {
 
   @action
   remove = async () => {
-    const result = await this.request.delete('users', { user_id: [this.userId] });
+    const result = await this.request.delete('users', {
+      user_id: [this.userId]
+    });
 
     if (get(result, 'user_id')) {
       this.hideModal();
@@ -198,14 +225,12 @@ export default class UserStore extends Store {
   };
 
   @action
-  oauth2Check = async (params = {}) => {
-    return await this.request.post('oauth2/token', {
-      grant_type: 'password',
-      scope: '',
-      username: params.email,
-      password: params.password
-    });
-  };
+  oauth2Check = async (params = {}) => await this.request.post('oauth2/token', {
+    grant_type: 'password',
+    scope: '',
+    username: params.email,
+    password: params.password
+  });
 
   @action
   modifyUser = async e => {
@@ -250,14 +275,10 @@ export default class UserStore extends Store {
   };
 
   @action
-  resetPassword = async (params = {}) => {
-    return await this.request.post('users/password:reset', params);
-  };
+  resetPassword = async (params = {}) => await this.request.post('users/password:reset', params);
 
   @action
-  changePassword = async (params = {}) => {
-    return await this.request.post('users/password:change', params);
-  };
+  changePassword = async (params = {}) => await this.request.post('users/password:change', params);
 
   @action
   onSearch = async word => {

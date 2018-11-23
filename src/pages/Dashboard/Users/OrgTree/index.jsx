@@ -6,8 +6,8 @@ import styles from './index.scss';
 
 export default class OrgTree extends PureComponent {
   static propTypes = {
-    treeFlag: PropTypes.bool,
-    organizations: PropTypes.array
+    organizations: PropTypes.array,
+    treeFlag: PropTypes.bool
   };
 
   render() {
@@ -15,8 +15,8 @@ export default class OrgTree extends PureComponent {
 
     return (
       <ul className={styles.orgTree}>
-        {organizations &&
-          organizations.map((data, index) => (
+        {organizations
+          && organizations.map((data, index) => (
             <li key={data.org_id}>
               <div
                 className={styles.name}
@@ -24,12 +24,14 @@ export default class OrgTree extends PureComponent {
                   clickCompany(index);
                 }}
               >
-                <i className={`fa fa-caret-${data.depShow ? 'down' : 'right'}`} />
+                <i
+                  className={`fa fa-caret-${data.depShow ? 'down' : 'right'}`}
+                />
                 {data.company}
               </div>
               <ul className={classnames({ [styles.hide]: !data.depShow })}>
-                {data.department &&
-                  data.department.map((depData, depIndex) => (
+                {data.department
+                  && data.department.map((depData, depIndex) => (
                     <li
                       key={depIndex}
                       onClick={() => {
@@ -37,12 +39,20 @@ export default class OrgTree extends PureComponent {
                       }}
                     >
                       <div className={styles.name}>
-                        <i className={`fa fa-caret-${depData.staffShow ? 'down' : 'right'}`} />
+                        <i
+                          className={`fa fa-caret-${
+                            depData.staffShow ? 'down' : 'right'
+                          }`}
+                        />
                         {depData.name}
                       </div>
-                      <ul className={classnames({ [styles.hide]: !depData.staffShow })}>
-                        {depData.staff &&
-                          depData.staff.map(staffData => (
+                      <ul
+                        className={classnames({
+                          [styles.hide]: !depData.staffShow
+                        })}
+                      >
+                        {depData.staff
+                          && depData.staff.map(staffData => (
                             <li key={staffData}>
                               <div className={styles.lastName}>{staffData}</div>
                             </li>
