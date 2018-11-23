@@ -7,3 +7,5 @@ public/
 .cache/
 
 coverage/
+
+webpack*.js

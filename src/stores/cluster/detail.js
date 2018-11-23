@@ -239,7 +239,7 @@ export default class ClusterDetailStore extends Store {
 
   @action
   json2Yaml = str => {
-    let yamlStr = YAML.stringify(JSON.parse(str || '{}'));
+    const yamlStr = YAML.stringify(JSON.parse(str || '{}'));
     // fixme : some helm app with leading strings will cause deploy error
     return yamlStr.replace(/^---\n/, '').replace(/\s+(.*)/g, '$1');
   };

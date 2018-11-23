@@ -33,11 +33,15 @@ module.exports = {
         ],
         include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
       },
-      // {
-      //   test: /\.jsx?$/,
-      //   exclude: /node_modules/,
-      //   use: ['eslint-loader']
-      // },
+      {
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          fix: true
+        }
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
