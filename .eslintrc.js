@@ -69,7 +69,6 @@ module.exports = {
 
     // import
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-    // 'import/no-extraneous-dependencies': ['warn', { devDependencies: false }],
     'import/no-dynamic-require': 'warn',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',

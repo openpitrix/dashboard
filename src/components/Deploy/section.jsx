@@ -4,8 +4,10 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Radio, Input, Select, Slider, CodeMirror
+  Radio, Input, Select, Slider
 } from 'components/Base';
+
+import CodeMirror from 'components/CodeMirror';
 
 import styles from './index.scss';
 

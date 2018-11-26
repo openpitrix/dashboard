@@ -1,16 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 
-const CodeMirror = lazy(() => import('react-codemirror'));
-
-// fixme
-/* eslint-disable import/no-extraneous-dependencies */
-if (process.browser) {
-  require('codemirror/mode/yaml/yaml');
-  require('codemirror/mode/javascript/javascript');
-  require('codemirror/lib/codemirror.css');
-  require('codemirror/mode/markdown/markdown');
-}
+const CodeMirror = lazy(() => import('./CodeMirror'));
 
 export default class CodeMirrorX extends React.Component {
   static propTypes = {
@@ -24,11 +15,6 @@ export default class CodeMirrorX extends React.Component {
     onChange: () => {},
     mode: 'yaml'
   };
-
-  constructor(props) {
-    super(props);
-    this.state = { module: null };
-  }
 
   render() {
     const {
