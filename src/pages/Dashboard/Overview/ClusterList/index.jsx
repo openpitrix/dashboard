@@ -16,6 +16,10 @@ export default class ClusterList extends PureComponent {
     isNormal: PropTypes.bool
   };
 
+  renderStatusDot(status) {
+    return <span className={classNames(styles.statusDot, styles[status])} />;
+  }
+
   render() {
     const { clusters, isNormal, t } = this.props;
 
@@ -23,7 +27,9 @@ export default class ClusterList extends PureComponent {
       <ul className={styles.clusterList}>
         {clusters.map(cluster => (
           <li key={cluster.cluster_id}>
-            <div className={styles.dot}>{this.renderStatusDot(cluster.status)}</div>
+            <div className={styles.dot}>
+              {this.renderStatusDot(cluster.status)}
+            </div>
             <div className={styles.word}>
               <Link
                 className={styles.name}
@@ -41,17 +47,18 @@ export default class ClusterList extends PureComponent {
             </div>
             <div className={styles.total}>
               <div className={styles.nodes}>
-                {(cluster.cluster_node_set && cluster.cluster_node_set.length) || 0} {t('Nodes')}
+                {(cluster.cluster_node_set
+                  && cluster.cluster_node_set.length)
+                  || 0}{' '}
+                {t('Nodes')}
               </div>
-              <span className={styles.time}>{getPastTime(cluster.status_time)}</span>
+              <span className={styles.time}>
+                {getPastTime(cluster.status_time)}
+              </span>
             </div>
           </li>
         ))}
       </ul>
     );
-  }
-
-  renderStatusDot(status) {
-    return <span className={classNames(styles.statusDot, styles[status])} />;
   }
 }

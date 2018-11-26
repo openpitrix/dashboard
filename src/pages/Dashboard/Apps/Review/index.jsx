@@ -1,20 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import classnames from 'classnames';
 
-import {
-  Icon,
-  Button,
-  Table,
-  Popover,
-  Select,
-  Modal,
-  Image
-} from 'components/Base';
+import { Table } from 'components/Base';
 import Layout, {
-  Dialog,
   Grid,
   Row,
   Section,

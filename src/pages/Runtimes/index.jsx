@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
-import { Icon, Button, Popover } from 'components/Base';
+import { Icon, Popover } from 'components/Base';
 import Layout, { Dialog, BreadCrumb } from 'components/Layout';
 import { ProviderName } from 'components/TdName';
 
@@ -22,6 +22,17 @@ export default class Runtimes extends Component {
     currentType: 'all'
   };
 
+  componentWillMount() {
+    const { runtimeStore, clusterStore } = this.props;
+
+    runtimeStore.runtimes = runtimeStore.runtimes.filter(
+      rt => rt.status !== 'deleted'
+    );
+
+    runtimeStore.reset();
+    clusterStore.reset();
+  }
+
   async componentDidMount() {
     const { runtimeStore, clusterStore } = this.props;
 
@@ -29,15 +40,6 @@ export default class Runtimes extends Component {
     await clusterStore.fetchAll({
       noLimit: true
     });
-  }
-
-  componentWillMount() {
-    const { runtimeStore, clusterStore } = this.props;
-
-    runtimeStore.runtimes = runtimeStore.runtimes.filter(rt => rt.status !== 'deleted');
-
-    runtimeStore.reset();
-    clusterStore.reset();
   }
 
   selectType = async (value, flag) => {
@@ -62,11 +64,17 @@ export default class Runtimes extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>{t('View detail')}</Link>
+        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
+          {t('View detail')}
+        </Link>
         {detail.status !== 'deleted' && (
           <Fragment>
-            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>{t('Modify Runtime')}</Link>
-            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>{t('Delete')}</span>
+            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>
+              {t('Modify Runtime')}
+            </Link>
+            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>
+              {t('Delete')}
+            </span>
           </Fragment>
         )}
       </div>
@@ -95,7 +103,10 @@ export default class Runtimes extends Component {
 
     return (
       <div className={styles.runtimeCard}>
-        <Link className={styles.name} to={`/dashboard/runtime/${runtime.runtime_id}`}>
+        <Link
+          className={styles.name}
+          to={`/dashboard/runtime/${runtime.runtime_id}`}
+        >
           {runtime.name}
         </Link>
         <div className={styles.description}>{runtime.description}</div>
@@ -103,7 +114,10 @@ export default class Runtimes extends Component {
           <dl>
             <dt>{t('Cloud Provider')}</dt>
             <dd className={styles.provider}>
-              <ProviderName name={runtime.provider} provider={runtime.provider} />
+              <ProviderName
+                name={runtime.provider}
+                provider={runtime.provider}
+              />
             </dd>
           </dl>
           <dl>
@@ -112,7 +126,13 @@ export default class Runtimes extends Component {
           </dl>
           <dl>
             <dt>{t('Clusters')}</dt>
-            <dd>{clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id).length}</dd>
+            <dd>
+              {
+                clusters.filter(
+                  cluster => runtime.runtime_id === cluster.runtime_id
+                ).length
+              }
+            </dd>
           </dl>
         </div>
 
@@ -147,8 +167,11 @@ export default class Runtimes extends Component {
           {types.map(type => (
             <label
               key={type.value}
-              className={classNames({ [styles.active]: type.value === currentType })}
-              onClick={() => this.selectType(type.value, type.value === currentType)}
+              className={classNames({
+                [styles.active]: type.value === currentType
+              })}
+              onClick={() => this.selectType(type.value, type.value === currentType)
+              }
             >
               {type.name}
             </label>

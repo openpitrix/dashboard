@@ -39,16 +39,16 @@ export default class GroupCard extends Component {
     return nextState.curVal !== this.state.curVal;
   }
 
-  handleChange = ({ value }) => {
-    this.setState({ curVal: value });
-  };
-
   componentDidUpdate() {
     const { groups } = this.props;
     const { curVal } = this.state;
 
     this.props.selectCard(find(groups, { value: curVal }));
   }
+
+  handleChange = ({ value }) => {
+    this.setState({ curVal: value });
+  };
 
   render() {
     const { groups, t } = this.props;

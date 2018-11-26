@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 
-import { Button, Icon, Table } from 'components/Base';
+import { Icon, Table } from 'components/Base';
 import { Card } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';

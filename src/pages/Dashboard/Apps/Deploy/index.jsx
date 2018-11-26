@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
@@ -52,7 +52,8 @@ export default class AppDeploy extends Component {
     }
 
     const repoProviders = _.get(repoStore.repoDetail, 'providers', []);
-    const isK8s = (appDeployStore.isK8s = repoProviders.includes('kubernetes'));
+    const isK8s = repoProviders.includes('kubernetes');
+    appDeployStore.isK8s = isK8s;
 
     // fetch runtimes
     await appDeployStore.fetchRuntimes({
@@ -146,7 +147,7 @@ export default class AppDeploy extends Component {
   };
 
   getFormDataByKey = (keyPrefix = '') => {
-    const formData = getFormData(this.refs.deployForm);
+    const formData = getFormData(this.deployForm);
 
     if (!keyPrefix) {
       return formData;
@@ -175,7 +176,8 @@ export default class AppDeploy extends Component {
       nodesConf,
       (res, val, key) => {
         const [role, meter] = key.split('.');
-        (res[role] || (res[role] = {}))[meter] = keysShouldBeNumber.indexOf(meter) > -1 ? parseInt(val) : val;
+        res[role] = res[role] || {};
+        res[role][meter] = keysShouldBeNumber.indexOf(meter) > -1 ? parseInt(val) : val;
       },
       {}
     );
@@ -375,7 +377,9 @@ export default class AppDeploy extends Component {
             className={styles.createForm}
             method="post"
             onSubmit={this.handleSubmit}
-            ref="deployForm"
+            ref={node => {
+              this.deployForm = node;
+            }}
           >
             {this.renderBody()}
           </form>

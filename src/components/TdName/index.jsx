@@ -36,7 +36,7 @@ export default class TdName extends React.Component {
     const { noCopy, t } = this.props;
 
     if (!noCopy) {
-      this.clipboard = new ClipboardJS(this.refs.copyBtn);
+      this.clipboard = new ClipboardJS(this.copyBtn);
 
       this.clipboard.on('success', e => {
         this.props.rootStore.notify({
@@ -112,7 +112,9 @@ export default class TdName extends React.Component {
             <span
               className="copy"
               data-clipboard-text={description}
-              ref="copyBtn"
+              ref={node => {
+                this.copyBtn = node;
+              }}
             >
               <Icon name="copy" type="dark" />
             </span>

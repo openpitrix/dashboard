@@ -128,8 +128,7 @@ export default class Overview extends React.Component {
       clusterStore,
       repoStore,
       categoryStore,
-      userStore,
-      t
+      userStore
     } = this.props;
     const { isLoading } = this.state;
 
@@ -283,7 +282,7 @@ export default class Overview extends React.Component {
 
   developerView = () => {
     const {
-      appStore, clusterStore, repoStore, runtimeStore, t
+      appStore, clusterStore, repoStore, runtimeStore
     } = this.props;
     const { isLoading } = appStore;
 

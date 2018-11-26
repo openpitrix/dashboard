@@ -61,7 +61,7 @@ class SideNav extends React.Component {
   }
 
   becomeDeveloper = isNormal => {
-    const { rootStore } = this.props;
+    const { rootStore, location } = this.props;
     rootStore.updateUser({
       changedRole: isNormal ? '' : 'user'
     });

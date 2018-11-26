@@ -16,7 +16,6 @@ import {
 } from 'components/Base';
 import Layout, {
   Grid,
-  Row,
   Section,
   Panel,
   Card,
@@ -259,14 +258,7 @@ export default class Users extends Component {
 
   render() {
     const { userStore, t } = this.props;
-    const {
-      treeFlag,
-      organizations,
-      selectValue,
-      selectGroupId,
-      selectRoleId,
-      selectName
-    } = userStore;
+    const { selectValue, selectName } = userStore;
 
     const data = toJS(userStore.users);
 
@@ -308,18 +300,6 @@ export default class Users extends Component {
             <Icon name="more" />
           </Popover>
         )
-      }
-    ];
-
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: 'Active', value: 'active' },
-          { name: 'Deleted', value: 'deleted' }
-        ],
-        onChangeFilter: userStore.onChangeStatus,
-        selectValue: userStore.selectStatus
       }
     ];
 

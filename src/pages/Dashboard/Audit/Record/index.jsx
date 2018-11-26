@@ -1,22 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import {
-  Icon,
-  Button,
-  Table,
-  Popover,
-  Select,
-  Modal,
-  Image
-} from 'components/Base';
+import { Icon, Button, Image } from 'components/Base';
 import Layout, {
-  Dialog, Grid, Row, Section, Card
+  Grid, Row, Section, Card
 } from 'components/Layout';
-import { getObjName, mappingStatus, getFilterObj } from 'utils';
 
 import { records } from './record';
 import styles from './index.scss';
@@ -42,7 +33,7 @@ export default class AuditRecord extends Component {
   }
 
   render() {
-    const { appVersionStore, appStore, t } = this.props;
+    const { appStore } = this.props;
     const { appDetail } = appStore;
     const statusMap = {
       notStarted: '未开始',

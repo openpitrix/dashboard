@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+/* import { Link } from 'react-router-dom'; */
 import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
@@ -46,9 +46,7 @@ export default class ClusterDetail extends Component {
 
   async componentDidMount() {
     const {
-      rootStore,
       clusterDetailStore,
-      clusterStore,
       runtimeStore,
       appStore,
       appVersionStore,
@@ -337,7 +335,6 @@ export default class ClusterDetail extends Component {
     return (
       <div className="operate-menu">
         {renderMenuBtns()}
-        {/* <span onClick={() => showOperateCluster(cluster_id, 'resize')}>{t('Resize cluster')}</span> */}
         {status !== 'deleted' && (
           <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
             {t('Delete cluster')}
@@ -350,8 +347,6 @@ export default class ClusterDetail extends Component {
   render() {
     const {
       appStore,
-      appVersionStore,
-      clusterStore,
       clusterDetailStore,
       runtimeStore,
       userStore,
@@ -411,7 +406,13 @@ export default class ClusterDetail extends Component {
 
           <Section size={8}>
             <Loading isLoading={!isRuntimeTypeFetched}>
-              <Panel>{isK8s ? <Helm cluster={cluster} /> : <VMbase cluster={cluster} />}</Panel>
+              <Panel>
+                {isK8s ? (
+                  <Helm cluster={cluster} />
+                ) : (
+                  <VMbase cluster={cluster} />
+                )}
+              </Panel>
             </Loading>
           </Section>
         </Grid>

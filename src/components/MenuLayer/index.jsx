@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Popover, Icon } from 'components/Base';
+import { Icon } from 'components/Base';
 
 import { userMeuns } from 'components/Layout/SideNav/navMap';
 import styles from './index.scss';
@@ -17,13 +17,13 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-export default class MenuLayer extends Component {
+class MenuLayer extends Component {
   static propTypes = {
     className: PropTypes.string
   };
 
   becomeDeveloper = isNormal => {
-    const { rootStore } = this.props;
+    const { rootStore, location } = this.props;
     rootStore.updateUser({
       changedRole: isNormal ? '' : 'user'
     });
@@ -93,3 +93,4 @@ export default class MenuLayer extends Component {
     );
   }
 }
+export default withRouter(MenuLayer);

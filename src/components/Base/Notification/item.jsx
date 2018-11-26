@@ -33,11 +33,24 @@ export default class NotificationItem extends React.Component {
     ts: Date.now()
   };
 
-  timer = null;
-
   state = {
     hidden: false
   };
+
+  componentDidMount() {
+    const { timeOut } = this.props;
+    if (timeOut) {
+      this.timer = setTimeout(this.hideNotify, timeOut);
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+    this.timer = null;
+    this.props.onClosed();
+  }
+
+  timer = null;
 
   // based on font-awesome icons
   iconMap = {
@@ -65,20 +78,7 @@ export default class NotificationItem extends React.Component {
     });
   };
 
-  componentDidMount() {
-    const { timeOut } = this.props;
-    if (timeOut) {
-      this.timer = setTimeout(this.hideNotify, timeOut);
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timer);
-    this.timer = null;
-    this.props.onClosed();
-  }
-
-  handleClick = e => {
+  handleClick = () => {
     // this.hideNotify();
   };
 

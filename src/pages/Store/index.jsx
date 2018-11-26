@@ -106,9 +106,7 @@ export default class Store extends Component {
   };
 
   render() {
-    const {
-      appStore, categoryStore, match, t
-    } = this.props;
+    const { appStore, categoryStore, match } = this.props;
     const { storeApps, isLoading, isProgressive } = appStore;
     const categories = categoryStore.categories;
 

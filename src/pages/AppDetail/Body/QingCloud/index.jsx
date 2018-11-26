@@ -72,7 +72,8 @@ export default class QingCloud extends React.Component {
   };
 
   renderSlider() {
-    let { currentPic, pictures = [] } = this.props;
+    const { currentPic } = this.props;
+    let { pictures = [] } = this.props;
     if (typeof pictures === 'string') {
       pictures = pictures.split(',').map(v => v.trim());
     }

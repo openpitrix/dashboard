@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import {
-  noop, clone, isEmpty, get
-} from 'lodash';
+import { noop, isEmpty } from 'lodash';
 
 import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';

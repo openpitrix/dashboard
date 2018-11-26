@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 const CodeMirror = lazy(() => import('react-codemirror'));
 
 // fixme
+/* eslint-disable import/no-extraneous-dependencies */
 if (process.browser) {
   require('codemirror/mode/yaml/yaml');
   require('codemirror/mode/javascript/javascript');
   require('codemirror/lib/codemirror.css');
+  require('codemirror/mode/markdown/markdown');
 }
 
 export default class CodeMirrorX extends React.Component {

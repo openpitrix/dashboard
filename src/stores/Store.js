@@ -32,6 +32,7 @@ Store.prototype = {
     this.notify(message, 'success');
   },
   error(message) {
+    const { location } = window;
     // Can't get token will skip to the login page
     if (message === 'Unauthorized') {
       const { pathname } = location;
@@ -81,7 +82,7 @@ Store.prototype = {
         const res = await target.post(url, { method, ...params });
 
         if (res && res.status >= 300 && res.status < 400) {
-          location.href = res.message || '/login';
+          window.location.href = res.message || '/login';
         }
 
         // error handling

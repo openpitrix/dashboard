@@ -1,19 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import {
-  Icon,
-  Input,
-  Table,
-  Pagination,
-  Popover,
-  Modal
+  Icon, Input, Table, Popover, Modal
 } from 'components/Base';
 import Layout, {
-  BackBtn,
   Dialog,
   Grid,
   Section,
@@ -28,8 +22,6 @@ import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
 import CategoryCard from 'components/DetailCard/CategoryCard';
 import { getObjName, mappingStatus } from 'utils';
-
-import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({

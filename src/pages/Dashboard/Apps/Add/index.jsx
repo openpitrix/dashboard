@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
@@ -19,7 +19,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-export default class AppAdd extends Component {
+class AppAdd extends Component {
   async componentDidMount() {
     const { repoStore } = this.props;
 
@@ -34,7 +34,7 @@ export default class AppAdd extends Component {
   }
 
   setCreateStep = step => {
-    const { appStore } = this.props;
+    const { appStore, history } = this.props;
     const { setCreateStep, createStep } = appStore;
 
     window.scroll({ top: 0, behavior: 'smooth' });
@@ -44,7 +44,6 @@ export default class AppAdd extends Component {
     if (step) {
       setCreateStep(step);
     } else {
-      // eslint-disable-next-line
       history.back();
     }
   };
@@ -229,7 +228,7 @@ export default class AppAdd extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, history } = this.props;
     const { createStep } = this.props.appStore;
 
     return (
@@ -248,3 +247,4 @@ export default class AppAdd extends Component {
     );
   }
 }
+export default withRouter(AppAdd);

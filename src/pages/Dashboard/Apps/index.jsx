@@ -1,10 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import {
-  filter, get, orderBy, capitalize
-} from 'lodash';
+import { get, orderBy } from 'lodash';
 
 import {
   Icon,
@@ -143,7 +141,7 @@ export default class Apps extends Component {
 
   renderHandleMenu = item => {
     const { user, t } = this.props;
-    const { showDeleteApp, showModifyAppCate } = this.props.appStore;
+    const { showModifyAppCate } = this.props.appStore;
     const { isAdmin } = user;
     let itemMenu = null,
       deployEntry = null;
@@ -259,7 +257,7 @@ export default class Apps extends Component {
     } = appStore;
     const { repos } = repoStore;
     const { users } = userStore;
-    const { isNormal, isDev, isAdmin } = user;
+    const { isDev, isAdmin } = user;
     const urlFront = isAdmin ? '/store/' : '/dashboard/app/';
 
     let columns = [

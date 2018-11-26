@@ -20,9 +20,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
-import { formatTime, getObjName } from 'utils';
-
-import styles from './index.scss';
+import { getObjName } from 'utils';
 
 @translate()
 @inject(({ rootStore }) => ({

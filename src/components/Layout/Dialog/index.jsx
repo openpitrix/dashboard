@@ -51,7 +51,12 @@ export default class Dialog extends React.PureComponent {
         {...rest}
       >
         <div className={styles.content}>
-          <form method="post" ref={node => (this.form = node)}>
+          <form
+            method="post"
+            ref={node => {
+              this.form = node;
+            }}
+          >
             {children}
           </form>
         </div>

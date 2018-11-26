@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { get, capitalize, pick } from 'lodash';
 import { translate } from 'react-i18next';
 
@@ -19,7 +19,7 @@ import Layout, {
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import TdName, { ProviderName } from 'components/TdName';
+import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import { getObjName } from 'utils';
@@ -35,7 +35,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-export default class RuntimeDetail extends Component {
+class RuntimeDetail extends Component {
   async componentDidMount() {
     const {
       runtimeStore,
@@ -67,16 +67,16 @@ export default class RuntimeDetail extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { clusterStore } = this.props;
-    clusterStore.reset();
-  }
-
   componentDidUpdate() {
     const { runtimeDeleted } = this.props.runtimeStore;
     if (get(runtimeDeleted, 'runtime_id')) {
-      history.back();
+      this.props.history.back();
     }
+  }
+
+  componentWillUnmount() {
+    const { clusterStore } = this.props;
+    clusterStore.reset();
   }
 
   listenToJob = async ({
@@ -269,7 +269,6 @@ export default class RuntimeDetail extends Component {
       clusterCount,
       isLoading,
       currentPage,
-      searchWord,
       selectStatus
     } = clusterStore;
 
@@ -430,3 +429,4 @@ export default class RuntimeDetail extends Component {
     );
   }
 }
+export default withRouter(RuntimeDetail);

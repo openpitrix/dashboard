@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-export default class RuntimeAdd extends Component {
+class RuntimeAdd extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.runtimeCreateStore;
@@ -45,7 +45,7 @@ export default class RuntimeAdd extends Component {
       _.get(this.store, 'runtimeCreated.runtime_id')
       && !this.store.isLoading
     ) {
-      history.back();
+      this.props.history.back();
     }
   }
 
@@ -55,7 +55,7 @@ export default class RuntimeAdd extends Component {
   }
 
   handleSubmit = async e => {
-    const { runtimeCreateStore } = this.props;
+    const { runtimeCreateStore, history } = this.props;
     const result = await runtimeCreateStore.handleSubmit(e);
 
     if (result && result.runtime_id) {
@@ -170,7 +170,7 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
-    const { t } = this.props;
+    const { t, history } = this.props;
     const {
       runtimeId,
       name,
@@ -272,7 +272,7 @@ export default class RuntimeAdd extends Component {
     const { user, t } = this.props;
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
-    const { isNormal, isDev, isAdmin } = user;
+    const { isNormal, isDev } = user;
     const linkPath = isDev
       ? `My Apps>Runtimes>${title}`
       : `Platform>Runtimes>${title}`;
@@ -291,3 +291,4 @@ export default class RuntimeAdd extends Component {
     );
   }
 }
+export default withRouter(RuntimeAdd);

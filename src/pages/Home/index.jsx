@@ -31,9 +31,7 @@ export default class Home extends Component {
   }
 
   async componentDidMount() {
-    const {
-      rootStore, appStore, categoryStore, match
-    } = this.props;
+    const { appStore, categoryStore, match } = this.props;
     const { category, search } = match.params;
     const filterParams = { status: 'active', noLimit: true };
 
