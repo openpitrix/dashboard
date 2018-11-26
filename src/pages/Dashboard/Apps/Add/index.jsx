@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
@@ -19,7 +19,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class AppAdd extends Component {
+export default class AppAdd extends Component {
   async componentDidMount() {
     const { repoStore } = this.props;
 
@@ -44,7 +44,7 @@ class AppAdd extends Component {
     if (step) {
       setCreateStep(step);
     } else {
-      history.back();
+      history.goBack();
     }
   };
 
@@ -235,7 +235,7 @@ class AppAdd extends Component {
       <div className={styles.createApp}>
         <div className={styles.operate}>
           <label onClick={() => this.setCreateStep()}>←&nbsp;{t('Back')}</label>
-          <label className="pull-right" onClick={() => history.back()}>
+          <label className="pull-right" onClick={() => history.goBack()}>
             <Icon name="close" size={24} type="dark" />&nbsp;{t('Esc')}
           </label>
         </div>
@@ -247,4 +247,3 @@ class AppAdd extends Component {
     );
   }
 }
-export default withRouter(AppAdd);

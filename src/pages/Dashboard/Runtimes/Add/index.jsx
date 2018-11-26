@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
@@ -21,7 +20,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class RuntimeAdd extends Component {
+export default class RuntimeAdd extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.runtimeCreateStore;
@@ -45,7 +44,7 @@ class RuntimeAdd extends Component {
       _.get(this.store, 'runtimeCreated.runtime_id')
       && !this.store.isLoading
     ) {
-      this.props.history.back();
+      this.props.history.goBack();
     }
   }
 
@@ -59,7 +58,7 @@ class RuntimeAdd extends Component {
     const result = await runtimeCreateStore.handleSubmit(e);
 
     if (result && result.runtime_id) {
-      setTimeout(() => history.back(), 1000);
+      setTimeout(() => history.goBack(), 1000);
     }
   };
 
@@ -252,7 +251,7 @@ class RuntimeAdd extends Component {
           >
             {t('Confirm')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -291,4 +290,3 @@ class RuntimeAdd extends Component {
     );
   }
 }
-export default withRouter(RuntimeAdd);

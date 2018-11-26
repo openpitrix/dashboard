@@ -23,11 +23,11 @@ class MenuLayer extends Component {
   };
 
   becomeDeveloper = isNormal => {
-    const { rootStore, location } = this.props;
+    const { rootStore, history } = this.props;
     rootStore.updateUser({
       changedRole: isNormal ? '' : 'user'
     });
-    location.href = '/dashboard';
+    history.push('/dashboard');
   };
 
   render() {

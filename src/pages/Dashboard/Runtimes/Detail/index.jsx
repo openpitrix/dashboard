@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { get, capitalize, pick } from 'lodash';
 import { translate } from 'react-i18next';
 
@@ -35,7 +35,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class RuntimeDetail extends Component {
+export default class RuntimeDetail extends Component {
   async componentDidMount() {
     const {
       runtimeStore,
@@ -70,7 +70,7 @@ class RuntimeDetail extends Component {
   componentDidUpdate() {
     const { runtimeDeleted } = this.props.runtimeStore;
     if (get(runtimeDeleted, 'runtime_id')) {
-      this.props.history.back();
+      this.props.history.goBack();
     }
   }
 
@@ -429,4 +429,3 @@ class RuntimeDetail extends Component {
     );
   }
 }
-export default withRouter(RuntimeDetail);

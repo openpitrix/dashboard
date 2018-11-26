@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
@@ -19,7 +19,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class RepoAdd extends Component {
+export default class RepoAdd extends Component {
   constructor(props) {
     super(props);
     this.store = this.props.repoCreateStore;
@@ -43,7 +43,7 @@ class RepoAdd extends Component {
     const result = await repoCreateStore.handleSubmit(e);
 
     if (result && result.repo_id) {
-      setTimeout(() => history.back(), 1000);
+      setTimeout(() => history.goBack(), 1000);
     }
   };
 
@@ -261,4 +261,3 @@ class RepoAdd extends Component {
     );
   }
 }
-export default withRouter(RepoAdd);

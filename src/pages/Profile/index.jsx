@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
@@ -16,7 +15,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class Profile extends Component {
+export default class Profile extends Component {
   state = {
     currentForm: 'basic'
   };
@@ -92,7 +91,7 @@ class Profile extends Component {
           <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -138,7 +137,7 @@ class Profile extends Component {
           <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -186,4 +185,3 @@ class Profile extends Component {
     );
   }
 }
-export default withRouter(Profile);
