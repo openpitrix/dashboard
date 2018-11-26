@@ -4,10 +4,8 @@ import CodeMirror from 'react-codemirror';
 
 // fixme
 /* eslint-disable import/no-extraneous-dependencies */
-if (process.browser) {
-  require('codemirror/lib/codemirror.css');
-  require('codemirror/mode/yaml/yaml');
-}
+require('codemirror/lib/codemirror.css');
+require('codemirror/mode/yaml/yaml');
 
 export default class ReactCodeMirror extends Component {
   static propTypes = {
