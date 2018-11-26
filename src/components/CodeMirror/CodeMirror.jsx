@@ -7,7 +7,7 @@ import CodeMirror from 'react-codemirror';
 require('codemirror/lib/codemirror.css');
 require('codemirror/mode/yaml/yaml');
 
-export default class ReactCodeMirror extends Component {
+export default class LazyCodeMirror extends Component {
   static propTypes = {
     code: PropTypes.string,
     mode: PropTypes.string,
@@ -29,7 +29,7 @@ export default class ReactCodeMirror extends Component {
       <CodeMirror
         value={code}
         onChange={onChange}
-        options={{ mode, lineNumbers: true }}
+        options={{ mode }}
         {...rest}
       />
     );

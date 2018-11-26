@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 
-const CodeMirror = lazy(() => import('./CodeMirror'));
+const Component = lazy(() => import('./CodeMirror'));
 
-export default class ComponentCodeMirror extends React.Component {
+export default class CodeMirror extends React.Component {
   static propTypes = {
     code: PropTypes.string,
     mode: PropTypes.string,
@@ -23,10 +23,10 @@ export default class ComponentCodeMirror extends React.Component {
 
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <CodeMirror
+        <Component
           value={code}
           onChange={onChange}
-          options={{ mode }}
+          options={{ mode, lineNumbers: true }}
           {...rest}
         />
       </Suspense>
