@@ -44,10 +44,6 @@ class Layout extends Component {
     isHome: false
   };
 
-  state = {
-    isScroll: false
-  };
-
   componentDidMount() {
     const { sock, listenToJob } = this.props;
 
@@ -62,8 +58,6 @@ class Layout extends Component {
           ...resource
         });
       });
-
-    window.onscroll = this.handleScroll;
   }
 
   componentWillUnmount() {
@@ -72,16 +66,7 @@ class Layout extends Component {
     if (sock && !isEmpty(sock._events)) {
       sock._events = {};
     }
-
-    window.onscroll = null;
   }
-
-  handleScroll = async () => {
-    const scrollTop = getScrollTop();
-    scrollTop > 0
-      ? this.setState({ isScroll: true })
-      : this.setState({ isScroll: false });
-  };
 
   goBack = () => {
     const { history } = this.props;
@@ -105,7 +90,6 @@ class Layout extends Component {
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
-    const { isScroll } = this.state;
     const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
     const isCenterPage = Boolean(pageTitle); // detail page, only one level menu
     const hasSubNav = hasMenu && !isCenterPage && !paths.includes(match.path);
@@ -124,7 +108,7 @@ class Layout extends Component {
         {noNotification ? null : <Notification />}
         {backBtn}
 
-        {hasMenu && <SideNav isScroll={isScroll} hasSubNav={hasSubNav} />}
+        {hasMenu && <SideNav hasSubNav={hasSubNav} />}
         {isNormal
           && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 

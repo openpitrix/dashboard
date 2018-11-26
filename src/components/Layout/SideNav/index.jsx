@@ -45,8 +45,7 @@ const changeKey = {
 class SideNav extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    hasSubNav: PropTypes.bool,
-    isScroll: PropTypes.bool
+    hasSubNav: PropTypes.bool
   };
 
   static defaultProps = {};
@@ -287,24 +286,6 @@ class SideNav extends React.Component {
             {t(link.name)}
           </Link>
         ))}
-      </div>
-    );
-  }
-
-  renderHeader() {
-    const { isScroll } = this.props;
-    const { username } = this.props.user;
-
-    return (
-      <div
-        className={classnames(styles.header, {
-          [styles.headerShadow]: isScroll
-        })}
-      >
-        <Popover content={<MenuLayer />} className={styles.user}>
-          {username}
-          <Icon name="caret-down" className={styles.iconDark} type="dark" />
-        </Popover>
       </div>
     );
   }
