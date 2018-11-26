@@ -9,7 +9,7 @@ if (process.browser) {
   require('codemirror/mode/yaml/yaml');
 }
 
-export default class CodeMirrorX extends Component {
+export default class ReactCodeMirror extends Component {
   static propTypes = {
     code: PropTypes.string,
     mode: PropTypes.string,

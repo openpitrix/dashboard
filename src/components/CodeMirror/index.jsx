@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const CodeMirror = lazy(() => import('./CodeMirror'));
 
-export default class CodeMirrorX extends React.Component {
+export default class ComponentCodeMirror extends React.Component {
   static propTypes = {
     code: PropTypes.string,
     mode: PropTypes.string,
@@ -26,7 +26,7 @@ export default class CodeMirrorX extends React.Component {
         <CodeMirror
           value={code}
           onChange={onChange}
-          options={{ mode, lineNumbers: true }}
+          options={{ mode }}
           {...rest}
         />
       </Suspense>
