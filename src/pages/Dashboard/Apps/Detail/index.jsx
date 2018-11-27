@@ -117,10 +117,12 @@ export default class AppDetail extends Component {
     appVersionStore.isLoading = true;
     appVersionStore.uploadFile = base64Str;
     appVersionStore.packageName = file.name;
-    setTimeout(() => (appVersionStore.isLoading = false), 1000);
+    setTimeout(() => {
+      appVersionStore.isLoading = false;
+    }, 1000);
   };
 
-  createVersion = (base64Str, file) => {
+  createVersion = base64Str => {
     const { appVersionStore } = this.props;
     appVersionStore.currentVersion = {};
     appVersionStore.uploadFile = base64Str;
@@ -412,9 +414,7 @@ export default class AppDetail extends Component {
     }
 
     const { appDetail } = appStore;
-    const {
-      isNormal, isDev, isAdmin, role
-    } = user;
+    const { isDev, role } = user;
     const editStatus = ['draft', 'rejected'];
     const isDisabled = !editStatus.includes(currentVersion.status)
       || !isDev

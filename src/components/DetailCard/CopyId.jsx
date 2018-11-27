@@ -20,7 +20,7 @@ export default class CopyId extends React.Component {
   componentDidMount() {
     const { t } = this.props;
 
-    this.clipboard = new ClipboardJS(this.refs.copyBtn);
+    this.clipboard = new ClipboardJS(this.copyBtn);
 
     this.clipboard.on('success', e => {
       this.props.rootStore.notify({
@@ -41,7 +41,13 @@ export default class CopyId extends React.Component {
     return (
       <div className={classnames(styles.copyOuter, className)}>
         id: {id}
-        <span className="copyId" data-clipboard-text={id} ref="copyBtn">
+        <span
+          className="copyId"
+          data-clipboard-text={id}
+          ref={node => {
+            this.copyBtn = node;
+          }}
+        >
           <Icon name="copy" type="dark" />
         </span>
       </div>

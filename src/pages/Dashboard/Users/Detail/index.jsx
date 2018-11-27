@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { pick } from 'lodash';
 
 import { Icon, Table, Popover } from 'components/Base';
 import Layout, {
-  BackBtn,
   Grid,
   Section,
   Panel,
   Card,
-  Dialog,
   BreadCrumb
 } from 'components/Layout';
 import UserCard from 'components/DetailCard/UserCard';
@@ -54,7 +51,7 @@ export default class Detail extends Component {
   }
 
   // todo
-  deleteUser = id => {};
+  deleteUser = () => {};
 
   renderHandleMenu = id => {
     const { t } = this.props;

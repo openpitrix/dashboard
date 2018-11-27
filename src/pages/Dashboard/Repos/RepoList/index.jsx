@@ -27,7 +27,6 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
           {repos.map(
             ({
               repo_id,
-              status,
               name,
               description,
               providers,

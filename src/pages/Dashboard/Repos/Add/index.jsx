@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { get } from 'lodash';
 import { translate } from 'react-i18next';
 
 import {
@@ -40,11 +39,11 @@ export default class RepoAdd extends Component {
   }
 
   handleSubmit = async e => {
-    const { repoCreateStore } = this.props;
+    const { repoCreateStore, history } = this.props;
     const result = await repoCreateStore.handleSubmit(e);
 
     if (result && result.repo_id) {
-      setTimeout(() => history.back(), 1000);
+      setTimeout(() => history.goBack(), 1000);
     }
   };
 

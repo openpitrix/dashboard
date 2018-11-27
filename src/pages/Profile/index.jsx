@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classNames from 'classnames';
-import { extend } from 'lodash';
 
 import { Button, Input } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
@@ -49,7 +48,7 @@ export default class Profile extends Component {
   };
 
   renderBasic() {
-    const { userStore, t } = this.props;
+    const { userStore, t, history } = this.props;
     const { userDetail, changeUser } = userStore;
     // const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
@@ -92,14 +91,14 @@ export default class Profile extends Component {
           <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
   }
 
   renderPassword() {
-    const { userStore, t } = this.props;
+    const { userStore, t, history } = this.props;
     const { modifyPassword } = userStore;
 
     return (
@@ -112,7 +111,6 @@ export default class Profile extends Component {
             type="password"
             maxLength={50}
             required
-            ref={input => (this.input = input)}
           />
         </div>
         <div>
@@ -123,7 +121,6 @@ export default class Profile extends Component {
             type="password"
             maxLength={50}
             required
-            ref={input => (this.input = input)}
           />
         </div>
         <div>
@@ -134,14 +131,13 @@ export default class Profile extends Component {
             type="password"
             maxLength={50}
             required
-            ref={input => (this.input = input)}
           />
         </div>
         <div className={styles.submitBtn}>
           <Button type={`primary`} htmlType="submit">
             {t('Modify')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );

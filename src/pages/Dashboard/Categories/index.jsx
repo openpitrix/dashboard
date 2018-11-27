@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -6,11 +6,9 @@ import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
 import {
-  Input, Button, Popover, Icon, Modal
+  Input, Popover, Icon, Modal
 } from 'components/Base';
-import Layout, {
-  Dialog, Grid, Section, BreadCrumb
-} from 'components/Layout';
+import Layout, { Dialog, BreadCrumb } from 'components/Layout';
 import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
 import { getScrollTop } from 'utils';
@@ -185,7 +183,7 @@ export default class Categories extends Component {
         </div>
 
         <div>
-          {defaultCategories.map((data, index) => (
+          {defaultCategories.map(data => (
             <div key={data.category_id} className={styles.categoryContent}>
               <CategoryCard
                 id={data.category_id}

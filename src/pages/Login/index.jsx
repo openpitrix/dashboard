@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import { translate } from 'react-i18next';

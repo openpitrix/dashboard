@@ -136,7 +136,7 @@ export default class Pagination extends React.Component {
   }
 
   render() {
-    const { total, className, ...rest } = this.props;
+    const { total, className } = this.props;
     const { current } = this.state;
     const totalPage = this.calculatePage();
 

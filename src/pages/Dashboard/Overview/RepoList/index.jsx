@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import { ucfirst } from 'utils/string';
 import { Icon } from 'components/Base';
 import { getFilterObj } from 'utils';
 import styles from './index.scss';

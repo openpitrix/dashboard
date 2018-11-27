@@ -34,7 +34,7 @@ export default class AppAdd extends Component {
   }
 
   setCreateStep = step => {
-    const { appStore } = this.props;
+    const { appStore, history } = this.props;
     const { setCreateStep, createStep } = appStore;
 
     window.scroll({ top: 0, behavior: 'smooth' });
@@ -44,8 +44,7 @@ export default class AppAdd extends Component {
     if (step) {
       setCreateStep(step);
     } else {
-      // eslint-disable-next-line
-      history.back();
+      history.goBack();
     }
   };
 
@@ -229,14 +228,14 @@ export default class AppAdd extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, history } = this.props;
     const { createStep } = this.props.appStore;
 
     return (
       <div className={styles.createApp}>
         <div className={styles.operate}>
           <label onClick={() => this.setCreateStep()}>←&nbsp;{t('Back')}</label>
-          <label className="pull-right" onClick={() => history.back()}>
+          <label className="pull-right" onClick={() => history.goBack()}>
             <Icon name="close" size={24} type="dark" />&nbsp;{t('Esc')}
           </label>
         </div>

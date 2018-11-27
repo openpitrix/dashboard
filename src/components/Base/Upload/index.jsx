@@ -6,7 +6,7 @@ import { noop } from 'lodash';
 import attrAccept from './utils/attr-accept';
 import traverseFileTree from './utils/traverseFileTree';
 
-import styles from './index.scss';
+import './index.scss';
 
 const now = Date.now();
 let index = 0;
@@ -17,8 +17,6 @@ function getUid() {
 }
 
 export default class Upload extends Component {
-  reqs = {};
-
   static propTypes = {
     accept: PropTypes.string,
     checkFile: PropTypes.func,
@@ -53,6 +51,8 @@ export default class Upload extends Component {
     this.uploaderMounted = false;
     this.abort();
   }
+
+  reqs = {};
 
   onChange = e => {
     const { files } = e.target;

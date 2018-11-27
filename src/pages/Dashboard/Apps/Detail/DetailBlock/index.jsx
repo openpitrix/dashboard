@@ -8,9 +8,6 @@ import { ProviderName } from 'components/TdName';
 import { Image, Button } from 'components/Base';
 import Status from 'components/Status';
 import CopyId from 'components/DetailCard/CopyId';
-import {
-  Grid, Section, Card, Panel
-} from 'components/Layout';
 import { mappingStatus } from 'utils';
 
 import styles from './index.scss';

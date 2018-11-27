@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
@@ -6,10 +6,10 @@ import { translate } from 'react-i18next';
 import classNames from 'classnames';
 
 import {
-  Icon, Button, Table, Popover, Image
+  Icon, Table, Popover, Image
 } from 'components/Base';
 import Layout, {
-  Dialog, Grid, Row, Section, Card
+  Dialog, Grid, Section, Card
 } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';

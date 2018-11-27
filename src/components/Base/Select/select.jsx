@@ -26,13 +26,13 @@ export default class Select extends React.Component {
     isOpen: false
   };
 
-  childNodes = [];
-
-  currentLabel = '';
-
   componentWillUnmount() {
     document.removeEventListener('click', this.handleOutsideClick.bind(this));
   }
+
+  childNodes = [];
+
+  currentLabel = '';
 
   handleOutsideClick(e) {
     if (this.wrapper && !this.wrapper.contains(e.target)) {
@@ -92,7 +92,7 @@ export default class Select extends React.Component {
 
   renderControl() {
     const { isOpen } = this.state;
-    const { value, disabled } = this.props;
+    const { disabled } = this.props;
 
     return (
       <div className={styles.control} onClick={this.handleControlClick}>

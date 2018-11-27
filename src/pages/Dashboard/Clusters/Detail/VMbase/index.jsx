@@ -6,12 +6,11 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Button, Icon, Table, Radio, Input, Modal
+  Button, Table, Radio, Input, Modal
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import { formatTime } from 'utils';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
 
@@ -142,7 +141,9 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        {/* <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}> */}
+        {/*
+            <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>
+          */}
         {/* <Icon name="add" size="mini" type="white" /> */}
         {/* <span className={styles.addNodeTxt}>{t('Add Nodes')}</span> */}
         {/* </Button> */}

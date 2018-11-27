@@ -26,7 +26,7 @@ export default class UserCard extends React.Component {
   };
 
   render() {
-    const { userDetail, user, t } = this.props;
+    const { userDetail, t } = this.props;
 
     return (
       <div className={styles.detailCard}>

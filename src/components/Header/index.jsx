@@ -27,7 +27,7 @@ class Header extends Component {
   onSearch = async value => {
     const { appStore, history, isHome } = this.props;
     const pushUrl = isHome ? `/apps/search/${value}` : `/store/search/${value}`;
-    this.props.history.push(pushUrl);
+    history.push(pushUrl);
     await appStore.fetchAll({ search_word: value });
     appStore.homeApps = appStore.apps;
   };
@@ -134,13 +134,23 @@ class Header extends Component {
       <div className={classnames(styles.header, styles.deepInner)}>
         <div className={styles.wrapper}>
           <Link className={styles.logoIcon} to="/">
-            <Icon className={styles.icon} name="op-logo" type="white" size={16} />
+            <Icon
+              className={styles.icon}
+              name="op-logo"
+              type="white"
+              size={16}
+            />
           </Link>
           {this.renderMenus()}
           {this.renderMenuBtns()}
           <Icon name="mail" size={20} type="white" className={styles.mail} />
           <Link to="#" className={styles.upgrade}>
-            <Icon name="shield" size={16} type="white" className={styles.shield} />
+            <Icon
+              name="shield"
+              size={16}
+              type="white"
+              className={styles.shield}
+            />
             {t('UPGRADE_PROVIDER')}
           </Link>
         </div>

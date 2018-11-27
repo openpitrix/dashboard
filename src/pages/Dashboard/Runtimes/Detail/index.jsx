@@ -19,7 +19,7 @@ import Layout, {
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import TdName, { ProviderName } from 'components/TdName';
+import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import RuntimeCard from 'components/DetailCard/RuntimeCard';
 import { getObjName } from 'utils';
@@ -67,16 +67,16 @@ export default class RuntimeDetail extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { clusterStore } = this.props;
-    clusterStore.reset();
-  }
-
   componentDidUpdate() {
     const { runtimeDeleted } = this.props.runtimeStore;
     if (get(runtimeDeleted, 'runtime_id')) {
-      history.back();
+      this.props.history.goBack();
     }
+  }
+
+  componentWillUnmount() {
+    const { clusterStore } = this.props;
+    clusterStore.reset();
   }
 
   listenToJob = async ({
@@ -269,7 +269,6 @@ export default class RuntimeDetail extends Component {
       clusterCount,
       isLoading,
       currentPage,
-      searchWord,
       selectStatus
     } = clusterStore;
 

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
@@ -45,7 +44,7 @@ export default class RuntimeAdd extends Component {
       _.get(this.store, 'runtimeCreated.runtime_id')
       && !this.store.isLoading
     ) {
-      history.back();
+      this.props.history.goBack();
     }
   }
 
@@ -55,11 +54,11 @@ export default class RuntimeAdd extends Component {
   }
 
   handleSubmit = async e => {
-    const { runtimeCreateStore } = this.props;
+    const { runtimeCreateStore, history } = this.props;
     const result = await runtimeCreateStore.handleSubmit(e);
 
     if (result && result.runtime_id) {
-      setTimeout(() => history.back(), 1000);
+      setTimeout(() => history.goBack(), 1000);
     }
   };
 
@@ -170,7 +169,7 @@ export default class RuntimeAdd extends Component {
   }
 
   renderForm() {
-    const { t } = this.props;
+    const { t, history } = this.props;
     const {
       runtimeId,
       name,
@@ -252,7 +251,7 @@ export default class RuntimeAdd extends Component {
           >
             {t('Confirm')}
           </Button>
-          <Button onClick={() => history.back()}>{t('Cancel')}</Button>
+          <Button onClick={() => history.goBack()}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -272,7 +271,7 @@ export default class RuntimeAdd extends Component {
     const { user, t } = this.props;
     const { runtimeId } = this.store;
     const title = runtimeId ? t('Modify Runtime') : t('Create Runtime');
-    const { isNormal, isDev, isAdmin } = user;
+    const { isNormal, isDev } = user;
     const linkPath = isDev
       ? `My Apps>Runtimes>${title}`
       : `Platform>Runtimes>${title}`;

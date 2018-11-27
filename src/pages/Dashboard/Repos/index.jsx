@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -10,8 +10,6 @@ import Loading from 'components/Loading';
 import { getScrollTop } from 'utils';
 import RepoList from './RepoList/index';
 
-import styles from './index.scss';
-
 @translate()
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
@@ -21,7 +19,7 @@ import styles from './index.scss';
 @observer
 export default class Repos extends Component {
   async componentDidMount() {
-    const { repoStore, appStore, user } = this.props;
+    const { repoStore, appStore } = this.props;
 
     window.scroll({ top: 0, behavior: 'auto' });
     window.onscroll = _.throttle(this.handleScroll, 200);

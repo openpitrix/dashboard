@@ -42,6 +42,20 @@ export default class Table extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.dataSource, nextProps.dataSource)) {
+      this.setState({
+        selectionDirty: false
+      });
+    }
+
+    if (nextProps.rowSelection && nextProps.rowSelection.selectedRowKeys) {
+      this.setState({
+        selectedRowKeys: nextProps.rowSelection.selectedRowKeys || []
+      });
+    }
+  }
+
   getTableData = () => {
     const { rowKey } = this.props;
     const data = [...this.props.dataSource];
@@ -109,13 +123,8 @@ export default class Table extends React.Component {
     }
   };
 
-  setExtendRowKeys = (
-    selectedRowKeys,
-    {
-      selectType, item, checked, changeRowKeys
-    }
-  ) => {
-    const { extendRowSelection } = this.props;
+  setExtendRowKeys = () => {
+    /* const { extendRowSelection } = this.props; */
   };
 
   handleCheckboxSelect = (value, index, e) => {
@@ -353,20 +362,6 @@ export default class Table extends React.Component {
       />
     );
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.dataSource, nextProps.dataSource)) {
-      this.setState({
-        selectionDirty: false
-      });
-    }
-
-    if (nextProps.rowSelection && nextProps.rowSelection.selectedRowKeys) {
-      this.setState({
-        selectedRowKeys: nextProps.rowSelection.selectedRowKeys || []
-      });
-    }
-  }
 
   render() {
     const {

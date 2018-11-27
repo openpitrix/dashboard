@@ -5,21 +5,12 @@ import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
 import {
-  Table,
-  Popover,
-  Radio,
-  Button,
-  Input,
-  Select,
-  Icon,
-  Modal
+  Table, Popover, Button, Input, Icon, Modal
 } from 'components/Base';
 import Layout, {
   CreateResource,
   Dialog,
-  Panel,
   Grid,
-  Row,
   Section,
   Card
 } from 'components/Layout';
@@ -67,7 +58,7 @@ export default class SSHKeys extends Component {
   }
 
   goBack = () => {
-    history.back();
+    window.history.back();
   };
 
   onClickPair = item => {

@@ -37,13 +37,13 @@ export default class DetailTabs extends Component {
     return nextState.curTab !== this.state.curTab;
   }
 
-  handleChange = tab => {
-    this.setState({ curTab: tab });
-  };
-
   componentDidUpdate() {
     this.props.changeTab(this.state.curTab);
   }
+
+  handleChange = tab => {
+    this.setState({ curTab: tab });
+  };
 
   render() {
     const { tabs, t } = this.props;

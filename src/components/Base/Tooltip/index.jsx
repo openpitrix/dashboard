@@ -39,6 +39,20 @@ export default class Tooltip extends React.Component {
     this.trigger = props.trigger;
   }
 
+  componentDidMount() {
+    this.bindEvent();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.visible !== this.state.visible) {
+      this.setState({ visible: nextProps.visible });
+    }
+  }
+
+  componentWillUnmount() {
+    this.removeEvent();
+  }
+
   showPopper = () => {
     this.setState(
       { visible: true },
@@ -109,20 +123,6 @@ export default class Tooltip extends React.Component {
       target.removeEventListener('mouseleave', this.hidePopper);
     }
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.visible !== this.state.visible) {
-      this.setState({ visible: nextProps.visible });
-    }
-  }
-
-  componentDidMount() {
-    this.bindEvent();
-  }
-
-  componentWillUnmount() {
-    this.removeEvent();
-  }
 
   render() {
     const {
