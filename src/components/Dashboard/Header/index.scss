@@ -1,0 +1,38 @@
+@import '~scss/vars';
+
+.header {
+  display: flex;
+  padding: 0 20px;
+  height: 64px;
+  background: $N0;
+  align-items: center;
+
+  .name {
+    flex: 1;
+  }
+
+  .search {
+    width: 232px;
+    margin-right: 12px;
+  }
+
+  .btnCreate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :global {
+    .icon {
+      margin-right: 4px;
+    }
+  }
+}
+.header.fixedHeader {
+  position: fixed;
+  top: 0;
+  left: 60px;
+  right: 0;
+
+  z-index: 10;
+}

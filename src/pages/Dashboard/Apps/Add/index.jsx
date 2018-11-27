@@ -1,249 +1,201 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
 import {
-  Icon, Button, Upload, Notification
+  Icon, Button, Input, Upload, Notification
 } from 'components/Base';
-import RepoList from './RepoList';
-import StepContent from './StepContent';
+import { LayoutStep } from 'components/Layout';
+import Card from './Card';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  repoStore: rootStore.repoStore,
+  appCreateStore: rootStore.appCreateStore,
   user: rootStore.user
 }))
 @observer
 export default class AppAdd extends Component {
-  async componentDidMount() {
-    const { repoStore } = this.props;
-
-    await repoStore.fetchAll({
-      noLimit: true
-    });
-  }
-
   componentWillUnmount() {
-    const { appStore } = this.props;
-    appStore.createReset();
+    this.props.appCreateStore.reset();
   }
 
-  setCreateStep = step => {
-    const { appStore, history } = this.props;
-    const { setCreateStep, createStep } = appStore;
-
-    window.scroll({ top: 0, behavior: 'smooth' });
-
-    step = step || createStep - 1;
-    appStore.createError = '';
-    if (step) {
-      setCreateStep(step);
-    } else {
-      history.goBack();
-    }
-  };
-
-  selectRepoNext = repos => {
-    const { repoStore, t } = this.props;
-
-    if (!repos.length) {
-      repoStore.info(t('Please select one repo'));
-      return;
-    }
-
-    this.setCreateStep(2);
-  };
-
-  onChange = repoId => {
-    const { repoStore, appStore } = this.props;
-    const { repos } = repoStore;
-
-    appStore.createReopId = repoId;
-    repos.forEach(repo => {
-      if (repo.repo_id === repoId) {
-        repo.active = true;
-      } else {
-        repo.active = false;
-      }
-    });
-  };
-
-  checkFile = file => {
-    const result = true;
-    const { appStore, t } = this.props;
-    const maxsize = 2 * 1024 * 1024;
-
-    if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      appStore.createError = t('file_format_note');
-      return false;
-    }
-    if (file.size > maxsize) {
-      appStore.createError = t('The file size cannot exceed 2M');
-      return false;
-    }
-
-    return result;
-  };
-
-  uploadFile = base64Str => {
-    const { appStore } = this.props;
-    appStore.uploadFile = base64Str;
-    appStore.createOrModify();
-  };
-
-  renderSelectRepo() {
-    const { t } = this.props;
-    const { repos } = this.props.repoStore;
-
-    // filter s3 repos support upload package
-    const filterRepos = repos.filter(rp => rp.type.toLowerCase() === 's3');
-    const publicRepos = filterRepos.filter(
-      repo => repo.visibility === 'public'
-    );
-    const privateRepos = filterRepos.filter(
-      repo => repo.visibility === 'private'
-    );
-    const selectRepos = repos.filter(
-      repo => repo.active && repo.type.toLowerCase() === 's3'
-    );
-    const name = t('creat_new_app');
-    const explain = t('select_repo_app');
-
+  renderVersionTypes() {
+    const { appCreateStore } = this.props;
+    const { versionTypes } = appCreateStore;
     return (
-      <StepContent
-        name={name}
-        explain={explain}
-        className={styles.createVersion}
-      >
-        <div>
-          <RepoList
-            type="public"
-            repos={publicRepos}
-            onChange={this.onChange}
-          />
-          <RepoList
-            type="private"
-            repos={privateRepos}
-            onChange={this.onChange}
-          />
-        </div>
-        <div
-          onClick={() => this.selectRepoNext(selectRepos)}
-          className={classNames(styles.stepOperate, {
-            [styles.noClick]: !selectRepos.length
-          })}
-        >
-          {t('Next')} →
-        </div>
-      </StepContent>
+      <div className={styles.cardContainer}>
+        {versionTypes.map(item => (
+          <Card key={item.intro} appCreateStore={appCreateStore} {...item} />
+        ))}
+      </div>
     );
   }
 
-  renderUploadPackage() {
-    const { t } = this.props;
-    const { isLoading, createError } = this.props.appStore;
-    const name = t('creat_new_app');
-    const explain = t('Upload Package');
+  renderUploadConf() {
+    const { t, appCreateStore } = this.props;
+    const {
+      isLoading,
+      uploadStatus,
+      errorMessage,
+      checkPackageFile,
+      uploadPackage
+    } = appCreateStore;
+    const configs = [
+      'Chart.yaml',
+      'LICENSE',
+      'README.md',
+      'requirements.yaml',
+      'values.yaml',
+      'charts/',
+      'templates/',
+      'templates/NOTES.txt'
+    ];
 
     return (
-      <StepContent
-        name={name}
-        explain={explain}
-        className={styles.createVersion}
-      >
-        <Upload checkFile={this.checkFile} uploadFile={this.uploadFile}>
+      <Fragment>
+        <Upload checkFile={checkPackageFile} uploadFile={uploadPackage}>
           <div
             className={classNames(styles.upload, {
-              [styles.uploading]: isLoading
+              [styles.uploadError]: !!errorMessage
             })}
           >
-            <Icon name="upload" size={48} type="dark" />
-            <p className={styles.word}>{t('click_upload')}</p>
-            <p className={styles.note}>{t('file_format_note')}</p>
-            {isLoading && <div className={styles.loading} />}
+            {!!isLoading && (
+              <div className={styles.loading}>
+                <Icon name="loading" size={48} type="dark" />
+                <p className={styles.note}>{t('file_format_loading')}</p>
+              </div>
+            )}
+            {!isLoading
+              && !errorMessage && (
+                <div>
+                  <Icon name="upload" size={48} type="dark" />
+                  <p className={styles.note}>{t('file_format_note')}</p>
+                </div>
+            )}
+            {!isLoading
+              && errorMessage && (
+                <div className={styles.errorNote}>
+                  <Icon name="error" size={48} />
+                  {errorMessage}
+                  「<span className={styles.errorNoteLink}>
+                    {t('Upload again')}
+                  </span>」
+                </div>
+            )}
           </div>
         </Upload>
 
-        <div className={styles.operateWord}>
-          {t('view_guide_1')}
-          <a
-            className={styles.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
-          >
-            {t('view_guide_2')}
-          </a>
-          {t('view_guide_3')}
-        </div>
-        {createError && (
-          <div className={styles.errorNote}>
-            <Icon name="error" size={24} />
-            {createError}
-          </div>
-        )}
-      </StepContent>
+        <ul className={styles.config}>
+          {configs.map(config => (
+            <li key={config}>
+              <span className={styles.configName}>{config}</span>
+              <span className={styles.configInfo}># {t(`${config}_Info`)}</span>
+            </li>
+          ))}
+          {uploadStatus === 'init' && <div className={styles.configMask} />}
+        </ul>
+      </Fragment>
     );
   }
 
-  renderCreatedApp() {
-    const { t } = this.props;
-    const { createAppId } = this.props.appStore;
-    const name = t('Congratulations');
-    const explain = t('app_created');
+  renderConfirmMsg() {
+    const { t, appCreateStore } = this.props;
+    const {
+      attribute,
+      checkIconFile,
+      uploadIcon,
+      errorMessage,
+      valueChange
+    } = appCreateStore;
+    const { icon } = attribute;
 
     return (
-      <StepContent
-        name={name}
-        explain={explain}
-        className={styles.createVersion}
-      >
-        <div className={styles.checkImg}>
-          <label>
-            <Icon name="check" size={48} />
-          </label>
+      <Fragment>
+        <div className={styles.configMsg}>
+          <div>
+            <label className={styles.configTitle}>{t('App Name')}</label>
+            <Input
+              className={styles.appName}
+              name="name"
+              value={attribute.name}
+              valueChange={valueChange}
+              placeholder=""
+            />
+            <span className={styles.tips}>{t('INPUT_APP_NAME_TIP')}</span>
+          </div>
+          <div>
+            <label className={styles.configTitle}>{t('Current Version')}</label>
+            <Input
+              className={styles.appVersion}
+              name="version_name"
+              value={attribute.version_name}
+              valueChange={valueChange}
+              placeholder=""
+            />
+            <span className={styles.tips}>{t('INPUT_APP_VERSION_TIP')}</span>
+          </div>
+          <div>
+            <label className={styles.configTitle}>{t('App Icon')}</label>
+            <Upload checkFile={checkIconFile} uploadFile={uploadIcon}>
+              <span className={styles.appIcon}>
+                {icon && <img src={icon} className={styles.iconImage} />}
+                {!icon && (
+                  <span className={styles.iconText}>{t('Select a file')}</span>
+                )}
+              </span>
+            </Upload>
+            <span className={styles.tips}>{t('INPUT_APP_ICON_TIP')}</span>
+            <span className={styles.iconError}>{errorMessage}</span>
+          </div>
         </div>
-        <div className={styles.operateBtn}>
-          <Link to={`/store/${createAppId}/deploy`}>
-            <Button type="primary">{t('Deploy & Test')}</Button>
-          </Link>
-          <Link to={`/dashboard/app/${createAppId}`}>
-            <Button>{t('View detail')}</Button>
-          </Link>
+      </Fragment>
+    );
+  }
+
+  renderSuccessMsg() {
+    const { t } = this.props;
+
+    return (
+      <div className={styles.successMsg}>
+        <Icon className={styles.checkedIcon} name="checked-circle" size={48} />
+        <div className={styles.textTip}>{t('Congratulations on you')}</div>
+        <div className={styles.textHeader}>
+          {t('Your app has been created successfully')}
         </div>
-        <div className={styles.operateWord}>
-          {t('go_back_app_1')}
-          <span onClick={() => this.setCreateStep(2)} className={styles.link}>
-            {t('go_back_app_2')}
-          </span>
-          {t('go_back_app_3')}
+        <div className={styles.successBtns}>
+          <Button type="primary" onClick={() => {}}>
+            {t('Deploy Test')}
+          </Button>
+          <Button onClick={() => {}} className={styles.addBtn}>
+            {t('Add delivery type')}
+          </Button>
         </div>
-      </StepContent>
+      </div>
     );
   }
 
   render() {
-    const { t, history } = this.props;
-    const { createStep } = this.props.appStore;
+    const { appCreateStore } = this.props;
+    const { activeStep } = appCreateStore;
+    const { disableNextStep } = appCreateStore;
 
     return (
-      <div className={styles.createApp}>
-        <div className={styles.operate}>
-          <label onClick={() => this.setCreateStep()}>←&nbsp;{t('Back')}</label>
-          <label className="pull-right" onClick={() => history.goBack()}>
-            <Icon name="close" size={24} type="dark" />&nbsp;{t('Esc')}
-          </label>
-        </div>
-        {createStep === 1 && this.renderSelectRepo()}
-        {createStep === 2 && this.renderUploadPackage()}
-        {createStep === 3 && this.renderCreatedApp()}
+      <LayoutStep
+        className={styles.createApp}
+        name="create_app"
+        store={appCreateStore}
+        disableNextStep={disableNextStep}
+      >
+        {activeStep === 1 && this.renderVersionTypes()}
+        {activeStep === 2 && this.renderUploadConf()}
+        {activeStep === 3 && this.renderConfirmMsg()}
+        {activeStep === 4 && this.renderSuccessMsg()}
         <Notification />
-      </div>
+      </LayoutStep>
     );
   }
 }

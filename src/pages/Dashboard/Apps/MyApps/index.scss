@@ -1,0 +1,13 @@
+@import '~scss/vars';
+
+.layout {
+  margin: 74px 0 0 64px !important;
+  width: calc(100% - 64px) !important;
+  height: calc(100vh - 84px) !important;
+}
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 20px 10px;
+}

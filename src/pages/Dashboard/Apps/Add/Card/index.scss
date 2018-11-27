@@ -1,0 +1,72 @@
+@import '~scss/vars';
+
+.container {
+  width: 295.7px;
+  border-radius: 2px;
+  background: $N0;
+  margin-bottom: 20px;
+  padding: 36px 24px 32px;
+  border: solid 1px $N0;
+  text-align: center;
+  position: relative;
+  &:hover {
+    cursor: pointer;
+    border: solid 1px $P30;
+    .intro {
+      display: none;
+    }
+    a {
+      display: block;
+    }
+  }
+  &.selected {
+    border: solid 1px $N75;
+  }
+  &.added {
+    cursor: none;
+    border: solid 1px $N0;
+  }
+
+  a {
+    display: none;
+    margin-top: 20px;
+  }
+}
+.addedContainer {
+  opacity: 0.8;
+}
+.disabledContainer {
+  opacity: 0.5;
+}
+.checkedIcon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.linkIcon {
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: normal;
+  color: $N500;
+}
+.intro {
+  font-size: 12px;
+  line-height: 1.67;
+  text-align: center;
+  color: $N75;
+}
+.addedType {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  opacity: 0.5;
+  border-radius: 1px;
+  background-color: $N30;
+  padding: 8px;
+}

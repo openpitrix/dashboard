@@ -63,3 +63,9 @@
 .provider{
   max-width: 115px;
 }
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 10px 10px;
+}

@@ -39,6 +39,7 @@ class Layout extends Component {
     title: '',
     pageTitle: '',
     hasSearch: false,
+    noSubMenu: false,
     isHome: false
   };
 
@@ -83,6 +84,7 @@ class Layout extends Component {
       title,
       isHome,
       match,
+      noSubMenu,
       pageTitle
     } = this.props;
 
@@ -90,7 +92,7 @@ class Layout extends Component {
     const hasMenu = (isDev || isAdmin) && !isHome;
     const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
     const isCenterPage = Boolean(pageTitle); // detail page, only one level menu
-    const hasSubNav = hasMenu && !isCenterPage && !paths.includes(match.path);
+    const hasSubNav = !noSubMenu && hasMenu && !isCenterPage && !paths.includes(match.path);
 
     return (
       <div

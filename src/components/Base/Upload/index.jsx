@@ -40,7 +40,7 @@ export default class Upload extends Component {
 
   state = {
     uid: getUid(),
-    isDraging: true
+    isDraging: false
   };
 
   componentDidMount() {

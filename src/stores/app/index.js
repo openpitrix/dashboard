@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get, assign } from 'lodash';
+import { get, assign, concat } from 'lodash';
 
 import { getProgress } from 'utils';
 import ts from 'config/translation';
@@ -84,6 +84,8 @@ export default class AppStore extends Store {
 
   @observable createResult = null;
 
+  @observable hasMore = false;
+
   // menu actions logic
   @observable
   handleApp = {
@@ -146,7 +148,12 @@ export default class AppStore extends Store {
       assign(defaultParams, params)
     );
 
-    this.apps = get(result, 'app_set', []);
+    const apps = get(result, 'app_set', []);
+    if (params.loadMore) {
+      this.apps = concat(this.apps, apps);
+    } else {
+      this.apps = apps;
+    }
     this.totalCount = get(result, 'total_count', 0);
 
     // appCount for show repo datail page "App Count"
@@ -156,6 +163,7 @@ export default class AppStore extends Store {
 
     this.isLoading = false;
     this.isProgressive = false;
+    this.hasMore = this.totalCount > (this.currentPage + 1) * this.pageSize;
   };
 
   @action
@@ -320,6 +328,12 @@ export default class AppStore extends Store {
   changePagination = async page => {
     this.currentPage = page;
     await this.fetchAll();
+  };
+
+  @action
+  loadMore = async page => {
+    this.currentPage = page;
+    await this.fetchAll({ loadMore: true });
   };
 
   @action
