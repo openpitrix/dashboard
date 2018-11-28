@@ -78,7 +78,9 @@ app.use(require('./middleware/render'));
 
 app.listen(PORT, err => {
   if (err) throw err;
-  debug(`server running at port %d`, PORT);
+  debug(`OpenPitrix Dashboard running at %s`, `${HOSTNAME}:${PORT}`);
 });
 
-watchConfig();
+watchConfig(() => {
+  app.config = getServerConfig();
+});
