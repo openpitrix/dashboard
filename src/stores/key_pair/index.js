@@ -51,8 +51,8 @@ export default class KeyPairStore extends Store {
     this.keyPairs = _.get(result, 'key_pair_set', []);
 
     if (!this.currentPairId || this.currentPairId === this.pairId) {
-      this.nodeIds = _.get(this.keyPairs[0], 'node_id', '');
-      this.currentPairId = _.get(this.keyPairs[0], 'key_pair_id', '');
+      this.nodeIds = _.get(this.keyPairs.slice(), '[0].node_id', '');
+      this.currentPairId = _.get(this.keyPairs.slice(), '[0].key_pair_id', '');
     }
 
     this.isLoading = false;

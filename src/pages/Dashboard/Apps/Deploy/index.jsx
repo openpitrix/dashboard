@@ -65,15 +65,18 @@ export default class AppDeploy extends Component {
 
     if (!isK8s) {
       appDeployStore.runtimeId = _.get(
-        appDeployStore.runtimes[0],
-        'runtime_id'
+        appDeployStore.runtimes.slice(),
+        '[0].runtime_id'
       );
       await appDeployStore.fetchSubnetsByRuntime(appDeployStore.runtimeId);
     }
 
     // fetch versions
     await appDeployStore.fetchVersions({ app_id: [appId] });
-    appDeployStore.versionId = _.get(appDeployStore.versions[0], 'version_id');
+    appDeployStore.versionId = _.get(
+      appDeployStore.versions.slice(),
+      '[0].version_id'
+    );
     await appDeployStore.fetchFilesByVersion(appDeployStore.versionId, isK8s);
 
     if (!isK8s && !_.isEmpty(appDeployStore.configJson)) {

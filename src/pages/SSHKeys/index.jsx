@@ -40,7 +40,7 @@ export default class SSHKeys extends Component {
     sshKeyStore.userId = user.user_id;
     await sshKeyStore.fetchKeyPairs();
 
-    const nodeIds = get(sshKeyStore.keyPairs[0], 'node_id', '');
+    const nodeIds = get(sshKeyStore.keyPairs.slice(), '[0].node_id', '');
     clusterDetailStore.nodeIds = nodeIds || ['0'];
     if (nodeIds) {
       await clusterStore.fetchAll({
@@ -92,7 +92,7 @@ export default class SSHKeys extends Component {
         const keyPairs = sshKeyStore.keyPairs.filter(
           item => item.key_pair_id === currentPairId
         );
-        const nodeIds = get(keyPairs[0], 'node_id', '');
+        const nodeIds = get(keyPairs.slice(), '[0].node_id', '');
         await fetchNodes({ node_id: nodeIds || 0 });
       }, 3000);
     }
