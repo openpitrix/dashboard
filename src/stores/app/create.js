@@ -70,9 +70,17 @@ export default class AppCreateStore extends Store {
   @observable
   attribute = {
     name: '',
+    version_name: '',
     version_type: null,
-    versino_package: null
+    versino_package: null,
+    icon: ''
   };
+
+  @observable iconBase64 = '';
+
+  @observable fileName = '';
+
+  @observable appDetail = {};
 
   @action
   nextStep = async () => {
@@ -85,6 +93,12 @@ export default class AppCreateStore extends Store {
     }
     if (this.activeStep === 3) {
       await this.create();
+      const { app_id } = this.createResult;
+      if (!app_id) {
+        return false;
+      }
+
+      await this.fetchOneApp({ app_id });
       // await this.modify();
     }
     this.disableNextStep = true;
@@ -106,11 +120,14 @@ export default class AppCreateStore extends Store {
 
   reset = () => {
     this.activeStep = 1;
-    this.attribute = {};
-    // this.createAppId = '';
-    // this.appVersion = '';
-    // this.selectedType = '';
-    // this.icon = '';
+    this.attribute = {
+      name: '',
+      version_name: '',
+      version_type: null,
+      versino_package: null,
+      icon: ''
+    };
+    this.iconBase64 = '';
     this.errorMessage = '';
   };
 
@@ -119,7 +136,7 @@ export default class AppCreateStore extends Store {
     this.isLoading = true;
     const defaultParams = _.pickBy(
       this.attribute,
-      o => o !== null && !_.isUndefined(o)
+      o => o !== null && !_.isUndefined(o) && o !== ''
     );
 
     this.createResult = await this.request.post(
@@ -133,6 +150,19 @@ export default class AppCreateStore extends Store {
       const { err, errDetail } = this.createResult;
       this.errorMessage = errDetail || err;
     }
+    this.isLoading = false;
+  };
+
+  fetchOneApp = async (params = {}) => {
+    this.isLoading = true;
+    const defaultParams = {
+      limit: 1
+    };
+    const result = await this.request.get(
+      'apps',
+      _.assign(defaultParams, params)
+    );
+    this.appDetail = _.get(result, 'app_set[0]', {});
     this.isLoading = false;
   };
 
@@ -177,9 +207,10 @@ export default class AppCreateStore extends Store {
   };
 
   @action
-  uploadPackage = base64Str => {
+  uploadPackage = (base64Str, file) => {
     this.attribute.version_package = base64Str;
-    this.activeStep += 1;
+    this.uploadStatus = 'ok';
+    this.fileName = file.name;
   };
 
   @action
@@ -204,7 +235,12 @@ export default class AppCreateStore extends Store {
   @action
   uploadIcon = (base64Str, file) => {
     const ext = _.last(file.name.toLocaleLowerCase().split('.'));
-    this.attribute.icon = `data:image/${ext};base64,${base64Str}`;
+    this.attribute.icon = base64Str;
+    if (ext === 'svg') {
+      this.iconBase64 = `data:image/svg+xml;base64,${base64Str}`;
+    } else {
+      this.iconBase64 = `data:image/${ext};base64,${base64Str}`;
+    }
   };
 
   @action
@@ -215,5 +251,6 @@ export default class AppCreateStore extends Store {
     } else {
       this.disableNextStep = true;
     }
+    this.errorMessage = '';
   };
 }

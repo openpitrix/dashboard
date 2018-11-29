@@ -7,6 +7,7 @@ import {
   Icon, Button, Input, Upload, Notification
 } from 'components/Base';
 import { LayoutStep } from 'components/Layout';
+import AppCard from 'pages/Dashboard/Apps/Card';
 import Card from './Card';
 
 import styles from './index.scss';
@@ -22,6 +23,10 @@ export default class AppAdd extends Component {
   componentWillUnmount() {
     this.props.appCreateStore.reset();
   }
+
+  onUploadClick = () => {
+    this.uploadRef.onClick();
+  };
 
   renderVersionTypes() {
     const { appCreateStore } = this.props;
@@ -42,6 +47,7 @@ export default class AppAdd extends Component {
       uploadStatus,
       errorMessage,
       checkPackageFile,
+      fileName,
       uploadPackage
     } = appCreateStore;
     const configs = [
@@ -57,7 +63,13 @@ export default class AppAdd extends Component {
 
     return (
       <Fragment>
-        <Upload checkFile={checkPackageFile} uploadFile={uploadPackage}>
+        <Upload
+          ref={node => {
+            this.uploadRef = node;
+          }}
+          checkFile={checkPackageFile}
+          uploadFile={uploadPackage}
+        >
           <div
             className={classNames(styles.upload, {
               [styles.uploadError]: !!errorMessage
@@ -70,6 +82,7 @@ export default class AppAdd extends Component {
               </div>
             )}
             {!isLoading
+              && uploadStatus !== 'ok'
               && !errorMessage && (
                 <div>
                   <Icon name="upload" size={48} type="dark" />
@@ -77,6 +90,7 @@ export default class AppAdd extends Component {
                 </div>
             )}
             {!isLoading
+              && uploadStatus !== 'ok'
               && errorMessage && (
                 <div className={styles.errorNote}>
                   <Icon name="error" size={48} />
@@ -86,16 +100,48 @@ export default class AppAdd extends Component {
                   </span>」
                 </div>
             )}
+            {!isLoading
+              && uploadStatus === 'ok'
+              && !errorMessage && (
+                <div className={styles.uploadSuccess}>
+                  <Icon name="checked-circle" size={48} />
+                  <div className={styles.uploadSuccessText}>
+                    {t('File')}
+                    <span className={styles.uploadFileName}>{fileName}</span>
+                    {t('Successful upload')}
+                  </div>
+                </div>
+            )}
           </div>
         </Upload>
 
         <ul className={styles.config}>
           {configs.map(config => (
             <li key={config}>
-              <span className={styles.configName}>{config}</span>
-              <span className={styles.configInfo}># {t(`${config}_Info`)}</span>
+              <span
+                className={classNames(styles.configName, {
+                  [styles.errorColor]: !config
+                })}
+              >
+                {config}
+              </span>
+              <span
+                className={classNames(styles.configInfo, {
+                  [styles.errorColor]: !config
+                })}
+              >
+                # {t(`${config}_Info`)}
+              </span>
             </li>
           ))}
+          {uploadStatus === 'ok' && (
+            <div className={styles.uploadConfirm}>
+              {t('The file has problem?')}
+              <span className={styles.uploadBtn} onClick={this.onUploadClick}>
+                {t('Upload again')}
+              </span>
+            </div>
+          )}
           {uploadStatus === 'init' && <div className={styles.configMask} />}
         </ul>
       </Fragment>
@@ -105,13 +151,13 @@ export default class AppAdd extends Component {
   renderConfirmMsg() {
     const { t, appCreateStore } = this.props;
     const {
+      iconBase64,
       attribute,
       checkIconFile,
       uploadIcon,
       errorMessage,
       valueChange
     } = appCreateStore;
-    const { icon } = attribute;
 
     return (
       <Fragment>
@@ -140,16 +186,22 @@ export default class AppAdd extends Component {
           </div>
           <div>
             <label className={styles.configTitle}>{t('App Icon')}</label>
-            <Upload checkFile={checkIconFile} uploadFile={uploadIcon}>
+            <Upload
+              className={styles.uploadIcon}
+              checkFile={checkIconFile}
+              uploadFile={uploadIcon}
+            >
               <span className={styles.appIcon}>
-                {icon && <img src={icon} className={styles.iconImage} />}
-                {!icon && (
+                {iconBase64 && (
+                  <img src={iconBase64} className={styles.iconImage} />
+                )}
+                {!iconBase64 && (
                   <span className={styles.iconText}>{t('Select a file')}</span>
                 )}
               </span>
             </Upload>
             <span className={styles.tips}>{t('INPUT_APP_ICON_TIP')}</span>
-            <span className={styles.iconError}>{errorMessage}</span>
+            <span className={styles.errorMessage}>{errorMessage}</span>
           </div>
         </div>
       </Fragment>
@@ -157,24 +209,41 @@ export default class AppAdd extends Component {
   }
 
   renderSuccessMsg() {
-    const { t } = this.props;
+    const {
+      appCreateStore, t, rootStore, history
+    } = this.props;
+    const { appDetail } = appCreateStore;
 
     return (
-      <div className={styles.successMsg}>
-        <Icon className={styles.checkedIcon} name="checked-circle" size={48} />
-        <div className={styles.textTip}>{t('Congratulations on you')}</div>
-        <div className={styles.textHeader}>
-          {t('Your app has been created successfully')}
+      <Fragment>
+        <div className={styles.successMsg}>
+          <Icon
+            className={styles.checkedIcon}
+            name="checked-circle"
+            size={48}
+          />
+          <div className={styles.textTip}>{t('Congratulations on you')}</div>
+          <div className={styles.textHeader}>
+            {t('Your app has been created successfully')}
+          </div>
+          <div className={styles.successBtns}>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push(`/store/${appDetail.app_id}/deploy`);
+              }}
+            >
+              {t('Deploy Test')}
+            </Button>
+            <Button onClick={() => {}} className={styles.addBtn}>
+              {t('Add delivery type')}
+            </Button>
+          </div>
         </div>
-        <div className={styles.successBtns}>
-          <Button type="primary" onClick={() => {}}>
-            {t('Deploy Test')}
-          </Button>
-          <Button onClick={() => {}} className={styles.addBtn}>
-            {t('Add delivery type')}
-          </Button>
+        <div className={styles.appCard}>
+          <AppCard apiServer={rootStore.apiServer} t={t} data={appDetail} />
         </div>
-      </div>
+      </Fragment>
     );
   }
 

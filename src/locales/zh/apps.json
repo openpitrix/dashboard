@@ -62,6 +62,7 @@
   "charts/_Info": "[可选] 该目录中放置当前 Chart 依赖的其它 Chart",
   "templates/_Info": "[可选] 部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
   "templates/NOTES.txt_Info": "[可选] 使用指南",
+  "The file has problem?": "文件有问题?",
   "Upload again": "重新上传",
   "Select a file": "选择文件",
 
@@ -80,6 +81,10 @@
   "LINK_STEPPER_FOOTER_CREATE_APP_2": "《Helm 规范及应用开发》。",
 
   "icon_format_note": "图标最佳格式为 png/svg，请重新上传",
+  "Search result is empty": "搜索结果为空",
+  "No result for search word": "没有找到与关键字 「{{searchWord}}」 相关的应用",
+  "File": "文件",
+  "Successful upload": "上传成功",
 
   "Go on": "继续",
   "Done": "完成"

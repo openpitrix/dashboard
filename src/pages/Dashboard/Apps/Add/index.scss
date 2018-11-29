@@ -104,6 +104,28 @@
   .errorNoteLink {
     color: $P75;
   }
+
+  .uploadSuccess {
+    text-align: center;
+    :global {
+      .icon {
+        display: block;
+        margin-bottom: 8px;
+
+        svg {
+          --primary-color: #{$G100};
+          --secondary-color: #{$G30};
+        }
+      }
+    }
+  }
+  .uploadSuccessText {
+    color: $N75;
+    .uploadFileName {
+      color: $N500;
+      padding: 0 6px;
+    }
+  }
 }
 
 .config {
@@ -118,10 +140,19 @@
     padding: 6px 20px;
     display: inline-block;
   }
+  li {
+    background: $N0;
+    margin-bottom: 8px;
+  }
   .configName {
     width: 180px;
+    color: $N300;
   }
   .configInfo {
+    color: $N65;
+  }
+  .errorColor {
+    color: $R200;
   }
   .configMask {
     position: absolute;
@@ -131,6 +162,17 @@
     bottom: 0;
     z-index: 2;
     background-image: linear-gradient(to bottom, rgba($body-bg, 0.75), $body-bg);
+  }
+  .uploadConfirm {
+    text-align: center;
+    font-size: 12px;
+    span {
+      cursor: pointer;
+      padding: 0 3px;
+    }
+  }
+  .uploadBtn {
+    color: $P75;
   }
 }
 
@@ -145,9 +187,11 @@
 }
 
 .configMsg {
-  width: 947px;
+  width: 549px;
   margin: 0 auto;
   text-align: left;
+  padding: 32px 48px 12px;
+  background: $N0;
   .appName {
     width: 453px;
   }
@@ -184,11 +228,14 @@
     border-radius: 2px;
     background: $N0;
     margin: 8px auto;
+    background: $background-color;
   }
 
-  .iconError {
-    font-size: 12px;
+  .errorMessage {
+    display: inline-block;
+    font-size: 14px;
     line-height: 20px;
+    min-height: 20px;
     color: $R200;
   }
 
@@ -230,4 +277,9 @@
     color: $N300;
     margin-left: 12px;
   }
+}
+.appCard {
+  display: flex;
+  text-align: left;
+  justify-content: center;
 }

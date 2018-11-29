@@ -4,16 +4,24 @@
   display: flex;
   padding: 0 20px;
   height: 64px;
-  background: $N0;
   align-items: center;
+  background: $background-color;
 
   .name {
     flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: $N500;
   }
 
   .search {
     width: 232px;
     margin-right: 12px;
+    input {
+      background: $background-color;
+      border-color: transparent;
+      color: $N45;
+    }
   }
 
   .btnCreate {

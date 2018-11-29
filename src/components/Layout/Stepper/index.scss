@@ -5,7 +5,14 @@
   top: 0;
   left: 0;
   height: 2px;
+}
+
+.headerStepNotFinished {
   background-color: $Y75;
+}
+
+.headerStepFinished {
+  background-color: $G100;
 }
 
 .operate {

@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
+import Loading from 'components/Loading';
 
 import { Link, Icon } from 'components/Base';
 
 import styles from './index.scss';
 
 @translate()
+@observer
 class LayoutStepper extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -20,9 +23,31 @@ class LayoutStepper extends Component {
       steps: PropTypes.number,
       prevStep: PropTypes.func,
       disableNextStep: PropTypes.bool,
+      isLoading: PropTypes.bool,
       nextStep: PropTypes.func
     })
   };
+
+  renderTopProgress() {
+    const { store } = this.props;
+    const { steps, activeStep } = store;
+    const width = `${activeStep * 100 / steps}%`;
+    let className = 'headerStepNotFinished';
+    if (activeStep > steps) {
+      className = 'headerStepFinished';
+    }
+
+    const style = {
+      width
+    };
+
+    return (
+      <div
+        style={style}
+        className={classnames(styles.headerStep, styles[className])}
+      />
+    );
+  }
 
   renderTopNav() {
     const {
@@ -125,14 +150,14 @@ class LayoutStepper extends Component {
 
   render() {
     const { className, children, store } = this.props;
-    const { steps, activeStep } = store;
-    const width = `${activeStep * 100 / steps}%`;
     return (
       <div className={classnames(styles.layout)}>
-        <div style={{ width }} className={styles.headerStep} />
+        {this.renderTopProgress()}
         {this.renderTopNav()}
         {this.renderTitle()}
-        <div className={className}>{children}</div>
+        <Loading isLoading={store.isLoading}>
+          <div className={className}>{children}</div>
+        </Loading>
         {this.renderFooter()}
       </div>
     );

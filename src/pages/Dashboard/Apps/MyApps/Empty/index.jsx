@@ -9,6 +9,7 @@ import styles from './index.scss';
 export default class Loading extends PureComponent {
   render() {
     const { t } = this.props;
+
     return (
       <div className={styles.container}>
         <div className={styles.wrapper}>

@@ -27,7 +27,6 @@ const renderRoute = (match, route, store) => {
   if (route.needAuth && !user.username) {
     return <Redirect to={`/login?url=${match.url}`} />;
   }
-  debugger;
 
   if (route.noMatch) {
     return <Redirect to="/" />;

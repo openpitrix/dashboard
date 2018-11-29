@@ -41,7 +41,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class Apps extends Component {
+export default class Apps extends Component {
   async componentDidMount() {
     const {
       appStore,
@@ -53,8 +53,8 @@ class Apps extends Component {
     } = this.props;
     const { isAdmin } = user;
     if (!isAdmin) {
-      history.push({
-        pathname: '/dev/apps/mine',
+      history.replace({
+        pathname: '/dashboard/apps/mine',
         state: { fromDashboard: true }
       });
     }
@@ -437,4 +437,3 @@ class Apps extends Component {
     );
   }
 }
-export default withRouter(Apps);

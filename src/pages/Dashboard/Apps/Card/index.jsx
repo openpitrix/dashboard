@@ -8,21 +8,29 @@ import styles from './index.scss';
 
 export default class Loading extends Component {
   static propTypes = {
+    apiServer: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     data: PropTypes.object
   };
 
   render() {
-    const { className, data, t } = this.props;
+    const {
+      apiServer, className, data, t
+    } = this.props;
     const {
       icon, name, description, status, status_time
     } = data;
+    // TODO change icon
+    let imgStr = icon;
+    if (icon && icon.includes('att-')) {
+      imgStr = `${apiServer.split('/v')[0]}/attachments/${icon}/raw`;
+    }
     const deliverTypes = ['VM', 'API', 'Helm'];
     return (
       <div className={classnames(styles.container, className)}>
         <div className={styles.title}>
-          <img className={styles.icon} src={icon || ''} alt="logo" />
+          <img className={styles.icon} src={imgStr || ''} alt="logo" />
           <div>
             <span className={styles.name}>{name}</span>
             <Status className={styles.status} name={status} type={status} />
