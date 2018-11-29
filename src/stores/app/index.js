@@ -148,7 +148,6 @@ export default class AppStore extends Store {
       assign(defaultParams, params)
     );
 
-    // this.apps = get(result, 'app_set', []);
     const apps = get(result, 'app_set', []);
     if (params.loadMore) {
       this.apps = concat(this.apps, apps);

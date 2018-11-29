@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import links from 'config/doc-link';
 
 @translate()
-export default class Loading extends Component {
+export default class BaseLink extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
