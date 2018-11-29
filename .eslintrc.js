@@ -28,6 +28,7 @@ module.exports = {
     jest: true
   },
   globals: {
+    HOSTNAME: true,
     PORT: true
   },
   settings: {

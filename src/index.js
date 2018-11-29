@@ -21,16 +21,19 @@ if (typeof window !== 'undefined') {
   let sc = null;
   // when logged in, setup socket client
   if (user.isLoggedIn()) {
-    const sockEndpoint = SockClient.composeEndpoint(store.socketUrl, user.accessToken);
+    const sockEndpoint = SockClient.composeEndpoint(
+      store.socketUrl,
+      user.accessToken
+    );
     sc = new SockClient(sockEndpoint);
     sc.setUp();
   }
 
   store.setUser(user);
 
-  // todo:  in dev mode
-  window._user = user;
-  window._store = store;
+  // expose getters
+  window._getUser = () => Object.assign({}, user);
+  window._getStore = () => Object.assign({}, store);
 
   import('./routes').then(({ default: routes }) => {
     ReactDOM.render(
