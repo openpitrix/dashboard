@@ -117,7 +117,7 @@ class LayoutStepper extends Component {
 
     const NAME = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
     const tipText = t(NAME);
-    const tipLink = <Link type={NAME} />;
+    const tipLink = <Link type={NAME} isExternal={true} />;
 
     const buttonText = t('Go on');
 

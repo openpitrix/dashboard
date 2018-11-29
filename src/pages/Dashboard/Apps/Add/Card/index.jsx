@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import { Icon } from 'components/Base';
+import { Icon, Link } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -27,7 +26,6 @@ export default class CreateAppCard extends Component {
       value,
       icon,
       intro,
-      introLink,
       className,
       t,
       appCreateStore
@@ -54,7 +52,7 @@ export default class CreateAppCard extends Component {
         <Icon name={icon} size={48} className={styles.icon} type={'light'} />
         <div className={styles.name}>{name}</div>
         <div className={styles.intro}>{t(intro)}</div>
-        <Link to={introLink}>
+        <Link type={'Create_App_Linkto_Intro_App'} isExternal={true}>
           {t('Linkto_Intro_App')}
           <Icon
             className={styles.linkIcon}

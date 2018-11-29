@@ -1,14 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import _ from 'lodash';
 
 import Icon from '../Icon';
 
 import styles from './index.scss';
 
-@observer
 export default class Input extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -29,19 +27,14 @@ export default class Input extends React.Component {
     disabled: false
   };
 
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(event) {
+  onChange = event => {
     const { target } = event;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
     this.props.valueChange(name, value);
     this.props.onChange(event);
-  }
+  };
 
   render() {
     const {

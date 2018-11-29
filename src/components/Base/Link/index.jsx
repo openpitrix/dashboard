@@ -10,6 +10,7 @@ export default class Loading extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    isExternal: PropTypes.bool,
     to: PropTypes.string,
     type: PropTypes.string
   };
@@ -17,12 +18,13 @@ export default class Loading extends Component {
   static defaultProps = {
     children: null,
     className: '',
+    isExternal: false,
     type: ''
   };
 
   render() {
     const {
-      t, to, type, children, className
+      t, to, type, children, className, isExternal
     } = this.props;
     let text = t(`LINK_${type}`);
     const linkTo = to || links[type];
@@ -38,6 +40,14 @@ export default class Loading extends Component {
     if (!linkTo) {
       console.error(
         "You should edit a link url in the file of 'config/doc-links'"
+      );
+    }
+
+    if (isExternal) {
+      return (
+        <a target="blank" className={className} href={linkTo}>
+          {text}
+        </a>
       );
     }
 

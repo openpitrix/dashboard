@@ -10,43 +10,37 @@ const versionTypes = [
     icon: 'vm-icon',
     name: 'VM',
     value: 'vmbase',
-    intro: 'delivery_type_intro_vm',
-    introLink: ''
+    intro: 'delivery_type_intro_vm'
   },
   {
     icon: 'helm-icon',
     name: 'Helm',
     value: 'helm',
-    intro: 'delivery_type_intro_helm',
-    introLink: ''
+    intro: 'delivery_type_intro_helm'
   },
   {
     icon: 'saas-icon',
     name: 'SaaS',
     value: 'saas',
-    intro: 'delivery_type_intro_saas',
-    introLink: ''
+    intro: 'delivery_type_intro_saas'
   },
   {
     icon: 'api-icon',
     name: 'API',
     value: 'api',
-    intro: 'delivery_type_intro_api',
-    introLink: ''
+    intro: 'delivery_type_intro_api'
   },
   {
     icon: 'native-icon',
     name: 'Native',
     value: 'native',
-    intro: 'delivery_type_intro_native',
-    introLink: ''
+    intro: 'delivery_type_intro_native'
   },
   {
     icon: 'serveless-icon',
     name: 'Serveless',
     value: 'serveless',
-    intro: 'delivery_type_intro_serveless',
-    introLink: ''
+    intro: 'delivery_type_intro_serveless'
   }
 ];
 
