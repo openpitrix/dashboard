@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Header } from 'components/Dashboard';
 import PageLoading from 'components/Loading/Page';
 import Card from 'pages/Dashboard/Apps/Card';
 
 import InfiniteScroll from 'components/InfiniteScroll';
 
+import { Link } from 'react-router-dom';
+import { Icon, Button, Input } from 'components/Base';
 import Layout from 'components/Layout';
 import Empty from './Empty';
 
@@ -48,6 +50,32 @@ export default class Apps extends Component {
     appStore.userId = '';
   }
 
+  renderHeader() {
+    const { t, appStore } = this.props;
+    const name = t('My Apps');
+    const lintTo = '/dashboard/app/create';
+    const { onSearch, onClear, searchWord } = appStore;
+
+    return (
+      <div className={classnames(styles.header, styles.fixedHeader)}>
+        <div className={styles.name}>{name}</div>
+        <Input.Search
+          className={styles.search}
+          placeholder={t('Search for app name or ID')}
+          value={searchWord}
+          onSearch={onSearch}
+          onClear={onClear}
+        />
+        <Link to={lintTo}>
+          <Button className={styles.btnCreate} type="primary">
+            <Icon name="add" size={20} type="white" />
+            <span className={styles.btnText}>{t('Create')} </span>
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   renderSearchEmpty() {
     const { t, appStore } = this.props;
     const { apps, searchWord } = appStore;
@@ -64,17 +92,7 @@ export default class Apps extends Component {
 
   render() {
     const { t, appStore, rootStore } = this.props;
-    const { apps, searchWord, onSearch } = appStore;
-    const headerProps = {
-      name: t('My Apps'),
-      store: appStore,
-      isFixed: true,
-      placeholder: t('Search for app name or ID'),
-      onSearch,
-      withCreateBtn: {
-        linkTo: '/dashboard/app/create'
-      }
-    };
+    const { apps, searchWord } = appStore;
 
     const { pageLoading } = this.state;
     if (!pageLoading && !searchWord && apps.length === 0) {
@@ -84,7 +102,7 @@ export default class Apps extends Component {
     return (
       <Layout className={styles.layout} noSubMenu={true}>
         <PageLoading isLoading={pageLoading}>
-          <Header {...headerProps} />
+          {this.renderHeader()}
           <InfiniteScroll store={appStore}>
             <div className={styles.cards}>
               {apps.map(item => (
