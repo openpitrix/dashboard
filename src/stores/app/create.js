@@ -109,7 +109,7 @@ export default class AppCreateStore extends Store {
     }
   };
 
-  // TODO
+  // TODO WIP: versionTypes from api
   checkAddedDelivery = name => this.versionTypes.toJSON().includes(name);
 
   reset = () => {
@@ -205,6 +205,7 @@ export default class AppCreateStore extends Store {
     this.attribute.version_package = base64Str;
     this.uploadStatus = 'ok';
     this.fileName = file.name;
+    this.attribute.name = _.first(file.name.split('.'));
   };
 
   @action
@@ -212,7 +213,7 @@ export default class AppCreateStore extends Store {
     const maxsize = 2 * 1024 * 1024;
     this.disableNextStep = true;
 
-    if (!/\.(png|svg)$/.test(file.name.toLocaleLowerCase())) {
+    if (!/\.(png)$/.test(file.name.toLocaleLowerCase())) {
       this.errorMessage = t('icon_format_note');
       return false;
     }
