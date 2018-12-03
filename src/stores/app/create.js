@@ -58,6 +58,31 @@ const appVersionModel = {
   package: null
 };
 
+const packageFiles = {
+  vmbased: [
+    'package.json',
+    'config.json',
+    'cluster.json.tmpl',
+    'LICENSE',
+    'locale/en.json',
+    'locale/zh-en.json'
+  ],
+  helm: [
+    'Chart.yaml',
+    'LICENSE',
+    'README.md',
+    'requirements.yaml',
+    'values.yaml',
+    'charts/',
+    'templates/',
+    'templates/NOTES.txt'
+  ],
+  saas: [],
+  api: [],
+  native: [],
+  serveless: []
+};
+
 export default class AppCreateStore extends Store {
   @observable activeStep = 1;
 
@@ -83,12 +108,16 @@ export default class AppCreateStore extends Store {
 
   @observable appDetail = {};
 
+  @observable uploadError = {};
+
   isCreateApp = true;
+
+  packageFiles = packageFiles;
 
   @action
   nextStep = async () => {
     const { isCreateApp } = this;
-    if (this.errorMessage) {
+    if (this.disableNextStep) {
       return false;
     }
     if (!this.getVersionType()) {
@@ -112,6 +141,9 @@ export default class AppCreateStore extends Store {
     }
     this.errorMessage = '';
     this.activeStep = this.activeStep + 1;
+    if (this.activeStep === 2) {
+      this.disableNextStep = true;
+    }
   };
 
   @action
@@ -128,6 +160,11 @@ export default class AppCreateStore extends Store {
     return this.attribute[versionName];
   };
 
+  getPackageFiles = () => {
+    const type = this.getVersionType();
+    return this.packageFiles[type];
+  };
+
   checkAddedVersionType = name => {
     const versions = _.get(this.appDetail, 'app_version_types', '');
     return versions.split(',').includes(name);
@@ -135,7 +172,8 @@ export default class AppCreateStore extends Store {
 
   checkSelectedVersionType = name => this.getVersionType() === name;
 
-  reset = ({ isCreateApp, appId }) => {
+  @action
+  reload = ({ isCreateApp, appId }) => {
     this.activeStep = 1;
     if (isCreateApp) {
       this.steps = 3;
@@ -147,8 +185,13 @@ export default class AppCreateStore extends Store {
     this.iconBase64 = '';
     this.errorMessage = '';
     this.uploadStatus = 'init';
-    this.appDetail = {};
     this.disableNextStep = true;
+  };
+
+  @action
+  reset = ({ isCreateApp, appId }) => {
+    this.reload({ isCreateApp, appId });
+    this.appDetail = {};
   };
 
   @action
@@ -212,7 +255,6 @@ export default class AppCreateStore extends Store {
   @action
   checkPackageFile = file => {
     const maxsize = 2 * 1024 * 1024;
-    this.disableNextStep = true;
 
     if (
       !/\.(tar|tar\.gz|tar\.bz|tgz|zip)$/.test(file.name.toLocaleLowerCase())
@@ -231,13 +273,38 @@ export default class AppCreateStore extends Store {
   };
 
   @action
-  uploadPackage = (base64Str, file) => {
+  uploadPackage = async (base64Str, file) => {
+    this.isLoading = true;
+    this.uploadStatus = 'init';
+    this.uploadError = {};
+    this.disableNextStep = true;
+    const param = {
+      version_type: this.getVersionType(),
+      version_package: base64Str
+    };
+    const result = await this.request.post('apps/validate_package', param);
+    this.isLoading = false;
+
+    if (result.error_details) {
+      this.uploadStatus = 'error';
+      this.errorMessage = t('Upload_Package_Error');
+      this.uploadError = result.error_details;
+      return;
+    }
+    if (result.error || result.err) {
+      this.errorMessage = result.error || result.errDetail || result.err;
+      return;
+    }
+
     if (this.isCreateApp) {
       this.attribute.version_package = base64Str;
-      this.attribute.name = _.initial(file.name.split('.')).join('.');
+      this.attribute.name = result.name;
+      this.attribute.version_name = result.version_name;
     } else {
       this.attribute.package = base64Str;
     }
+
+    this.disableNextStep = false;
     this.uploadStatus = 'ok';
     this.fileName = file.name;
   };

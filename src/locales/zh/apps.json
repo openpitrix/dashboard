@@ -53,18 +53,6 @@
   "Please select a delivery type!": "请选择一个交付方式!",
   "Linkto_Intro_App": "查看开发规范",
   "Added": "已添加",
-  "Upload configuration file": "上传配置文件",
-  "Chart.yaml_Info": "Yaml文件，用于描述 Chart 的基本信息，包括名称版本等",
-  "LICENSE_Info": "[可选] 文本格式的协议",
-  "README.md_Info": "[可选] 应用介绍、使用说明",
-  "requirements.yaml_Info": "[可选] 用于存放当前 Chart 依赖的其它 Chart 的说明文件",
-  "values.yaml_Info": "Chart 的默认值配置文件",
-  "charts/_Info": "[可选] 该目录中放置当前 Chart 依赖的其它 Chart",
-  "templates/_Info": "[可选] 部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
-  "templates/NOTES.txt_Info": "[可选] 使用指南",
-  "The file has problem?": "文件有问题?",
-  "Upload again": "重新上传",
-  "Select a file": "选择文件",
 
   "Search for app name or ID": "搜索应用名称或 ID",
 
@@ -104,6 +92,29 @@
   "version_type_api": "API",
   "version_type_native": "Native",
   "version_type_serveless": "Serveless",
+
+  "Upload configuration file": "上传配置文件",
+
+  "Chart_yaml_Info": "Yaml文件，用于描述 Chart 的基本信息，包括名称版本等",
+  "LICENSE_Info": "[可选] 文本格式的协议",
+  "README_md_Info": "[可选] 应用介绍、使用说明",
+  "requirements.yaml_Info": "[可选] 用于存放当前 Chart 依赖的其它 Chart 的说明文件",
+  "values_yaml_Info": "Chart 的默认值配置文件",
+  "charts/_Info": "[可选] 该目录中放置当前 Chart 依赖的其它 Chart",
+  "templates/_Info": "[可选] 部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
+  "templates/NOTES.txt_Info": "[可选] 使用指南",
+
+  "package_json_Info": "Json 格式文件记录应用详情",
+  "config_json_Info": "Json 格式文件包含最终用户创建此应用实例时需设置的参数等信息，包括各种角色的节点配置、参数配置等",
+  "cluster_json_tmpl_Info": "Tmpl 格式文件包含创建此应用实例时的基础架构、应用实例生命周期管理和自定义监控告警等信息",
+  "locale/en_json_Info": "[可选] 英文语言包",
+  "locale/zh-en_json_Info": "[可选] 中文语言包",
+
+  "The file has problem?": "文件有问题?",
+  "Upload again": "重新上传",
+  "Select a file": "选择文件",
+  "Upload_Package_Error": "部分文件有报错，请检查后",
+  "not found": "没有找到",
 
   "Go on": "继续",
   "Done": "完成"

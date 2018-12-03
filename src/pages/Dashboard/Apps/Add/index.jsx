@@ -68,18 +68,12 @@ export default class AppAdd extends Component {
       errorMessage,
       checkPackageFile,
       fileName,
+      getPackageFiles,
+      uploadError,
       uploadPackage
     } = appCreateStore;
-    const configs = [
-      'Chart.yaml',
-      'LICENSE',
-      'README.md',
-      'requirements.yaml',
-      'values.yaml',
-      'charts/',
-      'templates/',
-      'templates/NOTES.txt'
-    ];
+    const files = getPackageFiles();
+    const errorKeys = _.keys(uploadError);
 
     return (
       <Fragment>
@@ -136,21 +130,25 @@ export default class AppAdd extends Component {
         </Upload>
 
         <ul className={styles.config}>
-          {configs.map(config => (
-            <li key={config}>
+          {files.map(file => (
+            <li key={file}>
               <span
                 className={classNames(styles.configName, {
-                  [styles.errorColor]: !config
+                  [styles.errorColor]: errorKeys.includes(file)
                 })}
               >
-                {config}
+                {file}
               </span>
               <span
                 className={classNames(styles.configInfo, {
-                  [styles.errorColor]: !config
+                  [styles.errorColor]: errorKeys.includes(file)
                 })}
               >
-                # {t(`${config}_Info`)}
+                {errorKeys.includes(file) ? (
+                  <span>{t(`${uploadError[file]}`)}</span>
+                ) : (
+                  <span># {t(`${file.replace('.', '_')}_Info`)}</span>
+                )}
               </span>
             </li>
           ))}
@@ -239,6 +237,7 @@ export default class AppAdd extends Component {
     const {
       appCreateStore, t, rootStore, history
     } = this.props;
+    const { isCreateApp, appId } = this.state;
     const { appDetail } = appCreateStore;
 
     return (
@@ -264,9 +263,13 @@ export default class AppAdd extends Component {
             </Button>
             <Button
               onClick={() => {
-                history.replace(
-                  `/dashboard/app/${appDetail.app_id}/create-version`
-                );
+                if (isCreateApp) {
+                  history.replace(
+                    `/dashboard/app/${appDetail.app_id}/create-version`
+                  );
+                } else {
+                  appCreateStore.reload({ isCreateApp, appId });
+                }
               }}
               className={styles.addBtn}
             >
