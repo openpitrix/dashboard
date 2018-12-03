@@ -11,7 +11,7 @@
 
   "INPUT_APP_NAME_TIP": "清晰、准确的命名对于一款上架应用格外重要。",
   "INPUT_APP_VERSION_TIP": "通常由字母、数字组成，是应用的版本的重要标识。",
-  "INPUT_APP_ICON_TIP": "格式：png/svg 背景透明最佳；大小：96px * 96px",
+  "INPUT_APP_ICON_TIP": "格式：png 背景透明最佳；大小：96px * 96px",
   "Current Version": "当前版本号",
   "App Icon": "应用图标",
 
@@ -80,13 +80,25 @@
   "STEPPER_FOOTER_CREATE_APP_3": "以上信息调整之后将会自动更新配置文件中的对应内容。",
   "LINK_STEPPER_FOOTER_CREATE_APP_2": "《Helm 规范及应用开发》。",
 
+  "STEPPER_NAME_CREATE_APP_VERSION_HEADER": "添加交付方式 {{activeStep}}/{{steps}}",
+  "STEPPER_TITLE_CREATE_APP_VERSION_1": "选择应用的交付类型",
+  "STEPPER_TITLE_CREATE_APP_VERSION_2": "上传配置文件",
+  "STEPPER_TITLE_CREATE_APP_VERSION_3": "确认应用基本信息",
+  "STEPPER_HEADER_CREATE_APP_VERSION_2": "「选择应用的交付类型」",
+  "STEPPER_HEADER_CREATE_APP_VERSION_3": "「上传配置文件」",
+  "STEPPER_HEADER_CREATE_APP_VERSION_3": "「确认应用基本信息」",
+  "STEPPER_FOOTER_CREATE_APP_VERSION_1": "一款应用可以支持多种交付方式，管理过程中可以随时添加。",
+  "STEPPER_FOOTER_CREATE_APP_VERSION_2": "完整的应用开发规范请参看",
+  "STEPPER_FOOTER_CREATE_APP_VERSION_3": "以上信息调整之后将会自动更新配置文件中的对应内容。",
+  "LINK_STEPPER_FOOTER_CREATE_APP_VERSION_2": "《Helm 规范及应用开发》。",
+
   "icon_format_note": "图标最佳格式为 png，请重新上传",
   "Search result is empty": "搜索结果为空",
   "No result for search word": "没有找到与关键字 「{{searchWord}}」 相关的应用",
   "File": "文件",
   "Successful upload": "上传成功",
 
-  "version_type_vmbase": "VM",
+  "version_type_vmbased": "VM",
   "version_type_helm": "Helm",
   "version_type_saas": "SaaS",
   "version_type_api": "API",

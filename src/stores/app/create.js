@@ -9,7 +9,7 @@ const versionTypes = [
   {
     icon: 'vm-icon',
     name: 'VM',
-    value: 'vmbase',
+    value: 'vmbased',
     intro: 'delivery_type_intro_vm'
   },
   {
@@ -44,6 +44,20 @@ const versionTypes = [
   }
 ];
 
+const appModel = {
+  name: '',
+  version_name: '',
+  version_type: '',
+  versino_package: null,
+  icon: ''
+};
+const appVersionModel = {
+  app_id: '',
+  name: '',
+  type: '',
+  package: null
+};
+
 export default class AppCreateStore extends Store {
   @observable activeStep = 1;
 
@@ -61,14 +75,7 @@ export default class AppCreateStore extends Store {
 
   @observable versionTypes = versionTypes;
 
-  @observable
-  attribute = {
-    name: '',
-    version_name: '',
-    version_type: null,
-    versino_package: null,
-    icon: ''
-  };
+  @observable attribute = {};
 
   @observable iconBase64 = '';
 
@@ -76,26 +83,33 @@ export default class AppCreateStore extends Store {
 
   @observable appDetail = {};
 
+  isCreateApp = true;
+
   @action
   nextStep = async () => {
-    // window.scroll({ top: 0, behavior: 'smooth' });
+    const { isCreateApp } = this;
     if (this.errorMessage) {
       return false;
     }
-    if (!_.get(this.attribute, 'version_type')) {
+    if (!this.getVersionType()) {
       return this.info(t('Please select a delivery type!'));
     }
-    if (this.activeStep === 3) {
+    if (
+      (!isCreateApp && this.activeStep === 2)
+      || (isCreateApp && this.activeStep === 3)
+    ) {
       await this.create();
-      const { app_id } = this.createResult;
-      if (!app_id) {
+      if (this.errorMessage) {
+        this.uploadStatus = 'init';
         return false;
+      }
+      let { app_id } = this.createResult;
+      if (!app_id && !isCreateApp) {
+        app_id = _.get(this.appDetail, 'app_id');
       }
 
       await this.fetchOneApp({ app_id });
-      // await this.modify();
     }
-    this.disableNextStep = true;
     this.errorMessage = '';
     this.activeStep = this.activeStep + 1;
   };
@@ -109,32 +123,47 @@ export default class AppCreateStore extends Store {
     }
   };
 
-  // TODO WIP: versionTypes from api
-  checkAddedDelivery = name => this.versionTypes.toJSON().includes(name);
+  getVersionType = () => {
+    const versionName = this.isCreateApp ? 'version_type' : 'type';
+    return this.attribute[versionName];
+  };
 
-  reset = () => {
+  checkAddedVersionType = name => {
+    const versions = _.get(this.appDetail, 'app_version_types', '');
+    return versions.split(',').includes(name);
+  };
+
+  checkSelectedVersionType = name => this.getVersionType() === name;
+
+  reset = ({ isCreateApp, appId }) => {
     this.activeStep = 1;
-    this.attribute = {
-      name: '',
-      version_name: '',
-      version_type: null,
-      versino_package: null,
-      icon: ''
-    };
+    if (isCreateApp) {
+      this.steps = 3;
+      this.attribute = _.assign({}, appModel);
+    } else {
+      this.steps = 2;
+      this.attribute = _.assign({ appId }, appVersionModel);
+    }
     this.iconBase64 = '';
     this.errorMessage = '';
+    this.uploadStatus = 'init';
+    this.appDetail = {};
+    this.disableNextStep = true;
   };
 
   @action
   create = async (params = {}) => {
     this.isLoading = true;
+    this.errorMessage = '';
     const defaultParams = _.pickBy(
       this.attribute,
       o => o !== null && !_.isUndefined(o) && o !== ''
     );
 
+    const actionName = this.isCreateApp ? 'apps' : 'app_versions';
+
     this.createResult = await this.request.post(
-      'apps',
+      actionName,
       _.assign(defaultParams, params)
     );
 
@@ -170,11 +199,12 @@ export default class AppCreateStore extends Store {
   @action
   selectVersionType = type => {
     const { attribute } = this;
+    const typeName = this.isCreateApp ? 'version_type' : 'type';
     if (attribute.version_type === type) {
-      attribute.version_type = '';
+      attribute[typeName] = '';
       this.disableNextStep = true;
     } else {
-      attribute.version_type = type;
+      attribute[typeName] = type;
       this.disableNextStep = false;
     }
   };
@@ -202,10 +232,14 @@ export default class AppCreateStore extends Store {
 
   @action
   uploadPackage = (base64Str, file) => {
-    this.attribute.version_package = base64Str;
+    if (this.isCreateApp) {
+      this.attribute.version_package = base64Str;
+      this.attribute.name = _.initial(file.name.split('.')).join('.');
+    } else {
+      this.attribute.package = base64Str;
+    }
     this.uploadStatus = 'ok';
     this.fileName = file.name;
-    this.attribute.name = _.first(file.name.split('.'));
   };
 
   @action

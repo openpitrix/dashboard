@@ -9,8 +9,9 @@
   border: solid 1px $N0;
   text-align: center;
   position: relative;
+  cursor: pointer;
+  transition: border-color 200ms linear;
   &:hover {
-    cursor: pointer;
     border: solid 1px $P30;
     .intro {
       display: none;
@@ -34,6 +35,10 @@
 }
 .addedContainer {
   opacity: 0.8;
+  cursor: default;
+  &:hover {
+    border-color: transparent;
+  }
 }
 .disabledContainer {
   opacity: 0.5;

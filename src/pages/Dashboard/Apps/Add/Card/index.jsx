@@ -30,19 +30,23 @@ export default class CreateAppCard extends Component {
       t,
       appCreateStore
     } = this.props;
-    const { attribute, selectVersionType, checkAddedDelivery } = appCreateStore;
-    const { version_type } = attribute;
-    const isAdded = checkAddedDelivery(value);
+    const {
+      selectVersionType,
+      checkAddedVersionType,
+      checkSelectedVersionType
+    } = appCreateStore;
+    const isAdded = checkAddedVersionType(value);
+    const isSelected = checkSelectedVersionType(value);
 
     return (
       <div
-        onClick={() => selectVersionType(value)}
+        onClick={() => !isAdded && selectVersionType(value)}
         className={classNames(styles.container, className, {
           [styles.addedContainer]: isAdded
         })}
       >
         {isAdded && <span className={styles.addedType}>{t('Added')} </span>}
-        {value === version_type && (
+        {isSelected && (
           <Icon
             className={styles.checkedIcon}
             name="checked-circle"

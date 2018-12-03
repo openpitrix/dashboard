@@ -37,13 +37,12 @@ export default class BaseLink extends Component {
     if (!text) {
       return null;
     }
-    if (!linkTo) {
-      console.error(
-        "You should edit a link url in the file of 'config/doc-links'"
-      );
-    }
-
     if (isExternal) {
+      if (!linkTo) {
+        console.error(
+          `You should edit a link url in the file of 'config/doc-links'. type:${type}`
+        );
+      }
       return (
         <a target="blank" className={className} href={linkTo}>
           {text}

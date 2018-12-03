@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   Icon, Button, Input, Upload, Notification
@@ -20,8 +21,27 @@ import styles from './index.scss';
 }))
 @observer
 export default class AppAdd extends Component {
-  componentWillUnmount() {
-    this.props.appCreateStore.reset();
+  constructor(props) {
+    super(props);
+
+    const { match, appCreateStore } = props;
+    const appId = _.get(match, 'params.appId');
+    const isCreateApp = !appId;
+    appCreateStore.isCreateApp = isCreateApp;
+    appCreateStore.reset({ isCreateApp, appId });
+    this.state = {
+      name: isCreateApp ? 'create_app' : 'create_app_version',
+      isCreateApp,
+      appId
+    };
+  }
+
+  async componentDidMount() {
+    const { appCreateStore } = this.props;
+    const app_id = this.state.appId;
+    if (app_id) {
+      await appCreateStore.fetchOneApp({ app_id });
+    }
   }
 
   onUploadClick = () => {
@@ -158,51 +178,58 @@ export default class AppAdd extends Component {
       errorMessage,
       valueChange
     } = appCreateStore;
+    const { isCreateApp } = this.state;
 
     return (
       <Fragment>
         <div className={styles.configMsg}>
-          <div>
-            <label className={styles.configTitle}>{t('App Name')}</label>
-            <Input
-              className={styles.appName}
-              name="name"
-              value={attribute.name}
-              valueChange={valueChange}
-              placeholder=""
-            />
-            <span className={styles.tips}>{t('INPUT_APP_NAME_TIP')}</span>
-          </div>
+          {isCreateApp && (
+            <div>
+              <label className={styles.configTitle}>{t('App Name')}</label>
+              <Input
+                className={styles.appName}
+                name="name"
+                value={attribute.name}
+                valueChange={valueChange}
+                placeholder=""
+              />
+              <span className={styles.tips}>{t('INPUT_APP_NAME_TIP')}</span>
+            </div>
+          )}
           <div>
             <label className={styles.configTitle}>{t('Current Version')}</label>
             <Input
               className={styles.appVersion}
-              name="version_name"
+              name={isCreateApp ? 'version_name' : 'name'}
               value={attribute.version_name}
               valueChange={valueChange}
               placeholder=""
             />
             <span className={styles.tips}>{t('INPUT_APP_VERSION_TIP')}</span>
           </div>
-          <div>
-            <label className={styles.configTitle}>{t('App Icon')}</label>
-            <Upload
-              className={styles.uploadIcon}
-              checkFile={checkIconFile}
-              uploadFile={uploadIcon}
-            >
-              <span className={styles.appIcon}>
-                {iconBase64 && (
-                  <img src={iconBase64} className={styles.iconImage} />
-                )}
-                {!iconBase64 && (
-                  <span className={styles.iconText}>{t('Select a file')}</span>
-                )}
-              </span>
-            </Upload>
-            <span className={styles.tips}>{t('INPUT_APP_ICON_TIP')}</span>
-            <span className={styles.errorMessage}>{errorMessage}</span>
-          </div>
+          {isCreateApp && (
+            <div>
+              <label className={styles.configTitle}>{t('App Icon')}</label>
+              <Upload
+                className={styles.uploadIcon}
+                checkFile={checkIconFile}
+                uploadFile={uploadIcon}
+              >
+                <span className={styles.appIcon}>
+                  {iconBase64 && (
+                    <img src={iconBase64} className={styles.iconImage} />
+                  )}
+                  {!iconBase64 && (
+                    <span className={styles.iconText}>
+                      {t('Select a file')}
+                    </span>
+                  )}
+                </span>
+              </Upload>
+              <span className={styles.tips}>{t('INPUT_APP_ICON_TIP')}</span>
+              <span className={styles.errorMessage}>{errorMessage}</span>
+            </div>
+          )}
         </div>
       </Fragment>
     );
@@ -235,7 +262,14 @@ export default class AppAdd extends Component {
             >
               {t('Deploy Test')}
             </Button>
-            <Button onClick={() => {}} className={styles.addBtn}>
+            <Button
+              onClick={() => {
+                history.replace(
+                  `/dashboard/app/${appDetail.app_id}/create-version`
+                );
+              }}
+              className={styles.addBtn}
+            >
               {t('Add delivery type')}
             </Button>
           </div>
@@ -248,6 +282,7 @@ export default class AppAdd extends Component {
   }
 
   render() {
+    const { name, isCreateApp } = this.state;
     const { appCreateStore } = this.props;
     const { activeStep } = appCreateStore;
     const { disableNextStep } = appCreateStore;
@@ -255,14 +290,15 @@ export default class AppAdd extends Component {
     return (
       <LayoutStep
         className={styles.createApp}
-        name="create_app"
+        name={name}
         store={appCreateStore}
         disableNextStep={disableNextStep}
       >
         {activeStep === 1 && this.renderVersionTypes()}
         {activeStep === 2 && this.renderUploadConf()}
-        {activeStep === 3 && this.renderConfirmMsg()}
-        {activeStep === 4 && this.renderSuccessMsg()}
+        {activeStep === 3 && isCreateApp && this.renderConfirmMsg()}
+        {((activeStep === 3 && !isCreateApp) || activeStep === 4)
+          && this.renderSuccessMsg()}
         <Notification />
       </LayoutStep>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { withRouter } from 'react-router';
 import _ from 'lodash';
 
 import { getPastTime } from 'src/utils';
@@ -9,6 +10,7 @@ import { Image } from 'components/Base';
 
 import styles from './index.scss';
 
+@withRouter
 export default class Loading extends Component {
   static propTypes = {
     apiServer: PropTypes.string,
@@ -22,26 +24,31 @@ export default class Loading extends Component {
       apiServer, className, data, t
     } = this.props;
     const {
+      app_id,
       icon,
       name,
       description,
       status,
       status_time,
-      latest_app_version
+      app_version_types
     } = data;
     let imgStr = icon;
     if (icon && _.startsWith(icon, 'att-')) {
       imgStr = `${apiServer.split('/v')[0]}/attachments/${icon}/raw`;
     }
-    // TODO WIP versions from api
-    const versions = [latest_app_version.type];
+    const versions = app_version_types.split(',');
     return (
-      <div className={classnames(styles.container, className)}>
+      <div
+        className={classnames(styles.container, className)}
+        onClick={() => {
+          this.props.history.push(`/dashboard/app/${app_id}`);
+        }}
+      >
         <div className={styles.title}>
           <Image
             className={styles.icon}
             iconLetter={name}
-            src={imgStr || ''}
+            src={imgStr}
             iconSize={48}
             alt="logo"
           />
