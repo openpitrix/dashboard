@@ -6,21 +6,26 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Button, Table, Radio, Input, Modal
+  Button, Table, Radio, Input, Modal, Icon
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
+import DeploySection from 'components/Deploy';
+import Cache from 'lib/cache';
+import VMParser, { factory } from 'lib/config-parser';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
 
 import styles from '../index.scss';
 
+const keysShouldBeNumber = ['cpu', 'memory', 'storage_size', 'volume_size'];
+
 @translate()
 @inject(({ rootStore }) => ({
   store: rootStore.clusterDetailStore,
-  sshKeyStore: rootStore.sshKeyStore
-  // clusterStore: rootStore.clusterStore
+  sshKeyStore: rootStore.sshKeyStore,
+  deployStore: rootStore.appDeployStore
 }))
 @observer
 export default class VMbasedCluster extends React.Component {
@@ -31,6 +36,16 @@ export default class VMbasedCluster extends React.Component {
   static defaultProps = {
     cluster: {}
   };
+
+  state = {
+    fetchedConfigJson: false,
+    configJson: null
+  };
+
+  constructor(props) {
+    super(props);
+    this.cache = new Cache();
+  }
 
   onClickAddNodes = () => {
     this.props.store.showModal('addNodes');
@@ -63,17 +78,60 @@ export default class VMbasedCluster extends React.Component {
   };
 
   handleAddNodes = async (e, formData) => {
-    const { selectedNodeRole, addNodes } = this.props.store;
-    const { cluster } = this.props;
+    const { cluster, store } = this.props;
+    const { clusterNodes, selectedNodeRole } = store;
 
-    formData = _.extend(_.pick(formData, ['node_count', 'advanced_params']), {
-      cluster_id: cluster.clusterId,
-      role: selectedNodeRole
+    const origData = _.extend({}, formData);
+
+    formData = _.extend(_.pick(formData, ['node_count']), {
+      cluster_id: cluster.cluster_id,
+      role: selectedNodeRole,
+      advanced_params: []
     });
-
     formData.node_count = parseInt(formData.node_count);
 
-    await addNodes(formData);
+    // check if role is newly added
+    if (!_.find(clusterNodes, { role: selectedNodeRole })) {
+      // compose role conf from config.json
+      const rawRoleConf = _.pickBy(
+        origData,
+        (val, key) => key.indexOf('node.') === 0
+      );
+      // transform raw conf
+      const roleConf = _.transform(
+        rawRoleConf,
+        (res, val, key) => {
+          const keyParts = key.split('.');
+          if (keyParts.length < 3) {
+            return false;
+          }
+
+          const [node, role, meter] = [...keyParts];
+          if (keysShouldBeNumber.indexOf(meter) > -1) {
+            val = parseInt(val);
+          }
+
+          if (!res[role]) {
+            res[role] = {};
+          }
+
+          _.extend(res[role], {
+            [meter]: val
+          });
+        },
+        {}
+      );
+
+      formData.advanced_params.push(
+        JSON.stringify({
+          conf: {
+            cluster: roleConf
+          }
+        })
+      );
+    }
+
+    await store.addNodes(formData);
   };
 
   handleDeleteNodes = async () => {
@@ -86,15 +144,6 @@ export default class VMbasedCluster extends React.Component {
     });
   };
 
-  handleResizeCluster = () => {
-    // todo
-  };
-
-  getClusterRoles() {
-    const { cluster } = this.props.store;
-    return _.uniq(_.get(cluster, 'cluster_role_set', []).map(cl => cl.role));
-  }
-
   onSelectKey = item => {
     const { sshKeyStore } = this.props;
     const { pairId } = sshKeyStore;
@@ -104,9 +153,7 @@ export default class VMbasedCluster extends React.Component {
     }
   };
 
-  renderDetailTabs() {
-    return <DetailTabs tabs={['Nodes']} />;
-  }
+  renderDetailTabs = () => <DetailTabs tabs={['Nodes']} />;
 
   renderToolbar() {
     const { store, t } = this.props;
@@ -115,7 +162,8 @@ export default class VMbasedCluster extends React.Component {
       onSearchNode,
       onClearNode,
       onRefreshNode,
-      selectedNodeIds
+      selectedNodeIds,
+      cluster
     } = store;
 
     if (selectedNodeIds.length) {
@@ -141,12 +189,15 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        {/*
-            <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>
-          */}
-        {/* <Icon name="add" size="mini" type="white" /> */}
-        {/* <span className={styles.addNodeTxt}>{t('Add Nodes')}</span> */}
-        {/* </Button> */}
+        <Button
+          type="primary"
+          className={styles.addNodesBtn}
+          onClick={this.onClickAddNodes}
+          disabled={cluster.status !== 'active'}
+        >
+          <Icon name="add" size="mini" type="white" />
+          <span className={styles.addNodeTxt}>{t('Add Nodes')}</span>
+        </Button>
       </Toolbar>
     );
   }
@@ -214,9 +265,29 @@ export default class VMbasedCluster extends React.Component {
     if (modalType === 'attachKeyPairs') {
       return this.renderAttachModal();
     }
+  };
 
-    if (modalType === 'resize') {
-      return this.renderResizeClusterModal();
+  componentDidUpdate = async () => {
+    const { deployStore, store, cluster } = this.props;
+    const { modalType } = store;
+    const { version_id } = cluster;
+    const { configJson } = this.state;
+
+    if (modalType === 'addNodes' && _.isEmpty(configJson)) {
+      const cachedConfig = this.cache.get(version_id);
+      if (cachedConfig) {
+        this.setState({
+          configJson: cachedConfig
+        });
+      } else {
+        await deployStore.fetchFilesByVersion(version_id);
+        const cacheData = deployStore.configJson;
+
+        this.cache.set(version_id, cacheData);
+        this.setState({
+          configJson: cacheData
+        });
+      }
     }
   };
 
@@ -236,33 +307,20 @@ export default class VMbasedCluster extends React.Component {
     );
   };
 
-  renderResizeClusterModal = () => {
-    const { store, t } = this.props;
-    const { isModalOpen, hideResizeClusterModal } = store;
-
-    // todo
-    return (
-      <Dialog
-        title={t(`Resize cluster`)}
-        isOpen={isModalOpen}
-        onCancel={hideResizeClusterModal}
-        onSubmit={_.noop}
-      >
-        <p>resize cluster</p>
-      </Dialog>
-    );
-  };
-
   renderAddNodesModal = () => {
     const { store, t } = this.props;
     const {
       hideAddNodesModal,
       isModalOpen,
       selectedNodeRole,
-      onChangeNodeRole
+      changeNodeRole
     } = store;
-    const roles = this.getClusterRoles();
+    const roles = store.getClusterRoles();
     const hideRoles = roles.length === 1 && roles[0] === '';
+
+    if (!hideRoles && !selectedNodeRole) {
+      changeNodeRole(roles[0]);
+    }
 
     return (
       <Dialog
@@ -280,7 +338,7 @@ export default class VMbasedCluster extends React.Component {
             <label>{t('Node Role')}</label>
             <Radio.Group
               value={selectedNodeRole || roles[0]}
-              onChange={onChangeNodeRole}
+              onChange={changeNodeRole}
             >
               {roles.map((role, idx) => (
                 <Radio value={role} key={idx} className={styles.radio}>
@@ -299,8 +357,43 @@ export default class VMbasedCluster extends React.Component {
               required
             />
           </div>
+          {this.renderRoleSettings()}
         </div>
       </Dialog>
+    );
+  };
+
+  renderRoleSettings = () => {
+    const { clusterNodes, selectedNodeRole } = this.props.store;
+    const { configJson } = this.state;
+
+    if (_.find(clusterNodes, { role: selectedNodeRole })) {
+      return null;
+    }
+
+    if (_.isEmpty(configJson)) {
+      return <div>Loading..</div>;
+    }
+
+    const vmParser = new VMParser(configJson);
+    const nodeSettings = vmParser.getNodeSetting();
+    const roleSetting = _.find(nodeSettings, { key: selectedNodeRole }) || {};
+
+    return (
+      <div className={styles.roleSetting}>
+        {factory(roleSetting.properties).map((sec, idx) => {
+          if (_.isFunction(sec.toJSON)) {
+            sec = sec.toJSON();
+          }
+          return (
+            <DeploySection
+              detail={sec}
+              key={idx}
+              labelClsName={styles.roleSettingLabel}
+            />
+          );
+        })}
+      </div>
     );
   };
 

@@ -100,6 +100,8 @@ export default class ClusterDetailStore extends Store {
     this.isLoading = false;
   };
 
+  getClusterRoles = () => _.get(this.cluster, 'cluster_role_set', []).map(cl => cl.role);
+
   // todo: inject clusterStore
   // fixme: table search, filter no effect
   @action
@@ -188,13 +190,17 @@ export default class ClusterDetailStore extends Store {
 
   @action
   addNodes = async params => {
-    // todo
     // eslint-disable-next-line
     const res = await this.request.post('clusters/add_nodes', params);
+
+    if (res.cluster_id) {
+      this.hideAddNodesModal();
+      await this.onRefreshNode();
+    }
   };
 
   @action
-  onChangeNodeRole = role => {
+  changeNodeRole = role => {
     this.selectedNodeRole = role;
   };
 

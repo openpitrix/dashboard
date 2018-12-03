@@ -15,19 +15,20 @@ export default class Section extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     detail: PropTypes.shape({
-      defaultValue: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.bool
-      ]),
-      description: PropTypes.string,
-      keyName: PropTypes.string.isRequired, // key is reserved by react
-      label: PropTypes.string,
-      required: PropTypes.bool,
-      type: PropTypes.string.isRequired,
-      renderType: PropTypes.string,
-      items: PropTypes.array
+      // defaultValue: PropTypes.oneOfType([
+      //   PropTypes.string,
+      //   PropTypes.number,
+      //   PropTypes.bool
+      // ]),
+      // description: PropTypes.string,
+      // keyName: PropTypes.string.isRequired, // key is reserved by react
+      // label: PropTypes.string,
+      // required: PropTypes.bool,
+      type: PropTypes.string.isRequired
+      // renderType: PropTypes.string,
+      // items: PropTypes.array
     }),
+    labelClsName: PropTypes.string,
     onChange: PropTypes.func,
     onEmpty: PropTypes.func
   };
@@ -39,7 +40,9 @@ export default class Section extends React.Component {
       label: '',
       required: false,
       type: 'string'
-    }
+    },
+    onChange: _.noop,
+    onEmpty: _.noop
   };
 
   state = {
@@ -106,10 +109,11 @@ export default class Section extends React.Component {
 
   renderLabel() {
     const { keyName, label, renderType } = this.props.detail;
+    const { labelClsName } = this.props;
 
     return (
       <label
-        className={classnames(styles.label, {
+        className={classnames(styles.label, labelClsName, {
           [styles.isRadio]: renderType === 'radio',
           [styles.isYamlLabel]: renderType === 'yaml'
         })}

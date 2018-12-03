@@ -151,10 +151,6 @@ export default class ClusterDetail extends Component {
     this.props.clusterStore.showModal('jobs');
   };
 
-  showClusterParameters = () => {
-    this.props.clusterStore.showModal('parameters');
-  };
-
   renderModals() {
     const {
       t, appVersionStore, clusterStore, clusterDetailStore
@@ -254,11 +250,24 @@ export default class ClusterDetail extends Component {
       return (
         <Dialog
           title={t(`${capitalize(modalType)} cluster`)}
-          visible={isModalOpen}
+          isOpen={isModalOpen}
           onCancel={hideModal}
           onSubmit={this.handleCluster}
         >
           {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
+        </Dialog>
+      );
+    }
+
+    if (modalType === 'resize') {
+      return (
+        <Dialog
+          title={t(`Resize cluster`)}
+          isOpen={isModalOpen}
+          onCancel={hideModal}
+          onSubmit={this.handleCluster}
+        >
+          <p>resize cluster</p>
         </Dialog>
       );
     }
@@ -329,6 +338,7 @@ export default class ClusterDetail extends Component {
         <Fragment>
           {status === 'stopped' && renderBtn('start', t('Start cluster'))}
           {status === 'active' && renderBtn('stop', t('Stop cluster'))}
+          {status !== 'stopped' && renderBtn('resize', t('Resize cluster'))}
         </Fragment>
       );
     };
