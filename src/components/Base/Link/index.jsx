@@ -44,7 +44,12 @@ export default class BaseLink extends Component {
         );
       }
       return (
-        <a target="blank" className={className} href={linkTo}>
+        <a
+          className={className}
+          href={linkTo}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {text}
         </a>
       );

@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 import Loading from 'components/Loading';
 
-import { Link, Icon } from 'components/Base';
+import { BaseLink, Icon } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -117,7 +117,7 @@ class LayoutStepper extends Component {
 
     const NAME = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
     const tipText = t(NAME);
-    const tipLink = <Link type={NAME} isExternal={true} />;
+    const tipLink = <BaseLink type={NAME} isExternal={true} />;
 
     const buttonText = t('Go on');
 

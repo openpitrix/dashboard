@@ -16,4 +16,4 @@ export Timeline from './Timeline';
 export Tooltip from './Tooltip';
 export Image from './Image';
 export Upload from './Upload';
-export Link from './Link';
+export BaseLink from './Link';
