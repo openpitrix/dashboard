@@ -1,5 +1,4 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import {
   Manager, Target, Popper, Arrow
 } from 'react-popper';
@@ -75,11 +74,9 @@ export default class Tooltip extends React.Component {
   };
 
   handleDocumentClick = e => {
-    const rootNode = findDOMNode(this);
-
     if (
-      !rootNode
-      || rootNode.contains(e.target)
+      !this.rootNode
+      || this.rootNode.contains(e.target)
       || !this.target
       || this.target.contains(e.target)
       || !this.popper
@@ -137,7 +134,12 @@ export default class Tooltip extends React.Component {
     const visible = this.state.visible;
 
     return (
-      <Manager className={classNames(styles.tooltip, className)}>
+      <Manager
+        className={classNames(styles.tooltip, className)}
+        ref={c => {
+          this.rootNode = c;
+        }}
+      >
         <Target
           className={classNames(styles.target, {
             [styles.active]: visible || showBorder

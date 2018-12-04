@@ -7,7 +7,6 @@ import { noop, isEmpty } from 'lodash';
 
 import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';
-import { getScrollTop } from 'src/utils';
 import TitleBanner from './TitleBanner';
 import SideNav from './SideNav';
 
