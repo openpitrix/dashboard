@@ -56,3 +56,17 @@
 
   z-index: 1;
 }
+
+.searchEmpty {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.67;
+  color: $N75;
+
+  h4 {
+    font-size: 14px;
+    line-height: 2;
+    color: $N500;
+    margin-top: 24px;
+  }
+}

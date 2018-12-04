@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Link basic render 1`] = `
+<a
+  class=""
+  href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/helm-specification/"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  《Helm 规范及应用开发》
+</a>
+`;

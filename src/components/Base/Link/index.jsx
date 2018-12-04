@@ -6,29 +6,29 @@ import { translate } from 'react-i18next';
 import links from 'config/doc-link';
 
 @translate()
-export default class BaseLink extends Component {
+export default class DocLink extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     isExternal: PropTypes.bool,
-    to: PropTypes.string,
-    type: PropTypes.string
+    name: PropTypes.string,
+    to: PropTypes.string
   };
 
   static defaultProps = {
     children: null,
     className: '',
-    isExternal: false,
-    type: ''
+    isExternal: true,
+    name: ''
   };
 
   render() {
     const {
-      t, to, type, children, className, isExternal
+      t, to, name, children, className, isExternal
     } = this.props;
-    let text = t(`LINK_${type}`);
-    const linkTo = to || links[type];
-    if (text === `LINK_${type}`) {
+    let text = t(`LINK_${name}`);
+    const linkTo = to || links[name];
+    if (text === `LINK_${name}`) {
       text = linkTo;
     }
     if (children) {
@@ -40,7 +40,7 @@ export default class BaseLink extends Component {
     if (isExternal) {
       if (!linkTo) {
         console.error(
-          `You should edit a link url in the file of 'config/doc-links'. type:${type}`
+          `You should edit a link url in the file of 'config/doc-links'. name:${name}`
         );
       }
       return (

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Icon, BaseLink } from 'components/Base';
+import { Icon, DocLink } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -56,7 +56,7 @@ export default class CreateAppCard extends Component {
         <Icon name={icon} size={48} className={styles.icon} type={'light'} />
         <div className={styles.name}>{name}</div>
         <div className={styles.intro}>{t(intro)}</div>
-        <BaseLink type={'Create_App_Linkto_Intro_App'} isExternal={true}>
+        <DocLink name={'Create_App_Linkto_Intro_App'}>
           {t('Linkto_Intro_App')}
           <Icon
             className={styles.linkIcon}
@@ -64,7 +64,7 @@ export default class CreateAppCard extends Component {
             type="light"
             size={20}
           />
-        </BaseLink>
+        </DocLink>
       </div>
     );
   }
