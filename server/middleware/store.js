@@ -21,7 +21,7 @@ module.exports = async (ctx, next) => {
   if (!serverUrl.startsWith('http')) {
     serverUrl = `http://${serverUrl}`;
   }
-  if (!socketUrl.startsWith('ws://')) {
+  if (!socketUrl.startsWith('ws')) {
     socketUrl = `ws://${socketUrl}`;
   }
 

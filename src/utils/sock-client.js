@@ -14,15 +14,15 @@ let reopenCount = 0;
 
 class SockClient extends EventEmitter {
   static composeEndpoint = (socketUrl, accessToken = '') => {
-    const re = /(\w+?:\/\/)?([^\\?]+)/;
+    const re = /wss?:\/\/([^\\?]+)/;
     const suffix = `?sid=${accessToken}`;
     const matchParts = `${socketUrl}`.match(re);
-    let wsPrefix = 'ws://';
-    if (typeof window === 'object' && window.location.protocol === 'https:') {
-      wsPrefix = 'wss://';
+
+    if (!matchParts) {
+      throw Error(`Invalid socket url: ${socketUrl}`);
     }
 
-    return `${wsPrefix}${matchParts[2]}${suffix}`;
+    return `${matchParts[0]}${suffix}`;
   };
 
   constructor(endpoint, options = {}) {
