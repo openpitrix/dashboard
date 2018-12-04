@@ -74,6 +74,11 @@ export default class Tooltip extends React.Component {
   };
 
   handleDocumentClick = e => {
+    // fix react-popper Manager ref object
+    if (this.rootNode._getTargetNode) {
+      this.rootNode = this.rootNode._getTargetNode();
+    }
+
     if (
       !this.rootNode
       || this.rootNode.contains(e.target)
