@@ -59,7 +59,7 @@ module.exports = {
       }
     ],
     'prefer-destructuring': 'off',
-    'no-restricted-globals': 'warn',
+    'no-restricted-globals': ['warn', 'event'],
     'no-unexpected-multiline': 'off',
     'no-useless-constructor': 'warn',
     'max-nested-callbacks': ['error', 3],
