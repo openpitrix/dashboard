@@ -97,20 +97,9 @@ export default class Apps extends Component {
       return <Empty />;
     }
 
-    const props = {
-      hasMore: appStore.hasMore,
-      pageStart: appStore.currentPage,
-      loadMore: appStore.loadMore,
-      loader: <Loading isLoading={true} key={0} />
-    };
-
     return (
       <Layout className={styles.layout} noSubMenu={true}>
-        <Loading
-          className={styles.page}
-          grayColor={true}
-          isLoading={pageLoading}
-        >
+        <Loading className={styles.page} isLoading={pageLoading}>
           {this.renderHeader()}
           <div className={styles.cards}>
             {apps.map(item => (

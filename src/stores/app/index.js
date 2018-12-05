@@ -84,8 +84,6 @@ export default class AppStore extends Store {
 
   @observable createResult = null;
 
-  @observable hasMore = false;
-
   // menu actions logic
   @observable
   handleApp = {

@@ -88,12 +88,12 @@ class LayoutStepper extends Component {
       return null;
     }
 
-    const NAME = name.toUpperCase();
-    const header = t(`STEPPER_NAME_${NAME}_HEADER`, {
+    const nameKey = name.toUpperCase();
+    const header = t(`STEPPER_NAME_${nameKey}_HEADER`, {
       activeStep,
       steps
     });
-    const title = t(`STEPPER_TITLE_${NAME}_${activeStep}`);
+    const title = t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
     return (
       <div className={classnames(styles.stepContent)}>
         <div className={styles.stepName}>{header}</div>

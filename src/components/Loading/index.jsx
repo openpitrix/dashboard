@@ -8,7 +8,6 @@ export default class Loading extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    grayColor: PropTypes.bool,
     isLoading: PropTypes.bool
   };
 
@@ -17,18 +16,12 @@ export default class Loading extends Component {
   };
 
   render() {
-    const {
-      className, grayColor, isLoading, children
-    } = this.props;
+    const { className, isLoading, children } = this.props;
 
     if (isLoading) {
       return (
         <Fragment>
-          <div
-            className={classnames(styles.loading, className, {
-              [styles.grayColor]: grayColor
-            })}
-          >
+          <div className={classnames(styles.loading, className)}>
             <div className={styles.loadOuter}>
               <div className={styles.loader} />
             </div>

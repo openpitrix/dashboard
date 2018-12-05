@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
@@ -85,7 +85,7 @@ export default class AppAdd extends Component {
           uploadFile={uploadPackage}
         >
           <div
-            className={classNames(styles.upload, {
+            className={classnames(styles.upload, {
               [styles.uploadError]: !!errorMessage
             })}
           >
@@ -133,14 +133,14 @@ export default class AppAdd extends Component {
           {files.map(file => (
             <li key={file}>
               <span
-                className={classNames(styles.configName, {
+                className={classnames(styles.configName, {
                   [styles.errorColor]: errorKeys.includes(file)
                 })}
               >
                 {file}
               </span>
               <span
-                className={classNames(styles.configInfo, {
+                className={classnames(styles.configInfo, {
                   [styles.errorColor]: errorKeys.includes(file)
                 })}
               >
