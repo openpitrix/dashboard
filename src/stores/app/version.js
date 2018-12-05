@@ -1,5 +1,7 @@
 import { observable, action } from 'mobx';
-import { get, assign, capitalize } from 'lodash';
+import {
+  get, assign, capitalize, assignIn
+} from 'lodash';
 import { Base64 } from 'js-base64';
 
 import ts from 'config/translation';
@@ -66,6 +68,8 @@ export default class AppVersionStore extends Store {
   @observable store = {};
 
   @observable isReview = false; // judge review apps list or app version list
+
+  @observable audits = {}; // define object for not repeat query of the same version
 
   @action
   fetchAll = async (params = {}) => {
@@ -223,6 +227,15 @@ export default class AppVersionStore extends Store {
       return result;
     }
     this.isLoading = false;
+  };
+
+  @action
+  fetchAudits = async (appId, versionId) => {
+    const result = await this.request.get(
+      `app/${appId}/version/${versionId}/audits`
+    );
+    const audits = get(result, 'app_version_audit_set', []);
+    assignIn(this.audits, { [versionId]: audits });
   };
 
   // todo
