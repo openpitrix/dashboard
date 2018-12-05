@@ -12,8 +12,7 @@ export default class Input extends React.Component {
     disabled: PropTypes.bool,
     icon: PropTypes.string,
     iconSize: PropTypes.number,
-    iconType: PropTypes.string,
-    valueChange: PropTypes.func
+    iconType: PropTypes.string
   };
 
   static defaultProps = {
