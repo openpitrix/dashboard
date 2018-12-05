@@ -1,7 +1,6 @@
-const docUrl = 'https://docs.openpitrix.io';
-const version = 'v0.3';
-const lang = 'zh-CN';
-const url = `${docUrl}/${version}/${lang}`;
+import config from './index';
+
+const url = config.docUrl;
 
 const link = {
   helm: `${url}/developer-guide/openpitrix-developer-guide/`,
