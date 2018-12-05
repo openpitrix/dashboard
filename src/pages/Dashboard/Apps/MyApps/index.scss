@@ -1,0 +1,80 @@
+@import '~scss/vars';
+
+.layout {
+  margin: 64px 0 0 64px !important;
+  width: calc(100% - 64px) !important;
+  height: calc(100vh - 84px) !important;
+}
+
+.page {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 20px 10px;
+}
+
+.header {
+  display: flex;
+  padding: 0 20px;
+  height: 64px;
+  align-items: center;
+  background: $background-color;
+
+  .name {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .search {
+    width: 232px;
+    margin-right: 12px;
+    input {
+      background: $background-color;
+      border-color: transparent;
+      color: $N45;
+    }
+  }
+
+  .btnCreate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :global {
+    .icon {
+      margin-right: 4px;
+    }
+  }
+}
+.header.fixedHeader {
+  position: fixed;
+  top: 0;
+  left: 60px;
+  right: 0;
+
+  z-index: 1;
+}
+
+.searchEmpty {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.67;
+  color: $N75;
+
+  h4 {
+    font-size: 14px;
+    line-height: 2;
+    color: $N500;
+    margin-top: 24px;
+  }
+}

@@ -44,11 +44,13 @@ const routes = {
 
   '/:dash': Dash.Overview,
 
+  '/:dash/apps/mine': Dash.MyApps,
   '/:dash/apps': Dash.Apps,
   '/dev/apps': Dash.Apps,
   '/:dash/reviews': Dash.AppReview,
   '/:dash/review/:appId/:versionId': AppDetail,
   '/:dash/app/create': Dash.AppAdd,
+  '/:dash/app/:appId/create-version': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/audit/record/:appId': Dash.AuditRecord,
 

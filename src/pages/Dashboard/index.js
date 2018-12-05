@@ -3,6 +3,7 @@ export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';
 export AppReview from './Apps/Review';
 export AppDeploy from './Apps/Deploy';
+export MyApps from './Apps/MyApps';
 export AuditRecord from './Audit/Record';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';

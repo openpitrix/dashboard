@@ -40,7 +40,7 @@ export default class Upload extends Component {
 
   state = {
     uid: getUid(),
-    isDraging: true
+    isDraging: false
   };
 
   componentDidMount() {
@@ -170,11 +170,14 @@ export default class Upload extends Component {
     return (
       <span
         {...events}
-        className={classNames('upload', {
-          'upload-dragover': this.state.isDraging,
-          'upload-disabled': disabled,
+        className={classNames(
+          'upload',
+          {
+            'upload-dragover': this.state.isDraging,
+            'upload-disabled': disabled
+          },
           className
-        })}
+        )}
         role="button"
         style={style}
       >

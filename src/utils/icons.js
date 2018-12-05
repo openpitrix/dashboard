@@ -918,5 +918,61 @@ const svgSprites = `
         <path fill="#d3c4ed" d="M14.559 15.613H12V12l2.559 1.226z"/>
     </g>
 </symbol>
+<symbol id="qui-vm-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#576075" d="M12 19a7 7 0 0 0 6.814-8.61A4.39 4.39 0 0 1 17.61 19H12z"/>
+        <path fill="#BCC2D1" d="M12 19H6.392a4.392 4.392 0 0 1-1.204-8.617A7 7 0 1 1 12 19z"/>
+    </g>
+</symbol>
+<symbol id="qui-helm-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#BCC2D1" d="M20.644 6.001L16.336 8l.004 8.007-4.343 1.996.007 3.997-8.661-3.998V10L7.68 8V4l4.324-2 8.64 4.001zM7.64 12v4L12 14v-4l-4.36 2z"/>
+        <path fill="#576075" d="M16.336 8l4.308-1.999v12.001L12.004 22l-.007-3.997 4.343-1.996zM7.64 12v4L12 14v-4z"/>
+    </g>
+</symbol>
+<symbol id="qui-saas-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#576075" d="M5 5h14c.552 0 1 .488 1 1.09V17H4V6.09C4 5.489 4.448 5 5 5z"/>
+        <path fill="#BCC2D1" d="M2 17h20l-.31 1.243a1 1 0 0 1-.97.757H3.28a1 1 0 0 1-.97-.757L2 17z"/>
+    </g>
+</symbol>
+<symbol id="qui-api-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#576075" d="M12 13.695l1.248-2.677-.906-.422-.342.733V5h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-8v-5.305zM19.5 7a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-2 0a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-2 0a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zM14 10.61L16.39 13 14 15.39l.61.61 3-3-3-3-.61.61z"/>
+        <path fill="#BCC2D1" d="M12 11.329l-1.771 3.798.906.423.865-1.855V19H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h8v6.329zm-2.39-.718L9 10l-3 3 3 3 .61-.61L7.223 13l2.389-2.39z"/>
+        <path fill="#576075" fill-rule="nonzero" d="M9.61 10.61L9 10l-3 3 3 3 .61-.61L7.223 13z"/>
+        <path fill="#BCC2D1" fill-rule="nonzero" d="M14 10.61l.61-.61 3 3-3 3-.61-.61L16.39 13z"/>
+        <circle cx="15.5" cy="6.5" r="1" fill="#BCC2D1"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="#BCC2D1"/>
+        <circle cx="19.5" cy="6.5" r="1" fill="#BCC2D1"/>
+    </g>
+</symbol>
+<symbol id="qui-native-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#BCC2D1" d="M18 16v-6a2 2 0 0 0-2-2H6V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2z"/>
+        <path fill="#576075" d="M4 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/>
+    </g>
+</symbol>
+<symbol id="qui-serveless-icon" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#576075" d="M12.464 5l3.464 2v4l-3.464 2L9 11V7z"/>
+        <path fill="#BCC2D1" d="M16.464 12l3.464 2v4l-3.464 2L13 18v-4zM8.464 12l3.464 2v4l-3.464 2L5 18v-4z"/>
+    </g>
+</symbol>
+<symbol id="qui-next-icon" viewBox="0 0 24 24">
+    <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+        <path d="M16.501 6.501L22 12l-5.499 5.499z" opacity=".9"/>
+        <path d="M2 11h14.5v2H2z" opacity=".4"/>
+    </g>
+</symbol>
+<symbol id="qui-checked-icon" viewBox="0 0 24 24">
+    <path fill="#FFF" fill-rule="nonzero" d="M9.375 15.625L19 6l1.414 1.414L9.375 18.453 4 13.077l1.414-1.414z" opacity=".9"/>
+</symbol>
+<symbol id="qui-checked-circle" viewBox="0 0 24 24">
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="12" cy="12" r="9"  style="fill: var(--secondary-color); opacity: var(--secondary-opacity);"/>
+        <path  style="fill: var(--primary-color); opacity: var(--primary-opacity);" d="M9.885 14.06l6.134-6.133 1.414 1.414-7.548 7.548-3.806-3.806 1.415-1.414z"/>
+    </g>
+</symbol>
 </svg>`;
 export default svgSprites;

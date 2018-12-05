@@ -1,0 +1,133 @@
+@import '~scss/vars';
+
+.headerStep {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+}
+
+.headerStepNotFinished {
+  background-color: $Y75;
+}
+
+.headerStepFinished {
+  background-color: $G100;
+}
+
+.operate {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 32px;
+
+  > label {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 32px;
+    color: $N300;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0 12px;
+    // background: $N10;
+  }
+  :global {
+    .icon-close {
+      position: static;
+      transform: none;
+      vertical-align: middle;
+      margin-top: -1px;
+    }
+  }
+}
+.operateText {
+  color: $N65;
+}
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  background: $N0;
+  border-top: 1px solid rgba($N30, 0.5);
+}
+.footerTips {
+  font-size: 12px;
+  line-height: 1.67;
+  margin: 22px 0;
+  display: inline-block;
+  color: $N65;
+  flex: 1;
+
+  .footerTipsButton {
+    border-radius: 1px;
+    background-color: $N30;
+    padding: 2px 4px;
+    color: $N100;
+    margin-right: 4px;
+    display: inline-block;
+  }
+}
+.button {
+  border-radius: 2px;
+  color: $N0;
+  padding: 4px 12px;
+  box-shadow: 0 1px 3px 0 rgba($P400, 0.16), 0 1px 2px 0 rgba($N500, 0.03);
+  background-color: $P75;
+  border: 0;
+  opacity: 0.5;
+  cursor: pointer;
+  > span {
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+  }
+  &:active {
+    border: 0;
+  }
+}
+.buttonActived {
+  opacity: 1;
+}
+
+
+.icon {
+  vertical-align: middle;
+  margin: 0 4px;
+  margin-top: -1px;
+  :global {
+    .qicon {
+      --primary-color: #fff;
+    }
+  }
+}
+
+.stepContent {
+  padding: 100px 0 0;
+  min-width: 700px;
+  text-align: center;
+
+  .stepName {
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 24px;
+    color: $N300;
+  }
+
+  .stepExplain {
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0;
+    color: $N500;
+  }
+}
+

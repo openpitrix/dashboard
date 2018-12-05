@@ -16,3 +16,4 @@ export Timeline from './Timeline';
 export Tooltip from './Tooltip';
 export Image from './Image';
 export Upload from './Upload';
+export DocLink from './DocLink';

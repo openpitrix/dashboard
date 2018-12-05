@@ -3,7 +3,11 @@ const translations = {
     translation: require('../src/locales/en/translation.json')
   },
   zh: {
-    translation: require('../src/locales/zh/translation.json')
+    translation: Object.assign(
+      {},
+      require('../src/locales/zh/apps.json'),
+      require('../src/locales/zh/translation.json')
+    )
   }
 };
 
