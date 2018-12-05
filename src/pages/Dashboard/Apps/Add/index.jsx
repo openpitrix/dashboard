@@ -188,7 +188,7 @@ export default class AppAdd extends Component {
                 className={styles.appName}
                 name="name"
                 value={attribute.name}
-                valueChange={valueChange}
+                onChange={valueChange}
                 placeholder=""
               />
               <span className={styles.tips}>{t('INPUT_APP_NAME_TIP')}</span>

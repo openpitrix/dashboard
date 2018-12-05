@@ -340,7 +340,9 @@ export default class AppCreateStore extends Store {
   };
 
   @action
-  valueChange = (name, value) => {
+  valueChange = event => {
+    const { target } = event;
+    const { name, value } = target;
     this.attribute[name] = value;
     if (this.attribute.name) {
       this.disableNextStep = false;

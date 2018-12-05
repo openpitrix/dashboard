@@ -3,7 +3,7 @@
 exports[`Base/DocLink basic render 1`] = `
 <a
   class=""
-  href="undefined/developer-guide/helm-specification/"
+  href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/helm-specification/"
   rel="noopener noreferrer"
   target="_blank"
 >
