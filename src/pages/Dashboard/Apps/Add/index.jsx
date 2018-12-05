@@ -7,7 +7,7 @@ import _ from 'lodash';
 import {
   Icon, Button, Input, Upload, Notification
 } from 'components/Base';
-import { LayoutStep } from 'components/Layout';
+import { Stepper } from 'components/Layout';
 import AppCard from 'pages/Dashboard/Apps/Card';
 import Card from './Card';
 
@@ -291,10 +291,10 @@ export default class AppAdd extends Component {
     const { disableNextStep } = appCreateStore;
 
     return (
-      <LayoutStep
+      <Stepper
         className={styles.createApp}
         name={name}
-        store={appCreateStore}
+        stepOption={appCreateStore}
         disableNextStep={disableNextStep}
       >
         {activeStep === 1 && this.renderVersionTypes()}
@@ -303,7 +303,7 @@ export default class AppAdd extends Component {
         {((activeStep === 3 && !isCreateApp) || activeStep === 4)
           && this.renderSuccessMsg()}
         <Notification />
-      </LayoutStep>
+      </Stepper>
     );
   }
 }

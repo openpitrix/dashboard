@@ -4,14 +4,14 @@ import classnames from 'classnames';
 import { withRouter } from 'react-router';
 import _ from 'lodash';
 
-import { getPastTime } from 'src/utils';
 import Status from 'components/Status';
 import { Image } from 'components/Base';
+import { getPastTime } from 'src/utils';
 
 import styles from './index.scss';
 
 @withRouter
-export default class Loading extends Component {
+export default class AppCard extends Component {
   static propTypes = {
     apiServer: PropTypes.string,
     children: PropTypes.node,

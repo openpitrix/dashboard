@@ -92,7 +92,7 @@ class Layout extends Component {
     const hasMenu = (isDev || isAdmin) && !isHome;
     const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
     const isCenterPage = Boolean(pageTitle); // detail page, only one level menu
-    const hasSubNav = !noSubMenu && hasMenu && !isCenterPage && !paths.includes(match.path);
+    const hasSubNav = hasMenu && !noSubMenu && !isCenterPage && !paths.includes(match.path);
 
     return (
       <div

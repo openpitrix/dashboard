@@ -12,6 +12,6 @@ export Card from './Card';
 
 export SideNav from './SideNav';
 export BreadCrumb from './BreadCrumb';
-export LayoutStep from './Stepper';
+export Stepper from './Stepper';
 
 export default Layout;

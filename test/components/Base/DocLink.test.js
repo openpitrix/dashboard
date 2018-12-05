@@ -2,9 +2,9 @@ import React from 'react';
 import { render } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import DocLink from 'components/Base/Link';
+import DocLink from 'components/Base/DocLink';
 
-describe('Base/Link', () => {
+describe('Base/DocLink', () => {
   it('basic render', () => {
     const wrapper = render(
       <DocLink name="STEPPER_FOOTER_CREATE_APP_2">

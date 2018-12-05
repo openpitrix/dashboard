@@ -170,10 +170,14 @@ export default class Upload extends Component {
     return (
       <span
         {...events}
-        className={classNames(className, 'upload', {
-          'upload-dragover': this.state.isDraging,
-          'upload-disabled': disabled
-        })}
+        className={classNames(
+          'upload',
+          {
+            'upload-dragover': this.state.isDraging,
+            'upload-disabled': disabled
+          },
+          className
+        )}
         role="button"
         style={style}
       >

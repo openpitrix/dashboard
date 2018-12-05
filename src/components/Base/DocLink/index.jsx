@@ -39,7 +39,7 @@ export default class DocLink extends Component {
     }
     if (isExternal) {
       if (!linkTo) {
-        console.error(
+        throw new Error(
           `You should edit a link url in the file of 'config/doc-links'. name:${name}`
         );
       }

@@ -18,7 +18,7 @@ class LayoutStepper extends Component {
     children: PropTypes.node,
     className: PropTypes.string,
     name: PropTypes.string,
-    store: PropTypes.shape({
+    stepOption: PropTypes.shape({
       activeStep: PropTypes.number,
       steps: PropTypes.number,
       prevStep: PropTypes.func,
@@ -29,13 +29,10 @@ class LayoutStepper extends Component {
   };
 
   renderTopProgress() {
-    const { store } = this.props;
-    const { steps, activeStep } = store;
+    const { stepOption } = this.props;
+    const { steps, activeStep } = stepOption;
     const width = `${activeStep * 100 / steps}%`;
-    let className = 'headerStepNotFinished';
-    if (activeStep > steps) {
-      className = 'headerStepFinished';
-    }
+    const className = activeStep > steps ? 'headerStepNotFinished' : 'headerStepNotFinished';
 
     const style = {
       width
@@ -51,11 +48,11 @@ class LayoutStepper extends Component {
 
   renderTopNav() {
     const {
-      name, store, t, history
+      name, stepOption, t, history
     } = this.props;
     const {
       activeStep, steps, prevStep, goBack
-    } = store;
+    } = stepOption;
     const funcBack = _.isFunction(goBack) ? goBack : history.goBack;
 
     if (activeStep > steps) {
@@ -84,8 +81,8 @@ class LayoutStepper extends Component {
   }
 
   renderTitle() {
-    const { name, store, t } = this.props;
-    const { activeStep, steps } = store;
+    const { name, stepOption, t } = this.props;
+    const { activeStep, steps } = stepOption;
 
     if (activeStep > steps) {
       return null;
@@ -107,17 +104,17 @@ class LayoutStepper extends Component {
 
   renderFooter() {
     const {
-      t, store, name, disableNextStep
+      t, stepOption, name, disableNextStep
     } = this.props;
-    const { activeStep, steps, nextStep } = store;
+    const { activeStep, steps, nextStep } = stepOption;
 
     if (activeStep > steps) {
       return null;
     }
 
-    const NAME = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
-    const tipText = t(NAME);
-    const tipLink = <DocLink name={NAME} />;
+    const keyName = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
+    const tipText = t(keyName);
+    const tipLink = <DocLink name={keyName} />;
 
     const buttonText = t('Go on');
 
@@ -149,13 +146,13 @@ class LayoutStepper extends Component {
   }
 
   render() {
-    const { className, children, store } = this.props;
+    const { className, children, stepOption } = this.props;
     return (
       <div className={classnames(styles.layout)}>
         {this.renderTopProgress()}
         {this.renderTopNav()}
         {this.renderTitle()}
-        <Loading isLoading={store.isLoading}>
+        <Loading isLoading={stepOption.isLoading}>
           <div className={className}>{children}</div>
         </Loading>
         {this.renderFooter()}

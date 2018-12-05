@@ -12,8 +12,6 @@ import styles from './index.scss';
 @observer
 export default class CreateAppCard extends Component {
   static propTypes = {
-    appCreateStore: PropTypes.object,
-    children: PropTypes.node,
     className: PropTypes.string,
     intro: PropTypes.string,
     name: PropTypes.string,
@@ -53,7 +51,7 @@ export default class CreateAppCard extends Component {
             size={20}
           />
         )}
-        <Icon name={icon} size={48} className={styles.icon} type={'light'} />
+        <Icon name={icon} size={48} className={styles.icon} type="light" />
         <div className={styles.name}>{name}</div>
         <div className={styles.intro}>{t(intro)}</div>
         <DocLink name={'Create_App_Linkto_Intro_App'}>

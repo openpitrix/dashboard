@@ -6,6 +6,14 @@
   height: calc(100vh - 84px) !important;
 }
 
+.page {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .cards {
   display: flex;
   flex-flow: row wrap;

@@ -3,10 +3,8 @@ import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import PageLoading from 'components/Loading/Page';
+import Loading from 'components/Loading';
 import Card from 'pages/Dashboard/Apps/Card';
-
-import InfiniteScroll from 'components/InfiniteScroll';
 
 import { Link } from 'react-router-dom';
 import { Icon, Button, Input } from 'components/Base';
@@ -34,7 +32,7 @@ export default class Apps extends Component {
   async componentDidMount() {
     const { appStore, appVersionStore, user } = this.props;
     const { user_id } = user;
-    appStore.pageSize = 24;
+    appStore.pageSize = 200;
     appStore.userId = user_id;
     await appStore.fetchAll();
     await appVersionStore.fetchAll();
@@ -99,24 +97,33 @@ export default class Apps extends Component {
       return <Empty />;
     }
 
+    const props = {
+      hasMore: appStore.hasMore,
+      pageStart: appStore.currentPage,
+      loadMore: appStore.loadMore,
+      loader: <Loading isLoading={true} key={0} />
+    };
+
     return (
       <Layout className={styles.layout} noSubMenu={true}>
-        <PageLoading isLoading={pageLoading}>
+        <Loading
+          className={styles.page}
+          grayColor={true}
+          isLoading={pageLoading}
+        >
           {this.renderHeader()}
-          <InfiniteScroll store={appStore}>
-            <div className={styles.cards}>
-              {apps.map(item => (
-                <Card
-                  apiServer={rootStore.apiServer}
-                  key={item.app_id}
-                  t={t}
-                  data={item}
-                />
-              ))}
-            </div>
-          </InfiniteScroll>
+          <div className={styles.cards}>
+            {apps.map(item => (
+              <Card
+                apiServer={rootStore.apiServer}
+                key={item.app_id}
+                t={t}
+                data={item}
+              />
+            ))}
+          </div>
           {this.renderSearchEmpty()}
-        </PageLoading>
+        </Loading>
       </Layout>
     );
   }
