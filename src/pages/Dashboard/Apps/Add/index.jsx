@@ -200,7 +200,7 @@ export default class AppAdd extends Component {
               className={styles.appVersion}
               name={isCreateApp ? 'version_name' : 'name'}
               value={attribute.version_name}
-              valueChange={valueChange}
+              onChange={valueChange}
               placeholder=""
             />
             <span className={styles.tips}>{t('INPUT_APP_VERSION_TIP')}</span>
