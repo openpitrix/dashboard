@@ -412,5 +412,14 @@
   "Account info": "账户信息",
   "Change Password": "修改密码",
   "Notice settings": "通知设置",
-  "Payment": "支付"
+  "Payment": "支付",
+
+  "Record": "记录",
+  "Version": "版本",
+  "developer": "开发者",
+  "global_admin": "管理员",
+  "Reason": "原因",
+  "Expand": "展开",
+  "Collapse": "收起",
+  "None": "无"
 }
