@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { startsWith } from 'lodash';
+
 import styles from './index.scss';
 
 export default class Image extends React.Component {
@@ -47,6 +49,7 @@ export default class Image extends React.Component {
       src, iconLetter, className, iconSize, ...rest
     } = this.props;
     const { failed } = this.state;
+    const imgStr = src && startsWith(src, 'att-') ? `/attachments/${src}` : src;
 
     if (failed) {
       const style = {
@@ -73,7 +76,7 @@ export default class Image extends React.Component {
       return (
         <img
           src="/none.svg"
-          data-origin-url={src}
+          data-origin-url={imgStr}
           style={style}
           className={classnames(styles.img, className)}
           {...rest}
@@ -83,8 +86,8 @@ export default class Image extends React.Component {
 
     return (
       <img
-        src={src}
-        data-origin-url={src}
+        src={imgStr}
+        data-origin-url={imgStr}
         className={classnames(styles.img, className)}
         ref={c => {
           this.img = c;

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
-import _ from 'lodash';
 
 import Status from 'components/Status';
 import { Image } from 'components/Base';
@@ -13,16 +12,13 @@ import styles from './index.scss';
 @withRouter
 export default class AppCard extends Component {
   static propTypes = {
-    apiServer: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     data: PropTypes.object
   };
 
   render() {
-    const {
-      apiServer, className, data, t
-    } = this.props;
+    const { className, data, t } = this.props;
     const {
       app_id,
       icon,
@@ -32,10 +28,6 @@ export default class AppCard extends Component {
       status_time,
       app_version_types
     } = data;
-    let imgStr = icon;
-    if (icon && _.startsWith(icon, 'att-')) {
-      imgStr = `${apiServer.split('/v')[0]}/attachments/${icon}/raw`;
-    }
     const versions = app_version_types.split(',');
     return (
       <div
@@ -48,7 +40,7 @@ export default class AppCard extends Component {
           <Image
             className={styles.icon}
             iconLetter={name}
-            src={imgStr}
+            src={icon}
             iconSize={48}
             alt="logo"
           />
