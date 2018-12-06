@@ -421,5 +421,7 @@
   "Reason": "原因",
   "Expand": "展开",
   "Collapse": "收起",
-  "None": "无"
+  "None": "无",
+
+  "Scaling": "正在扩容"
 }

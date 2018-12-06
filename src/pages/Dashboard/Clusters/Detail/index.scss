@@ -201,7 +201,6 @@
     }
 
     .pubKey{
-      height: 20px;
       line-height: 20px;
       font-size: 12px;
       color: $N75;
@@ -230,4 +229,17 @@
 }
 .additionalTable {
   margin-bottom: 50px;
+}
+
+.roleSetting {
+  display: block;
+  padding-top: 10px;
+
+  .roleSettingLabel {
+    width: 70px;
+    text-align: left;
+    font-weight: normal;
+    color: $body-fg-color;
+    margin-right: 10px;
+  }
 }

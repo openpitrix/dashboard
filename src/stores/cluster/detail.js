@@ -22,10 +22,6 @@ export default class ClusterDetailStore extends Store {
 
   @observable clusterJobs = [];
 
-  @observable modalType = '';
-
-  @observable isModalOpen = false;
-
   @observable extendedRowKeys = [];
 
   @observable nodeType = '';
@@ -43,17 +39,6 @@ export default class ClusterDetailStore extends Store {
   @observable searchNode = '';
 
   @observable selectNodeStatus = '';
-
-  @action
-  showModal = type => {
-    this.modalType = type;
-    this.isModalOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isModalOpen = false;
-  };
 
   @action
   fetch = async clusterId => {
@@ -99,6 +84,8 @@ export default class ClusterDetailStore extends Store {
 
     this.isLoading = false;
   };
+
+  getClusterRoles = () => _.get(this.cluster, 'cluster_role_set', []).map(cl => cl.role);
 
   // todo: inject clusterStore
   // fixme: table search, filter no effect
@@ -188,39 +175,31 @@ export default class ClusterDetailStore extends Store {
 
   @action
   addNodes = async params => {
-    // todo
-    // eslint-disable-next-line
     const res = await this.request.post('clusters/add_nodes', params);
+    return res && res.job_id;
   };
 
   @action
-  onChangeNodeRole = role => {
+  setNodeRole = (role = '') => {
     this.selectedNodeRole = role;
   };
 
   @action
-  hideAddNodesModal = () => {
-    this.hideModal();
-    this.selectedNodeRole = '';
+  deleteNodes = async params => {
+    const res = await this.request.post('clusters/delete_nodes', params);
+    return res && res.job_id;
   };
 
   @action
-  hideDeleteNodesModal = () => {
-    this.hideModal();
+  cancelDeleteNodes = () => {
     this.selectedNodeIds = [];
     this.selectedNodeKeys = [];
   };
 
   @action
-  deleteNodes = async params => {
-    // eslint-disable-next-line
-    const res = await this.request.post('clusters/delete_nodes', params);
-  };
-
-  // resize cluster
-  @action
-  hideResizeClusterModal = () => {
-    this.hideModal();
+  resizeCluster = async params => {
+    const res = await this.request.post('clusters/resize', params);
+    return res && res.job_id;
   };
 
   @action

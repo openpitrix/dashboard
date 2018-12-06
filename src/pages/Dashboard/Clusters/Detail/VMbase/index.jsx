@@ -6,21 +6,27 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Button, Table, Radio, Input, Modal
+  Button, Table, Radio, Input, Modal, Icon
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
+import DeploySection from 'components/Deploy';
+import Cache from 'lib/cache';
+import VMParser, { factory } from 'lib/config-parser';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
 
 import styles from '../index.scss';
 
+const keysShouldBeNumber = ['cpu', 'memory', 'storage_size', 'volume_size'];
+
 @translate()
 @inject(({ rootStore }) => ({
-  store: rootStore.clusterDetailStore,
-  sshKeyStore: rootStore.sshKeyStore
-  // clusterStore: rootStore.clusterStore
+  clusterStore: rootStore.clusterStore,
+  detailStore: rootStore.clusterDetailStore,
+  sshKeyStore: rootStore.sshKeyStore,
+  deployStore: rootStore.appDeployStore
 }))
 @observer
 export default class VMbasedCluster extends React.Component {
@@ -32,29 +38,76 @@ export default class VMbasedCluster extends React.Component {
     cluster: {}
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      configJson: null
+    };
+
+    this.cache = new Cache();
+  }
+
+  componentDidUpdate = async () => {
+    const { deployStore, clusterStore, cluster } = this.props;
+    const { modalType } = clusterStore;
+    const { version_id } = cluster;
+    const { configJson } = this.state;
+
+    if (['addNodes', 'resize'].includes(modalType) && _.isEmpty(configJson)) {
+      const cachedConfig = this.cache.get(version_id);
+      if (cachedConfig) {
+        this.setState({
+          configJson: cachedConfig
+        });
+      } else {
+        await deployStore.fetchFilesByVersion(version_id);
+        const cacheData = deployStore.configJson;
+
+        this.cache.set(version_id, cacheData);
+        this.setState({
+          configJson: cacheData
+        });
+      }
+    }
+  };
+
   onClickAddNodes = () => {
-    this.props.store.showModal('addNodes');
+    this.props.clusterStore.showModal('addNodes');
+  };
+
+  onCancelAddNodes = () => {
+    const { clusterStore, detailStore } = this.props;
+    clusterStore.hideModal();
+    detailStore.setNodeRole();
   };
 
   onClickDeleteNodes = () => {
-    this.props.store.showModal('deleteNodes');
+    this.props.clusterStore.showModal('deleteNodes');
   };
 
-  attachKeyPairsShow = () => {
+  onCancelDeleteNodes = () => {
+    const { clusterStore, detailStore } = this.props;
+    clusterStore.hideModal();
+    detailStore.cancelDeleteNodes();
+  };
+
+  showKeyPairs = () => {
     const { sshKeyStore } = this.props;
     sshKeyStore.pairId = '';
-    this.props.store.showModal('attachKeyPairs');
+    this.props.clusterStore.showModal('attachKeyPairs');
   };
 
   attachKeyPairs = async () => {
-    const { store, sshKeyStore, t } = this.props;
-    const { selectedNodeIds, hideModal, cancelSelectNodes } = store;
+    const {
+      clusterStore, detailStore, sshKeyStore, t
+    } = this.props;
+    const { selectedNodeIds, cancelSelectNodes } = detailStore;
     const { pairId, attachKeyPairs } = sshKeyStore;
 
     if (pairId) {
       const result = await attachKeyPairs([pairId], selectedNodeIds);
       if (!(result && result.err)) {
-        hideModal();
+        clusterStore.hideModal();
         cancelSelectNodes();
       }
     } else {
@@ -62,38 +115,118 @@ export default class VMbasedCluster extends React.Component {
     }
   };
 
+  /**
+   * transform role conf from config.json
+   * @param data
+   */
+  transformRoleConf(data = {}) {
+    // compose role conf from config.json
+    const rawRoleConf = _.pickBy(
+      data,
+      (val, key) => key.indexOf('node.') === 0
+    );
+
+    // transform raw conf
+    return _.transform(
+      rawRoleConf,
+      (res, val, key) => {
+        const keyParts = key.split('.');
+        if (keyParts.length < 3) {
+          return false;
+        }
+
+        const [, role, meter] = [...keyParts];
+        if (keysShouldBeNumber.indexOf(meter) > -1) {
+          val = parseInt(val);
+        }
+
+        if (!res[role]) {
+          res[role] = {};
+        }
+
+        _.extend(res[role], {
+          [meter]: val
+        });
+      },
+      {}
+    );
+  }
+
   handleAddNodes = async (e, formData) => {
-    const { selectedNodeRole, addNodes } = this.props.store;
-    const { cluster } = this.props;
+    const { cluster, detailStore, clusterStore } = this.props;
+    const { clusterNodes, selectedNodeRole } = detailStore;
 
-    formData = _.extend(_.pick(formData, ['node_count', 'advanced_params']), {
-      cluster_id: cluster.clusterId,
-      role: selectedNodeRole
+    const origData = _.extend({}, formData);
+
+    formData = _.extend(_.pick(formData, ['node_count']), {
+      cluster_id: cluster.cluster_id,
+      role: selectedNodeRole,
+      advanced_params: []
     });
-
     formData.node_count = parseInt(formData.node_count);
 
-    await addNodes(formData);
+    // check if role is newly added
+    if (!_.find(clusterNodes, { role: selectedNodeRole })) {
+      formData.advanced_params.push(
+        JSON.stringify({
+          conf: {
+            cluster: this.transformRoleConf(origData)
+          }
+        })
+      );
+    }
+
+    const res = await detailStore.addNodes(formData);
+
+    if (res) {
+      clusterStore.hideModal();
+      detailStore.setNodeRole();
+      await detailStore.onRefreshNode();
+    }
   };
 
   handleDeleteNodes = async () => {
-    const { deleteNodes, selectedNodeIds } = this.props.store;
+    const { cluster, detailStore, clusterStore } = this.props;
+    const { deleteNodes, selectedNodeIds } = detailStore;
 
-    await deleteNodes({
-      cluster_id: this.clusterId,
+    const res = await deleteNodes({
+      cluster_id: cluster.cluster_id,
       node_id: selectedNodeIds,
-      advanced_params: [] // todo
+      advanced_params: []
     });
+
+    if (res) {
+      clusterStore.hideModal();
+      detailStore.cancelDeleteNodes();
+      await detailStore.onRefreshNode();
+    }
   };
 
-  handleResizeCluster = () => {
-    // todo
-  };
+  handleResize = async (e, formData) => {
+    const { cluster, detailStore, clusterStore } = this.props;
+    const { selectedNodeRole, resizeCluster } = detailStore;
+    const roleConf = this.transformRoleConf(formData);
+    const params = {
+      cluster_id: cluster.cluster_id,
+      role_resource: [],
+      advanced_param: []
+    };
 
-  getClusterRoles() {
-    const { cluster } = this.props.store;
-    return _.uniq(_.get(cluster, 'cluster_role_set', []).map(cl => cl.role));
-  }
+    if (roleConf[selectedNodeRole]) {
+      params.role_resource.push(
+        _.extend({}, roleConf[selectedNodeRole], {
+          role: selectedNodeRole
+        })
+      );
+    }
+
+    const res = await resizeCluster(params);
+
+    if (res) {
+      clusterStore.hideModal();
+      detailStore.setNodeRole();
+    }
+  };
 
   onSelectKey = item => {
     const { sshKeyStore } = this.props;
@@ -104,19 +237,18 @@ export default class VMbasedCluster extends React.Component {
     }
   };
 
-  renderDetailTabs() {
-    return <DetailTabs tabs={['Nodes']} />;
-  }
+  renderDetailTabs = () => <DetailTabs tabs={['Nodes']} />;
 
   renderToolbar() {
-    const { store, t } = this.props;
+    const { detailStore, t } = this.props;
     const {
       searchNode,
       onSearchNode,
       onClearNode,
       onRefreshNode,
-      selectedNodeIds
-    } = store;
+      selectedNodeIds,
+      cluster
+    } = detailStore;
 
     if (selectedNodeIds.length) {
       return (
@@ -128,7 +260,7 @@ export default class VMbasedCluster extends React.Component {
           >
             {t('Delete')}
           </Button>
-          <Button onClick={this.attachKeyPairsShow}>{t('Attach')}</Button>
+          <Button onClick={this.showKeyPairs}>{t('Attach')}</Button>
         </Toolbar>
       );
     }
@@ -141,18 +273,21 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        {/*
-            <Button type="primary" className={styles.addNodesBtn} onClick={this.onClickAddNodes}>
-          */}
-        {/* <Icon name="add" size="mini" type="white" /> */}
-        {/* <span className={styles.addNodeTxt}>{t('Add Nodes')}</span> */}
-        {/* </Button> */}
+        <Button
+          type="primary"
+          className={styles.addNodesBtn}
+          onClick={this.onClickAddNodes}
+          disabled={cluster.status !== 'active'}
+        >
+          <Icon name="add" size="mini" type="white" />
+          <span className={styles.addNodeTxt}>{t('Add Nodes')}</span>
+        </Button>
       </Toolbar>
     );
   }
 
   renderTable() {
-    const { store, t } = this.props;
+    const { detailStore, t } = this.props;
 
     const {
       clusterNodes,
@@ -163,7 +298,7 @@ export default class VMbasedCluster extends React.Component {
       onChangeNodeStatus,
       totalNodeCount,
       isLoading
-    } = store;
+    } = detailStore;
 
     return (
       <Table
@@ -193,14 +328,10 @@ export default class VMbasedCluster extends React.Component {
   }
 
   renderModals = () => {
-    const { modalType, isModalOpen } = this.props.store;
+    const { modalType, isModalOpen } = this.props.clusterStore;
 
     if (!isModalOpen) {
       return null;
-    }
-
-    if (['delete', 'start', 'stop'].includes(modalType)) {
-      return this.renderOperationModal();
     }
 
     if (modalType === 'addNodes') {
@@ -216,59 +347,27 @@ export default class VMbasedCluster extends React.Component {
     }
 
     if (modalType === 'resize') {
-      return this.renderResizeClusterModal();
+      return this.renderResize();
     }
   };
 
-  renderOperationModal = () => {
-    const { t } = this.props;
-    const { hideModal, isModalOpen, modalType } = this.props.store;
-
-    return (
-      <Dialog
-        title={t(`${_.capitalize(modalType)} cluster`)}
-        isOpen={isModalOpen}
-        onCancel={hideModal}
-        onSubmit={this.handleOperateCluster}
-      >
-        {t('operate cluster desc', { operate: t(_.capitalize(modalType)) })}
-      </Dialog>
-    );
-  };
-
-  renderResizeClusterModal = () => {
-    const { store, t } = this.props;
-    const { isModalOpen, hideResizeClusterModal } = store;
-
-    // todo
-    return (
-      <Dialog
-        title={t(`Resize cluster`)}
-        isOpen={isModalOpen}
-        onCancel={hideResizeClusterModal}
-        onSubmit={_.noop}
-      >
-        <p>resize cluster</p>
-      </Dialog>
-    );
-  };
-
   renderAddNodesModal = () => {
-    const { store, t } = this.props;
-    const {
-      hideAddNodesModal,
-      isModalOpen,
-      selectedNodeRole,
-      onChangeNodeRole
-    } = store;
-    const roles = this.getClusterRoles();
+    const { clusterStore, detailStore, t } = this.props;
+    const { isModalOpen } = clusterStore;
+    const { selectedNodeRole, setNodeRole } = detailStore;
+
+    const roles = detailStore.getClusterRoles();
     const hideRoles = roles.length === 1 && roles[0] === '';
+
+    if (!hideRoles && !selectedNodeRole) {
+      setNodeRole(roles[0]);
+    }
 
     return (
       <Dialog
         title={t(`Add Nodes`)}
         isOpen={isModalOpen}
-        onCancel={hideAddNodesModal}
+        onCancel={this.onCancelAddNodes}
         onSubmit={this.handleAddNodes}
       >
         <div className={styles.wrapAddNodes}>
@@ -280,7 +379,7 @@ export default class VMbasedCluster extends React.Component {
             <label>{t('Node Role')}</label>
             <Radio.Group
               value={selectedNodeRole || roles[0]}
-              onChange={onChangeNodeRole}
+              onChange={setNodeRole}
             >
               {roles.map((role, idx) => (
                 <Radio value={role} key={idx} className={styles.radio}>
@@ -299,23 +398,105 @@ export default class VMbasedCluster extends React.Component {
               required
             />
           </div>
+          {this.renderRoleSettings()}
         </div>
       </Dialog>
     );
   };
 
+  renderRoleSettings = ({ checkRoleNewlyAdd = true } = {}) => {
+    const { clusterNodes, selectedNodeRole } = this.props.detailStore;
+    const { configJson } = this.state;
+
+    if (checkRoleNewlyAdd) {
+      if (_.find(clusterNodes, { role: selectedNodeRole })) {
+        return null;
+      }
+    }
+
+    if (_.isEmpty(configJson)) {
+      return <div>Loading..</div>;
+    }
+
+    const vmParser = new VMParser(configJson);
+    const nodeSettings = vmParser.getNodeSetting();
+    const roleSetting = _.find(nodeSettings, { key: selectedNodeRole }) || {};
+
+    return (
+      <div className={styles.roleSetting}>
+        {factory(roleSetting.properties).map((sec, idx) => {
+          if (_.isFunction(sec.toJSON)) {
+            sec = sec.toJSON();
+          }
+          return (
+            <DeploySection
+              detail={sec}
+              key={idx}
+              labelClsName={styles.roleSettingLabel}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
   renderDeleteNodesModal = () => {
-    const { store, t } = this.props;
-    const { hideDeleteNodesModal, isModalOpen, selectedNodeIds } = store;
+    const { clusterStore, detailStore, t } = this.props;
+    const { isModalOpen } = clusterStore;
+    const { selectedNodeIds } = detailStore;
 
     return (
       <Dialog
         title={t('Delete Nodes')}
         isOpen={isModalOpen}
-        onCancel={hideDeleteNodesModal}
+        onCancel={this.onCancelDeleteNodes}
         onSubmit={this.handleDeleteNodes}
       >
         {t('DEL_RESOURCE_TIPS', { resource_ids: selectedNodeIds.join(', ') })}
+      </Dialog>
+    );
+  };
+
+  renderResize = () => {
+    const { clusterStore, detailStore, t } = this.props;
+    const { isModalOpen, hideModal } = clusterStore;
+
+    const { selectedNodeRole, setNodeRole } = detailStore;
+
+    const roles = detailStore.getClusterRoles();
+    const hideRoles = roles.length === 1 && roles[0] === '';
+
+    if (!hideRoles && !selectedNodeRole) {
+      setNodeRole(roles[0]);
+    }
+
+    return (
+      <Dialog
+        title={t(`Resize cluster`)}
+        isOpen={isModalOpen}
+        onCancel={hideModal}
+        onSubmit={this.handleResize}
+      >
+        <div className={styles.wrapAddNodes}>
+          <div
+            className={classnames(styles.formControl, {
+              [styles.hide]: hideRoles
+            })}
+          >
+            <label>{t('Node Role')}</label>
+            <Radio.Group
+              value={selectedNodeRole || roles[0]}
+              onChange={setNodeRole}
+            >
+              {roles.map((role, idx) => (
+                <Radio value={role} key={idx} className={styles.radio}>
+                  {role}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </div>
+          {this.renderRoleSettings({ checkRoleNewlyAdd: false })}
+        </div>
       </Dialog>
     );
   };
@@ -330,8 +511,8 @@ export default class VMbasedCluster extends React.Component {
   }
 
   renderAttachModal = () => {
-    const { store, sshKeyStore, t } = this.props;
-    const { isModalOpen, hideModal } = store;
+    const { clusterStore, sshKeyStore, t } = this.props;
+    const { isModalOpen, hideModal } = clusterStore;
     const { keyPairs, pairId } = sshKeyStore;
 
     return (
