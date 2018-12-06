@@ -89,7 +89,7 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { t, appStore, rootStore } = this.props;
+    const { t, appStore } = this.props;
     const { apps, searchWord } = appStore;
 
     const { pageLoading } = this.state;
@@ -102,14 +102,7 @@ export default class Apps extends Component {
         <Loading className={styles.page} isLoading={pageLoading}>
           {this.renderHeader()}
           <div className={styles.cards}>
-            {apps.map(item => (
-              <Card
-                apiServer={rootStore.apiServer}
-                key={item.app_id}
-                t={t}
-                data={item}
-              />
-            ))}
+            {apps.map(item => <Card key={item.app_id} t={t} data={item} />)}
           </div>
           {this.renderSearchEmpty()}
         </Loading>
