@@ -31,7 +31,7 @@ export default class Audits extends Component {
     const { appId } = match.params;
 
     await appVersionStore.fetchAll({ app_id: appId });
-    const versions = appVersionStore.versions;
+    const { versions } = appVersionStore;
 
     // default show last version audit records
     const versionId = _.get(versions, '[0].version_id');
@@ -85,7 +85,7 @@ export default class Audits extends Component {
     }
   }
 
-  expandReason(audit) {
+  toggleReason(audit) {
     audit.isExpand = !audit.isExpand;
   }
 
@@ -103,7 +103,7 @@ export default class Audits extends Component {
           <Fragment>
             <span className={styles.hideReason}>&nbsp;{audit.message}</span>
             <span
-              onClick={() => this.expandReason(audit)}
+              onClick={() => this.toggleReason(audit)}
               className={styles.expand}
             >
               {t('Expand')}
@@ -143,7 +143,7 @@ export default class Audits extends Component {
             <label className={styles.time}>{audit.status_time}</label>
             {audit.isExpand && (
               <span
-                onClick={() => this.expandReason(audit)}
+                onClick={() => this.toggleReason(audit)}
                 className={styles.showReason}
               >
                 {audit.message}
