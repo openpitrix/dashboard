@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-/* import { Link } from 'react-router-dom'; */
 import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
@@ -138,15 +137,6 @@ export default class ClusterDetail extends Component {
     }
   };
 
-  handleOperateCluster = () => {
-    const { clusterStore } = this.props;
-    const { clusterId, modalType } = clusterStore;
-
-    try {
-      clusterStore[modalType === 'delete' ? 'remove' : modalType]([clusterId]);
-    } catch (err) {}
-  };
-
   showClusterJobs = () => {
     this.props.clusterStore.showModal('jobs');
   };
@@ -258,19 +248,6 @@ export default class ClusterDetail extends Component {
         </Dialog>
       );
     }
-
-    if (modalType === 'resize') {
-      return (
-        <Dialog
-          title={t(`Resize cluster`)}
-          isOpen={isModalOpen}
-          onCancel={hideModal}
-          onSubmit={this.handleCluster}
-        >
-          <p>resize cluster</p>
-        </Dialog>
-      );
-    }
   }
 
   handleCluster = () => {
@@ -338,7 +315,7 @@ export default class ClusterDetail extends Component {
         <Fragment>
           {status === 'stopped' && renderBtn('start', t('Start cluster'))}
           {status === 'active' && renderBtn('stop', t('Stop cluster'))}
-          {status !== 'stopped' && renderBtn('resize', t('Resize cluster'))}
+          {status === 'active' && renderBtn('resize', t('Resize cluster'))}
         </Fragment>
       );
     };
