@@ -32,7 +32,7 @@ class LayoutStepper extends Component {
     const { stepOption } = this.props;
     const { steps, activeStep } = stepOption;
     const width = `${activeStep * 100 / steps}%`;
-    const className = activeStep > steps ? 'headerStepNotFinished' : 'headerStepNotFinished';
+    const className = activeStep > steps ? 'headerStepFinished' : 'headerStepNotFinished';
 
     const style = {
       width

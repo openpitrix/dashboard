@@ -25,6 +25,7 @@ export default class CreateAppCard extends Component {
       icon,
       intro,
       className,
+      disable,
       t,
       appCreateStore
     } = this.props;
@@ -38,9 +39,10 @@ export default class CreateAppCard extends Component {
 
     return (
       <div
-        onClick={() => !isAdded && selectVersionType(value)}
+        onClick={() => !isAdded && !disable && selectVersionType(value)}
         className={classNames(styles.container, className, {
-          [styles.addedContainer]: isAdded
+          [styles.addedContainer]: isAdded,
+          [styles.disabledContainer]: disable
         })}
       >
         {isAdded && <span className={styles.addedType}>{t('Added')} </span>}
