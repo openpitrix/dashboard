@@ -29,6 +29,7 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => assign(
   pick(rootStore, [
+    'rootStore',
     'appStore',
     'clusterStore',
     'appVersionStore',
@@ -320,7 +321,7 @@ export default class AppDetail extends Component {
   };
 
   renderCreateVersion = () => {
-    const { t } = this.props;
+    const { rootStore, t } = this.props;
     const { isLoading, createError } = this.props.appVersionStore;
     const name = t('creat_new_version');
     const explain = t('Upload Package');
@@ -347,7 +348,7 @@ export default class AppDetail extends Component {
               className={styles.link}
               target="_blank"
               rel="noopener noreferrer"
-              href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
+              href={rootStore.getAppConfig('doc_link')}
             >
               {t('view_guide_2')}
             </a>
@@ -401,8 +402,9 @@ export default class AppDetail extends Component {
   };
 
   renderInformation = () => {
-    const { t } = this.props;
-    const { appVersionStore, appStore, user } = this.props;
+    const {
+      rootStore, appVersionStore, appStore, user, t
+    } = this.props;
     const {
       currentVersion,
       createStep,
@@ -516,7 +518,7 @@ export default class AppDetail extends Component {
                 className={styles.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/"
+                href={rootStore.getAppConfig('doc_link')}
               >
                 {t('view_guide_2')}
               </a>
