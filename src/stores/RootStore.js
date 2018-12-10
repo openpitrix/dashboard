@@ -32,6 +32,12 @@ export default class RootStore extends Store {
     this.state = initialState;
   }
 
+  // get client side config
+  getAppConfig(key = '') {
+    const appConf = _.get(this, 'config.app', {});
+    return key ? appConf[key] : appConf;
+  }
+
   @action
   setNavFix(fixNav) {
     this.fixNav = !!fixNav;
