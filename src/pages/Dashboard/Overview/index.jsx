@@ -35,11 +35,7 @@ import styles from './index.scss';
 export default class Overview extends React.Component {
   constructor(props) {
     super(props);
-    const { user, history } = this.props;
-
-    if (user.isDev) {
-      history.replace('/dashboard/apps/mine');
-    }
+    const { user } = this.props;
 
     this.userInfo = {
       username: user.username,

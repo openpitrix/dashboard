@@ -13,21 +13,21 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  store: rootStore.userStore
+  store: rootStore.userStore,
+  user: rootStore.user
 }))
 @observer
 export default class Login extends Component {
   handleSubmit = async params => {
-    const { store, history } = this.props;
+    const { store, user, history } = this.props;
     const res = await store.oauth2Check(params);
 
     if (res && res.user) {
       await store.fetchDetail(res.user.sub, true);
     }
-
+    const defaultUrl = user.isDev ? '/dashboard/apps/mine' : '/dashboard';
     if (!(res && res.err)) {
-      history.push(getUrlParam('url') || '/dashboard');
-      // location.href = getUrlParam('url') || '/dashboard';
+      history.push(getUrlParam('url') || defaultUrl);
     }
   };
 
