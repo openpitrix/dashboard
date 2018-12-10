@@ -9,7 +9,7 @@ import {
 } from 'components/Base';
 import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
-import providers from '../providers';
+import providers from 'config/runtime-providers';
 
 import styles from './index.scss';
 

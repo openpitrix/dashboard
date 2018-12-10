@@ -3,12 +3,15 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   Checkbox, Radio, Button, Input, Select
 } from 'components/Base';
 import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
+
+import runtimeProviders from 'config/runtime-providers';
 
 import styles from './index.scss';
 
@@ -100,15 +103,11 @@ export default class RepoAdd extends Component {
             values={providers.toJSON()}
             onChange={this.store.changeProviders}
           >
-            <Checkbox value="qingcloud" disabled={Boolean(repoId)}>
-              QingCloud
-            </Checkbox>
-            <Checkbox value="aws" disabled={Boolean(repoId)}>
-              AWS
-            </Checkbox>
-            <Checkbox value="kubernetes" disabled={Boolean(repoId)}>
-              Kubernetes
-            </Checkbox>
+            {_.map(runtimeProviders, (label, key) => (
+              <Checkbox value={key} disabled={Boolean(repoId)} key={key}>
+                {label}
+              </Checkbox>
+            ))}
           </Checkbox.Group>
         </div>
         <div>
