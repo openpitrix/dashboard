@@ -44,20 +44,9 @@ import styles from './index.scss';
 export default class Apps extends Component {
   async componentDidMount() {
     const {
-      appStore,
-      userStore,
-      user,
-      categoryStore,
-      repoStore,
-      history
+      appStore, userStore, user, categoryStore, repoStore
     } = this.props;
     const { isAdmin } = user;
-    if (!isAdmin) {
-      history.replace({
-        pathname: '/dashboard/apps/mine',
-        state: { fromDashboard: true }
-      });
-    }
 
     await appStore.fetchAll();
     if (isAdmin) {

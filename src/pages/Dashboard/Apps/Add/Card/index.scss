@@ -1,5 +1,19 @@
 @import '~scss/vars';
 
+@mixin disable-hover($opacity) {
+  opacity: $opacity;
+  cursor: default;
+  &:hover {
+    border-color: transparent;
+    .intro {
+      display: block;
+    }
+    a {
+      display: none;
+    }
+  }
+}
+
 .container {
   width: 295.7px;
   border-radius: 2px;
@@ -34,14 +48,10 @@
   }
 }
 .addedContainer {
-  opacity: 0.8;
-  cursor: default;
-  &:hover {
-    border-color: transparent;
-  }
+  @include disable-hover(0.8);
 }
 .disabledContainer {
-  opacity: 0.5;
+  @include disable-hover(0.5);
 }
 .checkedIcon {
   position: absolute;

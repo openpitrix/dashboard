@@ -190,6 +190,7 @@ export default class AppAdd extends Component {
                 value={attribute.name}
                 onChange={valueChange}
                 placeholder=""
+                disabled
               />
               <span className={styles.tips}>{t('INPUT_APP_NAME_TIP')}</span>
             </div>
@@ -202,6 +203,7 @@ export default class AppAdd extends Component {
               value={attribute.version_name}
               onChange={valueChange}
               placeholder=""
+              disabled
             />
             <span className={styles.tips}>{t('INPUT_APP_VERSION_TIP')}</span>
           </div>
