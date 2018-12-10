@@ -163,15 +163,23 @@ class SideNav extends React.Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink exact to="/dev/apps">
+                <NavLink exact to="/dashboard/apps/mine">
                   <Icon
                     name="more"
                     size={20}
                     className={styles.icon}
-                    type={pathname.indexOf('/dev/apps') > -1 ? 'light' : 'dark'}
+                    type={
+                      pathname.indexOf('/dashboard/apps/mine') > -1
+                        ? 'light'
+                        : 'dark'
+                    }
                   />
                 </NavLink>
-                <NavLink exact to="/dev/apps" className={styles.title}>
+                <NavLink
+                  exact
+                  to="/dashboard/apps/mine"
+                  className={styles.title}
+                >
                   {t('View all')}
                 </NavLink>
               </li>
