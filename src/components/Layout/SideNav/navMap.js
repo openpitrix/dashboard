@@ -92,7 +92,7 @@ export const getNavs = {
       title: 'Create app'
     },
     {
-      link: '/dashboard/apps/mine',
+      link: '/dashboard/myapps',
       iconName: 'more',
       active: 'app',
       title: 'View all'
