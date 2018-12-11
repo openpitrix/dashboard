@@ -1,145 +1,194 @@
 @import '~scss/vars';
 
 .versions {
-  .title {
+  .noteWords {
+    margin-bottom: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N300;
+  }
+
+  .typeTitle {
     margin-bottom: 12px;
     line-height: 20px;
     font-size: 12px;
     color: $N75;
   }
 
-  .addMethod {
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    padding: 0 32px;
-    height: 92px;
-    background-color: $N0;
-
-    &:last-child {
-      margin-bottom: 32px;
-    }
-
-    .name {
-      float: left;
-      padding: 34px 0;
-      width: 98px;
-      line-height: 24px;
-      font-size: 20px;
-      font-weight: 500;
-      color: $N300;
-      border-right: 1px solid $N10;
-    }
+  .toggleIcon {
+    display: inline-block;
+    margin-left: 20px;
+    color: $P75;
+    cursor: pointer;
 
     .icon {
-      float: left;
-      margin-right: 8px;
-    }
-
-    .versions {
-      padding: 30px 0 30px 30px;
-      height: 32px;
-      overflow: hidden;
-
-      .total {
-        float: left;
-        display: inline-block;
-        margin-right: 28px;
-        line-height: 32px;
-        font-size: 12px;
-        color: $N300;
-      }
-
-      .version {
-        float: left;
-        display: inline-block;
-        box-sizing: border-box;
-        margin-right: 8px;
-        width: 132px;
-        height: 32px;
-        border-radius: 2px;
-        background-color: $B10;
-        padding: 8px 10px;
-        line-height: 16px;
-        font-size: 14px;
-        font-weight: 500;
-        color: $N500;
-        cursor: pointer;
-        @include textCut;
-
-        .dot {
-          float: left;
-          display: inline-block;
-          margin: 5px 10px 5px 8px;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background-color: $B75;
-        }
-
-        &.draft {
-          background: $B10;
-          .dot {
-            background-color: $B75;
-          }
-          &:hover {
-            background: $B30;
-          }
-        }
-
-        &.submitted {
-          background: $Y10;
-          .dot {
-            background-color: $Y300;
-          }
-          &:hover {
-            background: $Y30;
-          }
-        }
-
-        &.passed {
-          background-color: $G10;
-          .dot {
-            background-color: $G75;
-          }
-          &:hover {
-            background: $G30;
-          }
-        }
-
-        &.active {
-          background: $P10;
-          .dot {
-            background-color: $P75;
-          }
-          &:hover {
-            background: $P30;
-          }
-        }
-
-        &.suspended {
-          background: $N10;
-          .dot {
-            background-color: $N500;
-          }
-          &:hover {
-            background: $N30;
-          }
-        }
-
-        &.rejected {
-          background: $R10;
-          .dot {
-            background: $R200;
-          }
-          &:hover {
-            background: $R30;
-          }
-        }
-      }
+      float: right;
+      margin: 2px 4px;
     }
   }
 
-  .otherMethod {
+  .addedVersion {
+    margin-bottom: 20px;
+    padding: 24px 32px;
+    background-color: $N0;
+    border-radius: 2px;
+
+    &:hover {
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+      .button {
+        display: inline-block;
+      }
+    }
+
+    .title {
+      margin-bottom: 8px;
+      line-height: 32px;
+      font-size: 20px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .button {
+      float: right;
+      display: none;
+      color: $N300;
+
+      .addIcon {
+        float: left;
+        margin-top: -1px;
+        margin-right: 4px;
+      }
+    }
+
+    .total {
+      margin-bottom: 8px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+    }
+  }
+
+  .activeVersion {
+    margin-bottom: 36px;
+    overflow: hidden;
+
+    .total {
+      float: left;
+      display: inline-block;
+      margin-right: 28px;
+      line-height: 32px;
+      font-size: 12px;
+      color: $N300;
+    }
+
+
+    .version {
+      float: left;
+      display: inline-block;
+      box-sizing: border-box;
+      margin-right: 12px;
+      height: 44px;
+      padding: 12px;
+      border-radius: 2px;
+      border: 1px solid $N10;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+      cursor: pointer;
+
+      &.draft:hover {
+        border-color: $Y300;
+      }
+
+      &.submitted:hover {
+        border-color: $B75;
+      }
+
+      &.passed:hover {
+        border-color: $G75;
+      }
+
+      &.active:hover {
+        border-color: $P75;
+      }
+
+      &.suspended:hover {
+        border-color: $N500;
+      }
+
+      &.draft:hover {
+        border-color: $B75;
+      }
+
+      &.rejected:hover, &.deleted:hover {
+        border-color: $R200;
+      }
+    }
+
+    .status {
+      display: inline-block;
+      margin-right: 8px;
+      font-weight: 500;
+      color: $N300
+    }
+  }
+
+  .historyVersion {
+    li {
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 2px;
+      background-color: rgba(239, 240, 245, 0.3);
+
+      &:hover {
+        background-color: rgba(239, 240, 245, 0.6);
+
+        .link {
+          display: inline-block;
+        }
+      }
+
+      a>label {
+        display: inline-block;
+        float: left;
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        color: $N75;
+        cursor: pointer;
+      }
+    }
+
+    .status {
+      display: inline-block;
+      float: left;
+      width: 15%;
+      line-height: 20px;
+      font-weight: 500;
+      color: $N300;
+    }
+
+    .description {
+      width: 50%;
+      @include textCut;
+    }
+
+    .time {
+      width: 25%;
+    }
+
+    .link {
+      display: none;
+      width: 10%;
+      color: $P75;
+      text-align: right;
+    }
+  }
+
+  .notAddedType {
     position: relative;
     margin-bottom: 20px;
     padding: 24px;
@@ -179,7 +228,8 @@
 
     &:hover {
       background-color: $N0;
-      border-color: $P75;
+      border-color: $N0;
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
 
       .button {
         display: inline-block;
