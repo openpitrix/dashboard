@@ -431,5 +431,7 @@
   "Collapse": "收起",
   "None": "无",
 
-  "Scaling": "正在扩容"
+  "Scaling": "正在扩容",
+  "Testing env": "测试环境",
+  "Not support currently": "暂不支持"
 }

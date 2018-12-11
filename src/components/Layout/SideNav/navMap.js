@@ -164,7 +164,7 @@ export const getDevSubNavs = appId => [
   }
 ];
 
-export const userMeuns = [
+export const userMenus = [
   {
     name: 'Account Info',
     link: '/dashboard/account',
@@ -183,16 +183,19 @@ export const userMeuns = [
   {
     name: 'Payment',
     link: '#',
-    iconName: 'creditcard'
+    iconName: 'creditcard',
+    divider: true // show divide line
+  },
+  {
+    name: 'Testing env',
+    link: '/:dash/testing-env',
+    iconName: 'image',
+    only: 'developer' // only show when user role is developer
   },
   {
     name: 'SSH Keys',
     link: '/dashboard/account?type=SSH Keys',
-    iconName: 'ssh'
-  },
-  {
-    name: 'Log out',
-    link: '/logout',
-    iconName: 'logout'
+    iconName: 'ssh',
+    divider: true
   }
 ];

@@ -14,6 +14,7 @@ import Repo, { Create as RepoCreate } from './repo';
 import Runtime, { Create as RuntimeCreate } from './runtime';
 import User, { Role } from './user';
 import sshKey from './key_pair';
+import TestingEnv from './testing_env';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -124,5 +125,8 @@ export default class RootStore extends Store {
     this.register('role', Role);
 
     this.register('sshKey', sshKey);
+
+    // testing env, authorization
+    this.register('testingEnv', TestingEnv);
   }
 }

@@ -16,6 +16,7 @@ export default class Tooltip extends React.Component {
     placement: PropTypes.string,
     prefixCls: PropTypes.string,
     showBorder: PropTypes.bool,
+    targetCls: PropTypes.string,
     trigger: PropTypes.string,
     visible: PropTypes.bool
   };
@@ -129,6 +130,7 @@ export default class Tooltip extends React.Component {
   render() {
     const {
       prefixCls,
+      targetCls,
       className,
       content,
       placement,
@@ -146,8 +148,8 @@ export default class Tooltip extends React.Component {
         }}
       >
         <Target
-          className={classNames(styles.target, {
-            [styles.active]: visible || showBorder
+          className={classNames(styles.target, targetCls, {
+            [styles.active]: visible && showBorder
           })}
           innerRef={c => {
             this.target = c;
