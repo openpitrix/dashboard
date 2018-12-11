@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import {
+import _, {
   get, assign, capitalize, assignIn
 } from 'lodash';
 import { Base64 } from 'js-base64';
@@ -80,6 +80,12 @@ export default class AppVersionStore extends Store {
       offset: (this.currentPage - 1) * this.pageSize,
       status: this.selectStatus ? this.selectStatus : status
     };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
 
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
@@ -339,6 +345,43 @@ export default class AppVersionStore extends Store {
   }
 
   @action
+  async fetchActiveVersions(params = {}) {
+    const defaultParams = {
+      limit: this.maxLimit
+    };
+
+    this.isLoading = true;
+    const result = await this.request.get(
+      'active_app_versions',
+      assign(defaultParams, params)
+    );
+    this.versions = get(result, 'app_version_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchAppVersions(appId) {
+    this.isLoading = true;
+    const result = await this.request.get('app_versions', {
+      limit: this.maxLimit,
+      app_id: appId
+    });
+    const versions = get(result, 'app_version_set', []);
+
+    // get all unique version types
+    const types = _.uniq(versions.map(item => item.type));
+    // get type relatived versions
+    const typeVersions = [];
+    types.forEach(type => typeVersions.push({
+      type,
+      versions: versions.filter(item => item.type === type)
+    }));
+    this.versions = typeVersions;
+
+    this.isLoading = false;
+  }
+
   onSearch = async word => {
     this.currentPage = 1;
     this.searchWord = word;
