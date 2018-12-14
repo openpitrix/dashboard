@@ -1,14 +1,12 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .detailTabs {
-  //margin: -16px -24px 24px;
-
   padding: 0 24px;
   height: 47px;
   background: $N0;
   border-bottom: 1px solid $N10;
 
-  .tab{
+  >label {
     display: inline-block;
     padding: 15px 0;
     margin-right: 24px;
@@ -17,9 +15,27 @@
     font-weight: 500;
     color: $N300;
     cursor: pointer;
+
     &.active {
       color: $P75;
       border-bottom: 1px solid $P75;
+    }
+  }
+}
+
+.accountTabs {
+  padding: 0;
+  height: 41px;
+  background-color: $N500;
+  border-bottom: 0 none;
+
+  >label {
+    padding: 12px 0;
+    color: $N30;
+
+    &.active {
+      color: $N0;
+      border-color:$Y200;
     }
   }
 }

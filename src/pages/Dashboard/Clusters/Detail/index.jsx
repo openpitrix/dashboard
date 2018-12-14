@@ -357,7 +357,7 @@ export default class ClusterDetail extends Component {
         className={classnames({ [styles.clusterDetail]: !isNormal })}
         backBtn={isNormal && <BackBtn label="purchased" link="/purchased" />}
         listenToJob={this.listenToJob}
-        title="clusterDetail"
+        pageTitle="clusterDetail"
       >
         {!isNormal && <BreadCrumb linkPath={linkPath} />}
 

@@ -310,7 +310,7 @@ export default class AppDetail extends Component {
       <Layout
         className={classnames({ [styles.appDetail]: isHome })}
         isLoading={isLoading}
-        title="appDetail"
+        pageTitle="appDetail"
         hasSearch
         isHome={isHome}
         backBtn={

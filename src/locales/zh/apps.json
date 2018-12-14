@@ -79,6 +79,9 @@
   "STEPPER_FOOTER_CREATE_APP_VERSION_3": "以上信息调整之后将会自动更新配置文件中的对应内容。",
   "LINK_STEPPER_FOOTER_CREATE_APP_VERSION_2": "《Helm 规范及应用开发》。",
 
+  "STEPPER_NAME_ADD_APP_VERSION_HEADER": "添加新版本",
+  "STEPPER_TITLE_ADD_APP_VERSION_1":  "上传配置文件",
+
   "icon_format_note": "图标最佳格式为 png，请重新上传",
   "Search result is empty": "搜索结果为空",
   "No result for search word": "没有找到与关键字 「{{searchWord}}」 相关的应用",

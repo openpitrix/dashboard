@@ -406,7 +406,7 @@ export default class SSHKeys extends Component {
     const { keyPairs } = this.props.sshKeyStore;
 
     return (
-      <Layout title={t('SSH Keys')}>
+      <div>
         {keyPairs.length ? (
           this.renderDetail()
         ) : (
@@ -419,7 +419,7 @@ export default class SSHKeys extends Component {
           </CreateResource>
         )}
         {this.renderModals()}
-      </Layout>
+      </div>
     );
   }
 }

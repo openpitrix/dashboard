@@ -29,16 +29,14 @@ class Layout extends Component {
     listenToJob: PropTypes.func,
     loadClass: PropTypes.string,
     noNotification: PropTypes.bool,
-
-    pageTitle: PropTypes.string,
-    title: PropTypes.string
+    noSubMenu: PropTypes.bool,
+    pageTitle: PropTypes.string
   };
 
   static defaultProps = {
     noNotification: false,
     backBtn: null,
     listenToJob: noop,
-    title: '',
     pageTitle: '',
     hasSearch: false,
     noSubMenu: false,
@@ -83,11 +81,8 @@ class Layout extends Component {
       children,
       isLoading,
       loadClass,
-      backBtn,
       hasSearch,
-      title,
       isHome,
-      match,
       noSubMenu,
       pageTitle,
       isCenterPage,
@@ -96,9 +91,20 @@ class Layout extends Component {
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
-    const paths = ['/dashboard', '/profile', '/ssh_keys'];
 
-    const hasSubNav = hasMenu && !noSubMenu && !hasBack && !paths.includes(match.path);
+    const hasSubNav = hasMenu && !noSubMenu && !hasBack;
+
+    if (isNormal) {
+      return (
+        <div className={classnames(styles.layout, className)}>
+          {noNotification ? null : <Notification />}
+          {pageTitle && <TitleBanner title={pageTitle} hasSearch={hasSearch} />}
+          <Loading isLoading={isLoading} className={styles[loadClass]}>
+            {children}
+          </Loading>
+        </div>
+      );
+    }
 
     return (
       <div
@@ -106,16 +112,12 @@ class Layout extends Component {
           styles.layout,
           className,
           { [styles.hasMenu]: hasSubNav },
-          { [styles.hasNav]: hasMenu && !hasSubNav },
-          { [styles.hasBack]: Boolean(backBtn) }
+          { [styles.hasNav]: hasMenu && !hasSubNav }
         )}
       >
         {noNotification ? null : <Notification />}
-        {backBtn}
 
         {hasMenu && <SideNav hasSubNav={hasSubNav} />}
-        {isNormal
-          && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
           {isCenterPage || hasBack ? (
