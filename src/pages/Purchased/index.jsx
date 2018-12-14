@@ -333,7 +333,7 @@ export default class Purchased extends Component {
     };
 
     return (
-      <Layout title="Purchased" listenToJob={this.listenToJob}>
+      <Layout pageTitle="Purchased" listenToJob={this.listenToJob}>
         <Grid>
           <Section size={3}>
             <div className={styles.title}>{t('Apps')}</div>

@@ -1,0 +1,96 @@
+@import '~scss/vars';
+
+.account {
+  &.accountBg {
+    padding: 24px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color:$N0;
+  }
+
+  &.accountNormal {
+    margin-top: 24px;
+  }
+
+  .form {
+    &.fromEN {
+      .name {
+        width: 120px;
+      }
+    }
+
+    & > div {
+      margin-bottom: 24px;
+      label {
+        margin-bottom: 0;
+      }
+    }
+
+    .name {
+      display: inline-block;
+      float: left;
+      margin-right: 24px;
+      width: 80px;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: right;
+      color: $N500;
+    }
+
+    .input {
+      width: 256px;
+    }
+
+    .submitBtn {
+      margin-bottom: 8px;
+      padding-left: 104px;
+      button {
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+.banner {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  background-color: $N500;
+
+  .wrapper {
+    width: $content-width;
+    margin: 30px auto 0;
+  }
+
+  .userImg {
+    display: inline-block;
+    float: left;
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: $N400;
+  }
+
+  .userInfo {
+    margin-bottom: 15px;
+
+    .name {
+      margin-bottom: 4px;
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: 500;
+      color: $N0;
+    }
+
+    .loginInfo {
+      margin-bottom: 21px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N65;
+    }
+  }
+}

@@ -163,13 +163,13 @@ export const getDevSubNavs = appId => [
 
 export const userMeuns = [
   {
-    name: 'Account info',
-    link: '/profile',
+    name: 'Account Info',
+    link: '/dashboard/account',
     iconName: 'folder'
   },
   {
     name: 'Change Password',
-    link: '/profile',
+    link: '/dashboard/account?type=Change Password',
     iconName: 'lock'
   },
   {
@@ -184,7 +184,7 @@ export const userMeuns = [
   },
   {
     name: 'SSH Keys',
-    link: '/ssh_keys',
+    link: '/dashboard/account?type=SSH Keys',
     iconName: 'ssh'
   },
   {

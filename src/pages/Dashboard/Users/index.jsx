@@ -181,6 +181,7 @@ export default class Users extends Component {
               <Select.Option value="global_admin">
                 {t('Administrator')}
               </Select.Option>
+              <Select.Option value="isv">{t('ISV')}</Select.Option>
             </Select>
           </div>
           <div className="inputItem">

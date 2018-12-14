@@ -160,7 +160,11 @@ export default class Runtimes extends Component {
     const { isNormal } = user;
 
     return (
-      <Layout isLoading={isLoading} title="My Runtimes" className="clearfix">
+      <Layout
+        isLoading={isLoading}
+        pageTitle="My Runtimes"
+        className="clearfix"
+      >
         {!isNormal && <BreadCrumb linkPath="My Apps>Test>Runtimes" />}
 
         <div className={styles.types}>

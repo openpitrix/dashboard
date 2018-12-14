@@ -32,6 +32,7 @@ export default class AppAdd extends Component {
     const type = getUrlParam('type');
     let name = appId ? 'create_app' : 'create_app_version';
     if (type) {
+      appCreateStore.modifyVersionType = type;
       name = 'add_app_version';
     }
 
