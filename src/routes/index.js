@@ -53,6 +53,7 @@ const routes = {
   '/:dash/app/:appId': Dash.AppDetail,
   '/:dash/app/:appId/audit-record': Dash.AuditRecord,
   '/:dash/app/:appId/audits': Dash.Audits,
+
   '/:dash/app/:appId/versions': Dash.Versions,
   '/:dash/app/:appId/version/:versionId': Dash.VersionDetail,
   '/:dash/app/:appId/deploy/:versionId': Dash.AppDeploy,

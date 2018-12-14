@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
@@ -9,7 +9,7 @@ import styles from './index.scss';
 import typeFiles from './files';
 
 @translate()
-export default class CheckFiles extends PureComponent {
+export default class CheckFiles extends Component {
   static propTypes = {
     className: PropTypes.string,
     errorFiles: PropTypes.array,
@@ -55,7 +55,9 @@ export default class CheckFiles extends PureComponent {
             </li>
           ))}
         </ul>
+
         {uploadStatus === 'init' && <div className={styles.configMask} />}
+
         {isShowNote && (
           <div className={styles.document}>
             <span className={styles.note}>{t('Note')}</span>
@@ -64,7 +66,7 @@ export default class CheckFiles extends PureComponent {
               《{(_.find(typeFiles, { value: type }) || {}).name}
               {t('specification and app development')}
               》
-            </Link>。
+            </Link>
           </div>
         )}
       </div>

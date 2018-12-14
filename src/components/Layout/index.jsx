@@ -97,6 +97,7 @@ class Layout extends Component {
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
     const paths = ['/dashboard', '/profile', '/ssh_keys'];
+
     const hasSubNav = hasMenu && !noSubMenu && !hasBack && !paths.includes(match.path);
 
     return (
