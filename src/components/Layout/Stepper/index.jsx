@@ -153,7 +153,9 @@ class LayoutStepper extends Component {
         {this.renderTopNav()}
         {this.renderTitle()}
         <Loading isLoading={stepOption.isLoading}>
-          <div className={className}>{children}</div>
+          <div className={classnames(styles.mainContent, className)}>
+            {children}
+          </div>
         </Loading>
         {this.renderFooter()}
       </div>

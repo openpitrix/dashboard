@@ -5,51 +5,6 @@ import { t } from 'i18next';
 
 import Store from '../Store';
 
-const versionTypes = [
-  {
-    icon: 'vm-icon',
-    name: 'VM',
-    value: 'vmbased',
-    disable: false,
-    intro: 'delivery_type_intro_vm'
-  },
-  {
-    icon: 'helm-icon',
-    name: 'Helm',
-    value: 'helm',
-    disable: false,
-    intro: 'delivery_type_intro_helm'
-  },
-  {
-    icon: 'saas-icon',
-    name: 'SaaS',
-    value: 'saas',
-    disable: true,
-    intro: 'delivery_type_intro_saas'
-  },
-  {
-    icon: 'api-icon',
-    name: 'API',
-    value: 'api',
-    disable: true,
-    intro: 'delivery_type_intro_api'
-  },
-  {
-    icon: 'native-icon',
-    name: 'Native',
-    value: 'native',
-    disable: true,
-    intro: 'delivery_type_intro_native'
-  },
-  {
-    icon: 'serveless-icon',
-    name: 'Serveless',
-    value: 'serveless',
-    disable: true,
-    intro: 'delivery_type_intro_serveless'
-  }
-];
-
 const appModel = {
   name: '',
   version_name: '',
@@ -62,31 +17,6 @@ const appVersionModel = {
   name: '',
   type: '',
   package: null
-};
-
-const packageFiles = {
-  vmbased: [
-    'package.json',
-    'config.json',
-    'cluster.json.tmpl',
-    'LICENSE',
-    'locale/en.json',
-    'locale/zh-en.json'
-  ],
-  helm: [
-    'Chart.yaml',
-    'LICENSE',
-    'README.md',
-    'requirements.yaml',
-    'values.yaml',
-    'charts/',
-    'templates/',
-    'templates/NOTES.txt'
-  ],
-  saas: [],
-  api: [],
-  native: [],
-  serveless: []
 };
 
 export default class AppCreateStore extends Store {
@@ -104,8 +34,6 @@ export default class AppCreateStore extends Store {
 
   @observable errorMessage = '';
 
-  @observable versionTypes = versionTypes;
-
   @observable attribute = {};
 
   @observable iconBase64 = '';
@@ -118,11 +46,13 @@ export default class AppCreateStore extends Store {
 
   isCreateApp = true;
 
-  packageFiles = packageFiles;
+  isAddVersion = false;
+
+  modifyVersionType = '';
 
   @action
   nextStep = async () => {
-    const { isCreateApp } = this;
+    const { isCreateApp, isAddVersion } = this;
     if (this.disableNextStep) {
       return false;
     }
@@ -132,6 +62,7 @@ export default class AppCreateStore extends Store {
     if (
       (!isCreateApp && this.activeStep === 2)
       || (isCreateApp && this.activeStep === 3)
+      || (isAddVersion && this.activeStep === 1)
     ) {
       await this.create();
       if (this.errorMessage) {
@@ -163,12 +94,7 @@ export default class AppCreateStore extends Store {
 
   getVersionType = () => {
     const versionName = this.isCreateApp ? 'version_type' : 'type';
-    return this.attribute[versionName];
-  };
-
-  getPackageFiles = () => {
-    const type = this.getVersionType();
-    return this.packageFiles[type];
+    return this.attribute[versionName] || this.modifyVersionType;
   };
 
   checkAddedVersionType = name => {
@@ -179,15 +105,20 @@ export default class AppCreateStore extends Store {
   checkSelectedVersionType = name => this.getVersionType() === name;
 
   @action
-  reload = ({ isCreateApp, appId }) => {
+  reload = ({ appId, type }) => {
+    this.isCreateApp = !appId;
+    this.isAddVersion = Boolean(type);
     this.activeStep = 1;
-    if (isCreateApp) {
+
+    if (!appId) {
       this.steps = 3;
       this.attribute = _.assign({}, appModel);
     } else {
-      this.steps = 2;
+      this.steps = type ? 1 : 2;
       this.attribute = _.assign({ appId }, appVersionModel);
+      this.attribute.type = type;
     }
+
     this.iconBase64 = '';
     this.errorMessage = '';
     this.uploadStatus = 'init';
@@ -195,8 +126,8 @@ export default class AppCreateStore extends Store {
   };
 
   @action
-  reset = ({ isCreateApp, appId }) => {
-    this.reload({ isCreateApp, appId });
+  reset = ({ appId, type }) => {
+    this.reload({ appId, type });
     this.appDetail = {};
   };
 
@@ -266,10 +197,12 @@ export default class AppCreateStore extends Store {
       !/\.(tar|tar\.gz|tar\.bz|tgz|zip)$/.test(file.name.toLocaleLowerCase())
     ) {
       this.errorMessage = t('file_format_note');
+      this.uploadStatus = 'error';
       return false;
     }
     if (file.size > maxsize) {
       this.errorMessage = t('The file size cannot exceed 2M');
+      this.uploadStatus = 'error';
       return false;
     }
 

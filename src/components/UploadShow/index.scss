@@ -1,0 +1,99 @@
+@import '~scss/vars';
+
+@mixin disable-hover($opacity) {
+  opacity: $opacity;
+  cursor: default;
+  &:hover {
+    border-color: transparent;
+    .intro {
+      display: block;
+    }
+    a {
+      display: none;
+    }
+  }
+}
+
+.uploadShow {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 32px 24px;
+  border-radius: 2px;
+  background-color: $N0;
+  border: dashed 1px $N30;
+  text-align: center;
+  cursor: pointer;
+
+  &.bodyBg {
+    background-color: $background-color;
+    border: solid 1px $background-color;
+  }
+
+  .note {
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    color: $N100;
+  }
+
+  .icon {
+    margin-bottom: 8px;
+  }
+}
+
+.uploading {
+  width: 100%;
+  padding: 36px 50px;
+  background-color: $N0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  text-align: center;
+  cursor: not-allowed;
+
+  .icon {
+    margin-bottom: 8px;
+  }
+
+  .note {
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    color: $N100;
+  }
+}
+
+.uploadError {
+  font-size: 12px;
+  line-height: 20px;
+  color: $N75;
+  text-align: center;
+
+  .icon svg {
+    --primary-color: #{$R400};
+    --secondary-color: #{$R30};
+  }
+
+  .errorLink {
+    color: $P75;
+  }
+}
+
+.uploadSuccess {
+  text-align: center;
+
+  .icon svg {
+    --primary-color: #{$G100};
+    --secondary-color: #{$G30};
+  }
+
+  .successText {
+    color: $N75;
+    .uploadFileName {
+      color: $N500;
+      padding: 0 6px;
+    }
+  }
+}

@@ -40,7 +40,8 @@ const tsObj = {
     'Detach SSH Key successfully.': '解除SSH密钥的绑定成功。',
     'Delete SSH Key successfully.': '删除SSH密钥成功。',
 
-    "Kubernetes can't be selected with others": '不能与其它云服务商一起选择Kubernetes',
+    "Kubernetes can't be selected with others":
+      '不能与其它云服务商一起选择Kubernetes',
     'Validate successfully': '验证成功',
     'Validate fail': '验证失败',
     'Please select at least one Runtime Provider': '请至少选择一个云环境服务商',
@@ -71,9 +72,16 @@ const tsObj = {
 
     'Modify user successful.': '修改用户信息成功。',
     'New password is different entered twice.': '新密码两次的输入不一样。',
-    'Change password successful.': '修改密码成功。'
+    'Change password successful.': '修改密码成功。',
+
+    'The file size cannot exceed 2M': '上传的文件不能超过2M',
+    Upload_Package_Error: '部分文件有报错，请检查后',
+    file_format_note: '文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP'
   },
-  en: {}
+  en: {
+    Upload_Package_Error: 'Some files have errors, please check',
+    file_format_note: 'The file format supports TAR, TAR.GZ and TGZ'
+  }
 };
 
 export default key => {

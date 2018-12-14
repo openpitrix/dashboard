@@ -29,7 +29,34 @@
       &:last-child {
         margin-right: 0;
       }
+
+      .appName {
+        font-weight: 500;
+        color: $N500;
+
+        .imgOuter {
+          display: inline-block;
+          margin-right: 4px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .versionId {
+        color: $N300;
+      }
     }
+  }
+}
+
+.operateBtns {
+  float: right;
+  margin-top: 8px;
+
+  .operation {
+    float: right;
+    display: inline-block;
+    margin-left: 12px;
   }
 }
 
@@ -63,27 +90,55 @@
     }
   }
 
-  .document {
-    margin-top: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    color: $N65;
+  .upload {
+    display: none;
+    width: 100%;
+    margin-bottom: 20px;
+    &.show {
+      display: block;
+    }
+  }
 
-    .note {
-      float: left;
-      margin-right: 8px;
-      display: inline-block;
-      width: 32px;
-      height: 20px;
-      border-radius: 1px;
-      background-color: $N30;
-      color: $N100;
-      text-align: center;
+  .checkFile {
+    li {
+      box-shadow: 0 1px 0 0 $N10;
     }
   }
 }
 
-.recentRecord {
+.updateLog {
+  padding: 20px;
+  background-color: $N0;
+  >p {
+    margin-bottom: 12px;
+    height: 20px;
+    font-size: 12px;
+    color: $N75;
+  }
+
+  .description {
+    margin-bottom: 12px;
+    min-height: 280px;
+    width: 100%;
+    line-height: 24px;
+    font-size: 12px;
+    color: $N300;
+  }
+
+  .submitButtons {
+    button{
+      margin-right: 12px;
+    }
+  }
+}
+
+.descriptionShow {
+  min-height: 100px;
+  padding: 20px;
+  background-color: $N0;
+}
+
+.latestRecord {
   .title {
     margin-bottom: 12px;
     line-height: 28px;
@@ -162,90 +217,14 @@
   }
 }
 
-.versionDetail {
-  .operateBtns {
-    float: right;
-    margin-top: 8px;
+.noteContent {
+  font-size: 12px;
+  line-height: 20px;
+  color: $N300;
 
-    .operation {
-      float: right;
-      display: inline-block;
-      margin-left: 12px;
-    }
+  .noteList {
+    margin: 12px 0;
   }
 }
 
-.submitCheck {
-  .title {
-    margin-bottom: 25px;
-    line-height: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    color: $N300;
-  }
 
-  li {
-    line-height: 20px;
-    margin-bottom: 18px;
-
-    .status {
-      float: left;
-      display: inline-block;
-      margin-top: 4px;
-      margin-right: 8px;
-      width: 12px;
-      height: 12px;
-      background-color: $N10;
-      border-radius: 50%;
-    }
-
-    .name {
-      display: inline-block;
-      margin-right: 8px;
-      font-size: 14px;
-      color: $N100;
-    }
-
-    .description {
-      font-size: 12px;
-      color: $N65;
-    }
-
-    &.start {
-      .status {
-        width: 8px;
-        height: 8px;
-        background-color: $N0;
-        border: 2px solid $N300;
-        border-left-color: $N0;
-        animation: rotate 1s infinite linear;
-      }
-    }
-
-    &.info {
-      .status {
-        background-color: $Y65;
-      }
-      .name {
-        color: $Y300;
-      }
-    }
-
-    &.success {
-      .status {
-        background-color: $G65;
-      }
-      .name {
-        color: $N500;
-      }
-    }
-  }
-
-  .operateBtns {
-    margin: 30px 0 10px;
-    text-align: right;
-    button {
-      margin-left: 12px;
-    }
-  }
-}

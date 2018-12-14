@@ -46,16 +46,16 @@ const routes = {
 
   '/:dash/my/apps': Dash.MyApps,
   '/:dash/apps': Dash.Apps,
-  '/dev/apps': Dash.Apps,
   '/:dash/reviews': Dash.AppReview,
   '/:dash/review/:appId/:versionId': AppDetail,
   '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId/create-version': Dash.AppAdd,
   '/:dash/app/:appId': Dash.AppDetail,
-  '/:dash/audit/record/:appId': Dash.AuditRecord,
-  '/:dash/app/audits/:appId': Dash.Audits,
-  '/:dash/versions/:appId': Dash.Versions,
-  '/:dash/version/:versionId': Dash.VersionDetail,
+  '/:dash/app/:appId/audit-record': Dash.AuditRecord,
+  '/:dash/app/:appId/audits': Dash.Audits,
+  '/:dash/app/:appId/versions': Dash.Versions,
+  '/:dash/app/:appId/version/:versionId': Dash.VersionDetail,
+  '/:dash/app/:appId/deploy/:versionId': Dash.AppDeploy,
 
   '/:dash/clusters': Dash.Clusters,
 
