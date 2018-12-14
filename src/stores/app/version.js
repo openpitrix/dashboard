@@ -16,6 +16,7 @@ const defaultStatus = [
   'suspended'
 ];
 const reviwStatus = ['submitted', 'passed', 'rejected', 'active', 'suspended'];
+const maxSize = 2 * 1024 * 1024;
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
@@ -355,26 +356,23 @@ export default class AppVersionStore extends Store {
     // get all unique version types
     const types = _.uniq(versions.map(item => item.type));
     // get type relatived versions
-    const typeVersions = [];
-    types.forEach(type => typeVersions.push({
+    this.typeVersions = types.map(type => ({
       type,
       versions: versions.filter(item => item.type === type)
     }));
-    this.typeVersions = typeVersions;
 
     this.isLoading = false;
   };
 
   checkPackageFile = file => {
     const result = true;
-    const maxsize = 2 * 1024 * 1024;
     this.createError = '';
 
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
       this.createError = ts('file_format_note');
       return false;
     }
-    if (file.size > maxsize) {
+    if (file.size > maxSize) {
       this.createError = ts('The file size cannot exceed 2M');
       return false;
     }
@@ -383,7 +381,6 @@ export default class AppVersionStore extends Store {
   };
 
   uploadPackage = async (base64Str, file) => {
-    console.log(file);
     this.isLoading = true;
     this.packageName = file.name;
 
@@ -399,8 +396,8 @@ export default class AppVersionStore extends Store {
       this.uploadError = result.error_details;
       return;
     }
-    if (result.error || result.err) {
-      this.createError = result.error || result.err;
+    if (result.err) {
+      this.createError = result.err;
       return;
     }
 

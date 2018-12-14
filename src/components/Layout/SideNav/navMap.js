@@ -127,44 +127,39 @@ export const getBottomNavs = [
   }
 ];
 
-export function getDevSubNavs(appId) {
-  return [
-    {
-      title: 'Development',
-      items: [
-        {
-          name: 'Version management',
-          link: `/dashboard/app/${appId}/versions`
-        },
-        { name: 'Audit record', link: `/dashboard/app/${appId}/audits` },
-        { name: 'App information', link: '#' }
-      ]
-    },
-    {
-      title: 'Operation and maintenance',
-      items: [
-        { name: 'Monitor', link: '#' },
-        { name: 'Event', link: '#' },
-        { name: 'App information', link: '#' }
-      ]
-    },
-    {
-      title: 'Customer',
-      items: [
-        { name: 'Example', link: '#' },
-        { name: 'Work list', link: '#' },
-        { name: 'News', link: '#' }
-      ]
-    },
-    {
-      title: 'Sandbox',
-      items: [
-        { name: 'Example', link: '#' },
-        { name: 'Environment', link: '#' }
-      ]
-    }
-  ];
-}
+export const getDevSubNavs = appId => [
+  {
+    title: 'Development',
+    items: [
+      {
+        name: 'Version management',
+        link: `/dashboard/app/${appId}/versions`
+      },
+      { name: 'Audit record', link: `/dashboard/app/${appId}/audits` },
+      { name: 'App information', link: '#' }
+    ]
+  },
+  {
+    title: 'Operation and maintenance',
+    items: [
+      { name: 'Monitor', link: '#' },
+      { name: 'Event', link: '#' },
+      { name: 'App information', link: '#' }
+    ]
+  },
+  {
+    title: 'Customer',
+    items: [
+      { name: 'Example', link: '#' },
+      { name: 'Work list', link: '#' },
+      { name: 'News', link: '#' }
+    ]
+  },
+  {
+    title: 'Sandbox',
+    items: [{ name: 'Example', link: '#' }, { name: 'Environment', link: '#' }]
+  }
+];
 
 export const userMeuns = [
   {

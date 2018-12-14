@@ -31,7 +31,7 @@ export default class UploadShow extends Component {
 
     if (isLoading) {
       return (
-        <div className={classnames(className, styles.uploading)}>
+        <div className={classnames(styles.uploading, className)}>
           <Icon name="loading" size={48} type="dark" className={styles.icon} />
           <p className={styles.note}>{t('file_format_loading')}</p>
         </div>

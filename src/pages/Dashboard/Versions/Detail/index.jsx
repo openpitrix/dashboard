@@ -17,7 +17,16 @@ import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 
 import versionTypes from 'config/version-types';
+
 import styles from './index.scss';
+
+const actionName = {
+  draft: 'submit',
+  submitted: 'cancel',
+  passed: 'release',
+  rejected: 'submit'
+};
+const tags = ['fileConfig', 'setPrice', 'updateLog'];
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -375,13 +384,6 @@ export default class VersionDetail extends Component {
     const { appVersionStore, appStore, t } = this.props;
     const { version } = appVersionStore;
     const { appDetail } = appStore;
-
-    const actionName = {
-      draft: 'submit',
-      submitted: 'cancel',
-      passed: 'release',
-      rejected: 'submit'
-    };
     const handleType = actionName[version.status];
 
     return (
@@ -440,8 +442,6 @@ export default class VersionDetail extends Component {
     const { appVersionStore, appStore, t } = this.props;
     const { dialogType } = appVersionStore;
     const { detailTab } = appStore;
-
-    const tags = ['fileConfig', 'setPrice', 'updateLog'];
 
     return (
       <Layout

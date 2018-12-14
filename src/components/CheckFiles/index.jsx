@@ -5,8 +5,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import styles from './index.scss';
 import typeFiles from './files';
+
+import styles from './index.scss';
 
 @translate()
 export default class CheckFiles extends PureComponent {
@@ -35,6 +36,7 @@ export default class CheckFiles extends PureComponent {
       t
     } = this.props;
     const files = typeFiles[type] || [];
+    const linkType = (_.find(typeFiles, { value: type }) || {}).name;
 
     return (
       <div className={classnames(styles.checkFiles, className)}>
@@ -60,11 +62,11 @@ export default class CheckFiles extends PureComponent {
           <div className={styles.document}>
             <span className={styles.note}>{t('Note')}</span>
             {t('See the complete app development specification')}
-            <Link to="#">
-              《{(_.find(typeFiles, { value: type }) || {}).name}
+            <a to="#">
+              《{linkType}
               {t('specification and app development')}
               》
-            </Link>。
+            </a>。
           </div>
         )}
       </div>

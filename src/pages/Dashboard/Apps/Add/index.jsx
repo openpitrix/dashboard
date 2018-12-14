@@ -9,9 +9,9 @@ import {
 import { Stepper } from 'components/Layout';
 import AppCard from 'pages/Dashboard/Apps/Card';
 import versionTypes from 'config/version-types';
-import { getUrlParam } from 'utils';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
+import { getUrlParam } from 'utils';
 import Card from './Card';
 
 import styles from './index.scss';
@@ -31,7 +31,9 @@ export default class AppAdd extends Component {
     const appId = _.get(match, 'params.appId');
     const type = getUrlParam('type');
     let name = appId ? 'create_app' : 'create_app_version';
-    name = type ? 'add_app_version' : name;
+    if (type) {
+      name = 'add_app_version';
+    }
 
     appCreateStore.reset({ appId, type });
     this.state = {
