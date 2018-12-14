@@ -108,7 +108,7 @@ class SideNav extends React.Component {
               key={nav.iconName || nav.app_id}
               className={classnames({ [styles.devItem]: isDev })}
             >
-              <Link to={nav.link || `/dashboard/app/${nav.app_id}`}>
+              <Link to={nav.link || `/dashboard/app/${nav.app_id}/versions`}>
                 {nav.app_id && (
                   <span
                     className={classnames(styles.imageOuter, {
@@ -132,7 +132,10 @@ class SideNav extends React.Component {
                   />
                 )}
               </Link>
-              <NavLink exact to={nav.link || `/dashboard/app/${nav.app_id}`}>
+              <NavLink
+                exact
+                to={nav.link || `/dashboard/app/${nav.app_id}/versions`}
+              >
                 <label className={styles.title}>
                   {t(nav.title || nav.name)}
                 </label>
@@ -249,7 +252,7 @@ class SideNav extends React.Component {
           />
         </div>
 
-        {getDevSubNavs.map(nav => (
+        {getDevSubNavs(appDetail.app_id).map(nav => (
           <div key={nav.title} className={styles.subContent}>
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (

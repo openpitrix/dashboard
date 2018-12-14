@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
-import _ from 'lodash';
+import _, { capitalize } from 'lodash';
 
 import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';
@@ -21,10 +21,11 @@ import styles from './index.scss';
 @observer
 export default class Versions extends Component {
   async componentDidMount() {
-    const { appVersionStore, match } = this.props;
+    const { appVersionStore, appStore, match } = this.props;
     const { appId } = match.params;
 
-    await appVersionStore.fetchAppVersions(appId);
+    await appStore.fetch(appId);
+    await appVersionStore.fetchTypeVersions(appId);
   }
 
   componentWillUnmount() {
@@ -37,7 +38,8 @@ export default class Versions extends Component {
   }
 
   renderTypes(types) {
-    const { t } = this.props;
+    const { match, t } = this.props;
+    const { appId } = match.params;
     // get not added types
     const notAddedTypes = versionTypes.filter(
       item => !types.includes(item.value)
@@ -55,10 +57,14 @@ export default class Versions extends Component {
             />
             <div className={styles.name}>{t(item.name)}</div>
             <div className={styles.description}>{t(item.intro)}</div>
-            <Button className={styles.button} type="primary">
-              <Icon name="add" type="white" className={styles.addIcon} />
-              {t('New version')}
-            </Button>
+            <Link
+              to={`/dashboard/app/${appId}/create-version?type=${item.value}`}
+            >
+              <Button className={styles.button} type="primary">
+                <Icon name="add" type="white" className={styles.addIcon} />
+                {t('New version')}
+              </Button>
+            </Link>
           </div>
         ))}
       </div>
@@ -66,20 +72,21 @@ export default class Versions extends Component {
   }
 
   renderHistoryVersions(typeVersion) {
-    const { t } = this.props;
-    const versions = typeVersion.versions;
+    const { match, t } = this.props;
+    const { appId } = match.params;
+    const versions = typeVersion.versions || [];
     const historyVersions = versions.filter(
       item => item.status === 'suspended'
     );
 
     if (historyVersions.length === 0) {
-      return <div className={styles.total}>没有历史版本</div>;
+      return <div className={styles.total}>{t('No history version')}</div>;
     }
 
     return (
       <Fragment>
         <div className={styles.total}>
-          以及 {historyVersions.length} 个历史版本
+          {t('HISTORICAL_VERSIONS_TOTAL', { length: historyVersions.length })}
           <span
             onClick={() => this.toggleHistoryVersions(typeVersion)}
             className={styles.toggleIcon}
@@ -96,7 +103,7 @@ export default class Versions extends Component {
           <ul className={styles.historyVersion}>
             {historyVersions.map(item => (
               <li key={item.version_id}>
-                <Link to={`/dashboard/version/${item.version_id}`}>
+                <Link to={`/dashboard/app/${appId}/version/${item.version_id}`}>
                   <Status
                     type={item.status}
                     name={item.name}
@@ -106,7 +113,7 @@ export default class Versions extends Component {
                     {item.description}
                   </label>
                   <label className={styles.time}>
-                    {t('下架时间')}: {item.update_time}
+                    {t('Suspended time')}: {item.update_time}
                   </label>
                   <label className={styles.link}>{t('View detail')}→</label>
                 </Link>
@@ -119,21 +126,24 @@ export default class Versions extends Component {
   }
 
   renderActiveVersions(typeVersion) {
-    const { t } = this.props;
-    const versions = typeVersion.versions;
-    const activeVersions = versions.filter(item => item.status !== 'suspended');
+    const { match, t } = this.props;
+    const { appId } = match.params;
+    const versions = typeVersion.versions || [];
+    const activeVersions = versions.filter(
+      item => item.status !== 'suspended' && item.status !== 'deleted'
+    );
 
     return (
       <Fragment>
         <div className={styles.total}>
-          当前有 {activeVersions.length} 个活跃版本
+          {t('ACTIVE_VERSIONS_TOTAL', { length: activeVersions.length })}
         </div>
         <div className={styles.activeVersion}>
           {activeVersions.map(item => (
             <Link
               key={item.version_id}
               className={classnames(styles.version, [styles[item.status]])}
-              to={`/dashboard/version/${item.version_id}`}
+              to={`/dashboard/app/${appId}/version/${item.version_id}`}
             >
               <Status
                 type={item.status}
@@ -150,25 +160,34 @@ export default class Versions extends Component {
   }
 
   render() {
-    const { appVersionStore, t } = this.props;
-    const { versions } = appVersionStore;
-    const types = versions.map(item => item.type);
+    const { appVersionStore, match, t } = this.props;
+    const { typeVersions } = appVersionStore;
+    const { appId } = match.params;
+    const types = typeVersions.map(item => item.type);
 
     return (
-      <Layout className={styles.versions} pageTitle="版本管理" isCenterPage>
+      <Layout
+        className={styles.versions}
+        pageTitle={t('Version manage')}
+        isCenterPage
+      >
         <div className={styles.noteWords}>
-          每个应用可支持多种交付方式，每种交付方式的版本是相互独立的。
+          {t('APP_DELIVERY_MODES_EXPLAIN')}
         </div>
 
-        <div className={styles.typeTitle}>{t('已添加')}</div>
-        {versions.map(item => (
+        <div className={styles.typeTitle}>{t('Added')}</div>
+        {typeVersions.map(item => (
           <div key={item.type} className={styles.addedVersion}>
             <div className={styles.title}>
               {(_.find(versionTypes, { value: item.type }) || {}).name}
-              <Button className={styles.button} type="default">
-                <Icon name="add" type="dark" className={styles.addIcon} />
-                {t('New version')}
-              </Button>
+              <Link
+                to={`/dashboard/app/${appId}/create-version?type=${item.type}`}
+              >
+                <Button className={styles.button} type="default">
+                  <Icon name="add" type="dark" className={styles.addIcon} />
+                  {t('New version')}
+                </Button>
+              </Link>
             </div>
             {this.renderActiveVersions(item)}
           </div>
@@ -176,7 +195,7 @@ export default class Versions extends Component {
 
         {types.length < 6 && (
           <Fragment>
-            <div className={styles.typeTitle}>{t('未添加')}</div>
+            <div className={styles.typeTitle}>{t('Not added')}</div>
             {this.renderTypes(types)}
           </Fragment>
         )}

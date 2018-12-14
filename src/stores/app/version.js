@@ -5,7 +5,6 @@ import _, {
 import { Base64 } from 'js-base64';
 
 import ts from 'config/translation';
-
 import Store from '../Store';
 
 const defaultStatus = [
@@ -61,6 +60,8 @@ export default class AppVersionStore extends Store {
 
   @observable createError = '';
 
+  @observable uploadError = {};
+
   @observable createResult = null;
 
   @observable reason = ''; // version reject reason
@@ -70,6 +71,8 @@ export default class AppVersionStore extends Store {
   @observable isReview = false; // judge review apps list or app version list
 
   @observable audits = {}; // define object for not repeat query of the same version
+
+  @observable typeVersions = [];
 
   @action
   fetchAll = async (params = {}) => {
@@ -198,21 +201,6 @@ export default class AppVersionStore extends Store {
   // handleType value is: submit、reject、pass、release、suspend、recover、delete
   @action
   handle = async (handleType, versionId) => {
-    let isHandle = true;
-    if (handleType === 'submit') {
-      if (!this.name) {
-        return this.error(ts('Please input version name'));
-      }
-      if (!this.packageName) {
-        return this.error(ts('Please upload package'));
-      }
-      isHandle = await this.createOrModify();
-    }
-
-    if (!isHandle) {
-      return;
-    }
-
     this.isLoading = true;
     const params = { version_id: versionId };
     if (handleType === 'reject') {
@@ -226,19 +214,8 @@ export default class AppVersionStore extends Store {
 
     if (get(result, 'version_id')) {
       this.hideModal();
-      if (handleType === 'submit') {
-        this.isTipsOpen = true;
-      } else {
-        this.success(
-          ts(`${capitalize(handleType)} this version successfully.`)
-        );
-      }
-
-      if (handleType === 'delete') {
-        this.currentVersion = {};
-      }
-
-      await this.fetchAll();
+      this.success(ts(`${capitalize(handleType)} this version successfully.`));
+      await this.fetch(versionId);
     } else {
       return result;
     }
@@ -288,6 +265,12 @@ export default class AppVersionStore extends Store {
 
   @action
   showDelete = type => {
+    this.setDialogType(type);
+    this.showDialog();
+  };
+
+  @action
+  showTypeDialog = type => {
     this.setDialogType(type);
     this.showDialog();
   };
@@ -361,7 +344,7 @@ export default class AppVersionStore extends Store {
   }
 
   @action
-  async fetchAppVersions(appId) {
+  fetchTypeVersions = async appId => {
     this.isLoading = true;
     const result = await this.request.get('app_versions', {
       limit: this.maxLimit,
@@ -377,10 +360,55 @@ export default class AppVersionStore extends Store {
       type,
       versions: versions.filter(item => item.type === type)
     }));
-    this.versions = typeVersions;
+    this.typeVersions = typeVersions;
 
     this.isLoading = false;
-  }
+  };
+
+  checkPackageFile = file => {
+    const result = true;
+    const maxsize = 2 * 1024 * 1024;
+    this.createError = '';
+
+    if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
+      this.createError = ts('file_format_note');
+      return false;
+    }
+    if (file.size > maxsize) {
+      this.createError = ts('The file size cannot exceed 2M');
+      return false;
+    }
+
+    return result;
+  };
+
+  uploadPackage = async (base64Str, file) => {
+    console.log(file);
+    this.isLoading = true;
+    this.packageName = file.name;
+
+    const result = await this.request.post('apps/validate_package', {
+      version_type: this.version.type,
+      version_package: base64Str
+    });
+    this.isLoading = false;
+
+    if (result.error_details) {
+      this.uploadStatus = 'error';
+      this.createError = ts('Upload_Package_Error');
+      this.uploadError = result.error_details;
+      return;
+    }
+    if (result.error || result.err) {
+      this.createError = result.error || result.err;
+      return;
+    }
+
+    await this.modify({
+      version_id: this.version.version_id,
+      package: this.base64Str
+    });
+  };
 
   onSearch = async word => {
     this.currentPage = 1;

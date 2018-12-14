@@ -110,8 +110,8 @@ export default class AppDeployStore extends Store {
   fetchFilesByVersion = async (versionId, isK8s = false) => {
     this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId,
-      files: isK8s ? ['values.yaml'] : ['config.json']
+      version_id: versionId
+      // files: isK8s ? ['values.yaml'] : ['config.json']
     });
 
     const files = get(result, 'files', {});
@@ -124,6 +124,7 @@ export default class AppDeployStore extends Store {
       this.errMsg = 'Invalid config file, failed to render page';
       this.yamlStr = '';
     }
+
     this.isLoading = false;
   };
 

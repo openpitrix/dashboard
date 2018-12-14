@@ -33,7 +33,7 @@ export default class AppCard extends Component {
       <div
         className={classnames(styles.container, className)}
         onClick={() => {
-          this.props.history.push(`/dashboard/app/${app_id}`);
+          this.props.history.push(`/dashboard/app/${app_id}/versions`);
         }}
       >
         <div className={styles.title}>

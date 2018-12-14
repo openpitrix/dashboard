@@ -17,6 +17,7 @@
 
   "Congratulations on you": "祝贺你",
   "Your app has been created successfully": "你的应用已创建成功",
+  "New version has been created successfully": "新加版本已创建成功",
   "Deploy Test": "部署测试",
   "Add delivery type": "添加交付类型",
 
@@ -115,5 +116,35 @@
   "not found": "没有找到",
 
   "Go on": "继续",
-  "Done": "完成"
+  "Done": "完成",
+
+  "Note": "提示",
+  "See the complete app development specification": "完整的应用开发规范请参看",
+  "specification and app development": "规范及应用开发",
+  "Update log successful": "更新日志成功",
+  "Submit review": "提交审核",
+  "Continue testing": "继续测试",
+  "Edit": "编辑",
+  "Test instance": "测试实例",
+  "There are no deployment test instances in this release": "此版本没有部署测试实例",
+  "View all records": "查看全部记录",
+  "Used to describe the detailed update of this version": "用于描述该版本详细的更新内容",
+  "Save": "保存",
+  "Reset": "重置",
+  "Upload time": "上传时间",
+  "Version details": "版本详情",
+  "Its application": "所属应用",
+  "Latest record": "最新记录",
+  "Added": "已添加",
+  "No history version": "没有历史版本",
+  "HISTORICAL_VERSIONS_TOTAL": "以及 {{length}} 个历史版本",
+  "Suspended time": "下架时间",
+  "ACTIVE_VERSIONS_TOTAL": "当前有 {{length}} 个活跃版本",
+  "Version manage": "版本管理",
+  "APP_DELIVERY_MODES_EXPLAIN": "每个应用可支持多种交付方式，每种交付方式的版本是相互独立的。",
+  "Not added": "未添加",
+  "optional": "可选",
+  "fileConfig": "配置文件",
+  "setPrice": "定价",
+  "updateLog": "更新日志"
 }

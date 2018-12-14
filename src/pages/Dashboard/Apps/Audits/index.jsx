@@ -8,12 +8,14 @@ import { Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 
+import versionTypes from 'config/version-types';
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,
+  appStore: rootStore.appStore,
   userStore: rootStore.userStore
 }))
 @observer
@@ -27,13 +29,19 @@ export default class Audits extends Component {
   }
 
   async componentDidMount() {
-    const { appVersionStore, userStore, match } = this.props;
+    const {
+      appVersionStore, appStore, userStore, match
+    } = this.props;
     const { appId } = match.params;
 
+    // query this app detail info
+    await appStore.fetch(appId);
+
+    // query this app all versions
     await appVersionStore.fetchAll({ app_id: appId });
-    const { versions } = appVersionStore;
 
     // default show last version audit records
+    const { versions } = appVersionStore;
     const versionId = _.get(versions, '[0].version_id');
     await appVersionStore.fetchAudits(appId, versionId);
     versions[0].isShowAudits = true;
@@ -142,14 +150,14 @@ export default class Audits extends Component {
             <label className={styles.reason}>{this.renderReason(audit)}</label>
             <label className={styles.time}>{audit.status_time}</label>
             {audit.isExpand && (
-              <span
+              <pre
                 onClick={() => this.toggleReason(audit)}
                 className={styles.showReason}
               >
                 {audit.message}
                 <br />
                 <span className={styles.collapse}>{t('Collapse')}</span>
-              </span>
+              </pre>
             )}
           </li>
         ))}
@@ -172,7 +180,9 @@ export default class Audits extends Component {
             onClick={() => this.changeType(type)}
             className={classnames({ [styles.active]: activeType === type })}
           >
-            {typeMap[type] || type || t('None')}
+            {(_.find(versionTypes, { value: type }) || {}).name
+              || type
+              || t('None')}
           </label>
         ))}
       </div>
