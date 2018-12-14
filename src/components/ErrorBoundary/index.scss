@@ -1,0 +1,13 @@
+@import '~scss/vars';
+
+.error {
+  padding: 80px;
+  min-height: 100vh;
+  color: $R200;
+  width: 800px;
+  margin: 0 auto;
+  details {
+    margin: 20px auto;
+    white-space: pre-wrap;
+  }
+}

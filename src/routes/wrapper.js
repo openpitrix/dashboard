@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 export default class RouteWrapper extends React.Component {
   static propTypes = {
@@ -26,6 +27,10 @@ export default class RouteWrapper extends React.Component {
 
   render() {
     const { component: Component, ...restProps } = this.props;
-    return <Component {...restProps} />;
+    return (
+      <ErrorBoundary>
+        <Component {...restProps} />
+      </ErrorBoundary>
+    );
   }
 }
