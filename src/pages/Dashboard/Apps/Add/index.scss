@@ -1,178 +1,28 @@
 @import '~scss/vars';
 
-@mixin load-frames() {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes load {
-  @include load-frames;
-}
-@keyframes load {
-  @include load-frames;
-}
-
 .createApp {
   background: $background-color;
   min-width: 744px;
   text-align: center;
-}
-
-.createApp {
   .upload {
-    position: relative;
-    display: inline-block;
-    box-sizing: border-box;
     width: 552px;
-    padding: 32px 24px;
-    border-radius: 2px;
-    background-color: $N0;
-    border: dashed 1px $N30;
-    text-align: left;
-    cursor: pointer;
-
-    .note {
-      text-align: center;
-      font-size: 12px;
-      line-height: 20px;
-      color: $N100;
-    }
-
-    :global {
-      .icon {
-        display: block;
-        margin: 0 auto 8px;
-      }
-    }
-    &.uploadError {
-      background-color: $background-color;
-      border: solid 1px $background-color;
-    }
-  }
-
-  .uploading {
-    opacity: 0.3;
-    cursor: not-allowed;
-
-    .loading {
-      position: absolute;
-      top: 28px;
-      left: 244px;
-      z-index: 2;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-
-      &:after {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-      }
-
-      border-top: 2px solid $P300;
-      border-right: 2px solid $P300;
-      border-bottom: 2px solid $P10;
-      border-left: 2px solid $P10;
-      animation: load 1s infinite linear;
-      opacity: 3.33;
-    }
-  }
-
-  .errorNote {
-    font-size: 12px;
-    line-height: 20px;
-    color: $N75;
-    text-align: center;
-
-    :global {
-      .icon {
-        display: block;
-        margin-bottom: 8px;
-
-        svg {
-          --primary-color: #{$R400};
-          --secondary-color: #{$R30};
-        }
-      }
-    }
-  }
-  .errorNoteLink {
-    color: $P75;
-  }
-
-  .uploadSuccess {
-    text-align: center;
-    :global {
-      .icon {
-        display: block;
-        margin-bottom: 8px;
-
-        svg {
-          --primary-color: #{$G100};
-          --secondary-color: #{$G30};
-        }
-      }
-    }
-  }
-  .uploadSuccessText {
-    color: $N75;
-    .uploadFileName {
-      color: $N500;
-      padding: 0 6px;
-    }
   }
 }
 
 .config {
-  width: 927px;
-  margin: 20px auto;
-  text-align: left;
-  color: $N75;
   position: relative;
-  span {
-    font-size: 12px;
-    line-height: 20px;
-    padding: 6px 20px;
-    display: inline-block;
-  }
-  li {
-    background: $N0;
-    margin-bottom: 8px;
-  }
-  .configName {
-    width: 180px;
-    color: $N300;
-  }
-  .configInfo {
-    color: $N65;
-  }
-  .errorColor {
-    color: $R200;
-  }
-  .configMask {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    background-image: linear-gradient(to bottom, rgba($body-bg, 0.75), $body-bg);
-  }
+  margin-top: 20px;
+
   .uploadConfirm {
+    margin-top: 12px;
     text-align: center;
     font-size: 12px;
-    span {
+
+    .uploadBtn {
       cursor: pointer;
       padding: 0 3px;
+      color: $P75;
     }
-  }
-  .uploadBtn {
-    color: $P75;
   }
 }
 
@@ -279,7 +129,7 @@
   }
 }
 .appCard {
-  display: flex;
+  display: inline-block;
+  width: 320px;
   text-align: left;
-  justify-content: center;
 }

@@ -21,12 +21,15 @@ class Layout extends Component {
     backBtn: PropTypes.node,
     children: PropTypes.node,
     className: PropTypes.string,
+    hasBack: PropTypes.bool,
     hasSearch: PropTypes.bool,
+    isCenterPage: PropTypes.bool,
     isHome: PropTypes.bool,
     isLoading: PropTypes.bool,
     listenToJob: PropTypes.func,
     loadClass: PropTypes.string,
     noNotification: PropTypes.bool,
+
     pageTitle: PropTypes.string,
     title: PropTypes.string
   };
@@ -39,7 +42,9 @@ class Layout extends Component {
     pageTitle: '',
     hasSearch: false,
     noSubMenu: false,
-    isHome: false
+    isHome: false,
+    isCenterPage: false,
+    hasBack: false
   };
 
   componentDidMount() {
@@ -84,14 +89,15 @@ class Layout extends Component {
       isHome,
       match,
       noSubMenu,
-      pageTitle
+      pageTitle,
+      isCenterPage,
+      hasBack
     } = this.props;
 
     const { isNormal, isDev, isAdmin } = this.props.user;
     const hasMenu = (isDev || isAdmin) && !isHome;
-    const paths = ['/dashboard', '/profile', '/ssh_keys', '/dev/apps'];
-    const isCenterPage = Boolean(pageTitle); // detail page, only one level menu
-    const hasSubNav = hasMenu && !noSubMenu && !isCenterPage && !paths.includes(match.path);
+    const paths = ['/dashboard', '/profile', '/ssh_keys'];
+    const hasSubNav = hasMenu && !noSubMenu && !hasBack && !paths.includes(match.path);
 
     return (
       <div
@@ -100,8 +106,7 @@ class Layout extends Component {
           className,
           { [styles.hasMenu]: hasSubNav },
           { [styles.hasNav]: hasMenu && !hasSubNav },
-          { [styles.hasBack]: Boolean(backBtn) },
-          { [styles.detailPage]: isCenterPage }
+          { [styles.hasBack]: Boolean(backBtn) }
         )}
       >
         {noNotification ? null : <Notification />}
@@ -111,24 +116,23 @@ class Layout extends Component {
         {isNormal
           && !isHome && <TitleBanner title={title} hasSearch={hasSearch} />}
 
-        {isCenterPage && (
-          <div className={styles.pageTitle}>
-            <div className={styles.title}>
-              <Icon
-                onClick={this.goBack}
-                name="previous"
-                size={20}
-                type="dark"
-                className={styles.icon}
-              />
-              {pageTitle}
-            </div>
-          </div>
-        )}
-
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {isCenterPage ? (
-            <div className={styles.centerPage}>{children}</div>
+          {isCenterPage || hasBack ? (
+            <div className={styles.centerPage}>
+              <div className={styles.pageTitle}>
+                {hasBack && (
+                  <Icon
+                    onClick={() => this.goBack()}
+                    name="previous"
+                    size={24}
+                    type="dark"
+                    className={styles.backIcon}
+                  />
+                )}
+                {pageTitle}
+              </div>
+              {children}
+            </div>
           ) : (
             children
           )}

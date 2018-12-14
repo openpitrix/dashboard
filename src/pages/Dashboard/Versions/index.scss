@@ -1,0 +1,239 @@
+@import '~scss/vars';
+
+.versions {
+  .noteWords {
+    margin-bottom: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N300;
+  }
+
+  .typeTitle {
+    margin-bottom: 12px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N75;
+  }
+
+  .toggleIcon {
+    display: inline-block;
+    margin-left: 20px;
+    color: $P75;
+    cursor: pointer;
+
+    .icon {
+      float: right;
+      margin: 2px 4px;
+    }
+  }
+
+  .addedVersion {
+    margin-bottom: 20px;
+    padding: 24px 32px;
+    background-color: $N0;
+    border-radius: 2px;
+
+    &:hover {
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+      .button {
+        display: inline-block;
+      }
+    }
+
+    .title {
+      margin-bottom: 8px;
+      line-height: 32px;
+      font-size: 20px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .button {
+      float: right;
+      display: none;
+      color: $N300;
+
+      .addIcon {
+        float: left;
+        margin-top: -1px;
+        margin-right: 4px;
+      }
+    }
+
+    .total {
+      margin-bottom: 8px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+    }
+  }
+
+  .activeVersion {
+    margin-bottom: 24px;
+    overflow: hidden;
+
+    .total {
+      float: left;
+      display: inline-block;
+      margin-right: 28px;
+      line-height: 32px;
+      font-size: 12px;
+      color: $N300;
+    }
+
+
+    .version {
+      float: left;
+      display: inline-block;
+      box-sizing: border-box;
+      margin: 0 12px 12px 0;
+      height: 44px;
+      padding: 12px;
+      border-radius: 2px;
+      border: 1px solid $N10;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+      cursor: pointer;
+
+      &.draft:hover {
+        border-color: $Y300;
+      }
+
+      &.submitted:hover {
+        border-color: $B75;
+      }
+
+      &.passed:hover {
+        border-color: $G75;
+      }
+
+      &.active:hover {
+        border-color: $P75;
+      }
+
+      &.suspended:hover {
+        border-color: $N500;
+      }
+
+      &.draft:hover {
+        border-color: $B75;
+      }
+
+      &.rejected:hover, &.deleted:hover {
+        border-color: $R200;
+      }
+    }
+
+    .status {
+      display: inline-block;
+      margin-right: 8px;
+      font-weight: 500;
+      color: $N300
+    }
+  }
+
+  .historyVersion {
+    li {
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      height: 40px;
+      padding: 10px 20px;
+      border-radius: 2px;
+      background-color: rgba(239, 240, 245, 0.3);
+
+      &:hover {
+        background-color: rgba(239, 240, 245, 0.6);
+
+        .link {
+          display: inline-block;
+        }
+      }
+
+      a>label {
+        display: inline-block;
+        float: left;
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        color: $N75;
+        cursor: pointer;
+      }
+    }
+
+    .status {
+      display: inline-block;
+      float: left;
+      width: 15%;
+      line-height: 20px;
+      font-weight: 500;
+      color: $N300;
+    }
+
+    .description {
+      width: 50%;
+      @include textCut;
+    }
+
+    .time {
+      width: 25%;
+    }
+
+    .link {
+      display: none;
+      width: 10%;
+      color: $P75;
+      text-align: right;
+    }
+  }
+
+  .notAddedType {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 24px;
+    border: 1px solid $N10;
+
+    .name {
+      margin-bottom: 4px;
+      height: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .icon {
+      float: left;
+      margin-right: 8px;
+    }
+
+    .description {
+      padding-left: 28px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+    }
+
+    .button {
+      display: none;
+      position: absolute;
+      top: 29px;
+      right: 24px;
+    }
+
+    .addIcon {
+      float: left;
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background-color: $N0;
+      border-color: $N0;
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+      .button {
+        display: inline-block;
+      }
+    }
+  }
+}

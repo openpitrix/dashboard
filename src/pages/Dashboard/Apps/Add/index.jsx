@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
@@ -9,6 +8,10 @@ import {
 } from 'components/Base';
 import { Stepper } from 'components/Layout';
 import AppCard from 'pages/Dashboard/Apps/Card';
+import versionTypes from 'config/version-types';
+import CheckFiles from 'components/CheckFiles';
+import UploadShow from 'components/UploadShow';
+import { getUrlParam } from 'utils';
 import Card from './Card';
 
 import styles from './index.scss';
@@ -26,12 +29,17 @@ export default class AppAdd extends Component {
 
     const { match, appCreateStore } = props;
     const appId = _.get(match, 'params.appId');
-    const isCreateApp = !appId;
-    appCreateStore.isCreateApp = isCreateApp;
-    appCreateStore.reset({ isCreateApp, appId });
+    const type = getUrlParam('type');
+    let name = appId ? 'create_app' : 'create_app_version';
+    if (type) {
+      name = 'add_app_version';
+    }
+
+    appCreateStore.reset({ appId, type });
     this.state = {
-      name: isCreateApp ? 'create_app' : 'create_app_version',
-      isCreateApp,
+      name,
+      isCreateApp: !appId,
+      isAddVersion: Boolean(type),
       appId
     };
   }
@@ -50,7 +58,6 @@ export default class AppAdd extends Component {
 
   renderVersionTypes() {
     const { appCreateStore } = this.props;
-    const { versionTypes } = appCreateStore;
     return (
       <div className={styles.cardContainer}>
         {versionTypes.map(item => (
@@ -68,90 +75,37 @@ export default class AppAdd extends Component {
       errorMessage,
       checkPackageFile,
       fileName,
-      getPackageFiles,
+      getVersionType,
       uploadError,
       uploadPackage
     } = appCreateStore;
-    const files = getPackageFiles();
+    const type = getVersionType();
     const errorKeys = _.keys(uploadError);
 
     return (
       <Fragment>
         <Upload
+          className={styles.upload}
           ref={node => {
             this.uploadRef = node;
           }}
           checkFile={checkPackageFile}
           uploadFile={uploadPackage}
         >
-          <div
-            className={classnames(styles.upload, {
-              [styles.uploadError]: !!errorMessage
-            })}
-          >
-            {!!isLoading && (
-              <div className={styles.loading}>
-                <Icon name="loading" size={48} type="dark" />
-                <p className={styles.note}>{t('file_format_loading')}</p>
-              </div>
-            )}
-            {!isLoading
-              && uploadStatus !== 'ok'
-              && !errorMessage && (
-                <div>
-                  <Icon name="upload" size={48} type="dark" />
-                  <p className={styles.note}>{t('file_format_note')}</p>
-                </div>
-            )}
-            {!isLoading
-              && uploadStatus !== 'ok'
-              && errorMessage && (
-                <div className={styles.errorNote}>
-                  <Icon name="error" size={48} />
-                  {errorMessage}
-                  「<span className={styles.errorNoteLink}>
-                    {t('Upload again')}
-                  </span>」
-                </div>
-            )}
-            {!isLoading
-              && uploadStatus === 'ok'
-              && !errorMessage && (
-                <div className={styles.uploadSuccess}>
-                  <Icon name="checked-circle" size={48} />
-                  <div className={styles.uploadSuccessText}>
-                    {t('File')}
-                    <span className={styles.uploadFileName}>{fileName}</span>
-                    {t('Successful upload')}
-                  </div>
-                </div>
-            )}
-          </div>
+          <UploadShow
+            isLoading={isLoading}
+            uploadStatus={uploadStatus}
+            errorMessage={errorMessage}
+            fileName={fileName}
+          />
         </Upload>
 
-        <ul className={styles.config}>
-          {files.map(file => (
-            <li key={file}>
-              <span
-                className={classnames(styles.configName, {
-                  [styles.errorColor]: errorKeys.includes(file)
-                })}
-              >
-                {file}
-              </span>
-              <span
-                className={classnames(styles.configInfo, {
-                  [styles.errorColor]: errorKeys.includes(file)
-                })}
-              >
-                {errorKeys.includes(file) ? (
-                  <span>{t(`${uploadError[file]}`)}</span>
-                ) : (
-                  <span># {t(`${file.replace('.', '_')}_Info`)}</span>
-                )}
-              </span>
-            </li>
-          ))}
+        <div className={styles.config}>
+          <CheckFiles
+            type={type}
+            errorFiles={errorKeys}
+            uploadStatus={uploadStatus}
+          />
           {uploadStatus === 'ok' && (
             <div className={styles.uploadConfirm}>
               {t('The file has problem?')}
@@ -160,8 +114,7 @@ export default class AppAdd extends Component {
               </span>
             </div>
           )}
-          {uploadStatus === 'init' && <div className={styles.configMask} />}
-        </ul>
+        </div>
       </Fragment>
     );
   }
@@ -239,8 +192,11 @@ export default class AppAdd extends Component {
     const {
       appCreateStore, t, rootStore, history
     } = this.props;
-    const { isCreateApp, appId } = this.state;
+    const { isCreateApp, isAddVersion, appId } = this.state;
     const { appDetail } = appCreateStore;
+    const successInfo = isAddVersion
+      ? 'New version has been created successfully'
+      : 'Your app has been created successfully';
 
     return (
       <Fragment>
@@ -251,9 +207,7 @@ export default class AppAdd extends Component {
             size={48}
           />
           <div className={styles.textTip}>{t('Congratulations on you')}</div>
-          <div className={styles.textHeader}>
-            {t('Your app has been created successfully')}
-          </div>
+          <div className={styles.textHeader}>{t(successInfo)}</div>
           <div className={styles.successBtns}>
             <Button
               type="primary"
@@ -263,34 +217,56 @@ export default class AppAdd extends Component {
             >
               {t('Deploy Test')}
             </Button>
-            <Button
-              onClick={() => {
-                if (isCreateApp) {
-                  history.replace(
-                    `/dashboard/app/${appDetail.app_id}/create-version`
-                  );
-                } else {
-                  appCreateStore.reload({ isCreateApp, appId });
-                }
-              }}
-              className={styles.addBtn}
-            >
-              {t('Add delivery type')}
-            </Button>
+            {!isAddVersion && (
+              <Button
+                onClick={() => {
+                  if (isCreateApp) {
+                    history.replace(
+                      `/dashboard/app/${appDetail.app_id}/create-version`
+                    );
+                  } else {
+                    appCreateStore.reload({ isCreateApp, appId });
+                  }
+                }}
+                className={styles.addBtn}
+              >
+                {t('Add delivery type')}
+              </Button>
+            )}
           </div>
         </div>
         <div className={styles.appCard}>
-          <AppCard apiServer={rootStore.apiServer} t={t} data={appDetail} />
+          <AppCard
+            apiServer={rootStore.apiServer}
+            t={t}
+            data={appDetail}
+            className={styles.appCard}
+          />
         </div>
       </Fragment>
     );
   }
 
   render() {
-    const { name, isCreateApp } = this.state;
+    const { name, isCreateApp, isAddVersion } = this.state;
     const { appCreateStore } = this.props;
     const { activeStep } = appCreateStore;
     const { disableNextStep } = appCreateStore;
+
+    if (isAddVersion) {
+      return (
+        <Stepper
+          className={styles.createApp}
+          name={name}
+          stepOption={appCreateStore}
+          disableNextStep={disableNextStep}
+        >
+          {activeStep === 1 && this.renderUploadConf()}
+          {activeStep === 2 && this.renderSuccessMsg()}
+          <Notification />
+        </Stepper>
+      );
+    }
 
     return (
       <Stepper

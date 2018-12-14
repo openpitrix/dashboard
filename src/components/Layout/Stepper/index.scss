@@ -51,7 +51,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
+  z-index: 3;
+  height: $footer-height;
   padding: 0 20px;
   display: flex;
   align-items: center;
@@ -129,5 +130,10 @@
     letter-spacing: 0;
     color: $N500;
   }
+}
+
+.mainContent {
+  margin: 0 auto $footer-height + 20px;
+  max-width: $create-content-width;
 }
 

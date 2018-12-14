@@ -89,5 +89,9 @@
   "APP_STORE_DESC": "Openpitrix official store has {{total}} apps",
   "PURCHASED_DESC": "All the apps you have purchased will be shown here, including the corresponding instance of the app.",
   "MY_RUNTIMES_DESC": "The platform supports multiple cloud environments, at the same time and can be managed here.",
-  "UPGRADE_PROVIDER": "Upgrade to an「application provider」"
+  "UPGRADE_PROVIDER": "Upgrade to an「application provider」",
+
+  "APP_DELIVERY_MODES_EXPLAIN": "Each application can support multiple delivery modes, and the versions of each delivery mode are independent of each other.",
+  "HISTORICAL_VERSIONS_TOTAL":"And {{length}} historical versions",
+  "ACTIVE_VERSIONS_TOTAL":"There are currently {{length}} active versions"
 }

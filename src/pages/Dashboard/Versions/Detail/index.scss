@@ -1,0 +1,230 @@
+@import '~scss/vars';
+
+.topInfo {
+  display: inline-block;
+
+  .main {
+    margin-bottom: 8px;
+    line-height: 28px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $N500;
+
+    > label {
+      display: inline-block;
+      margin: 0 8px;
+      font-weight: normal;
+      color: $N75;
+    }
+  }
+
+  .secondary {
+    > label {
+      display: inline-block;
+      margin-right: 32px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N65;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .appName {
+        font-weight: 500;
+        color: $N500;
+
+        .imgOuter {
+          display: inline-block;
+          margin-right: 4px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .versionId {
+        color: $N300;
+      }
+    }
+  }
+}
+
+.operateBtns {
+  float: right;
+  margin-top: 8px;
+
+  .operation {
+    float: right;
+    display: inline-block;
+    margin-left: 12px;
+  }
+}
+
+.configFile {
+  .fileInfo {
+    margin-bottom: 20px;
+    padding: 46px 0 42px;
+    background-color: #f9fafb;
+    border-radius: 2px;
+    text-align: center;
+
+    .name {
+      margin-bottom: 8px;
+      line-height: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .time {
+      height: 20px;
+      font-size: 12px;
+      color: $N65;
+    }
+
+    .link {
+      display: inline-block;
+      margin-left: 20px;
+      color: $P75;
+      cursor: pointer;
+    }
+  }
+
+  .upload {
+    display: none;
+    width: 100%;
+    margin-bottom: 20px;
+    &.show {
+      display: block;
+    }
+  }
+
+  .checkFile {
+    li {
+      box-shadow: 0 1px 0 0 $N10;
+    }
+  }
+}
+
+.updateLog {
+  padding: 20px;
+  background-color: $N0;
+  >p {
+    margin-bottom: 12px;
+    height: 20px;
+    font-size: 12px;
+    color: $N75;
+  }
+
+  .description {
+    margin-bottom: 12px;
+    min-height: 280px;
+    width: 100%;
+    line-height: 24px;
+    font-size: 12px;
+    color: $N300;
+  }
+
+  .submitButtons {
+    button{
+      margin-right: 12px;
+    }
+  }
+}
+
+.descriptionShow {
+  min-height: 100px;
+  padding: 20px;
+  background-color: $N0;
+}
+
+.latestRecord {
+  .title {
+    margin-bottom: 12px;
+    line-height: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .record {
+    margin-left: 16px;
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
+
+  .status {
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+
+  .operator {
+    margin-bottom: 4px;
+    line-height: 20px;
+    color: $N300;
+  }
+
+  .time {
+    margin-bottom: 4px;
+    line-height: 20px;
+    color: $N75;
+  }
+
+  .link {
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .reason {
+    margin-bottom: 4px;
+    line-height: 20px;
+    color: $N75;
+  }
+
+  .hideReason {
+    display: inline-block;
+    width: calc(100% - 52px);
+    @include textCut;
+    vertical-align: middle;
+  }
+
+  .expand,
+  .collapse {
+    line-height: 20px;
+    color: $P75;
+    cursor: pointer;
+  }
+
+  .collapse {
+    display: inline-block;
+    margin-top: 8px;
+  }
+}
+
+.testInstance {
+  .title {
+    margin-bottom: 12px;
+    line-height: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .note {
+    line-height: 18px;
+    font-size: 12px;
+    color: $N75;
+  }
+}
+
+.noteContent {
+  font-size: 12px;
+  line-height: 20px;
+  color: $N300;
+
+  .noteList {
+    margin: 12px 0;
+  }
+}
+
+
