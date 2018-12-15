@@ -121,8 +121,12 @@ class Layout extends Component {
         {hasMenu && <SideNav hasSubNav={hasSubNav} />}
 
         <Loading isLoading={isLoading} className={styles[loadClass]}>
-          {isCenterPage || hasBack ? (
-            <div className={styles.centerPage}>
+          <div
+            className={classnames({
+              [styles.centerPage]: isCenterPage || hasBack
+            })}
+          >
+            {Boolean(pageTitle) && (
               <div className={styles.pageTitle}>
                 {hasBack && (
                   <Icon
@@ -135,11 +139,9 @@ class Layout extends Component {
                 )}
                 {pageTitle}
               </div>
-              {children}
-            </div>
-          ) : (
-            children
-          )}
+            )}
+            {children}
+          </div>
         </Loading>
       </div>
     );

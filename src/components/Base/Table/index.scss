@@ -13,35 +13,47 @@
     box-sizing: border-box;
     overflow: hidden;
 
-    .selectionColumn{
+    .selectionColumn {
       width: 14px;
-      padding: 12px 12px 12px 8px;
-      label{
+      padding: 0 7px;
+      label {
+        display: none;
         padding: 0;
+      }
+      [class*='checked'] {
+        display: inline-block;
       }
     }
 
-    th{
-      .filterOuter{
+    tr:hover {
+      .selectionColumn {
+        label {
+          display: inline-block;
+        }
+      }
+    }
+
+    th {
+      .filterOuter {
         max-width: 120px;
-        [class*='target']{
+        [class*='target'] {
           height: auto;
           //width: 60px;
           width: 68px;
           border: 0 none;
           box-shadow: none;
-          &:hover{
+          &:hover {
             border: 0 none;
             box-shadow: none;
           }
         }
-        :global{
-          .pi-popover-popper{
+        :global {
+          .pi-popover-popper {
             //margin-left: -52px;
             margin-left: -42px;
           }
-          .filterContent{
-            li{
+          .filterContent {
+            li {
               padding: 0 12px;
               width: 80px;
               line-height: 32px;
@@ -50,13 +62,14 @@
               color: $N300;
               cursor: pointer;
               transition: all $transition-speed;
-              &:hover, &.active{
+              &:hover,
+              &.active {
                 background-color: $N10;
                 color: $N500;
               }
             }
           }
-          .icon{
+          .icon {
             float: right;
             /*position: relative;
             top: 3px;
@@ -64,9 +77,9 @@
           }
         }
       }
-      .sortOuter{
-        :global{
-          .icon{
+      .sortOuter {
+        :global {
+          .icon {
             vertical-align: middle;
             margin-left: 6px;
             cursor: pointer;
@@ -83,19 +96,20 @@
 
     &-thead > tr > th {
       position: relative;
-      line-height: 16px;
-      padding: 12px 5px;
-      font-weight: 500;
-      color: $N500;
+      padding: 10px 5px;
+      line-height: 12px;
+      font-weight: normal;
+      font-size: 12px;
+      color: $N100;
+      box-shadow: inset 0 -1px 0 0 $N10, inset 0 1px 0 0 $N10;
       letter-spacing: 0;
-      background-color: $N10;
 
       &.actions {
         text-align: center;
       }
 
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         left: -1px;
         top: 8px;
@@ -112,10 +126,13 @@
       //}
     }
 
-    &-tbody > tr{
+    &-tbody > tr {
       transition: all $transition-speed;
       &:hover {
         background-color: $tr-hover-bg;
+        box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+          0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
         td {
           &:first-child {
             border-left-color: $tr-hover-bg;
@@ -124,11 +141,19 @@
             border-right-color: $tr-hover-bg;
           }
         }
-        td a, td [class*='tdName'] a, td > a > [class*='repoName']{
+
+        td a,
+        td [class*='tdName'] a,
+        td > a > [class*='repoName'] {
           color: $link-hover;
         }
-        td [class*="popper"] a{
+
+        td [class*='popper'] a {
           color: $N500;
+        }
+
+        td.actions > div{
+         display: block;
         }
       }
 
@@ -140,13 +165,13 @@
     }
 
     &-tbody > tr > td {
-      padding: 12px 5px;
+      padding: 14px 5px;
       line-height: 16px;
-      border-bottom: 1px solid $N10;
+      box-shadow: inset 0 -1px 0 0 $N10;
       transition: all $transition-speed;
       word-wrap: break-word;
       word-break: break-all;
-      a{
+      a {
         color: $N500;
       }
       &:first-child {
@@ -158,6 +183,9 @@
         //border-right: 48px solid #fff;
       }
 
+      &.actions > div {
+        display: none;
+      }
     }
 
     &-placeholder {
@@ -167,10 +195,10 @@
   }
 }
 
-.noData{
+.noData {
   padding: 20px 0;
   text-align: center;
-  .word{
+  .word {
     margin-bottom: 16px;
     font-size: 12px;
     line-height: 1.67;
@@ -179,7 +207,7 @@
   }
   :global {
     .icon {
-      opacity: .2;
+      opacity: 0.2;
     }
   }
 }

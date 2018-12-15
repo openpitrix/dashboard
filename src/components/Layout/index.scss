@@ -10,7 +10,7 @@
   &.hasNav {
     margin: 0 20px 32px $menu-width + 20px;
     //min-width: 950px;
-    min-width: 992px;
+    min-width: calc(#{$page-min-width} - #{$menu-nav-width} - 40px);
     min-height: calc(100vh - 100px);
     padding-top: 0;
   }
@@ -151,18 +151,18 @@
   margin: 0 auto;
   width: calc(100% - #{$min-center-page-margin}*2);
   max-width: $max-center-page-width;
+}
 
-  .pageTitle {
-    margin: 18px 0;
-    line-height: 28px;
-    font-size: 16px;
-    font-weight: 500;
-    color: $N500;
+.pageTitle {
+  margin: 18px 0;
+  line-height: 28px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $N500;
 
-    .backIcon {
-      float: left;
-      margin-left: -40px;
-      cursor: pointer;
-    }
+  .backIcon {
+    float: left;
+    margin-left: -40px;
+    cursor: pointer;
   }
 }

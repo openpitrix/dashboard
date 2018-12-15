@@ -50,6 +50,16 @@ export default class ClusterCard extends Component {
               transition={detail.transition_status}
             />
           </li>
+          <li>
+            <span className={styles.name}>{t('App')}</span>
+            <Link to={`/dashboard/app/${detail.app_id}`}>
+              {appName || t('None')}
+            </Link>
+          </li>
+          <li>
+            <span className={styles.name}>{t('Version')}</span>
+            {detail.version}
+          </li>
           <li className={styles.setHeight}>
             <span className={styles.name}>{t('Runtime')}</span>
             <Link
@@ -60,18 +70,12 @@ export default class ClusterCard extends Component {
             </Link>
           </li>
           <li>
-            <span className={styles.name}>{t('App')}</span>
-            <Link to={`/dashboard/app/${detail.app_id}`}>
-              {appName || t('None')}
-            </Link>
-          </li>
-          <li>
-            <span className={styles.name}>{t('User')}</span>
+            <span className={styles.name}>{t('Creator')}</span>
             {userName}
           </li>
           <li>
-            <span className={styles.name}>{t('Node Count')}</span>
-            {(detail.cluster_node_set && detail.cluster_node_set.length) || 0}
+            <span className={styles.name}>{t('Create Time')}</span>
+            <TimeShow time={detail.create_time} type="detailTime" />
           </li>
           <li>
             <span className={styles.name}>{t('Date Updated')}</span>

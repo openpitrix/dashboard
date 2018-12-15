@@ -150,14 +150,17 @@ export const getDevSubNavs = appId => [
   {
     title: 'Customer',
     items: [
-      { name: 'Example', link: '#' },
+      { name: 'Instance', link: `/dashboard/app/${appId}/customer-instances` },
       { name: 'Work list', link: '#' },
       { name: 'News', link: '#' }
     ]
   },
   {
     title: 'Sandbox',
-    items: [{ name: 'Example', link: '#' }, { name: 'Environment', link: '#' }]
+    items: [
+      { name: 'Instance', link: `/dashboard/app/${appId}/sandbox-instances` },
+      { name: 'Environment', link: '#' }
+    ]
   }
 ];
 
