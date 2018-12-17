@@ -127,6 +127,7 @@
   "See the complete app development specification": "完整的应用开发规范请参看",
   "specification and app development": "规范及应用开发",
   "Update log successful": "更新日志成功",
+  "Update time": "更新时间",
   "Submit review": "提交审核",
   "Continue testing": "继续测试",
   "Edit": "编辑",
@@ -151,5 +152,12 @@
   "optional": "可选",
   "fileConfig": "配置文件",
   "setPrice": "定价",
-  "updateLog": "更新日志"
+  "updateLog": "更新日志",
+
+  "Test Runtime": "测试环境",
+  "Instance Name ID": "实例名称 ID",
+  "Create Time": "创建时间",
+  "": "",
+  "": "",
+  "": ""
 }

@@ -69,6 +69,7 @@ export default class HelmCluster extends React.Component {
 
     return (
       <Toolbar
+        className={styles.toolbar}
         placeholder={t('Search Pods')}
         searchWord={searchNode}
         onSearch={onSearchNode}

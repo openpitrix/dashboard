@@ -56,8 +56,12 @@ const routes = {
   '/:dash/app/:appId/version/:versionId': Dash.VersionDetail,
   '/:dash/app/:appId/deploy/:versionId?': Dash.AppDeploy,
 
-  '/:dash/clusters': Dash.Clusters,
+  '/:dash/app/:appId/customer-instances': Dash.Clusters,
+  '/:dash/app/:appId/sandbox-instances': Dash.Clusters,
+  '/:dash/app/:appId/customer-instance/:clusterId': Dash.ClusterDetail,
+  '/:dash/app/:appId/sandbox-instance/:clusterId': Dash.ClusterDetail,
 
+  '/:dash/clusters': Dash.Clusters,
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
 
   '/:dash/runtimes': Dash.Runtimes,

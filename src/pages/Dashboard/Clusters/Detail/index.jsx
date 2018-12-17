@@ -339,28 +339,26 @@ export default class ClusterDetail extends Component {
       runtimeStore,
       userStore,
       user,
+      match,
       t
     } = this.props;
 
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
-    const { isNormal, isDev } = user;
+    const { isNormal } = user;
+    const pageTitle = match.path.endsWith('sandbox-instance')
+      ? t('Sandbox-Instance detail')
+      : t('Customer-Instance detail');
 
     const { isRuntimeTypeFetched } = this.state;
-
-    const linkPath = isDev
-      ? `My Apps>Test>Clusters>${cluster.name}`
-      : `Platform>All Clusters>${cluster.name}`;
 
     return (
       <Layout
         className={classnames({ [styles.clusterDetail]: !isNormal })}
-        backBtn={isNormal && <BackBtn label="purchased" link="/purchased" />}
         listenToJob={this.listenToJob}
-        pageTitle="clusterDetail"
+        pageTitle={pageTitle}
+        hasBack
       >
-        {!isNormal && <BreadCrumb linkPath={linkPath} />}
-
         <Grid>
           <Section>
             <Card>
@@ -385,7 +383,7 @@ export default class ClusterDetail extends Component {
               <div className={styles.title}>
                 {t('Activities')}
                 <div className={styles.more} onClick={this.showClusterJobs}>
-                  {t('More')} →
+                  {t('View all')} →
                 </div>
               </div>
               <TimeAxis timeList={clusterJobs.toJSON().splice(0, 4)} />

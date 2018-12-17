@@ -409,12 +409,18 @@
   "Customer": "客户",
   "News": "消息",
   "Sandbox": "沙盒",
-  "Example": "实例",
+  "Instance": "实例",
   "Environment": "环境",
   "Account Info": "账户信息",
   "Change Password": "修改密码",
   "Notice settings": "通知设置",
   "Payment": "支付",
+
+  "Sandbox-Instances": "沙盒-实例",
+  "Customer-Instances": "用户-实例",
+  "Sandbox-Instance detail": "沙盒-实例详情",
+  "Customer-Instance detail": "用户-实例详情",
+
 
   "Record": "记录",
   "Version": "版本",

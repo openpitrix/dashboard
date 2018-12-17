@@ -301,6 +301,7 @@ export default class Table extends React.Component {
               <Icon
                 name="caret-down"
                 type={`${filter.selectValue ? 'light' : 'dark'}`}
+                size={12}
               />
             </Popover>
           );

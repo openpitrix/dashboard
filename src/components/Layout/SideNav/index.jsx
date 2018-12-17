@@ -51,8 +51,14 @@ class SideNav extends React.Component {
   static defaultProps = {};
 
   async componentDidMount() {
-    const { isDev } = this.props.user;
-    const { hasMeunApps, fetchMenuApps } = this.props.appStore;
+    const { appStore, user, match } = this.props;
+    const { isDev } = user;
+    const { hasMeunApps, fetchMenuApps } = appStore;
+
+    const { appId } = match.params;
+    if (appId) {
+      appStore.fetch(appId);
+    }
 
     if (isDev && !hasMeunApps) {
       await fetchMenuApps();

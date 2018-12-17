@@ -4,7 +4,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 3;
+  z-index: 4;
   width: $menu-nav-width;
   height: 100vh;
   background-color: $N0;
@@ -175,7 +175,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 4;
+    z-index: 5;
     width: $menu-nav-width;
   }
 }
@@ -185,7 +185,7 @@
   position: fixed;
   left: $menu-nav-width;
   top: 0;
-  z-index: 2;
+  z-index: 3;
   height: 100vh;
   width: $menu-sub-nav-width;
   background-color: $N0;
@@ -241,7 +241,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 3;
+  z-index: 4;
   width: 100%;
  /* position: static;
   margin: -68px -20px 20px;*/

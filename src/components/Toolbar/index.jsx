@@ -109,11 +109,11 @@ class Toolbar extends React.Component {
           </Fragment>
         )}
         {children}
-        {!noRefreshBtn && (
+        {/* {!noRefreshBtn && (
           <Button className={styles.refreshBtn} onClick={onRefresh}>
             <Icon name="refresh" size="mini" />
           </Button>
-        )}
+        )} */}
       </div>
     );
   }

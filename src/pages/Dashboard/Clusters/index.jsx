@@ -43,6 +43,7 @@ export default class Clusters extends Component {
       userStore,
       user
     } = this.props;
+
     const { isAdmin } = user;
 
     clusterStore.registerStore('app', appStore);
@@ -94,6 +95,19 @@ export default class Clusters extends Component {
         return cl;
       });
     }
+  };
+
+  getDetailUrl = clusterId => {
+    const { match } = this.props;
+    const { appId } = match.params;
+    let url = `/dashboard/cluster/${clusterId}`;
+    if (appId) {
+      const type = match.path.endsWith('sandbox-instances')
+        ? `sandbox-instance`
+        : 'customer-instance';
+      url = `/dashboard/app/${appId}/${type}/${clusterId}`;
+    }
+    return url;
   };
 
   getAppTdShow = (appId, apps) => {
@@ -200,7 +214,8 @@ export default class Clusters extends Component {
   };
 
   renderToolbar() {
-    const { t } = this.props;
+    const { t, match } = this.props;
+    const { appId } = match.params;
     const {
       searchWord,
       onSearch,
@@ -212,18 +227,16 @@ export default class Clusters extends Component {
     if (clusterIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button
-            type="delete"
-            onClick={() => this.operateSelected('delete')}
-            className="btn-handle"
-          >
-            {t('Delete')}
-          </Button>
           <Button type="default" onClick={() => this.operateSelected('start')}>
+            <Icon name="start" size={20} type="dark" />
             {t('Start')}
           </Button>
-          <Button type="delete" onClick={() => this.operateSelected('stop')}>
+          <Button type="default" onClick={() => this.operateSelected('stop')}>
+            <Icon name="stop" size={20} type="dark" />
             {t('Stop')}
+          </Button>
+          <Button type="delete" onClick={() => this.operateSelected('delete')}>
+            {t('Delete')}
           </Button>
         </Toolbar>
       );
@@ -236,13 +249,18 @@ export default class Clusters extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-      />
+        noRefreshBtn
+      >
+        <Link to={`/dashboard/app/${appId}/deploy`} className="pull-right">
+          <Button type="primary">{t('Deploy')}</Button>
+        </Link>
+      </Toolbar>
     );
   }
 
   render() {
     const {
-      clusterStore, appStore, userStore, user, t
+      clusterStore, appStore, userStore, user, match, t
     } = this.props;
     const { summaryInfo, clusters, isLoading } = clusterStore;
 
@@ -252,35 +270,36 @@ export default class Clusters extends Component {
 
     let columns = [
       {
-        title: t('Cluster Name'),
+        title: t('Status'),
+        key: 'status',
+        width: '100px',
+        render: cl => (
+          <Status type={cl.status} transition={cl.transition_status} />
+        )
+      },
+      {
+        title: t('Instance Name ID'),
         key: 'name',
         width: '155px',
         render: cl => (
           <TdName
             name={cl.name}
             description={cl.cluster_id}
-            linkUrl={`/dashboard/cluster/${cl.cluster_id}`}
+            linkUrl={this.getDetailUrl(cl.cluster_id)}
             noIcon
           />
         )
       },
       {
-        title: t('Status'),
-        key: 'status',
-        width: '102px',
-        render: cl => (
-          <Status type={cl.status} transition={cl.transition_status} />
-        )
-      },
-      {
-        title: t('App'),
+        title: t('Version'),
         key: 'app_id',
         width: '150px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
-        title: t('Runtime'),
+        title: t('Test Runtime'),
         key: 'runtime_id',
+        width: '150px',
         render: cl => (
           <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
             <ProviderName
@@ -302,7 +321,7 @@ export default class Clusters extends Component {
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
-        title: t('User'),
+        title: t('Creater'),
         key: 'owner',
         width: '100px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
@@ -310,15 +329,15 @@ export default class Clusters extends Component {
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '100px',
+        width: '80px',
         sorter: true,
         onChangeSort: this.onChangeSort,
         render: cl => <TimeShow time={cl.create_time} />
       },
       {
-        title: t('Actions'),
+        title: '',
         key: 'actions',
-        width: '84px',
+        width: '70px',
         className: 'actions',
         render: cl => (
           <Popover content={this.renderHandleMenu(cl)} className="actions">
@@ -363,37 +382,32 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isDev, isAdmin, isNormal } = user;
-    const linkPath = isDev ? 'My Apps>Test>Clusters' : 'Platform>All Clusters';
+    const { isAdmin } = user;
+    const pageTitle = match.path.endsWith('sandbox-instances')
+      ? t('Sandbox-Instances')
+      : t('Customer-Instances');
 
     return (
-      <Layout listenToJob={this.listenToJob}>
-        {!isNormal && <BreadCrumb linkPath={linkPath} />}
-
+      <Layout listenToJob={this.listenToJob} pageTitle={pageTitle}>
         {isAdmin && (
           <Row>
             <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
           </Row>
         )}
 
-        <Row>
-          <Grid>
-            <Section size={12}>
-              <Card>
-                {this.renderToolbar()}
-                <Table
-                  columns={columns}
-                  dataSource={clusters.toJSON()}
-                  rowSelection={rowSelection}
-                  isLoading={isLoading}
-                  filterList={filterList}
-                  pagination={pagination}
-                />
-              </Card>
-              {this.renderDeleteModal()}
-            </Section>
-          </Grid>
-        </Row>
+        <div>
+          {this.renderToolbar()}
+          <Table
+            columns={columns}
+            dataSource={clusters.toJSON()}
+            rowSelection={rowSelection}
+            isLoading={isLoading}
+            filterList={filterList}
+            pagination={pagination}
+          />
+        </div>
+
+        {this.renderDeleteModal()}
       </Layout>
     );
   }
