@@ -8,8 +8,7 @@ import * as Dash from 'pages/Dashboard';
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
-const Profile = lazy(() => import('../pages/Profile'));
-const SSHKeys = lazy(() => import('../pages/SSHKeys'));
+const Account = lazy(() => import('../pages/Account'));
 const Store = lazy(() => import('../pages/Store'));
 const Purchased = lazy(() => import('../pages/Purchased'));
 const Runtimes = lazy(() => import('../pages/Runtimes'));
@@ -77,8 +76,7 @@ const routes = {
   '/:dash/users': Dash.Users,
   '/:dash/user/:userId': Dash.UserDetail,
 
-  '/profile': Profile,
-  '/ssh_keys': SSHKeys,
+  '/:dash/account': Account,
 
   '*': Home
 };

@@ -119,7 +119,7 @@ export default class Store extends Component {
     );
 
     return (
-      <Layout title="App Store" hasSearch>
+      <Layout pageTitle="App Store" hasSearch>
         <div className={styles.storeContent}>
           <Nav
             className={styles.nav}

@@ -10,14 +10,17 @@ import styles from './index.scss';
 export default class DetailTabs extends Component {
   static propTypes = {
     changeTab: PropTypes.func,
+    className: PropTypes.string,
     defaultTab: PropTypes.string,
+    isAccount: PropTypes.bool,
     tabs: PropTypes.array
   };
 
   static defaultProps = {
     changeTab: noop,
     tabs: [],
-    defaultTab: ''
+    defaultTab: '',
+    isAccount: false
   };
 
   constructor(props) {
@@ -46,21 +49,27 @@ export default class DetailTabs extends Component {
   };
 
   render() {
-    const { tabs, t } = this.props;
+    const {
+      tabs, className, isAccount, t
+    } = this.props;
     const { curTab } = this.state;
 
     return (
-      <div className={styles.detailTabs}>
+      <div
+        className={classnames(
+          styles.detailTabs,
+          { [styles.accountTabs]: isAccount },
+          className
+        )}
+      >
         {tabs.map((tab, idx) => (
-          <div
-            className={classnames(styles.tab, {
-              [styles.active]: tab === curTab
-            })}
+          <label
+            className={classnames({ [styles.active]: tab === curTab })}
             key={idx}
             onClick={() => this.handleChange(tab)}
           >
             {t(tab)}
-          </div>
+          </label>
         ))}
       </div>
     );

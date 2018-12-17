@@ -12,7 +12,9 @@ export default (clusters, t) => [
     title: t('Name'),
     key: 'name',
     width: '130px',
-    render: item => <TdName name={item.name} description={item.node_id} noIcon />
+    render: item => (
+      <TdName name={item.name} description={item.node_id} noIcon />
+    )
   },
   {
     title: t('Cluster Name'),
@@ -32,7 +34,9 @@ export default (clusters, t) => [
     key: 'status',
     width: '102px',
     // fixme: prop type check case sensitive
-    render: item => <Status type={`${item.status}`.toLowerCase()} name={item.status} />
+    render: item => (
+      <Status type={`${item.status}`.toLowerCase()} name={item.status} />
+    )
   },
   {
     title: t('Role'),

@@ -56,6 +56,8 @@ export default class UserStore extends Store {
 
   @observable rememberMe = false;
 
+  @observable language = localStorage.getItem('i18nextLng') || 'zh';
+
   @observable
   userDetail = {
     user_id: '',
@@ -351,6 +353,11 @@ export default class UserStore extends Store {
   @action
   changeUserRole = role => {
     this.userDetail.role = role;
+  };
+
+  @action
+  changeLanguage = lan => {
+    this.language = lan;
   };
 
   @action
