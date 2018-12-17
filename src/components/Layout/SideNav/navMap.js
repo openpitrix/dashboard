@@ -132,11 +132,11 @@ export const getDevSubNavs = appId => [
     title: 'Development',
     items: [
       {
-        name: 'Version management',
+        name: 'Version',
         link: `/dashboard/app/${appId}/versions`
       },
-      { name: 'Audit record', link: `/dashboard/app/${appId}/audits` },
-      { name: 'App information', link: '#' }
+      { name: 'App information', link: `/dashboard/app/${appId}/info` },
+      { name: 'Record', link: `/dashboard/app/${appId}/audits` }
     ]
   },
   {
