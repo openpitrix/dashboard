@@ -232,7 +232,7 @@ export default class Clusters extends Component {
             {t('Start')}
           </Button>
           <Button type="default" onClick={() => this.operateSelected('stop')}>
-            <Icon name="stop" size={20} type="stop" />
+            <Icon name="stop" size={20} type="dark" />
             {t('Stop')}
           </Button>
           <Button type="delete" onClick={() => this.operateSelected('delete')}>
