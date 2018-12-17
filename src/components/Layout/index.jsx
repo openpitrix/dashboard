@@ -96,8 +96,10 @@ class Layout extends Component {
     if (isNormal) {
       return (
         <div className={classnames(styles.layout, className)}>
-          {noNotification ? null : <Notification />}
-          {pageTitle && <TitleBanner title={pageTitle} hasSearch={hasSearch} />}
+          {!noNotification && <Notification />}
+          {Boolean(pageTitle) && (
+            <TitleBanner title={pageTitle} hasSearch={hasSearch} />
+          )}
           <Loading isLoading={isLoading} className={styles[loadClass]}>
             {children}
           </Loading>
@@ -114,7 +116,7 @@ class Layout extends Component {
           { [styles.hasNav]: hasMenu && !hasSubNav }
         )}
       >
-        {noNotification ? null : <Notification />}
+        {!noNotification && <Notification />}
 
         {hasMenu && <SideNav hasSubNav={hasSubNav} />}
 

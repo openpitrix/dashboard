@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
-import { getLoginDate } from 'src/utils/index';
+import { getLoginDate } from 'utils';
 
 import styles from './index.scss';
 
