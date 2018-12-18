@@ -20,12 +20,9 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageLoading: true
-    };
-  }
+  state = {
+    pageLoading: true
+  };
 
   async componentWillMount() {
     const { rootStore, match } = this.props;
@@ -50,10 +47,11 @@ export default class Home extends Component {
       window.onscroll = this.handleScroll;
     }
 
-    appStore.selectStatus = 'active';
-    appStore.categoryId = category;
-    appStore.searchWord = search;
-    appStore.pageSize = 48;
+    Object.assign(appStore, {
+      selectStatus: 'active',
+      categoryId: category,
+      searchWord: search
+    });
     await appStore.fetchAll();
 
     appStore.homeApps = appStore.apps.slice();
@@ -149,7 +147,14 @@ export default class Home extends Component {
     } = this.props;
     const { pageLoading } = this.state;
     const { fixNav } = rootStore;
-    const { homeApps, isProgressive } = appStore;
+    const {
+      homeApps,
+      isProgressive,
+      isLoading,
+      hasMore,
+      currentPage,
+      loadMoreHomeApps
+    } = appStore;
     const categories = categoryStore.categories;
 
     const { category, search } = match.params;
@@ -172,10 +177,10 @@ export default class Home extends Component {
           <Loading isLoading={pageLoading} className={styles.homeLoad}>
             <InfiniteScroll
               className={styles.apps}
-              pageStart={appStore.currentPage}
-              loadMore={appStore.loadMoreHomeApps}
-              isLoading={appStore.isLoading}
-              hasMore={(category || search) && appStore.hasMore}
+              pageStart={currentPage}
+              loadMore={loadMoreHomeApps}
+              isLoading={isLoading}
+              hasMore={(category || search) && hasMore}
             >
               <AppList
                 apps={showApps}
