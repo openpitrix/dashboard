@@ -3,11 +3,12 @@
 .error {
   padding: 80px;
   min-height: 100vh;
-  color: $R200;
   width: 800px;
   margin: 0 auto;
   details {
     margin: 20px auto;
+    padding: 20px;
     white-space: pre-wrap;
+    background: rgba(206, 17, 38, 0.05);
   }
 }

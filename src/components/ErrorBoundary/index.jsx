@@ -23,10 +23,10 @@ export default class ErrorBoundary extends React.Component {
     if (errorInfo) {
       return (
         <div className={styles.error}>
-          <h2>An error occurred during react's lifecycle methods.</h2>
+          <h2>Something went wrong..</h2>
           <details open>
             <summary>{error && error.toString()}</summary>
-            {errorInfo.componentStack}
+            <pre>{error.stack || errorInfo.componentStack}</pre>
           </details>
         </div>
       );
