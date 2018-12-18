@@ -96,6 +96,43 @@
     font-size: 12px;
     color: $P75;
     text-align: center;
+    opacity: 1;
+  }
+
+  .iconShow {
+    position: relative;
+    display: inline-block;
+    width: 96px;
+    height: 96px;
+    line-height: 96px;
+    text-align: center;
+
+    &:hover {
+      >img {
+        opacity: 0.4;
+        -webkit-filter: blur(3px);
+        filter: blur(3px);
+      }
+      .delete{
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+
+    >img{
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+
+    .delete{
+      display: none;
+      position: absolute;
+      left: 35px;
+      font-size: 12px;
+      color: $P75;
+      opacity: 2.5;
+    }
   }
 
   .operateBtns {
@@ -118,13 +155,15 @@
 
   .pictrues {
     margin-bottom: 20px;
-    width: 164px * 6;
+    width: 1150px;
     li {
       display: inline-block;
       margin-right: 20px;
       width: 144px;
       height: 90px;
+      line-height: 90px;
       background-color: $N0;
+      text-align: center;
     }
   }
 
@@ -136,11 +175,13 @@
       display: inline-block;
       margin: 0 12px;
       color: $P75;
+      cursor: pointer;
     }
 
     .deleteAll {
       color: $P75;
       opacity: 0.5;
+      cursor: pointer;
     }
   }
 }
@@ -167,11 +208,18 @@
     box-shadow: none;
     line-height: 24px;
     font-size: 12px;
+    color: $N300;
 
     &::-webkit-input-placeholder,
     &:-moz-placeholder,
     &::-moz-placeholder {
       color: $N30;
     }
+  }
+
+  .previewInfo {
+    line-height: 24px;
+    font-size: 12px;
+    color: $N300;
   }
 }

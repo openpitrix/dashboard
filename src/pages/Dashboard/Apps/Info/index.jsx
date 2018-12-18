@@ -1,39 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
+import _ from 'lodash';
 
 import {
-  Input, Select, Icon, Button, Upload
+  Input, Select, Icon, Button, Upload, Image
 } from 'components/Base';
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 
 import styles from './index.scss';
 
-const actionName = {
-  draft: 'submit',
-  submitted: 'cancel',
-  passed: 'release',
-  rejected: 'submit'
-};
 const tags = ['Base Info', 'Instructions', 'Terms of service'];
 
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  categoryStore: rootStore.categoryStore
 }))
 @observer
 export default class Info extends Component {
   async componentDidMount() {
-    const { appVersionStore, match } = this.props;
+    const {
+      appStore, appVersionStore, categoryStore, match
+    } = this.props;
     const { appId } = match.params;
 
     // query this version relatived app info
     await appVersionStore.fetchAll({ app_id: appId });
+
+    // judge you can edit app info
+    const { versions } = appVersionStore;
+    appStore.isEdit = !_.find(versions, { status: 'submitted' });
+
+    // query categories data for category select
+    await categoryStore.fetchAll();
   }
 
   componentWillUnmount() {
@@ -46,118 +51,224 @@ export default class Info extends Component {
     appStore.detailTab = tab;
   };
 
-  updateLog = async () => {
-    const { appVersionStore, t } = this.props;
-    const { version, description, modify } = appVersionStore;
-    await modify({
-      version_id: version.version_id,
-      description
-    });
-
-    const result = appVersionStore.createResult;
-    if (!(result && result.err)) {
-      appVersionStore.info(t('Update log successful'));
-    }
+  changePreview = type => {
+    const { appDetail } = this.props.appStore;
+    const previewType = type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
+    appDetail[previewType] = !appDetail[previewType];
   };
 
-  resetBaseInfo = () => {
-    const { appVersionStore } = this.props;
-  };
+  renderScreenshots() {
+    const { appStore, t } = this.props;
+    const {
+      isEdit,
+      appDetail,
+      checkScreenshot,
+      uploadScreenshot,
+      deleteScreenshot
+    } = appStore;
 
-  renderScreenshot(isEdit) {
-    const { t } = this.props;
+    const { screenshots } = appDetail;
+    const len = _.isArray(screenshots) ? screenshots.length : 0;
 
     return (
       <div className={styles.screenshot}>
         <ul className={styles.pictrues}>
-          <li />
+          {len > 0 ? (
+            screenshots.map((item, index) => (
+              <li key={index}>
+                <Image src={item} isBase64Str />
+              </li>
+            ))
+          ) : (
+            <Fragment>
+              <li />
+              <li />
+              <li />
+            </Fragment>
+          )}
         </ul>
         <div className={styles.words}>
-          0/6 张截图
-          <Upload className={styles.selectFile}>{t('选择文件')}</Upload>
-          <label className={styles.deleteAll}>{t('删除全部')}</label>
+          {screenshots.length}/6 {t('张截图')}
+          {isEdit && (
+            <Upload
+              multiple
+              className={styles.selectFile}
+              checkFile={checkScreenshot}
+              uploadFile={uploadScreenshot}
+            >
+              {t('选择文件')}
+            </Upload>
+          )}
+          {isEdit && (
+            <label className={styles.deleteAll} onClick={deleteScreenshot}>
+              {t('删除全部')}
+            </label>
+          )}
         </div>
       </div>
     );
   }
 
-  renderMakdownNote = () => {
-    const { t } = this.props;
+  renderIcon() {
+    const { appStore, t } = this.props;
+    const {
+      isEdit, appDetail, checkIcon, uploadIcon, deleteIcon
+    } = appStore;
+    const { icon } = appDetail;
+
+    if (icon) {
+      return (
+        <div className={styles.iconShow}>
+          <Image src={icon} isBase64Str />
+          {isEdit && (
+            <label className={styles.delete} onClick={deleteIcon}>
+              {t('Delete')}
+            </label>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <Upload
+        className={styles.selectIcon}
+        checkFile={checkIcon}
+        uploadFile={uploadIcon}
+        disabled={!isEdit}
+      >
+        {isEdit && <span>{t('Select file')}</span>}
+      </Upload>
+    );
+  }
+
+  renderMakdownNote = type => {
+    const { appStore, t } = this.props;
+    const { appDetail, isEdit, saveAppInfo } = appStore;
+    const previewType = type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
+    const isPreview = appDetail[previewType];
 
     return (
       <div className={styles.markdownNote}>
         {t('以下内容编辑支持')}
-        <a href="http://markdownpad.com/" target="blank">
+        <a href="http://markdownpad.com" target="blank">
           Markdown
         </a>
         {t('语法')}
         <div className={styles.buttons}>
-          <Button type="primary">{t('Save')}</Button>
-          <Button>
-            <Icon name="eye" size={20} type="dark" />
-            {t('preview')}
+          <Button
+            type="primary"
+            disabled={!isEdit}
+            onClick={() => saveAppInfo(type)}
+          >
+            {t('Save')}
           </Button>
+          <Button disabled={!isEdit} onClick={() => this.changePreview(type)}>
+            <Icon name={isPreview ? 'pen' : 'eye'} size={20} type="dark" />
+            {t(isPreview ? 'Edit' : 'Preview')}
+          </Button>
+          {type === 'readme' && (
+            <a href="#" target="_blank">
+              <Button>
+                <Icon name="documentation" size={20} type="dark" />
+                {t('查看范例')}
+              </Button>
+            </a>
+          )}
         </div>
       </div>
     );
   };
 
-  renderService(isEdit) {
+  renderService() {
     const { appStore, t } = this.props;
-    const { appDetail } = appStore;
-
-    if (!isEdit) {
-      return <ReactMarkdown source={appDetail.services} />;
-    }
+    const { appDetail, isEdit, changeApp } = appStore;
+    const isPreview = !isEdit || appDetail.isPreviewService;
 
     return (
       <div className={styles.textareaOuter}>
-        {this.renderMakdownNote()}
-        <textarea
-          className="textarea"
-          placeholder={t('开始编写应用的服务条款')}
-        />
+        {this.renderMakdownNote('service')}
+        {isPreview ? (
+          <pre className={styles.previewInfo}>
+            <ReactMarkdown source={appDetail.service} />
+          </pre>
+        ) : (
+          <textarea
+            autoFocus
+            value={appDetail.service}
+            onChange={e => changeApp(e, 'service')}
+            className="textarea"
+            placeholder={t('开始编写应用的服务条款')}
+          />
+        )}
       </div>
     );
   }
 
-  renderInstructions(isEdit) {
+  renderInstructions() {
     const { appStore, t } = this.props;
-    const { appDetail } = appStore;
-
-    if (!isEdit) {
-      return <ReactMarkdown source={appDetail.instructions} />;
-    }
+    const { appDetail, isEdit, changeApp } = appStore;
+    const isPreview = !isEdit || appDetail.isPreviewReadme;
 
     return (
       <div className={styles.textareaOuter}>
-        {this.renderMakdownNote()}
-        <textarea
-          className="textarea"
-          placeholder={t('开始编写应用的使用说明')}
-        />
+        {this.renderMakdownNote('readme')}
+        {isPreview ? (
+          <pre className={styles.previewInfo}>
+            <ReactMarkdown source={appDetail.readme} />
+          </pre>
+        ) : (
+          <textarea
+            autoFocus
+            value={appDetail.readme}
+            onChange={e => changeApp(e, 'readme')}
+            className="textarea"
+            placeholder={t('开始编写应用的使用说明')}
+          />
+        )}
       </div>
     );
   }
 
   renderBaseInfo() {
-    const { appStore, t } = this.props;
+    const { appStore, categoryStore, t } = this.props;
+    const { categories } = categoryStore;
+    const {
+      appDetail,
+      modifyApp,
+      changeApp,
+      changeCategory,
+      resetBaseInfo,
+      isEdit
+    } = appStore;
 
     return (
-      <form className={styles.createForm}>
+      <form id="infoForm" className={styles.createForm} onSubmit={modifyApp}>
         <div className={styles.item}>
           <div className={styles.name}>
             <label>{t('Name')}</label>
             <p className={styles.noteWord}>{t('应用的重要标识')}</p>
           </div>
-          <Input name="name" maxLength="30" />
+          <Input
+            name="name"
+            value={appDetail.name}
+            onChange={e => changeApp(e, 'name')}
+            maxLength="50"
+            required
+            disabled={!isEdit}
+          />
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
             <label>{t('一句话介绍')}</label>
             <p className={styles.noteWord}>{t('对应用的概括性介绍')}</p>
           </div>
-          <Input name="name" maxLength="100" />
+          <Input
+            name="keywords"
+            maxLength="200"
+            value={appDetail.keywords}
+            onChange={e => changeApp(e, 'keywords')}
+            disabled={!isEdit}
+          />
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
@@ -166,7 +277,12 @@ export default class Info extends Component {
               {t('在用户搜索应用时会非常有帮助')}
             </p>
           </div>
-          <textarea name="name" maxLength="30" />
+          <textarea
+            name="description"
+            value={appDetail.description}
+            onChange={e => changeApp(e, 'description')}
+            disabled={!isEdit}
+          />
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
@@ -176,7 +292,7 @@ export default class Info extends Component {
               {t('图形大小：')}96px*96*px
             </p>
           </div>
-          <Upload className={styles.selectIcon}>{t('Select file')}</Upload>
+          {this.renderIcon()}
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
@@ -188,7 +304,7 @@ export default class Info extends Component {
               {t('最少3张，最多6张')}
             </p>
           </div>
-          {this.renderScreenshot()}
+          {this.renderScreenshots()}
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
@@ -197,8 +313,16 @@ export default class Info extends Component {
               {t('选择适合的应用分类，便于用户更快发现你的应用')}
             </p>
           </div>
-          <Select>
-            <Select.Option>分类1</Select.Option>
+          <Select
+            value={appDetail.category_id}
+            onChange={changeCategory}
+            disabled={!isEdit}
+          >
+            {categories.map(item => (
+              <Select.Option key={item.category_id} value={item.category_id}>
+                {item.name}
+              </Select.Option>
+            ))}
           </Select>
         </div>
         <div className={styles.item}>
@@ -206,11 +330,22 @@ export default class Info extends Component {
             <label>{t('服务商网站')}</label>
             <p className={styles.noteWord}>{t('服务商的官方网站地址')}</p>
           </div>
-          <Input className={styles.input} name="name" maxLength="100" />
+          <Input
+            className={styles.input}
+            name="home"
+            maxLength="200"
+            value={appDetail.home}
+            onChange={e => changeApp(e, 'home')}
+            disabled={!isEdit}
+          />
         </div>
         <div className={styles.operateBtns}>
-          <Button type="primary">{t('Save')}</Button>
-          <Button onClick={this.resetBaseInfo}>{t('Reset')}</Button>
+          <Button type="primary" htmlType="submit" disabled={!isEdit}>
+            {t('Save')}
+          </Button>
+          <Button onClick={resetBaseInfo} disabled={!isEdit}>
+            {t('Reset')}
+          </Button>
         </div>
       </form>
     );
@@ -218,11 +353,8 @@ export default class Info extends Component {
 
   render() {
     const { appStore, match, t } = this.props;
-    const { detailTab } = appStore;
+    const { detailTab, isEdit } = appStore;
     const { appId } = match.params;
-
-    // todo: the logic need to discuss
-    const isEdit = false;
 
     return (
       <Layout className={styles.appInfo} pageTitle={t('App Info')} isCenterPage>
@@ -243,8 +375,8 @@ export default class Info extends Component {
         <DetailTabs tabs={tags} changeTab={this.changeTab} />
         <Card>
           {detailTab === 'Base Info' && this.renderBaseInfo()}
-          {detailTab === 'Instructions' && this.renderInstructions(isEdit)}
-          {detailTab === 'Terms of service' && this.renderService(isEdit)}
+          {detailTab === 'Instructions' && this.renderInstructions()}
+          {detailTab === 'Terms of service' && this.renderService()}
         </Card>
       </Layout>
     );
