@@ -102,7 +102,7 @@ export default class Apps extends Component {
 
     return (
       <Layout className={styles.layout} noSubMenu={true}>
-        <Loading margin={0} className={styles.page} isLoading={pageLoading}>
+        <Loading className={styles.page} isLoading={pageLoading}>
           {this.renderHeader()}
           <InfiniteScroll
             pageStart={appStore.currentPage}
