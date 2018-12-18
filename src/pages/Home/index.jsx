@@ -8,6 +8,7 @@ import Nav from 'components/Nav';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
+import InfiniteScroll from 'components/InfiniteScroll';
 import { getScrollTop, getScrollBottom } from 'src/utils';
 
 import styles from './index.scss';
@@ -19,6 +20,10 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
+  state = {
+    pageLoading: true
+  };
+
   async componentWillMount() {
     const { rootStore, match } = this.props;
     const { category, search } = match.params;
@@ -33,7 +38,6 @@ export default class Home extends Component {
   async componentDidMount() {
     const { appStore, categoryStore, match } = this.props;
     const { category, search } = match.params;
-    const filterParams = { status: 'active', noLimit: true };
 
     window.scroll({ top: 0 });
     await categoryStore.fetchAll();
@@ -43,15 +47,17 @@ export default class Home extends Component {
       window.onscroll = this.handleScroll;
     }
 
-    if (category) {
-      filterParams.category_id = category;
-    }
-    if (search) {
-      filterParams.search_word = search;
-    }
-    await appStore.fetchAll(filterParams);
+    Object.assign(appStore, {
+      selectStatus: 'active',
+      categoryId: category,
+      searchWord: search
+    });
+    await appStore.fetchAll();
 
     appStore.homeApps = appStore.apps.slice();
+    this.setState({
+      pageLoading: false
+    });
   }
 
   componentWillUnmount() {
@@ -139,8 +145,16 @@ export default class Home extends Component {
     const {
       rootStore, appStore, categoryStore, match
     } = this.props;
+    const { pageLoading } = this.state;
     const { fixNav } = rootStore;
-    const { homeApps, isLoading, isProgressive } = appStore;
+    const {
+      homeApps,
+      isProgressive,
+      isLoading,
+      hasMore,
+      currentPage,
+      loadMoreHomeApps
+    } = appStore;
     const categories = categoryStore.categories;
 
     const { category, search } = match.params;
@@ -160,15 +174,22 @@ export default class Home extends Component {
           className={classnames(styles.content, { [styles.fixNav]: fixNav })}
         >
           <Nav className={styles.nav} navs={categories.toJSON()} />
-          <Loading isLoading={isLoading} className={styles.homeLoad}>
-            <AppList
+          <Loading isLoading={pageLoading} className={styles.homeLoad}>
+            <InfiniteScroll
               className={styles.apps}
-              apps={showApps}
-              categoryApps={categories.toJSON()}
-              categoryTitle={categoryTitle}
-              appSearch={search}
+              pageStart={currentPage}
+              loadMore={loadMoreHomeApps}
               isLoading={isLoading}
-            />
+              hasMore={(category || search) && hasMore}
+            >
+              <AppList
+                apps={showApps}
+                categoryApps={categories.toJSON()}
+                categoryTitle={categoryTitle}
+                appSearch={search}
+                isLoading={pageLoading}
+              />
+            </InfiniteScroll>
             {isProgressive && (
               <div className={styles.loading}>
                 <div className={styles.loadOuter}>

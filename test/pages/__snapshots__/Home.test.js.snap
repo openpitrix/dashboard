@@ -19,16 +19,13 @@ Array [
       />
     </div>
     <div
-      class="apps"
+      class="loading homeLoad"
     >
       <div
-        class="appList"
+        class="loadOuter"
       >
         <div
-          class="title"
-        />
-        <div
-          class="noData"
+          class="loader"
         />
       </div>
     </div>
