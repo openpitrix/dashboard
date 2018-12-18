@@ -23,7 +23,7 @@ export default class InfiniteScroll extends Component {
     loadMore: _.noop,
     initialLoad: false,
     isLoading: true,
-    loader: <Loading isLoading={true} />,
+    loader: <Loading isLoading />,
     pageStart: 0,
     threshold: 250,
     useCapture: true,
