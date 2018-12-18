@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 import Loading from 'components/Loading';
 import Card from 'pages/Dashboard/Apps/Card';
 
+import InfiniteScroll from 'components/InfiniteScroll';
 import { Link } from 'react-router-dom';
 import { Icon, Button, Input } from 'components/Base';
 import Layout from 'components/Layout';
@@ -32,13 +33,15 @@ export default class Apps extends Component {
   async componentDidMount() {
     const { appStore, appVersionStore, user } = this.props;
     const { user_id } = user;
-    appStore.pageSize = 200;
+
+    appStore.pageSize = 48;
     appStore.userId = user_id;
     await appStore.fetchAll();
     await appVersionStore.fetchAll();
     this.setState({
       pageLoading: false
     });
+    window.scroll({ top: 0 });
   }
 
   componentWillUnmount() {
@@ -99,11 +102,18 @@ export default class Apps extends Component {
 
     return (
       <Layout className={styles.layout} noSubMenu={true}>
-        <Loading className={styles.page} isLoading={pageLoading}>
+        <Loading margin={0} className={styles.page} isLoading={pageLoading}>
           {this.renderHeader()}
-          <div className={styles.cards}>
-            {apps.map(item => <Card key={item.app_id} t={t} data={item} />)}
-          </div>
+          <InfiniteScroll
+            pageStart={appStore.currentPage}
+            loadMore={appStore.loadMore}
+            isLoading={appStore.isLoading}
+            hasMore={appStore.hasMore}
+          >
+            <div className={styles.cards}>
+              {apps.map(item => <Card key={item.app_id} t={t} data={item} />)}
+            </div>
+          </InfiniteScroll>
           {this.renderSearchEmpty()}
         </Loading>
       </Layout>
