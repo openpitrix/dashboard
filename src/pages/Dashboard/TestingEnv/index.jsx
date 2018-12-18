@@ -1,51 +1,60 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
-import Layout, {
-  Grid, Section, Card, BreadCrumb
-} from 'components/Layout';
-import cloudProviders from 'config/cloud-providers';
+import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
+import Tabs from 'components/DetailTabs';
+import { providers, tabs } from 'config/testing-env';
+import Env from './Env';
+import AuthInfo from './AuthInfo';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  rootStore,
   envStore: rootStore.testingEnvStore
 }))
 @observer
 export default class TestingEnv extends React.Component {
-  static propTypes = {};
+  async componentDidMount() {
+    const { updateProviderCounts } = this.props.envStore;
+    const validProviders = _.map(_.filter(providers, p => !p.disabled), 'key');
+    await updateProviderCounts(validProviders);
+  }
 
-  static defaultProps = {};
-
-  componentDidMount() {}
-
-  handleClickPlatform = e => {
-    const { envStore } = this.props;
-    const { platform, disabled } = e.currentTarget.dataset;
-
-    if (!parseInt(disabled)) {
-      envStore.setPlatform(platform);
+  handleClickPlatform = (curPlatform, disabled) => {
+    const { changePlatform } = this.props.envStore;
+    if (!disabled) {
+      changePlatform(curPlatform);
     }
+  };
+
+  handleChangeTab = tab => {
+    this.props.envStore.changeTab(tab);
+  };
+
+  goPage = () => {
+    const { platform = 'qingcloud' } = this.props.envStore;
+    const type = platform !== 'kubernetes' ? 'vm' : 'helm';
+    this.props.history.push(`/dashboard/testing-env/create?type=${type}`);
   };
 
   renderPlatforms() {
     const { envStore, t } = this.props;
-    const { platform } = envStore;
+    const { providerCounts, platform } = envStore;
 
     return (
       <ul className={styles.platforms}>
-        {_.map(cloudProviders, ({
+        {_.map(providers, ({
           name, icon, disabled, count, key
         }) => {
           disabled = Boolean(disabled);
-
+          if (!count) {
+            count = providerCounts[key];
+          }
           const elem = (
             <Fragment>
               <Icon name={icon} type="dark" />
@@ -59,13 +68,11 @@ export default class TestingEnv extends React.Component {
           return (
             <li
               key={key}
-              data-platform={key}
-              data-disabled={+disabled}
               className={classnames(styles.provider, {
                 [styles.disabled]: disabled,
                 [styles.active]: platform === key
               })}
-              onClick={this.handleClickPlatform}
+              onClick={() => this.handleClickPlatform(key, disabled)}
             >
               {disabled ? (
                 <Tooltip
@@ -73,6 +80,7 @@ export default class TestingEnv extends React.Component {
                   content={t('Not support currently')}
                   key={key}
                   targetCls={styles.tooltip}
+                  popperCls={styles.popper}
                 >
                   {elem}
                 </Tooltip>
@@ -86,14 +94,9 @@ export default class TestingEnv extends React.Component {
     );
   }
 
-  renderEnvs() {
-    return 'envs';
-  }
-
   render() {
-    const { t } = this.props;
-
-    console.log('render');
+    const { envStore, t } = this.props;
+    const { curTab, platform } = envStore;
 
     return (
       <Layout noSubMenu className={styles.layout}>
@@ -107,7 +110,20 @@ export default class TestingEnv extends React.Component {
             </Section>
 
             <Section size={9} className={styles.rightPanel}>
-              <Card className={styles.envs}>{this.renderEnvs()}</Card>
+              <Tabs
+                className={styles.tabs}
+                tabs={tabs}
+                defaultTab={curTab}
+                triggerFirst={false}
+                changeTab={this.handleChangeTab}
+              />
+              <div className={styles.body}>
+                {curTab === 'Testing env' ? (
+                  <Env goPage={this.goPage} platform={platform} />
+                ) : (
+                  <AuthInfo goPage={this.goPage} platform={platform} />
+                )}
+              </div>
             </Section>
           </Grid>
         </div>

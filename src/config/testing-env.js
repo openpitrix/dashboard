@@ -1,7 +1,8 @@
-export default [
+export const providers = [
   { name: 'QingCloud', icon: 'qingcloud', key: 'qingcloud' },
   { name: 'Aliyun', icon: 'aliyun', key: 'aliyun' },
   { name: 'Amazon Web Service', icon: 'aws', key: 'aws' },
+  { name: 'Kubernetes', icon: 'kubernetes', key: 'kubernetes' },
   {
     name: 'OpenStack',
     icon: 'openstack',
@@ -14,8 +15,6 @@ export default [
     key: 'vmware',
     disabled: true
   },
-  { name: 'KubeSphere', icon: 'kubesphere', key: 'ks' },
-  { name: 'Kubernetes', icon: 'kubernetes', key: 'k8s' },
   {
     name: 'EdgeWise',
     icon: 'edgewise',
@@ -23,3 +22,5 @@ export default [
     disabled: true
   }
 ];
+
+export const tabs = ['Testing env', 'Authorization info'];

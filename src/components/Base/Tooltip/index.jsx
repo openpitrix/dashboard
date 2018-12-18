@@ -14,6 +14,7 @@ export default class Tooltip extends React.Component {
     isShowArrow: PropTypes.bool,
     onVisibleChange: PropTypes.func,
     placement: PropTypes.string,
+    popperCls: PropTypes.string,
     prefixCls: PropTypes.string,
     showBorder: PropTypes.bool,
     targetCls: PropTypes.string,
@@ -131,6 +132,7 @@ export default class Tooltip extends React.Component {
     const {
       prefixCls,
       targetCls,
+      popperCls,
       className,
       content,
       placement,
@@ -159,9 +161,14 @@ export default class Tooltip extends React.Component {
         </Target>
         <Popper
           positionFixed={true}
-          className={classNames(styles.popper, `${prefixCls}-popper`, {
-            [styles.active]: visible
-          })}
+          className={classNames(
+            styles.popper,
+            popperCls,
+            `${prefixCls}-popper`,
+            {
+              [styles.active]: visible
+            }
+          )}
           placement={placement}
           innerRef={c => {
             this.popper = c;

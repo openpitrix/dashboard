@@ -25,3 +25,4 @@ export CategoryDetail from './Categories/Detail';
 export Users from './Users';
 export UserDetail from './Users/Detail';
 export TestingEnv from './TestingEnv';
+export CreateTestingEnv from './TestingEnv/Create';

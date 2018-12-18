@@ -17,6 +17,7 @@ class LayoutStepper extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    headerCls: PropTypes.string,
     name: PropTypes.string,
     stepOption: PropTypes.shape({
       activeStep: PropTypes.number,
@@ -25,7 +26,8 @@ class LayoutStepper extends Component {
       disableNextStep: PropTypes.bool,
       isLoading: PropTypes.bool,
       nextStep: PropTypes.func
-    })
+    }),
+    titleCls: PropTypes.string
   };
 
   renderTopProgress() {
@@ -35,7 +37,8 @@ class LayoutStepper extends Component {
     const className = activeStep > steps ? 'headerStepFinished' : 'headerStepNotFinished';
 
     const style = {
-      width
+      width,
+      transition: `width 500ms ease`
     };
 
     return (
@@ -81,7 +84,9 @@ class LayoutStepper extends Component {
   }
 
   renderTitle() {
-    const { name, stepOption, t } = this.props;
+    const {
+      name, stepOption, headerCls, titleCls, t
+    } = this.props;
     const { activeStep, steps } = stepOption;
 
     if (activeStep > steps) {
@@ -94,19 +99,20 @@ class LayoutStepper extends Component {
       steps
     });
     const title = t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
+
     return (
       <div className={classnames(styles.stepContent)}>
-        <div className={styles.stepName}>{header}</div>
-        <div className={styles.stepExplain}>{title}</div>
+        <div className={classnames(styles.stepName, headerCls)}>{header}</div>
+        <div className={classnames(styles.stepExplain, titleCls)}>{title}</div>
       </div>
     );
   }
 
   renderFooter() {
+    const { t, stepOption, name } = this.props;
     const {
-      t, stepOption, name, disableNextStep
-    } = this.props;
-    const { activeStep, steps, nextStep } = stepOption;
+      activeStep, steps, nextStep, disableNextStep
+    } = stepOption;
 
     if (activeStep > steps) {
       return null;

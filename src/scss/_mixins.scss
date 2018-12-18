@@ -75,7 +75,6 @@
   }
 }
 
-
 @mixin rotate-frames() {
   0% {
     -webkit-transform:rotate(0deg);
@@ -88,3 +87,10 @@
 }
 @-webkit-keyframes rotate {@include rotate-frames;}
 @keyframes rotate {@include rotate-frames;}
+
+@mixin centerAll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

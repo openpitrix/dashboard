@@ -221,3 +221,11 @@ export function mappingStatus(status) {
   }
   return status;
 }
+
+export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * check if app provider is helm, or query string type is helm
+ * @param type
+ */
+export const isHelm = type => ['kubernetes', 'helm'].includes(type);

@@ -42,6 +42,12 @@ Store.prototype = {
 
     this.notify(message, 'error');
   },
+  getValueFromEvent(val) {
+    if (typeof val === 'object' && val.nativeEvent) {
+      return val.currentTarget.value;
+    }
+    return val;
+  },
   /**
    * used in list page fetch all data
    *
@@ -85,7 +91,7 @@ Store.prototype = {
         }
 
         // error handling
-        if (res && res.err && res.status >= 400) {
+        if (_.isObject(res) && _.has(res, 'err') && res.status >= 400) {
           this.error(res.errDetail || res.err || 'internal error');
           return res;
         }

@@ -74,6 +74,7 @@ const routes = {
   '/:dash/account': Account,
 
   '/:dash/testing-env': Dash.TestingEnv,
+  '/:dash/testing-env/create': Dash.CreateTestingEnv,
 
   '*': Home
 };

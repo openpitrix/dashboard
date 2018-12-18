@@ -11,10 +11,13 @@ import App, {
 import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
-import Runtime, { Create as RuntimeCreate } from './runtime';
+import Runtime, {
+  Create as RuntimeCreate,
+  Credential as RuntimeCredential
+} from './runtime';
 import User, { Role } from './user';
 import sshKey from './key_pair';
-import TestingEnv from './testing_env';
+import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -47,6 +50,10 @@ export default class RootStore extends Store {
   @action
   setUser(user) {
     this.user = user;
+  }
+
+  getUser() {
+    return this.user;
   }
 
   @action
@@ -86,6 +93,11 @@ export default class RootStore extends Store {
     this.notifications = this.notifications.filter(item => item.ts !== ts);
   };
 
+  @action
+  clearNotify = () => {
+    this.notifications = [];
+  };
+
   register(name, Ctor, withState = true) {
     if (typeof Ctor !== 'function') {
       throw Error('store should be constructor function');
@@ -96,6 +108,23 @@ export default class RootStore extends Store {
     this[name] = new Ctor(withState ? this.state : '', name);
     this[name].notify = this.notify.bind(this);
     this[name].updateUser = this.updateUser.bind(this);
+    this[name].getStore = this.getRegisteredStore.bind(this);
+    this[name].getUser = this.getUser.bind(this);
+  }
+
+  getRegisteredStore(name = '') {
+    if (!name) {
+      throw Error('Bad store name');
+    }
+    if (!name.endsWith('Store')) {
+      name += 'Store';
+    }
+
+    if (!(this[name] instanceof Store)) {
+      throw Error(`Unregisterd store: ${name}`);
+    }
+
+    return this[name];
   }
 
   registerStores() {
@@ -112,6 +141,7 @@ export default class RootStore extends Store {
     // runtime
     this.register('runtime', Runtime);
     this.register('runtimeCreate', RuntimeCreate);
+    this.register('runtimeCredential', RuntimeCredential);
 
     // repo
     this.register('repo', Repo);
@@ -128,5 +158,6 @@ export default class RootStore extends Store {
 
     // testing env, authorization
     this.register('testingEnv', TestingEnv);
+    this.register('testingEnvCreate', TestingEnvCreate);
   }
 }

@@ -1,0 +1,121 @@
+@import "~scss/vars";
+
+.pgHeader{
+  font-size: $size-small !important;
+  color: $N75 !important;
+}
+.pgTitle {
+  font-size: 20px !important;
+  color: $N500 !important;
+}
+
+.wrap {
+  display: flex;
+  .info {
+    margin: 0 auto;
+    width: 453px;
+    height: 508px;
+    &.fmValidated {
+      height: 452px;
+    }
+
+    .createForm{
+      .formCtrl {
+        margin-bottom: 32px;
+        .label {
+          display: block;
+          font-size: $size-normal;
+          font-weight: 500;
+          color: $N500;
+          margin-bottom: 8px;
+        }
+        .input {
+          height: 32px;
+          border-radius: 2px;
+          background-color: $N0;
+        }
+        .txtCredential {
+          min-height: 232px;
+        }
+      }
+      .btnVerify {
+
+      }
+    }
+
+    .fieldSetName {
+      margin-top: 28px;
+    }
+
+    .errMsg{
+      position: relative;
+      display: inline-block;
+      margin-left: 12px;
+      width: 80%;
+
+      .msg {
+        display: inline-block;;
+        margin-left: 5px;
+        font-size: $size-small;
+        color: $N75;
+
+        &.fixLoadingPos {
+          margin-left: 20px;
+        }
+      }
+      .spinner {
+        position: relative;
+        top: -17px;
+        left: -120px;
+        .loading {
+          width: 16px;
+          height: 16px;
+          border-width: 1px;
+        }
+      }
+      :global {
+        .icon {
+          vertical-align: middle;
+        }
+      }
+
+      .iconSuccess {
+        svg {
+          --primary-color: #{$G100};
+          --secondary-color: #{$G30};
+        }
+      }
+      .iconFailed {
+        svg {
+          --primary-color: #{$R400};
+          --secondary-color: #{$R30};
+        }
+      }
+    }
+
+    .tips{
+      &>p {
+        margin-top: 24px;
+        font-size: $size-small;
+        font-weight: 500;
+        line-height: 1.67;
+        color: $N300;
+        :global {
+          .icon {
+            vertical-align: sub;
+          }
+        }
+      }
+      &>ol{
+        padding-left: 16px;
+        margin-top: 8px;
+        &>li {
+          list-style-type: decimal;
+          font-size: $size-small;
+          color: $N300;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}
