@@ -1,31 +1,43 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
-import { getProgress } from 'utils';
+import { getFormData, getProgress } from 'utils';
 import ts from 'config/translation';
+import { t } from 'i18next';
 
 import Store from '../Store';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
+const maxsize = 2 * 1024 * 1024;
 
 export default class AppStore extends Store {
   @observable apps = [];
 
   @observable homeApps = [];
 
+  // store page category apps
   @observable storeApps = [];
 
-  // store page category apps
+  // normal user store page app total
   @observable storeTotal = 0;
 
-  // normal user store page app total
+  // menu apps
   @observable menuApps = [];
 
-  // menu apps
+  // judje query menu apps
   @observable hasMeunApps = false;
 
-  // judje query menu apps
-  @observable appDetail = {};
+  @observable
+  appDetail = {
+    name: '',
+    keywords: '',
+    deccription: '',
+    category_id: '',
+    home: '',
+    readme: '',
+    icon: '',
+    screenshots: []
+  };
 
   @observable summaryInfo = {};
 
@@ -85,6 +97,14 @@ export default class AppStore extends Store {
   @observable createResult = null;
 
   @observable hasMore = false;
+
+  isEdit = true;
+
+  resetAppDetail = {};
+
+  @observable iconShow = '';
+
+  @observable screenshotsShow = '';
 
   // menu actions logic
   @observable
@@ -193,7 +213,12 @@ export default class AppStore extends Store {
       app_id: appId,
       isGlobalQuery: true
     });
-    this.appDetail = get(result, 'app_set[0]', {});
+    const appDetail = get(result, 'app_set[0]', {});
+    this.appDetail = _.assign(appDetail, {
+      category_id: get(appDetail, 'category_set[0].category_id', '')
+    });
+    // set this variable for reset app info
+    this.resetAppDetail = { ...this.appDetail };
     this.isLoading = false;
   };
 
@@ -234,6 +259,103 @@ export default class AppStore extends Store {
     this.isLoading = true;
     this.createResult = await this.request.patch('apps', params);
     this.isLoading = false;
+
+    if (get(this.createResult, 'app_id')) {
+      this.info('应用信息保存成功');
+    }
+  };
+
+  @action
+  modifyApp = async e => {
+    e.preventDefault();
+
+    const data = getFormData(e.target);
+    await this.modify(
+      _.assign(data, {
+        app_id: this.appDetail.app_id,
+        category_id: this.appDetail.category_id,
+        icon: this.appDetail.icon,
+        screenshots: this.appDetail.screenshots
+      })
+    );
+  };
+
+  @action
+  changeApp = (event, type) => {
+    this.appDetail[type] = event.target.value;
+  };
+
+  @action
+  changeCategory = value => {
+    this.appDetail.category_id = value;
+  };
+
+  @action
+  saveAppInfo = async type => {
+    await this.modify({
+      app_id: this.appDetail.app_id,
+      [type]: this.appDetail[type]
+    });
+  };
+
+  @action
+  checkIcon = file => {
+    if (!/\.(png)$/.test(file.name.toLocaleLowerCase())) {
+      this.error(t('icon_format_note'));
+      return false;
+    }
+
+    if (file.size > maxsize) {
+      this.error(t('The file size cannot exceed 2M'));
+      return false;
+    }
+
+    return true;
+  };
+
+  @action
+  uploadIcon = (base64Str, file) => {
+    this.appDetail.icon = base64Str;
+  };
+
+  @action
+  deleteIcon = () => {
+    this.appDetail.icon = '';
+  };
+
+  @action
+  checkScreenshot = file => {
+    if (!/\.(png|jpg)$/.test(file.name.toLocaleLowerCase())) {
+      this.error(t('screenshot_format_note'));
+      return false;
+    }
+
+    if (file.size > maxsize) {
+      this.error(t('The file size cannot exceed 2M'));
+      return false;
+    }
+
+    return true;
+  };
+
+  @action
+  uploadScreenshot = (base64Str, file) => {
+    const { screenshots } = this.appDetail;
+    const len = _.isArray(screenshots) ? screenshots.length : 0;
+    if (len >= 6) {
+      return this.error(t('最多只能上传6张界面截图'));
+    }
+
+    if (_.isArray(screenshots)) {
+      this.appDetail.screenshots.push(base64Str);
+    } else {
+      this.appDetail.screenshots = [base64Str];
+    }
+  };
+
+  @action
+  deleteScreenshot = () => {
+    this.appDetail.screenshots = [];
   };
 
   @action
@@ -385,6 +507,11 @@ export default class AppStore extends Store {
     this.createError = '';
     this.createAppId = '';
     this.createResult = null;
+  };
+
+  @action
+  resetBaseInfo = () => {
+    _.assign(this.appDetail, this.resetAppDetail);
   };
 
   @action

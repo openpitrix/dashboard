@@ -11,13 +11,15 @@ export default class Image extends React.Component {
     className: PropTypes.string,
     iconLetter: PropTypes.string,
     iconSize: PropTypes.number,
+    isBase64Str: PropTypes.bool,
     src: PropTypes.string
   };
 
   static defaultProps = {
     iconSize: 24,
     src: '',
-    iconLetter: ''
+    iconLetter: '',
+    isBase64Str: false
   };
 
   state = {
@@ -46,10 +48,19 @@ export default class Image extends React.Component {
 
   render() {
     const {
-      src, iconLetter, className, iconSize, ...rest
+      src,
+      iconLetter,
+      className,
+      iconSize,
+      isBase64Str,
+      ...rest
     } = this.props;
     const { failed } = this.state;
-    const imgStr = src && startsWith(src, 'att-') ? `/attachments/${src}` : src;
+
+    let imgStr = src && startsWith(src, 'att-') ? `/attachments/${src}` : src;
+    if (isBase64Str && !imgStr.startsWith('/attachments/')) {
+      imgStr = `data:image/png;data:image/svg;data:image/jpg;base64,${src}`;
+    }
 
     if (failed) {
       const style = {
