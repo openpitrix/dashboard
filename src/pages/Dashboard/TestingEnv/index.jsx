@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
 import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
+import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
 import { providers, tabs } from 'config/testing-env';
 import Env from './Env';
@@ -19,8 +20,15 @@ import styles from './index.scss';
 }))
 @observer
 export default class TestingEnv extends React.Component {
-  componentDidMount() {
-    this.props.envStore.updateProviderCounts();
+  state = {
+    loadedRt: false
+  };
+
+  async componentDidMount() {
+    await this.props.envStore.updateProviderCounts();
+    this.setState({
+      loadedRt: true
+    });
   }
 
   handleClickPlatform = (curPlatform, disabled) => {
@@ -32,12 +40,6 @@ export default class TestingEnv extends React.Component {
 
   handleChangeTab = tab => {
     this.props.envStore.changeTab(tab);
-  };
-
-  goPage = () => {
-    const { platform = 'qingcloud' } = this.props.envStore;
-    const type = platform !== 'kubernetes' ? 'vm' : 'helm';
-    this.props.history.push(`/dashboard/testing-env/create?type=${type}`);
   };
 
   renderPlatforms() {
@@ -94,6 +96,7 @@ export default class TestingEnv extends React.Component {
 
   render() {
     const { envStore, t } = this.props;
+    const { loadedRt } = this.state;
     const { curTab, platform } = envStore;
 
     return (
@@ -116,11 +119,13 @@ export default class TestingEnv extends React.Component {
                 changeTab={this.handleChangeTab}
               />
               <div className={styles.body}>
-                {curTab === 'Testing env' ? (
-                  <Env goPage={this.goPage} platform={platform} />
-                ) : (
-                  <AuthInfo goPage={this.goPage} platform={platform} />
-                )}
+                <Loading isLoading={!loadedRt}>
+                  {curTab === 'Testing env' ? (
+                    <Env platform={platform} />
+                  ) : (
+                    <AuthInfo platform={platform} />
+                  )}
+                </Loading>
               </div>
             </Section>
           </Grid>

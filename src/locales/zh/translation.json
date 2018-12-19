@@ -468,6 +468,11 @@
   "Please validate env auth info": "请验证授权信息",
   "Auth info name is empty": "授权信息名称为空",
 
-  "Delete runtime successfully": "删除环境成功"
+  "Delete runtime successfully": "删除环境成功",
+
+  "You can": "你可以",
+  "Choose from already saved resource": "从已添加的当中选择：",
+  "Or": "或者",
+  "Newly create": "添加全新的..."
 
 }

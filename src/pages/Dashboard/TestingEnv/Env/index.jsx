@@ -1,18 +1,23 @@
 import React, { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
+
 import { providers } from 'config/testing-env';
 
-import { Icon, Button, Popover } from 'components/Base';
+import {
+  Icon, Button, Popover, Input
+} from 'components/Base';
 import {
   Grid, Section, Card, Dialog
 } from 'components/Layout';
 import Loading from 'components/Loading';
 
 import styles from '../index.scss';
+import myStyles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -22,24 +27,23 @@ import styles from '../index.scss';
   credentialStore: rootStore.runtimeCredentialStore
 }))
 @observer
-export default class Env extends React.Component {
+class Env extends React.Component {
   static propTypes = {
-    goPage: PropTypes.func,
     platform: PropTypes.string
   };
 
   static defaultProps = {
-    platform: 'qingcloud',
-    goPage: _.noop
+    platform: 'qingcloud'
   };
 
-  componentDidMount() {
-    this.props.envStore.fetchData();
+  async componentDidMount() {
+    await this.props.envStore.fetchData();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.platform !== this.props.platform) {
-      this.props.envStore.fetchData();
+  async componentDidUpdate(prevProps) {
+    const { platform, envStore } = this.props;
+    if (prevProps.platform !== platform) {
+      await envStore.fetchData();
     }
   }
 
@@ -47,6 +51,11 @@ export default class Env extends React.Component {
     const { showModal, setCurrentId } = this.props.envStore;
     showModal(type);
     setCurrentId(id);
+  };
+
+  goPage = () => {
+    const { platform = 'qingcloud' } = this.props.envStore;
+    this.props.history.push(`/dashboard/testing-env/add?provider=${platform}`);
   };
 
   renderMenu(runtime_id) {
@@ -74,12 +83,20 @@ export default class Env extends React.Component {
   }
 
   renderModals() {
-    const { envStore, t } = this.props;
     const {
-      isModalOpen, modalType, hideModal, handleOperation
+      envStore, runtimeStore, credentialStore, t
+    } = this.props;
+    const {
+      isModalOpen,
+      modalType,
+      hideModal,
+      selectId,
+      handleOperation
     } = envStore;
+    const { runtimes } = runtimeStore;
 
     if (modalType === 'modify_runtime') {
+      const rt = _.find(runtimes, { runtime_id: selectId });
       return (
         <Dialog
           title={t('Modify Runtime')}
@@ -87,19 +104,63 @@ export default class Env extends React.Component {
           onCancel={hideModal}
           onSubmit={handleOperation}
         >
-          <p>modify runtime</p>
+          <div className={myStyles.fmCtrl}>
+            <label className={myStyles.label}>{t('Name')}</label>
+            <Input
+              className={myStyles.field}
+              name="name"
+              defaultValue={rt.name}
+            />
+          </div>
+          <div className={myStyles.fmCtrl}>
+            <label className={myStyles.label}>{t('Description')}</label>
+            <Input
+              className={myStyles.field}
+              name="description"
+              defaultValue={rt.description}
+            />
+          </div>
         </Dialog>
       );
     }
     if (modalType === 'switch_auth') {
+      const { credentials } = credentialStore;
+      const { selectCredentialId, setCredentialId } = envStore;
       return (
         <Dialog
           title={t('Switch authorization info')}
           isOpen={isModalOpen}
           onCancel={hideModal}
           onSubmit={handleOperation}
+          className={myStyles.dialog}
         >
-          <p>switch auth info</p>
+          {_.map(
+            credentials,
+            (
+              {
+                name, description, runtime_credential_id, create_time
+              },
+              idx
+            ) => {
+              const checked = selectCredentialId === runtime_credential_id;
+
+              return (
+                <Card
+                  className={classnames(myStyles.item, {
+                    [myStyles.checked]: checked
+                  })}
+                  key={idx}
+                  onClick={() => setCredentialId(runtime_credential_id)}
+                >
+                  <span className={myStyles.name}>{name}</span>
+                  <span className={myStyles.desc}>{description}</span>
+                  <span className={myStyles.icon}>
+                    {checked && <Icon name="check" />}
+                  </span>
+                </Card>
+              );
+            }
+          )}
         </Dialog>
       );
     }
@@ -118,7 +179,7 @@ export default class Env extends React.Component {
   }
 
   renderEmpty() {
-    const { envStore, goPage, t } = this.props;
+    const { envStore, t } = this.props;
     const platformName = _.get(
       _.find(providers, { key: envStore.platform }),
       'name',
@@ -129,7 +190,11 @@ export default class Env extends React.Component {
       <Card className={styles.emptyData}>
         <p>{t('No env')}</p>
         <p>{t('TIPS_NOT_ADD_ENV', { env: platformName })}</p>
-        <Button type="primary" className={styles.btnAddEnv} onClick={goPage}>
+        <Button
+          type="primary"
+          className={styles.btnAddEnv}
+          onClick={this.goPage}
+        >
           <Icon name="add" type="white" />
           {t('Add')}
         </Button>
@@ -143,7 +208,6 @@ export default class Env extends React.Component {
       runtimeStore,
       credentialStore,
       clusterStore,
-      goPage,
       t
     } = this.props;
     const { platform } = envStore;
@@ -212,7 +276,7 @@ export default class Env extends React.Component {
           }
         )}
         <Section size={6} className={styles.cardAddEnv}>
-          <Button className={styles.btnAdd} onClick={goPage}>
+          <Button className={styles.btnAdd} onClick={this.goPage}>
             <Icon name="add" type="dark" />
             {t('Add new env')}
           </Button>
@@ -233,3 +297,5 @@ export default class Env extends React.Component {
     );
   }
 }
+
+export default withRouter(Env);

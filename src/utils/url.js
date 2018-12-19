@@ -1,3 +1,5 @@
+import qs from 'query-string';
+
 const dashboardPrefix = '/dashboard';
 
 const toUrl = path => {
@@ -21,4 +23,9 @@ const needAuth = route => {
   return paths.includes(route);
 };
 
-export { toUrl, needAuth };
+const getUrlParam = key => {
+  const query = qs.parse(location.search);
+  return key ? query[key] : query;
+};
+
+export { toUrl, needAuth, getUrlParam };

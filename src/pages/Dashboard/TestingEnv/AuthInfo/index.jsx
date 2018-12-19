@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
@@ -18,15 +19,13 @@ import styles from '../index.scss';
   credentialStore: rootStore.runtimeCredentialStore
 }))
 @observer
-export default class AuthInfo extends React.Component {
+class AuthInfo extends React.Component {
   static propTypes = {
-    goPage: PropTypes.func,
     platform: PropTypes.string
   };
 
   static defaultProps = {
-    platform: 'qingcloud',
-    goPage: _.noop
+    platform: 'qingcloud'
   };
 
   componentDidMount() {
@@ -44,6 +43,13 @@ export default class AuthInfo extends React.Component {
   };
 
   handleSubmitAction = () => {};
+
+  goPage = () => {
+    const { platform = 'qingcloud' } = this.props.envStore;
+    this.props.history.push(
+      `/dashboard/testing-env/add?type=credential&provider=${platform}`
+    );
+  };
 
   renderMenu() {
     const { t } = this.props;
@@ -108,7 +114,7 @@ export default class AuthInfo extends React.Component {
   }
 
   renderContent() {
-    const { credentialStore, goPage, t } = this.props;
+    const { credentialStore, t } = this.props;
     const { credentials } = credentialStore;
 
     return (
@@ -140,7 +146,7 @@ export default class AuthInfo extends React.Component {
         )}
         <div className={styles.addAuthInfo}>
           <Icon name="add" />
-          <span onClick={goPage} className={styles.btnAdd}>
+          <span onClick={this.goPage} className={styles.btnAdd}>
             {t('Add authorization info')}
           </span>
         </div>
@@ -160,3 +166,5 @@ export default class AuthInfo extends React.Component {
     );
   }
 }
+
+export default withRouter(AuthInfo);

@@ -27,20 +27,36 @@ import styles from './index.scss';
 }))
 @observer
 export default class CreateTestingEnv extends React.Component {
+  componentDidMount() {
+    this.props.envStore.checkStoreWhenInitPage([this.getUrlParam('provider')]);
+  }
+
   componentWillUnmount() {
     const { rootStore, createEnvStore } = this.props;
     createEnvStore.reset();
     rootStore.clearNotify();
   }
 
+  getUrlParam(key = '') {
+    const query = qs.parse(this.props.location.search);
+    return key ? query[key] : query;
+  }
+
   async componentDidUpdate(prevProps) {
     const {
-      activeStep, credentialStore, createdRuntime, history
+      activeStep,
+      credentialStore,
+      createEnvStore,
+      createdRuntime,
+      history
     } = this.props;
     const { credential, fetchZonesByCredential } = credentialStore;
+    const { selectCredentialId } = createEnvStore;
 
     if (prevProps.activeStep === 1 && activeStep === 2) {
-      await fetchZonesByCredential(credential.runtime_credential_id);
+      await fetchZonesByCredential(
+        selectCredentialId || credential.runtime_credential_id
+      );
     }
 
     if (activeStep === 2 && createdRuntime.runtime_id) {
@@ -61,15 +77,90 @@ export default class CreateTestingEnv extends React.Component {
 
   renderEnvAuthInfo() {
     const {
-      envStore, createEnvStore, t, location
+      envStore, createEnvStore, credentialStore, t
     } = this.props;
     const { platform } = envStore;
-    const { validatePassed } = createEnvStore;
-    const query = qs.parse(location.search);
-    const curPlatform = query.type || platform || 'vm';
+    const {
+      validatePassed,
+      selectCredential,
+      selectCredentialId,
+      showNewlyCreate,
+      toggleNewlyCreate
+    } = createEnvStore;
+    const { credentials } = credentialStore;
+    const curPlatform = this.getUrlParam('provider') || platform;
+
+    if (credentials.length && !showNewlyCreate) {
+      return (
+        <div className={styles.credentialList}>
+          <p className={styles.tipChoose}>
+            <span className={styles.txt1}>{t('You can')}</span>
+            <span className={styles.txt2}>
+              {t('Choose from already saved resource')}
+            </span>
+          </p>
+          {_.map(
+            credentials,
+            ({ name, description, runtime_credential_id }, idx) => {
+              const checked = selectCredentialId === runtime_credential_id;
+
+              return (
+                <Card
+                  className={classnames(styles.item, {
+                    [styles.checked]: checked
+                  })}
+                  key={idx}
+                  onClick={() => selectCredential(runtime_credential_id)}
+                >
+                  <span className={styles.name}>{name}</span>
+                  <span className={styles.desc}>{description}</span>
+                  <span className={styles.icon}>
+                    {checked && <Icon name="check" />}
+                  </span>
+                </Card>
+              );
+            }
+          )}
+          <p className={styles.tipAdd}>
+            <span className={styles.txt1}>{t('Or')}</span>
+            <span className={styles.linkAdd} onClick={toggleNewlyCreate}>
+              {t('Newly create')}
+            </span>
+          </p>
+        </div>
+      );
+    }
+
+    const showTips = Boolean(credentials.length && showNewlyCreate);
 
     return (
-      <div className={styles.wrap}>
+      <div
+        className={classnames(styles.wrap, {
+          [styles.fixWrap]: showTips
+        })}
+      >
+        {showTips && (
+          <div className={styles.tipWrap}>
+            <p
+              className={styles.tipChoose}
+              style={{
+                paddingBottom: '24px',
+                borderBottom: '1px solid #eff0f5',
+                marginBottom: '24px'
+              }}
+            >
+              <span className={styles.txt1}>{t('You can')}</span>
+              <span className={styles.linkAdd} onClick={toggleNewlyCreate}>
+                {t('Choose from already saved resource')}
+              </span>
+            </p>
+            <p>
+              <span className={styles.txt1}>{t('Or')}</span>
+              <span className={styles.txt2}>{t('Newly create')}</span>
+            </p>
+          </div>
+        )}
+
         <Card
           className={classnames(styles.info, {
             [styles.fmValidated]: Boolean(validatePassed)
@@ -203,12 +294,18 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   renderAuthForHelm() {
-    const { t } = this.props;
+    const { createEnvStore, t } = this.props;
+    const { credentialContent, changeCredentialContent } = createEnvStore;
 
     return (
       <div className={styles.formCtrl}>
         <label className={styles.label}>{t('Credential')}</label>
-        <textarea className={styles.txtCredential} maxLength={1000} />
+        <textarea
+          className={styles.txtCredential}
+          maxLength={1000}
+          value={credentialContent}
+          onChange={changeCredentialContent}
+        />
       </div>
     );
   }
@@ -269,7 +366,11 @@ export default class CreateTestingEnv extends React.Component {
   render() {
     const { createEnvStore } = this.props;
     const {
-      stepOption, prevStep, nextStep, validatePassed
+      stepOption,
+      prevStep,
+      nextStep,
+      validatePassed,
+      selectCredentialId
     } = createEnvStore;
     const { activeStep } = stepOption;
 
@@ -283,7 +384,7 @@ export default class CreateTestingEnv extends React.Component {
           prevStep,
           nextStep,
           goBack: this.handleEsc,
-          disableNextStep: !validatePassed
+          disableNextStep: !(selectCredentialId || validatePassed)
         }}
       >
         <Notification />

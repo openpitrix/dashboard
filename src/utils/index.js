@@ -228,4 +228,4 @@ export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
  * check if app provider is helm, or query string type is helm
  * @param type
  */
-export const isHelm = type => ['kubernetes', 'helm'].includes(type);
+export const isHelm = type => ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());

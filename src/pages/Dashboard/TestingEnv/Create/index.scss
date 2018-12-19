@@ -143,3 +143,58 @@
     }
   }
 }
+
+.credentialList {
+  width: 453px;
+  margin: 0 auto;
+  .item {
+    width: 453px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color: $N0;
+    cursor: pointer;
+    &:hover, &.checked {
+      border: 1px solid $P75;
+    }
+
+    .icon {
+      float: right;
+    }
+  }
+}
+
+.txt1 {
+  font-size: $size-small;
+  color: $N75;
+  margin-right: 4px;
+}
+.txt2 {
+  font-size: $size-small;
+  font-weight: 500;
+  color: $N300;
+}
+.tipChoose {
+  margin-bottom: 12px;
+}
+.tipAdd {
+  margin-top: 49px;
+}
+.linkAdd {
+  font-size: $size-small;
+  font-weight: 500;
+  color: $P75;
+  cursor: pointer;
+}
+.tipWrap {
+  width: 453px;
+  margin: 0 auto;
+  margin-bottom:12px;
+  hr {
+    margin: 24px 0;
+    height: 1px;
+    background-color: $N10;
+  }
+}
+.fixWrap {
+  display: block;
+}
