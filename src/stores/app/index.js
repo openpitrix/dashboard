@@ -82,7 +82,7 @@ export default class AppStore extends Store {
 
   @observable selectedRowKeys = [];
 
-  @observable detailTab = 'Information';
+  @observable detailTab = '';
 
   @observable currentPic = 1;
 

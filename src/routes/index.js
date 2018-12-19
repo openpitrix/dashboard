@@ -36,7 +36,6 @@ const routes = {
 
   '/:dash/my/apps': Dash.MyApps,
   '/:dash/apps': Dash.Apps,
-  '/:dash/reviews': Dash.AppReview,
   '/:dash/review/:appId/:versionId': AppDetail,
   '/:dash/app/create': Dash.AppAdd,
   '/:dash/app/:appId/create-version': Dash.AppAdd,
@@ -47,6 +46,9 @@ const routes = {
   '/:dash/app/:appId/version/:versionId': Dash.VersionDetail,
   '/:dash/app/:appId/deploy/:versionId?': Dash.AppDeploy,
   '/:dash/app/:appId/info': Dash.AppInfo,
+
+  '/:dash/app-reviews': Dash.Reviews,
+  '/:dash/app-review/:appId/:versionId': Dash.ReviewDetail,
 
   '/:dash/app/:appId/customer-instances': Dash.Clusters,
   '/:dash/app/:appId/sandbox-instances': Dash.Clusters,

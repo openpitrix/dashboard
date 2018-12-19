@@ -1,0 +1,145 @@
+@import '~scss/vars';
+
+.reviewTitle {
+  margin-bottom: 0;
+  box-shadow: none;
+
+  .name {
+    margin-bottom: 12px;
+    @include title-font($font-size: 16px);
+  }
+
+  .note {
+    @include note-font;
+  }
+}
+
+.baseInfo {
+  dl {
+    margin-bottom: 24px;
+  }
+  dt {
+    @include title-font;
+    margin-bottom: 8px;
+  }
+  dd {
+    @include normal-font;
+  }
+}
+
+.configFile {
+  .fileInfo {
+    margin-bottom: 20px;
+    padding: 46px 0 42px;
+    background-color: #f9fafb;
+    border-radius: 2px;
+    text-align: center;
+
+    .name {
+      margin-bottom: 8px;
+      line-height: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .time {
+      height: 20px;
+      font-size: 12px;
+      color: $N65;
+    }
+
+    .link {
+      display: inline-block;
+      margin-left: 20px;
+      color: $P75;
+      cursor: pointer;
+    }
+  }
+
+  .checkFile {
+    li {
+      box-shadow: 0 1px 0 0 $N10;
+    }
+  }
+}
+
+.updateLog {
+  min-height: 300px;
+  line-height: 24px;
+  font-size: 12px;
+  color: $N300;
+}
+
+.reviewInfo {
+  .info {
+    margin-top: 12px;
+  }
+
+  dl {
+    margin-bottom: 4px;
+    @include note-font;
+    dt, dd {
+      display: inline-block;
+    }
+    dt {
+      width: 60px;
+    }
+  }
+}
+
+.versionReview {
+  .title {
+    @include note-font;
+    margin-bottom: 8px;
+  }
+
+  .name {
+    @include title-font;
+    margin-bottom: 16px;
+
+    .status, .passed {
+      @include note-font;
+      float: right;
+      line-height: 28px;
+      color: $Y300;
+    }
+
+    .passed {
+      color: $G100;
+    }
+  }
+
+  .submit, reviewed, .pending, .unreviewed{
+    margin-bottom: 10px;
+    padding: 12px 20px;
+  }
+
+  .submit, .unreviewed {
+    @include title-font;
+
+    .time, .status {
+      @include note-font;
+      float: right;
+      line-height: 28px;
+      opacity: 1;
+    }
+  }
+
+  .unreviewed {
+    opacity: 0.5;
+  }
+
+  .opreateButtons {
+    margin: 30px 0 12px;
+
+    button {
+      margin-right: 12px;
+    }
+  }
+}
+
+.reason{
+  width: 100%;
+  min-height: 200px;
+}

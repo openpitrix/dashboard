@@ -9,7 +9,7 @@ import {
   Icon, Image, Button, Popover, Upload
 } from 'components/Base';
 import Layout, {
-  Grid, Row, Section, Card, Dialog
+  Grid, Section, Card, Dialog
 } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
@@ -26,7 +26,11 @@ const actionName = {
   passed: 'release',
   rejected: 'submit'
 };
-const tags = ['fileConfig', 'setPrice', 'updateLog'];
+const tags = [
+  { name: 'Config File', value: 'configFile' },
+  { name: 'Set Price', value: 'setPrice', isDisabled: true },
+  { name: 'Update Log', value: 'updateLog' }
+];
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -284,7 +288,7 @@ export default class VersionDetail extends Component {
 
     if (isEdit) {
       return (
-        <div className={styles.updateLog}>
+        <Card className={styles.updateLog}>
           <p>{t('Used to describe the detailed update of this version')}:</p>
           <textarea
             className={styles.description}
@@ -301,16 +305,18 @@ export default class VersionDetail extends Component {
             </Button>
             <Button onClick={this.resetLog}>{t('Reset')}</Button>
           </div>
-        </div>
+        </Card>
       );
     }
 
     return (
-      <pre className={styles.descriptionShow}>{description || t('None')}</pre>
+      <Card className={styles.updateLog}>
+        <pre>{description || t('None')}</pre>
+      </Card>
     );
   }
 
-  renderConfigFile() {
+  renderFileConfig() {
     const { appVersionStore, appStore, t } = this.props;
     const {
       version,
@@ -453,7 +459,7 @@ export default class VersionDetail extends Component {
         <Grid>
           <Section size={8}>
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
-            {detailTab === 'fileConfig' && this.renderConfigFile()}
+            {detailTab === 'configFile' && this.renderFileConfig()}
             {detailTab === 'updateLog' && this.renderUpdateLog()}
           </Section>
 

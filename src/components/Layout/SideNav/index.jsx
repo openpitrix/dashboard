@@ -25,14 +25,16 @@ const keys = [
   'categories',
   'category',
   'user',
-  'create'
+  'create',
+  'provider'
 ];
 const changeKey = {
   review: 'app',
   cluster: 'repo',
   runtime: 'repo',
   categories: 'app',
-  category: 'app'
+  category: 'app',
+  applications: 'provider'
 };
 
 @translate()

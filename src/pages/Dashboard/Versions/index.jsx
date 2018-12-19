@@ -10,6 +10,7 @@ import Layout from 'components/Layout';
 import Status from 'components/Status';
 
 import versionTypes from 'config/version-types';
+
 import styles from './index.scss';
 
 @translate()

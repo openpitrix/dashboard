@@ -1,7 +1,6 @@
 export Apps from './Apps';
 export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';
-export AppReview from './Apps/Review';
 export AppDeploy from './Apps/Deploy';
 export MyApps from './Apps/MyApps';
 export Audits from './Apps/Audits';
@@ -9,6 +8,10 @@ export AuditRecord from './Audit/Record';
 export Versions from './Versions';
 export VersionDetail from './Versions/Detail';
 export AppInfo from './Apps/Info';
+
+export Reviews from './Reviews';
+export ReviewDetail from './Reviews/Detail';
+
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 export Runtimes from './Runtimes';

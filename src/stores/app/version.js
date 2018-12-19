@@ -75,6 +75,8 @@ export default class AppVersionStore extends Store {
 
   @observable typeVersions = [];
 
+  @observable reviewDetail = {};
+
   @action
   fetchAll = async (params = {}) => {
     const status = this.isReview ? reviwStatus : defaultStatus;
@@ -230,6 +232,14 @@ export default class AppVersionStore extends Store {
     );
     const audits = get(result, 'app_version_audit_set', []);
     assignIn(this.audits, { [versionId]: audits });
+  };
+
+  @action
+  fetchReviewDetail = async (appId, versionId) => {
+    const result = await this.request.get(
+      `app/${appId}/version/${versionId}/reviews`
+    );
+    this.reviewDetail = get(result, 'app_version_review_set[0]', {});
   };
 
   // todo

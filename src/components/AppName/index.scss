@@ -1,0 +1,48 @@
+@import '~scss/vars';
+
+.appName {
+  display: inline-block;
+  .image {
+    display: inline-block;
+    float: left;
+    margin-right: 8px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .info {
+    display: inline-block;
+    line-height: 20px;
+    font-size: 12px;
+
+    .name {
+      width: 120px;
+      color: $N500;
+      font-weight: 500;
+      width: 130px;
+      @include textCut;
+    }
+
+    a:hover {
+      color: $link-hover;
+    }
+
+    .description {
+      .type {
+        color: $N300;
+        font-weight: 500;
+      }
+
+      .versionName {
+        color: $N300;
+      }
+    }
+  }
+}
