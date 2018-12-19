@@ -19,10 +19,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class TestingEnv extends React.Component {
-  async componentDidMount() {
-    const { updateProviderCounts } = this.props.envStore;
-    const validProviders = _.map(_.filter(providers, p => !p.disabled), 'key');
-    await updateProviderCounts(validProviders);
+  componentDidMount() {
+    this.props.envStore.updateProviderCounts();
   }
 
   handleClickPlatform = (curPlatform, disabled) => {

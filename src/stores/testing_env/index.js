@@ -18,6 +18,8 @@ export default class TestingEnvStore extends Store {
 
   @observable modalType = '';
 
+  @observable selectId = ''; // current handle runtime id
+
   // register external store instance if you want access
   get clusterStore() {
     return this.getStore('cluster');
@@ -56,14 +58,43 @@ export default class TestingEnvStore extends Store {
     this.isModalOpen = false;
   };
 
+  @action
+  setCurrentId = id => {
+    this.selectId = id;
+  };
+
+  @action
+  handleOperation = async () => {
+    this.isLoading = true;
+
+    if (this.modalType === 'modify_runtime') {
+    }
+    if (this.modalType === 'switch_auth') {
+    }
+    if (this.modalType === 'delete_runtime') {
+      const res = await this.request.delete('runtimes', {
+        runtime_id: [this.selectId]
+      });
+      if (res && !_.isEmpty(res.runtime_id)) {
+        this.hideModal();
+        this.success('Delete runtime successfully');
+        await this.updateProviderCounts();
+        await this.fetchData();
+      }
+    }
+    this.isLoading = false;
+  };
+
   // count runtime by provider
   getProviderRuntimesMap = () => _.mapValues(_.groupBy(this.runtimeStore.runtimes, 'provider'), v => _.map(v, 'runtime_id'));
 
+  getValidProviders = () => _.map(_.filter(providersConf, p => !p.disabled), 'key');
+
   @action
-  updateProviderCounts = async provider => {
+  updateProviderCounts = async () => {
     this.isLoading = true;
     await this.runtimeStore.fetchAll({
-      provider,
+      provider: this.getValidProviders(),
       owner: this.userId,
       noLimit: true
     });

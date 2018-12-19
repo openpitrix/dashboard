@@ -10,6 +10,11 @@ export default class RuntimeCredentialStore extends Store {
 
   @observable credentials = [];
 
+  // last created resource
+  @observable credential = {};
+
+  @observable runtimeZones = [];
+
   @observable credentialCount = 0;
 
   @action
@@ -29,5 +34,38 @@ export default class RuntimeCredentialStore extends Store {
     const res = await this.request.get('runtimes/credentials:validate', params);
     this.isLoading = false;
     return res;
+  };
+
+  @action
+  create = async (params = {}) => {
+    this.isLoading = true;
+    const res = await this.request.post('runtimes/credentials', params);
+    if (_.isObject(res) && res.runtime_credential_id) {
+      this.credential = { ...res };
+    }
+    this.isLoading = false;
+    return res;
+  };
+
+  @action
+  modify = async (params = {}) => {
+    this.isLoading = true;
+    const res = await this.request.patch('runtimes/credentials', params);
+    if (_.isObject(res) && res.runtime_credential_id) {
+      this.credential = { ...res };
+    }
+    this.isLoading = false;
+    return res;
+  };
+
+  @action
+  fetchZonesByCredential = async credential_id => {
+    this.isLoading = true;
+    const res = await this.request.get('runtimes/zones', {
+      runtime_credential_id: credential_id
+    });
+    this.runtimeZones = _.get(res, 'zone', []);
+    this.isLoading = false;
+    return this.runtimeZones;
   };
 }

@@ -32,12 +32,40 @@ export default class CreateEnvStore extends Store {
 
   @observable validateMsg = '';
 
+  // create runtime, provide runtime info
+  @observable
+  runtimeInfo = {
+    selectZone: '',
+    name: '',
+    desc: ''
+  };
+
+  // last created runtime
+  @observable runtime = {};
+
   get envStore() {
     return this.getStore('testingEnv');
   }
 
   get credentialStore() {
     return this.getStore('runtimeCredential');
+  }
+
+  getCredentialContent() {
+    return JSON.stringify({
+      access_key_id: this.accessKey,
+      secret_access_key: this.secretKey
+    });
+  }
+
+  getCredentialParams() {
+    return {
+      runtime_url: this.runtimeUrl,
+      runtime_credential_content: this.getCredentialContent(),
+      provider: this.envStore.platform,
+      name: this.authInfoName,
+      description: ''
+    };
   }
 
   @action
@@ -48,13 +76,73 @@ export default class CreateEnvStore extends Store {
   };
 
   @action
-  nextStep = () => {
+  nextStep = async () => {
     if (!this.validatePassed) {
       return this.error('Please validate env auth info');
     }
+    if (this.validatePassed && !this.authInfoName) {
+      return this.error('Auth info name is empty');
+    }
+
+    const { platform } = this.envStore;
+    const { runtime_credential_id } = this.credentialStore.credential;
+
     if (this.stepOption.activeStep < STEPS) {
+      if (isHelm(platform)) {
+        // create credential for helm type
+      } else {
+        // create credential for vm type
+        if (!runtime_credential_id) {
+          await this.credentialStore.create(this.getCredentialParams());
+        } else {
+          // modify exist credential
+          const res = await this.credentialStore.modify(
+            _.extend(
+              _.omit(this.getCredentialParams(), ['runtime_url', 'provider']),
+              { runtime_credential_id }
+            )
+          );
+
+          if (res && res.runtime_credential_id) {
+            this.info('Saved runtime credential');
+          }
+        }
+      }
+
       this.stepOption.activeStep++;
     }
+
+    if (this.stepOption.activeStep === STEPS) {
+      const { selectZone, name, desc } = this.runtimeInfo;
+      if (!selectZone) {
+        return this.error('Please select runtime zone');
+      }
+      if (!name) {
+        return this.error('Runtime is empty');
+      }
+
+      await this.createRuntime({
+        name,
+        description: desc,
+        zone: selectZone,
+        provider: platform,
+        runtime_credential_id
+      });
+
+      if (this.runtime.runtime_id) {
+        this.success('Create runtime successfully');
+      }
+    }
+  };
+
+  @action
+  createRuntime = async (params = {}) => {
+    this.isLoading = true;
+    const res = await this.request.post('runtimes', params);
+    if (_.isObject(res) && res.runtime_id) {
+      this.runtime = { ...res };
+    }
+    this.isLoading = false;
   };
 
   @action
@@ -77,8 +165,24 @@ export default class CreateEnvStore extends Store {
     this.credentialContent = this.getValueFromEvent(cont);
   };
 
+  @action
   changeAuthInfoName = name => {
     this.authInfoName = this.getValueFromEvent(name);
+  };
+
+  @action
+  changeRuntimeZone = zone => {
+    this.runtimeInfo.selectZone = zone;
+  };
+
+  @action
+  changeRuntimeName = name => {
+    this.runtimeInfo.name = this.getValueFromEvent(name);
+  };
+
+  @action
+  changeRuntimeDesc = desc => {
+    this.runtimeInfo.desc = this.getValueFromEvent(desc);
   };
 
   @action
@@ -112,10 +216,7 @@ export default class CreateEnvStore extends Store {
         return;
       }
 
-      params.runtime_credential_content = JSON.stringify({
-        access_key_id: this.accessKey,
-        secret_access_key: this.secretKey
-      });
+      params.runtime_credential_content = this.getCredentialContent();
     }
     const res = await this.credentialStore.validate(params);
     if (_.isObject(res) && res.err) {

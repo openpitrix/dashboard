@@ -21,18 +21,31 @@ import styles from './index.scss';
   rootStore,
   envStore: rootStore.testingEnvStore,
   createEnvStore: rootStore.testingEnvCreateStore,
-  credentialStore: rootStore.runtimeCredentialStore
+  credentialStore: rootStore.runtimeCredentialStore,
+  activeStep: rootStore.testingEnvCreateStore.stepOption.activeStep,
+  createdRuntime: rootStore.testingEnvCreateStore.runtime
 }))
 @observer
 export default class CreateTestingEnv extends React.Component {
-  static propTypes = {};
-
-  static defaultProps = {};
-
   componentWillUnmount() {
     const { rootStore, createEnvStore } = this.props;
     createEnvStore.reset();
     rootStore.clearNotify();
+  }
+
+  async componentDidUpdate(prevProps) {
+    const {
+      activeStep, credentialStore, createdRuntime, history
+    } = this.props;
+    const { credential, fetchZonesByCredential } = credentialStore;
+
+    if (prevProps.activeStep === 1 && activeStep === 2) {
+      await fetchZonesByCredential(credential.runtime_credential_id);
+    }
+
+    if (activeStep === 2 && createdRuntime.runtime_id) {
+      history.push(toUrl(`/:dash/testing-env`));
+    }
   }
 
   handleSubmit = async e => {
@@ -201,7 +214,56 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   renderEnvSetting() {
-    return null;
+    const { createEnvStore, credentialStore, t } = this.props;
+    const { runtimeZones } = credentialStore;
+    const {
+      runtimeInfo,
+      changeRuntimeZone,
+      changeRuntimeName,
+      changeRuntimeDesc
+    } = createEnvStore;
+    const { selectZone, name, desc } = runtimeInfo;
+
+    return (
+      <div className={styles.wrap}>
+        <Card className={classnames(styles.info, styles.fmEnvSetting)}>
+          <form className={styles.createForm}>
+            <div className={styles.formCtrl}>
+              <label className={styles.label}>{t('Zone')}</label>
+              <ul className={styles.zones}>
+                {runtimeZones.map((zone, idx) => (
+                  <li
+                    key={idx}
+                    className={classnames({
+                      [styles.activeZone]: selectZone === zone
+                    })}
+                    onClick={() => changeRuntimeZone(zone)}
+                  >
+                    {zone}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={styles.formCtrl}>
+              <label className={styles.label}>{t('Name')}</label>
+              <Input
+                className={styles.input}
+                value={name}
+                onChange={changeRuntimeName}
+              />
+            </div>
+            <div className={styles.formCtrl}>
+              <label className={styles.label}>{t('Backlog')}</label>
+              <textarea
+                maxLength={1000}
+                value={desc}
+                onChange={changeRuntimeDesc}
+              />
+            </div>
+          </form>
+        </Card>
+      </div>
+    );
   }
 
   render() {

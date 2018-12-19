@@ -14,9 +14,14 @@
   .info {
     margin: 0 auto;
     width: 453px;
-    height: 508px;
+    min-height: 508px;
+    height: auto;
+
     &.fmValidated {
-      height: 452px;
+      min-height: 452px;
+    }
+    &.fmEnvSetting {
+      min-height: 388px;
     }
 
     .createForm{
@@ -40,6 +45,25 @@
       }
       .btnVerify {
 
+      }
+      .zones {
+        display: flex;
+        flex-wrap: wrap;
+        li {
+          width: 71px;
+          background-color: $N0;
+          border-radius: 2px;
+          border: 1px solid $N30;
+          color: $N300;
+          text-align: center;
+          padding: 9px 12px;
+          cursor: pointer;
+          &:hover, &.activeZone {
+            color: $P75;
+            border: 1px solid $P75;
+            box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
+          }
+        }
       }
     }
 

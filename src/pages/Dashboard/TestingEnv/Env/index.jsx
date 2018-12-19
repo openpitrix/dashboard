@@ -43,25 +43,29 @@ export default class Env extends React.Component {
     }
   }
 
-  handleClickAction = type => {
-    this.props.envStore.showModal(type);
+  handleClickAction = (type, id) => {
+    const { showModal, setCurrentId } = this.props.envStore;
+    showModal(type);
+    setCurrentId(id);
   };
 
-  handleSubmitAction = () => {};
-
-  renderMenu() {
+  renderMenu(runtime_id) {
     const { t } = this.props;
     return (
       <div className="operate-menu">
-        <span onClick={() => this.handleClickAction('modify_runtime')}>
+        <span
+          onClick={() => this.handleClickAction('modify_runtime', runtime_id)}
+        >
           <Icon name="pen" type="dark" />
           {t('Modify')}
         </span>
-        <span onClick={() => this.handleClickAction('switch_auth')}>
+        <span onClick={() => this.handleClickAction('switch_auth', runtime_id)}>
           <Icon name="refresh" type="dark" />
           {t('Switch authorization info')}
         </span>
-        <span onClick={() => this.handleClickAction('delete_runtime')}>
+        <span
+          onClick={() => this.handleClickAction('delete_runtime', runtime_id)}
+        >
           <Icon name="trash" type="dark" />
           {t('Delete')}
         </span>
@@ -71,7 +75,9 @@ export default class Env extends React.Component {
 
   renderModals() {
     const { envStore, t } = this.props;
-    const { isModalOpen, modalType, hideModal } = envStore;
+    const {
+      isModalOpen, modalType, hideModal, handleOperation
+    } = envStore;
 
     if (modalType === 'modify_runtime') {
       return (
@@ -79,7 +85,7 @@ export default class Env extends React.Component {
           title={t('Modify Runtime')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
           <p>modify runtime</p>
         </Dialog>
@@ -91,7 +97,7 @@ export default class Env extends React.Component {
           title={t('Switch authorization info')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
           <p>switch auth info</p>
         </Dialog>
@@ -103,7 +109,7 @@ export default class Env extends React.Component {
           title={t('Delete Runtime')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
           <p>{t('DELETE_RUNTIME_CONFIRM')}</p>
         </Dialog>
@@ -156,12 +162,7 @@ export default class Env extends React.Component {
         {_.map(
           validRts,
           ({
-            name,
-            description,
-            runtime_id,
-            runtime_credential_id,
-            zone,
-            ...rest
+            name, description, runtime_id, runtime_credential_id, zone
           }) => {
             const cntCluster = clusterRtMap[runtime_id]
               ? clusterRtMap[runtime_id].length
@@ -179,7 +180,7 @@ export default class Env extends React.Component {
                     <Popover
                       showBorder
                       className={classnames('operation', styles.actionPop)}
-                      content={this.renderMenu()}
+                      content={this.renderMenu(runtime_id)}
                     >
                       <Icon
                         name="more"

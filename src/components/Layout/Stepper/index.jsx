@@ -122,7 +122,8 @@ class LayoutStepper extends Component {
     const tipText = t(keyName);
     const tipLink = <DocLink name={keyName} />;
 
-    const buttonText = t('Go on');
+    const buttonText = activeStep === steps ? t('Done') : t('Go on');
+    const iconName = activeStep === steps ? 'checked-icon' : 'next-icon';
 
     return (
       <div className={styles.footer}>
@@ -138,14 +139,8 @@ class LayoutStepper extends Component {
           type="primary"
           onClick={nextStep}
         >
-          {/*
-              {activeStep === steps && <Icon className={styles.icon} name="checked-icon" size={20} />}
-            */}
           <span>{buttonText}</span>
-          <Icon className={styles.icon} name="next-icon" size={20} />
-          {/*
-              {activeStep !== steps && <Icon className={styles.icon} name="next-icon" size={20} />}
-            */}
+          <Icon className={styles.icon} name={iconName} size={20} />
         </button>
       </div>
     );
