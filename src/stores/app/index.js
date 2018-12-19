@@ -9,6 +9,7 @@ import Store from '../Store';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
 const maxsize = 2 * 1024 * 1024;
+let sequence = 0; // app screenshot for sort
 
 export default class AppStore extends Store {
   @observable apps = [];
@@ -30,11 +31,12 @@ export default class AppStore extends Store {
   @observable
   appDetail = {
     name: '',
-    keywords: '',
+    abstraction: '',
     deccription: '',
     category_id: '',
     home: '',
     readme: '',
+    tos: '',
     icon: '',
     screenshots: []
   };
@@ -273,9 +275,7 @@ export default class AppStore extends Store {
     await this.modify(
       _.assign(data, {
         app_id: this.appDetail.app_id,
-        category_id: this.appDetail.category_id,
-        icon: this.appDetail.icon,
-        screenshots: this.appDetail.screenshots
+        category_id: this.appDetail.category_id
       })
     );
   };
@@ -299,6 +299,11 @@ export default class AppStore extends Store {
   };
 
   @action
+  attachment = async (params = {}) => {
+    await this.request.patch('app/attachment', params);
+  };
+
+  @action
   checkIcon = file => {
     if (!/\.(png)$/.test(file.name.toLocaleLowerCase())) {
       this.error(t('icon_format_note'));
@@ -314,7 +319,17 @@ export default class AppStore extends Store {
   };
 
   @action
-  uploadIcon = (base64Str, file) => {
+  uploadIcon = async (base64Str, file) => {
+    const result = await this.attachment({
+      app_id: this.appDetail.app_id,
+      type: 'icon',
+      attachment_content: base64Str
+    });
+
+    if (result && result.errDetail) {
+      return false;
+    }
+
     this.appDetail.icon = base64Str;
   };
 
@@ -339,13 +354,25 @@ export default class AppStore extends Store {
   };
 
   @action
-  uploadScreenshot = (base64Str, file) => {
+  uploadScreenshot = async (base64Str, file) => {
     const { screenshots } = this.appDetail;
     const len = _.isArray(screenshots) ? screenshots.length : 0;
     if (len >= 6) {
       return this.error(t('最多只能上传6张界面截图'));
     }
 
+    const result = await this.attachment({
+      app_id: this.appDetail.app_id,
+      type: 'screenshot',
+      attachment_content: base64Str,
+      sequence
+    });
+
+    if (result && result.errDetail) {
+      return false;
+    }
+
+    sequence++;
     if (_.isArray(screenshots)) {
       this.appDetail.screenshots.push(base64Str);
     } else {

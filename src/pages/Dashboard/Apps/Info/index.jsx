@@ -186,16 +186,16 @@ export default class Info extends Component {
 
     return (
       <div className={styles.textareaOuter}>
-        {this.renderMakdownNote('service')}
+        {this.renderMakdownNote('tos')}
         {isPreview ? (
-          <pre className={styles.previewInfo}>
-            <ReactMarkdown source={appDetail.service} />
-          </pre>
+          <div className="markdown">
+            <ReactMarkdown source={appDetail.tos} />
+          </div>
         ) : (
           <textarea
             autoFocus
-            value={appDetail.service}
-            onChange={e => changeApp(e, 'service')}
+            value={appDetail.tos}
+            onChange={e => changeApp(e, 'tos')}
             className="textarea"
             placeholder={t('开始编写应用的服务条款')}
           />
@@ -213,9 +213,9 @@ export default class Info extends Component {
       <div className={styles.textareaOuter}>
         {this.renderMakdownNote('readme')}
         {isPreview ? (
-          <pre className={styles.previewInfo}>
+          <div className="markdown">
             <ReactMarkdown source={appDetail.readme} />
-          </pre>
+          </div>
         ) : (
           <textarea
             autoFocus
@@ -252,7 +252,7 @@ export default class Info extends Component {
             name="name"
             value={appDetail.name}
             onChange={e => changeApp(e, 'name')}
-            maxLength="50"
+            maxLength={50}
             required
             disabled={!isEdit}
           />
@@ -263,10 +263,10 @@ export default class Info extends Component {
             <p className={styles.noteWord}>{t('对应用的概括性介绍')}</p>
           </div>
           <Input
-            name="keywords"
-            maxLength="200"
-            value={appDetail.keywords}
-            onChange={e => changeApp(e, 'keywords')}
+            name="abstraction"
+            maxLength={200}
+            value={appDetail.abstraction}
+            onChange={e => changeApp(e, 'abstraction')}
             disabled={!isEdit}
           />
         </div>
@@ -333,7 +333,7 @@ export default class Info extends Component {
           <Input
             className={styles.input}
             name="home"
-            maxLength="200"
+            maxLength={200}
             value={appDetail.home}
             onChange={e => changeApp(e, 'home')}
             disabled={!isEdit}
