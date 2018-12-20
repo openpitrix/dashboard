@@ -163,10 +163,8 @@ export default class CreateEnvStore extends Store {
       }
     } else {
       if (isHelm(platform)) {
-      } else {
-        if (!selectZone) {
-          return this.error('Please select runtime zone');
-        }
+      } else if (!selectZone) {
+        return this.error('Please select runtime zone');
       }
 
       if (!name) {
