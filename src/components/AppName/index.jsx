@@ -24,7 +24,7 @@ export default class AppName extends React.Component {
     } = this.props;
 
     return (
-      <span className={classnames(styles.appName, className)}>
+      <div className={classnames(styles.appName, className)}>
         <span className={styles.image}>
           <Image src={icon} iconLetter={name} iconSize={40} />
         </span>
@@ -49,7 +49,7 @@ export default class AppName extends React.Component {
             </div>
           )}
         </span>
-      </span>
+      </div>
     );
   }
 }
