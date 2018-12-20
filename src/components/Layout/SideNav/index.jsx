@@ -17,6 +17,7 @@ import {
 import styles from './index.scss';
 
 const keys = [
+  'applications',
   'app',
   'review',
   'cluster',
@@ -168,6 +169,7 @@ class SideNav extends React.Component {
           <Link
             key={link.name}
             className={classnames(styles.link, {
+              [styles.disabled]: link.isDisabled,
               [styles.active]: path.indexOf(link.active) > -1
             })}
             to={link.link}

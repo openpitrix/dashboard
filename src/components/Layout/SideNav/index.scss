@@ -234,6 +234,12 @@
       font-weight: 500;
       color: $P75;
     }
+
+    &.disabled {
+      color: $N75;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }
 
