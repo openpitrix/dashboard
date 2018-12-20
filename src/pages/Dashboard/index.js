@@ -8,6 +8,7 @@ export Audits from './Apps/Audits';
 export AuditRecord from './Audit/Record';
 export Versions from './Versions';
 export VersionDetail from './Versions/Detail';
+export AppInfo from './Apps/Info';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 export Runtimes from './Runtimes';

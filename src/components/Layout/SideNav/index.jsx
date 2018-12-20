@@ -57,7 +57,7 @@ class SideNav extends React.Component {
 
     const { appId } = match.params;
     if (appId) {
-      appStore.fetch(appId);
+      await appStore.fetch(appId);
     }
 
     if (isDev && !hasMeunApps) {
@@ -229,7 +229,7 @@ class SideNav extends React.Component {
   renderSubDev() {
     const { t } = this.props;
     const { url } = this.props.match;
-    const { appDetail } = this.props.appStore;
+    const { appDetail, resetAppDetail } = this.props.appStore;
 
     if (url === '/dashboard') {
       return (
@@ -250,7 +250,7 @@ class SideNav extends React.Component {
     return (
       <div className={styles.subNav}>
         <div className={styles.title}>
-          <div className={styles.name}>{appDetail.name}</div>
+          <div className={styles.name}>{resetAppDetail.name}</div>
           <Status
             className={styles.status}
             name={appDetail.status}
