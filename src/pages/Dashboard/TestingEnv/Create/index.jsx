@@ -321,7 +321,7 @@ export default class CreateTestingEnv extends React.Component {
         <label className={styles.label}>{t('Credential')}</label>
         <textarea
           className={styles.txtCredential}
-          maxLength={1000}
+          maxLength={50000}
           value={helmCredential}
           onChange={changeHelmCredential}
         />

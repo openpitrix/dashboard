@@ -262,8 +262,10 @@ export default class CreateEnvStore extends Store {
       if (!this.helmCredential) {
         return this.setValidateMsg('invalid kebeconfig');
       }
-      // todo
-      params.credential = this.helmCredential;
+      _.extend(params, {
+        runtime_url: '',
+        runtime_credential_content: this.helmCredential
+      });
     } else {
       if (!this.runtimeUrl) {
         return this.setValidateMsg('invalid url');
