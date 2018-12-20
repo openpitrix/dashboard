@@ -40,6 +40,15 @@ export default class CreateTestingEnv extends React.Component {
     return this.props.createEnvStore.doneCreateCredential;
   }
 
+  @computed
+  get platform() {
+    return getUrlParam('provider') || this.props.envStore.platform;
+  }
+
+  get isCreateVmRt() {
+    return !isHelm(this.platform) && !this.isCredential;
+  }
+
   async componentDidMount() {
     await this.props.envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
   }
@@ -52,17 +61,13 @@ export default class CreateTestingEnv extends React.Component {
 
   async componentDidUpdate(prevProps) {
     const {
-      envStore,
-      credentialStore,
-      createEnvStore,
-      history,
-      activeStep
+      credentialStore, createEnvStore, history, activeStep
     } = this.props;
     const { credential, fetchZonesByCredential } = credentialStore;
     const { selectCredentialId } = createEnvStore;
 
     if (prevProps.activeStep === 1 && activeStep === 2) {
-      if (!isHelm(envStore.platform) && !this.isCredential) {
+      if (this.isCreateVmRt) {
         await fetchZonesByCredential(
           selectCredentialId || credential.runtime_credential_id
         );
@@ -86,10 +91,7 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   renderCredentialForm() {
-    const {
-      envStore, createEnvStore, credentialStore, t
-    } = this.props;
-    const { platform } = envStore;
+    const { createEnvStore, credentialStore, t } = this.props;
     const {
       validatePassed,
       selectCredential,
@@ -98,7 +100,6 @@ export default class CreateTestingEnv extends React.Component {
       toggleNewlyCreate
     } = createEnvStore;
     const { credentials } = credentialStore;
-    const curPlatform = getUrlParam('provider') || platform;
 
     if (!this.isCredential && credentials.length && !showNewlyCreate) {
       return (
@@ -151,14 +152,7 @@ export default class CreateTestingEnv extends React.Component {
       >
         {showTips && (
           <div className={styles.tipWrap}>
-            <p
-              className={styles.tipChoose}
-              style={{
-                paddingBottom: '24px',
-                borderBottom: '1px solid #eff0f5',
-                marginBottom: '24px'
-              }}
-            >
+            <p className={classnames(styles.tipChoose, styles.fixPos)}>
               <span className={styles.txt1}>{t('You can')}</span>
               <span className={styles.linkAdd} onClick={toggleNewlyCreate}>
                 {t('Choose from already saved resource')}
@@ -177,7 +171,7 @@ export default class CreateTestingEnv extends React.Component {
           })}
         >
           <form onSubmit={this.handleSubmit} className={styles.createForm}>
-            {isHelm(curPlatform)
+            {isHelm(this.platform)
               ? this.renderCredentialForHelm()
               : this.renderCredentialForVM()}
             <div>
@@ -228,16 +222,12 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   renderTipsOrName() {
-    const { createEnvStore, envStore, t } = this.props;
+    const { createEnvStore, t } = this.props;
     const {
       validatePassed,
       credentialName,
       changeCredentialName
     } = createEnvStore;
-
-    if (isHelm(envStore.platform)) {
-      return null;
-    }
 
     if (!validatePassed) {
       return (
@@ -254,7 +244,8 @@ export default class CreateTestingEnv extends React.Component {
         </div>
       );
     }
-    if (!this.isCredential) {
+
+    if (this.isCreateVmRt) {
       return (
         <div className={styles.fieldSetName}>
           <Input
@@ -336,7 +327,9 @@ export default class CreateTestingEnv extends React.Component {
       runtimeInfo,
       changeRuntimeZone,
       changeRuntimeName,
-      changeRuntimeDesc
+      changeRuntimeDesc,
+      helmNamespace,
+      changeRuntimeNamespace
     } = createEnvStore;
     const { selectZone, name, desc } = runtimeInfo;
 
@@ -345,20 +338,33 @@ export default class CreateTestingEnv extends React.Component {
         <Card className={classnames(styles.info, styles.fmEnvSetting)}>
           <form className={styles.createForm}>
             <div className={styles.formCtrl}>
-              <label className={styles.label}>{t('Zone')}</label>
-              <ul className={styles.zones}>
-                {runtimeZones.map((zone, idx) => (
-                  <li
-                    key={idx}
-                    className={classnames({
-                      [styles.activeZone]: selectZone === zone
-                    })}
-                    onClick={() => changeRuntimeZone(zone)}
-                  >
-                    {zone}
-                  </li>
-                ))}
-              </ul>
+              {isHelm(this.platform) ? (
+                <Fragment>
+                  <label className={styles.label}>{t('Namespace')}</label>
+                  <Input
+                    className={styles.input}
+                    value={helmNamespace}
+                    onChange={changeRuntimeNamespace}
+                  />
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <label className={styles.label}>{t('Zone')}</label>
+                  <ul className={styles.zones}>
+                    {runtimeZones.map((zone, idx) => (
+                      <li
+                        key={idx}
+                        className={classnames({
+                          [styles.activeZone]: selectZone === zone
+                        })}
+                        onClick={() => changeRuntimeZone(zone)}
+                      >
+                        {zone}
+                      </li>
+                    ))}
+                  </ul>
+                </Fragment>
+              )}
             </div>
             <div className={styles.formCtrl}>
               <label className={styles.label}>{t('Name')}</label>
@@ -371,7 +377,7 @@ export default class CreateTestingEnv extends React.Component {
             <div className={styles.formCtrl}>
               <label className={styles.label}>{t('Backlog')}</label>
               <textarea
-                maxLength={1000}
+                maxLength={5000}
                 value={desc}
                 onChange={changeRuntimeDesc}
               />
