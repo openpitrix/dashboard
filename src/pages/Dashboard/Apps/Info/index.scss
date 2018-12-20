@@ -209,10 +209,8 @@
     line-height: 24px;
     font-size: 12px;
     color: $N300;
-
-    &::-webkit-input-placeholder,
-    &:-moz-placeholder,
-    &::-moz-placeholder {
+    
+    &::placeholder {
       color: $N30;
     }
   }
