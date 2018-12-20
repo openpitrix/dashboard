@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 import { formatTime } from 'utils';
 
-import { Icon, Popover } from 'components/Base';
+import { Icon, Popover, Input } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 
@@ -19,7 +19,7 @@ import styles from '../index.scss';
   credentialStore: rootStore.runtimeCredentialStore
 }))
 @observer
-class AuthInfo extends React.Component {
+class Credential extends React.Component {
   static propTypes = {
     platform: PropTypes.string
   };
@@ -38,32 +38,40 @@ class AuthInfo extends React.Component {
     }
   }
 
-  handleClickAction = type => {
-    this.props.envStore.showModal(type);
+  handleClickAction = (type, id) => {
+    const { showModal, setCredentialId } = this.props.envStore;
+    showModal(type);
+    setCredentialId(id);
   };
-
-  handleSubmitAction = () => {};
 
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
     this.props.history.push(
-      `/dashboard/testing-env/add?type=credential&provider=${platform}`
+      `/dashboard/testing-runtime/add?type=credential&provider=${platform}`
     );
   };
 
-  renderMenu() {
+  renderMenu(credential_id) {
     const { t } = this.props;
     return (
       <div className="operate-menu">
-        <span onClick={() => this.handleClickAction('modify_auth_info')}>
+        <span
+          onClick={() => this.handleClickAction('modify_auth_info', credential_id)
+          }
+        >
           <Icon name="pen" type="dark" />
           {t('Modify')}
         </span>
-        <span onClick={() => this.handleClickAction('add_runtime')}>
+        <span
+          onClick={() => this.handleClickAction('add_runtime', credential_id)}
+        >
           <Icon name="add" type="dark" />
           {t('Add runtime')}
         </span>
-        <span onClick={() => this.handleClickAction('delete_auth_info')}>
+        <span
+          onClick={() => this.handleClickAction('delete_auth_info', credential_id)
+          }
+        >
           <Icon name="trash" type="dark" />
           {t('Delete')}
         </span>
@@ -72,18 +80,43 @@ class AuthInfo extends React.Component {
   }
 
   renderModals() {
-    const { envStore, t } = this.props;
-    const { isModalOpen, modalType, hideModal } = envStore;
+    const { envStore, credentialStore, t } = this.props;
+    const {
+      isModalOpen,
+      modalType,
+      hideModal,
+      selectCredentialId,
+      handleOperation
+    } = envStore;
+    const { credentials } = credentialStore;
 
     if (modalType === 'modify_auth_info') {
+      const cr = _.find(credentials, {
+        runtime_credential_id: selectCredentialId
+      });
       return (
         <Dialog
           title={t('Modify authorization info')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
-          <p>modify auth info</p>
+          <div className={styles.fmCtrl}>
+            <label className={styles.label}>{t('Name')}</label>
+            <Input
+              className={styles.field}
+              name="name"
+              defaultValue={cr.name}
+            />
+          </div>
+          <div className={styles.fmCtrl}>
+            <label className={styles.label}>{t('Description')}</label>
+            <Input
+              className={styles.field}
+              name="description"
+              defaultValue={cr.description}
+            />
+          </div>
         </Dialog>
       );
     }
@@ -93,9 +126,9 @@ class AuthInfo extends React.Component {
           title={t('Add runtime')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
-          <p>add runtime</p>
+          <p>Add runtime</p>
         </Dialog>
       );
     }
@@ -105,7 +138,7 @@ class AuthInfo extends React.Component {
           title={t('Delete authorization info')}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleSubmitAction}
+          onSubmit={handleOperation}
         >
           <p>{t('DELETE_AUTH_INFO_CONFIRM')}</p>
         </Dialog>
@@ -137,7 +170,7 @@ class AuthInfo extends React.Component {
                   styles.actionPop,
                   styles.fixMenu
                 )}
-                content={this.renderMenu()}
+                content={this.renderMenu(runtime_credential_id)}
               >
                 <Icon name="more" type="dark" className={styles.actionBar} />
               </Popover>
@@ -167,4 +200,4 @@ class AuthInfo extends React.Component {
   }
 }
 
-export default withRouter(AuthInfo);
+export default withRouter(Credential);

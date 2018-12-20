@@ -1,12 +1,11 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
-import qs from 'query-string';
 import { isHelm } from 'utils';
-import { toUrl } from 'utils/url';
+import { toUrl, getUrlParam } from 'utils/url';
 
 import {
   Icon, Button, Notification, Input
@@ -22,13 +21,27 @@ import styles from './index.scss';
   envStore: rootStore.testingEnvStore,
   createEnvStore: rootStore.testingEnvCreateStore,
   credentialStore: rootStore.runtimeCredentialStore,
-  activeStep: rootStore.testingEnvCreateStore.stepOption.activeStep,
-  createdRuntime: rootStore.testingEnvCreateStore.runtime
+  activeStep: rootStore.testingEnvCreateStore.stepOption.activeStep
 }))
 @observer
 export default class CreateTestingEnv extends React.Component {
-  componentDidMount() {
-    this.props.envStore.checkStoreWhenInitPage([this.getUrlParam('provider')]);
+  constructor(props) {
+    super(props);
+    this.isCredential = getUrlParam('type') === 'credential';
+  }
+
+  @computed
+  get doneCreateRt() {
+    return this.props.createEnvStore.doneCreateRt;
+  }
+
+  @computed
+  get doneCreateCredential() {
+    return this.props.createEnvStore.doneCreateCredential;
+  }
+
+  async componentDidMount() {
+    await this.props.envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
   }
 
   componentWillUnmount() {
@@ -37,30 +50,27 @@ export default class CreateTestingEnv extends React.Component {
     rootStore.clearNotify();
   }
 
-  getUrlParam(key = '') {
-    const query = qs.parse(this.props.location.search);
-    return key ? query[key] : query;
-  }
-
   async componentDidUpdate(prevProps) {
     const {
-      activeStep,
+      envStore,
       credentialStore,
       createEnvStore,
-      createdRuntime,
-      history
+      history,
+      activeStep
     } = this.props;
     const { credential, fetchZonesByCredential } = credentialStore;
     const { selectCredentialId } = createEnvStore;
 
     if (prevProps.activeStep === 1 && activeStep === 2) {
-      await fetchZonesByCredential(
-        selectCredentialId || credential.runtime_credential_id
-      );
+      if (!isHelm(envStore.platform) && !this.isCredential) {
+        await fetchZonesByCredential(
+          selectCredentialId || credential.runtime_credential_id
+        );
+      }
     }
 
-    if (activeStep === 2 && createdRuntime.runtime_id) {
-      history.push(toUrl(`/:dash/testing-env`));
+    if (activeStep === 2 && (this.doneCreateRt || this.doneCreateCredential)) {
+      history.push(toUrl(`/:dash/testing-runtime`));
     }
   }
 
@@ -72,10 +82,10 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   handleEsc = () => {
-    this.props.history.push(toUrl(`/:dash/testing-env`));
+    this.props.history.push(toUrl(`/:dash/testing-runtime`));
   };
 
-  renderEnvAuthInfo() {
+  renderCredentialForm() {
     const {
       envStore, createEnvStore, credentialStore, t
     } = this.props;
@@ -88,9 +98,9 @@ export default class CreateTestingEnv extends React.Component {
       toggleNewlyCreate
     } = createEnvStore;
     const { credentials } = credentialStore;
-    const curPlatform = this.getUrlParam('provider') || platform;
+    const curPlatform = getUrlParam('provider') || platform;
 
-    if (credentials.length && !showNewlyCreate) {
+    if (!this.isCredential && credentials.length && !showNewlyCreate) {
       return (
         <div className={styles.credentialList}>
           <p className={styles.tipChoose}>
@@ -131,7 +141,7 @@ export default class CreateTestingEnv extends React.Component {
       );
     }
 
-    const showTips = Boolean(credentials.length && showNewlyCreate);
+    const showTips = !this.isCredential && Boolean(credentials.length && showNewlyCreate);
 
     return (
       <div
@@ -168,8 +178,8 @@ export default class CreateTestingEnv extends React.Component {
         >
           <form onSubmit={this.handleSubmit} className={styles.createForm}>
             {isHelm(curPlatform)
-              ? this.renderAuthForHelm()
-              : this.renderAuthForVM()}
+              ? this.renderCredentialForHelm()
+              : this.renderCredentialForVM()}
             <div>
               <Button
                 htmlType="submit"
@@ -218,8 +228,16 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   renderTipsOrName() {
-    const { createEnvStore, t } = this.props;
-    const { validatePassed, authInfoName, changeAuthInfoName } = createEnvStore;
+    const { createEnvStore, envStore, t } = this.props;
+    const {
+      validatePassed,
+      credentialName,
+      changeCredentialName
+    } = createEnvStore;
+
+    if (isHelm(envStore.platform)) {
+      return null;
+    }
 
     if (!validatePassed) {
       return (
@@ -236,20 +254,21 @@ export default class CreateTestingEnv extends React.Component {
         </div>
       );
     }
-
-    return (
-      <div className={styles.fieldSetName}>
-        <Input
-          className={styles.input}
-          placeholder={t('Set name')}
-          value={authInfoName}
-          onChange={changeAuthInfoName}
-        />
-      </div>
-    );
+    if (!this.isCredential) {
+      return (
+        <div className={styles.fieldSetName}>
+          <Input
+            className={styles.input}
+            placeholder={t('Set name')}
+            value={credentialName}
+            onChange={changeCredentialName}
+          />
+        </div>
+      );
+    }
   }
 
-  renderAuthForVM() {
+  renderCredentialForVM() {
     const { createEnvStore, t } = this.props;
     const {
       runtimeUrl,
@@ -266,7 +285,7 @@ export default class CreateTestingEnv extends React.Component {
           <label className={styles.label}>{t('URL')}</label>
           <Input
             className={styles.input}
-            placeholder="https://www.qingcloud.com/api"
+            placeholder="例如: https://api.qingcloud.com"
             value={runtimeUrl}
             onChange={changeRuntimeUrl}
           />
@@ -293,9 +312,9 @@ export default class CreateTestingEnv extends React.Component {
     );
   }
 
-  renderAuthForHelm() {
+  renderCredentialForHelm() {
     const { createEnvStore, t } = this.props;
-    const { credentialContent, changeCredentialContent } = createEnvStore;
+    const { helmCredential, changeHelmCredential } = createEnvStore;
 
     return (
       <div className={styles.formCtrl}>
@@ -303,14 +322,14 @@ export default class CreateTestingEnv extends React.Component {
         <textarea
           className={styles.txtCredential}
           maxLength={1000}
-          value={credentialContent}
-          onChange={changeCredentialContent}
+          value={helmCredential}
+          onChange={changeHelmCredential}
         />
       </div>
     );
   }
 
-  renderEnvSetting() {
+  renderRuntimeSetting() {
     const { createEnvStore, credentialStore, t } = this.props;
     const { runtimeZones } = credentialStore;
     const {
@@ -363,6 +382,41 @@ export default class CreateTestingEnv extends React.Component {
     );
   }
 
+  renderCredentialNameSetting() {
+    const { createEnvStore, t } = this.props;
+    const {
+      credentialName,
+      credentialDesc,
+      changeCredentialName,
+      changeCredentialDesc
+    } = createEnvStore;
+
+    return (
+      <div className={styles.wrap}>
+        <Card className={styles.info}>
+          <form className={styles.createForm}>
+            <div className={styles.formCtrl}>
+              <label className={styles.label}>{t('Name')}</label>
+              <Input
+                className={styles.input}
+                value={credentialName}
+                onChange={changeCredentialName}
+              />
+            </div>
+            <div className={styles.formCtrl}>
+              <label className={styles.label}>{t('Backlog')}</label>
+              <textarea
+                maxLength={1000}
+                value={credentialDesc}
+                onChange={changeCredentialDesc}
+              />
+            </div>
+          </form>
+        </Card>
+      </div>
+    );
+  }
+
   render() {
     const { createEnvStore } = this.props;
     const {
@@ -373,12 +427,13 @@ export default class CreateTestingEnv extends React.Component {
       selectCredentialId
     } = createEnvStore;
     const { activeStep } = stepOption;
+    const title = this.isCredential ? 'create_credential' : 'create_runtime';
 
     return (
       <Stepper
         headerCls={styles.pgHeader}
         titleCls={styles.pgTitle}
-        name={'create_runtime'}
+        name={title}
         stepOption={{
           ...stepOption,
           prevStep,
@@ -389,8 +444,14 @@ export default class CreateTestingEnv extends React.Component {
       >
         <Notification />
         <div className={styles.form}>
-          {activeStep === 1 && this.renderEnvAuthInfo()}
-          {activeStep === 2 && this.renderEnvSetting()}
+          {activeStep === 1 && this.renderCredentialForm()}
+          {activeStep === 2
+            && (!this.isCredential
+              ? this.renderRuntimeSetting()
+              : this.renderCredentialNameSetting())}
+        </div>
+        <div className="hide">
+          {this.doneCreateRt || this.doneCreateCredential}
         </div>
       </Stepper>
     );

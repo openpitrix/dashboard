@@ -188,7 +188,7 @@ export const userMenus = [
   },
   {
     name: 'Testing env',
-    link: '/:dash/testing-env',
+    link: '/:dash/testing-runtime',
     iconName: 'image',
     only: 'developer' // only show when user role is developer
   },

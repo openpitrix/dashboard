@@ -74,6 +74,7 @@ export default class TestingEnvStore extends Store {
   handleOperation = async (e, formData) => {
     this.isLoading = true;
 
+    // runtime ops
     if (this.modalType === 'modify_runtime') {
       const res = await this.request.patch(
         'runtimes',
@@ -111,6 +112,35 @@ export default class TestingEnvStore extends Store {
         this.hideModal();
         this.success('Delete runtime successfully');
         await this.updateProviderCounts();
+        await this.fetchData();
+      }
+    }
+
+    // credential ops
+    if (this.modalType === 'modify_auth_info') {
+      const res = await this.request.patch(
+        'runtimes/credentials',
+        _.extend(_.pick(formData, ['name', 'description']), {
+          runtime_credential_id: this.selectCredentialId
+        })
+      );
+      if (res && res.runtime_credential_id) {
+        this.hideModal();
+        this.success('Modify runtime credential successfully');
+        await this.fetchData();
+      }
+    }
+    if (this.modalType === 'add_runtime') {
+      // todo
+    }
+    if (this.modalType === 'delete_auth_info') {
+      const res = await this.request.delete('runtimes/credentials', {
+        runtime_credential_id: [this.selectCredentialId]
+      });
+
+      if (res && res.runtime_credential_id) {
+        this.hideModal();
+        this.success('Delete runtime credential successfully');
         await this.fetchData();
       }
     }

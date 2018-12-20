@@ -89,6 +89,7 @@ $card-height: 188px;
     background: none;
     border: none;
     margin-top: -40px;
+    margin-bottom: 12px;
 
     &>div {
       font-size: $size-normal;
@@ -243,7 +244,39 @@ $card-height: 188px;
       }
     }
   }
+}
 
+
+// modify runtime and credential
+.fmCtrl {
+  margin-bottom: 24px;
+  .label {
+    display: block;
+    font-weight: 500;
+    color: $N500;
+    margin-bottom: 8px;
+  }
+  .field {
+    height: 32px;
+    border-radius: 2px;
+    background-color: $N0;
+  }
+}
+
+.dialog {
+  .item {
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color: $N0;
+    cursor: pointer;
+    &:hover, &.checked {
+      border: 1px solid $P75;
+    }
+    .icon {
+      float: right;
+    }
+  }
 }
 
 

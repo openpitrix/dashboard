@@ -450,6 +450,16 @@
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_1": "《平台服务条款》",
   "STEPPER_FOOTER_CREATE_RUNTIME_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_2": "《平台服务条款》",
+  
+  "STEPPER_NAME_CREATE_CREDENTIAL_HEADER": "添加授权信息 {{activeStep}}/{{steps}}",
+  "STEPPER_TITLE_CREATE_CREDENTIAL_1": "提供环境授权信息",
+  "STEPPER_TITLE_CREATE_CREDENTIAL_2": "设置名称、备注",
+  "STEPPER_HEADER_CREATE_CREDENTIAL_2": "「提供环境授权信息」",
+  "STEPPER_FOOTER_CREATE_CREDENTIAL_1": "关于授权信息的保密与安全问题请参看",
+  "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_1": "《平台服务条款》",
+  "STEPPER_FOOTER_CREATE_CREDENTIAL_2": "关于授权信息的保密与安全问题请参看",
+  "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_2": "《平台服务条款》",
+  
   "Verify": "验证",
   "How to get these tips?": "如何获得这些信息？",
 
@@ -465,7 +475,7 @@
   "DELETE_RUNTIME_CONFIRM": "确认删除该环境吗?",
   "DELETE_AUTH_INFO_CONFIRM": "确认删除该授权信息吗?",
   "Backlog": "备注",
-  "Please validate env auth info": "请验证授权信息",
+  "Please validate runtime credential": "请验证授权信息",
   "Auth info name is empty": "授权信息名称为空",
 
   "Delete runtime successfully": "删除环境成功",
@@ -473,6 +483,13 @@
   "You can": "你可以",
   "Choose from already saved resource": "从已添加的当中选择：",
   "Or": "或者",
-  "Newly create": "添加全新的..."
+  "Newly create": "添加全新的...",
+
+  "Credential name is empty": "授权信息名称为空",
+  "Saved runtime credential successfully": "授权信息添加成功",
+  "Please select runtime zone": "请选择环境区域",
+  "Runtime name is empty": "环境名称为空",
+  "Modify runtime credential successfully": "修改授权信息成功",
+  "Delete runtime credential successfully": "删除授权信息成功"
 
 }

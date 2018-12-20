@@ -17,7 +17,6 @@ import {
 import Loading from 'components/Loading';
 
 import styles from '../index.scss';
-import myStyles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -27,7 +26,7 @@ import myStyles from './index.scss';
   credentialStore: rootStore.runtimeCredentialStore
 }))
 @observer
-class Env extends React.Component {
+class Runtime extends React.Component {
   static propTypes = {
     platform: PropTypes.string
   };
@@ -55,7 +54,9 @@ class Env extends React.Component {
 
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
-    this.props.history.push(`/dashboard/testing-env/add?provider=${platform}`);
+    this.props.history.push(
+      `/dashboard/testing-runtime/add?provider=${platform}`
+    );
   };
 
   renderMenu(runtime_id) {
@@ -104,18 +105,18 @@ class Env extends React.Component {
           onCancel={hideModal}
           onSubmit={handleOperation}
         >
-          <div className={myStyles.fmCtrl}>
-            <label className={myStyles.label}>{t('Name')}</label>
+          <div className={styles.fmCtrl}>
+            <label className={styles.label}>{t('Name')}</label>
             <Input
-              className={myStyles.field}
+              className={styles.field}
               name="name"
               defaultValue={rt.name}
             />
           </div>
-          <div className={myStyles.fmCtrl}>
-            <label className={myStyles.label}>{t('Description')}</label>
+          <div className={styles.fmCtrl}>
+            <label className={styles.label}>{t('Description')}</label>
             <Input
-              className={myStyles.field}
+              className={styles.field}
               name="description"
               defaultValue={rt.description}
             />
@@ -132,29 +133,24 @@ class Env extends React.Component {
           isOpen={isModalOpen}
           onCancel={hideModal}
           onSubmit={handleOperation}
-          className={myStyles.dialog}
+          className={styles.dialog}
         >
           {_.map(
             credentials,
-            (
-              {
-                name, description, runtime_credential_id, create_time
-              },
-              idx
-            ) => {
+            ({ name, description, runtime_credential_id }, idx) => {
               const checked = selectCredentialId === runtime_credential_id;
 
               return (
                 <Card
-                  className={classnames(myStyles.item, {
-                    [myStyles.checked]: checked
+                  className={classnames(styles.item, {
+                    [styles.checked]: checked
                   })}
                   key={idx}
                   onClick={() => setCredentialId(runtime_credential_id)}
                 >
-                  <span className={myStyles.name}>{name}</span>
-                  <span className={myStyles.desc}>{description}</span>
-                  <span className={myStyles.icon}>
+                  <span className={styles.name}>{name}</span>
+                  <span className={styles.desc}>{description}</span>
+                  <span className={styles.icon}>
                     {checked && <Icon name="check" />}
                   </span>
                 </Card>
@@ -298,4 +294,4 @@ class Env extends React.Component {
   }
 }
 
-export default withRouter(Env);
+export default withRouter(Runtime);
