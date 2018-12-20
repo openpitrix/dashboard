@@ -1,5 +1,9 @@
 @import '~scss/vars';
 
+%has-bottom {
+  border-bottom: 1px solid $N10;
+}
+
 .menuLayer {
   min-width: 140px;
 
@@ -39,7 +43,7 @@
       line-height: 32px;
       font-weight: 500;
       color: $N500;
-      border-bottom: 1px solid $N10;
+      @extend %has-bottom;
 
       .userIcon {
         float: left;
@@ -88,15 +92,15 @@
       > label {
         line-height: 40px;
       }
-      border-bottom: 1px solid $N10;
+      @extend %has-bottom;
 
       .iconImg {
         margin: 12px 8px 12px 15px;
       }
     }
+  }
 
-    &:last-child {
-      border-top: 1px solid $N10;
-    }
+  .divider {
+    @extend %has-bottom;
   }
 }

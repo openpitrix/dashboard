@@ -1,0 +1,200 @@
+@import "~scss/vars";
+
+.pgHeader{
+  font-size: $size-small !important;
+  color: $N75 !important;
+}
+.pgTitle {
+  font-size: 20px !important;
+  color: $N500 !important;
+}
+
+.wrap {
+  display: flex;
+  .info {
+    margin: 0 auto;
+    width: 453px;
+    //min-height: 508px;
+    height: auto;
+
+    &.fmValidated {
+      min-height: 452px;
+    }
+    &.fmEnvSetting {
+      min-height: 388px;
+    }
+
+    .createForm{
+      .formCtrl {
+        margin-bottom: 32px;
+        .label {
+          display: block;
+          font-size: $size-normal;
+          font-weight: 500;
+          color: $N500;
+          margin-bottom: 8px;
+        }
+        .input {
+          height: 32px;
+          border-radius: 2px;
+          background-color: $N0;
+        }
+        .txtCredential {
+          min-height: 232px;
+        }
+      }
+      .btnVerify {
+
+      }
+      .zones {
+        display: flex;
+        flex-wrap: wrap;
+        li {
+          width: 71px;
+          background-color: $N0;
+          border-radius: 2px;
+          border: 1px solid $N30;
+          color: $N300;
+          text-align: center;
+          padding: 9px 12px;
+          cursor: pointer;
+          &:hover, &.activeZone {
+            color: $P75;
+            border: 1px solid $P75;
+            box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
+          }
+        }
+      }
+    }
+
+    .fieldSetName {
+      margin-top: 28px;
+    }
+
+    .errMsg{
+      position: relative;
+      display: inline-block;
+      margin-left: 12px;
+      width: 80%;
+
+      .msg {
+        display: inline-block;;
+        margin-left: 5px;
+        font-size: $size-small;
+        color: $N75;
+
+        &.fixLoadingPos {
+          margin-left: 20px;
+        }
+      }
+      .spinner {
+        position: relative;
+        top: -17px;
+        left: -120px;
+        .loading {
+          width: 16px;
+          height: 16px;
+          border-width: 1px;
+        }
+      }
+      :global {
+        .icon {
+          vertical-align: middle;
+        }
+      }
+
+      .iconSuccess {
+        svg {
+          --primary-color: #{$G100};
+          --secondary-color: #{$G30};
+        }
+      }
+      .iconFailed {
+        svg {
+          --primary-color: #{$R400};
+          --secondary-color: #{$R30};
+        }
+      }
+    }
+
+    .tips{
+      &>p {
+        margin-top: 24px;
+        font-size: $size-small;
+        font-weight: 500;
+        line-height: 1.67;
+        color: $N300;
+        :global {
+          .icon {
+            vertical-align: sub;
+          }
+        }
+      }
+      &>ol{
+        padding-left: 16px;
+        margin-top: 8px;
+        &>li {
+          list-style-type: decimal;
+          font-size: $size-small;
+          color: $N300;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}
+
+.credentialList {
+  width: 453px;
+  margin: 0 auto;
+  .item {
+    width: 453px;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color: $N0;
+    cursor: pointer;
+    &:hover, &.checked {
+      border: 1px solid $P75;
+    }
+
+    .icon {
+      float: right;
+    }
+  }
+}
+
+.txt1 {
+  font-size: $size-small;
+  color: $N75;
+  margin-right: 4px;
+}
+.txt2 {
+  font-size: $size-small;
+  font-weight: 500;
+  color: $N300;
+}
+.tipChoose {
+  margin-bottom: 12px;
+}
+.tipAdd {
+  margin-top: 49px;
+}
+.linkAdd {
+  font-size: $size-small;
+  font-weight: 500;
+  color: $P75;
+  cursor: pointer;
+}
+.tipWrap {
+  width: 453px;
+  margin: 0 auto;
+  margin-bottom:12px;
+  hr {
+    margin: 24px 0;
+    height: 1px;
+    background-color: $N10;
+  }
+}
+.fixWrap {
+  display: block;
+}

@@ -218,3 +218,4 @@ export default class RuntimeStore extends Store {
 }
 
 export Create from './create';
+export Credential from './credential';

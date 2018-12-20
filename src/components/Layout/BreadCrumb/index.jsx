@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
+import { toUrl } from 'utils/url';
 import pathLink from './path-link';
+
 import styles from './index.scss';
 
 @translate()
@@ -14,7 +16,6 @@ import styles from './index.scss';
 @observer
 export default class BreadCrumb extends Component {
   static propTypes = {
-    children: PropTypes.node,
     linkPath: PropTypes.string
   };
 
@@ -26,7 +27,7 @@ export default class BreadCrumb extends Component {
     const {
       children, linkPath, user, t
     } = this.props;
-    const paths = linkPath.split('>');
+    const paths = linkPath.split('>').map(s => s.trim());
     const linkLen = paths.length - 1;
     const pathToLink = pathLink(user.isDev);
 
@@ -36,13 +37,13 @@ export default class BreadCrumb extends Component {
           <Fragment key={path}>
             {index !== linkLen && (
               <label>
-                <Link to={pathToLink[path] || '/'}>{t(path)}</Link>&nbsp;/&nbsp;
+                <Link to={toUrl(pathToLink[path]) || '/'}>{t(path)}</Link> /{' '}
               </label>
             )}
             {index === linkLen && <label>{t(path)}</label>}
           </Fragment>
         ))}
-        {Boolean(children) && children}
+        {children}
       </div>
     );
   }

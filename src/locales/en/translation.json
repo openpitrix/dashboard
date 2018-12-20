@@ -93,5 +93,8 @@
 
   "APP_DELIVERY_MODES_EXPLAIN": "Each application can support multiple delivery modes, and the versions of each delivery mode are independent of each other.",
   "HISTORICAL_VERSIONS_TOTAL":"And {{length}} historical versions",
-  "ACTIVE_VERSIONS_TOTAL":"There are currently {{length}} active versions"
+  "ACTIVE_VERSIONS_TOTAL":"There are currently {{length}} active versions",
+
+  "DELETE_AUTH_INFO_CONFIRM": "Are you sure to delete this authorization info ?",
+  "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?"
 }

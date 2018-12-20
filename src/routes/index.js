@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { toUrl, needAuth } from 'utils/url';
 
 // views without lazy load
 import Home from 'pages/Home';
@@ -12,16 +13,6 @@ const Account = lazy(() => import('../pages/Account'));
 const Store = lazy(() => import('../pages/Store'));
 const Purchased = lazy(() => import('../pages/Purchased'));
 const Runtimes = lazy(() => import('../pages/Runtimes'));
-
-const dashboardPrefix = '/dashboard';
-
-const dashUrl = path => {
-  if (!path) return dashboardPrefix;
-  if (path.startsWith('/:dash')) {
-    path = path.replace('/:dash', dashboardPrefix);
-  }
-  return path;
-};
 
 const routes = {
   '/': Home,
@@ -82,30 +73,20 @@ const routes = {
 
   '/:dash/account': Account,
 
+  '/:dash/testing-runtime': Dash.TestingEnv,
+  '/:dash/testing-runtime/add': Dash.CreateTestingEnv,
+
   '*': Home
-};
-
-const judgeNeedAuth = route => {
-  if (route.startsWith('/:dash')) {
-    return true;
-  }
-
-  if (route.startsWith('/store/:appId/deploy')) {
-    return true;
-  }
-
-  const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys', '/store'];
-  return paths.includes(route);
 };
 
 export default Object.keys(routes).map(route => {
   const routeDefinition = Object.assign(
     {},
     {
-      path: dashUrl(route),
+      path: toUrl(route),
       exact: route !== '/login',
       component: routes[route],
-      needAuth: judgeNeedAuth(route)
+      needAuth: needAuth(route)
     }
   );
   if (route === '*') {

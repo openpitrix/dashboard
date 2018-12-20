@@ -974,5 +974,26 @@ const svgSprites = `
         <path  style="fill: var(--primary-color); opacity: var(--primary-opacity);" d="M9.885 14.06l6.134-6.133 1.414 1.414-7.548 7.548-3.806-3.806 1.415-1.414z"/>
     </g>
 </symbol>
+<symbol id="qui-aliyun" viewBox="0 0 24 24">
+ <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+    <path d="M10.69 5.75l-.573 1.923a852.69 852.69 0 0 0-4.714 1.093c-.348.087-.464.257-.464.953v2.613H2v-3.22C2 7.126 3.59 5.75 5.348 5.75h5.342zm0 12.499H5.348C3.59 18.249 2 16.874 2 14.886v-3.22h2.94v2.614c0 .696.115.866.463.953.232.057 1.804.422 4.714 1.093l.573 1.923zM13.306 5.75h5.341c1.759 0 3.348 1.375 3.348 3.363v3.22h-2.94V9.718c0-.696-.115-.866-.463-.953a852.69 852.69 0 0 0-4.714-1.093l-.572-1.923zm0 12.499l.572-1.923c2.91-.671 4.482-1.036 4.714-1.093.348-.087.464-.257.464-.953v-2.613h2.94v3.22c0 1.987-1.59 3.362-3.349 3.362h-5.341zM10 11.75h4v1h-4z"/>
+  </g>
+</symbol>
+<symbol id="qui-openstack" viewBox="0 0 24 24">
+ <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+      <path d="M20.086 2H3.95a1.848 1.848 0 0 0-1.843 1.843v4.341h4.477v-.709a1 1 0 0 1 .998-.998h8.88c.55.002.995.448.995.998v.71h4.48V3.842A1.848 1.848 0 0 0 20.086 2zM17.45 15.932c0 .55-.445.996-.995.998h-8.88a1 1 0 0 1-.998-.998v-.71H2.1v4.342a1.848 1.848 0 0 0 1.843 1.843H20.08a1.848 1.848 0 0 0 1.843-1.843v-4.341H17.45v.709zM2.1 9.464h4.477v4.477H2.1zM17.452 9.464h4.477v4.477h-4.477z"/>
+  </g>
+</symbol>
+<symbol id="qui-kubesphere" viewBox="0 0 24 24">
+ <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+    <path d="M18.289 18.224l-4.431-2.554v5.108zM18.289 5.788l-4.431-2.554v5.108zM11.67 2L3 6.997v10.018l8.67 4.997V14.41L7.5 12.006l4.172-2.404zM11.701 12.006l8.658 4.989V7.017z"/>
+  </g>
+</symbol>
+<symbol id="qui-edgewise" viewBox="0 0 24 24">
+ <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+    <path fill="#576075" d="M12 12h5l-5 10zM12 12H7l5-10z"/>
+    <path fill="#BCC2D1" d="M12 12v5L2 12zM12 12V7l10 5z"/>
+  </g>
+</symbol>
 </svg>`;
 export default svgSprites;

@@ -6,11 +6,11 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
+import { userMenus } from 'components/Layout/SideNav/navMap';
+import { toUrl } from 'utils/url';
 
-import { userMeuns } from 'components/Layout/SideNav/navMap';
 import styles from './index.scss';
 
-// translate hoc should place before mobx
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -23,11 +23,10 @@ class MenuLayer extends Component {
   };
 
   becomeDeveloper = isNormal => {
-    const { rootStore, history } = this.props;
-    rootStore.updateUser({
+    this.props.user.update({
       changedRole: isNormal ? '' : 'user'
     });
-    history.push('/dashboard');
+    location.replace('/dashboard');
   };
 
   render() {
@@ -75,20 +74,36 @@ class MenuLayer extends Component {
           </li>
         )}
 
-        {userMeuns.map(item => (
-          <li key={item.name}>
-            <Icon
-              name={item.iconName}
-              type="dark"
-              size={16}
-              className={styles.iconImg}
-            />
-            {item.name === 'Log out' && <a href={item.link}>{t(item.name)}</a>}
-            {item.name !== 'Log out' && (
-              <Link to={item.link}>{t(item.name)}</Link>
-            )}
-          </li>
-        ))}
+        {userMenus.map((item, idx) => {
+          if (Array.isArray(item.only) && !item.only.includes(user.role)) {
+            return null;
+          }
+          if (typeof item.only === 'string' && user.role !== item.only) {
+            return null;
+          }
+
+          return (
+            <li
+              key={idx}
+              className={classnames({
+                [styles.divider]: Boolean(item.divider)
+              })}
+            >
+              <Icon
+                name={item.iconName}
+                type="dark"
+                size={16}
+                className={styles.iconImg}
+              />
+              <Link to={toUrl(item.link)}>{t(item.name)}</Link>
+            </li>
+          );
+        })}
+
+        <li>
+          <Icon name="logout" type="dark" className={styles.iconImg} />
+          <a href="/logout">{t('Log out')}</a>
+        </li>
       </ul>
     );
   }

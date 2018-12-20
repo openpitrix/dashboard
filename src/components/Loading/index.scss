@@ -1,7 +1,6 @@
 @import "~scss/vars";
 
 %spinner-basic {
-  border-radius:50%;
   width:6em;
   height:6em;
 }
@@ -22,10 +21,8 @@
     margin: -3em 0 0 -3em;
 
     .loader {
+      border-radius:50%;
       @extend %spinner-basic;
-      &:after {
-        @extend %spinner-basic
-      }
 
       margin:60px auto;
       font-size:10px;

@@ -64,6 +64,7 @@ module.exports = {
     'no-useless-constructor': 'warn',
     'max-nested-callbacks': ['error', 3],
     'no-multi-assign': 'warn',
+    'no-lonely-if': 'off',
 
     // allow paren-less arrow functions
     'arrow-parens': 'off',
