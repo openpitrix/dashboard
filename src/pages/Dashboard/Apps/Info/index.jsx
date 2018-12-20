@@ -196,7 +196,6 @@ export default class Info extends Component {
             autoFocus
             value={appDetail.tos}
             onChange={e => changeApp(e, 'tos')}
-            className="textarea"
             placeholder={t('开始编写应用的服务条款')}
           />
         )}
