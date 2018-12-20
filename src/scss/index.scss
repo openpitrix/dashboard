@@ -3,6 +3,8 @@
 // basic variables
 @import "vars";
 
+@import "markdown";
+
 %active-dropdown-btn {
   color: $third-text-color !important;
   border-color: $border-dark !important;

@@ -7,7 +7,7 @@ export const subNavMap = {
     title: 'Store',
     links: [
       { name: 'All Apps', link: '/dashboard/apps', active: '/app' },
-      { name: 'App Reviews', link: '/dashboard/reviews', active: 'review' },
+      { name: 'App Reviews', link: '/dashboard/app-reviews', active: 'review' },
       { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
       /* { name: 'Appearance', link: '#', active: 'appearance' } */
     ]
@@ -30,6 +30,19 @@ export const subNavMap = {
       { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' }
       /* { name: 'Service Status', link: '#', active: 'service' } */
     ]
+  },
+  provider: {
+    title: 'App service provider',
+    links: [
+      { name: '全部服务商', link: '/dashboard/providers', active: 'providers' },
+      {
+        name: '入驻申请',
+        link: '/dashboard/applications',
+        active: 'applications'
+      },
+      { name: '合约', link: '#', active: '#' },
+      { name: '保证金', link: '#', active: '#' }
+    ]
   }
 };
 
@@ -48,10 +61,10 @@ export const getNavs = {
       title: 'App Store'
     },
     {
-      link: '/dashboard/repos',
+      link: '/dashboard/providers',
       iconName: 'shield',
-      active: 'repo',
-      title: 'App service provider ISV'
+      active: 'provider',
+      title: 'App service provider'
     },
     {
       link: '#',

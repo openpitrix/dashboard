@@ -20,6 +20,12 @@
       color: $P75;
       border-bottom: 1px solid $P75;
     }
+
+    &.disabled {
+      color: $N100;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }
 

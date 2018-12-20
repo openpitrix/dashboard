@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { noop } from 'lodash';
+import _, { noop } from 'lodash';
 import { translate } from 'react-i18next';
 
 import styles from './index.scss';
@@ -28,8 +28,11 @@ export default class DetailTabs extends Component {
   constructor(props) {
     super(props);
 
+    const curTabValue = _.isObject(props.tabs[0])
+      ? props.tabs[0].value
+      : props.tabs[0];
     this.state = {
-      curTab: props.defaultTab || props.tabs[0]
+      curTab: props.defaultTab || curTabValue
     };
   }
 
@@ -48,7 +51,11 @@ export default class DetailTabs extends Component {
   }
 
   handleChange = tab => {
-    this.setState({ curTab: tab });
+    const tabValue = _.isObject(tab) ? tab.value : tab;
+
+    if (!tab.isDisabled) {
+      this.setState({ curTab: tabValue });
+    }
   };
 
   render() {
@@ -65,13 +72,16 @@ export default class DetailTabs extends Component {
           className
         )}
       >
-        {tabs.map((tab, idx) => (
+        {tabs.map(tab => (
           <label
-            className={classnames({ [styles.active]: tab === curTab })}
-            key={idx}
+            className={classnames({
+              [styles.active]: (tab.value || tab) === curTab,
+              [styles.disabled]: tab.isDisabled
+            })}
+            key={tab.value || tab}
             onClick={() => this.handleChange(tab)}
           >
-            {t(tab)}
+            {t(tab.name || tab)}
           </label>
         ))}
       </div>

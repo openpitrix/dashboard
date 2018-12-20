@@ -97,6 +97,7 @@
 
 @mixin note-font ($line-height: 20px, $font-size: 12px){
   line-height: $line-height;
+  font-weight: normal;
   font-size: $font-size;
   color: $N75;
 }
@@ -104,11 +105,13 @@
 @mixin title-font ($line-height: 28px, $font-size: 14px) {
   line-height: $line-height;
   font-size: $font-size;
+  font-weight: 500;
   color: $N500;
 }
 
 @mixin normal-font  ($line-height: 28px, $font-size: 14px) {
   line-height: 20px;
+  font-weight: normal;
   font-size: 12px;
   color: $N300;
 }
