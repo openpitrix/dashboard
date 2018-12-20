@@ -75,7 +75,10 @@ class MenuLayer extends Component {
         )}
 
         {userMenus.map((item, idx) => {
-          if (item.only && user.role !== item.only) {
+          if (Array.isArray(item.only) && !item.only.includes(user.role)) {
+            return null;
+          }
+          if (typeof item.only === 'string' && user.role !== item.only) {
             return null;
           }
 
