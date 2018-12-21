@@ -316,6 +316,8 @@ export default class ClusterDetail extends Component {
           {status === 'stopped' && renderBtn('start', t('Start cluster'))}
           {status === 'active' && renderBtn('stop', t('Stop cluster'))}
           {status === 'active' && renderBtn('resize', t('Resize cluster'))}
+          {status !== 'deleted'
+            && renderBtn('update_env', t('Update cluster env'))}
         </Fragment>
       );
     };
