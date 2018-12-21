@@ -218,13 +218,13 @@ export default class ClusterDetail extends Component {
     }
 
     if (modalType === 'update_env') {
-      const { changeEnv, env } = clusterStore;
+      const { changeEnv, env, cancelChangeEnv } = clusterDetailStore;
 
       return (
         <Modal
           title={t(`${capitalize(modalType)} cluster`)}
           visible={isModalOpen}
-          onCancel={hideModal}
+          onCancel={cancelChangeEnv}
           onOk={this.handleCluster}
         >
           <div className="formContent">
@@ -316,6 +316,8 @@ export default class ClusterDetail extends Component {
           {status === 'stopped' && renderBtn('start', t('Start cluster'))}
           {status === 'active' && renderBtn('stop', t('Stop cluster'))}
           {status === 'active' && renderBtn('resize', t('Resize cluster'))}
+          {status !== 'deleted'
+            && renderBtn('update_env', t('Update cluster env'))}
         </Fragment>
       );
     };

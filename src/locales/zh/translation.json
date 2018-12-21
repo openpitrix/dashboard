@@ -492,5 +492,6 @@
   "Modify runtime credential successfully": "修改授权信息成功",
   "Delete runtime credential successfully": "删除授权信息成功",
   "invalid kebeconfig": "错误的kubeconfig",
+  "Update cluster env successfully": "修改集群环境成功",
   "Helm runtime namespace is empty": "命名空间为空"
 }

@@ -43,8 +43,6 @@ export default class ClusterStore extends Store {
 
   @observable clusterIds = [];
 
-  @observable env = '';
-
   @observable versionId = '';
 
   // cluster job queue
@@ -54,6 +52,14 @@ export default class ClusterStore extends Store {
   };
 
   store = {};
+
+  get clusterEnv() {
+    return this.getStore('clusterDetail').envJson();
+  }
+
+  get fetchJobs() {
+    return this.getStore('clusterDetail').fetchJobs;
+  }
 
   @action
   showModal = type => {
@@ -194,20 +200,6 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  updateEnv = async clusterIds => {
-    const result = await this.request.patch('clusters/update_env', {
-      cluster_id: clusterIds[0],
-      env: this.env
-    });
-    if (get(result, 'cluster_id')) {
-      this.hideModal();
-      await this.fetchAll();
-      await this.fetchJobs();
-      this.success(ts('Update cluster environment successfully.'));
-    }
-  };
-
-  @action
   upgradeVersion = async clusterIds => {
     const result = await this.request.post('clusters/upgrade', {
       cluster_id: clusterIds[0],
@@ -291,11 +283,6 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changeEnv = str => {
-    this.env = str;
-  };
-
-  @action
   changeAppVersion = type => {
     this.versionId = type;
   };
@@ -303,6 +290,21 @@ export default class ClusterStore extends Store {
   @action
   registerStore = (name, store) => {
     this.store[name] = store;
+  };
+
+  @action
+  updateEnv = async clusterIds => {
+    const clusterId = [].concat(clusterIds)[0];
+    const result = await this.request.patch('clusters/update_env', {
+      cluster_id: clusterId,
+      env: this.clusterEnv
+    });
+    if (get(result, 'cluster_id')) {
+      this.hideModal();
+      // for refresh env
+      await this.getStore('clusterDetail').fetch(clusterId);
+      this.success('Update cluster env successfully');
+    }
   };
 }
 

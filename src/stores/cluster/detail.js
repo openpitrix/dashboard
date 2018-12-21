@@ -3,6 +3,7 @@ import _ from 'lodash';
 import yaml from 'js-yaml';
 
 import Store from 'stores/Store';
+import { sleep } from 'utils';
 
 // separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
@@ -40,6 +41,8 @@ export default class ClusterDetailStore extends Store {
 
   @observable selectNodeStatus = '';
 
+  @observable env = '';
+
   @action
   fetch = async clusterId => {
     this.isLoading = true;
@@ -47,6 +50,7 @@ export default class ClusterDetailStore extends Store {
       cluster_id: clusterId
     });
     this.cluster = _.get(result, 'cluster_set[0]', {});
+    this.setEnv();
     this.isLoading = false;
   };
 
@@ -90,11 +94,7 @@ export default class ClusterDetailStore extends Store {
   // todo: inject clusterStore
   // fixme: table search, filter no effect
   @action
-  formatClusterNodes = ({
-    type,
-    clusterStore = this.clusterStore,
-    searchWord = ''
-  }) => {
+  formatClusterNodes = ({ type, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = this.cluster;
 
     if (_.isEmpty(cluster_role_set)) {
@@ -105,7 +105,6 @@ export default class ClusterDetailStore extends Store {
 
     cluster_role_set.forEach(roleItem => {
       if (!roleItem.role) {
-        clusterStore.env = this.toYaml(roleItem.env);
         return false;
       }
 
@@ -231,11 +230,24 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  onChangeK8sTag = name => {
+  setEnv = () => {
+    const { env } = this.cluster;
+    if (env) {
+      this.env = this.toYaml(env);
+    } else {
+      this.env = '';
+    }
+  };
+
+  @action
+  onChangeK8sTag = async name => {
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
     if (this.nodeType !== type) {
       this.nodeType = type;
+      this.isLoading = true;
+      await sleep(300);
+      this.isLoading = false;
       this.formatClusterNodes({ type });
     }
   };
@@ -295,6 +307,16 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
+  changeEnv = env => {
+    this.env = env;
+  };
+
+  cancelChangeEnv = () => {
+    this.getStore('cluster').hideModal();
+    this.setEnv();
+  };
+
+  @action
   reset = () => {
     this.currentNodePage = 1;
     this.selectNodeStatus = '';
@@ -305,5 +327,14 @@ export default class ClusterDetailStore extends Store {
     this.cluster = {};
     this.helmClusterNodes = [];
     this.clusterNodes = [];
+  };
+
+  @action
+  envJson = () => {
+    let { env } = this;
+    if (env) {
+      env = JSON.stringify(yaml.safeLoad(env));
+    }
+    return env;
   };
 }
