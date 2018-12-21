@@ -43,8 +43,6 @@ export default class ClusterStore extends Store {
 
   @observable clusterIds = [];
 
-  @observable env = '';
-
   @observable versionId = '';
 
   // cluster job queue
@@ -54,6 +52,14 @@ export default class ClusterStore extends Store {
   };
 
   store = {};
+
+  get clusterEnv() {
+    let { env } = this.getStore('clusterDetail');
+    if (env) {
+      env = JSON.stringify(JSON.parse(env), null, 0);
+    }
+    return env;
+  }
 
   @action
   showModal = type => {
@@ -120,6 +126,14 @@ export default class ClusterStore extends Store {
       runtimeCount: get(result, 'runtime_count', 0)
     };
     // this.isLoading = false;
+  };
+
+  @action
+  fetchJobs = async clusterId => {
+    this.isLoading = true;
+    const result = await this.request.get(`jobs`, { cluster_id: clusterId });
+    this.clusterJobs = get(result, 'job_set', []);
+    this.isLoading = false;
   };
 
   @action
@@ -190,20 +204,6 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       await this.fetchJobs();
       this.success(ts('Rollback cluster successfully.'));
-    }
-  };
-
-  @action
-  updateEnv = async clusterIds => {
-    const result = await this.request.patch('clusters/update_env', {
-      cluster_id: clusterIds[0],
-      env: this.env
-    });
-    if (get(result, 'cluster_id')) {
-      this.hideModal();
-      await this.fetchAll();
-      await this.fetchJobs();
-      this.success(ts('Update cluster environment successfully.'));
     }
   };
 
@@ -291,11 +291,6 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  changeEnv = str => {
-    this.env = str;
-  };
-
-  @action
   changeAppVersion = type => {
     this.versionId = type;
   };
@@ -303,6 +298,22 @@ export default class ClusterStore extends Store {
   @action
   registerStore = (name, store) => {
     this.store[name] = store;
+  };
+
+  @action
+  updateEnv = async clusterIds => {
+    const clusterId = clusterIds[0];
+    const result = await this.request.patch('clusters/update_env', {
+      cluster_id: clusterId,
+      env: this.clusterEnv
+    });
+    if (get(result, 'cluster_id')) {
+      this.hideModal();
+      // for refresh env
+      await this.getStore('clusterDetail').fetch(clusterIds[0]);
+      await this.fetchJobs(clusterId);
+      this.success(ts('Update cluster environment successfully.'));
+    }
   };
 }
 

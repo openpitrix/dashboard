@@ -40,6 +40,8 @@ export default class ClusterDetailStore extends Store {
 
   @observable selectNodeStatus = '';
 
+  @observable env = '';
+
   @action
   fetch = async clusterId => {
     this.isLoading = true;
@@ -47,6 +49,7 @@ export default class ClusterDetailStore extends Store {
       cluster_id: clusterId
     });
     this.cluster = _.get(result, 'cluster_set[0]', {});
+    this.setEnv();
     this.isLoading = false;
   };
 
@@ -90,11 +93,7 @@ export default class ClusterDetailStore extends Store {
   // todo: inject clusterStore
   // fixme: table search, filter no effect
   @action
-  formatClusterNodes = ({
-    type,
-    clusterStore = this.clusterStore,
-    searchWord = ''
-  }) => {
+  formatClusterNodes = ({ type, searchWord = '' }) => {
     const { cluster_role_set, cluster_node_set } = this.cluster;
 
     if (_.isEmpty(cluster_role_set)) {
@@ -105,7 +104,6 @@ export default class ClusterDetailStore extends Store {
 
     cluster_role_set.forEach(roleItem => {
       if (!roleItem.role) {
-        clusterStore.env = this.toYaml(roleItem.env);
         return false;
       }
 
@@ -231,6 +229,17 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
+  setEnv = () => {
+    const { env } = this.cluster;
+    if (env) {
+      // format json string with 4 space
+      this.env = JSON.stringify(JSON.parse(env), null, 4);
+    } else {
+      this.env = '';
+    }
+  };
+
+  @action
   onChangeK8sTag = name => {
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
@@ -292,6 +301,19 @@ export default class ClusterDetailStore extends Store {
     await this.fetchNodes({
       cluster_id: this.cluster.cluster_id
     });
+  };
+
+  @action
+  changeEnv = env => {
+    this.env = env;
+  };
+
+  cancelChangeEnv = () => {
+    Object.assign(this.getStore('cluster'), {
+      modalType: '',
+      isModalOpen: false
+    });
+    this.setEnv();
   };
 
   @action

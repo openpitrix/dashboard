@@ -4,8 +4,9 @@ import CodeMirror from 'react-codemirror';
 
 // fixme
 /* eslint-disable import/no-extraneous-dependencies */
-require('codemirror/lib/codemirror.css');
-require('codemirror/mode/yaml/yaml');
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/yaml/yaml';
+import 'codemirror/mode/javascript/javascript';
 
 export default class LazyCodeMirror extends Component {
   static propTypes = {
@@ -29,7 +30,10 @@ export default class LazyCodeMirror extends Component {
       <CodeMirror
         value={code}
         onChange={onChange}
-        options={{ mode }}
+        options={{
+          lineNumbers: true,
+          mode
+        }}
         {...rest}
       />
     );

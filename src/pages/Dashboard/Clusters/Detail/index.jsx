@@ -218,18 +218,22 @@ export default class ClusterDetail extends Component {
     }
 
     if (modalType === 'update_env') {
-      const { changeEnv, env } = clusterStore;
+      const { changeEnv, env, cancelChangeEnv } = clusterDetailStore;
 
       return (
         <Modal
           title={t(`${capitalize(modalType)} cluster`)}
           visible={isModalOpen}
-          onCancel={hideModal}
+          onCancel={cancelChangeEnv}
           onOk={this.handleCluster}
         >
           <div className="formContent">
             <div className="inputItem">
-              <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
+              <CodeMirror
+                code={env}
+                onChange={changeEnv}
+                mode={{ name: 'javascript', json: true }}
+              />
             </div>
           </div>
         </Modal>
