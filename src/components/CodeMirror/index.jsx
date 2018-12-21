@@ -1,11 +1,13 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 const Component = lazy(() => import('./CodeMirror'));
 
 export default class CodeMirror extends React.Component {
   render() {
-    const { props } = this;
-
-    return <Component {...props} />;
+    return (
+      <Suspense fallback={<div>Loading</div>}>
+        <Component {...this.props} />
+      </Suspense>
+    );
   }
 }

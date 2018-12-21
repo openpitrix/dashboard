@@ -3,6 +3,7 @@ import _ from 'lodash';
 import yaml from 'js-yaml';
 
 import Store from 'stores/Store';
+import { sleep } from 'utils';
 
 // separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
@@ -232,19 +233,21 @@ export default class ClusterDetailStore extends Store {
   setEnv = () => {
     const { env } = this.cluster;
     if (env) {
-      // format json string with 4 space
-      this.env = JSON.stringify(JSON.parse(env), null, 4);
+      this.env = this.toYaml(env);
     } else {
       this.env = '';
     }
   };
 
   @action
-  onChangeK8sTag = name => {
+  onChangeK8sTag = async name => {
     this.extendedRowKeys = [];
     const type = name.split(' ')[0];
     if (this.nodeType !== type) {
       this.nodeType = type;
+      this.isLoading = true;
+      await sleep(300);
+      this.isLoading = false;
       this.formatClusterNodes({ type });
     }
   };
@@ -309,10 +312,7 @@ export default class ClusterDetailStore extends Store {
   };
 
   cancelChangeEnv = () => {
-    Object.assign(this.getStore('cluster'), {
-      modalType: '',
-      isModalOpen: false
-    });
+    this.getStore('cluster').hideModal();
     this.setEnv();
   };
 
@@ -327,5 +327,14 @@ export default class ClusterDetailStore extends Store {
     this.cluster = {};
     this.helmClusterNodes = [];
     this.clusterNodes = [];
+  };
+
+  @action
+  envJson = () => {
+    let { env } = this;
+    if (env) {
+      env = JSON.stringify(yaml.safeLoad(env));
+    }
+    return env;
   };
 }

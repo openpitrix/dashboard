@@ -229,11 +229,7 @@ export default class ClusterDetail extends Component {
         >
           <div className="formContent">
             <div className="inputItem">
-              <CodeMirror
-                code={env}
-                onChange={changeEnv}
-                mode={{ name: 'javascript', json: true }}
-              />
+              <CodeMirror code={env} onChange={changeEnv} mode={'yaml'} />
             </div>
           </div>
         </Modal>
