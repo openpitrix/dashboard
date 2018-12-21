@@ -55,6 +55,8 @@ export default class CreateEnvStore extends Store {
 
   @observable doneCreateCredential = false;
 
+  @observable helmNamespace = '';
+
   get envStore() {
     return this.getStore('testingEnv');
   }
@@ -67,6 +69,11 @@ export default class CreateEnvStore extends Store {
     return getUrlParam('type') === 'credential';
   }
 
+  // fix get platform wrong when refresh page
+  get platform() {
+    return getUrlParam('provider') || this.envStore.platform;
+  }
+
   getCredentialContent() {
     return JSON.stringify({
       access_key_id: this.accessKey,
@@ -77,9 +84,12 @@ export default class CreateEnvStore extends Store {
   getCredentialParams() {
     return {
       runtime_url: this.runtimeUrl,
-      runtime_credential_content: this.getCredentialContent(),
-      provider: this.envStore.platform,
-      name: this.credentialName,
+      runtime_credential_content: isHelm(this.platform)
+        ? this.helmCredential
+        : this.getCredentialContent(),
+      provider: this.platform,
+      // using random string for credential name when type is helm
+      name: isHelm(this.platform) ? `rtc-${Date.now()}` : this.credentialName,
       description: ''
     };
   }
@@ -102,8 +112,6 @@ export default class CreateEnvStore extends Store {
 
   @action
   nextStep = async () => {
-    const { platform } = this.envStore;
-
     if (this.stepOption.activeStep < STEPS) {
       if (this.selectCredentialId) {
         // todo
@@ -112,15 +120,16 @@ export default class CreateEnvStore extends Store {
         if (!this.validatePassed) {
           return this.error('Please validate runtime credential');
         }
-        if (this.validatePassed && !this.isCredential && !this.credentialName) {
-          return this.error('Auth info name is empty');
-        }
 
-        if (isHelm(platform)) {
+        if (isHelm(this.platform)) {
           // todo
         } else {
-          await this.saveCredential();
+          if (!this.isCredential && !this.credentialName) {
+            return this.error('Auth info name is empty');
+          }
         }
+
+        await this.saveCredential();
       }
 
       this.stepOption.activeStep++;
@@ -145,7 +154,6 @@ export default class CreateEnvStore extends Store {
 
   @action
   doneStep = async () => {
-    const { platform } = this.envStore;
     const { selectZone, name, desc } = this.runtimeInfo;
     const { runtime_credential_id } = this.credentialStore.credential;
 
@@ -162,7 +170,10 @@ export default class CreateEnvStore extends Store {
         this.doneCreateCredential = true;
       }
     } else {
-      if (isHelm(platform)) {
+      if (isHelm(this.platform)) {
+        if (!this.helmNamespace) {
+          return this.error('Helm runtime namespace is empty');
+        }
       } else if (!selectZone) {
         return this.error('Please select runtime zone');
       }
@@ -175,8 +186,8 @@ export default class CreateEnvStore extends Store {
       await this.createRuntime({
         name,
         description: desc,
-        zone: selectZone,
-        provider: platform,
+        zone: isHelm(this.platform) ? this.helmNamespace : selectZone,
+        provider: this.platform,
         runtime_credential_id: this.selectCredentialId || runtime_credential_id
       });
 
@@ -222,6 +233,7 @@ export default class CreateEnvStore extends Store {
     this.credentialName = this.getValueFromEvent(name);
   };
 
+  @action
   changeCredentialDesc = desc => {
     this.credentialDesc = this.getValueFromEvent(desc);
   };
@@ -242,6 +254,11 @@ export default class CreateEnvStore extends Store {
   };
 
   @action
+  changeRuntimeNamespace = ns => {
+    this.helmNamespace = this.getValueFromEvent(ns);
+  };
+
+  @action
   setValidateMsg = (msg = '', success = false) => {
     this.validateMsg = msg;
     this.validatePassed = success;
@@ -249,21 +266,22 @@ export default class CreateEnvStore extends Store {
 
   @action
   validateCredential = async () => {
-    const platform = getUrlParam('provider') || this.envStore.platform;
     const params = {
-      provider: platform
+      provider: this.platform
     };
 
-    if (!platform) {
+    if (!this.platform) {
       return this.setValidateMsg('invalid provider');
     }
 
-    if (isHelm(platform)) {
+    if (isHelm(this.platform)) {
       if (!this.helmCredential) {
         return this.setValidateMsg('invalid kebeconfig');
       }
-      // todo
-      params.credential = this.helmCredential;
+      _.extend(params, {
+        runtime_url: '',
+        runtime_credential_content: this.helmCredential
+      });
     } else {
       if (!this.runtimeUrl) {
         return this.setValidateMsg('invalid url');

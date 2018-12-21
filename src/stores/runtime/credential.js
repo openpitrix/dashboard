@@ -31,7 +31,10 @@ export default class RuntimeCredentialStore extends Store {
   @action
   validate = async (params = {}) => {
     this.isLoading = true;
-    const res = await this.request.get('runtimes/credentials:validate', params);
+    const res = await this.request.post(
+      'runtimes/credentials:validate',
+      params
+    );
     this.isLoading = false;
     return res;
   };
