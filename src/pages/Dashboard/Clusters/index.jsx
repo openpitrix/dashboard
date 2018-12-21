@@ -250,11 +250,7 @@ export default class Clusters extends Component {
         onClear={onClearSearch}
         onRefresh={onRefresh}
         noRefreshBtn
-      >
-        <Link to={`/dashboard/app/${appId}/deploy`} className="pull-right">
-          <Button type="primary">{t('Deploy')}</Button>
-        </Link>
-      </Toolbar>
+      />
     );
   }
 

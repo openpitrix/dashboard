@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
-import YAML from 'json2yaml';
+import yaml from 'js-yaml';
 
 import Store from 'stores/Store';
 
@@ -105,7 +105,7 @@ export default class ClusterDetailStore extends Store {
 
     cluster_role_set.forEach(roleItem => {
       if (!roleItem.role) {
-        clusterStore.env = this.json2Yaml(roleItem.env);
+        clusterStore.env = this.toYaml(roleItem.env);
         return false;
       }
 
@@ -216,11 +216,18 @@ export default class ClusterDetailStore extends Store {
     this.extendedRowKeys = _.union([], this.extendedRowKeys);
   };
 
+  /**
+   * string to yaml
+   * @param str
+   * @returns {XML|string}
+   */
   @action
-  json2Yaml = str => {
-    const yamlStr = YAML.stringify(JSON.parse(str || '{}'));
+  toYaml = str => {
+    const yamlStr = yaml.safeDump(JSON.parse(str || '{}'));
     // fixme : some helm app with leading strings will cause deploy error
-    return yamlStr.replace(/^---\n/, '').replace(/\s+(.*)/g, '$1');
+    // return yamlStr.replace(/^---\n?/, '').replace(/\s+(.*)/g, '$1');
+
+    return yamlStr;
   };
 
   @action

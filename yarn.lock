@@ -5721,12 +5721,6 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
-json2yaml@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/json2yaml/-/json2yaml-1.1.0.tgz#5414d907f9816586b80c513ec2e3aeb2ab819a6c"
-  dependencies:
-    remedial "1.x"
-
 json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
@@ -8323,10 +8317,6 @@ remark-parse@^5.0.0:
     unist-util-remove-position "^1.0.0"
     vfile-location "^2.0.0"
     xtend "^4.0.1"
-
-remedial@1.x:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/remedial/-/remedial-1.0.8.tgz#a5e4fd52a0e4956adbaf62da63a5a46a78c578a0"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
