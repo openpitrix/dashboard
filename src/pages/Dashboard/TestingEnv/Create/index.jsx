@@ -312,7 +312,6 @@ export default class CreateTestingEnv extends React.Component {
         <label className={styles.label}>{t('Credential')}</label>
         <textarea
           className={styles.txtCredential}
-          maxLength={50000}
           value={helmCredential}
           onChange={changeHelmCredential}
         />
@@ -377,8 +376,8 @@ export default class CreateTestingEnv extends React.Component {
             <div className={styles.formCtrl}>
               <label className={styles.label}>{t('Backlog')}</label>
               <textarea
-                maxLength={5000}
                 value={desc}
+                maxLength={1000}
                 onChange={changeRuntimeDesc}
               />
             </div>
@@ -412,8 +411,8 @@ export default class CreateTestingEnv extends React.Component {
             <div className={styles.formCtrl}>
               <label className={styles.label}>{t('Backlog')}</label>
               <textarea
-                maxLength={1000}
                 value={credentialDesc}
+                maxLength={1000}
                 onChange={changeCredentialDesc}
               />
             </div>
