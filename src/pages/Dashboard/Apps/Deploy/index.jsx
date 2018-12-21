@@ -115,9 +115,9 @@ export default class AppDeploy extends Component {
         cluster: _.extend(
           {},
           this.getFormDataByKey('cluster'),
-          this.getNodesConf()
+          this.getConfByKey()
         ),
-        env: this.getFormDataByKey('env')
+        env: this.getConfByKey('env')
       });
     }
 
@@ -172,11 +172,16 @@ export default class AppDeploy extends Component {
     return _.mapKeys(dataByPrefix, (val, key) => key.substring(keyPrefix.length));
   };
 
-  getNodesConf = () => {
-    const nodesConf = this.getFormDataByKey('node');
+  /**
+   *
+   * @param confKey node | env
+   * @returns {*}
+   */
+  getConfByKey = (confKey = 'node') => {
+    const conf = this.getFormDataByKey(confKey);
 
     return _.transform(
-      nodesConf,
+      conf,
       (res, val, key) => {
         const [role, meter] = key.split('.');
         res[role] = res[role] || {};
