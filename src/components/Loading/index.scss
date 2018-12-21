@@ -44,14 +44,6 @@
   }
 }
 
-:global {
-  .loadTable {
-    position: static;
-    height: 150px;
-  }
-}
-
-
 @mixin load-frames() {
   0% {
     -webkit-transform:rotate(0deg);
