@@ -18,6 +18,15 @@ import styles from './index.scss';
 }))
 @observer
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    // eslint-disable-next-line
+    if (_getUser().accessToken) {
+      props.history.replace('/');
+    }
+  }
+
   handleSubmit = async params => {
     const { store, user, history } = this.props;
     const res = await store.oauth2Check(params);
