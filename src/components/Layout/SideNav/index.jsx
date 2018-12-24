@@ -99,8 +99,7 @@ class SideNav extends React.Component {
     const { isISV } = user;
     const role = isISV ? 'isv' : user.role;
     const key = this.getMatchKey();
-
-    return subNavMap[role][key] || {};
+    return (_.isObject(subNavMap[role]) && subNavMap[role][key]) || {};
   };
 
   renderSubsDev() {
@@ -159,6 +158,10 @@ class SideNav extends React.Component {
     const { t } = this.props;
     const subNavData = this.getSudNavData();
     const { path } = this.props.match;
+
+    if (!subNavData.title) {
+      return null;
+    }
 
     return (
       <div className={styles.subNav}>
