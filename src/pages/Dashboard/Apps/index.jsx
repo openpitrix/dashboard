@@ -383,45 +383,25 @@ export default class Apps extends Component {
       noCancel: false
     };
 
-    const linkPath = isAdmin ? 'Store>All Apps' : 'My Apps>All';
-
     return (
-      <Layout>
-        <BreadCrumb linkPath={linkPath} />
-
-        {isAdmin && (
+      <Layout pageTitle={t('All Apps')} noSubMenu>
+        {/* {isAdmin && (
           <Row>
             <Statistics {...summaryInfo} objs={repos.slice()} />
           </Row>
-        )}
+        )} */}
 
-        <Row>
-          <Grid>
-            <Section size={12}>
-              {isDev && this.renderToolbar(true)}
+        <Table
+          columns={columns}
+          dataSource={apps.slice(0, 10)}
+          rowSelection={rowSelection}
+          filterList={filterList}
+          pagination={pagination}
+          isLoading={isLoading}
+        />
 
-              {viewType === 'card' ? (
-                this.renderCardApps()
-              ) : (
-                <Card>
-                  {isAdmin && this.renderToolbar()}
-
-                  <Table
-                    columns={columns}
-                    dataSource={apps.slice(0, 10)}
-                    rowSelection={rowSelection}
-                    filterList={filterList}
-                    pagination={pagination}
-                    isLoading={isLoading}
-                  />
-                </Card>
-              )}
-
-              {this.renderOpsModal()}
-              {this.renderDeleteDialog()}
-            </Section>
-          </Grid>
-        </Row>
+        {this.renderOpsModal()}
+        {this.renderDeleteDialog()}
       </Layout>
     );
   }

@@ -53,12 +53,14 @@ class SideNav extends React.Component {
   static defaultProps = {};
 
   async componentDidMount() {
-    const { appStore, user, match } = this.props;
+    const {
+      appStore, user, match, hasSubNav
+    } = this.props;
     const { isDev } = user;
     const { hasMeunApps, fetchMenuApps } = appStore;
 
     const { appId } = match.params;
-    if (appId) {
+    if (hasSubNav && isDev && appId) {
       await appStore.fetch(appId);
     }
 
@@ -67,17 +69,21 @@ class SideNav extends React.Component {
     }
   }
 
-  becomeDeveloper = isNormal => {
-    const { rootStore, location } = this.props;
-    rootStore.updateUser({
-      changedRole: isNormal ? '' : 'user'
-    });
-    location.href = '/dashboard';
+  becomeDeveloper = type => {
+    const { rootStore } = this.props;
+
+    if (type === 'wrench' || type === 'back') {
+      rootStore.updateUser({
+        changedRole: type === 'back' ? '' : 'developer'
+      });
+      const url = type === 'back' ? '/dashboard/apps' : '/dashboard/my/apps';
+      location.replace(url);
+    }
   };
 
   getMatchKey = () => {
     const { path } = this.props.match;
-    const key = _.find(keys, k => path.indexOf(k) > -1) || 'dashboard';
+    const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
 
     return changeKey[key] || key;
   };
@@ -88,147 +94,15 @@ class SideNav extends React.Component {
   };
 
   getSudNavData = () => {
+    const { user } = this.props;
+    const { isISV } = user;
+    const role = isISV ? 'isv' : user.role;
     const key = this.getMatchKey();
-    return subNavMap[key];
+
+    return subNavMap[role][key] || {};
   };
 
-  renderNav() {
-    const {
-      user, appStore, history, t
-    } = this.props;
-    const { role, isDev } = user;
-    const { pathname } = history.location;
-    const { menuApps } = appStore;
-    const navs = isDev ? menuApps : getNavs[role];
-    const bottomNavs = isDev ? getBottomNavs.slice(2) : getBottomNavs;
-
-    return (
-      <div className={styles.nav}>
-        <ul className={styles.topNav}>
-          <li>
-            <Link to="/">
-              <img src="/logo_icon.svg" className={styles.icon} />
-            </Link>
-            <label className={styles.title}>{t('QingCloud App Center')}</label>
-          </li>
-          {navs.map(nav => (
-            <li
-              key={nav.iconName || nav.app_id}
-              className={classnames({ [styles.devItem]: isDev })}
-            >
-              <Link to={nav.link || `/dashboard/app/${nav.app_id}/versions`}>
-                {nav.app_id && (
-                  <span
-                    className={classnames(styles.imageOuter, {
-                      [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
-                    })}
-                  >
-                    <Image
-                      src={nav.icon}
-                      iconLetter={t(nav.name)}
-                      iconSize={32}
-                      className={styles.image}
-                    />
-                  </span>
-                )}
-                {nav.iconName && (
-                  <Icon
-                    className={styles.icon}
-                    size={20}
-                    name={nav.iconName}
-                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-                  />
-                )}
-              </Link>
-              <NavLink
-                exact
-                to={nav.link || `/dashboard/app/${nav.app_id}/versions`}
-              >
-                <label className={styles.title}>
-                  {t(nav.title || nav.name)}
-                </label>
-              </NavLink>
-            </li>
-          ))}
-          {isDev && (
-            <Fragment>
-              <li className={styles.devItem}>
-                <NavLink
-                  className={styles.addOuter}
-                  exact
-                  to="/dashboard/app/create"
-                >
-                  <Icon
-                    name="add"
-                    size={20}
-                    type="dark"
-                    className={styles.icon}
-                  />
-                </NavLink>
-                <NavLink
-                  exact
-                  to="/dashboard/app/create"
-                  className={styles.title}
-                >
-                  {t('Create app')}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink exact to="/dashboard/my/apps">
-                  <Icon
-                    name="more"
-                    size={20}
-                    className={styles.icon}
-                    type={
-                      pathname.indexOf('/dashboard/my/apps') > -1
-                        ? 'light'
-                        : 'dark'
-                    }
-                  />
-                </NavLink>
-                <NavLink exact to="/dashboard/my/apps" className={styles.title}>
-                  {t('View all')}
-                </NavLink>
-              </li>
-            </Fragment>
-          )}
-        </ul>
-        <ul className={styles.bottomNav}>
-          {bottomNavs.map(
-            nav => (nav.iconName === 'human' ? (
-                <li key={nav.iconName}>
-                  <Popover content={<MenuLayer />} className={styles.iconOuter}>
-                    <Icon
-                      className={styles.icon}
-                      size={20}
-                      name={nav.iconName}
-                      type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-                    />
-                    <Link to="#">
-                      <label className={styles.title}>{t(nav.title)}</label>
-                    </Link>
-                  </Popover>
-                </li>
-            ) : (
-                <li key={nav.iconName}>
-                  <Icon
-                    className={styles.icon}
-                    size={20}
-                    name={nav.iconName}
-                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-                  />
-                  <Link to="#">
-                    <label className={styles.title}>{t(nav.title)}</label>
-                  </Link>
-                </li>
-            ))
-          )}
-        </ul>
-      </div>
-    );
-  }
-
-  renderSubDev() {
+  renderSubsDev() {
     const { t } = this.props;
     const { url } = this.props.match;
     const { appDetail, resetAppDetail } = this.props.appStore;
@@ -280,7 +154,7 @@ class SideNav extends React.Component {
     );
   }
 
-  renderSubAdmin() {
+  renderSubs() {
     const { t } = this.props;
     const subNavData = this.getSudNavData();
     const { path } = this.props.match;
@@ -305,15 +179,194 @@ class SideNav extends React.Component {
     );
   }
 
+  renderNavsBottom() {
+    const { t } = this.props;
+    const bottomNavs = getBottomNavs;
+
+    return (
+      <ul className={styles.bottomNav}>
+        {bottomNavs.map(
+          nav => (nav.iconName === 'human' ? (
+              <li key={nav.iconName}>
+                <Popover content={<MenuLayer />} className={styles.iconOuter}>
+                  <Icon
+                    className={styles.icon}
+                    size={20}
+                    name={nav.iconName}
+                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                  />
+                  <Link to="#">
+                    <label className={styles.title}>{t(nav.title)}</label>
+                  </Link>
+                </Popover>
+              </li>
+          ) : (
+              <li key={nav.iconName}>
+                <Icon
+                  className={styles.icon}
+                  size={20}
+                  name={nav.iconName}
+                  type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                />
+                <Link to="#">
+                  <label className={styles.title}>{t(nav.title)}</label>
+                </Link>
+              </li>
+          ))
+        )}
+      </ul>
+    );
+  }
+
+  renderNavsDev() {
+    const {
+      appStore, history, user, t
+    } = this.props;
+    const { pathname } = history.location;
+    const { menuApps } = appStore;
+    const { changedRole, isDev } = user;
+    const hasBack = changedRole === 'developer' && isDev;
+
+    return (
+      <div className={styles.nav}>
+        <ul className={styles.topNav}>
+          {hasBack ? (
+            <li onClick={() => this.becomeDeveloper('back')}>
+              <Link to="#">
+                <Icon
+                  className={styles.icon}
+                  size={20}
+                  name="back"
+                  type="dark"
+                />
+              </Link>
+              <label className={styles.title}>{t('Back')}</label>
+            </li>
+          ) : (
+            <li>
+              <Link to="/">
+                <img src="/logo_icon.svg" className={styles.icon} />
+              </Link>
+              <label className={styles.title}>
+                {t('QingCloud App Center')}
+              </label>
+            </li>
+          )}
+          {menuApps.map(nav => (
+            <li key={nav.app_id} className={styles.devItem}>
+              <Link to={`/dashboard/app/${nav.app_id}/versions`}>
+                <span
+                  className={classnames(styles.imageOuter, {
+                    [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
+                  })}
+                >
+                  <Image
+                    src={nav.icon}
+                    iconLetter={t(nav.name)}
+                    iconSize={32}
+                    className={styles.image}
+                  />
+                </span>
+              </Link>
+              <NavLink exact to={`/dashboard/app/${nav.app_id}/versions`}>
+                <label className={styles.title}>{t(nav.name)}</label>
+              </NavLink>
+            </li>
+          ))}
+          <li className={styles.devItem}>
+            <NavLink
+              className={styles.addOuter}
+              exact
+              to="/dashboard/app/create"
+            >
+              <Icon name="add" size={20} type="dark" className={styles.icon} />
+            </NavLink>
+            <NavLink exact to="/dashboard/app/create" className={styles.title}>
+              {t('Create app')}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/dashboard/my/apps">
+              <Icon
+                name="more"
+                size={20}
+                className={styles.icon}
+                type={
+                  pathname.indexOf('/dashboard/my/apps') > -1 ? 'light' : 'dark'
+                }
+              />
+            </NavLink>
+            <NavLink exact to="/dashboard/my/apps" className={styles.title}>
+              {t('View all')}
+            </NavLink>
+          </li>
+        </ul>
+        {this.renderNavsBottom()}
+      </div>
+    );
+  }
+
+  renderNavs() {
+    const {
+      user, appStore, history, t
+    } = this.props;
+    const { pathname } = history.location;
+    const { isISV, isDev, role } = user;
+    const viewRole = isISV ? 'isv' : role;
+    const navs = getNavs[viewRole] || [];
+
+    return (
+      <div className={styles.nav}>
+        <ul className={styles.topNav}>
+          <li>
+            <Link to="/">
+              <img src="/logo_icon.svg" className={styles.icon} />
+            </Link>
+            <label className={styles.title}>{t('QingCloud App Center')}</label>
+          </li>
+          {navs.map(nav => (
+            <li
+              key={nav.iconName}
+              onClick={() => this.becomeDeveloper(nav.iconName)}
+            >
+              <Link to={nav.link}>
+                <Icon
+                  className={styles.icon}
+                  size={20}
+                  name={nav.iconName}
+                  type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                />
+              </Link>
+              <NavLink exact to={nav.link}>
+                <label className={styles.title}>{t(nav.title)}</label>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        {this.renderNavsBottom()}
+      </div>
+    );
+  }
+
   render() {
     const { hasSubNav, user } = this.props;
-    const { isDev, isAdmin } = user;
+    const {
+      isDev, isAdmin, isISV, changedRole
+    } = user;
+
+    if (isDev) {
+      return (
+        <Fragment>
+          {this.renderNavsDev()}
+          {hasSubNav && this.renderSubsDev()}
+        </Fragment>
+      );
+    }
 
     return (
       <Fragment>
-        {this.renderNav()}
-        {hasSubNav && isDev && this.renderSubDev()}
-        {hasSubNav && isAdmin && this.renderSubAdmin()}
+        {this.renderNavs()}
+        {hasSubNav && this.renderSubs()}
       </Fragment>
     );
   }

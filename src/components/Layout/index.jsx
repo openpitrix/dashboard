@@ -89,8 +89,8 @@ class Layout extends Component {
       hasBack
     } = this.props;
 
-    const { isNormal, isDev, isAdmin } = this.props.user;
-    const hasMenu = (isDev || isAdmin) && !isHome;
+    const { isNormal } = this.props.user;
+    const hasMenu = !isNormal && !isHome;
     const hasSubNav = hasMenu && !noSubMenu && !hasBack;
 
     if (isNormal) {
@@ -131,7 +131,7 @@ class Layout extends Component {
                 {hasBack && (
                   <Icon
                     onClick={() => this.goBack()}
-                    name="previous"
+                    name="back"
                     size={24}
                     type="dark"
                     className={styles.backIcon}
