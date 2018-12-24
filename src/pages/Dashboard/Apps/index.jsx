@@ -384,7 +384,7 @@ export default class Apps extends Component {
     };
 
     return (
-      <Layout pageTitle={t('All Apps')} noSubMenu>
+      <Layout pageTitle={t('All Apps')}>
         {/* {isAdmin && (
           <Row>
             <Statistics {...summaryInfo} objs={repos.slice()} />

@@ -65,12 +65,4 @@ export default class UserProvider {
       && this.username === 'isv'
     );
   }
-
-  set isAdmin(boolen) {}
-
-  set isDev(boolen) {}
-
-  set isNormal(boolen) {}
-
-  set isISV(boolen) {}
 }
