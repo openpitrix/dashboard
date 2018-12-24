@@ -29,7 +29,7 @@ export default class UserProvider {
   }
 
   isLoggedIn() {
-    return Boolean(this.accessToken) && this.username;
+    return this.accessToken && this.username;
   }
 
   update(props = {}) {

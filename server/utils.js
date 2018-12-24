@@ -10,11 +10,8 @@ const oauthResFields = [
 ];
 
 const getTokenGroupFromCtx = (ctx, group = '') => oauthResFields.reduce((obj, prop) => {
-  if (group) {
-    prop = [group, prop].join('_');
-  }
-
-  obj[prop] = ctx.cookies.get(prop);
+  const key = group ? [group, prop].join('_') : prop;
+  obj[prop] = ctx.cookies.get(key);
   return obj;
 }, {});
 
@@ -30,9 +27,9 @@ const saveTokenResponseToCookie = (
 
   without(oauthResFields, 'id_token').forEach(prop => {
     const val = prop === 'expires_in' ? Date.now() + msExpireIn : token_res[prop];
-    // refresh_token cookie expires after 2 days
+    // refresh_token cookie expires after 2 weeks
     if (prop === 'refresh_token') {
-      cookieOption.maxAge = 2 * 24 * 60 * 60 * 1000;
+      cookieOption.maxAge = 2 * 7 * 24 * 60 * 60 * 1000;
     } else {
       cookieOption.maxAge = msExpireIn;
     }

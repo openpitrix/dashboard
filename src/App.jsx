@@ -36,10 +36,6 @@ class App extends React.Component {
     // todo
     const hasHeader = user.isNormal || !user.accessToken || user.role === 'user';
 
-    if (route.needAuth && !user.accessToken) {
-      return <Redirect to={`/login?url=${match.url}`} />;
-    }
-
     if (route.noMatch) {
       return <Redirect to="/" />;
     }

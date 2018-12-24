@@ -13,11 +13,21 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   store: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    // eslint-disable-next-line
+    if (props.rootStore.user.isLoggedIn()) {
+      props.history.replace('/');
+    }
+  }
+
   handleSubmit = async params => {
     const { store, user, history } = this.props;
     const res = await store.oauth2Check(params);
@@ -27,7 +37,7 @@ export default class Login extends Component {
     }
     const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (!(res && res.err)) {
-      history.push(getUrlParam('url') || defaultUrl);
+      history.push(getUrlParam('redirect_url') || defaultUrl);
     }
   };
 

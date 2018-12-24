@@ -1,12 +1,11 @@
 const Router = require('koa-router');
+const debug = require('debug')('app');
 
 const agent = require('lib/request').default;
 const logger = require('../logger');
 const utils = require('../utils');
 
 const router = new Router();
-const header = {};
-
 const authEndpoint = 'oauth2/token';
 
 router.post('/api/*', async ctx => {
@@ -23,10 +22,8 @@ router.post('/api/*', async ctx => {
 
   logger({ method, url, body });
 
-  const authToken = utils.getTokenGroupFromCtx(ctx);
-  const unAuthToken = utils.getTokenGroupFromCtx(ctx, 'un_auth');
-
   const browserUrl = ctx.headers.referer;
+  // todo
   const endUrl = browserUrl
     .split('/')
     .slice(3)
@@ -34,59 +31,56 @@ router.post('/api/*', async ctx => {
   const usingNoAuthToken = endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
   delete body.isGlobalQuery;
 
-  // defalut special token params
-  const tokenData = {
-    grant_type: 'client_credentials',
+  const authParams = {
     client_id: clientId,
     client_secret: clientSecret,
     scope: ''
   };
 
-  // retrieve special token
-  if (usingNoAuthToken && !unAuthToken.access_token) {
-    const res = await agent.send('post', [apiServer, authEndpoint].join('/'), tokenData);
+  // get current auth info from cookie
+  const prefix = usingNoAuthToken ? 'no_auth' : '';
+  const authInfo = utils.getTokenGroupFromCtx(ctx, prefix);
+  const {
+    token_type, access_token, refresh_token, expires_in
+  } = authInfo;
 
-    if (!res || !res.access_token) {
-      ctx.throw(401, 'Retrieve token failed');
-    }
-
-    utils.saveTokenResponseToCookie(ctx, res, 'un_auth');
-
-    Object.assign(unAuthToken, res);
-  }
-
-  const chooseToken = usingNoAuthToken ? unAuthToken : authToken;
-
-  // check if token expired, retrieve refresh token or special token
-  const { access_token, refresh_token } = chooseToken;
-  if (!access_token && refresh_token) {
-    // refresh token params
-    if (!usingNoAuthToken) {
-      tokenData.grant_type = 'refresh_token';
-      tokenData.refresh_token = chooseToken.refresh_token;
-    }
-
-    const res = await agent.send('post', [apiServer, authEndpoint].join('/'), tokenData);
-
-    if (!res || !res.access_token) {
-      ctx.throw(401, 'Refresh token failed');
-    }
-
-    utils.saveTokenResponseToCookie(ctx, res, usingNoAuthToken ? 'un_auth' : '');
-    Object.assign(chooseToken, res);
-  }
-
-  if (!chooseToken.access_token) {
-    ctx.throw(401, 'Unauthorized: invalid access token');
-  } else {
-    header.Authorization = `${chooseToken.token_type} ${chooseToken.access_token}`;
-
-    delete body.method;
-
-    ctx.body = await agent.send(method, url, body, {
-      header
+  const payload = usingNoAuthToken
+    ? Object.assign(authParams, {
+      grant_type: 'client_credentials'
+    })
+    : Object.assign(authParams, {
+      grant_type: 'refresh_token',
+      refresh_token
     });
+
+  if (!usingNoAuthToken && !refresh_token) {
+    // need login
+    ctx.throw(401, 'refresh token expired');
   }
+
+  if (!access_token || expires_in < Date.now()) {
+    const res = await agent.post([apiServer, authEndpoint].join('/'), payload);
+    debug(`Using refresh token to exchange auth info: %O`, res);
+
+    if (!res || !res.access_token) {
+      ctx.throw(401, 'Retrieve access token failed');
+    }
+
+    utils.saveTokenResponseToCookie(ctx, res, prefix);
+    Object.assign(authInfo, res);
+  }
+
+  if (!authInfo.access_token) {
+    ctx.throw(401, 'Unauthorized: invalid access token');
+  }
+
+  delete body.method;
+
+  ctx.body = await agent.send(method, url, body, {
+    header: {
+      Authorization: `${authInfo.token_type} ${authInfo.access_token}`
+    }
+  });
 });
 
 module.exports = router;
