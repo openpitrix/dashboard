@@ -1,0 +1,44 @@
+@import '~scss/vars';
+
+.header {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  margin: 18px 0;
+  color: $N500;
+}
+
+.noShadow {
+  box-shadow: none;
+  background: transparent;
+}
+
+.selectedRoleTitle {
+  padding-bottom: 16px;
+}
+
+.moduleName {
+  color: $N75;
+  font-size: 12px;
+  padding-top: 20px;
+  padding-left: 6px;
+}
+
+.module {
+  display: flex;
+  border-top: 1px solid $N10;
+
+  .moduleTree {
+    margin-right: 20px;
+    min-width: 220px;
+  }
+  .actions {
+    flex: 1;
+    padding-top: 20px;
+    padding-left: 20px;
+    border-left: 1px solid $N10;
+  }
+}

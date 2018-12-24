@@ -1,0 +1,26 @@
+@import '~scss/vars';
+
+.main {
+  color: $N75;
+  font-size: $size-small;
+
+  strong {
+    color: $N500;
+    font-weight: 500;
+  }
+  > div {
+    margin: 16px 0 7px;
+  }
+}
+
+.header {
+  font-size: $size-normal;
+  color: $N500;
+  margin: 12px 0 12px;
+}
+
+.tree {
+  ul ul li {
+    display: inline-block;
+  }
+}

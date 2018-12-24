@@ -1,6 +1,57 @@
 import routes, { toRoute } from 'routes';
 
-// First level navigation(top) for admin, isv and developer
+// <<<<<<< HEAD
+// // First level navigation(top) for admin, isv and developer
+// =======
+// export const subNavMap = {
+//   dashboard: {
+//     title: 'Dashboard',
+//     links: [{ name: 'Overview', link: '/dashboard', active: 'dashboard' }]
+//   },
+//   app: {
+//     title: 'Store',
+//     links: [
+//       { name: 'All Apps', link: '/dashboard/apps', active: '/app' },
+//       { name: 'App Reviews', link: '/dashboard/app-reviews', active: 'review' },
+//       { name: 'Categroies', link: '/dashboard/categories', active: 'categor' }
+//       /* { name: 'Appearance', link: '#', active: 'appearance' } */
+//     ]
+//   },
+//   user: {
+//     title: 'Account and Permission',
+//     links: [
+//       { name: 'All Accounts', link: '/dashboard/users', active: 'user' },
+//       { name: 'Roles', link: '/dashboard/roles', active: 'role' }
+//     ]
+//   },
+//   repo: {
+//     title: 'Platform',
+//     links: [
+//       /* { name: 'Tickets', link: '#', active: 'ticket' },
+//        { name: 'Notifications', link: '#', active: 'notification' }, */
+//       { name: 'Repos', link: '/dashboard/repos', active: 'repo' },
+//       { name: 'Runtimes', link: '/dashboard/runtimes', active: 'runtime' },
+//       { name: 'All Clusters', link: '/dashboard/clusters', active: 'cluster' }
+//       /* { name: 'Service Status', link: '#', active: 'service' } */
+//     ]
+//   },
+//   provider: {
+//     title: 'App service provider',
+//     links: [
+//       { name: '全部服务商', link: '/dashboard/providers', active: 'providers' },
+//       {
+//         name: '入驻申请',
+//         link: '/dashboard/applications',
+//         active: 'applications'
+//       },
+//       { name: '合约', link: '#', active: '#' },
+//       { name: '保证金', link: '#', active: '#' }
+//     ]
+//   }
+// };
+
+// >>>>>>> test: Add account and role page
+// >>>>>>> feat: Add user and role pages
 export const getNavs = {
   global_admin: [
     {
@@ -46,7 +97,7 @@ export const getNavs = {
       link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
       iconName: 'group',
       active: 'user',
-      title: 'Users'
+      title: 'Account and Permission'
     },
     {
       link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
@@ -214,6 +265,9 @@ export const subNavMap = {
     user: {
       title: 'Users and Permission',
       links: [
+        // { name: 'All Users', link: '/dashboard/users', active: 'user' },
+        // { name: 'Roles', link: '/dashboard/roles', active: 'role' },
+        // { name: 'Permission and Policy', link: '#', active: 'policy' }
         {
           name: 'All Users',
           link: toRoute(routes.portal._admin.users, { portal: 'admin' }),

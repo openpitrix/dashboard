@@ -28,6 +28,7 @@ const keys = [
   'categories',
   'category',
   'user',
+  'role',
   'create',
   'provider-detail',
   'provider',

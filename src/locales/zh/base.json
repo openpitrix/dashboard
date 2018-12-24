@@ -12,7 +12,6 @@
   "Roles": "角色",
   "Categories": "分类",
   "Search Categories": "搜索分类",
-  "My Instances": "我的实例",
   "Catalog": "目录",
   "Deployment": "部署",
   "Development": "开发",
@@ -67,6 +66,7 @@
   "View detail": "查看详情",
   "Deploy App": "部署应用",
   "Modify category": "编辑分类",
+  "Modify": "修改",
   "Delete": "删除",
   "Search App": "搜索应用",
   "App Name": "应用名称",
@@ -134,6 +134,8 @@
   "Published": "已上架",
   "Recalled": "已下架",
   "Recall": "下架",
+  "Activated": "已激活",
+
   "In-review": "审核中",
   "public": "公共",
   "private": "私有",
@@ -239,6 +241,8 @@
   "Notifications": "通知",
   "Service Status": "服务状态",
   "All Users": "全部用户",
+  "All Accounts": "全部账户",
+  "Account and Permission": "账户与权限",
   "User Groups": "用户分组",
   "Policy": "政策",
   "SSH Keys": "SSH密钥",
@@ -463,5 +467,12 @@
   "Delete category successfully": "删除分类成功",
   "days ago": " 天前",
   "hours ago": " 小时前",
-  "Service provider": "服务商"
+
+  "Helm runtime namespace is empty": "命名空间为空",
+  "Selected organization": "所选组织",
+  "Set role": "设置角色",
+  "Role Name": "角色名称",
+  "Create admin role": "创建管理后台角色",
+  "Edit info": "编辑信息",
+  "Disable": "禁用"
 }

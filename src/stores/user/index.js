@@ -55,6 +55,14 @@ export default class UserStore extends Store {
 
   @observable rememberMe = false;
 
+  @observable selectedRowKeys = [];
+
+  @observable userIds = [];
+
+  @observable userNames = [];
+
+  @observable orgName = '';
+
   @observable language = localStorage.getItem('i18nextLng') || 'zh';
 
   @observable
@@ -346,6 +354,16 @@ export default class UserStore extends Store {
   };
 
   @action
+  showSetRole = user => {
+    if (user) {
+      this.userIds.push(user.user_id);
+      this.userNames.push(user.username);
+    }
+    this.operateType = 'set_role';
+    this.isCreateOpen = true;
+  };
+
+  @action
   showDeleteUser = userId => {
     this.userId = userId;
     this.isDeleteOpen = true;
@@ -390,6 +408,24 @@ export default class UserStore extends Store {
       role: '',
       description: ''
     };
+  };
+
+  @action
+  onChangeSelect = (selectedRowKeys, selectedRows) => {
+    this.selectedRowKeys = selectedRowKeys;
+    this.userIds = selectedRows.map(row => row.user_id);
+    this.userNames = selectedRows.map(row => row.username);
+  };
+
+  @action
+  onSelectOrg = (keys, info) => {
+    this.orgName = keys.length ? get(info, 'node.props.title') : '';
+    this.fetchAll();
+  };
+
+  @action
+  setUserDisable = user_id => {
+    this.modify({ status: 'draft', user_id });
   };
 }
 

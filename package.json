@@ -33,6 +33,7 @@
     "prop-types": "^15.6.0",
     "query-string": "^6.2.0",
     "rc-table": "^6.1.2",
+    "rc-tree": "^1.14.8",
     "react": "^16.6.0",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.6.0",

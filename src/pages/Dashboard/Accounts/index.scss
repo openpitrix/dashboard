@@ -11,6 +11,26 @@
   color: $N500;
 }
 
+.title {
+  color: $N75;
+  font-size: 12px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.67;
+  margin-bottom: 12px;
+  strong {
+    color: $N500;
+    margin-left: 8px;
+  }
+}
+
+.centerText {
+  text-align: center;
+}
+
+.noPadding {
+  padding: 0;
+}
 
 .usersContent {
   .selectInfo {
@@ -31,6 +51,7 @@
 
   .noShadow {
     box-shadow: none;
+    background: transparent;
   }
 }
 
@@ -118,41 +139,5 @@
   li{
     display: inline-block;
     width: 50%;
-  }
-}
-
-.formContent {
-  .operationBtn {
-    margin-left: 192px;
-
-    button {
-      margin-right: 12px;
-    }
-  }
-}
-
-.createForm {
-  & > div {
-    margin-bottom: 24px;
-
-    & > label {
-      display: inline-block;
-      float: left;
-      margin-right:  24px;
-      width: 168px;
-      line-height: 32px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: right;
-      color: $N500;
-    }
-
-    & > input {
-      width: 256px;
-    }
-
-    & > select {
-      width: 256px;
-    }
   }
 }
