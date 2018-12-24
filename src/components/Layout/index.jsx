@@ -95,6 +95,7 @@ class Layout extends Component {
     const { isNormal } = this.props.user;
     const hasMenu = !isNormal && !isHome;
     const hasSubNav = hasMenu && !noSubMenu && !hasBack;
+    const maxWidth = isCenterPage || hasBack ? `${centerWidth}px` : '100%';
 
     if (isNormal) {
       return (
@@ -128,7 +129,7 @@ class Layout extends Component {
             className={classnames({
               [styles.centerPage]: isCenterPage || hasBack
             })}
-            style={{ maxWidth: `${centerWidth}px` }}
+            style={{ maxWidth }}
           >
             {Boolean(pageTitle) && (
               <div className={styles.pageTitle}>

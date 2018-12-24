@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import { Table } from 'components/Base';
+import { Table, Input } from 'components/Base';
 import Layout from 'components/Layout';
 
 import providers from './mock/providers';
@@ -20,8 +20,15 @@ export default class Providers extends Component {
 
   renderTitleSearch() {
     const { t } = this.props;
-
-    return <div> 1111</div>;
+    return (
+      <div className={styles.titleSearch}>
+        {t('全部服务商')}
+        <Input.Search
+          className={styles.search}
+          placeholder={t('搜索公司名称')}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -81,7 +88,8 @@ export default class Providers extends Component {
     };
 
     return (
-      <Layout pageTitle={t('全部服务商')}>
+      <Layout>
+        {this.renderTitleSearch()}
         <Table
           columns={columns}
           dataSource={providers}

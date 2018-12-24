@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import { Image, Button } from 'components/Base';
 import Layout, {
-  Grid, Row, Section, Card, Dialog
+  Grid, Section, Card, Dialog
 } from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
@@ -97,7 +97,7 @@ export default class ReviewDetail extends Component {
   };
 
   renderVersionReview() {
-    const { appStore, appVersionStore, t } = this.props;
+    const { appVersionStore, t } = this.props;
     const { version, reviewDetail } = appVersionStore;
     const { phase } = reviewDetail;
     const phaseKeys = _.keys(phase);

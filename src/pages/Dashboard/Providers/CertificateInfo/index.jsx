@@ -41,7 +41,7 @@ export default class CertificateInfo extends Component {
           </dl>
           <dl>
             <dt>{t('办公邮箱')}</dt>
-            <dd>info@crancloud.com/</dd>
+            <dd>info@crancloud.com</dd>
           </dl>
           <dl>
             <dt>{t('手机号')}</dt>

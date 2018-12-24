@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
-import _, { capitalize } from 'lodash';
+import _ from 'lodash';
 
 import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';

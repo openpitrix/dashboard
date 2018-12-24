@@ -41,12 +41,6 @@ export default class Applications extends Component {
     }
   };
 
-  renderTitleSearch() {
-    const { t } = this.props;
-
-    return <div> 1111</div>;
-  }
-
   render() {
     const { t } = this.props;
 

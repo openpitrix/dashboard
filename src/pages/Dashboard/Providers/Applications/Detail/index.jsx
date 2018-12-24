@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Button } from 'components/Base';
-import Layout, { Dailog, Card } from 'components/Layout';
+import Layout, { Card } from 'components/Layout';
 import Status from 'components/Status';
 import CertificateInfo from '../../CertificateInfo';
 
