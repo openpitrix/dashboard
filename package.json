@@ -67,7 +67,6 @@
   "lint-staged": {
     "*.{js,jsx,md}": [
       "prettier --write",
-      "eslint --fix",
       "git add"
     ]
   },

@@ -34,7 +34,6 @@ npm test
 ## Directory and File Conventions
 
 ```
-|- build-deps   # build dependencies or binary used in CI build
 |- config       # global config files
 |- docs         # documents
 |- lib          # libraries used both on server and client
