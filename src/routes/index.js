@@ -68,11 +68,6 @@ const routes = {
   '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
   '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
-  '/:dash/repos': Dash.Repos,
-  '/:dash/repo/create': Dash.RepoAdd,
-  '/:dash/repo/edit/:repoId': Dash.RepoAdd,
-  '/:dash/repo/:repoId': Dash.RepoDetail,
-
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
 
