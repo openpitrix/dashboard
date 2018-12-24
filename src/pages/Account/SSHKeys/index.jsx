@@ -7,12 +7,8 @@ import { get } from 'lodash';
 import {
   Table, Popover, Button, Input, Icon, Modal
 } from 'components/Base';
-import Layout, {
-  CreateResource,
-  Dialog,
-  Grid,
-  Section,
-  Card
+import {
+  CreateResource, Dialog, Grid, Section, Card
 } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import { formatTime } from 'utils';
@@ -402,7 +398,6 @@ export default class SSHKeys extends Component {
   }
 
   render() {
-    const { t } = this.props;
     const { keyPairs } = this.props.sshKeyStore;
 
     return (

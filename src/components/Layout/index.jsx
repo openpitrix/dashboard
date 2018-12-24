@@ -19,6 +19,7 @@ import styles from './index.scss';
 class Layout extends Component {
   static propTypes = {
     backBtn: PropTypes.node,
+    centerWidth: PropTypes.number,
     children: PropTypes.node,
     className: PropTypes.string,
     hasBack: PropTypes.bool,
@@ -42,7 +43,8 @@ class Layout extends Component {
     noSubMenu: false,
     isHome: false,
     isCenterPage: false,
-    hasBack: false
+    hasBack: false,
+    centerWidth: 1200
   };
 
   componentDidMount() {
@@ -86,12 +88,14 @@ class Layout extends Component {
       noSubMenu,
       pageTitle,
       isCenterPage,
+      centerWidth,
       hasBack
     } = this.props;
 
     const { isNormal } = this.props.user;
     const hasMenu = !isNormal && !isHome;
     const hasSubNav = hasMenu && !noSubMenu && !hasBack;
+    const maxWidth = isCenterPage || hasBack ? `${centerWidth}px` : '100%';
 
     if (isNormal) {
       return (
@@ -125,6 +129,7 @@ class Layout extends Component {
             className={classnames({
               [styles.centerPage]: isCenterPage || hasBack
             })}
+            style={{ maxWidth }}
           >
             {Boolean(pageTitle) && (
               <div className={styles.pageTitle}>

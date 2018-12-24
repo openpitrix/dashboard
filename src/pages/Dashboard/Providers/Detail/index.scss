@@ -1,0 +1,205 @@
+@import '~scss/vars';
+
+.providerInfo {
+  .title {
+    border-bottom: 1px solid $N10;
+    margin-bottom: 24px;
+
+    .number {
+      @include note-font;
+      margin-bottom: 8px;
+    }
+    .name {
+      @include title-font;
+      margin-bottom: 24px;
+    }
+  }
+  .info {
+    dl {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    dt {
+      @include note-font;
+    }
+
+    dd {
+      @include normal-font($line-height: 20px, $font-size: 12px);
+    }
+  }
+}
+
+.statistics {
+  padding: 32px 0  32px 50px;
+  height: 104px;
+
+  dl {
+    float: left;
+    display: inline-block;
+    width: 25%;
+
+    dt {
+      @include note-font($line-height: 12px);
+      margin-bottom: 12px;
+    }
+
+    dd {
+      line-height: 16px;
+      font-size: 18px;
+    }
+
+    .yellow svg {
+      --primary-color: #{$Y75};
+      --secondary-color: #{$Y75};
+    }
+  }
+}
+
+.margin {
+  .title {
+    @include note-font;
+    margin-bottom: 20px;
+
+    > button {
+      float: right;
+    }
+
+    .icon {
+      margin-right: 4px;
+    }
+  }
+
+  dl {
+    margin-bottom: 12px;
+    line-height: 20px;
+    height: 20px;
+    font-size: 12px;
+    color: $N300;
+
+    dt {
+      float: left;
+      display: inline-block;
+      margin-right: 20px;
+      width: 60px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    dd {
+      margin-left: 80px;
+    }
+
+    &:last-child {
+      margin-bottom: 16px;
+    }
+  }
+}
+
+
+.appsInfo {
+  .total {
+    @include note-font;
+    margin-bottom: 12px;
+  }
+  li {
+    height: 48px;
+    padding: 20px 24px;
+    box-shadow: inset 0 1px 0 0 $N10;
+    line-height: 24px;
+    font-size: 12px;
+    color: $N75;
+    clear: both;
+
+    &:hover {
+      background-color: $background-color;
+
+      >div {
+        .link {
+          display: inline-block;
+        }
+
+        .time {
+          display: none;
+        }
+      }
+
+      .appName {
+        .info .name {
+          color: $P75;
+        }
+      }
+    }
+
+    >div {
+      float: left;
+      display: inline-block;
+      height: 48px;
+      width: 27%;
+
+      &.appName {
+        width: 46%;
+      }
+
+      &:last-child {
+        line-height: 48px;
+        text-align: right;
+      }
+    }
+    .types {
+      color: $N300;
+    }
+
+    .deployNumber {
+      color: $N500;
+      font-weight: bold;
+    }
+
+    .link {
+      display: none;
+    }
+  }
+}
+
+.appName {
+  width: 40%;
+
+  .image {
+    display: inline-block;
+    float: left;
+    margin-top: 6px;
+    margin-right: 16px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .info {
+    display: inline-block;
+    line-height: 20px;
+    font-size: 12px;
+
+    .name {
+      @include textCut;
+      width: 220px;
+      line-height: 28px;
+      color: $N500;
+      font-weight: 500;
+    }
+
+    .description {
+      @include textCut;
+      width: 220px;
+      color: $N75;
+    }
+  }
+}

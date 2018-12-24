@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import {
   Icon, Button, Input, Select
 } from 'components/Base';
-import Layout, { Card } from 'components/Layout';
+import Layout from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import { getLoginDate, getUrlParam } from 'utils';
 import SSHKeys from './SSHKeys';

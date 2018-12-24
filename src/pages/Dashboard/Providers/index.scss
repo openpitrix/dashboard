@@ -1,0 +1,34 @@
+@import '~scss/vars';
+
+.titleSearch {
+  @include title-font($font-size: 16px);
+  margin: 18px 0;
+
+  .search {
+    float: right;
+    line-height: 32px;
+    font-size: 12px;
+
+    input {
+      background-color: $background-color;
+      border-color: $background-color;
+
+      &:hover {
+        border-color: $N10;
+      }
+
+      &:focus {
+        border-color: $P75;
+      }
+    }
+
+    svg {
+      float: right;
+    }
+  }
+}
+
+.actions {
+  color: $P75;
+  font-size: 12px;
+}

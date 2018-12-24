@@ -167,10 +167,6 @@ export default class Audits extends Component {
 
   renderTypes(types, activeType) {
     const { t } = this.props;
-    const typeMap = {
-      vmbase: 'VM',
-      helm: 'Helm'
-    };
 
     return (
       <div className={styles.types}>
