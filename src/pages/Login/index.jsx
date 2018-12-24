@@ -13,6 +13,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   store: rootStore.userStore,
   user: rootStore.user
 }))
@@ -22,7 +23,7 @@ export default class Login extends Component {
     super(props);
 
     // eslint-disable-next-line
-    if (_getUser().accessToken) {
+    if (props.rootStore.user.isLoggedIn()) {
       props.history.replace('/');
     }
   }
@@ -36,7 +37,7 @@ export default class Login extends Component {
     }
     const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (!(res && res.err)) {
-      history.push(getUrlParam('url') || defaultUrl);
+      history.push(getUrlParam('redirect_url') || defaultUrl);
     }
   };
 

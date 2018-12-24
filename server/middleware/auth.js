@@ -10,22 +10,22 @@ const authPages = [
 ];
 
 module.exports = async (ctx, next) => {
-  const { cookies } = ctx;
+  const { cookies, url } = ctx;
 
   // filter non-asset types
-  if (ctx.url.endsWith('.map')) {
+  if (url.endsWith('.map')) {
     return;
   }
 
-  debug('PAGE: %s', ctx.url);
+  debug('PAGE: %s', url);
 
   /* eslint prefer-destructuring: off */
   const page = (ctx.params.page || '').split('/')[0];
-  const needAuth = authPages.indexOf(page) > -1;
+  const needAuth = authPages.includes(page);
 
-  if (needAuth && !(cookies.get('user') && cookies.get('access_token'))) {
+  if (needAuth && !cookies.get('refresh_token')) {
     // not login
-    ctx.redirect(`/login?url=${ctx.params.page}`);
+    ctx.redirect(`/login?redirect_url=${url}`);
   }
 
   await next();

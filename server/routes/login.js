@@ -15,9 +15,9 @@ router.get('/logout', ctx => {
     'role',
     'expires_in',
 
-    'un_auth_access_token',
-    'un_auth_expires_in',
-    'un_auth_token_type'
+    'no_auth_access_token',
+    'no_auth_expires_in',
+    'no_auth_token_type'
   ];
   names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
   ctx.redirect('/login');

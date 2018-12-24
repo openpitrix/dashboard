@@ -1,7 +1,6 @@
 import { set } from 'mobx';
 import agent from 'lib/request';
 import _ from 'lodash';
-import qs from 'query-string';
 
 export default class Store {
   constructor(initialState, branch) {
@@ -33,14 +32,6 @@ Store.prototype = {
     this.notify(message, 'success');
   },
   error(message) {
-    // Can't get token will skip to the login page
-    if (message === 'Unauthorized') {
-      const { pathname } = location;
-      if (pathname && pathname !== '/') {
-        location.href = `/login?url=${pathname}`;
-      }
-    }
-
     this.notify(message, 'error');
   },
   getValueFromEvent(val) {
@@ -86,10 +77,6 @@ Store.prototype = {
 
         // forward to node backend
         const res = await target.post(url, { method, ...params });
-
-        if (res && res.status >= 300 && res.status < 400) {
-          location.href = res.message || '/login';
-        }
 
         // error handling
         if (_.isObject(res) && _.has(res, 'err') && res.status >= 400) {
