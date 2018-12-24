@@ -54,9 +54,7 @@ class Runtime extends React.Component {
 
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
-    this.props.history.push(
-      `/dashboard/testing-runtime/add?provider=${platform}`
-    );
+    this.props.history.push(`/dashboard/runtime/create?provider=${platform}`);
   };
 
   renderMenu(runtime_id) {

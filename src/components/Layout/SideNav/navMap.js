@@ -281,7 +281,7 @@ export const userMenus = [
   },
   {
     name: 'Testing env',
-    link: '/:dash/testing-runtime',
+    link: '/:dash/runtimes',
     iconName: 'image',
     only: ['global_admin', 'developer']
   },

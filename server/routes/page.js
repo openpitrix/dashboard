@@ -12,6 +12,27 @@ router.get('/attachments/:id', async ctx => {
   ctx.body = await agent.send('get', apiUrl);
 });
 
+router.get('/logout', ctx => {
+  const cookieOptions = {
+    maxAge: -1,
+    httpOnly: false
+  };
+  ctx.session = null;
+  const names = [
+    'access_token',
+    'token_type',
+    'user',
+    'role',
+    'expires_in',
+
+    'no_auth_access_token',
+    'no_auth_expires_in',
+    'no_auth_token_type'
+  ];
+  names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
+  ctx.redirect('/login');
+});
+
 router.get('/:page(/?.*)', auth, gzip, async (ctx, next) => {
   try {
     await next();

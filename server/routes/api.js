@@ -8,6 +8,35 @@ const utils = require('../utils');
 const router = new Router();
 const authEndpoint = 'oauth2/token';
 
+router.post(`/api/${authEndpoint}`, async ctx => {
+  const { apiServer, clientId, clientSecret } = ctx.store;
+  const url = [apiServer, authEndpoint].join('/');
+  const { body } = ctx.request;
+  const { method } = body;
+
+  Object.assign(body, {
+    client_id: clientId,
+    client_secret: clientSecret
+  });
+
+  logger({ method, url, body });
+
+  delete body.method;
+
+  const res = await agent.send(method, url, body);
+
+  if (res && 'err' in res) {
+    ctx.body = res;
+    return;
+  }
+
+  debug(`Auth token res: %O`, res);
+
+  // extract user info
+  const user = utils.saveUserFromCtx(ctx, res);
+  ctx.body = Object.assign(res, { user });
+});
+
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
 
@@ -28,7 +57,8 @@ router.post('/api/*', async ctx => {
     .split('/')
     .slice(3)
     .join('/');
-  const usingNoAuthToken = endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
+  const usingNoAuthToken =
+    endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
   delete body.isGlobalQuery;
 
   const authParams = {
@@ -40,18 +70,16 @@ router.post('/api/*', async ctx => {
   // get current auth info from cookie
   const prefix = usingNoAuthToken ? 'no_auth' : '';
   const authInfo = utils.getTokenGroupFromCtx(ctx, prefix);
-  const {
-    token_type, access_token, refresh_token, expires_in
-  } = authInfo;
+  const { token_type, access_token, refresh_token, expires_in } = authInfo;
 
   const payload = usingNoAuthToken
     ? Object.assign(authParams, {
-      grant_type: 'client_credentials'
-    })
+        grant_type: 'client_credentials'
+      })
     : Object.assign(authParams, {
-      grant_type: 'refresh_token',
-      refresh_token
-    });
+        grant_type: 'refresh_token',
+        refresh_token
+      });
 
   if (!usingNoAuthToken && !refresh_token) {
     // need login
@@ -66,7 +94,7 @@ router.post('/api/*', async ctx => {
       ctx.throw(401, 'Retrieve access token failed');
     }
 
-    utils.saveTokenResponseToCookie(ctx, res, prefix);
+    utils.saveTokenFromCtx(ctx, res, prefix);
     Object.assign(authInfo, res);
   }
 

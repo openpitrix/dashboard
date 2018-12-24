@@ -75,7 +75,7 @@ export default class CreateTestingEnv extends React.Component {
     }
 
     if (activeStep === 2 && (this.doneCreateRt || this.doneCreateCredential)) {
-      history.push(toUrl(`/:dash/testing-runtime`));
+      history.push(toUrl(`/:dash/runtimes`));
     }
   }
 
@@ -87,7 +87,7 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   handleEsc = () => {
-    this.props.history.push(toUrl(`/:dash/testing-runtime`));
+    this.props.history.push(toUrl(`/:dash/runtimes`));
   };
 
   renderCredentialForm() {

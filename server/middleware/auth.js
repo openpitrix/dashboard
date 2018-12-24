@@ -1,13 +1,6 @@
 const debug = require('debug')('app');
 
-const authPages = [
-  'dashboard',
-  'runtimes',
-  'purchased',
-  'profile',
-  'ssh_keys',
-  'store'
-];
+const authPages = ['dashboard', 'store'];
 
 module.exports = async (ctx, next) => {
   const { cookies, url } = ctx;
@@ -19,11 +12,13 @@ module.exports = async (ctx, next) => {
 
   debug('PAGE: %s', url);
 
+  // check if user logged in
+  const loggedIn = cookies.get('user') && cookies.get('access_token');
+
   /* eslint prefer-destructuring: off */
   const page = (ctx.params.page || '').split('/')[0];
-  const needAuth = authPages.includes(page);
 
-  if (needAuth && !cookies.get('refresh_token')) {
+  if (authPages.includes(page) && !loggedIn) {
     // not login
     ctx.redirect(`/login?redirect_url=${url}`);
   }

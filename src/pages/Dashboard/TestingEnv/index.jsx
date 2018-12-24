@@ -16,6 +16,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  user: rootStore.user,
   envStore: rootStore.testingEnvStore
 }))
 @observer
@@ -95,12 +96,17 @@ export default class TestingEnv extends React.Component {
   }
 
   render() {
-    const { envStore, t } = this.props;
+    const { envStore, user, t } = this.props;
     const { loadedRt } = this.state;
     const { curTab, platform } = envStore;
 
     return (
-      <Layout noSubMenu className={styles.layout}>
+      <Layout
+        noSubMenu
+        className={classnames(styles.layout, {
+          [styles.isNormal]: user.isNormal
+        })}
+      >
         <div className={styles.page}>
           <h1 className={styles.title}>{t('Testing env')}</h1>
           <BreadCrumb linkPath="Cloud Provider > Platform" />

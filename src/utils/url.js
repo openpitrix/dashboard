@@ -10,22 +10,9 @@ const toUrl = path => {
   return path;
 };
 
-const needAuth = route => {
-  if (route.startsWith('/:dash')) {
-    return true;
-  }
-
-  if (route.startsWith('/store/:appId/deploy')) {
-    return true;
-  }
-
-  const paths = ['/runtimes', '/purchased', '/profile', '/ssh_keys', '/store'];
-  return paths.includes(route);
-};
-
 const getUrlParam = key => {
   const query = qs.parse(location.search);
   return key ? query[key] : query;
 };
 
-export { toUrl, needAuth, getUrlParam };
+export { toUrl, getUrlParam };

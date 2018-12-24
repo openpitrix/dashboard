@@ -16,6 +16,18 @@ $card-height: 188px;
 .layout {
   margin-top: $pg-margin !important;
 
+  // fix normal layout
+  &.isNormal {
+    margin-top: 32px !important;
+    padding-top: 0;
+    .leftPanel {
+      max-width: 220px;
+    }
+    .page {
+      margin: 0 auto;
+    }
+  }
+
   .leftPanel {
     max-width: 205px;
     border-right: 1px solid $N10;

@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { toUrl, needAuth } from 'utils/url';
+import { toUrl } from 'utils/url';
 
 // views without lazy load
 import Home from 'pages/Home';
@@ -25,12 +25,11 @@ const routes = {
   '/store/search/:search': Store,
   '/store/category/:category': Store,
   '/store/:appId': AppDetail,
+  // todo
   '/store/:appId/deploy': Dash.AppDeploy,
 
-  '/purchased': Purchased,
-  '/purchased/:clusterId': Dash.ClusterDetail,
-
-  '/runtimes': Runtimes,
+  '/:dash/purchased': Purchased,
+  '/:dash/purchased/:clusterId': Dash.ClusterDetail,
 
   '/:dash': Dash.Overview,
 
@@ -65,9 +64,12 @@ const routes = {
   '/:dash/clusters': Dash.Clusters,
   '/:dash/cluster/:clusterId': Dash.ClusterDetail,
 
-  '/:dash/runtimes': Dash.Runtimes,
-  '/:dash/runtime/create': Dash.RuntimeAdd,
-  '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
+  '/:dash/runtimes': Dash.TestingEnv,
+  '/:dash/runtime/create': Dash.CreateTestingEnv,
+
+  // '/:dash/runtimes': Dash.Runtimes,
+  // '/:dash/runtime/create': Dash.RuntimeAdd,
+  // '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
   '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
   '/:dash/categories': Dash.Categories,
@@ -77,9 +79,6 @@ const routes = {
   '/:dash/user/:userId': Dash.UserDetail,
 
   '/:dash/account': Account,
-
-  '/:dash/testing-runtime': Dash.TestingEnv,
-  '/:dash/testing-runtime/add': Dash.CreateTestingEnv,
 
   '*': Home
 };
@@ -91,7 +90,7 @@ export default Object.keys(routes).map(route => {
       path: toUrl(route),
       exact: route !== '/login',
       component: routes[route],
-      needAuth: needAuth(route)
+      needAuth: route.startsWith('/:dash')
     }
   );
   if (route === '*') {
