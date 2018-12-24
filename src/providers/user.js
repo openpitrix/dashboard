@@ -46,16 +46,23 @@ export default class UserProvider {
   }
 
   get isDev() {
-    return this.changedRole !== ROLE_NORMAL && this.role === ROLE_DEV;
+    return (
+      this.changedRole === ROLE_DEV
+      || (this.changedRole !== ROLE_NORMAL
+        && this.role === ROLE_DEV
+        && this.username !== 'isv')
+    );
   }
 
   get isNormal() {
     return this.changedRole === ROLE_NORMAL || this.role === ROLE_NORMAL;
   }
 
-  set isAdmin(boolen) {}
-
-  set isDev(boolen) {}
-
-  set isNormal(boolen) {}
+  get isISV() {
+    return (
+      this.changedRole !== ROLE_DEV
+      && this.role === ROLE_DEV
+      && this.username === 'isv'
+    );
+  }
 }

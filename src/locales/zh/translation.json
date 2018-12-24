@@ -286,6 +286,7 @@
   "Developer": "开发者",
   "Normal User": "普通用户",
   "Permission and Policy": "权限与策略",
+  "Users and Permission": "用户与权限",
   "Email": "邮箱",
   "delete_user_desc": "您确定要删除该用户吗?",
   "Organization": "机构",
@@ -390,7 +391,11 @@
   "QingCloud App Center": "QingCloud 应用中心",
   "My dashboard": "我的工作台",
   "App service provider": "应用服务商",
+  "App Manage": "应用管理",
+  "App Develop": "应用开发",
   "Work list": "工单",
+  "Operation Center": "运维中心",
+  "Team Members": "团队成员",
   "Financial Center": "财务中心",
   "Message and monitoring": "消息与监控",
   "Settings": "设置",
@@ -450,7 +455,7 @@
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_1": "《平台服务条款》",
   "STEPPER_FOOTER_CREATE_RUNTIME_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_2": "《平台服务条款》",
-  
+
   "STEPPER_NAME_CREATE_CREDENTIAL_HEADER": "添加授权信息 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_CREATE_CREDENTIAL_1": "提供环境授权信息",
   "STEPPER_TITLE_CREATE_CREDENTIAL_2": "设置名称、备注",
@@ -459,7 +464,7 @@
   "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_1": "《平台服务条款》",
   "STEPPER_FOOTER_CREATE_CREDENTIAL_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_2": "《平台服务条款》",
-  
+
   "Verify": "验证",
   "How to get these tips?": "如何获得这些信息？",
 

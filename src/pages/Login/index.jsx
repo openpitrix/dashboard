@@ -25,7 +25,7 @@ export default class Login extends Component {
     if (res && res.user) {
       await store.fetchDetail(res.user.sub, true);
     }
-    const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard';
+    const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (!(res && res.err)) {
       history.push(getUrlParam('url') || defaultUrl);
     }
