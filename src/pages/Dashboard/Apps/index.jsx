@@ -13,19 +13,10 @@ import {
   Modal,
   Image
 } from 'components/Base';
-import Layout, {
-  Dialog,
-  Grid,
-  Row,
-  Section,
-  Card,
-  BreadCrumb
-} from 'components/Layout';
-import Status from 'components/Status';
+import Layout, { Dialog, Card } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import Statistics from 'components/Statistics';
-import TimeShow from 'components/TimeShow';
+import TitleSearch from 'components/TitleSearch';
 import Loading from 'components/Loading';
 import { getObjName, mappingStatus } from 'utils';
 
@@ -43,9 +34,7 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   async componentDidMount() {
-    const {
-      appStore, userStore, user, categoryStore, repoStore
-    } = this.props;
+    const { appStore, userStore, user, categoryStore, repoStore } = this.props;
     const { isAdmin } = user;
 
     await appStore.fetchAll();
@@ -244,26 +233,16 @@ export default class Apps extends Component {
   }
 
   render() {
-    const {
-      appStore, repoStore, userStore, user, t
-    } = this.props;
-    const {
-      apps,
-      summaryInfo,
-      isLoading,
-      onChangeStatus,
-      selectStatus,
-      viewType
-    } = appStore;
+    const { appStore, repoStore, userStore, t } = this.props;
+    const { apps, isLoading } = appStore;
     const { repos } = repoStore;
     const { users } = userStore;
-    const { isDev, isAdmin } = user;
 
-    let columns = [
+    const columns = [
       {
         title: t('App Name'),
         key: 'name',
-        width: '165px',
+        width: '150px',
         render: item => (
           <TdName
             name={item.name}
@@ -274,103 +253,47 @@ export default class Apps extends Component {
         )
       },
       {
-        title: t('Latest Version'),
+        title: t('应用介绍'),
         key: 'latest_version',
-        width: '90px',
-        render: item => get(item, 'latest_app_version.name', '')
-      },
-      {
-        title: t('Status'),
-        key: 'status',
-        width: '90px',
-        render: item => (
-          <Status type={item.status} name={mappingStatus(item.status)} />
-        )
+        width: '160px',
+        render: item => item.abstraction
       },
       {
         title: t('Categories'),
         key: 'category',
         width: '100px',
-        render: item => t(
-          get(item, 'category_set', [])
-            .filter(cate => cate.category_id && cate.status === 'enabled')
-            .map(cate => cate.name)
-            .join(', ')
-        )
+        render: item =>
+          t(
+            get(item, 'category_set', [])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => cate.name)
+              .join(', ')
+          )
       },
       {
-        title: t('Visibility'),
-        key: 'visibility',
-        width: '65px',
-        render: item => t(getObjName(repos, 'repo_id', item.repo_id, 'visibility'))
+        title: t('交付类型'),
+        key: 'app_version_types',
+        width: '80px',
+        render: item => item.app_version_types
       },
       {
-        title: t('Repo'),
-        key: 'repo_id',
-        width: '125px',
-        render: item => (
-          <Link to={`/dashboard/repo/${item.repo_id}`}>
-            <ProviderName
-              className={styles.provider}
-              name={getObjName(repos, 'repo_id', item.repo_id, 'name')}
-              provider={getObjName(
-                repos,
-                'repo_id',
-                item.repo_id,
-                'providers[0]'
-              )}
-            />
-          </Link>
-        )
+        title: t('部署总次数'),
+        key: 'deploy_total',
+        width: '60px',
+        render: item => item.deploy_total || 0
       },
       {
         title: t('Developer'),
         key: 'owner',
-        width: '80px',
-        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        width: '60px',
+        render: item =>
+          getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
-        title: t('Updated At'),
+        title: t('上架时间'),
         key: 'status_time',
         width: '102px',
-        sorter: isAdmin,
-        onChangeSort: this.onChangeSort,
-        render: item => <TimeShow time={item.status_time} />
-      },
-      {
-        title: t('Actions'),
-        key: 'actions',
-        width: '84px',
-        className: 'actions',
-        render: item => (
-          <Popover content={this.renderHandleMenu(item)} className="actions">
-            <Icon name="more" />
-          </Popover>
-        )
-      }
-    ];
-
-    if (!isAdmin) {
-      columns = columns.filter(item => item.key !== 'owner');
-    }
-
-    const rowSelection = {
-      type: 'checkbox',
-      selectedRowKeys: appStore.selectedRowKeys,
-      onChange: appStore.onChangeSelect
-    };
-
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: t('Draft'), value: 'draft' },
-          { name: t(mappingStatus('Active')), value: 'active' },
-          { name: t(mappingStatus('Suspended')), value: 'suspended' },
-          { name: t('Deleted'), value: 'deleted' }
-        ],
-        onChangeFilter: onChangeStatus,
-        selectValue: selectStatus
+        render: item => item.status_time
       }
     ];
 
@@ -382,19 +305,21 @@ export default class Apps extends Component {
       noCancel: false
     };
 
+    const { searchWord, onSearch, onClearSearch } = appStore;
+
     return (
-      <Layout pageTitle={t('All Apps')}>
-        {/* {isAdmin && (
-          <Row>
-            <Statistics {...summaryInfo} objs={repos.slice()} />
-          </Row>
-        )} */}
+      <Layout>
+        <TitleSearch
+          title={t('All Apps')}
+          placeholder={t('Search App')}
+          searchWord={searchWord}
+          onSearch={onSearch}
+          onClear={onClearSearch}
+        />
 
         <Table
           columns={columns}
           dataSource={apps.slice(0, 10)}
-          rowSelection={rowSelection}
-          filterList={filterList}
           pagination={pagination}
           isLoading={isLoading}
         />

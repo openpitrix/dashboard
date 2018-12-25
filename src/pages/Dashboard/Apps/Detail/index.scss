@@ -44,7 +44,7 @@
     dd {
       @include normal-font($line-height: 20px, $font-size: 12px);
 
-      >label {
+      > label {
         display: inline-block;
         margin-right: 8px;
       }
@@ -58,28 +58,30 @@
   }
 }
 
-.statistics {
-  padding: 32px 0  32px 50px;
-  height: 104px;
+.versionName {
+  .type {
+  }
+}
 
-  dl {
-    float: left;
-    display: inline-block;
-    width: 25%;
+.searchOuter {
+  .total {
+    @include note-font;
+  }
 
-    dt {
-      @include note-font($line-height: 12px);
-      margin-bottom: 12px;
-    }
+  .search {
+    margin: 12px 0;
+    width: 256px;
 
-    dd {
-      line-height: 16px;
-      font-size: 18px;
-    }
+    input {
+      border-color: $N0;
 
-    .yellow svg {
-      --primary-color: #{$Y75};
-      --secondary-color: #{$Y75};
+      &:hover {
+        border-color: $N10;
+      }
+
+      &:focus {
+        border-color: $P75;
+      }
     }
   }
 }

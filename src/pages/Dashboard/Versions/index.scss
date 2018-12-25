@@ -165,14 +165,14 @@
     .status {
       display: inline-block;
       float: left;
-      width: 15%;
+      width: 20%;
       line-height: 20px;
       font-weight: 500;
       color: $N300;
     }
 
     .description {
-      width: 50%;
+      width: 40%;
       @include textCut;
     }
 
@@ -182,7 +182,7 @@
 
     .link {
       display: none;
-      width: 10%;
+      width: 15%;
       color: $P75;
       text-align: right;
     }
@@ -234,6 +234,43 @@
       .button {
         display: inline-block;
       }
+    }
+  }
+
+  .disableType {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: $background-color;
+      border-color: $N10;
+      box-shadow: none;
+
+      .button {
+        display: none;
+      }
+    }
+  }
+}
+
+.showVersions {
+  padding: 24px 32px;
+  background-color: $N0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+  .addedVersion {
+    margin-bottom: 0;
+    padding: 24px 0;
+    border-top: 1px solid $N10;
+
+    &:first-child {
+      padding-top: 0;
+      border-top: 0 none;
+    }
+
+    &:hover {
+      box-shadow: none;
     }
   }
 }

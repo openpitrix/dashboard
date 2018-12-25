@@ -171,6 +171,8 @@
       transition: all $transition-speed;
       word-wrap: break-word;
       word-break: break-all;
+      font-size: 12px;
+
       a {
         color: $N500;
       }

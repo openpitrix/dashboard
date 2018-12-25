@@ -36,11 +36,11 @@ export default class Image extends React.Component {
     if (nextProps.src !== this.props.src) {
       this.setState({ failed: false });
     }
-    console.log(nextProps.src !== this.props.src, nextProps.src, 22, this.props.src, this.state.failed);
+
     return (
-      nextProps.src !== this.props.src
-      || Boolean(nextState.failed)
-      || Boolean(nextProps.iconLetter)
+      nextProps.src !== this.props.src ||
+      Boolean(nextState.failed) ||
+      Boolean(nextProps.iconLetter)
     );
   }
 
@@ -60,7 +60,6 @@ export default class Image extends React.Component {
       ...rest
     } = this.props;
     const { failed } = this.state;
-    console.log(failed, 11, src, iconLetter);
 
     let imgStr = src && startsWith(src, 'att-') ? `/attachments/${src}` : src;
     if (isBase64Str && !imgStr.startsWith('/attachments/')) {

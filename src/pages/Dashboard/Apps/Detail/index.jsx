@@ -5,12 +5,14 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import {
-  Icon, Input, Table, Popover, Button, Image
-} from 'components/Base';
+import { Icon, Input, Table, Button, Image } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
-import AppName from 'components/AppName';
+import Status from 'components/Status';
+import TdName from 'components/TdName';
+import TimeShow from 'components/TimeShow';
+import AppStatistics from 'components/AppStatistics';
+import versionTypes from 'config/version-types';
 import Versions from '../../Versions';
 
 import styles from './index.scss';
@@ -26,82 +28,181 @@ const tags = [
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   clusterStore: rootStore.clusterStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
 export default class AppDetail extends Component {
   async componentDidMount() {
-    const { appStore, clusterStore, match } = this.props;
+    const { appStore, appVersionStore, clusterStore, match } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
 
-    await clusterStore.fetchAll();
+    clusterStore.appId = appId;
+    await clusterStore.fetchAll({ app_id: appId });
+
+    await appVersionStore.fetchAll({ app_id: appId, noLimit: true });
   }
 
   changeTab = async tab => {
-    const { appStore } = this.props;
+    const { appStore, appVersionStore, match } = this.props;
+
     if (tab !== appStore.detailTab) {
       appStore.detailTab = tab;
 
       if (tab === 'online') {
-        const { appVersionStore, match } = this.props;
         const { appId } = match.params;
         await appVersionStore.fetchTypeVersions(appId);
+      } else if (tab === 'record') {
+        const { appDetail } = appStore;
+        const versoinId = _.get(appDetail, 'latest_app_version.version_id', '');
+        await appVersionStore.fetchAudits(appDetail.app_id, versoinId);
       }
     }
   };
 
-  renderInstance() {
-    const { t } = this.props;
-
-    return <Card>renderInstance</Card>;
-  }
-
-  renderStatistics() {
-    const { t } = this.props;
+  renderVersionName = version_id => {
+    const { appVersionStore } = this.props;
+    const { versions } = appVersionStore;
+    const version = _.find(versions, { version_id }) || {};
+    const typeName = (_.find(versionTypes, { value: version.type }) || {}).name;
 
     return (
-      <Card className={styles.statistics}>
-        <dl>
-          <dt>{t('已上架应用')}</dt>
-          <dd>5</dd>
-        </dl>
-        <dl>
-          <dt>{t('本月部署次数')}</dt>
-          <dd>555</dd>
-        </dl>
-        <dl>
-          <dt>{t('总部署次数')}</dt>
-          <dd>8686</dd>
-        </dl>
-        <dl>
-          <dt>{t('综合评价')}</dt>
-          <dd>
-            3.0<label>
-              <Icon
-                name="star"
-                size={16}
-                type="dark"
-                className={styles.yellow}
-              />
-              <Icon
-                name="star"
-                size={16}
-                type="dark"
-                className={styles.yellow}
-              />
-              <Icon
-                name="star"
-                size={16}
-                type="dark"
-                className={styles.yellow}
-              />
-              <Icon name="star" size={16} type="dark" />
-              <Icon name="star" size={16} type="dark" />
-            </label>
-          </dd>
-        </dl>
+      <div className={styles.versionName}>
+        <label className={styles.type}>{typeName}VM</label>
+        {version.name} 0.0.1
+      </div>
+    );
+  };
+
+  renderRecord() {
+    const { appVersionStore, appStore, userStore, t } = this.props;
+    const { appDetail } = appStore;
+    const { users } = userStore;
+    const { audits } = appVersionStore;
+    const versoinId = _.get(appDetail, 'latest_app_version.version_id', '');
+    const records = audits[versoinId] || [];
+
+    const columns = [
+      {
+        title: t('申请编号'),
+        key: 'number',
+        width: '120px',
+        render: item => item.version_id
+      },
+      {
+        title: t('申请类型'),
+        key: 'type',
+        width: '60px',
+        render: item => item.type
+      },
+      {
+        title: t('Status'),
+        key: 'status',
+        width: '80px',
+        render: cl => (
+          <Status type={cl.status} transition={cl.transition_status} />
+        )
+      },
+      {
+        title: t('Update time'),
+        key: 'status_time',
+        width: '100px',
+        render: item => item.status_time
+      },
+      {
+        title: t('审核人员'),
+        key: 'operator',
+        width: '80px',
+        render: item => item.operator
+      }
+    ];
+
+    // todo
+    const pagination = {
+      tableType: 'Clusters',
+      total: records.length,
+      current: 1
+    };
+
+    return (
+      <Card>
+        <Table columns={columns} dataSource={records} pagination={pagination} />
+      </Card>
+    );
+  }
+
+  renderInstance() {
+    const { clusterStore, appStore, userStore, t } = this.props;
+    const { clusters, onSearch, onClearSearch, searchWord } = clusterStore;
+    const { users } = userStore;
+
+    const columns = [
+      {
+        title: t('Status'),
+        key: 'status',
+        width: '100px',
+        render: item => (
+          <Status type={item.status} transition={item.transition_status} />
+        )
+      },
+      {
+        title: t('Instance Name ID'),
+        key: 'name',
+        width: '155px',
+        render: item => (
+          <TdName name={item.name} description={item.cluster_id} noIcon />
+        )
+      },
+      {
+        title: t('Version'),
+        key: 'app_id',
+        width: '150px',
+        render: item => this.renderVersionName(item.version_id)
+      },
+      {
+        title: t('Node Count'),
+        key: 'node_count',
+        width: '80px',
+        render: item =>
+          (item.cluster_node_set && item.cluster_node_set.length) || 0
+      },
+      {
+        title: t('Created At'),
+        key: 'create_time',
+        width: '80px',
+        render: item => <TimeShow time={item.create_time} />
+      }
+    ];
+
+    const pagination = {
+      tableType: 'Clusters',
+      onChange: clusterStore.changePagination,
+      total: clusterStore.totalCount,
+      current: clusterStore.currentPage,
+      noCancel: false
+    };
+
+    return (
+      <Card>
+        <div className={styles.searchOuter}>
+          <p className={styles.total}>
+            已部署 {clusterStore.totalCount} 个应用实例
+          </p>
+          <Input.Search
+            className={styles.search}
+            placeholder={t('搜索或过滤')}
+            value={searchWord}
+            onSearch={onSearch}
+            onClear={onClearSearch}
+          />
+        </div>
+        <Table
+          columns={columns}
+          dataSource={clusters.toJSON()}
+          pagination={pagination}
+        />
       </Card>
     );
   }
@@ -161,21 +262,20 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const {
-      appVersionStore, appStore, clusterStore, t
-    } = this.props;
+    const { appVersionStore, appStore, t } = this.props;
     const { detailTab } = appStore;
+    const { versions } = appVersionStore;
 
     return (
       <Layout pageTitle={t('应用详情')} hasBack>
         <Grid>
           <Section size={4}>{this.renderAppBase()}</Section>
           <Section size={8}>
-            {this.renderStatistics()}
+            <AppStatistics isAppDetail appTotal={versions.length} />
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
             {detailTab === 'instance' && this.renderInstance()}
             {detailTab === 'online' && <Versions />}
-            {detailTab === 'record' && this.renderInstance()}
+            {detailTab === 'record' && this.renderRecord()}
           </Section>
         </Grid>
       </Layout>
