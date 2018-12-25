@@ -19,10 +19,15 @@ router.get('/logout', ctx => {
   };
   ctx.session = null;
   const names = [
+    'username',
+    'user_id',
+    'role',
+    'email',
+    'login_time',
+    'changedRole',
+
     'access_token',
     'token_type',
-    'user',
-    'role',
     'expires_in',
 
     'no_auth_access_token',

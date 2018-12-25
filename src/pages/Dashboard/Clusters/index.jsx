@@ -30,18 +30,15 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   async componentDidMount() {
     const {
-      clusterStore,
-      appStore,
-      runtimeStore,
-      userStore,
-      user
+      clusterStore, runtimeStore, userStore, user
     } = this.props;
 
     const { isAdmin } = user;
 
-    clusterStore.registerStore('app', appStore);
+    await clusterStore.fetchAll({
+      attachApps: true
+    });
 
-    await clusterStore.fetchAll();
     if (isAdmin) {
       await clusterStore.fetchStatistics();
       await userStore.fetchAll({ noLimit: true });

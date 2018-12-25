@@ -1,6 +1,7 @@
 const { isEmpty, without, map } = require('lodash');
 const sessConfig = require('./session-config');
 const { Base64 } = require('js-base64');
+const debug = require('debug')('app');
 
 const oauthResFields = [
   'access_token',
@@ -54,8 +55,12 @@ const saveUserFromCtx = (ctx, res) => {
   const idToken = res.id_token.split('.');
   const user = idToken[1] ? JSON.parse(Base64.decode(idToken[1])) : {};
 
+  debug('save user from ctx: %O', user);
+
   saveTokenFromCtx(ctx, res, '', {
-    user: JSON.stringify({ ...user, loginTime: Date.now() })
+    role: user.role,
+    user_id: user.sub,
+    login_time: Date.now()
   });
 
   return user;

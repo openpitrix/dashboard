@@ -1,0 +1,44 @@
+@import "~scss/vars";
+
+.toolbar {
+  display: inline-block;
+  position: relative;
+  margin-top: -20px;
+  cursor: pointer;
+
+  .backTxt {
+    display: inline-block;
+    font-size: 12px;
+    color: #576075;
+    position: relative;
+    top: -8px;
+    margin-left: 8px;
+  }
+}
+
+.title {
+  .tip{
+    color: $N75;
+  }
+  .txt {
+    font-size: $size-normal;
+    font-weight: 500;
+    line-height: 2;
+    color: $N500;
+  }
+}
+
+.colItems {
+  font-size: $size-small;
+  .icon {
+    font-weight: 500;
+    color: $N300;
+  }
+  .type {
+    margin-left: 12px;
+    margin-right: 8px;
+  }
+  .version {
+    color: $N75;
+  }
+}

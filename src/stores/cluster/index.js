@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { get } from 'lodash';
+import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
 import ts from 'config/translation';
@@ -51,7 +51,9 @@ export default class ClusterStore extends Store {
     // job_id=> cluster_id
   };
 
-  store = {};
+  get appStore() {
+    return this.getStore('app');
+  }
 
   get clusterEnv() {
     return this.getStore('clusterDetail').envJson();
@@ -75,7 +77,9 @@ export default class ClusterStore extends Store {
 
   @action
   fetchAll = async params => {
-    params = this.normalizeParams(params);
+    const attachApps = Boolean(params.attachApps);
+
+    params = this.normalizeParams(_.without(params, ['attachApps']));
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }
@@ -98,11 +102,11 @@ export default class ClusterStore extends Store {
       this.clusterCount = this.totalCount;
     }
 
-    const appStore = this.store.app;
-
-    const appIds = this.clusters.map(cluster => cluster.app_id);
-    if (appStore && appIds.length > 1) {
-      await appStore.fetchAll({ app_id: appIds });
+    if (attachApps) {
+      const appIds = this.clusters.map(cluster => cluster.app_id);
+      if (appIds.length) {
+        await this.appStore.fetchAll({ app_id: appIds });
+      }
     }
 
     this.isLoading = false;
@@ -265,7 +269,6 @@ export default class ClusterStore extends Store {
 
     this.selectedRowKeys = [];
     this.clusterIds = [];
-    this.store = {};
 
     this.clusters = [];
   };
@@ -285,11 +288,6 @@ export default class ClusterStore extends Store {
   @action
   changeAppVersion = type => {
     this.versionId = type;
-  };
-
-  @action
-  registerStore = (name, store) => {
-    this.store[name] = store;
   };
 
   @action

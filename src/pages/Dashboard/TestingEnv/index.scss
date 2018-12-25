@@ -18,8 +18,7 @@ $card-height: 188px;
 
   // fix normal layout
   &.isNormal {
-    margin-top: 32px !important;
-    padding-top: 0;
+    margin-top: 0 !important;
     .leftPanel {
       max-width: 220px;
     }
@@ -39,18 +38,19 @@ $card-height: 188px;
       width: 885px;
     }
   }
+
+  .pageTitle {
+    font-size: $size-medium;
+    color:$N500;
+    margin-bottom: $pg-margin;
+    margin-left: 102px;
+  }
 }
 
 .page {
   display: block;
   margin-left: $body-margin - 30px;
   margin-right: $body-margin - 30px;
-
-  .title {
-    font-size: $size-medium;
-    color:$N500;
-    margin-bottom: $pg-margin;
-  }
 
   .platforms {
     border-right: 1px solid $N10;

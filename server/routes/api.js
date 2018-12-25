@@ -8,35 +8,6 @@ const utils = require('../utils');
 const router = new Router();
 const authEndpoint = 'oauth2/token';
 
-router.post(`/api/${authEndpoint}`, async ctx => {
-  const { apiServer, clientId, clientSecret } = ctx.store;
-  const url = [apiServer, authEndpoint].join('/');
-  const { body } = ctx.request;
-  const { method } = body;
-
-  Object.assign(body, {
-    client_id: clientId,
-    client_secret: clientSecret
-  });
-
-  logger({ method, url, body });
-
-  delete body.method;
-
-  const res = await agent.send(method, url, body);
-
-  if (res && 'err' in res) {
-    ctx.body = res;
-    return;
-  }
-
-  debug(`Auth token res: %O`, res);
-
-  // extract user info
-  const user = utils.saveUserFromCtx(ctx, res);
-  ctx.body = Object.assign(res, { user });
-});
-
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
 
@@ -50,6 +21,32 @@ router.post('/api/*', async ctx => {
   const url = [apiServer, endpoint].join('/');
 
   logger({ method, url, body });
+
+  delete body.method;
+
+  // handle oauth login
+  if (endpoint === authEndpoint) {
+    const res = await agent.send(
+      method,
+      url,
+      Object.assign(body, {
+        client_id: clientId,
+        client_secret: clientSecret
+      })
+    );
+
+    if (res && 'err' in res) {
+      ctx.body = res;
+      return;
+    }
+
+    debug(`Auth token res: %O`, res);
+
+    // extract user info
+    const user = utils.saveUserFromCtx(ctx, res);
+    ctx.body = Object.assign(res, { user });
+    return;
+  }
 
   const browserUrl = ctx.headers.referer;
   // todo
@@ -86,7 +83,7 @@ router.post('/api/*', async ctx => {
     ctx.throw(401, 'refresh token expired');
   }
 
-  if (!access_token || expires_in < Date.now()) {
+  if (!access_token || (expires_in && parseInt(expires_in) < Date.now())) {
     const res = await agent.post([apiServer, authEndpoint].join('/'), payload);
     debug(`Using refresh token to exchange auth info: %O`, res);
 
@@ -101,8 +98,6 @@ router.post('/api/*', async ctx => {
   if (!authInfo.access_token) {
     ctx.throw(401, 'Unauthorized: invalid access token');
   }
-
-  delete body.method;
 
   ctx.body = await agent.send(method, url, body, {
     header: {

@@ -22,6 +22,8 @@ export default class TestingEnvStore extends Store {
 
   @observable selectCredentialId = ''; // switch credential
 
+  @observable runtimeToShowInstances = {};
+
   // register external store instance if you want access
   get clusterStore() {
     return this.getStore('cluster');
@@ -42,6 +44,7 @@ export default class TestingEnvStore extends Store {
   @action
   changePlatform = platform => {
     this.platform = platform;
+    this.changeRuntimeToShowInstances();
   };
 
   @action
@@ -68,6 +71,11 @@ export default class TestingEnvStore extends Store {
   @action
   setCredentialId = id => {
     this.selectCredentialId = id;
+  };
+
+  @action
+  changeRuntimeToShowInstances = (runtime = {}) => {
+    this.runtimeToShowInstances = runtime;
   };
 
   @action
@@ -184,12 +192,13 @@ export default class TestingEnvStore extends Store {
   };
 
   @action
-  fetchClusters = async () => {
+  fetchClusters = async (runtime_id = '') => {
     await this.clusterStore.fetchAll({
       owner: this.userId,
       noLimit: true,
       // ['-'] assume no runtime found
-      runtime_id: _.get(this.getProviderRuntimesMap(), this.platform, ['-'])
+      runtime_id:
+        runtime_id || _.get(this.getProviderRuntimesMap(), this.platform, ['-'])
     });
   };
 

@@ -1,4 +1,5 @@
 import { getCookie, setCookie } from 'utils';
+import { map } from 'lodash';
 
 const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'developer';
@@ -6,39 +7,26 @@ const ROLE_NORMAL = 'user';
 
 export default class UserProvider {
   constructor() {
-    this.role = '';
-    this.username = '';
-    this.user_id = '';
-    this.email = '';
+    this.role = getCookie('role');
+    this.username = getCookie('username');
+    this.user_id = getCookie('user_id');
+    this.email = getCookie('email');
     this.changedRole = '';
-
-    let user = {};
-
-    // read user from cookie
-    try {
-      user = JSON.parse(getCookie('user') || '{}');
-    } catch (err) {}
-
-    Object.assign(this, user);
-
     this.accessToken = getCookie('access_token');
   }
 
-  canChangeRole() {
-    return this.isDev;
-  }
-
   isLoggedIn() {
-    return this.accessToken && this.username;
+    return this.accessToken && this.user_id;
   }
 
   update(props = {}) {
     Object.assign(this, props);
-    this.accessToken = getCookie('access_token');
 
     // save own props to cookie
     const expires_in = parseInt(getCookie('expires_in'));
-    setCookie('user', JSON.stringify(this), new Date(expires_in));
+    map(props, (v, k) => {
+      setCookie(k, v, new Date(expires_in));
+    });
   }
 
   get isAdmin() {

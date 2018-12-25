@@ -29,15 +29,16 @@ export default class Login extends Component {
   }
 
   handleSubmit = async params => {
-    const { store, user, history } = this.props;
+    const { store, user } = this.props;
     const res = await store.oauth2Check(params);
 
     if (res && res.user) {
       await store.fetchDetail(res.user.sub, true);
     }
+
     const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (!(res && res.err)) {
-      history.push(getUrlParam('redirect_url') || defaultUrl);
+      location.href = getUrlParam('redirect_url') || defaultUrl;
     }
   };
 

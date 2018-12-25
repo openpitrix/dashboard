@@ -12,7 +12,6 @@ const AppDetail = lazy(() => import('../pages/AppDetail'));
 const Account = lazy(() => import('../pages/Account'));
 const Store = lazy(() => import('../pages/Store'));
 const Purchased = lazy(() => import('../pages/Purchased'));
-const Runtimes = lazy(() => import('../pages/Runtimes'));
 
 const routes = {
   '/': Home,
@@ -67,10 +66,7 @@ const routes = {
   '/:dash/runtimes': Dash.TestingEnv,
   '/:dash/runtime/create': Dash.CreateTestingEnv,
 
-  // '/:dash/runtimes': Dash.Runtimes,
-  // '/:dash/runtime/create': Dash.RuntimeAdd,
-  // '/:dash/runtime/edit/:runtimeId': Dash.RuntimeAdd,
-  '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
+  // '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
   '/:dash/categories': Dash.Categories,
   '/:dash/category/:categoryId': Dash.CategoryDetail,
