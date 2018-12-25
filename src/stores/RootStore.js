@@ -59,7 +59,7 @@ export default class RootStore extends Store {
 
   @action
   updateUser(props) {
-    _.isFunction(this.user.update) && this.user.update(props);
+    this.user.update(props);
   }
 
   @action

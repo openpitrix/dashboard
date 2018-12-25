@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { noop, isEmpty } from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';
@@ -12,6 +13,7 @@ import SideNav from './SideNav';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore, sock }) => ({
   user: rootStore.user,
   sock
@@ -31,7 +33,8 @@ class Layout extends Component {
     loadClass: PropTypes.string,
     noNotification: PropTypes.bool,
     noSubMenu: PropTypes.bool,
-    pageTitle: PropTypes.string
+    pageTitle: PropTypes.string,
+    titleCls: PropTypes.string
   };
 
   static defaultProps = {
@@ -87,9 +90,11 @@ class Layout extends Component {
       isHome,
       noSubMenu,
       pageTitle,
+      titleCls,
       isCenterPage,
       centerWidth,
-      hasBack
+      hasBack,
+      t
     } = this.props;
 
     const { isNormal } = this.props.user;
@@ -115,9 +120,11 @@ class Layout extends Component {
       <div
         className={classnames(
           styles.layout,
-          className,
-          { [styles.hasMenu]: hasSubNav },
-          { [styles.hasNav]: hasMenu && !hasSubNav }
+          {
+            [styles.hasMenu]: hasSubNav,
+            [styles.hasNav]: hasMenu && !hasSubNav
+          },
+          className
         )}
       >
         {!noNotification && <Notification />}
@@ -132,7 +139,7 @@ class Layout extends Component {
             style={{ maxWidth }}
           >
             {Boolean(pageTitle) && (
-              <div className={styles.pageTitle}>
+              <div className={classnames(styles.pageTitle, titleCls)}>
                 {hasBack && (
                   <Icon
                     onClick={() => this.goBack()}
@@ -142,7 +149,7 @@ class Layout extends Component {
                     className={styles.backIcon}
                   />
                 )}
-                {pageTitle}
+                {t(pageTitle)}
               </div>
             )}
             {children}

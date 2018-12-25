@@ -47,7 +47,7 @@ class Credential extends React.Component {
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
     this.props.history.push(
-      `/dashboard/testing-runtime/add?type=credential&provider=${platform}`
+      `/dashboard/runtime/create?type=credential&provider=${platform}`
     );
   };
 

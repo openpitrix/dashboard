@@ -22,13 +22,40 @@ router.post('/api/*', async ctx => {
 
   logger({ method, url, body });
 
+  delete body.method;
+
+  // handle oauth login
+  if (endpoint === authEndpoint) {
+    const res = await agent.send(
+      method,
+      url,
+      Object.assign(body, {
+        client_id: clientId,
+        client_secret: clientSecret
+      })
+    );
+
+    if (res && 'err' in res) {
+      ctx.body = res;
+      return;
+    }
+
+    debug(`Auth token res: %O`, res);
+
+    // extract user info
+    const user = utils.saveUserFromCtx(ctx, res);
+    ctx.body = Object.assign(res, { user });
+    return;
+  }
+
   const browserUrl = ctx.headers.referer;
   // todo
   const endUrl = browserUrl
     .split('/')
     .slice(3)
     .join('/');
-  const usingNoAuthToken = endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
+  const usingNoAuthToken =
+    endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
   delete body.isGlobalQuery;
 
   const authParams = {
@@ -40,25 +67,23 @@ router.post('/api/*', async ctx => {
   // get current auth info from cookie
   const prefix = usingNoAuthToken ? 'no_auth' : '';
   const authInfo = utils.getTokenGroupFromCtx(ctx, prefix);
-  const {
-    token_type, access_token, refresh_token, expires_in
-  } = authInfo;
+  const { token_type, access_token, refresh_token, expires_in } = authInfo;
 
   const payload = usingNoAuthToken
     ? Object.assign(authParams, {
-      grant_type: 'client_credentials'
-    })
+        grant_type: 'client_credentials'
+      })
     : Object.assign(authParams, {
-      grant_type: 'refresh_token',
-      refresh_token
-    });
+        grant_type: 'refresh_token',
+        refresh_token
+      });
 
   if (!usingNoAuthToken && !refresh_token) {
     // need login
     ctx.throw(401, 'refresh token expired');
   }
 
-  if (!access_token || expires_in < Date.now()) {
+  if (!access_token || (expires_in && parseInt(expires_in) < Date.now())) {
     const res = await agent.post([apiServer, authEndpoint].join('/'), payload);
     debug(`Using refresh token to exchange auth info: %O`, res);
 
@@ -66,15 +91,13 @@ router.post('/api/*', async ctx => {
       ctx.throw(401, 'Retrieve access token failed');
     }
 
-    utils.saveTokenResponseToCookie(ctx, res, prefix);
+    utils.saveTokenFromCtx(ctx, res, prefix);
     Object.assign(authInfo, res);
   }
 
   if (!authInfo.access_token) {
     ctx.throw(401, 'Unauthorized: invalid access token');
   }
-
-  delete body.method;
 
   ctx.body = await agent.send(method, url, body, {
     header: {

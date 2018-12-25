@@ -15,6 +15,7 @@ import {
   Grid, Section, Card, Dialog
 } from 'components/Layout';
 import Loading from 'components/Loading';
+import { toUrl } from 'utils/url';
 
 import styles from '../index.scss';
 
@@ -23,7 +24,8 @@ import styles from '../index.scss';
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,
   envStore: rootStore.testingEnvStore,
-  credentialStore: rootStore.runtimeCredentialStore
+  credentialStore: rootStore.runtimeCredentialStore,
+  user: rootStore.user
 }))
 @observer
 class Runtime extends React.Component {
@@ -52,11 +54,16 @@ class Runtime extends React.Component {
     setCurrentId(id);
   };
 
+  handleClickClusterCnt = rt => {
+    const { user, envStore } = this.props;
+    if (user.isNormal) {
+      envStore.changeRuntimeToShowInstances(rt);
+    }
+  };
+
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
-    this.props.history.push(
-      `/dashboard/testing-runtime/add?provider=${platform}`
-    );
+    this.props.history.push(`/dashboard/runtime/create?provider=${platform}`);
   };
 
   renderMenu(runtime_id) {
@@ -257,7 +264,14 @@ class Runtime extends React.Component {
                     </div>
                     <div className={styles.info}>
                       <p className={styles.label}>实例数</p>
-                      <p className={styles.val}>{cntCluster}</p>
+                      <p
+                        className={styles.val}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => this.handleClickClusterCnt({ name, runtime_id })
+                        }
+                      >
+                        {cntCluster}
+                      </p>
                     </div>
                     <div className={styles.info}>
                       <p className={styles.label}>授权信息</p>

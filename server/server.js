@@ -68,10 +68,8 @@ app.use(require('./middleware/session')(app));
 app.use(require('./middleware/store'));
 
 // add routes
-app.use(require('./routes/auth-token').routes());
-app.use(require('./routes/login').routes());
-app.use(require('./routes/api').routes());
 app.use(require('./routes/page').routes());
+app.use(require('./routes/api').routes());
 
 // render page
 app.use(require('./middleware/render'));

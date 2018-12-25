@@ -11,11 +11,13 @@ import Tabs from 'components/DetailTabs';
 import { providers, tabs } from 'config/testing-env';
 import Runtime from './Runtime';
 import Credential from './Credential';
+import InstanceList from './InstanceList';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  user: rootStore.user,
   envStore: rootStore.testingEnvStore
 }))
 @observer
@@ -94,39 +96,62 @@ export default class TestingEnv extends React.Component {
     );
   }
 
-  render() {
-    const { envStore, t } = this.props;
+  renderContent() {
     const { loadedRt } = this.state;
-    const { curTab, platform } = envStore;
+    const { curTab, platform, runtimeToShowInstances } = this.props.envStore;
+
+    if (
+      curTab === 'Testing env'
+      && _.isObject(runtimeToShowInstances)
+      && runtimeToShowInstances.runtime_id
+    ) {
+      return <InstanceList runtime={{ ...runtimeToShowInstances }} />;
+    }
 
     return (
-      <Layout noSubMenu className={styles.layout}>
+      <Fragment>
+        <Tabs
+          className={styles.tabs}
+          tabs={tabs}
+          defaultTab={curTab}
+          triggerFirst={false}
+          changeTab={this.handleChangeTab}
+        />
+        <div className={styles.body}>
+          <Loading isLoading={!loadedRt}>
+            {curTab === 'Testing env' ? (
+              <Runtime platform={platform} />
+            ) : (
+              <Credential platform={platform} />
+            )}
+          </Loading>
+        </div>
+      </Fragment>
+    );
+  }
+
+  render() {
+    const { user } = this.props;
+    const title = user.isNormal ? 'My Runtimes' : 'Testing env';
+
+    return (
+      <Layout
+        noSubMenu
+        pageTitle={title}
+        titleCls={styles.pageTitle}
+        className={classnames(styles.layout, {
+          [styles.isNormal]: user.isNormal
+        })}
+      >
         <div className={styles.page}>
-          <h1 className={styles.title}>{t('Testing env')}</h1>
           <BreadCrumb linkPath="Cloud Provider > Platform" />
 
           <Grid>
             <Section size={3} className={styles.leftPanel}>
               {this.renderPlatforms()}
             </Section>
-
             <Section size={9} className={styles.rightPanel}>
-              <Tabs
-                className={styles.tabs}
-                tabs={tabs}
-                defaultTab={curTab}
-                triggerFirst={false}
-                changeTab={this.handleChangeTab}
-              />
-              <div className={styles.body}>
-                <Loading isLoading={!loadedRt}>
-                  {curTab === 'Testing env' ? (
-                    <Runtime platform={platform} />
-                  ) : (
-                    <Credential platform={platform} />
-                  )}
-                </Loading>
-              </div>
+              {this.renderContent()}
             </Section>
           </Grid>
         </div>

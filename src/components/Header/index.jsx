@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { NavLink, withRouter, Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
+import { toUrl } from 'utils/url';
 
 import { Popover, Icon, Input } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
@@ -63,7 +64,7 @@ class Header extends Component {
           {t('Purchased')}
         </NavLink>
         <NavLink
-          to="/runtimes"
+          to={toUrl('/:dash/runtimes')}
           exact
           activeClassName={styles.active}
           isActive={this.isLinkActive.bind(null, 'runtime')}
