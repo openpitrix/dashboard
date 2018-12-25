@@ -34,7 +34,8 @@ class LayoutStepper extends Component {
     const { stepOption } = this.props;
     const { steps, activeStep } = stepOption;
     const width = `${activeStep * 100 / steps}%`;
-    const className = activeStep > steps ? 'headerStepFinished' : 'headerStepNotFinished';
+    const className =
+      activeStep > steps ? 'headerStepFinished' : 'headerStepNotFinished';
 
     const style = {
       width,
@@ -50,12 +51,8 @@ class LayoutStepper extends Component {
   }
 
   renderTopNav() {
-    const {
-      name, stepOption, t, history
-    } = this.props;
-    const {
-      activeStep, steps, prevStep, goBack
-    } = stepOption;
+    const { name, stepOption, t, history } = this.props;
+    const { activeStep, steps, prevStep, goBack } = stepOption;
     const funcBack = _.isFunction(goBack) ? goBack : history.goBack;
 
     if (activeStep > steps) {
@@ -84,9 +81,7 @@ class LayoutStepper extends Component {
   }
 
   renderTitle() {
-    const {
-      name, stepOption, headerCls, titleCls, t
-    } = this.props;
+    const { name, stepOption, headerCls, titleCls, t } = this.props;
     const { activeStep, steps } = stepOption;
 
     if (activeStep > steps) {
@@ -111,7 +106,11 @@ class LayoutStepper extends Component {
   renderFooter() {
     const { t, stepOption, name } = this.props;
     const {
-      activeStep, steps, nextStep, disableNextStep
+      activeStep,
+      steps,
+      nextStep,
+      disableNextStep,
+      btnText
     } = stepOption;
 
     if (activeStep > steps) {
@@ -139,8 +138,8 @@ class LayoutStepper extends Component {
           type="primary"
           onClick={nextStep}
         >
-          <span>{buttonText}</span>
           <Icon className={styles.icon} name={iconName} size={20} />
+          <span>{t(btnText || buttonText)}</span>
         </button>
       </div>
     );

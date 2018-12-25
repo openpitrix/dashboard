@@ -88,9 +88,9 @@ export const getNavs = {
       title: 'Team Members'
     },
     {
-      link: '#',
+      link: '/dashboard/provider-detail',
       iconName: 'shield',
-      active: '',
+      active: 'provider-detail',
       title: '服务商详情'
     }
   ],

@@ -264,7 +264,7 @@
 
   "Store": "商店",
   "Platform": "平台",
-  "All Apps": "所有应用",
+  "All Apps": "全部应用",
   "App Reviews": "应用审核",
   "All Clusters": "所有集群",
   "Categroies": "分类",
@@ -498,5 +498,9 @@
   "Delete runtime credential successfully": "删除授权信息成功",
   "invalid kebeconfig": "错误的kubeconfig",
   "Update cluster env successfully": "修改集群环境成功",
-  "Helm runtime namespace is empty": "命名空间为空"
+  "Helm runtime namespace is empty": "命名空间为空",
+
+  "STEPPER_NAME_CREATE_PROVIDER_HEADER": "成为认证服务商",
+  "STEPPER_TITLE_CREATE_PROVIDER_1": "提交认证信息",
+  "STEPPER_FOOTER_CREATE_PROVIDER_1": "以上是平台审核的重要信息，请准确填写。"
 }

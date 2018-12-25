@@ -1,0 +1,81 @@
+@import '~scss/vars';
+
+.createFrom {
+  margin: 20px auto;
+  width: 600px;
+  padding: 32px 64px;
+  background-color: $N0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+  textarea {
+    width: 100%;
+  }
+
+  dl {
+    margin-bottom: 24px;
+  }
+
+  dt  {
+    @include title-font;
+  }
+
+  dd {
+    @include note-font;
+  }
+
+  .column {
+    float: left;
+    width: calc(50% - 6px);
+    height: 84px;
+
+    &:first-child {
+      margin-right: 12px;
+    }
+  }
+  .note {
+    @include note-font;
+    margin-top: 8px;
+  }
+
+  .blockMargin {
+    margin-bottom: 72px;
+  }
+
+  .protocol {
+    @include normal-font($line-height: 20px)
+  }
+}
+
+.successMessage {
+  margin: 132px auto 8px;
+  text-align: center;
+
+  .checkedIcon {
+    svg {
+      --primary-color: #{$G100};
+      --secondary-color: #{$G30};
+    }
+  }
+  .textTip {
+    @include note-font;
+  }
+
+  .textHeader {
+    @include title-font($line-height: 32px, $font-size: 20px);
+    margin: 4px auto 8px;
+  }
+
+  .successBtns {
+    display: block;
+    margin: 24px auto;
+  }
+
+  .certificateInfo {
+    margin: 0 auto;
+    width: 600px;
+    text-align: left;
+    opacity: 0.1;
+    background: linear-gradient(to bottom, rgba(249, 250, 251, 0.81), $background-color);
+  }
+}
