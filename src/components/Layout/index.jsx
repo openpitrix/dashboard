@@ -79,6 +79,35 @@ class Layout extends Component {
     history.goBack();
   };
 
+  renderTitle() {
+    const {
+      user, pageTitle, titleCls, hasBack, hasSearch, t
+    } = this.props;
+
+    if (!pageTitle) {
+      return null;
+    }
+
+    if (user.isNormal) {
+      return <TitleBanner title={pageTitle} hasSearch={hasSearch} />;
+    }
+
+    return (
+      <div className={classnames(styles.pageTitle, titleCls)}>
+        {hasBack && (
+          <Icon
+            onClick={this.goBack}
+            name="back"
+            size={24}
+            type="dark"
+            className={styles.backIcon}
+          />
+        )}
+        {t(pageTitle)}
+      </div>
+    );
+  }
+
   render() {
     const {
       className,
@@ -86,35 +115,17 @@ class Layout extends Component {
       children,
       isLoading,
       loadClass,
-      hasSearch,
       isHome,
       noSubMenu,
-      pageTitle,
-      titleCls,
       isCenterPage,
       centerWidth,
       hasBack,
-      t
+      user
     } = this.props;
 
-    const { isNormal } = this.props.user;
-    const hasMenu = !isNormal && !isHome;
+    const hasMenu = !user.isNormal && !isHome;
     const hasSubNav = hasMenu && !noSubMenu && !hasBack;
     const maxWidth = isCenterPage || hasBack ? `${centerWidth}px` : '100%';
-
-    if (isNormal) {
-      return (
-        <div className={classnames(styles.layout, className)}>
-          {!noNotification && <Notification />}
-          {Boolean(pageTitle) && (
-            <TitleBanner title={pageTitle} hasSearch={hasSearch} />
-          )}
-          <Loading isLoading={isLoading} className={styles[loadClass]}>
-            {children}
-          </Loading>
-        </div>
-      );
-    }
 
     return (
       <div
@@ -128,33 +139,18 @@ class Layout extends Component {
         )}
       >
         {!noNotification && <Notification />}
-
         {hasMenu && <SideNav hasSubNav={hasSubNav} />}
-
-        <Loading isLoading={isLoading} className={styles[loadClass]}>
-          <div
-            className={classnames({
-              [styles.centerPage]: isCenterPage || hasBack
-            })}
-            style={{ maxWidth }}
-          >
-            {Boolean(pageTitle) && (
-              <div className={classnames(styles.pageTitle, titleCls)}>
-                {hasBack && (
-                  <Icon
-                    onClick={() => this.goBack()}
-                    name="back"
-                    size={24}
-                    type="dark"
-                    className={styles.backIcon}
-                  />
-                )}
-                {t(pageTitle)}
-              </div>
-            )}
+        <div
+          className={classnames({
+            [styles.centerPage]: isCenterPage || hasBack
+          })}
+          style={{ maxWidth }}
+        >
+          {this.renderTitle()}
+          <Loading isLoading={isLoading} className={styles[loadClass]}>
             {children}
-          </div>
-        </Loading>
+          </Loading>
+        </div>
       </div>
     );
   }
