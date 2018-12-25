@@ -18,6 +18,7 @@ import Runtime, {
 import User, { Role } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
+import Provider, { Create as ProviderCreate } from './provider';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -159,5 +160,9 @@ export default class RootStore extends Store {
     // testing env, authorization
     this.register('testingEnv', TestingEnv);
     this.register('testingEnvCreate', TestingEnvCreate);
+
+    // provider
+    this.register('provider', Provider);
+    this.register('providerCreate', ProviderCreate);
   }
 }

@@ -26,7 +26,7 @@ export default class ProviderDetail extends Component {
   async componentDidMount() {
     // todo
     const { appStore } = this.props;
-    appStore.fetchAll({ status: 'active' });
+    await appStore.fetchAll({ status: 'active' });
   }
 
   changeTab = tab => {

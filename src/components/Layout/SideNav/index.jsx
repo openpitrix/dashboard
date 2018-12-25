@@ -27,6 +27,7 @@ const keys = [
   'category',
   'user',
   'create',
+  'provider-detail',
   'provider'
 ];
 const changeKey = {
@@ -91,6 +92,7 @@ class SideNav extends React.Component {
 
   isLinkActive = activeName => {
     const key = this.getMatchKey();
+
     return activeName === key;
   };
 
@@ -99,7 +101,8 @@ class SideNav extends React.Component {
     const { isISV } = user;
     const role = isISV ? 'isv' : user.role;
     const key = this.getMatchKey();
-    return (_.isObject(subNavMap[role]) && subNavMap[role][key]) || {};
+
+    return _.get(subNavMap, `${role}.${key}`, {});
   };
 
   renderSubsDev() {

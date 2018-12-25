@@ -111,7 +111,11 @@ class LayoutStepper extends Component {
   renderFooter() {
     const { t, stepOption, name } = this.props;
     const {
-      activeStep, steps, nextStep, disableNextStep
+      activeStep,
+      steps,
+      nextStep,
+      disableNextStep,
+      btnText
     } = stepOption;
 
     if (activeStep > steps) {
@@ -139,8 +143,8 @@ class LayoutStepper extends Component {
           type="primary"
           onClick={nextStep}
         >
-          <span>{buttonText}</span>
           <Icon className={styles.icon} name={iconName} size={20} />
+          <span>{t(btnText || buttonText)}</span>
         </button>
       </div>
     );

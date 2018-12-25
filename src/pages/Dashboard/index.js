@@ -16,6 +16,7 @@ export Providers from './Providers';
 export ProviderDetail from './Providers/Detail';
 export Applications from './Providers/Applications';
 export ApplicationDetail from './Providers/Applications/Detail';
+export ProviderCreate from './Providers/Create';
 
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
