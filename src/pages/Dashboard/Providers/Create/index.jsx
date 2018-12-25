@@ -3,7 +3,9 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import { Button, Input, Checkbox, Icon } from 'components/Base';
+import {
+  Button, Input, Checkbox, Icon
+} from 'components/Base';
 import { Stepper } from 'components/Layout';
 import CertificateInfo from '../CertificateInfo';
 

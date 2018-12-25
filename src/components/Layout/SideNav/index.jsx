@@ -10,7 +10,9 @@ import { Icon, Popover, Image } from 'components/Base';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 
-import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
+import {
+  subNavMap, getNavs, getDevSubNavs, getBottomNavs
+} from './navMap';
 
 import styles from './index.scss';
 
@@ -53,7 +55,9 @@ class SideNav extends React.Component {
   static defaultProps = {};
 
   async componentDidMount() {
-    const { appStore, user, match, hasSubNav } = this.props;
+    const {
+      appStore, user, match, hasSubNav
+    } = this.props;
     const { isDev } = user;
     const { hasMeunApps, fetchMenuApps } = appStore;
 
@@ -190,8 +194,7 @@ class SideNav extends React.Component {
     return (
       <ul className={styles.bottomNav}>
         {bottomNavs.map(
-          nav =>
-            nav.iconName === 'human' ? (
+          nav => (nav.iconName === 'human' ? (
               <li key={nav.iconName}>
                 <Popover content={<MenuLayer />} className={styles.iconOuter}>
                   <Icon
@@ -205,7 +208,7 @@ class SideNav extends React.Component {
                   </Link>
                 </Popover>
               </li>
-            ) : (
+          ) : (
               <li key={nav.iconName}>
                 <Icon
                   className={styles.icon}
@@ -217,14 +220,16 @@ class SideNav extends React.Component {
                   <label className={styles.title}>{t(nav.title)}</label>
                 </Link>
               </li>
-            )
+          ))
         )}
       </ul>
     );
   }
 
   renderNavsDev() {
-    const { appStore, history, user, t } = this.props;
+    const {
+      appStore, history, user, t
+    } = this.props;
     const { pathname } = history.location;
     const { menuApps } = appStore;
     const { changedRole, isDev } = user;
@@ -310,7 +315,9 @@ class SideNav extends React.Component {
   }
 
   renderNavs() {
-    const { user, appStore, history, t } = this.props;
+    const {
+      user, appStore, history, t
+    } = this.props;
     const { pathname } = history.location;
     const { isISV, isDev, role } = user;
     const viewRole = isISV ? 'isv' : role;
@@ -351,7 +358,9 @@ class SideNav extends React.Component {
 
   render() {
     const { hasSubNav, user } = this.props;
-    const { isDev, isAdmin, isISV, changedRole } = user;
+    const {
+      isDev, isAdmin, isISV, changedRole
+    } = user;
 
     if (isDev) {
       return (
