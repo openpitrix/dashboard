@@ -38,9 +38,9 @@ export default class Image extends React.Component {
     }
 
     return (
-      nextProps.src !== this.props.src ||
-      Boolean(nextState.failed) ||
-      Boolean(nextProps.iconLetter)
+      nextProps.src !== this.props.src
+      || Boolean(nextState.failed)
+      || Boolean(nextProps.iconLetter)
     );
   }
 

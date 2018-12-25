@@ -5,7 +5,9 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 import classNames from 'classnames';
 
-import { Icon, Input, Table, Button, Image } from 'components/Base';
+import {
+  Icon, Input, Table, Button, Image
+} from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
@@ -34,7 +36,9 @@ const tags = [
 @observer
 export default class AppDetail extends Component {
   async componentDidMount() {
-    const { appStore, appVersionStore, clusterStore, match } = this.props;
+    const {
+      appStore, appVersionStore, clusterStore, match
+    } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
@@ -77,7 +81,9 @@ export default class AppDetail extends Component {
   };
 
   renderRecord() {
-    const { appVersionStore, appStore, userStore, t } = this.props;
+    const {
+      appVersionStore, appStore, userStore, t
+    } = this.props;
     const { appDetail } = appStore;
     const { users } = userStore;
     const { audits } = appVersionStore;
@@ -134,8 +140,12 @@ export default class AppDetail extends Component {
   }
 
   renderInstance() {
-    const { clusterStore, appStore, userStore, t } = this.props;
-    const { clusters, onSearch, onClearSearch, searchWord } = clusterStore;
+    const {
+      clusterStore, appStore, userStore, t
+    } = this.props;
+    const {
+      clusters, onSearch, onClearSearch, searchWord
+    } = clusterStore;
     const { users } = userStore;
 
     const columns = [
@@ -165,8 +175,7 @@ export default class AppDetail extends Component {
         title: t('Node Count'),
         key: 'node_count',
         width: '80px',
-        render: item =>
-          (item.cluster_node_set && item.cluster_node_set.length) || 0
+        render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('Created At'),

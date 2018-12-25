@@ -34,7 +34,9 @@ import styles from './index.scss';
 @observer
 export default class Apps extends Component {
   async componentDidMount() {
-    const { appStore, userStore, user, categoryStore, repoStore } = this.props;
+    const {
+      appStore, userStore, user, categoryStore, repoStore
+    } = this.props;
     const { isAdmin } = user;
 
     await appStore.fetchAll();
@@ -233,7 +235,9 @@ export default class Apps extends Component {
   }
 
   render() {
-    const { appStore, repoStore, userStore, t } = this.props;
+    const {
+      appStore, repoStore, userStore, t
+    } = this.props;
     const { apps, isLoading } = appStore;
     const { repos } = repoStore;
     const { users } = userStore;
@@ -262,13 +266,12 @@ export default class Apps extends Component {
         title: t('Categories'),
         key: 'category',
         width: '100px',
-        render: item =>
-          t(
-            get(item, 'category_set', [])
-              .filter(cate => cate.category_id && cate.status === 'enabled')
-              .map(cate => cate.name)
-              .join(', ')
-          )
+        render: item => t(
+          get(item, 'category_set', [])
+            .filter(cate => cate.category_id && cate.status === 'enabled')
+            .map(cate => cate.name)
+            .join(', ')
+        )
       },
       {
         title: t('交付类型'),
@@ -286,8 +289,7 @@ export default class Apps extends Component {
         title: t('Developer'),
         key: 'owner',
         width: '60px',
-        render: item =>
-          getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('上架时间'),

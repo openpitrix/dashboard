@@ -26,7 +26,9 @@ export default class AppStatistics extends Component {
   };
 
   render() {
-    const { onSearch, onClear, searchWord, placeholder, title } = this.props;
+    const {
+      onSearch, onClear, searchWord, placeholder, title
+    } = this.props;
 
     return (
       <div className={styles.titleSearch}>
