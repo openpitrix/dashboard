@@ -25,8 +25,10 @@ export default class Versions extends Component {
     const { appVersionStore, appStore, match } = this.props;
     const { appId } = match.params;
 
-    await appStore.fetch(appId);
-    await appVersionStore.fetchTypeVersions(appId);
+    if (appId) {
+      await appStore.fetch(appId);
+      await appVersionStore.fetchTypeVersions(appId);
+    }
   }
 
   componentWillUnmount() {

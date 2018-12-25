@@ -258,7 +258,6 @@ export default class Apps extends Component {
     const { repos } = repoStore;
     const { users } = userStore;
     const { isDev, isAdmin } = user;
-    const urlFront = isAdmin ? '/store/' : '/dashboard/versions/';
 
     let columns = [
       {
@@ -270,7 +269,7 @@ export default class Apps extends Component {
             name={item.name}
             description={item.app_id}
             image={item.icon}
-            linkUrl={urlFront + item.app_id}
+            linkUrl={`/dashboard/app/${item.app_id}`}
           />
         )
       },

@@ -29,6 +29,7 @@ export default class Info extends Component {
       appStore, appVersionStore, categoryStore, match
     } = this.props;
     const { appId } = match.params;
+    await appStore.fetch(appId);
 
     // query this version relatived app info
     await appVersionStore.fetchAll({ app_id: appId });
