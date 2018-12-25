@@ -59,7 +59,10 @@
 }
 
 .versionName {
+  @include normal-font($line-height: 20px, $font-size: 12px);
+
   .type {
+    color: $N75;
   }
 }
 

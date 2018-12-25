@@ -74,8 +74,8 @@ export default class AppDetail extends Component {
 
     return (
       <div className={styles.versionName}>
-        <label className={styles.type}>{typeName}VM</label>
-        {version.name} 0.0.1
+        <label className={styles.type}>{typeName}</label>
+        {version.name}
       </div>
     );
   };
