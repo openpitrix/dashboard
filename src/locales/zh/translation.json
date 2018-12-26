@@ -505,5 +505,8 @@
   "STEPPER_FOOTER_CREATE_PROVIDER_1": "以上是平台审核的重要信息，请准确填写。",
 
   "Selected runtime": "所选环境",
-  "App / Delivery type / Version": "所属应用、交付方式、版本"
+  "App / Delivery type / Version": "所属应用、交付方式、版本",
+
+  "Reviewed": "已审核",
+  "Unreviewed": "未审核"
 }

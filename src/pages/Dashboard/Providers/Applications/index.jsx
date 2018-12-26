@@ -3,42 +3,51 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import { Table } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-
-import providers from '../mock/applications';
+import TableTypes from 'components/TableTypes';
 
 import styles from './index.scss';
 
 const types = [
-  { name: 'Processed', value: 'processed' },
-  { name: 'Unprocessed', value: 'unprocessed' }
+  { name: 'Unreviewed', value: 'unreviewed', status: ['submitted'] },
+  { name: 'Reviewed', value: 'reviewed', status: ['rejected', 'passed'] }
 ];
 
 @translate()
 @inject(({ rootStore }) => ({
-  rootStore
+  rootStore,
+  user: rootStore.user,
+  vendorStore: rootStore.vendorStore
 }))
 @observer
 export default class Applications extends Component {
-  state = {
-    activeType: 'processed'
-  };
+  async componentDidMount() {
+    const { vendorStore } = this.props;
+    await vendorStore.fetchAll({ status: 'submitted' });
+  }
 
-  async componentDidMount() {}
+  componentWillUnmount() {
+    const { vendorStore } = this.props;
+    vendorStore.reset();
+  }
 
-  changeType = type => {
-    const { activeType } = this.state;
+  changeType = async type => {
+    const { vendorStore } = this.props;
 
-    if (type !== activeType) {
-      this.setState({ activeType: type });
+    if (type !== vendorStore.activeType) {
+      vendorStore.activeType = type;
+      const typeMap = _.find(types, { value: type });
+      await vendorStore.fetchAll({ status: typeMap.status });
     }
   };
 
   render() {
-    const { t } = this.props;
+    const { vendorStore, user, t } = this.props;
+    const { vendors, activeType } = vendorStore;
 
     const columns = [
       {
@@ -46,8 +55,8 @@ export default class Applications extends Component {
         key: 'number',
         width: '80px',
         render: item => (
-          <Link to={`/dashboard/application/${item.number}`}>
-            {item.number}
+          <Link to={`/dashboard/application/${item.user_id}`}>
+            {item.user_id}
           </Link>
         )
       },
@@ -63,8 +72,8 @@ export default class Applications extends Component {
         width: '200px',
         render: item => (
           <div className={styles.company}>
-            <div className={styles.name}>{item.company}</div>
-            <div className={styles.introduce}>{item.introduce}</div>
+            <div className={styles.name}>{item.company_name}</div>
+            <div className={styles.introduce}>{item.company_profile}</div>
           </div>
         )
       },
@@ -72,19 +81,19 @@ export default class Applications extends Component {
         title: t('公司官网'),
         key: 'home',
         width: '120px',
-        render: item => item.home
+        render: item => item.company_website
       },
       {
         title: t('审核时间'),
         key: 'audit_time',
         width: '100px',
-        render: item => item.audit_time
+        render: item => item.submit_time
       },
       {
         title: t('审核人员'),
         key: 'auditor',
         width: '120px',
-        render: item => item.auditor
+        render: item => user.username
       },
       {
         title: '',
@@ -93,7 +102,7 @@ export default class Applications extends Component {
         className: 'actions',
         render: item => (
           <div className={styles.actions}>
-            <Link to={`/dashboard/application/${item.number}`}>
+            <Link to={`/dashboard/application/${item.user_id}`}>
               {t('查看详情')} →
             </Link>
           </div>
@@ -102,31 +111,23 @@ export default class Applications extends Component {
     ];
 
     const pagination = {
-      total: 6,
-      current: 1
+      tableType: 'Apps',
+      total: vendorStore.totalCount,
+      current: vendorStore.currentPage,
+      onChange: vendorStore.changeApplyPagination
     };
-
-    const { activeType } = this.state;
 
     return (
       <Layout pageTitle={t('入驻申请')}>
-        <div className={styles.types}>
-          {types.map(type => (
-            <label
-              key={type.value}
-              onClick={() => this.changeType(type.value)}
-              className={classnames({
-                [styles.active]: activeType === type.value
-              })}
-            >
-              {t(type.name)}
-            </label>
-          ))}
-        </div>
+        <TableTypes
+          types={types}
+          activeType={activeType}
+          changeType={this.changeType}
+        />
 
         <Table
           columns={columns}
-          dataSource={providers}
+          dataSource={vendors.toJSON()}
           pagination={pagination}
         />
       </Layout>

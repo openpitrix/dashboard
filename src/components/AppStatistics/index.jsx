@@ -23,7 +23,7 @@ export default class AppStatistics extends Component {
   };
 
   static defaultProps = {
-    isAppDetail: true,
+    isAppDetail: false,
     appTotal: 0,
     versionTotal: 0,
     monthDepoly: 0,
@@ -57,7 +57,7 @@ export default class AppStatistics extends Component {
           <dt>{t('总部署次数')}</dt>
           <dd>{totalDepoly}</dd>
         </dl>
-        <dl>
+        {/* <dl>
           <dt>{t('综合评价')}</dt>
           <dd>
             {starTotal}
@@ -75,7 +75,7 @@ export default class AppStatistics extends Component {
               ))}
             </label>
           </dd>
-        </dl>
+        </dl> */}
       </Card>
     );
   }

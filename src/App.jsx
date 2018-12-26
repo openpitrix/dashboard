@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Provider } from 'mobx-react';
 import { withRouter } from 'react-router';
-import {
-  BrowserRouter, Switch, Route, Redirect
-} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import LazyLoad from 'components/LazyLoad';
@@ -15,6 +13,8 @@ import Footer from 'components/Footer';
 import WrapComp from './routes/wrapper';
 
 import './scss/index.scss';
+
+const noHeaderPath = ['/dashboard/provider/submit'];
 
 class App extends React.Component {
   static propTypes = {
@@ -33,8 +33,12 @@ class App extends React.Component {
 
   renderRoute(match, route, store) {
     const user = store.user || {};
+
     // todo
-    const hasHeader = user.isNormal || !user.accessToken || user.role === 'user';
+    // add noHeaderPath for user apply provider from page no need header
+    const hasHeader =
+      !noHeaderPath.includes(route.path) &&
+      (user.isNormal || !user.accessToken || user.role === 'user');
 
     if (route.noMatch) {
       return <Redirect to="/" />;
@@ -62,9 +66,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {
-      routes, store, sock, i18n
-    } = this.props;
+    const { routes, store, sock, i18n } = this.props;
 
     return (
       <I18nextProvider i18n={i18n}>
@@ -78,7 +80,8 @@ class App extends React.Component {
                       key={i}
                       exact={route.exact}
                       path={route.path}
-                      render={({ match }) => this.renderRoute(match, route, store)
+                      render={({ match }) =>
+                        this.renderRoute(match, route, store)
                       }
                     />
                   ))}

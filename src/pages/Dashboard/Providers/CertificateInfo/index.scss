@@ -35,3 +35,13 @@
     }
   }
 }
+
+.blankInfo {
+  padding: 96px 0;
+  text-align: center;
+
+  .word {
+    @include note-font;
+    margin-top: 8px;
+  }
+}
