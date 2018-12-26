@@ -15,9 +15,7 @@ import {
   Icon,
   Popover
 } from 'components/Base';
-import Layout, {
-  Grid, Section, Panel, Card, Dialog
-} from 'components/Layout';
+import Layout, { Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
@@ -165,9 +163,7 @@ export default class Users extends Component {
 
   renderOperateModal = () => {
     const { userStore, t } = this.props;
-    const {
-      userDetail, operateType, changeUser, changeUserRole
-    } = userStore;
+    const { userDetail, operateType, changeUser, changeUserRole } = userStore;
 
     if (operateType === 'set_role') {
       return this.renderSetRole();
@@ -217,6 +213,17 @@ export default class Users extends Component {
               pattern={emailRegexp}
               required
             />
+          </div>
+          <div className="selectItem">
+            <label>{t('Role')}</label>
+            <Select onChange={changeUserRole} value={userDetail.role}>
+              <Select.Option value="user">{t('Normal User')}</Select.Option>
+              <Select.Option value="developer">{t('Developer')}</Select.Option>
+              <Select.Option value="global_admin">
+                {t('Administrator')}
+              </Select.Option>
+              <Select.Option value="isv">{t('ISV')}</Select.Option>
+            </Select>
           </div>
           <div className="inputItem">
             <label>{t('Password')}</label>
@@ -311,9 +318,7 @@ export default class Users extends Component {
 
   render() {
     const { userStore, t } = this.props;
-    const {
-      selectValue, selectName, orgName, onSelectOrg
-    } = userStore;
+    const { selectValue, selectName, orgName, onSelectOrg } = userStore;
 
     const data = toJS(userStore.users);
 
