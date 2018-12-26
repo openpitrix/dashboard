@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { Tree } from 'components/Base';
+
+import { Dialog } from 'components/Layout';
 
 import Item from './item';
 
 import styles from './index.scss';
 
+@translate()
+@observer
 export default class RoleTree extends Component {
   getTreeData(roleStore) {
     const adminRoles = roleStore.roles.filter(
@@ -52,6 +58,26 @@ export default class RoleTree extends Component {
       )
     }));
     return navData;
+  }
+
+  renderModals() {
+    const { roleStore, t } = this.props;
+    const {
+      isModalOpen, modalType, hideModal, handleOperation
+    } = roleStore;
+
+    if (modalType === 'delete_runtime') {
+      return (
+        <Dialog
+          title={t('Create admin role')}
+          isOpen={isModalOpen}
+          onCancel={hideModal}
+          onSubmit={handleOperation}
+        >
+          <p>{t('DELETE_RUNTIME_CONFIRM')}</p>
+        </Dialog>
+      );
+    }
   }
 
   render() {

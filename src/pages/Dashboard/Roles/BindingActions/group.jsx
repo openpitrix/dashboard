@@ -16,7 +16,7 @@ export default class ActionGroup extends Component {
     const { name, treeData } = data;
 
     return (
-      <div className={styles.main}>
+      <div className={styles.actions}>
         {!_.isEmpty(name) && <h3 className={styles.header}>{name}</h3>}
         <div>操作列表</div>
         <Tree
@@ -25,6 +25,7 @@ export default class ActionGroup extends Component {
           selectable={false}
           className={styles.tree}
           treeData={treeData}
+          switcherIcon={this.renderSwitchIcon}
         />
         <div>
           数据范围：

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Store from '../Store';
 
 const KeyFeatureAll = 'all';
+const KeyCreateRoll = 'add';
 const TypeFeature = 'feature';
 const TypeModule = 'module';
 
@@ -18,6 +19,10 @@ export default class RoleStoreStore extends Store {
   @observable isLoading = true;
 
   @observable bingActions = [];
+
+  @observable isModalOpen = false;
+
+  @observable modalType = '';
 
   modules = [];
 
@@ -268,11 +273,14 @@ export default class RoleStoreStore extends Store {
   };
 
   @action
-  selectRole = key => {
-    if (_.isEmpty(key)) {
+  selectRole = keys => {
+    const key = _.first(keys);
+    if (_.isEmpty(keys)) {
       this.selectedRole = {};
+    } else if (key === KeyCreateRoll) {
+      console.log('click');
     } else {
-      const roles = _.filter(this.roles, role => role.role_id === _.first(key));
+      const roles = _.filter(this.roles, role => role.role_id === key);
       this.selectedRole = _.first(roles);
     }
   };
