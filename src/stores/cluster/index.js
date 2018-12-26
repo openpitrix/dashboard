@@ -81,7 +81,7 @@ export default class ClusterStore extends Store {
   fetchAll = async params => {
     const attachApps = Boolean(params.attachApps);
 
-    params = this.normalizeParams(_.without(params, ['attachApps']));
+    params = this.normalizeParams(_.omit(params, ['attachApps']));
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }

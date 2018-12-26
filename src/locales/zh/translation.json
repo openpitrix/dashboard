@@ -518,5 +518,10 @@
   "Count deploy": "部署总次数",
   "Publish time": "上架时间",
   "Search App Name or ID": "搜索应用名称或ID",
-  "unknown": "未知"
+  "unknown": "未知",
+  "All categories": "全部分类",
+  "App category": "应用分类",
+  "Customize": "自定义",
+  "Adjust category": "调整分类",
+  "Chosen category": "所选分类"
 }

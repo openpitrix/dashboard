@@ -16,6 +16,8 @@ export default class AppStore extends Store {
 
   @observable apps = [];
 
+  @observable allApps = [];
+
   @observable homeApps = [];
 
   // store page category apps
@@ -160,7 +162,8 @@ export default class AppStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    params = this.normalizeParams(params);
+    const keepAll = Boolean(params.keepAll);
+    params = this.normalizeParams(_.omit(params, ['keepAll']));
 
     if (params.app_id) {
       delete params.status;
@@ -192,6 +195,11 @@ export default class AppStore extends Store {
       this.apps = _.concat(this.apps.slice(), apps);
     } else {
       this.apps = apps;
+    }
+
+    if (keepAll) {
+      // shallow copy apps
+      this.allApps = [...this.apps];
     }
 
     this.totalCount = get(result, 'total_count', 0);
@@ -542,6 +550,7 @@ export default class AppStore extends Store {
     this.appIds = [];
 
     this.apps = [];
+    this.allApps = [];
     this.appDetail = {};
   };
 

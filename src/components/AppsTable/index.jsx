@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 import { Table } from 'components/Base';
@@ -15,7 +14,7 @@ export default class AppsTable extends React.PureComponent {
     className: PropTypes.string,
     columns: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
     columnsFilter: PropTypes.func,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.array,
     filterList: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
     inject: PropTypes.object,
     isLoading: PropTypes.bool,
@@ -29,7 +28,6 @@ export default class AppsTable extends React.PureComponent {
       totalCount: PropTypes.number,
       currentPage: PropTypes.number
     }).isRequired,
-    // inject extra data
     tableType: PropTypes.string
   };
 

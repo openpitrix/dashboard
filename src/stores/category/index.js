@@ -20,6 +20,8 @@ export default class CategoryStore extends Store {
 
   @observable isModalOpen = false;
 
+  @observable modalType = '';
+
   @observable isDeleteOpen = false;
 
   @observable isDetailPage = false;
@@ -28,15 +30,23 @@ export default class CategoryStore extends Store {
 
   @observable searchWord = '';
 
-  @observable selectedCategory = '';
+  @observable selectedCategory = {};
 
   get appStore() {
     return this.getStore('appStore');
   }
 
   @action
-  setCategory = cate_id => {
-    this.selectedCategory = cate_id;
+  changeCategory = async category => {
+    const { category_id } = category;
+    if (category_id !== this.selectedCategory.category_id) {
+      this.selectedCategory = category;
+      this.appStore.categoryId = category_id;
+
+      await this.appStore.fetchAll({
+        category_id
+      });
+    }
   };
 
   @action
@@ -136,7 +146,12 @@ export default class CategoryStore extends Store {
     await this.postHandleResult(result, 'Delete');
   };
 
-  @action.bound
+  showModal = type => {
+    this.isModalOpen = true;
+    this.modalType = type;
+  };
+
+  @action
   hideModal = () => {
     this.isModalOpen = false;
     this.isDeleteOpen = false;
@@ -208,5 +223,7 @@ export default class CategoryStore extends Store {
 
     this.categories = [];
     this.category = {};
+
+    this.appStore.categoryId = '';
   }
 }

@@ -15,16 +15,43 @@
   .rightPanel {
 
   }
+  .summary {
+    margin-bottom: 22px;
+  }
+  .topActions{
+    margin-bottom: 16px;
+    font-size: $size-small;
+    .choosen {
+      color: $N75;
+    }
+    .name {
+      color: $N500;
+      font-weight: 500;
+    }
+    .actions {
+      display: inline-block;
+      margin-left: 20px;
+      &>span {
+        color: $P75;
+        cursor: pointer;
+        margin-right: 12px;
+      }
+    }
+  }
   .cates {
     border-right: 1px solid $N10;
     .item {
+      font-size: $size-small;
       height: 40px;
-      padding-left: 12px;
+      //padding-left: 12px;
       cursor: pointer;
+      color: $N300;
 
       &.active, &:hover {
         box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
         background-color: $N0;
+        color: $P75;
+        font-weight: 500;
       }
       &.disabled {
         opacity: 0.5;
@@ -38,15 +65,27 @@
         padding: 12px 0 !important;
         vertical-align: middle;
 
-        &.proName {
+        &.name {
           font-size: $size-small;
           margin-left: 8px;
         }
-        &.proCount {
+        &.count {
           font-size: $size-small;
           float: right;
           margin-right: 23px;
         }
+      }
+    }
+    .btnAdd {
+      font-size: $size-normal;
+      color: $P75;
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+      svg {
+        vertical-align: bottom;
+        --primary-color: #{$P75};
+        --secondary-color: #{$P75};
       }
     }
   }

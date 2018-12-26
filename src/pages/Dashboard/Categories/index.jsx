@@ -6,14 +6,11 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import {
-  Input, Popover, Icon, Modal, Button
+  Input, Icon, Modal, Button
 } from 'components/Base';
 import Layout, { Dialog, Grid, Section } from 'components/Layout';
-import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
-import { getScrollTop } from 'utils';
 import AppsTable from 'components/AppsTable';
-import CategoryCard from './CategoryCard';
 
 import styles from './index.scss';
 
@@ -26,199 +23,233 @@ import styles from './index.scss';
 export default class Categories extends Component {
   async componentDidMount() {
     const { categoryStore, appStore } = this.props;
+    const { changeCategory } = categoryStore;
+
     await categoryStore.fetchAll({ noLimit: true });
     await appStore.fetchAll({
       noLimit: true,
+      keepAll: true,
       category_id: _.map(categoryStore.categories, cate => cate.category_id)
     });
+
+    changeCategory(_.first(categoryStore.categories));
   }
 
   componentWillUnmount() {
     const { categoryStore, appStore } = this.props;
-
-    window.onscroll = null;
     categoryStore.reset();
     appStore.reset();
   }
 
-  handleScroll = async () => {
-    const { categoryStore, appStore } = this.props;
-    const { categories, initLoadNumber } = categoryStore;
-    const len = categories.length;
-    const loadDataHeight = 240 + 24;
+  // renderHandleMenu = category => {
+  //   const { categoryStore, t } = this.props;
+  //   const { showDeleteCategory, showModifyCategory } = categoryStore;
+  //
+  //   return (
+  //     <div className="operate-menu">
+  //       <Link to={`/dashboard/category/${category.category_id}`}>
+  //         {t('View detail')}
+  //       </Link>
+  //       <span onClick={showModifyCategory.bind(categoryStore, category)}>
+  //         {t('Modify Category')}
+  //       </span>
+  //       <span onClick={showDeleteCategory.bind(categoryStore, category)}>
+  //         {t('Delete')}
+  //       </span>
+  //     </div>
+  //   );
+  // };
 
-    if (len <= initLoadNumber || categories[len - 1].apps) {
-      return;
-    }
-
-    const scrollTop = getScrollTop();
-    const loadNumber = parseInt(scrollTop / loadDataHeight) + 1;
-    for (
-      let i = initLoadNumber;
-      i < len && i < initLoadNumber + loadNumber * 3;
-      i++
-    ) {
-      if (!categories[i].appFlag) {
-        categoryStore.categories[i].appFlag = true;
-        await appStore.fetchAll({
-          status: 'active',
-          category_id: categories[i].category_id
-        });
-        const temp = categoryStore.categories[i];
-        categoryStore.categories[i] = {
-          total: appStore.totalCount,
-          apps: appStore.apps,
-          ...temp
-        };
-      }
-    }
+  showOperation = type => {
+    const { showModal } = this.props.categoryStore;
+    showModal(type);
   };
 
-  renderHandleMenu = category => {
-    const { categoryStore, t } = this.props;
-    const { showDeleteCategory, showModifyCategory } = categoryStore;
-
-    return (
-      <div className="operate-menu">
-        <Link to={`/dashboard/category/${category.category_id}`}>
-          {t('View detail')}
-        </Link>
-        <span onClick={showModifyCategory.bind(categoryStore, category)}>
-          {t('Modify Category')}
-        </span>
-        <span onClick={showDeleteCategory.bind(categoryStore, category)}>
-          {t('Delete')}
-        </span>
-      </div>
-    );
-  };
-
-  renderOpsModal = () => {
+  renderModals() {
     const { categoryStore, t } = this.props;
     const {
-      isModalOpen, hideModal, category, createOrModify
+      category,
+      modalType,
+      isModalOpen,
+      hideModal,
+      createOrModify,
+      remove
     } = categoryStore;
-    let modalTitle = t('Create Category');
-    if (category && category.category_id) {
-      modalTitle = t('Modify Category');
+
+    if (!isModalOpen) {
+      return null;
     }
-    return (
-      <Modal
-        title={modalTitle}
-        visible={isModalOpen}
-        onCancel={hideModal}
-        onOk={createOrModify}
-      >
-        <div className="formContent">
-          <div>
-            <label>{t('Name')}</label>
-            <Input
-              name="name"
-              autoFocus
-              defaultValue={category.name}
-              onChange={categoryStore.changeName}
-              maxLength="50"
-            />
-          </div>
-          <div className="textareaItem">
-            <label>{t('Description')}</label>
-            <textarea
-              name="description"
-              defaultValue={category.description}
-              onChange={categoryStore.changeDescription}
-              maxLength="500"
-            />
-          </div>
-        </div>
-      </Modal>
-    );
-  };
 
-  renderDeleteModal = () => {
-    const { t } = this.props;
-    const { isDeleteOpen, hideModal, remove } = this.props.categoryStore;
+    if (modalType === 'edit') {
+      let modalTitle = t('Create Category');
+      if (category && category.category_id) {
+        modalTitle = t('Modify Category');
+      }
 
-    return (
-      <Dialog
-        title={t('Delete Category')}
-        visible={isDeleteOpen}
-        onSubmit={remove}
-        onCancel={hideModal}
-      >
-        {t('Delete Category desc')}
-      </Dialog>
-    );
-  };
+      return (
+        <Modal
+          title={modalTitle}
+          visible={isModalOpen}
+          onCancel={hideModal}
+          onOk={createOrModify}
+        >
+          <div className="formContent">
+            <div>
+              <label>{t('Name')}</label>
+              <Input
+                name="name"
+                autoFocus
+                defaultValue={category.name}
+                onChange={categoryStore.changeName}
+                maxLength="50"
+              />
+            </div>
+            <div className="textareaItem">
+              <label>{t('Description')}</label>
+              <textarea
+                name="description"
+                defaultValue={category.description}
+                onChange={categoryStore.changeDescription}
+                maxLength="500"
+              />
+            </div>
+          </div>
+        </Modal>
+      );
+    }
+
+    if (modalType === 'delete') {
+      return (
+        <Dialog
+          title={t('Delete Category')}
+          visible={isModalOpen}
+          onSubmit={remove}
+          onCancel={hideModal}
+        >
+          {t('Delete Category desc')}
+        </Dialog>
+      );
+    }
+
+    if (modalType === 'customize') {
+      return (
+        <Dialog
+          title={t('创建新分类')}
+          visible={isModalOpen}
+          onSubmit={remove}
+          onCancel={hideModal}
+        />
+      );
+    }
+
+    if (modalType === 'adjust-cate') {
+      return (
+        <Dialog
+          title={t('调整应用分类')}
+          visible={isModalOpen}
+          onSubmit={remove}
+          onCancel={hideModal}
+        />
+      );
+    }
+
+    if (modalType === 'add-app') {
+      return (
+        <Dialog
+          title={t('添加应用到 [分类]')}
+          visible={isModalOpen}
+          onSubmit={remove}
+          onCancel={hideModal}
+        >
+          {t('Delete Category desc')}
+        </Dialog>
+      );
+    }
+  }
 
   filterApps = category_id => {
-    const { apps } = this.props.appStore;
-    return _.filter(apps, app => _.find(app.category_set, { category_id, status: 'enabled' })).length;
+    const { allApps } = this.props.appStore;
+    return _.filter(allApps, app => _.find(app.category_set, { category_id, status: 'enabled' })).length;
   };
 
   renderMenu() {
     const { categoryStore, t } = this.props;
-    const { categories, selectedCategory, setCategory } = categoryStore;
+    const { categories, selectedCategory, changeCategory } = categoryStore;
 
-    const defaultCategories = categories.filter(
+    this.normalizeCates = categories.filter(
       cate => cate.category_id !== 'ctg-uncategorized'
     );
-    const uncategorized = categories.filter(
-      cate => cate.category_id === 'ctg-uncategorized'
-    );
+    const uncategorized = _.find(categories, {
+      category_id: 'ctg-uncategorized'
+    });
+    if (uncategorized) {
+      this.normalizeCates.push(uncategorized);
+    }
 
     return (
       <ul className={styles.cates}>
-        {_.map(
-          defaultCategories.concat(uncategorized),
-          ({ name, category_id }) => (
-            <li
-              key={category_id}
-              className={classnames(styles.item, {
-                [styles.active]: selectedCategory === category_id
-              })}
-              onClick={() => setCategory(category_id)}
-            >
-              <Icon name={name} type="dark" />
-              <span className={styles.proName}>{name}</span>
-              <span className={styles.proCount}>
-                {this.filterApps(category_id)}
-              </span>
-            </li>
-          )
-        )}
-        <p>
-          <span className={styles.btnAdd}>
-            <Icon name="add" type="dark" />
-            {t('自定义')}
-          </span>
-        </p>
+        {_.map(this.normalizeCates, ({ name, category_id }) => (
+          <li
+            key={category_id}
+            className={classnames(styles.item, {
+              [styles.active]: selectedCategory.category_id === category_id
+            })}
+            onClick={() => changeCategory({ name, category_id })}
+          >
+            <Icon name={name} type="dark" />
+            <span className={styles.name}>{t(name)}</span>
+            <span className={styles.count}>{this.filterApps(category_id)}</span>
+          </li>
+        ))}
+        <li
+          className={styles.btnAdd}
+          onClick={() => this.showOperation('customize')}
+        >
+          <Icon name="add" type="dark" />
+          {t('Customize')}
+        </li>
       </ul>
     );
   }
 
-  // renderContent(){
-  //   return (
-  //     <Toolbar
-  //       placeholder={t('Search Categories')}
-  //       searchWord={searchWord}
-  //       onSearch={categoryStore.onSearch}
-  //       onClear={categoryStore.onClearSearch}
-  //       onRefresh={categoryStore.onRefresh}
-  //       withCreateBtn={{ name: t('Create'), onClick: showCreateCategory }}
-  //     />
-  //   )
-  // }
-
-  render() {
-    const { categoryStore, appStore, t } = this.props;
+  renderToolbar() {
+    const { appStore, t } = this.props;
     const {
-      categories,
-      isLoading,
-      searchWord,
-      showCreateCategory
-    } = categoryStore;
+      searchWord, onSearch, onClearSearch, onRefresh, appIds
+    } = appStore;
 
-    const { apps } = appStore;
+    if (appIds.length) {
+      return (
+        <Toolbar noRefreshBtn noSearchBox>
+          <Button
+            onClick={() => this.showOperation('adjust-cate')}
+            className="btn-handle"
+          >
+            {t('Adjust category')}
+          </Button>
+        </Toolbar>
+      );
+    }
+
+    return (
+      <Toolbar
+        placeholder={t('Search Categories')}
+        searchWord={searchWord}
+        onSearch={onSearch}
+        onClear={onClearSearch}
+        onRefresh={onRefresh}
+        withCreateBtn={{
+          name: t('Create'),
+          onClick: () => this.showOperation('add-app')
+        }}
+      />
+    );
+  }
+
+  renderContent() {
+    const { appStore, categoryStore } = this.props;
+    const { apps, isLoading } = appStore;
+    const { selectedCategory } = categoryStore;
     const displayCols = [
       'name',
       'delivery_type',
@@ -226,6 +257,28 @@ export default class Categories extends Component {
       'maintainers',
       'status_time'
     ];
+
+    if (!selectedCategory) {
+      return null;
+    }
+
+    return (
+      <Fragment>
+        {this.renderToolbar()}
+        <AppsTable
+          store={appStore}
+          data={apps}
+          isLoading={isLoading}
+          columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
+          }
+        />
+      </Fragment>
+    );
+  }
+
+  render() {
+    const { categoryStore, t } = this.props;
+    const { categories, isLoading, selectedCategory } = categoryStore;
 
     return (
       <Layout
@@ -236,18 +289,25 @@ export default class Categories extends Component {
         <Grid>
           <Section size={3} className={styles.leftPanel}>
             <p className={styles.summary}>
-              {t('全部分类')}({categories.length})
+              {t('All categories')}({categories.length})
             </p>
             {this.renderMenu()}
           </Section>
           <Section size={9} className={styles.rightPanel}>
-            <AppsTable
-              store={appStore}
-              data={apps}
-              isLoading={appStore.isLoading}
-              columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
-              }
-            />
+            <div className={styles.topActions}>
+              <span className={styles.choosen}>{t('Chosen category')}: </span>
+              <span className={styles.name}>{t(selectedCategory.name)}</span>
+              <div className={styles.actions}>
+                <span onClick={() => this.showOperation('edit')}>
+                  {t('Edit')}
+                </span>
+                <span onClick={() => this.showOperation('delete')}>
+                  {t('Delete')}
+                </span>
+              </div>
+            </div>
+            {this.renderContent()}
+            {this.renderModals()}
           </Section>
         </Grid>
       </Layout>
