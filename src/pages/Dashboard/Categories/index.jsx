@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import {
   Input, Popover, Icon, Modal
 } from 'components/Base';
-import Layout, { Dialog, BreadCrumb } from 'components/Layout';
+import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
 import { getScrollTop } from 'utils';
@@ -25,13 +25,11 @@ import styles from './index.scss';
 export default class Categories extends Component {
   async componentDidMount() {
     const { categoryStore, appStore } = this.props;
-
-    window.scroll({ top: 0, behavior: 'auto' });
-    window.onscroll = throttle(this.handleScroll, 200);
-
-    categoryStore.isDetailPage = false;
-    categoryStore.appStore = appStore;
-    await categoryStore.fetchAll({}, categoryStore.appStore);
+    await categoryStore.fetchAll({ noLimit: true });
+    await appStore.fetchAll({
+      noLimit: true,
+      category_id: _.map(categoryStore.categories, cate => cate.category_id)
+    });
   }
 
   componentWillUnmount() {
@@ -41,6 +39,8 @@ export default class Categories extends Component {
     categoryStore.reset();
     appStore.reset();
   }
+
+  handleClickCate = cate => {};
 
   handleScroll = async () => {
     const { categoryStore, appStore } = this.props;
@@ -151,82 +151,78 @@ export default class Categories extends Component {
     );
   };
 
+  filterApps = category_id => {
+    const { apps } = this.props.appStore;
+    return _.filter(apps, app => _.find(app.category_set, { category_id, status: 'enabled' })).length;
+  };
+
+  renderMenu() {
+    const { categoryStore, t } = this.props;
+    const { categories } = categoryStore;
+
+    return (
+      <ul className={styles.cates}>
+        {_.map(categories, ({ name, category_id }) => (
+          <li
+            key={category_id}
+            className={classnames(styles.provider, {
+              // [styles.active]: platform === key
+            })}
+            onClick={() => this.handleClickCate(category_id)}
+          >
+            <Icon name={name} type="dark" />
+            <span className={styles.proName}>{name}</span>
+            <span className={styles.proCount}>
+              {this.filterApps(category_id)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  // renderContent(){
+  //   return (
+  //     <Toolbar
+  //       placeholder={t('Search Categories')}
+  //       searchWord={searchWord}
+  //       onSearch={categoryStore.onSearch}
+  //       onClear={categoryStore.onClearSearch}
+  //       onRefresh={categoryStore.onRefresh}
+  //       withCreateBtn={{ name: t('Create'), onClick: showCreateCategory }}
+  //     />
+  //   )
+  // }
+
   render() {
     const { categoryStore, t } = this.props;
-    const { isLoading, searchWord, showCreateCategory } = categoryStore;
+    const {
+      categories,
+      isLoading,
+      searchWord,
+      showCreateCategory
+    } = categoryStore;
 
-    const categories = categoryStore.categories;
     const defaultCategories = categories.filter(
       cate => cate.category_id !== 'ctg-uncategorized'
     );
     const uncategorized = categories.find(cate => cate.category_id === 'ctg-uncategorized') || {};
 
     return (
-      <Layout isLoading={isLoading}>
-        <BreadCrumb linkPath="Store>Categories" />
-
-        <Toolbar
-          placeholder={t('Search Categories')}
-          searchWord={searchWord}
-          onSearch={categoryStore.onSearch}
-          onClear={categoryStore.onClearSearch}
-          onRefresh={categoryStore.onRefresh}
-          withCreateBtn={{ name: t('Create'), onClick: showCreateCategory }}
-        />
-
-        <div className={styles.categories}>
-          <div className={styles.line}>
-            <div className={styles.word}>
-              {t('Default')} ({defaultCategories.length})
-            </div>
-          </div>
-        </div>
-
-        <div>
-          {defaultCategories.map(data => (
-            <div key={data.category_id} className={styles.categoryContent}>
-              <CategoryCard
-                id={data.category_id}
-                title={data.name}
-                idNo={data.idNo}
-                description={data.description}
-                apps={data.apps}
-                total={data.total}
-              />
-              <div className={styles.handlePop}>
-                <Popover content={this.renderHandleMenu(data)}>
-                  <Icon name="more" />
-                </Popover>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className={styles.categories}>
-          <div className={styles.line}>
-            <div className={styles.word}>{t('Uncategories')}</div>
-          </div>
-        </div>
-
-        {uncategorized.category_id && (
-          <div
-            className={classnames(styles.categoryContent, styles.unCategorized)}
-          >
-            <div className={styles.rectangle}>
-              <div className={styles.title} title={uncategorized.name}>
-                <Link to={`/dashboard/category/${uncategorized.category_id}`}>
-                  {t(uncategorized.name)}
-                </Link>
-              </div>
-              <AppImages
-                apps={uncategorized.apps}
-                total={uncategorized.total}
-              />
-            </div>
-          </div>
-        )}
-        {this.renderOpsModal()}
-        {this.renderDeleteModal()}
+      <Layout
+        isLoading={isLoading}
+        pageTitle="App category"
+        className={styles.page}
+      >
+        <Grid>
+          <Section size={3} className={styles.leftPanel}>
+            <p className={styles.summary}>
+              {t('全部分类')}({categories.length})
+            </p>
+            {this.renderMenu()}
+          </Section>
+          <Section size={9} className={styles.rightPanel} />
+        </Grid>
       </Layout>
     );
   }

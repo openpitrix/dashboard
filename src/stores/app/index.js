@@ -12,6 +12,8 @@ const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
 
 export default class AppStore extends Store {
+  sortKey = 'status_time';
+
   @observable apps = [];
 
   @observable homeApps = [];
@@ -158,33 +160,23 @@ export default class AppStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    const defaultParams = {
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
-    };
+    params = this.normalizeParams(params);
 
-    if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
-      delete params.noLimit;
-    }
     if (params.app_id) {
-      delete defaultParams.status;
+      delete params.status;
     }
 
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
     if (this.categoryId) {
-      defaultParams.category_id = this.categoryId;
+      params.category_id = this.categoryId;
     }
     if (this.repoId) {
-      defaultParams.repo_id = this.repoId;
+      params.repo_id = this.repoId;
     }
     if (this.userId) {
-      defaultParams.owner = this.userId;
+      params.owner = this.userId;
     }
 
     if (!params.noLoading) {
@@ -194,11 +186,7 @@ export default class AppStore extends Store {
       delete params.noLoading;
     }
 
-    const result = await this.request.get(
-      'apps',
-      assign(defaultParams, params)
-    );
-
+    const result = await this.request.get('apps', params);
     const apps = get(result, 'app_set', []);
     if (params.loadMore) {
       this.apps = _.concat(this.apps.slice(), apps);
@@ -220,7 +208,7 @@ export default class AppStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    // this.isLoading = true;
+    this.isLoading = true;
     const result = await this.request.get('apps/statistics');
     this.summaryInfo = {
       name: 'Apps',
@@ -234,7 +222,7 @@ export default class AppStore extends Store {
       appCount: get(result, 'app_count', 0),
       repoCount: get(result, 'repo_count', 0)
     };
-    // this.isLoading = false;
+    this.isLoading = false;
   };
 
   @action

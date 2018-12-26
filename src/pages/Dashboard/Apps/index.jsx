@@ -2,23 +2,16 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { get, orderBy } from 'lodash';
+import _, { get, orderBy } from 'lodash';
 
 import {
-  Icon,
-  Button,
-  Table,
-  Popover,
-  Select,
-  Modal,
-  Image
+  Button, Select, Modal, Image
 } from 'components/Base';
-import Layout, { Dialog, Card } from 'components/Layout';
+import Layout, { Dialog } from 'components/Layout';
+import AppsTable from 'components/AppsTable';
 import Toolbar from 'components/Toolbar';
-import TdName, { ProviderName } from 'components/TdName';
-import TitleSearch from 'components/TitleSearch';
 import Loading from 'components/Loading';
-import { getObjName, mappingStatus } from 'utils';
+import { sleep } from 'utils';
 
 import styles from './index.scss';
 
@@ -39,9 +32,11 @@ export default class Apps extends Component {
     } = this.props;
     const { isAdmin } = user;
 
+    // preset default status
+    appStore.defaultStatus = ['active'];
     await appStore.fetchAll();
+
     if (isAdmin) {
-      await appStore.fetchStatistics();
       await userStore.fetchAll({ noLimit: true });
     }
     await repoStore.fetchAll({
@@ -54,6 +49,7 @@ export default class Apps extends Component {
   componentWillUnmount() {
     const { appStore } = this.props;
     appStore.reset();
+    appStore.defaultStatus = '';
   }
 
   onChangeSort = (params = {}) => {
@@ -62,16 +58,14 @@ export default class Apps extends Component {
     appStore.apps = orderBy(appStore.apps, params.sort_key, order);
   };
 
-  changeView = type => {
+  changeView = async type => {
     const { appStore } = this.props;
 
     if (appStore.viewType !== type) {
       appStore.isLoading = true;
       appStore.viewType = type;
-      // mimic loading
-      setTimeout(() => {
-        appStore.isLoading = false;
-      }, 200);
+      await sleep(300);
+      appStore.isLoading = false;
     }
   };
 
@@ -173,16 +167,16 @@ export default class Apps extends Component {
       onClearSearch,
       onRefresh,
       showDeleteApp,
-      appIds,
+      selectIds,
       viewType
     } = this.props.appStore;
 
-    if (appIds.length) {
+    if (selectIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           <Button
             type="delete"
-            onClick={() => showDeleteApp(appIds)}
+            onClick={() => showDeleteApp(selectIds)}
             className="btn-handle"
           >
             {t('Delete')}
@@ -236,94 +230,45 @@ export default class Apps extends Component {
 
   render() {
     const {
-      appStore, repoStore, userStore, t
+      appStore, userStore, user, t
     } = this.props;
-    const { apps, isLoading } = appStore;
-    const { repos } = repoStore;
+    const {
+      apps,
+      isLoading,
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh
+    } = appStore;
     const { users } = userStore;
-
-    const columns = [
-      {
-        title: t('App Name'),
-        key: 'name',
-        width: '150px',
-        render: item => (
-          <TdName
-            name={item.name}
-            description={item.app_id}
-            image={item.icon}
-            linkUrl={`/dashboard/app/${item.app_id}`}
-          />
-        )
-      },
-      {
-        title: t('应用介绍'),
-        key: 'latest_version',
-        width: '160px',
-        render: item => item.abstraction
-      },
-      {
-        title: t('Categories'),
-        key: 'category',
-        width: '100px',
-        render: item => t(
-          get(item, 'category_set', [])
-            .filter(cate => cate.category_id && cate.status === 'enabled')
-            .map(cate => cate.name)
-            .join(', ')
-        )
-      },
-      {
-        title: t('交付类型'),
-        key: 'app_version_types',
-        width: '80px',
-        render: item => item.app_version_types
-      },
-      {
-        title: t('部署总次数'),
-        key: 'deploy_total',
-        width: '60px',
-        render: item => item.deploy_total || 0
-      },
-      {
-        title: t('Developer'),
-        key: 'owner',
-        width: '60px',
-        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
-      },
-      {
-        title: t('上架时间'),
-        key: 'status_time',
-        width: '102px',
-        render: item => item.status_time
-      }
-    ];
-
-    const pagination = {
-      tableType: 'Apps',
-      onChange: appStore.changePagination,
-      total: appStore.totalCount,
-      current: appStore.currentPage,
-      noCancel: false
+    const { isAdmin } = user;
+    const urlPrefix = isAdmin ? '/store/' : '/dashboard/versions/';
+    const columnsFilter = columns => {
+      const excludeKeys = isAdmin ? 'owner' : 'maintainers';
+      return columns.filter(item => item.key !== excludeKeys);
     };
 
-    const { searchWord, onSearch, onClearSearch } = appStore;
-
     return (
-      <Layout>
-        <TitleSearch
-          title={t('All Apps')}
-          placeholder={t('Search App')}
+      <Layout pageTitle={t('All Apps')}>
+        <Toolbar
+          placeholder={t('Search App Name or ID')}
           searchWord={searchWord}
           onSearch={onSearch}
           onClear={onClearSearch}
+          onRefresh={onRefresh}
         />
 
-        <Table
-          columns={columns}
-          dataSource={apps.slice(0, 10)}
-          pagination={pagination}
+        <AppsTable
           isLoading={isLoading}
+          store={appStore}
+          data={apps}
+          columnsFilter={columnsFilter}
+          inject={{
+            users,
+            isAdmin,
+            urlPrefix,
+            onChangeSort: this.onChangeSort
+          }}
         />
 
         {this.renderOpsModal()}

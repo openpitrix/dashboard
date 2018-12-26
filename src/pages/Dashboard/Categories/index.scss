@@ -8,6 +8,51 @@
   color: $N500;
 }
 
+.page {
+  .leftPanel {
+
+  }
+  .rightPanel {
+
+  }
+  .cates {
+    border-right: 1px solid $N10;
+    .provider {
+      height: 40px;
+      padding-left: 12px;
+      cursor: pointer;
+
+      &.active, &:hover {
+        box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+        background-color: $N0;
+      }
+      &.disabled {
+        opacity: 0.5;
+        cursor: default;
+        box-shadow: none;
+        background-color: transparent;
+      }
+
+      span {
+        display: inline-block;
+        padding: 12px 0 !important;
+        vertical-align: middle;
+
+        &.proName {
+          font-size: $size-small;
+          margin-left: 8px;
+        }
+        &.proCount {
+          font-size: $size-small;
+          float: right;
+          margin-right: 23px;
+        }
+      }
+    }
+  }
+}
+
+
 .categories{
   text-align: center;
   padding: 12px 24px;

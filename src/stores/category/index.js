@@ -26,52 +26,48 @@ export default class CategoryStore extends Store {
 
   initLoadNumber = 6;
 
-  @observable appStore = null;
-
   @observable searchWord = '';
 
+  get appStore() {
+    return this.getStore('appStore');
+  }
+
   @action
-  fetchAll = async (params = {}, appStore) => {
-    const defaultParams = {
-      limit: this.maxLimit,
-      offset: 0
-    };
+  fetchAll = async (params = {}) => {
+    params = this.normalizeParams(params);
 
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
 
     this.isLoading = true;
-    const result = await this.request.get(
-      'categories',
-      assign(defaultParams, params)
-    );
+    const result = await this.request.get('categories', params);
     this.categories = get(result, 'category_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
-    if (appStore) {
-      for (
-        let i = 0;
-        i < this.initLoadNumber && i < this.categories.length;
-        i++
-      ) {
-        await appStore.fetchAll({
-          category_id: this.categories[i].category_id
-        });
-        this.categories[i] = {
-          total: appStore.totalCount,
-          apps: appStore.apps,
-          ...this.categories[i]
-        };
-      }
-    }
+    // if (appStore) {
+    //   for (
+    //     let i = 0;
+    //     i < this.initLoadNumber && i < this.categories.length;
+    //     i++
+    //   ) {
+    //     await appStore.fetchAll({
+    //       category_id: this.categories[i].category_id
+    //     });
+    //     this.categories[i] = {
+    //       total: appStore.totalCount,
+    //       apps: appStore.apps,
+    //       ...this.categories[i]
+    //     };
+    //   }
+    // }
     this.isLoading = false;
   };
 
   @action
   onSearch = async word => {
     this.searchWord = word;
-    await this.fetchAll({}, this.appStore);
+    // await this.fetchAll({}, this.appStore);
   };
 
   @action
@@ -81,7 +77,7 @@ export default class CategoryStore extends Store {
 
   @action
   onRefresh = async () => {
-    await this.fetchAll({}, this.appStore);
+    // await this.fetchAll({}, this.appStore);
   };
 
   @action

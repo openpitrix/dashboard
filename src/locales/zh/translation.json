@@ -270,8 +270,8 @@
   "All Apps": "全部应用",
   "App Reviews": "应用审核",
   "All Clusters": "所有集群",
-  "Categroies": "分类",
-  "Appearance": "外观",
+  "App Category": "应用分类",
+  "Store Appearance": "商店外观",
   "Tickets": "优惠卷",
   "Notifications": "通知",
   "Service Status": "服务状态",
@@ -511,5 +511,11 @@
   "App / Delivery type / Version": "所属应用、交付方式、版本",
 
   "Reviewed": "已审核",
-  "Unreviewed": "未审核"
+  "Unreviewed": "未审核",
+
+  "App intro": "应用介绍",
+  "Delivery type": "交付类型",
+  "Count deploy": "部署总次数",
+  "Publish time": "上架时间",
+  "Search App Name or ID": "搜索应用名称或ID"
 }
