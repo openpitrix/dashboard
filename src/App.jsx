@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import { Provider } from 'mobx-react';
 import { withRouter } from 'react-router';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter, Switch, Route, Redirect
+} from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import LazyLoad from 'components/LazyLoad';
@@ -36,9 +38,8 @@ class App extends React.Component {
 
     // todo
     // add noHeaderPath for user apply provider from page no need header
-    const hasHeader =
-      !noHeaderPath.includes(route.path) &&
-      (user.isNormal || !user.accessToken || user.role === 'user');
+    const hasHeader = !noHeaderPath.includes(route.path)
+      && (user.isNormal || !user.accessToken || user.role === 'user');
 
     if (route.noMatch) {
       return <Redirect to="/" />;
@@ -66,7 +67,9 @@ class App extends React.Component {
   }
 
   render() {
-    const { routes, store, sock, i18n } = this.props;
+    const {
+      routes, store, sock, i18n
+    } = this.props;
 
     return (
       <I18nextProvider i18n={i18n}>
@@ -80,8 +83,7 @@ class App extends React.Component {
                       key={i}
                       exact={route.exact}
                       path={route.path}
-                      render={({ match }) =>
-                        this.renderRoute(match, route, store)
+                      render={({ match }) => this.renderRoute(match, route, store)
                       }
                     />
                   ))}

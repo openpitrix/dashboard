@@ -40,7 +40,9 @@ export default class Applications extends Component {
   }
 
   renderMessageDialog = () => {
-    const { vendorStore, user, match, t } = this.props;
+    const {
+      vendorStore, user, match, t
+    } = this.props;
     const { providerId } = match.params;
     const {
       isMessageOpen,
@@ -73,7 +75,9 @@ export default class Applications extends Component {
   };
 
   renderStatusInfo() {
-    const { vendorStore, user, match, t } = this.props;
+    const {
+      vendorStore, user, match, t
+    } = this.props;
     const { providerId } = match.params;
     const { isISV } = user;
     const { vendorDetail, applyPass, applyRejectShow } = vendorStore;

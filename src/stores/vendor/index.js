@@ -191,8 +191,7 @@ export default class VendorStore extends Store {
   @action
   changeApplyPagination = async page => {
     this.currentPage = page;
-    const status =
-      this.activeType === 'unreviewed' ? ['submitted'] : ['rejected', 'passed'];
+    const status = this.activeType === 'unreviewed' ? ['submitted'] : ['rejected', 'passed'];
     await this.fetchAll({ status });
   };
 

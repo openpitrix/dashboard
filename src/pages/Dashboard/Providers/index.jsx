@@ -77,7 +77,9 @@ export default class Providers extends Component {
       }
     ];
 
-    const { vendors, searchWord, onSearch, onClearSearch } = vendorStore;
+    const {
+      vendors, searchWord, onSearch, onClearSearch
+    } = vendorStore;
 
     const pagination = {
       tableType: 'Apps',
