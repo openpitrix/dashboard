@@ -466,6 +466,7 @@ export default class AppVersionStore extends Store {
 
     this.versions = [];
     this.currentVersion = {};
+    this.packageName = '';
   };
 
   @action

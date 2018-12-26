@@ -1,0 +1,27 @@
+@import '~scss/vars';
+
+.appStatistics {
+  padding: 32px 0  32px 50px;
+  height: 104px;
+
+  dl {
+    float: left;
+    display: inline-block;
+    width: 25%;
+
+    dt {
+      @include note-font($line-height: 12px);
+      margin-bottom: 12px;
+    }
+
+    dd {
+      line-height: 16px;
+      font-size: 18px;
+    }
+
+    .yellow svg {
+      --primary-color: #{$Y75};
+      --secondary-color: #{$Y75};
+    }
+  }
+}

@@ -1,340 +1,90 @@
 @import '~scss/vars';
 
-.appDetail {
-  min-width: 950px !important;
-}
+.appBase {
+  .title {
+    margin: 0 -24px 24px;
+    padding: 0 24px 24px;
+    border-bottom: 1px solid $N10;
 
-.appInfo {
-  position: relative;
+    .number {
+      @include note-font;
+      margin-bottom: 8px;
+    }
 
-  .operation {
-    position: absolute;
-    top: 34px;
-    right: 32px;
+    .name {
+      @include title-font;
+      margin-bottom: 24px;
+    }
 
-    :global {
-      .pi-popover-popper {
-        margin-right: 60px;
-      }
+    .image {
+      display: inline-block;
+      margin-right: 12px;
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+    }
+
+    .appName {
+      @include title-font($line-height: 48px, $font-size: 16px);
     }
   }
-}
+  .info {
+    dl {
+      margin-bottom: 20px;
 
-.appVersion {
-  background-color: $N0;
-  @include bg-panel();
-
-  .rightInfo {
-    width: calc((#{$grid-width} + #{$grid-gap}) * 8);
-    border-left: 1px solid $N10;
-  }
-
-  .noShadow {
-    box-shadow: none;
-  }
-}
-
-.addVersion {
-  padding: 0 10px;
-  line-height: 40px;
-  font-size: 14px;
-  color: $P75;
-  cursor: pointer;
-}
-
-.versionInfo {
-  padding: 24px 24px 48px;
-
-  dl {
-    margin-bottom: 24px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
 
     dt {
-      display: inline-block;
-      //width: 264px;
-      width: calc(35% - 12px);
-      margin-top: 8px;
-      margin-right: 24px;
-      font-size: 14px;
-      line-height: 16px;
-      font-weight: 500;
-      color: $N500;
+      @include note-font;
     }
 
     dd {
-      display: inline-block;
-      //width: 430px;
-      width: calc(65% - 12px);
-      vertical-align: top;
+      @include normal-font($line-height: 20px, $font-size: 12px);
 
-      &.message {
-        margin-top: 8px;
-      }
-
-      button {
-        margin-right: 12px;
-      }
-    }
-  }
-
-  .fileName {
-    display: inline-block;
-    box-sizing: border-box;
-    margin-bottom: 8px;
-    width: 400px;
-    height: 80px;
-    padding: 24px 32px;
-    font-size: 14px;
-    line-height: 32px;
-    color: $N300;
-    border-radius: 2px;
-    background-color: $N0;
-    border: solid 1px $N30;
-
-    :global {
-      .icon {
-        float: left;
+      > label {
+        display: inline-block;
         margin-right: 8px;
       }
     }
 
-    .name {
-      display: inline-block;
-      width: 240px;
-      @include textCut;
-    }
-
-    .delete {
-      float: right;
-      color: $P75;
-      cursor: pointer;
-    }
-  }
-
-  .disabledFile{
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  .viewGuide {
-    display: inline-block;
-    line-height: 20px;
-    font-size: 12px;
-
     .link {
-      color: $P75;
-      cursor: pointer;
-    }
-  }
-
-  .note {
-    margin-top: 8px;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 20px;
-    color: $N100;
-  }
-
-  .input {
-    width: 256px;
-  }
-
-  .textarea {
-    width: 400px;
-    height: 88px;
-    padding: 7px 10px;
-    border-radius: 2px;
-    border: 1px solid $N30;
-    outline: none;
-    resize: none;
-  }
-}
-
-@mixin load-frames() {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes load {
-  @include load-frames;
-}
-@keyframes load {
-  @include load-frames;
-}
-
-.createVersion {
-  //margin-bottom: 150px;
-
-  .upload {
-    position: relative;
-    display: inline-block;
-    box-sizing: border-box;
-    margin-bottom: 8px;
-    width: 552px;
-    height: 120px;
-    padding: 36px 24px 36px 100px;
-    border-radius: 2px;
-    background-color: $N0;
-    border: dashed 1px $N30;
-    text-align: left;
-    cursor: pointer;
-
-    .word {
-      margin-bottom: 4px;
-      font-size: 14px;
-      line-height: 24px;
-      color: $N300;
-    }
-
-    .note {
+      display: inline-block;
+      margin-bottom: 12px;
       font-size: 12px;
-      line-height: 20px;
-      color: $N100;
-    }
-
-    :global {
-      .icon {
-        float: left;
-        margin-right: 12px;
-      }
-    }
-  }
-
-  .uploading {
-    opacity: 0.3;
-    cursor: not-allowed;
-    .loading {
-      position: absolute;
-      top: 28px;
-      left: 244px;
-      z-index: 2;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      &:after {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-      }
-      border-top: 2px solid $P300;
-      border-right: 2px solid $P300;
-      border-bottom: 2px solid $P10;
-      border-left: 2px solid $P10;
-      animation: load 1s infinite linear;
-      opacity: 3.33;
-    }
-  }
-
-  .errorNote {
-    display: inline-block;
-    position: relative;
-    box-sizing: border-box;
-    width: 552px;
-    //height: 40px;
-    padding: 7px 15px 7px 44px;
-    font-size: 14px;
-    line-height: 24px;
-    color: $R300;
-    border-radius: 2px;
-    background-color: $R10;
-    box-shadow: 0 2px 4px 0 rgba(178, 42, 38, 0.1);
-    border: solid 1px $R45;
-    text-align: left;
-
-    :global {
-      .icon {
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        transform: translateY(-50%);
-
-        svg {
-          --primary-color: #{$N0};
-          --secondary-color: #{$R300};
-        }
-      }
-    }
-  }
-
-  .editError {
-    width: 400px;
-  }
-
-  .editFile{
-    width: 400px;
-    height: auto;
-    padding: 24px 12px 24px 30px;
-  }
-
-  .checkImg {
-    margin: 48px 0 40px;
-    > label {
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background-color: $G300;
-      :global {
-        svg {
-          --primary-color: #{$N0};
-          --secondary-color: #{$N0};
-        }
-      }
-    }
-  }
-
-  .operateBtn {
-    margin-bottom: 12px;
-    button {
-      margin: 0 6px;
-    }
-  }
-
-  .operateWord {
-    margin-bottom: 16px;
-    font-size: 12px;
-    line-height: 20px;
-    color: $N100;
-    .link {
-      color: $P75;
-      cursor: pointer;
     }
   }
 }
 
-.tipsContent {
-  padding: 24px;
-  text-align: center;
-  .icon {
-    display: inline-block;
-    margin-bottom: 12px;
-    width: 48px;
-    height: 48px;
-    background-color: $G300;
-    border-radius: 50%;
-    :global {
-      .icon svg {
-        --primary-color: #{$N0};
-        --secondary-color: #{$N0};
+.versionName {
+  @include normal-font($line-height: 20px, $font-size: 12px);
+
+  .type {
+    color: $N75;
+  }
+}
+
+.searchOuter {
+  .total {
+    @include note-font;
+  }
+
+  .search {
+    margin: 12px 0;
+    width: 256px;
+
+    input {
+      border-color: $N0;
+
+      &:hover {
+        border-color: $N10;
+      }
+
+      &:focus {
+        border-color: $P75;
       }
     }
-  }
-  .note {
-    margin-bottom: 12px;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 28px;
-    color: $N500;
-  }
-  .explain {
-    padding: 0 24px;
-    line-height: 24px;
-    text-align: center;
-    color: $N300;
   }
 }

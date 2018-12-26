@@ -23,10 +23,12 @@ import styles from './index.scss';
 export default class Versions extends Component {
   async componentDidMount() {
     const { appVersionStore, appStore, match } = this.props;
-    const { appId } = match.params;
+    const appId = _.get(match, 'params.appId', '');
 
-    await appStore.fetch(appId);
-    await appVersionStore.fetchTypeVersions(appId);
+    if (appId) {
+      await appStore.fetch(appId);
+      await appVersionStore.fetchTypeVersions(appId);
+    }
   }
 
   componentWillUnmount() {
@@ -39,8 +41,8 @@ export default class Versions extends Component {
   }
 
   renderTypes(types) {
-    const { match, t } = this.props;
-    const { appId } = match.params;
+    const { appStore, t } = this.props;
+    const { appDetail } = appStore;
     // get not added types
     const notAddedTypes = versionTypes.filter(
       item => !types.includes(item.value)
@@ -49,7 +51,12 @@ export default class Versions extends Component {
     return (
       <div>
         {notAddedTypes.map(item => (
-          <div key={item.value} className={styles.notAddedType}>
+          <div
+            key={item.value}
+            className={classnames(styles.notAddedType, {
+              [styles.disableType]: item.disable
+            })}
+          >
             <Icon
               name={item.icon}
               size={48}
@@ -59,7 +66,9 @@ export default class Versions extends Component {
             <div className={styles.name}>{t(item.name)}</div>
             <div className={styles.description}>{t(item.intro)}</div>
             <Link
-              to={`/dashboard/app/${appId}/create-version?type=${item.value}`}
+              to={`/dashboard/app/${appDetail.app_id}/create-version?type=${
+                item.value
+              }`}
             >
               <Button className={styles.button} type="primary">
                 <Icon name="add" type="white" className={styles.addIcon} />
@@ -73,8 +82,8 @@ export default class Versions extends Component {
   }
 
   renderHistoryVersions(typeVersion) {
-    const { match, t } = this.props;
-    const { appId } = match.params;
+    const { appStore, t } = this.props;
+    const { appDetail } = appStore;
     const versions = typeVersion.versions || [];
     const historyVersions = versions.filter(
       item => item.status === 'suspended'
@@ -104,7 +113,11 @@ export default class Versions extends Component {
           <ul className={styles.historyVersion}>
             {historyVersions.map(item => (
               <li key={item.version_id}>
-                <Link to={`/dashboard/app/${appId}/version/${item.version_id}`}>
+                <Link
+                  to={`/dashboard/app/${appDetail.app_id}/version/${
+                    item.version_id
+                  }`}
+                >
                   <Status
                     type={item.status}
                     name={item.name}
@@ -127,8 +140,8 @@ export default class Versions extends Component {
   }
 
   renderActiveVersions(typeVersion) {
-    const { match, t } = this.props;
-    const { appId } = match.params;
+    const { appStore, t } = this.props;
+    const { appDetail } = appStore;
     const versions = typeVersion.versions || [];
     const activeVersions = versions.filter(
       item => item.status !== 'suspended' && item.status !== 'deleted'
@@ -144,7 +157,9 @@ export default class Versions extends Component {
             <Link
               key={item.version_id}
               className={classnames(styles.version, [styles[item.status]])}
-              to={`/dashboard/app/${appId}/version/${item.version_id}`}
+              to={`/dashboard/app/${appDetail.app_id}/version/${
+                item.version_id
+              }`}
             >
               <Status
                 type={item.status}
@@ -161,10 +176,28 @@ export default class Versions extends Component {
   }
 
   render() {
-    const { appVersionStore, match, t } = this.props;
+    const {
+      appVersionStore, appStore, match, t
+    } = this.props;
     const { typeVersions } = appVersionStore;
-    const { appId } = match.params;
+    const { appDetail } = appStore;
     const types = typeVersions.map(item => item.type);
+
+    // this judge for app detail page online versions tab show
+    if (!match) {
+      return (
+        <div className={classnames(styles.versions, styles.showVersions)}>
+          {typeVersions.map(item => (
+            <div key={item.type} className={styles.addedVersion}>
+              <div className={styles.title}>
+                {(_.find(versionTypes, { value: item.type }) || {}).name}
+              </div>
+              {this.renderActiveVersions(item)}
+            </div>
+          ))}
+        </div>
+      );
+    }
 
     return (
       <Layout
@@ -182,7 +215,9 @@ export default class Versions extends Component {
             <div className={styles.title}>
               {(_.find(versionTypes, { value: item.type }) || {}).name}
               <Link
-                to={`/dashboard/app/${appId}/create-version?type=${item.type}`}
+                to={`/dashboard/app/${appDetail.app_id}/create-version?type=${
+                  item.type
+                }`}
               >
                 <Button className={styles.button} type="default">
                   <Icon name="add" type="dark" className={styles.addIcon} />
