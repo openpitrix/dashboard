@@ -42,6 +42,7 @@ export default class Tree extends Component {
       checkable,
       hoverLine,
       sameHeight,
+      switcherIcon,
       ...resetProps
     } = this.props;
     return (
@@ -55,7 +56,7 @@ export default class Tree extends Component {
           className
         )}
         checkable={checkable ? <span className="checkbox-inner" /> : checkable}
-        switcherIcon={this.renderSwitcherIcon}
+        switcherIcon={switcherIcon || this.renderSwitcherIcon}
         {...resetProps}
       />
     );

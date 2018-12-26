@@ -23,4 +23,9 @@
   ul ul li {
     display: inline-block;
   }
+  :global {
+    ul ul.rc-tree-child-tree-open {
+      display: inline-block;
+    }
+  }
 }

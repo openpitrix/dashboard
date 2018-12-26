@@ -15,7 +15,9 @@ import {
   Icon,
   Popover
 } from 'components/Base';
-import Layout, { Grid, Section, Panel, Card, Dialog } from 'components/Layout';
+import Layout, {
+  Grid, Section, Panel, Card, Dialog
+} from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
@@ -163,7 +165,9 @@ export default class Users extends Component {
 
   renderOperateModal = () => {
     const { userStore, t } = this.props;
-    const { userDetail, operateType, changeUser, changeUserRole } = userStore;
+    const {
+      userDetail, operateType, changeUser, changeUserRole
+    } = userStore;
 
     if (operateType === 'set_role') {
       return this.renderSetRole();
@@ -318,7 +322,9 @@ export default class Users extends Component {
 
   render() {
     const { userStore, t } = this.props;
-    const { selectValue, selectName, orgName, onSelectOrg } = userStore;
+    const {
+      selectValue, selectName, orgName, onSelectOrg
+    } = userStore;
 
     const data = toJS(userStore.users);
 
