@@ -1,5 +1,16 @@
 @import '~scss/vars';
 
+@keyframes treeCheckboxEffect {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
 .tree {
   :global {
     font-size: 12px;
@@ -70,6 +81,81 @@
     .rc-tree-title {
       position: relative;
       z-index: 1;
+    }
+  }
+}
+
+.tree {
+  :global {
+    li span.rc-tree-checkbox {
+      background-image: none;
+      margin: 4px 4px 0 2px;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      width: auto;
+      height: auto;
+    }
+    .rc-tree-checkbox-checked {
+      &:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 2px;
+        border: 1px solid $P75;
+        content: '';
+        animation: treeCheckboxEffect .36s ease-in-out;
+        animation-fill-mode: both;
+        visibility: hidden;
+      }
+
+      .checkbox-inner {
+        background-color: $P75;
+        border-color: $P75;
+        &:after {
+          transform: rotate(45deg) scale(1);
+          position: absolute;
+          display: table;
+          border: 2px solid $N0;
+          border-top: 0;
+          border-left: 0;
+          content: ' ';
+          transition: all .2s cubic-bezier(.12, .4, .29, 1.46) .1s;
+          opacity: 1;        }
+      }
+    }
+    .checkbox-inner {
+      position: relative;
+      top: 0;
+      left: 0;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid $P75;
+      border-radius: 2px;
+      background-color: $N0;
+      transition: all .3s;
+      border-collapse: separate;
+      &:after {
+        transform: rotate(45deg) scale(0);
+        position: absolute;
+        display: table;
+        left: 4.57142857px;
+        top: 1.14285714px;
+        width: 5.71428571px;
+        height: 9.14285714px;
+        border: 2px solid $N0;
+        border-top: 0;
+        border-left: 0;
+        content: ' ';
+        transition: all .1s cubic-bezier(.71, -0.46, .88, .6),opacity .1s;
+        opacity: 0;
+      }
+    }
+    *, *:before, *:after {
+      box-sizing: border-box;
     }
   }
 }

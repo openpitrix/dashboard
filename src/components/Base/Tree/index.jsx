@@ -12,6 +12,7 @@ import styles from './index.scss';
 
 export default class Tree extends Component {
   static propTypes = {
+    checkable: PropTypes.bool,
     onSelect: PropTypes.func,
     sameHeight: PropTypes.bool,
     showIcon: PropTypes.bool,
@@ -20,6 +21,7 @@ export default class Tree extends Component {
   };
 
   static defaultProps = {
+    checkable: false,
     sameHeight: false,
     showIcon: false,
     showLine: false,
@@ -36,7 +38,11 @@ export default class Tree extends Component {
 
   render() {
     const {
-      className, hoverLine, sameHeight, ...resetProps
+      className,
+      checkable,
+      hoverLine,
+      sameHeight,
+      ...resetProps
     } = this.props;
     return (
       <RcTree
@@ -48,6 +54,7 @@ export default class Tree extends Component {
           },
           className
         )}
+        checkable={checkable ? <span className="checkbox-inner" /> : checkable}
         switcherIcon={this.renderSwitcherIcon}
         {...resetProps}
       />
