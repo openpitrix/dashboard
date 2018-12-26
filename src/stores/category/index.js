@@ -28,9 +28,16 @@ export default class CategoryStore extends Store {
 
   @observable searchWord = '';
 
+  @observable selectedCategory = '';
+
   get appStore() {
     return this.getStore('appStore');
   }
+
+  @action
+  setCategory = cate_id => {
+    this.selectedCategory = cate_id;
+  };
 
   @action
   fetchAll = async (params = {}) => {

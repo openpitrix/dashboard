@@ -517,5 +517,6 @@
   "Delivery type": "交付类型",
   "Count deploy": "部署总次数",
   "Publish time": "上架时间",
-  "Search App Name or ID": "搜索应用名称或ID"
+  "Search App Name or ID": "搜索应用名称或ID",
+  "unknown": "未知"
 }

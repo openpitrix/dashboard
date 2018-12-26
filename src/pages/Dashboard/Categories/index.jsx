@@ -6,12 +6,13 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import {
-  Input, Popover, Icon, Modal
+  Input, Popover, Icon, Modal, Button
 } from 'components/Base';
 import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import AppImages from 'components/AppImages';
 import Toolbar from 'components/Toolbar';
 import { getScrollTop } from 'utils';
+import AppsTable from 'components/AppsTable';
 import CategoryCard from './CategoryCard';
 
 import styles from './index.scss';
@@ -39,8 +40,6 @@ export default class Categories extends Component {
     categoryStore.reset();
     appStore.reset();
   }
-
-  handleClickCate = cate => {};
 
   handleScroll = async () => {
     const { categoryStore, appStore } = this.props;
@@ -158,25 +157,41 @@ export default class Categories extends Component {
 
   renderMenu() {
     const { categoryStore, t } = this.props;
-    const { categories } = categoryStore;
+    const { categories, selectedCategory, setCategory } = categoryStore;
+
+    const defaultCategories = categories.filter(
+      cate => cate.category_id !== 'ctg-uncategorized'
+    );
+    const uncategorized = categories.filter(
+      cate => cate.category_id === 'ctg-uncategorized'
+    );
 
     return (
       <ul className={styles.cates}>
-        {_.map(categories, ({ name, category_id }) => (
-          <li
-            key={category_id}
-            className={classnames(styles.provider, {
-              // [styles.active]: platform === key
-            })}
-            onClick={() => this.handleClickCate(category_id)}
-          >
-            <Icon name={name} type="dark" />
-            <span className={styles.proName}>{name}</span>
-            <span className={styles.proCount}>
-              {this.filterApps(category_id)}
-            </span>
-          </li>
-        ))}
+        {_.map(
+          defaultCategories.concat(uncategorized),
+          ({ name, category_id }) => (
+            <li
+              key={category_id}
+              className={classnames(styles.item, {
+                [styles.active]: selectedCategory === category_id
+              })}
+              onClick={() => setCategory(category_id)}
+            >
+              <Icon name={name} type="dark" />
+              <span className={styles.proName}>{name}</span>
+              <span className={styles.proCount}>
+                {this.filterApps(category_id)}
+              </span>
+            </li>
+          )
+        )}
+        <p>
+          <span className={styles.btnAdd}>
+            <Icon name="add" type="dark" />
+            {t('自定义')}
+          </span>
+        </p>
       </ul>
     );
   }
@@ -195,7 +210,7 @@ export default class Categories extends Component {
   // }
 
   render() {
-    const { categoryStore, t } = this.props;
+    const { categoryStore, appStore, t } = this.props;
     const {
       categories,
       isLoading,
@@ -203,10 +218,14 @@ export default class Categories extends Component {
       showCreateCategory
     } = categoryStore;
 
-    const defaultCategories = categories.filter(
-      cate => cate.category_id !== 'ctg-uncategorized'
-    );
-    const uncategorized = categories.find(cate => cate.category_id === 'ctg-uncategorized') || {};
+    const { apps } = appStore;
+    const displayCols = [
+      'name',
+      'delivery_type',
+      'cnt_deploy',
+      'maintainers',
+      'status_time'
+    ];
 
     return (
       <Layout
@@ -221,7 +240,15 @@ export default class Categories extends Component {
             </p>
             {this.renderMenu()}
           </Section>
-          <Section size={9} className={styles.rightPanel} />
+          <Section size={9} className={styles.rightPanel}>
+            <AppsTable
+              store={appStore}
+              data={apps}
+              isLoading={appStore.isLoading}
+              columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
+              }
+            />
+          </Section>
         </Grid>
       </Layout>
     );
