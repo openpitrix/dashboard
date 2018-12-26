@@ -12,9 +12,7 @@ import MenuLayer from 'components/MenuLayer';
 
 import routes, { toRoute } from 'routes';
 
-import {
-  subNavMap, getNavs, getDevSubNavs, getBottomNavs
-} from './navMap';
+import { subNavMap, getNavs, getDevSubNavs, getBottomNavs } from './navMap';
 
 import styles from './index.scss';
 
@@ -205,7 +203,7 @@ export class SideNav extends React.Component {
                   <label className={styles.title}>{t(nav.title)}</label>
                 </Popover>
               </li>
-          ) : (
+            ) : (
               <li key={nav.iconName}>
                 <Icon
                   className={styles.icon}
@@ -217,16 +215,15 @@ export class SideNav extends React.Component {
                   <label className={styles.title}>{t(nav.title)}</label>
                 </Link>
               </li>
-          ))
+            )
+          )
         )}
       </ul>
     );
   }
 
   renderNavsDev() {
-    const {
-      appStore, history, user, t
-    } = this.props;
+    const { appStore, history, user, t } = this.props;
     const { pathname } = history.location;
     const { menuApps } = appStore;
     const hasBack = user.isISV && user.isDevPortal;
@@ -326,8 +323,9 @@ export class SideNav extends React.Component {
   }
 
   renderNavs() {
-    const { user, t } = this.props;
-    const { isISV, role } = user;
+    const { user, appStore, history, t } = this.props;
+    const { pathname } = history.location;
+    const { isISV, isDev, role } = user;
     const viewRole = isISV ? 'isv' : role;
     const navs = getNavs[viewRole] || [];
 
@@ -366,6 +364,7 @@ export class SideNav extends React.Component {
 
   render() {
     const { hasSubNav, user } = this.props;
+    const { isDev, isAdmin, isISV, changedRole } = user;
 
     if (user.isDevPortal) {
       return (
