@@ -143,6 +143,7 @@
     padding: 7px 10px;
     width: 400px;
     height: 88px;
+    line-height: 20px;
     border-radius: 2px;
     background-color: $N0;
     border: 1px solid $N30;
@@ -173,6 +174,8 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
+    margin: 0;
+    padding: 0;
   }
 
   .icon-more {

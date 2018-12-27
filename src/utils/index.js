@@ -2,7 +2,12 @@ import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import ts from '../config/translation';
 
-export function formatTime(time, format = 'YYYY/MM/DD') {
+export function formatTime(time, format = '') {
+  if (!format) {
+    const lang = getCookie('lang');
+    format = lang === 'zh' ? 'YYYY年MM月DD日' : 'YYYY/MM/DD';
+  }
+
   const parsedTs = day(time);
   if (!parsedTs.isValid()) {
     throw Error(`invalid time: ${time}`);

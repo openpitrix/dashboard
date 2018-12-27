@@ -30,6 +30,15 @@ class LayoutStepper extends Component {
     titleCls: PropTypes.string
   };
 
+  // if next stop button is disabled, can't execution click method
+  nextStep = () => {
+    const { nextStep, disableNextStep } = this.props.stepOption;
+
+    if (!disableNextStep) {
+      nextStep();
+    }
+  };
+
   renderTopProgress() {
     const { stepOption } = this.props;
     const { steps, activeStep } = stepOption;
@@ -111,11 +120,7 @@ class LayoutStepper extends Component {
   renderFooter() {
     const { t, stepOption, name } = this.props;
     const {
-      activeStep,
-      steps,
-      nextStep,
-      disableNextStep,
-      btnText
+      activeStep, steps, disableNextStep, btnText
     } = stepOption;
 
     if (activeStep > steps) {
@@ -141,7 +146,7 @@ class LayoutStepper extends Component {
             [styles.buttonActived]: !disableNextStep
           })}
           type="primary"
-          onClick={nextStep}
+          onClick={this.nextStep}
         >
           <Icon className={styles.icon} name={iconName} size={20} />
           <span>{t(btnText || buttonText)}</span>

@@ -84,7 +84,7 @@
   background-color: $P75;
   border: 0;
   opacity: 0.5;
-  cursor: pointer;
+  cursor: not-allowed;
   > span {
     font-size: 14px;
     line-height: 24px;
@@ -96,6 +96,7 @@
 }
 .buttonActived {
   opacity: 1;
+  cursor: pointer;
 }
 
 

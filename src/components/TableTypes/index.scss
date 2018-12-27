@@ -1,0 +1,22 @@
+@import "~scss/vars";
+
+.tableTypes {
+  margin-bottom: 16px;
+
+  > label {
+    display: inline-block;
+    padding: 9px 12px;
+    border-radius: 2px;
+    background-color: $N0;
+    border: 1px solid $N10;
+    font-size: 14px;
+    line-height: 14px;
+    color: $N300;
+    cursor: pointer;
+
+    &.active {
+      color: $P75;
+      border-color: $P75;
+    }
+  }
+}

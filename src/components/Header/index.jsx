@@ -145,7 +145,7 @@ class Header extends Component {
           {this.renderMenus()}
           {this.renderMenuBtns()}
           <Icon name="mail" size={20} type="white" className={styles.mail} />
-          <Link to="#" className={styles.upgrade}>
+          <Link to="/dashboard/provider/submit" className={styles.upgrade}>
             <Icon
               name="shield"
               size={16}

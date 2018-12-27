@@ -3,11 +3,10 @@
 .appStatistics {
   padding: 32px 0  32px 50px;
   height: 104px;
+  display: flex;
 
   dl {
-    float: left;
-    display: inline-block;
-    width: 25%;
+    flex: 1;
 
     dt {
       @include note-font($line-height: 12px);

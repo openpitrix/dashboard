@@ -16,6 +16,8 @@ import WrapComp from './routes/wrapper';
 
 import './scss/index.scss';
 
+const noHeaderPath = ['/dashboard/provider/submit'];
+
 class App extends React.Component {
   static propTypes = {
     i18n: PropTypes.object,
@@ -33,8 +35,11 @@ class App extends React.Component {
 
   renderRoute(match, route, store) {
     const user = store.user || {};
+
     // todo
-    const hasHeader = user.isNormal || !user.accessToken || user.role === 'user';
+    // add noHeaderPath for user apply provider from page no need header
+    const hasHeader = !noHeaderPath.includes(route.path)
+      && (user.isNormal || !user.accessToken || user.role === 'user');
 
     if (route.noMatch) {
       return <Redirect to="/" />;

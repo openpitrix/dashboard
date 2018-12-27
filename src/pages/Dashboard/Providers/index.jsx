@@ -5,34 +5,29 @@ import { translate } from 'react-i18next';
 
 import { Table, Input } from 'components/Base';
 import Layout from 'components/Layout';
-
-import providers from './mock/providers';
+import TitleSearch from 'components/TitleSearch';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  rootStore
+  rootStore,
+  vendorStore: rootStore.vendorStore
 }))
 @observer
 export default class Providers extends Component {
-  async componentDidMount() {}
+  async componentDidMount() {
+    const { vendorStore } = this.props;
+    await vendorStore.fetchAll();
+  }
 
-  renderTitleSearch() {
-    const { t } = this.props;
-    return (
-      <div className={styles.titleSearch}>
-        {t('全部服务商')}
-        <Input.Search
-          className={styles.search}
-          placeholder={t('搜索公司名称')}
-        />
-      </div>
-    );
+  componentWillUnmount() {
+    const { vendorStore } = this.props;
+    vendorStore.reset();
   }
 
   render() {
-    const { t } = this.props;
+    const { vendorStore, t } = this.props;
 
     const columns = [
       {
@@ -40,32 +35,32 @@ export default class Providers extends Component {
         key: 'number',
         width: '80px',
         render: item => (
-          <Link to={`/dashboard/provider/${item.number}`}>{item.number}</Link>
+          <Link to={`/dashboard/provider/${item.user_id}`}>{item.user_id}</Link>
         )
       },
       {
         title: t('公司名称'),
         key: 'company',
         width: '200px',
-        render: item => item.company
+        render: item => item.company_name
       },
       {
         title: t('已上架应用'),
         key: 'app_total',
         width: '100px',
-        render: item => item.app_total
+        render: item => item.app_total || 0
       },
       {
         title: t('本月部署次数'),
         key: 'moth_count',
         width: '80px',
-        render: item => item.moth_count
+        render: item => item.moth_count || 0
       },
       {
         title: t('总部署次数'),
         key: 'total_count',
         width: '80px',
-        render: item => item.total_count
+        render: item => item.total_count || 0
       },
       {
         title: '',
@@ -74,7 +69,7 @@ export default class Providers extends Component {
         className: 'actions',
         render: item => (
           <div className={styles.actions}>
-            <Link to={`/dashboard/provider/${item.number}`}>
+            <Link to={`/dashboard/provider/${item.user_id}`}>
               {t('查看详情')} →
             </Link>
           </div>
@@ -82,17 +77,30 @@ export default class Providers extends Component {
       }
     ];
 
+    const {
+      vendors, searchWord, onSearch, onClearSearch
+    } = vendorStore;
+
     const pagination = {
-      total: 6,
-      current: 1
+      tableType: 'Apps',
+      total: vendorStore.totalCount,
+      current: vendorStore.currentPage,
+      onChange: vendorStore.changePagination
     };
 
     return (
       <Layout>
-        {this.renderTitleSearch()}
+        <TitleSearch
+          title={t('全部服务商')}
+          placeholder={t('Search App')}
+          searchWord={searchWord}
+          onSearch={onSearch}
+          onClear={onClearSearch}
+        />
+
         <Table
           columns={columns}
-          dataSource={providers}
+          dataSource={vendors.toJSON()}
           pagination={pagination}
         />
       </Layout>

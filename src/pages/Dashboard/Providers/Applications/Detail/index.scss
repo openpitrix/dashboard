@@ -28,6 +28,8 @@
 
 .statusInfo {
   display: flex;
+  height: 20px;
+  margin-bottom: 12px;
 
   dl,
   dt,
@@ -37,7 +39,6 @@
 
   dl {
     flex: 1;
-    margin-bottom: 12px;
     line-height: 20px;
     font-size: 12px;
 
@@ -68,8 +69,36 @@
 
   .status {
     font-size: 12px;
+
     dt  {
       float: left;
     }
+
+    .new {
+      color: $N75;
+    }
+
+    .submitted {
+      color: $Y300;
+    }
+
+    .passed {
+      color: $G200;
+    }
+
+    .rejected {
+      color: $R100;
+    }
+  }
+}
+
+.rejectMessage {
+  textarea {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .note {
+    @include note-font;
   }
 }

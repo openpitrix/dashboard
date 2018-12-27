@@ -49,7 +49,7 @@ const routes = {
   '/:dash/app-review/:appId/:versionId': Dash.ReviewDetail,
 
   '/:dash/providers': Dash.Providers,
-  '/:dash/provider/create': Dash.ProviderCreate,
+  '/:dash/provider/submit': Dash.ProviderCreate,
   '/:dash/provider/:providerId': Dash.ProviderDetail,
   '/:dash/applications': Dash.Applications,
   '/:dash/application/:providerId': Dash.ApplicationDetail,
