@@ -17,7 +17,8 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
-  roleStore: rootStore.roleStore
+  roleStore: rootStore.roleStore,
+  pageStore: rootStore.pageStore
 }))
 @observer
 export default class Roles extends Component {
@@ -34,7 +35,7 @@ export default class Roles extends Component {
   }
 
   render() {
-    const { t, roleStore } = this.props;
+    const { t, roleStore, pageStore } = this.props;
     const { isLoading, selectedRole } = roleStore;
     return (
       <Layout isLoading={isLoading}>
@@ -42,7 +43,7 @@ export default class Roles extends Component {
         <Panel className={classnames(styles.noShadow)}>
           <Grid>
             <Section size={4}>
-              <RoleTree roleStore={roleStore} />
+              <RoleTree roleStore={roleStore} pageStore={pageStore} />
             </Section>
 
             <Section size={8}>

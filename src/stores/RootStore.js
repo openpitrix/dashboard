@@ -19,6 +19,8 @@ import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 import Vendor from './vendor';
 import CloudEnv from './cloud_env';
 import NotificationServer from './notification_server';
+import Provider, { Create as ProviderCreate } from './provider';
+import Page from './page';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -201,5 +203,11 @@ export default class RootStore extends Store {
 
     this.register('cloudEnv', CloudEnv);
     this.register('notificationServer', NotificationServer);
-  };
+
+    // provider
+    this.register('provider', Provider);
+    this.register('providerCreate', ProviderCreate);
+
+    this.register('page', Page);
+  }
 }

@@ -25,9 +25,6 @@ import TimeShow from 'components/TimeShow';
 import { roleMap } from 'config/roles';
 
 import styles from './index.scss';
-import config from './config';
-
-const { treeData } = config;
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -35,12 +32,19 @@ const { treeData } = config;
 }))
 @observer
 export default class Users extends Component {
+  state = {
+    isLoading: true
+  };
+
   async componentDidMount() {
     const { userStore } = this.props;
 
     await userStore.fetchAll({
       status: ['']
     });
+    await userStore.fetchGroups();
+    userStore.getGroupTree();
+    this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {
@@ -322,8 +326,9 @@ export default class Users extends Component {
 
   render() {
     const { userStore, t } = this.props;
+    const { isLoading } = this.state;
     const {
-      selectValue, selectName, orgName, onSelectOrg
+      selectName, orgName, onSelectOrg, groupTreeData
     } = userStore;
 
     const data = toJS(userStore.users);
@@ -383,7 +388,7 @@ export default class Users extends Component {
     };
 
     return (
-      <Layout className={styles.usersContent}>
+      <Layout className={styles.usersContent} isLoading={isLoading}>
         <h2 className={styles.header}>{t('All Accounts')}</h2>
         <Panel className={classnames(styles.noShadow, styles.noPadding)}>
           <Grid>
@@ -399,7 +404,7 @@ export default class Users extends Component {
                   defaultExpandAll
                   showLine
                   hoverLine
-                  treeData={treeData}
+                  treeData={groupTreeData}
                   onSelect={onSelectOrg}
                 />
               </Card>

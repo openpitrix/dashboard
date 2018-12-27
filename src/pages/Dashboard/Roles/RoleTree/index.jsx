@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Tree } from 'components/Base';
+import {
+  Button, Input, Tree, Modal
+} from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 
@@ -13,7 +15,7 @@ import styles from './index.scss';
 @translate()
 @observer
 export default class RoleTree extends Component {
-  getTreeData(roleStore) {
+  getTreeData({ roleStore, pageStore }) {
     const adminRoles = roleStore.roles.filter(
       ({ portal }) => portal === 'admin'
     );
@@ -43,8 +45,15 @@ export default class RoleTree extends Component {
       )
     }));
     navData[0].children.push({
-      key: 'add',
-      title: <Item type="createBtn" title="自定义" roleStore={roleStore} />
+      key: 'create_role',
+      title: (
+        <Item
+          type="create_btn"
+          title="自定义"
+          roleStore={roleStore}
+          pageStore={pageStore}
+        />
+      )
     });
     navData[1].children = normalRoles.map(role => ({
       key: role.role_id,
@@ -61,27 +70,36 @@ export default class RoleTree extends Component {
   }
 
   renderModals() {
-    const { roleStore, t } = this.props;
-    const {
-      isModalOpen, modalType, hideModal, handleOperation
-    } = roleStore;
+    const { pageStore, roleStore, t } = this.props;
+    const { isModalOpen, modalType, hideModal } = pageStore;
+    const { createRole } = roleStore;
 
-    if (modalType === 'delete_runtime') {
+    if (modalType === 'create_role') {
       return (
         <Dialog
+          className={styles.form}
           title={t('Create admin role')}
+          width={744}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={handleOperation}
+          onSubmit={createRole}
         >
-          <p>{t('DELETE_RUNTIME_CONFIRM')}</p>
+          <div className={styles.fmCtrl}>
+            <label>{t('Role Name')}</label>
+            <Input className={styles.input} name="role_name" />
+          </div>
+          <div className={styles.textareaItem}>
+            <label>{t('Description')}</label>
+            <textarea name="description" />
+          </div>
+          <Input name="portal" value="admin" type="hidden" />
         </Dialog>
       );
     }
   }
 
   render() {
-    const { roleStore } = this.props;
+    const { roleStore, pageStore } = this.props;
     const { selectRole } = roleStore;
     return (
       <div>
@@ -91,8 +109,9 @@ export default class RoleTree extends Component {
           selectable
           onSelect={selectRole}
           className={styles.tree}
-          treeData={this.getTreeData(roleStore)}
+          treeData={this.getTreeData({ roleStore, pageStore })}
         />
+        {this.renderModals()}
       </div>
     );
   }

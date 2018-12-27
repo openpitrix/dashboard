@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
 export default class RoleItem extends Component {
-  static propTypes = {};
-
-  static defaultProps = {};
+  showCreateModal = () => {
+    this.props.pageStore.showModal('create_role');
+  };
 
   renderCreateBtn() {
     const { title } = this.props;
     return (
-      <span className={styles.btnCreate}>
+      <span onClick={this.showCreateModal} className={styles.btnCreate}>
         <Icon className={styles.btnIcon} name="add" size={14} />
         {title}
       </span>
@@ -25,7 +23,7 @@ export default class RoleItem extends Component {
     const {
       title, description, type, isGlobalAdmin, isAdmin
     } = this.props;
-    if (type === 'createBtn') {
+    if (type === 'create_btn') {
       return this.renderCreateBtn();
     }
     return (

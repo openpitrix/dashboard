@@ -43,8 +43,10 @@ export default class Tree extends Component {
       hoverLine,
       sameHeight,
       switcherIcon,
+      isLoading,
       ...resetProps
     } = this.props;
+
     return (
       <RcTree
         className={classnames(

@@ -1,9 +1,11 @@
 import { observable, action } from 'mobx';
-import { get, pick, assign } from 'lodash';
+import _, { get, pick, assign } from 'lodash';
 
 import { getFormData } from 'utils';
 
 import Store from '../Store';
+
+import dataGroup from './data_json';
 
 const defaultStatus = ['active'];
 
@@ -64,6 +66,8 @@ export default class UserStore extends Store {
   @observable orgName = '';
 
   @observable language = localStorage.getItem('i18nextLng') || 'zh';
+
+  @observable groupTreeData = [];
 
   @observable
   userDetail = {
@@ -225,8 +229,9 @@ export default class UserStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    const result = await this.request.get('groups');
-    this.groups = get(result, 'group_set', []);
+    // const result = await this.request.get('groups');
+    // this.groups = get(result, 'group_set', []);
+    this.groups = get(dataGroup, 'op_group_set', []);
     this.isLoading = false;
   };
 
@@ -426,6 +431,39 @@ export default class UserStore extends Store {
   @action
   setUserDisable = user_id => {
     this.modify({ status: 'draft', user_id });
+  };
+
+  getGroupTree = () => {
+    const { groups } = this;
+    if (groups.length === 0) {
+      return [];
+    }
+
+    const root = _.find(groups, g => !g.parent_group_id);
+    const data = [
+      {
+        group_id: root.group_id,
+        key: root.group_id,
+        title: root.group_name
+      }
+    ];
+    const filter = (dataSet, parent_group_id) => _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
+      (a, b) => a.seq_order - b.seq_order
+    );
+    const setChildren = (dataSet, treeDataNode) => {
+      const children = filter(dataSet, treeDataNode.group_id);
+      if (children.length === 0) {
+        return [];
+      }
+      return children.map(node => ({
+        key: node.group_id,
+        title: node.group_name,
+        children: setChildren(dataSet, node)
+      }));
+    };
+
+    data[0].children = setChildren(groups, data[0]);
+    this.groupTreeData = data;
   };
 }
 
