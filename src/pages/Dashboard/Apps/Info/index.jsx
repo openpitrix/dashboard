@@ -11,6 +11,7 @@ import {
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 
+import PropTypes from 'prop-types';
 import styles from './index.scss';
 
 const tags = ['Base Info', 'Instructions', 'Terms of service'];
@@ -24,22 +25,33 @@ const tags = ['Base Info', 'Instructions', 'Terms of service'];
 }))
 @observer
 export default class Info extends Component {
+  static propTypes = {
+    isCheckInfo: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isCheckInfo: false
+  };
+
   async componentDidMount() {
     const {
       appStore, appVersionStore, categoryStore, match
     } = this.props;
-    const { appId } = match.params;
-    await appStore.fetch(appId);
+    const appId = _.get(match, 'params.appId', '');
 
-    // query this version relatived app info
-    await appVersionStore.fetchAll({ app_id: appId });
+    if (appId) {
+      await appStore.fetch(appId);
 
-    // judge you can edit app info
-    const { versions } = appVersionStore;
-    appStore.isEdit = !_.find(versions, { status: 'submitted' });
+      // query this version relatived app info
+      await appVersionStore.fetchAll({ app_id: appId });
 
-    // query categories data for category select
-    await categoryStore.fetchAll();
+      // judge you can edit app info
+      const { versions } = appVersionStore;
+      appStore.isEdit = !_.find(versions, { status: 'submitted' });
+
+      // query categories data for category select
+      await categoryStore.fetchAll();
+    }
   }
 
   componentWillUnmount() {
@@ -230,7 +242,9 @@ export default class Info extends Component {
   }
 
   renderBaseInfo() {
-    const { appStore, categoryStore, t } = this.props;
+    const {
+      appStore, categoryStore, isCheckInfo, t
+    } = this.props;
     const { categories } = categoryStore;
     const {
       appDetail,
@@ -339,22 +353,45 @@ export default class Info extends Component {
             disabled={!isEdit}
           />
         </div>
-        <div className={styles.operateBtns}>
-          <Button type="primary" htmlType="submit" disabled={!isEdit}>
-            {t('Save')}
-          </Button>
-          <Button onClick={resetBaseInfo} disabled={!isEdit}>
-            {t('Reset')}
-          </Button>
-        </div>
+        {!isCheckInfo && (
+          <div className={styles.operateBtns}>
+            <Button type="primary" htmlType="submit" disabled={!isEdit}>
+              {t('Save')}
+            </Button>
+            <Button onClick={resetBaseInfo} disabled={!isEdit}>
+              {t('Reset')}
+            </Button>
+          </div>
+        )}
       </form>
     );
   }
 
+  renderContent() {
+    const { detailTab } = this.props.appStore;
+
+    return (
+      <Fragment>
+        <DetailTabs tabs={tags} changeTab={this.changeTab} />
+        <Card>
+          {detailTab === 'Base Info' && this.renderBaseInfo()}
+          {detailTab === 'Instructions' && this.renderInstructions()}
+          {detailTab === 'Terms of service' && this.renderService()}
+        </Card>
+      </Fragment>
+    );
+  }
+
   render() {
-    const { appStore, match, t } = this.props;
-    const { detailTab, isEdit } = appStore;
-    const { appId } = match.params;
+    const {
+      appStore, isCheckInfo, match, t
+    } = this.props;
+    const { isEdit } = appStore;
+    const appId = _.get(match, 'params.appId', '');
+
+    if (isCheckInfo) {
+      return this.renderContent();
+    }
 
     return (
       <Layout className={styles.appInfo} pageTitle={t('App Info')} isCenterPage>
@@ -372,12 +409,7 @@ export default class Info extends Component {
           </div>
         )}
 
-        <DetailTabs tabs={tags} changeTab={this.changeTab} />
-        <Card>
-          {detailTab === 'Base Info' && this.renderBaseInfo()}
-          {detailTab === 'Instructions' && this.renderInstructions()}
-          {detailTab === 'Terms of service' && this.renderService()}
-        </Card>
+        {this.renderContent()}
       </Layout>
     );
   }

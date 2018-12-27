@@ -124,7 +124,7 @@
         min-width: 105px;
         padding: 0 12px;
         height: 32px;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 32px;
         color: $N300;
         background-color: $N0;
@@ -133,6 +133,15 @@
         &:hover {
           color: $N500;
           background-color: $N10;
+        }
+
+        .icon {
+          display: inline-block;
+          min-width: auto;
+          padding-left: 0;
+          padding-right: 4px;
+          background-color: transparent;
+          vertical-align: sub;
         }
       }
     }

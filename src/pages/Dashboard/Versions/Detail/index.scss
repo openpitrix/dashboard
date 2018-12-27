@@ -58,6 +58,12 @@
     display: inline-block;
     margin-left: 12px;
   }
+
+  :global {
+    .pi-popover-popper {
+      margin-left: -90px !important;
+    }
+  }
 }
 
 .configFile {
@@ -220,4 +226,32 @@
   }
 }
 
+.successMesage {
+  margin: 132px auto 0;
+  text-align: center;
 
+  .icon {
+    svg {
+      --primary-color: #{$G100};
+      --secondary-color: #{$G30};
+    }
+  }
+  .textHeader {
+    @include title-font;
+    margin-bottom: 16px;
+  }
+
+  .note {
+    @include note-font;
+    margin-top: 24px;
+
+    >label {
+      display: inline-block;
+      margin-right: 6px;
+      width: 32px;
+      height: 20px;
+      border-radius: 1px;
+      background-color: $N30;
+    }
+  }
+}

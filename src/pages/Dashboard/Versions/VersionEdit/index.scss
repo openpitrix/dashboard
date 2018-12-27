@@ -1,0 +1,58 @@
+@import '~scss/vars';
+
+.versionEdit {
+  padding: 48px 48px 48px 90px;
+
+  .title {
+    @include note-font;
+    margin-bottom: 20px;
+  }
+
+  .note {
+    @include note-font;
+    padding: 6px 0;
+    background-color: $background-color;
+    text-align: center;
+  }
+}
+
+.editForm {
+  .item {
+    margin-bottom: 32px;
+    clear: both;
+
+    > input {
+      width: 466px;
+    }
+
+    > textarea {
+      width: 466px;
+    }
+
+    > select {
+      width: 223px;
+    }
+  }
+
+  .name {
+    float: left;
+    width: 270px;
+    margin-right: 20px;
+
+    > label {
+      margin-bottom: 4px;
+      line-height: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: $N500;
+    }
+
+    .noteWord {
+      margin-bottom: 32px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+    }
+  }
+}
+

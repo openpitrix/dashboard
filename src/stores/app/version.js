@@ -21,7 +21,11 @@ const maxSize = 2 * 1024 * 1024;
 export default class AppVersionStore extends Store {
   @observable versions = [];
 
-  @observable version = {};
+  @observable
+  version = {
+    name: '',
+    description: ''
+  };
 
   @observable isLoading = false;
 
@@ -76,6 +80,18 @@ export default class AppVersionStore extends Store {
   @observable typeVersions = [];
 
   @observable reviewDetail = {};
+
+  @observable isSubmitCheck = false;
+
+  @observable activeStep = 1;
+
+  @observable disableNextStep = false;
+
+  steps = 2;
+
+  get appStore() {
+    return this.getStore('app');
+  }
 
   @action
   fetchAll = async (params = {}) => {
@@ -217,7 +233,7 @@ export default class AppVersionStore extends Store {
 
     if (get(result, 'version_id')) {
       this.hideModal();
-      this.success(ts(`${capitalize(handleType)} this version successfully.`));
+      // this.success(ts(`${capitalize(handleType)} this version successfully.`));
       await this.fetch(versionId);
     } else {
       return result;
@@ -302,7 +318,7 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  async handleCreateVersion(appId) {
+  handleCreateVersion = async appId => {
     if (!this.name) {
       this.info(ts('Please input Name!'));
     } else if (!/https?:\/\/.+/.test(this.packageName)) {
@@ -322,10 +338,10 @@ export default class AppVersionStore extends Store {
         await this.fetchAll({ app_id: appId });
       }
     }
-  }
+  };
 
   @action
-  async fetchPackageFiles(versionId) {
+  fetchPackageFiles = async versionId => {
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId,
       files: ['README.md']
@@ -336,10 +352,18 @@ export default class AppVersionStore extends Store {
     } else {
       this.readme = '';
     }
-  }
+  };
 
   @action
-  async fetchActiveVersions(params = {}) {
+  downloadPackage = async versionId => {
+    const result = await this.request.get('app_version/package', {
+      version_id: versionId
+    });
+    this.uploadFile = result.package;
+  };
+
+  @action
+  fetchActiveVersions = async (params = {}) => {
     const defaultParams = {
       limit: this.maxLimit
     };
@@ -352,7 +376,7 @@ export default class AppVersionStore extends Store {
     this.versions = get(result, 'app_version_set', []);
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
-  }
+  };
 
   @action
   fetchTypeVersions = async appId => {
@@ -449,6 +473,36 @@ export default class AppVersionStore extends Store {
   @action
   changeReason = event => {
     this.reason = event.target.value;
+  };
+
+  @action
+  changeSubmitCheck = () => {
+    this.isSubmitCheck = !this.isSubmitCheck;
+
+    if (this.isSubmitCheck) {
+      this.hideModal();
+    } else {
+      this.activeStep = 1;
+    }
+  };
+
+  @action
+  changeVersion = (event, type) => {
+    this.version[type] = event.target.value;
+  };
+
+  @action
+  nextStep = async () => {
+    if (this.activeStep === 1) {
+      await this.appStore.modifyApp();
+    } else if (this.activeStep === 2) {
+      const data = _.pick(this.version, ['version_id', 'name', 'description']);
+      await this.modify(data);
+
+      await this.handle('submit', this.version.version_id);
+    }
+
+    this.activeStep++;
   };
 
   reset = () => {
