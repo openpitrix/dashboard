@@ -5,7 +5,9 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Icon, Image, Button, Popover, Upload } from 'components/Base';
+import {
+  Icon, Image, Button, Popover, Upload
+} from 'components/Base';
 import Layout, {
   Grid,
   Section,
@@ -515,7 +517,9 @@ export default class VersionDetail extends Component {
   }
 
   render() {
-    const { appVersionStore, appStore, match, t } = this.props;
+    const {
+      appVersionStore, appStore, match, t
+    } = this.props;
     const { activeStep, dialogType, isSubmitCheck } = appVersionStore;
     const { detailTab } = appStore;
     const { appId } = match.params;

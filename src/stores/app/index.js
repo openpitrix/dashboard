@@ -434,8 +434,7 @@ export default class AppStore extends Store {
   @action
   remove = async () => {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
-    const ids =
-      this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
+    const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {
