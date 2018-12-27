@@ -5,26 +5,35 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {
-  Icon, Image, Button, Popover, Upload
-} from 'components/Base';
+import { Icon, Image, Button, Popover, Upload } from 'components/Base';
 import Layout, {
-  Grid, Section, Card, Dialog
+  Grid,
+  Section,
+  Card,
+  Dialog,
+  Stepper
 } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
-
 import versionTypes from 'config/version-types';
+import Info from '../../Apps/Info';
+import VersionEdit from '../VersionEdit';
 
 import styles from './index.scss';
 
-const actionName = {
+const actionType = {
   draft: 'submit',
-  submitted: 'cancel',
+  submitted: 'submit',
   passed: 'release',
   rejected: 'submit'
+};
+const actionName = {
+  submit: 'Submit review',
+  submitted: 'Cancel review',
+  release: 'Release to store',
+  active: 'View in store'
 };
 const tags = [
   { name: 'Config File', value: 'configFile' },
@@ -38,13 +47,18 @@ const tags = [
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   appCreateStore: rootStore.appCreateStore,
+  categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore
 }))
 @observer
 export default class VersionDetail extends Component {
   async componentDidMount() {
     const {
-      appVersionStore, appStore, userStore, match
+      appVersionStore,
+      appStore,
+      categoryStore,
+      userStore,
+      match
     } = this.props;
     const { appId, versionId } = match.params;
 
@@ -63,6 +77,9 @@ export default class VersionDetail extends Component {
       item => item.operator
     );
     await userStore.fetchAll({ user_id: userIds });
+
+    // query categories data for category select
+    await categoryStore.fetchAll();
   }
 
   componentWillUnmount() {
@@ -103,10 +120,16 @@ export default class VersionDetail extends Component {
   }
 
   handleVersion = async (handleType, noDailog) => {
-    const { appVersionStore, match } = this.props;
+    const { appVersionStore, match, history } = this.props;
     const { appId, versionId } = match.params;
 
-    if (!noDailog && (handleType === 'delete' || handleType === 'submit')) {
+    if (handleType === 'active') {
+      history.push(`/store/${appId}`);
+      return false;
+    }
+
+    const hasDailog = ['delete', 'submit', 'cancel'].includes(handleType);
+    if (!noDailog && hasDailog) {
       appVersionStore.showTypeDialog(handleType);
     } else {
       const result = await appVersionStore.handle(handleType, versionId);
@@ -133,16 +156,25 @@ export default class VersionDetail extends Component {
     const { appVersionStore, match, t } = this.props;
     const { appId, versionId } = match.params;
     const { version, showTypeDialog } = appVersionStore;
+    const { status } = version;
     const deleteStatus = ['draft', 'rejected', 'passed'];
-    const hasDeleteBtn = deleteStatus.includes(version.status);
+    const hasDeleteBtn = deleteStatus.includes(status);
 
     return (
       <div className="operate-menu">
         <Link to={`/dashboard/app/${appId}/deploy/${versionId}`}>
+          <Icon name="stateful-set" type="dark" />
           {t('Deploy App')}
         </Link>
+        {status === 'submitted' && (
+          <span onClick={() => this.handleVersion('cancel')}>
+            <Icon name="restart" type="dark" /> {t(actionName[status])}
+          </span>
+        )}
         {hasDeleteBtn && (
-          <span onClick={() => showTypeDialog('delete')}>{t('Delete')}</span>
+          <span onClick={() => showTypeDialog('delete')}>
+            <Icon name="trash" type="dark" /> {t('Delete')}
+          </span>
         )}
       </div>
     );
@@ -164,7 +196,7 @@ export default class VersionDetail extends Component {
     );
   };
 
-  renderNoteDialog = () => {
+  renderCancelDialog = () => {
     const { appVersionStore, t } = this.props;
     const { isDialogOpen, hideModal } = appVersionStore;
 
@@ -172,7 +204,24 @@ export default class VersionDetail extends Component {
       <Dialog
         title={t('Note')}
         isOpen={isDialogOpen}
-        onSubmit={() => this.handleVersion('submit', true)}
+        onSubmit={() => this.handleVersion('cancel', true)}
+        onCancel={hideModal}
+        okText={t('Undo')}
+      >
+        {t('CANNEL_VERSION_DESC')}
+      </Dialog>
+    );
+  };
+
+  renderNoteDialog = () => {
+    const { appVersionStore, t } = this.props;
+    const { isDialogOpen, hideModal, changeSubmitCheck } = appVersionStore;
+
+    return (
+      <Dialog
+        title={t('Note')}
+        isOpen={isDialogOpen}
+        onSubmit={changeSubmitCheck}
         onCancel={hideModal}
         okText={t('Submit review')}
         cancelText={t('Continue testing')}
@@ -294,6 +343,7 @@ export default class VersionDetail extends Component {
             className={styles.description}
             value={description}
             onChange={changeDescription}
+            autoFocus
           />
           <div className={styles.submitButtons}>
             <Button
@@ -325,7 +375,8 @@ export default class VersionDetail extends Component {
       uploadError,
       packageName,
       checkPackageFile,
-      uploadPackage
+      uploadPackage,
+      downloadPackage
     } = appVersionStore;
 
     const { appDetail } = appStore;
@@ -343,20 +394,18 @@ export default class VersionDetail extends Component {
             </div>
             <div className={styles.time}>
               {t('Upload time')}：{version.status_time}
-              <Link
+              <span
                 className={styles.link}
-                to={`/dashboard/app/${appDetail.app_id}/deploy/${
-                  version.version_id
-                }`}
+                onClick={() => downloadPackage(version.version_id)}
               >
-                {t('Deploy App')}
-              </Link>
+                {t('Download')}
+              </span>
               {isEdit && (
                 <span
                   className={styles.link}
                   onClick={() => this.onUploadClick()}
                 >
-                  {t('Edit')}
+                  {t('Modify')}
                 </span>
               )}
             </div>
@@ -390,7 +439,8 @@ export default class VersionDetail extends Component {
     const { appVersionStore, appStore, t } = this.props;
     const { version } = appVersionStore;
     const { appDetail } = appStore;
-    const handleType = actionName[version.status];
+    const handleType = actionType[version.status] || version.status;
+    const hasOperate = !['suspended', 'deleted'].includes(version.status);
 
     return (
       <Card>
@@ -402,7 +452,7 @@ export default class VersionDetail extends Component {
           </div>
           <div className={styles.secondary}>
             <label>
-              {t('Its application')}：
+              {t('Its application')}:
               <span className={styles.appName}>
                 <span className={styles.imgOuter}>
                   <Image
@@ -415,39 +465,70 @@ export default class VersionDetail extends Component {
               </span>
             </label>
             <label>
-              {t('Version')}ID：
+              {t('Version')}ID:
               <span className={styles.versionId}>{version.version_id}</span>
             </label>
             <label>
-              {t('Update time')}:{version.status_time}
+              {t('Update time')}: {version.status_time}
             </label>
           </div>
         </div>
-        <div className={styles.operateBtns}>
-          {handleType && (
+        {hasOperate && (
+          <div className={styles.operateBtns}>
             <Button
+              disabled={version.status === 'submitted'}
               type="primary"
               onClick={() => this.handleVersion(handleType)}
             >
-              {t(_.capitalize(handleType))}
+              {t(actionName[handleType])}
             </Button>
-          )}
-          <Popover
-            className={styles.operation}
-            content={this.renderHandleMenu()}
-            showBorder
-          >
-            <Icon name="more" />
-          </Popover>
-        </div>
+            <Popover
+              className={styles.operation}
+              content={this.renderHandleMenu()}
+              showBorder
+            >
+              <Icon name="more" />
+            </Popover>
+          </div>
+        )}
       </Card>
     );
   }
 
+  renderSuccessMesage() {
+    const { appVersionStore, t } = this.props;
+    const { changeSubmitCheck } = appVersionStore;
+
+    return (
+      <div className={styles.successMesage}>
+        <Icon className={styles.icon} name="checked-circle" size={48} />
+        <div className={styles.textHeader}>{t('你的应用已提交成功')}</div>
+        <Button type="primary" onClick={changeSubmitCheck}>
+          {t('查看版本')}
+        </Button>
+        <div className={styles.note}>
+          <label>{t('Note')}</label>
+          {t('整个审核包括应用服务商审核和平台审核两个环节，请留意审核通知。')}
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { appVersionStore, appStore, t } = this.props;
-    const { dialogType } = appVersionStore;
+    const { appVersionStore, appStore, match, t } = this.props;
+    const { activeStep, dialogType, isSubmitCheck } = appVersionStore;
     const { detailTab } = appStore;
+    const { appId } = match.params;
+
+    if (isSubmitCheck) {
+      return (
+        <Stepper name="VERSION_SUBMIT_CHECK" stepOption={appVersionStore}>
+          {activeStep === 1 && <Info isCheckInfo />}
+          {activeStep === 2 && <VersionEdit />}
+          {activeStep === 3 && this.renderSuccessMesage()}
+        </Stepper>
+      );
+    }
 
     return (
       <Layout
@@ -471,6 +552,7 @@ export default class VersionDetail extends Component {
 
         {dialogType === 'delete' && this.renderDeleteDialog()}
         {dialogType === 'submit' && this.renderNoteDialog()}
+        {dialogType === 'cancel' && this.renderCancelDialog()}
       </Layout>
     );
   }

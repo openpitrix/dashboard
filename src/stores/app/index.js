@@ -32,7 +32,7 @@ export default class AppStore extends Store {
   appDetail = {
     name: '',
     abstraction: '',
-    deccription: '',
+    description: '',
     category_id: '',
     home: '',
     readme: '',
@@ -125,6 +125,35 @@ export default class AppStore extends Store {
     const result = await this.request.get('apps', params);
     this.menuApps = get(result, 'app_set', []);
     this.hasMeunApps = true;
+  };
+
+  @action
+  fetchActiveApps = async (params = {}) => {
+    const defaultParams = {
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize
+    };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
+    if (this.searchWord) {
+      defaultParams.search_word = this.searchWord;
+    }
+
+    this.isLoading = true;
+    const result = await this.request.get(
+      'active_apps',
+      assign(defaultParams, params)
+    );
+    this.isLoading = false;
+
+    this.apps = get(result, 'app_set', []);
+    this.totalCount = get(result, 'total_count', 0);
   };
 
   @action
@@ -257,26 +286,40 @@ export default class AppStore extends Store {
   };
 
   @action
-  modify = async (params = {}) => {
+  modify = async (params = {}, hasNote) => {
     this.isLoading = true;
     this.createResult = await this.request.patch('apps', params);
     this.isLoading = false;
 
-    if (get(this.createResult, 'app_id')) {
+    if (hasNote && get(this.createResult, 'app_id')) {
       this.info('应用信息保存成功');
     }
   };
 
   @action
   modifyApp = async e => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
-    const data = getFormData(e.target);
+    const data = _.pick(this.appDetail, [
+      'name',
+      'abstraction',
+      'description',
+      'home',
+      'icon'
+    ]);
+
     await this.modify(
-      _.assign(data, {
-        app_id: this.appDetail.app_id,
-        category_id: this.appDetail.category_id
-      })
+      _.assign(
+        data,
+        {
+          app_id: this.appDetail.app_id,
+          category_id: this.appDetail.category_id,
+          icon: this.appDetail.icon
+        },
+        Boolean(e)
+      )
     );
   };
 
@@ -292,10 +335,13 @@ export default class AppStore extends Store {
 
   @action
   saveAppInfo = async type => {
-    await this.modify({
-      app_id: this.appDetail.app_id,
-      [type]: this.appDetail[type]
-    });
+    await this.modify(
+      {
+        app_id: this.appDetail.app_id,
+        [type]: this.appDetail[type]
+      },
+      true
+    );
   };
 
   @action
@@ -388,7 +434,8 @@ export default class AppStore extends Store {
   @action
   remove = async () => {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
-    const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
+    const ids =
+      this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {

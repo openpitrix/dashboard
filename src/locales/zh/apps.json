@@ -155,6 +155,14 @@
   "Set Price": "定价",
   "Update Log": "更新日志",
 
+  "Submit review": "提交审核",
+  "Cancel review": "撤消审核",
+  "Release to store": "上架到商店",
+  "View in store": "去商店查看",
+  "Download": "下载",
+  "Undo": "撤销",
+  "CANNEL_VERSION_DESC": "此版本正在等待审核，确定要撤销吗？",
+
   "Test Runtime": "测试环境",
   "Instance Name ID": "实例名称 ID",
   "Create Time": "创建时间",
@@ -167,5 +175,13 @@
 
   "Preview": "预览",
   "Processed": "已处理",
-  "Unprocessed": "未处理"
+  "Unprocessed": "未处理",
+
+  "STEPPER_NAME_VERSION_SUBMIT_CHECK_HEADER": "准备提交 {{activeStep}}/{{steps}}",
+  "STEPPER_TITLE_VERSION_SUBMIT_CHECK_1": "检查应用信息",
+  "STEPPER_FOOTER_VERSION_SUBMIT_CHECK_1": "丰富全面的介绍会更利于应用的销售。",
+  "STEPPER_TITLE_VERSION_SUBMIT_CHECK_2": "检查版本信息",
+  "STEPPER_FOOTER_VERSION_SUBMIT_CHECK_2": "版本号以及版本的更新日志都是重要的信息。",
+  "STEPPER_HEADER_VERSION_SUBMIT_CHECK_2": "「检查应用信息」",
+  "": ""
 }

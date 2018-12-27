@@ -11,7 +11,7 @@ export default class UserProvider {
     this.username = getCookie('username');
     this.user_id = getCookie('user_id');
     this.email = getCookie('email');
-    this.changedRole = '';
+    this.changedRole = getCookie('changedRole');
     this.accessToken = getCookie('access_token');
   }
 
@@ -35,10 +35,10 @@ export default class UserProvider {
 
   get isDev() {
     return (
-      this.changedRole === ROLE_DEV
-      || (this.changedRole !== ROLE_NORMAL
-        && this.role === ROLE_DEV
-        && this.username !== 'isv')
+      this.changedRole === ROLE_DEV ||
+      (this.changedRole !== ROLE_NORMAL &&
+        this.role === ROLE_DEV &&
+        this.username !== 'isv')
     );
   }
 
@@ -48,9 +48,9 @@ export default class UserProvider {
 
   get isISV() {
     return (
-      this.changedRole !== ROLE_DEV
-      && this.role === ROLE_DEV
-      && this.username === 'isv'
+      this.changedRole !== ROLE_DEV &&
+      this.role === ROLE_DEV &&
+      this.username === 'isv'
     );
   }
 }
