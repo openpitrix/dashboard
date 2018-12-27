@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import { computed } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
@@ -6,7 +7,7 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import {
-  Input, Icon, Modal, Button
+  Input, Icon, Modal, Button, Select
 } from 'components/Base';
 import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
@@ -21,16 +22,18 @@ import styles from './index.scss';
 }))
 @observer
 export default class Categories extends Component {
+  @computed
+  get allAppsOfCurrentCate() {
+    return this.props.appStore.allAppsOfCurrentCate;
+  }
+
   async componentDidMount() {
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore } = this.props;
     const { changeCategory } = categoryStore;
 
     await categoryStore.fetchAll({ noLimit: true });
-    await appStore.fetchAll({
-      noLimit: true,
-      keepAll: true,
-      category_id: _.map(categoryStore.categories, cate => cate.category_id)
-    });
+
+    await categoryStore.updateAppCategoryCounts();
 
     changeCategory(_.first(categoryStore.categories));
   }
@@ -60,25 +63,42 @@ export default class Categories extends Component {
   //   );
   // };
 
-  showOperation = type => {
-    const { showModal } = this.props.categoryStore;
+  showOperation = async type => {
+    const { categoryStore, appStore } = this.props;
+    const { showModal } = categoryStore;
     showModal(type);
+    if (type === 'delete') {
+      // fetch all apps for current category
+      await appStore.fetchAll({
+        noLimit: true,
+        keepAllForCate: true,
+        noLoading: true
+      });
+    }
   };
 
   renderModals() {
-    const { categoryStore, t } = this.props;
+    const { categoryStore, appStore, t } = this.props;
     const {
+      categories,
       category,
+      selectedCategory,
       modalType,
       isModalOpen,
       hideModal,
-      createOrModify,
-      remove
+      handleOperation,
+      filterApps
     } = categoryStore;
 
     if (!isModalOpen) {
       return null;
     }
+
+    const { allApps, appIds } = appStore;
+    const appNames = _.map(
+      appIds,
+      id => (_.find(allApps, { app_id: id }) || {}).name || ''
+    );
 
     if (modalType === 'edit') {
       let modalTitle = t('Create Category');
@@ -87,46 +107,36 @@ export default class Categories extends Component {
       }
 
       return (
-        <Modal
+        <Dialog
           title={modalTitle}
           visible={isModalOpen}
+          onSubmit={handleOperation}
           onCancel={hideModal}
-          onOk={createOrModify}
         >
-          <div className="formContent">
-            <div>
-              <label>{t('Name')}</label>
-              <Input
-                name="name"
-                autoFocus
-                defaultValue={category.name}
-                onChange={categoryStore.changeName}
-                maxLength="50"
-              />
-            </div>
-            <div className="textareaItem">
-              <label>{t('Description')}</label>
-              <textarea
-                name="description"
-                defaultValue={category.description}
-                onChange={categoryStore.changeDescription}
-                maxLength="500"
-              />
-            </div>
-          </div>
-        </Modal>
+          <p>edit category</p>
+        </Dialog>
       );
     }
 
     if (modalType === 'delete') {
+      const cateAppsNames = filterApps(
+        selectedCategory.category_id,
+        this.allAppsOfCurrentCate
+      ).map(app => app.name);
+
       return (
         <Dialog
           title={t('Delete Category')}
           visible={isModalOpen}
-          onSubmit={remove}
+          onSubmit={handleOperation}
           onCancel={hideModal}
+          btnType="delete"
         >
-          {t('Delete Category desc')}
+          {t('TIPS_DELETE_CATE', {
+            cateName: t(selectedCategory.name),
+            appNames: cateAppsNames.join(', '),
+            appCount: cateAppsNames.length
+          })}
         </Dialog>
       );
     }
@@ -136,20 +146,41 @@ export default class Categories extends Component {
         <Dialog
           title={t('创建新分类')}
           visible={isModalOpen}
-          onSubmit={remove}
+          onSubmit={handleOperation}
           onCancel={hideModal}
         />
       );
     }
 
     if (modalType === 'adjust-cate') {
+      const { categoryToAdjust, changeCategoryToAdjust } = categoryStore;
+
       return (
         <Dialog
           title={t('调整应用分类')}
           visible={isModalOpen}
-          onSubmit={remove}
+          onSubmit={handleOperation}
           onCancel={hideModal}
-        />
+          okText={t('Submit')}
+        >
+          <p>
+            {t('TIPS_ADJUST_APP_CATE', {
+              appNames: appNames.join(', '),
+              appCount: appNames.length
+            })}
+          </p>
+          <Select
+            value={categoryToAdjust || selectedCategory.category_id}
+            onChange={changeCategoryToAdjust}
+            className={styles.selectCateToAdjust}
+          >
+            {_.map(categories, ({ category_id, name }) => (
+              <Select.Option value={category_id} key={category_id}>
+                {t(name)}
+              </Select.Option>
+            ))}
+          </Select>
+        </Dialog>
       );
     }
 
@@ -158,7 +189,7 @@ export default class Categories extends Component {
         <Dialog
           title={t('添加应用到 [分类]')}
           visible={isModalOpen}
-          onSubmit={remove}
+          onSubmit={handleOperation}
           onCancel={hideModal}
         >
           {t('Delete Category desc')}
@@ -167,28 +198,28 @@ export default class Categories extends Component {
     }
   }
 
-  filterApps = category_id => {
-    const { allApps } = this.props.appStore;
-    return _.filter(allApps, app => _.find(app.category_set, { category_id, status: 'enabled' })).length;
-  };
-
   renderMenu() {
     const { categoryStore, t } = this.props;
-    const { categories, selectedCategory, changeCategory } = categoryStore;
+    const {
+      categories,
+      selectedCategory,
+      changeCategory,
+      filterApps
+    } = categoryStore;
 
-    this.normalizeCates = categories.filter(
+    const normalizeCates = categories.filter(
       cate => cate.category_id !== 'ctg-uncategorized'
     );
     const uncategorized = _.find(categories, {
       category_id: 'ctg-uncategorized'
     });
     if (uncategorized) {
-      this.normalizeCates.push(uncategorized);
+      normalizeCates.push(uncategorized);
     }
 
     return (
       <ul className={styles.cates}>
-        {_.map(this.normalizeCates, ({ name, category_id }) => (
+        {_.map(normalizeCates, ({ name, category_id }) => (
           <li
             key={category_id}
             className={classnames(styles.item, {
@@ -198,7 +229,9 @@ export default class Categories extends Component {
           >
             <Icon name={name} type="dark" />
             <span className={styles.name}>{t(name)}</span>
-            <span className={styles.count}>{this.filterApps(category_id)}</span>
+            <span className={styles.count}>
+              {filterApps(category_id).length}
+            </span>
           </li>
         ))}
         <li

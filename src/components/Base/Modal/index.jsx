@@ -38,6 +38,7 @@ ReactModal.defaultStyles.content = Object.assign(
 @translate()
 export default class Modal extends React.Component {
   static propTypes = {
+    btnType: PropTypes.string,
     cancelText: PropTypes.string,
     children: PropTypes.any,
     className: PropTypes.string,
@@ -61,7 +62,8 @@ export default class Modal extends React.Component {
     closable: true,
     isDialog: false,
     onOk() {},
-    onCancel() {}
+    onCancel() {},
+    btnType: 'primary'
   };
 
   render() {
@@ -79,6 +81,7 @@ export default class Modal extends React.Component {
       cancelText,
       closable,
       isDialog,
+      btnType,
       t
     } = this.props;
     const style = { content: { width } };
@@ -90,6 +93,7 @@ export default class Modal extends React.Component {
         isOpen={visible}
         onRequestClose={onCancel}
         ariaHideApp={false}
+        shouldCloseOnOverlayClick={false}
       >
         {!hideHeader && (
           <div className={styles.header}>
@@ -101,7 +105,7 @@ export default class Modal extends React.Component {
         {!hideFooter && (
           <div className={styles.footer}>
             <div className={classnames({ [styles.operationBtn]: !isDialog })}>
-              <Button type="primary" onClick={onOk}>
+              <Button type={btnType} onClick={onOk}>
                 {okText || t('Confirm')}
               </Button>
               <Button type="default" onClick={onCancel}>

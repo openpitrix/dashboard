@@ -18,6 +18,8 @@ export default class AppStore extends Store {
 
   @observable allApps = [];
 
+  @observable allAppsOfCurrentCate = [];
+
   @observable homeApps = [];
 
   // store page category apps
@@ -163,7 +165,12 @@ export default class AppStore extends Store {
   @action
   fetchAll = async (params = {}) => {
     const keepAll = Boolean(params.keepAll);
-    params = this.normalizeParams(_.omit(params, ['keepAll']));
+    // keep all apps for current category
+    const keepAllForCate = Boolean(params.keepAllForCate);
+
+    params = this.normalizeParams(
+      _.omit(params, ['keepAll', 'keepAllForCate'])
+    );
 
     if (params.app_id) {
       delete params.status;
@@ -173,7 +180,9 @@ export default class AppStore extends Store {
       params.search_word = this.searchWord;
     }
     if (this.categoryId) {
-      params.category_id = this.categoryId;
+      if (keepAllForCate || !keepAll) {
+        params.category_id = this.categoryId;
+      }
     }
     if (this.repoId) {
       params.repo_id = this.repoId;
@@ -200,6 +209,10 @@ export default class AppStore extends Store {
     if (keepAll) {
       // shallow copy apps
       this.allApps = [...this.apps];
+    }
+
+    if (keepAllForCate) {
+      this.allAppsOfCurrentCate = [...this.apps];
     }
 
     this.totalCount = get(result, 'total_count', 0);
@@ -286,10 +299,6 @@ export default class AppStore extends Store {
     this.isLoading = true;
     this.createResult = await this.request.patch('apps', params);
     this.isLoading = false;
-
-    if (hasNote && get(this.createResult, 'app_id')) {
-      this.info('应用信息保存成功');
-    }
   };
 
   @action
@@ -546,12 +555,12 @@ export default class AppStore extends Store {
     this.repoId = '';
     this.userId = '';
 
-    this.selectedRowKeys = [];
-    this.appIds = [];
+    this.cancelSelected();
 
     this.apps = [];
     this.allApps = [];
     this.appDetail = {};
+    this.allAppsOfCurrentCate = [];
   };
 
   @action

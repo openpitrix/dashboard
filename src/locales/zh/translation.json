@@ -523,5 +523,10 @@
   "App category": "应用分类",
   "Customize": "自定义",
   "Adjust category": "调整分类",
-  "Chosen category": "所选分类"
+  "Chosen category": "所选分类",
+
+  "TIPS_ADJUST_APP_CATE": "请为已选择的 {{appNames}} 等 {{appCount}} 个应用调整所属分类",
+  "App category not change": "应用分类未更改",
+  "Adjust apps category successfully": "应用分类调整完毕",
+  "TIPS_DELETE_CATE": "分类「{{cateName}}」被删除之后，其中的 {{appNames}} 等 {{appCount}} 个应用将自动归到「未归类」中。"
 }
