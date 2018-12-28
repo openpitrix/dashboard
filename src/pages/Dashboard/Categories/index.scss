@@ -1,20 +1,6 @@
 @import '~scss/vars';
 
-.pageTitle{
-  height: 24px;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  color: $N500;
-}
-
 .page {
-  .leftPanel {
-
-  }
-  .rightPanel {
-
-  }
   .summary {
     margin-bottom: 22px;
   }
@@ -99,82 +85,39 @@
   margin-top: 20px;
 }
 
-.categories{
-  text-align: center;
-  padding: 12px 24px;
-
-  .line{
+.fmCtrl {
+  padding-left: 35px;
+  margin-bottom: 30px;
+  .label {
     display: inline-block;
-    width: 330px;
-    height: 1px;
-    border-bottom: 1px solid $N30;
+    margin-right: 20px;
   }
-
-  .word{
+  .name {
+    min-width: 256px;
+  }
+  &>div {
     display: inline-block;
+  }
+  .icons {
     position: relative;
-    bottom: 10px;
-    padding: 0 7px;
-    line-height:20px;
-    font-size: 12px;
-    color: $N100;
-    background: $background-color;
-  }
-}
+    margin-left: 40px;
+    margin-top: -15px;
+    .icon {
+      margin-right: 12px;
+      cursor: pointer;
+      opacity: 0.5;
 
-.categoryContent {
-  display: inline-block;
-  position: relative;
-  width: calc(33.333% - 16px);
-  margin: 0 24px 24px 0;
-
-  &:nth-child(3n+3) {
-    margin-right: 0;
-  }
-
-  .handlePop {
-    position: absolute;
-    right: 24px;
-    top: 24px;
-
-    :global {
-      .pi-popover-popper {
-         margin-left: -90px !important;
-       }
-    }
-  }
-
-  .rectangle{
-    display: inline-block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 24px;
-    height: 140px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-
-    .title a{
-      display: block;
-      margin-bottom: 16px;
-      font-size: 20px;
-      line-height: 24px;
-      font-weight: 500;
-      color: $N500;
-      @include textCut;
-    }
-
-    &:hover {
-      .title a {
-        color: $P75;
+      &:hover, &.active {
+        opacity: 1;
+        svg {
+          --primary-color: #{$P300};
+          --secondary-color: #{$P45};
+        }
       }
     }
   }
 }
 
-.unCategorized{
-  width: 100%;
+.dialogFooter{
+  margin-left: 75px;
 }
-
-
-
-

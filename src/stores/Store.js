@@ -28,6 +28,9 @@ Store.prototype = {
   info(message) {
     this.notify(message, 'info');
   },
+  warn(message) {
+    this.notify(message, 'warning');
+  },
   success(message) {
     this.notify(message, 'success');
   },

@@ -244,3 +244,10 @@ export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
  * @param type
  */
 export const isHelm = type => ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());
+
+export const makeArray = val => {
+  if (!Array.isArray(val)) {
+    return [val];
+  }
+  return val;
+};

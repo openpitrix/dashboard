@@ -16,10 +16,6 @@ export default class AppStore extends Store {
 
   @observable apps = [];
 
-  @observable allApps = [];
-
-  @observable allAppsOfCurrentCate = [];
-
   @observable homeApps = [];
 
   // store page category apps
@@ -164,13 +160,10 @@ export default class AppStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    const keepAll = Boolean(params.keepAll);
-    // keep all apps for current category
-    const keepAllForCate = Boolean(params.keepAllForCate);
+    // dont mutate observables, just return results
+    const noMutate = Boolean(params.noMutate);
 
-    params = this.normalizeParams(
-      _.omit(params, ['keepAll', 'keepAllForCate'])
-    );
+    params = this.normalizeParams(_.omit(params, ['noMutate']));
 
     if (params.app_id) {
       delete params.status;
@@ -179,11 +172,11 @@ export default class AppStore extends Store {
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }
-    if (this.categoryId) {
-      if (keepAllForCate || !keepAll) {
-        params.category_id = this.categoryId;
-      }
+
+    if (this.categoryId && !params.category_id) {
+      params.category_id = this.categoryId;
     }
+
     if (this.repoId) {
       params.repo_id = this.repoId;
     }
@@ -200,22 +193,22 @@ export default class AppStore extends Store {
 
     const result = await this.request.get('apps', params);
     const apps = get(result, 'app_set', []);
+    const totalCount = get(result, 'total_count', 0);
+
+    if (noMutate) {
+      return {
+        apps,
+        totalCount
+      };
+    }
+
     if (params.loadMore) {
       this.apps = _.concat(this.apps.slice(), apps);
     } else {
       this.apps = apps;
     }
 
-    if (keepAll) {
-      // shallow copy apps
-      this.allApps = [...this.apps];
-    }
-
-    if (keepAllForCate) {
-      this.allAppsOfCurrentCate = [...this.apps];
-    }
-
-    this.totalCount = get(result, 'total_count', 0);
+    this.totalCount = totalCount;
 
     // appCount for show repo datail page "App Count"
     if (!this.searchWord && !this.selectStatus) {
@@ -558,9 +551,7 @@ export default class AppStore extends Store {
     this.cancelSelected();
 
     this.apps = [];
-    this.allApps = [];
     this.appDetail = {};
-    this.allAppsOfCurrentCate = [];
   };
 
   @action

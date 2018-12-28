@@ -1,38 +1,34 @@
 import React, { Fragment, Component } from 'react';
-import { computed } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import {
-  Input, Icon, Modal, Button, Select
+  Input, Icon, Button, Select
 } from 'components/Base';
 import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import AppsTable from 'components/AppsTable';
+import Loading from 'components/Loading';
+import { getIconList } from 'utils/icons';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  categoryStore: rootStore.categoryStore
+  categoryStore: rootStore.categoryStore,
+  isModalOpen: rootStore.categoryStore.isModalOpen
 }))
 @observer
 export default class Categories extends Component {
-  @computed
-  get allAppsOfCurrentCate() {
-    return this.props.appStore.allAppsOfCurrentCate;
-  }
-
   async componentDidMount() {
-    const { categoryStore } = this.props;
+    const { categoryStore, appStore } = this.props;
     const { changeCategory } = categoryStore;
 
+    appStore.defaultStatus = ['active'];
     await categoryStore.fetchAll({ noLimit: true });
-
     await categoryStore.updateAppCategoryCounts();
 
     changeCategory(_.first(categoryStore.categories));
@@ -42,38 +38,31 @@ export default class Categories extends Component {
     const { categoryStore, appStore } = this.props;
     categoryStore.reset();
     appStore.reset();
+    appStore.defaultStatus = [];
   }
 
-  // renderHandleMenu = category => {
-  //   const { categoryStore, t } = this.props;
-  //   const { showDeleteCategory, showModifyCategory } = categoryStore;
-  //
-  //   return (
-  //     <div className="operate-menu">
-  //       <Link to={`/dashboard/category/${category.category_id}`}>
-  //         {t('View detail')}
-  //       </Link>
-  //       <span onClick={showModifyCategory.bind(categoryStore, category)}>
-  //         {t('Modify Category')}
-  //       </span>
-  //       <span onClick={showDeleteCategory.bind(categoryStore, category)}>
-  //         {t('Delete')}
-  //       </span>
-  //     </div>
-  //   );
-  // };
+  componentDidUpdate(prevProps) {
+    const {
+      isModalOpen,
+      modalType,
+      selectedCategory,
+      createdCate
+    } = this.props.categoryStore;
+    if (!prevProps.isModalOpen && isModalOpen && modalType === 'edit') {
+      Object.assign(
+        createdCate,
+        _.pick({ ...selectedCategory }, ['name', 'description'])
+      );
+    }
+  }
 
   showOperation = async type => {
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore } = this.props;
     const { showModal } = categoryStore;
     showModal(type);
-    if (type === 'delete') {
-      // fetch all apps for current category
-      await appStore.fetchAll({
-        noLimit: true,
-        keepAllForCate: true,
-        noLoading: true
-      });
+
+    if (type === 'customize') {
+      categoryStore.createdCate = { name: '', description: '' };
     }
   };
 
@@ -81,7 +70,6 @@ export default class Categories extends Component {
     const { categoryStore, appStore, t } = this.props;
     const {
       categories,
-      category,
       selectedCategory,
       modalType,
       isModalOpen,
@@ -94,35 +82,73 @@ export default class Categories extends Component {
       return null;
     }
 
-    const { allApps, appIds } = appStore;
+    const { apps, appIds } = appStore;
     const appNames = _.map(
       appIds,
-      id => (_.find(allApps, { app_id: id }) || {}).name || ''
+      id => (_.find(apps, { app_id: id }) || {}).name || ''
     );
 
-    if (modalType === 'edit') {
-      let modalTitle = t('Create Category');
-      if (category && category.category_id) {
-        modalTitle = t('Modify Category');
-      }
+    if (['edit', 'customize'].includes(modalType)) {
+      const isEdit = modalType === 'edit';
+      const title = isEdit ? t('Modify category') : t('创建新分类');
+      const okText = isEdit ? t('Submit') : t('Create');
+
+      const {
+        createdCate,
+        changeCreatedCateName,
+        changeCreatedCateDesc
+      } = categoryStore;
+      const { name, description } = createdCate;
+      const icons = getIconList();
 
       return (
         <Dialog
-          title={modalTitle}
+          title={title}
           visible={isModalOpen}
           onSubmit={handleOperation}
           onCancel={hideModal}
+          okText={okText}
+          footerCls={styles.dialogFooter}
         >
-          <p>edit category</p>
+          <div className={styles.fmCtrl}>
+            <label htmlFor="name" className={styles.label}>
+              {t('Name')}
+            </label>
+            <div>
+              <Input
+                className={styles.name}
+                value={name}
+                onChange={changeCreatedCateName}
+              />
+            </div>
+          </div>
+          <div className={styles.fmCtrl}>
+            <label htmlFor="desc" className={styles.label}>
+              {t('图标')}
+            </label>
+            <div className={styles.icons}>
+              {icons.map((icon, idx) => (
+                <Icon
+                  className={classnames(styles.icon, {
+                    [styles.active]: description === icon
+                  })}
+                  name={icon}
+                  size={24}
+                  type="dark"
+                  key={idx}
+                  onClick={() => changeCreatedCateDesc(icon)}
+                />
+              ))}
+            </div>
+          </div>
         </Dialog>
       );
     }
 
     if (modalType === 'delete') {
-      const cateAppsNames = filterApps(
-        selectedCategory.category_id,
-        this.allAppsOfCurrentCate
-      ).map(app => app.name);
+      const cateAppsNames = filterApps(selectedCategory.category_id).map(
+        app => app.name
+      );
 
       return (
         <Dialog
@@ -138,17 +164,6 @@ export default class Categories extends Component {
             appCount: cateAppsNames.length
           })}
         </Dialog>
-      );
-    }
-
-    if (modalType === 'customize') {
-      return (
-        <Dialog
-          title={t('创建新分类')}
-          visible={isModalOpen}
-          onSubmit={handleOperation}
-          onCancel={hideModal}
-        />
       );
     }
 
@@ -192,7 +207,7 @@ export default class Categories extends Component {
           onSubmit={handleOperation}
           onCancel={hideModal}
         >
-          {t('Delete Category desc')}
+          <p>add app to cate</p>
         </Dialog>
       );
     }
@@ -204,7 +219,7 @@ export default class Categories extends Component {
       categories,
       selectedCategory,
       changeCategory,
-      filterApps
+      cateAppsCount
     } = categoryStore;
 
     const normalizeCates = categories.filter(
@@ -219,21 +234,26 @@ export default class Categories extends Component {
 
     return (
       <ul className={styles.cates}>
-        {_.map(normalizeCates, ({ name, category_id }) => (
-          <li
-            key={category_id}
-            className={classnames(styles.item, {
-              [styles.active]: selectedCategory.category_id === category_id
-            })}
-            onClick={() => changeCategory({ name, category_id })}
-          >
-            <Icon name={name} type="dark" />
-            <span className={styles.name}>{t(name)}</span>
-            <span className={styles.count}>
-              {filterApps(category_id).length}
-            </span>
-          </li>
-        ))}
+        {_.map(
+          normalizeCates,
+          ({
+            name, description, category_id, icon = ''
+          }) => (
+            <li
+              key={category_id}
+              className={classnames(styles.item, {
+                [styles.active]: selectedCategory.category_id === category_id
+              })}
+              onClick={() => changeCategory({ name, description, category_id })}
+            >
+              <Icon name={icon || description} type="dark" />
+              <span className={styles.name}>{t(name)}</span>
+              <span className={styles.count}>
+                {cateAppsCount[category_id] || 0}
+              </span>
+            </li>
+          )
+        )}
         <li
           className={styles.btnAdd}
           onClick={() => this.showOperation('customize')}
@@ -327,19 +347,21 @@ export default class Categories extends Component {
             {this.renderMenu()}
           </Section>
           <Section size={9} className={styles.rightPanel}>
-            <div className={styles.topActions}>
-              <span className={styles.choosen}>{t('Chosen category')}: </span>
-              <span className={styles.name}>{t(selectedCategory.name)}</span>
-              <div className={styles.actions}>
-                <span onClick={() => this.showOperation('edit')}>
-                  {t('Edit')}
-                </span>
-                <span onClick={() => this.showOperation('delete')}>
-                  {t('Delete')}
-                </span>
+            <Loading isLoading={isLoading}>
+              <div className={styles.topActions}>
+                <span className={styles.choosen}>{t('Chosen category')}: </span>
+                <span className={styles.name}>{t(selectedCategory.name)}</span>
+                <div className={styles.actions}>
+                  <span onClick={() => this.showOperation('edit')}>
+                    {t('Edit')}
+                  </span>
+                  <span onClick={() => this.showOperation('delete')}>
+                    {t('Delete')}
+                  </span>
+                </div>
               </div>
-            </div>
-            {this.renderContent()}
+              {this.renderContent()}
+            </Loading>
             {this.renderModals()}
           </Section>
         </Grid>
