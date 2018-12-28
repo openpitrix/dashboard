@@ -177,7 +177,9 @@ export default class Versions extends Component {
   }
 
   render() {
-    const { appVersionStore, appStore, match, t } = this.props;
+    const {
+      appVersionStore, appStore, match, t
+    } = this.props;
     const { typeVersions } = appVersionStore;
     const { appDetail } = appStore;
     const types = typeVersions.map(item => item.type);

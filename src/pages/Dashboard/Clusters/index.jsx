@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Button, Table, Popover } from 'components/Base';
+import {
+  Icon, Button, Table, Popover
+} from 'components/Base';
 import Layout, { Dialog, Row } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -27,7 +29,9 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   async componentDidMount() {
-    const { clusterStore, runtimeStore, userStore, user, match } = this.props;
+    const {
+      clusterStore, runtimeStore, userStore, user, match
+    } = this.props;
     const { appId } = match.params;
     const { isAdmin } = user;
 
@@ -59,7 +63,9 @@ export default class Clusters extends Component {
     clusterStore.reset();
   }
 
-  listenToJob = async ({ op, rtype, rid, values = {} }) => {
+  listenToJob = async ({
+    op, rtype, rid, values = {}
+  }) => {
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
     const status = _.pick(values, ['status', 'transition_status']);
@@ -247,8 +253,12 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { clusterStore, appStore, userStore, user, match, t } = this.props;
-    const { summaryInfo, clusters, isLoading, onlyView } = clusterStore;
+    const {
+      clusterStore, appStore, userStore, user, match, t
+    } = this.props;
+    const {
+      summaryInfo, clusters, isLoading, onlyView
+    } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
     const { apps } = appStore;
@@ -310,8 +320,7 @@ export default class Clusters extends Component {
         title: t('Creater'),
         key: 'owner',
         width: '100px',
-        render: item =>
-          getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Created At'),

@@ -35,8 +35,8 @@ export default class UserProvider {
 
   get isDev() {
     return (
-      this.changedRole === ROLE_DEV ||
-      (this.changedRole !== ROLE_NORMAL && this.role === ROLE_DEV)
+      this.changedRole === ROLE_DEV
+      || (this.changedRole !== ROLE_NORMAL && this.role === ROLE_DEV)
     );
   }
 
@@ -46,9 +46,9 @@ export default class UserProvider {
 
   get isISV() {
     return (
-      this.changedRole !== ROLE_DEV &&
-      this.role === ROLE_ADMIN &&
-      this.username === 'isv'
+      this.changedRole !== ROLE_DEV
+      && this.role === ROLE_ADMIN
+      && this.username === 'isv'
     );
   }
 }

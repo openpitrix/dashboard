@@ -25,7 +25,7 @@ export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset
     : (document.documentElement || document.body.parentNode || document.body)
-        .scrollTop;
+      .scrollTop;
 }
 
 export function getScrollBottom() {
@@ -243,5 +243,4 @@ export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
  * check if app provider is helm, or query string type is helm
  * @param type
  */
-export const isHelm = type =>
-  ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());
+export const isHelm = type => ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());

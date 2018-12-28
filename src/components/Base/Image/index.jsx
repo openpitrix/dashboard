@@ -34,9 +34,9 @@ export default class Image extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      nextProps.src !== this.props.src ||
-      Boolean(nextState.failed) ||
-      Boolean(nextProps.iconLetter)
+      nextProps.src !== this.props.src
+      || Boolean(nextState.failed)
+      || Boolean(nextProps.iconLetter)
     );
   }
 

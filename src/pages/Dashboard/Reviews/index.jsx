@@ -50,7 +50,9 @@ export default class Reviews extends Component {
   };
 
   render() {
-    const { appVersionStore, appStore, userStore, t } = this.props;
+    const {
+      appVersionStore, appStore, userStore, t
+    } = this.props;
     const { versions, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const { users } = userStore;
@@ -90,8 +92,7 @@ export default class Reviews extends Component {
         title: t('提交者'),
         key: 'developer',
         width: '80px',
-        render: item =>
-          getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('提交时间'),

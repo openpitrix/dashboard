@@ -1,5 +1,7 @@
 import { observable, action } from 'mobx';
-import _, { get, assign, capitalize, assignIn } from 'lodash';
+import _, {
+  get, assign, capitalize, assignIn
+} from 'lodash';
 import { Base64 } from 'js-base64';
 
 import ts from 'config/translation';

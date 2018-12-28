@@ -7,7 +7,9 @@ import _ from 'lodash';
 import classnames from 'classnames';
 
 import { Image, Button } from 'components/Base';
-import Layout, { Grid, Section, Card, Dialog } from 'components/Layout';
+import Layout, {
+  Grid, Section, Card, Dialog
+} from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
@@ -89,7 +91,9 @@ export default class ReviewDetail extends Component {
 
   renderReasonDialog = () => {
     const { appVersionStore, t } = this.props;
-    const { isDialogOpen, hideModal, changeReason, reason } = appVersionStore;
+    const {
+      isDialogOpen, hideModal, changeReason, reason
+    } = appVersionStore;
 
     return (
       <Dialog
@@ -258,8 +262,8 @@ export default class ReviewDetail extends Component {
           </label>
         </Card>
 
-        {reviewDetail.status &&
-          reviewRoles.map(role => (
+        {reviewDetail.status
+          && reviewRoles.map(role => (
             <div key={role}>{this.renderReviewCard(role)}</div>
           ))}
       </div>

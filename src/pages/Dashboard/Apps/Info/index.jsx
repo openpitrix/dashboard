@@ -6,7 +6,9 @@ import { translate } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 
-import { Input, Select, Icon, Button, Upload, Image } from 'components/Base';
+import {
+  Input, Select, Icon, Button, Upload, Image
+} from 'components/Base';
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 
@@ -32,7 +34,9 @@ export default class Info extends Component {
   };
 
   async componentDidMount() {
-    const { appStore, appVersionStore, categoryStore, match } = this.props;
+    const {
+      appStore, appVersionStore, categoryStore, match
+    } = this.props;
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
@@ -62,8 +66,7 @@ export default class Info extends Component {
 
   changePreview = type => {
     const { appDetail } = this.props.appStore;
-    const previewType =
-      type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
+    const previewType = type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
     appDetail[previewType] = !appDetail[previewType];
   };
 
@@ -121,7 +124,9 @@ export default class Info extends Component {
 
   renderIcon() {
     const { appStore, t } = this.props;
-    const { isEdit, appDetail, checkIcon, uploadIcon, deleteIcon } = appStore;
+    const {
+      isEdit, appDetail, checkIcon, uploadIcon, deleteIcon
+    } = appStore;
     const { icon } = appDetail;
 
     if (icon) {
@@ -152,8 +157,7 @@ export default class Info extends Component {
   renderMakdownNote = type => {
     const { appStore, t } = this.props;
     const { appDetail, isEdit, saveAppInfo } = appStore;
-    const previewType =
-      type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
+    const previewType = type === 'readme' ? 'isPreviewReadme' : 'isPreviewService';
     const isPreview = appDetail[previewType];
 
     return (
@@ -238,7 +242,9 @@ export default class Info extends Component {
   }
 
   renderBaseInfo() {
-    const { appStore, categoryStore, isCheckInfo, t } = this.props;
+    const {
+      appStore, categoryStore, isCheckInfo, t
+    } = this.props;
     const { categories } = categoryStore;
     const {
       appDetail,
@@ -377,7 +383,9 @@ export default class Info extends Component {
   }
 
   render() {
-    const { appStore, isCheckInfo, match, t } = this.props;
+    const {
+      appStore, isCheckInfo, match, t
+    } = this.props;
     const { isEdit } = appStore;
     const appId = _.get(match, 'params.appId', '');
 

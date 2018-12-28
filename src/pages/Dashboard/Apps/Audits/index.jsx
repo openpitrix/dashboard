@@ -30,7 +30,9 @@ export default class Audits extends Component {
   }
 
   async componentDidMount() {
-    const { appVersionStore, appStore, userStore, match } = this.props;
+    const {
+      appVersionStore, appStore, userStore, match
+    } = this.props;
     const { appId } = match.params;
 
     // query this app detail info
@@ -177,9 +179,9 @@ export default class Audits extends Component {
             onClick={() => this.changeType(type)}
             className={classnames({ [styles.active]: activeType === type })}
           >
-            {(_.find(versionTypes, { value: type }) || {}).name ||
-              type ||
-              t('None')}
+            {(_.find(versionTypes, { value: type }) || {}).name
+              || type
+              || t('None')}
           </label>
         ))}
       </div>
