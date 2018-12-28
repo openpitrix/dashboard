@@ -46,7 +46,7 @@
 }
 
 .createForm {
-  margin: 24px 24px 24px 60px;
+  margin: 24px 24px 24px 50px;
   .item {
     margin-bottom: 32px;
     clear: both;
@@ -209,7 +209,7 @@
     line-height: 24px;
     font-size: 12px;
     color: $N300;
-    
+
     &::placeholder {
       color: $N30;
     }

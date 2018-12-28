@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
-import { getFormData, getProgress } from 'utils';
+import { getProgress } from 'utils';
 import ts from 'config/translation';
 import { t } from 'i18next';
 
@@ -297,9 +297,9 @@ export default class AppStore extends Store {
   };
 
   @action
-  modifyApp = async e => {
-    if (e) {
-      e.preventDefault();
+  modifyApp = async event => {
+    if (event) {
+      event.preventDefault();
     }
 
     const data = _.pick(this.appDetail, [
@@ -311,15 +311,12 @@ export default class AppStore extends Store {
     ]);
 
     await this.modify(
-      _.assign(
-        data,
-        {
-          app_id: this.appDetail.app_id,
-          category_id: this.appDetail.category_id,
-          icon: this.appDetail.icon
-        },
-        Boolean(e)
-      )
+      _.assign(data, {
+        app_id: this.appDetail.app_id,
+        category_id: this.appDetail.category_id,
+        icon: this.appDetail.icon
+      }),
+      Boolean(event)
     );
   };
 
@@ -434,7 +431,8 @@ export default class AppStore extends Store {
   @action
   remove = async () => {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
-    const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
+    const ids =
+      this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {

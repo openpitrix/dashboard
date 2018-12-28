@@ -143,8 +143,9 @@
   "Working": "工作中",
   "Updating": "更新中",
   "Stopping": "停止中",
-  "Submitted": "已提交",
+  "Submitted": "等待审核",
   "Submit": "提交",
+  "Review": "审核",
   "Pass": "通过",
   "Reject": "拒绝",
   "Release": "发布",
@@ -153,6 +154,8 @@
   "Published": "已上架",
   "Recalled": "已下架",
   "Recall": "下架",
+
+  "In-review": "审核中",
 
   "public": "公共",
   "private": "私有",

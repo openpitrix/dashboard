@@ -7,8 +7,9 @@ import _ from 'lodash';
 import { Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-
 import versionTypes from 'config/version-types';
+import { formatTime } from 'utils';
+
 import styles from './index.scss';
 
 @translate()
@@ -29,9 +30,7 @@ export default class Audits extends Component {
   }
 
   async componentDidMount() {
-    const {
-      appVersionStore, appStore, userStore, match
-    } = this.props;
+    const { appVersionStore, appStore, userStore, match } = this.props;
     const { appId } = match.params;
 
     // query this app detail info
@@ -148,7 +147,9 @@ export default class Audits extends Component {
               }
             </label>
             <label className={styles.reason}>{this.renderReason(audit)}</label>
-            <label className={styles.time}>{audit.status_time}</label>
+            <label className={styles.time}>
+              {formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}
+            </label>
             {audit.isExpand && (
               <pre
                 onClick={() => this.toggleReason(audit)}
@@ -176,9 +177,9 @@ export default class Audits extends Component {
             onClick={() => this.changeType(type)}
             className={classnames({ [styles.active]: activeType === type })}
           >
-            {(_.find(versionTypes, { value: type }) || {}).name
-              || type
-              || t('None')}
+            {(_.find(versionTypes, { value: type }) || {}).name ||
+              type ||
+              t('None')}
           </label>
         ))}
       </div>

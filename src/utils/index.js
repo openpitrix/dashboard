@@ -1,11 +1,17 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
+
 import ts from '../config/translation';
 
-export function formatTime(time, format = '') {
-  if (!format) {
-    const lang = getCookie('lang');
-    format = lang === 'zh' ? 'YYYY年MM月DD日' : 'YYYY/MM/DD';
+const formatMap = {
+  'YYYY/MM/DD': 'YYYY年MM月DD日',
+  'YYYY/MM/DD HH:mm:ss': 'YYYY年MM月DD日 HH:mm:ss'
+};
+
+export function formatTime(time, format = 'YYYY/MM/DD') {
+  time = time || new Date();
+  if (getCookie('lang') === 'zh') {
+    format = formatMap[format] || format;
   }
 
   const parsedTs = day(time);
@@ -19,7 +25,7 @@ export function getScrollTop() {
   return window.pageYOffset !== undefined
     ? window.pageYOffset
     : (document.documentElement || document.body.parentNode || document.body)
-      .scrollTop;
+        .scrollTop;
 }
 
 export function getScrollBottom() {
@@ -237,4 +243,5 @@ export const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
  * check if app provider is helm, or query string type is helm
  * @param type
  */
-export const isHelm = type => ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());
+export const isHelm = type =>
+  ['kubernetes', 'helm', 'k8s'].includes(`${type}`.toLowerCase());

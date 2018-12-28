@@ -55,9 +55,9 @@ const routes = {
   '/:dash/application/:providerId': Dash.ApplicationDetail,
   '/:dash/provider-detail': Dash.ApplicationDetail,
 
-  '/:dash/app/:appId/customer-instances': Dash.Clusters,
+  '/:dash/app/:appId/user-instances': Dash.Clusters,
   '/:dash/app/:appId/sandbox-instances': Dash.Clusters,
-  '/:dash/app/:appId/customer-instance/:clusterId': Dash.ClusterDetail,
+  '/:dash/app/:appId/user-instance/:clusterId': Dash.ClusterDetail,
   '/:dash/app/:appId/sandbox-instance/:clusterId': Dash.ClusterDetail,
 
   '/:dash/clusters': Dash.Clusters,

@@ -5,9 +5,7 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {
-  Icon, Image, Button, Popover, Upload
-} from 'components/Base';
+import { Icon, Image, Button, Popover, Upload } from 'components/Base';
 import Layout, {
   Grid,
   Section,
@@ -20,6 +18,7 @@ import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import versionTypes from 'config/version-types';
+import { formatTime } from 'utils';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
 
@@ -29,7 +28,8 @@ const actionType = {
   draft: 'submit',
   submitted: 'submit',
   passed: 'release',
-  rejected: 'submit'
+  rejected: 'submit',
+  active: 'active'
 };
 const actionName = {
   submit: 'Submit review',
@@ -321,7 +321,9 @@ export default class VersionDetail extends Component {
             }
           </div>
           {this.renderReason(audit)}
-          <div className={styles.time}>{audit.status_time}</div>
+          <div className={styles.time}>
+            {formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}
+          </div>
         </div>
         <div className={styles.link}>
           <Link to={`/dashboard/app/${version.app_id}/audits`}>
@@ -395,7 +397,8 @@ export default class VersionDetail extends Component {
               {packageName || `${appDetail.name} ${version.name}`}
             </div>
             <div className={styles.time}>
-              {t('Upload time')}：{version.status_time}
+              {t('Upload time')}:&nbsp;
+              {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
               <span
                 className={styles.link}
                 onClick={() => downloadPackage(version.version_id)}
@@ -441,7 +444,7 @@ export default class VersionDetail extends Component {
     const { appVersionStore, appStore, t } = this.props;
     const { version } = appVersionStore;
     const { appDetail } = appStore;
-    const handleType = actionType[version.status] || version.status;
+    const handleType = actionType[version.status];
     const hasOperate = !['suspended', 'deleted'].includes(version.status);
 
     return (
@@ -454,7 +457,7 @@ export default class VersionDetail extends Component {
           </div>
           <div className={styles.secondary}>
             <label>
-              {t('Its application')}:
+              {t('Its application')}:&nbsp;
               <span className={styles.appName}>
                 <span className={styles.imgOuter}>
                   <Image
@@ -467,11 +470,12 @@ export default class VersionDetail extends Component {
               </span>
             </label>
             <label>
-              {t('Version')}ID:
+              {t('Version')}ID:&nbsp;
               <span className={styles.versionId}>{version.version_id}</span>
             </label>
             <label>
-              {t('Update time')}: {version.status_time}
+              {t('Update time')}:&nbsp;
+              {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
             </label>
           </div>
         </div>
@@ -482,7 +486,7 @@ export default class VersionDetail extends Component {
               type="primary"
               onClick={() => this.handleVersion(handleType)}
             >
-              {t(actionName[handleType])}
+              {t(actionName[handleType] || version.status)}
             </Button>
             <Popover
               className={styles.operation}
@@ -517,9 +521,7 @@ export default class VersionDetail extends Component {
   }
 
   render() {
-    const {
-      appVersionStore, appStore, match, t
-    } = this.props;
+    const { appVersionStore, appStore, match, t } = this.props;
     const { activeStep, dialogType, isSubmitCheck } = appVersionStore;
     const { detailTab } = appStore;
     const { appId } = match.params;

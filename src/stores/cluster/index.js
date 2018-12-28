@@ -45,6 +45,8 @@ export default class ClusterStore extends Store {
 
   @observable versionId = '';
 
+  @observable onlyView = false; // user-instances only view, can't operate
+
   // cluster job queue
   @observable
   jobs = {
@@ -266,6 +268,7 @@ export default class ClusterStore extends Store {
     this.appId = '';
     this.runtimeId = '';
     this.userId = '';
+    this.onlyView = false;
 
     this.selectedRowKeys = [];
     this.clusterIds = [];
