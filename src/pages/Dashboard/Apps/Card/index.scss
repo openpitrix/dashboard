@@ -1,11 +1,11 @@
 @import '~scss/vars';
 .container {
+  @include note-font;
   padding: 32px;
   background: $N0;
   box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
   width: calc(25% - 20px);
   margin: 0 10px 20px;
-  color: $N75;
   cursor: pointer;
   .status {
     height: inherit;
@@ -26,19 +26,21 @@
 }
 
 .name {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 2;
-  color: $N500;
+  @include title-font;
+  @include textCut;
+  max-width: 148px;
 }
 
-.icon {
+.imageOuter {
+  display: inline-block;
+  margin-right: 8px;
   width: 48px;
   height: 48px;
-  margin-right: 8px;
+  line-height: 48px;
 }
 
 .description {
+  @include note-font;
   display: -webkit-box;
   /* autoprefixer: off */
   -webkit-box-orient: vertical;
@@ -48,14 +50,11 @@
   margin: 20px 0;
   height: 60px;
   width: 100%;
-  font-size: 14px;
-  line-height: 20px;
-  color: $N75;
   overflow: hidden;
 }
 
 .deliverTypes {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .deliverType {
   margin-right: 12px;

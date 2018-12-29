@@ -26,7 +26,7 @@ export default class Versions extends Component {
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
-      await appStore.fetch(appId);
+      // await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
     }
   }

@@ -37,19 +37,15 @@ export default class AppCard extends Component {
         }}
       >
         <div className={styles.title}>
-          <Image
-            className={styles.icon}
-            iconLetter={name}
-            src={icon}
-            iconSize={48}
-            alt="logo"
-          />
+          <label className={styles.imageOuter}>
+            <Image iconLetter={name} src={icon} iconSize={48} alt="logo" />
+          </label>
           <div>
-            <span className={styles.name}>{name}</span>
+            <p className={styles.name}>{name}</p>
             <Status className={styles.status} name={status} type={status} />
           </div>
         </div>
-        <div className={styles.description}>{description}</div>
+        <pre className={styles.description}>{description}</pre>
         <div className={styles.deliverTypes}>
           <span>{t('Delivery type')}：</span>
           {versions.map(type => (

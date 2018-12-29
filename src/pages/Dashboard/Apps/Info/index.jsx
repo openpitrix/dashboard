@@ -40,7 +40,7 @@ export default class Info extends Component {
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
-      await appStore.fetch(appId);
+      // await appStore.fetch(appId);
 
       // query this version relatived app info
       await appVersionStore.fetchAll({ app_id: appId });

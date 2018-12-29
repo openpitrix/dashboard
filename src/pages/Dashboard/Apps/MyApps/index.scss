@@ -41,6 +41,14 @@
       background: $background-color;
       border-color: transparent;
       color: $N45;
+
+      &:hover {
+       border-color: $N10;
+      }
+
+      &:focus {
+        border-color: $P75;
+      }
     }
   }
 

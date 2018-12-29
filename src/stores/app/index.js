@@ -110,14 +110,40 @@ class AppStore extends Store {
 
   @action
   fetchMenuApps = async () => {
-    const params = {
-      sort_key: 'status_time',
-      limit: 5,
-      status: defaultStatus
-    };
-    const result = await this.request.get('apps', params);
-    this.menuApps = get(result, 'app_set', []);
-    this.hasMeunApps = true;
+    const menuApps = localStorage.getItem('menuApps');
+
+    if (!menuApps) {
+      const params = {
+        sort_key: 'status_time',
+        limit: 5,
+        status: defaultStatus
+      };
+      const result = await this.request.get('apps', params);
+
+      this.menuApps = get(result, 'app_set', []);
+      localStorage.setItem('menuApps', JSON.stringify(this.menuApps));
+    } else {
+      this.menuApps = JSON.parse(menuApps);
+    }
+  };
+
+  @action
+  fetchMeunApp = async appId => {
+    const menuApps = localStorage.getItem('menuApps');
+    const apps = JSON.parse(menuApps || '[]');
+    const appDetail = _.find(apps, { app_id: appId });
+
+    if (appDetail) {
+      this.appDetail = appDetail;
+      // modify info will change app info
+      this.resetAppDetail = appDetail;
+    } else {
+      await this.fetch(appId);
+      apps.unshift(this.appDetail);
+      apps.splice(5, 1);
+      localStorage.setItem('menuApps', JSON.stringify(apps));
+      this.menuApps = apps;
+    }
   };
 
   @action
