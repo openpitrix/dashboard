@@ -97,7 +97,11 @@ export default class Apps extends Component {
 
     const { pageLoading } = this.state;
     if (!pageLoading && !searchWord && apps.length === 0) {
-      return <Empty />;
+      return (
+        <Layout noSubMenu>
+          <Empty />
+        </Layout>
+      );
     }
 
     return (

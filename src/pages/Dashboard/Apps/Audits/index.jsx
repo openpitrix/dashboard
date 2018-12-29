@@ -36,7 +36,7 @@ export default class Audits extends Component {
     const { appId } = match.params;
 
     // query this app detail info
-    await appStore.fetch(appId);
+    // await appStore.fetch(appId);
 
     // query this app all versions
     await appVersionStore.fetchAll({ app_id: appId });
@@ -45,7 +45,9 @@ export default class Audits extends Component {
     const { versions } = appVersionStore;
     const versionId = _.get(versions, '[0].version_id');
     await appVersionStore.fetchAudits(appId, versionId);
-    versions[0].isShowAudits = true;
+    if (_.isObject(versions[0])) {
+      versions[0].isShowAudits = true;
+    }
 
     // query audit relative operators name
     const userIds = _.get(appVersionStore.audits, versionId, []).map(

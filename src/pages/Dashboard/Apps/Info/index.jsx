@@ -40,7 +40,7 @@ export default class Info extends Component {
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
-      await appStore.fetch(appId);
+      // await appStore.fetch(appId);
 
       // query this version relatived app info
       await appVersionStore.fetchAll({ app_id: appId });
@@ -80,6 +80,7 @@ export default class Info extends Component {
       deleteScreenshot
     } = appStore;
 
+    // todo: api screenshots is string, not array
     const { screenshots } = appDetail;
     const len = _.isArray(screenshots) ? screenshots.length : 0;
 

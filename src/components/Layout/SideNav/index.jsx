@@ -60,15 +60,16 @@ class SideNav extends React.Component {
       appStore, user, match, hasSubNav
     } = this.props;
     const { isDev } = user;
-    const { hasMeunApps, fetchMenuApps } = appStore;
+    const { fetchMenuApps, fetchMeunApp } = appStore;
 
     const { appId } = match.params;
-    if (hasSubNav && isDev && appId) {
-      await appStore.fetch(appId);
-    }
 
-    if (isDev && !hasMeunApps) {
+    if (isDev) {
       await fetchMenuApps();
+
+      if (hasSubNav && appId) {
+        fetchMeunApp(appId);
+      }
     }
   }
 
