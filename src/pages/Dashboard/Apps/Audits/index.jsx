@@ -7,8 +7,9 @@ import _ from 'lodash';
 import { Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-
 import versionTypes from 'config/version-types';
+import { formatTime } from 'utils';
+
 import styles from './index.scss';
 
 @translate()
@@ -148,7 +149,9 @@ export default class Audits extends Component {
               }
             </label>
             <label className={styles.reason}>{this.renderReason(audit)}</label>
-            <label className={styles.time}>{audit.status_time}</label>
+            <label className={styles.time}>
+              {formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}
+            </label>
             {audit.isExpand && (
               <pre
                 onClick={() => this.toggleReason(audit)}

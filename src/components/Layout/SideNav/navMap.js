@@ -163,7 +163,7 @@ export const subNavMap = {
           name: 'Appearance',
           link: '#',
           active: 'appearance',
-          isDisabled: true
+          disabled: true
         }
       ]
     },
@@ -184,13 +184,13 @@ export const subNavMap = {
           name: '合约',
           link: '#',
           active: '#',
-          isDisabled: true
+          disabled: true
         },
         {
           name: '保证金',
           link: '#',
           active: '#',
-          isDisabled: true
+          disabled: true
         }
       ]
     },
@@ -225,33 +225,46 @@ export const getDevSubNavs = appId => [
     items: [
       {
         name: 'Version',
-        link: `/dashboard/app/${appId}/versions`
+        link: `/dashboard/app/${appId}/versions`,
+        active: 'versions'
       },
-      { name: 'App information', link: `/dashboard/app/${appId}/info` },
-      { name: 'Record', link: `/dashboard/app/${appId}/audits` }
+      {
+        name: 'App information',
+        link: `/dashboard/app/${appId}/info`,
+        active: 'info'
+      },
+      {
+        name: 'Record',
+        link: `/dashboard/app/${appId}/audits`,
+        active: 'audits'
+      }
     ]
   },
   {
     title: 'Operation and maintenance',
     items: [
-      { name: 'Monitor', link: '#' },
-      { name: 'Event', link: '#' },
-      { name: 'App information', link: '#' }
+      { name: 'Monitor', link: '#', disabled: true },
+      { name: 'Event', link: '#', disabled: true }
     ]
   },
   {
-    title: 'Customer',
+    title: 'User',
     items: [
-      { name: 'Instance', link: `/dashboard/app/${appId}/customer-instances` },
-      { name: 'Work list', link: '#' },
-      { name: 'News', link: '#' }
+      {
+        name: 'Instance',
+        link: `/dashboard/app/${appId}/user-instances`,
+        active: 'user-instances'
+      }
     ]
   },
   {
     title: 'Sandbox',
     items: [
-      { name: 'Instance', link: `/dashboard/app/${appId}/sandbox-instances` },
-      { name: 'Environment', link: '#' }
+      {
+        name: 'Instance',
+        link: `/dashboard/app/${appId}/sandbox-instances`,
+        active: 'sandbox-instances'
+      }
     ]
   }
 ];

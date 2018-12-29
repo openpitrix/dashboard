@@ -25,6 +25,12 @@
   dd {
     @include normal-font;
   }
+
+  .imageOuter {
+    width: 96px;
+    height: 96px;
+    line-height: 96px;
+  }
 }
 
 .configFile {
@@ -72,16 +78,21 @@
 }
 
 .reviewInfo {
+  margin-top: 12px;
+
   .info {
     margin-top: 12px;
   }
 
   dl {
-    margin-bottom: 4px;
     @include note-font;
-    dt, dd {
+    margin-bottom: 4px;
+
+    dt,
+    dd {
       display: inline-block;
     }
+
     dt {
       width: 60px;
     }
@@ -94,40 +105,75 @@
     margin-bottom: 8px;
   }
 
+  .noData {
+    @include note-font;
+  }
+
+  .submit,
+  .unReview,
+  .waitReview,
+  .startReview,
+  .pendingReview,
+  .passed {
+    padding: 12px 20px;
+  }
+
   .name {
     @include title-font;
-    margin-bottom: 16px;
+  }
 
-    .status, .passed {
-      @include note-font;
-      float: right;
-      line-height: 28px;
-      color: $Y300;
+  .status,
+  .time {
+    @include note-font;
+    float: right;
+    line-height: 28px;
+  }
+
+  .unReview {
+    .name,
+    .status {
+      opacity: 0.5;
+    }
+  }
+
+  .waitReview {
+    border: 1px solid $B75;
+
+    .status {
+      color: $B75;
+    }
+  }
+
+  .startReview {
+    .name {
+      line-height: 32px;
     }
 
-    .passed {
+    button {
+      float: right;
+    }
+  }
+
+  .pendingReview {
+    border: 1px solid $Y300;
+
+    .status {
+      color: $Y300;
+    }
+  }
+
+  .passed {
+    .status {
       color: $G100;
     }
   }
 
-  .submit, reviewed, .pending, .unreviewed{
-    margin-bottom: 10px;
-    padding: 12px 20px;
-  }
+  .rejectd {
+    border: 1px solid $R200;
 
-  .submit, .unreviewed {
-    @include title-font;
-
-    .time, .status {
-      @include note-font;
-      float: right;
-      line-height: 28px;
-      opacity: 1;
+    .status {
+      color: $R200;
     }
-  }
-
-  .unreviewed {
-    opacity: 0.5;
   }
 
   .opreateButtons {
@@ -137,9 +183,25 @@
       margin-right: 12px;
     }
   }
+
+  .startReviewed {
+    @include title-font;
+    padding: 12px 20px;
+    line-height: 32px;
+
+    > button {
+      float: right;
+    }
+  }
 }
 
-.reason{
-  width: 100%;
-  min-height: 200px;
+.rejectMessage {
+  textarea {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .note {
+    @include note-font;
+  }
 }

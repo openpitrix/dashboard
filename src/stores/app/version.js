@@ -5,17 +5,22 @@ import _, {
 import { Base64 } from 'js-base64';
 
 import ts from 'config/translation';
+import { t } from 'i18next';
 import Store from '../Store';
 
 const defaultStatus = [
   'draft',
   'submitted',
+  'in-review',
   'passed',
   'rejected',
   'active',
   'suspended'
 ];
-const reviwStatus = ['submitted', 'passed', 'rejected', 'active', 'suspended'];
+const reviewStatus = {
+  unprocessed: ['submitted', 'in-review'],
+  processed: ['rejected', 'active', 'suspended']
+};
 const maxSize = 2 * 1024 * 1024;
 
 export default class AppVersionStore extends Store {
@@ -69,11 +74,13 @@ export default class AppVersionStore extends Store {
 
   @observable createResult = null;
 
+  @observable activeType = 'unprocessed';
+
   @observable reason = ''; // version reject reason
 
   @observable store = {};
 
-  @observable isReview = false; // judge review apps list or app version list
+  @observable isReviewTable = false; // judge review apps list or app version list
 
   @observable audits = {}; // define object for not repeat query of the same version
 
@@ -93,11 +100,17 @@ export default class AppVersionStore extends Store {
     return this.getStore('app');
   }
 
+  get userStore() {
+    return this.getStore('user');
+  }
+
   @action
   fetchAll = async (params = {}) => {
-    const status = this.isReview ? reviwStatus : defaultStatus;
+    const status = this.isReviewTable
+      ? reviewStatus[this.activeType]
+      : defaultStatus;
     const defaultParams = {
-      sort_key: 'create_time',
+      sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
       status: this.selectStatus ? this.selectStatus : status
@@ -133,18 +146,15 @@ export default class AppVersionStore extends Store {
       this.currentVersion = { ...this.currentVersion };
     }
 
-    // todo
-    const appStore = this.store.app;
+    // query app review table relative data
     const appIds = this.versions.map(item => item.app_id);
-    if (appStore && appIds.length > 0) {
-      appStore.fetchAll({ app_id: appIds });
+    if (this.isReviewTable && appIds.length > 0) {
+      await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
     }
 
-    // todo
-    const userStore = this.store.user;
     const userIds = this.versions.map(item => item.owner);
-    if (userStore && userIds.length > 0) {
-      userStore.fetchAll({ user_id: userIds });
+    if (this.isReviewTable && userIds.length > 0) {
+      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
 
     this.isLoading = false;
@@ -217,19 +227,14 @@ export default class AppVersionStore extends Store {
     this.isLoading = false;
   };
 
-  // handleType value is: submit、reject、pass、release、suspend、recover、delete
+  // handleType value is: submit、release、suspend、recover、delete
   @action
   handle = async (handleType, versionId) => {
     this.isLoading = true;
-    const params = { version_id: versionId };
-    if (handleType === 'reject') {
-      params.message = this.reason;
-    }
 
-    const result = await this.request.post(
-      `app_version/action/${handleType}`,
-      params
-    );
+    const result = await this.request.post(`app_version/action/${handleType}`, {
+      version_id: versionId
+    });
 
     if (get(result, 'version_id')) {
       this.hideModal();
@@ -238,6 +243,48 @@ export default class AppVersionStore extends Store {
     } else {
       return result;
     }
+
+    this.isLoading = false;
+  };
+
+  /**
+   *
+   * @param handleType: review, pass, reject
+   * @param versionId
+   * @param role: isv, business_admin, develop_admin
+   * @returns {Promise<*>}
+   */
+  @action
+  versionReview = async (handleType, versionId, role) => {
+    if (handleType === 'reject' && !this.reason) {
+      return this.error(t('请您填写拒绝原因'));
+    }
+
+    const params = { version_id: versionId };
+    if (handleType === 'reject') {
+      params.message = this.reason;
+    }
+
+    this.isLoading = true;
+    const result = await this.request.post(
+      `app_version/action/${role}/${handleType}`,
+      params
+    );
+
+    if (get(result, 'version_id')) {
+      this.hideModal();
+      await this.fetch(versionId);
+      await this.fetchReviewDetail(this.version.app_id, versionId);
+
+      if (handleType === 'review') {
+        this.isTipsOpen = true;
+      } else {
+        this.success(`${capitalize(handleType)} this version successfully.`);
+      }
+    } else {
+      return result;
+    }
+
     this.isLoading = false;
   };
 
@@ -253,9 +300,14 @@ export default class AppVersionStore extends Store {
   @action
   fetchReviewDetail = async (appId, versionId) => {
     const result = await this.request.get(
-      `app/${appId}/version/${versionId}/reviews`
+      `app/${appId}/version/${versionId}/reviews`,
+      {
+        limit: this.maxLimit,
+        sort_key: 'review_time'
+      }
     );
-    this.reviewDetail = get(result, 'app_version_review_set[0]', {});
+
+    this.reviewDetail = _.get(result, 'app_version_review_set[0]', {});
   };
 
   // todo
@@ -516,15 +568,10 @@ export default class AppVersionStore extends Store {
 
     this.uploadFile = '';
     this.store = {};
-    this.isReview = false;
+    this.isReviewTable = false;
 
     this.versions = [];
     this.currentVersion = {};
     this.packageName = '';
-  };
-
-  @action
-  registerStore = (name, store) => {
-    this.store[name] = store;
   };
 }

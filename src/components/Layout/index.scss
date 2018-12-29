@@ -10,16 +10,17 @@
   &.hasNav {
     margin: 0 20px 32px $menu-width + 20px;
     //min-width: 950px;
-    min-width: calc(#{$page-min-width} - #{$menu-nav-width} - 40px);
     min-height: calc(100vh - 100px);
     padding-top: 0;
   }
 
   &.hasMenu {
+    min-width: calc(#{$page-min-width} - #{$menu-width} - 40px);
     width: calc(100% - #{$menu-width} - 40px);
   }
 
   &.hasNav {
+    min-width: calc(#{$page-min-width} - #{$menu-nav-width} - 40px);
     width: calc(100% - #{$menu-nav-width} - 40px);
     margin-left: $menu-nav-width + 20px;
   }

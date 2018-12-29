@@ -33,15 +33,17 @@ export default class Image extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.src !== this.props.src) {
-      this.setState({ failed: false });
-    }
-
     return (
       nextProps.src !== this.props.src
       || Boolean(nextState.failed)
       || Boolean(nextProps.iconLetter)
     );
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.src !== this.props.src) {
+      this.setState({ failed: false });
+    }
   }
 
   componentWillUnmount() {
@@ -87,16 +89,7 @@ export default class Image extends React.Component {
           </span>
         );
       }
-
-      return (
-        <img
-          src="/none.svg"
-          data-origin-url={imgStr}
-          style={style}
-          className={classnames(styles.img, className)}
-          {...rest}
-        />
-      );
+      return null;
     }
 
     return (

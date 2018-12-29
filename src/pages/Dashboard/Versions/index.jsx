@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-
+import { formatTime } from 'utils';
 import versionTypes from 'config/version-types';
 
 import styles from './index.scss';
@@ -127,7 +127,8 @@ export default class Versions extends Component {
                     {item.description}
                   </label>
                   <label className={styles.time}>
-                    {t('Suspended time')}: {item.update_time}
+                    {t('Suspended time')}:&nbsp;
+                    {formatTime(item.update_time, 'YYYY/MM/DD HH:mm:ss')}
                   </label>
                   <label className={styles.link}>{t('View detail')}→</label>
                 </Link>

@@ -7,17 +7,15 @@ import classnames from 'classnames';
 import { Table } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-import Toolbar from 'components/Toolbar';
 import AppName from 'components/AppName';
 import TimeShow from 'components/TimeShow';
-
 import { getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
 const types = [
-  { name: 'Processed', value: 'processed' },
-  { name: 'Unprocessed', value: 'unprocessed' }
+  { name: 'Unprocessed', value: 'unprocessed' },
+  { name: 'Processed', value: 'processed' }
 ];
 
 @translate()
@@ -31,22 +29,10 @@ const types = [
 }))
 @observer
 export default class Reviews extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeType: 'processed'
-    };
-  }
-
   async componentDidMount() {
-    const { appVersionStore, appStore, userStore } = this.props;
+    const { appVersionStore } = this.props;
 
-    appVersionStore.registerStore('app', appStore);
-    appVersionStore.registerStore('user', userStore);
-
-    appVersionStore.isReview = true;
-
+    appVersionStore.isReviewTable = true;
     await appVersionStore.fetchAll();
   }
 
@@ -56,46 +42,26 @@ export default class Reviews extends Component {
   }
 
   changeType = type => {
-    const { activeType } = this.state;
-
-    if (type !== activeType) {
-      this.setState({ activeType: type });
+    const { appVersionStore } = this.props;
+    if (type !== appVersionStore.activeType) {
+      appVersionStore.activeType = type;
+      appVersionStore.fetchAll();
     }
   };
-
-  renderToolbar() {
-    const { t } = this.props;
-    const {
-      searchWord,
-      onSearch,
-      onClearSearch,
-      onRefresh
-    } = this.props.appVersionStore;
-
-    return (
-      <Toolbar
-        placeholder={t('Search App')}
-        searchWord={searchWord}
-        onSearch={onSearch}
-        onClear={onClearSearch}
-        onRefresh={onRefresh}
-      />
-    );
-  }
 
   render() {
     const {
       appVersionStore, appStore, userStore, t
     } = this.props;
-    const { versions, isLoading } = appVersionStore;
+    const { versions, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const { users } = userStore;
 
     const columns = [
       {
         title: t('编号'),
-        key: 'no',
-        width: '135px',
+        key: 'version_id',
+        width: '100px',
         render: item => (
           <Link to={`/dashboard/app-review/${item.app_id}/${item.version_id}`}>
             {item.version_id}
@@ -103,18 +69,19 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('审核类型'),
-        key: 'audit_type',
+        title: t('申请类型'),
+        key: 'apply_type',
         width: '70px',
-        render: item => item.type
+        render: item => item.apply_type || t('应用上架')
       },
       {
         title: t('App Info'),
         key: 'appName',
-        width: '155px',
+        width: '130px',
         render: item => (
           <AppName
-            image={item.icon}
+            linkUrl={`/dashboard/app/${item.app_id}`}
+            icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
             type={item.type}
             versionName={item.name}
@@ -122,7 +89,7 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('Developer'),
+        title: t('提交者'),
         key: 'developer',
         width: '80px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
@@ -136,9 +103,9 @@ export default class Reviews extends Component {
         render: item => <TimeShow time={item.status_time} type="detailTime" />
       },
       {
-        title: t('Status'),
+        title: t('审核状态'),
         key: 'status',
-        width: '110px',
+        width: '100px',
         render: item => (
           <Status type={item.status} name={mappingStatus(item.status)} />
         )
@@ -167,8 +134,6 @@ export default class Reviews extends Component {
       current: appVersionStore.currentPage,
       noCancel: false
     };
-
-    const { activeType } = this.state;
 
     return (
       <Layout pageTitle={t('App Reviews')}>

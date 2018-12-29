@@ -30,10 +30,18 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   async componentDidMount() {
     const {
-      clusterStore, runtimeStore, userStore, user
+      clusterStore, runtimeStore, userStore, user, match
     } = this.props;
-
+    const { appId } = match.params;
     const { isAdmin } = user;
+
+    if (match.path.endsWith('user-instances')) {
+      clusterStore.onlyView = true;
+    }
+
+    if (appId) {
+      clusterStore.appId = appId;
+    }
 
     await clusterStore.fetchAll({
       attachApps: true
@@ -94,7 +102,7 @@ export default class Clusters extends Component {
     if (appId) {
       const type = match.path.endsWith('sandbox-instances')
         ? `sandbox-instance`
-        : 'customer-instance';
+        : 'user-instance';
       url = `/dashboard/app/${appId}/${type}/${clusterId}`;
     }
     return url;
@@ -248,7 +256,9 @@ export default class Clusters extends Component {
     const {
       clusterStore, appStore, userStore, user, match, t
     } = this.props;
-    const { summaryInfo, clusters, isLoading } = clusterStore;
+    const {
+      summaryInfo, clusters, isLoading, onlyView
+    } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
     const { apps } = appStore;
@@ -258,7 +268,7 @@ export default class Clusters extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
+        width: '90px',
         render: cl => (
           <Status type={cl.status} transition={cl.transition_status} />
         )
@@ -266,7 +276,7 @@ export default class Clusters extends Component {
       {
         title: t('Instance Name ID'),
         key: 'name',
-        width: '155px',
+        width: '120px',
         render: cl => (
           <TdName
             name={cl.name}
@@ -279,13 +289,13 @@ export default class Clusters extends Component {
       {
         title: t('Version'),
         key: 'app_id',
-        width: '150px',
+        width: '120px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
         title: t('Test Runtime'),
         key: 'runtime_id',
-        width: '150px',
+        width: '130px',
         render: cl => (
           <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
             <ProviderName
@@ -303,7 +313,7 @@ export default class Clusters extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '80px',
+        width: '60px',
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
@@ -315,10 +325,10 @@ export default class Clusters extends Component {
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '80px',
+        width: '140px',
         sorter: true,
         onChangeSort: this.onChangeSort,
-        render: cl => <TimeShow time={cl.create_time} />
+        render: cl => <TimeShow time={cl.create_time} type="detailTime" />
       },
       {
         title: '',
@@ -386,7 +396,7 @@ export default class Clusters extends Component {
           <Table
             columns={columns}
             dataSource={clusters.toJSON()}
-            rowSelection={rowSelection}
+            rowSelection={onlyView ? {} : rowSelection}
             isLoading={isLoading}
             filterList={filterList}
             pagination={pagination}

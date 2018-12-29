@@ -144,7 +144,8 @@ class SideNav extends React.Component {
               <Link
                 key={item.name}
                 className={classnames(styles.link, {
-                  [styles.active]: url.indexOf(item.active) > -1
+                  [styles.active]: url.indexOf(item.active) > -1,
+                  [styles.disabled]: item.disabled
                 })}
                 to={item.link}
               >
@@ -175,7 +176,7 @@ class SideNav extends React.Component {
           <Link
             key={link.name}
             className={classnames(styles.link, {
-              [styles.disabled]: link.isDisabled,
+              [styles.disabled]: link.disabled,
               [styles.active]: path.indexOf(link.active) > -1
             })}
             to={link.link}

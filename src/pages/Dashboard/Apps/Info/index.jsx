@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
@@ -11,7 +12,6 @@ import {
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 
-import PropTypes from 'prop-types';
 import styles from './index.scss';
 
 const tags = ['Base Info', 'Instructions', 'Terms of service'];

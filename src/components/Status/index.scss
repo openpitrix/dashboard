@@ -18,10 +18,10 @@
   border-radius: 50%;
   font-style: normal;
 
-  &.draft {
+  &.draft, &.submitted {
     background-color: $B75;
   }
-  &.submitted {
+  &.in-review {
     background-color: $Y300;
   }
   &.passed {
