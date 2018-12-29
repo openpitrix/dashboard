@@ -2,7 +2,8 @@ import React from 'react';
 import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { isEqual } from 'lodash';
+import { isEqual, find } from 'lodash';
+import { translate } from 'react-i18next';
 
 import {
   Checkbox, Radio, Popover, Icon, Pagination
@@ -12,6 +13,7 @@ import NoData from './noData';
 
 import styles from './index.scss';
 
+@translate()
 export default class Table extends React.Component {
   static propTypes = {
     columns: PropTypes.array,
@@ -29,7 +31,8 @@ export default class Table extends React.Component {
     columns: [],
     pagination: {},
     rowKey: 'key',
-    rowSelection: {}
+    rowSelection: {},
+    filterList: []
   };
 
   constructor(props) {
@@ -267,49 +270,52 @@ export default class Table extends React.Component {
     return tableColumns;
   };
 
-  renderFilterContent = filter => (
-    <ul className="filterContent">
-      {filter.conditions.map(condition => (
-        <li
-          key={condition.value}
-          onClick={() => filter.onChangeFilter(condition.value)}
-          className={classNames({
-            active: condition.value === filter.selectValue
-          })}
-        >
-          {condition.name}
-        </li>
-      ))}
-    </ul>
-  );
+  renderFilterContent = filter => {
+    const { t } = this.props;
+
+    return (
+      <ul className="filterContent">
+        {filter.conditions.map(condition => (
+          <li
+            key={condition.value}
+            onClick={() => filter.onChangeFilter(condition.value)}
+            className={classNames({
+              active: condition.value === filter.selectValue
+            })}
+          >
+            {t(condition.name)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   renderFilterColumn = columns => {
-    const { filterList } = this.props;
-    if (filterList) {
-      columns = columns.map(column => {
-        const newColumn = { ...column };
-        const filter = filterList.find(
-          element => element.key === newColumn.key
+    const { filterList, t } = this.props;
+    return columns.map(column => {
+      const filter = find(filterList, { key: column.key || '' });
+
+      if (filter) {
+        column.title = (
+          <Popover
+            content={this.renderFilterContent(filter)}
+            className={styles.filterOuter}
+          >
+            {t(column.title)}
+            <Icon
+              name="caret-down"
+              type={`${filter.selectValue ? 'light' : 'dark'}`}
+              size={12}
+            />
+          </Popover>
         );
-        if (filter) {
-          newColumn.title = (
-            <Popover
-              content={this.renderFilterContent(filter)}
-              className={styles.filterOuter}
-            >
-              {newColumn.title}
-              <Icon
-                name="caret-down"
-                type={`${filter.selectValue ? 'light' : 'dark'}`}
-                size={12}
-              />
-            </Popover>
-          );
-        }
-        return newColumn;
-      });
-    }
-    return columns;
+      } else if (typeof column.title === 'string') {
+        // won't call translate helper in columns file
+        column.title = t(column.title);
+      }
+
+      return column;
+    });
   };
 
   rowClassName = (record, index) => {

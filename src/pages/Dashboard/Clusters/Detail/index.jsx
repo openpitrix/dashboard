@@ -198,15 +198,13 @@ export default class ClusterDetail extends Component {
           onCancel={hideModal}
           onOk={this.handleCluster}
         >
-          <div className="formContent">
-            <Select value={clusterStore.versionId} onChange={changeAppVersion}>
-              {versions.map(({ version_id, name }) => (
-                <Select.Option key={version_id} value={version_id}>
-                  {name}
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
+          <Select value={clusterStore.versionId} onChange={changeAppVersion}>
+            {versions.map(({ version_id, name }) => (
+              <Select.Option key={version_id} value={version_id}>
+                {name}
+              </Select.Option>
+            ))}
+          </Select>
         </Modal>
       );
     }
@@ -221,11 +219,7 @@ export default class ClusterDetail extends Component {
           onCancel={cancelChangeEnv}
           onOk={this.handleCluster}
         >
-          <div className="formContent">
-            <div className="inputItem">
-              <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
-            </div>
-          </div>
+          <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
         </Modal>
       );
     }

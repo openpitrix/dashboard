@@ -23,19 +23,22 @@ export const getNavs = {
       link: '#',
       iconName: 'ticket',
       active: '',
-      title: 'Work list'
+      title: 'Work list',
+      disabled: true
     },
     {
       link: '#',
       iconName: 'wallet',
       active: '',
-      title: 'Financial Center'
+      title: 'Financial Center',
+      disabled: true
     },
     {
       link: '#',
       iconName: 'linechart',
       active: '',
-      title: 'Message and monitoring'
+      title: 'Message and monitoring',
+      disabled: true
     },
     {
       link: '/dashboard/users',
@@ -47,7 +50,8 @@ export const getNavs = {
       link: '#',
       iconName: 'cogwheel',
       active: '',
-      title: 'Settings'
+      title: 'Settings',
+      disabled: true
     }
   ],
   isv: [
@@ -155,12 +159,12 @@ export const subNavMap = {
           active: 'review'
         },
         {
-          name: 'Categroies',
+          name: 'App Category',
           link: '/dashboard/categories',
-          active: 'categor'
+          active: 'categories'
         },
         {
-          name: 'Appearance',
+          name: 'Store Appearance',
           link: '#',
           active: 'appearance',
           disabled: true

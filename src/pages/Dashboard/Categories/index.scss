@@ -1,89 +1,136 @@
 @import '~scss/vars';
 
-.pageTitle{
-  height: 24px;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  color: $N500;
-}
-
-.categories{
-  text-align: center;
-  padding: 12px 24px;
-
-  .line{
-    display: inline-block;
-    width: 330px;
-    height: 1px;
-    border-bottom: 1px solid $N30;
+.page {
+  .summary {
+    margin-bottom: 22px;
   }
-
-  .word{
-    display: inline-block;
-    position: relative;
-    bottom: 10px;
-    padding: 0 7px;
-    line-height:20px;
-    font-size: 12px;
-    color: $N100;
-    background: $background-color;
-  }
-}
-
-.categoryContent {
-  display: inline-block;
-  position: relative;
-  width: calc(33.333% - 16px);
-  margin: 0 24px 24px 0;
-
-  &:nth-child(3n+3) {
-    margin-right: 0;
-  }
-
-  .handlePop {
-    position: absolute;
-    right: 24px;
-    top: 24px;
-
-    :global {
-      .pi-popover-popper {
-         margin-left: -90px !important;
-       }
+  .topActions{
+    margin-bottom: 16px;
+    font-size: $size-small;
+    .choosen {
+      color: $N75;
     }
-  }
-
-  .rectangle{
-    display: inline-block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 24px;
-    height: 140px;
-    background-color: $N0;
-    box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
-
-    .title a{
-      display: block;
-      margin-bottom: 16px;
-      font-size: 20px;
-      line-height: 24px;
-      font-weight: 500;
+    .name {
       color: $N500;
-      @include textCut;
+      font-weight: 500;
     }
-
-    &:hover {
-      .title a {
+    .actions {
+      display: inline-block;
+      margin-left: 20px;
+      &>span {
         color: $P75;
+        cursor: pointer;
+        margin-right: 12px;
+      }
+    }
+  }
+  .cates {
+    border-right: 1px solid $N10;
+    .item {
+      font-size: $size-small;
+      height: 40px;
+      //padding-left: 12px;
+      cursor: pointer;
+      color: $N300;
+
+      &.active, &:hover {
+        box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+        background-color: $N0;
+        color: $P75;
+        font-weight: 500;
+      }
+      &.disabled {
+        opacity: 0.5;
+        cursor: default;
+        box-shadow: none;
+        background-color: transparent;
+      }
+
+      span {
+        display: inline-block;
+        padding: 12px 0 !important;
+        vertical-align: middle;
+
+        &.name {
+          font-size: $size-small;
+          margin-left: 8px;
+        }
+        &.count {
+          font-size: $size-small;
+          float: right;
+          margin-right: 23px;
+        }
+      }
+    }
+    .btnAdd {
+      font-size: $size-normal;
+      color: $P75;
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+      svg {
+        vertical-align: bottom;
+        --primary-color: #{$P75};
+        --secondary-color: #{$P75};
+      }
+    }
+  }
+
+  .chosenCateNames {
+    margin: 0 5px;
+  }
+}
+
+.selectCateToAdjust{
+  margin-top: 20px;
+}
+
+.addAppTips{
+  font-size: $size-small;
+  color: $N300;
+  margin-bottom: 12px;
+  &> span {
+    color: $N500;
+    font-weight: 500;
+  }
+}
+
+.fmCtrl {
+  padding-left: 35px;
+  margin-bottom: 30px;
+  font-size: $size-small;
+  .label {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 500;
+    color: $N500;
+  }
+  .name {
+    min-width: 256px;
+  }
+  &>div {
+    display: inline-block;
+  }
+  .icons {
+    position: relative;
+    margin-left: 40px;
+    margin-top: -15px;
+    .icon {
+      margin-right: 12px;
+      cursor: pointer;
+      opacity: 0.5;
+
+      &:hover, &.active {
+        opacity: 1;
+        svg {
+          --primary-color: #{$P300};
+          --secondary-color: #{$P45};
+        }
       }
     }
   }
 }
 
-.unCategorized{
-  width: 100%;
+.dialogFooter{
+  margin-left: 75px;
 }
-
-
-
-

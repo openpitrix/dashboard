@@ -96,5 +96,7 @@
   "ACTIVE_VERSIONS_TOTAL":"There are currently {{length}} active versions",
 
   "DELETE_AUTH_INFO_CONFIRM": "Are you sure to delete this authorization info ?",
-  "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?"
+  "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?",
+
+  "TIPS_ADJUST_APP_CATE": "Please adjust category of {{appNames}} these {{appCount}} apps"
 }

@@ -28,7 +28,8 @@ const keys = [
   'user',
   'create',
   'provider-detail',
-  'provider'
+  'provider',
+  'dashboard'
 ];
 const changeKey = {
   review: 'app',
@@ -90,11 +91,7 @@ class SideNav extends React.Component {
     return changeKey[key] || key;
   };
 
-  isLinkActive = activeName => {
-    const key = this.getMatchKey();
-
-    return activeName === key;
-  };
+  isLinkActive = activeName => activeName === this.getMatchKey();
 
   getSudNavData = () => {
     const { user } = this.props;
@@ -316,11 +313,8 @@ class SideNav extends React.Component {
   }
 
   renderNavs() {
-    const {
-      user, appStore, history, t
-    } = this.props;
-    const { pathname } = history.location;
-    const { isISV, isDev, role } = user;
+    const { user, t } = this.props;
+    const { isISV, role } = user;
     const viewRole = isISV ? 'isv' : role;
     const navs = getNavs[viewRole] || [];
 
@@ -337,15 +331,16 @@ class SideNav extends React.Component {
             <li
               key={nav.iconName}
               onClick={() => this.becomeDeveloper(nav.iconName)}
+              className={classnames(styles.navItem, {
+                [styles.disabled]: nav.disabled
+              })}
             >
-              <Link to={nav.link}>
-                <Icon
-                  className={styles.icon}
-                  size={20}
-                  name={nav.iconName}
-                  type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-                />
-              </Link>
+              <Icon
+                className={styles.icon}
+                size={20}
+                name={nav.iconName}
+                type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+              />
               <NavLink exact to={nav.link}>
                 <label className={styles.title}>{t(nav.title)}</label>
               </NavLink>
@@ -359,11 +354,8 @@ class SideNav extends React.Component {
 
   render() {
     const { hasSubNav, user } = this.props;
-    const {
-      isDev, isAdmin, isISV, changedRole
-    } = user;
 
-    if (isDev) {
+    if (user.isDev) {
       return (
         <Fragment>
           {this.renderNavsDev()}

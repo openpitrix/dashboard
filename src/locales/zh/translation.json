@@ -77,7 +77,7 @@
   "Category": "分类",
   "View detail": "查看详情",
   "Deploy App": "部署应用",
-  "Modify category": "修改分类",
+  "Modify category": "编辑分类",
 
   "Delete": "删除",
   "Search App": "搜索应用",
@@ -270,8 +270,8 @@
   "All Apps": "全部应用",
   "App Reviews": "应用审核",
   "All Clusters": "所有集群",
-  "Categroies": "分类",
-  "Appearance": "外观",
+  "App Category": "应用分类",
+  "Store Appearance": "商店外观",
   "Tickets": "优惠卷",
   "Notifications": "通知",
   "Service Status": "服务状态",
@@ -511,5 +511,33 @@
   "App / Delivery type / Version": "所属应用、交付方式、版本",
 
   "Reviewed": "已审核",
-  "Unreviewed": "未审核"
+  "Unreviewed": "未审核",
+
+  "App intro": "应用介绍",
+  "Delivery type": "交付类型",
+  "Count deploy": "部署总次数",
+  "Publish time": "上架时间",
+  "Search App Name or ID": "搜索应用名称或ID",
+  "unknown": "未知",
+  "All categories": "全部分类",
+  "App category": "应用分类",
+  "Customize": "自定义",
+  "Adjust category": "调整分类",
+  "Chosen category": "所选分类",
+
+  "TIPS_ADJUST_APP_CATE": "请为已选择的 {{appNames}} 等 {{appCount}} 个应用调整所属分类",
+  "App category not change": "应用分类未更改",
+  "Adjust apps category successfully": "应用分类调整完毕",
+  "TIPS_DELETE_CATE": "分类「{{cateName}}」被删除之后，其中的 {{appNames}} 等 {{appCount}} 个应用将自动归到「未归类」中。",
+  "TIPS_ADD_APP_TO_CATE": "添加应用到「{{name}}」",
+  "CHOOSE_FROM_UNCATEGORY": "请从 [未归类] 中选择",
+  "ctg-uncategorized can not be deleted": "未归类 不能被删除",
+  "This category contains apps, please move those apps to another category": "该分类包含应用，删除分类前请先移出分类下的应用",
+  "Category name is empty": "分类名为空",
+  "Create category successfully": "创建分类成功",
+  "Modify category successfully": "编辑分类成功",
+  "No need to move current category": "当前分类不需要添加",
+  "Move apps category successfully": "添加应用到分类成功",
+  "Delete category successfully": "删除分类成功"
+
 }

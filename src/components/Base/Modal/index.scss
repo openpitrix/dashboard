@@ -1,5 +1,7 @@
 @import '~scss/vars';
 
+$padding-left: 24px;
+
 .modal {
   position: relative;
   width: 744px;
@@ -13,8 +15,8 @@
 
   .header {
     position: relative;
-    padding: 20px 32px;
-    border-bottom: 1px solid $N10;
+    padding: 20px $padding-left;
+    //border-bottom: 1px solid $N10;
     .title {
       font-size: 20px;
       line-height: 1.2;
@@ -32,85 +34,12 @@
   }
 
   .body {
-    padding: 20px 32px;
-    //overflow-y: auto;
-    :global{
-      .formContent{
-        margin: 12px 0 -18px;
-        & > div, .inputItem{
-          margin-bottom: 24px;
-          & > label{
-            display: inline-block;
-            margin-right:  24px;
-            width: 168px;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.14;
-            text-align: right;
-            color: $N500;
-          }
-          & > input{
-            width: 256px;
-            height: 32px;
-            border-radius: 2px;
-            background-color: $N0;
-            // box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
-          }
-          & > textarea{
-            box-sizing: border-box;
-            padding: 7px 10px;
-            width: 400px;
-            max-width: calc(100% - 192px);
-            height: 80px;
-            border-radius: 2px;
-            border: 1px solid #e7e7e7;
-            outline: none;
-            resize: none;
-            border-radius: 2px;
-            background-color: $N0;
-            border: solid 1px $N30;
-            &:focus{
-              border: 1px solid $border-dark;
-            }
-          }
-          & > select{
-            width: 256px;
-            height: 32px;
-            border-radius: 2px;
-            background-color: $N0;
-            box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
-            border: solid 1px $P75;
-          }
-        }
-        .textareaItem{
-          height: 80px;
-          & > label {
-            float: left;
-            position: relative;
-            top: 10px;
-          }
-        }
-        .selectItem{
-          & > label{
-            float: left;
-            line-height: 32px;
-          }
-        }
-
-        .operationBtn {
-          margin-left: 192px;
-
-          button {
-            margin-right: 12px;
-          }
-        }
-      }
-    }
+    padding: 5px $padding-left;
   }
   .footer {
-    padding: 16px 32px;
-    border-top: 1px solid $N10;
-    text-align: right;
+    padding: 32px $padding-left;
+    //border-top: 1px solid $N10;
+    //text-align: right;
     .operationBtn{
       margin-left: 192px;
       text-align: left;

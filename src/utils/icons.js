@@ -1002,4 +1002,10 @@ const svgSprites = `
   </g>
 </symbol>
 </svg>`;
+
+export const getIconList = () => {
+  const ids = svgSprites.match(/id="qui-(\w+)"/g) || [];
+  return ids.map(id => id.substring(8, id.length - 1));
+};
+
 export default svgSprites;

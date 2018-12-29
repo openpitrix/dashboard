@@ -69,7 +69,6 @@ const routes = {
   // '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
   '/:dash/categories': Dash.Categories,
-  '/:dash/category/:categoryId': Dash.CategoryDetail,
 
   '/:dash/users': Dash.Users,
   '/:dash/user/:userId': Dash.UserDetail,

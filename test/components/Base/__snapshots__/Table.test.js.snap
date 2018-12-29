@@ -30,14 +30,10 @@ exports[`Base/Table basic render 1`] = `
             <tr>
               <th
                 class=""
-              >
-                Name
-              </th>
+              />
               <th
                 class=""
-              >
-                Age
-              </th>
+              />
             </tr>
           </thead>
           <tbody
