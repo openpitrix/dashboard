@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import {
-  Button, Input, Tree, Modal
-} from 'components/Base';
+import { Button, Input, Tree, Modal } from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 
@@ -46,6 +44,7 @@ export default class RoleTree extends Component {
     }));
     navData[0].children.push({
       key: 'create_role',
+      disabled: true,
       title: (
         <Item
           type="create_btn"

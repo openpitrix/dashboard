@@ -252,12 +252,13 @@ export default class UserStore extends Store {
   };
 
   @action
-  oauth2Check = async (params = {}) => await this.request.post('oauth2/token', {
-    grant_type: 'password',
-    scope: '',
-    username: params.email,
-    password: params.password
-  });
+  oauth2Check = async (params = {}) =>
+    await this.request.post('oauth2/token', {
+      grant_type: 'password',
+      scope: '',
+      username: params.email,
+      password: params.password
+    });
 
   @action
   modifyUser = async e => {
@@ -302,10 +303,12 @@ export default class UserStore extends Store {
   };
 
   @action
-  resetPassword = async (params = {}) => await this.request.post('users/password:reset', params);
+  resetPassword = async (params = {}) =>
+    await this.request.post('users/password:reset', params);
 
   @action
-  changePassword = async (params = {}) => await this.request.post('users/password:change', params);
+  changePassword = async (params = {}) =>
+    await this.request.post('users/password:change', params);
 
   @action
   onSearch = async word => {
@@ -424,6 +427,7 @@ export default class UserStore extends Store {
 
   @action
   onSelectOrg = (keys, info) => {
+    console.log('onSelectOrg', keys, info);
     this.orgName = keys.length ? get(info, 'node.props.title') : '';
     this.fetchAll();
   };
@@ -433,7 +437,7 @@ export default class UserStore extends Store {
     this.modify({ status: 'draft', user_id });
   };
 
-  getGroupTree = () => {
+  getGroupTree = renderTitle => {
     const { groups } = this;
     if (groups.length === 0) {
       return [];
@@ -447,9 +451,10 @@ export default class UserStore extends Store {
         title: root.group_name
       }
     ];
-    const filter = (dataSet, parent_group_id) => _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
-      (a, b) => a.seq_order - b.seq_order
-    );
+    const filter = (dataSet, parent_group_id) =>
+      _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
+        (a, b) => a.seq_order - b.seq_order
+      );
     const setChildren = (dataSet, treeDataNode) => {
       const children = filter(dataSet, treeDataNode.group_id);
       if (children.length === 0) {
@@ -457,7 +462,10 @@ export default class UserStore extends Store {
       }
       return children.map(node => ({
         key: node.group_id,
-        title: node.group_name,
+        title: renderTitle({
+          key: node.group_id,
+          title: node.group_name
+        }),
         children: setChildren(dataSet, node)
       }));
     };

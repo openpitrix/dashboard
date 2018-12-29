@@ -15,9 +15,7 @@ import {
   Icon,
   Popover
 } from 'components/Base';
-import Layout, {
-  Grid, Section, Panel, Card, Dialog
-} from 'components/Layout';
+import Layout, { Grid, Section, Panel, Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
@@ -39,11 +37,9 @@ export default class Users extends Component {
   async componentDidMount() {
     const { userStore } = this.props;
 
-    await userStore.fetchAll({
-      status: ['']
-    });
+    await userStore.fetchAll();
     await userStore.fetchGroups();
-    userStore.getGroupTree();
+    userStore.getGroupTree(this.renderGroupTitle);
     this.setState({ isLoading: false });
   }
 
@@ -52,58 +48,38 @@ export default class Users extends Component {
     userStore.reset();
   }
 
-  changeSelect = value => {
-    const { userStore } = this.props;
-    userStore.selectValue = value;
-  };
+  onGroupClick(key, type, e) {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log(e, key, type);
+  }
 
-  clickCompany = index => {
-    const { userStore } = this.props;
-    const temp = userStore.organizations;
-    temp[index].depShow = !temp[index].depShow;
-    userStore.treeFlag = !userStore.treeFlag;
-    userStore.organizations = temp;
-  };
-
-  clickDep = (index, depIndex) => {
-    const { userStore } = this.props;
-    const temp = userStore.organizations;
-    temp[index].department[depIndex].staffShow = !temp[index].department[
-      depIndex
-    ].staffShow;
-    userStore.treeFlag = !userStore.treeFlag;
-    userStore.treeFlag = temp;
-  };
-
-  selectGroup = item => {
-    const { userStore } = this.props;
-
-    if (item.value !== userStore.selectGroupId) {
-      userStore.selectGroupId = item.value;
-      userStore.selectName = item.name;
-      userStore.fetchAll();
-    }
-  };
-
-  selectRole = async item => {
-    const { userStore } = this.props;
-
-    userStore.selectRoleId = item.value;
-    userStore.selectName = item.name;
-    userStore.currentPage = 1;
-
-    await userStore.fetchAll();
-  };
-
-  openAuthorityModal = () => {
-    const { userStore } = this.props;
-    userStore.showAuthorityModal = true;
-  };
-
-  closeAuthorityModal = () => {
-    const { userStore } = this.props;
-    userStore.showAuthorityModal = false;
-  };
+  renderGroupTitle = ({ title, key }) => (
+    <span>
+      {title}
+      <Icon
+        key={`${key}-create`}
+        size={14}
+        name="plus-square"
+        className={styles.titleEventIcon}
+        onClick={this.onGroupClick.bind(this, key, 'create')}
+      />
+      <Icon
+        key={`${key}-modify`}
+        size={14}
+        name="plus-square"
+        className={styles.titleEventIcon}
+        onClick={this.onGroupClick.bind(this, key, 'modify')}
+      />
+      <Icon
+        key={`${key}-delete`}
+        size={14}
+        name="plus-square"
+        className={styles.titleEventIcon}
+        onClick={this.onGroupClick.bind(this, key, 'delete')}
+      />
+    </span>
+  );
 
   renderHandleMenu = user => {
     const { userStore, t } = this.props;
@@ -121,13 +97,7 @@ export default class Users extends Component {
 
   renderSetRole = () => {
     const { userStore, t } = this.props;
-    const {
-      userDetail,
-      operateType,
-      changeUser,
-      changeUserRole,
-      userNames
-    } = userStore;
+    const { userDetail, changeUserRole, userNames } = userStore;
 
     return (
       <Modal
@@ -169,9 +139,7 @@ export default class Users extends Component {
 
   renderOperateModal = () => {
     const { userStore, t } = this.props;
-    const {
-      userDetail, operateType, changeUser, changeUserRole
-    } = userStore;
+    const { userDetail, operateType, changeUser, changeUserRole } = userStore;
 
     if (operateType === 'set_role') {
       return this.renderSetRole();
@@ -319,7 +287,7 @@ export default class Users extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-        withCreateBtn={{ name: t('Create'), onClick: showCreateUser }}
+        withCreateBtn={{ name: t('Add'), onClick: showCreateUser }}
       />
     );
   }
@@ -327,9 +295,7 @@ export default class Users extends Component {
   render() {
     const { userStore, t } = this.props;
     const { isLoading } = this.state;
-    const {
-      selectName, orgName, onSelectOrg, groupTreeData
-    } = userStore;
+    const { selectName, orgName, onSelectOrg, groupTreeData } = userStore;
 
     const data = toJS(userStore.users);
 

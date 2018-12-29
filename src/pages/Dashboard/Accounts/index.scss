@@ -53,6 +53,10 @@
     box-shadow: none;
     background: transparent;
   }
+
+  .titleEventIcon {
+    position: static;
+  }
 }
 
 .list {
@@ -100,44 +104,11 @@
   }
 }
 
-
-.authorityModal{
-  overflow: auto;
-  .category{
-    .title{
-      line-height: 14px;
-      color: #020508;
-      font-weight: bold;
-    }
-    .description{
-      margin: 0 0 10px 22px;
-      line-height: 24px;
-      font-size: 14px;
-      color: #324558;
-    }
-  }
-  .operation{
-    margin-top:30px;
-    text-align: right;
-    button{
-      margin-left: 12px;
-    }
+.groupPopover {
+  float: right;
+  :global(.icon) {
+    left: auto;
+    margin-left: 5px;
   }
 }
 
-.authorityList{
-  margin-bottom: 28px;
-  padding: 16px 20px 4px 20px;
-  background-color: #e2d0f2;
-  li{
-    margin-bottom: 4px;
-    line-height: 16px;
-  }
-}
-.innerList{
-  margin: 4px 0 20px 22px;
-  li{
-    display: inline-block;
-    width: 50%;
-  }
-}
