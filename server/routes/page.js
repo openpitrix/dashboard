@@ -35,7 +35,6 @@ router.get('/logout', ctx => {
     'no_auth_token_type'
   ];
   names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
-  localStorage.removeItem('menuApps'); // clear newest visited menu apps
   ctx.redirect('/login');
 });
 

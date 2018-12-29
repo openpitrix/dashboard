@@ -4,9 +4,7 @@ import { throttle } from 'lodash';
 import { translate } from 'react-i18next';
 
 import Logo from 'components/Logo';
-import {
-  Form, Input, Button, Checkbox, Notification
-} from 'components/Base';
+import { Form, Input, Button, Checkbox, Notification } from 'components/Base';
 import { getUrlParam } from 'utils';
 
 import styles from './index.scss';
@@ -38,6 +36,7 @@ export default class Login extends Component {
 
     const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (!(res && res.err)) {
+      localStorage.removeItem('menuApps'); // clear newest visited menu apps
       location.href = getUrlParam('redirect_url') || defaultUrl;
     }
   };
