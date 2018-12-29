@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
-
-import { getProgress } from 'utils';
+import { getProgress, getCookie } from 'utils';
 import ts from 'config/translation';
 import { t } from 'i18next';
 
@@ -110,7 +109,8 @@ class AppStore extends Store {
 
   @action
   fetchMenuApps = async () => {
-    const menuApps = localStorage.getItem('menuApps');
+    const userId = getCookie('user_id');
+    const menuApps = localStorage.getItem(`${userId}-apps`);
 
     if (!menuApps) {
       const params = {
@@ -121,27 +121,35 @@ class AppStore extends Store {
       const result = await this.request.get('apps', params);
 
       this.menuApps = get(result, 'app_set', []);
-      localStorage.setItem('menuApps', JSON.stringify(this.menuApps));
+      localStorage.setItem(`${userId}-apps`, JSON.stringify(this.menuApps));
     } else {
       this.menuApps = JSON.parse(menuApps);
     }
   };
 
   @action
-  fetchMeunApp = async appId => {
-    const menuApps = localStorage.getItem('menuApps');
+  fetchMeunApp = async (appId, isFetch) => {
+    const userId = getCookie('user_id');
+    const menuApps = localStorage.getItem(`${userId}-apps`);
     const apps = JSON.parse(menuApps || '[]');
     const appDetail = _.find(apps, { app_id: appId });
 
-    if (appDetail) {
+    if (appDetail && !isFetch) {
       this.appDetail = appDetail;
       // modify info will change app info
       this.resetAppDetail = appDetail;
     } else {
       await this.fetch(appId);
-      apps.unshift(this.appDetail);
-      apps.splice(5, 1);
-      localStorage.setItem('menuApps', JSON.stringify(apps));
+
+      if (appDetail) {
+        const index = _.findIndex(apps, { app_id: appId });
+        apps.splice(index, 1, this.appDetail);
+      } else {
+        apps.unshift(this.appDetail);
+        apps.splice(5, 1);
+      }
+
+      localStorage.setItem(`${userId}-apps`, JSON.stringify(apps));
       this.menuApps = apps;
     }
   };
@@ -290,7 +298,6 @@ class AppStore extends Store {
     if (get(this.createResult, 'app_id')) {
       this.createAppId = get(this.createResult, 'app_id');
       this.createStep = 3; // show application has been created page
-      await this.fetchMenuApps();
     } else {
       const { err, errDetail } = this.createResult;
       this.createError = errDetail || err;
@@ -333,6 +340,11 @@ class AppStore extends Store {
       }),
       Boolean(event)
     );
+
+    // update the meun app show
+    if (get(this.createResult, 'app_id')) {
+      this.fetchMeunApp(this.appDetail.app_id, true);
+    }
   };
 
   @action
@@ -384,7 +396,7 @@ class AppStore extends Store {
       attachment_content: base64Str
     });
 
-    if (result && result.errDetail) {
+    if (result && result.err) {
       return false;
     }
 
@@ -451,7 +463,6 @@ class AppStore extends Store {
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {
-      await this.fetchMenuApps();
       if (this.operateType !== 'detailDelete') {
         await this.fetchAll();
         this.cancelSelected();

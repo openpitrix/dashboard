@@ -80,6 +80,7 @@ export default class Info extends Component {
       deleteScreenshot
     } = appStore;
 
+    // todo: api screenshots is string, not array
     const { screenshots } = appDetail;
     const len = _.isArray(screenshots) ? screenshots.length : 0;
 
