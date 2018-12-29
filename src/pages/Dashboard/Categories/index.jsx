@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import { computed } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
@@ -19,7 +20,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
-  isModalOpen: rootStore.categoryStore.isModalOpen
+  uncateAppStore: rootStore.appUncategoriedStore
 }))
 @observer
 export default class Categories extends Component {
@@ -35,34 +36,36 @@ export default class Categories extends Component {
   }
 
   componentWillUnmount() {
-    const { categoryStore, appStore } = this.props;
+    const { categoryStore, appStore, uncateAppStore } = this.props;
     categoryStore.reset();
     appStore.reset();
     appStore.defaultStatus = [];
+    uncateAppStore.reset();
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      isModalOpen,
-      modalType,
-      selectedCategory,
-      createdCate
-    } = this.props.categoryStore;
-    if (!prevProps.isModalOpen && isModalOpen && modalType === 'edit') {
+  showOperation = async type => {
+    const { categoryStore, uncateAppStore } = this.props;
+    const { showModal, selectedCategory, createdCate } = categoryStore;
+    showModal(type);
+
+    if (type === 'edit') {
       Object.assign(
         createdCate,
         _.pick({ ...selectedCategory }, ['name', 'description'])
       );
     }
-  }
-
-  showOperation = async type => {
-    const { categoryStore } = this.props;
-    const { showModal } = categoryStore;
-    showModal(type);
 
     if (type === 'customize') {
       categoryStore.createdCate = { name: '', description: '' };
+    }
+
+    if (type === 'add-app') {
+      const category_id = categoryStore.reserveCateKey;
+      uncateAppStore.categoryId = category_id;
+      uncateAppStore.resetTableParams();
+      await uncateAppStore.fetchAll({
+        category_id
+      });
     }
   };
 
@@ -82,9 +85,9 @@ export default class Categories extends Component {
       return null;
     }
 
-    const { apps, appIds } = appStore;
+    const { apps, selectIds } = appStore;
     const appNames = _.map(
-      appIds,
+      selectIds,
       id => (_.find(apps, { app_id: id }) || {}).name || ''
     );
 
@@ -200,14 +203,23 @@ export default class Categories extends Component {
     }
 
     if (modalType === 'add-app') {
+      const { uncateAppStore } = this.props;
+
       return (
         <Dialog
-          title={t('添加应用到 [分类]')}
+          title={t('TIPS_ADD_APP_TO_CATE', { name: selectedCategory.name })}
           visible={isModalOpen}
           onSubmit={handleOperation}
           onCancel={hideModal}
         >
-          <p>add app to cate</p>
+          <p className={styles.addAppTips}>{t('CHOOSE_FROM_UNCATEGORY')}</p>
+          <AppsTable
+            isLoading={uncateAppStore.isLoading}
+            store={uncateAppStore}
+            data={uncateAppStore.apps}
+            columnsFilter={cols => cols.filter(item => ['name', 'intro'].includes(item.key))
+            }
+          />
         </Dialog>
       );
     }
@@ -266,12 +278,17 @@ export default class Categories extends Component {
   }
 
   renderToolbar() {
-    const { appStore, t } = this.props;
+    const { appStore, categoryStore, t } = this.props;
     const {
-      searchWord, onSearch, onClearSearch, onRefresh, appIds
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      selectIds
     } = appStore;
+    const { isModalOpen } = categoryStore;
 
-    if (appIds.length) {
+    if (selectIds.length && !isModalOpen) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           <Button
@@ -292,7 +309,7 @@ export default class Categories extends Component {
         onClear={onClearSearch}
         onRefresh={onRefresh}
         withCreateBtn={{
-          name: t('Create'),
+          name: t('Add'),
           onClick: () => this.showOperation('add-app')
         }}
       />

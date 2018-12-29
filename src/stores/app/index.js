@@ -5,13 +5,15 @@ import { getProgress } from 'utils';
 import ts from 'config/translation';
 import { t } from 'i18next';
 
+import { useTableActions } from 'mixins';
 import Store from '../Store';
 
 const defaultStatus = ['draft', 'active', 'suspended'];
 const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
 
-export default class AppStore extends Store {
+@useTableActions
+class AppStore extends Store {
   sortKey = 'status_time';
 
   @observable apps = [];
@@ -55,16 +57,7 @@ export default class AppStore extends Store {
 
   @observable isProgressive = false;
 
-  @observable totalCount = 0;
-
   @observable appCount = 0;
-
-  @observable currentPage = 1;
-
-  // app table query params
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
 
   @observable repoId = '';
 
@@ -79,10 +72,6 @@ export default class AppStore extends Store {
   @observable operateType = '';
 
   @observable appTitle = '';
-
-  @observable appIds = [];
-
-  @observable selectedRowKeys = [];
 
   @observable detailTab = '';
 
@@ -116,6 +105,8 @@ export default class AppStore extends Store {
     action: '', // delete, modify
     selectedCategory: '' // category id
   };
+
+  @observable unCategoriedApps = [];
 
   @action
   fetchMenuApps = async () => {
@@ -429,7 +420,7 @@ export default class AppStore extends Store {
   @action
   remove = async () => {
     this.appId = this.appId ? this.appId : this.appDetail.app_id;
-    const ids = this.operateType === 'multiple' ? this.appIds.toJSON() : [this.appId];
+    const ids = this.operateType === 'multiple' ? this.selectIds.toJSON() : [this.appId];
     const result = await this.request.delete('apps', { app_id: ids });
 
     if (get(result, 'app_id')) {
@@ -475,9 +466,9 @@ export default class AppStore extends Store {
   };
 
   @action
-  showDeleteApp = appIds => {
-    if (typeof appIds === 'string') {
-      this.appId = appIds;
+  showDeleteApp = ids => {
+    if (typeof ids === 'string') {
+      this.appId = ids;
       this.operateType = 'single';
     } else {
       this.operateType = 'multiple';
@@ -498,48 +489,6 @@ export default class AppStore extends Store {
     this.isModalOpen = true;
   };
 
-  @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeSelect = (selectedRowKeys, selectedRows) => {
-    this.selectedRowKeys = selectedRowKeys;
-    this.appIds = selectedRows.map(row => row.app_id);
-  };
-
-  @action
-  cancelSelected = () => {
-    this.selectedRowKeys = [];
-    this.appIds = [];
-  };
-
   reset = () => {
     this.currentPage = 1;
     this.selectStatus = '';
@@ -548,7 +497,7 @@ export default class AppStore extends Store {
     this.repoId = '';
     this.userId = '';
 
-    this.cancelSelected();
+    // this.cancelSelected();
 
     this.apps = [];
     this.appDetail = {};
@@ -567,15 +516,6 @@ export default class AppStore extends Store {
     this.homeApps = this.apps.slice();
   };
 
-  createReset = () => {
-    this.createStep = 1;
-    this.createReopId = '';
-    this.uploadFile = '';
-    this.createError = '';
-    this.createAppId = '';
-    this.createResult = null;
-  };
-
   @action
   resetBaseInfo = () => {
     _.assign(this.appDetail, this.resetAppDetail);
@@ -587,6 +527,9 @@ export default class AppStore extends Store {
   };
 }
 
+export default AppStore;
+
 export Deploy from './deploy';
 export Version from './version';
 export Create from './create';
+export Uncategoried from './uncategoried';

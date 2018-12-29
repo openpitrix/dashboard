@@ -49,6 +49,14 @@ export default class CategoryStore extends Store {
     return this.getStore('appStore');
   }
 
+  get uncateAppStore() {
+    return this.getStore('appUncategoried');
+  }
+
+  get reserveCateKey() {
+    return RESERVE;
+  }
+
   @action
   updateAppCategoryCounts = async (filter_ids = []) => {
     const cateIds = !_.isEmpty(filter_ids)
@@ -128,7 +136,7 @@ export default class CategoryStore extends Store {
       }
 
       // batch modify app category
-      const batch = this.appStore.appIds.map(
+      const batch = this.appStore.selectIds.map(
         applyModify(this.categoryToAdjust)
       );
       await Promise.all(batch);
@@ -152,9 +160,6 @@ export default class CategoryStore extends Store {
           'This category contains apps, please move those apps to another category'
         );
       }
-
-      // const batch = appIds.map(applyModify(RESERVE));
-      // await Promise.all(batch);
 
       const res = await this.remove(curCategory);
       if (res) {
@@ -199,7 +204,17 @@ export default class CategoryStore extends Store {
     }
 
     if (this.modalType === 'add-app') {
-      // todo
+      if (curCategory === RESERVE) {
+        return this.warn('No need to move current category');
+      }
+
+      const batch = this.uncateAppStore.selectIds.map(applyModify(curCategory));
+      await Promise.all(batch);
+      this.success('Move apps category successfully');
+      this.hideModal();
+      this.uncateAppStore.cancelSelected();
+      await this.updateAppCategoryCounts([RESERVE, curCategory]);
+      await this.appStore.fetchAll({ category_id: curCategory });
     }
   };
 

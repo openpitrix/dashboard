@@ -6,7 +6,8 @@ import Store from './Store';
 import App, {
   Deploy as AppDeploy,
   Version as AppVersion,
-  Create as AppCreate
+  Create as AppCreate,
+  Uncategoried as AppUncategoried
 } from './app';
 import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
@@ -38,32 +39,30 @@ export default class RootStore extends Store {
   }
 
   // get client side config
-  getAppConfig(key = '') {
+  getAppConfig = key => {
     const appConf = _.get(this, 'config.app', {});
     return key ? appConf[key] : appConf;
-  }
+  };
 
   @action
-  setNavFix(fixNav) {
+  setNavFix = fixNav => {
     this.fixNav = !!fixNav;
-  }
+  };
 
   @action
-  setUser(user) {
+  setUser = user => {
     this.user = user;
-  }
+  };
 
-  getUser() {
-    return this.user;
-  }
+  getUser = () => this.user;
 
   @action
-  updateUser(props) {
+  updateUser = props => {
     this.user.update(props);
-  }
+  };
 
   @action
-  notify(...msg) {
+  notify = (...msg) => {
     let notification = {};
 
     if (typeof msg[0] === 'object') {
@@ -87,7 +86,7 @@ export default class RootStore extends Store {
         ts: Date.now()
       })
     );
-  }
+  };
 
   @action
   detachNotify = ts => {
@@ -99,21 +98,31 @@ export default class RootStore extends Store {
     this.notifications = [];
   };
 
-  register(name, Ctor, withState = true) {
-    if (typeof Ctor !== 'function') {
-      throw Error('store should be constructor function');
-    }
+  register = (name, Ctor, withState = true) => {
     if (!name.endsWith('Store')) {
       name += 'Store';
     }
-    this[name] = new Ctor(withState ? this.state : '', name);
-    this[name].notify = this.notify.bind(this);
-    this[name].updateUser = this.updateUser.bind(this);
-    this[name].getStore = this.getRegisteredStore.bind(this);
-    this[name].getUser = this.getUser.bind(this);
-  }
+    if (typeof Ctor === 'function') {
+      this[name] = new Ctor(withState ? this.state : '', name);
+    } else if (
+      typeof Ctor === 'object'
+      && Ctor.opStore.toString() === 'Symbol(op)'
+    ) {
+      Ctor.setInitialState(withState ? this.state : '', name);
+      this[name] = Ctor;
+    } else {
+      throw Error('Invalid store constructor or instance');
+    }
 
-  getRegisteredStore(name = '') {
+    Object.assign(this[name], {
+      notify: this.notify,
+      updateUser: this.updateUser,
+      getStore: this.getRegisteredStore,
+      getUser: this.getUser
+    });
+  };
+
+  getRegisteredStore = (name = '') => {
     if (!name) {
       throw Error('Bad store name');
     }
@@ -126,14 +135,15 @@ export default class RootStore extends Store {
     }
 
     return this[name];
-  }
+  };
 
-  registerStores() {
+  registerStores = () => {
     // app
     this.register('app', App);
     this.register('appDeploy', AppDeploy);
     this.register('appVersion', AppVersion);
     this.register('appCreate', AppCreate);
+    this.register('appUncategoried', AppUncategoried);
 
     // cluster
     this.register('cluster', Cluster);

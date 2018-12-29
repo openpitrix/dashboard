@@ -85,12 +85,25 @@
   margin-top: 20px;
 }
 
+.addAppTips{
+  font-size: $size-small;
+  color: $N300;
+  margin-bottom: 12px;
+  &> span {
+    color: $N500;
+    font-weight: 500;
+  }
+}
+
 .fmCtrl {
   padding-left: 35px;
   margin-bottom: 30px;
+  font-size: $size-small;
   .label {
     display: inline-block;
     margin-right: 20px;
+    font-weight: 500;
+    color: $N500;
   }
   .name {
     min-width: 256px;

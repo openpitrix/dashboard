@@ -7,8 +7,6 @@ import { Table } from 'components/Base';
 import defaultColumns from './columns';
 import defaultFilters from './filters';
 
-// import styles from './index.scss';
-
 export default class AppsTable extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -21,12 +19,14 @@ export default class AppsTable extends React.PureComponent {
     selectionType: PropTypes.string,
     store: PropTypes.shape({
       selectedRowKeys: PropTypes.array,
+      selectIds: PropTypes.array,
+      selectStatus: PropTypes.string,
+      searchWord: PropTypes.string,
+      totalCount: PropTypes.number,
+      currentPage: PropTypes.number,
       onChangeSelect: PropTypes.func,
       onChangeStatus: PropTypes.func,
-      selectStatus: PropTypes.string,
-      changePagination: PropTypes.func,
-      totalCount: PropTypes.number,
-      currentPage: PropTypes.number
+      changePagination: PropTypes.func
     }).isRequired,
     tableType: PropTypes.string
   };

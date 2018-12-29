@@ -528,5 +528,16 @@
   "TIPS_ADJUST_APP_CATE": "请为已选择的 {{appNames}} 等 {{appCount}} 个应用调整所属分类",
   "App category not change": "应用分类未更改",
   "Adjust apps category successfully": "应用分类调整完毕",
-  "TIPS_DELETE_CATE": "分类「{{cateName}}」被删除之后，其中的 {{appNames}} 等 {{appCount}} 个应用将自动归到「未归类」中。"
+  "TIPS_DELETE_CATE": "分类「{{cateName}}」被删除之后，其中的 {{appNames}} 等 {{appCount}} 个应用将自动归到「未归类」中。",
+  "TIPS_ADD_APP_TO_CATE": "添加应用到「{{name}}」",
+  "CHOOSE_FROM_UNCATEGORY": "请从 [未归类] 中选择",
+  "ctg-uncategorized can not be deleted": "未归类 不能被删除",
+  "This category contains apps, please move those apps to another category": "该分类包含应用，删除分类前请先移出分类下的应用",
+  "Category name is empty": "分类名为空",
+  "Create category successfully": "创建分类成功",
+  "Modify category successfully": "编辑分类成功",
+  "No need to move current category": "当前分类不需要添加",
+  "Move apps category successfully": "添加应用到分类成功",
+  "Delete category successfully": "删除分类成功"
+
 }

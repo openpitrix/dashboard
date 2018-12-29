@@ -1,27 +1,46 @@
-import { set } from 'mobx';
+import { set, action } from 'mobx';
 import agent from 'lib/request';
 import _ from 'lodash';
 
 export default class Store {
   constructor(initialState, branch) {
-    if (initialState) {
-      if (branch) {
-        set(this, initialState[branch]);
-      } else {
-        // set rootStore
-        Object.getOwnPropertyNames(initialState)
-          .filter(prop => !prop.endsWith('Store'))
-          .forEach(prop => {
-            set(this, {
-              [prop]: initialState[prop]
-            });
-          });
-      }
-    }
+    this.setInitialState(initialState, branch);
   }
 }
 
 Store.prototype = {
+  opStore: Symbol('op'), // flag
+
+  setInitialState(initialState = {}, branch) {
+    if (_.isEmpty(initialState)) {
+      return;
+    }
+
+    if (branch) {
+      set(this, initialState[branch]);
+    } else {
+      // set rootStore
+      Object.getOwnPropertyNames(initialState)
+        .filter(prop => !prop.endsWith('Store'))
+        .forEach(prop => {
+          set(this, {
+            [prop]: initialState[prop]
+          });
+        });
+    }
+  },
+
+  @action
+  hideModal() {
+    this.isModalOpen = false;
+    this.modalType = '';
+  },
+  @action
+  showModal(type) {
+    this.isModalOpen = true;
+    this.modalType = type;
+  },
+
   pageSize: 10,
   maxLimit: 200, // fixme: api max returned data count
 
