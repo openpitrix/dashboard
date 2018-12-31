@@ -17,7 +17,10 @@ build: Dockerfile
 
 run:
 	@echo up and running openpitrix-dashboard
-	docker run -p 8000:8000 --rm --name openpitrix-dashboard op/web-app
+	docker run -p 8000:8000 --rm \
+	--name openpitrix-dashboard \
+	-v "$(cwd)"/server/local_config.yml:/app/server/local_config.yml op/web-app \
+	op/web-app
 
 # alpine linux has no bash
 sh:
@@ -29,7 +32,10 @@ dev: docker-compose.yml
 run-official:
 	@echo up and running official image
 	docker pull openpitrix/dashboard
-	docker run -d -p 8000:8000 --name openpitrix-dashboard openpitrix/dashboard
+	docker run -d -p 8000:8000 \
+	--name openpitrix-dashboard \
+	-v "$(cwd)"/server/local_config.yml:/app/server/local_config.yml \
+	openpitrix/dashboard
 
 # kill any running openpitrix-dashboard containers
 clean:
