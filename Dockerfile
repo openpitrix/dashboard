@@ -2,9 +2,6 @@ FROM node:9-alpine as builder
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
 # see: https://github.com/sass/node-sass/#binary-configuration-parameters
-ARG SASS_BINARY_PATH
-ARG SASS_BINARY_SITE
-
 ENV SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/
 ENV PATH=$PATH:/app/node_modules/.bin
 

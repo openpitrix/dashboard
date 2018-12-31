@@ -9,6 +9,9 @@ language: node_js
 
 node_js: '9'
 
+env:
+  SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
+
 cache:
   yarn: true
   directories:
