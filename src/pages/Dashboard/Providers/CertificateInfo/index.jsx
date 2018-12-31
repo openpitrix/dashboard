@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Card } from 'components/Layout';
-import { Icon } from 'components/base';
+import { Icon } from 'components/Base';
 import DetailTabs from 'components/DetailTabs';
 import styles from './index.scss';
 
