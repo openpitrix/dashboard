@@ -78,7 +78,7 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  fetchAll = async params => {
+  fetchAll = async (params = {}) => {
     const attachApps = Boolean(params.attachApps);
 
     params = this.normalizeParams(_.omit(params, ['attachApps']));
