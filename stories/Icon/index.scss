@@ -1,0 +1,18 @@
+.p {
+  display: inline-flex;
+  width: 16.66%;
+  align-items: center;
+  font-size: 30px;
+  line-height: 1;
+  margin: 10px auto;
+  :global(svg) {
+    display: block;
+  }
+  :global(.icon) {
+    margin-right: 4px;
+  }
+}
+
+.bgWhite {
+  background: cadetblue;
+}
