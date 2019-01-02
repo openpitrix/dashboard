@@ -141,7 +141,8 @@ class AppStore extends Store {
     } else {
       await this.fetch(appId);
 
-      if (this.appDetail.app_id) {
+      // if can't get app, should not storage app info
+      if (!this.appDetail.app_id) {
         return;
       }
 
