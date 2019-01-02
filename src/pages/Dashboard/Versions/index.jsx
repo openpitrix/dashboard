@@ -32,8 +32,12 @@ export default class Versions extends Component {
   }
 
   componentWillUnmount() {
-    const { appVersionStore } = this.props;
-    appVersionStore.reset();
+    const { appVersionStore, match } = this.props;
+    const appId = _.get(match, 'params.appId', '');
+
+    if (appId) {
+      appVersionStore.reset();
+    }
   }
 
   toggleHistoryVersions(typeVersion) {

@@ -141,6 +141,11 @@ class AppStore extends Store {
     } else {
       await this.fetch(appId);
 
+      // if can't get app, should not storage app info
+      if (!this.appDetail.app_id) {
+        return;
+      }
+
       if (appDetail) {
         const index = _.findIndex(apps, { app_id: appId });
         apps.splice(index, 1, this.appDetail);

@@ -104,6 +104,10 @@ export default class ClusterStore extends Store {
       this.clusterCount = this.totalCount;
     }
 
+    if (params.created_date === 30) {
+      this.monthCount = get(result, 'total_count', 0);
+    }
+
     if (attachApps) {
       const appIds = this.clusters.map(cluster => cluster.app_id);
       if (appIds.length) {

@@ -193,6 +193,15 @@
       float: right;
     }
   }
+
+  .operator {
+    @include note-font;
+
+    .name {
+      color: $N500;
+      font-weight: 500;
+    }
+  }
 }
 
 .rejectMessage {

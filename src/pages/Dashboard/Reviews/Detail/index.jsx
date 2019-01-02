@@ -31,6 +31,11 @@ const reviewStatus = {
   business_admin: ['isv-passed', 'business-in-review'],
   develop_admin: ['business-passed', 'dev-in-review']
 };
+const rejectStatus = {
+  isv: 'isv-rejected',
+  business_admin: 'business-rejected',
+  develop_admin: 'dev-rejected'
+};
 const reviewTitle = {
   isv: '应用服务商审核',
   business_admin: '平台商务审核',
@@ -48,6 +53,7 @@ const reviewPassNote = {
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
@@ -136,6 +142,21 @@ export default class ReviewDetail extends Component {
     );
   };
 
+  renderOperator(operatorId) {
+    const {
+      appVersionStore, userStore, user, t
+    } = this.props;
+    const { users } = userStore;
+    const operator = _.find(users, { user_id: operatorId }) || user;
+
+    return (
+      <div className={styles.operator}>
+        <label className={styles.name}>{operator.username}</label>{' '}
+        {operator.email}
+      </div>
+    );
+  }
+
   renderReviewCard(role) {
     const { appVersionStore, user, t } = this.props;
     const { reviewDetail } = appVersionStore;
@@ -174,7 +195,7 @@ export default class ReviewDetail extends Component {
           <div className={styles.reviewInfo}>
             <dl>
               <dt>{t('审核人员')}:</dt>
-              <dd>{record.operator}</dd>
+              <dd>{this.renderOperator(record.operator)}</dd>
             </dl>
             <dl>
               <dt>{t('开始时间')}:</dt>
@@ -182,6 +203,11 @@ export default class ReviewDetail extends Component {
             </dl>
           </div>
           <div className={styles.opreateButtons}>
+            {user.username === 'develop_admin' && (
+              <Link to={`/dashboard/app/${reviewDetail.app_id}/deploy`}>
+                <Button>{t('Deploy Test')}</Button>
+              </Link>
+            )}
             <Button type="primary" onClick={() => this.handleReview('review')}>
               {t('Pass')}
             </Button>
@@ -193,9 +219,9 @@ export default class ReviewDetail extends Component {
       );
     }
 
-    // passed
+    // passed, rejectd
     if (phaseKeys.includes(role) && !reviewStatus[role].includes(status)) {
-      const isReject = status.indexOf('reject') > -1;
+      const isReject = status === rejectStatus[role];
 
       return (
         <Card
@@ -210,7 +236,7 @@ export default class ReviewDetail extends Component {
           <div className={styles.reviewInfo}>
             <dl>
               <dt>{t('审核人员')}:</dt>
-              <dd>{record.operator}</dd>
+              <dd>{this.renderOperator(record.operator)}</dd>
             </dl>
             <dl>
               <dt>{t('开始时间')}:</dt>
