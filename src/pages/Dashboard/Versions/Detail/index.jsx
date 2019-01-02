@@ -318,9 +318,9 @@ export default class VersionDetail extends Component {
         />
         <div className={styles.record}>
           <div className={styles.operator}>
-            {t(audit.role)}:&nbsp;{
-              (_.find(users, { user_id: audit.operator }) || {}).username
-            }
+            {t(audit.role)}:&nbsp;{(
+              _.find(users, { user_id: audit.operator }) || {}
+            ).username || audit.operator}
           </div>
           {this.renderReason(audit)}
           <div className={styles.time}>

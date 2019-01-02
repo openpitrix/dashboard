@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
-import classNames from 'classnames';
 
 import {
   Icon, Input, Table, Button, Image
@@ -15,6 +14,7 @@ import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import AppStatistics from 'components/AppStatistics';
 import versionTypes from 'config/version-types';
+import { formatTime } from 'utils';
 import Versions from '../../Versions';
 
 import styles from './index.scss';
@@ -37,31 +37,48 @@ const tags = [
 export default class AppDetail extends Component {
   async componentDidMount() {
     const {
-      appStore, appVersionStore, clusterStore, match
+      appStore,
+      appVersionStore,
+      clusterStore,
+      userStore,
+      match
     } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
 
+    await appVersionStore.fetchActiveVersions({ app_id: appId, noLimit: true });
+
     clusterStore.appId = appId;
+    // get month deploy total
+    await clusterStore.fetchAll({ app_id: appId, created_date: 30, limit: 1 });
+    // get deploy total and user instance
     await clusterStore.fetchAll({ app_id: appId });
 
-    await appVersionStore.fetchAll({ app_id: appId, noLimit: true });
+    const { appDetail } = appStore;
+    await userStore.fetchDetail({ user_id: appDetail.owner });
   }
 
   changeTab = async tab => {
-    const { appStore, appVersionStore, match } = this.props;
+    const {
+      appStore, appVersionStore, userStore, match
+    } = this.props;
 
     if (tab !== appStore.detailTab) {
       appStore.detailTab = tab;
 
       if (tab === 'online') {
         const { appId } = match.params;
-        await appVersionStore.fetchTypeVersions(appId);
+        await appVersionStore.fetchTypeVersions(appId, true);
       } else if (tab === 'record') {
         const { appDetail } = appStore;
-        const versoinId = _.get(appDetail, 'latest_app_version.version_id', '');
-        await appVersionStore.fetchAudits(appDetail.app_id, versoinId);
+        const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
+        await appVersionStore.fetchAudits(appDetail.app_id, versionId);
+        // query record relative operators name
+        const userIds = _.get(appVersionStore.audits, versionId, []).map(
+          item => item.operator
+        );
+        await userStore.fetchAll({ user_id: _.uniq(userIds) });
       }
     }
   };
@@ -87,8 +104,8 @@ export default class AppDetail extends Component {
     const { appDetail } = appStore;
     const { users } = userStore;
     const { audits } = appVersionStore;
-    const versoinId = _.get(appDetail, 'latest_app_version.version_id', '');
-    const records = audits[versoinId] || [];
+    const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
+    const records = audits[versionId] || [];
 
     const columns = [
       {
@@ -101,7 +118,7 @@ export default class AppDetail extends Component {
         title: t('申请类型'),
         key: 'type',
         width: '60px',
-        render: item => item.type
+        render: item => item.type || t('应用上架')
       },
       {
         title: t('Status'),
@@ -115,13 +132,13 @@ export default class AppDetail extends Component {
         title: t('Update time'),
         key: 'status_time',
         width: '100px',
-        render: item => item.status_time
+        render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: t('审核人员'),
         key: 'operator',
         width: '80px',
-        render: item => item.operator
+        render: item => (_.find(users, { user_id: item.operator }) || {}).username
       }
     ];
 
@@ -217,8 +234,9 @@ export default class AppDetail extends Component {
   }
 
   renderAppBase() {
-    const { appStore, t } = this.props;
+    const { appStore, userStore, t } = this.props;
     const { appDetail } = appStore;
+    const { userDetail } = userStore;
     const categories = _.get(appDetail, 'category_set', []);
 
     return (
@@ -256,11 +274,11 @@ export default class AppDetail extends Component {
           </dl>
           <dl>
             <dt>{t('开发者')}</dt>
-            <dd>{appDetail.owner}</dd>
+            <dd>{userDetail.username}</dd>
           </dl>
           <dl>
             <dt>{t('上架时间')}</dt>
-            <dd>{appDetail.status_time}</dd>
+            <dd>{formatTime(appDetail.status_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
           </dl>
           <Link to="/" className={styles.link}>
             {t('去商店中查看')} →
@@ -271,7 +289,9 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const { appVersionStore, appStore, t } = this.props;
+    const {
+      appVersionStore, appStore, clusterStore, t
+    } = this.props;
     const { detailTab } = appStore;
     const { versions } = appVersionStore;
 
@@ -280,7 +300,12 @@ export default class AppDetail extends Component {
         <Grid>
           <Section size={4}>{this.renderAppBase()}</Section>
           <Section size={8}>
-            <AppStatistics isAppDetail appTotal={versions.length} />
+            <AppStatistics
+              isAppDetail
+              versionTotal={versions.length}
+              totalDepoly={clusterStore.totalCount}
+              monthDepoly={clusterStore.monthCount}
+            />
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
             {detailTab === 'instance' && this.renderInstance()}
             {detailTab === 'online' && <Versions />}

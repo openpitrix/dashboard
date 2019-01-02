@@ -5,7 +5,6 @@ import _, {
 import { Base64 } from 'js-base64';
 
 import ts from 'config/translation';
-import { t } from 'i18next';
 import Store from '../Store';
 
 const defaultStatus = [
@@ -161,6 +160,35 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  fetchActiveVersions = async (params = {}) => {
+    const defaultParams = {
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize
+    };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
+    if (this.appId) {
+      defaultParams.app_id = this.appId;
+    }
+
+    this.isLoading = true;
+    const result = await this.request.get(
+      'active_app_versions',
+      assign(defaultParams, params)
+    );
+    this.isLoading = false;
+
+    this.versions = get(result, 'app_version_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+  };
+
+  @action
   fetch = async (versionId = '') => {
     this.isLoading = true;
     const result = await this.request.get(`app_versions`, {
@@ -257,7 +285,7 @@ export default class AppVersionStore extends Store {
   @action
   versionReview = async (handleType, versionId, role) => {
     if (handleType === 'reject' && !this.reason) {
-      return this.error(t('请您填写拒绝原因'));
+      return this.error('Please input the reason for reject');
     }
 
     const params = { version_id: versionId };
@@ -279,7 +307,7 @@ export default class AppVersionStore extends Store {
       if (handleType === 'review') {
         this.isTipsOpen = true;
       } else {
-        this.success(`${capitalize(handleType)} this version successfully.`);
+        this.success(`${role.toUpperCase()}_REVIEW_PASS`);
       }
     } else {
       return result;
@@ -303,11 +331,15 @@ export default class AppVersionStore extends Store {
       `app/${appId}/version/${versionId}/reviews`,
       {
         limit: this.maxLimit,
-        sort_key: 'review_time'
+        sort_key: 'status_time',
+        reverse: true
       }
     );
 
     this.reviewDetail = _.get(result, 'app_version_review_set[0]', {});
+    const { phase } = this.reviewDetail;
+    const userIds = _.map(phase, o => o.operator);
+    await this.userStore.fetchAll({ user_id: userIds });
   };
 
   // todo
@@ -431,9 +463,10 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  fetchTypeVersions = async appId => {
+  fetchTypeVersions = async (appId, isActive) => {
+    const url = isActive ? 'active_app_versions' : 'app_versions';
     this.isLoading = true;
-    const result = await this.request.get('app_versions', {
+    const result = await this.request.get(url, {
       limit: this.maxLimit,
       app_id: appId
     });

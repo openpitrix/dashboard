@@ -40,14 +40,16 @@ export default class Info extends Component {
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
-      // await appStore.fetch(appId);
+      await appStore.fetch(appId);
 
       // query this version relatived app info
       await appVersionStore.fetchAll({ app_id: appId });
 
       // judge you can edit app info
       const { versions } = appVersionStore;
-      appStore.isEdit = !_.find(versions, { status: 'submitted' });
+      const { appDetail } = appStore;
+      appStore.isEdit = !_.find(versions, { status: 'in-view' })
+        && appDetail.status !== 'deleted';
 
       // query categories data for category select
       await categoryStore.fetchAll();
