@@ -290,10 +290,17 @@ export default class Table extends React.Component {
     );
   };
 
+  trans = key => {
+    if (typeof key === 'string') {
+      return this.props.t(key);
+    }
+    return key;
+  };
+
   renderFilterColumn = columns => {
     const { filterList, t } = this.props;
-    return columns.map(column => {
-      const filter = find(filterList, { key: column.key || '' });
+    return columns.map(({ ...column }) => {
+      const filter = find(filterList, { key: column.key });
 
       if (filter) {
         column.title = (
@@ -301,7 +308,7 @@ export default class Table extends React.Component {
             content={this.renderFilterContent(filter)}
             className={styles.filterOuter}
           >
-            {t(column.title)}
+            {this.trans(column.title)}
             <Icon
               name="caret-down"
               type={`${filter.selectValue ? 'light' : 'dark'}`}
