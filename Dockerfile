@@ -24,7 +24,6 @@ RUN cd /app && ln -fs /tmp/node_modules && yarn prod:build
 FROM node:9-alpine
 
 ENV NODE_ENV=production
-ENV PORT=8000
 
 WORKDIR /app
 
@@ -33,6 +32,6 @@ RUN mkdir -p /app
 COPY --from=builder /app /app
 COPY --from=builder /tmp/prod_node_modules /app/node_modules
 
-EXPOSE PORT
+EXPOSE 8000
 
 CMD ["npm", "run", "prod:serve"]
