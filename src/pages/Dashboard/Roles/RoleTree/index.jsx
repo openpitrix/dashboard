@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Button, Input, Tree, Modal } from 'components/Base';
+import {
+  Button, Input, Tree, Modal
+} from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 
