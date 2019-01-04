@@ -164,7 +164,7 @@ export default class RepoStore extends Store {
 
     if (get(result, 'repo_id')) {
       this.deleteRepoClose();
-      this.success(ts('Delete repo successfully.'));
+      this.success('Delete repo successfully');
 
       if (this.repos.length) {
         await this.fetchAll({}, this.appStore);
@@ -218,9 +218,9 @@ export default class RepoStore extends Store {
       repo_id: repoId
     });
     if (repoEvent.repo_id) {
-      this.success(`${ts('Started repo indexer:')} ${repoEvent.repo_id}`);
+      this.success(`${'Started repo indexer:'} ${repoEvent.repo_id}`);
     } else {
-      this.error(`${ts('Start repo indexer failed:')} ${repoEvent.errDetail}`);
+      this.error(`${'Start repo indexer failed:'} ${repoEvent.errDetail}`);
     }
   };
 

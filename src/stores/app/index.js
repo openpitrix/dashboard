@@ -473,7 +473,7 @@ class AppStore extends Store {
         this.cancelSelected();
         this.hideModal();
       }
-      this.success(ts('Delete app successfully.'));
+      this.success('Delete app successfully');
     } else {
       return result;
     }
@@ -487,7 +487,7 @@ class AppStore extends Store {
   @action
   modifyCategoryById = async () => {
     if (!this.handleApp.selectedCategory) {
-      this.info(ts('Please select a category'));
+      this.info('Please select a category');
       return;
     }
     const result = await this.modify({
@@ -497,7 +497,7 @@ class AppStore extends Store {
     this.hideModal();
 
     if (!result.err) {
-      this.success(ts('Modify category successfully'));
+      this.success('Modify category successfully');
       await this.fetchAll();
     }
   };

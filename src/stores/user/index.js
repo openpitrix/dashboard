@@ -243,7 +243,7 @@ export default class UserStore extends Store {
     const result = await this.modify(data);
 
     if (get(result, 'user_id')) {
-      this.success(ts('Modify user successful.'));
+      this.success('Modify user successful');
       return { username: data.username };
     }
   };
@@ -254,7 +254,7 @@ export default class UserStore extends Store {
 
     const data = getFormData(e.target);
     if (data.new_password !== data.confirm_password) {
-      this.error(ts('New password is different entered twice.'));
+      this.error('New password is different entered twice');
       return;
     }
 
@@ -271,7 +271,7 @@ export default class UserStore extends Store {
       });
 
       if (get(result, 'user_id')) {
-        this.success(ts('Change password successful.'));
+        this.success('Change password successful');
       }
     }
   };

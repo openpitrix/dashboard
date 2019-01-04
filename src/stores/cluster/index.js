@@ -149,7 +149,7 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
-      this.success(ts('Delete cluster successfully.'));
+      this.success('Delete cluster successfully');
     } else {
       return result;
     }
@@ -164,7 +164,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.success(ts('Start cluster successfully.'));
+      this.success('Start cluster successfully');
     }
   };
 
@@ -177,7 +177,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.success(ts('Stop cluster successfully.'));
+      this.success('Stop cluster successfully');
     }
   };
 
@@ -192,7 +192,7 @@ export default class ClusterStore extends Store {
       await this.fetchAll();
       await this.fetchJobs();
       this.cancelSelected();
-      this.success(ts('Cease cluster successfully.'));
+      this.success('Cease cluster successfully');
     }
   };
 
@@ -205,7 +205,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
-      this.success(ts('Rollback cluster successfully.'));
+      this.success('Rollback cluster successfully');
     }
   };
 
@@ -219,7 +219,7 @@ export default class ClusterStore extends Store {
       this.hideModal();
       await this.fetchAll();
       await this.fetchJobs();
-      this.success(ts('Upgrade cluster successfully.'));
+      this.success('Upgrade cluster successfully');
     }
   };
 
