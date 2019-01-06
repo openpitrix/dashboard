@@ -1,8 +1,6 @@
 import { observable, action } from 'mobx';
 import { get, assign, orderBy } from 'lodash';
 
-import ts from 'config/translation';
-
 import Store from '../Store';
 
 export default class RepoStore extends Store {

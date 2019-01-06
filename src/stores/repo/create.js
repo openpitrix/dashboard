@@ -2,7 +2,6 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 import { getFormData } from 'utils';
-import ts from 'config/translation';
 
 import Store from '../Store';
 

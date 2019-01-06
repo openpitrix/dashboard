@@ -1,8 +1,6 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import ts from 'config/translation';
-
 import Store from '../Store';
 
 export default class KeyPairStore extends Store {

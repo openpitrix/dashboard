@@ -1,8 +1,6 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 
-import ts from '../config/translation';
-
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
   'YYYY/MM/DD HH:mm:ss': 'YYYY年MM月DD日 HH:mm:ss'

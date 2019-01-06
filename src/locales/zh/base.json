@@ -2,7 +2,6 @@
   "brand": {
     "slogan": "多云应用管理平台"
   },
-
   "Dashboard": "工作台",
   "Overview": "总览",
   "Apps": "应用",
@@ -13,7 +12,6 @@
   "Roles": "角色",
   "Categories": "分类",
   "Search Categories": "搜索分类",
-
   "Catalog": "目录",
   "Deployment": "部署",
   "Development": "开发",
@@ -22,21 +20,17 @@
   "search": {
     "placeholder": "搜索应用.."
   },
-
   "Login": "登录",
   "Log out": "退出",
   "Remember me": "记住我",
   "Username": "用户名",
   "Password": "密码",
   "Login OpenPitrix": "登录 OpenPitrix",
-
   "Newest": "最新",
   "more": "更多..",
-
   "About": "关于",
   "Help": "帮助",
   "Terms": "案例",
-
   "Back to link": "← 返回{{link}}",
   "Deploy": "部署",
   "Application Version": "应用版本",
@@ -49,15 +43,12 @@
   "Application ID": "应用ID",
   "Created At": "创建时间",
   "Versions": "版本列表",
-
   "greet words": "你好，{{name}}",
   "last login time": "上次登录时间 {{last_login}}",
-
   "role": "角色",
   "role_admin": "管理员",
   "role_developer": "开发者",
   "role_normal": "普通用户",
-
   "Top Repos": "人气最佳的仓库",
   "Top Apps": "人气最佳的应用",
   "Top Runtimes": "人气最佳的运行环境",
@@ -65,12 +56,9 @@
   "Latest Apps": "最新创建的应用",
   "My Runtimes": "我的环境",
   "Recently Viewed Apps": "最近查看的应用",
-
   "Public": "公共",
   "Private": "私有",
-
   "Nodes": "节点",
-
   "Delete App": "删除应用",
   "Delete App desc": "您确定要删除该应用吗?",
   "Choose App Category": "选择应用分类",
@@ -78,7 +66,6 @@
   "View detail": "查看详情",
   "Deploy App": "部署应用",
   "Modify category": "编辑分类",
-
   "Delete": "删除",
   "Search App": "搜索应用",
   "App Name": "应用名称",
@@ -88,7 +75,6 @@
   "Repo": "仓库",
   "Updated At": "更新时间",
   "Actions": "操作",
-
   "Create App Version": "创建应用版本",
   "Name": "名称",
   "Package address": "程序包地址",
@@ -103,14 +89,11 @@
   "Date Created": "创建时间",
   "Create version": "创建版本",
   "Reject reason": "拒绝原因",
-
-
   "My Apps": "我的应用",
   "All": "所有",
   "Logs": "日志",
   "New version": "新版本",
   "Package": "压缩包",
-
   "Upload Package": "上传压缩包",
   "Next": "下一步",
   "Back": "返回",
@@ -120,14 +103,10 @@
   "View in Store": "在商店中查看",
   "Tips": "提示",
   "Operations": "操作",
-
-
   "Preview in Catalog": "在目录中预览",
   "Date Updated": "更新时间",
-
   "Total": "总计",
   "Lasted 2 Weeks": "最近两周",
-
   "Passed": "已通过",
   "Rejected": "已拒绝",
   "Draft": "待提交",
@@ -154,19 +133,14 @@
   "Published": "已上架",
   "Recalled": "已下架",
   "Recall": "下架",
-
   "In-review": "审核中",
-
   "public": "公共",
   "private": "私有",
-
   "Basic Settings": "基本设置",
   "Deploy Settings": "部署设置",
   "Node Settings": "节点设置",
   "Vxnet Settings": "网络设置",
   "Environment Settings": "环境设置",
-
-
   "Delete cluster": "删除集群",
   "Start cluster": "启用集群",
   "Stop cluster": "停用集群",
@@ -179,7 +153,6 @@
   "Runtime": "环境",
   "Node Count": "节点数量",
   "User": "用户",
-
   "Frontgate ID": "Frontgate ID",
   "More": "更多",
   "Activities": "操作日志",
@@ -188,16 +161,14 @@
   "Node Status": "节点状态",
   "Configuration": "配置",
   "Private IP": "私有IP",
-
-  "Runtime Provider" : "环境云服务商",
-  "Zone/Namespace" : "地区/命名空间",
+  "Runtime Provider": "环境云服务商",
+  "Zone/Namespace": "地区/命名空间",
   "Cluster": "集群",
   "Creator": "创建者",
   "Count": "数量",
   "App Count": "应用数量",
   "Labels": "标签",
   "Events": "事件",
-
   "Create": "创建",
   "Default": "默认",
   "Uncategories": "未分类",
@@ -205,8 +176,6 @@
   "Modify Category": "修改分类",
   "Delete Category": "删除分类",
   "Delete Category desc": "您确定要删除该分类吗?",
-
-
   "Provider": "云服务商",
   "Modify Repo": "修改仓库",
   "Delete Repo": "删除仓库",
@@ -220,7 +189,6 @@
   "The name of the repo": "仓库的名称",
   "Repo Name": "仓库名称",
   "Search Repos": "搜索仓库",
-
   "Runtime Name": "环境名称",
   "Cluster Count": "集群数量",
   "Delete Runtime": "删除环境",
@@ -237,34 +205,28 @@
   "Cloud Provider": "云服务商",
   "Region": "区域",
   "Create Runtime": "创建环境",
-
   "Remove": "移除",
   "Add": "添加",
   "Validate": "验证",
   "Key": "键",
   "Value": "值",
-
   "Confirm": "确定",
   "Cancel": "取消",
   "Selected": "已选中",
-
   "No search data": "没有相关搜索结果！",
   "Guide": "说明",
   "Create Repo explain": "在OpenPitrix中，部署的每个应用程序都是基础软件包存储库，换句话说，如果要将OpenPitrix用于多云应用程序管理器，则需要先创建存储库。应用程序管理器可以将包存储到http / https服务器或S3对象存储。",
   "Create Runtime explain": "环境是云服务商，它可以是AWS、GCE、QingCloud、Kubernetes、OpenStack、VMware VSphere等，让OpenPitrix有权限访问这些云服务商，OpenPitrix将管理所有这些应用程序。",
   "Deploy App explain": "OpenPitrix将应用程序部署到任何云服务商，它非常简单，选择想要部署的应用程序，然后选择环境（云服务商），最后按下确定按钮。这样就完成了。",
-
   "NO_SEARCH_DATA": "暂无应用数据!",
   "uncategorized": "未分类",
   "Uncategorized": "未分类",
   "repo_visible": "{{visible}}仓库",
-
   "Browse Apps": "浏览应用",
   "Create Repo": "创建仓库",
   "Manage Clusters": "管理集群",
   "Browse": "浏览",
   "Manage": "管理",
-
   "Store": "商店",
   "Platform": "平台",
   "All Apps": "全部应用",
@@ -281,10 +243,9 @@
   "SSH Keys": "SSH密钥",
   "Profile": "账号设置",
   "Test": "测试",
-
   "Create New User": "创建新用户",
-  "Modify User" : "修改用户",
-  "Delete User" : "删除用户",
+  "Modify User": "修改用户",
+  "Delete User": "删除用户",
   "Administrator": "管理员",
   "Developer": "开发者",
   "Normal User": "普通用户",
@@ -295,7 +256,6 @@
   "Organization": "机构",
   "Group": "团队",
   "Search users": "搜索用户",
-
   "Personal Center": "个人中心",
   "Settings": "设置",
   "Basic setting": "基本设置",
@@ -315,10 +275,8 @@
   "Attach SSH Key": "绑定SSH密钥",
   "Detach SSH Key": "解绑SSH密钥",
   "detach_key_desc": "您确定要解绑该SSH密钥与所选节点的绑定吗?",
-
   "Attach": "绑定",
   "Detach": "解绑",
-
   "App Store": "应用商店",
   "Purchased": "已部署应用",
   "My runtimes": "我的环境",
@@ -326,24 +284,17 @@
   "PURCHASED_DESC": "所有你购买过的应用都会展示在此，包括应用对应的实例。",
   "MY_RUNTIMES_DESC": "平台同时支持多种云环境，可以在这里进行统一管理。",
   "UPGRADE_PROVIDER": "升级成为「应用提供商」",
-
-
   "EMPTY_APP_TIPS": "如果OpenPitrix管理员设置完毕仓库，所有的应用会自动导入。作为OpenPitrix用户，可以浏览所有公有应用，可以通过标签和类别来过滤应用。",
   "EMPTY_REPO_TIPS": "应用开发者可以非常轻松的创建OpenPitrix规范的打包应用，该应用通过yaml或者json格式来描述，并可以上传应用到http服务器或者对象存储系统。",
   "EMPTY_CLUSTER_TIPS": "OpenPitrix管理应用的生命周期，贯穿始终。应用的状态(通常以集群方式运行)例如：阻塞，活跃，关闭，删除。如果管理员想停止集群，只需要告诉OpenPitrix， 它将帮助云运维人员完成后续工作。",
   "EMPTY_RUNTIME_TIPS": "在组织中部署为一站式应用程序管理平台，以支持包括混合云在内的多个云系统。",
   "Private Repo": "私有仓库",
-
   "NORMAL_GUIDING_WORDS": "欢迎来到OpenPitrix, 接下来你想做什么?",
-
   "ADMINISTRATOR_DESC": "平台管理员提供系统全局管理，主要负责平台的设置、用户管理、应用审批、财务对账、商店运营等工作",
   "DEVELOPER_DESC": "开发人员通过开发者门户创建应用、测试应用、提交应用，根据授权对所提供应用进行运维",
   "NORMAL_DESC": "普通用户通过服务门户，对应用进行浏览、购买应用、接入不同的运行环境，对已部署实例进行监控、控制和统计分析",
-
   "Copy success": "复制成功",
-
   "search_results": "搜索结果",
-
   "Choose category": "选择分类",
   "Deployment Name": "部署名称",
   "Deployment Pods": "部署",
@@ -360,37 +311,30 @@
   "DaemonSets": "守护进程集",
   "DEPLOY_NO_RUNTIME_NOTE": "当前无可用环境，请前往",
   "create": "创建",
-
   "Back to user": "普通用户",
   "Back to developer": "开发中心",
   "App Center": "应用中心",
   "Develop Center": "开发中心",
   "Document": "文档",
-
   "Already create new version": "已创建新版本",
-
   "None": "无",
   "Add Nodes": "添加节点",
   "Node Role": "节点角色",
   "DEL_RESOURCE_TIPS": "确定要删除 {{resource_ids}} ?",
-
   "kubeconfig desc": "用于配置集群间访问的文件，在 Kubernetes 环境 “~/.kube/config” 查看",
   "Please select one repo": "请选择一个仓库",
   "Please input reject Reason": "请输入拒绝原因",
   "Please select SSH key": "请选择SSH密钥",
   "HELM_APP_NAME_TIP": "小写字母开头，最长14个字符（支持数字/小写字母/连字符）",
-
   "Basic settings": "基础设置",
   "Vxnet settings": "网络设置",
   "Deploy settings": "部署设置",
-
   "Name should not be empty": "名称不能为空",
   "Invalid yaml": "非法的 yaml",
   "Version should not be empty": "版本不能为空",
   "Runtime should not be empty": "运行环境不能为空",
   "Deploy app successfully": "部署应用成功",
   "Invalid config file, failed to render page": "无效的配置文件，无法渲染页面",
-
   "QingCloud App Center": "QingCloud 应用中心",
   "My dashboard": "我的工作台",
   "App service provider": "应用服务商",
@@ -401,7 +345,6 @@
   "Team Members": "团队成员",
   "Financial Center": "财务中心",
   "Message and monitoring": "消息与监控",
-  "Settings": "设置",
   "Create app": "创建新应用",
   "View all": "查看全部",
   "Global search": "全局搜索",
@@ -420,16 +363,12 @@
   "Instance": "实例",
   "Environment": "环境",
   "Account Info": "账户信息",
-  "Change Password": "修改密码",
   "Notice settings": "通知设置",
   "Payment": "支付",
-
   "Sandbox-Instances": "沙盒-实例",
   "Customer-Instances": "用户-实例",
   "Sandbox-Instance detail": "沙盒-实例详情",
   "Customer-Instance detail": "用户-实例详情",
-
-
   "Record": "记录",
   "Version": "版本",
   "developer": "开发者",
@@ -437,8 +376,6 @@
   "Reason": "原因",
   "Expand": "展开",
   "Collapse": "收起",
-  "None": "无",
-
   "Scaling": "正在扩容",
   "Testing env": "测试环境",
   "Not support currently": "暂不支持",
@@ -449,7 +386,6 @@
   "Switch authorization info": "切换授权信息",
   "Add authorization info": "添加授权信息",
   "Add runtime": "添加环境",
-
   "STEPPER_NAME_CREATE_RUNTIME_HEADER": "添加测试环境 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_CREATE_RUNTIME_1": "提供环境授权信息",
   "STEPPER_TITLE_CREATE_RUNTIME_2": "设置环境信息",
@@ -458,7 +394,6 @@
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_1": "《平台服务条款》",
   "STEPPER_FOOTER_CREATE_RUNTIME_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_2": "《平台服务条款》",
-
   "STEPPER_NAME_CREATE_CREDENTIAL_HEADER": "添加授权信息 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_CREATE_CREDENTIAL_1": "提供环境授权信息",
   "STEPPER_TITLE_CREATE_CREDENTIAL_2": "设置名称、备注",
@@ -467,17 +402,14 @@
   "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_1": "《平台服务条款》",
   "STEPPER_FOOTER_CREATE_CREDENTIAL_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_2": "《平台服务条款》",
-
   "Verify": "验证",
   "How to get these tips?": "如何获得这些信息？",
-
   "Validating": "信息验证中..",
   "invalid url": "错误的URL",
   "invalid provider": "错误的提供商",
   "access key and secret key should not be empty": "请填写完整的访问密钥和私钥",
   "Validate successfully": "信息验证成功",
   "Set name": "设置名称",
-
   "Modify authorization info": "修改授权信息",
   "Delete authorization info": "删除授权信息",
   "DELETE_RUNTIME_CONFIRM": "确认删除该环境吗?",
@@ -485,14 +417,11 @@
   "Backlog": "备注",
   "Please validate runtime credential": "请验证授权信息",
   "Auth info name is empty": "授权信息名称为空",
-
   "Delete runtime successfully": "删除环境成功",
-
   "You can": "你可以",
   "Choose from already saved resource": "从已添加的当中选择：",
   "Or": "或者",
   "Newly create": "添加全新的...",
-
   "Credential name is empty": "授权信息名称为空",
   "Saved runtime credential successfully": "授权信息添加成功",
   "Please select runtime zone": "请选择环境区域",
@@ -502,17 +431,13 @@
   "invalid kebeconfig": "错误的kubeconfig",
   "Update cluster env successfully": "修改集群环境成功",
   "Helm runtime namespace is empty": "命名空间为空",
-
   "STEPPER_NAME_CREATE_PROVIDER_HEADER": "成为认证服务商",
   "STEPPER_TITLE_CREATE_PROVIDER_1": "提交认证信息",
   "STEPPER_FOOTER_CREATE_PROVIDER_1": "以上是平台审核的重要信息，请准确填写。",
-
   "Selected runtime": "所选环境",
   "App / Delivery type / Version": "所属应用、交付方式、版本",
-
   "Reviewed": "已审核",
   "Unreviewed": "未审核",
-
   "App intro": "应用介绍",
   "Delivery type": "交付类型",
   "Count deploy": "部署总次数",
@@ -524,7 +449,6 @@
   "Customize": "自定义",
   "Adjust category": "调整分类",
   "Chosen category": "所选分类",
-
   "TIPS_ADJUST_APP_CATE": "请为已选择的 {{appNames}} 等 {{appCount}} 个应用调整所属分类",
   "App category not change": "应用分类未更改",
   "Adjust apps category successfully": "应用分类调整完毕",
@@ -538,6 +462,7 @@
   "Modify category successfully": "编辑分类成功",
   "No need to move current category": "当前分类不需要添加",
   "Move apps category successfully": "添加应用到分类成功",
-  "Delete category successfully": "删除分类成功"
-
+  "Delete category successfully": "删除分类成功",
+  " days ago": " 天前",
+  " hours ago": " 小时前"
 }

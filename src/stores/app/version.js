@@ -4,7 +4,6 @@ import _, {
 } from 'lodash';
 import { Base64 } from 'js-base64';
 
-import ts from 'config/translation';
 import Store from '../Store';
 
 const defaultStatus = [

@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
 import { getProgress, getCookie } from 'utils';
-import ts from 'config/translation';
 import { t } from 'i18next';
 
 import { useTableActions } from 'mixins';
