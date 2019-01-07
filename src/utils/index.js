@@ -1,5 +1,6 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
+import { t } from 'i18next';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
@@ -61,8 +62,8 @@ export function getPastTime(time) {
   const date = new Date(time);
   const diff = (now.getTime() - date.getTime()) / (60 * 60 * 1000);
   return diff / 24 > 1
-    ? `${parseInt(diff / 24)} days ago`
-    : `${parseInt(diff)} hours ago`;
+    ? `${parseInt(diff / 24)} ${t('days ago')}`
+    : `${parseInt(diff)} ${t('hours ago')}`;
 }
 
 export function toQueryString(params) {
