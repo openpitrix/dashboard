@@ -50,7 +50,7 @@
     "dev": "npm-run-all -p dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
-    "prod:build": "npm run clean:prod && npm run trans && NODE_ENV=production webpack -p --config webpack.prod.js",
+    "prod:build": "npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
     "prod:serve": "NODE_ENV=production DEBUG=app node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
     "build:prod-client": "node build.js --prod-client",
