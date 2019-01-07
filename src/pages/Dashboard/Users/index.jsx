@@ -141,12 +141,12 @@ export default class Users extends Component {
         hideFooter
       >
         <form
-          className="formContent"
+          className={styles.formContent}
           onSubmit={e => userStore.createOrModify(e)}
           method="post"
         >
           {userDetail.user_id && (
-            <div className="inputItem">
+            <div>
               <label>{t('Name')}</label>
               <Input
                 name="name"
@@ -159,7 +159,7 @@ export default class Users extends Component {
               />
             </div>
           )}
-          <div className="inputItem">
+          <div>
             <label>{t('Email')}</label>
             <Input
               name="email"
@@ -184,7 +184,7 @@ export default class Users extends Component {
               <Select.Option value="isv">{t('ISV')}</Select.Option>
             </Select>
           </div>
-          <div className="inputItem">
+          <div>
             <label>{t('Password')}</label>
             <Input
               name="password"
@@ -197,7 +197,7 @@ export default class Users extends Component {
               required={!userDetail.user_id}
             />
           </div>
-          <div className="textareaItem">
+          <div>
             <label>{t('Description')}</label>
             <textarea
               name="description"
@@ -208,7 +208,7 @@ export default class Users extends Component {
               }}
             />
           </div>
-          <div className="operationBtn">
+          <div className={styles.operationBtn}>
             <Button type="primary" htmlType="submit">
               {t('Confirm')}
             </Button>
