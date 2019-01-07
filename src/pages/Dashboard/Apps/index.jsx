@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import _ from 'lodash';
+import _, { get, orderBy } from 'lodash';
+import { setPage } from 'mixins';
 
 import Layout from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
@@ -16,6 +17,7 @@ import Toolbar from 'components/Toolbar';
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
+@setPage('appStore')
 @observer
 export default class Apps extends Component {
   async componentDidMount() {

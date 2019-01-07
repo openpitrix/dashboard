@@ -25,3 +25,5 @@ export default mixin;
 
 // export other useful mixins
 export useTableActions from './useTableActions';
+
+export setPage from './setPage';
