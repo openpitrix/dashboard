@@ -36,6 +36,7 @@ $padding-left: 24px;
   .body {
     padding: 5px $padding-left;
   }
+
   .footer {
     padding: 32px $padding-left;
     //border-top: 1px solid $N10;
@@ -51,6 +52,32 @@ $padding-left: 24px;
       }
     }
 
+  }
+
+  form {
+    & > div {
+      margin-bottom: 24px;
+
+      & > label {
+        display: inline-block;
+        float: left;
+        margin-right:  24px;
+        width: 168px;
+        line-height: 32px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: right;
+        color: $N500;
+      }
+
+      & > input {
+        width: 256px;
+      }
+
+      & > select {
+        width: 256px;
+      }
+    }
   }
 }
 
