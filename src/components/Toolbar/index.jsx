@@ -2,12 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { noop } from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { Icon, Button, Input } from 'components/Base';
 
 import styles from './index.scss';
 
+@withRouter
 class Toolbar extends React.Component {
   static propTypes = {
     changeView: PropTypes.func,
@@ -45,19 +46,31 @@ class Toolbar extends React.Component {
     changeView: noop
   };
 
+  onSearch = word => {
+    const { history, onSearch } = this.props;
+    history.push({
+      search: `q=${word}`
+    });
+    onSearch(word);
+  };
+
+  onClear = () => {
+    const { history, onClear } = this.props;
+    history.push({
+      search: ''
+    });
+    onClear();
+  };
+
   render() {
     const {
       className,
-      onSearch,
-      onClear,
       searchWord,
       placeholder,
-      onRefresh,
       inputMaxLen,
       children,
       withCreateBtn,
       noSearchBox,
-      noRefreshBtn,
       viewType,
       changeView
     } = this.props;
@@ -69,8 +82,8 @@ class Toolbar extends React.Component {
             className={styles.search}
             placeholder={placeholder}
             value={searchWord}
-            onSearch={onSearch}
-            onClear={onClear}
+            onSearch={this.onSearch}
+            onClear={this.onClear}
             maxLength={inputMaxLen}
           />
         )}

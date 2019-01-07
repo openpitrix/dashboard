@@ -1,10 +1,10 @@
-import { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import qs from 'query-string';
 
-function createSetPage(storeName, component) {
-  const displayName = `setPage-${component.displayName
-    || component.name
+function createSetPage(storeName, WrapComponent) {
+  const displayName = `setPage-${WrapComponent.displayName
+    || WrapComponent.name
     || 'unkown'}`;
 
   class Injector extends Component {
@@ -18,10 +18,14 @@ function createSetPage(storeName, component) {
       if (!_.isNaN(currentPage)) {
         store.currentPage = currentPage;
       }
+      const word = values.q;
+      if (word) {
+        store.searchWord = word;
+      }
     }
 
     render() {
-      return createElement(component, this.props);
+      return <WrapComponent {...this.props} />;
     }
   }
 

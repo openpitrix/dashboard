@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 
 import { Table } from 'components/Base';
@@ -8,8 +7,7 @@ import { Table } from 'components/Base';
 import defaultColumns from './columns';
 import defaultFilters from './filters';
 
-@withRouter
-export default class EnhanceTable extends React.PureComponent {
+export default class AppsTable extends React.PureComponent {
   static propTypes = {
     canCancelPager: PropTypes.bool,
     className: PropTypes.string,
@@ -56,14 +54,6 @@ export default class EnhanceTable extends React.PureComponent {
     replaceFilterConditions: []
   };
 
-  onChangePagination = page => {
-    const { history, store } = this.props;
-    history.push({
-      search: `page=${page}`
-    });
-    store.changePagination(page);
-  };
-
   render() {
     const {
       data,
@@ -88,7 +78,7 @@ export default class EnhanceTable extends React.PureComponent {
 
     const pagination = {
       tableType,
-      onChange: this.onChangePagination,
+      onChange: store.changePagination,
       total: store.totalCount,
       current: store.currentPage,
       noCancel: !canCancelPager

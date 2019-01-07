@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { noop } from 'lodash';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
 
 import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
 @translate()
+@withRouter
 export default class Pagination extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -74,6 +76,10 @@ export default class Pagination extends React.Component {
       }
 
       const pageSize = this.state.pageSize;
+      const { history } = this.props;
+      history.push({
+        search: `page=${page}`
+      });
       this.props.onChange(page, pageSize);
       return page;
     }

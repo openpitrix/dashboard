@@ -1,9 +1,13 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import Pagination from 'components/Base/Pagination';
 
 describe('Base/Pagination', () => {
   it('basic render', () => {
     const wrapper = render(
-      <Pagination className="test" defaultCurrent={2} pageSize={20} />
+      <MemoryRouter>
+        <Pagination className="test" defaultCurrent={2} pageSize={20} />
+      </MemoryRouter>
     );
 
     expect(toJson(wrapper)).toMatchSnapshot();
