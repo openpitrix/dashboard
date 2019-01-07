@@ -45,9 +45,9 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "dev:client": "npm run locale && NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "dev:client": "DEBUG=app NODE_ENV=development npm run locale && webpack --config webpack.dev.js --progress",
     "dev:serve": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "dev": "npm-run-all -p dev:serve 'dev:client -- --watch'",
+    "dev": "npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
     "prod:build": "npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
@@ -63,7 +63,8 @@
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
-    "locale": "node ./bin/locale.js merge all"
+    "locale": "node ./bin/locale.js merge all",
+    "watch:locale": "DEBUG=app npm run locale -- --watch"
   },
   "lint-staged": {
     "*.{js,jsx,md}": [

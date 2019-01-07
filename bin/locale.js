@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const program = require('commander');
+const chokidar = require('chokidar');
+const debug = require('debug')('app');
 const { root } = require('../lib/utils');
 
 const baseDir = 'src/locales';
@@ -26,7 +28,7 @@ const writeFileAsJson = (file, data) => {
   }
   try {
     fs.writeFileSync(file, data, 'utf8');
-    console.log(`${file} saved \n`);
+    debug(`%s saved\n`, file);
   } catch (err) {
     throw err;
   }
@@ -44,7 +46,7 @@ const stripDupKeys = (file, write = true) => {
 
 const mergeLocaleDir = (dir, write = true) => {
   // fixme: only handle first level files in src/locales
-  console.log(`Merging locale files in ${dir}`);
+  debug(`Merging locale files in %s`, dir);
 
   const files = fs.readdirSync(dir);
   const merged = files
@@ -52,7 +54,7 @@ const mergeLocaleDir = (dir, write = true) => {
     .filter(f => f !== reserveFile)
     .reduce((acc, f) => {
       const filePath = getFilePath(f, dir);
-      console.log(`[merge] ${filePath}`);
+      debug(`[merge] %s`, filePath);
       return Object.assign(acc, stripDupKeys(filePath, false));
     }, {});
 
@@ -79,8 +81,10 @@ program
     ./bin/locale strip <file>, Strip duplicate key in locale file
     ./bin/locale merge <dir>, Merge locale files in dir
     ./bin/locale merge all, Merge all locale files
+    ./bin/locale merge all --watch, Merge all files on watch mode
   `
   )
+  .option('-w, --watch', 'watch mode')
   .arguments('<cmd> <file|dir>')
   .action((cmd, file) => {
     curCmd = cmd;
@@ -111,19 +115,31 @@ if (curCmd === 'strip') {
 
 if (curCmd === 'merge') {
   if (arg === 'all') {
-    // todo: refactor later
     ['en', 'zh'].forEach(dir => {
       mergeLocaleDir(getFilePath(dir));
     });
 
-    process.exit(0);
+    if (program.watch) {
+      const watcher = chokidar.watch(getBaseDir(), {
+        ignored: /translation\.json/
+      });
+
+      watcher.on('change', file => {
+        debug('[watch locale]: %s', file);
+        if (file.endsWith('.json')) {
+          mergeLocaleDir(path.dirname(file));
+        }
+      });
+    }
+
+    return;
   }
 
   const file = getFilePath(arg);
 
   if (!isDir(file)) {
-    console.warn(`${file} is not dir`);
-    process.exit(-1);
+    console.error(`${file} is not dir`);
+    return;
   }
 
   mergeLocaleDir(file);
