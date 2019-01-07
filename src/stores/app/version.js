@@ -4,7 +4,6 @@ import _, {
 } from 'lodash';
 import { Base64 } from 'js-base64';
 
-import ts from 'config/translation';
 import Store from '../Store';
 
 const defaultStatus = [
@@ -266,7 +265,7 @@ export default class AppVersionStore extends Store {
 
     if (get(result, 'version_id')) {
       this.hideModal();
-      // this.success(ts(`${capitalize(handleType)} this version successfully.`));
+      // this.success(`${capitalize(handleType)} this version successfully`);
       await this.fetch(versionId);
     } else {
       return result;
@@ -404,9 +403,9 @@ export default class AppVersionStore extends Store {
   @action
   handleCreateVersion = async appId => {
     if (!this.name) {
-      this.info(ts('Please input Name!'));
+      this.info('Please input Name!');
     } else if (!/https?:\/\/.+/.test(this.packageName)) {
-      this.info(ts('Package url is empty or invalid!'));
+      this.info('Package url is empty or invalid!');
     } else {
       const data = {
         app_id: appId,
@@ -417,7 +416,7 @@ export default class AppVersionStore extends Store {
       const result = await this.create(data);
 
       if (!result.err) {
-        this.success(ts('Create App Version successful.'));
+        this.success('Create App Version successful');
         this.hideModal();
         await this.fetchAll({ app_id: appId });
       }
@@ -488,11 +487,11 @@ export default class AppVersionStore extends Store {
     this.createError = '';
 
     if (!/\.(tar|tar\.gz|tar\.bz|tgz)$/.test(file.name.toLocaleLowerCase())) {
-      this.createError = ts('file_format_note');
+      this.createError = 'file_format_note';
       return false;
     }
     if (file.size > maxSize) {
-      this.createError = ts('The file size cannot exceed 2M');
+      this.createError = 'The file size cannot exceed 2M';
       return false;
     }
 
@@ -511,7 +510,7 @@ export default class AppVersionStore extends Store {
 
     if (result.error_details) {
       this.uploadStatus = 'error';
-      this.createError = ts('Upload_Package_Error');
+      this.createError = 'Upload_Package_Error';
       this.uploadError = result.error_details;
       return;
     }

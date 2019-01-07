@@ -2,7 +2,6 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 import { getFormData } from 'utils';
-import ts from 'config/translation';
 
 import Store from '../Store';
 
@@ -64,7 +63,7 @@ export default class RepoCreateStore extends Store {
     const len = providers.length;
     if (len > 1 && providers.includes('kubernetes')) {
       providers = providers.filter(data => data !== 'kubernetes');
-      this.info(ts("Kubernetes can't be selected with others"));
+      this.info("Kubernetes can't be selected with others");
     }
     this.providers = providers;
   };
@@ -87,9 +86,9 @@ export default class RepoCreateStore extends Store {
   @action
   handleValidateCredential = () => {
     if (this.accessKey && this.secretKey) {
-      this.success(ts('Validate successfully'));
+      this.success('Validate successfully');
     } else {
-      this.error(ts('Validate fail'));
+      this.error('Validate fail');
     }
   };
 
@@ -165,14 +164,14 @@ export default class RepoCreateStore extends Store {
   @action
   validateRepoCredential = async () => {
     if (!this.url || !this.accessKey || !this.secretKey) {
-      return this.info(ts('Information to be verified is incomplete!'));
+      return this.info('Information to be verified is incomplete!');
     }
 
     // format s3 url
     const url = this.url.startsWith('s3://') ? this.url : `s3://${this.url}`;
     if (!s3UrlPattern.test(url)) {
       return this.info(
-        ts('Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo')
+        'Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'
       );
     }
 
@@ -186,9 +185,9 @@ export default class RepoCreateStore extends Store {
     };
     const result = await this.request.get('repos/validate', params);
     if (result && result.ok) {
-      this.success(ts('Access key verification successfully'));
+      this.success('Access key verification successfully');
     } else {
-      this.error(ts('Access key verification fail'));
+      this.error('Access key verification fail');
     }
   };
 
@@ -208,25 +207,25 @@ export default class RepoCreateStore extends Store {
     const data = getFormData(e.target);
 
     if (_.isEmpty(providers)) {
-      return this.info(ts('Please select at least one Runtime Provider'));
+      return this.info('Please select at least one Runtime Provider');
     }
 
     for (let i = 0; i < this.selectors.length; i++) {
       const item = this.selectors[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.info(ts('Runtime Selector missing value'));
+        return this.info('Runtime Selector missing value');
       }
       if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.info(ts('Runtime Selector missing key'));
+        return this.info('Runtime Selector missing key');
       }
     }
     for (let i = 0; i < this.labels.length; i++) {
       const item = this.labels[i];
       if (item.label_key && _.isEmpty(item.label_value)) {
-        return this.info(ts('Labels missing value'));
+        return this.info('Labels missing value');
       }
       if (item.label_value && _.isEmpty(item.label_key)) {
-        return this.info(ts('Labels missing key'));
+        return this.info('Labels missing key');
       }
     }
 
@@ -243,9 +242,7 @@ export default class RepoCreateStore extends Store {
 
       if (!s3UrlPattern.test(data.url)) {
         return this.info(
-          ts(
-            'Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'
-          )
+          'Invalid s3 url, should be like s3://s3.pek3a.qingstor.com/op-repo'
         );
       }
     } else {
@@ -296,11 +293,11 @@ export default class RepoCreateStore extends Store {
     }
 
     if (this.repoId && _.get(this, 'repoCreated.repo_id')) {
-      this.success(ts('Modify repo successfully'));
+      this.success('Modify repo successfully');
       return this.repoCreated;
     }
     if (_.get(this, 'repoCreated.repo_id')) {
-      this.success(ts('Create repo successfully'));
+      this.success('Create repo successfully');
       return this.repoCreated;
     }
   };

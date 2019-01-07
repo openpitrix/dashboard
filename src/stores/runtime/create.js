@@ -2,7 +2,6 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 import { getFormData } from 'utils';
-import ts from 'config/translation';
 
 import Store from '../Store';
 
@@ -87,7 +86,7 @@ export default class RuntimeCreateStore extends Store {
     if (this.runtimeUrl && this.accessKey && this.secretKey) {
       this.getRuntimeZone();
     } else {
-      this.info(ts('Information to be verified is incomplete!'));
+      this.info('Information to be verified is incomplete!');
     }
   };
 
@@ -151,37 +150,37 @@ export default class RuntimeCreateStore extends Store {
     } = this;
 
     if (_.isEmpty(name)) {
-      result = ts('Please input Name!');
+      result = 'Please input Name!';
     }
     if (!runtimeId && provider !== 'kubernetes') {
       if (_.isEmpty(this.runtimeUrl)) {
-        result = ts('Please input URL!');
+        result = 'Please input URL!';
       }
       if (_.isEmpty(this.accessKey)) {
-        result = ts('Please input Access Key ID!');
+        result = 'Please input Access Key ID!';
       }
       if (_.isEmpty(this.secretKey)) {
-        result = ts('Please input Secret Access Key!');
+        result = 'Please input Secret Access Key!';
       }
       if (_.isEmpty(zone)) {
-        result = ts('Please select Zone!');
+        result = 'Please select Zone!';
       }
     } else if (!runtimeId) {
       if (_.isEmpty(this.credential)) {
-        result = ts('Please input kubeconfig!');
+        result = 'Please input kubeconfig!';
       }
     }
     for (let i = 0; i < labels.length; i++) {
       const item = labels[i];
       if (keys.find(key => key === item.label_key)) {
-        result = ts('Labels has repeat key');
+        result = 'Labels has repeat key';
       } else if (item.label_key) {
         keys.push(item.label_key);
       }
       if (item.label_value && _.isEmpty(item.label_key)) {
-        result = ts('Labels missing key');
+        result = 'Labels missing key';
       } else if (item.label_key && _.isEmpty(item.label_value)) {
-        result = ts('Labels missing value');
+        result = 'Labels missing value';
       }
     }
     return result;
@@ -228,9 +227,9 @@ export default class RuntimeCreateStore extends Store {
 
     if (_.get(this, 'runtimeCreated.runtime_id')) {
       if (this.runtimeId) {
-        this.success(ts('Modify runtime successfully.'));
+        this.success('Modify runtime successfully');
       } else {
-        this.success(ts('Create runtime successfully.'));
+        this.success('Create runtime successfully');
       }
       return this.runtimeCreated;
     }

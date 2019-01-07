@@ -2,44 +2,30 @@
   "search": {
     "placeholder": "Search apps in OpenPitrix.."
   },
-
   "brand": {
     "slogan": "Application Management Platform on Multi-Cloud Environment"
   },
-
   "more": "More..",
-
   "Back to link": "← Back to {{link}}",
-
   "greet words": "Hi，{{name}}",
-
   "role": "role",
   "role_admin": "Administrator",
   "role_developer": "Developer",
   "role_normal": "Normal User",
-
   "last login time": "Last Logged in {{last_login}}",
-
   "Delete App desc": "Are you sure delete this App?",
   "Delete Version desc": "Are you sure delete this Version?",
   "Delete Category desc": "Are you sure delete this category?",
   "Delete Repo desc": "Are you sure delete this Repo?",
   "Delete Runtime desc": "Are you sure delete this Runtime?",
   "delete_user_desc": "Are you sure delete this user?",
-
   "No search data": "No results for search.",
-
   "operate cluster desc": "Are you sure {{operate}} this Cluster?",
-
   "Create Runtime explain": "Runtime is Cloud provider, It can be AWS，GCE, QingCloud,Kubernetes,OpenStack,VMwareVSphere etc. give OpenPitrix permission to access those cloud provider, OpenPitrix willmanage all of them applications.",
   "Create Repo explain": "In OpenPitrix, Every application deployed is base package repository, on the other words, If you want to use OpenPitrix for your multi-cloud application manager, you need create repository first. Application manager can store package to http/https server or S3 object storage.",
   "Deploy App explain": "OpenPitrix deploy application to any cloud provider, it's very simple, selected application want to deploy ,and then choose runtime (cloud provider), and press the button. it's done.",
-
   "NO_SEARCH_DATA": "No Application Data!",
-
   "repo_visible": "{{visible}} Repos",
-
-
   "creat_new_app": "Create New Application",
   "creat_new_version": "Create New Version",
   "select_repo_app": "Select a Repo to store your application",
@@ -61,42 +47,32 @@
   "review_process_info": "The review process usually takes 2-3 business days, please be patient.",
   "version_name_tips": "Use the number to indicate the version number of the application",
   "version_desc_tips": "The description of the version will appear on the app details page, and the number of words should not exceed 300 words",
-  "ssh_key_guide":" SSH keys allow you to establish a secure connection between your computer and Cluster Nodes.",
+  "ssh_key_guide": " SSH keys allow you to establish a secure connection between your computer and Cluster Nodes.",
   "delete_key_desc": "Are you sure delete this SSH Key?",
   "detach_key_desc": "Are you sure detach the SSH Key from the selected node?",
   "app_review_desc": "This application version [{{version}}] has been",
-
   "EMPTY_APP_TIPS": "If OpenPitrix administrator setting repo done, all applications can imported automatically. As OpenPitrix user, can browse all public applications. and browse by label or categories",
   "EMPTY_REPO_TIPS": "Application developer create OpenPitrix packaged apps very easy, it's used yaml or json format for description language, and upload to http server or object storage",
   "EMPTY_CLUSTER_TIPS": "OpenPitrix managing application lifecycle ,both day1 and day2 , the status of application (as normal run as cluster )like : pending, active, shutdown, deleted. If admin want to stop clusters, just tell OpenPitrix, it will help cloud administrator finished the rest steps",
   "EMPTY_RUNTIME_TIPS": "Deployed as one-stop-shop application management platform in an organization to support multiple cloud systems including hybrid cloud.",
   "NORMAL_GUIDING_WORDS": "Welcome to OpenPitirx, What would you like to do?",
-
   "search_results": "Results",
-
   "DEL_RESOURCE_TIPS": "Are you sure to delete {{resource_ids}} ?",
-
   "ADMINISTRATOR_DESC": "The platform administrator provides the system global management and is mainly responsible for setting up the platform, user management application approval, financial reconciliation store operation and other work",
   "DEVELOPER_DESC": "The developer creates the application test application through the developer portal and submits the application, which is run and maintained by authorization",
   "NORMAL_DESC": "The normal users access different operating environments to browse and buy applications through the service portal, and monitor and control and statistical analysis of deployed instances",
-
   "kubeconfig desc": "The file used to configure intercluster access is viewed in the Kubernetes environment '~/.kube/config' ",
-
   "DEPLOY_NO_RUNTIME_NOTE": "There is currently no available runtime, please go to ",
-
   "HELM_APP_NAME_TIP": "Start with [a-z], with '-', 0~9, lowercase letter in the middle, no more than 14 characters in length.",
-
   "APP_STORE_DESC": "Openpitrix official store has {{total}} apps",
   "PURCHASED_DESC": "All the apps you have purchased will be shown here, including the corresponding instance of the app.",
   "MY_RUNTIMES_DESC": "The platform supports multiple cloud environments, at the same time and can be managed here.",
   "UPGRADE_PROVIDER": "Upgrade to an「application provider」",
-
   "APP_DELIVERY_MODES_EXPLAIN": "Each application can support multiple delivery modes, and the versions of each delivery mode are independent of each other.",
-  "HISTORICAL_VERSIONS_TOTAL":"And {{length}} historical versions",
-  "ACTIVE_VERSIONS_TOTAL":"There are currently {{length}} active versions",
-
+  "HISTORICAL_VERSIONS_TOTAL": "And {{length}} historical versions",
+  "ACTIVE_VERSIONS_TOTAL": "There are currently {{length}} active versions",
   "DELETE_AUTH_INFO_CONFIRM": "Are you sure to delete this authorization info ?",
   "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?",
-
-  "TIPS_ADJUST_APP_CATE": "Please adjust category of {{appNames}} these {{appCount}} apps"
+  "TIPS_ADJUST_APP_CATE": "Please adjust category of {{appNames}} these {{appCount}} apps",
+  "Upload_Package_Error": "Some files have errors, please check"
 }

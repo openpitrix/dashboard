@@ -45,12 +45,12 @@
     "superagent": "^3.8.3"
   },
   "scripts": {
-    "dev:client": "NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "dev:client": "npm run locale && NODE_ENV=development webpack --config webpack.dev.js --progress",
     "dev:serve": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
     "dev": "npm-run-all -p dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
-    "prod:build": "npm run clean:prod && NODE_ENV=production webpack -p --config webpack.prod.js",
+    "prod:build": "npm run clean:prod && npm run trans && NODE_ENV=production webpack -p --config webpack.prod.js",
     "prod:serve": "NODE_ENV=production DEBUG=app node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
     "build:prod-client": "node build.js --prod-client",
@@ -62,7 +62,8 @@
     "report-cov": "cat ./coverage/lcov.info | codecov",
     "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
-    "release": "standard-version -i CHANGELOG.md -n"
+    "release": "standard-version -i CHANGELOG.md -n",
+    "locale": "node ./bin/locale.js merge all"
   },
   "lint-staged": {
     "*.{js,jsx,md}": [
@@ -93,6 +94,7 @@
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
     "codecov": "^3.0.2",
+    "commander": "^2.19.0",
     "compression-webpack-plugin": "^1.1.11",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",

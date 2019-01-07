@@ -1,27 +1,21 @@
 {
   "APPS_EMPTY_TITLE": "我创建的应用",
-  "Create the first app": "创建第一个应用",
   "APPS_EMPTY_DESCRIBER": "这里会列出你创建的和导入的全部应用，点击其中一个应用，可以查看详细信息。",
   "Create the first app": "创建第一个应用",
   "APPS_EMPTY_TIPS01": "关于如何开发应用，请阅读",
   "APPS_EMPTY_TIPS02": "《应用开发指南》",
-
   "Delivery type": "交付方式",
-
   "creat_new_version": "创建新版本",
-
   "INPUT_APP_NAME_TIP": "清晰、准确的命名对于一款上架应用格外重要。",
   "INPUT_APP_VERSION_TIP": "通常由字母、数字组成，是应用的版本的重要标识。",
   "INPUT_APP_ICON_TIP": "格式：png 背景透明最佳；大小：96px * 96px",
   "Current Version": "当前版本号",
   "App Icon": "应用图标",
-
   "Congratulations on you": "祝贺你",
   "Your app has been created successfully": "你的应用已创建成功",
   "New version has been created successfully": "新加版本已创建成功",
   "Deploy Test": "部署测试",
   "Add delivery type": "添加交付类型",
-
   "diff_repo": "公共仓库和私人仓库之间的区别。",
   "click_upload": "请单击以选择文件上载",
   "file_format_note": "文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP",
@@ -44,20 +38,16 @@
   "version_desc_tips": "版本说明将显示在应用详细信息页面上，字数不应超过300字",
   "ssh_key_guide": "SSH密钥允许您在计算机和群集节点之间建立安全连接。",
   "app_review_desc": "此应用版本{{version}}",
-
   "delivery_type_intro_vm": "结合 OpenPitrix 的开发规范，将应用打包成镜像，用户基于镜像快速部署应用。",
   "delivery_type_intro_helm": "轻量级、可移植、自包含的软件打包技术，使应用可以在几乎任何地方以相同的方式运行。",
   "delivery_type_intro_saas": "云端集中式托管软件及其相关的数据，软件仅需透过互联网，而不须透过安装即可使用。",
   "delivery_type_intro_api": "云端集中式托管软件及其相关的数据，软件仅需透过互联网，而不须透过安装即可使用。",
   "delivery_type_intro_native": "云端集中式托管软件及其相关的数据，软件仅需透过互联网，而不须透过安装即可使用。",
   "delivery_type_intro_serveless": "Serverless Framework是无服务器应用框架和生态系统。",
-
   "Please select a delivery type!": "请选择一个交付方式!",
   "Linkto_Intro_App": "查看开发规范",
   "Added": "已添加",
-
   "Search for app name or ID": "搜索应用名称或 ID",
-
   "STEPPER_NAME_CREATE_APP_HEADER": "创建应用 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_CREATE_APP_1": "选择应用的交付类型",
   "STEPPER_TITLE_CREATE_APP_2": "上传配置文件",
@@ -68,39 +58,32 @@
   "STEPPER_FOOTER_CREATE_APP_2": "完整的应用开发规范请参看",
   "STEPPER_FOOTER_CREATE_APP_3": "以上信息调整之后将会自动更新配置文件中的对应内容。",
   "LINK_STEPPER_FOOTER_CREATE_APP_2": "《Helm 规范及应用开发》。",
-
   "STEPPER_NAME_CREATE_APP_VERSION_HEADER": "添加交付方式 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_CREATE_APP_VERSION_1": "选择应用的交付类型",
   "STEPPER_TITLE_CREATE_APP_VERSION_2": "上传配置文件",
   "STEPPER_TITLE_CREATE_APP_VERSION_3": "确认应用基本信息",
-  "STEPPER_HEADER_CREATE_APP_VERSION_2": "「选择应用的交付类型」",
   "STEPPER_HEADER_CREATE_APP_VERSION_2": "「上传配置文件」",
   "STEPPER_FOOTER_CREATE_APP_VERSION_1": "一款应用可以支持多种交付方式，管理过程中可以随时添加。",
   "STEPPER_FOOTER_CREATE_APP_VERSION_2": "完整的应用开发规范请参看",
   "STEPPER_FOOTER_CREATE_APP_VERSION_3": "以上信息调整之后将会自动更新配置文件中的对应内容。",
   "LINK_STEPPER_FOOTER_CREATE_APP_VERSION_2": "《Helm 规范及应用开发》。",
-
   "STEPPER_NAME_ADD_APP_VERSION_HEADER": "添加新版本",
-  "STEPPER_TITLE_ADD_APP_VERSION_1":  "上传配置文件",
+  "STEPPER_TITLE_ADD_APP_VERSION_1": "上传配置文件",
   "STEPPER_FOOTER_ADD_APP_VERSION_1": "完整的应用开发规范请参看",
   "LINK_STEPPER_FOOTER_ADD_APP_VERSION_1": "《Helm 规范及应用开发》。",
-
   "icon_format_note": "图标最佳格式为 png，请重新上传",
   "screenshot_format_note": "界面截图最佳格式为 png/jpg ，请重新上传",
   "Search result is empty": "搜索结果为空",
   "No result for search word": "没有找到与关键字 「{{searchWord}}」 相关的应用",
   "File": "文件",
   "Successful upload": "上传成功",
-
   "version_type_vmbased": "VM",
   "version_type_helm": "Helm",
   "version_type_saas": "SaaS",
   "version_type_api": "API",
   "version_type_native": "Native",
   "version_type_serveless": "Serveless",
-
   "Upload configuration file": "上传配置文件",
-
   "Chart_yaml_Info": "Yaml文件，用于描述 Chart 的基本信息，包括名称版本等",
   "LICENSE_Info": "[可选] 文本格式的协议",
   "README_md_Info": "[可选] 应用介绍、使用说明",
@@ -109,22 +92,18 @@
   "charts/_Info": "[可选] 该目录中放置当前 Chart 依赖的其它 Chart",
   "templates/_Info": "[可选] 部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
   "templates/NOTES.txt_Info": "[可选] 使用指南",
-
   "package_json_Info": "Json 格式文件记录应用详情",
   "config_json_Info": "Json 格式文件包含最终用户创建此应用实例时需设置的参数等信息，包括各种角色的节点配置、参数配置等",
   "cluster_json_tmpl_Info": "Tmpl 格式文件包含创建此应用实例时的基础架构、应用实例生命周期管理和自定义监控告警等信息",
   "locale/en_json_Info": "[可选] 英文语言包",
   "locale/zh-en_json_Info": "[可选] 中文语言包",
-
   "The file has problem?": "文件有问题?",
   "Upload again": "重新上传",
   "Select a file": "选择文件",
   "Upload_Package_Error": "部分文件有报错，请检查后",
   "not found": "没有找到",
-
   "Go on": "继续",
   "Done": "完成",
-
   "Note": "提示",
   "See the complete app development specification": "完整的应用开发规范请参看",
   "specification and app development": "规范及应用开发",
@@ -143,7 +122,6 @@
   "Version details": "版本详情",
   "Its application": "所属应用",
   "Latest record": "最新记录",
-  "Added": "已添加",
   "No history version": "没有历史版本",
   "HISTORICAL_VERSIONS_TOTAL": "以及 {{length}} 个历史版本",
   "Suspended time": "下架时间",
@@ -155,38 +133,30 @@
   "Config File": "配置文件",
   "Set Price": "定价",
   "Update Log": "更新日志",
-
-  "Submit review": "提交审核",
   "Cancel review": "撤消审核",
   "Release to store": "上架到商店",
   "View in store": "去商店查看",
   "Download": "下载",
   "Undo": "撤销",
   "CANNEL_VERSION_DESC": "此版本正在等待审核，确定要撤销吗？",
-
   "Test Runtime": "测试环境",
   "Instance Name ID": "实例名称 ID",
   "Create Time": "创建时间",
-
   "App Info": "应用信息",
   "Base Info": "基本信息",
   "Instructions": "使用说明",
   "Terms of service": "服务条款",
   "Select file": "选择文件",
-
   "Preview": "预览",
   "Processed": "已处理",
   "Unprocessed": "未处理",
-
   "STEPPER_NAME_VERSION_SUBMIT_CHECK_HEADER": "准备提交 {{activeStep}}/{{steps}}",
   "STEPPER_TITLE_VERSION_SUBMIT_CHECK_1": "检查应用信息",
   "STEPPER_FOOTER_VERSION_SUBMIT_CHECK_1": "丰富全面的介绍会更利于应用的销售。",
   "STEPPER_TITLE_VERSION_SUBMIT_CHECK_2": "检查版本信息",
   "STEPPER_FOOTER_VERSION_SUBMIT_CHECK_2": "版本号以及版本的更新日志都是重要的信息。",
   "STEPPER_HEADER_VERSION_SUBMIT_CHECK_2": "「检查应用信息」",
-
   "Please input the reason for reject": "请您填写拒绝原因",
-
   "ISV_REVIEW_PASS": "应用服务商审核通过了该应用版本",
   "BUSINESS_ADMIN_REVIEW_PASS": "平台商务审核通过了该应用版本",
   "DEVELOP_ADMIN_REVIEW_PASS": "平台技术审核审核通过了该应用版本"

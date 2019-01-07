@@ -2,7 +2,6 @@ import { observable, action } from 'mobx';
 import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
-import ts from 'config/translation';
 
 import Store from '../Store';
 
@@ -134,7 +133,7 @@ export default class RuntimeStore extends Store {
       this.hideModal();
       await this.fetchAll();
       this.cancelSelected();
-      this.success(ts('Delete runtime successfully.'));
+      this.success('Delete runtime successfully');
     }
   };
 
