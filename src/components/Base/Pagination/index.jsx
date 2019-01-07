@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { noop } from 'lodash';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
+import qs from 'query-string';
 
 import { Icon } from 'components/Base';
 
@@ -76,9 +77,11 @@ export default class Pagination extends React.Component {
       }
 
       const pageSize = this.state.pageSize;
-      const { history } = this.props;
+      const { history, location } = this.props;
+      const values = qs.parse(location.search);
+      values.page = page;
       history.push({
-        search: `page=${page}`
+        search: qs.stringify(values)
       });
       this.props.onChange(page, pageSize);
       return page;
