@@ -52,21 +52,21 @@
     clear: both;
 
     > input {
-      width: 466px;
+      width: 400px;
     }
 
     > textarea {
-      width: 466px;
+      width: 400px;
     }
 
     > select {
-      width: 223px;
+      width: 200px;
     }
   }
 
   .name {
     float: left;
-    width: 270px;
+    width: 250px;
     margin-right: 20px;
 
     > label {
@@ -136,7 +136,7 @@
   }
 
   .operateBtns {
-    margin-left: 290px;
+    margin-left: 270px;
 
     > button {
       margin-right: 12px;
@@ -145,7 +145,7 @@
 }
 
 .screenshot {
-  margin-left: 290px;
+  margin-left: 270px;
   width: 466px;
   height: 170px;
   padding: 20px 0 20px 20px;

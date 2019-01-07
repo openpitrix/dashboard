@@ -320,6 +320,10 @@ class AppStore extends Store {
     this.isLoading = true;
     this.createResult = await this.request.patch('apps', params);
     this.isLoading = false;
+
+    if (hasNote && get(this.createResult, 'app_id')) {
+      this.info('应用信息保存成功');
+    }
   };
 
   @action

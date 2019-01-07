@@ -4,6 +4,7 @@ import _, {
 } from 'lodash';
 import { Base64 } from 'js-base64';
 
+import { reviewStatus } from 'config/version';
 import Store from '../Store';
 
 const defaultStatus = [
@@ -15,14 +16,19 @@ const defaultStatus = [
   'active',
   'suspended'
 ];
-const reviewStatus = {
-  unprocessed: ['submitted', 'in-review'],
-  processed: ['rejected', 'active', 'suspended']
+
+const rejectStatus = {
+  isv: 'isv-rejected',
+  business_admin: 'business-rejected',
+  develop_admin: 'dev-rejected'
 };
+
 const maxSize = 2 * 1024 * 1024;
 
 export default class AppVersionStore extends Store {
   @observable versions = [];
+
+  @observable reviews = [];
 
   @observable
   version = {
@@ -78,8 +84,6 @@ export default class AppVersionStore extends Store {
 
   @observable store = {};
 
-  @observable isReviewTable = false; // judge review apps list or app version list
-
   @observable audits = {}; // define object for not repeat query of the same version
 
   @observable typeVersions = [];
@@ -104,14 +108,10 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    const status = this.isReviewTable
-      ? reviewStatus[this.activeType]
-      : defaultStatus;
     const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : status
+      offset: (this.currentPage - 1) * this.pageSize
     };
 
     if (params.noLimit) {
@@ -142,17 +142,6 @@ export default class AppVersionStore extends Store {
       this.description = version.description;
     } else {
       this.currentVersion = { ...this.currentVersion };
-    }
-
-    // query app review table relative data
-    const appIds = this.versions.map(item => item.app_id);
-    if (this.isReviewTable && appIds.length > 0) {
-      await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
-    }
-
-    const userIds = this.versions.map(item => item.owner);
-    if (this.isReviewTable && userIds.length > 0) {
-      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
 
     this.isLoading = false;
@@ -195,6 +184,51 @@ export default class AppVersionStore extends Store {
     });
     this.version = get(result, 'app_version_set[0]', {});
     this.isLoading = false;
+  };
+
+  @action
+  fetchReviews = async (params = {}) => {
+    const loginUser = this.getUser();
+    const status = _.get(
+      reviewStatus,
+      `${this.activeType}.${loginUser.username}`,
+      ''
+    );
+
+    const defaultParams = {
+      status: this.selectStatus ? this.selectStatus : status,
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      reverse: false,
+      offset: (this.currentPage - 1) * this.pageSize
+    };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
+    this.isLoading = true;
+    const result = await this.request.get(
+      'app_version_reviews',
+      assign(defaultParams, params)
+    );
+    this.isLoading = false;
+
+    this.reviews = get(result, 'app_version_review_set', []);
+    this.totalCount = get(result, 'total_count', 0);
+
+    // query app review table relative data
+    const appIds = this.reviews.map(item => item.app_id);
+    if (appIds.length > 0) {
+      await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
+    }
+
+    const userIds = this.reviews.map(item => item.owner);
+    if (userIds.length > 0) {
+      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
+    }
   };
 
   @action
@@ -317,23 +351,20 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchAudits = async (appId, versionId) => {
-    const result = await this.request.get(
-      `app/${appId}/version/${versionId}/audits`
-    );
+    const result = await this.request.get('app_version_audits', {
+      app_id: appId,
+      version_id: versionId,
+      limit: this.maxLimit
+    });
     const audits = get(result, 'app_version_audit_set', []);
     assignIn(this.audits, { [versionId]: audits });
   };
 
   @action
-  fetchReviewDetail = async (appId, versionId) => {
-    const result = await this.request.get(
-      `app/${appId}/version/${versionId}/reviews`,
-      {
-        limit: this.maxLimit,
-        sort_key: 'status_time',
-        reverse: true
-      }
-    );
+  fetchReviewDetail = async (reviewId = '') => {
+    const result = await this.request.get('app_version_reviews', {
+      review_id: reviewId
+    });
 
     this.reviewDetail = _.get(result, 'app_version_review_set[0]', {});
     const { phase } = this.reviewDetail;
@@ -605,5 +636,7 @@ export default class AppVersionStore extends Store {
     this.versions = [];
     this.currentVersion = {};
     this.packageName = '';
+
+    this.reviews = [];
   };
 }
