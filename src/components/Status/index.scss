@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .status {
   text-transform: capitalize;
@@ -7,7 +7,6 @@
   height: 100%;
   align-items: center;
 }
-
 
 .icon {
   display: inline-block;
@@ -18,16 +17,26 @@
   border-radius: 50%;
   font-style: normal;
 
-  &.draft, &.submitted {
+  &.draft,
+  &.submitted {
     background-color: $B75;
   }
-  &.in-review {
+  &.in-review,
+  &.isv-in-review,
+  &.business-in-review,
+  &.dev-in-review {
     background-color: $Y300;
   }
-  &.passed {
+  &.passed,
+  &.isv-passed,
+  &.business-passed,
+  &.dev-passed {
     background-color: $G75;
   }
-  &.rejected {
+  &.rejected,
+  &.isv-rejected,
+  &.business-rejected,
+  &.dev-rejected {
     background-color: $R200;
   }
   &.suspended {
@@ -39,10 +48,12 @@
   &.stopped {
     background-color: $N30;
   }
-  &.active, &.successful {
+  &.active,
+  &.successful {
     background-color: $G75;
   }
-  &.deleted, &.failed {
+  &.deleted,
+  &.failed {
     background-color: $R300;
   }
   &.enabled {
@@ -69,23 +80,31 @@
     @include transitionStatus;
   }
 
-  &.starting, &.creating {
+  &.starting,
+  &.creating {
     background-color: $P75;
     border-color: $P65;
   }
-  &.running, &.working {
+  &.running,
+  &.working {
     background-color: $G200;
     border-color: $G100;
   }
-  &.updating, &.upgrading, &.resizing, &.scaling {
+  &.updating,
+  &.upgrading,
+  &.resizing,
+  &.scaling {
     background-color: $Y75;
     border-color: $Y65;
   }
-  &.stopping, &.ceasing {
+  &.stopping,
+  &.ceasing {
     background-color: $Y300;
     border-color: $Y200;
   }
-  &.pending, &.rollbacking, &.recovering {
+  &.pending,
+  &.rollbacking,
+  &.recovering {
     background-color: $B75;
     border-color: $B65;
   }
@@ -94,5 +113,3 @@
     border-color: $R100;
   }
 }
-
-

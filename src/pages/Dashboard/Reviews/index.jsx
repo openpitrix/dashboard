@@ -32,8 +32,7 @@ export default class Reviews extends Component {
   async componentDidMount() {
     const { appVersionStore } = this.props;
 
-    appVersionStore.isReviewTable = true;
-    await appVersionStore.fetchAll();
+    await appVersionStore.fetchReviews();
   }
 
   componentWillUnmount() {
@@ -45,7 +44,7 @@ export default class Reviews extends Component {
     const { appVersionStore } = this.props;
     if (type !== appVersionStore.activeType) {
       appVersionStore.activeType = type;
-      appVersionStore.fetchAll();
+      appVersionStore.fetchReviews();
     }
   };
 
@@ -53,18 +52,18 @@ export default class Reviews extends Component {
     const {
       appVersionStore, appStore, userStore, t
     } = this.props;
-    const { versions, isLoading, activeType } = appVersionStore;
+    const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const { users } = userStore;
 
     const columns = [
       {
         title: t('编号'),
-        key: 'version_id',
+        key: 'review_id',
         width: '100px',
         render: item => (
-          <Link to={`/dashboard/app-review/${item.app_id}/${item.version_id}`}>
-            {item.version_id}
+          <Link to={`/dashboard/app-review/${item.review_id}`}>
+            {item.review_id}
           </Link>
         )
       },
@@ -152,7 +151,7 @@ export default class Reviews extends Component {
         </div>
         <Table
           columns={columns}
-          dataSource={versions.toJSON()}
+          dataSource={reviews.toJSON()}
           filterList={filterList}
           pagination={pagination}
           isLoading={isLoading}

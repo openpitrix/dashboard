@@ -60,11 +60,13 @@ const reviewPassNote = {
 export default class ReviewDetail extends Component {
   async componentDidMount() {
     const { appStore, appVersionStore, match } = this.props;
-    const { appId, versionId } = match.params;
+    const { reviewId } = match.params;
 
-    await appStore.fetch(appId);
-    await appVersionStore.fetch(versionId);
-    await appVersionStore.fetchReviewDetail(appId, versionId);
+    await appVersionStore.fetchReviewDetail(reviewId);
+
+    const { reviewDetail } = appVersionStore;
+    await appStore.fetch(reviewDetail.app_id);
+    await appVersionStore.fetch(reviewDetail.version_id);
   }
 
   changeTab = tab => {
