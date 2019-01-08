@@ -8,17 +8,19 @@ import { getFormData } from 'utils';
 import styles from './index.scss';
 
 export default class Dialog extends React.PureComponent {
-  static defaultProps = {
-    width: 500,
-    noActions: false
-  };
-
   static propTypes = {
     isOpen: PropTypes.bool,
     noActions: PropTypes.bool,
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
-    title: PropTypes.string
+    title: PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    wrapCls: PropTypes.string
+  };
+
+  static defaultProps = {
+    width: 500,
+    noActions: false
   };
 
   handleSubmit = e => {
@@ -35,6 +37,7 @@ export default class Dialog extends React.PureComponent {
       children,
       className,
       noActions,
+      wrapCls,
       ...rest
     } = this.props;
 
@@ -53,6 +56,7 @@ export default class Dialog extends React.PureComponent {
         <div className={styles.content}>
           <form
             method="post"
+            className={wrapCls}
             ref={node => {
               this.form = node;
             }}

@@ -6,13 +6,7 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
 import {
-  Input,
-  Button,
-  Select,
-  Table,
-  Modal,
-  Icon,
-  Popover
+  Input, Select, Table, Icon, Popover
 } from 'components/Base';
 import Layout, {
   Grid,
@@ -25,11 +19,12 @@ import Layout, {
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
-// import OrgTree from './OrgTree';
 import roles, { roleMap } from 'config/roles';
 import GroupCard from './GroupCard';
 
 import styles from './index.scss';
+
+const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -39,15 +34,7 @@ import styles from './index.scss';
 export default class Users extends Component {
   async componentDidMount() {
     const { userStore } = this.props;
-
     await userStore.fetchAll();
-    // await userStore.fetchStatistics();
-
-    // todo: api 404
-    // await userStore.fetchOrganizations();
-    // await userStore.fetchGroups();
-    // await userStore.fetchRoles();
-    // await userStore.fetchAuthorities();
   }
 
   componentWillUnmount() {
@@ -78,16 +65,6 @@ export default class Users extends Component {
     userStore.treeFlag = temp;
   };
 
-  selectGroup = item => {
-    const { userStore } = this.props;
-
-    if (item.value !== userStore.selectGroupId) {
-      userStore.selectGroupId = item.value;
-      userStore.selectName = item.name;
-      userStore.fetchAll();
-    }
-  };
-
   selectRole = async item => {
     const { userStore } = this.props;
 
@@ -96,16 +73,6 @@ export default class Users extends Component {
     userStore.currentPage = 1;
 
     await userStore.fetchAll();
-  };
-
-  openAuthorityModal = () => {
-    const { userStore } = this.props;
-    userStore.showAuthorityModal = true;
-  };
-
-  closeAuthorityModal = () => {
-    const { userStore } = this.props;
-    userStore.showAuthorityModal = false;
   };
 
   renderHandleMenu = user => {
@@ -124,98 +91,99 @@ export default class Users extends Component {
   renderOperateModal = () => {
     const { userStore, t } = this.props;
     const {
-      userDetail, operateType, changeUser, changeUserRole
+      userDetail,
+      operateType,
+      changeUser,
+      changeUserRole,
+      createOrModify
     } = userStore;
+    const {
+      user_id,
+      username,
+      email,
+      role,
+      password,
+      description
+    } = userDetail;
 
     let title = t('Create New User');
     if (operateType === 'modify') {
       title = t('Modify User');
     }
-    const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
     return (
-      <Modal
+      <Dialog
+        width={744}
         title={title}
-        visible={userStore.isCreateOpen}
+        isOpen={userStore.isCreateOpen}
         onCancel={userStore.hideModal}
-        hideFooter
+        onSubmit={createOrModify}
+        wrapCls={styles.createForm}
       >
-        <form
-          className={styles.formContent}
-          onSubmit={e => userStore.createOrModify(e)}
-          method="post"
-        >
-          {userDetail.user_id && (
-            <div>
-              <label>{t('Name')}</label>
-              <Input
-                name="name"
-                maxLength="50"
-                value={userDetail.username}
-                onChange={e => {
-                  changeUser(e, 'username');
-                }}
-                required
-              />
-            </div>
-          )}
+        {user_id && (
           <div>
-            <label>{t('Email')}</label>
+            <label>{t('Name')}</label>
             <Input
-              name="email"
-              maxLength={50}
-              placeholer="username@example.com"
-              value={userDetail.email}
+              name="name"
+              maxLength="50"
+              value={username}
               onChange={e => {
-                changeUser(e, 'email');
+                changeUser(e, 'username');
               }}
-              pattern={emailRegexp}
               required
             />
           </div>
-          <div className="selectItem">
-            <label>{t('Role')}</label>
-            <Select onChange={changeUserRole} value={userDetail.role}>
-              <Select.Option value="user">{t('Normal User')}</Select.Option>
-              <Select.Option value="developer">{t('Developer')}</Select.Option>
-              <Select.Option value="global_admin">
-                {t('Administrator')}
-              </Select.Option>
-              <Select.Option value="isv">{t('ISV')}</Select.Option>
-            </Select>
-          </div>
-          <div>
-            <label>{t('Password')}</label>
-            <Input
-              name="password"
-              type="password"
-              maxLength={50}
-              value={userDetail.password}
-              onChange={e => {
-                changeUser(e, 'password');
-              }}
-              required={!userDetail.user_id}
-            />
-          </div>
-          <div>
-            <label>{t('Description')}</label>
-            <textarea
-              name="description"
-              maxLength={500}
-              value={userDetail.description}
-              onChange={e => {
-                changeUser(e, 'description');
-              }}
-            />
-          </div>
-          <div className={styles.operationBtn}>
-            <Button type="primary" htmlType="submit">
-              {t('Confirm')}
-            </Button>
-            <Button onClick={userStore.hideModal}>{t('Cancel')}</Button>
-          </div>
-        </form>
-      </Modal>
+        )}
+        <div>
+          <label>{t('Email')}</label>
+          <Input
+            name="email"
+            maxLength={50}
+            placeholer="username@example.com"
+            value={email}
+            onChange={e => {
+              changeUser(e, 'email');
+            }}
+            pattern={emailRegexp}
+            required
+          />
+        </div>
+        <div className="selectItem">
+          <label>{t('Role')}</label>
+          <Select onChange={changeUserRole} value={role}>
+            <Select.Option value="user">{t('Normal User')}</Select.Option>
+            <Select.Option value="developer">{t('Developer')}</Select.Option>
+            <Select.Option value="global_admin">
+              {t('Administrator')}
+            </Select.Option>
+            <Select.Option value="isv">{t('ISV')}</Select.Option>
+          </Select>
+        </div>
+        <div>
+          <label>{t('Password')}</label>
+          <Input
+            name="password"
+            type="password"
+            maxLength={50}
+            value={password}
+            onChange={e => {
+              changeUser(e, 'password');
+            }}
+            required={!user_id}
+          />
+        </div>
+        <div>
+          <label>{t('Description')}</label>
+          <textarea
+            name="description"
+            maxLength={500}
+            value={description}
+            onChange={e => {
+              changeUser(e, 'description');
+            }}
+          />
+        </div>
+      </Dialog>
     );
   };
 
@@ -315,10 +283,6 @@ export default class Users extends Component {
       <Layout className={styles.usersContent}>
         <BreadCrumb linkPath="Users>All Users" />
 
-        {/* <Row>
-          <Statistics {...summaryInfo} objs={users.toJSON()} />
-        </Row> */}
-
         <Panel>
           <Grid>
             <Section>
@@ -328,25 +292,8 @@ export default class Users extends Component {
                   value={selectValue}
                   onChange={this.changeSelect}
                 >
-                  {/* <Select.Option value="organization">{t('Organization')}</Select.Option>
-                  <Select.Option value="group">{t('Group')}</Select.Option> */}
                   <Select.Option value="roles">{t('Roles')}</Select.Option>
                 </Select>
-                {/* {selectValue === 'organization' && ( */}
-                {/* <OrgTree */}
-                {/* treeFlag={treeFlag} */}
-                {/* organizations={organizations} */}
-                {/* clickCompany={this.clickCompany} */}
-                {/* clickDep={this.clickDep} */}
-                {/* /> */}
-                {/* )} */}
-                {/* {selectValue === 'group' && ( */}
-                {/* <GroupCard */}
-                {/* groups={groups} */}
-                {/* selectCard={this.selectGroup} */}
-                {/* selectValue={selectGroupId} */}
-                {/* /> */}
-                {/* )} */}
                 {selectValue === 'roles' && (
                   <GroupCard groups={roles} selectCard={this.selectRole} />
                 )}

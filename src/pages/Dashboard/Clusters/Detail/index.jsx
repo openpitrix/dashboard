@@ -163,11 +163,11 @@ export default class ClusterDetail extends Component {
 
     if (modalType === 'parameters') {
       return (
-        <Modal
+        <Dialog
           title="Parameters"
-          visible={isModalOpen}
+          isOpen={isModalOpen}
           onCancel={hideModal}
-          hideFooter
+          noActions
         >
           <ul className={styles.parameters}>
             <li>
@@ -180,23 +180,20 @@ export default class ClusterDetail extends Component {
               </div>
             </li>
           </ul>
-        </Modal>
+        </Dialog>
       );
     }
 
     if (modalType === 'upgrade') {
       const { changeAppVersion } = clusterStore;
       const { versions } = appVersionStore;
-      if (versions.length === 0) {
-        return null;
-      }
 
       return (
-        <Modal
+        <Dialog
           title={t(`${capitalize(modalType)} cluster`)}
-          visible={isModalOpen}
+          isOpen={isModalOpen}
           onCancel={hideModal}
-          onOk={this.handleCluster}
+          onSubmit={this.handleCluster}
         >
           <Select value={clusterStore.versionId} onChange={changeAppVersion}>
             {versions.map(({ version_id, name }) => (
@@ -205,7 +202,7 @@ export default class ClusterDetail extends Component {
               </Select.Option>
             ))}
           </Select>
-        </Modal>
+        </Dialog>
       );
     }
 
@@ -213,14 +210,15 @@ export default class ClusterDetail extends Component {
       const { changeEnv, env, cancelChangeEnv } = clusterDetailStore;
 
       return (
-        <Modal
+        <Dialog
+          width={744}
           title={t(`${capitalize(modalType)} cluster`)}
-          visible={isModalOpen}
+          isOpen={isModalOpen}
           onCancel={cancelChangeEnv}
-          onOk={this.handleCluster}
+          onSubmit={this.handleCluster}
         >
           <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
-        </Modal>
+        </Dialog>
       );
     }
 

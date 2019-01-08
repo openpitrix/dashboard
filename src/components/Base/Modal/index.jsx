@@ -1,38 +1,36 @@
-import { omit } from 'lodash';
 import React from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { omit } from 'lodash';
 
 import Icon from '../Icon';
 import Button from '../Button';
+
 import styles from './index.scss';
 
-ReactModal.defaultStyles.overlay = Object.assign(
-  {},
-  ReactModal.defaultStyles.overlay,
-  {
+const customStyles = {
+  overlay: {
     padding: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     zIndex: 2000
-  }
-);
-
-ReactModal.defaultStyles.content = Object.assign(
-  {},
-  omit(ReactModal.defaultStyles.content, [
-    'top',
-    'left',
-    'right',
-    'bottom',
-    'padding'
-  ]),
-  {
+  },
+  content: {
     width: 744,
     position: 'relative',
     margin: '0 auto'
   }
+};
+
+const { content } = ReactModal.defaultStyles;
+
+Object.assign(ReactModal.defaultStyles.overlay, customStyles.overlay);
+
+ReactModal.defaultStyles.content = Object.assign(
+  {},
+  omit(content, ['top', 'left', 'right', 'bottom', 'padding']),
+  customStyles.content
 );
 
 @translate()
@@ -110,9 +108,7 @@ export default class Modal extends React.Component {
               <Button type={btnType} onClick={onOk}>
                 {okText || t('Confirm')}
               </Button>
-              <Button type="default" onClick={onCancel}>
-                {cancelText || t('Cancel')}
-              </Button>
+              <Button onClick={onCancel}>{cancelText || t('Cancel')}</Button>
             </div>
           </div>
         )}

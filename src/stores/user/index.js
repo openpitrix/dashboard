@@ -135,8 +135,7 @@ export default class UserStore extends Store {
   };
 
   @action
-  createOrModify = async e => {
-    e.preventDefault();
+  createOrModify = async () => {
     const params = pick({ ...this.userDetail }, [
       'user_id',
       'username',
@@ -146,12 +145,26 @@ export default class UserStore extends Store {
       'description'
     ]);
 
+    if (!params.email) {
+      return this.error('Empty email');
+    }
+    if (!params.role) {
+      return this.error('Empty role');
+    }
+
     if (params.user_id) {
+      // modify user
       if (!params.password) {
         delete params.password;
       }
       await this.modify(params);
     } else {
+      // create user
+      if (!params.password) {
+        return this.error('Empty password');
+      }
+
+      // fixme
       delete params.username;
       await this.create(params);
     }
