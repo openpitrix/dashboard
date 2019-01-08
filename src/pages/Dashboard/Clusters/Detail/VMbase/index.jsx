@@ -516,11 +516,11 @@ export default class VMbasedCluster extends React.Component {
     const { keyPairs, pairId } = sshKeyStore;
 
     return (
-      <Modal
+      <Dialog
+        isOpen={isModalOpen}
         title={t('Attach SSH Key')}
-        visible={isModalOpen}
         onCancel={hideModal}
-        hideFooter
+        onSubmit={this.attachKeyPairs}
       >
         <div className={styles.attachContent}>
           {keyPairs.map(pair => (
@@ -535,15 +535,7 @@ export default class VMbasedCluster extends React.Component {
             </div>
           ))}
         </div>
-        <div className={styles.operateBtns}>
-          <Button type="primary" onClick={this.attachKeyPairs}>
-            {t('Confirm')}
-          </Button>
-          <Button type="default" onClick={hideModal}>
-            {t('Cancel')}
-          </Button>
-        </div>
-      </Modal>
+      </Dialog>
     );
   };
 

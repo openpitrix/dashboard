@@ -1,15 +1,4 @@
 @import '~scss/vars';
-.appCardContent {
-  >a{
-    display: inline-block;
-    margin: 0 20px 20px 0;
-    width: calc(25% - 15px);
-
-    &:nth-child(4n+4) {
-      margin-right: 0;
-    }
-  }
-}
 
 .appCard {
   display: inline-block;

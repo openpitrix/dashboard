@@ -3,11 +3,9 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import Layout, { Dialog } from 'components/Layout';
+import Layout from 'components/Layout';
 import AppsTable from 'components/AppsTable';
 import Toolbar from 'components/Toolbar';
-
-import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -94,7 +92,6 @@ export default class Apps extends Component {
             onChangeSort: this.onChangeSort
           }}
         />
-
       </Layout>
     );
   }

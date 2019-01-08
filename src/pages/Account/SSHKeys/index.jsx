@@ -5,12 +5,13 @@ import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
 import {
-  Table, Popover, Button, Input, Icon, Modal
+  Table, Popover, Button, Input, Icon
 } from 'components/Base';
 import {
-  CreateResource, Dialog, Grid, Section, Card
+  Dialog, Grid, Section, Card
 } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
+import Loading from 'components/Loading';
 import { formatTime } from 'utils';
 
 import { clusterStatus } from 'config/resource-status';
@@ -149,15 +150,51 @@ export default class SSHKeys extends Component {
     const { sshKeyStore, t } = this.props;
     const { isModalOpen, hideModal } = sshKeyStore;
 
+    const {
+      name,
+      pub_key,
+      description,
+      addKeyPairs,
+      changeName,
+      changePubkey,
+      changeDescription
+    } = sshKeyStore;
+
     return (
-      <Modal
+      <Dialog
+        width={744}
         title={t('Create SSH Key')}
-        visible={isModalOpen}
+        isOpen={isModalOpen}
         onCancel={hideModal}
-        hideFooter
+        onSubmit={addKeyPairs}
       >
-        {this.renderForm(hideModal)}
-      </Modal>
+        <div className={styles.createForm}>
+          <div>
+            <label className={styles.name}>{t('Name')}</label>
+            <Input
+              name="name"
+              value={name}
+              onChange={changeName}
+              maxLength="50"
+            />
+          </div>
+          <div className={styles.textareaItem}>
+            <label className={styles.name}>{t('Public Key')}</label>
+            <textarea name="pub_key" value={pub_key} onChange={changePubkey} />
+            <p className={styles.rightShow}>
+              {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrdgjUTEEHh...
+            </p>
+          </div>
+          <div className={styles.textareaItem}>
+            <label className={styles.name}>{t('Description')}</label>
+            <textarea
+              name="description"
+              value={description}
+              onChange={changeDescription}
+            />
+          </div>
+        </div>
+      </Dialog>
     );
   };
 
@@ -180,61 +217,6 @@ export default class SSHKeys extends Component {
       </Dialog>
     );
   };
-
-  renderForm(cancelFun) {
-    const { sshKeyStore, t } = this.props;
-    const {
-      name,
-      pub_key,
-      description,
-      addKeyPairs,
-      changeName,
-      changePubkey,
-      changeDescription
-    } = sshKeyStore;
-
-    return (
-      <form className={styles.createForm}>
-        <div>
-          <label className={styles.name}>{t('Name')}</label>
-          <Input
-            name="name"
-            value={name}
-            onChange={changeName}
-            maxLength="50"
-          />
-        </div>
-        <div className={styles.textareaItem}>
-          <label className={styles.name}>{t('Public Key')}</label>
-          <textarea name="pub_key" value={pub_key} onChange={changePubkey} />
-          <p className={styles.rightShow}>
-            {t('Format')}: ssh-rsa AAAAB3NzaC1ycEAAArwtrdgjUTEEHh...
-          </p>
-        </div>
-        <div className={styles.textareaItem}>
-          <label className={styles.name}>{t('Description')}</label>
-          <textarea
-            name="description"
-            value={description}
-            onChange={changeDescription}
-          />
-        </div>
-
-        <div className={styles.submitBtnGroup}>
-          <Button type={`primary`} className={`primary`} onClick={addKeyPairs}>
-            {t('Confirm')}
-          </Button>
-          <Button onClick={cancelFun || this.goBack}>{t('Cancel')}</Button>
-        </div>
-      </form>
-    );
-  }
-
-  renderAside() {
-    const { t } = this.props;
-
-    return <p>{t('ssh_key_guide')}</p>;
-  }
 
   renderCard(pair) {
     const { t } = this.props;
@@ -398,23 +380,13 @@ export default class SSHKeys extends Component {
   }
 
   render() {
-    const { keyPairs } = this.props.sshKeyStore;
+    const { sshKeyStore } = this.props;
 
     return (
-      <div>
-        {keyPairs.length ? (
-          this.renderDetail()
-        ) : (
-          <CreateResource
-            title={'Create SSH Key'}
-            aside={this.renderAside()}
-            asideTitle="SSH Keys"
-          >
-            {this.renderForm()}
-          </CreateResource>
-        )}
+      <Loading isLoading={sshKeyStore.isLoading}>
+        {this.renderDetail()}
         {this.renderModals()}
-      </div>
+      </Loading>
     );
   }
 }
