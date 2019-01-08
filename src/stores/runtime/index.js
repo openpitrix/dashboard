@@ -1,10 +1,12 @@
 import { observable, action } from 'mobx';
 import _, { get } from 'lodash';
 
+import { useTableActions } from 'mixins';
 import { getProgress } from 'utils';
 
 import Store from '../Store';
 
+@useTableActions
 export default class RuntimeStore extends Store {
   sortKey = 'status_time';
 
@@ -22,46 +24,21 @@ export default class RuntimeStore extends Store {
 
   @observable isLoading = false;
 
-  @observable totalCount = 0;
-
   @observable runtimeId = '';
 
   @observable isModalOpen = false;
 
+  @observable modalType = '';
+
   @observable isK8s = false;
-
-  @observable currentPage = 1;
-
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
 
   @observable userId = '';
 
   @observable operateType = '';
 
-  @observable runtimeIds = [];
-
-  @observable selectedRowKeys = [];
-
   @observable runtimeDeleted = null;
 
-  @observable
-  handleRuntime = {
-    action: '' // delete
-  };
-
   @observable allRuntimes = [];
-
-  @action.bound
-  showModal = () => {
-    this.isModalOpen = true;
-  };
-
-  @action.bound
-  hideModal = () => {
-    this.isModalOpen = false;
-  };
 
   @action
   fetchAll = async (params = {}) => {
@@ -93,7 +70,7 @@ export default class RuntimeStore extends Store {
 
   @action
   fetchStatistics = async () => {
-    // this.isLoading = true;
+    this.isLoading = true;
     const result = await this.request.get('runtimes/statistics');
     this.summaryInfo = {
       name: 'Runtimes',
@@ -107,7 +84,7 @@ export default class RuntimeStore extends Store {
       runtimeCount: get(result, 'runtime_count', 0),
       providerount: get(result, 'provider_count', 0)
     };
-    // this.isLoading = false;
+    this.isLoading = false;
   };
 
   @action
@@ -121,100 +98,13 @@ export default class RuntimeStore extends Store {
     this.isLoading = false;
   };
 
-  @action
-  remove = async () => {
-    const ids = this.operateType === 'single'
-      ? [this.runtimeId]
-      : this.runtimeIds.toJSON();
-    this.runtimeDeleted = await this.request.delete('runtimes', {
-      runtime_id: ids
-    });
-    if (_.get(this.runtimeDeleted, 'runtime_id')) {
-      this.hideModal();
-      await this.fetchAll();
-      this.cancelSelected();
-      this.success('Delete runtime successfully');
-    }
-  };
-
-  @action
-  showDeleteRuntime = runtimeIds => {
-    if (typeof runtimeIds === 'string') {
-      this.runtimeId = runtimeIds;
-      this.operateType = 'single';
-    } else {
-      this.operateType = 'multiple';
-    }
-    this.showModal();
-  };
-
-  @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    this.currentPage = 1;
-    await this.fetchAll({ status: this.selectStatus });
-  };
-
-  @action
-  onChangeSelect = (selectedRowKeys, selectedRows) => {
-    this.selectedRowKeys = selectedRowKeys;
-    this.runtimeIds = [];
-    selectedRows.map(row => this.runtimeIds.push(row.runtime_id));
-  };
-
-  @action
-  cancelSelected = () => {
-    this.selectedRowKeys = [];
-    this.runtimeIds = [];
-  };
-
   reset = () => {
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
+    this.resetTableParams();
     this.userId = '';
-
-    this.selectedRowKeys = [];
-    this.runtimeIds = [];
     this.runtimeDeleted = null;
-
     this.runtimes = [];
     this.runtimeDetail = {};
   };
-
-  checkK8s = runtimeId => {
-    if (!runtimeId || _.isEmpty(this.runtimes)) {
-      return false;
-    }
-    return _.some(
-      this.runtimes,
-      rt => rt.runtime_id === runtimeId && rt.provider === 'kubernetes'
-    );
-  };
 }
 
-export Create from './create';
 export Credential from './credential';

@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Icon, Table, Button } from 'components/Base';
 import Toolbar from 'components/Toolbar';
+// import AppsTable from 'components/AppsTable';
 import columns from './columns';
 
 import styles from './index.scss';
@@ -27,11 +28,19 @@ export default class RuntimeInstances extends React.Component {
 
   async componentDidMount() {
     const { clusterStore, runtime, user } = this.props;
+    const { runtime_id } = runtime;
+
+    clusterStore.runtimeId = runtime_id;
+
     await clusterStore.fetchAll({
       attachApps: true,
       runtime_id: runtime.runtime_id,
       owner: user.user_id
     });
+  }
+
+  componentWillUnmount() {
+    this.props.clusterStore.reset();
   }
 
   goBack = () => {

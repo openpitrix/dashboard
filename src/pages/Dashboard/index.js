@@ -35,8 +35,8 @@ export Categories from './Categories';
 export Users from './Users';
 export UserDetail from './Users/Detail';
 
-export TestingEnv from './TestingEnv';
-export CreateTestingEnv from './TestingEnv/Create';
-
 export Purchased from './Purchased';
 export PurchasedDetail from './Purchased/Detail';
+
+export Runtimes from './Runtimes';
+export CreateRuntime from './Runtimes/Create';

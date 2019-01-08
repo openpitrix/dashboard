@@ -30,7 +30,6 @@ const keysShouldBeNumber = [
   appStore: rootStore.appStore,
   repoStore: rootStore.repoStore,
   appDeployStore: rootStore.appDeployStore,
-  runtimeStore: rootStore.runtimeStore,
   user: rootStore.user
 }))
 @observer

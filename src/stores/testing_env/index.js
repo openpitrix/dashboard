@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import { providers as providersConf, tabs } from 'config/testing-env';
+import { providers as providersConf, tabs } from 'config/runtimes';
 import Store from '../Store';
 
 export default class TestingEnvStore extends Store {

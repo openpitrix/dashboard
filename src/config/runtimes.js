@@ -1,3 +1,12 @@
+// original
+// export const providers={
+//   // key => label
+//   qingcloud: 'QingCloud',
+//   aws: 'AWS',
+//   aliyun: 'Aliyun',
+//   kubernetes: 'Kubernetes'
+// };
+
 export const providers = [
   { name: 'QingCloud', icon: 'qingcloud', key: 'qingcloud' },
   { name: 'Aliyun', icon: 'aliyun', key: 'aliyun' },

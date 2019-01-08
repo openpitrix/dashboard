@@ -6,7 +6,7 @@ import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import { providers } from 'config/testing-env';
+import { providers } from 'config/runtimes';
 
 import {
   Icon, Button, Popover, Input
@@ -15,7 +15,6 @@ import {
   Grid, Section, Card, Dialog
 } from 'components/Layout';
 import Loading from 'components/Loading';
-import { toUrl } from 'utils/url';
 
 import styles from '../index.scss';
 
@@ -55,10 +54,7 @@ class Runtime extends React.Component {
   };
 
   handleClickClusterCnt = rt => {
-    const { user, envStore } = this.props;
-    if (user.isNormal) {
-      envStore.changeRuntimeToShowInstances(rt);
-    }
+    this.props.envStore.changeRuntimeToShowInstances(rt);
   };
 
   goPage = () => {
