@@ -19,7 +19,7 @@ import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';

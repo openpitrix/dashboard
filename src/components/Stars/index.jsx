@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -8,7 +8,7 @@ import styles from './index.scss';
 
 const stars = [1, 2, 3, 4, 5];
 
-export default class Stars extends Component {
+export default class Stars extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     starTotal: PropTypes.number

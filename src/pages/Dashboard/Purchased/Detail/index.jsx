@@ -13,7 +13,8 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
-import { formatTime, getObjName, getVersionTypesName } from 'utils';
+import { formatTime, getObjName } from 'utils';
+import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 

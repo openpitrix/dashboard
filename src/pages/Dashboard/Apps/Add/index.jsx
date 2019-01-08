@@ -8,7 +8,7 @@ import {
 } from 'components/Base';
 import { Stepper } from 'components/Layout';
 import AppCard from 'pages/Dashboard/Apps/Card';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { getUrlParam } from 'utils';

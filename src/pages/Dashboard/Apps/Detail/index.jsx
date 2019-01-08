@@ -11,7 +11,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import AppStatistics from 'components/AppStatistics';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
 import Versions from '../../Versions';
 

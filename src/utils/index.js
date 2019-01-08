@@ -2,8 +2,6 @@ import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import { t } from 'i18next';
 
-import versionTypes from '../config/version-types';
-
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
   'YYYY/MM/DD HH:mm:ss': 'YYYY年MM月DD日 HH:mm:ss'
@@ -251,16 +249,4 @@ export const makeArray = val => {
     return [val];
   }
   return val;
-};
-
-export const getVersionTypesName = types => {
-  if (!types) {
-    return '';
-  }
-
-  const typeArr = types.split(',');
-  const names = typeArr.map(
-    type => (_.find(versionTypes, { value: type }) || {}).name || type
-  );
-  return names;
 };

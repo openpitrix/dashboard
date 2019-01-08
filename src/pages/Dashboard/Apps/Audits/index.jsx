@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
 
 import styles from './index.scss';

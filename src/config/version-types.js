@@ -1,4 +1,6 @@
-export default [
+import _ from 'lodash';
+
+export const versionTypes = [
   {
     icon: 'vm-icon',
     name: 'VM',
@@ -40,3 +42,15 @@ export default [
     disable: true
   }
 ];
+
+export const getVersionTypesName = types => {
+  if (!types) {
+    return '';
+  }
+
+  const typeArr = types.split(',');
+  const names = typeArr.map(
+    type => (_.find(versionTypes, { value: type }) || {}).name || type
+  );
+  return names;
+};

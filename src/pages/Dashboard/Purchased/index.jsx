@@ -7,8 +7,9 @@ import { Button, Table } from 'components/Base';
 import Layout, { TitleBanner } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import TdName from 'components/TdName';
-import { formatTime, getVersionTypesName } from 'utils';
 import Stars from 'components/Stars';
+import { formatTime } from 'utils';
+import { getVersionTypesName } from 'config/version-types';
 
 @translate()
 @inject(({ rootStore }) => ({
