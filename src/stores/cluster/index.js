@@ -52,8 +52,14 @@ export default class ClusterStore extends Store {
     // job_id=> cluster_id
   };
 
+  @observable attachApps = false;
+
   get appStore() {
     return this.getStore('app');
+  }
+
+  get appVersionStore() {
+    return this.getStore('appVersion');
   }
 
   get clusterEnv() {
@@ -111,6 +117,13 @@ export default class ClusterStore extends Store {
       const appIds = this.clusters.map(cluster => cluster.app_id);
       if (appIds.length) {
         await this.appStore.fetchAll({ app_id: appIds });
+      }
+    }
+
+    if (this.attachVersions) {
+      const versionIds = this.clusters.map(cluster => cluster.version_id);
+      if (versionIds.length) {
+        await this.appVersionStore.fetchAll({ version_id: versionIds });
       }
     }
 
@@ -277,6 +290,8 @@ export default class ClusterStore extends Store {
     this.clusterIds = [];
 
     this.clusters = [];
+
+    this.attachVersions = false;
   };
 
   @action

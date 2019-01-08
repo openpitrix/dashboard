@@ -22,11 +22,10 @@ import styles from './index.scss';
 @observer
 export default class Versions extends Component {
   async componentDidMount() {
-    const { appVersionStore, appStore, match } = this.props;
+    const { appVersionStore, match } = this.props;
     const appId = _.get(match, 'params.appId', '');
 
     if (appId) {
-      // await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
     }
   }

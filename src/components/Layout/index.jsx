@@ -8,7 +8,6 @@ import { translate } from 'react-i18next';
 
 import { Notification, Icon } from 'components/Base';
 import Loading from 'components/Loading';
-import TitleBanner from './TitleBanner';
 import SideNav from './SideNav';
 
 import styles from './index.scss';
@@ -25,7 +24,6 @@ class Layout extends Component {
     children: PropTypes.node,
     className: PropTypes.string,
     hasBack: PropTypes.bool,
-    hasSearch: PropTypes.bool,
     isCenterPage: PropTypes.bool,
     isHome: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -42,7 +40,6 @@ class Layout extends Component {
     backBtn: null,
     listenToJob: noop,
     pageTitle: '',
-    hasSearch: false,
     noSubMenu: false,
     isHome: false,
     isCenterPage: false,
@@ -81,15 +78,11 @@ class Layout extends Component {
 
   renderTitle() {
     const {
-      user, pageTitle, titleCls, hasBack, hasSearch, t
+      user, pageTitle, titleCls, hasBack, t
     } = this.props;
 
-    if (!pageTitle) {
+    if (!pageTitle || user.isNormal) {
       return null;
-    }
-
-    if (user.isNormal) {
-      return <TitleBanner title={pageTitle} hasSearch={hasSearch} />;
     }
 
     return (

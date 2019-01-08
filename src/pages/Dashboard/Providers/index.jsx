@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
-import { Table, Input } from 'components/Base';
+import { Table } from 'components/Base';
 import Layout from 'components/Layout';
 import TitleSearch from 'components/TitleSearch';
 

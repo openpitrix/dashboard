@@ -1,0 +1,9 @@
+@import '~scss/vars';
+
+.stars {
+  display: inline-block;
+  .yellow svg {
+    --primary-color: #{$Y75};
+    --secondary-color: #{$Y75};
+  }
+}

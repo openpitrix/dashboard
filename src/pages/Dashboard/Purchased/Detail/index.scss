@@ -1,0 +1,38 @@
+@import '~scss/vars';
+
+.appBase {
+  .title {
+    margin: 0 -24px 24px;
+    padding: 0 24px 24px;
+    border-bottom: 1px solid $N10;
+  }
+
+  .info {
+    dl {
+      margin-bottom: 20px;
+    }
+
+    dt {
+      @include note-font;
+    }
+
+    dd {
+      @include normal-font($line-height: 20px, $font-size: 12px);
+    }
+  }
+
+  .link {
+    font-size: 12px;
+  }
+}
+
+.versionInfo {
+  font-size: 12px;
+  color: $N300;
+
+  & > label {
+    display: inline-block;
+    margin-left: 8px;
+    color: $N75;
+  }
+}

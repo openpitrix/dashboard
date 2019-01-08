@@ -145,15 +145,13 @@ export default class ReviewDetail extends Component {
   };
 
   renderOperator(operatorId) {
-    const {
-      appVersionStore, userStore, user, t
-    } = this.props;
+    const { userStore, user } = this.props;
     const { users } = userStore;
     const operator = _.find(users, { user_id: operatorId }) || user;
 
     return (
       <div className={styles.operator}>
-        <label className={styles.name}>{operator.username}</label>{' '}
+        <label className={styles.name}>{operator.username}</label>&nbsp;
         {operator.email}
       </div>
     );

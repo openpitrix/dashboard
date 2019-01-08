@@ -280,7 +280,7 @@ export default class VMbasedCluster extends React.Component {
           disabled={cluster.status !== 'active'}
         >
           <Icon name="add" size="mini" type="white" />
-          <span className={styles.addNodeTxt}>{t('Add Nodes')}</span>
+          {t('Add')}
         </Button>
       </Toolbar>
     );

@@ -190,6 +190,11 @@ $profile-hover-color: #efe6f8;
 
     .icon {
       margin: 7px;
+
+      svg {
+        --primary-color: #{$N0};
+        --secondary-color: #{$Y200};
+      }
     }
   }
 

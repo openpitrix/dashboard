@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Table } from 'components/Base';
@@ -93,7 +92,7 @@ export default class Applications extends Component {
         title: t('审核人员'),
         key: 'auditor',
         width: '120px',
-        render: item => user.username
+        render: () => user.username
       },
       {
         title: '',

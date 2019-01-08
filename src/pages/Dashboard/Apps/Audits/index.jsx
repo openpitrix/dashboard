@@ -30,13 +30,8 @@ export default class Audits extends Component {
   }
 
   async componentDidMount() {
-    const {
-      appVersionStore, appStore, userStore, match
-    } = this.props;
+    const { appVersionStore, userStore, match } = this.props;
     const { appId } = match.params;
-
-    // query this app detail info
-    // await appStore.fetch(appId);
 
     // query this app all versions
     await appVersionStore.fetchAll({ app_id: appId });

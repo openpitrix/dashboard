@@ -9,7 +9,12 @@ import {
 } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
 import Layout, {
-  Grid, Section, Card, Panel, Dialog
+  Grid,
+  Section,
+  Card,
+  Panel,
+  Dialog,
+  TitleBanner
 } from 'components/Layout';
 import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
@@ -347,6 +352,12 @@ export default class ClusterDetail extends Component {
         pageTitle={pageTitle}
         hasBack
       >
+        {isNormal && (
+          <TitleBanner
+            title={t('已部署应用')}
+            description={t('所有你部署过的应用都会展示在此。')}
+          />
+        )}
         <Grid>
           <Section>
             <Card>

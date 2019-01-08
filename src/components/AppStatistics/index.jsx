@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import { Icon } from 'components/Base';
 import { Card } from 'components/Layout';
 
 import styles from './index.scss';
-
-const stars = [1, 2, 3, 4, 5];
 
 @translate()
 export default class AppStatistics extends Component {
@@ -39,7 +36,6 @@ export default class AppStatistics extends Component {
       versionTotal,
       monthDepoly,
       totalDepoly,
-      starTotal,
       t
     } = this.props;
 

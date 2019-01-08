@@ -1,7 +1,5 @@
 import { observable, action } from 'mobx';
-import _, {
-  get, assign, capitalize, assignIn
-} from 'lodash';
+import _, { get, assign, assignIn } from 'lodash';
 import { Base64 } from 'js-base64';
 
 import { reviewStatus } from 'config/version';
@@ -16,12 +14,6 @@ const defaultStatus = [
   'active',
   'suspended'
 ];
-
-const rejectStatus = {
-  isv: 'isv-rejected',
-  business_admin: 'business-rejected',
-  develop_admin: 'dev-rejected'
-};
 
 const maxSize = 2 * 1024 * 1024;
 
@@ -109,6 +101,7 @@ export default class AppVersionStore extends Store {
   @action
   fetchAll = async (params = {}) => {
     const defaultParams = {
+      status: this.selectStatus ? this.selectStatus : defaultStatus,
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize

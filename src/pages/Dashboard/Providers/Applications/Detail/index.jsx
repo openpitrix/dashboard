@@ -40,15 +40,12 @@ export default class Applications extends Component {
   }
 
   renderMessageDialog = () => {
-    const {
-      vendorStore, user, match, t
-    } = this.props;
+    const { vendorStore, match, t } = this.props;
     const { providerId } = match.params;
     const {
       isMessageOpen,
       hideModal,
       changeRejectMessage,
-      rejectMessage,
       applyReject
     } = vendorStore;
 

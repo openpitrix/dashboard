@@ -523,12 +523,9 @@ export default class VersionDetail extends Component {
   }
 
   render() {
-    const {
-      appVersionStore, appStore, match, t
-    } = this.props;
+    const { appVersionStore, appStore, t } = this.props;
     const { activeStep, dialogType, isSubmitCheck } = appVersionStore;
     const { detailTab } = appStore;
-    const { appId } = match.params;
 
     if (isSubmitCheck) {
       return (

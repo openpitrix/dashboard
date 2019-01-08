@@ -914,8 +914,8 @@ const svgSprites = `
 </symbol>
 <symbol id="qui-op-logo" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
-        <path fill="#6d35c3" d="M2.559 0H6.14c2.26 0 4.093 1.849 4.093 4.129v1.29c0 2.28-1.833 4.13-4.093 4.13H2.559v5.935H0V0h2.559zm0 2.58v4.388H6.14c.847 0 1.535-.693 1.535-1.549V4.13c0-.855-.688-1.548-1.535-1.548H2.559zM12 0h2.559v10.323L12 9.033z"/>
-        <path fill="#d3c4ed" d="M14.559 15.613H12V12l2.559 1.226z"/>
+        <path d="M2.559 0H6.14c2.26 0 4.093 1.849 4.093 4.129v1.29c0 2.28-1.833 4.13-4.093 4.13H2.559v5.935H0V0h2.559zm0 2.58v4.388H6.14c.847 0 1.535-.693 1.535-1.549V4.13c0-.855-.688-1.548-1.535-1.548H2.559zM12 0h2.559v10.323L12 9.033z" style="fill: var(--secondary-color); opacity: var(--secondary-opacity);"/>
+        <path d="M14.559 15.613H12V12l2.559 1.226z" style="fill: var(--secondary-color); opacity: var(--secondary-opacity);"/>
     </g>
 </symbol>
 <symbol id="qui-vm-icon" viewBox="0 0 24 24">
