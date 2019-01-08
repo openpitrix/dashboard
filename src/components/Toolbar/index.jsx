@@ -49,7 +49,7 @@ class Toolbar extends React.Component {
   onSearch = word => {
     const { history, onSearch } = this.props;
     history.push({
-      search: `q=${word}`
+      search: `keyword=${word}`
     });
     onSearch(word);
   };

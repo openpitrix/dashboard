@@ -15,7 +15,11 @@ function getTable(props) {
 
 const setup = (type, props = {}) => (type === 'render' ? render(getTable(props)) : mount(getTable(props)));
 
-const getTableInstance = wrapper => wrapper.find(Table).instance();
+const getTableInstance = wrapper => wrapper
+  .find(Table)
+  .childAt(0)
+  .childAt(0)
+  .instance();
 
 describe('Base/Table', () => {
   const columns = [

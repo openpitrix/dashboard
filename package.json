@@ -57,7 +57,7 @@
     "build:prod-client": "node build.js --prod-client",
     "build:prod-server": "node build.js --prod-server",
     "lint-fix": "eslint --fix --ext js,jsx .",
-    "test": "jest --config jest.config.json -u --verbose false",
+    "test": "jest --config jest.config.json -u",
     "precommit": "npm test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",

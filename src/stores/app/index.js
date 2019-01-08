@@ -204,6 +204,9 @@ class AppStore extends Store {
       this.isProgressive = true;
       delete params.noLoading;
     }
+    if (this.reverse === false) {
+      params.reverse = this.reverse;
+    }
 
     const result = await this.request.get(fetchAction, params);
     const apps = get(result, 'app_set', []);

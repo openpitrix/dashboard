@@ -18,10 +18,11 @@ function createSetPage(storeName, WrapComponent) {
       if (!_.isNaN(currentPage)) {
         store.currentPage = currentPage;
       }
-      const word = values.q;
-      if (word) {
-        store.searchWord = word;
+      const { keyword, reverse } = values;
+      if (keyword) {
+        store.searchWord = keyword;
       }
+      store.reverse = reverse !== '0';
     }
 
     render() {
