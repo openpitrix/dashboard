@@ -7,8 +7,12 @@ import { Table } from 'components/Base';
 import defaultColumns from './columns';
 import defaultFilters from './filters';
 
-export default class AppsTable extends React.PureComponent {
+/**
+ *  A enhanced table component to simplify operations
+ */
+export default class EnhanceTable extends React.PureComponent {
   static propTypes = {
+    canCancelPager: PropTypes.bool,
     className: PropTypes.string,
     columns: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
     columnsFilter: PropTypes.func,
@@ -16,6 +20,7 @@ export default class AppsTable extends React.PureComponent {
     filterList: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
     inject: PropTypes.object,
     isLoading: PropTypes.bool,
+    replaceFilterConditions: PropTypes.array,
     selectionType: PropTypes.string,
     store: PropTypes.shape({
       selectedRowKeys: PropTypes.array,
@@ -47,7 +52,9 @@ export default class AppsTable extends React.PureComponent {
     selectionType: 'checkbox',
     tableType: 'Apps',
     filterList: [],
-    inject: {}
+    inject: {},
+    canCancelPager: true,
+    replaceFilterConditions: []
   };
 
   render() {
@@ -61,7 +68,9 @@ export default class AppsTable extends React.PureComponent {
       selectionType,
       tableType,
       isLoading,
-      className
+      className,
+      canCancelPager,
+      replaceFilterConditions
     } = this.props;
 
     const rowSelection = {
@@ -75,7 +84,7 @@ export default class AppsTable extends React.PureComponent {
       onChange: store.changePagination,
       total: store.totalCount,
       current: store.currentPage,
-      noCancel: false
+      noCancel: !canCancelPager
     };
 
     let normalizeCols = _.isEmpty(columns) ? defaultColumns : columns;
@@ -93,7 +102,11 @@ export default class AppsTable extends React.PureComponent {
         rowSelection={rowSelection}
         filterList={
           _.isEmpty(filterList)
-            ? defaultFilters(store.onChangeStatus, store.selectStatus)
+            ? defaultFilters(
+              store.onChangeStatus,
+              store.selectStatus,
+              replaceFilterConditions
+            )
             : filterList
         }
         pagination={pagination}

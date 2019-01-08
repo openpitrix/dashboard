@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import Layout from 'components/Layout';
-import AppsTable from 'components/AppsTable';
+import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
 
 @translate()
@@ -80,7 +80,7 @@ export default class Apps extends Component {
           onRefresh={onRefresh}
         />
 
-        <AppsTable
+        <EnhanceTable
           isLoading={isLoading}
           store={appStore}
           data={apps}

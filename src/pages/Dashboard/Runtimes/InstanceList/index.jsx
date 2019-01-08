@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
-import { Icon, Table, Button } from 'components/Base';
+import { Icon, Button } from 'components/Base';
 import Toolbar from 'components/Toolbar';
-// import AppsTable from 'components/AppsTable';
+import EnhanceTable from 'components/EnhanceTable';
 import columns from './columns';
 
 import styles from './index.scss';
@@ -95,49 +95,24 @@ export default class RuntimeInstances extends React.Component {
     const {
       clusterStore, appStore, user, t
     } = this.props;
-    const { clusters, isLoading } = clusterStore;
+    const { clusters } = clusterStore;
     const { apps } = appStore;
 
-    const rowSelection = {
-      type: 'checkbox',
-      selectType: 'onSelect',
-      selectedRowKeys: clusterStore.selectedRowKeys,
-      onChange: clusterStore.onChangeSelect
-    };
-
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: t('Pending'), value: 'pending' },
-          { name: t('Active'), value: 'active' },
-          { name: t('Stopped'), value: 'stopped' },
-          { name: t('Suspended'), value: 'suspended' },
-          { name: t('Deleted'), value: 'deleted' },
-          { name: t('Ceased'), value: 'ceased' }
-        ],
-        onChangeFilter: clusterStore.onChangeStatus,
-        selectValue: clusterStore.selectStatus
-      }
-    ];
-
-    const pagination = {
-      tableType: 'Clusters',
-      onChange: clusterStore.changePagination,
-      total: clusterStore.totalCount,
-      current: clusterStore.currentPage,
-      noCancel: false
-    };
-
     return (
-      // todo
-      <Table
+      <EnhanceTable
+        tableType="Clusters"
         columns={columns(t, apps, user.isDev)}
-        dataSource={clusters.toJSON()}
-        rowSelection={rowSelection}
-        isLoading={isLoading}
-        filterList={filterList}
-        pagination={pagination}
+        data={clusters}
+        store={clusterStore}
+        isLoading={clusterStore.isLoading}
+        replaceFilterConditions={[
+          { name: 'Pending', value: 'pending' },
+          { name: 'Active', value: 'active' },
+          { name: 'Stopped', value: 'stopped' },
+          { name: 'Suspended', value: 'suspended' },
+          { name: 'Deleted', value: 'deleted' },
+          { name: 'Ceased', value: 'ceased' }
+        ]}
       />
     );
   }

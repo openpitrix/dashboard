@@ -63,13 +63,12 @@ export default class Table extends React.Component {
     const { rowKey } = this.props;
     const data = [...this.props.dataSource];
 
-    data.map((item, i) => {
+    return data.map((item, i) => {
       if (!item[rowKey]) {
         item[rowKey] = item.id || rowKey + i;
       }
       return item;
     });
-    return data;
   };
 
   getItemKey = (item, index) => {
@@ -124,10 +123,6 @@ export default class Table extends React.Component {
           break;
       }
     }
-  };
-
-  setExtendRowKeys = () => {
-    /* const { extendRowSelection } = this.props; */
   };
 
   handleCheckboxSelect = (value, index, e) => {
@@ -212,7 +207,7 @@ export default class Table extends React.Component {
 
   renderSelectionBox = type => (value, row, index) => {
     const handleChange = e => {
-      e.stopPropagation();
+      e.preventDefault();
       type === 'radio'
         ? this.handleRadioSelect(value, index, e)
         : this.handleCheckboxSelect(value, index, e);
@@ -233,7 +228,7 @@ export default class Table extends React.Component {
     );
   };
 
-  renderRowSelection = () => {
+  renderHeaderColumns = () => {
     const { rowSelection, columns } = this.props;
     const tableColumns = [...columns];
 
@@ -297,8 +292,27 @@ export default class Table extends React.Component {
     return key;
   };
 
-  renderFilterColumn = columns => {
+  handleSort = (cb, column) => {
+    const { reverse } = this.state;
+
+    this.setState(
+      {
+        reverse: !reverse
+      },
+      () => {
+        typeof cb === 'function'
+          && cb({
+            sort_key: column.key || column.dataIndex,
+            reverse
+          });
+      }
+    );
+  };
+
+  filterColumns = columns => {
     const { filterList, t } = this.props;
+    const { reverse } = this.state;
+
     return columns.map(({ ...column }) => {
       const filter = find(filterList, { key: column.key });
 
@@ -321,6 +335,19 @@ export default class Table extends React.Component {
         column.title = t(column.title);
       }
 
+      // is col can be sorted?
+      if (column.sorter) {
+        column.title = (
+          <span
+            onClick={() => this.handleSort(column.onChangeSort, column)}
+            className={styles.sortOuter}
+          >
+            {column.title}
+            <Icon name={`sort-${reverse ? 'ascend' : 'descend'}ing`} />
+          </span>
+        );
+      }
+
       return column;
     });
   };
@@ -339,31 +366,8 @@ export default class Table extends React.Component {
   renderTable = () => {
     const { pagination, ...restProps } = this.props;
     const data = this.getTableData();
-    let columns = this.renderRowSelection();
-    columns = this.renderFilterColumn(columns);
-    columns = columns.map((column, i) => {
-      const newColumn = { ...column };
-      newColumn.key = column.key || column.dataIndex || i;
-      if (newColumn.sorter) {
-        const { reverse } = this.state;
-        const onChangeSort = () => {
-          this.setState({
-            reverse: !reverse
-          });
-          column.onChangeSort({
-            sort_key: column.key,
-            reverse
-          });
-        };
-        newColumn.title = (
-          <span onClick={() => onChangeSort()} className={styles.sortOuter}>
-            {newColumn.title}
-            <Icon name={`sort-${reverse ? 'ascend' : 'descend'}ing`} />
-          </span>
-        );
-      }
-      return newColumn;
-    });
+    let columns = this.renderHeaderColumns();
+    columns = this.filterColumns(columns);
 
     return (
       <RcTable
