@@ -37,3 +37,6 @@ export UserDetail from './Users/Detail';
 
 export TestingEnv from './TestingEnv';
 export CreateTestingEnv from './TestingEnv/Create';
+
+export Purchased from './Purchased';
+export PurchasedDetail from './Purchased/Detail';

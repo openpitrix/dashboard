@@ -4,16 +4,14 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import {
-  Icon, Input, Table, Button, Image
-} from 'components/Base';
+import { Input, Table, Image } from 'components/Base';
 import Layout, { Grid, Section, Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import AppStatistics from 'components/AppStatistics';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
 import Versions from '../../Versions';
 
@@ -157,13 +155,10 @@ export default class AppDetail extends Component {
   }
 
   renderInstance() {
-    const {
-      clusterStore, appStore, userStore, t
-    } = this.props;
+    const { clusterStore, t } = this.props;
     const {
       clusters, onSearch, onClearSearch, searchWord
     } = clusterStore;
-    const { users } = userStore;
 
     const columns = [
       {
@@ -185,7 +180,7 @@ export default class AppDetail extends Component {
       {
         title: t('Version'),
         key: 'app_id',
-        width: '150px',
+        width: '100px',
         render: item => this.renderVersionName(item.version_id)
       },
       {
@@ -197,7 +192,7 @@ export default class AppDetail extends Component {
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '80px',
+        width: '120px',
         render: item => <TimeShow time={item.create_time} />
       }
     ];

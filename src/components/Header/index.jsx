@@ -37,7 +37,7 @@ class Header extends Component {
     this.props.history.push('/');
   };
 
-  isLinkActive = (curLink, match, location) => {
+  isLinkActive = curLink => {
     const { pathname } = location;
     return pathname.indexOf(curLink) > -1;
   };
@@ -51,23 +51,31 @@ class Header extends Component {
           to="/store"
           exact
           activeClassName={styles.active}
-          isActive={this.isLinkActive.bind(null, 'store')}
+          isActive={() => this.isLinkActive('store')}
         >
           {t('App Store')}
         </NavLink>
         <NavLink
-          to="/purchased"
+          to={toUrl('/:dash/purchased')}
           exact
           activeClassName={styles.active}
-          isActive={this.isLinkActive.bind(null, 'purchased')}
+          isActive={() => this.isLinkActive('purchased')}
         >
           {t('Purchased')}
+        </NavLink>
+        <NavLink
+          to={toUrl('/:dash/clusters')}
+          exact
+          activeClassName={styles.active}
+          isActive={() => this.isLinkActive('cluster')}
+        >
+          {t('My Instances')}
         </NavLink>
         <NavLink
           to={toUrl('/:dash/runtimes')}
           exact
           activeClassName={styles.active}
-          isActive={this.isLinkActive.bind(null, 'runtime')}
+          isActive={() => this.isLinkActive('runtime')}
         >
           {t('My Runtimes')}
         </NavLink>

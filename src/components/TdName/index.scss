@@ -1,26 +1,23 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .tdName {
   display: flex;
-  height: 37px;
-
-  :global{
-   .icon{
+  :global {
+    .icon {
       float: left;
       margin: 4px 0 0 0;
     }
   }
-  .image{
+  .image {
     display: inline-block;
     float: left;
-    //margin: 3px 12px 3px 0;
-    margin: 5px 12px 3px 0;
-    width: 24px;
-    height: 24px;
+    margin: 6px 8px 6px 0;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
     border-radius: 2px;
-    line-height: 24px;
     text-align: center;
-    img{
+    img {
       max-width: 100%;
       max-height: 100%;
       vertical-align: middle;
@@ -37,13 +34,14 @@
     }
     .name {
       display: block;
-      line-height: 20px;
+      line-height: 28px;
       font-weight: 500;
+      font-size: 14px;
       text-align: left;
       color: $N500;
-      width: 110px;
+      max-width: 150px;
       @include textCut;
-      &:hover{
+      &:hover {
         color: $link-hover;
       }
     }
@@ -55,21 +53,21 @@
       color: $N500;
       width: 180px;
       @include textCut;
-      &:hover{
+      &:hover {
         color: $link-hover;
       }
     }
-    .description{
+    .description {
       display: inline-block;
-      width: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      @include idText;
+      line-height: 20px;
+      font-size: 12px;
+      color: $N75;
+      max-width: 150px;
+      @include textCut;
     }
 
-    :global{
-      .copy{
+    :global {
+      .copy {
         visibility: hidden;
         float: right;
         position: relative;
@@ -86,7 +84,7 @@
   @include textCut;
   color: $N300;
 
-  :global{
+  :global {
     .icon {
       float: left;
       margin-top: 2px;
@@ -103,7 +101,7 @@
       width: 75px !important;
     }
   }
-  .largeShow{
+  .largeShow {
     [class*='name'] {
       //width: 240px !important;
     }
@@ -112,4 +110,3 @@
     }
   }
 }
-

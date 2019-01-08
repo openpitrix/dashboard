@@ -19,7 +19,7 @@ import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
-import versionTypes from 'config/version-types';
+import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
@@ -523,12 +523,9 @@ export default class VersionDetail extends Component {
   }
 
   render() {
-    const {
-      appVersionStore, appStore, match, t
-    } = this.props;
+    const { appVersionStore, appStore, t } = this.props;
     const { activeStep, dialogType, isSubmitCheck } = appVersionStore;
     const { detailTab } = appStore;
-    const { appId } = match.params;
 
     if (isSubmitCheck) {
       return (

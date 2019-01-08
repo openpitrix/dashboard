@@ -82,8 +82,7 @@ export default class Reviews extends Component {
             linkUrl={`/dashboard/app/${item.app_id}`}
             icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
-            type={item.type}
-            versionName={item.name}
+            versionName={item.version_name}
           />
         )
       },
@@ -97,8 +96,6 @@ export default class Reviews extends Component {
         title: t('提交时间'),
         key: 'status_time',
         width: '130px',
-        sorter: this.role === 'global_admin',
-        onChangeSort: this.onChangeSort,
         render: item => <TimeShow time={item.status_time} type="detailTime" />
       },
       {

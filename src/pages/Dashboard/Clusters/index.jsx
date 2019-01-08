@@ -7,11 +7,10 @@ import { translate } from 'react-i18next';
 import {
   Icon, Button, Table, Popover
 } from 'components/Base';
-import Layout, { Dialog, Row } from 'components/Layout';
+import Layout, { TitleBanner, Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
-import Statistics from 'components/Statistics';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 
@@ -212,15 +211,14 @@ export default class Clusters extends Component {
   };
 
   renderToolbar() {
-    const { t, match } = this.props;
-    const { appId } = match.params;
+    const { clusterStore, t } = this.props;
     const {
       searchWord,
       onSearch,
       onClearSearch,
       onRefresh,
       clusterIds
-    } = this.props.clusterStore;
+    } = clusterStore;
 
     if (clusterIds.length) {
       return (
@@ -256,9 +254,7 @@ export default class Clusters extends Component {
     const {
       clusterStore, appStore, userStore, user, match, t
     } = this.props;
-    const {
-      summaryInfo, clusters, isLoading, onlyView
-    } = clusterStore;
+    const { clusters, isLoading, onlyView } = clusterStore;
 
     const runtimes = this.props.runtimeStore.allRuntimes;
     const { apps } = appStore;
@@ -378,17 +374,17 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const { isAdmin } = user;
     const pageTitle = match.path.endsWith('sandbox-instances')
       ? t('Sandbox-Instances')
       : t('Customer-Instances');
 
     return (
       <Layout listenToJob={this.listenToJob} pageTitle={pageTitle}>
-        {isAdmin && (
-          <Row>
-            <Statistics {...summaryInfo} objs={runtimes.toJSON()} />
-          </Row>
+        {user.isNormal && (
+          <TitleBanner
+            title={t('My Instances')}
+            description={t('基于应用创建出的实例列表。')}
+          />
         )}
 
         <div>

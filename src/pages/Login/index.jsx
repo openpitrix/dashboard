@@ -36,7 +36,10 @@ export default class Login extends Component {
       await store.fetchDetail(res.user.sub, true);
     }
 
-    const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
+    let defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
+    if (user.isNormal) {
+      defaultUrl = '/store';
+    }
     if (!(res && res.err)) {
       localStorage.removeItem('menuApps'); // clear newest visited menu apps
       location.href = getUrlParam('redirect_url') || defaultUrl;
