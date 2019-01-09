@@ -65,6 +65,10 @@ export default class ClusterStore extends Store {
     return this.selectIds;
   }
 
+  get describeActionName() {
+    return this.getUser().isDev ? 'debug_clusters' : 'clusters';
+  }
+
   @action
   fetchAll = async (params = {}) => {
     const attachApps = Boolean(params.attachApps);
@@ -84,7 +88,7 @@ export default class ClusterStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('clusters', params);
+    const result = await this.request.get(this.describeActionName, params);
     this.clusters = get(result, 'cluster_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
