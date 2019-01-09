@@ -9,6 +9,8 @@ import * as Dash from 'pages/Dashboard';
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
+const Account = lazy(() => import('../pages/Account'));
+// const Store = lazy(() => import('../pages/Store'));
 
 const routes = {
   '/login': Login,
@@ -16,7 +18,19 @@ const routes = {
   '/apps': Home,
   '/apps/search/:search': Home,
   '/apps/category/:category': Home,
+  // '/apps/search/:search': Home,
+  // '/apps/category/:category': Home,
+
   '/apps/:appId': AppDetail,
+
+  // '/store': Store,
+  // '/store/search/:search': Store,
+  // '/store/category/:category': Store,
+  // '/store/:appId': AppDetail,
+
+  // '/store/:appId/deploy': Dash.AppDeploy,
+
+  '/:dash': Dash.Overview,
 
   // only for user
   '/:dash/purchased': Dash.Purchased,
@@ -64,9 +78,6 @@ const routes = {
 
   '/:dash/app-reviews': Dash.Reviews,
   '/:dash/app-review/:reviewId': Dash.ReviewDetail,
-
-  // for all roles
-  '/:dash': Dash.Overview,
 
   '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 

@@ -19,11 +19,12 @@
       margin-top: 0;
     }
 
-    li {
+    .item {
       margin-bottom: 12px;
       height: 20px;
       line-height: 20px;
       list-style: none;
+
       a {
         @include textCut;
         display:inline-block;
@@ -33,7 +34,17 @@
         &:hover{
           color: $P75;
         }
+
+        .name {
+          display: inline-block;
+          margin-left: 12px;
+        }
+
+        .icon {
+          vertical-align: middle;
+        }
       }
+
       :global{
         .active{
           color: $P75;

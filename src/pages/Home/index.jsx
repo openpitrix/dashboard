@@ -24,22 +24,16 @@ export default class Home extends Component {
     pageLoading: true
   };
 
-  async componentWillMount() {
-    const { rootStore, match } = this.props;
-    const { category, search } = match.params;
-
-    if (category || search) {
-      rootStore.setNavFix(true);
-    } else {
-      rootStore.setNavFix(false);
-    }
-  }
-
   async componentDidMount() {
-    const { appStore, categoryStore, match } = this.props;
+    const {
+      rootStore, appStore, categoryStore, match
+    } = this.props;
     const { category, search } = match.params;
+
+    rootStore.setNavFix(Boolean(category || search));
 
     window.scroll({ top: 0 });
+
     await categoryStore.fetchAll();
 
     if (!(category || search)) {
@@ -86,6 +80,7 @@ export default class Home extends Component {
     const fixNav = rootStore.fixNav;
     const scrollTop = getScrollTop();
     const needFixNav = scrollTop > this.threshold;
+
     if (needFixNav && !fixNav) {
       rootStore.setNavFix(true);
     } else if (!needFixNav && fixNav) {
@@ -173,7 +168,8 @@ export default class Home extends Component {
         <div
           className={classnames(styles.content, { [styles.fixNav]: fixNav })}
         >
-          <Nav className={styles.nav} navs={categories.toJSON()} />
+          <Nav className={styles.nav} navs={categories} />
+
           <Loading isLoading={pageLoading} className={styles.homeLoad}>
             <InfiniteScroll
               className={styles.apps}
