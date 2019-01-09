@@ -41,7 +41,7 @@ const actionName = {
 };
 const tags = [
   { name: 'Config File', value: 'configFile' },
-  { name: 'Set Price', value: 'setPrice', isDisabled: true },
+  { name: 'Set Price', value: 'setPrice', disabled: true },
   { name: 'Update Log', value: 'updateLog' }
 ];
 

@@ -13,8 +13,13 @@ import SSHKeys from './SSHKeys';
 
 import styles from './index.scss';
 
-const normalTabs = ['Account Info', 'Change Password', 'SSH Keys'];
-const tabs = ['Account Info', 'Change Password', 'SSH Keys'];
+const tabs = [
+  { name: 'Account Info', value: 'account' },
+  { name: 'Change Password', value: 'password' },
+  { name: 'Payment', value: 'payment', disabled: true },
+  { name: 'Notice settings', value: 'notice', disabled: true },
+  { name: 'SSH Keys', value: 'ssh' }
+];
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -23,20 +28,22 @@ const tabs = ['Account Info', 'Change Password', 'SSH Keys'];
   user: rootStore.user
 }))
 @observer
-export default class Profile extends Component {
+export default class Account extends Component {
   constructor(props) {
     super(props);
 
     const language = props.i18n.language || 'zh';
-    const type = getUrlParam('type');
+    const { type } = props.match.params;
+
     this.state = {
       language,
-      activeTab: type || 'Account Info'
+      activeTab: type || 'account'
     };
   }
 
   async componentDidMount() {
     const { userStore, user } = this.props;
+
     await userStore.fetchDetail(user.user_id);
   }
 
@@ -204,7 +211,7 @@ export default class Profile extends Component {
 
           <DetailTabs
             className={styles.detailTabs}
-            tabs={normalTabs}
+            tabs={tabs}
             defaultTab={activeTab}
             changeTab={this.changeTab}
             isAccount
@@ -218,6 +225,9 @@ export default class Profile extends Component {
     const { user, t } = this.props;
     const { activeTab } = this.state;
     const { isNormal } = user;
+    const filterTabs = tabs.filter(
+      tab => !['payment', 'ssh'].includes(tab.value)
+    );
 
     return (
       <Layout
@@ -229,7 +239,7 @@ export default class Profile extends Component {
 
         {!isNormal && (
           <DetailTabs
-            tabs={tabs}
+            tabs={filterTabs}
             defaultTab={activeTab}
             changeTab={this.changeTab}
           />
@@ -240,9 +250,9 @@ export default class Profile extends Component {
             [styles.accountNormal]: isNormal
           })}
         >
-          {activeTab === 'Account Info' && this.renderBasic()}
-          {activeTab === 'Change Password' && this.renderPassword()}
-          {activeTab === 'SSH Keys' && <SSHKeys />}
+          {activeTab === 'account' && this.renderBasic()}
+          {activeTab === 'password' && this.renderPassword()}
+          {activeTab === 'ssh' && <SSHKeys />}
         </div>
       </Layout>
     );

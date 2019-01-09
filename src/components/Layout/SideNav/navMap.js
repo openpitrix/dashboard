@@ -282,30 +282,32 @@ export const userMenus = [
   },
   {
     name: 'Change Password',
-    link: '/dashboard/account?type=Change Password',
+    link: '/dashboard/account/password',
     iconName: 'lock'
   },
   {
     name: 'Notice settings',
     link: '#',
-    iconName: 'loudspeaker'
+    iconName: 'loudspeaker',
+    disabled: true
   },
   {
     name: 'Payment',
     link: '#',
     iconName: 'creditcard',
+    disabled: true,
     divider: true // show divide line
   },
   {
     name: 'Testing env',
     link: '/:dash/runtimes',
-    iconName: 'image',
-    only: ['global_admin', 'developer']
+    iconName: 'image'
   },
   {
     name: 'SSH Keys',
-    link: '/dashboard/account?type=SSH Keys',
+    link: '/dashboard/account/ssh',
     iconName: 'ssh',
-    divider: true
+    divider: true,
+    only: ['user']
   }
 ];

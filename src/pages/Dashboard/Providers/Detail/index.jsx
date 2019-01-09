@@ -15,8 +15,8 @@ import styles from './index.scss';
 const tags = [
   { name: 'App', value: 'app' },
   { name: '认证信息', value: 'certificationInfo' },
-  { name: '合约', value: 'contract', isDisabled: true },
-  { name: '保证金', value: 'margin', isDisabled: true }
+  { name: '合约', value: 'contract', disabled: true },
+  { name: '保证金', value: 'margin', disabled: true }
 ];
 @translate()
 @inject(({ rootStore }) => ({

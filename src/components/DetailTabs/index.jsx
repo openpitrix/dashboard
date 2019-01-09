@@ -53,7 +53,7 @@ export default class DetailTabs extends Component {
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
-    if (!tab.isDisabled) {
+    if (!tab.disabled) {
       this.setState({ curTab: tabValue });
     }
   };
@@ -76,7 +76,7 @@ export default class DetailTabs extends Component {
           <label
             className={classnames({
               [styles.active]: (tab.value || tab) === curTab,
-              [styles.disabled]: tab.isDisabled
+              [styles.disabled]: tab.disabled
             })}
             key={tab.value || tab}
             onClick={() => this.handleChange(tab)}
