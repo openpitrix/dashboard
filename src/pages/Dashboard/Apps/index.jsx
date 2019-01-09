@@ -46,12 +46,6 @@ export default class Apps extends Component {
     appStore.defaultStatus = '';
   }
 
-  onChangeSort = (params = {}) => {
-    const { appStore } = this.props;
-    const order = params.reverse ? 'asc' : 'desc';
-    appStore.apps = _.orderBy(appStore.apps, params.sort_key, order);
-  };
-
   render() {
     const {
       appStore, userStore, user, t
@@ -90,8 +84,7 @@ export default class Apps extends Component {
           inject={{
             users,
             isAdmin,
-            urlPrefix,
-            onChangeSort: this.onChangeSort
+            urlPrefix
           }}
         />
       </Layout>
