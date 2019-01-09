@@ -27,6 +27,10 @@ export default class AppDeployStore extends Store {
 
   configJson = {};
 
+  get createActionName() {
+    return this.getUser().isDev ? 'debug_clusters/create' : 'clusters/create';
+  }
+
   reset() {
     this.versions = [];
     this.runtimes = [];
@@ -131,7 +135,7 @@ export default class AppDeployStore extends Store {
   @action
   create = async (params = {}) => {
     this.isLoading = true;
-    const res = await this.request.post(`clusters/create`, params);
+    const res = await this.request.post(this.createActionName, params);
     this.isLoading = false;
 
     return res;

@@ -43,10 +43,14 @@ export default class ClusterDetailStore extends Store {
 
   @observable env = '';
 
+  get describeActionName() {
+    return this.getUser().isDev ? 'debug_clusters' : 'clusters';
+  }
+
   @action
   fetch = async clusterId => {
     this.isLoading = true;
-    const result = await this.request.get(`clusters`, {
+    const result = await this.request.get(this.describeActionName, {
       cluster_id: clusterId
     });
     this.cluster = _.get(result, 'cluster_set[0]', {});
