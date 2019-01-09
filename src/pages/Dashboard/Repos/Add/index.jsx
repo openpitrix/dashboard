@@ -11,7 +11,7 @@ import {
 import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
 import TodoList from 'components/TodoList';
 
-import runtimeProviders from 'config/runtime-providers';
+import { providers as runtimeProviders } from 'config/runtimes';
 
 import styles from './index.scss';
 

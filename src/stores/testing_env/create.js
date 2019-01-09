@@ -74,6 +74,10 @@ export default class CreateEnvStore extends Store {
     return getUrlParam('provider') || this.envStore.platform;
   }
 
+  get createRuntimeAction() {
+    return this.getUser().isDev ? 'debug_runtimes' : 'runtimes';
+  }
+
   getCredentialContent() {
     return JSON.stringify({
       access_key_id: this.accessKey,
@@ -201,7 +205,7 @@ export default class CreateEnvStore extends Store {
   @action
   createRuntime = async (params = {}) => {
     this.isLoading = true;
-    const res = await this.request.post('runtimes', params);
+    const res = await this.request.post(this.createRuntimeAction, params);
     if (_.isObject(res) && res.runtime_id) {
       this.runtime = { ...res };
     }

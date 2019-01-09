@@ -10,7 +10,7 @@ import {
 } from 'components/Base';
 import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
-import AppsTable from 'components/AppsTable';
+import EnhanceTable from 'components/EnhanceTable';
 import Loading from 'components/Loading';
 import { getIconList } from 'utils/icons';
 
@@ -213,7 +213,7 @@ export default class Categories extends Component {
           onCancel={hideModal}
         >
           <p className={styles.addAppTips}>{t('CHOOSE_FROM_UNCATEGORY')}</p>
-          <AppsTable
+          <EnhanceTable
             isLoading={uncateAppStore.isLoading}
             store={uncateAppStore}
             data={uncateAppStore.apps}
@@ -335,7 +335,7 @@ export default class Categories extends Component {
     return (
       <Fragment>
         {this.renderToolbar()}
-        <AppsTable
+        <EnhanceTable
           store={appStore}
           data={apps}
           isLoading={isLoading}

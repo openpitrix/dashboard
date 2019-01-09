@@ -2,13 +2,13 @@ import { observable, action } from 'mobx';
 import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
+import { useTableActions } from 'mixins';
 
 import Store from '../Store';
 
+@useTableActions
 export default class ClusterStore extends Store {
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
-
-  @observable currentPage = 1;
 
   @observable clusters = [];
 
@@ -20,27 +20,17 @@ export default class ClusterStore extends Store {
 
   @observable summaryInfo = {};
 
-  @observable totalCount = 0;
-
   @observable clusterCount = 0;
 
   @observable clusterId = '';
 
   @observable operateType = '';
 
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
-
   @observable appId = '';
 
   @observable runtimeId = '';
 
   @observable userId = '';
-
-  @observable selectedRowKeys = [];
-
-  @observable clusterIds = [];
 
   @observable versionId = '';
 
@@ -70,17 +60,10 @@ export default class ClusterStore extends Store {
     return this.getStore('clusterDetail').fetchJobs;
   }
 
-  @action
-  showModal = type => {
-    this.modalType = type;
-    this.isModalOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.modalType = '';
-    this.isModalOpen = false;
-  };
+  // back compat
+  get clusterIds() {
+    return this.selectIds;
+  }
 
   @action
   fetchAll = async (params = {}) => {
@@ -247,63 +230,14 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll();
-  };
-
-  @action
   reset = () => {
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
     this.appId = '';
     this.runtimeId = '';
     this.userId = '';
     this.onlyView = false;
-
-    this.selectedRowKeys = [];
-    this.clusterIds = [];
-
     this.clusters = [];
-
     this.attachVersions = false;
-  };
-
-  @action
-  onChangeSelect = (selectedRowKeys, selectedRows) => {
-    this.selectedRowKeys = selectedRowKeys;
-    this.clusterIds = selectedRows.map(row => row.cluster_id);
-  };
-
-  @action
-  cancelSelected = () => {
-    this.selectedRowKeys = [];
-    this.clusterIds = [];
+    this.resetTableParams();
   };
 
   @action

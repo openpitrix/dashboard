@@ -1,281 +1,174 @@
-import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { observer, inject } from 'mobx-react';
+import React, { Fragment } from 'react';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
-import { orderBy } from 'lodash';
+import { inject, observer } from 'mobx-react';
+import _ from 'lodash';
 
-import {
-  Icon, Button, Popover, Table
-} from 'components/Base';
+import { Icon, Tooltip } from 'components/Base';
 import Layout, {
-  Dialog,
   Grid,
-  Row,
   Section,
-  Card,
-  BreadCrumb
+  BreadCrumb,
+  TitleBanner
 } from 'components/Layout';
-import Status from 'components/Status';
-import Toolbar from 'components/Toolbar';
-import TdName, { ProviderName } from 'components/TdName';
-import Statistics from 'components/Statistics';
-import TimeShow from 'components/TimeShow';
-import { getObjName } from 'utils';
+import Loading from 'components/Loading';
+import Tabs from 'components/DetailTabs';
+import { providers, tabs } from 'config/runtimes';
+
+import Runtime from './Runtime';
+import Credential from './Credential';
+import InstanceList from './InstanceList';
+
+import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore,
-  userStore: rootStore.userStore
+  user: rootStore.user,
+  envStore: rootStore.testingEnvStore
 }))
 @observer
-export default class Runtimes extends Component {
+export default class Runtimes extends React.Component {
+  state = {
+    loadedRt: false
+  };
+
   async componentDidMount() {
-    const { runtimeStore, clusterStore, userStore } = this.props;
-
-    await runtimeStore.fetchAll();
-    await runtimeStore.fetchStatistics();
-    await clusterStore.fetchAll({
-      noLimit: true
+    await this.props.envStore.updateProviderCounts();
+    this.setState({
+      loadedRt: true
     });
-    await userStore.fetchAll({ noLimit: true });
   }
 
-  componentWillUnmount() {
-    const { runtimeStore } = this.props;
-    runtimeStore.reset();
+  handleClickPlatform = (curPlatform, disabled) => {
+    const { changePlatform } = this.props.envStore;
+    if (!disabled) {
+      changePlatform(curPlatform);
+    }
+  };
+
+  handleChangeTab = tab => {
+    this.props.envStore.changeTab(tab);
+  };
+
+  renderPlatforms() {
+    const { envStore, t } = this.props;
+    const { providerCounts, platform } = envStore;
+
+    return (
+      <ul className={styles.platforms}>
+        {_.map(providers, ({
+          name, icon, disabled, count, key
+        }) => {
+          disabled = Boolean(disabled);
+          if (!count) {
+            count = providerCounts[key];
+          }
+          const elem = (
+            <Fragment>
+              <Icon name={icon} type="dark" />
+              <span className={styles.proName}>{name}</span>
+              <span className={styles.proCount}>
+                {disabled ? '-' : count || 0}
+              </span>
+            </Fragment>
+          );
+
+          return (
+            <li
+              key={key}
+              className={classnames(styles.provider, {
+                [styles.disabled]: disabled,
+                [styles.active]: platform === key
+              })}
+              onClick={() => this.handleClickPlatform(key, disabled)}
+            >
+              {disabled ? (
+                <Tooltip
+                  placement="top"
+                  content={t('Not support currently')}
+                  key={key}
+                  targetCls={styles.tooltip}
+                  popperCls={styles.popper}
+                >
+                  {elem}
+                </Tooltip>
+              ) : (
+                elem
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
   }
 
-  onChangeSort = (params = {}) => {
-    const { runtimeStore } = this.props;
-    const order = params.reverse ? 'asc' : 'desc';
-    runtimeStore.runtimes = orderBy(
-      runtimeStore.runtimes,
-      params.sort_key,
-      order
-    );
-  };
+  renderContent() {
+    const { loadedRt } = this.state;
+    const { curTab, platform, runtimeToShowInstances } = this.props.envStore;
 
-  renderHandleMenu = detail => {
-    const { runtimeStore, t } = this.props;
-    const { showDeleteRuntime } = runtimeStore;
-
-    return (
-      <div className="operate-menu">
-        <Link to={`/dashboard/runtime/${detail.runtime_id}`}>
-          {t('View detail')}
-        </Link>
-        {detail.status !== 'deleted' && (
-          <Fragment>
-            <Link to={`/dashboard/runtime/edit/${detail.runtime_id}`}>
-              {t('Modify Runtime')}
-            </Link>
-            <span onClick={() => showDeleteRuntime(detail.runtime_id)}>
-              {t('Delete')}
-            </span>
-          </Fragment>
-        )}
-      </div>
-    );
-  };
-
-  renderDeleteModal = () => {
-    const { runtimeStore, t } = this.props;
-    const { isModalOpen, hideModal, remove } = runtimeStore;
-
-    return (
-      <Dialog
-        title={t('Delete Runtime')}
-        isOpen={isModalOpen}
-        onSubmit={remove}
-        onCancel={hideModal}
-      >
-        {t('Delete Runtime desc')}
-      </Dialog>
-    );
-  };
-
-  renderToolbar() {
-    const { t } = this.props;
-    const {
-      searchWord,
-      onSearch,
-      onClearSearch,
-      onRefresh,
-      showDeleteRuntime,
-      runtimeIds
-    } = this.props.runtimeStore;
-
-    if (runtimeIds.length) {
-      return (
-        <Toolbar noRefreshBtn noSearchBox>
-          <Button
-            type="delete"
-            onClick={() => showDeleteRuntime(runtimeIds)}
-            className="btn-handle"
-          >
-            {t('Delete')}
-          </Button>
-        </Toolbar>
-      );
+    if (
+      curTab === 'Testing env'
+      && _.isObject(runtimeToShowInstances)
+      && runtimeToShowInstances.runtime_id
+    ) {
+      return <InstanceList runtime={{ ...runtimeToShowInstances }} />;
     }
 
     return (
-      <Toolbar
-        placeholder={t('Search Runtimes')}
-        searchWord={searchWord}
-        onSearch={onSearch}
-        onClear={onClearSearch}
-        onRefresh={onRefresh}
-        withCreateBtn={{
-          name: t('Create'),
-          linkTo: `/dashboard/runtime/create`
-        }}
-      />
+      <Fragment>
+        <Tabs
+          className={styles.tabs}
+          tabs={tabs}
+          defaultTab={curTab}
+          triggerFirst={false}
+          changeTab={this.handleChangeTab}
+        />
+        <div className={styles.body}>
+          <Loading isLoading={!loadedRt}>
+            {curTab === 'Testing env' ? (
+              <Runtime platform={platform} />
+            ) : (
+              <Credential platform={platform} />
+            )}
+          </Loading>
+        </div>
+      </Fragment>
     );
   }
 
   render() {
-    const {
-      runtimeStore, clusterStore, userStore, t
-    } = this.props;
-    const data = runtimeStore.runtimes.toJSON();
-    const clusters = clusterStore.clusters.toJSON();
-    const { users } = userStore;
-
-    const {
-      summaryInfo,
-      isLoading,
-      currentPage,
-      totalCount,
-      changePagination,
-      selectedRowKeys,
-      onChangeSelect,
-      onChangeStatus,
-      selectStatus
-    } = runtimeStore;
-
-    const columns = [
-      {
-        title: t('Runtime Name'),
-        dataIndex: 'name',
-        key: 'name',
-        width: '155px',
-        render: (name, obj) => (
-          <TdName
-            name={name}
-            description={obj.runtime_id}
-            linkUrl={`/dashboard/runtime/${obj.runtime_id}`}
-            noIcon
-          />
-        )
-      },
-      {
-        title: t('Status'),
-        dataIndex: 'status',
-        key: 'status',
-        render: text => <Status type={`${text}`.toLowerCase()} name={text} />
-      },
-      {
-        title: t('Provider'),
-        key: 'provider',
-        render: item => (
-          <ProviderName name={item.provider} provider={item.provider} />
-        )
-      },
-      {
-        title: t('Zone/Namespace'),
-        dataIndex: 'zone',
-        key: 'zone'
-      },
-      {
-        title: t('Cluster Count'),
-        key: 'node_count',
-        width: '100px',
-        render: runtime => clusters.filter(cluster => runtime.runtime_id === cluster.runtime_id)
-          .length
-      },
-      {
-        title: t('User'),
-        key: 'owner',
-        width: '100px',
-        render: runtime => getObjName(users, 'user_id', runtime.owner, 'username')
-          || runtime.owner
-      },
-      {
-        title: t('Updated At'),
-        key: 'status_time',
-        width: '102px',
-        sorter: true,
-        onChangeSort: this.onChangeSort,
-        render: runtime => <TimeShow time={runtime.status_time} />
-      },
-      {
-        title: t('Actions'),
-        key: 'actions',
-        width: '84px',
-        className: 'actions',
-        render: runtime => (
-          <Popover content={this.renderHandleMenu(runtime)} className="actions">
-            <Icon name="more" />
-          </Popover>
-        )
-      }
-    ];
-
-    const rowSelection = {
-      type: 'checkbox',
-      selectType: 'onSelect',
-      selectedRowKeys,
-      onChange: onChangeSelect
-    };
-
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: t('Active'), value: 'active' },
-          { name: t('Deleted'), value: 'deleted' }
-        ],
-        onChangeFilter: onChangeStatus,
-        selectValue: selectStatus
-      }
-    ];
-
-    const pagination = {
-      tableType: 'Runtimes',
-      onChange: changePagination,
-      total: totalCount,
-      current: currentPage,
-      noCancel: false
-    };
+    const { user, t } = this.props;
+    const title = user.isNormal ? 'My Runtimes' : 'Testing env';
 
     return (
-      <Layout>
-        <BreadCrumb linkPath="Platform>Runtimes" />
+      <Layout
+        noSubMenu
+        pageTitle={title}
+        titleCls={styles.pageTitle}
+        className={classnames(styles.layout, {
+          [styles.isNormal]: user.isNormal
+        })}
+      >
+        <div className={styles.page}>
+          {user.isNormal && (
+            <TitleBanner
+              title={t('我的环境')}
+              description={t(
+                '平台同时支持多种云环境，可以在这里进行统一管理。'
+              )}
+            />
+          )}
+          <BreadCrumb linkPath="Cloud Provider > Platform" />
 
-        <Row>
-          <Statistics {...summaryInfo} />
-        </Row>
-
-        <Row>
           <Grid>
-            <Section size={12}>
-              <Card>
-                {this.renderToolbar()}
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  rowSelection={rowSelection}
-                  isLoading={isLoading}
-                  filterList={filterList}
-                  pagination={pagination}
-                />
-              </Card>
-              {this.renderDeleteModal()}
+            <Section size={3} className={styles.leftPanel}>
+              {this.renderPlatforms()}
+            </Section>
+            <Section size={9} className={styles.rightPanel}>
+              {this.renderContent()}
             </Section>
           </Grid>
-        </Row>
+        </div>
       </Layout>
     );
   }

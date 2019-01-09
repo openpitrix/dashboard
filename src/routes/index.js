@@ -31,7 +31,6 @@ const routes = {
   // only for user
   '/:dash/purchased': Dash.Purchased,
   '/:dash/purchased/:appId': Dash.PurchasedDetail,
-  '/:dash/clusters': Dash.Clusters,
 
   // only for developer
   '/:dash/my/apps': Dash.MyApps,
@@ -58,6 +57,12 @@ const routes = {
   '/:dash/applications': Dash.Applications,
   '/:dash/application/:providerId': Dash.ApplicationDetail,
 
+  '/:dash/clusters': Dash.Clusters,
+  '/:dash/cluster/:clusterId': Dash.ClusterDetail,
+
+  '/:dash/runtimes': Dash.Runtimes,
+  '/:dash/runtime/create': Dash.CreateRuntime,
+
   '/:dash/categories': Dash.Categories,
 
   '/:dash/users': Dash.Users,
@@ -73,15 +78,7 @@ const routes = {
   // for all roles
   '/:dash/app/:appId/deploy/:versionId?': Dash.AppDeploy,
 
-  '/:dash/runtimes': Dash.TestingEnv,
-  '/:dash/runtime/create': Dash.CreateTestingEnv,
-
   '/:dash/account': Account,
-
-  '/:dash/cluster/:clusterId': Dash.ClusterDetail,
-
-  // todo
-  // '/:dash/runtime/:runtimeId': Dash.RuntimeDetail,
 
   '*': Home
 };
