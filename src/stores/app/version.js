@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import _, { get, assign, assignIn } from 'lodash';
 import { Base64 } from 'js-base64';
+import { downloadFileFromBase64 } from 'utils';
 
 import { reviewStatus } from 'config/version';
 import Store from '../Store';
@@ -462,11 +463,13 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  downloadPackage = async versionId => {
+  downloadPackage = async (versionId, pkgName) => {
     const result = await this.request.get('app_version/package', {
       version_id: versionId
     });
     this.uploadFile = result.package;
+
+    downloadFileFromBase64(this.uploadFile, pkgName);
   };
 
   @action

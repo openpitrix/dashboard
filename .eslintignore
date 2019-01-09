@@ -9,3 +9,5 @@ public/
 coverage/
 
 webpack*.js
+
+lib/blob
