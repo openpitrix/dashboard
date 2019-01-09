@@ -229,17 +229,17 @@ export default class UserStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    // const result = await this.request.get('groups');
-    // this.groups = get(result, 'group_set', []);
-    this.groups = get(dataGroup, 'op_group_set', []);
+    const result = await this.request.get('iam/groups');
+    // this.groups = get(dataGroup, 'op_group_set', []);
+    this.groups = get(result, 'group_set', []);
     this.isLoading = false;
   };
 
   @action
   fetchRoles = async () => {
     this.isLoading = true;
-    const result = await this.request.get('roles');
-    this.roles = get(result, 'role_set', []);
+    // const result = await this.request.get('iam/roles');
+    // this.roles = get(result, 'role_set', []);
     this.isLoading = false;
   };
 
@@ -424,7 +424,6 @@ export default class UserStore extends Store {
 
   @action
   onSelectOrg = (keys, info) => {
-    console.log('onSelectOrg', keys, info);
     this.orgName = keys.length ? get(info, 'node.props.title') : '';
     this.fetchAll();
   };
@@ -440,7 +439,10 @@ export default class UserStore extends Store {
       return [];
     }
 
-    const root = _.find(groups, g => !g.parent_group_id);
+    const root = _.find(groups, g => g.parent_group_id === 'string');
+    if (_.isEmpty(root)) {
+      throw new Error('No root group');
+    }
     const data = [
       {
         group_id: root.group_id,

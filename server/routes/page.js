@@ -8,6 +8,7 @@ const router = new Router();
 router.get('/attachments/:id', async ctx => {
   const { apiServer } = ctx.store;
   const apiUrl = `${apiServer.split('/v')[0]}/attachments/${ctx.params.id}/raw`;
+  console.log(apiUrl);
 
   ctx.body = await agent.send('get', apiUrl);
 });

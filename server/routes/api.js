@@ -8,6 +8,8 @@ const utils = require('../utils');
 const router = new Router();
 const authEndpoint = 'oauth2/token';
 
+const checkIAM = url => url.startsWith('/api/iam');
+
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
 
@@ -15,10 +17,17 @@ router.post('/api/*', async ctx => {
     endpoint = endpoint.substring(1);
   }
 
-  const { apiServer, clientId, clientSecret } = ctx.store;
+  const isIAM = checkIAM(ctx.path);
+  if (isIAM) {
+    endpoint = endpoint.replace(/^iam\//, '');
+  }
+  const {
+    apiServer, iamApiServer, clientId, clientSecret
+  } = ctx.store;
   const { body } = ctx.request;
   const { method } = body;
-  const url = [apiServer, endpoint].join('/');
+  const serverUrl = isIAM ? iamApiServer : apiServer;
+  const url = [serverUrl, endpoint].join('/');
 
   logger.info(`%s: %s`, method.toUpperCase(), url, { body });
 
@@ -86,7 +95,7 @@ router.post('/api/*', async ctx => {
   }
 
   if (!access_token || (expires_in && parseInt(expires_in) < Date.now())) {
-    const res = await agent.post([apiServer, authEndpoint].join('/'), payload);
+    const res = await agent.post([serverUrl, authEndpoint].join('/'), payload);
     debug(`Using refresh token to exchange auth info: %O`, res);
 
     if (!res || !res.access_token) {

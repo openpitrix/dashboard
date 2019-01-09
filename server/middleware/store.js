@@ -16,6 +16,8 @@ module.exports = async (ctx, next) => {
 
   const apiVer = process.env.apiVersion || config.apiVersion || 'v1';
 
+  const iamApiVer = process.env.iamApiVersion || config.iamApiVersion || 'v1.1';
+
   let socketUrl = process.env.socketUrl || config.socketUrl;
 
   if (!serverUrl.startsWith('http')) {
@@ -31,10 +33,13 @@ module.exports = async (ctx, next) => {
     apiServer = apiServer.substring(0, apiServer.length - 1);
   }
 
+  const iamApiServer = url.resolve(serverUrl, iamApiVer);
+
   Object.assign(store, {
     config,
     socketUrl,
     apiServer,
+    iamApiServer,
     clientId: process.env.clientId || config.clientId,
     clientSecret: process.env.clientSecret || config.clientSecret
   });

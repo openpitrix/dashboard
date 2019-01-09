@@ -40,6 +40,7 @@ export default class Users extends Component {
     const { userStore } = this.props;
 
     await userStore.fetchAll();
+    await userStore.fetchRoles();
     await userStore.fetchGroups();
     userStore.getGroupTree(this.renderGroupTitle);
     this.setState({ isLoading: false });
@@ -56,32 +57,38 @@ export default class Users extends Component {
     console.log(e, key, type);
   }
 
-  renderGroupTitle = ({ title, key }) => (
-    <span>
-      {title}
-      <Icon
-        key={`${key}-create`}
-        size={14}
-        name="plus-square"
-        className={styles.titleEventIcon}
-        onClick={this.onGroupClick.bind(this, key, 'create')}
-      />
-      <Icon
-        key={`${key}-modify`}
-        size={14}
-        name="plus-square"
-        className={styles.titleEventIcon}
-        onClick={this.onGroupClick.bind(this, key, 'modify')}
-      />
-      <Icon
-        key={`${key}-delete`}
-        size={14}
-        name="plus-square"
-        className={styles.titleEventIcon}
-        onClick={this.onGroupClick.bind(this, key, 'delete')}
-      />
-    </span>
-  );
+  renderGroupTitle = ({ title, key }) => {
+    const { t } = this.props;
+    return (
+      <span className={styles.groupTitle}>
+        {title}
+        <Icon
+          key={`${key}-create`}
+          size={14}
+          name="plus-square"
+          className={styles.titleEventIcon}
+          title={t('Create')}
+          onClick={this.onGroupClick.bind(this, key, 'create')}
+        />
+        <Icon
+          key={`${key}-modify`}
+          size={14}
+          name="hammer"
+          title={t('Modify')}
+          className={styles.titleEventIcon}
+          onClick={this.onGroupClick.bind(this, key, 'modify')}
+        />
+        <Icon
+          key={`${key}-delete`}
+          size={14}
+          name="trash"
+          title={t('Delete')}
+          className={styles.titleEventIcon}
+          onClick={this.onGroupClick.bind(this, key, 'delete')}
+        />
+      </span>
+    );
+  };
 
   renderHandleMenu = user => {
     const { userStore, t } = this.props;

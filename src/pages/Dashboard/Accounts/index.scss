@@ -54,8 +54,21 @@
     background: transparent;
   }
 
+  .groupTitle {
+    display: inline-flex;
+    align-items: center;
+    span:first-child {
+      margin-left: 5px;
+    }
+  }
   .titleEventIcon {
+    display: none;
     position: static;
+  }
+  :global(.rc-tree-node-selected) {
+    .titleEventIcon {
+      display: inline-flex;
+    }
   }
 }
 
@@ -111,4 +124,3 @@
     margin-left: 5px;
   }
 }
-
