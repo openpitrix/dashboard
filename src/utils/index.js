@@ -1,6 +1,7 @@
 import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import { t } from 'i18next';
+import { saveAs } from 'file-saver';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
@@ -249,4 +250,23 @@ export const makeArray = val => {
     return [val];
   }
   return val;
+};
+
+export const downloadFileFromBase64 = (base64_str = '', filename) => {
+  // Convert the Base64 string back to text.
+  const byteString = atob(base64_str);
+
+  // Convert that text into a byte array.
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([ia], { type: 'application/tar+gzip' });
+
+  saveAs(blob, `${filename}.tgz`);
+
+  // Alternatively, you could redirect to the blob to open it in the browser.
+  // document.location.href = window.URL.createObjectURL(blob);
 };

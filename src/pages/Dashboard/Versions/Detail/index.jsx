@@ -390,20 +390,19 @@ export default class VersionDetail extends Component {
     const errorFiles = _.keys(uploadError);
 
     const isEdit = version.status === 'draft' || version.status === 'rejected';
+    const pkgName = packageName || `${appDetail.name}-${version.name}`;
 
     return (
       <Card className={styles.configFile}>
         {!isShowUpload && (
           <div className={styles.fileInfo}>
-            <div className={styles.name}>
-              {packageName || `${appDetail.name} ${version.name}`}
-            </div>
+            <div className={styles.name}>{pkgName}</div>
             <div className={styles.time}>
               {t('Upload time')}:&nbsp;
               {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
               <span
                 className={styles.link}
-                onClick={() => downloadPackage(version.version_id)}
+                onClick={() => downloadPackage(version.version_id, pkgName)}
               >
                 {t('Download')}
               </span>

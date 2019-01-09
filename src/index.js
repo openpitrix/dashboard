@@ -1,4 +1,7 @@
+// polyfills
 import 'promise-polyfill/src/polyfill';
+// shim Blob construct
+import '../lib/blob/Blob';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
