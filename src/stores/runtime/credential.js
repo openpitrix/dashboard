@@ -17,12 +17,18 @@ export default class RuntimeCredentialStore extends Store {
 
   @observable credentialCount = 0;
 
+  get actionName() {
+    return this.getUser().isDev
+      ? 'debug_runtimes/credentials'
+      : 'runtimes/credentials';
+  }
+
   @action
   fetchAll = async params => {
     params = this.normalizeParams(params);
 
     this.isLoading = true;
-    const res = await this.request.get('runtimes/credentials', params);
+    const res = await this.request.get(this.actionName, params);
     this.credentials = _.get(res, 'runtime_credential_set', []);
     this.credentialCount = _.get(res, 'total_count', 0);
     this.isLoading = false;
@@ -42,7 +48,7 @@ export default class RuntimeCredentialStore extends Store {
   @action
   create = async (params = {}) => {
     this.isLoading = true;
-    const res = await this.request.post('runtimes/credentials', params);
+    const res = await this.request.post(this.actionName, params);
     if (_.isObject(res) && res.runtime_credential_id) {
       this.credential = { ...res };
     }

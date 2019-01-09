@@ -38,7 +38,9 @@ export default class RuntimeStore extends Store {
 
   @observable runtimeDeleted = null;
 
-  @observable allRuntimes = [];
+  get actionName() {
+    return this.getUser().isDev ? 'debug_runtimes' : 'runtimes';
+  }
 
   @action
   fetchAll = async (params = {}) => {
@@ -53,17 +55,9 @@ export default class RuntimeStore extends Store {
 
     this.isLoading = true;
 
-    if (!params.simpleQuery) {
-      const result = await this.request.get('runtimes', params);
-      this.runtimes = get(result, 'runtime_set', []);
-      this.totalCount = get(result, 'total_count', 0);
-    } else {
-      // simple query: just fetch runtime data used in other pages
-      // no need to set totalCount
-      delete params.simpleQuery;
-      const result = await this.request.get('runtimes', params);
-      this.allRuntimes = get(result, 'runtime_set', []);
-    }
+    const result = await this.request.get(this.actionName, params);
+    this.runtimes = get(result, 'runtime_set', []);
+    this.totalCount = get(result, 'total_count', 0);
 
     this.isLoading = false;
   };
@@ -90,7 +84,7 @@ export default class RuntimeStore extends Store {
   @action
   fetch = async runtimeId => {
     this.isLoading = true;
-    const result = await this.request.get(`runtimes`, {
+    const result = await this.request.get(this.actionName, {
       runtime_id: runtimeId
     });
     this.runtimeDetail = get(result, 'runtime_set[0]', {});

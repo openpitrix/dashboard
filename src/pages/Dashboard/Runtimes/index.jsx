@@ -5,7 +5,12 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
-import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
+import Layout, {
+  Grid,
+  Section,
+  BreadCrumb,
+  TitleBanner
+} from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
 import { providers, tabs } from 'config/runtimes';
@@ -132,7 +137,7 @@ export default class Runtimes extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, t } = this.props;
     const title = user.isNormal ? 'My Runtimes' : 'Testing env';
 
     return (
@@ -145,6 +150,14 @@ export default class Runtimes extends React.Component {
         })}
       >
         <div className={styles.page}>
+          {user.isNormal && (
+            <TitleBanner
+              title={t('我的环境')}
+              description={t(
+                '平台同时支持多种云环境，可以在这里进行统一管理。'
+              )}
+            />
+          )}
           <BreadCrumb linkPath="Cloud Provider > Platform" />
 
           <Grid>

@@ -52,8 +52,7 @@ export default class Clusters extends Component {
     }
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
-      noLimit: true,
-      simpleQuery: true
+      noLimit: true
     });
   }
 
@@ -256,7 +255,7 @@ export default class Clusters extends Component {
     } = this.props;
     const { clusters, isLoading, onlyView } = clusterStore;
 
-    const runtimes = this.props.runtimeStore.allRuntimes;
+    const { runtimes } = this.props.runtimeStore;
     const { apps } = appStore;
     const { users } = userStore;
 

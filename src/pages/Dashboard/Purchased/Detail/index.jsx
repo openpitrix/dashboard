@@ -43,8 +43,7 @@ export default class PurchasedDetail extends Component {
 
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
-      noLimit: true,
-      simpleQuery: true
+      noLimit: true
     });
   }
 
@@ -148,7 +147,7 @@ export default class PurchasedDetail extends Component {
       clusterStore, runtimeStore, user, t
     } = this.props;
     const { clusters, isLoading } = clusterStore;
-    const { allRuntimes } = runtimeStore;
+    const { runtimes } = runtimeStore;
 
     const columns = [
       {
@@ -185,14 +184,9 @@ export default class PurchasedDetail extends Component {
         render: item => (
           <Link to={`/dashboard/runtime/${item.runtime_id}`}>
             <ProviderName
-              name={getObjName(
-                allRuntimes,
-                'runtime_id',
-                item.runtime_id,
-                'name'
-              )}
+              name={getObjName(runtimes, 'runtime_id', item.runtime_id, 'name')}
               provider={getObjName(
-                allRuntimes,
+                runtimes,
                 'runtime_id',
                 item.runtime_id,
                 'provider'
