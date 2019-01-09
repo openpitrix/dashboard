@@ -56,7 +56,7 @@ class App extends React.Component {
 
       return (
         <LazyLoad>
-          {(hasHeader || isHome) && <Header isHome={isHome} />}
+          {(hasHeader || isHome) && <Header />}
           <WrapComp {...props} />
           {(hasHeader || isHome) && <Footer />}
         </LazyLoad>

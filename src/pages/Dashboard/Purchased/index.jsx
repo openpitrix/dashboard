@@ -80,7 +80,7 @@ export default class Purchased extends Component {
         title: t('交付方式'),
         key: 'version_type',
         width: '102px',
-        render: item => getVersionTypesName(item.app_version_types).join(' ')
+        render: item => (getVersionTypesName(item.app_version_types) || []).join(' ')
       },
       {
         title: t('实例总数'),
@@ -107,7 +107,7 @@ export default class Purchased extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/app/${item.app_id}/deploy`}>
+            <Link to={`/dashboard/apps/${item.app_id}/deploy`}>
               <Button>{t('Deploy Instance')}</Button>
             </Link>
           </div>

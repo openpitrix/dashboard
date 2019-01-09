@@ -107,7 +107,6 @@ export default class Clusters extends Component {
   };
 
   getAppTdShow = (appId, apps) => {
-    const { isDev } = this.props.user;
     const app = apps.find(item => item.app_id === appId);
 
     return app ? (
@@ -117,7 +116,7 @@ export default class Clusters extends Component {
         name={app.name}
         description={_.get(app, 'latest_app_version.name')}
         image={app.icon}
-        linkUrl={isDev ? `/dashboard/app/${appId}` : `/store/${appId}`}
+        linkUrl={`/apps/${appId}`}
       />
     ) : null;
   };

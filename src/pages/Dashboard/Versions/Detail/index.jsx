@@ -128,7 +128,7 @@ export default class VersionDetail extends Component {
     const { appId, versionId } = match.params;
 
     if (handleType === 'active') {
-      history.push(`/store/${appId}`);
+      history.push(`/apps/${appId}`);
       return false;
     }
 
@@ -166,7 +166,7 @@ export default class VersionDetail extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/app/${appId}/deploy/${versionId}`}>
+        <Link to={`/dashboard/apps/${appId}/deploy/${versionId}`}>
           <Icon name="stateful-set" type="dark" />
           {t('Deploy App')}
         </Link>

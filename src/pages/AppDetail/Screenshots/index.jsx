@@ -4,24 +4,23 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
-import Icon from 'components/Base/Icon';
-import Section from '../../section';
+import { Icon, Image } from 'components/Base';
 
 import styles from './index.scss';
 
 @translate()
 @observer
-export default class QingCloud extends React.Component {
-  static defaultProps = {
-    app: {},
-    pictures: []
-  };
-
+export default class Screenshots extends React.Component {
   static propTypes = {
     app: PropTypes.object,
     changePicture: PropTypes.func,
     currentPic: PropTypes.number,
     pictures: PropTypes.oneOfType([PropTypes.array, PropTypes.string])
+  };
+
+  static defaultProps = {
+    app: {},
+    pictures: []
   };
 
   state = {
@@ -71,8 +70,41 @@ export default class QingCloud extends React.Component {
     this.props.changePicture(type, number, pictures);
   };
 
-  renderSlider() {
-    const { currentPic } = this.props;
+  renderOverlay() {
+    const { showOverlay, currentPic } = this.state;
+
+    if (!showOverlay) {
+      return null;
+    }
+
+    return (
+      <div className={styles.overlay}>
+        <div className={styles.closeOverlay} onClick={this.closeOverlay}>
+          <Icon name="close" size={32} type="dark" />
+        </div>
+        <div className={styles.viewCont}>
+          <label
+            className={styles.pre}
+            onClick={() => this.changeOverlayPic(-1)}
+          >
+            <Icon name="chevron-left" size={24} type="dark" />
+          </label>
+          <label
+            className={styles.next}
+            onClick={() => this.changeOverlayPic(1)}
+          >
+            <Icon name="chevron-right" size={24} type="dark" />
+          </label>
+          <div className={styles.overlayPic}>
+            <Image src={currentPic} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    const { currentPic, t } = this.props;
     let { pictures = [] } = this.props;
     if (typeof pictures === 'string') {
       pictures = pictures.split(',').map(v => v.trim());
@@ -80,29 +112,29 @@ export default class QingCloud extends React.Component {
     const picWidth = 276 * pictures.length;
     const picLeft = (1 - currentPic) * 276;
 
-    if (!pictures.length) {
-      return null;
+    if (pictures.length === 0) {
+      return <div className={styles.screenshots}>{t('None')}</div>;
     }
 
     return (
-      <div className={styles.slider}>
+      <div className={styles.screenshots}>
         <label className={styles.pre} onClick={() => this.changePicture('pre')}>
-          <Icon name="chevron-left" size={36} />
+          <Icon name="chevron-left" size={24} type="dark" />
         </label>
         <label
           className={styles.next}
           onClick={() => this.changePicture('next')}
         >
-          <Icon name="chevron-right" size={36} />
+          <Icon name="chevron-right" size={24} type="dark" />
         </label>
         <div className={styles.dotList}>
           {pictures.filter((v, idx) => idx % 2 === 1).map((data, index) => (
             <label
               key={data}
               className={classnames(styles.dot, {
-                [styles.active]: currentPic === index
+                [styles.active]: currentPic - 1 === index
               })}
-              onClick={() => this.changePicture('dot', index)}
+              onClick={() => this.changePicture('dot', index + 1)}
             />
           ))}
         </div>
@@ -118,68 +150,12 @@ export default class QingCloud extends React.Component {
                   data-pic={pic}
                   onClick={this.handleClickPicture}
                 >
-                  <img src={pic} />
+                  <Image src={pic} />
                 </div>
               </li>
             ))}
           </ul>
-          <div />
         </div>
-      </div>
-    );
-  }
-
-  renderOverlay() {
-    const { showOverlay, currentPic } = this.state;
-
-    if (!showOverlay) {
-      return null;
-    }
-
-    return (
-      <div className={styles.overlay}>
-        <div className={styles.closeOverlay} onClick={this.closeOverlay}>
-          <Icon name="close" size={32} />
-        </div>
-        <div className={styles.viewCont}>
-          <label
-            className={styles.pre}
-            onClick={() => this.changeOverlayPic(-1)}
-          >
-            <Icon name="chevron-left" size={36} />
-          </label>
-          <label className={styles.next}>
-            <Icon
-              name="chevron-right"
-              size={36}
-              onClick={() => this.changeOverlayPic(1)}
-            />
-          </label>
-          <img
-            src={currentPic}
-            alt="overlay picture"
-            className={styles.overlayPic}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  render() {
-    const { t } = this.props;
-
-    return (
-      <div className={styles.body}>
-        <Section
-          title={t('Introduction')}
-          contentClass={styles.description}
-          style={{ marginLeft: 0 }}
-        >
-          Is the Apache trafodion (the main contribution of the project hatch).
-          Trafodion is the open source release of Apache 2014 and became a
-          Apache project in May 2015. In the past ten years.
-        </Section>
-        {this.renderSlider()}
         {this.renderOverlay()}
       </div>
     );

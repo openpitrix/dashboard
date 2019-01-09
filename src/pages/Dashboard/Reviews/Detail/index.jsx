@@ -204,7 +204,7 @@ export default class ReviewDetail extends Component {
           </div>
           <div className={styles.opreateButtons}>
             {user.username === 'develop_admin' && (
-              <Link to={`/dashboard/app/${reviewDetail.app_id}/deploy`}>
+              <Link to={`/dashboard/apps/${reviewDetail.app_id}/deploy`}>
                 <Button>{t('Deploy Test')}</Button>
               </Link>
             )}

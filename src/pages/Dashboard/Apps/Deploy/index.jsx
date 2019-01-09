@@ -366,7 +366,7 @@ export default class AppDeploy extends Component {
           isNormal && (
             <BackBtn
               label={appDetail.name}
-              link={`/store/${appDetail.app_id}`}
+              link={`/apps/${appDetail.app_id}`}
             />
           )
         }

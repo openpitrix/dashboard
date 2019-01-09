@@ -74,5 +74,6 @@
   "DELETE_AUTH_INFO_CONFIRM": "Are you sure to delete this authorization info ?",
   "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?",
   "TIPS_ADJUST_APP_CATE": "Please adjust category of {{appNames}} these {{appCount}} apps",
-  "Upload_Package_Error": "Some files have errors, please check"
+  "Upload_Package_Error": "Some files have errors, please check",
+  "APP_TOTAL_DESCRIPTION": "Openpitrix oficial store，there are {{total}} apps"
 }

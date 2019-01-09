@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
+import { withRouter } from 'react-router-dom';
 
 import Home from 'pages/Home';
 

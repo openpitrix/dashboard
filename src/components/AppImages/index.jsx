@@ -36,7 +36,7 @@ export default class AppImages extends Component {
             <Link
               className={styles.image}
               key={app_id}
-              to={user.isDev ? `/dashboard/app/${app_id}` : `/store/${app_id}`}
+              to={`/apps/${app_id}`}
               title={name}
             >
               <Image src={icon} iconLetter={name} className={styles.img} />

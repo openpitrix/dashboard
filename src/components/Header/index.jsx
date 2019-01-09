@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import { toUrl } from 'utils/url';
 
-import { Popover, Icon, Input } from 'components/Base';
+import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
 import Logo from '../Logo';
 
@@ -21,24 +21,13 @@ import styles from './index.scss';
 }))
 @observer
 class Header extends Component {
-  static propTypes = {
-    isHome: PropTypes.bool
-  };
-
-  onSearch = async value => {
-    const { appStore, history, isHome } = this.props;
-    const pushUrl = isHome ? `/apps/search/${value}` : `/store/search/${value}`;
-    history.push(pushUrl);
-    await appStore.fetchAll({ search_word: value });
-    appStore.homeApps = appStore.apps;
-  };
-
-  onClearSearch = async () => {
-    this.props.history.push('/');
-  };
-
   isLinkActive = curLink => {
     const { pathname } = location;
+
+    if (curLink === 'apps') {
+      return pathname === '/' || pathname.indexOf(curLink) > -1;
+    }
+
     return pathname.indexOf(curLink) > -1;
   };
 
@@ -48,10 +37,10 @@ class Header extends Component {
     return (
       <div className={styles.menus}>
         <NavLink
-          to="/store"
+          to="/apps"
           exact
           activeClassName={styles.active}
-          isActive={() => this.isLinkActive('store')}
+          isActive={() => this.isLinkActive('apps')}
         >
           {t('App Store')}
         </NavLink>
@@ -106,41 +95,21 @@ class Header extends Component {
   }
 
   render() {
-    const {
-      t,
-      isHome,
-      match,
-      rootStore: { fixNav }
-    } = this.props;
-    const logoUrl = fixNav ? '/logo_light.svg' : '/logo_dark.svg';
-    const appSearch = match.params.search;
+    const { user, t } = this.props;
 
-    if (isHome) {
+    if (!user.isNormal) {
       return (
-        <div
-          className={classnames('header', styles.header, {
-            [styles.deepHome]: fixNav
-          })}
-        >
+        <div className={styles.header}>
           <div className={styles.wrapper}>
-            <Logo className={styles.logo} url={logoUrl} />
+            <Logo className={styles.logo} url="/logo_light.svg" />
             {this.renderMenuBtns()}
-            {fixNav && (
-              <Input.Search
-                className={styles.search}
-                placeholder={t('search.placeholder')}
-                value={appSearch}
-                onSearch={this.onSearch}
-                onClear={this.onClearSearch}
-              />
-            )}
           </div>
         </div>
       );
     }
 
     return (
-      <div className={classnames(styles.header, styles.deepInner)}>
+      <div className={classnames(styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
           <Link className={styles.logoIcon} to="/">
             <Icon

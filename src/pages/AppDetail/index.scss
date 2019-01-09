@@ -1,201 +1,148 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
-.appDetail {
-  padding-top: 68px !important;
-}
-
-.section {
-  margin-left: 64px;
-  .title {
-    margin-bottom: 16px;
-    line-height: 21px;
-    font-size: 18px;
-    font-weight: 500;
-    color: $N500;
-  }
-  .content {
-    line-height: 24px;
-    font-size: 14px;
-    color: $N300;
-  }
-}
-
-.introCard {
-  padding: 32px;
-  border-radius: 2px;
-  margin-bottom: 84px;
-}
-
-.detailCard{
-  margin-bottom: 24px;
-  padding: 32px;
-  overflow: hidden;
-}
-
-.versionItem{
+.appBase {
   margin-bottom: 32px;
-  .title{
-    margin-bottom: 14px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: 0;
-    color: $N500;
-  }
-  .value, .value a{
-    font-size: 14px;
-    line-height: 1.14;
-    color: $P75;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
-  .linkItem {
-    margin-top: 4px;
-  }
-}
 
-.deployBtn {
-  margin-top: 16px;
-  width: 100%;
-  box-shadow: 0 3px 4px 0 rgba(102, 38, 175, 0.2);
-}
+  .icon {
+    float: left;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    margin-right: 12px;
 
-.versions{
-  margin-top: 32px;
-  overflow: scroll;
-  &>p{
-    margin-bottom: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: 0;
-    color: $N500;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
   }
-  li {
-    line-height: 30px;
-    font-size: 14px;
-    color: $P75;
-    .name {
-      display: inline-block;
-      max-width: 200px;
+
+  .title {
+    @include title-font;
+  }
+  .abstraction {
+    @include note-font;
+    .word {
       @include textCut;
+      display: inline-block;
+      max-width: 400px;
     }
-    .time {
+
+    .category {
       float: right;
-    }
 
-    &.draft {
-      color: $B75;
-    }
-
-    &.submitted {
-      color: $Y300;
-    }
-
-    &.passed {
-      color: $G75;
-    }
-
-    &.active {
-      color: $P75;
-      .time {
-        color: $N300;;
+      & > label {
+        color: $N300;
       }
     }
-
-    &.suspended, &.deleted {
-      color: $N500;
-    }
-
-    &.rejected {
-      color: $R200;
-    }
   }
 }
 
-.reviewContent {
-  position: fixed;
-  left: 248px;
-  right: 0;
-  bottom: 0;
-  box-sizing: border-box;
-  //height: 72px;
-  padding: 20px;
-  background-color: $B10;
-  color: $B75;
-  line-height: 32px;
+.typeVersions {
+  margin-left: 40px;
+  margin-bottom: 28px;
 
-  .message {
-    padding-left: 30px;
+  dl {
+    margin-bottom: 20px;
+    height: 32px;
   }
 
-  .dot {
-    float: left;
+  dt {
+    @include normal-font;
     display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    margin: 8px 8px;
-    background-color: $B75;
+    width: 70px;
+    padding: 6px 12px 6px 0;
+    text-align: right;
   }
 
-  &.draft {
-    background-color: $B10;
-    color: $B75;
-    .dot {
-      background-color: $B75;
-    }
+  dd {
+    display: inline-block;
   }
 
-  &.submitted {
-    background-color: $Y10;
-    color: $Y300;
-    .dot {
-      background-color: $Y300;
-    }
-  }
+  .types {
+    margin-bottom: 16px;
 
-  &.passed {
-    background-color: $G10;
-    color: $G75;
-    .dot {
-      background-color: $G75;
-    }
-  }
+    > label {
+      display: inline-block;
+      padding: 9px 12px;
+      border-radius: 2px;
+      background-color: $N0;
+      border: 1px solid $N10;
+      font-size: 14px;
+      line-height: 14px;
+      color: $N300;
+      cursor: pointer;
 
-  &.active {
-    background-color: $P10;
-    color: $P75;
-    .dot {
-      background-color: $P75;
-    }
-  }
-
-  &.suspended, &.deleted {
-    background-color: $N10;
-    color: $N500;
-    .dot {
-      background-color: $N500;
-    }
-  }
-
-  &.rejected {
-    background-color: $R10;
-    color: $R200;
-    .dot {
-      background-color: $R200;
-    }
-  }
-
-  .operateBtns {
-    float: right;
-
-    button {
-      margin-left: 12px;
+      &.active {
+        color: $P75;
+        border-color: $P75;
+      }
     }
   }
 }
 
-.reason{
- width: 100%;
+.detailTabs {
+  margin: 0 -24px;
+  padding: 0 24px 0 84px;
+}
+
+.appDetail {
+  margin: 24px 24px 24px 60px;
+  font-size: 12px;
+
+  .title {
+    @include title-font;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    margin-bottom: 24px;
+    line-height: 24px;
+  }
+}
+
+.instructions {
+  padding: 24px 24px 24px 60px;
+  font-size: 12px;
+}
+
+.providerInfo {
+  .title,
+  .company {
+    @include title-font;
+    margin-bottom: 20px;
+  }
+
+  .number {
+    @include note-font;
+    margin-bottom: 4px;
+  }
+
+  .company {
+    font-size: 16px;
+  }
+
+  dl {
+    margin-bottom: 20px;
+  }
+
+  dt {
+    @include note-font;
+    margin-bottom: 4px;
+  }
+
+  dd {
+    @include normal-font;
+
+    .stars {
+      display: inline-block;
+      float: left;
+      margin-right: 8px;
+      width: 22px;
+      height: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      color: $N300;
+    }
+  }
 }
