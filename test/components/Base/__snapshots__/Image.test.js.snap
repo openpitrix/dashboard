@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Iamge basic render 1`] = `
+<img
+  class="img"
+  data-origin-url="/helloword"
+  src="/helloword"
+/>
+`;
