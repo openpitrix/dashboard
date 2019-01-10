@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 
-import { Image, Input } from 'components/Base';
+import { Image } from 'components/Base';
 import SearchBox from 'pages/Home/SearchBox';
 
 import styles from './index.scss';
@@ -19,7 +19,6 @@ import styles from './index.scss';
 @observer
 class TitleBanner extends Component {
   static propTypes = {
-    appSearch: PropTypes.string,
     className: PropTypes.string,
     description: PropTypes.string,
     hasSearch: PropTypes.bool,
@@ -31,8 +30,7 @@ class TitleBanner extends Component {
     icon: '',
     title: '',
     description: '',
-    hasSearch: false,
-    appSearch: ''
+    hasSearch: false
   };
 
   render() {
@@ -42,9 +40,11 @@ class TitleBanner extends Component {
     const { fixNav } = rootStore;
 
     return (
-      <div className={classnames(styles.titleBanner, {
-        [styles.shrink]: fixNav
-      })}>
+      <div
+        className={classnames('banner', styles.titleBanner, {
+          [styles.shrink]: fixNav
+        })}
+      >
         <div className={styles.wrapper}>
           <div className={styles.words}>
             {Boolean(icon) && (

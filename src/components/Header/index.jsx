@@ -40,10 +40,10 @@ class Header extends Component {
 
     return (
       <div className={styles.menus}>
-        <LinkItem to="/" title={t('App Store')}/>
-        <LinkItem to={toUrl('/:dash/purchased')} title={t('Purchased')}/>
-        <LinkItem to={toUrl('/:dash/clusters')} title={t('My Instances')}/>
-        <LinkItem to={toUrl('/:dash/runtimes')} title={t('My Runtimes')}/>
+        <LinkItem to="/" title={t('App Store')} />
+        <LinkItem to={toUrl('/:dash/purchased')} title={t('Purchased')} />
+        <LinkItem to={toUrl('/:dash/clusters')} title={t('My Instances')} />
+        <LinkItem to={toUrl('/:dash/runtimes')} title={t('My Runtimes')} />
       </div>
     );
   };
@@ -95,7 +95,7 @@ class Header extends Component {
     // }
 
     return (
-      <div className={classnames(styles.header, styles.menusHeader)}>
+      <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
           <Link className={styles.logoIcon} to="/">
             <Icon

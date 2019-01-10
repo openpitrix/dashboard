@@ -2,15 +2,8 @@
 
 .search {
   width: 360px;
-  margin-top: 32px;
-  i {
-    color: $N65;
-  }
-  &:hover {
-    i {
-      color: $P100;
-    }
-  }
+  margin-top: 20px;
+
   input {
     color: $N500;
     padding-left: 36px;
@@ -18,6 +11,7 @@
     border: 1px solid transparent;
     background-color: $N10;
     transition: all .3s ease-in-out;
+
     &::placeholder {
       font-size: 14px;
       color: $N45;

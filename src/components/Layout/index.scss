@@ -55,19 +55,25 @@
   width: 100%;
   height: $title-banner-height-orig;
   background-color: $N500;
+  transition: height .3s ease-in-out;
 
   &.shrink {
     height: $title-banner-height;
 
     .search {
+      transition: all .3s ease-in-out;
       float: right;
-      top: -50px;
+      top: -15px;
+    }
+
+    .wrapper {
+      margin: 30px auto;
     }
   }
 
   .wrapper {
     width: $content-width;
-    margin: 30px auto;
+    margin: 68px auto;
 
     .words {
       display: inline-block;
@@ -119,9 +125,7 @@
 
   .search {
     position: relative;
-    //float: right;
     width: 303px;
-    //top: -50px;
 
     input {
       color: $N0;

@@ -18,7 +18,7 @@ exports[`Home basic render 1`] = `
       class="content"
     >
       <div
-        class="titleBanner"
+        class="banner titleBanner"
       >
         <div
           class="wrapper"
@@ -58,24 +58,62 @@ exports[`Home basic render 1`] = `
         </div>
       </div>
       <div
-        class="nav nav"
-      >
-        <p
-          class="caption"
-        />
-        <ul
-          class="subNav"
-        />
-      </div>
-      <div
-        class="loading homeLoad"
+        class="nav"
       >
         <div
-          class="loadOuter"
+          class="navGrp"
+        >
+          <p
+            class="caption"
+          />
+          <ul
+            class="menu"
+          >
+            <li
+              class="item"
+            >
+              <span
+                class="icon icon-cart icon"
+                style="width:24px;height:24px"
+              >
+                <svg
+                  class="qicon qicon-cart qicon-dark"
+                >
+                  <use
+                    href="#qui-cart"
+                  />
+                </svg>
+              </span>
+              <span
+                class="name"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          class="navGrp"
+        >
+          <p
+            class="caption"
+          />
+          <ul
+            class="menu"
+          />
+        </div>
+      </div>
+      <div
+        class="apps"
+      >
+        <div
+          class=""
         >
           <div
-            class="loader"
-          />
+            class="appList"
+          >
+            <div
+              class="title"
+            />
+          </div>
         </div>
       </div>
     </div>

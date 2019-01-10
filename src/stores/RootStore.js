@@ -30,7 +30,7 @@ export default class RootStore extends Store {
     username: ''
   };
 
-  @observable searchWord=''; // home page search word
+  @observable searchWord = ''; // home page search word
 
   constructor(initialState) {
     super(initialState);
@@ -46,6 +46,11 @@ export default class RootStore extends Store {
   @action
   setNavFix = fixNav => {
     this.fixNav = !!fixNav;
+  };
+
+  @action
+  setSearchWord = word => {
+    this.searchWord = word;
   };
 
   @action
