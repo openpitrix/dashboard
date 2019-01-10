@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
+import {BrowserRouter as Router }from 'react-router-dom';
 
 import Home from 'pages/Home';
 
@@ -19,7 +19,8 @@ describe('Home', () => {
       categoryStore: {
         getCategoryApps: () => {},
         categories: []
-      }
+      },
+      user: {}
     });
   });
 
@@ -32,7 +33,9 @@ describe('Home', () => {
   it('basic render', () => {
     const wrapper = render(
       <Provider rootStore={rootStore}>
-        <Home match={match} />
+        <Router>
+          <Home match={match} />
+        </Router>
       </Provider>
     );
 

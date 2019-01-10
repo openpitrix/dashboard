@@ -1,34 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home basic render 1`] = `
-Array [
+<div
+  class="layout"
+>
   <div
     class="wrapper"
-  />,
+  />
   <div
-    class="content"
+    class=""
+    style="max-width:100%"
   >
     <div
-      class="nav nav"
-    >
-      <p
-        class="caption"
-      />
-      <ul
-        class="subNav"
-      />
-    </div>
+      class="wrapper"
+    />
     <div
-      class="loading homeLoad"
+      class="content"
     >
       <div
-        class="loadOuter"
+        class="titleBanner"
       >
         <div
-          class="loader"
+          class="wrapper"
+        >
+          <div
+            class="words"
+          >
+            <div
+              class="name"
+            />
+            <div
+              class="description"
+            />
+          </div>
+          <div
+            class="inputGroup search search"
+          >
+            <span
+              class="icon icon-search"
+              style="width:16px;height:16px"
+            >
+              <svg
+                class="qicon qicon-magnifier qicon-light"
+              >
+                <use
+                  href="#qui-magnifier"
+                />
+              </svg>
+            </span>
+            <input
+              class="input"
+              placeholder=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="nav nav"
+      >
+        <p
+          class="caption"
+        />
+        <ul
+          class="subNav"
         />
       </div>
+      <div
+        class="loading homeLoad"
+      >
+        <div
+          class="loadOuter"
+        >
+          <div
+            class="loader"
+          />
+        </div>
+      </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
