@@ -118,5 +118,6 @@ describe('Base/Table', () => {
     expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(mockSelectAll).toHaveBeenCalled();
     expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
+    expect(mockSelectAll).toHaveBeenCalled();
   });
 });
