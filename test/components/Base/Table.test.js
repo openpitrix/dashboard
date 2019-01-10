@@ -120,7 +120,7 @@ describe('Base/Table', () => {
     expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
   });
 
-  it('call onSelectAll', () => {
+  it('call remove onSelectAll', () => {
     const wrapper = setup('mount', {
       columns,
       dataSource,
@@ -131,10 +131,11 @@ describe('Base/Table', () => {
       .find('thead th')
       .at(0)
       .find('input[type="checkbox"]');
+    checkbox.simulate('change', { target: { checked: true } });
     checkbox.simulate('change', { target: { checked: false } });
   });
 
-  it('call remove onSelectAll', () => {
+  it('call handleSort', () => {
     const wrapper = setup('mount', {
       columns,
       dataSource,
