@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { toUrl } from 'utils/url';
+import { isEmpty } from 'lodash';
 
 // views without lazy load
 import Home from 'pages/Home';
@@ -11,12 +12,13 @@ const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
 
 const routes = {
-  '/login': Login,
   '/': Home,
-  '/apps': Home,
-  '/apps/search/:search': Home,
-  '/apps/category/:category': Home,
-  '/apps/:appId': AppDetail,
+  '/cat/:category': Home,
+  '/apps/:appId': [AppDetail, { applyHome: true }],
+
+  '/login': Login,
+
+  '/:dash': Dash.Overview,
 
   // only for user
   '/:dash/purchased': Dash.Purchased,
@@ -65,9 +67,6 @@ const routes = {
   '/:dash/app-reviews': Dash.Reviews,
   '/:dash/app-review/:reviewId': Dash.ReviewDetail,
 
-  // for all roles
-  '/:dash': Dash.Overview,
-
   '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 
   '/:dash/account/:type?': Dash.Account,
@@ -75,17 +74,30 @@ const routes = {
   '*': Home
 };
 
-export default Object.keys(routes).map(route => {
-  const routeDefinition = Object.assign(
-    {},
-    {
-      path: toUrl(route),
-      exact: route !== '/login',
-      component: routes[route],
-      needAuth: route.startsWith('/:dash')
-    }
-  );
-  if (route === '*') {
+const isValidComponent = comp => (typeof comp === 'object'
+    && typeof comp.$$typeof === 'symbol'
+    && comp.$$typeof.toString() === 'Symbol(react.lazy)')
+  || (typeof comp === 'function'
+    && Object.getPrototypeOf(comp) === React.Component);
+
+export default Object.keys(routes).map(path => {
+  const routeConf = [].concat(routes[path]);
+  if (!isValidComponent(routeConf[0])) {
+    throw Error(
+      'Invalid route definition, first element should be react component or lazy component'
+    );
+  }
+
+  const comp = routeConf[0];
+  const compOption = routeConf[1] || {};
+
+  const routeDefinition = Object.assign(compOption, {
+    path: toUrl(path),
+    exact: path !== '/login',
+    component: comp,
+    needAuth: path.startsWith('/:dash')
+  });
+  if (path === '*') {
     Object.assign(routeDefinition, { noMatch: true });
   }
   return routeDefinition;

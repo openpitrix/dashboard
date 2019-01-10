@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -7,6 +7,7 @@ import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import { toUrl } from 'utils/url';
+import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
@@ -41,7 +42,6 @@ const columns = (t, apps, isDev) => [
       const {
         name, icon, app_id, app_version_types
       } = app;
-      const deliveryType = app_version_types === 'vmbased' ? 'VM' : 'Helm';
 
       return (
         <span className={styles.colItems}>
@@ -53,7 +53,9 @@ const columns = (t, apps, isDev) => [
               {name}
             </Link>
           </span>
-          <span className={styles.type}>{deliveryType}</span>
+          <span className={styles.type}>
+            {getVersionTypesName(app_version_types)}
+          </span>
           <span className={styles.version}>
             {_.get(app, 'latest_app_version.name')}
           </span>

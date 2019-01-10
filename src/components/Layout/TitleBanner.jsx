@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
 import { translate } from 'react-i18next';
+import { inject, observer } from 'mobx-react';
 
-import { Image, Input } from 'components/Base';
+import { Image } from 'components/Base';
+import SearchBox from 'pages/Home/SearchBox';
+
 import styles from './index.scss';
 
 @translate()
-class TitleBanner extends Component {
+@inject('rootStore')
+@observer
+export default class TitleBanner extends Component {
   static propTypes = {
-    appSearch: PropTypes.string,
     className: PropTypes.string,
     description: PropTypes.string,
     hasSearch: PropTypes.bool,
     icon: PropTypes.string,
+    stretch: PropTypes.bool,
     title: PropTypes.string
   };
 
@@ -22,24 +27,33 @@ class TitleBanner extends Component {
     title: '',
     description: '',
     hasSearch: false,
-    appSearch: ''
-  };
-
-  onSearch = async value => {
-    this.props.history.push(`/apps/search/${value}`);
-  };
-
-  onClearSearch = async () => {
-    this.props.history.push('/');
+    stretch: false
   };
 
   render() {
     const {
-      icon, title, description, hasSearch, appSearch, t
+      icon,
+      title,
+      description,
+      hasSearch,
+      className,
+      stretch,
+      rootStore,
+      t
     } = this.props;
 
     return (
-      <div className={styles.titleBanner}>
+      <div
+        className={classnames(
+          'banner',
+          styles.titleBanner,
+          {
+            [styles.stretch]: stretch,
+            [styles.shrink]: rootStore.fixNav
+          },
+          className
+        )}
+      >
         <div className={styles.wrapper}>
           <div className={styles.words}>
             {Boolean(icon) && (
@@ -51,19 +65,9 @@ class TitleBanner extends Component {
             <div className={styles.description}>{t(description)}</div>
           </div>
 
-          {hasSearch && (
-            <Input.Search
-              className={styles.search}
-              placeholder={t('search.placeholder')}
-              value={appSearch}
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-            />
-          )}
+          {hasSearch && <SearchBox className={styles.search} />}
         </div>
       </div>
     );
   }
 }
-
-export default withRouter(TitleBanner);

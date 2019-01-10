@@ -2,69 +2,73 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Provider } from 'mobx-react';
-import { withRouter } from 'react-router';
 import {
-  BrowserRouter, Switch, Route, Redirect
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
 } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
 import LazyLoad from 'components/LazyLoad';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-
-import WrapComp from './routes/wrapper';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 import './scss/index.scss';
 
+// fixme
 const noHeaderPath = ['/dashboard/provider/submit'];
+
+const WrapRoute = ({ component: Comp, ...rest }) => {
+  const {
+    path, store, computedMatch, needAuth, noMatch
+  } = rest;
+  const user = store.user || {};
+
+  // todo
+  const hasHeader = path !== '/login'
+    && !noHeaderPath.includes(path)
+    && (user.isNormal || !user.accessToken);
+
+  if (noMatch) {
+    return <Redirect to="/" />;
+  }
+
+  if (needAuth && !user.isLoggedIn()) {
+    return <Redirect to={`/login?redirect_url=${computedMatch.url || ''}`} />;
+  }
+
+  const isHome = rest.applyHome || Comp.isHome;
+
+  return (
+    <Route
+      {...rest}
+      render={props => (
+        <LazyLoad>
+          <ErrorBoundary>
+            {(hasHeader || isHome) && <Header />}
+            <Comp {...props} rootStore={store} />
+            {(hasHeader || isHome) && <Footer />}
+          </ErrorBoundary>
+        </LazyLoad>
+      )}
+    />
+  );
+};
 
 class App extends React.Component {
   static propTypes = {
     i18n: PropTypes.object,
     routes: PropTypes.array.isRequired,
-    sock: PropTypes.any,
     store: PropTypes.object.isRequired
   };
 
   static defaultProps = {
     routes: [],
     store: {},
-    i18n: {},
-    sock: null
+    i18n: {}
   };
-
-  renderRoute(match, route, store) {
-    const user = store.user || {};
-
-    // todo
-    // add noHeaderPath for user apply provider from page no need header
-    const hasHeader = !noHeaderPath.includes(route.path)
-      && (user.isNormal || !user.accessToken || user.role === 'user');
-
-    if (route.noMatch) {
-      return <Redirect to="/" />;
-    }
-
-    const props = {
-      component: withRouter(route.component),
-      rootStore: store,
-      match
-    };
-
-    if (route.path !== '/login') {
-      const isHome = route.path === '/' || route.path.startsWith('/apps');
-
-      return (
-        <LazyLoad>
-          {(hasHeader || isHome) && <Header />}
-          <WrapComp {...props} />
-          {(hasHeader || isHome) && <Footer />}
-        </LazyLoad>
-      );
-    }
-
-    return <WrapComp {...props} />;
-  }
 
   render() {
     const {
@@ -74,23 +78,17 @@ class App extends React.Component {
     return (
       <I18nextProvider i18n={i18n}>
         <Provider rootStore={store} sock={sock}>
-          <BrowserRouter>
+          <Router>
             <div className="main">
               <LazyLoad>
                 <Switch>
-                  {routes.map((route, i) => (
-                    <Route
-                      key={i}
-                      exact={route.exact}
-                      path={route.path}
-                      render={({ match }) => this.renderRoute(match, route, store)
-                      }
-                    />
+                  {routes.map(route => (
+                    <WrapRoute {...route} store={store} key={route.path} />
                   ))}
                 </Switch>
               </LazyLoad>
             </div>
-          </BrowserRouter>
+          </Router>
         </Provider>
       </I18nextProvider>
     );

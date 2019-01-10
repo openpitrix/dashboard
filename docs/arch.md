@@ -59,7 +59,6 @@ Project component file structure as follows
 ├── src
 │   ├── components
 │   │   ├── AppList
-│   │   ├── Banner
 │   │   ├── Base
 ...
 │   │   ├── ToolBar

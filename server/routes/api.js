@@ -48,15 +48,15 @@ router.post('/api/*', async ctx => {
     return;
   }
 
-  const browserUrl = ctx.headers.referer;
-  // todo
-  const endUrl = browserUrl
-    .split('/')
-    .slice(3)
-    .join('/');
-  const usingNoAuthToken =
-    endUrl === '' || endUrl.startsWith('apps') || body.isGlobalQuery;
-  delete body.isGlobalQuery;
+  const { referer } = ctx.headers;
+  debug(`referer url: %s`, referer);
+
+  const urlParts = require('url').parse(referer);
+  const usingNoAuthToken = urlParts.pathname === '/' || urlParts.pathname.startsWith('/cat/') || body.isGlobalQuery;
+
+  if ('isGlobalQuery' in body) {
+    delete body.isGlobalQuery;
+  }
 
   const authParams = {
     client_id: clientId,
@@ -67,16 +67,16 @@ router.post('/api/*', async ctx => {
   // get current auth info from cookie
   const prefix = usingNoAuthToken ? 'no_auth' : '';
   const authInfo = utils.getTokenGroupFromCtx(ctx, prefix);
-  const { token_type, access_token, refresh_token, expires_in } = authInfo;
+  const { access_token, refresh_token, expires_in } = authInfo;
 
   const payload = usingNoAuthToken
     ? Object.assign(authParams, {
-        grant_type: 'client_credentials'
-      })
+      grant_type: 'client_credentials'
+    })
     : Object.assign(authParams, {
-        grant_type: 'refresh_token',
-        refresh_token
-      });
+      grant_type: 'refresh_token',
+      refresh_token
+    });
 
   if (!usingNoAuthToken && !refresh_token) {
     // need login

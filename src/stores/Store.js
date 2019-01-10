@@ -6,6 +6,19 @@ export default class Store {
   constructor(initialState, branch) {
     this.setInitialState(initialState, branch);
   }
+
+  // will attached to store instance own prop
+  @action
+  hideModal = () => {
+    this.isModalOpen = false;
+    this.modalType = '';
+  };
+
+  @action
+  showModal = (type = '') => {
+    this.isModalOpen = true;
+    this.modalType = type;
+  };
 }
 
 Store.prototype = {
@@ -28,17 +41,6 @@ Store.prototype = {
           });
         });
     }
-  },
-
-  @action
-  hideModal() {
-    this.isModalOpen = false;
-    this.modalType = '';
-  },
-  @action
-  showModal(type) {
-    this.isModalOpen = true;
-    this.modalType = type;
   },
 
   pageSize: 10,

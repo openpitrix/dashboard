@@ -1,34 +1,115 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home basic render 1`] = `
-Array [
+<div
+  class="layout"
+>
   <div
     class="wrapper"
-  />,
+  />
   <div
-    class="content"
+    class=""
+    style="max-width:100%"
   >
     <div
-      class="nav nav"
-    >
-      <p
-        class="caption"
-      />
-      <ul
-        class="subNav"
-      />
-    </div>
-    <div
-      class="loading homeLoad"
+      class="content"
     >
       <div
-        class="loadOuter"
+        class="banner titleBanner stretch"
       >
         <div
-          class="loader"
-        />
+          class="wrapper"
+        >
+          <div
+            class="words"
+          >
+            <div
+              class="name"
+            />
+            <div
+              class="description"
+            />
+          </div>
+          <div
+            class="inputGroup search search"
+          >
+            <span
+              class="icon icon-search"
+              style="width:16px;height:16px"
+            >
+              <svg
+                class="qicon qicon-magnifier qicon-light"
+              >
+                <use
+                  href="#qui-magnifier"
+                />
+              </svg>
+            </span>
+            <input
+              class="input"
+              placeholder=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="nav"
+      >
+        <div
+          class="navGrp"
+        >
+          <p
+            class="caption"
+          />
+          <ul
+            class="menu"
+          >
+            <li
+              class="item"
+            >
+              <span
+                class="icon icon-cart icon"
+                style="width:24px;height:24px"
+              >
+                <svg
+                  class="qicon qicon-cart qicon-dark"
+                >
+                  <use
+                    href="#qui-cart"
+                  />
+                </svg>
+              </span>
+              <span
+                class="name"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          class="navGrp"
+        >
+          <p
+            class="caption"
+          />
+          <ul
+            class="menu"
+          />
+        </div>
+      </div>
+      <div
+        class="apps"
+      >
+        <div
+          class="appList fixNav"
+        >
+          <div
+            class="title"
+          />
+        </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;

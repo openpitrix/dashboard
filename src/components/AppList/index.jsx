@@ -11,100 +11,65 @@ import styles from './index.scss';
 @translate()
 export default class AppList extends PureComponent {
   static propTypes = {
-    appSearch: PropTypes.string,
     apps: PropTypes.array,
-    categoryApps: PropTypes.array,
-    categoryTitle: PropTypes.string,
     className: PropTypes.string,
+    fixNav: PropTypes.bool,
     isLoading: PropTypes.bool,
-    skipLink: PropTypes.string
+    search: PropTypes.string,
+    title: PropTypes.string
   };
 
   static defaultProps = {
     apps: [],
-    categoryApps: [],
-    skipLink: 'apps',
     isLoading: false
   };
 
-  renderCategoryApps() {
-    const {
-      categoryTitle, appSearch, categoryApps, skipLink
-    } = this.props;
-    const categoryShow = !categoryTitle && !appSearch && categoryApps;
-
-    if (!categoryShow) {
-      return null;
-    }
-
-    if (categoryShow) {
-      return categoryApps.map(({ category_id, name, apps }) => {
-        apps = apps || [];
-        if (apps.length === 0) {
-          return null;
-        }
-
-        return (
-          <div key={category_id} className={styles.categoryApps}>
-            {apps.length > 0 && (
-              <CardTitle
-                skipLink={skipLink}
-                categoryId={category_id}
-                title={name}
-                more
-              />
-            )}
-
-            {apps
-              .slice(0, 6)
-              .map(app => (
-                <Card
-                  key={app.app_id}
-                  icon={app.icon}
-                  name={app.name}
-                  desc={app.description}
-                  link={`/apps/${app.app_id}`}
-                  fold
-                />
-              ))}
-          </div>
-        );
-      });
-    }
-  }
-
   getSearchTitle() {
-    const { appSearch, categoryTitle, t } = this.props;
-    return (appSearch && t('search_results')) || categoryTitle || t('Newest');
+    const { search, title, t } = this.props;
+    return (search && t('search_results')) || title || t('Newest');
   }
 
   render() {
     const {
-      apps, className, skipLink, isLoading, t
+      apps, className, isLoading, fixNav, t
     } = this.props;
 
     return (
-      <div className={classnames(className)}>
-        <div className={styles.appList}>
-          {<CardTitle title={this.getSearchTitle()} more={false} />}
+      <div
+        className={classnames(
+          styles.appList,
+          {
+            [styles.fixNav]: !fixNav
+          },
+          className
+        )}
+      >
+        {<CardTitle title={this.getSearchTitle()} more={false} />}
 
-          {apps.map((app, idx) => (
+        {apps.map(
+          (
+            {
+              app_id, name, icon, description, app_version_types, maintainers
+            },
+            idx
+          ) => (
             <Card
-              icon={app.icon}
-              name={app.name}
-              desc={app.description}
+              icon={icon}
+              name={name}
+              desc={description}
+              link={`/apps/${app_id}`}
               key={idx}
-              link={`/apps/${app.app_id}`}
+              canToggle
+              maintainer={maintainers}
+              type={app_version_types}
             />
-          ))}
+          )
+        )}
 
-          {!apps.length
-            && !isLoading && (
-              <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
-          )}
-        </div>
-
-        {this.renderCategoryApps()}
+        {!apps.length
+          && !isLoading && (
+            <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
+        )}
       </div>
     );
   }

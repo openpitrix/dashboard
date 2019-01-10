@@ -8,11 +8,17 @@ import { toUrl } from 'utils/url';
 
 import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
+import SearchBox from 'pages/Home/SearchBox';
 import Logo from '../Logo';
 
 import styles from './index.scss';
 
-// translate hoc should place before mobx
+const LinkItem = ({ to, title }) => (
+  <NavLink to={to} exact activeClassName={styles.active}>
+    {title}
+  </NavLink>
+);
+
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -21,53 +27,23 @@ import styles from './index.scss';
 }))
 @observer
 class Header extends Component {
-  isLinkActive = curLink => {
-    const { pathname } = location;
-
-    if (curLink === 'apps') {
-      return pathname === '/' || pathname.indexOf(curLink) > -1;
-    }
-
-    return pathname.indexOf(curLink) > -1;
+  static propTypes = {
+    isHome: PropTypes.bool
   };
 
   renderMenus = () => {
-    const { t } = this.props;
+    const { t, user } = this.props;
+
+    if (!user.isLoggedIn()) {
+      return null;
+    }
 
     return (
       <div className={styles.menus}>
-        <NavLink
-          to="/apps"
-          exact
-          activeClassName={styles.active}
-          isActive={() => this.isLinkActive('apps')}
-        >
-          {t('App Store')}
-        </NavLink>
-        <NavLink
-          to={toUrl('/:dash/purchased')}
-          exact
-          activeClassName={styles.active}
-          isActive={() => this.isLinkActive('purchased')}
-        >
-          {t('Purchased')}
-        </NavLink>
-        <NavLink
-          to={toUrl('/:dash/clusters')}
-          exact
-          activeClassName={styles.active}
-          isActive={() => this.isLinkActive('cluster')}
-        >
-          {t('My Instances')}
-        </NavLink>
-        <NavLink
-          to={toUrl('/:dash/runtimes')}
-          exact
-          activeClassName={styles.active}
-          isActive={() => this.isLinkActive('runtime')}
-        >
-          {t('My Runtimes')}
-        </NavLink>
+        <LinkItem to="/" title={t('App Store')} />
+        <LinkItem to={toUrl('/:dash/purchased')} title={t('Purchased')} />
+        <LinkItem to={toUrl('/:dash/clusters')} title={t('My Instances')} />
+        <LinkItem to={toUrl('/:dash/runtimes')} title={t('My Runtimes')} />
       </div>
     );
   };
@@ -95,21 +71,31 @@ class Header extends Component {
   }
 
   render() {
-    const { user, t } = this.props;
+    const {
+      t,
+      isHome,
+      rootStore: { fixNav }
+    } = this.props;
+    const logoUrl = fixNav ? '/logo_light.svg' : '/logo_dark.svg';
 
-    if (!user.isNormal) {
-      return (
-        <div className={styles.header}>
-          <div className={styles.wrapper}>
-            <Logo className={styles.logo} url="/logo_light.svg" />
-            {this.renderMenuBtns()}
-          </div>
-        </div>
-      );
-    }
+    // if (isHome) {
+    //   return (
+    //     <div
+    //       className={classnames('header', styles.header, {
+    //         [styles.deepHome]: fixNav
+    //       })}
+    //     >
+    //       <div className={styles.wrapper}>
+    //         <Logo className={styles.logo} url={logoUrl} />
+    //         {this.renderMenuBtns()}
+    //         {fixNav && <SearchBox className={styles.search} />}
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     return (
-      <div className={classnames(styles.header, styles.menusHeader)}>
+      <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
           <Link className={styles.logoIcon} to="/">
             <Icon

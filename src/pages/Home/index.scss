@@ -9,69 +9,89 @@
   .homeLoad {
     margin-left: $nav-width;
   }
+
+  .navGrp {
+    margin-bottom: 42px;
+  }
+
   .nav {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: fixed;
+    top: $header-height + $title-banner-height-orig;
     width: $nav-width;
     height: 100%;
+
+    &.fixNav {
+      top: $header-height + $title-banner-height;
+    }
+
+    padding-top: 32px;
+
+    .caption {
+      margin-bottom: 14px;
+      line-height: 20px;
+      font-size: $font16;
+      font-weight: bold;
+      color: $N500;
+    }
+
+    .menu {
+      padding: 0;
+      margin-top: $base-margin;
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      .item {
+        margin-bottom: 12px;
+        height: 20px;
+        line-height: 20px;
+        list-style: none;
+        color: $N400;
+
+        &:hover, &.active {
+          color: $P75;
+          font-weight: bold;
+          cursor: pointer;
+
+          svg {
+            --primary-color: #{$P75};
+            --secondary-color: #{$P75};
+          }
+        }
+
+        .name {
+          display: inline-block;
+          margin-left: 12px;
+        }
+
+        .icon {
+          vertical-align: middle;
+        }
+      }
+    }
   }
+
   .apps {
     margin-left: $nav-width;
     padding-left: 24px;
     padding-bottom: $page-bottom;
   }
-
-  .progressive{
-    position: static;
-    height: 60px;
-    .loadOuter{
-      position: static;
-      padding: 30px 0;
-      .loader {
-        margin: 0 auto;
-      }
-    }
-  }
-  .loading {
-    margin-top: -20px;
-    margin-left: $nav-width;
-    text-align: center;
-    .loadOuter{
-      display: inline-block;
-      .loader {
-        border-radius:50%;
-        width:40px;
-        height:40px;
-        &:after {
-          border-radius:50%;
-          width:40px;
-          height:40px;
-        }
-        border-top: 2px solid rgba($purple-light,0.2);
-        border-right: 2px solid rgba($purple-light,0.2);
-        border-bottom: 2px solid rgba($purple-light,0.2);
-        border-left: 2px solid rgba($purple-light,1);
-        transform: translateZ(0);
-        animation:rotate 1.1s infinite linear;
-      }
-    }
-  }
 }
 
-.fixNav {
-  div[class*='_nav'] {
-    position: fixed;
-    top: $header-height;
-    left: auto;
-    height: $main-height;
+.banner {
+  height: $banner-height;
+  padding-top: 120px;
+  background-color: $N0;
+  .wrapper {
+    position: relative;
+    width: $content-width;
+    margin: 0 auto;
   }
-
-  div[class*='appList'] {
-    padding-top: $header-height;
-  }
-
-  div[class*='_cateTitle']{
-    padding-top: 72px;
+  .title {
+    width: 552px;
+    font-size: $font32;
+    font-weight: 500;
+    line-height: 1.25;
+    color: $P400;
   }
 }

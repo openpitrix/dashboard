@@ -15,12 +15,81 @@
    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
    cursor: pointer;
 
+  .label {
+    font-size: $size-small;
+    color: $N75;
+    &+span {
+      margin-left: 4px;
+      font-size: $size-small;
+      color: $N300;
+    }
+  }
+
+  .toggleCard{
+    display: none;
+  }
+
+  // mimic toggle card effect
+  &.canToggle {
+    &:hover {
+      padding: 28px 24px;
+      border: 1px solid $P45;
+      box-shadow: 0 0 8px 0 rgba(119, 133, 146, 0.04), 0 3px 4px 0 rgba(134, 145, 156, 0.04);
+
+      .basicCard {
+        display: none;
+      }
+
+      .toggleCard {
+        display: block;
+        text-align: left;
+        transition: all .3s ease-in-out;
+
+        .title {
+          .icon {
+            float: left;
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            margin-top: -16px;
+            border-radius: 2px;
+            line-height: 48px;
+            text-align: center;
+            img{
+              max-width: 100%;
+              max-height: 100%;
+              vertical-align: middle;
+            }
+          }
+          .name{
+            display: inline-block;
+            float: left;
+            margin-left: 8px;
+            font-weight: bold;
+            color: $N500;
+            width: auto;
+            @include textCut;
+          }
+        }
+        .desc{
+          clear: both;
+          text-align: left;
+        }
+        .maintainer {
+          margin-top: 48px;
+        }
+        .type {
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
   p {
      margin: 0;
    }
    .title{
      .icon {
-       //float: left;
        display: inline-block;
        width: 48px;
        height: 48px;
@@ -59,7 +128,6 @@
    &:hover {
      transform: translate3d(0, -12px, 0);
      box-shadow:  0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);;
-    // box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
    }
  }
 
@@ -69,7 +137,6 @@
   text-align: left;
   position: relative;
   margin: 0 24px 24px 0;
-
 
   .title{
     .icon {

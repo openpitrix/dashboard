@@ -1,70 +1,108 @@
 import React, { Fragment, Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import { get, find } from 'lodash';
+import _ from 'lodash';
+import { translate } from 'react-i18next';
 
-import { Notification } from 'components/Base';
-import Nav from 'components/Nav';
-import Banner from 'components/Banner';
+import { Icon, Notification } from 'components/Base';
+import Layout, { TitleBanner } from 'components/Layout';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
-import { getScrollTop, getScrollBottom } from 'src/utils';
+
+import { getScrollTop, getScrollBottom } from 'utils';
+import { getUrlParam } from 'utils/url';
 
 import styles from './index.scss';
 
+const cateLatest = 'latest';
+
+@translate()
 @inject(({ rootStore }) => ({
   rootStore,
   categoryStore: rootStore.categoryStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  search: rootStore.searchWord
 }))
 @observer
 export default class Home extends Component {
+  static isHome = true;
+
   state = {
     pageLoading: true
   };
 
-  async componentWillMount() {
-    const { rootStore, match } = this.props;
-    const { category, search } = match.params;
-
-    if (category || search) {
-      rootStore.setNavFix(true);
-    } else {
-      rootStore.setNavFix(false);
-    }
+  get searchWord() {
+    return getUrlParam('q');
   }
 
   async componentDidMount() {
-    const { appStore, categoryStore, match } = this.props;
-    const { category, search } = match.params;
+    const {
+      rootStore, appStore, categoryStore, match
+    } = this.props;
+    const { category } = match.params;
 
-    window.scroll({ top: 0 });
-    await categoryStore.fetchAll();
-
-    if (!(category || search)) {
+    rootStore.setNavFix(Boolean(category || this.searchWord));
+    if (!(category || this.searchWord)) {
       this.threshold = this.getThreshold();
-      window.onscroll = this.handleScroll;
+      window.onscroll = _.throttle(this.handleScroll, 100);
+    }
+    window.scroll({ top: 0 });
+
+    await categoryStore.fetchAll();
+    await appStore.fetchStoreAppsCount();
+
+    // always fetch active apps
+    appStore.selectStatus = 'active';
+
+    if (this.searchWord || category) {
+      await appStore.fetchAll({
+        search_word: this.searchWord,
+        category_id: category
+      });
+    } else {
+      await appStore.fetchActiveApps();
     }
 
-    Object.assign(appStore, {
-      selectStatus: 'active',
-      categoryId: category,
-      searchWord: search
-    });
-    await appStore.fetchAll();
-
-    appStore.homeApps = appStore.apps.slice();
     this.setState({
       pageLoading: false
     });
   }
 
+  async componentDidUpdate(prevProps) {
+    const { match, appStore, search } = this.props;
+    const { category } = match.params;
+
+    if (prevProps.match.params.category !== category) {
+      if (category === cateLatest) {
+        await appStore.fetchActiveApps({
+          search_word: this.searchWord
+        });
+      } else {
+        // reset search wd
+        appStore.searchWord = '';
+        await appStore.fetchAll({
+          category_id: category
+        });
+      }
+    }
+
+    if (prevProps.search !== search) {
+      appStore.searchWord = search;
+      if (search) {
+        await appStore.fetchAll();
+      } else {
+        await appStore.fetchActiveApps();
+      }
+    }
+  }
+
   componentWillUnmount() {
-    const { appStore } = this.props;
+    const { appStore, rootStore } = this.props;
 
     window.onscroll = null;
     appStore.reset();
+    rootStore.setSearchWord();
   }
 
   getThreshold() {
@@ -77,119 +115,135 @@ export default class Home extends Component {
   }
 
   handleScroll = async () => {
-    const { rootStore } = this.props;
+    const { rootStore, appStore, categoryStore } = this.props;
+    const { fixNav } = rootStore;
     if (this.threshold <= 0) {
       return;
     }
 
-    // judge header fixed
-    const fixNav = rootStore.fixNav;
-    const scrollTop = getScrollTop();
-    const needFixNav = scrollTop > this.threshold;
+    const needFixNav = getScrollTop() > this.threshold;
+
     if (needFixNav && !fixNav) {
       rootStore.setNavFix(true);
     } else if (!needFixNav && fixNav) {
       rootStore.setNavFix(false);
     }
 
-    // load app data progressive by window scroll
-    const { appStore, categoryStore } = this.props;
+    // todo
+  };
+
+  handleClickCate = cate_id => {
+    this.props.history.push(`/cat/${cate_id}`);
+  };
+
+  renderCateMenu() {
+    const {
+      match, categoryStore, rootStore, t
+    } = this.props;
     const { categories } = categoryStore;
-    const len = categories.length;
-    if (len > 0 && categories[len - 1].appFlag) {
-      return;
-    }
+    const { category } = match.params;
 
-    const initLoadNumber = parseInt((document.body.clientHeight - 720) / 250);
-    if (len > 0 && !categories[0].appFlag && !appStore.isLoading) {
-      await this.loadAppData(categories, initLoadNumber);
-    }
+    return (
+      <div
+        className={classnames(styles.nav, {
+          [styles.fixNav]: rootStore.fixNav
+        })}
+      >
+        <div className={styles.navGrp}>
+          <p className={styles.caption}>{t('发现')}</p>
+          <ul className={styles.menu}>
+            <li
+              key={cateLatest}
+              className={classnames(styles.item, {
+                [styles.active]: category === cateLatest
+              })}
+              onClick={() => this.handleClickCate(cateLatest)}
+            >
+              <Icon name="cart" size={24} type="dark" className={styles.icon} />
+              <span className={styles.name}>{t('最新上架')}</span>
+            </li>
+          </ul>
+        </div>
 
-    const scrollBottom = getScrollBottom();
-    if (scrollBottom < 100 && !appStore.isProgressive) {
-      await this.loadAppData(categories);
-    }
-  };
-
-  loadAppData = async (categories, initLoadNumber) => {
-    const { categoryStore, appStore } = this.props;
-
-    for (let i = 0; i < categories.length; i++) {
-      if (!categories[i].appFlag) {
-        categoryStore.categories[i].appFlag = true;
-        await appStore.fetchAll({
-          limit: 6,
-          status: 'active',
-          category_id: categories[i].category_id,
-          noLoading: true
-        });
-        const temp = categoryStore.categories[i];
-        categoryStore.categories[i] = {
-          apps: appStore.apps,
-          ...temp
-        };
-        if (initLoadNumber) {
-          if (appStore.apps.length === 0) {
-            initLoadNumber++;
-          } else if (initLoadNumber === i + 1) {
-            break;
-          }
-        } else if (appStore.apps.length > 0) {
-          break;
-        }
-      }
-    }
-  };
+        <div className={styles.navGrp}>
+          <p className={styles.caption}>{t('Categories')}</p>
+          <ul className={styles.menu}>
+            {categories.map(({ category_id, name, description }) => (
+              <li
+                key={category_id}
+                className={classnames(styles.item, {
+                  [styles.active]: category === category_id
+                })}
+                onClick={() => this.handleClickCate(category_id)}
+              >
+                <Icon
+                  name={description}
+                  size={24}
+                  type="dark"
+                  className={styles.icon}
+                />
+                <span className={styles.name}>{t(name)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 
   render() {
     const {
-      rootStore, appStore, categoryStore, match
+      rootStore, appStore, categoryStore, match, t
     } = this.props;
     const { pageLoading } = this.state;
     const { fixNav } = rootStore;
     const {
-      homeApps,
+      apps,
       isProgressive,
       isLoading,
       hasMore,
       currentPage,
-      loadMoreHomeApps
+      loadMoreHomeApps,
+      countStoreApps
     } = appStore;
-    const categories = categoryStore.categories;
-
-    const { category, search } = match.params;
-    const showApps = category || search ? homeApps.slice() : homeApps.slice(0, 3);
-    const isHomePage = match.path === '/';
-    const categoryTitle = get(
-      find(categories, { category_id: category }),
+    const { categories } = categoryStore;
+    const { category } = match.params;
+    const categoryTitle = _.get(
+      _.find(categories, { category_id: category }),
       'name',
       ''
     );
 
     return (
-      <Fragment>
-        {isHomePage && <Banner />}
-        <Notification />
+      <Layout isHome>
         <div
           className={classnames(styles.content, { [styles.fixNav]: fixNav })}
         >
-          <Nav className={styles.nav} navs={categories.toJSON()} />
-          <Loading isLoading={pageLoading} className={styles.homeLoad}>
+          <TitleBanner
+            title="App Store"
+            description={t('APP_STORE_DESC', { total: countStoreApps })}
+            hasSearch
+            stretch
+          />
+          {this.renderCateMenu()}
+
+          <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
             <InfiniteScroll
               className={styles.apps}
               pageStart={currentPage}
               loadMore={loadMoreHomeApps}
               isLoading={isLoading}
-              hasMore={(category || search) && hasMore}
+              hasMore={Boolean(category || this.searchWord) && hasMore}
             >
               <AppList
-                apps={showApps}
-                categoryApps={categories.toJSON()}
-                categoryTitle={categoryTitle}
-                appSearch={search}
+                apps={apps}
+                title={categoryTitle}
+                search={this.searchWord}
                 isLoading={pageLoading}
+                fixNav={fixNav}
               />
             </InfiniteScroll>
+
             {isProgressive && (
               <div className={styles.loading}>
                 <div className={styles.loadOuter}>
@@ -199,7 +253,7 @@ export default class Home extends Component {
             )}
           </Loading>
         </div>
-      </Fragment>
+      </Layout>
     );
   }
 }

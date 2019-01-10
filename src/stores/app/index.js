@@ -18,12 +18,6 @@ class AppStore extends Store {
 
   @observable homeApps = [];
 
-  // store page category apps
-  @observable storeApps = [];
-
-  // normal user store page app total
-  @observable storeTotal = 0;
-
   // menu apps
   @observable menuApps = [];
 
@@ -106,6 +100,17 @@ class AppStore extends Store {
 
   @observable unCategoriedApps = [];
 
+  @observable countStoreApps = 0;
+
+  @action
+  fetchStoreAppsCount = async () => {
+    const res = await this.request.get('apps', {
+      display_columns: ['']
+    });
+
+    this.countStoreApps = _.get(res, 'total_count', 0);
+  };
+
   @action
   fetchMenuApps = async () => {
     const userId = getCookie('user_id');
@@ -160,27 +165,14 @@ class AppStore extends Store {
 
   @action
   fetchActiveApps = async (params = {}) => {
-    const defaultParams = {
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize
-    };
-
-    if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
-      delete params.noLimit;
-    }
+    params = this.normalizeParams(params);
 
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
 
     this.isLoading = true;
-    const result = await this.request.get(
-      'active_apps',
-      assign(defaultParams, params)
-    );
+    const result = await this.request.get('active_apps', params);
     this.isLoading = false;
 
     this.apps = get(result, 'app_set', []);
