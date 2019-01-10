@@ -1,3 +1,5 @@
+import Account from './Account';
+
 export Apps from './Apps';
 export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';
@@ -26,9 +28,6 @@ export RepoAdd from './Repos/Add';
 export RepoDetail from './Repos/Detail';
 
 export Overview from './Overview';
-export OverviewAppList from './Overview/AppList';
-export OverviewClusterList from './Overview/ClusterList';
-export OverviewRepoList from './Overview/RepoList';
 
 export Categories from './Categories';
 
@@ -40,3 +39,5 @@ export PurchasedDetail from './Purchased/Detail';
 
 export Runtimes from './Runtimes';
 export CreateRuntime from './Runtimes/Create';
+
+export Account from './Account';

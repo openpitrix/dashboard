@@ -23,7 +23,7 @@ const tabs = [
   { name: 'Instructions', value: 'readme' },
   { name: 'Terms of service', value: 'service' },
   { name: 'Config File', value: 'configFile' },
-  { name: 'Set Price', value: 'price', isDisabled: true },
+  { name: 'Set Price', value: 'price', disabled: true },
   { name: 'Update Log', value: 'updateLog' }
 ];
 const reviewStatus = {

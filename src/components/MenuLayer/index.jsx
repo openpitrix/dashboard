@@ -86,7 +86,8 @@ class MenuLayer extends Component {
             <li
               key={idx}
               className={classnames({
-                [styles.divider]: Boolean(item.divider)
+                [styles.divider]: Boolean(item.divider),
+                [styles.disabled]: Boolean(item.disabled)
               })}
             >
               <Icon
@@ -101,7 +102,7 @@ class MenuLayer extends Component {
         })}
 
         <li>
-          <Icon name="logout" type="dark" className={styles.iconImg} />
+          <Icon name="previous" type="dark" className={styles.iconImg} />
           <a href="/logout">{t('Log out')}</a>
         </li>
       </ul>

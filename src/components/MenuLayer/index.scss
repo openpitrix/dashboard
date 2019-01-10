@@ -103,4 +103,11 @@
   .divider {
     @extend %has-bottom;
   }
+
+  .disabled {
+    opacity: 0.5;
+    a {
+      cursor: not-allowed;
+    }
+  }
 }

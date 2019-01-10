@@ -9,11 +9,8 @@ import * as Dash from 'pages/Dashboard';
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
-const Account = lazy(() => import('../pages/Account'));
-const Store = lazy(() => import('../pages/Store'));
 
 const routes = {
-  // for no login
   '/login': Login,
   '/': Home,
   '/apps': Home,
@@ -73,7 +70,7 @@ const routes = {
 
   '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 
-  '/:dash/account': Account,
+  '/:dash/account/:type?': Dash.Account,
 
   '*': Home
 };

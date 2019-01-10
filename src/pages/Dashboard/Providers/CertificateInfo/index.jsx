@@ -9,7 +9,7 @@ import styles from './index.scss';
 
 const tags = [
   { name: '认证信息', value: 'certificate' },
-  { name: '合约', value: 'contract', isDisabled: true }
+  { name: '合约', value: 'contract', disabled: true }
 ];
 @translate()
 @inject(({ rootStore }) => ({
