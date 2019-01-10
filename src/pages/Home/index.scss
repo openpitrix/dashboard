@@ -114,15 +114,15 @@
   }
 }
 
-//.fixNav {
-//  div[class*='appList'] {
-//    padding-top: $header-height;
-//  }
-//
-//  div[class*='_cateTitle']{
-//    padding-top: 72px;
-//  }
-//}
+.fixNav {
+  div[class*='appList'] {
+    padding-top: $header-height;
+  }
+
+  div[class*='_cateTitle']{
+    padding-top: 72px;
+  }
+}
 
 .banner {
   height: $banner-height;

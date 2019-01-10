@@ -52,7 +52,7 @@ router.post('/api/*', async ctx => {
   debug(`referer url: %s`, referer);
 
   const urlParts = require('url').parse(referer);
-  const usingNoAuthToken = urlParts.pathname === '/' || body.isGlobalQuery;
+  const usingNoAuthToken = urlParts.pathname === '/' || urlParts.pathname.startsWith('/cat/') || body.isGlobalQuery;
 
   if ('isGlobalQuery' in body) {
     delete body.isGlobalQuery;

@@ -183,8 +183,6 @@ export default class Home extends Component {
   }
 
   render() {
-    console.log('render home');
-
     const {
       rootStore, appStore, categoryStore, match, t
     } = this.props;
