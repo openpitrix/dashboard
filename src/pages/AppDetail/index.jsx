@@ -14,6 +14,7 @@ import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
 import { getVersionTypesName } from 'config/version-types';
 import { formatTime } from 'utils';
+import PropTypes from 'prop-types';
 import Screenshots from './Screenshots';
 import Versions from './Versions';
 
@@ -22,7 +23,7 @@ import styles from './index.scss';
 const tabs = [
   { name: 'App Detail', value: 'appDetail' },
   { name: 'Instructions', value: 'instructions' },
-  { name: 'User Evaluation', value: 'evaluation', isDisabled: true }
+  { name: 'User Evaluation', value: 'evaluation', disabled: true }
 ];
 
 @translate()
@@ -35,6 +36,14 @@ const tabs = [
 }))
 @observer
 export default class AppDetail extends Component {
+  static propTypes = {
+    isCreate: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isCreate: false
+  };
+
   state = {
     activeType: '',
     activeVersion: ''
@@ -42,27 +51,36 @@ export default class AppDetail extends Component {
 
   async componentDidMount() {
     const {
-      appStore, appVersionStore, vendorStore, match
+      appStore,
+      appVersionStore,
+      vendorStore,
+      match,
+      isCreate
     } = this.props;
-    const { appId } = match.params;
+    const { appDetail } = appStore;
 
     appStore.currentPic = 1;
 
-    await appStore.fetch(appId);
+    if (!isCreate) {
+      const { appId } = match.params;
 
-    await appVersionStore.fetchTypeVersions(appId);
+      await appStore.fetch(appId);
+      await appVersionStore.fetchTypeVersions(appId);
 
-    const { appDetail } = appStore;
-    // todo
-    // await vendorStore.fetch(appDetail.vendor_id);
+      // todo
+      // await vendorStore.fetch(appDetail.vendor_id);
 
-    await appStore.fetchActiveApps();
+      await appStore.fetchActiveApps();
+    }
   }
 
   componentWillUnmount() {
-    const { appStore, appVersionStore } = this.props;
-    appStore.reset();
-    appVersionStore.reset();
+    const { appStore, appVersionStore, isCreate } = this.props;
+
+    if (!isCreate) {
+      appStore.reset();
+      appVersionStore.reset();
+    }
   }
 
   changeType = (value, type) => {
@@ -275,16 +293,23 @@ export default class AppDetail extends Component {
   }
 
   render() {
-    const { appStore, t } = this.props;
+    const { appStore, isCreate, t } = this.props;
     const { detailTab, isLoading, totalCount } = appStore;
 
     return (
-      <Layout isLoading={isLoading} isHome>
-        <TitleBanner
-          hasSearch
-          title={t('App Store')}
-          description={t('APP_TOTAL_DESCRIPTION', { total: totalCount })}
-        />
+      <Layout
+        isLoading={isLoading}
+        className={classnames({ [styles.createOuter]: isCreate })}
+        isHome
+      >
+        {!isCreate && (
+          <TitleBanner
+            hasSearch
+            title={t('App Store')}
+            description={t('APP_TOTAL_DESCRIPTION', { total: totalCount })}
+          />
+        )}
+
         <Grid>
           <Section size={8}>
             <Card>

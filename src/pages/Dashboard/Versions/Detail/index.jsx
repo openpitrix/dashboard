@@ -21,6 +21,7 @@ import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { versionTypes } from 'config/version-types';
 import { formatTime } from 'utils';
+import AppDetail from 'pages/AppDetail';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
 
@@ -248,6 +249,30 @@ export default class VersionDetail extends Component {
           <p>
             更全面的测试手册请参看<Link to={'#'}>《开发者测试指南》</Link>。
           </p>
+        </div>
+      </Dialog>
+    );
+  };
+
+  renderReleaseDialog = () => {
+    const { appVersionStore, match, t } = this.props;
+    const { isDialogOpen, hideModal } = appVersionStore;
+    const { appId } = match.params;
+
+    return (
+      <Dialog
+        title={t('Note')}
+        isOpen={isDialogOpen}
+        onSubmit={() => this.handleVersion('cancel', true)}
+        onCancel={hideModal}
+        hideFooter
+      >
+        <div className={styles.releaseContent}>
+          <p className={styles.title}>{t('Congratulations on you')} </p>
+          <p className={styles.description}> {t('APP_SHELF_AND_SELL')}</p>
+          <Link to={`/apps/${appId}`}>
+            <Button type="primary">{t('View in store')}</Button>
+          </Link>
         </div>
       </Dialog>
     );
@@ -529,9 +554,14 @@ export default class VersionDetail extends Component {
     if (isSubmitCheck) {
       return (
         <Stepper name="VERSION_SUBMIT_CHECK" stepOption={appVersionStore}>
-          {activeStep === 1 && <Info isCheckInfo />}
+          {activeStep === 1 && (
+            <div className={styles.checkInfo}>
+              <Info isCheckInfo />
+            </div>
+          )}
           {activeStep === 2 && <VersionEdit />}
-          {activeStep === 3 && this.renderSuccessMesage()}
+          {activeStep === 3 && <AppDetail isCreate />}
+          {activeStep === 4 && this.renderSuccessMesage()}
         </Stepper>
       );
     }
@@ -559,6 +589,7 @@ export default class VersionDetail extends Component {
         {dialogType === 'delete' && this.renderDeleteDialog()}
         {dialogType === 'submit' && this.renderNoteDialog()}
         {dialogType === 'cancel' && this.renderCancelDialog()}
+        {dialogType === 'release' && this.renderReleaseDialog()}
       </Layout>
     );
   }

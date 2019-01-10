@@ -84,7 +84,7 @@ export default class AppAdd extends Component {
     const errorKeys = _.keys(uploadError);
 
     return (
-      <Fragment>
+      <div className={styles.uploadConf}>
         <Upload
           className={styles.upload}
           ref={node => {
@@ -116,7 +116,7 @@ export default class AppAdd extends Component {
             </div>
           )}
         </div>
-      </Fragment>
+      </div>
     );
   }
 

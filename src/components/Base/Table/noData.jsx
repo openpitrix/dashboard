@@ -32,7 +32,7 @@ export default class NoData extends PureComponent {
     return (
       <div className={styles.noData}>
         <Icon name={iconName} size={120} type={`light`} />
-        <div className={styles.word}>{t('No search data')}</div>
+        <div className={styles.word}>{t('No data')}!</div>
       </div>
     );
   }

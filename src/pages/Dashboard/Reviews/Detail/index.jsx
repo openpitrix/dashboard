@@ -403,12 +403,12 @@ export default class ReviewDetail extends Component {
         </dl>
         <dl>
           <dt>{t('一句话介绍')}</dt>
-          <dd>{appDetail.abstraction}</dd>
+          <dd>{appDetail.abstraction || t('None')}</dd>
         </dl>
         <dl>
           <dt>{t('详细介绍')}</dt>
           <dd>
-            <pre>{appDetail.description}</pre>
+            <pre>{appDetail.description || t('None')}</pre>
           </dd>
         </dl>
         <dl>
@@ -423,11 +423,11 @@ export default class ReviewDetail extends Component {
         </dl>
         <dl>
           <dt>{t('页面截图')}</dt>
-          <dd>{appDetail.screenshots}</dd>
+          <dd>{appDetail.screenshots || t('None')}</dd>
         </dl>
         <dl>
           <dt>{t('分类')}</dt>
-          <dd>{categoryName}</dd>
+          <dd>{categoryName || t('None')}</dd>
         </dl>
         <dl>
           <dt>{t('服务商网站')}</dt>
@@ -435,6 +435,7 @@ export default class ReviewDetail extends Component {
             <a href={appDetail.home} target="_blank" rel="noopener noreferrer">
               {appDetail.home}
             </a>
+            {!appDetail.home && <span>{t('None')}</span>}
           </dd>
         </dl>
       </div>
