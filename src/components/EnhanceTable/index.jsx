@@ -7,7 +7,10 @@ import { Table } from 'components/Base';
 import defaultColumns from './columns';
 import defaultFilters from './filters';
 
-export default class AppsTable extends React.PureComponent {
+/**
+ *  A enhanced table component to simplify operations
+ */
+export default class EnhanceTable extends React.PureComponent {
   static propTypes = {
     canCancelPager: PropTypes.bool,
     className: PropTypes.string,
