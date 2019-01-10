@@ -14,6 +14,7 @@ describe('Base/Table', () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      sorter: true,
       width: '50%'
     },
     {
@@ -97,8 +98,10 @@ describe('Base/Table', () => {
 
     const mockSelect = rowSelection.onSelect;
     expect(wrapper.state().selectionDirty).toBeTruthy();
-    expect(mockSelect).toHaveBeenCalled();
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
+
+    checkbox.simulate('change', { target: { checked: false } });
+    expect(mockSelect).toHaveBeenCalled();
   });
 
   it('call onSelectAll', () => {
@@ -117,7 +120,21 @@ describe('Base/Table', () => {
     const mockSelectAll = rowSelection.onSelectAll;
     expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(mockSelectAll).toHaveBeenCalled();
-    expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
     expect(mockSelectAll).toHaveBeenCalled();
+    expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
+  });
+
+  it('call handleSort', () => {
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
+    const icon = wrapper
+      .find('thead th')
+      .at(1)
+      .find('span.icon');
+    icon.simulate('click');
   });
 });

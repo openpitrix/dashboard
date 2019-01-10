@@ -30,7 +30,24 @@ exports[`Base/Table basic render 1`] = `
             <tr>
               <th
                 class=""
-              />
+              >
+                <span
+                  class="sortOuter"
+                >
+                  <span
+                    class="icon icon-sort-ascending"
+                    style="width:16px;height:16px"
+                  >
+                    <svg
+                      class="qicon qicon-sort-ascending qicon-light"
+                    >
+                      <use
+                        href="#qui-sort-ascending"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
               <th
                 class=""
               />
@@ -165,7 +182,24 @@ exports[`Base/Table render emptyText 1`] = `
             <tr>
               <th
                 class=""
-              />
+              >
+                <span
+                  class="sortOuter"
+                >
+                  <span
+                    class="icon icon-sort-ascending"
+                    style="width:16px;height:16px"
+                  >
+                    <svg
+                      class="qicon qicon-sort-ascending qicon-light"
+                    >
+                      <use
+                        href="#qui-sort-ascending"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
               <th
                 class=""
               />
