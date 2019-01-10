@@ -131,8 +131,11 @@ describe('Base/Table', () => {
       .find('thead th')
       .at(0)
       .find('input[type="checkbox"]');
+    const mockSelectAll = rowSelection.onSelectAll;
     checkbox.simulate('change', { target: { checked: true } });
+    expect(mockSelectAll).toHaveBeenCalled();
     checkbox.simulate('change', { target: { checked: false } });
+    expect(mockSelectAll).toHaveBeenCalled();
   });
 
   it('call handleSort', () => {

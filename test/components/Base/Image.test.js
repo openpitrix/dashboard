@@ -22,9 +22,15 @@ describe('Base/Iamge', () => {
   });
 
   it('on error', () => {
-    const wrapper = mount(<ImageComponent src={LOAD_FAILURE_SRC} />);
+    const wrapper = setup('mount', {
+      src: LOAD_FAILURE_SRC,
+      iconLetter: LOAD_FAILURE_SRC,
+      isBase64Str: true
+    });
     const img = wrapper.instance().img;
     img.onerror(new Error('mocked error'));
     expect(wrapper.state().failed).toEqual(true);
+
+    wrapper.unmount();
   });
 });
