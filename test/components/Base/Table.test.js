@@ -99,9 +99,6 @@ describe('Base/Table', () => {
     const mockSelect = rowSelection.onSelect;
     expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
-
-    checkbox.simulate('change', { target: { checked: false } });
-    expect(mockSelect).toHaveBeenCalled();
   });
 
   it('call onSelectAll', () => {
@@ -120,11 +117,24 @@ describe('Base/Table', () => {
     const mockSelectAll = rowSelection.onSelectAll;
     expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(mockSelectAll).toHaveBeenCalled();
-    expect(mockSelectAll).toHaveBeenCalled();
     expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
   });
 
-  it('call handleSort', () => {
+  it('call onSelectAll', () => {
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
+    const checkbox = wrapper
+      .find('thead th')
+      .at(0)
+      .find('input[type="checkbox"]');
+    checkbox.simulate('change', { target: { checked: false } });
+  });
+
+  it('call remove onSelectAll', () => {
     const wrapper = setup('mount', {
       columns,
       dataSource,
