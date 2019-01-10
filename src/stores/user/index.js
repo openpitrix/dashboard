@@ -57,6 +57,8 @@ export default class UserStore extends Store {
 
   @observable language = localStorage.getItem('i18nextLng') || 'zh';
 
+  @observable activeType = 'account';
+
   @observable
   userDetail = {
     user_id: '',

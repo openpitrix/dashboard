@@ -85,10 +85,10 @@ export const getNavs = {
       title: 'Financial Center'
     },
     {
-      link: '#',
+      link: '/dashboard/isv/users',
       iconName: 'group',
       active: 'user',
-      title: 'Team Members'
+      title: 'Team and Members'
     },
     {
       link: '/dashboard/provider-detail',
@@ -237,6 +237,13 @@ export const subNavMap = {
           link: '/dashboard/app-reviews',
           active: 'review'
         }
+      ]
+    },
+    user: {
+      title: 'Team and Members',
+      links: [
+        { name: 'All Users', link: '/dashboard/isv/users', active: 'user' },
+        { name: 'Roles', link: '/dashboard/isv/roles', active: 'role' }
       ]
     }
   }

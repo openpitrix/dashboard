@@ -1,0 +1,54 @@
+@import '~scss/vars';
+
+.topBar {
+  height: 48px;
+
+  .tableTypes {
+    float: left;
+    margin-right: 12px;
+  }
+}
+
+.userName {
+  line-height: 32px;
+}
+
+.formContent {
+  .operationBtn {
+    margin-left: 192px;
+
+    button {
+      margin-right: 12px;
+    }
+  }
+}
+
+.createForm {
+  & > div {
+    margin-bottom: 24px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    & > label {
+      display: inline-block;
+      float: left;
+      margin-right:  24px;
+      width: 168px;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: right;
+      color: $N500;
+    }
+
+    & > input {
+      width: 256px;
+    }
+
+    & > select {
+      width: 256px;
+    }
+  }
+}

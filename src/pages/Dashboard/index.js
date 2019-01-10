@@ -31,6 +31,8 @@ export Categories from './Categories';
 
 export Users from './Users';
 export UserDetail from './Users/Detail';
+export ISVUsers from './Users/ISV';
+export ISVRoles from './Users/ISV/Roles';
 
 export Purchased from './Purchased';
 export PurchasedDetail from './Purchased/Detail';

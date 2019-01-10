@@ -1,0 +1,77 @@
+@import '~scss/vars';
+
+.roleCard {
+  margin-bottom: 12px;
+  padding: 16px 24px 24px;
+  border: 1px solid $N10;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:hover {
+    background: $N0;
+    border-color: $P75;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
+
+    .rightIcon {
+      display: none;
+    }
+
+    .downIcon,
+    .auths {
+      display: block;
+      transition: all 0.5s ease-in-out;
+    }
+  }
+
+  .name {
+    @include title-font;
+  }
+
+  .description {
+    @include note-font;
+  }
+
+  .rightIcon,
+  .downIcon {
+    float: right;
+    margin-top: 14px;
+  }
+
+  .downIcon {
+    display: none;
+  }
+
+  .auths {
+    display: none;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .auth {
+    float: left;
+    display: inline-block;
+    width: 20%;
+
+    .title {
+      @include title-font($line-height: 20px, $font-size: 12px);
+      margin-bottom: 8px;
+    }
+
+    li {
+      @include note-font;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.noteWord {
+  @include note-font;
+
+  .note {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 0 4px;
+    background-color: $N30;
+  }
+}

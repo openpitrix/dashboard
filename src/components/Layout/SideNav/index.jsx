@@ -26,6 +26,7 @@ const keys = [
   'categories',
   'category',
   'user',
+  'role',
   'create',
   'provider-detail',
   'provider',
@@ -35,6 +36,7 @@ const keys = [
 ];
 const changeKey = {
   'cloud-env': 'setting',
+  role: 'user',
   review: 'app',
   cluster: 'repo',
   runtime: 'repo',

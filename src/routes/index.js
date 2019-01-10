@@ -45,6 +45,8 @@ const routes = {
   ],
 
   '/:dash/provider-detail': [Dash.ApplicationDetail, { acl: r.isv }],
+  '/:dash/isv/users': [Dash.ISVUsers, { acl: r.isv }],
+  '/:dash/isv/roles': [Dash.ISVRoles, { acl: r.isv }],
   '/:dash/provider/submit': [Dash.ProviderCreate, { acl: [r.isv, r.user] }],
 
   '/:dash/providers': [Dash.Providers, { acl: r.admin }],
