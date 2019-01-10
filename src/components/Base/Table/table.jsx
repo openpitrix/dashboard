@@ -150,7 +150,6 @@ export default class Table extends React.Component {
 
   handleSelectAll = e => {
     const type = e.target.checked ? 'all' : 'removeAll';
-    console.log('handleSelectAll ', type);
     const data = this.getTableData();
     const defaultSelection = this.state.selectionDirty
       ? []
