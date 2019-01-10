@@ -11,8 +11,8 @@ export default class RouteWrapper extends React.Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    const { match } = this.props;
-    return match.url !== nextProps.match.url;
+    const { match, search } = this.props;
+    return match.url !== nextProps.match.url || search !== nextProps.search;
   }
 
   // componentWillReceiveProps(nextProps) {

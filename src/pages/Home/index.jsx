@@ -1,18 +1,23 @@
 import React, { Fragment, Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import { get, find } from 'lodash';
+import _ from 'lodash';
+import { translate } from 'react-i18next';
 
 import { Notification } from 'components/Base';
+import Layout, { TitleBanner } from 'components/Layout';
 import Nav from 'components/Nav';
-import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
-import { getScrollTop, getScrollBottom } from 'src/utils';
+
+import { getScrollTop, getScrollBottom } from 'utils';
+import { getUrlParam } from 'utils/url';
+import SearchBox from './SearchBox';
 
 import styles from './index.scss';
 
+@translate()
 @inject(({ rootStore }) => ({
   rootStore,
   categoryStore: rootStore.categoryStore,
@@ -20,23 +25,30 @@ import styles from './index.scss';
 }))
 @observer
 export default class Home extends Component {
+  static isHome=true;
+
   state = {
     pageLoading: true
   };
+
+  get searchWord() {
+    return getUrlParam('q');
+  }
 
   async componentDidMount() {
     const {
       rootStore, appStore, categoryStore, match
     } = this.props;
-    const { category, search } = match.params;
 
-    rootStore.setNavFix(Boolean(category || search));
+    const { category } = match.params;
+
+    rootStore.setNavFix(Boolean(category || this.searchWord));
 
     window.scroll({ top: 0 });
 
     await categoryStore.fetchAll();
 
-    if (!(category || search)) {
+    if (!(category || this.searchWord)) {
       this.threshold = this.getThreshold();
       window.onscroll = this.handleScroll;
     }
@@ -44,11 +56,12 @@ export default class Home extends Component {
     Object.assign(appStore, {
       selectStatus: 'active',
       categoryId: category,
-      searchWord: search
+      searchWord: this.searchWord
     });
     await appStore.fetchAll();
 
     appStore.homeApps = appStore.apps.slice();
+
     this.setState({
       pageLoading: false
     });
@@ -136,9 +149,29 @@ export default class Home extends Component {
     }
   };
 
+  renderBanner() {
+    const { match, t } = this.props;
+    const showBanner = ['/', '/cat/:category'].includes(match.path) && !this.searchWord;
+    if (!showBanner) {
+      return null;
+    }
+
+    return (
+      <div className={classnames('banner', styles.banner)}>
+        <div className={styles.wrapper}>
+          <img className="banner-img-1" src="/1-1.svg" />
+          <img className="banner-img-2" src="/1-2.svg" />
+          <img className="banner-img-3" src="/1-3.svg" />
+          <div className={styles.title}>{t('brand.slogan')}</div>
+          <SearchBox />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
-      rootStore, appStore, categoryStore, match
+      rootStore, appStore, categoryStore, match, t
     } = this.props;
     const { pageLoading } = this.state;
     const { fixNav } = rootStore;
@@ -154,21 +187,25 @@ export default class Home extends Component {
 
     const { category, search } = match.params;
     const showApps = category || search ? homeApps.slice() : homeApps.slice(0, 3);
-    const isHomePage = match.path === '/';
-    const categoryTitle = get(
-      find(categories, { category_id: category }),
+    const categoryTitle = _.get(
+      _.find(categories, { category_id: category }),
       'name',
       ''
     );
 
     return (
-      <Fragment>
-        {isHomePage && <Banner />}
+      <Layout isHome>
         <Notification />
+         {/* {this.renderBanner()} */}
         <div
           className={classnames(styles.content, { [styles.fixNav]: fixNav })}
         >
-          <Nav className={styles.nav} navs={categories} />
+          <TitleBanner
+            title="App Store"
+            description={t('APP_STORE_DESC', { total: 1024 })}
+            hasSearch
+          />
+          <Nav className={classnames(styles.nav, { [styles.fixNav]: fixNav })} navs={categories} />
 
           <Loading isLoading={pageLoading} className={styles.homeLoad}>
             <InfiniteScroll
@@ -186,16 +223,16 @@ export default class Home extends Component {
                 isLoading={pageLoading}
               />
             </InfiniteScroll>
-            {isProgressive && (
-              <div className={styles.loading}>
-                <div className={styles.loadOuter}>
-                  <div className={styles.loader} />
-                </div>
-              </div>
-            )}
+             {isProgressive && (
+               <div className={styles.loading}>
+                 <div className={styles.loadOuter}>
+                   <div className={styles.loader} />
+                 </div>
+               </div>
+             )}
           </Loading>
         </div>
-      </Fragment>
+      </Layout>
     );
   }
 }

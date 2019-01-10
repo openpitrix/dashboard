@@ -11,10 +11,14 @@
   }
   .nav {
     position: absolute;
-    top: 0;
+    top: 92px;
     left: 0;
     width: $nav-width;
     height: 100%;
+
+    &.fixNav {
+      top: 92px - ($title-banner-height-orig - $title-banner-height);
+    }
   }
   .apps {
     margin-left: $nav-width;
@@ -60,12 +64,12 @@
 }
 
 .fixNav {
-  div[class*='_nav'] {
-    position: fixed;
-    top: $header-height;
-    left: auto;
-    height: $main-height;
-  }
+  //div[class*='_nav'] {
+  //  position: fixed;
+  //  top: $header-height;
+  //  left: auto;
+  //  height: $main-height;
+  //}
 
   div[class*='appList'] {
     padding-top: $header-height;
@@ -73,5 +77,47 @@
 
   div[class*='_cateTitle']{
     padding-top: 72px;
+  }
+}
+
+.banner {
+  height: $banner-height;
+  padding-top: 120px;
+  background-color: $N0;
+  .wrapper {
+    position: relative;
+    width: $content-width;
+    margin: 0 auto;
+  }
+  .title {
+    width: 552px;
+    font-size: $font32;
+    font-weight: 500;
+    line-height: 1.25;
+    color: $P400;
+  }
+
+  :global {
+    .banner-img-1 {
+      position: absolute;
+      top: -59px;
+      left: 560px;
+      z-index: 1;
+      width: 195px;
+    }
+    .banner-img-2 {
+      position: absolute;
+      top: -209px;
+      right: 123px;
+      z-index: 1;
+      width: 202px;
+    }
+    .banner-img-3 {
+      position: absolute;
+      top: 110px;
+      right: 100px;
+      z-index: 1;
+      width: 150px;
+    }
   }
 }

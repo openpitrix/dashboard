@@ -35,24 +35,30 @@ class App extends React.Component {
 
   renderRoute(match, route, store) {
     const user = store.user || {};
+    const { search } = location;
 
     // todo
     // add noHeaderPath for user apply provider from page no need header
     const hasHeader = !noHeaderPath.includes(route.path)
-      && (user.isNormal || !user.accessToken || user.role === 'user');
+      && (user.isNormal || !user.accessToken);
 
     if (route.noMatch) {
       return <Redirect to="/" />;
     }
 
+    if (route.needAuth && !user.isLoggedIn()) {
+      return <Redirect to={`/login?redirect_url=${match.path}`} />;
+    }
+
     const props = {
       component: withRouter(route.component),
       rootStore: store,
-      match
+      match,
+      search
     };
 
     if (route.path !== '/login') {
-      const isHome = route.path === '/' || route.path.startsWith('/apps');
+      const isHome = route.applyHome || route.component.isHome;
 
       return (
         <LazyLoad>

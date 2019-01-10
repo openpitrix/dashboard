@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import { observer, inject } from 'mobx-react';
 
 import { Image, Input } from 'components/Base';
+import SearchBox from 'pages/Home/SearchBox';
+
 import styles from './index.scss';
 
 @translate()
+@inject(({ rootStore }) => ({
+  rootStore,
+  appStore: rootStore.appStore,
+  user: rootStore.user
+}))
+@observer
 class TitleBanner extends Component {
   static propTypes = {
     appSearch: PropTypes.string,
@@ -25,21 +35,16 @@ class TitleBanner extends Component {
     appSearch: ''
   };
 
-  onSearch = async value => {
-    this.props.history.push(`/apps/search/${value}`);
-  };
-
-  onClearSearch = async () => {
-    this.props.history.push('/');
-  };
-
   render() {
     const {
-      icon, title, description, hasSearch, appSearch, t
+      icon, title, description, hasSearch, rootStore, t
     } = this.props;
+    const { fixNav } = rootStore;
 
     return (
-      <div className={styles.titleBanner}>
+      <div className={classnames(styles.titleBanner, {
+        [styles.shrink]: fixNav
+      })}>
         <div className={styles.wrapper}>
           <div className={styles.words}>
             {Boolean(icon) && (
@@ -51,15 +56,7 @@ class TitleBanner extends Component {
             <div className={styles.description}>{t(description)}</div>
           </div>
 
-          {hasSearch && (
-            <Input.Search
-              className={styles.search}
-              placeholder={t('search.placeholder')}
-              value={appSearch}
-              onSearch={this.onSearch}
-              onClear={this.onClearSearch}
-            />
-          )}
+          {hasSearch && <SearchBox className={styles.search} />}
         </div>
       </div>
     );

@@ -16,7 +16,7 @@ export default class UserProvider {
   }
 
   isLoggedIn() {
-    return this.accessToken && this.user_id;
+    return Boolean(this.accessToken && this.user_id);
   }
 
   update(props = {}) {

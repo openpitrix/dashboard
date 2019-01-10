@@ -30,6 +30,8 @@ export default class RootStore extends Store {
     username: ''
   };
 
+  @observable searchWord=''; // home page search word
+
   constructor(initialState) {
     super(initialState);
     this.state = initialState;

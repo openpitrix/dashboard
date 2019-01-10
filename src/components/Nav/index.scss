@@ -14,7 +14,6 @@
   .subNav {
     padding: 0;
     margin-top: $base-margin;
-    //margin-right: -2px;
     &:first-of-type {
       margin-top: 0;
     }
@@ -24,33 +23,26 @@
       height: 20px;
       line-height: 20px;
       list-style: none;
+      color: $N400;
 
-      a {
-        @include textCut;
-        display:inline-block;
-        max-width: 100%;
-        color: $N500;
-        transition: color .3s ease-in;
-        &:hover{
-          color: $P75;
-        }
+      &:hover, &.active {
+        color: $P75;
+        font-weight: bold;
+        cursor: pointer;
 
-        .name {
-          display: inline-block;
-          margin-left: 12px;
-        }
-
-        .icon {
-          vertical-align: middle;
+        svg {
+          --primary-color: #{$P75};
+          --secondary-color: #{$P75};
         }
       }
 
-      :global{
-        .active{
-          color: $P75;
-          font-weight: bold;
-          cursor: auto;
-        }
+      .name {
+        display: inline-block;
+        margin-left: 12px;
+      }
+
+      .icon {
+        vertical-align: middle;
       }
     }
   }

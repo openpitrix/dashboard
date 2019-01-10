@@ -1,5 +1,6 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { toUrl } from 'utils/url';
+import { isEmpty } from 'lodash';
 
 // views without lazy load
 import Home from 'pages/Home';
@@ -9,7 +10,6 @@ import * as Dash from 'pages/Dashboard';
 // views using lazy load
 const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
-const Account = lazy(() => import('../pages/Account'));
 // const Store = lazy(() => import('../pages/Store'));
 
 const routes = {
@@ -19,9 +19,9 @@ const routes = {
   '/apps/search/:search': Home,
   '/apps/category/:category': Home,
   // '/apps/search/:search': Home,
-  // '/apps/category/:category': Home,
+  '/cat/:category': Home,
 
-  '/apps/:appId': AppDetail,
+  '/apps/:appId': [AppDetail, { applyHome: true }],
 
   // '/store': Store,
   // '/store/search/:search': Store,
@@ -86,17 +86,33 @@ const routes = {
   '*': Home
 };
 
-export default Object.keys(routes).map(route => {
+const isValidCompoennt = comp => (
+  typeof comp === 'object'
+    && typeof comp.$$typeof === 'symbol'
+    && comp.$$typeof.toString() === 'Symbol(react.lazy)'
+) || (
+  typeof comp === 'function' && Object.getPrototypeOf(comp) === React.Component
+);
+
+export default Object.keys(routes).map(path => {
+  const routeConf = [].concat(routes[path]);
+  if (!isValidCompoennt(routeConf[0])) {
+    throw Error('Invalid route definition, first element should be react component or lazy component');
+  }
+
+  const comp = routeConf[0];
+  const compOption = routeConf[1] || {};
+
   const routeDefinition = Object.assign(
-    {},
+    compOption,
     {
-      path: toUrl(route),
-      exact: route !== '/login',
-      component: routes[route],
-      needAuth: route.startsWith('/:dash')
+      path: toUrl(path),
+      exact: path !== '/login',
+      component: comp,
+      needAuth: path.startsWith('/:dash')
     }
   );
-  if (route === '*') {
+  if (path === '*') {
     Object.assign(routeDefinition, { noMatch: true });
   }
   return routeDefinition;
