@@ -1,82 +1,62 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { get, capitalize } from 'lodash';
+import ReactMarkdown from 'react-markdown';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import Layout, {
-  Grid,
-  Section,
-  BackBtn,
-  Panel,
-  Card,
-  BreadCrumb,
-  Dialog
+  Grid, Section, Card, TitleBanner
 } from 'components/Layout';
-import { Button } from 'components/Base';
-import { formatTime, mappingStatus } from 'utils';
-import { versionCompare } from 'utils/string';
-import Meta from './Meta';
-import Information from './Information';
-import { QingCloud, Helm } from './Body';
-import VersionItem from './versionItem';
+import { Button, Image } from 'components/Base';
+import DetailTabs from 'components/DetailTabs';
+import Stars from 'components/Stars';
+import { getVersionTypesName } from 'config/version-types';
+import { formatTime } from 'utils';
+import Screenshots from './Screenshots';
+import Versions from './Versions';
 
 import styles from './index.scss';
+
+const tabs = [
+  { name: 'App Detail', value: 'appDetail' },
+  { name: 'Instructions', value: 'instructions' },
+  { name: 'User Evaluation', value: 'evaluation', isDisabled: true }
+];
 
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
-  repoStore: rootStore.repoStore,
+  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @observer
 export default class AppDetail extends Component {
   state = {
-    isLoading: false
+    activeType: '',
+    activeVersion: ''
   };
 
   async componentDidMount() {
     const {
-      rootStore,
-      appStore,
-      repoStore,
-      appVersionStore,
-      user,
-      match
+      appStore, appVersionStore, vendorStore, match
     } = this.props;
-    const { appId, versionId } = match.params;
+    const { appId } = match.params;
 
-    this.setState({ isLoading: true });
-    rootStore.setNavFix(true);
-    appVersionStore.appId = appId;
     appStore.currentPic = 1;
 
-    await appStore.fetch(appId, true);
+    await appStore.fetch(appId);
 
-    const { isNormal, role } = user;
-    const params = { app_id: appId };
-    // normal user or not login only query 'active' versions
-    if (isNormal || !role) {
-      params.status = ['active'];
-    }
-    await appVersionStore.fetchAll(params);
+    await appVersionStore.fetchTypeVersions(appId);
 
-    if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(
-        get(appStore, 'appDetail.repo_id', ''),
-        true
-      );
-    }
+    const { appDetail } = appStore;
+    // todo
+    // await vendorStore.fetch(appDetail.vendor_id);
 
-    const providerName = get(repoStore, 'repoDetail.providers[0]', '');
-    const version_id = versionId || get(appStore, 'appDetail.latest_app_version.version_id', '');
-    if (providerName === 'kubernetes' && version_id) {
-      await appVersionStore.fetchPackageFiles(version_id);
-    }
-    this.setState({ isLoading: false });
+    await appStore.fetchActiveApps();
   }
 
   componentWillUnmount() {
@@ -84,6 +64,20 @@ export default class AppDetail extends Component {
     appStore.reset();
     appVersionStore.reset();
   }
+
+  changeType = (value, type) => {
+    if (value !== this.state[type]) {
+      this.setState({ [type]: value });
+    }
+  };
+
+  changeTab = async tab => {
+    const { appStore } = this.props;
+
+    if (tab !== appStore.detailTab) {
+      appStore.detailTab = tab;
+    }
+  };
 
   changePicture = (type, number, pictures) => {
     const { appStore } = this.props;
@@ -101,237 +95,213 @@ export default class AppDetail extends Component {
     return currentPic;
   };
 
-  handleVersion = async (handleType, versionId) => {
-    const { appVersionStore } = this.props;
+  renderProviderInfo() {
+    const { vendorStore, t } = this.props;
+    const { vendorDetail } = vendorStore;
 
-    await appVersionStore.handle(handleType, versionId);
-  };
+    return (
+      <Card className={styles.providerInfo}>
+        <div className={styles.title}>{t('应用服务商')}</div>
+        <div className={styles.number}>
+          {t('服务商编号')}: &nbsp; {vendorDetail.user_id || t('None')}
+        </div>
+        <div className={styles.company}>{vendorDetail.company_name}</div>
 
-  showReasonDialog = () => {
-    const { appVersionStore } = this.props;
-    appVersionStore.reason = '';
-    appVersionStore.isDialogOpen = true;
-  };
+        <dl>
+          <dt>{t('综合评价')}</dt>
+          <dd>
+            <label className={styles.stars}>5.0</label>
+            <Stars />
+          </dd>
+        </dl>
+        <dl>
+          <dt>{t('业务简介')}</dt>
+          <dd>{vendorDetail.company_profile || t('None')}</dd>
+        </dl>
+        <dl>
+          <dt>{t('公司网站')}</dt>
+          <dd>{vendorDetail.company_website || t('None')}</dd>
+        </dl>
+        <dl>
+          <dt>{t('入驻时间')}</dt>
+          <dd>{formatTime(vendorDetail.submit_time)}</dd>
+        </dl>
+      </Card>
+    );
+  }
 
-  submitReason = async () => {
-    const { appVersionStore, t } = this.props;
-    const { handle, version, reason } = appVersionStore;
-
-    if (!reason) {
-      appVersionStore.error(t('Please input reject Reason'));
-    } else {
-      await handle('reject', version.version_id);
-    }
-  };
-
-  renderBody() {
-    const { appStore, repoStore, appVersionStore } = this.props;
+  renderInstructions() {
+    const { appStore, t } = this.props;
     const { appDetail } = appStore;
-    const providerName = get(repoStore.repoDetail, 'providers[0]', '');
-    const isHelmApp = providerName === 'kubernetes';
+
+    return (
+      <div className={classnames('markdown', styles.instructions)}>
+        <ReactMarkdown source={appDetail.readme || t('None')} />
+      </div>
+    );
+  }
+
+  renderAppDetail() {
+    const { appStore, appVersionStore, t } = this.props;
+    const { appDetail, currentPic } = appStore;
+    const { typeVersions } = appVersionStore;
 
     let screenshots = [];
     if (appDetail.screenshots) {
       try {
         screenshots = JSON.parse(appDetail.screenshots) || [];
-      } catch (err) {}
-    }
-
-    if (isHelmApp) {
-      return <Helm readme={appVersionStore.readme} />;
+      } catch (err) {
+        screenshots = [];
+      }
     }
 
     return (
-      <Fragment>
-        <QingCloud
+      <div className={styles.appDetail}>
+        <div className={styles.title}>{t('Introduction')}</div>
+        <pre className={styles.description}>
+          {appDetail.description || t('none')}
+        </pre>
+        <div className={styles.title}>{t('截图')}</div>
+        <Screenshots
           app={appDetail}
-          currentPic={appStore.currentPic}
+          currentPic={currentPic}
           changePicture={this.changePicture}
           pictures={screenshots}
         />
-        <Information app={appDetail} repo={repoStore.repoDetail} />
-      </Fragment>
+        <div className={styles.title}>{t('Versions')}</div>
+        <Versions typeVersions={typeVersions} />
+      </div>
     );
   }
 
-  renderVersions() {
+  renderTypeVersions() {
     const {
       appStore, appVersionStore, user, t
     } = this.props;
+    const { typeVersions } = appVersionStore;
     const { appDetail } = appStore;
-    const appVersions = appVersionStore.versions.toJSON();
+    const { activeType, activeVersion } = this.state;
+
+    const types = typeVersions.map(item => item.type);
+    const selectItem = _.find(typeVersions, { type: activeType || types[0] }) || {};
+    const versions = selectItem.versions || [];
+    const selectVersion = activeVersion || _.get(versions, '[0].version_id');
+
+    const url = `/dashboard/apps/${appDetail.app_id}/deploy/${selectVersion}`;
 
     return (
-      <Section>
-        <Card className={styles.detailCard}>
-          <Link to={`/store/${appDetail.app_id}/deploy`}>
-            <Button
-              className={styles.deployBtn}
-              type="primary"
-              disabled={appDetail.status === 'deleted' || !user.user_id}
-            >
-              {t('Deploy')}
-            </Button>
-          </Link>
-          <div className={styles.versions}>
-            <p>{t('Versions')}</p>
-            <ul>
-              {appVersions
-                .sort((verA, verB) => versionCompare(verA.name, verB.name) < 0)
-                .map((version, idx) => (
-                  <li key={idx} className={classnames(styles[version.status])}>
-                    <span className={styles.name} title={version.name}>
-                      {version.name}
-                    </span>
-                    <span className={styles.time}>
-                      {formatTime(version.create_time, 'YYYY/MM/DD')}
-                    </span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        </Card>
-
-        <Panel className={styles.detailCard}>
-          <VersionItem
-            title={t('Application Version')}
-            value={get(appDetail, 'latest_app_version.name')}
-          />
-          <VersionItem title={t('Home')} value={appDetail.home} type="link" />
-          <VersionItem
-            title={t('Source repository')}
-            value={appDetail.sources}
-            type="link"
-          />
-          <VersionItem
-            title={t('Maintainers')}
-            value={appDetail.maintainers}
-            type="maintainer"
-          />
-          <VersionItem title={t('Related')} />
-        </Panel>
-      </Section>
+      <div className={styles.typeVersions}>
+        <dl>
+          <dt>{t('Delivery type')}:</dt>
+          <dd className={styles.types}>
+            {types.map(type => (
+              <label
+                key={type}
+                onClick={() => this.changeType(type, 'activeType')}
+                className={classnames({
+                  [styles.active]: (activeType || types[0]) === type
+                })}
+              >
+                {getVersionTypesName(type) || t('None')}
+              </label>
+            ))}
+          </dd>
+        </dl>
+        <dl>
+          <dt>{t('版本号')}:</dt>
+          <dd className={styles.types}>
+            {versions.map(item => (
+              <label
+                key={item.version_id}
+                onClick={() => this.changeType(item.version_id, 'activeVersion')
+                }
+                className={classnames({
+                  [styles.active]: selectVersion === item.version_id
+                })}
+              >
+                {item.name}
+              </label>
+            ))}
+          </dd>
+        </dl>
+        <dl>
+          <dt />
+          <dd>
+            {user.user_id ? (
+              <Link to={url}>
+                <Button type="primary">{t('立即部署')}</Button>
+              </Link>
+            ) : (
+              <Link to={`/login?redirect_url=${url}`}>
+                <Button type="primary">{t('登录后部署')}</Button>
+              </Link>
+            )}
+          </dd>
+        </dl>
+      </div>
     );
   }
 
-  renderReasonDialog = () => {
-    const { appVersionStore, t } = this.props;
-    const {
-      isDialogOpen, hideModal, changeReason, reason
-    } = appVersionStore;
+  renderAppBase() {
+    const { appStore, t } = this.props;
+    const { appDetail } = appStore;
 
     return (
-      <Dialog
-        title={t('Reject reason')}
-        isOpen={isDialogOpen}
-        onCancel={hideModal}
-        onSubmit={this.submitReason}
-      >
-        <textarea
-          className={styles.reason}
-          onChange={changeReason}
-          maxLength={500}
-        >
-          {reason}
-        </textarea>
-      </Dialog>
-    );
-  };
-
-  renderAdminReview = () => {
-    const { appVersionStore, match, t } = this.props;
-    const { versions } = appVersionStore;
-    const { versionId } = match.params;
-    const result = versions.filter(item => item.version_id === versionId);
-    const version = result[0] || versions[0];
-
-    if (!version) {
-      return null;
-    }
-
-    appVersionStore.version = version;
-    const { status } = version;
-    const handleMap = {
-      // rejected: 'pass',
-      submitted: 'pass', // or action 'reject'
-      active: 'suspend',
-      suspended: 'recover'
-    };
-    const handle = handleMap[status];
-
-    return (
-      <div className={classnames(styles.reviewContent, styles[version.status])}>
-        <label className={styles.dot} />
-        {t('app_review_desc', { version: version.name })}
-        {t(mappingStatus(capitalize(version.status)))}
-        {version.status === 'rejected'
-          && version.message && (
-            <div className={styles.message}>
-              {t('Reject reason')}: {version.message}
-            </div>
-        )}
-
-        {Boolean(handle) && (
-          <div className={styles.operateBtns}>
-            <Button
-              type="primary"
-              onClick={() => this.handleVersion(handle, version.version_id)}
-            >
-              {t(mappingStatus(capitalize(handle)))}
-            </Button>
-            {status === 'submitted' && (
-              <Button type="delete" onClick={this.showReasonDialog}>
-                {t('Reject')}
-              </Button>
-            )}
+      <div className={styles.appBase}>
+        <span className={styles.icon}>
+          <Image
+            src={appDetail.icon}
+            iconSize={48}
+            iconLetter={appDetail.name}
+          />
+        </span>
+        <div className={styles.title}>{appDetail.name}</div>
+        <div className={styles.abstraction}>
+          <div className={styles.word}>
+            {appDetail.abstraction || t('None')}
           </div>
-        )}
+          <div className={styles.category}>
+            {t('Category')}:&nbsp;
+            <label>
+              {_.get(appDetail, 'category_set', [])
+                .filter(cate => cate.category_id && cate.status === 'enabled')
+                .map(cate => cate.name)
+                .join(', ')}
+            </label>
+          </div>
+        </div>
       </div>
     );
-  };
+  }
 
   render() {
-    const { appStore, user } = this.props;
-    const { isLoading } = this.state;
-    const { appDetail } = appStore;
-    const { isNormal, isDev, isAdmin } = user;
-    const { path } = this.props.match;
-
-    const isShowReview = isAdmin && path.indexOf('review') > -1 && appDetail.status !== 'deleted';
-    const backPath = isShowReview ? 'App Reviews' : 'All Apps';
-    const linkPath = isDev
-      ? `My Apps>${appDetail.name}`
-      : `Store>${backPath}>${appDetail.name}`;
-    const isHome = path.startsWith('/apps/');
-    const backLabel = isHome ? 'Home' : 'Store';
-    const backLink = isHome ? '/' : '/store';
+    const { appStore, t } = this.props;
+    const { detailTab, isLoading, totalCount } = appStore;
 
     return (
-      <Layout
-        className={classnames({ [styles.appDetail]: isHome })}
-        isLoading={isLoading}
-        pageTitle="appDetail"
-        hasSearch
-        isHome={isHome}
-        backBtn={
-          (isNormal || isHome) && <BackBtn label={backLabel} link={backLink} />
-        }
-      >
-        {(isAdmin || isDev) && !isHome && <BreadCrumb linkPath={linkPath} />}
-
+      <Layout isLoading={isLoading} isHome>
+        <TitleBanner
+          hasSearch
+          title={t('App Store')}
+          description={t('APP_TOTAL_DESCRIPTION', { total: totalCount })}
+        />
         <Grid>
           <Section size={8}>
-            <Panel className={styles.introCard}>
-              <Meta app={appDetail} />
-              {this.renderBody()}
-            </Panel>
+            <Card>
+              {this.renderAppBase()}
+              {this.renderTypeVersions()}
+              <DetailTabs
+                className={styles.detailTabs}
+                tabs={tabs}
+                changeTab={this.changeTab}
+              />
+              {detailTab === 'appDetail' && this.renderAppDetail()}
+              {detailTab === 'instructions' && this.renderInstructions()}
+            </Card>
           </Section>
 
-          {this.renderVersions()}
+          <Section size={4}>{this.renderProviderInfo()}</Section>
         </Grid>
-
-        {isShowReview && this.renderAdminReview()}
-        {this.renderReasonDialog()}
       </Layout>
     );
   }

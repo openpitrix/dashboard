@@ -13,20 +13,13 @@ const Account = lazy(() => import('../pages/Account'));
 const Store = lazy(() => import('../pages/Store'));
 
 const routes = {
-  '/': Home,
+  // for no login
   '/login': Login,
+  '/': Home,
+  '/apps': Home,
   '/apps/search/:search': Home,
   '/apps/category/:category': Home,
   '/apps/:appId': AppDetail,
-
-  '/store': Store,
-  '/store/search/:search': Store,
-  '/store/category/:category': Store,
-  '/store/:appId': AppDetail,
-  // todo
-  '/store/:appId/deploy': Dash.AppDeploy,
-
-  '/:dash': Dash.Overview,
 
   // only for user
   '/:dash/purchased': Dash.Purchased,
@@ -76,7 +69,9 @@ const routes = {
   '/:dash/app-review/:reviewId': Dash.ReviewDetail,
 
   // for all roles
-  '/:dash/app/:appId/deploy/:versionId?': Dash.AppDeploy,
+  '/:dash': Dash.Overview,
+
+  '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 
   '/:dash/account': Account,
 

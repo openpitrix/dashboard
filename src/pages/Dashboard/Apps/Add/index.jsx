@@ -213,7 +213,7 @@ export default class AppAdd extends Component {
             <Button
               type="primary"
               onClick={() => {
-                history.push(`/store/${appDetail.app_id}/deploy`);
+                history.push(`/dashboard/apps/${appDetail.app_id}/deploy`);
               }}
             >
               {t('Deploy Test')}

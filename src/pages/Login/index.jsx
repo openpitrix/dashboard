@@ -38,7 +38,7 @@ export default class Login extends Component {
 
     let defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
     if (user.isNormal) {
-      defaultUrl = '/store';
+      defaultUrl = '/apps';
     }
     if (!(res && res.err)) {
       localStorage.removeItem('menuApps'); // clear newest visited menu apps

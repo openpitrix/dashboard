@@ -242,7 +242,7 @@ export default class Overview extends React.Component {
             <Panel
               type="app"
               title="Latest Apps"
-              linkTo="/store"
+              linkTo="/apps"
               len={appList.length}
             >
               <AppList apps={appList} />

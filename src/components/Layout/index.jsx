@@ -113,7 +113,8 @@ class Layout extends Component {
       isCenterPage,
       centerWidth,
       hasBack,
-      user
+      user,
+      match
     } = this.props;
 
     const hasMenu = !user.isNormal && !isHome;

@@ -14,12 +14,12 @@ $profile-hover-color: #efe6f8;
 }
 
 .header {
-  position: absolute;
+  position: fixed;
   top: 0;
+  z-index: 99;
   width: 100%;
   height: $header-height;
-  z-index: 99;
-  background: none;
+  background-color: $N400;
 
   .wrapper {
     width: $content-width;
@@ -99,9 +99,10 @@ $profile-hover-color: #efe6f8;
   .login{
     float: right;
     display: inline-block;
-    margin: 14px 0;
-    line-height: 20px;
-    color: $N500;
+    margin: 16px 0;
+    line-height: 16px;
+    font-size: 12px;
+    color: $N0;
     font-weight: 500;
     opacity: 0.9;
 
@@ -118,9 +119,9 @@ $profile-hover-color: #efe6f8;
       height: 16px;
       width: auto;
       line-height: 16px;
-      font-size: 14px;
-      opacity: 0.9;
-      color: $N500;
+      font-size: 12px;
+      color: $N65;
+      opacity: 1;
       font-weight: 500;
       border: 0 none;
 
@@ -128,15 +129,18 @@ $profile-hover-color: #efe6f8;
         float: right;
         margin-left: 2px;
         svg {
-          --primary-color: #{$N500};
-          --secondary-color: #{$N500};
+          --primary-color: #{$N65};
+          --secondary-color: #{$N65};
         }
       }
 
-      &:hover{
-        border: 0 none;
-        box-shadow: none;
-        opacity: 1;
+      &:hover {
+        color: $N30;
+
+        .icon svg {
+          --primary-color: #{$N30};
+          --secondary-color: #{$N30};
+        }
       }
     }
   }
@@ -149,36 +153,7 @@ $profile-hover-color: #efe6f8;
   }
 }
 
-.deepInner,
-.deepHome {
-  position: fixed;
-}
-
-.deepHome {
-  background: linear-gradient(to left, $P75, #854fb9 32%, #484999);
-  animation-duration: 0.5s;
-  animation-name: deepHeader;
-  animation-iteration-count: 1;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-
-  .login {
-    color: $N0;
-  }
-
-  .user [class*='target']{
-    color: $N0;
-
-    .icon svg{
-      --primary-color: #{$N0};
-      --secondary-color: #{$N0};
-    }
-  }
-}
-
-.deepInner {
-  background-color: $N400;
-
+.menusHeader {
   .logoIcon {
     float: left;
     display: inline-block;
@@ -216,26 +191,6 @@ $profile-hover-color: #efe6f8;
       &.active {
         font-weight: 500;
         color: $N10;
-      }
-    }
-  }
-
-  .user [class*='target'] {
-    font-size: 12px;
-    color: $N65;
-    opacity: 1;
-
-    .icon svg{
-      --primary-color: #{$N65};
-      --secondary-color: #{$N65};
-    }
-
-    &:hover {
-      color: $N30;
-
-      .icon svg {
-        --primary-color: #{$N30};
-        --secondary-color: #{$N30};
       }
     }
   }

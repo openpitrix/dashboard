@@ -63,7 +63,7 @@ export default class AppList extends PureComponent {
                   icon={app.icon}
                   name={app.name}
                   desc={app.description}
-                  link={`/${skipLink}/${app.app_id}`}
+                  link={`/apps/${app.app_id}`}
                   fold
                 />
               ))}
@@ -94,7 +94,7 @@ export default class AppList extends PureComponent {
               name={app.name}
               desc={app.description}
               key={idx}
-              link={`/${skipLink}/${app.app_id}`}
+              link={`/apps/${app.app_id}`}
             />
           ))}
 
