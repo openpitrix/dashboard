@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { observer, inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import { Image } from 'components/Base';
 import SearchBox from 'pages/Home/SearchBox';
@@ -11,18 +10,15 @@ import SearchBox from 'pages/Home/SearchBox';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore }) => ({
-  rootStore,
-  appStore: rootStore.appStore,
-  user: rootStore.user
-}))
+@inject('rootStore')
 @observer
-class TitleBanner extends Component {
+export default class TitleBanner extends Component {
   static propTypes = {
     className: PropTypes.string,
     description: PropTypes.string,
     hasSearch: PropTypes.bool,
     icon: PropTypes.string,
+    stretch: PropTypes.bool,
     title: PropTypes.string
   };
 
@@ -30,20 +26,33 @@ class TitleBanner extends Component {
     icon: '',
     title: '',
     description: '',
-    hasSearch: false
+    hasSearch: false,
+    stretch: false
   };
 
   render() {
     const {
-      icon, title, description, hasSearch, rootStore, t
+      icon,
+      title,
+      description,
+      hasSearch,
+      className,
+      stretch,
+      rootStore,
+      t
     } = this.props;
-    const { fixNav } = rootStore;
 
     return (
       <div
-        className={classnames('banner', styles.titleBanner, {
-          [styles.shrink]: fixNav
-        })}
+        className={classnames(
+          'banner',
+          styles.titleBanner,
+          {
+            [styles.stretch]: stretch,
+            [styles.shrink]: rootStore.fixNav
+          },
+          className
+        )}
       >
         <div className={styles.wrapper}>
           <div className={styles.words}>
@@ -62,5 +71,3 @@ class TitleBanner extends Component {
     );
   }
 }
-
-export default withRouter(TitleBanner);

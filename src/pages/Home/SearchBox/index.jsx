@@ -12,11 +12,7 @@ import styles from './index.scss';
 
 @translate()
 @withRouter
-@inject(({ rootStore }) => ({
-  rootStore,
-  appStore: rootStore.appStore,
-  user: rootStore.user
-}))
+@inject('rootStore')
 @observer
 export default class SearchBox extends React.Component {
   static propTypes = {

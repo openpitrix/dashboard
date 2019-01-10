@@ -15,7 +15,7 @@ import { getUrlParam } from 'utils/url';
 
 import styles from './index.scss';
 
-const cateLatest = 'ctg-latest';
+const cateLatest = 'latest';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -45,16 +45,24 @@ export default class Home extends Component {
     rootStore.setNavFix(Boolean(category || this.searchWord));
     if (!(category || this.searchWord)) {
       this.threshold = this.getThreshold();
-      window.onscroll = this.handleScroll;
+      window.onscroll = _.throttle(this.handleScroll, 100);
     }
     window.scroll({ top: 0 });
 
     await categoryStore.fetchAll();
-
     await appStore.fetchStoreAppsCount();
-    // fetch active apps
+
+    // always fetch active apps
     appStore.selectStatus = 'active';
-    await appStore.fetchActiveApps();
+
+    if (this.searchWord || category) {
+      await appStore.fetchAll({
+        search_word: this.searchWord,
+        category_id: category
+      });
+    } else {
+      await appStore.fetchActiveApps();
+    }
 
     this.setState({
       pageLoading: false
@@ -90,10 +98,11 @@ export default class Home extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore } = this.props;
+    const { appStore, rootStore } = this.props;
 
     window.onscroll = null;
     appStore.reset();
+    rootStore.setSearchWord();
   }
 
   getThreshold() {
@@ -207,7 +216,6 @@ export default class Home extends Component {
 
     return (
       <Layout isHome>
-        <Notification />
         <div
           className={classnames(styles.content, { [styles.fixNav]: fixNav })}
         >
@@ -215,6 +223,7 @@ export default class Home extends Component {
             title="App Store"
             description={t('APP_STORE_DESC', { total: countStoreApps })}
             hasSearch
+            stretch
           />
           {this.renderCateMenu()}
 
@@ -231,6 +240,7 @@ export default class Home extends Component {
                 title={categoryTitle}
                 search={this.searchWord}
                 isLoading={pageLoading}
+                fixNav={fixNav}
               />
             </InfiniteScroll>
 

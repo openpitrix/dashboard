@@ -12,13 +12,10 @@ exports[`Home basic render 1`] = `
     style="max-width:100%"
   >
     <div
-      class="wrapper"
-    />
-    <div
       class="content"
     >
       <div
-        class="banner titleBanner"
+        class="banner titleBanner stretch"
       >
         <div
           class="wrapper"
@@ -105,15 +102,11 @@ exports[`Home basic render 1`] = `
         class="apps"
       >
         <div
-          class=""
+          class="appList fixNav"
         >
           <div
-            class="appList"
-          >
-            <div
-              class="title"
-            />
-          </div>
+            class="title"
+          />
         </div>
       </div>
     </div>

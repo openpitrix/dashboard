@@ -13,6 +13,7 @@ export default class AppList extends PureComponent {
   static propTypes = {
     apps: PropTypes.array,
     className: PropTypes.string,
+    fixNav: PropTypes.bool,
     isLoading: PropTypes.bool,
     search: PropTypes.string,
     title: PropTypes.string
@@ -20,7 +21,6 @@ export default class AppList extends PureComponent {
 
   static defaultProps = {
     apps: [],
-    categoryApps: [],
     isLoading: false
   };
 
@@ -31,31 +31,45 @@ export default class AppList extends PureComponent {
 
   render() {
     const {
-      apps, className, isLoading, t
+      apps, className, isLoading, fixNav, t
     } = this.props;
 
     return (
-      <div className={classnames(className)}>
-        <div className={styles.appList}>
-          {<CardTitle title={this.getSearchTitle()} more={false} />}
+      <div
+        className={classnames(
+          styles.appList,
+          {
+            [styles.fixNav]: !fixNav
+          },
+          className
+        )}
+      >
+        {<CardTitle title={this.getSearchTitle()} more={false} />}
 
-          {apps.map(({
-            app_id, name, icon, description
-          }, idx) => (
+        {apps.map(
+          (
+            {
+              app_id, name, icon, description, app_version_types, maintainers
+            },
+            idx
+          ) => (
             <Card
               icon={icon}
               name={name}
               desc={description}
-              key={idx}
               link={`/apps/${app_id}`}
+              key={idx}
+              canToggle
+              maintainer={maintainers}
+              type={app_version_types}
             />
-          ))}
+          )
+        )}
 
-          {!apps.length
-            && !isLoading && (
-              <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
-          )}
-        </div>
+        {!apps.length
+          && !isLoading && (
+            <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
+        )}
       </div>
     );
   }

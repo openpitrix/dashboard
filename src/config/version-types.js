@@ -49,8 +49,7 @@ export const getVersionTypesName = types => {
   }
 
   const typeArr = types.split(',');
-  const names = typeArr.map(
+  return typeArr.map(
     type => (_.find(versionTypes, { value: type }) || {}).name || type
   );
-  return names;
 };

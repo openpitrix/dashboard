@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
-import { toUrl } from 'utils/url';
 
 import Layout, {
   Grid, Section, Card, TitleBanner
@@ -187,59 +186,6 @@ export default class AppDetail extends Component {
     const selectItem = _.find(typeVersions, { type: activeType || types[0] }) || {};
     const versions = selectItem.versions || [];
     const selectVersion = activeVersion || _.get(versions, '[0].version_id');
-
-    //   return (
-    //     <Section>
-    //       <Card className={styles.detailCard}>
-    //         <Link to={toUrl(`/:dash/app/${appDetail.app_id}/deploy`)}>
-    //           <Button
-    //             className={styles.deployBtn}
-    //             type="primary"
-    //             disabled={appDetail.status === 'deleted' || !user.user_id}
-    //           >
-    //             {t('Deploy')}
-    //           </Button>
-    //         </Link>
-    //         <div className={styles.versions}>
-    //           <p>{t('Versions')}</p>
-    //           <ul>
-    //             {appVersions
-    //               .sort((verA, verB) => versionCompare(verA.name, verB.name) < 0)
-    //               .map((version, idx) => (
-    //                 <li key={idx} className={classnames(styles[version.status])}>
-    //                   <span className={styles.name} title={version.name}>
-    //                     {version.name}
-    //                   </span>
-    //                   <span className={styles.time}>
-    //                     {formatTime(version.create_time, 'YYYY/MM/DD')}
-    //                   </span>
-    //                 </li>
-    //               ))}
-    //           </ul>
-    //         </div>
-    //       </Card>
-    //
-    //       <Panel className={styles.detailCard}>
-    //         <VersionItem
-    //           title={t('Application Version')}
-    //           value={get(appDetail, 'latest_app_version.name')}
-    //         />
-    //         <VersionItem title={t('Home')} value={appDetail.home} type="link" />
-    //         <VersionItem
-    //           title={t('Source repository')}
-    //           value={appDetail.sources}
-    //           type="link"
-    //         />
-    //         <VersionItem
-    //           title={t('Maintainers')}
-    //           value={appDetail.maintainers}
-    //           type="maintainer"
-    //         />
-    //         <VersionItem title={t('Related')} />
-    //       </Panel>
-    //     </Section>
-    //   );
-    // }
 
     const url = `/dashboard/apps/${appDetail.app_id}/deploy/${selectVersion}`;
 

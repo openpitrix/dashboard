@@ -32,6 +32,8 @@ export default class RootStore extends Store {
 
   @observable searchWord = ''; // home page search word
 
+  lastSetFixStamp = Date.now();
+
   constructor(initialState) {
     super(initialState);
     this.state = initialState;
@@ -45,11 +47,16 @@ export default class RootStore extends Store {
 
   @action
   setNavFix = fixNav => {
+    if (Date.now() - this.lastSetFixStamp < 150) {
+      // fixNav在临界值造成的抖动，忽略此次设置
+      return;
+    }
+    this.lastSetFixStamp = Date.now();
     this.fixNav = !!fixNav;
   };
 
   @action
-  setSearchWord = word => {
+  setSearchWord = (word = '') => {
     this.searchWord = word;
   };
 
