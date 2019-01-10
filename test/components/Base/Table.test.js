@@ -53,6 +53,12 @@ describe('Base/Table', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  it('render emptyText', () => {
+    const wrapper = setup('render', { columns, dataSource: [] });
+
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
   it('call onChange', () => {
     const wrapper = setup('mount', {
       columns,

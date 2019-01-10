@@ -1,9 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Base/Iamge basic render 1`] = `
-<img
-  class="img"
-  data-origin-url="/helloword"
-  src="/helloword"
-/>
+exports[`Base/Iamge renders attachments 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {
+      "class": "img",
+      "data-origin-url": "/helloword",
+      "src": "/helloword",
+    },
+    "children": Array [],
+    "name": "img",
+    "namespace": "http://www.w3.org/1999/xhtml",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "root": Object {
+      "attribs": Object {},
+      "children": Array [
+        [Circular],
+      ],
+      "name": "root",
+      "namespace": "http://www.w3.org/1999/xhtml",
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "type": "root",
+      "x-attribsNamespace": Object {},
+      "x-attribsPrefix": Object {},
+    },
+    "type": "tag",
+    "x-attribsNamespace": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+    "x-attribsPrefix": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xml": false,
+  },
+}
 `;
