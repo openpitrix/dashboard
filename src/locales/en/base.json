@@ -75,5 +75,6 @@
   "DELETE_RUNTIME_CONFIRM": "Are you sure to delete this runtime ?",
   "TIPS_ADJUST_APP_CATE": "Please adjust category of {{appNames}} these {{appCount}} apps",
   "Upload_Package_Error": "Some files have errors, please check",
-  "APP_TOTAL_DESCRIPTION": "Openpitrix oficial store，there are {{total}} apps"
+  "APP_TOTAL_DESCRIPTION": "Openpitrix oficial store，there are {{total}} apps",
+  "APP_SHELF_AND_SELL": "Your application shelf to official store and start selling ~"
 }

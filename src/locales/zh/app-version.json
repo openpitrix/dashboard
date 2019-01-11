@@ -62,5 +62,6 @@
   "Change password successful": "修改密码成功。",
   "The file size cannot exceed 2M": "上传的文件不能超过2M",
   "Upload_Package_Error": "部分文件有报错，请检查后",
-  "file_format_note": "文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP"
+  "file_format_note": "文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP",
+  "APP_SHELF_AND_SELL": "你的应用已经上架到官方商店，开始售卖了~"
 }

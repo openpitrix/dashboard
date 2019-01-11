@@ -214,7 +214,7 @@
   "Confirm": "确定",
   "Cancel": "取消",
   "Selected": "已选中",
-  "No search data": "没有相关搜索结果！",
+  "No data": "没有相关数据",
   "Guide": "说明",
   "Create Repo explain": "在OpenPitrix中，部署的每个应用程序都是基础软件包存储库，换句话说，如果要将OpenPitrix用于多云应用程序管理器，则需要先创建存储库。应用程序管理器可以将包存储到http / https服务器或S3对象存储。",
   "Create Runtime explain": "环境是云服务商，它可以是AWS、GCE、QingCloud、Kubernetes、OpenStack、VMware VSphere等，让OpenPitrix有权限访问这些云服务商，OpenPitrix将管理所有这些应用程序。",

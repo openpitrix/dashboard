@@ -89,7 +89,7 @@ export default class AppVersionStore extends Store {
 
   @observable disableNextStep = false;
 
-  steps = 2;
+  steps = 3;
 
   get appStore() {
     return this.getStore('app');
@@ -186,7 +186,7 @@ export default class AppVersionStore extends Store {
     const status = _.get(
       reviewStatus,
       `${this.activeType}.${loginUser.username}`,
-      ''
+      'none'
     );
 
     const defaultParams = {
@@ -295,6 +295,10 @@ export default class AppVersionStore extends Store {
       this.hideModal();
       // this.success(`${capitalize(handleType)} this version successfully`);
       await this.fetch(versionId);
+
+      if (handleType === 'release') {
+        this.showTypeDialog('release');
+      }
     } else {
       return result;
     }
@@ -329,7 +333,7 @@ export default class AppVersionStore extends Store {
     if (get(result, 'version_id')) {
       this.hideModal();
       await this.fetch(versionId);
-      await this.fetchReviewDetail(this.version.app_id, versionId);
+      await this.fetchReviewDetail(this.reviewDetail.review_id);
 
       if (handleType === 'review') {
         this.isTipsOpen = true;
@@ -603,6 +607,21 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  goBack = () => {
+    this.isSubmitCheck = false;
+    this.activeStep = 1;
+  };
+
+  @action
+  prevStep = () => {
+    this.errorMessage = '';
+    this.disableNextStep = false;
+    if (this.activeStep > 1) {
+      this.activeStep = this.activeStep - 1;
+    }
+  };
+
+  @action
   nextStep = async () => {
     if (this.activeStep === 1) {
       await this.appStore.modifyApp();
@@ -610,6 +629,11 @@ export default class AppVersionStore extends Store {
       const data = _.pick(this.version, ['version_id', 'name', 'description']);
       await this.modify(data);
 
+      // get data for app detail page
+      const { appDetail, fetchActiveApps } = this.appStore;
+      await this.fetchTypeVersions(appDetail.app_id);
+      await fetchActiveApps();
+    } else if (this.activeStep === 3) {
       await this.handle('submit', this.version.version_id);
     }
 

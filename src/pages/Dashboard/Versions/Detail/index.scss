@@ -255,3 +255,23 @@
     }
   }
 }
+
+.checkInfo {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.releaseContent {
+  padding: 50px 0;
+  text-align: center;
+
+  .title {
+    @include title-font;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    @include note-font;
+    margin-bottom: 16px;
+  }
+}
