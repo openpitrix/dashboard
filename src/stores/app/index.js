@@ -107,7 +107,8 @@ class AppStore extends Store {
   @action
   fetchStoreAppsCount = async () => {
     const res = await this.request.get('apps', {
-      display_columns: ['']
+      display_columns: [''],
+      status: 'active'
     });
 
     this.countStoreApps = _.get(res, 'total_count', 0);
@@ -168,19 +169,6 @@ class AppStore extends Store {
   @action
   fetchActiveApps = async (params = {}) => {
     await this.fetchAll(Object.assign(params, { action: 'active_apps' }));
-
-    // params = this.normalizeParams(params);
-    //
-    // if (this.searchWord) {
-    //   params.search_word = this.searchWord;
-    // }
-    //
-    // this.isLoading = true;
-    // const result = await this.request.get('active_apps', params);
-    // this.isLoading = false;
-    //
-    // this.apps = get(result, 'app_set', []);
-    // this.totalCount = get(result, 'total_count', 0);
   };
 
   @action

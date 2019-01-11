@@ -22,10 +22,6 @@ export default class SearchBox extends React.Component {
     className: PropTypes.string
   };
 
-  // componentWillUnmount() {
-  //   this.props.rootStore.setSearchWord();
-  // }
-
   onSearch = value => {
     this.props.rootStore.setSearchWord(value);
     this.props.history.push(`/?q=${value}`);

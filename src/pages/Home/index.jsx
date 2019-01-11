@@ -29,37 +29,42 @@ export default class Home extends Component {
   static isHome = true;
 
   state = {
-    pageLoading: true
+    pageLoading: true,
+    cate: ''
   };
 
   get searchWord() {
     return this.props.search || getUrlParam('q');
   }
 
+  get category() {
+    return this.state.cate || getUrlParam('cate');
+  }
+
   async componentDidMount() {
-    const {
-      rootStore, appStore, categoryStore, match
-    } = this.props;
-    const { category } = match.params;
+    const { rootStore, appStore, categoryStore } = this.props;
 
-    rootStore.setNavFix(Boolean(category || this.searchWord));
+    rootStore.setNavFix(Boolean(this.category || this.searchWord));
 
-    if (!(category || this.searchWord)) {
+    if (!(this.category || this.searchWord)) {
       this.threshold = this.getThreshold();
       window.onscroll = _.debounce(this.handleScroll, 100);
     }
     window.scroll({ top: 0 });
 
-    await categoryStore.fetchAll();
+    await categoryStore.fetchAll({ noLimit: true });
     await appStore.fetchStoreAppsCount();
 
     // always fetch active apps
-    appStore.selectStatus = 'active';
+    Object.assign(appStore, {
+      selectStatus: 'active',
+      currentPage: 1
+    });
 
-    if (this.searchWord || (category && category !== cateLatest)) {
+    if (this.searchWord || (this.category && this.category !== cateLatest)) {
       await appStore.fetchAll({
         search_word: this.searchWord,
-        category_id: category
+        category_id: this.category
       });
     } else {
       await appStore.fetchActiveApps();
@@ -70,22 +75,21 @@ export default class Home extends Component {
     });
   }
 
-  async componentDidUpdate(prevProps) {
-    const { match, appStore, search } = this.props;
-    const { category } = match.params;
+  async componentDidUpdate(prevProps, prevState) {
+    const { appStore, search } = this.props;
+    const { cate } = this.state;
 
-    appStore.showActiveApps = category === cateLatest;
+    appStore.showActiveApps = this.category === cateLatest;
 
-    if (prevProps.match.params.category !== category) {
+    if (prevState.cate !== cate) {
       appStore.currentPage = 1;
-
-      if (category === cateLatest) {
+      // reset search wd
+      appStore.searchWord = '';
+      if (cate === cateLatest) {
         await appStore.fetchActiveApps();
       } else {
-        // reset search wd
-        appStore.searchWord = '';
         await appStore.fetchAll({
-          category_id: category
+          category_id: cate
         });
       }
     }
@@ -94,10 +98,11 @@ export default class Home extends Component {
       appStore.searchWord = search;
       appStore.currentPage = 1;
 
-      if (search) {
-        await appStore.fetchAll();
-      } else {
+      if (!search) {
+        this.setState({ cate: cateLatest });
         await appStore.fetchActiveApps();
+      } else {
+        await appStore.fetchAll();
       }
     }
   }
@@ -133,20 +138,22 @@ export default class Home extends Component {
     } else if (!needFixNav && fixNav) {
       rootStore.setNavFix(false);
     }
-
-    // todo
   };
 
-  handleClickCate = cate_id => {
-    this.props.history.push(`/cat/${cate_id}`);
+  handleClickCate = cate => {
+    const { rootStore, history } = this.props;
+
+    this.setState({
+      cate
+    });
+    rootStore.setNavFix(true);
+    rootStore.setSearchWord();
+    history.push(`/?cate=${cate}`);
   };
 
   renderCateMenu() {
-    const {
-      match, categoryStore, rootStore, t
-    } = this.props;
+    const { categoryStore, rootStore, t } = this.props;
     const { categories } = categoryStore;
-    const { category } = match.params;
 
     return (
       <div
@@ -160,7 +167,7 @@ export default class Home extends Component {
             <li
               key={cateLatest}
               className={classnames(styles.item, {
-                [styles.active]: category === cateLatest
+                [styles.active]: this.category === cateLatest
               })}
               onClick={() => this.handleClickCate(cateLatest)}
             >
@@ -177,7 +184,7 @@ export default class Home extends Component {
               <li
                 key={category_id}
                 className={classnames(styles.item, {
-                  [styles.active]: category === category_id
+                  [styles.active]: this.category === category_id
                 })}
                 onClick={() => this.handleClickCate(category_id)}
               >
@@ -198,7 +205,7 @@ export default class Home extends Component {
 
   render() {
     const {
-      rootStore, appStore, categoryStore, match, t
+      rootStore, appStore, categoryStore, t
     } = this.props;
     const { pageLoading } = this.state;
     const { fixNav } = rootStore;
@@ -212,9 +219,8 @@ export default class Home extends Component {
       countStoreApps
     } = appStore;
     const { categories } = categoryStore;
-    const { category } = match.params;
     const categoryTitle = _.get(
-      _.find(categories, { category_id: category }),
+      _.find(categories, { category_id: this.category }),
       'name',
       ''
     );
@@ -238,7 +244,7 @@ export default class Home extends Component {
               pageStart={currentPage}
               loadMore={loadMore}
               isLoading={isLoading}
-              hasMore={Boolean(category || this.searchWord) && hasMore}
+              hasMore={Boolean(this.category || this.searchWord) && hasMore}
             >
               <AppList
                 apps={apps}
