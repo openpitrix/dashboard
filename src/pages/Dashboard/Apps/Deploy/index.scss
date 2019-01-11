@@ -1,7 +1,111 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
-.deployApp{
-  min-width: 980px !important;
+.deployApp {
+  min-width: 1128px !important;
+  margin: 0 auto;
+}
+
+.appBaseInfo {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $N10;
+
+  .title {
+    margin-bottom: 32px;
+  }
+
+  .icon {
+    float: left;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 16px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .name {
+    @include title-font($line-height: 40px, $font-size: 20px);
+    @include textCut;
+  }
+
+  .abstraction {
+    @include note-font;
+  }
+}
+
+.typeVersions {
+  dl {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  dt {
+    @include normal-font;
+    display: inline-block;
+    width: 70px;
+    padding: 6px 12px 6px 0;
+    text-align: right;
+  }
+
+  dd {
+    display: inline-block;
+    float: right;
+    width: calc(100% - 82px);
+  }
+
+  .types {
+    // margin-bottom: 16px;
+
+    > label {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 2px;
+      background-color: $N0;
+      border: 1px solid $N10;
+      font-size: 14px;
+      line-height: 14px;
+      color: $N300;
+      cursor: pointer;
+
+      &.active {
+        color: $P75;
+        border-color: $P75;
+      }
+    }
+  }
+}
+
+.selectRuntime {
+  padding-left: 150px;
+
+  .name {
+    @include normal-font($line-height: 32px);
+    float: left;
+    display: inline-block;
+    margin-right: 20px;
+  }
+
+  .select {
+    float: left;
+    width: 326px;
+  }
+
+  & > a {
+    display: inline-block;
+    margin-left: 12px;
+    line-height: 32px;
+    font-size: 12px;
+  }
+
+}
+
+.deployForm {
+  padding: 32px;
 }
 
 .header {
@@ -10,7 +114,7 @@
     line-height: 20px;
     font-weight: 500;
     color: $title-color;
-    transition: color .3s ease-in-out;
+    transition: color 0.3s ease-in-out;
     &:hover {
       color: lighten($title-color, 20%);
     }
@@ -22,7 +126,7 @@
   margin: 0;
   margin-top: 5px;
 
-  .moduleTitle{
+  .moduleTitle {
     //margin: 50px 0 25px 0;
     margin-bottom: 28px;
     font-size: 16px;
@@ -31,12 +135,12 @@
       margin-top: 50px;
     }
   }
-  .cellModule{
+  .cellModule {
     margin-bottom: 20px;
     min-height: 24px;
     clear: both;
   }
-  .name{
+  .name {
     display: inline-block;
     //float: left;
     margin-right: 24px;
@@ -46,32 +150,34 @@
     color: $N500;
     text-align: right;
   }
-  .selectName{
+  .selectName {
     float: left;
     line-height: 32px;
   }
-  .radioName{
+  .radioName {
     float: left;
     margin-top: 5px;
   }
-  .showWord{
+  .showWord {
     display: inline-block;
     max-width: calc(100% - 192px);
     line-height: 32px;
   }
 
-  .radio,.checkbox{
+  .radio,
+  .checkbox {
     margin-right: 20px;
   }
-  .add{
+  .add {
     display: inline-block;
     font-weight: bold;
   }
-  .select, .input{
+  .select,
+  .input {
     width: 256px;
     margin-right: 12px;
   }
-  .textarea{
+  .textarea {
     box-sizing: border-box;
     padding: 7px 10px;
     width: 400px;
@@ -81,68 +187,38 @@
     border: 1px solid $N30;
     outline: none;
     resize: none;
-    &:focus{
+    &:focus {
       box-shadow: 0 1px 2px 0 rgba(109, 53, 195, 0.15);
       border: solid 1px $P75;
     }
   }
-  .textareaName{
+  .textareaName {
     position: relative;
     bottom: 70px;
   }
 
-  .rightShow{
+  .rightShow {
     margin-top: 7px;
     margin-left: 170px;
   }
-  .note{
+
+  .note {
     font-size: 12px;
     color: $N100;
   }
-  .submitBtnGroup{
+
+  .submitBtnGroup {
     margin: 0 -32px;
     padding: 16px 0 16px 224px;
     border-top: 1px solid $N10;
     margin-bottom: 0;
-    button{
+    button {
       margin-right: 12px;
     }
   }
 
   .createRuntime {
     line-height: 24px;
-  }
-}
-
-.aside {
-  .appIntro {
-    margin-bottom: 16px;
-
-    .icon {
-      float: left;
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      border-radius: 3px;
-      img{
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .name {
-      margin-left: 12px;
-      height: 24px;
-      @include H5RobotoLeftBlack;
-    }
-  }
-}
-
-.actionBtnGroup {
-  padding-left: 220px;
-
-  &>.btn {
-    margin-right: 9px;
   }
 }
 

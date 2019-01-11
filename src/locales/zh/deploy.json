@@ -1,0 +1,15 @@
+{
+  "Basic info": "基本信息",
+  "Node settings": "节点设置",
+  "Deploy settings": "部署配置",
+  "Vxnet settings": "网络设置",
+  "Instance Name": "实例名称",
+  "name": "实例名称",
+  "description": "描述",
+  "Subnet": "网络",
+  "Memory": "内存",
+  "STEPPER_NAME_APP_DEPLOY_HEADER": "部署",
+  "STEPPER_TITLE_APP_DEPLOY_1": "部署实例",
+  "STEPPER_FOOTER_APP_DEPLOY_1": "部署完成的实例将会出现在「我的实例」列表中",
+  "HELM_APP_NAME_TIP": "小写字母开头，最长14个字符（支持数字/小写字母/连字符）"
+}

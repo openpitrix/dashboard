@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import factory from 'lib/config-parser/factory';
@@ -7,6 +8,7 @@ import Section from './section';
 
 import styles from './index.scss';
 
+@translate()
 export default class DeployGroup extends React.Component {
   static propTypes = {
     detail: PropTypes.object,
@@ -37,7 +39,7 @@ export default class DeployGroup extends React.Component {
   };
 
   render() {
-    const { detail, seq } = this.props;
+    const { detail, seq, t } = this.props;
     const isNormalGroup = Array.isArray(detail.items);
     const title = isNormalGroup ? detail.title : detail.label || detail.key;
     const items = isNormalGroup ? detail.items : factory(detail.properties);
@@ -48,9 +50,15 @@ export default class DeployGroup extends React.Component {
       titlePrefix += `${_.capitalize(detail.labelPrefix)}: `;
     }
 
+    if (detail.keyPrefix === 'node') {
+      titlePrefix = 'Node settings';
+    }
+
     return (
       <div className={styles.group}>
-        <h2 className={styles.title}>{`${seq + 1}. ${titlePrefix}${title}`}</h2>
+        <h2 className={styles.title}>{`${seq + 1}. ${t(
+          titlePrefix
+        )} ${title}`}</h2>
         {items.map((item, idx) => (
           <div key={idx}>{this.renderSingle(item)}</div>
         ))}

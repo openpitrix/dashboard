@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { translate } from 'react-i18next';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -10,11 +11,11 @@ import Layout, {
   Grid, Section, Card, TitleBanner
 } from 'components/Layout';
 import { Button, Image } from 'components/Base';
+import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
-import { getVersionTypesName } from 'config/version-types';
 import { formatTime } from 'utils';
-import PropTypes from 'prop-types';
+import { getVersionTypesName } from 'config/version-types';
 import Screenshots from './Screenshots';
 import Versions from './Versions';
 
@@ -45,12 +46,14 @@ export default class AppDetail extends Component {
   };
 
   state = {
+    isLoading: false,
     activeType: '',
     activeVersion: ''
   };
 
   async componentDidMount() {
     const {
+      rootStore,
       appStore,
       appVersionStore,
       vendorStore,
@@ -64,6 +67,8 @@ export default class AppDetail extends Component {
     if (!isCreate) {
       const { appId } = match.params;
 
+      rootStore.setNavFix(true);
+      this.setState({ isLoading: true });
       await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
 
@@ -71,6 +76,7 @@ export default class AppDetail extends Component {
       // await vendorStore.fetch(appDetail.vendor_id);
 
       await appStore.fetchActiveApps();
+      this.setState({ isLoading: false });
     }
   }
 
@@ -294,14 +300,11 @@ export default class AppDetail extends Component {
 
   render() {
     const { appStore, isCreate, t } = this.props;
-    const { detailTab, isLoading, totalCount } = appStore;
+    const { detailTab, totalCount } = appStore;
+    const { isLoading } = this.state;
 
     return (
-      <Layout
-        isLoading={isLoading}
-        className={classnames({ [styles.createOuter]: isCreate })}
-        isHome
-      >
+      <Layout className={classnames({ [styles.createOuter]: isCreate })} isHome>
         {!isCreate && (
           <TitleBanner
             hasSearch
@@ -309,20 +312,21 @@ export default class AppDetail extends Component {
             description={t('APP_TOTAL_DESCRIPTION', { total: totalCount })}
           />
         )}
-
         <Grid>
           <Section size={8}>
-            <Card>
-              {this.renderAppBase()}
-              {this.renderTypeVersions()}
-              <DetailTabs
-                className={styles.detailTabs}
-                tabs={tabs}
-                changeTab={this.changeTab}
-              />
-              {detailTab === 'appDetail' && this.renderAppDetail()}
-              {detailTab === 'instructions' && this.renderInstructions()}
-            </Card>
+            <Loading isLoading={isLoading}>
+              <Card>
+                {this.renderAppBase()}
+                {this.renderTypeVersions()}
+                <DetailTabs
+                  className={styles.detailTabs}
+                  tabs={tabs}
+                  changeTab={this.changeTab}
+                />
+                {detailTab === 'appDetail' && this.renderAppDetail()}
+                {detailTab === 'instructions' && this.renderInstructions()}
+              </Card>
+            </Loading>
           </Section>
 
           <Section size={4}>{this.renderProviderInfo()}</Section>

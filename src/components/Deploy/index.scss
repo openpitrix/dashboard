@@ -1,13 +1,19 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .group {
-  margin-bottom: 60px;
+  margin: 0 -32px 32px;
+  padding: 0 32px 24px;
+  border-bottom: 1px solid $N10;
 
   .title {
-    display: block;
-    margin-bottom: 32px;
-    font-weight: normal;
-    @include BodyRobotoLeftBlack;
+    @include note-font;
+    margin-bottom: 12px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0 none;
   }
 }
 
@@ -15,16 +21,13 @@
   display: flex;
   margin-bottom: 20px;
 
-  .label{
+  .label {
+    @include normal-font($line-height: 16px);
     display: inline-block;
     float: left;
-    margin-right: 24px;
+    margin-right: 20px;
     margin-top: 8px;
     width: 168px;
-    line-height: 1.2;
-    font-size: 14px;
-    font-weight: 500;
-    color: $N500;
     text-align: right;
     word-break: break-word;
   }
@@ -33,7 +36,7 @@
     max-width: 488px;
   }
 
-  .tips{
+  .tips {
     font-size: 12px;
     color: $N100;
     display: inline-block;
@@ -42,28 +45,25 @@
     word-break: break-word;
   }
   .radio {
-
   }
   .input {
     width: 256px;
   }
 
   .select {
-
   }
-  .slider{
+  .slider {
     width: 256px;
     margin-right: 12px;
   }
-  .inputSmall{
+  .inputSmall {
     max-width: 4em;
     padding: 7px 5px;
   }
-  .sliderInput{
+  .sliderInput {
     display: inline-block;
   }
   .text {
-
   }
 }
 

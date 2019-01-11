@@ -148,7 +148,9 @@ class LayoutStepper extends Component {
           type="primary"
           onClick={this.nextStep}
         >
-          <Icon className={styles.icon} name={iconName} size={20} />
+          {!btnText && (
+            <Icon className={styles.icon} name={iconName} size={20} />
+          )}
           <span>{t(btnText || buttonText)}</span>
         </button>
       </div>
@@ -156,13 +158,15 @@ class LayoutStepper extends Component {
   }
 
   render() {
-    const { className, children, stepOption } = this.props;
+    const {
+      className, children, name, stepOption
+    } = this.props;
     return (
       <div className={classnames(styles.layout)}>
         {this.renderTopProgress()}
         {this.renderTopNav()}
         {this.renderTitle()}
-        <Loading isLoading={stepOption.isLoading}>
+        <Loading isLoading={name !== 'APP_DEPLOY' && stepOption.isLoading}>
           <div className={classnames(styles.mainContent, className)}>
             {children}
           </div>

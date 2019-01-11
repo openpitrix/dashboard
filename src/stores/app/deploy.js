@@ -1,9 +1,9 @@
 import { observable, action } from 'mobx';
-import { get } from 'lodash';
+import _ from 'lodash';
 import { Base64 } from 'js-base64';
 import yamlJs from 'js-yaml';
-import { flattenObject } from 'utils';
 
+import { flattenObject } from 'utils';
 import Store from '../Store';
 
 export default class AppDeployStore extends Store {
@@ -25,7 +25,21 @@ export default class AppDeployStore extends Store {
 
   @observable yamlStr = '';
 
+  @observable activeStep = 1;
+
+  @observable disableNextStep = false;
+
+  steps = 1;
+
   configJson = {};
+
+  get appStore() {
+    return this.getStore('app');
+  }
+
+  get runtimeStore() {
+    return this.getStore('runtime');
+  }
 
   get createActionName() {
     return this.getUser().isDev ? 'debug_clusters/create' : 'clusters/create';
@@ -58,16 +72,17 @@ export default class AppDeployStore extends Store {
   }));
 
   @action
-  onChangeFormField = async (fieldName, changedVal) => {
-    if (fieldName === 'cluster.runtime' && !this.isK8s) {
-      this.runtimeId = changedVal;
-      await this.fetchSubnetsByRuntime(changedVal);
+  changeRuntime = async runtimeId => {
+    this.runtimeId = runtimeId;
+    if (!this.isK8s) {
+      await this.fetchSubnetsByRuntime(runtimeId);
     }
+  };
 
-    if (fieldName === 'cluster.version') {
-      this.versionId = changedVal;
-      await this.fetchFilesByVersion(changedVal, this.isK8s);
-    }
+  @action
+  changeVersion = async versionId => {
+    this.versionId = versionId;
+    await this.fetchFilesByVersion(versionId);
   };
 
   yaml2Json = yaml_str => flattenObject(yamlJs.safeLoad(yaml_str));
@@ -87,38 +102,44 @@ export default class AppDeployStore extends Store {
     }
     params.isGlobalQuery = true;
     const result = await this.request.get('app_versions', params);
-    this.versions = get(result, 'app_version_set', []);
+    this.versions = _.get(result, 'app_version_set', []);
     this.isLoading = false;
   };
 
   @action
   fetchRuntimes = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get('runtimes', params);
-    this.runtimes = get(result, 'runtime_set', []);
+
+    await this.runtimeStore.fetchAll(
+      _.assign({ limit: this.maxLimit, status: 'active' }, params)
+    );
+    this.runtimes = this.runtimeStore.runtimes;
+    this.runtimeId = _.get(this.runtimes, '[0].runtime_id', '');
+
+    if (!this.isK8s && this.runtimeId) {
+      await this.fetchSubnetsByRuntime(this.runtimeId);
+    }
     this.isLoading = false;
   };
 
   @action
   fetchSubnetsByRuntime = async runtimeId => {
-    this.isLoading = true;
     const result = await this.request.get(`clusters/subnets`, {
       runtime_id: runtimeId,
       limit: this.maxLimit
     });
-    this.subnets = get(result, 'subnet_set', []);
-    this.isLoading = false;
+    this.subnets = _.get(result, 'subnet_set', []);
   };
 
   @action
-  fetchFilesByVersion = async (versionId, isK8s = false) => {
+  fetchFilesByVersion = async versionId => {
     this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId
       // files: isK8s ? ['values.yaml'] : ['config.json']
     });
 
-    const files = get(result, 'files', {});
+    const files = _.get(result, 'files', {});
 
     if (files['config.json']) {
       this.configJson = JSON.parse(Base64.decode(files['config.json']));
@@ -134,10 +155,7 @@ export default class AppDeployStore extends Store {
 
   @action
   create = async (params = {}) => {
-    this.isLoading = true;
     const res = await this.request.post(this.createActionName, params);
-    this.isLoading = false;
-
     return res;
   };
 }

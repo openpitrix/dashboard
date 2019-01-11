@@ -5,13 +5,24 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import { Button, Image } from 'components/Base';
-import Layout, { BackBtn, CreateResource, BreadCrumb } from 'components/Layout';
-
+import {
+  Button, Select, Image, Notification
+} from 'components/Base';
+import Layout, {
+  Section,
+  Grid,
+  Card,
+  BackBtn,
+  CreateResource,
+  Stepper
+} from 'components/Layout';
 import { Group as DeployGroup } from 'components/Deploy';
+import Loading from 'components/Loading';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
+import { getVersionTypesName } from 'config/version-types';
 
+import { action } from 'mobx/lib/mobx';
 import styles from './index.scss';
 
 const validKeyPrefix = ['cluster', 'node', 'env'];
@@ -28,7 +39,7 @@ const keysShouldBeNumber = [
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  repoStore: rootStore.repoStore,
+  appVersionStore: rootStore.appVersionStore,
   appDeployStore: rootStore.appDeployStore,
   user: rootStore.user
 }))
@@ -37,48 +48,54 @@ export default class AppDeploy extends Component {
   constructor(props) {
     super(props);
     this.vmParser = new VMParser();
+
+    this.state = {
+      activeType: '',
+      activeVersion: ''
+    };
   }
 
   async componentDidMount() {
     const {
-      appStore, repoStore, appDeployStore, user, match
+      appStore,
+      appVersionStore,
+      appDeployStore,
+      user,
+      match
     } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
-    if (appStore.appDetail.repo_id) {
-      await repoStore.fetchRepoDetail(appStore.appDetail.repo_id);
+
+    // get typeversions
+    await appVersionStore.fetchTypeVersions(appId);
+
+    const { typeVersions } = appVersionStore;
+    const defaultId = _.get(typeVersions, '[0].versions[0].version_id', '');
+    const versionId = _.get(match, 'params.versionId', defaultId);
+
+    // get version detail for default type and version number
+    await appVersionStore.fetch(versionId);
+    const { version } = appVersionStore;
+    this.setState({
+      activeType: version.type,
+      activeVersion: versionId
+    });
+
+    // fetch config files for deploy form
+    appDeployStore.versionId = versionId;
+    await appDeployStore.fetchFilesByVersion(versionId);
+    if (version.type === 'helm' || appDeployStore.yamlStr) {
+      appDeployStore.isK8s = true;
     }
 
-    const repoProviders = _.get(repoStore.repoDetail, 'providers', []);
-    const isK8s = repoProviders.includes('kubernetes');
-    appDeployStore.isK8s = isK8s;
-
-    // fetch runtimes
+    // todo: fetch runtimes
     await appDeployStore.fetchRuntimes({
-      status: 'active',
-      label: repoStore.getStringFor('selectors'),
-      provider: repoProviders,
+      type: version.type,
       owner: user.user_id
     });
 
-    if (!isK8s) {
-      appDeployStore.runtimeId = _.get(
-        appDeployStore.runtimes.slice(),
-        '[0].runtime_id'
-      );
-      await appDeployStore.fetchSubnetsByRuntime(appDeployStore.runtimeId);
-    }
-
-    // fetch versions
-    await appDeployStore.fetchVersions({ app_id: [appId] });
-    appDeployStore.versionId = _.get(
-      appDeployStore.versions.slice(),
-      '[0].version_id'
-    );
-    await appDeployStore.fetchFilesByVersion(appDeployStore.versionId, isK8s);
-
-    if (!isK8s && !_.isEmpty(appDeployStore.configJson)) {
+    if (!_.isEmpty(appDeployStore.configJson)) {
       this.vmParser.setConfig(appDeployStore.configJson);
       this.forceUpdate();
     }
@@ -88,13 +105,45 @@ export default class AppDeploy extends Component {
     this.props.appDeployStore.reset();
   }
 
-  handleSubmit = async e => {
-    e.preventDefault();
+  changeType = async (value, type) => {
+    if (value !== this.state[type]) {
+      const { appDeployStore, appVersionStore, user } = this.props;
+      this.setState({ [type]: value });
 
+      let versonId = '';
+      if (type === 'activeType') {
+        const { typeVersions } = appVersionStore;
+        const selectItem = _.find(typeVersions, { type: value }) || {};
+
+        appDeployStore.isK8s = value === 'helm';
+        versonId = _.get(selectItem, 'versions[0].version_id', '');
+        this.setState({ activeVersion: versonId });
+
+        await appDeployStore.fetchRuntimes({
+          type: value,
+          owner: user.user_id
+        });
+      } else {
+        versonId = value;
+      }
+
+      await appDeployStore.changeVersion(versonId);
+    }
+  };
+
+  isDeployReady() {
+    const { configJson, yamlStr } = this.props.appDeployStore;
+    return !_.isEmpty(configJson) || `${yamlStr}`;
+  }
+
+  handleSubmit = async () => {
     const {
       appDeployStore, user, history, match, t
     } = this.props;
-    const { isK8s, create } = appDeployStore;
+    const {
+      isK8s, runtimeId, versionId, create
+    } = appDeployStore;
+    const { appId } = match.params;
 
     const formData = this.getFormDataByKey();
     const name = _.get(formData, 'cluster.name', '');
@@ -120,18 +169,8 @@ export default class AppDeploy extends Component {
       });
     }
 
-    const versionId = formData['cluster.version'] || '';
-    const runtimeId = formData['cluster.runtime'] || '';
-
-    if (!versionId) {
-      return appDeployStore.info(t('Version should not be empty'));
-    }
-    if (!runtimeId) {
-      return appDeployStore.info(t('Runtime should not be empty'));
-    }
-
     const res = await create({
-      app_id: match.params.appId,
+      app_id: appId,
       version_id: versionId,
       runtime_id: runtimeId,
       conf: conf.replace(/>>>>>>/g, '.')
@@ -139,13 +178,11 @@ export default class AppDeploy extends Component {
 
     if (res && _.get(res, 'cluster_id')) {
       appDeployStore.success(t('Deploy app successfully'));
-      const path = user.isNormal ? '/purchased' : '/dashboard/clusters';
+      const path = user.isDev
+        ? `/dashboard/app/${appId}/sandbox-instances`
+        : '/dashboard/clusters';
       setTimeout(() => history.push(path), 1000);
     }
-  };
-
-  handleCancel = () => {
-    this.props.history.go(-1);
   };
 
   getFormDataByKey = (keyPrefix = '') => {
@@ -190,77 +227,28 @@ export default class AppDeploy extends Component {
     );
   };
 
-  renderAside() {
-    const { appStore, t } = this.props;
-    const { appDetail } = appStore;
-
-    return (
-      <div className={styles.aside}>
-        <div className={styles.appIntro}>
-          <Image
-            src={appDetail.icon}
-            className={styles.icon}
-            iconLetter={appDetail.name}
-          />
-          <span className={styles.name}>{appDetail.name}</span>
-        </div>
-        <p>{t('Deploy App explain')}</p>
-      </div>
-    );
-  }
-
   renderForEmptyItem = itemKey => {
     const { t } = this.props;
 
     if (!this.isDeployReady()) {
       return null;
     }
-
-    if (itemKey === 'cluster.runtime') {
-      return (
-        <span>
-          {t('DEPLOY_NO_RUNTIME_NOTE')}
-          <Link to={'/dashboard/runtime/create'}>{t('create')}</Link>
-        </span>
-      );
-    }
   };
 
-  renderBody() {
+  renderDeployForm() {
     if (!this.isDeployReady()) {
       return null;
     }
 
     const { appDeployStore, t } = this.props;
-    const {
-      isK8s,
-      yamlStr,
-      normalizeRuntime,
-      normalizeVersions,
-      normalizeSubnets,
-      onChangeFormField,
-      runtimeId,
-      versionId
-    } = appDeployStore;
+    const { isK8s, yamlStr, normalizeSubnets } = appDeployStore;
 
     let groups = [];
-
-    if (!isK8s) {
-      if (!this.vmParser.isReady()) {
-        return null;
-      }
-
-      this.vmParser.setSubnets(normalizeSubnets());
-    }
-
-    // always set runtimes and versions
-    this.vmParser.setRuntimes(normalizeRuntime(), { default: runtimeId });
-    this.vmParser.setVersions(normalizeVersions(), { default: versionId });
 
     if (isK8s) {
       groups = [].concat(
         {
-          title: t('Basic settings'),
+          title: t('Basic info'),
           items: this.vmParser.getDefaultBasicSetting({
             key: 'name',
             description: t('HELM_APP_NAME_TIP')
@@ -279,119 +267,187 @@ export default class AppDeploy extends Component {
         }
       );
     } else {
+      if (!this.vmParser.isReady()) {
+        return null;
+      }
+      this.vmParser.setSubnets(normalizeSubnets());
+
       const basicSetting = this.vmParser.getBasicSetting();
       const nodeSetting = this.vmParser.getNodeSetting();
       const envSetting = this.vmParser.getEnvSetting();
       const vxnetSetting = this.vmParser.getVxnetSetting();
 
       groups = [].concat(
-        { title: t('Basic settings'), items: basicSetting },
+        { title: t('Basic info'), items: basicSetting },
         nodeSetting,
         { title: t('Vxnet settings'), items: vxnetSetting },
         envSetting
       );
     }
 
-    return groups.map((group, idx) => (
-      <DeployGroup
-        detail={group}
-        seq={idx}
-        key={idx}
-        onChange={onChangeFormField}
-        onEmpty={this.renderForEmptyItem}
-      />
-    ));
+    return (
+      <form
+        method="post"
+        onSubmit={this.handleSubmit}
+        ref={node => {
+          this.deployForm = node;
+        }}
+      >
+        {groups.map((group, idx) => (
+          <DeployGroup
+            detail={group}
+            seq={idx}
+            key={idx}
+            onEmpty={this.renderForEmptyItem}
+          />
+        ))}
+      </form>
+    );
   }
 
-  isDeployReady() {
-    const { configJson, yamlStr } = this.props.appDeployStore;
-    return !_.isEmpty(configJson) || `${yamlStr}`;
-  }
-
-  renderFooter() {
-    const { t } = this.props;
-    const {
-      isLoading,
-      isK8s,
-      runtimes,
-      versions,
-      subnets
-    } = this.props.appDeployStore;
-
-    if (!this.isDeployReady()) {
-      return null;
-    }
-
-    let canSubmit = runtimes.length && versions.length;
-
-    if (!isK8s) {
-      canSubmit = canSubmit && subnets.length;
-    }
+  renderRuntimes() {
+    const { appDeployStore, t } = this.props;
+    const { runtimes, changeRuntime } = appDeployStore;
 
     return (
-      <div className={styles.actionBtnGroup}>
-        <Button
-          type="primary"
-          onClick={this.handleSubmit}
-          className={styles.btn}
-          disabled={isLoading || !canSubmit}
+      <Card className={styles.selectRuntime}>
+        <label className={styles.name}>{t('My Runtimes')}</label>
+        <Select
+          className={styles.select}
+          value={appDeployStore.runtimeId}
+          onChange={changeRuntime}
+          disabled={runtimes.length === 0}
         >
-          {t('Confirm')}
-        </Button>
-        <Button onClick={this.handleCancel} className={styles.btn}>
-          {t('Cancel')}
-        </Button>
+          {runtimes.map(item => (
+            <Select.Option key={item.runtime_id} value={item.runtime_id}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
+        <Link to="/dashboard/runtime/create">{t('Create Runtime')}</Link>
+      </Card>
+    );
+  }
+
+  renderTypeVersions() {
+    const { appStore, appVersionStore, t } = this.props;
+    const { typeVersions } = appVersionStore;
+    const { appDetail } = appStore;
+    const { activeType, activeVersion } = this.state;
+
+    const types = typeVersions.map(item => item.type);
+    const versions = (_.find(typeVersions, { type: activeType }) || {}).versions || [];
+
+    return (
+      <div className={styles.typeVersions}>
+        <dl>
+          <dt>{t('Delivery type')}:</dt>
+          <dd className={styles.types}>
+            {types.map(type => (
+              <label
+                key={type}
+                onClick={() => this.changeType(type, 'activeType')}
+                className={classnames({
+                  [styles.active]: (activeType || types[0]) === type
+                })}
+              >
+                {getVersionTypesName(type) || t('None')}
+              </label>
+            ))}
+          </dd>
+        </dl>
+        <dl>
+          <dt>{t('版本号')}:</dt>
+          <dd className={styles.types}>
+            {versions.map(item => (
+              <label
+                key={item.version_id}
+                onClick={() => this.changeType(item.version_id, 'activeVersion')
+                }
+                className={classnames({
+                  [styles.active]: activeVersion === item.version_id
+                })}
+              >
+                {item.name}
+              </label>
+            ))}
+          </dd>
+        </dl>
       </div>
     );
   }
 
-  render() {
-    const {
-      appDeployStore, appStore, user, t
-    } = this.props;
+  renderAppBaseInfo() {
+    const { appStore, appVersionStore, t } = this.props;
+    const { typeVersions } = appVersionStore;
     const { appDetail } = appStore;
-    const { isLoading, errMsg } = appDeployStore;
-
-    const title = `${t('Deploy')} ${appDetail.name}`;
-    const { isNormal, isDev } = user;
-    const linkPath = isDev ? 'My Apps>Test>Deploy' : 'Store>All Apps>Deploy';
 
     return (
-      <Layout
-        className={classnames({ [styles.deployApp]: !isNormal })}
-        title="Store"
-        hasSearch
-        isLoading={isLoading}
-        backBtn={
-          isNormal && (
-            <BackBtn
-              label={appDetail.name}
-              link={`/apps/${appDetail.app_id}`}
-            />
-          )
-        }
-      >
-        {!isNormal && <BreadCrumb linkPath={linkPath} />}
-
-        <CreateResource
-          title={title}
-          aside={this.renderAside()}
-          asideTitle=""
-          footer={this.renderFooter()}
+      <div className={styles.appBaseInfo}>
+        <div
+          className={classnames({
+            [styles.title]: Boolean(appDetail.abstraction)
+          })}
         >
-          {errMsg && <p className={styles.errMsg}>{t(errMsg)}</p>}
-          <form
-            className={styles.createForm}
-            method="post"
-            onSubmit={this.handleSubmit}
-            ref={node => {
-              this.deployForm = node;
-            }}
-          >
-            {this.renderBody()}
-          </form>
-        </CreateResource>
-      </Layout>
+          <span className={styles.icon}>
+            <Image
+              src={appDetail.icon}
+              iconSize={48}
+              iconLetter={appDetail.name}
+            />
+          </span>
+          <div className={styles.name}>{appDetail.name}</div>
+        </div>
+        <div className={styles.abstraction}>{appDetail.abstraction}</div>
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { appDeployStore, t } = this.props;
+    const { isLoading, errMsg } = appDeployStore;
+
+    return (
+      <Grid>
+        <Section size={4}>
+          <Card>
+            {this.renderAppBaseInfo()}
+            {this.renderTypeVersions()}
+          </Card>
+        </Section>
+        <Section size={8}>
+          {this.renderRuntimes()}
+          <Loading isLoading={isLoading}>
+            <Card className={styles.deployForm}>
+              {errMsg && <p className={styles.errMsg}>{t(errMsg)}</p>}
+              {this.renderDeployForm()}
+            </Card>
+          </Loading>
+        </Section>
+      </Grid>
+    );
+  }
+
+  render() {
+    const { appDeployStore, appStore, t } = this.props;
+    const {
+      activeStep, versionId, runtimeId, subnets
+    } = appDeployStore;
+    const disableNextStep = !versionId || (!runtimeId && subnets.length === 0);
+
+    return (
+      <Stepper
+        name="APP_DEPLOY"
+        stepOption={{
+          activeStep,
+          disableNextStep,
+          btnText: t('Deploy'),
+          nextStep: this.handleSubmit
+        }}
+      >
+        {activeStep === 1 && this.renderContent()}
+        <Notification />
+      </Stepper>
     );
   }
 }
