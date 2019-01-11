@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Iamge basic render 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {
+      "class": "img",
+      "data-origin-url": "https://cc_webchat.yunify.com/images/icon.png",
+      "src": "https://cc_webchat.yunify.com/images/icon.png",
+    },
+    "children": Array [],
+    "name": "img",
+    "namespace": "http://www.w3.org/1999/xhtml",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "root": Object {
+      "attribs": Object {},
+      "children": Array [
+        [Circular],
+      ],
+      "name": "root",
+      "namespace": "http://www.w3.org/1999/xhtml",
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "type": "root",
+      "x-attribsNamespace": Object {},
+      "x-attribsPrefix": Object {},
+    },
+    "type": "tag",
+    "x-attribsNamespace": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+    "x-attribsPrefix": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`Base/Iamge render base64 1`] = `
+initialize {
+  "0": Object {
+    "attribs": Object {
+      "class": "img",
+      "data-origin-url": "data:image/png;data:image/svg;data:image/jpg;base64,https://cc_webchat.yunify.com/images/icon.png",
+      "src": "data:image/png;data:image/svg;data:image/jpg;base64,https://cc_webchat.yunify.com/images/icon.png",
+    },
+    "children": Array [],
+    "name": "img",
+    "namespace": "http://www.w3.org/1999/xhtml",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "root": Object {
+      "attribs": Object {},
+      "children": Array [
+        [Circular],
+      ],
+      "name": "root",
+      "namespace": "http://www.w3.org/1999/xhtml",
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "type": "root",
+      "x-attribsNamespace": Object {},
+      "x-attribsPrefix": Object {},
+    },
+    "type": "tag",
+    "x-attribsNamespace": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+    "x-attribsPrefix": Object {
+      "class": undefined,
+      "data-origin-url": undefined,
+      "src": undefined,
+    },
+  },
+  "_root": [Circular],
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "normalizeWhitespace": false,
+    "withDomLvl1": true,
+    "xml": false,
+  },
+}
+`;

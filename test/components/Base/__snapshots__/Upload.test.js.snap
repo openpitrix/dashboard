@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Upload basic render 1`] = `
+<span
+  class="upload"
+  role="button"
+>
+  <input
+    style="display:none"
+    type="file"
+  />
+</span>
+`;

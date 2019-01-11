@@ -30,7 +30,24 @@ exports[`Base/Table basic render 1`] = `
             <tr>
               <th
                 class=""
-              />
+              >
+                <span
+                  class="sortOuter"
+                >
+                  <span
+                    class="icon icon-sort-ascending"
+                    style="width:16px;height:16px"
+                  >
+                    <svg
+                      class="qicon qicon-sort-ascending qicon-light"
+                    >
+                      <use
+                        href="#qui-sort-ascending"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
               <th
                 class=""
               />
@@ -77,6 +94,144 @@ exports[`Base/Table basic render 1`] = `
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <div
+    class="pagination"
+  >
+    <div
+      class="total"
+    >
+      : 100
+    </div>
+    <div
+      class="pageItems"
+    >
+      <span
+        aria-disabled="true"
+        class="btn btn-disabled"
+      >
+        <span
+          class="icon icon-previous"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-previous qicon-light"
+          >
+            <use
+              href="#qui-previous"
+            />
+          </svg>
+        </span>
+      </span>
+      <span
+        class="current"
+      >
+        1 / 10
+      </span>
+      <span
+        aria-disabled="false"
+        class="btn"
+      >
+        <span
+          class="icon icon-next"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-next qicon-light"
+          >
+            <use
+              href="#qui-next"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Base/Table render emptyText 1`] = `
+<div
+  class="table"
+>
+  <div
+    class="pi-table pi-table-scroll-position-left"
+  >
+    <div
+      class="pi-table-content"
+    >
+      <div
+        class="pi-table-body"
+      >
+        <table
+          class=""
+        >
+          <colgroup>
+            <col
+              style="width:50%;min-width:50%"
+            />
+            <col
+              style="width:50%;min-width:50%"
+            />
+          </colgroup>
+          <thead
+            class="pi-table-thead"
+          >
+            <tr>
+              <th
+                class=""
+              >
+                <span
+                  class="sortOuter"
+                >
+                  <span
+                    class="icon icon-sort-ascending"
+                    style="width:16px;height:16px"
+                  >
+                    <svg
+                      class="qicon qicon-sort-ascending qicon-light"
+                    >
+                      <use
+                        href="#qui-sort-ascending"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </th>
+              <th
+                class=""
+              />
+            </tr>
+          </thead>
+          <tbody
+            class="pi-table-tbody"
+          />
+        </table>
+      </div>
+      <div
+        class="pi-table-placeholder"
+      >
+        <div
+          class="noData"
+        >
+          <span
+            class="icon icon-appcenter"
+            style="width:120px;height:120px"
+          >
+            <svg
+              class="qicon qicon-appcenter qicon-light"
+            >
+              <use
+                href="#qui-appcenter"
+              />
+            </svg>
+          </span>
+          <div
+            class="word"
+          />
+        </div>
       </div>
     </div>
   </div>

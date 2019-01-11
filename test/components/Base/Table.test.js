@@ -14,6 +14,7 @@ describe('Base/Table', () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      sorter: true,
       width: '50%'
     },
     {
@@ -49,6 +50,12 @@ describe('Base/Table', () => {
   };
   it('basic render', () => {
     const wrapper = setup('render', { columns, dataSource });
+
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('render emptyText', () => {
+    const wrapper = setup('render', { columns, dataSource: [] });
 
     expect(toJson(wrapper)).toMatchSnapshot();
   });
@@ -91,7 +98,6 @@ describe('Base/Table', () => {
 
     const mockSelect = rowSelection.onSelect;
     expect(wrapper.state().selectionDirty).toBeTruthy();
-    expect(mockSelect).toHaveBeenCalled();
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
   });
 
@@ -112,5 +118,37 @@ describe('Base/Table', () => {
     expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(mockSelectAll).toHaveBeenCalled();
     expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
+  });
+
+  it('call remove onSelectAll', () => {
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
+    const checkbox = wrapper
+      .find('thead th')
+      .at(0)
+      .find('input[type="checkbox"]');
+    const mockSelectAll = rowSelection.onSelectAll;
+    checkbox.simulate('change', { target: { checked: true } });
+    expect(mockSelectAll).toHaveBeenCalled();
+    checkbox.simulate('change', { target: { checked: false } });
+    expect(mockSelectAll).toHaveBeenCalled();
+  });
+
+  it('call handleSort', () => {
+    const wrapper = setup('mount', {
+      columns,
+      dataSource,
+      rowSelection,
+      pagination
+    });
+    const icon = wrapper
+      .find('thead th')
+      .at(1)
+      .find('span.icon');
+    icon.simulate('click');
   });
 });
