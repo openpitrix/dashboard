@@ -12,12 +12,19 @@ import styles from './index.scss';
 
 @translate()
 @withRouter
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  rootStore,
+  appStore: rootStore.appStore
+}))
 @observer
 export default class SearchBox extends React.Component {
   static propTypes = {
     className: PropTypes.string
   };
+
+  // componentWillUnmount() {
+  //   this.props.rootStore.setSearchWord();
+  // }
 
   onSearch = value => {
     this.props.rootStore.setSearchWord(value);
@@ -25,8 +32,10 @@ export default class SearchBox extends React.Component {
   };
 
   onClearSearch = () => {
-    this.props.rootStore.setSearchWord('');
-    this.props.history.push('/');
+    const { rootStore, appStore, history } = this.props;
+    appStore.currentPage = 1;
+    rootStore.setSearchWord('');
+    history.push('/');
   };
 
   render() {
@@ -37,7 +46,7 @@ export default class SearchBox extends React.Component {
       <Input.Search
         className={classnames(styles.search, className)}
         placeholder={t('search.placeholder')}
-        value={getUrlParam('q') || searchWord}
+        value={searchWord || getUrlParam('q')}
         onSearch={this.onSearch}
         onClear={this.onClearSearch}
       />

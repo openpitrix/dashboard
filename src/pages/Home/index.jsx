@@ -1,16 +1,16 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Notification } from 'components/Base';
+import { Icon } from 'components/Base';
 import Layout, { TitleBanner } from 'components/Layout';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
 
-import { getScrollTop, getScrollBottom } from 'utils';
+import { getScrollTop } from 'utils';
 import { getUrlParam } from 'utils/url';
 
 import styles from './index.scss';
@@ -33,7 +33,7 @@ export default class Home extends Component {
   };
 
   get searchWord() {
-    return getUrlParam('q');
+    return this.props.search || getUrlParam('q');
   }
 
   async componentDidMount() {
@@ -43,9 +43,10 @@ export default class Home extends Component {
     const { category } = match.params;
 
     rootStore.setNavFix(Boolean(category || this.searchWord));
+
     if (!(category || this.searchWord)) {
       this.threshold = this.getThreshold();
-      window.onscroll = _.throttle(this.handleScroll, 100);
+      window.onscroll = _.debounce(this.handleScroll, 100);
     }
     window.scroll({ top: 0 });
 
@@ -55,7 +56,7 @@ export default class Home extends Component {
     // always fetch active apps
     appStore.selectStatus = 'active';
 
-    if (this.searchWord || category) {
+    if (this.searchWord || (category && category !== cateLatest)) {
       await appStore.fetchAll({
         search_word: this.searchWord,
         category_id: category
@@ -73,11 +74,13 @@ export default class Home extends Component {
     const { match, appStore, search } = this.props;
     const { category } = match.params;
 
+    appStore.showActiveApps = category === cateLatest;
+
     if (prevProps.match.params.category !== category) {
+      appStore.currentPage = 1;
+
       if (category === cateLatest) {
-        await appStore.fetchActiveApps({
-          search_word: this.searchWord
-        });
+        await appStore.fetchActiveApps();
       } else {
         // reset search wd
         appStore.searchWord = '';
@@ -89,6 +92,8 @@ export default class Home extends Component {
 
     if (prevProps.search !== search) {
       appStore.searchWord = search;
+      appStore.currentPage = 1;
+
       if (search) {
         await appStore.fetchAll();
       } else {
@@ -115,7 +120,7 @@ export default class Home extends Component {
   }
 
   handleScroll = async () => {
-    const { rootStore, appStore, categoryStore } = this.props;
+    const { rootStore } = this.props;
     const { fixNav } = rootStore;
     if (this.threshold <= 0) {
       return;
@@ -203,7 +208,7 @@ export default class Home extends Component {
       isLoading,
       hasMore,
       currentPage,
-      loadMoreHomeApps,
+      loadMore,
       countStoreApps
     } = appStore;
     const { categories } = categoryStore;
@@ -231,7 +236,7 @@ export default class Home extends Component {
             <InfiniteScroll
               className={styles.apps}
               pageStart={currentPage}
-              loadMore={loadMoreHomeApps}
+              loadMore={loadMore}
               isLoading={isLoading}
               hasMore={Boolean(category || this.searchWord) && hasMore}
             >
