@@ -11,15 +11,3 @@ exports[`Base/Upload basic render 1`] = `
   />
 </span>
 `;
-
-exports[`Base/Upload basic render 2`] = `
-<span
-  class="upload"
-  role="button"
->
-  <input
-    style="display:none"
-    type="file"
-  />
-</span>
-`;
