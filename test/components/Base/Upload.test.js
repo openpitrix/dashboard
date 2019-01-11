@@ -6,12 +6,21 @@ import Upload from 'components/Base/Upload';
 
 const findByRef = wrapper => ref => wrapper.findWhere(node => node.getDOMNode() === wrapper.instance()[ref]);
 
-const fileName = 'test.zip';
+const image = {
+  name: 'cat.jpg',
+  size: 1000,
+  type: 'image/jpeg'
+};
 
 describe('Base/Upload', () => {
   it('basic render', () => {
     const wrapper = render(<Upload />);
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('disabled', () => {
+    const wrapper = mount(<Upload disabled directory />);
+    expect(wrapper.prop('disabled')).toBeTruthy();
   });
 
   it('call onChange', () => {
@@ -20,12 +29,16 @@ describe('Base/Upload', () => {
     wrapper.findByRef = findByRef(wrapper);
 
     const input = wrapper.findByRef('fileInput');
-    input.simulate('change', { target: { files: [fileName] } });
+    input.simulate('change', { target: { files: [image] } });
   });
 
-  it('disabled', () => {
-    const wrapper = mount(<Upload disabled />);
-    expect(wrapper.prop('disabled')).toBeTruthy();
+  it('call onFileDrop', () => {
+    const wrapper = mount(<Upload accept="jpg" />);
+    wrapper.simulate('click');
+    wrapper.simulate('keyDown', { key: 'Enter' });
+    wrapper.simulate('dragOver', { type: 'dragover' });
+    wrapper.simulate('dragOver', { type: 'dragleave' });
+    wrapper.simulate('drop', { dataTransfer: { files: [image] } });
     wrapper.unmount();
   });
 });
