@@ -48,14 +48,9 @@ jest.mock('i18next', () => ({
   exists: () => false
 }));
 
-const setWrapper = WarpComponent => (type, props = {}) => (type === 'render'
-  ? render(<WarpComponent {...props} />)
-  : mount(<WarpComponent {...props} />));
-
 // attach helpers to global
 global.React = React;
 global.mount = mount;
 global.shallow = shallow;
 global.render = render;
 global.toJson = toJson;
-global.setWrapper = setWrapper;

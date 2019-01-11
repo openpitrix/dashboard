@@ -110,14 +110,14 @@ export default class Upload extends Component {
     if (checkFile !== noop && checkFile(file)) {
       const reader = new FileReader();
       reader.readAsDataURL(file, 'UTF-8');
-      reader.onload = function () {
-        let fileStringBase64 = this.result;
+      reader.addEventListener('load', () => {
+        let fileStringBase64 = reader.result;
         fileStringBase64 = fileStringBase64.substring(
           fileStringBase64.indexOf(',') + 1,
           fileStringBase64.length
         );
         uploadFile(fileStringBase64, file);
-      };
+      });
     }
   }
 

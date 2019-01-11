@@ -5,8 +5,8 @@ initialize {
   "0": Object {
     "attribs": Object {
       "class": "img",
-      "data-origin-url": "LOAD_SUCCESS_SRC",
-      "src": "LOAD_SUCCESS_SRC",
+      "data-origin-url": "https://cc_webchat.yunify.com/images/icon.png",
+      "src": "https://cc_webchat.yunify.com/images/icon.png",
     },
     "children": Array [],
     "name": "img",
@@ -56,8 +56,8 @@ initialize {
   "0": Object {
     "attribs": Object {
       "class": "img",
-      "data-origin-url": "data:image/png;data:image/svg;data:image/jpg;base64,LOAD_SUCCESS_SRC",
-      "src": "data:image/png;data:image/svg;data:image/jpg;base64,LOAD_SUCCESS_SRC",
+      "data-origin-url": "data:image/png;data:image/svg;data:image/jpg;base64,https://cc_webchat.yunify.com/images/icon.png",
+      "src": "data:image/png;data:image/svg;data:image/jpg;base64,https://cc_webchat.yunify.com/images/icon.png",
     },
     "children": Array [],
     "name": "img",
