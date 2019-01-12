@@ -26,7 +26,11 @@ export default class AppList extends PureComponent {
 
   getSearchTitle() {
     const { search, title, t } = this.props;
-    return (search && t('search_results')) || title || t('Newest');
+    if (search) {
+      return t('search_results');
+    }
+
+    return title || t('Newest');
   }
 
   render() {

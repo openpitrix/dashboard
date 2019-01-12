@@ -102,10 +102,13 @@ class AppStore extends Store {
 
   @observable countStoreApps = 0;
 
+  @observable showActiveApps = false;
+
   @action
   fetchStoreAppsCount = async () => {
     const res = await this.request.get('apps', {
-      display_columns: ['']
+      display_columns: [''],
+      status: 'active'
     });
 
     this.countStoreApps = _.get(res, 'total_count', 0);
@@ -165,26 +168,16 @@ class AppStore extends Store {
 
   @action
   fetchActiveApps = async (params = {}) => {
-    params = this.normalizeParams(params);
-
-    if (this.searchWord) {
-      params.search_word = this.searchWord;
-    }
-
-    this.isLoading = true;
-    const result = await this.request.get('active_apps', params);
-    this.isLoading = false;
-
-    this.apps = get(result, 'app_set', []);
-    this.totalCount = get(result, 'total_count', 0);
+    await this.fetchAll(Object.assign(params, { action: 'active_apps' }));
   };
 
   @action
   fetchAll = async (params = {}) => {
     // dont mutate observables, just return results
     const noMutate = Boolean(params.noMutate);
+    const fetchAction = params.action || 'apps';
 
-    params = this.normalizeParams(_.omit(params, ['noMutate']));
+    params = this.normalizeParams(_.omit(params, ['noMutate', 'action']));
 
     if (params.app_id) {
       delete params.status;
@@ -212,9 +205,18 @@ class AppStore extends Store {
       delete params.noLoading;
     }
 
-    const result = await this.request.get('apps', params);
+    const result = await this.request.get(fetchAction, params);
     const apps = get(result, 'app_set', []);
     const totalCount = get(result, 'total_count', 0);
+
+    // exception data, stop load more data
+    if (_.has(result, 'total_count') && !_.has(result, 'app_set')) {
+      this.isLoading = false;
+      this.hasMore = false;
+      return;
+    }
+
+    this.hasMore = totalCount > apps.length;
 
     if (noMutate) {
       return {
@@ -238,7 +240,6 @@ class AppStore extends Store {
 
     this.isLoading = false;
     this.isProgressive = false;
-    this.hasMore = this.totalCount > (this.currentPage + 1) * this.pageSize;
   };
 
   @action
@@ -544,14 +545,8 @@ class AppStore extends Store {
   @action
   loadMore = async page => {
     this.currentPage = page;
-    await this.fetchAll({ loadMore: true });
-  };
-
-  @action
-  loadMoreHomeApps = async page => {
-    this.currentPage = page;
-    await this.fetchAll({ loadMore: true });
-    this.homeApps = this.apps.slice();
+    const fetchAction = this.showActiveApps ? 'fetchActiveApps' : 'fetchAll';
+    await this[fetchAction]({ loadMore: true });
   };
 
   @action

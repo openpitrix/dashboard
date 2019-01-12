@@ -13,7 +13,7 @@ const AppDetail = lazy(() => import('../pages/AppDetail'));
 
 const routes = {
   '/': Home,
-  '/cat/:category': Home,
+
   '/apps/:appId': [AppDetail, { applyHome: true }],
 
   '/login': Login,
