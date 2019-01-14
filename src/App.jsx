@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { Provider } from 'mobx-react';
 import {
@@ -40,6 +41,15 @@ const WrapRoute = ({ component: Comp, ...rest }) => {
   }
 
   const isHome = rest.applyHome || Comp.isHome;
+  let { acl } = rest;
+
+  if (!_.isEmpty(acl)) {
+    acl = [].concat(acl);
+
+    if (!_.some(acl, role => user[`is${_.capitalize(role)}`])) {
+      return <Redirect to="/" />;
+    }
+  }
 
   return (
     <Route

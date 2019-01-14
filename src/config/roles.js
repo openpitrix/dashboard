@@ -22,4 +22,13 @@ export const roleMap = {
   user: 'Normal User'
 };
 
+// matching user provider's getter
+// i.e admin => user.isAdmin
+export const roleTypes = {
+  admin: 'admin',
+  isv: 'ISV',
+  dev: 'dev',
+  user: 'normal'
+};
+
 export default roles;
