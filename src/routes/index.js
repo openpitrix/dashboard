@@ -21,11 +21,9 @@ const routes = {
 
   '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 
-  // only for user
   '/:dash/purchased': [Dash.Purchased, { acl: r.user }],
   '/:dash/purchased/:appId': [Dash.PurchasedDetail, { acl: r.user }],
 
-  // only for developer
   '/:dash/my/apps': [Dash.MyApps, { acl: r.dev }],
   '/:dash/app/create': [Dash.AppAdd, { acl: r.dev }],
   '/:dash/app/:appId/create-version': [Dash.AppAdd, { acl: r.dev }],
@@ -46,35 +44,32 @@ const routes = {
     { acl: r.dev }
   ],
 
-  // only for isv
   '/:dash/provider-detail': [Dash.ApplicationDetail, { acl: r.isv }],
-  '/:dash/provider/submit': [Dash.ProviderCreate, { acl: r.isv }],
+  '/:dash/provider/submit': [Dash.ProviderCreate, { acl: [r.isv, r.user] }],
 
-  // only for admin
   '/:dash/providers': [Dash.Providers, { acl: r.admin }],
   '/:dash/provider/:providerId': [Dash.ProviderDetail, { acl: r.admin }],
   '/:dash/applications': [Dash.Applications, { acl: r.admin }],
   '/:dash/application/:providerId': [Dash.ApplicationDetail, { acl: r.admin }],
 
-  '/:dash/clusters': [Dash.Clusters, { acl: r.admin }],
-  '/:dash/cluster/:clusterId': [Dash.ClusterDetail, { acl: r.admin }],
+  '/:dash/clusters': [Dash.Clusters, { acl: [r.admin, r.user] }],
+  '/:dash/cluster/:clusterId': [Dash.ClusterDetail, { acl: [r.admin, r.user] }],
 
-  '/:dash/runtimes': [Dash.Runtimes, { acl: r.admin }],
-  '/:dash/runtime/create': [Dash.CreateRuntime, { acl: r.admin }],
+  '/:dash/runtimes': Dash.Runtimes,
+  '/:dash/runtime/create': Dash.CreateRuntime,
 
   '/:dash/categories': [Dash.Categories, { acl: r.admin }],
 
   '/:dash/users': [Dash.Users, { acl: r.admin }],
   '/:dash/user/:userId': [Dash.UserDetail, { acl: r.admin }],
 
-  // for admin or isv
   '/:dash/apps': [Dash.Apps, { acl: [r.admin, r.isv] }],
   '/:dash/app/:appId': [Dash.AppDetail, { acl: [r.admin, r.isv] }],
 
   '/:dash/app-reviews': [Dash.Reviews, { acl: [r.admin, r.isv] }],
   '/:dash/app-review/:reviewId': [Dash.ReviewDetail, { acl: [r.admin, r.isv] }],
 
-  '/:dash/account/:type?': [Dash.Account, { acl: [r.admin, r.isv] }],
+  '/:dash/account/:type?': Dash.Account,
 
   '*': Home
 };
