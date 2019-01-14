@@ -14,6 +14,7 @@ import LazyLoad from 'components/LazyLoad';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ErrorBoundary from 'components/ErrorBoundary';
+import Wrapper from 'routes/wrapper';
 
 import './scss/index.scss';
 
@@ -45,13 +46,11 @@ const WrapRoute = ({ component: Comp, ...rest }) => {
     <Route
       {...rest}
       render={props => (
-        <LazyLoad>
-          <ErrorBoundary>
-            {(hasHeader || isHome) && <Header />}
-            <Comp {...props} rootStore={store} />
-            {(hasHeader || isHome) && <Footer />}
-          </ErrorBoundary>
-        </LazyLoad>
+        <ErrorBoundary>
+          {(hasHeader || isHome) && <Header />}
+          <Wrapper comp={Comp} {...props} rootStore={store} />
+          {(hasHeader || isHome) && <Footer />}
+        </ErrorBoundary>
       )}
     />
   );
