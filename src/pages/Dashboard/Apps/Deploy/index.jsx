@@ -34,6 +34,10 @@ const keysShouldBeNumber = [
   'instance_class',
   'count'
 ];
+const providerMap = {
+  vm: ['qingcloud', 'aws', 'aliyun'],
+  helm: ['kubernetes']
+};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -87,12 +91,14 @@ export default class AppDeploy extends Component {
     await appDeployStore.fetchFilesByVersion(versionId);
     if (version.type === 'helm' || appDeployStore.yamlStr) {
       appDeployStore.isK8s = true;
+      version.type = 'helm'; // for compatible old data
+    } else {
+      version.type = 'vm'; // for compatible old data
     }
 
-    // todo: fetch runtimes
+    // fetch runtimes
     await appDeployStore.fetchRuntimes({
-      type: version.type,
-      owner: user.user_id
+      provider: providerMap[version.type] || ''
     });
 
     if (!_.isEmpty(appDeployStore.configJson)) {
