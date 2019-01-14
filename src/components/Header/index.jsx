@@ -8,8 +8,6 @@ import { toUrl } from 'utils/url';
 
 import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
-import SearchBox from 'pages/Home/SearchBox';
-import Logo from '../Logo';
 
 import styles from './index.scss';
 
@@ -71,28 +69,7 @@ class Header extends Component {
   }
 
   render() {
-    const {
-      t,
-      isHome,
-      rootStore: { fixNav }
-    } = this.props;
-    const logoUrl = fixNav ? '/logo_light.svg' : '/logo_dark.svg';
-
-    // if (isHome) {
-    //   return (
-    //     <div
-    //       className={classnames('header', styles.header, {
-    //         [styles.deepHome]: fixNav
-    //       })}
-    //     >
-    //       <div className={styles.wrapper}>
-    //         <Logo className={styles.logo} url={logoUrl} />
-    //         {this.renderMenuBtns()}
-    //         {fixNav && <SearchBox className={styles.search} />}
-    //       </div>
-    //     </div>
-    //   );
-    // }
+    const { t } = this.props;
 
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>
