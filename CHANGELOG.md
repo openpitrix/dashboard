@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/openpitrix/dashboard/compare/v0.3.2...v0.3.3) (2019-01-14)
+
+
+### Bug Fixes
+
+* App detail page userId transfer name ([#626](https://github.com/openpitrix/dashboard/issues/626)) ([de8b597](https://github.com/openpitrix/dashboard/commit/de8b597))
+* Auth token not updated cause page redirect to login ([#609](https://github.com/openpitrix/dashboard/issues/609)) ([90bf637](https://github.com/openpitrix/dashboard/commit/90bf637))
+* Cluster detail yaml string transform ([#604](https://github.com/openpitrix/dashboard/issues/604)) ([dd26562](https://github.com/openpitrix/dashboard/commit/dd26562))
+* Config parser factory.js getRenderType ([#607](https://github.com/openpitrix/dashboard/issues/607)) ([3bbd2b2](https://github.com/openpitrix/dashboard/commit/3bbd2b2))
+* Create user modal style ([#639](https://github.com/openpitrix/dashboard/issues/639)) ([76d4d57](https://github.com/openpitrix/dashboard/commit/76d4d57))
+* Deploy app, parse config with env params ([#608](https://github.com/openpitrix/dashboard/issues/608)) ([f747256](https://github.com/openpitrix/dashboard/commit/f747256))
+* Dockerfile port ([#630](https://github.com/openpitrix/dashboard/issues/630)) ([01dff67](https://github.com/openpitrix/dashboard/commit/01dff67))
+* Home page fetch active apps ([#666](https://github.com/openpitrix/dashboard/issues/666)) ([a6a4bb2](https://github.com/openpitrix/dashboard/commit/a6a4bb2))
+* Home page loading data and card animation ([#664](https://github.com/openpitrix/dashboard/issues/664)) ([16fa672](https://github.com/openpitrix/dashboard/commit/16fa672))
+* Modify code format by IDE ([c705455](https://github.com/openpitrix/dashboard/commit/c705455))
+* Npm run locale ([#642](https://github.com/openpitrix/dashboard/issues/642)) ([f23c3dd](https://github.com/openpitrix/dashboard/commit/f23c3dd))
+* Reviews and audits page fetch data by new api ([#645](https://github.com/openpitrix/dashboard/issues/645)) ([6c61cf0](https://github.com/openpitrix/dashboard/commit/6c61cf0))
+* Router info different navigation info ([#612](https://github.com/openpitrix/dashboard/issues/612)) ([c483986](https://github.com/openpitrix/dashboard/commit/c483986))
+* Table render column filter sprea args ([#634](https://github.com/openpitrix/dashboard/issues/634)) ([a79e3cb](https://github.com/openpitrix/dashboard/commit/a79e3cb))
+* Travis build error ([#624](https://github.com/openpitrix/dashboard/issues/624)) ([cf0bfa8](https://github.com/openpitrix/dashboard/commit/cf0bfa8))
+* Validate runtime credential and create helm type runtime ([#601](https://github.com/openpitrix/dashboard/issues/601)) ([eeb80e2](https://github.com/openpitrix/dashboard/commit/eeb80e2))
+
+
+### Features
+
+* Add new app detail page ([#655](https://github.com/openpitrix/dashboard/issues/655)) ([762fdf4](https://github.com/openpitrix/dashboard/commit/762fdf4))
+* Add new deploy page ([#665](https://github.com/openpitrix/dashboard/issues/665)) ([0ce38d6](https://github.com/openpitrix/dashboard/commit/0ce38d6))
+* Add new ISV navigation ([#611](https://github.com/openpitrix/dashboard/issues/611)) ([9700678](https://github.com/openpitrix/dashboard/commit/9700678))
+* Add new review pages for admin and ISV ([#591](https://github.com/openpitrix/dashboard/issues/591)) ([aa5f664](https://github.com/openpitrix/dashboard/commit/aa5f664))
+* Add providers and apply static pages ([#602](https://github.com/openpitrix/dashboard/issues/602)) ([787d880](https://github.com/openpitrix/dashboard/commit/787d880))
+* Admin category mgmt ([#616](https://github.com/openpitrix/dashboard/issues/616)) ([7b752b9](https://github.com/openpitrix/dashboard/commit/7b752b9))
+* App information mgmt and service contract ([#594](https://github.com/openpitrix/dashboard/issues/594)) ([879a69e](https://github.com/openpitrix/dashboard/commit/879a69e))
+* App mgmt for isv and admin ([#617](https://github.com/openpitrix/dashboard/issues/617)) ([f6c876a](https://github.com/openpitrix/dashboard/commit/f6c876a))
+* Create testing runtime and runtime credential ([#579](https://github.com/openpitrix/dashboard/issues/579)) ([00e1fa1](https://github.com/openpitrix/dashboard/commit/00e1fa1)), closes [#571](https://github.com/openpitrix/dashboard/issues/571)
+* Developer test and user instance pages ([#584](https://github.com/openpitrix/dashboard/issues/584)) ([c2cd6c3](https://github.com/openpitrix/dashboard/commit/c2cd6c3))
+* Download app version package file from browser ([#652](https://github.com/openpitrix/dashboard/issues/652)) ([6621cb3](https://github.com/openpitrix/dashboard/commit/6621cb3))
+* Instances and purchased pages for user ([#649](https://github.com/openpitrix/dashboard/issues/649)) ([cf85fa5](https://github.com/openpitrix/dashboard/commit/cf85fa5))
+* Integrate app version review api for all roles ([#621](https://github.com/openpitrix/dashboard/issues/621)) ([35e7237](https://github.com/openpitrix/dashboard/commit/35e7237))
+* ISV pages integrate API ([#619](https://github.com/openpitrix/dashboard/issues/619)) ([c0eaef6](https://github.com/openpitrix/dashboard/commit/c0eaef6))
+* New app version mgmt pages ([#578](https://github.com/openpitrix/dashboard/issues/578)) ([bf83cb1](https://github.com/openpitrix/dashboard/commit/bf83cb1))
+* New style home page ([#654](https://github.com/openpitrix/dashboard/issues/654)) ([06107a5](https://github.com/openpitrix/dashboard/commit/06107a5))
+* Review submitted app version and validate info ([#620](https://github.com/openpitrix/dashboard/issues/620)) ([5a9624c](https://github.com/openpitrix/dashboard/commit/5a9624c))
+* Service provider detail and create static pages ([#615](https://github.com/openpitrix/dashboard/issues/615)) ([c6b9fa1](https://github.com/openpitrix/dashboard/commit/c6b9fa1))
+* User runtime and instance list ([#614](https://github.com/openpitrix/dashboard/issues/614)) ([0de33cc](https://github.com/openpitrix/dashboard/commit/0de33cc))
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/openpitrix/dashboard/compare/v0.3.0...v0.3.2) (2018-12-13)
 
