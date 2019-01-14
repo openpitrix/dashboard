@@ -1,12 +1,25 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { render, mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 import Table from 'components/Base/Table';
 
-const setup = (type, props = {}) => (type === 'render'
-  ? render(<Table {...props} />)
-  : mount(<Table {...props} />));
+function getTable(props) {
+  return (
+    <MemoryRouter>
+      <Table {...props} />
+    </MemoryRouter>
+  );
+}
+
+const setup = (type, props = {}) => (type === 'render' ? render(getTable(props)) : mount(getTable(props)));
+
+const getTableInstance = wrapper => wrapper
+  .find(Table)
+  .childAt(0)
+  .childAt(0)
+  .instance();
 
 describe('Base/Table', () => {
   const columns = [
@@ -67,6 +80,7 @@ describe('Base/Table', () => {
       rowSelection,
       pagination
     });
+    const tableInstance = getTableInstance(wrapper);
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -76,7 +90,7 @@ describe('Base/Table', () => {
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockChange = rowSelection.onChange;
-    expect(wrapper.state().selectionDirty).toBeTruthy();
+    expect(tableInstance.state.selectionDirty).toBeTruthy();
     expect(mockChange).toHaveBeenCalled();
     expect(mockChange.mock.calls[0][0]).toEqual(['1']);
   });
@@ -88,6 +102,7 @@ describe('Base/Table', () => {
       rowSelection,
       pagination
     });
+    const tableInstance = getTableInstance(wrapper);
     const checkbox = wrapper
       .find('tbody tr')
       .first()
@@ -97,7 +112,8 @@ describe('Base/Table', () => {
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockSelect = rowSelection.onSelect;
-    expect(wrapper.state().selectionDirty).toBeTruthy();
+    expect(tableInstance.state.selectionDirty).toBeTruthy();
+    expect(mockSelect).toHaveBeenCalled();
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
   });
 
@@ -108,6 +124,7 @@ describe('Base/Table', () => {
       rowSelection,
       pagination
     });
+    const tableInstance = getTableInstance(wrapper);
     const checkbox = wrapper
       .find('thead th')
       .at(0)
@@ -115,7 +132,7 @@ describe('Base/Table', () => {
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockSelectAll = rowSelection.onSelectAll;
-    expect(wrapper.state().selectionDirty).toBeTruthy();
+    expect(tableInstance.state.selectionDirty).toBeTruthy();
     expect(mockSelectAll).toHaveBeenCalled();
     expect(mockSelectAll.mock.calls[0][1]).toEqual(dataSource);
   });

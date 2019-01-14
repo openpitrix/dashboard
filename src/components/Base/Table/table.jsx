@@ -2,8 +2,10 @@ import React from 'react';
 import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { isEqual, find } from 'lodash';
+import _, { isEqual, find } from 'lodash';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
+import qs from 'query-string';
 
 import {
   Checkbox, Radio, Popover, Icon, Pagination
@@ -14,6 +16,7 @@ import NoData from './noData';
 import styles from './index.scss';
 
 @translate()
+@withRouter
 export default class Table extends React.Component {
   static propTypes = {
     columns: PropTypes.array,
@@ -38,10 +41,14 @@ export default class Table extends React.Component {
   constructor(props) {
     super(props);
 
+    const { location } = props;
+    const values = qs.parse(location.search);
+    const reverse = values.reverse !== '0';
     this.state = {
       selectedRowKeys: (props.rowSelection || {}).selectedRowKeys || [],
       selectionDirty: false,
-      reverse: true
+      sort_key: values.sort_key,
+      reverse
     };
   }
 
@@ -61,7 +68,9 @@ export default class Table extends React.Component {
 
   getTableData = () => {
     const { rowKey } = this.props;
-    const data = [...this.props.dataSource];
+    const { reverse, sort_key } = this.state;
+    const order = reverse ? 'desc' : 'asc';
+    const data = _.orderBy(this.props.dataSource, sort_key, order);
 
     return data.map((item, i) => {
       if (!item[rowKey]) {
@@ -293,13 +302,22 @@ export default class Table extends React.Component {
   };
 
   handleSort = (cb, column) => {
-    const { reverse } = this.state;
-
+    const sort_key = column.key || column.dataIndex;
     this.setState(
       {
-        reverse: !reverse
+        sort_key,
+        reverse: !this.state.reverse
       },
       () => {
+        const { reverse } = this.state;
+        const { history, location } = this.props;
+        const values = qs.parse(location.search);
+        values.reverse = reverse ? 1 : 0;
+        values.sort_key = sort_key;
+        history.push({
+          search: qs.stringify(values)
+        });
+
         typeof cb === 'function'
           && cb({
             sort_key: column.key || column.dataIndex,
@@ -343,7 +361,7 @@ export default class Table extends React.Component {
             className={styles.sortOuter}
           >
             {column.title}
-            <Icon name={`sort-${reverse ? 'ascend' : 'descend'}ing`} />
+            <Icon name={`sort-${reverse ? 'descend' : 'ascend'}ing`} />
           </span>
         );
       }

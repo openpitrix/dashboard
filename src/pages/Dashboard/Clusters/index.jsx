@@ -13,6 +13,7 @@ import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
+import { setPage } from 'mixins';
 
 import styles from './index.scss';
 
@@ -25,6 +26,7 @@ import styles from './index.scss';
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
+@setPage('clusterStore')
 @observer
 export default class Clusters extends Component {
   async componentDidMount() {
@@ -178,16 +180,6 @@ export default class Clusters extends Component {
   operateSelected = type => {
     const { showOperateCluster, clusterIds } = this.props.clusterStore;
     showOperateCluster(clusterIds, type);
-  };
-
-  onChangeSort = (params = {}) => {
-    const { clusterStore } = this.props;
-    const order = params.reverse ? 'asc' : 'desc';
-    clusterStore.clusters = _.orderBy(
-      clusterStore.clusters,
-      params.sort_key,
-      order
-    );
   };
 
   renderDeleteModal = () => {

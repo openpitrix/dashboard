@@ -1,4 +1,5 @@
 import { observable } from 'mobx';
+import qs from 'query-string';
 
 export default {
   @observable selectedRowKeys: [],
@@ -17,6 +18,10 @@ export default {
   async onChangeStatus(status) {
     this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
+    const { location } = window;
+    const values = qs.parse(location.search);
+    values.status = status;
+    window.history.pushState({}, '', `?${qs.stringify(values)}`);
     await this.fetchAll();
   },
 
