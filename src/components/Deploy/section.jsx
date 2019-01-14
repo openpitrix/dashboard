@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -11,6 +12,7 @@ import CodeMirror from 'components/CodeMirror';
 
 import styles from './index.scss';
 
+@translate()
 export default class Section extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -108,8 +110,8 @@ export default class Section extends React.Component {
   };
 
   renderLabel() {
-    const { keyName, label, renderType } = this.props.detail;
-    const { labelClsName } = this.props;
+    const { detail, labelClsName, t } = this.props;
+    const { keyName, label, renderType } = detail;
 
     return (
       <label
@@ -118,7 +120,7 @@ export default class Section extends React.Component {
           [styles.isYamlLabel]: renderType === 'yaml'
         })}
       >
-        {label || keyName}
+        {t(label || keyName)}
       </label>
     );
   }
