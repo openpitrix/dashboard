@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {
   Button, Select, Image, Notification
 } from 'components/Base';
-import Layout, {
+import {
   Section,
   Grid,
   Card,
@@ -34,7 +34,7 @@ const keysShouldBeNumber = [
   'count'
 ];
 const providerMap = {
-  vm: ['qingcloud', 'aws', 'aliyun'],
+  vmbased: ['qingcloud', 'aws', 'aliyun'],
   helm: ['kubernetes']
 };
 
@@ -60,11 +60,7 @@ export default class AppDeploy extends Component {
 
   async componentDidMount() {
     const {
-      appStore,
-      appVersionStore,
-      appDeployStore,
-      user,
-      match
+      appStore, appVersionStore, appDeployStore, match
     } = this.props;
     const { appId } = match.params;
 
@@ -88,11 +84,12 @@ export default class AppDeploy extends Component {
     // fetch config files for deploy form
     appDeployStore.versionId = versionId;
     await appDeployStore.fetchFilesByVersion(versionId);
+
     if (version.type === 'helm' || appDeployStore.yamlStr) {
       appDeployStore.isK8s = true;
       version.type = 'helm'; // for compatible old data
     } else {
-      version.type = 'vm'; // for compatible old data
+      version.type = 'vmbased'; // for compatible old data
     }
 
     // fetch runtimes
@@ -112,7 +109,7 @@ export default class AppDeploy extends Component {
 
   changeType = async (value, type) => {
     if (value !== this.state[type]) {
-      const { appDeployStore, appVersionStore, user } = this.props;
+      const { appDeployStore, appVersionStore } = this.props;
       this.setState({ [type]: value });
 
       let versonId = '';
@@ -125,8 +122,7 @@ export default class AppDeploy extends Component {
         this.setState({ activeVersion: versonId });
 
         await appDeployStore.fetchRuntimes({
-          type: value,
-          owner: user.user_id
+          provider: providerMap[value] || ''
         });
       } else {
         versonId = value;
@@ -162,7 +158,7 @@ export default class AppDeploy extends Component {
       if (!yamlStr) {
         return appDeployStore.error(t('Invalid yaml'));
       }
-      conf = [`Name: ${name}`, yamlStr].join('\n').replace(/#.*/g, '');
+      conf = [`Name: ${name}`, yamlStr].join('\n').replace(/#.*|\r/g, '');
     } else {
       conf = JSON.stringify({
         cluster: _.extend(
@@ -175,6 +171,12 @@ export default class AppDeploy extends Component {
     }
 
     const res = await create({
+      app_id: appId,
+      version_id: versionId,
+      runtime_id: runtimeId,
+      conf: conf.replace(/>>>>>>/g, '.')
+    });
+    console.log({
       app_id: appId,
       version_id: versionId,
       runtime_id: runtimeId,
@@ -312,7 +314,8 @@ export default class AppDeploy extends Component {
 
   renderRuntimes() {
     const { appDeployStore, t } = this.props;
-    const { runtimes, changeRuntime } = appDeployStore;
+    const { runtimes, changeRuntime, isK8s } = appDeployStore;
+    const createK8S = isK8s ? '?provider=kubernetes' : '';
 
     return (
       <Card className={styles.selectRuntime}>
@@ -329,7 +332,9 @@ export default class AppDeploy extends Component {
             </Select.Option>
           ))}
         </Select>
-        <Link to="/dashboard/runtime/create">{t('Create Runtime')}</Link>
+        <Link to={`/dashboard/runtime/create${createK8S}`}>
+          {t('Create Runtime')}
+        </Link>
       </Card>
     );
   }
@@ -383,8 +388,7 @@ export default class AppDeploy extends Component {
   }
 
   renderAppBaseInfo() {
-    const { appStore, appVersionStore, t } = this.props;
-    const { typeVersions } = appVersionStore;
+    const { appStore } = this.props;
     const { appDetail } = appStore;
 
     return (
@@ -434,11 +438,11 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, appStore, t } = this.props;
+    const { appDeployStore, t } = this.props;
     const {
-      activeStep, versionId, runtimeId, subnets
+      activeStep, versionId, runtimeId, subnets, isK8s
     } = appDeployStore;
-    const disableNextStep = !versionId || (!runtimeId && subnets.length === 0);
+    const disableNextStep = !versionId || !runtimeId || (!isK8s && subnets.length === 0);
 
     return (
       <Stepper

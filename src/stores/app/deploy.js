@@ -135,8 +135,8 @@ export default class AppDeployStore extends Store {
   fetchFilesByVersion = async versionId => {
     this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId
-      // files: isK8s ? ['values.yaml'] : ['config.json']
+      version_id: versionId,
+      files: this.isK8s ? ['values.yaml'] : ['config.json']
     });
 
     const files = _.get(result, 'files', {});

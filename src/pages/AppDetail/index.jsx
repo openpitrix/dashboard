@@ -46,7 +46,7 @@ export default class AppDetail extends Component {
   };
 
   state = {
-    isLoading: false,
+    isLoading: !this.props.isCreate,
     activeType: '',
     activeVersion: ''
   };
@@ -68,7 +68,6 @@ export default class AppDetail extends Component {
       const { appId } = match.params;
 
       rootStore.setNavFix(true);
-      this.setState({ isLoading: true });
       await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
 
@@ -76,6 +75,7 @@ export default class AppDetail extends Component {
       // await vendorStore.fetch(appDetail.vendor_id);
 
       await appStore.fetchActiveApps();
+
       this.setState({ isLoading: false });
     }
   }

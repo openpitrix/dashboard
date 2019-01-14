@@ -166,7 +166,7 @@ class LayoutStepper extends Component {
         {this.renderTopProgress()}
         {this.renderTopNav()}
         {this.renderTitle()}
-        <Loading isLoading={name !== 'APP_DEPLOY' && stepOption.isLoading}>
+        <Loading isLoading={stepOption.isLoading}>
           <div className={classnames(styles.mainContent, className)}>
             {children}
           </div>
