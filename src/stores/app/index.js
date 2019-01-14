@@ -106,7 +106,7 @@ class AppStore extends Store {
 
   @action
   fetchStoreAppsCount = async () => {
-    const res = await this.request.get('apps', {
+    const res = await this.request.get('active_apps', {
       display_columns: [''],
       status: 'active'
     });
@@ -189,6 +189,11 @@ class AppStore extends Store {
 
     if (this.categoryId && !params.category_id) {
       params.category_id = this.categoryId;
+    }
+
+    // filter empty cate
+    if (!params.category_id) {
+      delete params.category_id;
     }
 
     if (this.repoId) {
@@ -536,10 +541,9 @@ class AppStore extends Store {
     this.repoId = '';
     this.userId = '';
 
-    // this.cancelSelected();
-
     this.apps = [];
     this.appDetail = {};
+    this.showActiveApps = false;
   };
 
   @action

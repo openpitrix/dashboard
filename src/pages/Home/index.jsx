@@ -58,17 +58,14 @@ export default class Home extends Component {
     // always fetch active apps
     Object.assign(appStore, {
       selectStatus: 'active',
-      currentPage: 1
+      currentPage: 1,
+      showActiveApps: true
     });
 
-    if (this.searchWord || (this.category && this.category !== cateLatest)) {
-      await appStore.fetchAll({
-        search_word: this.searchWord,
-        category_id: this.category
-      });
-    } else {
-      await appStore.fetchActiveApps();
-    }
+    await appStore.fetchActiveApps({
+      search_word: this.searchWord,
+      category_id: this.category === cateLatest ? '' : this.category
+    });
 
     this.setState({
       pageLoading: false
@@ -79,31 +76,27 @@ export default class Home extends Component {
     const { appStore, search } = this.props;
     const { cate } = this.state;
 
-    appStore.showActiveApps = this.category === cateLatest;
-
     if (prevState.cate !== cate) {
-      appStore.currentPage = 1;
-      // reset search wd
-      appStore.searchWord = '';
-      if (cate === cateLatest) {
-        await appStore.fetchActiveApps();
-      } else {
-        await appStore.fetchAll({
-          category_id: cate
-        });
-      }
-    }
+      Object.assign(appStore, {
+        currentPage: 1,
+        searchWord: ''
+      });
 
-    if (prevProps.search !== search) {
-      appStore.searchWord = search;
-      appStore.currentPage = 1;
+      await appStore.fetchActiveApps({
+        category_id: cate === cateLatest ? '' : cate
+      });
+    } else if (prevProps.search !== search) {
+      Object.assign(appStore, {
+        currentPage: 1,
+        searchWord: search,
+        category_id: ''
+      });
 
       if (!search) {
         this.setState({ cate: cateLatest });
-        await appStore.fetchActiveApps();
-      } else {
-        await appStore.fetchAll();
       }
+
+      await appStore.fetchActiveApps();
     }
   }
 
