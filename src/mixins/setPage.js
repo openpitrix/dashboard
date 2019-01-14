@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import qs from 'query-string';
 
@@ -7,6 +8,9 @@ function createSetPage(storeName, WrapComponent) {
     || WrapComponent.name
     || 'unkown'}`;
 
+  const originSource = {};
+  const keys = ['currentPage', 'keyword', 'defaultStatus'];
+  @withRouter
   class Injector extends Component {
     static displayName = displayName;
 
@@ -15,12 +19,26 @@ function createSetPage(storeName, WrapComponent) {
       const store = this.props[storeName];
       const values = qs.parse(this.props.location.search);
       const currentPage = Number(values.page);
+      _.assign(originSource, _.pick(store, keys));
       if (!_.isNaN(currentPage)) {
         store.currentPage = currentPage;
       }
       const { keyword } = values;
       if (keyword) {
         store.searchWord = keyword;
+      }
+      if (values.status) {
+        store.defaultStatus = values.status;
+      }
+    }
+
+    componentDidUpdate(prevProps) {
+      const search = _.get(this.props, 'location.search');
+      const preSearch = _.get(prevProps, 'location.search');
+      if (search === '' && preSearch !== '') {
+        const store = this.props[storeName];
+        _.assign(store, originSource);
+        store.fetchAll();
       }
     }
 
