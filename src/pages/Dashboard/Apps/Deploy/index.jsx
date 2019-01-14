@@ -22,7 +22,6 @@ import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
 
-import { action } from 'mobx/lib/mobx';
 import styles from './index.scss';
 
 const validKeyPrefix = ['cluster', 'node', 'env'];
