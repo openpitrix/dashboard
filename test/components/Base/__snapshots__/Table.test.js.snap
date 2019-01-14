@@ -35,14 +35,14 @@ exports[`Base/Table basic render 1`] = `
                   class="sortOuter"
                 >
                   <span
-                    class="icon icon-sort-ascending"
+                    class="icon icon-sort-descending"
                     style="width:16px;height:16px"
                   >
                     <svg
-                      class="qicon qicon-sort-ascending qicon-light"
+                      class="qicon qicon-sort-descending qicon-light"
                     >
                       <use
-                        href="#qui-sort-ascending"
+                        href="#qui-sort-descending"
                       />
                     </svg>
                   </span>
@@ -187,14 +187,14 @@ exports[`Base/Table render emptyText 1`] = `
                   class="sortOuter"
                 >
                   <span
-                    class="icon icon-sort-ascending"
+                    class="icon icon-sort-descending"
                     style="width:16px;height:16px"
                   >
                     <svg
-                      class="qicon qicon-sort-ascending qicon-light"
+                      class="qicon qicon-sort-descending qicon-light"
                     >
                       <use
-                        href="#qui-sort-ascending"
+                        href="#qui-sort-descending"
                       />
                     </svg>
                   </span>
@@ -230,7 +230,9 @@ exports[`Base/Table render emptyText 1`] = `
           </span>
           <div
             class="word"
-          />
+          >
+            !
+          </div>
         </div>
       </div>
     </div>

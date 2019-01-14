@@ -112,7 +112,6 @@ describe('Base/Table', () => {
     checkbox.simulate('change', { target: { checked: true } });
 
     const mockSelect = rowSelection.onSelect;
-    expect(wrapper.state().selectionDirty).toBeTruthy();
     expect(tableInstance.state.selectionDirty).toBeTruthy();
     expect(mockSelect).toHaveBeenCalled();
     expect(mockSelect.mock.calls[0][1]).toEqual(dataSource[0]);
