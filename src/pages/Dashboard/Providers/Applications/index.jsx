@@ -50,7 +50,7 @@ export default class Applications extends Component {
 
     const columns = [
       {
-        title: t('申请编号'),
+        title: t('Apply No'),
         key: 'number',
         width: '80px',
         render: item => (
@@ -60,13 +60,13 @@ export default class Applications extends Component {
         )
       },
       {
-        title: t('审核结果'),
+        title: t('Review result'),
         key: 'status',
         width: '80px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
-        title: t('公司名称、介绍'),
+        title: t('Company name, introduction'),
         key: 'company',
         width: '200px',
         render: item => (
@@ -77,19 +77,19 @@ export default class Applications extends Component {
         )
       },
       {
-        title: t('公司官网'),
+        title: t('Company website'),
         key: 'home',
         width: '120px',
         render: item => item.company_website
       },
       {
-        title: t('审核时间'),
+        title: t('Review time'),
         key: 'audit_time',
         width: '100px',
         render: item => item.submit_time
       },
       {
-        title: t('审核人员'),
+        title: t('Auditor'),
         key: 'auditor',
         width: '120px',
         render: () => user.username
@@ -102,7 +102,7 @@ export default class Applications extends Component {
         render: item => (
           <div className={styles.actions}>
             <Link to={`/dashboard/application/${item.user_id}`}>
-              {t('查看详情')} →
+              {t('View detail')} →
             </Link>
           </div>
         )
@@ -117,7 +117,7 @@ export default class Applications extends Component {
     };
 
     return (
-      <Layout pageTitle={t('入驻申请')}>
+      <Layout pageTitle={t('Apply for Residence')}>
         <TableTypes
           types={types}
           activeType={activeType}

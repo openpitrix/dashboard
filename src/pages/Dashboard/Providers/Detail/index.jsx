@@ -14,9 +14,9 @@ import styles from './index.scss';
 
 const tags = [
   { name: 'App', value: 'app' },
-  { name: '认证信息', value: 'certificationInfo' },
-  { name: '合约', value: 'contract', disabled: true },
-  { name: '保证金', value: 'margin', disabled: true }
+  { name: 'Auth Information', value: 'certificationInfo' },
+  { name: 'Contract', value: 'contract', disabled: true },
+  { name: 'Margin', value: 'margin', disabled: true }
 ];
 @translate()
 @inject(({ rootStore }) => ({
@@ -53,31 +53,31 @@ export default class ProviderDetail extends Component {
     return (
       <Card className={styles.margin}>
         <div className={styles.title}>
-          {t('当前状态')}：未缴纳
+          {t('Current status')}：{t('Not paid')}
           <Button type="default">
             <Icon name="add" size={20} type="dark" className={styles.icon} />
-            {t('添加记录')}
+            {t('Add record')}
           </Button>
         </div>
         <div>
           <dl>
-            <dt>{t('操作')}</dt>
-            <dd>平台退回</dd>
+            <dt>{t('Operation')}</dt>
+            <dd>{t('Platform return')}</dd>
           </dl>
           <dl>
-            <dt>{t('金额')}</dt>
+            <dt>{t('Amount')}</dt>
             <dd>2000.00</dd>
           </dl>
           <dl>
-            <dt>{t('凭证编号')}</dt>
+            <dt>{t('Document No')}</dt>
             <dd>2093842934503495238405234692345</dd>
           </dl>
           <dl>
-            <dt>{t('操作时间')}</dt>
+            <dt>{t('Operation time')}</dt>
             <dd>2018年10月29日 19:21:32</dd>
           </dl>
           <dl>
-            <dt>{t('操作人员')}</dt>
+            <dt>{t('Operator')}</dt>
             <dd>Zhenzhen zhenzhen@yunify.com</dd>
           </dl>
         </div>
@@ -91,7 +91,9 @@ export default class ProviderDetail extends Component {
 
     return (
       <Card className={styles.appsInfo}>
-        <div className={styles.total}>{t(`已上架 ${totalCount} 款应用`)}</div>
+        <div className={styles.total}>
+          {t('SHELF_APP_TOTAL', { total: totalCount })}
+        </div>
 
         <ul>
           {apps.map(item => (
@@ -111,23 +113,23 @@ export default class ProviderDetail extends Component {
                 </span>
               </div>
               <div>
-                {t('交付方式')}:&nbsp;
+                {t('Delivery type')}:&nbsp;
                 <label className={styles.types}>{item.app_version_types}</label>
                 <br />
-                {t('总部署次数')}:&nbsp;
+                {t('Total of deploy')}:&nbsp;
                 <label className={styles.deployNumber}>
                   {item.deploy_total || 0}
                 </label>
               </div>
               <div>
                 <label className={styles.time}>
-                  {t('上架时间')}:&nbsp; {getPastTime(item.status_time)}
+                  {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
                 </label>
                 <Link
                   to={`/dashboard/app/${item.app_id}`}
                   className={styles.link}
                 >
-                  {t('查看详情')} →
+                  {t('View detail')} →
                 </Link>
               </div>
             </li>
@@ -145,21 +147,21 @@ export default class ProviderDetail extends Component {
       <Card className={styles.providerInfo}>
         <div className={styles.title}>
           <div className={styles.number}>
-            {t('服务商编号')}:&nbsp; {vendorDetail.user_id}
+            {t('Provider No')}:&nbsp; {vendorDetail.user_id}
           </div>
           <div className={styles.name}>{vendorDetail.company_name}</div>
         </div>
         <div className={styles.info}>
           <dl>
-            <dt>{t('业务介绍')}</dt>
+            <dt>{t('Business introduction')}</dt>
             <dd>{vendorDetail.company_profile}</dd>
           </dl>
           <dl>
-            <dt>{t('公司官网')}</dt>
+            <dt>{t('Company website')}</dt>
             <dd>{vendorDetail.company_website}</dd>
           </dl>
           <dl>
-            <dt>{t('联系人信息')}</dt>
+            <dt>{t('Contact information')}</dt>
             <dd>
               {vendorDetail.authorizer_name}
               <br />
@@ -169,7 +171,7 @@ export default class ProviderDetail extends Component {
             </dd>
           </dl>
           <dl>
-            <dt>{t('入驻时间')}</dt>
+            <dt>{t('Time of entry')}</dt>
             <dd>{formatTime(vendorDetail.submit_time)}</dd>
           </dl>
         </div>
@@ -182,7 +184,7 @@ export default class ProviderDetail extends Component {
     const { detailTab } = vendorStore;
 
     return (
-      <Layout pageTitle={t('应用服务商详情')} hasBack>
+      <Layout pageTitle={t('App Service Provider Detail')} hasBack>
         <Grid>
           <Section size={4}>{this.renderProviderInfo()}</Section>
           <Section size={8}>

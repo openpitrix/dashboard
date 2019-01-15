@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 
 import { Card } from 'components/Layout';
 import { Icon } from 'components/Base';
@@ -8,8 +9,8 @@ import DetailTabs from 'components/DetailTabs';
 import styles from './index.scss';
 
 const tags = [
-  { name: '认证信息', value: 'certificate' },
-  { name: '合约', value: 'contract', disabled: true }
+  { name: 'Auth Information', value: 'certificate' },
+  { name: 'Contract', value: 'contract', disabled: true }
 ];
 @translate()
 @inject(({ rootStore }) => ({
@@ -20,9 +21,12 @@ const tags = [
 @observer
 export default class CertificateInfo extends Component {
   render() {
-    const { user, vendorStore, t } = this.props;
+    const {
+      user, vendorStore, i18n, t
+    } = this.props;
     const { isISV } = user;
     const { vendorDetail } = vendorStore;
+    const language = i18n.language || 'zh';
 
     if (isISV && !vendorDetail.company_name) {
       return (
@@ -30,7 +34,9 @@ export default class CertificateInfo extends Component {
           <DetailTabs tabs={tags} />
           <Card className={styles.blankInfo}>
             <Icon name="paper" size={48} type="dark" />
-            <p className={styles.word}>{t('还未提交过认证信息')}</p>
+            <p className={styles.word}>
+              {t('Auth information has not yet been submitted')}
+            </p>
           </Card>
         </Fragment>
       );
@@ -39,45 +45,51 @@ export default class CertificateInfo extends Component {
     return (
       <Fragment>
         {isISV && <DetailTabs tabs={tags} />}
-        <Card className={styles.certificateInfo}>
-          {!isISV && <div className={styles.title}>{t('认证信息')}</div>}
+        <Card
+          className={classnames(styles.certificateInfo, {
+            [styles.enInfo]: language === 'en'
+          })}
+        >
+          {!isISV && (
+            <div className={styles.title}>{t('Auth Information')}</div>
+          )}
           <div className={styles.info}>
             <dl>
-              <dt>{t('公司名称')}</dt>
+              <dt>{t('Company name')}</dt>
               <dd>{vendorDetail.company_name}</dd>
             </dl>
             <dl>
-              <dt>{t('公司官网')}</dt>
+              <dt>{t('Company website')}</dt>
               <dd>{vendorDetail.company_website}</dd>
             </dl>
             <dl>
-              <dt>{t('业务简介')}</dt>
+              <dt>{t('Business introduction')}</dt>
               <dd>
                 <pre>{vendorDetail.company_profile}</pre>
               </dd>
             </dl>
             <dl>
-              <dt>{t('姓名')}</dt>
+              <dt>{t('name_provider')}</dt>
               <dd>{vendorDetail.authorizer_name}</dd>
             </dl>
             <dl>
-              <dt>{t('办公邮箱')}</dt>
+              <dt>{t('Office mailbox')}</dt>
               <dd>{vendorDetail.authorizer_email}</dd>
             </dl>
             <dl>
-              <dt>{t('手机号')}</dt>
+              <dt>{t('Mobile number')}</dt>
               <dd>{vendorDetail.authorizer_phone}</dd>
             </dl>
             <dl>
-              <dt>{t('开户银行')}</dt>
+              <dt>{t('Opening bank')}</dt>
               <dd>{vendorDetail.bank_name}</dd>
             </dl>
             <dl>
-              <dt>{t('开户名')}</dt>
+              <dt>{t('Account name')}</dt>
               <dd>{vendorDetail.bank_account_name}</dd>
             </dl>
             <dl>
-              <dt>{t('账号')}</dt>
+              <dt>{t('Account number')}</dt>
               <dd>{vendorDetail.bank_account_number}</dd>
             </dl>
           </div>

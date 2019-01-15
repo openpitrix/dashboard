@@ -141,5 +141,21 @@
   "VALUES_FILE_DESC": "Chart's default profile",
   "CHARTS_FILE_DESC": "Place other Charts that Chart currently depends on in this directory.",
   "TEMPLATES_FILE_DESC": "Deploy file template directory, fill in the corresponding value in values. yaml, and generate the final kubernetes configuration file",
-  "NOTES_FILE_DESC": "Guide for use"
+  "NOTES_FILE_DESC": "Guide for use",
+
+  "name_provider": "Name",
+  "STEPPER_NAME_CREATE_PROVIDER_HEADER": "Become a certification service provider",
+  "STEPPER_TITLE_CREATE_PROVIDER_1": "Submit certification information",
+  "STEPPER_FOOTER_CREATE_PROVIDER_1": "Above is the important information of platform audit, please fill in it accurately.",
+  "SUBMIT_SUCCESS_HEADER": "We have received your certification information and will complete the audit as soon as possible.",
+  "SUBMIT_SUCCESS_TIP": "Please pay attention to the notification of audit results. ",
+  "SUBMIT_WRITE_TIP": "The following information is very important for the platform to verify the qualifications of service providers, please fill in accurately.",
+  "CONTACT_INFORMATION_NOTE": "In the process of auditing, as well as after the important events will be the first time to communicate with contacts.",
+  "PUBLIC_ACCOUNT_NOTE": "The platform will settle all kinds of financial transactions with your company through this account.",
+  "OPENING_BANK_NOTE": "Opening bank with public account, accurate to bank branches, branches, savings offices and counters.",
+  "RELEVANT_AGREEMENT_NOTE": "Please consciously abide by the following agreements after you enter.",
+  "SERVICE_ACCOMMODATION":"Service Provider Accommodation Agreement",
+  "SERVICE_MANAGEMENT":"Service Provider Management Specification",
+  "SERVICE_PLATFORM":"Service Provider Platform Agreement",
+  "SHELF_APP_TOTAL": "The shelf has {{total}} application"
 }

@@ -127,7 +127,7 @@ export default class AppDetail extends Component {
       <Card className={styles.providerInfo}>
         <div className={styles.title}>{t('App service provider')}</div>
         <div className={styles.number}>
-          {t('Provider number')}: &nbsp; {vendorDetail.user_id || t('None')}
+          {t('Provider No')}: &nbsp; {vendorDetail.user_id || t('None')}
         </div>
         <div className={styles.company}>{vendorDetail.company_name}</div>
 
