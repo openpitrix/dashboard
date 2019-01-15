@@ -37,14 +37,14 @@ const rejectStatus = {
   develop_admin: 'dev-rejected'
 };
 const reviewTitle = {
-  isv: '应用服务商审核',
-  business_admin: '平台商务审核',
-  develop_admin: '平台技术审核'
+  isv: 'App service provider review',
+  business_admin: 'Platform business review',
+  develop_admin: 'Platform technology review'
 };
 const reviewPassNote = {
-  isv: '通过之后，此申请将提交到平台进行商务和技术审核。',
-  business_admin: '通过之后，此申请将提交到平台进行技术审核。',
-  develop_admin: '通过之后，应用开发者可以将此版本发布到应用商店。'
+  isv: 'ISV_PASS_NOTE',
+  business_admin: 'BUSINESS_PASS_NOTE',
+  develop_admin: 'TECHNICAL_PASS_NOTE'
 };
 
 @translate()
@@ -105,7 +105,7 @@ export default class ReviewDetail extends Component {
 
     return (
       <Dialog
-        title={t('为什么拒绝此申请？')}
+        title={t('Why refuse this application?')}
         isOpen={isDialogOpen}
         onCancel={hideModal}
         onSubmit={() => this.handleReview('reject')}
@@ -113,14 +113,12 @@ export default class ReviewDetail extends Component {
       >
         <div className={styles.rejectMessage}>
           <textarea
-            placeholder={t('请写下拒绝原因')}
+            placeholder={t('Please write down the reasons for rejection')}
             onChange={changeReason}
             maxLength={500}
             value={reason}
           />
-          <p className={styles.note}>
-            {t('以上原因将会以邮件的形式发送给申请者，请仔细填写。')}
-          </p>
+          <p className={styles.note}>{t('REJECT_REASON_NOTE')}</p>
         </div>
       </Dialog>
     );
@@ -137,7 +135,7 @@ export default class ReviewDetail extends Component {
         onCancel={hideModal}
         onSubmit={() => this.handleReview('pass')}
         okText={t('Pass')}
-        cancelText={t('再看看')}
+        cancelText={t('Look again')}
       >
         {t(reviewPassNote[user.username])}
       </Dialog>
@@ -169,7 +167,7 @@ export default class ReviewDetail extends Component {
       return (
         <Card className={styles.unReview}>
           <span className={styles.name}> {t(reviewTitle[role])}</span>
-          <label className={styles.status}>{t('尚未开始')}</label>
+          <label className={styles.status}>{t('Not yet started')}</label>
         </Card>
       );
     }
@@ -179,7 +177,7 @@ export default class ReviewDetail extends Component {
       return (
         <Card className={styles.waitReview}>
           <span className={styles.name}> {t(reviewTitle[role])}</span>
-          <label className={styles.status}>{t('等待审核')}</label>
+          <label className={styles.status}>{t('Waiting for review')}</label>
         </Card>
       );
     }
@@ -190,15 +188,15 @@ export default class ReviewDetail extends Component {
         <Card className={styles.pendingReview}>
           <div className={styles.name}>
             {t(reviewTitle[role])}
-            <label className={styles.status}>{t('审核中')}</label>
+            <label className={styles.status}>{t('In-review')}</label>
           </div>
           <div className={styles.reviewInfo}>
             <dl>
-              <dt>{t('审核人员')}:</dt>
+              <dt>{t('Auditor')}:</dt>
               <dd>{this.renderOperator(record.operator)}</dd>
             </dl>
             <dl>
-              <dt>{t('开始时间')}:</dt>
+              <dt>{t('Start time')}:</dt>
               <dd>{formatTime(record.review_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
             </dl>
           </div>
@@ -235,20 +233,20 @@ export default class ReviewDetail extends Component {
           </div>
           <div className={styles.reviewInfo}>
             <dl>
-              <dt>{t('审核人员')}:</dt>
+              <dt>{t('Auditor')}:</dt>
               <dd>{this.renderOperator(record.operator)}</dd>
             </dl>
             <dl>
-              <dt>{t('开始时间')}:</dt>
+              <dt>{t('Start time')}:</dt>
               <dd>{formatTime(record.review_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
             </dl>
             <dl>
-              <dt>{isReject ? t('拒绝时间') : t('通过时间')}:</dt>
+              <dt>{isReject ? t('Reject time') : t('Pass time')}:</dt>
               <dd>{formatTime(record.status_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
             </dl>
             {record.message && (
               <dl>
-                <dt>{t('拒绝原因')}:</dt>
+                <dt>{t('Reject reason')}:</dt>
                 <dd>
                   <pre>{record.message}</pre>
                 </dd>
@@ -269,15 +267,15 @@ export default class ReviewDetail extends Component {
     if (!reviewDetail.version_id) {
       return (
         <div className={styles.versionReview}>
-          <div className={styles.title}>{t('审核进度')}</div>
-          <Card className={styles.noData}>{t('暂无审核记录数据')}</Card>
+          <div className={styles.title}>{t('Review progress')}</div>
+          <Card className={styles.noData}>{t('No review record data')}</Card>
         </div>
       );
     }
 
     return (
       <div className={styles.versionReview}>
-        <div className={styles.title}>{t('审核进度')}</div>
+        <div className={styles.title}>{t('Review progress')}</div>
         <Card className={styles.submit}>
           <span className={styles.name}>{t('Submit')}</span>
           <label className={styles.time}>
@@ -311,15 +309,15 @@ export default class ReviewDetail extends Component {
         />
         <div className={styles.info}>
           <dl>
-            <dt>{t('审核类型')}:</dt>
-            <dd>{version.apply_type || t('上架申请')}</dd>
+            <dt>{t('Audit type')}:</dt>
+            <dd>{version.apply_type || t('Apply for shelf')}</dd>
           </dl>
           <dl>
-            <dt>{t('审核编号')}:</dt>
+            <dt>{t('Audit No')}:</dt>
             <dd>{version.version_id}</dd>
           </dl>
           <dl>
-            <dt>{t('当前状态')}:</dt>
+            <dt>{t('Current status')}:</dt>
             <dd>
               <Status type={version.status} name={version.status} />
             </dd>
@@ -398,21 +396,21 @@ export default class ReviewDetail extends Component {
     return (
       <div className={styles.baseInfo}>
         <dl>
-          <dt>{t('名称')}</dt>
+          <dt>{t('Name')}</dt>
           <dd>{appDetail.name}</dd>
         </dl>
         <dl>
-          <dt>{t('一句话介绍')}</dt>
+          <dt>{t('One-sentence introduction')}</dt>
           <dd>{appDetail.abstraction || t('None')}</dd>
         </dl>
         <dl>
-          <dt>{t('详细介绍')}</dt>
+          <dt>{t('Detail introduction')}</dt>
           <dd>
             <pre>{appDetail.description || t('None')}</pre>
           </dd>
         </dl>
         <dl>
-          <dt>{t('图标')}</dt>
+          <dt>{t('Icon')}</dt>
           <dd className={styles.imageOuter}>
             <Image
               src={appDetail.icon}
@@ -422,15 +420,15 @@ export default class ReviewDetail extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('页面截图')}</dt>
+          <dt>{t('Screenshot of the interface')}</dt>
           <dd>{appDetail.screenshots || t('None')}</dd>
         </dl>
         <dl>
-          <dt>{t('分类')}</dt>
+          <dt>{t('Category')}</dt>
           <dd>{categoryName || t('None')}</dd>
         </dl>
         <dl>
-          <dt>{t('服务商网站')}</dt>
+          <dt>{t('Service provider website')}</dt>
           <dd>
             <a href={appDetail.home} target="_blank" rel="noopener noreferrer">
               {appDetail.home}
@@ -447,17 +445,15 @@ export default class ReviewDetail extends Component {
     const { detailTab } = appStore;
 
     return (
-      <Layout pageTitle={t('应用审核详情')} hasBack>
+      <Layout pageTitle={t('App review detail')} hasBack>
         <Grid>
           <Section size={8}>
             <Card className={styles.reviewTitle}>
-              <div className={styles.name}>{t('审核内容')}</div>
+              <div className={styles.name}>{t('Audit content')}</div>
               <div className={styles.note}>
-                {t(
-                  '以下信息必须真实准确，关键的操作说明需要描述详情，对于条款中的权利与义务需要描述清晰，'
-                )}
+                {t('AUDIT_CONTENT_INTRODUCE')}
                 <a href="#" target="_blank">
-                  {t('查看详细标准')} →
+                  {t('view detail standard')} →
                 </a>
               </div>
             </Card>

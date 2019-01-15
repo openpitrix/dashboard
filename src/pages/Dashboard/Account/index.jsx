@@ -176,7 +176,11 @@ export default class Account extends Component {
             <Select.Option value="en">English</Select.Option>
           </Select>
         </div>
-        <div className={styles.submitBtn}>
+        <div
+          className={classnames(styles.submitBtn, {
+            [styles.submitBtnEn]: language === 'en'
+          })}
+        >
           <Button type="primary" htmlType="submit">
             {t('Save')}
           </Button>

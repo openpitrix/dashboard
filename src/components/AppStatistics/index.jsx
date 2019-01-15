@@ -42,19 +42,19 @@ export default class AppStatistics extends Component {
     return (
       <Card className={classnames(styles.appStatistics, className)}>
         <dl>
-          <dt>{t(isAppDetail ? '线上版本' : '已上架应用')}</dt>
+          <dt>{t(isAppDetail ? 'Online version' : 'On the shelf apps')}</dt>
           <dd>{isAppDetail ? versionTotal : appTotal}</dd>
         </dl>
         <dl>
-          <dt>{t('本月部署次数')}</dt>
+          <dt>{t('Deploy times this month')}</dt>
           <dd>{monthDepoly}</dd>
         </dl>
         <dl>
-          <dt>{t('总部署次数')}</dt>
+          <dt>{t('Total of deploy')}</dt>
           <dd>{totalDepoly}</dd>
         </dl>
         {/* <dl>
-          <dt>{t('综合评价')}</dt>
+          <dt>{t('Evaluation stars')}</dt>
           <dd>
             {starTotal}
             <label>

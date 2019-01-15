@@ -155,7 +155,7 @@ export default class Home extends Component {
         })}
       >
         <div className={styles.navGrp}>
-          <p className={styles.caption}>{t('发现')}</p>
+          <p className={styles.caption}>{t('Discoveries')}</p>
           <ul className={styles.menu}>
             <li
               key={cateLatest}
@@ -165,7 +165,7 @@ export default class Home extends Component {
               onClick={() => this.handleClickCate(cateLatest)}
             >
               <Icon name="cart" size={24} type="dark" className={styles.icon} />
-              <span className={styles.name}>{t('最新上架')}</span>
+              <span className={styles.name}>{t('New Arrival')}</span>
             </li>
           </ul>
         </div>

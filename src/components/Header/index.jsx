@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { NavLink, withRouter, Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import { toUrl } from 'utils/url';
 
 import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
+import { toUrl } from 'utils/url';
 
 import styles from './index.scss';
 
@@ -69,31 +69,48 @@ class Header extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, user } = this.props;
 
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
-          <Link className={styles.logoIcon} to="/">
-            <Icon
-              className={styles.icon}
-              name="op-logo"
-              type="white"
-              size={16}
-            />
-          </Link>
+          {user.user_id ? (
+            <Link className={styles.logoIcon} to="/">
+              <Icon
+                className={styles.icon}
+                name="op-logo"
+                type="white"
+                size={16}
+              />
+            </Link>
+          ) : (
+            <NavLink className={styles.logo} to="/">
+              <img src="/logo_light.svg" height="100%" />
+            </NavLink>
+          )}
+
           {this.renderMenus()}
           {this.renderMenuBtns()}
-          <Icon name="mail" size={20} type="white" className={styles.mail} />
-          <Link to="/dashboard/provider/submit" className={styles.upgrade}>
-            <Icon
-              name="shield"
-              size={16}
-              type="white"
-              className={styles.shield}
-            />
-            {t('UPGRADE_PROVIDER')}
-          </Link>
+
+          {user.user_id && (
+            <Fragment>
+              <Icon
+                name="mail"
+                size={20}
+                type="white"
+                className={styles.mail}
+              />
+              <Link to="/dashboard/provider/submit" className={styles.upgrade}>
+                <Icon
+                  name="shield"
+                  size={16}
+                  type="white"
+                  className={styles.shield}
+                />
+                {t('UPGRADE_PROVIDER')}
+              </Link>
+            </Fragment>
+          )}
         </div>
       </div>
     );

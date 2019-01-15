@@ -569,7 +569,7 @@ export default class VersionDetail extends Component {
     return (
       <Layout
         className={styles.versionDetail}
-        pageTitle={t('Version details')}
+        pageTitle={t('Version detail')}
         hasBack
       >
         {this.renderTopInfo()}
