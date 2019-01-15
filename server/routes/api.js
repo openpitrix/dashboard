@@ -20,7 +20,7 @@ router.post('/api/*', async ctx => {
   const { method } = body;
   const url = [apiServer, endpoint].join('/');
 
-  logger.info({ method, url, body });
+  logger.info(`%s: %s`, method.toUpperCase(), url, { body });
 
   delete body.method;
 
