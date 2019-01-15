@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Input, Table, Image } from 'components/Base';
-import Layout, { Grid, Section, Card } from 'components/Layout';
+import {
+  Input, Table, Image, Icon, Popover
+} from 'components/Base';
+import Layout, {
+  Grid, Section, Card, Dialog
+} from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import AppStatistics from 'components/AppStatistics';
-import { versionTypes } from 'config/version-types';
+import { versionTypes, getVersionTypesName } from 'config/version-types';
 import { formatTime } from 'utils';
 import Versions from '../../Versions';
 
@@ -53,6 +58,7 @@ export default class AppDetail extends Component {
     // get deploy total and user instance
     await clusterStore.fetchAll({ app_id: appId });
 
+    // to fix: should query provider info
     const { appDetail } = appStore;
     await userStore.fetchDetail({ user_id: appDetail.owner });
   }
@@ -81,11 +87,43 @@ export default class AppDetail extends Component {
     }
   };
 
+  renderHandleMenu = () => {
+    const { appStore, match, t } = this.props;
+    const { appId } = match.params;
+
+    return (
+      <div className="operate-menu">
+        <Link to={`/dashboard/apps/${appId}/deploy`}>
+          <Icon name="stateful-set" type="dark" /> {t('部署实例')}
+        </Link>
+        <span onClick={() => appStore.showModal('suspend')}>
+          <Icon name="sort-descending" type="dark" /> {t('下架应用')}
+        </span>
+      </div>
+    );
+  };
+
+  renderSuspendDialog = () => {
+    const { appStore, t } = this.props;
+    const { isModalOpen, hideModal } = appStore;
+
+    return (
+      <Dialog
+        title={t('Note')}
+        isOpen={isModalOpen}
+        onSubmit={hideModal}
+        onCancel={hideModal}
+      >
+        {t('应用下架后用户无法从商店中购买到此应用，你确定要下架吗？')}
+      </Dialog>
+    );
+  };
+
   renderVersionName = version_id => {
     const { appVersionStore } = this.props;
     const { versions } = appVersionStore;
     const version = _.find(versions, { version_id }) || {};
-    const typeName = (_.find(versionTypes, { value: version.type }) || {}).name;
+    const typeName = getVersionTypesName(version.type);
 
     return (
       <div className={styles.versionName}>
@@ -278,6 +316,12 @@ export default class AppDetail extends Component {
           <Link to="/" className={styles.link}>
             {t('View in store')} →
           </Link>
+          <Popover
+            className={classnames('operation', styles.operationIcon)}
+            content={this.renderHandleMenu()}
+          >
+            <Icon name="more" />
+          </Popover>
         </div>
       </Card>
     );
@@ -307,6 +351,7 @@ export default class AppDetail extends Component {
             {detailTab === 'record' && this.renderRecord()}
           </Section>
         </Grid>
+        {this.renderSuspendDialog()}
       </Layout>
     );
   }

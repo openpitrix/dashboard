@@ -62,6 +62,8 @@
   @include normal-font($line-height: 20px, $font-size: 12px);
 
   .type {
+    display: inline-block;
+    margin-right: 4px;
     color: $N75;
   }
 }
@@ -87,4 +89,9 @@
       }
     }
   }
+}
+
+.operationIcon {
+  top: auto !important;
+  bottom: 24px;
 }
