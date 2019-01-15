@@ -104,7 +104,7 @@ export default class Info extends Component {
           )}
         </ul>
         <div className={styles.words}>
-          {screenshots.length}/6 {t('张截图')}
+          {(screenshots || []).length}/6 {t('screenshots')}
           {isEdit && (
             <Upload
               multiple
@@ -112,12 +112,12 @@ export default class Info extends Component {
               checkFile={checkScreenshot}
               uploadFile={uploadScreenshot}
             >
-              {t('选择文件')}
+              {t('Select file')}
             </Upload>
           )}
           {isEdit && (
             <label className={styles.deleteAll} onClick={deleteScreenshot}>
-              {t('删除全部')}
+              {t('Delete all')}
             </label>
           )}
         </div>
@@ -165,11 +165,11 @@ export default class Info extends Component {
 
     return (
       <div className={styles.markdownNote}>
-        {t('以下内容编辑支持')}
+        {t('The following content editing support ')}
         <a href="http://markdownpad.com" target="blank">
           Markdown
         </a>
-        {t('语法')}
+        {t(' grammar')}
         <div className={styles.buttons}>
           <Button
             type="primary"
@@ -186,7 +186,7 @@ export default class Info extends Component {
             <a href="#" target="_blank">
               <Button>
                 <Icon name="documentation" size={20} type="dark" />
-                {t('查看范例')}
+                {t('View example')}
               </Button>
             </a>
           )}
@@ -212,7 +212,7 @@ export default class Info extends Component {
             autoFocus
             value={appDetail.tos}
             onChange={e => changeApp(e, 'tos')}
-            placeholder={t('开始编写应用的服务条款')}
+            placeholder={t('Start writing application terms of service')}
           />
         )}
       </div>
@@ -237,7 +237,7 @@ export default class Info extends Component {
             value={appDetail.readme}
             onChange={e => changeApp(e, 'readme')}
             className="textarea"
-            placeholder={t('开始编写应用的使用说明')}
+            placeholder={t('Start writing instructions for the app')}
           />
         )}
       </div>
@@ -263,7 +263,9 @@ export default class Info extends Component {
         <div className={styles.item}>
           <div className={styles.name}>
             <label>{t('Name')}</label>
-            <p className={styles.noteWord}>{t('应用的重要标识')}</p>
+            <p className={styles.noteWord}>
+              {t('Important identifier of the application')}
+            </p>
           </div>
           <Input
             name="name"
@@ -276,8 +278,10 @@ export default class Info extends Component {
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('一句话介绍')}</label>
-            <p className={styles.noteWord}>{t('对应用的概括性介绍')}</p>
+            <label>{t('One-sentence introduction')}</label>
+            <p className={styles.noteWord}>
+              {t('A general introduction to the application')}
+            </p>
           </div>
           <Input
             name="abstraction"
@@ -289,9 +293,9 @@ export default class Info extends Component {
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('详细介绍')}</label>
+            <label>{t('Detail introduction')}</label>
             <p className={styles.noteWord}>
-              {t('在用户搜索应用时会非常有帮助')}
+              {t('Very helpful when users search for apps')}
             </p>
           </div>
           <textarea
@@ -303,32 +307,30 @@ export default class Info extends Component {
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('图标')}</label>
+            <label>{t('Icon')}</label>
             <p className={styles.noteWord}>
-              {t('格式: png/svg背景透明最佳')} <br />
-              {t('图形大小：')}96px*96*px
+              {t('Format png/svg background transparency is the best')} <br />
+              {t('Graphics size')}: 96px*96*px
             </p>
           </div>
           {this.renderIcon()}
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('界面截图')}</label>
+            <label>{t('Screenshot of the interface')}</label>
             <p className={styles.noteWord}>
-              {t('格式')} : png/jpg <br />
-              {t('文件大小：不超过 2MB')}
+              {t('Format')} : png/jpg <br />
+              {t('File size no more than 2MB')}
               <br />
-              {t('最少3张，最多6张')}
+              {t('Minimum 3, maximum 6')}
             </p>
           </div>
           {this.renderScreenshots()}
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('分类')}</label>
-            <p className={styles.noteWord}>
-              {t('选择适合的应用分类，便于用户更快发现你的应用')}
-            </p>
+            <label>{t('Categories')}</label>
+            <p className={styles.noteWord}>{t('CHOOSE_APP_CATEGORY_DESC')}</p>
           </div>
           <Select
             value={appDetail.category_id}
@@ -344,8 +346,10 @@ export default class Info extends Component {
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('服务商网站')}</label>
-            <p className={styles.noteWord}>{t('服务商的官方网站地址')}</p>
+            <label>{t('Service provider website')}</label>
+            <p className={styles.noteWord}>
+              {t("Service provider's official website address")}
+            </p>
           </div>
           <Input
             className={styles.input}
@@ -400,14 +404,15 @@ export default class Info extends Component {
       <Layout className={styles.appInfo} pageTitle={t('App Info')} isCenterPage>
         {isEdit ? (
           <div className={styles.note}>
-            <label>{t('Note')}</label>每次修改的内容都将跟随下一次版本上架而真正生效。
+            <label>{t('Note')}</label>
+            {t('MODIFY_VERSION_TIPS')}
           </div>
         ) : (
           <div className={styles.auditNote}>
             <Icon name="exclamation" size={20} className={styles.icon} />
-            {t('当前应用有版本正在审核中，以下信息暂时不可更改。')}
+            {t('UNDER_REVIEW_TIPS')}
             <Link to={`/dashboard/app/${appId}/versions`}>
-              {t('查看版本记录 →')}
+              {t('View version record')} →
             </Link>
           </div>
         )}

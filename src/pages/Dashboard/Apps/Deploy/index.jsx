@@ -367,7 +367,7 @@ export default class AppDeploy extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('版本号')}:</dt>
+          <dt>{t('Version No')}:</dt>
           <dd className={styles.types}>
             {versions.map(item => (
               <label

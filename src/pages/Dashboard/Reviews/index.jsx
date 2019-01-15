@@ -58,7 +58,7 @@ export default class Reviews extends Component {
 
     const columns = [
       {
-        title: t('编号'),
+        title: t('Number'),
         key: 'review_id',
         width: '100px',
         render: item => (
@@ -68,10 +68,10 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('申请类型'),
+        title: t('Apply Type'),
         key: 'apply_type',
         width: '70px',
-        render: item => item.apply_type || t('应用上架')
+        render: item => item.apply_type || t('App on the shelf')
       },
       {
         title: t('App Info'),
@@ -87,19 +87,19 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('提交者'),
+        title: t('Submitter'),
         key: 'developer',
         width: '80px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
-        title: t('提交时间'),
+        title: t('Submit time'),
         key: 'status_time',
         width: '130px',
         render: item => <TimeShow time={item.status_time} type="detailTime" />
       },
       {
-        title: t('审核状态'),
+        title: t('Audit status'),
         key: 'status',
         width: '100px',
         render: item => (

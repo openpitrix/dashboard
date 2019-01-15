@@ -125,29 +125,29 @@ export default class AppDetail extends Component {
 
     return (
       <Card className={styles.providerInfo}>
-        <div className={styles.title}>{t('应用服务商')}</div>
+        <div className={styles.title}>{t('App service provider')}</div>
         <div className={styles.number}>
-          {t('服务商编号')}: &nbsp; {vendorDetail.user_id || t('None')}
+          {t('Provider number')}: &nbsp; {vendorDetail.user_id || t('None')}
         </div>
         <div className={styles.company}>{vendorDetail.company_name}</div>
 
         <dl>
-          <dt>{t('综合评价')}</dt>
+          <dt>{t('Evaluation stars')}</dt>
           <dd>
             <label className={styles.stars}>5.0</label>
             <Stars />
           </dd>
         </dl>
         <dl>
-          <dt>{t('业务简介')}</dt>
+          <dt>{t('Business introduction')}</dt>
           <dd>{vendorDetail.company_profile || t('None')}</dd>
         </dl>
         <dl>
-          <dt>{t('公司网站')}</dt>
+          <dt>{t('Company website')}</dt>
           <dd>{vendorDetail.company_website || t('None')}</dd>
         </dl>
         <dl>
-          <dt>{t('入驻时间')}</dt>
+          <dt>{t('Time of entry')}</dt>
           <dd>{formatTime(vendorDetail.submit_time)}</dd>
         </dl>
       </Card>
@@ -185,7 +185,7 @@ export default class AppDetail extends Component {
         <pre className={styles.description}>
           {appDetail.description || t('none')}
         </pre>
-        <div className={styles.title}>{t('截图')}</div>
+        <div className={styles.title}>{t('Screenshot')}</div>
         <Screenshots
           app={appDetail}
           currentPic={currentPic}
@@ -232,7 +232,7 @@ export default class AppDetail extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('版本号')}:</dt>
+          <dt>{t('Version No')}:</dt>
           <dd className={styles.types}>
             {versions.map(item => (
               <label
@@ -253,11 +253,11 @@ export default class AppDetail extends Component {
           <dd>
             {user.user_id ? (
               <Link to={url}>
-                <Button type="primary">{t('立即部署')}</Button>
+                <Button type="primary">{t('Deploy now')}</Button>
               </Link>
             ) : (
               <Link to={`/login?redirect_url=${url}`}>
-                <Button type="primary">{t('登录后部署')}</Button>
+                <Button type="primary">{t('Deploy after login')}</Button>
               </Link>
             )}
           </dd>

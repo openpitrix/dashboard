@@ -51,7 +51,7 @@ export default class CheckFiles extends PureComponent {
               <div className={styles.description}>
                 #&nbsp;&nbsp;
                 {file.isOptional && <span>[{t('optional')}]&nbsp;&nbsp;</span>}
-                {file.description}
+                {t(file.description)}
               </div>
             </li>
           ))}
@@ -63,7 +63,7 @@ export default class CheckFiles extends PureComponent {
             {t('See the complete app development specification')}
             <a to="#">
               《{linkType}
-              {t('specification and app development')}
+              {t('specification and application development')}
               》
             </a>。
           </div>

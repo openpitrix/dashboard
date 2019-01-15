@@ -18,9 +18,9 @@ import Versions from '../../Versions';
 import styles from './index.scss';
 
 const tags = [
-  { name: '用户实例', value: 'instance' },
-  { name: '线上版本', value: 'online' },
-  { name: '审核记录', value: 'record' }
+  { name: 'User instances', value: 'instance' },
+  { name: 'Online version', value: 'online' },
+  { name: 'Audit record', value: 'record' }
 ];
 @translate()
 @inject(({ rootStore }) => ({
@@ -107,16 +107,16 @@ export default class AppDetail extends Component {
 
     const columns = [
       {
-        title: t('申请编号'),
+        title: t('Apply No'),
         key: 'number',
         width: '120px',
         render: item => item.version_id
       },
       {
-        title: t('申请类型'),
+        title: t('Apply Type'),
         key: 'type',
         width: '60px',
-        render: item => item.type || t('应用上架')
+        render: item => item.type || t('App on the shelf')
       },
       {
         title: t('Status'),
@@ -133,7 +133,7 @@ export default class AppDetail extends Component {
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
-        title: t('审核人员'),
+        title: t('Auditors'),
         key: 'operator',
         width: '80px',
         render: item => (_.find(users, { user_id: item.operator }) || {}).username
@@ -209,11 +209,11 @@ export default class AppDetail extends Component {
       <Card>
         <div className={styles.searchOuter}>
           <p className={styles.total}>
-            已部署 {clusterStore.totalCount} 个应用实例
+            {t('DEPLOYED_APP_TOTAL', { total: clusterStore.totalCount })}
           </p>
           <Input.Search
             className={styles.search}
-            placeholder={t('搜索或过滤')}
+            placeholder={t('Search or filter')}
             value={searchWord}
             onSearch={onSearch}
             onClear={onClearSearch}
@@ -248,19 +248,19 @@ export default class AppDetail extends Component {
         </div>
         <div className={styles.info}>
           <dl>
-            <dt>{t('应用编号')}</dt>
+            <dt>{t('App No')}</dt>
             <dd>{appDetail.app_id}</dd>
           </dl>
           <dl>
-            <dt>{t('交付类型')}</dt>
+            <dt>{t('Delivery type')}</dt>
             <dd>{appDetail.app_version_types}</dd>
           </dl>
           <dl>
-            <dt>{t('应用介绍')}</dt>
+            <dt>{t('App intro')}</dt>
             <dd>{appDetail.abstraction}</dd>
           </dl>
           <dl>
-            <dt>{t('分类')}</dt>
+            <dt>{t('Category')}</dt>
             <dd>
               {categories.map(item => (
                 <label key={item.category_id}>{item.name}</label>
@@ -268,15 +268,15 @@ export default class AppDetail extends Component {
             </dd>
           </dl>
           <dl>
-            <dt>{t('开发者')}</dt>
+            <dt>{t('Developer')}</dt>
             <dd>{userDetail.username}</dd>
           </dl>
           <dl>
-            <dt>{t('上架时间')}</dt>
+            <dt>{t('Publish time')}</dt>
             <dd>{formatTime(appDetail.status_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
           </dl>
           <Link to="/" className={styles.link}>
-            {t('去商店中查看')} →
+            {t('View in store')} →
           </Link>
         </div>
       </Card>
@@ -291,7 +291,7 @@ export default class AppDetail extends Component {
     const { versions } = appVersionStore;
 
     return (
-      <Layout pageTitle={t('应用详情')} hasBack>
+      <Layout pageTitle={t('App Detail')} hasBack>
         <Grid>
           <Section size={4}>{this.renderAppBase()}</Section>
           <Section size={8}>

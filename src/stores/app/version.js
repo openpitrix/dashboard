@@ -219,7 +219,9 @@ export default class AppVersionStore extends Store {
       await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
     }
 
-    const userIds = this.reviews.map(item => item.owner);
+    const userIds = this.reviews
+      .filter(item => item.reviewer)
+      .map(item => item.reviewer);
     if (userIds.length > 0) {
       await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
