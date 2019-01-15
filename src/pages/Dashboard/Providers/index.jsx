@@ -31,7 +31,7 @@ export default class Providers extends Component {
 
     const columns = [
       {
-        title: t('编号'),
+        title: t('Number'),
         key: 'number',
         width: '80px',
         render: item => (
@@ -39,25 +39,25 @@ export default class Providers extends Component {
         )
       },
       {
-        title: t('公司名称'),
+        title: t('Company name'),
         key: 'company',
         width: '200px',
         render: item => item.company_name
       },
       {
-        title: t('已上架应用'),
+        title: t('On the shelf apps'),
         key: 'app_total',
         width: '100px',
         render: item => item.app_total || 0
       },
       {
-        title: t('本月部署次数'),
+        title: t('Deploy times this month'),
         key: 'moth_count',
         width: '80px',
         render: item => item.moth_count || 0
       },
       {
-        title: t('总部署次数'),
+        title: t('Total of deploy'),
         key: 'total_count',
         width: '80px',
         render: item => item.total_count || 0
@@ -70,7 +70,7 @@ export default class Providers extends Component {
         render: item => (
           <div className={styles.actions}>
             <Link to={`/dashboard/provider/${item.user_id}`}>
-              {t('查看详情')} →
+              {t('View detail')} →
             </Link>
           </div>
         )
@@ -91,7 +91,7 @@ export default class Providers extends Component {
     return (
       <Layout>
         <TitleSearch
-          title={t('全部服务商')}
+          title={t('All Providers')}
           placeholder={t('Search App')}
           searchWord={searchWord}
           onSearch={onSearch}

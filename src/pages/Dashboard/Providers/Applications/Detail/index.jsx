@@ -13,15 +13,15 @@ import CertificateInfo from '../../CertificateInfo';
 import styles from './index.scss';
 
 const statusMap = {
-  new: '未认证',
-  submitted: '审核中',
-  passed: '已认证',
-  rejected: '已拒绝'
+  new: 'Uncertified',
+  submitted: 'In-review',
+  passed: 'Certified',
+  rejected: 'Rejected'
 };
 const statusTime = {
-  submitted: '申请时间',
-  passed: '通过时间',
-  rejected: '拒绝时间'
+  submitted: 'Apply time',
+  passed: 'Pass time',
+  rejected: 'Reject time'
 };
 
 @translate()
@@ -51,7 +51,7 @@ export default class Applications extends Component {
 
     return (
       <Dialog
-        title={t('为什么拒绝此申请？')}
+        title={t('Why refuse this application?')}
         isOpen={isMessageOpen}
         onCancel={hideModal}
         onSubmit={() => applyReject(providerId)}
@@ -61,11 +61,9 @@ export default class Applications extends Component {
             className={styles.reason}
             onChange={changeRejectMessage}
             maxLength={500}
-            palaceholder={t('请写下拒绝原因')}
+            palaceholder={t('Please write down the reasons for rejection')}
           />
-          <p className={styles.note}>
-            {t('以上原因将会以邮件的形式发送给申请者，请仔细填写。')}
-          </p>
+          <p className={styles.note}>{t('REJECT_REASON_NOTE')}</p>
         </div>
       </Dialog>
     );
@@ -85,26 +83,27 @@ export default class Applications extends Component {
       return (
         <div className={styles.statusInfo}>
           <dl className={styles.status}>
-            <dt>{t('申请状态')}:&nbsp;</dt>
+            <dt>{t('Apply status')}:&nbsp;</dt>
             <dd>
               <span className={classnames(styles[status])}>
                 {t(statusMap[status] || status)}
               </span>
               {isSubmit && (
                 <Link to="/dashboard/provider/submit">
-                  {t(status === 'new' ? '立即提交' : '重新提交')}
+                  {t(status === 'new' ? 'Submit immediately' : 'Re-submit')}
                 </Link>
               )}
             </dd>
           </dl>
           <dl>
-            <dt>{t('保证金')}:&nbsp;</dt>
+            <dt>{t('Margin')}:&nbsp;</dt>
             <dd>
-              未缴纳<Link to="#">{t('查看缴纳方式')}</Link>
+              {t('Not paid')}
+              <Link to="#">{t('View payment method')}</Link>
             </dd>
           </dl>
           <dl>
-            <dt>{t('创建时间')}:&nbsp;</dt>
+            <dt>{t('Create Time')}:&nbsp;</dt>
             <dd>{formatTime(vendorDetail.status_time)}</dd>
           </dl>
         </div>
@@ -114,7 +113,7 @@ export default class Applications extends Component {
     return (
       <div className={styles.statusInfo}>
         <dl className={styles.status}>
-          <dt>{t('申请状态')}:&nbsp;</dt>
+          <dt>{t('Apply status')}:&nbsp;</dt>
           <dd>
             <Status type={status} name={status} />
           </dd>
@@ -134,7 +133,7 @@ export default class Applications extends Component {
           </dl>
         ) : (
           <dl>
-            <dt>{t('审核人员')}:&nbsp;</dt>
+            <dt>{t('Auditor')}:&nbsp;</dt>
             <dd>
               <label>{user.username}</label> {user.email}
             </dd>
@@ -148,7 +147,7 @@ export default class Applications extends Component {
     const { user, vendorStore, t } = this.props;
     const { isISV } = user;
     const { vendorDetail } = vendorStore;
-    const numberTitle = isISV ? t('服务商编号') : t('申请编号');
+    const numberTitle = isISV ? t('Provider No') : t('Apply No');
 
     return (
       <Card className={styles.baseInfo}>
@@ -161,7 +160,7 @@ export default class Applications extends Component {
         {this.renderStatusInfo()}
         {vendorDetail.status === 'rejected' && (
           <div className={styles.reason}>
-            <label>{t('原因')}:&nbsp;</label>
+            <label>{t('Reason')}:&nbsp;</label>
             <pre>{vendorDetail.reject_message}</pre>
           </div>
         )}
@@ -172,7 +171,9 @@ export default class Applications extends Component {
   render() {
     const { user, t } = this.props;
     const { isISV } = user;
-    const pagetTitle = isISV ? t('服务商详情') : t('入驻申请详情');
+    const pagetTitle = isISV
+      ? t('Service Provider Detail')
+      : t('Details of app for residence');
 
     return (
       <Layout

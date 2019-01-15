@@ -39,13 +39,13 @@ export default class ApplicationCreate extends Component {
     return (
       <div className={styles.successMessage}>
         <Icon className={styles.checkedIcon} name="checked-circle" size={48} />
-        <div className={styles.textTip}>{t('提交成功')}</div>
-        <div className={styles.textHeader}>
-          {t('你的认证信息我们已经收到，会尽快完成审核。')}
-        </div>
-        <div className={styles.textTip}>{t('请留意审核结果通知。')}</div>
+        <div className={styles.textTip}>{t('Submit successful')}</div>
+        <div className={styles.textHeader}>{t('SUBMIT_SUCCESS_HEADER')}</div>
+        <div className={styles.textTip}>{t('SUBMIT_SUCCESS_TIP')}</div>
         <Link className={styles.successBtns} to="/dashboard/provider-detail">
-          <Button type="primary">{t('查看应用商详情')}</Button>
+          <Button type="primary">
+            {t('View app service provider detail')}
+          </Button>
         </Link>
         <div className={styles.certificateInfo}>
           <CertificateInfo />
@@ -66,11 +66,11 @@ export default class ApplicationCreate extends Component {
     return (
       <div className={styles.createFrom}>
         <dl>
-          <dt>{t('基本信息')}</dt>
-          <dd>{t('以下信息对于平台审核服务商资质非常重要，请准确填写')}:</dd>
+          <dt>{t('Base Info')}</dt>
+          <dd>{t('SUBMIT_WRITE_TIP')}:</dd>
         </dl>
         <dl>
-          <dt>{t('公司名称')}</dt>
+          <dt>{t('Company name')}</dt>
           <dd>
             <Input
               name="company_name"
@@ -81,7 +81,7 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('公司官网')}</dt>
+          <dt>{t('Company website')}</dt>
           <dd>
             <Input
               name="company_website"
@@ -92,7 +92,7 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl className={styles.blockMargin}>
-          <dt>{t('业务简介')}</dt>
+          <dt>{t('Business introduction')}</dt>
           <dd>
             <textarea
               name="company_profile"
@@ -103,16 +103,12 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('联系人信息')}</dt>
-          <dd>
-            {t(
-              '在审核过程中，以及入驻之后的重要事件都会第一时间与联系人沟通。'
-            )}
-          </dd>
+          <dt>{t('Contact information')}</dt>
+          <dd>{t('CONTACT_INFORMATION_NOTE')}</dd>
         </dl>
         <dl>
           <div className={styles.column}>
-            <dt>{t('姓名')}</dt>
+            <dt>{t('name_provider')}</dt>
             <dd>
               <Input
                 name="authorizer_name"
@@ -123,7 +119,7 @@ export default class ApplicationCreate extends Component {
             </dd>
           </div>
           <div className={styles.column}>
-            <dt>{t('办公邮箱')}</dt>
+            <dt>{t('Office mailbox')}</dt>
             <dd>
               <Input
                 name="authorizer_email"
@@ -135,7 +131,7 @@ export default class ApplicationCreate extends Component {
           </div>
         </dl>
         <dl className={styles.blockMargin}>
-          <dt>{t('手机号')}</dt>
+          <dt>{t('Mobile number')}</dt>
           <dd>
             <Input
               name="authorizer_phone"
@@ -146,11 +142,11 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('对公账户信息')}</dt>
-          <dd>{t('平台会通过此账号与贵公司进行各种财务结算。')}</dd>
+          <dt>{t('Public account information')}</dt>
+          <dd>{t('PUBLIC_ACCOUNT_NOTE')}</dd>
         </dl>
         <dl>
-          <dt>{t('开户银行')}</dt>
+          <dt>{t('Opening bank')}</dt>
           <dd>
             <Input
               name="bank_name"
@@ -158,13 +154,11 @@ export default class ApplicationCreate extends Component {
               onChange={e => changeVendor(e, 'bank_name')}
               maxLength={50}
             />
-            <p className={styles.note}>
-              {t('对公账号开户银行，精确到银行分行、支行、储蓄所、专柜')}
-            </p>
+            <p className={styles.note}>{t('OPENING_BANK_NOTE')}</p>
           </dd>
         </dl>
         <dl>
-          <dt>{t('开户名')}</dt>
+          <dt>{t('Account name')}</dt>
           <dd>
             <Input
               name="bank_account_name"
@@ -175,7 +169,7 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl className={styles.blockMargin}>
-          <dt>{t('账号')}</dt>
+          <dt>{t('Account number')}</dt>
           <dd>
             <Input
               name="bank_account_number"
@@ -186,13 +180,13 @@ export default class ApplicationCreate extends Component {
           </dd>
         </dl>
         <dl>
-          <dt>{t('相关协议')}</dt>
-          <dd>{t('入驻之后请自觉遵守以下协议。')}</dd>
+          <dt>{t('Relevant Agreement')}</dt>
+          <dd>{t('RELEVANT_AGREEMENT_NOTE')}</dd>
         </dl>
         <div className={styles.protocol}>
           <Checkbox checked={checkedProtocol} onChange={changeProtocol} />
-          《{t('服务商入驻协议')}》《{t('服务商管理规范')}》《{t(
-            '服务商平台协议'
+          《{t('SERVICE_ACCOMMODATION')}》《{t('SERVICE_MANAGEMENT')}》《{t(
+            'SERVICE_PLATFORM'
           )}》
         </div>
       </div>

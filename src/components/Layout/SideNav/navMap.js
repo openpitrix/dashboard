@@ -175,23 +175,23 @@ export const subNavMap = {
       title: 'App service provider',
       links: [
         {
-          name: '全部服务商',
+          name: 'All Providers',
           link: '/dashboard/providers',
           active: 'provider'
         },
         {
-          name: '入驻申请',
+          name: 'Apply for Residence',
           link: '/dashboard/applications',
           active: 'applications'
         },
         {
-          name: '合约',
+          name: 'Contract',
           link: '#',
           active: '#',
           disabled: true
         },
         {
-          name: '保证金',
+          name: 'Margin',
           link: '#',
           active: '#',
           disabled: true
