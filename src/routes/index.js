@@ -1,13 +1,12 @@
 import React, { lazy } from 'react';
 import { toUrl } from 'utils/url';
-import { isEmpty } from 'lodash';
+import { roleTypes as r } from 'config/roles';
 
-// views without lazy load
+// pages without lazy load
 import Home from 'pages/Home';
-
 import * as Dash from 'pages/Dashboard';
 
-// views using lazy load
+// pages using lazy load
 const Login = lazy(() => import('../pages/Login'));
 const AppDetail = lazy(() => import('../pages/AppDetail'));
 
@@ -20,54 +19,55 @@ const routes = {
 
   '/:dash': Dash.Overview,
 
-  // only for user
-  '/:dash/purchased': Dash.Purchased,
-  '/:dash/purchased/:appId': Dash.PurchasedDetail,
+  '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
 
-  // only for developer
-  '/:dash/my/apps': Dash.MyApps,
-  '/:dash/app/create': Dash.AppAdd,
-  '/:dash/app/:appId/create-version': Dash.AppAdd,
+  '/:dash/purchased': [Dash.Purchased, { acl: r.user }],
+  '/:dash/purchased/:appId': [Dash.PurchasedDetail, { acl: r.user }],
 
-  '/:dash/app/:appId/versions': Dash.Versions,
-  '/:dash/app/:appId/version/:versionId': Dash.VersionDetail,
-  '/:dash/app/:appId/audits': Dash.Audits,
-  '/:dash/app/:appId/info': Dash.AppInfo,
+  '/:dash/my/apps': [Dash.MyApps, { acl: r.dev }],
+  '/:dash/app/create': [Dash.AppAdd, { acl: r.dev }],
+  '/:dash/app/:appId/create-version': [Dash.AppAdd, { acl: r.dev }],
 
-  '/:dash/app/:appId/user-instances': Dash.Clusters,
-  '/:dash/app/:appId/sandbox-instances': Dash.Clusters,
-  '/:dash/app/:appId/user-instance/:clusterId': Dash.ClusterDetail,
-  '/:dash/app/:appId/sandbox-instance/:clusterId': Dash.ClusterDetail,
+  '/:dash/app/:appId/versions': [Dash.Versions, { acl: r.dev }],
+  '/:dash/app/:appId/version/:versionId': [Dash.VersionDetail, { acl: r.dev }],
+  '/:dash/app/:appId/audits': [Dash.Audits, { acl: r.dev }],
+  '/:dash/app/:appId/info': [Dash.AppInfo, { acl: r.dev }],
 
-  // only for isv
-  '/:dash/provider-detail': Dash.ApplicationDetail,
-  '/:dash/provider/submit': Dash.ProviderCreate,
+  '/:dash/app/:appId/user-instances': [Dash.Clusters, { acl: r.dev }],
+  '/:dash/app/:appId/sandbox-instances': [Dash.Clusters, { acl: r.dev }],
+  '/:dash/app/:appId/user-instance/:clusterId': [
+    Dash.ClusterDetail,
+    { acl: r.dev }
+  ],
+  '/:dash/app/:appId/sandbox-instance/:clusterId': [
+    Dash.ClusterDetail,
+    { acl: r.dev }
+  ],
 
-  // only for admin
-  '/:dash/providers': Dash.Providers,
-  '/:dash/provider/:providerId': Dash.ProviderDetail,
-  '/:dash/applications': Dash.Applications,
-  '/:dash/application/:providerId': Dash.ApplicationDetail,
+  '/:dash/provider-detail': [Dash.ApplicationDetail, { acl: r.isv }],
+  '/:dash/provider/submit': [Dash.ProviderCreate, { acl: [r.isv, r.user] }],
 
-  '/:dash/clusters': Dash.Clusters,
-  '/:dash/cluster/:clusterId': Dash.ClusterDetail,
+  '/:dash/providers': [Dash.Providers, { acl: r.admin }],
+  '/:dash/provider/:providerId': [Dash.ProviderDetail, { acl: r.admin }],
+  '/:dash/applications': [Dash.Applications, { acl: r.admin }],
+  '/:dash/application/:providerId': [Dash.ApplicationDetail, { acl: r.admin }],
+
+  '/:dash/clusters': [Dash.Clusters, { acl: [r.admin, r.user] }],
+  '/:dash/cluster/:clusterId': [Dash.ClusterDetail, { acl: [r.admin, r.user] }],
 
   '/:dash/runtimes': Dash.Runtimes,
   '/:dash/runtime/create': Dash.CreateRuntime,
 
-  '/:dash/categories': Dash.Categories,
+  '/:dash/categories': [Dash.Categories, { acl: r.admin }],
 
-  '/:dash/users': Dash.Users,
-  '/:dash/user/:userId': Dash.UserDetail,
+  '/:dash/users': [Dash.Users, { acl: r.admin }],
+  '/:dash/user/:userId': [Dash.UserDetail, { acl: r.admin }],
 
-  // for admin or isv
-  '/:dash/apps': Dash.Apps,
-  '/:dash/app/:appId': Dash.AppDetail,
+  '/:dash/apps': [Dash.Apps, { acl: [r.admin, r.isv] }],
+  '/:dash/app/:appId': [Dash.AppDetail, { acl: [r.admin, r.isv] }],
 
-  '/:dash/app-reviews': Dash.Reviews,
-  '/:dash/app-review/:reviewId': Dash.ReviewDetail,
-
-  '/:dash/apps/:appId/deploy/:versionId?': Dash.AppDeploy,
+  '/:dash/app-reviews': [Dash.Reviews, { acl: [r.admin, r.isv] }],
+  '/:dash/app-review/:reviewId': [Dash.ReviewDetail, { acl: [r.admin, r.isv] }],
 
   '/:dash/account/:type?': Dash.Account,
 
@@ -95,7 +95,8 @@ export default Object.keys(routes).map(path => {
     path: toUrl(path),
     exact: path !== '/login',
     component: comp,
-    needAuth: path.startsWith('/:dash')
+    needAuth: path.startsWith('/:dash'),
+    acl: compOption.acl || []
   });
   if (path === '*') {
     Object.assign(routeDefinition, { noMatch: true });

@@ -10,7 +10,7 @@ import Layout, {
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
-import { getObjName, getPastTime } from 'src/utils';
+import { getObjName, getPastTime } from 'utils';
 
 import UserInfo from './UserInfo';
 import TotalCard from './TotalCard';
