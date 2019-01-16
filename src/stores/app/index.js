@@ -6,13 +6,14 @@ import { t } from 'i18next';
 import { useTableActions } from 'mixins';
 import Store from '../Store';
 
-const defaultStatus = ['draft', 'active', 'suspended'];
 const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
 
 @useTableActions
 class AppStore extends Store {
   sortKey = 'status_time';
+
+  defaultStatus = ['draft', 'active', 'suspended'];
 
   @observable apps = [];
 
