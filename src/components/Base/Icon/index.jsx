@@ -39,7 +39,10 @@ class Icon extends React.PureComponent {
     changeable: PropTypes.bool,
     className: PropTypes.string,
     clickable: PropTypes.bool,
-    color: PropTypes.object,
+    color: PropTypes.shape({
+      primary: PropTypes.string,
+      secondary: PropTypes.string
+    }),
     disabled: PropTypes.bool,
     name: PropTypes.string.isRequired,
     onClick: PropTypes.func,
