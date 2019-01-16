@@ -8,6 +8,7 @@ import RcTree, { TreeNode } from 'rc-tree';
 import { Icon } from 'components/Base';
 
 import 'rc-tree/assets/index.css';
+
 import styles from './index.scss';
 
 export default class Tree extends Component {
@@ -36,6 +37,21 @@ export default class Tree extends Component {
     return <Icon name={expanded ? 'caret-down' : 'caret-right'} type="dark" />;
   };
 
+  renderTitle = node => {
+    const { renderTreeTitle } = this.props;
+    if (_.isFunction(renderTreeTitle)) {
+      return renderTreeTitle(node);
+    }
+
+    return node.title;
+  };
+
+  renderTreeNodes = data => data.map(node => (
+      <TreeNode key={node.key} title={this.renderTitle(node)}>
+        {node.children && this.renderTreeNodes(node.children)}
+      </TreeNode>
+  ));
+
   render() {
     const {
       className,
@@ -44,6 +60,8 @@ export default class Tree extends Component {
       sameHeight,
       switcherIcon,
       isLoading,
+      children,
+      treeData,
       ...resetProps
     } = this.props;
 
@@ -60,7 +78,9 @@ export default class Tree extends Component {
         checkable={checkable ? <span className="checkbox-inner" /> : checkable}
         switcherIcon={switcherIcon || this.renderSwitcherIcon}
         {...resetProps}
-      />
+      >
+        {children || this.renderTreeNodes(treeData)}
+      </RcTree>
     );
   }
 }

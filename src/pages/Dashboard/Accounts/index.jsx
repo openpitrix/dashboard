@@ -15,6 +15,7 @@ import {
   Icon,
   Popover
 } from 'components/Base';
+
 import Layout, {
   Grid, Section, Panel, Card, Dialog
 } from 'components/Layout';
@@ -52,43 +53,80 @@ export default class Users extends Component {
   }
 
   onGroupClick(key, type, e) {
-    e.stopPropagation();
+    if (type === 'create') {
+      e.stopPropagation();
+    }
     e.preventDefault();
-    console.log(e, key, type);
+    console.log(type);
   }
 
-  renderGroupTitle = ({ title, key }) => {
+  renderTreeTitle = node => {
+    const { userStore } = this.props;
+    const { selectOrgKeys } = userStore;
+    return selectOrgKeys.includes(node.key)
+      ? this.renderGroupTitle(node)
+      : node.title;
+  };
+
+  renderHandleGroupNode = ({ key }) => {
     const { t } = this.props;
+
     return (
-      <span className={styles.groupTitle}>
-        {title}
-        <Icon
-          key={`${key}-create`}
-          size={14}
-          name="plus-square"
-          className={styles.titleEventIcon}
-          title={t('Create')}
-          onClick={this.onGroupClick.bind(this, key, 'create')}
-        />
-        <Icon
-          key={`${key}-modify`}
-          size={14}
-          name="hammer"
-          title={t('Modify')}
-          className={styles.titleEventIcon}
-          onClick={this.onGroupClick.bind(this, key, 'modify')}
-        />
-        <Icon
+      <div key={`${key}-operates`} className="operate-menu">
+        <span
+          key={`${key}-rename`}
+          onClickCapture={e => this.onGroupClick(key, 'rename', e)}
+        >
+          {t('Rename')}
+        </span>
+        <span
           key={`${key}-delete`}
-          size={14}
-          name="trash"
-          title={t('Delete')}
-          className={styles.titleEventIcon}
-          onClick={this.onGroupClick.bind(this, key, 'delete')}
-        />
-      </span>
+          onClickCapture={e => this.onGroupClick(key, 'delete', e)}
+        >
+          {t('Delete')}
+        </span>
+      </div>
     );
   };
+
+  renderGroupTitle = ({ title, key }) => (
+    <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
+      <span key={`title-${key}-${title}`} className={styles.groupTitle}>
+        {title}
+      </span>
+      <Popover
+        portal
+        key={`${key}-operate`}
+        content={this.renderHandleGroupNode({ key })}
+        className={classnames(styles.groupPopver)}
+        targetCls={classnames(styles.groupPopverTarget)}
+        popperCls={classnames(styles.groupPopverPopper)}
+      >
+        <Icon type="dark" name="more" />
+      </Popover>
+      <Icon
+        key={`${key}-create`}
+        size={20}
+        type="dark"
+        name="plus-square"
+        className={styles.titleEventIcon}
+        onClick={e => this.onGroupClick(key, 'create', e)}
+      />
+      {/* <Tooltip
+            placement="top"
+            content={t('Add the child node')}
+            >
+            <Icon
+            key={`${key}-create`}
+            size={20}
+            type="dark"
+            name="plus-square"
+            className={styles.titleEventIcon}
+            onClick={(e) => this.onGroupClick(key, 'create', e)}
+            />
+            </Tooltip> */}
+    </span>
+  );
 
   renderHandleMenu = user => {
     const { userStore, t } = this.props;
@@ -383,8 +421,9 @@ export default class Users extends Component {
                   defaultExpandAll
                   showLine
                   hoverLine
-                  treeData={groupTreeData}
+                  renderTreeTitle={this.renderTreeTitle}
                   onSelect={onSelectOrg}
+                  treeData={groupTreeData}
                 />
               </Card>
             </Section>
@@ -393,7 +432,7 @@ export default class Users extends Component {
               <Card className={styles.noShadow}>
                 <div className={styles.title}>
                   {t('Selected organization')}:
-                  <strong>{orgName}</strong>
+                  <strong className={styles.groupHeader}>{orgName}</strong>
                 </div>
 
                 {Boolean(selectName) && (

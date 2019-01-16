@@ -127,3 +127,40 @@ $bgcolor: $text-color;
     }
   }
 }
+.portalPopper {
+  padding: 0;
+  background-color: $N0;
+  color: $N300;
+  :global {
+    .operate-menu {
+      a {
+        color: $N300;
+      }
+      li,a,span {
+        display: block;
+        min-width: 105px;
+        padding: 0 12px;
+        height: 32px;
+        font-size: 12px;
+        line-height: 32px;
+        color: $N300;
+        background-color: $N0;
+        cursor: pointer;
+        transition: all $transition-speed;
+        &:hover {
+          color: $N500;
+          background-color: $N10;
+        }
+
+        .icon {
+          display: inline-block;
+          min-width: auto;
+          padding-left: 0;
+          padding-right: 4px;
+          background-color: transparent;
+          vertical-align: sub;
+        }
+      }
+    }
+  }
+}

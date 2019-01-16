@@ -69,6 +69,8 @@ export default class UserStore extends Store {
 
   @observable groupTreeData = [];
 
+  @observable selectOrgKeys = [];
+
   @observable
   userDetail = {
     user_id: '',
@@ -229,9 +231,9 @@ export default class UserStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    const result = await this.request.get('iam/groups');
-    // this.groups = get(dataGroup, 'op_group_set', []);
-    this.groups = get(result, 'group_set', []);
+    // const result = await this.request.get('iam/groups');
+    this.groups = get(dataGroup, 'op_group_set', []);
+    // this.groups = get(result, 'group_set', []);
     this.isLoading = false;
   };
 
@@ -424,6 +426,7 @@ export default class UserStore extends Store {
 
   @action
   onSelectOrg = (keys, info) => {
+    this.selectOrgKeys = keys;
     this.orgName = keys.length ? get(info, 'node.props.title') : '';
     this.fetchAll();
   };
@@ -433,13 +436,13 @@ export default class UserStore extends Store {
     this.modify({ status: 'draft', user_id });
   };
 
-  getGroupTree = renderTitle => {
+  getGroupTree = () => {
     const { groups } = this;
     if (groups.length === 0) {
       return [];
     }
 
-    const root = _.find(groups, g => g.parent_group_id === 'string');
+    const root = _.find(groups, g => !g.parent_group_id);
     if (_.isEmpty(root)) {
       throw new Error('No root group');
     }
@@ -460,10 +463,7 @@ export default class UserStore extends Store {
       }
       return children.map(node => ({
         key: node.group_id,
-        title: renderTitle({
-          key: node.group_id,
-          title: node.group_name
-        }),
+        title: node.group_name,
         children: setChildren(dataSet, node)
       }));
     };
