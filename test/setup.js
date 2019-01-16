@@ -7,10 +7,7 @@ import toJson from 'enzyme-to-json';
 
 configure({ adapter: new Adapter() });
 
-global.requestAnimationFrame = global.requestAnimationFrame
-  || function (cb) {
-    return setTimeout(cb, 0);
-  };
+global.requestAnimationFrame = global.requestAnimationFrame || process.nextTick;
 
 /*
  fix jest unhandle promise

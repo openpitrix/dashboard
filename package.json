@@ -47,8 +47,8 @@
     "winston": "^3.1.0"
   },
   "scripts": {
-    "dev:client": "DEBUG=app NODE_ENV=development npm run locale && webpack --config webpack.dev.js --progress",
-    "dev:serve": "DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
+    "dev:client": "cross-env DEBUG=app NODE_ENV=development npm run locale && webpack --config webpack.dev.js --progress",
+    "dev:serve": "cross-env DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
     "dev": "npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
@@ -62,7 +62,7 @@
     "precommit": "npm test && lint-staged",
     "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
     "report-cov": "cat ./coverage/lcov.info | codecov",
-    "dbg": "BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
+    "dbg": "cross-env BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
     "locale": "node ./bin/locale.js merge all",
@@ -99,6 +99,7 @@
     "codecov": "^3.0.2",
     "commander": "^2.19.0",
     "compression-webpack-plugin": "^1.1.11",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.6.0",
