@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
 
-import Status from 'components/Status';
 import { Image } from 'components/Base';
+import Status from 'components/Status';
 import { getPastTime } from 'src/utils';
+import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
@@ -28,7 +29,6 @@ export default class AppCard extends Component {
       status_time,
       app_version_types
     } = data;
-    const versions = app_version_types.split(',');
     return (
       <div
         className={classnames(styles.container, className)}
@@ -48,11 +48,9 @@ export default class AppCard extends Component {
         <pre className={styles.description}>{description}</pre>
         <div className={styles.deliverTypes}>
           <span>{t('Delivery type')}：</span>
-          {versions.map(type => (
-            <span key={type} className={styles.deliverType}>
-              {t(`version_type_${type}`)}
-            </span>
-          ))}
+          <span className={styles.deliverType}>
+            {(getVersionTypesName(app_version_types) || []).join(' ')}
+          </span>
         </div>
         <div>
           <span>{t('Updated At')}：</span>

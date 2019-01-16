@@ -25,10 +25,10 @@ export const roleMap = {
 // matching user provider's getter
 // i.e admin => user.isAdmin
 export const roleTypes = {
-  admin: 'admin',
+  admin: 'Admin',
   isv: 'ISV',
-  dev: 'dev',
-  user: 'normal'
+  dev: 'Dev',
+  user: 'Normal'
 };
 
 export default roles;

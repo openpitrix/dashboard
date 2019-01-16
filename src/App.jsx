@@ -46,8 +46,7 @@ const WrapRoute = ({ component: Comp, ...rest }) => {
 
   if (!_.isEmpty(acl)) {
     acl = [].concat(acl);
-
-    if (!_.some(acl, role => user[`is${_.capitalize(role)}`])) {
+    if (!_.some(acl, role => user[`is${role}`])) {
       return <Redirect to="/" />;
     }
   }

@@ -37,7 +37,6 @@ export default class Apps extends Component {
     appStore.pageSize = 48;
     appStore.userId = user_id;
     await appStore.fetchAll();
-    await appVersionStore.fetchAll();
     this.setState({
       pageLoading: false
     });
