@@ -105,6 +105,10 @@ class AppStore extends Store {
 
   @observable showActiveApps = false;
 
+  get clusterStore() {
+    return this.getStore('cluster');
+  }
+
   @action
   fetchStoreAppsCount = async () => {
     const res = await this.request.get('active_apps', {
@@ -242,6 +246,21 @@ class AppStore extends Store {
     // appCount for show repo datail page "App Count"
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
+    }
+
+    // query app deploy times
+    if (this.attchDeployTotal && apps.length > 0) {
+      const clusterStore = this.clusterStore;
+      this.apps = [];
+      await apps.forEach(async app => {
+        await clusterStore.fetchAll({
+          app_id: app.app_id,
+          display_columns: ['']
+        });
+        this.apps.push(
+          _.assign(app, { deploy_total: clusterStore.totalCount })
+        );
+      });
     }
 
     this.isLoading = false;

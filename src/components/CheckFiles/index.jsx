@@ -4,6 +4,7 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
+import { versionTypes } from 'config/version-types';
 import typeFiles from './files';
 
 import styles from './index.scss';
@@ -35,7 +36,7 @@ export default class CheckFiles extends PureComponent {
       t
     } = this.props;
     const files = typeFiles[type] || [];
-    const linkType = (_.find(typeFiles, { value: type }) || {}).name;
+    const linkType = (_.find(versionTypes, { value: type }) || {}).name;
 
     return (
       <div className={classnames(styles.checkFiles, className)}>

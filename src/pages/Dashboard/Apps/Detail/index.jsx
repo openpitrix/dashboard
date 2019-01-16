@@ -303,7 +303,7 @@ export default class AppDetail extends Component {
             />
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
             {detailTab === 'instance' && this.renderInstance()}
-            {detailTab === 'online' && <Versions />}
+            {detailTab === 'online' && <Versions isAppDetail />}
             {detailTab === 'record' && this.renderRecord()}
           </Section>
         </Grid>

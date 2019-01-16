@@ -100,12 +100,12 @@
   }
 }
 
-
 .appsInfo {
   .total {
     @include note-font;
     margin-bottom: 12px;
   }
+
   li {
     height: 48px;
     padding: 20px 24px;
@@ -139,10 +139,11 @@
       float: left;
       display: inline-block;
       height: 48px;
-      width: 27%;
+      width: 25%;
 
       &.appName {
-        width: 46%;
+        margin-right: 3%;
+        width: 47%;
       }
 
       &:last-child {

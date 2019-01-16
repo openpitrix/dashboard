@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import { Table } from 'components/Base';
 import Layout from 'components/Layout';
 import TitleSearch from 'components/TitleSearch';
+import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
@@ -18,6 +20,7 @@ import styles from './index.scss';
 export default class Providers extends Component {
   async componentDidMount() {
     const { vendorStore } = this.props;
+    vendorStore.attchStatictics = true;
     await vendorStore.fetchAll();
   }
 
@@ -29,11 +32,16 @@ export default class Providers extends Component {
   render() {
     const { vendorStore, t } = this.props;
 
+    const {
+      vendors, statistics, searchWord, onSearch, onClear
+    } = vendorStore;
+
     const columns = [
       {
         title: t('Number'),
         key: 'number',
-        width: '80px',
+        width: '120px',
+        className: 'number',
         render: item => (
           <Link to={`/dashboard/provider/${item.user_id}`}>{item.user_id}</Link>
         )
@@ -41,31 +49,49 @@ export default class Providers extends Component {
       {
         title: t('Company name'),
         key: 'company',
-        width: '200px',
-        render: item => item.company_name
+        width: '180px',
+        className: 'fold',
+        render: item => (
+          <Link to={`/dashboard/provider/${item.user_id}`}>
+            {item.company_name}
+          </Link>
+        )
       },
       {
         title: t('On the shelf apps'),
-        key: 'app_total',
+        key: 'active_app_count',
         width: '100px',
-        render: item => item.app_total || 0
+        className: 'fold',
+        render: item => (_.find(statistics, { user_id: item.user_id }) || {})
+          .active_app_count || 0
       },
       {
         title: t('Deploy times this month'),
-        key: 'moth_count',
+        key: 'cluster_count_month',
         width: '80px',
-        render: item => item.moth_count || 0
+        className: 'fold',
+        render: item => (_.find(statistics, { user_id: item.user_id }) || {})
+          .cluster_count_month || 0
       },
       {
         title: t('Total of deploy'),
-        key: 'total_count',
+        key: 'cluster_count_total',
         width: '80px',
-        render: item => item.total_count || 0
+        className: 'fold',
+        render: item => (_.find(statistics, { user_id: item.user_id }) || {})
+          .cluster_count_total || 0
+      },
+      {
+        title: t('Time of entry'),
+        key: 'status_time',
+        width: '100px',
+        className: 'time',
+        render: item => formatTime(item.status_time)
       },
       {
         title: '',
         key: 'actions',
-        width: '80px',
+        width: '60px',
         className: 'actions',
         render: item => (
           <div className={styles.actions}>
@@ -77,12 +103,8 @@ export default class Providers extends Component {
       }
     ];
 
-    const {
-      vendors, searchWord, onSearch, onClearSearch
-    } = vendorStore;
-
     const pagination = {
-      tableType: 'Apps',
+      tableType: 'shield',
       total: vendorStore.totalCount,
       current: vendorStore.currentPage,
       onChange: vendorStore.changePagination
@@ -92,10 +114,10 @@ export default class Providers extends Component {
       <Layout>
         <TitleSearch
           title={t('All Providers')}
-          placeholder={t('Search App')}
+          placeholder={t('Search providers')}
           searchWord={searchWord}
           onSearch={onSearch}
-          onClear={onClearSearch}
+          onClear={onClear}
         />
 
         <Table

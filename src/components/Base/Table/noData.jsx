@@ -27,7 +27,7 @@ export default class NoData extends PureComponent {
       Events: 'tateful-set',
       Versions: 'tag'
     };
-    const iconName = iconMap[type] || 'appcenter';
+    const iconName = iconMap[type] || type;
 
     return (
       <div className={styles.noData}>

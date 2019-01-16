@@ -39,7 +39,6 @@
 
   dl {
     flex: 1;
-    line-height: 20px;
     font-size: 12px;
 
     >button {
@@ -50,15 +49,25 @@
   }
 
   dt {
+    float: left;
     color: $N75;
   }
 
   dd {
+    width: 150px;
     color: $N300;
+    word-break: break-all;
+    word-wrap: break-word;
 
     >label {
       color: $N500;
       font-weight: 500;
+    }
+
+    .email {
+      display: inline-block;
+      margin-right: 4px;
+      color: $N75;
     }
 
     >a {

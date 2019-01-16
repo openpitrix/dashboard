@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import { versionTypes } from 'config/version-types';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -9,8 +10,8 @@ import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import { formatTime } from 'utils';
-import { versionTypes } from 'config/version-types';
 
+import PropTypes from 'prop-types';
 import styles from './index.scss';
 
 @translate()
@@ -21,29 +22,40 @@ import styles from './index.scss';
 }))
 @observer
 export default class Versions extends Component {
-  async componentDidMount() {
-    const { appVersionStore, match } = this.props;
-    const appId = _.get(match, 'params.appId', '');
+  static propTypes = {
+    isAppDetail: PropTypes.bool
+  };
 
-    if (appId) {
+  static defaultProps = {
+    isAppDetail: false
+  };
+
+  async componentDidMount() {
+    const { appVersionStore, isAppDetail, match } = this.props;
+
+    if (!isAppDetail) {
+      const appId = _.get(match, 'params.appId', '');
       await appVersionStore.fetchTypeVersions(appId);
     }
   }
 
   async componentDidUpdate(prevProps) {
-    const { match, appVersionStore } = this.props;
-    const { appId } = match.params;
+    const { match, isAppDetail, appVersionStore } = this.props;
 
-    if (prevProps.match.params.appId !== appId) {
-      await appVersionStore.fetchTypeVersions(appId);
+    if (!isAppDetail) {
+      const appId = _.get(match, 'params.appId', '');
+      const prevAppId = _.get(prevProps.match, 'params.appId', '');
+
+      if (appId !== prevAppId) {
+        await appVersionStore.fetchTypeVersions(appId);
+      }
     }
   }
 
   componentWillUnmount() {
-    const { appVersionStore, match } = this.props;
-    const appId = _.get(match, 'params.appId', '');
+    const { appVersionStore, isAppDetail, match } = this.props;
 
-    if (appId) {
+    if (isAppDetail) {
       appVersionStore.reset();
     }
   }

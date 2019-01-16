@@ -18,17 +18,19 @@ $padding-left: 24px;
     padding: 20px $padding-left;
     //border-bottom: 1px solid $N10;
     .title {
-      font-size: 20px;
-      line-height: 1.2;
-      font-weight: 500;
-      color: $N500;
+     @include title-font;
     }
     :global {
       .icon-close {
         position: absolute;
         top: 32px;
-        right: 22px;
+        right: 18px;
         cursor: pointer;
+
+        &:hover svg{
+          --primary-color: #{$P75};
+          --secondary-color: #{$P75};
+        }
       }
     }
   }

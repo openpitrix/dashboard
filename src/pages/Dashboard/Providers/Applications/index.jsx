@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import { Table } from 'components/Base';
+import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import TableTypes from 'components/TableTypes';
+import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
@@ -45,14 +46,16 @@ export default class Applications extends Component {
   };
 
   render() {
-    const { vendorStore, user, t } = this.props;
+    const { vendorStore, t } = this.props;
     const { vendors, activeType } = vendorStore;
+    const isUnreviewed = activeType === 'unreviewed';
 
-    const columns = [
+    let columns = [
       {
         title: t('Apply No'),
         key: 'number',
-        width: '80px',
+        width: '135px',
+        className: 'number',
         render: item => (
           <Link to={`/dashboard/application/${item.user_id}`}>
             {item.user_id}
@@ -62,16 +65,19 @@ export default class Applications extends Component {
       {
         title: t('Review result'),
         key: 'status',
-        width: '80px',
+        width: '90px',
         render: item => <Status type={item.status} name={item.status} />
       },
       {
         title: t('Company name, introduction'),
         key: 'company',
-        width: '200px',
         render: item => (
           <div className={styles.company}>
-            <div className={styles.name}>{item.company_name}</div>
+            <div className={styles.name}>
+              <Link to={`/dashboard/application/${item.user_id}`}>
+                {item.company_name}
+              </Link>
+            </div>
             <div className={styles.introduce}>{item.company_profile}</div>
           </div>
         )
@@ -79,45 +85,55 @@ export default class Applications extends Component {
       {
         title: t('Company website'),
         key: 'home',
-        width: '120px',
+        width: '150px',
+        className: 'textCut',
         render: item => item.company_website
       },
       {
-        title: t('Review time'),
-        key: 'audit_time',
+        title: isUnreviewed ? t('Apply time') : t('Review time'),
+        key: 'review_time',
         width: '100px',
-        render: item => item.submit_time
+        className: 'time',
+        render: item => formatTime(item.submit_time)
       },
       {
         title: t('Auditor'),
         key: 'auditor',
-        width: '120px',
-        render: () => user.username
+        width: '130px',
+        render: item => item.auditor
       },
       {
-        title: '',
+        title: isUnreviewed ? t('Auditor') : '',
         key: 'actions',
-        width: '80px',
+        width: '100px',
         className: 'actions',
         render: item => (
-          <div className={styles.actions}>
+          <div>
             <Link to={`/dashboard/application/${item.user_id}`}>
-              {t('View detail')} →
+              {isUnreviewed ? (
+                <Button>{t('Start process')}</Button>
+              ) : (
+                <span>{t('View detail')} →</span>
+              )}
             </Link>
           </div>
         )
       }
     ];
 
+    if (isUnreviewed) {
+      columns = columns.filter(item => item.key !== 'auditor');
+    }
+
     const pagination = {
-      tableType: 'Apps',
+      tableType: 'shield',
       total: vendorStore.totalCount,
       current: vendorStore.currentPage,
       onChange: vendorStore.changeApplyPagination
     };
 
     return (
-      <Layout pageTitle={t('Apply for Residence')}>
+      <Layout pageTitle={t('Apply for Residence')} className={styles.applyList}>
         <TableTypes
           types={types}
           activeType={activeType}

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import { Table } from 'components/Base';
+import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
-import TimeShow from 'components/TimeShow';
-import { getObjName, mappingStatus } from 'utils';
+import TableTypes from 'components/TableTypes';
+import { formatTime, getObjName, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -24,7 +24,6 @@ const types = [
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
-  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
@@ -50,17 +49,17 @@ export default class Reviews extends Component {
 
   render() {
     const {
-      appVersionStore, appStore, userStore, t
+      appVersionStore, appStore, user, t
     } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
-    const { users } = userStore;
 
     const columns = [
       {
         title: t('Number'),
         key: 'review_id',
-        width: '100px',
+        width: '120px',
+        className: 'number',
         render: item => (
           <Link to={`/dashboard/app-review/${item.review_id}`}>
             {item.review_id}
@@ -68,35 +67,37 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('Apply Type'),
+        title: t('Audit type'),
         key: 'apply_type',
-        width: '70px',
+        width: '80px',
         render: item => item.apply_type || t('App on the shelf')
       },
       {
         title: t('App Info'),
         key: 'appName',
-        width: '130px',
+        width: '150px',
         render: item => (
           <AppName
             linkUrl={`/dashboard/app/${item.app_id}`}
             icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
             versionName={item.version_name}
+            type={item.version_type || 'VM'}
           />
         )
       },
       {
         title: t('Submitter'),
-        key: 'developer',
-        width: '80px',
-        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        key: 'submitter',
+        width: '150px',
+        render: item => item.submitter
       },
       {
         title: t('Submit time'),
         key: 'status_time',
-        width: '130px',
-        render: item => <TimeShow time={item.status_time} type="detailTime" />
+        width: '120px',
+        className: 'time',
+        render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: t('Audit status'),
@@ -105,21 +106,17 @@ export default class Reviews extends Component {
         render: item => (
           <Status type={item.status} name={mappingStatus(item.status)} />
         )
-      }
-    ];
-
-    const filterList = [
+      },
       {
-        key: 'status',
-        conditions: [
-          { name: t('Submitted'), value: 'submitted' },
-          { name: t('Passed'), value: 'passed' },
-          { name: t('Rejected'), value: 'rejected' },
-          { name: t(mappingStatus('Active')), value: 'active' },
-          { name: t(mappingStatus('Suspended')), value: 'suspended' }
-        ],
-        onChangeFilter: appVersionStore.onChangeStatus,
-        selectValue: appVersionStore.selectStatus
+        title: t('Auditor'),
+        key: 'actions',
+        width: '80px',
+        className: 'actions',
+        render: item => (
+          <Link to={`/dashboard/app-review/${item.review_id}`}>
+            <Button>{t('Start process')}</Button>
+          </Link>
+        )
       }
     ];
 
@@ -132,24 +129,15 @@ export default class Reviews extends Component {
     };
 
     return (
-      <Layout pageTitle={t('App Reviews')}>
-        <div className={styles.types}>
-          {types.map(type => (
-            <label
-              key={type.value}
-              onClick={() => this.changeType(type.value)}
-              className={classnames({
-                [styles.active]: activeType === type.value
-              })}
-            >
-              {t(type.name)}
-            </label>
-          ))}
-        </div>
+      <Layout pageTitle={t('App Reviews')} className={styles.reviewList}>
+        <TableTypes
+          types={types}
+          activeType={activeType}
+          changeType={this.changeType}
+        />
         <Table
           columns={columns}
           dataSource={reviews.toJSON()}
-          filterList={filterList}
           pagination={pagination}
           isLoading={isLoading}
         />

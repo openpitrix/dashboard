@@ -1,5 +1,10 @@
 @import '~scss/vars';
 
+.applyList {
+  width: 1000px !important;
+  padding-right: 20px;
+}
+
 .types {
   margin-bottom: 16px;
 
@@ -33,7 +38,7 @@
   .introduce {
     @include textCut;
     color: $N75;
-    max-width: 180px;
+    max-width: 250px;
   }
 }
 

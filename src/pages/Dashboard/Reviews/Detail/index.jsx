@@ -340,13 +340,16 @@ export default class ReviewDetail extends Component {
     const { version } = appVersionStore;
 
     return (
-      <Card className={styles.configFile}>
+      <div className={styles.configFile}>
         <div className={styles.fileInfo}>
           <div className={styles.name}>
             {`${appDetail.name} ${version.name}`}
           </div>
           <div className={styles.time}>
-            {t('Upload time')}：{version.status_time}
+            {t('Upload time')}：{formatTime(
+              version.status_time,
+              'YYYY/MM/DD HH:mm:ss'
+            )}
             <Link
               className={styles.link}
               to={`/dashboard/app/${appDetail.app_id}/deploy/${
@@ -362,7 +365,7 @@ export default class ReviewDetail extends Component {
           type={version.type}
           isShowNote
         />
-      </Card>
+      </div>
     );
   }
 
