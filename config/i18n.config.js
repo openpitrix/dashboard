@@ -3,11 +3,7 @@ const translations = {
     translation: require('../src/locales/en/translation.json')
   },
   zh: {
-    translation: Object.assign(
-      {},
-      require('../src/locales/zh/apps.json'),
-      require('../src/locales/zh/translation.json')
-    )
+    translation: require('../src/locales/zh/translation.json')
   }
 };
 
@@ -18,8 +14,8 @@ module.exports = {
   // init common resource
   resources: translations,
 
-  lng: 'zh',
-  fallbackLng: 'en',
+  // lng: 'zh',
+  fallbackLng: 'zh',
   // debug: process.env.NODE_ENV !== 'production',
 
   whitelist: ['en', 'zh'],
@@ -34,6 +30,6 @@ module.exports = {
   },
 
   react: {
-    wait: false // set wait to false when on SSR
+    wait: true // set wait to false when on SSR
   }
 };
