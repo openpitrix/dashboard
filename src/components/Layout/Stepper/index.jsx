@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 import Loading from 'components/Loading';
@@ -12,6 +12,7 @@ import { DocLink, Icon } from 'components/Base';
 import styles from './index.scss';
 
 @translate()
+@inject('rootStore')
 @observer
 class LayoutStepper extends Component {
   static propTypes = {
@@ -60,7 +61,7 @@ class LayoutStepper extends Component {
 
   renderTopNav() {
     const {
-      name, stepOption, t, history
+      name, stepOption, t, history, rootStore
     } = this.props;
     const {
       activeStep, steps, prevStep, goBack
@@ -77,7 +78,11 @@ class LayoutStepper extends Component {
     }
 
     return (
-      <div className={styles.operate}>
+      <div
+        className={classnames(styles.operate, {
+          [styles.normalUser]: rootStore.user.isNormal
+        })}
+      >
         {activeStep > 1 && (
           <label onClick={prevStep}>
             ←&nbsp;{t('Back')}&nbsp;
@@ -158,19 +163,15 @@ class LayoutStepper extends Component {
   }
 
   render() {
-    const {
-      className, children, name, stepOption
-    } = this.props;
+    const { className, children, stepOption } = this.props;
     return (
-      <div className={classnames(styles.layout)}>
+      <div className={classnames(styles.stepper, className)}>
         {this.renderTopProgress()}
         {this.renderTopNav()}
         {this.renderTitle()}
-        <Loading isLoading={stepOption.isLoading}>
-          <div className={classnames(styles.mainContent, className)}>
-            {children}
-          </div>
-        </Loading>
+        <div className={styles.mainContent}>
+          <Loading isLoading={stepOption.isLoading}>{children}</Loading>
+        </div>
         {this.renderFooter()}
       </div>
     );

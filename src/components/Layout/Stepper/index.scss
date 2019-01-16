@@ -1,5 +1,11 @@
 @import '~scss/vars';
 
+.stepper {
+  .normalUser {
+    top: $header-height + 5px;
+  }
+}
+
 .headerStep {
   position: fixed;
   top: 0;

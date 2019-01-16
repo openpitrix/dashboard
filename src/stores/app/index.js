@@ -215,13 +215,6 @@ class AppStore extends Store {
     const apps = get(result, 'app_set', []);
     const totalCount = get(result, 'total_count', 0);
 
-    // exception data, stop load more data
-    if (_.has(result, 'total_count') && !_.has(result, 'app_set')) {
-      this.isLoading = false;
-      this.hasMore = false;
-      return;
-    }
-
     this.hasMore = totalCount > apps.length;
 
     if (noMutate) {
