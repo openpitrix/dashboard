@@ -44,6 +44,9 @@ jest.mock('i18next', () => ({
   exists: () => false
 }));
 
+// mock window.scroll
+window.scroll = () => {};
+
 // attach helpers to global
 global.React = React;
 global.mount = mount;
