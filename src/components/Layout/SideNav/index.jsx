@@ -29,9 +29,12 @@ const keys = [
   'create',
   'provider-detail',
   'provider',
+  'setting',
+  'cloud-environment',
   'dashboard'
 ];
 const changeKey = {
+  'cloud-environment': 'setting',
   review: 'app',
   cluster: 'repo',
   runtime: 'repo',
@@ -88,6 +91,8 @@ export class SideNav extends React.Component {
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
+    console.log(path);
+    console.log(key);
 
     return changeKey[key] || key;
   };

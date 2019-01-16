@@ -47,11 +47,10 @@ export const getNavs = {
       title: 'Users'
     },
     {
-      link: '#',
+      link: '/dashboard/cloud-environment',
       iconName: 'cogwheel',
-      active: '',
-      title: 'Settings',
-      disabled: true
+      active: 'setting',
+      title: 'Settings'
     }
   ],
   isv: [
@@ -204,6 +203,22 @@ export const subNavMap = {
         { name: 'All Users', link: '/dashboard/users', active: 'user' },
         { name: 'Roles', link: '#', active: 'role' },
         { name: 'Permission and Policy', link: '#', active: 'policy' }
+      ]
+    },
+    setting: {
+      title: 'Platform setting',
+      links: [
+        {
+          name: 'User authentication',
+          link: '#',
+          active: 'user_authentication',
+          disabled: true
+        },
+        {
+          name: 'Cloud environment',
+          link: '/dashboard/cloud-environment',
+          active: 'cloud-environment'
+        }
       ]
     }
   },

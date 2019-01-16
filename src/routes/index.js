@@ -71,6 +71,8 @@ const routes = {
 
   '/:dash/account/:type?': Dash.Account,
 
+  '/:dash/cloud-environment': [Dash.CloudEnvironment, { acl: r.admin }],
+
   '*': Home
 };
 

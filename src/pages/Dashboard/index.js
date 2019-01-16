@@ -38,4 +38,6 @@ export PurchasedDetail from './Purchased/Detail';
 export Runtimes from './Runtimes';
 export CreateRuntime from './Runtimes/Create';
 
+export CloudEnvironment from './CloudEnvironment';
+
 export Account from './Account';

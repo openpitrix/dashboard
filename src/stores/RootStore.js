@@ -18,6 +18,8 @@ import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 import Vendor from './vendor';
 
+import CloudEnvironment from './cloud_environment';
+
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
 export default class RootStore extends Store {
@@ -184,5 +186,7 @@ export default class RootStore extends Store {
 
     // Vendor
     this.register('vendor', Vendor);
+
+    this.register('cloudEnvironment', CloudEnvironment);
   };
 }
