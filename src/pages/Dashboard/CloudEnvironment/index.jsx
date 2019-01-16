@@ -19,7 +19,6 @@ import styles from './index.scss';
 export default class CloudEnvironment extends Component {
   async componentDidMount() {
     const { cloudEnvironmentStore } = this.props;
-    console.log(cloudEnvironmentStore);
     cloudEnvironmentStore.fetchAll();
   }
 

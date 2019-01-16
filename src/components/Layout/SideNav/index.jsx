@@ -91,8 +91,6 @@ export class SideNav extends React.Component {
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
-    console.log(path);
-    console.log(key);
 
     return changeKey[key] || key;
   };
