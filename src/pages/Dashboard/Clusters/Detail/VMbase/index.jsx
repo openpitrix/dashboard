@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Button, Table, Radio, Input, Modal, Icon
+  Button, Table, Radio, Input, Icon
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';

@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import _, { get } from 'lodash';
+import { get } from 'lodash';
 
 import { useTableActions } from 'mixins';
 import { getProgress } from 'utils';

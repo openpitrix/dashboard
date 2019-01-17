@@ -1,7 +1,7 @@
 const { isEmpty, without, map } = require('lodash');
-const sessConfig = require('./session-config');
 const { Base64 } = require('js-base64');
 const debug = require('debug')('app');
+const sessConfig = require('./session-config');
 
 const oauthResFields = [
   'access_token',
@@ -11,12 +11,11 @@ const oauthResFields = [
   'id_token'
 ];
 
-const getTokenGroupFromCtx = (ctx, group = '') =>
-  oauthResFields.reduce((obj, prop) => {
-    const key = group ? [group, prop].join('_') : prop;
-    obj[prop] = ctx.cookies.get(key);
-    return obj;
-  }, {});
+const getTokenGroupFromCtx = (ctx, group = '') => oauthResFields.reduce((obj, prop) => {
+  const key = group ? [group, prop].join('_') : prop;
+  obj[prop] = ctx.cookies.get(key);
+  return obj;
+}, {});
 
 const saveTokenFromCtx = (ctx, token_res, prefix = '', additional = {}) => {
   const { expires_in } = token_res;
@@ -24,8 +23,7 @@ const saveTokenFromCtx = (ctx, token_res, prefix = '', additional = {}) => {
   const cookieOption = Object.assign({}, sessConfig, { maxAge: msExpireIn });
 
   without(oauthResFields, 'id_token').forEach(prop => {
-    const val =
-      prop === 'expires_in' ? Date.now() + msExpireIn : token_res[prop];
+    const val = prop === 'expires_in' ? Date.now() + msExpireIn : token_res[prop];
     // refresh_token cookie expires after 2 weeks
     if (prop === 'refresh_token') {
       cookieOption.maxAge = 2 * 7 * 24 * 60 * 60 * 1000;

@@ -13,10 +13,9 @@ module.exports = async (ctx, next) => {
   debug('PAGE: %s', url);
 
   // check if user logged in
-  const loggedIn =
-    cookies.get('access_token') &&
-    cookies.get('refresh_token') &&
-    cookies.get('user_id');
+  const loggedIn = cookies.get('access_token')
+    && cookies.get('refresh_token')
+    && cookies.get('user_id');
 
   /* eslint prefer-destructuring: off */
   const page = (ctx.params.page || '').split('/')[0];

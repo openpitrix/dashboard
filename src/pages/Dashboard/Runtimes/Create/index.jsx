@@ -30,33 +30,8 @@ export default class CreateTestingEnv extends React.Component {
     this.isCredential = getUrlParam('type') === 'credential';
   }
 
-  @computed
-  get doneCreateRt() {
-    return this.props.createEnvStore.doneCreateRt;
-  }
-
-  @computed
-  get doneCreateCredential() {
-    return this.props.createEnvStore.doneCreateCredential;
-  }
-
-  @computed
-  get platform() {
-    return getUrlParam('provider') || this.props.envStore.platform;
-  }
-
-  get isCreateVmRt() {
-    return !isHelm(this.platform) && !this.isCredential;
-  }
-
   async componentDidMount() {
     await this.props.envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
-  }
-
-  componentWillUnmount() {
-    const { rootStore, createEnvStore } = this.props;
-    createEnvStore.reset();
-    rootStore.clearNotify();
   }
 
   async componentDidUpdate(prevProps) {
@@ -77,6 +52,31 @@ export default class CreateTestingEnv extends React.Component {
     if (activeStep === 2 && (this.doneCreateRt || this.doneCreateCredential)) {
       history.push(toUrl(`/:dash/runtimes`));
     }
+  }
+
+  componentWillUnmount() {
+    const { rootStore, createEnvStore } = this.props;
+    createEnvStore.reset();
+    rootStore.clearNotify();
+  }
+
+  @computed
+  get doneCreateRt() {
+    return this.props.createEnvStore.doneCreateRt;
+  }
+
+  @computed
+  get doneCreateCredential() {
+    return this.props.createEnvStore.doneCreateCredential;
+  }
+
+  @computed
+  get platform() {
+    return getUrlParam('provider') || this.props.envStore.platform;
+  }
+
+  get isCreateVmRt() {
+    return !isHelm(this.platform) && !this.isCredential;
   }
 
   handleSubmit = async e => {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
-import _, { get, orderBy } from 'lodash';
 import { setPage } from 'mixins';
 
 import Layout from 'components/Layout';

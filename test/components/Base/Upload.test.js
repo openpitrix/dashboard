@@ -1,6 +1,6 @@
 import Upload from 'components/Base/Upload';
 
-const findByRef = wrapper => ref => wrapper.findWhere(node => node.getDOMNode() === wrapper.instance()[ref]);
+const findByRef = (wrapper, ref = '') => wrapper.findWhere(node => node.getDOMNode() === wrapper.instance()[ref]);
 
 describe('Base/Upload', () => {
   const checkFile = jest.fn().mockReturnValue(() => true);
@@ -65,10 +65,7 @@ describe('Base/Upload', () => {
 
   it('call onChange', () => {
     const wrapper = mount(<Upload checkFile={checkFile} />);
-
-    wrapper.findByRef = findByRef(wrapper);
-
-    const input = wrapper.findByRef('fileInput');
+    const input = findByRef(wrapper, 'fileInput');
     input.simulate('change', { target: { files: [file] } });
     expect(addEventListener).toHaveBeenCalledWith('load', expect.any(Function));
   });

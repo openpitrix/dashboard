@@ -105,10 +105,7 @@ class Card extends PureComponent {
   }
 
   render() {
-    const {
-      icon, name, desc, fold, className, canToggle
-    } = this.props;
-    const iconSize = fold ? 36 : 48;
+    const { fold, className, canToggle } = this.props;
 
     return (
       <div

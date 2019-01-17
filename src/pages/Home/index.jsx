@@ -33,14 +33,6 @@ export default class Home extends Component {
     cate: ''
   };
 
-  get searchWord() {
-    return this.props.search || getUrlParam('q');
-  }
-
-  get category() {
-    return this.state.cate || getUrlParam('cate');
-  }
-
   async componentDidMount() {
     const { rootStore, appStore, categoryStore } = this.props;
 
@@ -106,6 +98,14 @@ export default class Home extends Component {
     window.onscroll = null;
     appStore.reset();
     rootStore.setSearchWord();
+  }
+
+  get searchWord() {
+    return this.props.search || getUrlParam('q');
+  }
+
+  get category() {
+    return this.state.cate || getUrlParam('cate');
   }
 
   getThreshold() {

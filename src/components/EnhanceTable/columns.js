@@ -60,7 +60,7 @@ export default ({
     title: 'Count deploy',
     key: 'cnt_deploy',
     // todo
-    render: item => <I18n>{t => t('unknown')}</I18n>
+    render: () => <I18n>{t => t('unknown')}</I18n>
   },
   {
     title: 'Developer',

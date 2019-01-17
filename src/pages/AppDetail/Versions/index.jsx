@@ -1,11 +1,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import { Icon } from 'components/Base';
 import { versionTypes, getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';

@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from 'react';
-import { computed } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';

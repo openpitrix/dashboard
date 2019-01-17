@@ -1,7 +1,9 @@
 import { Icon } from 'components/Base';
 
+/* eslint-disable no-unused-vars */
+
 describe('Base/Icon', () => {
-  it.only('basic render', () => {
+  it('basic render', () => {
     const wrapper = shallow(<Icon name="app" />);
     expect(toJson(wrapper)).toMatchSnapshot();
     expect(wrapper.find('svg').hasClass('qicon')).toBe(true);
