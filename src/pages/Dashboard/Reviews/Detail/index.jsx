@@ -14,7 +14,7 @@ import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
-import { formatTime } from 'utils';
+import { formatTime, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -319,7 +319,10 @@ export default class ReviewDetail extends Component {
           <dl>
             <dt>{t('Current status')}:</dt>
             <dd>
-              <Status type={version.status} name={version.status} />
+              <Status
+                type={version.status}
+                name={mappingStatus(version.status)}
+              />
             </dd>
           </dl>
         </div>

@@ -10,6 +10,7 @@ import Status from 'components/Status';
 import AppName from 'components/AppName';
 import TableTypes from 'components/TableTypes';
 import { formatTime, getObjName, mappingStatus } from 'utils';
+import { reviewShowStatus } from 'config/version';
 
 import styles from './index.scss';
 
@@ -53,6 +54,7 @@ export default class Reviews extends Component {
     } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
+    const isUnprocessed = activeType === 'unprocessed';
 
     const columns = [
       {
@@ -93,6 +95,17 @@ export default class Reviews extends Component {
         render: item => item.submitter
       },
       {
+        title: t('Audit status'),
+        key: 'status',
+        width: '100px',
+        render: item => (
+          <Status
+            type={reviewShowStatus[item.status] || item.status}
+            name={reviewShowStatus[item.status] || item.status}
+          />
+        )
+      },
+      {
         title: t('Submit time'),
         key: 'status_time',
         width: '120px',
@@ -100,22 +113,20 @@ export default class Reviews extends Component {
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
-        title: t('Audit status'),
-        key: 'status',
-        width: '100px',
-        render: item => (
-          <Status type={item.status} name={mappingStatus(item.status)} />
-        )
-      },
-      {
-        title: t('Auditor'),
+        title: isUnprocessed ? t('Auditor') : '',
         key: 'actions',
-        width: '80px',
+        width: '75px',
         className: 'actions',
         render: item => (
-          <Link to={`/dashboard/app-review/${item.review_id}`}>
-            <Button>{t('Start process')}</Button>
-          </Link>
+          <div>
+            <Link to={`/dashboard/app-review/${item.review_id}`}>
+              {isUnprocessed ? (
+                <Button>{t('Start process')}</Button>
+              ) : (
+                <span>{t('View detail')} →</span>
+              )}
+            </Link>
+          </div>
         )
       }
     ];

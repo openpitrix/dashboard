@@ -91,7 +91,7 @@ export default class Providers extends Component {
       {
         title: '',
         key: 'actions',
-        width: '60px',
+        width: '80px',
         className: 'actions',
         render: item => (
           <div className={styles.actions}>

@@ -25,3 +25,16 @@ export const reviewStatus = {
     develop_admin: ['dev-passed', 'dev-rejected']
   }
 };
+
+export const reviewShowStatus = {
+  submitted: 'submitted',
+  'isv-in-review': 'in-review',
+  'isv-rejected': 'rejected',
+  'isv-passed': 'submitted',
+  'business-in-review': 'in-review',
+  'business-rejected': 'rejected',
+  'business-passed': 'submitted',
+  'dev-rejected': 'rejected',
+  'dev-in-review': 'in-review',
+  'dev-passed': 'passed'
+};

@@ -196,6 +196,8 @@
 
   .operator {
     @include note-font;
+    word-break: break-all;
+    word-wrap: break-word;
 
     .name {
       color: $N500;
