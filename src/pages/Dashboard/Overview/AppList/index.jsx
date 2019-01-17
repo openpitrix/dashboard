@@ -23,10 +23,9 @@ export default class AppList extends PureComponent {
   };
 
   render() {
-    const {
-      topApps, apps, isAdmin, isDev
-    } = this.props;
+    const { topApps, apps, isAdmin } = this.props;
     const items = isAdmin ? topApps : apps;
+
     return (
       <ul className={styles.appList}>
         {items.map((item, index) => {

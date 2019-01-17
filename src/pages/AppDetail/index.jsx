@@ -56,12 +56,9 @@ export default class AppDetail extends Component {
       rootStore,
       appStore,
       appVersionStore,
-      vendorStore,
       match,
       isCreate
     } = this.props;
-    const { appDetail } = appStore;
-
     appStore.currentPic = 1;
 
     if (!isCreate) {

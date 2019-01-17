@@ -10,7 +10,7 @@ import { getVersionTypesName } from 'config/version-types';
 import styles from './index.scss';
 
 @translate()
-class Card extends PureComponent {
+export class Card extends PureComponent {
   static propTypes = {
     canToggle: PropTypes.bool,
     className: PropTypes.string,
@@ -105,10 +105,7 @@ class Card extends PureComponent {
   }
 
   render() {
-    const {
-      icon, name, desc, fold, className, canToggle
-    } = this.props;
-    const iconSize = fold ? 36 : 48;
+    const { fold, className, canToggle } = this.props;
 
     return (
       <div

@@ -8,7 +8,7 @@ import {
 } from 'components/Base';
 import Layout from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
-import { getLoginDate, getUrlParam } from 'utils';
+import { getLoginDate } from 'utils';
 import SSHKeys from './SSHKeys';
 
 import styles from './index.scss';

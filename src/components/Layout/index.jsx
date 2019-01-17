@@ -17,7 +17,7 @@ import styles from './index.scss';
   user: rootStore.user,
   sock
 }))
-class Layout extends Component {
+export class Layout extends Component {
   static propTypes = {
     backBtn: PropTypes.node,
     centerWidth: PropTypes.number,
@@ -113,8 +113,7 @@ class Layout extends Component {
       isCenterPage,
       centerWidth,
       hasBack,
-      user,
-      match
+      user
     } = this.props;
 
     const hasMenu = !user.isNormal && !isHome;

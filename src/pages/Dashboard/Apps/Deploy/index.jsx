@@ -5,16 +5,9 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
+import { Select, Image, Notification } from 'components/Base';
 import {
-  Button, Select, Image, Notification
-} from 'components/Base';
-import {
-  Section,
-  Grid,
-  Card,
-  BackBtn,
-  CreateResource,
-  Stepper
+  Section, Grid, Card, Stepper
 } from 'components/Layout';
 import { Group as DeployGroup } from 'components/Deploy';
 import Loading from 'components/Loading';
@@ -234,9 +227,7 @@ export default class AppDeploy extends Component {
     );
   };
 
-  renderForEmptyItem = itemKey => {
-    const { t } = this.props;
-
+  renderForEmptyItem = () => {
     if (!this.isDeployReady()) {
       return null;
     }
@@ -340,9 +331,8 @@ export default class AppDeploy extends Component {
   }
 
   renderTypeVersions() {
-    const { appStore, appVersionStore, t } = this.props;
+    const { appVersionStore, t } = this.props;
     const { typeVersions } = appVersionStore;
-    const { appDetail } = appStore;
     const { activeType, activeVersion } = this.state;
 
     const types = typeVersions.map(item => item.type);

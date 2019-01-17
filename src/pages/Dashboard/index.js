@@ -1,5 +1,3 @@
-import Account from './Account';
-
 export Apps from './Apps';
 export AppAdd from './Apps/Add';
 export AppDetail from './Apps/Detail';

@@ -16,8 +16,7 @@ import NoData from './noData';
 import styles from './index.scss';
 
 @translate()
-@withRouter
-export default class Table extends React.Component {
+export class Table extends React.Component {
   static propTypes = {
     columns: PropTypes.array,
     dataSource: PropTypes.array,
@@ -25,7 +24,12 @@ export default class Table extends React.Component {
     isLoading: PropTypes.bool,
     pagination: PropTypes.object,
     prefixCls: PropTypes.string,
-    rowSelection: PropTypes.object
+    rowSelection: PropTypes.shape({
+      selectedRowKeys: PropTypes.array,
+      onChange: PropTypes.func,
+      onSelect: PropTypes.func,
+      onSelectAll: PropTypes.func
+    })
   };
 
   static defaultProps = {
@@ -34,8 +38,14 @@ export default class Table extends React.Component {
     columns: [],
     pagination: {},
     rowKey: 'key',
-    rowSelection: {},
-    filterList: []
+    rowSelection: {
+      selectedRowKeys: [],
+      onChange: _.noop,
+      onSelect: _.noop,
+      onSelectAll: _.noop
+    },
+    filterList: [],
+    isLoading: false
   };
 
   constructor(props) {
@@ -410,16 +420,18 @@ export default class Table extends React.Component {
     const { selectedRowKeys } = this.state;
 
     return (
-      <Loading isLoading={isLoading}>
-        <div className={classNames(styles.table, className)} style={style}>
+      <div className={classNames(styles.table, className)} style={style}>
+        <Loading isLoading={isLoading}>
           {this.renderTable()}
           <Pagination
             {...pagination}
             selectedRows={selectedRowKeys}
             onSelectRow={rowSelection.onChange}
           />
-        </div>
-      </Loading>
+        </Loading>
+      </div>
     );
   }
 }
+
+export default withRouter(Table);

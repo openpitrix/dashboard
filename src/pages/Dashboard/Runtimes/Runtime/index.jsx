@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -27,7 +27,7 @@ import styles from '../index.scss';
   user: rootStore.user
 }))
 @observer
-class Runtime extends React.Component {
+export class Runtime extends React.Component {
   static propTypes = {
     platform: PropTypes.string
   };

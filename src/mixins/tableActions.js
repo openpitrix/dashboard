@@ -1,5 +1,8 @@
 import { observable } from 'mobx';
 import qs from 'query-string';
+import { isEmpty } from 'lodash';
+
+import history from 'createHistory';
 
 export default {
   @observable selectedRowKeys: [],
@@ -8,6 +11,20 @@ export default {
   @observable searchWord: '',
   @observable totalCount: 0,
   @observable currentPage: 1,
+
+  appendQuery(params = {}, ret = false) {
+    const searchVals = qs.parse(location.search);
+    if (!isEmpty(params)) {
+      Object.assign(searchVals, params);
+    }
+
+    const str = qs.stringify(searchVals);
+    if (ret) {
+      return str;
+    }
+
+    history.push(`?${str}`);
+  },
 
   onChangeSelect(selectedRowKeys, selectedRows) {
     this.selectedRowKeys = selectedRowKeys;
@@ -18,17 +35,13 @@ export default {
   async onChangeStatus(status) {
     this.currentPage = 1;
     this.selectStatus = this.selectStatus === status ? '' : status;
-    const { location } = window;
-    const values = qs.parse(location.search);
-    values.status = status;
-    window.history.pushState({}, '', `?${qs.stringify(values)}`);
+    this.appendQuery({ status });
     await this.fetchAll();
   },
 
   async changePagination(page) {
     this.currentPage = page;
-
-    // mixed class should implement `fetchAll`
+    this.appendQuery({ page });
     await this.fetchAll();
   },
 

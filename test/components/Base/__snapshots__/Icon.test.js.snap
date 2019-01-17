@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Icon basic render 1`] = `
+<span
+  className="icon icon-app"
+  onClick={[Function]}
+  style={
+    Object {
+      "height": "16px",
+      "width": "16px",
+    }
+  }
+>
+  <svg
+    className="qicon qicon-app qicon-light"
+    style={Object {}}
+  >
+    <use
+      xlinkHref="#qui-app"
+    />
+  </svg>
+</span>
+`;
+
+exports[`Base/Icon render when prop color is not empty 1`] = `
+<span
+  className="icon icon-app"
+  onClick={[Function]}
+  style={
+    Object {
+      "height": "16px",
+      "width": "16px",
+    }
+  }
+>
+  <svg
+    className="qicon qicon-app qicon-light"
+    style={
+      Object {
+        "--primary-color": "#aaa",
+        "--secondary-color": undefined,
+      }
+    }
+  >
+    <use
+      xlinkHref="#qui-app"
+    />
+  </svg>
+</span>
+`;
+
+exports[`Base/Icon render when prop size is number 1`] = `
+<span
+  className="icon icon-app"
+  onClick={[Function]}
+  style={
+    Object {
+      "height": "20px",
+      "width": "20px",
+    }
+  }
+>
+  <svg
+    className="qicon qicon-app qicon-light"
+    style={Object {}}
+  >
+    <use
+      xlinkHref="#qui-app"
+    />
+  </svg>
+</span>
+`;

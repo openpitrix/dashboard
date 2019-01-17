@@ -14,7 +14,7 @@ import styles from './index.scss';
 @translate()
 @inject('rootStore')
 @observer
-class LayoutStepper extends Component {
+export class Stepper extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
@@ -178,4 +178,4 @@ class LayoutStepper extends Component {
   }
 }
 
-export default withRouter(LayoutStepper);
+export default withRouter(Stepper);

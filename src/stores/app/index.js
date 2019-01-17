@@ -408,7 +408,7 @@ class AppStore extends Store {
   };
 
   @action
-  uploadIcon = async (base64Str, file) => {
+  uploadIcon = async base64Str => {
     const result = await this.attachment({
       app_id: this.appDetail.app_id,
       type: 'icon',
@@ -443,7 +443,7 @@ class AppStore extends Store {
   };
 
   @action
-  uploadScreenshot = async (base64Str, file) => {
+  uploadScreenshot = async base64Str => {
     const { screenshots } = this.appDetail;
     const len = _.isArray(screenshots) ? screenshots.length : 0;
     if (len >= 6) {

@@ -17,7 +17,7 @@ import styles from './index.scss';
   user: rootStore.user
 }))
 @observer
-class MenuLayer extends Component {
+export class MenuLayer extends Component {
   static propTypes = {
     className: PropTypes.string
   };

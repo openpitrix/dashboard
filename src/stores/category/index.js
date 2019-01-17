@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import _, { get, assign } from 'lodash';
+import _, { get } from 'lodash';
 
 import { sleep, makeArray } from 'utils';
 

@@ -18,6 +18,9 @@ exports[`Base/Table basic render 1`] = `
         >
           <colgroup>
             <col
+              style="width:30px;min-width:30px"
+            />
+            <col
               style="width:50%;min-width:50%"
             />
             <col
@@ -28,6 +31,17 @@ exports[`Base/Table basic render 1`] = `
             class="pi-table-thead"
           >
             <tr>
+              <th
+                class="selectionColumn"
+              >
+                <label
+                  class="checkbox"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                </label>
+              </th>
               <th
                 class=""
               >
@@ -60,12 +74,23 @@ exports[`Base/Table basic render 1`] = `
               class="pi-table-row  pi-table-row-level-0"
             >
               <td
-                class=""
+                class="selectionColumn"
               >
                 <span
                   class="pi-table-row-indent indent-level-0"
                   style="padding-left:0px"
                 />
+                <label
+                  class="checkbox"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                </label>
+              </td>
+              <td
+                class=""
+              >
                 zhangsan
               </td>
               <td
@@ -78,12 +103,23 @@ exports[`Base/Table basic render 1`] = `
               class="pi-table-row  pi-table-row-level-0"
             >
               <td
-                class=""
+                class="selectionColumn"
               >
                 <span
                   class="pi-table-row-indent indent-level-0"
                   style="padding-left:0px"
                 />
+                <label
+                  class="checkbox"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                </label>
+              </td>
+              <td
+                class=""
+              >
                 lisi
               </td>
               <td
@@ -103,14 +139,14 @@ exports[`Base/Table basic render 1`] = `
     <div
       class="total"
     >
-      : 100
+      : 2
     </div>
     <div
       class="pageItems"
     >
       <span
-        aria-disabled="true"
-        class="btn btn-disabled"
+        aria-disabled="false"
+        class="btn"
       >
         <span
           class="icon icon-previous"
@@ -128,11 +164,11 @@ exports[`Base/Table basic render 1`] = `
       <span
         class="current"
       >
-        1 / 10
+        2 / 1
       </span>
       <span
-        aria-disabled="false"
-        class="btn"
+        aria-disabled="true"
+        class="btn btn-disabled"
       >
         <span
           class="icon icon-next"
@@ -170,6 +206,9 @@ exports[`Base/Table render emptyText 1`] = `
         >
           <colgroup>
             <col
+              style="width:30px;min-width:30px"
+            />
+            <col
               style="width:50%;min-width:50%"
             />
             <col
@@ -180,6 +219,17 @@ exports[`Base/Table render emptyText 1`] = `
             class="pi-table-thead"
           >
             <tr>
+              <th
+                class="selectionColumn"
+              >
+                <label
+                  class="checkbox"
+                >
+                  <input
+                    type="checkbox"
+                  />
+                </label>
+              </th>
               <th
                 class=""
               >
@@ -217,14 +267,14 @@ exports[`Base/Table render emptyText 1`] = `
           class="noData"
         >
           <span
-            class="icon icon-appcenter"
+            class="icon icon-cluster"
             style="width:120px;height:120px"
           >
             <svg
-              class="qicon qicon-appcenter qicon-light"
+              class="qicon qicon-cluster qicon-light"
             >
               <use
-                href="#qui-appcenter"
+                href="#qui-cluster"
               />
             </svg>
           </span>
@@ -243,14 +293,14 @@ exports[`Base/Table render emptyText 1`] = `
     <div
       class="total"
     >
-      : 100
+      : 2
     </div>
     <div
       class="pageItems"
     >
       <span
-        aria-disabled="true"
-        class="btn btn-disabled"
+        aria-disabled="false"
+        class="btn"
       >
         <span
           class="icon icon-previous"
@@ -268,11 +318,11 @@ exports[`Base/Table render emptyText 1`] = `
       <span
         class="current"
       >
-        1 / 10
+        2 / 1
       </span>
       <span
-        aria-disabled="false"
-        class="btn"
+        aria-disabled="true"
+        class="btn btn-disabled"
       >
         <span
           class="icon icon-next"

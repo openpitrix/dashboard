@@ -4,10 +4,7 @@ import _ from 'lodash';
 
 import { Provider } from 'mobx-react';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
+  Router, Switch, Route, Redirect
 } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 
@@ -16,6 +13,7 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Wrapper from 'routes/wrapper';
+import history from './createHistory';
 
 import './scss/index.scss';
 
@@ -86,7 +84,7 @@ class App extends React.Component {
     return (
       <I18nextProvider i18n={i18n}>
         <Provider rootStore={store} sock={sock}>
-          <Router>
+          <Router history={history}>
             <div className="main">
               <LazyLoad>
                 <Switch>

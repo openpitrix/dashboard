@@ -4,9 +4,7 @@ import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import {
-  Icon, Popover, Modal, Select
-} from 'components/Base';
+import { Icon, Popover, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
 import Layout, {
   Grid,
