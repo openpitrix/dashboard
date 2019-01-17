@@ -41,7 +41,7 @@ export default class CloudEnvironment extends Component {
     const { t, cloudEnvStore } = this.props;
     const { environment } = cloudEnvStore;
     return (
-      <Layout isCenterPage pageTitle={t('Cloud environment')}>
+      <Layout isCenterPage centerWidth={660} pageTitle={t('Cloud environment')}>
         <h3 className={styles.title}>{t('CLOUD-ENVIRONMENT-DESCRIBE')}</h3>
         <div className={styles.list}>
           {_.map(environment, item => this.renderItem(item))}
