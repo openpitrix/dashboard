@@ -135,7 +135,8 @@ export default class Applications extends Component {
           <dl>
             <dt>{t('Auditor')}:&nbsp;</dt>
             <dd>
-              <label>{user.username}</label> {user.email}
+              <label>{user.username}</label>
+              <span className={styles.email}>{user.email}</span>
             </dd>
           </dl>
         )}
@@ -181,7 +182,7 @@ export default class Applications extends Component {
         hasBack={!isISV}
         isCenterPage
         noSubMenu
-        centerWidth={660}
+        centerWidth={760}
       >
         {this.renderBaseInfo()}
         <CertificateInfo />

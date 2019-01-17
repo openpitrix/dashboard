@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import Layout, { Grid, Section, Card } from 'components/Layout';
 import { Button, Icon, Image } from 'components/Base';
+import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import AppStatistics from 'components/AppStatistics';
 import { formatTime, getPastTime } from 'utils';
+import { getVersionTypesName } from 'config/version-types';
 import CertificateInfo from '../CertificateInfo';
 
 import styles from './index.scss';
@@ -32,7 +35,10 @@ export default class ProviderDetail extends Component {
 
     await vendorStore.fetch(providerId);
 
-    await appStore.fetchAll({
+    await vendorStore.fetchStatistics({ user_id: providerId });
+
+    appStore.attchDeployTotal = true;
+    await appStore.fetchActiveApps({
       owner: providerId,
       status: 'active',
       noLimit: true
@@ -87,54 +93,66 @@ export default class ProviderDetail extends Component {
 
   renderApps() {
     const { appStore, t } = this.props;
-    const { apps, totalCount } = appStore;
+    const { apps, totalCount, isLoading } = appStore;
 
     return (
       <Card className={styles.appsInfo}>
-        <div className={styles.total}>
-          {t('SHELF_APP_TOTAL', { total: totalCount })}
-        </div>
+        <Loading isLoading={isLoading}>
+          <div className={styles.total}>
+            {t('SHELF_APP_TOTAL', { total: totalCount })}
+          </div>
 
-        <ul>
-          {apps.map(item => (
-            <li key={item.app_id}>
-              <div className={styles.appName}>
-                <span className={styles.image}>
-                  <Image src={item.icon} iconLetter={item.name} iconSize={36} />
-                </span>
-                <span className={styles.info}>
+          <ul>
+            {apps.map(item => (
+              <li key={item.app_id}>
+                <div className={styles.appName}>
+                  <span className={styles.image}>
+                    <Image
+                      src={item.icon}
+                      iconLetter={item.name}
+                      iconSize={36}
+                    />
+                  </span>
+                  <span className={styles.info}>
+                    <Link
+                      to={`/dashboard/app/${item.app_id}`}
+                      className={styles.name}
+                    >
+                      {item.name}
+                    </Link>
+                    <div className={styles.description}>
+                      {item.abstraction || t('None')}
+                    </div>
+                  </span>
+                </div>
+                <div>
+                  {t('Delivery type')}:&nbsp;
+                  <label className={styles.types}>
+                    {(getVersionTypesName(item.app_version_types) || []).join(
+                      ' '
+                    )}
+                  </label>
+                  <br />
+                  {t('Total of deploy')}:&nbsp;
+                  <label className={styles.deployNumber}>
+                    {item.deploy_total || 0}
+                  </label>
+                </div>
+                <div>
+                  <label className={styles.time}>
+                    {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
+                  </label>
                   <Link
                     to={`/dashboard/app/${item.app_id}`}
-                    className={styles.name}
+                    className={styles.link}
                   >
-                    {item.name}
+                    {t('View detail')} →
                   </Link>
-                  <div className={styles.description}>{item.description}</div>
-                </span>
-              </div>
-              <div>
-                {t('Delivery type')}:&nbsp;
-                <label className={styles.types}>{item.app_version_types}</label>
-                <br />
-                {t('Total of deploy')}:&nbsp;
-                <label className={styles.deployNumber}>
-                  {item.deploy_total || 0}
-                </label>
-              </div>
-              <div>
-                <label className={styles.time}>
-                  {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
-                </label>
-                <Link
-                  to={`/dashboard/app/${item.app_id}`}
-                  className={styles.link}
-                >
-                  {t('View detail')} →
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Loading>
       </Card>
     );
   }
@@ -180,15 +198,20 @@ export default class ProviderDetail extends Component {
   }
 
   render() {
-    const { t, vendorStore, appStore } = this.props;
-    const { detailTab } = vendorStore;
+    const { t, vendorStore } = this.props;
+    const { statistics, detailTab } = vendorStore;
+    const totalMap = _.get(statistics, '[0]', {});
 
     return (
       <Layout pageTitle={t('App Service Provider Detail')} hasBack>
         <Grid>
           <Section size={4}>{this.renderProviderInfo()}</Section>
           <Section size={8}>
-            <AppStatistics appTotal={appStore.totalCount} />
+            <AppStatistics
+              appTotal={totalMap.active_app_count}
+              totalDepoly={totalMap.cluster_count_month}
+              monthDepoly={totalMap.cluster_count_total}
+            />
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
             {detailTab === 'app' && this.renderApps()}
             {detailTab === 'certificationInfo' && <CertificateInfo />}

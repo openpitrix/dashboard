@@ -14,7 +14,7 @@ import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
-import { formatTime } from 'utils';
+import { formatTime, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -319,7 +319,10 @@ export default class ReviewDetail extends Component {
           <dl>
             <dt>{t('Current status')}:</dt>
             <dd>
-              <Status type={version.status} name={version.status} />
+              <Status
+                type={version.status}
+                name={mappingStatus(version.status)}
+              />
             </dd>
           </dl>
         </div>
@@ -340,13 +343,16 @@ export default class ReviewDetail extends Component {
     const { version } = appVersionStore;
 
     return (
-      <Card className={styles.configFile}>
+      <div className={styles.configFile}>
         <div className={styles.fileInfo}>
           <div className={styles.name}>
             {`${appDetail.name} ${version.name}`}
           </div>
           <div className={styles.time}>
-            {t('Upload time')}：{version.status_time}
+            {t('Upload time')}：{formatTime(
+              version.status_time,
+              'YYYY/MM/DD HH:mm:ss'
+            )}
             <Link
               className={styles.link}
               to={`/dashboard/app/${appDetail.app_id}/deploy/${
@@ -362,7 +368,7 @@ export default class ReviewDetail extends Component {
           type={version.type}
           isShowNote
         />
-      </Card>
+      </div>
     );
   }
 

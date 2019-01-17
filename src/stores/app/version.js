@@ -660,5 +660,6 @@ export default class AppVersionStore extends Store {
     this.packageName = '';
 
     this.reviews = [];
+    this.activeType = 'unprocessed';
   };
 }

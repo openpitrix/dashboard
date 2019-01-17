@@ -21,6 +21,8 @@ export default class VendorStore extends Store {
 
   @observable vendors = [];
 
+  @observable statistics = [];
+
   @observable userId = '';
 
   @observable activeType = 'unreviewed';
@@ -68,6 +70,11 @@ export default class VendorStore extends Store {
 
     this.vendors = get(result, 'vendor_verify_info_set', []);
 
+    const userIds = this.vendors.map(item => item.user_id);
+    if (this.attchStatictics && userIds.length > 0) {
+      await this.fetchStatistics({ user_id: _.uniq(userIds) });
+    }
+
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -81,6 +88,18 @@ export default class VendorStore extends Store {
     if (_.get(result, 'user_id')) {
       this.vendorDetail = result;
     }
+    this.isLoading = false;
+  };
+
+  @action
+  fetchStatistics = async (params = {}) => {
+    this.isLoading = true;
+    const result = await this.request.get(
+      'DescribeAppVendorStatistics',
+      params
+    );
+
+    this.statistics = get(result, 'vendor_verify_statistics_set', []);
     this.isLoading = false;
   };
 

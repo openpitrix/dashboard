@@ -98,7 +98,9 @@ export default class Modal extends React.Component {
         {!hideHeader && (
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
-            {closable && <Icon name="close" size={36} onClick={onCancel} />}
+            {closable && (
+              <Icon name="close" size={36} type="dark" onClick={onCancel} />
+            )}
           </div>
         )}
         <div className={styles.body}>{children}</div>
