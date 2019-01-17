@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { versionTypes } from 'config/version-types';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
@@ -11,7 +12,6 @@ import Layout from 'components/Layout';
 import Status from 'components/Status';
 import { formatTime } from 'utils';
 
-import PropTypes from 'prop-types';
 import styles from './index.scss';
 
 @translate()
