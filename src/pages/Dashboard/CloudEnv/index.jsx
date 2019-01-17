@@ -13,34 +13,33 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
-  cloudEnvironmentStore: rootStore.cloudEnvironmentStore
+  cloudEnvStore: rootStore.cloudEnvStore
 }))
 @observer
 export default class CloudEnvironment extends Component {
   async componentDidMount() {
-    const { cloudEnvironmentStore } = this.props;
-    cloudEnvironmentStore.fetchAll();
+    const { cloudEnvStore } = this.props;
+    await cloudEnvStore.fetchAll();
   }
 
-  renderItem = item => {
-    const checked = item.status === 'active';
-    return (
-      <div
-        key={item.id}
-        className={classnames(styles.item, {
-          [styles.disabled]: !checked
-        })}
-      >
-        <Icon name={item.id} />
-        <span className={styles.itemName}>{item.name}</span>
-        <Switch checked={checked} />
-      </div>
-    );
-  };
+  renderItem = ({
+    key, name, icon, disabled
+  }) => (
+    <div
+      key={key}
+      className={classnames(styles.item, {
+        [styles.disabled]: disabled
+      })}
+    >
+      <Icon name={icon} />
+      <span className={styles.itemName}>{name}</span>
+      <Switch checked={!disabled} />
+    </div>
+  );
 
   render() {
-    const { t, cloudEnvironmentStore } = this.props;
-    const { environment } = cloudEnvironmentStore;
+    const { t, cloudEnvStore } = this.props;
+    const { environment } = cloudEnvStore;
     return (
       <Layout isCenterPage pageTitle={t('Cloud environment')}>
         <h3 className={styles.title}>{t('CLOUD-ENVIRONMENT-DESCRIBE')}</h3>

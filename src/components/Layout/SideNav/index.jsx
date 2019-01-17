@@ -30,11 +30,11 @@ const keys = [
   'provider-detail',
   'provider',
   'setting',
-  'cloud-environment',
+  'cloud-env',
   'dashboard'
 ];
 const changeKey = {
-  'cloud-environment': 'setting',
+  'cloud-env': 'setting',
   review: 'app',
   cluster: 'repo',
   runtime: 'repo',
