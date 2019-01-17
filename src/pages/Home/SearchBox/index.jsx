@@ -11,13 +11,12 @@ import { getUrlParam } from 'utils/url';
 import styles from './index.scss';
 
 @translate()
-@withRouter
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore
 }))
 @observer
-export default class SearchBox extends React.Component {
+export class SearchBox extends React.Component {
   static propTypes = {
     className: PropTypes.string
   };
@@ -49,3 +48,5 @@ export default class SearchBox extends React.Component {
     );
   }
 }
+
+export default withRouter(SearchBox);

@@ -8,8 +8,7 @@ import { Icon, Button, Input } from 'components/Base';
 
 import styles from './index.scss';
 
-@withRouter
-class Toolbar extends React.Component {
+export class Toolbar extends React.Component {
   static propTypes = {
     changeView: PropTypes.func,
     children: PropTypes.node,
@@ -132,4 +131,4 @@ class Toolbar extends React.Component {
   }
 }
 
-export default Toolbar;
+export default withRouter(Toolbar);

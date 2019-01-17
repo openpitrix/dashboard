@@ -10,7 +10,7 @@ import { getVersionTypesName } from 'config/version-types';
 import styles from './index.scss';
 
 @translate()
-class Card extends PureComponent {
+export class Card extends PureComponent {
   static propTypes = {
     canToggle: PropTypes.bool,
     className: PropTypes.string,

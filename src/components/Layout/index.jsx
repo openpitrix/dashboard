@@ -17,7 +17,7 @@ import styles from './index.scss';
   user: rootStore.user,
   sock
 }))
-class Layout extends Component {
+export class Layout extends Component {
   static propTypes = {
     backBtn: PropTypes.node,
     centerWidth: PropTypes.number,

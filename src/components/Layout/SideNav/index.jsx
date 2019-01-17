@@ -47,7 +47,7 @@ const changeKey = {
   user: rootStore.user
 }))
 @observer
-class SideNav extends React.Component {
+export class SideNav extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     hasSubNav: PropTypes.bool

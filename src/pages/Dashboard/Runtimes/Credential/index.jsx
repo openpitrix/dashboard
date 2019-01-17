@@ -19,7 +19,7 @@ import styles from '../index.scss';
   credentialStore: rootStore.runtimeCredentialStore
 }))
 @observer
-class Credential extends React.Component {
+export class Credential extends React.Component {
   static propTypes = {
     platform: PropTypes.string
   };

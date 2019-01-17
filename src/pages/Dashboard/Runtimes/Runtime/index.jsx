@@ -27,7 +27,7 @@ import styles from '../index.scss';
   user: rootStore.user
 }))
 @observer
-class Runtime extends React.Component {
+export class Runtime extends React.Component {
   static propTypes = {
     platform: PropTypes.string
   };

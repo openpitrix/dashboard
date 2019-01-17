@@ -10,8 +10,7 @@ import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
-@withRouter
-export default class AppCard extends Component {
+export class AppCard extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
@@ -60,3 +59,5 @@ export default class AppCard extends Component {
     );
   }
 }
+
+export default withRouter(AppCard);

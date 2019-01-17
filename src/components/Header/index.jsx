@@ -24,7 +24,7 @@ const LinkItem = ({ to, title }) => (
   user: rootStore.user
 }))
 @observer
-class Header extends Component {
+export class Header extends Component {
   static propTypes = {
     isHome: PropTypes.bool
   };

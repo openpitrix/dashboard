@@ -12,6 +12,7 @@
     "debug": "^3.1.0",
     "deepmerge": "^2.1.0",
     "file-saver": "^2.0.0",
+    "history": "^4.7.2",
     "i18next": "^11.3.3",
     "i18next-browser-languagedetector": "^2.2.3",
     "js-base64": "^2.4.5",
