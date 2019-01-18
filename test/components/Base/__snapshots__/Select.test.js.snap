@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Select basic render 1`] = `
+<div
+  class="select"
+>
+  <input
+    name=""
+    type="hidden"
+  />
+  <div
+    class="control"
+  >
+    <div
+      class="controlLabel"
+    />
+    <span
+      class="icon icon-caret-down"
+      style="width:16px;height:16px"
+    >
+      <svg
+        class="qicon qicon-caret-down qicon-dark"
+      >
+        <use
+          href="#qui-caret-down"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    class="options"
+  >
+    <div
+      class="option"
+    >
+      item1
+    </div>
+    <div
+      class="option"
+    >
+      item2
+    </div>
+    <div
+      class="option"
+    >
+      item3
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Base/Select disabled render 1`] = `
+<div
+  class="select"
+  disabled=""
+>
+  <input
+    name=""
+    type="hidden"
+  />
+  <div
+    class="control"
+  >
+    <div
+      class="controlLabel"
+    />
+    <span
+      class="icon icon-caret-down"
+      style="width:16px;height:16px"
+    >
+      <svg
+        class="qicon qicon-caret-down qicon-dark"
+      >
+        <use
+          href="#qui-caret-down"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    class="options"
+  >
+    <div
+      class="option"
+    >
+      item1
+    </div>
+    <div
+      class="option"
+    >
+      item2
+    </div>
+    <div
+      class="option"
+    >
+      item3
+    </div>
+  </div>
+</div>
+`;
