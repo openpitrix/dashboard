@@ -52,6 +52,7 @@ export default class Checkbox extends Component {
       children,
       isFold,
       fold,
+      name,
       value
     } = this.props;
     const { isChecked } = this.state;
@@ -72,6 +73,7 @@ export default class Checkbox extends Component {
           type="checkbox"
           value={value}
           checked={isChecked}
+          name={name}
           onChange={this.handleToggleCheck}
         />
         {children}
