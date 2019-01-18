@@ -95,3 +95,20 @@
   top: auto !important;
   bottom: 24px;
 }
+
+.versionType {
+  line-height: 32px;
+}
+
+.operationVersion {
+  text-align: left;
+}
+
+.suspended {
+  @include note-font;
+  display: inline-block;
+  position: relative;
+  top: -6px;
+  padding: 0 4px;
+  background-color: $N10;
+}

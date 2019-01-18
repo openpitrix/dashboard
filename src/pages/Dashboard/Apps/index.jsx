@@ -7,12 +7,13 @@ import Layout from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
 
+import styles from './index.scss';
+
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
-  repoStore: rootStore.repoStore,
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
@@ -21,21 +22,17 @@ import Toolbar from 'components/Toolbar';
 export default class Apps extends Component {
   async componentDidMount() {
     const {
-      appStore, userStore, user, categoryStore, repoStore
+      appStore, userStore, user, categoryStore
     } = this.props;
     const { isAdmin } = user;
 
-    // preset default status
-    appStore.defaultStatus = ['active'];
     await appStore.fetchAll();
 
+    // todo
     if (isAdmin) {
       await userStore.fetchAll({ noLimit: true });
     }
-    await repoStore.fetchAll({
-      status: ['active', 'deleted'],
-      noLimit: true
-    });
+
     await categoryStore.fetchAll();
   }
 
@@ -66,7 +63,7 @@ export default class Apps extends Component {
     };
 
     return (
-      <Layout pageTitle={t('All Apps')}>
+      <Layout pageTitle={t('All Apps')} className={styles.appList}>
         <Toolbar
           placeholder={t('Search App Name or ID')}
           searchWord={searchWord}

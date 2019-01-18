@@ -92,7 +92,7 @@ export default class Categories extends Component {
 
     if (['edit', 'customize'].includes(modalType)) {
       const isEdit = modalType === 'edit';
-      const title = isEdit ? t('Modify category') : t('创建新分类');
+      const title = isEdit ? t('Modify category') : t('Create Category');
       const okText = isEdit ? t('Submit') : t('Create');
 
       const {
@@ -174,7 +174,7 @@ export default class Categories extends Component {
 
       return (
         <Dialog
-          title={t('调整应用分类')}
+          title={t('Adjust App Category')}
           visible={isModalOpen}
           onSubmit={handleOperation}
           onCancel={hideModal}
@@ -338,6 +338,7 @@ export default class Categories extends Component {
           store={appStore}
           data={apps}
           isLoading={isLoading}
+          hasRowSelection
           columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
           }
         />
@@ -353,7 +354,7 @@ export default class Categories extends Component {
       <Layout
         isLoading={isLoading}
         pageTitle="App category"
-        className={styles.page}
+        className={styles.categoryPage}
       >
         <Grid>
           <Section size={3} className={styles.leftPanel}>

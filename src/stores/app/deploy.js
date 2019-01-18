@@ -42,7 +42,9 @@ export default class AppDeployStore extends Store {
   }
 
   get createActionName() {
-    return this.getUser().isDev ? 'debug_clusters/create' : 'clusters/create';
+    return this.getUser().isNormal
+      ? 'clusters/create'
+      : 'debug_clusters/create';
   }
 
   reset() {

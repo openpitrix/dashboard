@@ -349,8 +349,36 @@ export default class AppVersionStore extends Store {
     this.isLoading = false;
   };
 
+  // type value is: suspend、recover
+  @action
+  versionSuspend = async (versionIds, type) => {
+    let isOperateSuccess = true;
+    await versionIds.forEach(async id => {
+      const result = await this.request.post(`app_version/action/${type}`, {
+        version_id: id
+      });
+
+      if (!get(result, 'version_id')) {
+        isOperateSuccess = false;
+      }
+    });
+
+    if (isOperateSuccess) {
+      this.appStore.hideModal();
+      const appId = _.get(this.appStore, 'appDetail.app_id', '');
+      await this.appStore.fetch(appId);
+      await this.fetchAll({
+        app_id: _.get(this.appStore, 'appDetail.app_id', ''),
+        status: ['active', 'suspended'],
+        noLimit: true
+      });
+      this.success(`${_.capitalize(type)} successfully`);
+    }
+  };
+
   @action
   fetchAudits = async (appId, versionId) => {
+    this.isLoading = true;
     const result = await this.request.get('app_version_audits', {
       app_id: appId,
       version_id: versionId,
@@ -358,6 +386,7 @@ export default class AppVersionStore extends Store {
     });
     const audits = get(result, 'app_version_audit_set', []);
     assignIn(this.audits, { [versionId]: audits });
+    this.isLoading = false;
   };
 
   @action

@@ -8,16 +8,11 @@ import { getObjName } from 'utils';
 import _ from 'lodash';
 
 // inject
-export default ({
-  users = [],
-  isAdmin = false,
-  urlPrefix = '',
-  onChangeSort = _.noop
-}) => [
+export default ({ users = [], urlPrefix = '' }) => [
   {
     title: 'App Name',
     key: 'name',
-    width: '165px',
+    width: '150px',
     render: item => (
       <TdName
         name={item.name}
@@ -30,6 +25,7 @@ export default ({
   {
     title: 'App intro',
     key: 'intro',
+    width: '150px',
     render: item => (
       <LessText txt={item.abstraction || item.description} limit={40} />
     )
@@ -54,11 +50,13 @@ export default ({
   {
     title: 'Delivery type',
     key: 'delivery_type',
+    width: '80px',
     render: item => <I18n>{t => item.app_version_types || t('unknown')}</I18n>
   },
   {
     title: 'Count deploy',
     key: 'cnt_deploy',
+    width: '80px',
     // todo
     render: () => <I18n>{t => t('unknown')}</I18n>
   },
@@ -71,6 +69,7 @@ export default ({
   {
     title: 'App service provider',
     key: 'maintainers',
+    width: '80px',
     render: item => {
       let { maintainers } = item;
       if (maintainers && _.isString(maintainers)) {
@@ -85,9 +84,7 @@ export default ({
   {
     title: 'Publish time',
     key: 'status_time',
-    width: '102px',
-    sorter: isAdmin,
-    onChangeSort,
+    width: '130px',
     render: item => <TimeShow time={item.status_time} />
   }
 ];

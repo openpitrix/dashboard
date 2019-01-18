@@ -18,6 +18,7 @@ export default class EnhanceTable extends React.PureComponent {
     columnsFilter: PropTypes.func,
     data: PropTypes.array,
     filterList: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
+    hasRowSelection: PropTypes.bool,
     inject: PropTypes.object,
     isLoading: PropTypes.bool,
     replaceFilterConditions: PropTypes.array,
@@ -50,6 +51,7 @@ export default class EnhanceTable extends React.PureComponent {
     columns: [],
     columnsFilter: x => x,
     selectionType: 'checkbox',
+    hasRowSelection: false,
     tableType: 'Apps',
     filterList: [],
     inject: {},
@@ -66,6 +68,7 @@ export default class EnhanceTable extends React.PureComponent {
       inject,
       filterList,
       selectionType,
+      hasRowSelection,
       tableType,
       isLoading,
       className,
@@ -99,7 +102,7 @@ export default class EnhanceTable extends React.PureComponent {
         isLoading={isLoading}
         columns={columnsFilter(normalizeCols)}
         dataSource={data.slice(0, store.pageSize || 10)}
-        rowSelection={rowSelection}
+        rowSelection={hasRowSelection ? rowSelection : {}}
         filterList={
           _.isEmpty(filterList)
             ? defaultFilters(
