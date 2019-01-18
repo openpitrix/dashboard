@@ -24,18 +24,22 @@ export default class CloudEnvironment extends Component {
 
   renderItem = ({
     key, name, icon, disabled
-  }) => (
-    <div
-      key={key}
-      className={classnames(styles.item, {
-        [styles.disabled]: disabled
-      })}
-    >
-      <Icon name={icon} />
-      <span className={styles.itemName}>{name}</span>
-      <Switch checked={!disabled} />
-    </div>
-  );
+  }) => {
+    const { cloudEnvStore } = this.props;
+    const { changeEnv } = cloudEnvStore;
+    return (
+      <div
+        key={key}
+        className={classnames(styles.item, {
+          [styles.disabled]: disabled
+        })}
+      >
+        <Icon name={icon} />
+        <span className={styles.itemName}>{name}</span>
+        <Switch checked={!disabled} onChange={changeEnv(key)} />
+      </div>
+    );
+  };
 
   render() {
     const { t, cloudEnvStore } = this.props;

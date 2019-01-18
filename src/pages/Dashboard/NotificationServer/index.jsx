@@ -57,138 +57,134 @@ export default class NotificationServer extends Component {
 
     return (
       <Layout pageTitle={t('Notification server')}>
-        <Grid>
-          <Section size={3}>
-            <div className={styles.nav}>
-              <div className={styles.navHeader}>{t('Server Type')}</div>
-              <ul className={styles.navUl}>
-                <li className={styles.active}>{t('Mail')}</li>
-                <li className={styles.disabled}>{t('SMS')}</li>
-                <li className={styles.disabled}>{t('Wechat')}</li>
-              </ul>
-            </div>
-          </Section>
+        <div className={styles.flex}>
+          <div className={styles.nav}>
+            <div className={styles.navHeader}>{t('Server Type')}</div>
+            <ul className={styles.navUl}>
+              <li className={styles.active}>{t('Mail')}</li>
+              <li className={styles.disabled}>{t('SMS')}</li>
+              <li className={styles.disabled}>{t('Wechat')}</li>
+            </ul>
+          </div>
 
-          <Section size={9}>
-            <Panel>
-              <h3 className={styles.header}>
-                <strong>{t('Mail server config')}</strong>
-                <Button
-                  type={`primary`}
-                  className={`primary`}
-                  htmlType="submit"
-                  onClick={save}
-                >
-                  {t('Save')}
-                </Button>
-                <Button onClick={cancleSave}>{t('Cancel')}</Button>
-              </h3>
+          <Panel className={styles.panel}>
+            <h3 className={styles.header}>
+              <strong>{t('Mail server config')}</strong>
+              <Button
+                type={`primary`}
+                className={`primary`}
+                htmlType="submit"
+                onClick={save}
+              >
+                {t('Save')}
+              </Button>
+              <Button onClick={cancleSave}>{t('Cancel')}</Button>
+            </h3>
 
-              <Loading isLoading={isLoading}>
-                <form className={styles.form}>
+            <Loading isLoading={isLoading}>
+              <form className={styles.form}>
+                <div>
                   <div>
-                    <div>
-                      <label>{t('Server protocol')}</label>
-                      <Select
-                        onChange={onChangeSelect}
-                        name="type"
-                        value={formData.type}
-                      >
-                        <Select.Option value="smtp">SMTP</Select.Option>
-                        <Select.Option disabled value="pop3">
-                          POP3
-                        </Select.Option>
-                        <Select.Option disabled value="imap">
-                          IMAP
-                        </Select.Option>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div>
-                      <label>SMTP {t('Server host name')}</label>
-                      <Input
-                        name="server_name"
-                        placeholder="server name"
-                        onChange={onChangeFormItem}
-                        value={formData.server_name}
-                      />
-                    </div>
-
-                    <div>
-                      <label>SMTP {t('Server host port')}</label>
-                      <Input
-                        name="server_port"
-                        placeholder="1000"
-                        type="number"
-                        className={styles.smallInput}
-                        onChange={onChangeFormItem}
-                        value={formData.server_port}
-                      />
-                    </div>
-                    <div className={styles.paddingTop}>
-                      <Checkbox
-                        name="ssl_connect"
-                        checked={formData.ssl_connect}
-                        onChange={onChangeFormItem}
-                      >
-                        {t('SSL 安全连接')}
-                      </Checkbox>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div>
-                      <label>{t('Sender address')}</label>
-                      <Input
-                        name="email"
-                        placeholder={`${t(
-                          'for example'
-                        )}：cn=admin,dc=example,dc=org`}
-                        value={formData.email}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <div>
-                      <label>{t('Server username')}</label>
-                      <Input
-                        name="username"
-                        placeholder={`${t('for example')}：name@example.com`}
-                        value={formData.username}
-                        onChange={onChangeFormItem}
-                      />
-                    </div>
-
-                    <div>
-                      <label>{t('Server password')}</label>
-                      <Input
-                        name="password"
-                        type="password"
-                        placeholder="**********"
-                        value={formData.password}
-                        onChange={onChangeFormItem}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Button
-                      className={classnames({
-                        [styles.btnLoading]: testStatus === 'loading'
-                      })}
-                      onClick={testConnect}
+                    <label>{t('Server protocol')}</label>
+                    <Select
+                      onChange={onChangeSelect}
+                      name="type"
+                      value={formData.type}
                     >
-                      {t('Connect test')}
-                    </Button>
-                    {this.renderConnectStatus()}
+                      <Select.Option value="smtp">SMTP</Select.Option>
+                      <Select.Option disabled value="pop3">
+                        POP3
+                      </Select.Option>
+                      <Select.Option disabled value="imap">
+                        IMAP
+                      </Select.Option>
+                    </Select>
                   </div>
-                </form>
-              </Loading>
-            </Panel>
-          </Section>
-        </Grid>
+                </div>
+
+                <div>
+                  <div>
+                    <label>SMTP {t('Server host name')}</label>
+                    <Input
+                      name="server_name"
+                      placeholder="server name"
+                      onChange={onChangeFormItem}
+                      value={formData.server_name}
+                    />
+                  </div>
+
+                  <div>
+                    <label>SMTP {t('Server host port')}</label>
+                    <Input
+                      name="server_port"
+                      placeholder="1000"
+                      type="number"
+                      className={styles.smallInput}
+                      onChange={onChangeFormItem}
+                      value={formData.server_port}
+                    />
+                  </div>
+                  <div className={styles.paddingTop}>
+                    <Checkbox
+                      name="ssl_connect"
+                      checked={formData.ssl_connect}
+                      onChange={onChangeFormItem}
+                    >
+                      {t('SSL 安全连接')}
+                    </Checkbox>
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label>{t('Sender address')}</label>
+                    <Input
+                      name="email"
+                      placeholder={`${t(
+                        'for example'
+                      )}：cn=admin,dc=example,dc=org`}
+                      value={formData.email}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label>{t('Server username')}</label>
+                    <Input
+                      name="username"
+                      placeholder={`${t('for example')}：name@example.com`}
+                      value={formData.username}
+                      onChange={onChangeFormItem}
+                    />
+                  </div>
+
+                  <div>
+                    <label>{t('Server password')}</label>
+                    <Input
+                      name="password"
+                      type="password"
+                      placeholder="**********"
+                      value={formData.password}
+                      onChange={onChangeFormItem}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Button
+                    className={classnames({
+                      [styles.btnLoading]: testStatus === 'loading'
+                    })}
+                    onClick={testConnect}
+                  >
+                    {t('Connect test')}
+                  </Button>
+                  {this.renderConnectStatus()}
+                </div>
+              </form>
+            </Loading>
+          </Panel>
+        </div>
       </Layout>
     );
   }

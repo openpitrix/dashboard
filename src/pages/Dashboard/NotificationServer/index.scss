@@ -1,7 +1,15 @@
 @import '~scss/vars';
 
+.flex {
+  display: flex;
+}
+.panel {
+  flex: 1;
+  margin-left: 20px;
+}
 .nav {
   color: $N75;
+  width: 270px;
 }
 .navHeader {
   padding: 12px;
@@ -74,4 +82,7 @@
   justify-content: center;
   align-items: center;
   margin-left: 5px;
+  :global(.icon) {
+    margin-right: 4px;
+  }
 }
