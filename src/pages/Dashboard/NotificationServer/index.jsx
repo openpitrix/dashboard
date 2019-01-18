@@ -7,7 +7,7 @@ import {
   Button, Input, Select, Checkbox, Icon
 } from 'components/Base';
 
-import Layout, { Grid, Section, Panel } from 'components/Layout';
+import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
 
 import styles from './index.scss';
@@ -18,10 +18,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class NotificationServer extends Component {
-  state = {
-    activeTab: 'Mail'
-  };
-
   renderConnectStatus() {
     const { t, notificationServerStore } = this.props;
     const { testStatus } = notificationServerStore;
@@ -144,6 +140,7 @@ export default class NotificationServer extends Component {
                         'for example'
                       )}：cn=admin,dc=example,dc=org`}
                       value={formData.email}
+                      onChange={onChangeFormItem}
                     />
                   </div>
                 </div>
