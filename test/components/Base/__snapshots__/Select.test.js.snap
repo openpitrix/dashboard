@@ -32,19 +32,16 @@ exports[`Base/Select basic render 1`] = `
   >
     <div
       class="option"
-      value="item1"
     >
       item1
     </div>
     <div
       class="option"
-      value="item2"
     >
       item2
     </div>
     <div
       class="option"
-      value="item3"
     >
       item3
     </div>
@@ -85,19 +82,16 @@ exports[`Base/Select disabled render 1`] = `
   >
     <div
       class="option"
-      value="item1"
     >
       item1
     </div>
     <div
       class="option"
-      value="item2"
     >
       item2
     </div>
     <div
       class="option"
-      value="item3"
     >
       item3
     </div>

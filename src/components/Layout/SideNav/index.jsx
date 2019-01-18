@@ -34,7 +34,6 @@ const keys = [
   'dashboard'
 ];
 const changeKey = {
-  'cloud-env': 'setting',
   review: 'app',
   cluster: 'repo',
   runtime: 'repo',

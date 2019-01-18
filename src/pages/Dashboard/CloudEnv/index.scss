@@ -1,7 +1,7 @@
 @import '~scss/vars';
 
 .title {
-  @include title-font($font-size: 12px);
+  @include normal-font;;
 }
 
 .item {
