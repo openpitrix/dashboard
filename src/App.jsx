@@ -1,104 +1,72 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-
-import { Provider } from 'mobx-react';
+import React, { lazy } from 'react';
 import {
-  Router, Switch, Route, Redirect
+  Router, Switch, Route, NavLink
 } from 'react-router-dom';
-import { I18nextProvider } from 'react-i18next';
 
 import LazyLoad from 'components/LazyLoad';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
-import ErrorBoundary from 'components/ErrorBoundary';
-import Wrapper from 'routes/wrapper';
+import NotFound from 'components/NotFound';
+import Home from 'pages/Home';
+import { Account } from 'pages/Dashboard';
+import routes, {
+  UserRoutes, DevRoutes, IsvRoutes, AdminRoutes
+} from 'routes';
+import WrapRoute from 'routes/WrapRoute';
+
 import history from './createHistory';
 
 import './scss/index.scss';
 
-// fixme
-const noHeaderPath = ['/dashboard/provider/submit'];
+const Login = lazy(() => import('./pages/Login'));
+const AppDetail = lazy(() => import('./pages/AppDetail'));
 
-const WrapRoute = ({ component: Comp, ...rest }) => {
-  const {
-    path, store, computedMatch, needAuth, noMatch
-  } = rest;
-  const user = store.user || {};
+// todo: mock
+const Nav = () => (
+  <ul>
+    <li>
+      <NavLink to="/">Dashboard</NavLink>
+    </li>
+  </ul>
+);
 
-  // todo
-  const hasHeader = path !== '/login'
-    && !noHeaderPath.includes(path)
-    && (user.isNormal || !user.accessToken);
-
-  if (noMatch) {
-    return <Redirect to="/" />;
-  }
-
-  if (needAuth && !user.isLoggedIn()) {
-    return <Redirect to={`/login?redirect_url=${computedMatch.url || ''}`} />;
-  }
-
-  const isHome = rest.applyHome || Comp.isHome;
-  let { acl } = rest;
-
-  if (!_.isEmpty(acl)) {
-    acl = [].concat(acl);
-    if (!_.some(acl, role => user[`is${role}`])) {
-      return <Redirect to="/" />;
-    }
-  }
-
-  return (
-    <Route
-      {...rest}
-      render={props => (
-        <ErrorBoundary>
-          {(hasHeader || isHome) && <Header />}
-          <Wrapper comp={Comp} {...props} rootStore={store} />
-          {(hasHeader || isHome) && <Footer />}
-        </ErrorBoundary>
-      )}
-    />
-  );
-};
-
-class App extends React.Component {
-  static propTypes = {
-    i18n: PropTypes.object,
-    routes: PropTypes.array.isRequired,
-    store: PropTypes.object.isRequired
-  };
-
-  static defaultProps = {
-    routes: [],
-    store: {},
-    i18n: {}
-  };
-
+export default class App extends React.Component {
   render() {
-    const {
-      routes, store, sock, i18n
-    } = this.props;
-
     return (
-      <I18nextProvider i18n={i18n}>
-        <Provider rootStore={store} sock={sock}>
-          <Router history={history}>
-            <div className="main">
-              <LazyLoad>
-                <Switch>
-                  {routes.map(route => (
-                    <WrapRoute {...route} store={store} key={route.path} />
-                  ))}
-                </Switch>
-              </LazyLoad>
-            </div>
-          </Router>
-        </Provider>
-      </I18nextProvider>
+      <Router history={history}>
+        <LazyLoad>
+          <div className="main">
+            {/* <Nav/> */}
+
+            <Switch>
+              <WrapRoute path={routes.home} exact component={Home} />
+              <WrapRoute path={routes.login} component={Login} />
+              <WrapRoute path={routes.appDetail} component={AppDetail} />
+              <WrapRoute path={routes.profile} component={Account} />
+
+              <Route
+                path="/user"
+                render={({ match }) => <UserRoutes prefix={match.path} />}
+              />
+
+              <Route
+                path="/dev"
+                render={({ match }) => <DevRoutes prefix={match.path} />}
+              />
+
+              <Route
+                path="/isv"
+                render={({ match }) => <IsvRoutes prefix={match.path} />}
+              />
+
+              <Route
+                path="/admin"
+                render={({ match }) => <AdminRoutes prefix={match.path} />}
+              />
+
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+        </LazyLoad>
+      </Router>
     );
   }
 }
-
-export default App;

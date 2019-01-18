@@ -2,7 +2,7 @@ import qs from 'query-string';
 
 const dashboardPrefix = '/dashboard';
 
-const toUrl = path => {
+export const toUrl = path => {
   if (!path) return dashboardPrefix;
   if (path.startsWith('/:dash')) {
     path = path.replace('/:dash', dashboardPrefix);
@@ -16,3 +16,4 @@ const getUrlParam = key => {
 };
 
 export { toUrl, getUrlParam };
+

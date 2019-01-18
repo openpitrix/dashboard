@@ -1,6 +1,5 @@
 // polyfills
 import 'promise-polyfill/src/polyfill';
-// shim Blob construct
 import '../lib/blob/Blob';
 
 import React from 'react';
@@ -34,14 +33,15 @@ if (typeof window !== 'undefined') {
 
   store.setUser(user);
 
-  // expose getters
-  window._getUser = () => Object.assign({}, user);
-  window._getStore = () => Object.assign({}, store);
+  // window._getUser = () => Object.assign({}, user);
+  // window._getStore = () => Object.assign({}, store);
 
-  import('./routes').then(({ default: routes }) => {
-    ReactDOM.render(
-      <App routes={routes} store={store} i18n={i18n} sock={sc} />,
-      document.getElementById('root')
-    );
-  });
+  ReactDOM.render(
+    <I18nextProvider i18n={i18n}>
+      <MobxProvider rootStore={store} sock={sc}>
+        <App />
+      </MobxProvider>
+    </I18nextProvider>,
+    document.getElementById('root')
+  );
 }

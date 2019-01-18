@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
+
+import { pathWithFooter } from 'routes';
 
 import styles from './index.scss';
 
