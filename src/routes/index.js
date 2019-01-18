@@ -71,7 +71,11 @@ const routes = {
 
   '/:dash/account/:type?': Dash.Account,
 
-  '/:dash/cloud-env': [Dash.CloudEnv, { acl: r.admin }],
+  '/:dash/setting/cloud-env': [Dash.CloudEnv, { acl: r.admin }],
+  '/:dash/setting/notification-server': [
+    Dash.NotificationServer,
+    { acl: r.admin }
+  ],
 
   '*': Home
 };

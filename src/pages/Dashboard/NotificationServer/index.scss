@@ -1,0 +1,67 @@
+@import '~scss/vars';
+
+.nav {
+  color: $N75;
+}
+.navHeader {
+  padding: 12px;
+  border: 1px solid $N10;
+}
+.navUl {
+  li {
+    padding: 16px 12px;
+    border: 1px solid $N10;
+    cursor: pointer;
+    &:hover,
+    &.active {
+      color: $N500;
+      border: 1px solid $P75;
+    }
+    &.disabled {
+      cursor: default;
+      color: $N75;
+      border: 1px solid $N10;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  padding: 14px 24px;
+  border: 1px solid $N10;
+  @include title-font;
+  strong {
+    flex: 1;
+  }
+  button {
+    margin-right: 12px;
+  }
+  button:last-child {
+    margin: 0;
+  }
+}
+
+.form {
+  padding: 24px;
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  > div {
+    display: flex;
+    margin-bottom: 20px;
+
+    > div {
+      margin-right: 20px;
+    }
+  }
+  .paddingTop {
+    padding-top: 30px;
+  }
+  input {
+    width: 256px;
+  }
+  .smallInput {
+    width: 128px;
+  }
+}

@@ -47,7 +47,7 @@ export const getNavs = {
       title: 'Users'
     },
     {
-      link: '/dashboard/cloud-env',
+      link: '/dashboard/setting/cloud-env',
       iconName: 'cogwheel',
       active: 'setting',
       title: 'Settings'
@@ -211,13 +211,18 @@ export const subNavMap = {
         {
           name: 'User authentication',
           link: '#',
-          active: 'user_authentication',
+          active: 'user-auth',
           disabled: true
         },
         {
           name: 'Cloud environment',
-          link: '/dashboard/cloud-env',
+          link: '/dashboard/setting/cloud-env',
           active: 'cloud-env'
+        },
+        {
+          name: 'Notification server',
+          link: '/dashboard/setting/notification-server',
+          active: 'notification-server'
         }
       ]
     }
