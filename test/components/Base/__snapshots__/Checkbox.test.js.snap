@@ -6,6 +6,7 @@ exports[`Base/Checkbox basic render 1`] = `
   disabled=""
 >
   <input
+    name="test"
     type="checkbox"
   />
   option1
@@ -33,6 +34,7 @@ exports[`Base/Checkbox group render 1`] = `
     </span>
     <input
       checked=""
+      name="test"
       type="checkbox"
       value="1"
     />
@@ -42,6 +44,7 @@ exports[`Base/Checkbox group render 1`] = `
     class="checkbox"
   >
     <input
+      name="test"
       type="checkbox"
       value="2"
     />
@@ -64,6 +67,7 @@ exports[`Base/Checkbox group render 1`] = `
     </span>
     <input
       checked=""
+      name="test"
       type="checkbox"
       value="3"
     />

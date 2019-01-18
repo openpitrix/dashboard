@@ -1,0 +1,22 @@
+@import '~scss/vars';
+
+.title {
+  @include title-font($font-size: 12px);
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  padding: 16px 12px;
+  &:hover {
+    background: $N0;
+  }
+
+}
+.disabled {
+  opacity: 0.3;
+}
+.itemName {
+  flex: 1;
+  margin-left: 5px;
+}

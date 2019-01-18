@@ -17,6 +17,8 @@ import User, { Role } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 import Vendor from './vendor';
+import CloudEnv from './cloud_env';
+import NotificationServer from './notification_server';
 
 const defaultNotifyOption = { title: '', message: '', type: 'info' };
 
@@ -184,5 +186,8 @@ export default class RootStore extends Store {
 
     // Vendor
     this.register('vendor', Vendor);
+
+    this.register('cloudEnv', CloudEnv);
+    this.register('notificationServer', NotificationServer);
   };
 }
