@@ -23,8 +23,6 @@ export default class Roles extends Component {
   }
 
   renderRoleCard(role) {
-    const { t } = this.props;
-
     return (
       <div className={styles.roleCard}>
         <div className={styles.name}>

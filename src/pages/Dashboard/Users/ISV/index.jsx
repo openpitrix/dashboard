@@ -11,7 +11,7 @@ import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
-import roles, { roleMap } from 'config/roles';
+import { roleMap } from 'config/roles';
 import TableTypes from 'components/TableTypes';
 
 import styles from './index.scss';
@@ -209,7 +209,7 @@ export default class Users extends Component {
 
   render() {
     const { userStore, t } = this.props;
-    const { selectValue, selectName, activeType } = userStore;
+    const { activeType } = userStore;
 
     const data = toJS(userStore.users);
 
