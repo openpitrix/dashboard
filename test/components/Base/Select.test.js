@@ -4,22 +4,43 @@ const { Option } = Select;
 
 describe('Base/Select', () => {
   let props = {};
-  let items = ['item1', 'item2', 'item3'];
+  let items = [
+    {
+      value: 'item1'
+    },
+    {
+      value: 'item2',
+      isSelected: true
+    },
+    {
+      value: 'item3'
+    }
+  ];
+
+  const getWrapper = () => (
+    <Select {...props}>
+      {items.map(({ value, ...restProps }) => (
+        <Option key={value} {...restProps}>
+          {value}
+        </Option>
+      ))}
+    </Select>
+  );
+
   beforeAll(() => {
     props = { ...props };
     items = [...items];
   });
-  it('basic render', () => {
-    const wrapper = render(
-      <Select {...props}>
-        {items.map(item => (
-          <Option key={item} value={item}>
-            {item}
-          </Option>
-        ))}
-      </Select>
-    );
 
+  it('basic render', () => {
+    const wrapper = render(getWrapper());
+
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('disabled render', () => {
+    props.disabled = true;
+    const wrapper = render(getWrapper());
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
