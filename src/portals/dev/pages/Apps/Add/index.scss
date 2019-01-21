@@ -1,0 +1,139 @@
+@import '~scss/vars';
+
+.createApp {
+  background: $background-color;
+  text-align: center;
+  .upload {
+    width: 552px;
+  }
+}
+
+.uploadConf {
+  width: 744px;
+  margin: 0 auto;
+}
+
+.config {
+  position: relative;
+  margin-top: 20px;
+
+  .uploadConfirm {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+
+    .uploadBtn {
+      cursor: pointer;
+      padding: 0 3px;
+      color: $P75;
+    }
+  }
+}
+
+.cardContainer {
+  display: flex;
+  margin: 0 auto;
+  width: 927.7px;
+  flex-flow: row wrap;
+  > div:nth-child(3n+2) {
+    margin: 0 20.3px 20px;
+  }
+}
+
+.configMsg {
+  width: 549px;
+  margin: 0 auto;
+  text-align: left;
+  padding: 32px 48px 12px;
+  background: $N0;
+  .appName {
+    width: 453px;
+  }
+  .appVersion {
+    width: 215px;
+  }
+  input {
+    display: block;
+    margin: 8px 0;
+  }
+  .configTitle {
+    display: block;
+    ont-size: 14px;
+    font-weight: 500;
+    line-height: 2;
+    color: $N500;
+  }
+  .tips {
+    display: block;
+    font-size: 12px;
+    line-height: 1.67;
+    color: $N75;
+  }
+  > div + div {
+    margin-top: 32px;
+  }
+  .appIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 96px;
+    height: 96px;
+    border-radius: 2px;
+    background: $N0;
+    margin: 8px auto;
+    background: $background-color;
+  }
+
+  .errorMessage {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 20px;
+    color: $R200;
+  }
+
+  .iconImage {
+    max-width: 96px;
+  }
+  .iconText {
+    font-size: 12px;
+    color: $P75;
+  }
+}
+.successMsg {
+  margin: 132px auto 0;
+  text-align: center;
+
+  .checkedIcon {
+    :global {
+      svg {
+        --primary-color: #{$G100};
+        --secondary-color: #{$G30};
+      }
+    }
+  }
+  .textTip {
+    font-size: 12px;
+    color: $N75;
+    margin: 12px auto 8px;
+  }
+  .textHeader {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: $N500;
+  }
+  .successBtns {
+    margin: 20px auto;
+  }
+  .addBtn {
+    color: $N300;
+    margin-left: 12px;
+  }
+}
+.appCard {
+  display: inline-block;
+  width: 320px;
+  text-align: left;
+}

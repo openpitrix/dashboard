@@ -122,10 +122,9 @@ export default class Versions extends Component {
             {historyVersions.map(item => (
               <li key={item.version_id}>
                 <Link
-                  to={toRoute(routes.portal._dev.versionDetail, {
-                    appId: appDetail.app_id,
-                    versionId: item.version_id
-                  })}
+                  to={`/dashboard/app/${appDetail.app_id}/version/${
+                    item.version_id
+                  }`}
                 >
                   <Status
                     type={item.status}
@@ -167,10 +166,9 @@ export default class Versions extends Component {
             <Link
               key={item.version_id}
               className={classnames(styles.version, [styles[item.status]])}
-              to={toRoute(routes.portal._dev.versionDetail, {
-                appId: appDetail.app_id,
-                versionId: item.version_id
-              })}
+              to={`/dashboard/app/${appDetail.app_id}/version/${
+                item.version_id
+              }`}
             >
               <Status
                 type={item.status}
@@ -193,10 +191,6 @@ export default class Versions extends Component {
     const { typeVersions } = appVersionStore;
     const { appDetail } = appStore;
     const types = typeVersions.map(item => item.type);
-
-    const createUrl = toRoute(routes.portal._dev.versionCreate, {
-      appId: appDetail.app_id
-    });
 
     // this judge for app detail page online versions tab show
     if (!match) {
@@ -229,7 +223,11 @@ export default class Versions extends Component {
           <div key={item.type} className={styles.addedVersion}>
             <div className={styles.title}>
               {(_.find(versionTypes, { value: item.type }) || {}).name}
-              <Link to={`${createUrl}?type=${item.type}`}>
+              <Link
+                to={`/dashboard/app/${appDetail.app_id}/create-version?type=${
+                  item.type
+                }`}
+              >
                 <Button className={styles.button} type="default">
                   <Icon name="add" type="dark" className={styles.addIcon} />
                   {t('New version')}

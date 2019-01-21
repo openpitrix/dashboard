@@ -1,0 +1,62 @@
+@import '~scss/vars';
+.container {
+  @include note-font;
+  padding: 32px;
+  background: $N0;
+  box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  width: calc(25% - 20px);
+  margin: 0 10px 20px;
+  cursor: pointer;
+  .status {
+    height: inherit;
+  }
+}
+
+@media screen and (min-width: 2468px) {
+  /* .cards { */
+  /*   grid-template-columns: repeat(6, 1fr); */
+  /* } */
+  .container {
+    width: calc(16.66% - 20px);
+  }
+}
+
+.title {
+  display: flex;
+}
+
+.name {
+  @include title-font;
+  @include textCut;
+  max-width: 148px;
+}
+
+.imageOuter {
+  display: inline-block;
+  margin-right: 8px;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+}
+
+.description {
+  @include note-font;
+  display: -webkit-box;
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 3;
+
+  margin: 20px 0;
+  height: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.deliverTypes {
+  margin-bottom: 8px;
+}
+.deliverType {
+  margin-right: 12px;
+  color: $N300;
+}

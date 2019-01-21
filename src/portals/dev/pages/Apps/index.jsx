@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
+import Loading from 'components/Loading';
+import Card from 'pages/Dashboard/Apps/Card';
+
+import InfiniteScroll from 'components/InfiniteScroll';
+import { Link } from 'react-router-dom';
 import { Icon, Button, Input } from 'components/Base';
 import Layout from 'components/Layout';
-import Loading from 'components/Loading';
-import InfiniteScroll from 'components/InfiniteScroll';
-import Card from 'pages/Dashboard/Apps/Card';
-import routes, { toRoute } from 'routes';
 import Empty from './Empty';
 
 import styles from './index.scss';
@@ -53,6 +53,7 @@ export default class Apps extends Component {
   renderHeader() {
     const { t, appStore } = this.props;
     const name = t('My Apps');
+    const lintTo = '/dashboard/app/create';
     const { onSearch, onClear, searchWord } = appStore;
 
     return (
@@ -65,7 +66,7 @@ export default class Apps extends Component {
           onSearch={onSearch}
           onClear={onClear}
         />
-        <Link to={toRoute(routes.portal._dev.appCreate)}>
+        <Link to={lintTo}>
           <Button className={styles.btnCreate} type="primary">
             <Icon name="add" size={20} type="white" />
             <span className={styles.btnText}>{t('Create')} </span>

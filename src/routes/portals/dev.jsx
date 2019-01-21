@@ -10,6 +10,7 @@ import {
   AppAdd,
   Versions,
   VersionDetail,
+  Deploy,
   Audits,
   AppInfo,
   Clusters,
@@ -24,8 +25,6 @@ export default ({ prefix }) => (
 
     <WrapRoute path={`${prefix}/apps`} component={MyApps} />
     <WrapRoute path={`${prefix}/apps/create`} component={AppAdd} />
-    <WrapRoute path={`${prefix}/apps/:appId`} component={AppInfo} />
-    <WrapRoute path={`${prefix}/apps/:appId/audits`} component={Audits} />
 
     <WrapRoute path={`${prefix}/apps/:appId/versions`} component={Versions} />
     <WrapRoute
@@ -36,6 +35,13 @@ export default ({ prefix }) => (
       path={`${prefix}/apps/:appId/versions/:versionId`}
       component={VersionDetail}
     />
+    <WrapRoute
+      path={`${prefix}/apps/:appId/deploy/:versionId`}
+      component={Deploy}
+    />
+
+    <WrapRoute path={`${prefix}/apps/:appId`} component={AppInfo} />
+    <WrapRoute path={`${prefix}/apps/:appId/audits`} component={Audits} />
 
     <WrapRoute path={`${prefix}/apps/:appId/instances`} component={Clusters} />
     <WrapRoute
