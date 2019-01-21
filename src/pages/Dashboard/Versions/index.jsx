@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { versionTypes } from 'config/version-types';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
@@ -22,42 +21,27 @@ import styles from './index.scss';
 }))
 @observer
 export default class Versions extends Component {
-  static propTypes = {
-    isAppDetail: PropTypes.bool
-  };
-
-  static defaultProps = {
-    isAppDetail: false
-  };
-
   async componentDidMount() {
-    const { appVersionStore, isAppDetail, match } = this.props;
+    const { appVersionStore, match } = this.props;
 
-    if (!isAppDetail) {
-      const appId = _.get(match, 'params.appId', '');
+    const appId = _.get(match, 'params.appId', '');
+    await appVersionStore.fetchTypeVersions(appId);
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { match, appVersionStore } = this.props;
+    const appId = _.get(match, 'params.appId', '');
+    const prevAppId = _.get(prevProps.match, 'params.appId', '');
+
+    if (appId !== prevAppId) {
       await appVersionStore.fetchTypeVersions(appId);
     }
   }
 
-  async componentDidUpdate(prevProps) {
-    const { match, isAppDetail, appVersionStore } = this.props;
-
-    if (!isAppDetail) {
-      const appId = _.get(match, 'params.appId', '');
-      const prevAppId = _.get(prevProps.match, 'params.appId', '');
-
-      if (appId !== prevAppId) {
-        await appVersionStore.fetchTypeVersions(appId);
-      }
-    }
-  }
-
   componentWillUnmount() {
-    const { appVersionStore, isAppDetail, match } = this.props;
+    const { appVersionStore } = this.props;
 
-    if (isAppDetail) {
-      appVersionStore.reset();
-    }
+    appVersionStore.reset();
   }
 
   toggleHistoryVersions(typeVersion) {

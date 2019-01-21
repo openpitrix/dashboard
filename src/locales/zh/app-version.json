@@ -78,5 +78,13 @@
   "TEMPLATES_FILE_DESC": "部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
   "NOTES_FILE_DESC": "使用指南",
 
-  "specification and application development": "规范和应用程序开发"
+  "specification and application development": "规范和应用程序开发",
+  "Suspend app": "下架应用",
+  "Recover app": "上架应用",
+  "Suspend version": "下架版本",
+  "Recover version": "上架版本",
+  "suspend-app-note-desc": "应用下架后，用户无法从商店中购买到此应用，你确定要下架该应用吗？",
+  "recover-app-note-desc": "应用上架后，相关的下架版本都将变成上架，你确定要上架该应用吗？",
+  "suspend-version-note-desc": "版本下架后，关联的应用将不显示该版本，你确定要下架吗？",
+  "recover-version-note-desc": "版本上架后，关联的应用将显示出该版本，你确定要上架吗？"
 }

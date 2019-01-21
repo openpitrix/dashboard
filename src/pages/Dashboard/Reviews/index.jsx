@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import classnames from 'classnames';
 
 import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
 import TableTypes from 'components/TableTypes';
-import { formatTime, getObjName, mappingStatus } from 'utils';
+import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
 
 import styles from './index.scss';
@@ -49,9 +48,7 @@ export default class Reviews extends Component {
   };
 
   render() {
-    const {
-      appVersionStore, appStore, user, t
-    } = this.props;
+    const { appVersionStore, appStore, t } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const isUnprocessed = activeType === 'unprocessed';

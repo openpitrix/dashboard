@@ -1,19 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Input, Table, Image } from 'components/Base';
-import Layout, { Grid, Section, Card } from 'components/Layout';
+import {
+  Input, Table, Image, Icon, Popover
+} from 'components/Base';
+import Layout, {
+  Grid, Section, Card, Dialog
+} from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import VersionType from 'components/VersionType';
 import AppStatistics from 'components/AppStatistics';
-import { versionTypes } from 'config/version-types';
-import { formatTime } from 'utils';
-import Versions from '../../Versions';
+import { formatTime, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -45,7 +49,11 @@ export default class AppDetail extends Component {
 
     await appStore.fetch(appId);
 
-    await appVersionStore.fetchActiveVersions({ app_id: appId, noLimit: true });
+    await appVersionStore.fetchAll({
+      app_id: appId,
+      status: ['active', 'suspended'],
+      noLimit: true
+    });
 
     clusterStore.appId = appId;
     // get month deploy total
@@ -53,22 +61,18 @@ export default class AppDetail extends Component {
     // get deploy total and user instance
     await clusterStore.fetchAll({ app_id: appId });
 
+    // to fix: should query provider info
     const { appDetail } = appStore;
     await userStore.fetchDetail({ user_id: appDetail.owner });
   }
 
   changeTab = async tab => {
-    const {
-      appStore, appVersionStore, userStore, match
-    } = this.props;
+    const { appStore, appVersionStore, userStore } = this.props;
 
     if (tab !== appStore.detailTab) {
       appStore.detailTab = tab;
 
-      if (tab === 'online') {
-        const { appId } = match.params;
-        await appVersionStore.fetchTypeVersions(appId, true);
-      } else if (tab === 'record') {
+      if (tab === 'record') {
         const { appDetail } = appStore;
         const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
         await appVersionStore.fetchAudits(appDetail.app_id, versionId);
@@ -81,15 +85,90 @@ export default class AppDetail extends Component {
     }
   };
 
+  handle = async () => {
+    const { appStore, appVersionStore } = this.props;
+    const { modalType } = appStore;
+    const { versions, versionId, versionSuspend } = appVersionStore;
+    const operateType = modalType.split('-');
+    const versionIds = operateType[1] === 'version'
+      ? [versionId]
+      : versions.map(item => item.version_id);
+    await versionSuspend(versionIds, operateType[0]);
+  };
+
+  renderAppHandleMenu = appDetail => {
+    const { appStore, match, t } = this.props;
+    const { appId } = match.params;
+
+    return (
+      <div className="operate-menu">
+        <Link to={`/dashboard/apps/${appId}/deploy`}>
+          <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
+        </Link>
+        {appDetail.status === 'active' && (
+          <span onClick={() => appStore.showModal('suspend-app')}>
+            <Icon name="sort-descending" type="dark" /> {t('Suspend app')}
+          </span>
+        )}
+        {appDetail.status === 'suspended' && (
+          <span onClick={() => appStore.showModal('recover-app')}>
+            <Icon name="sort-ascending" type="dark" /> {t('Record app')}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  renderVersionHandleMenu = item => {
+    const {
+      appStore, appVersionStore, match, t
+    } = this.props;
+    const { appId } = match.params;
+    appVersionStore.versionId = item.version_id;
+
+    return (
+      <div className="operate-menu">
+        <Link to={`/dashboard/apps/${appId}/deploy/${item.version_id}`}>
+          <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
+        </Link>
+        {item.status === 'active' && (
+          <span onClick={() => appStore.showModal('suspend-version')}>
+            <Icon name="sort-descending" type="dark" /> {t('Suspend version')}
+          </span>
+        )}
+        {item.status === 'suspended' && (
+          <span onClick={() => appStore.showModal('recover-version')}>
+            <Icon name="sort-ascending" type="dark" /> {t('Recover version')}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  renderSuspendDialog = () => {
+    const { appStore, t } = this.props;
+    const { isModalOpen, modalType, hideModal } = appStore;
+
+    return (
+      <Dialog
+        title={t('Note')}
+        isOpen={isModalOpen}
+        onSubmit={this.handle}
+        onCancel={hideModal}
+      >
+        {t(`${modalType}-note-desc`)}
+      </Dialog>
+    );
+  };
+
   renderVersionName = version_id => {
     const { appVersionStore } = this.props;
     const { versions } = appVersionStore;
     const version = _.find(versions, { version_id }) || {};
-    const typeName = (_.find(versionTypes, { value: version.type }) || {}).name;
 
     return (
       <div className={styles.versionName}>
-        <label className={styles.type}>{typeName}</label>
+        <VersionType className={styles.type} types={version.type} />
         {version.name}
       </div>
     );
@@ -101,7 +180,7 @@ export default class AppDetail extends Component {
     } = this.props;
     const { appDetail } = appStore;
     const { users } = userStore;
-    const { audits } = appVersionStore;
+    const { audits, isLoading } = appVersionStore;
     const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
     const records = audits[versionId] || [];
 
@@ -148,17 +227,90 @@ export default class AppDetail extends Component {
     };
 
     return (
-      <Card>
-        <Table columns={columns} dataSource={records} pagination={pagination} />
-      </Card>
+      <Table
+        isLoading={isLoading}
+        columns={columns}
+        dataSource={records}
+        pagination={pagination}
+      />
+    );
+  }
+
+  renderVersions() {
+    const { appVersionStore, user, t } = this.props;
+    const { versions } = appVersionStore;
+
+    let columns = [
+      {
+        title: t('Version No'),
+        key: 'name',
+        width: '100px',
+        render: item => item.name
+      },
+      {
+        title: t('Delivery type'),
+        key: 'app_id',
+        width: '80px',
+        render: item => (
+          <VersionType className={styles.versionType} types={item.type} />
+        )
+      },
+      {
+        title: t('Status'),
+        key: 'status',
+        width: '80px',
+        render: item => (
+          <Status type={item.status} name={mappingStatus(item.status)} />
+        )
+      },
+      {
+        title: t('Created At'),
+        key: 'create_time',
+        width: '100px',
+        render: item => <TimeShow time={item.create_time} />
+      },
+      {
+        title: '',
+        key: 'actions',
+        width: '70px',
+        className: 'actions',
+        render: item => (
+          <Popover
+            className={styles.operationVersion}
+            content={this.renderVersionHandleMenu(item)}
+          >
+            <Icon name="more" />
+          </Popover>
+        )
+      }
+    ];
+    if (!user.isAdmin) {
+      columns = columns.filter(item => item.key !== 'actions');
+    }
+
+    const pagination = {
+      tableType: 'application',
+      onChange: appVersionStore.changePagination,
+      total: appVersionStore.totalCount,
+      current: appVersionStore.currentPage,
+      noCancel: false
+    };
+
+    return (
+      <Table
+        columns={columns}
+        dataSource={versions.toJSON()}
+        pagination={pagination}
+      />
     );
   }
 
   renderInstance() {
-    const { clusterStore, t } = this.props;
+    const { clusterStore, userStore, t } = this.props;
     const {
       clusters, onSearch, onClearSearch, searchWord
     } = clusterStore;
+    const { users } = userStore;
 
     const columns = [
       {
@@ -172,7 +324,7 @@ export default class AppDetail extends Component {
       {
         title: t('Instance Name ID'),
         key: 'name',
-        width: '155px',
+        width: '130px',
         render: item => (
           <TdName name={item.name} description={item.cluster_id} noIcon />
         )
@@ -182,6 +334,12 @@ export default class AppDetail extends Component {
         key: 'app_id',
         width: '100px',
         render: item => this.renderVersionName(item.version_id)
+      },
+      {
+        title: t('User'),
+        key: 'owner',
+        width: '80px',
+        render: item => (_.find(users, { user_id: item.owner }) || {}).email
       },
       {
         title: t('Node Count'),
@@ -206,7 +364,7 @@ export default class AppDetail extends Component {
     };
 
     return (
-      <Card>
+      <Fragment>
         <div className={styles.searchOuter}>
           <p className={styles.total}>
             {t('DEPLOYED_APP_TOTAL', { total: clusterStore.totalCount })}
@@ -224,15 +382,15 @@ export default class AppDetail extends Component {
           dataSource={clusters.toJSON()}
           pagination={pagination}
         />
-      </Card>
+      </Fragment>
     );
   }
 
   renderAppBase() {
-    const { appStore, userStore, t } = this.props;
+    const { appStore, user, t } = this.props;
     const { appDetail } = appStore;
-    const { userDetail } = userStore;
     const categories = _.get(appDetail, 'category_set', []);
+    const isSuspend = appDetail.status === 'suspended';
 
     return (
       <Card className={styles.appBase}>
@@ -252,12 +410,8 @@ export default class AppDetail extends Component {
             <dd>{appDetail.app_id}</dd>
           </dl>
           <dl>
-            <dt>{t('Delivery type')}</dt>
-            <dd>{appDetail.app_version_types}</dd>
-          </dl>
-          <dl>
             <dt>{t('App intro')}</dt>
-            <dd>{appDetail.abstraction}</dd>
+            <dd>{appDetail.abstraction || t('None')}</dd>
           </dl>
           <dl>
             <dt>{t('Category')}</dt>
@@ -268,16 +422,34 @@ export default class AppDetail extends Component {
             </dd>
           </dl>
           <dl>
-            <dt>{t('Developer')}</dt>
-            <dd>{userDetail.username}</dd>
+            <dt>{t('Delivery type')}</dt>
+            <dd>
+              <VersionType types={appDetail.app_version_types} />
+            </dd>
           </dl>
           <dl>
-            <dt>{t('Publish time')}</dt>
+            <dt>{t('App service provider')}</dt>
+            <dd>{appDetail.provider || t('None')}</dd>
+          </dl>
+          <dl>
+            <dt>{t(isSuspend ? 'Suspend time' : 'Publish time')}</dt>
             <dd>{formatTime(appDetail.status_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
           </dl>
-          <Link to="/" className={styles.link}>
-            {t('View in store')} →
-          </Link>
+          {isSuspend ? (
+            <label className={styles.suspended}>{t('Recalled')}</label>
+          ) : (
+            <Link to="/" className={styles.link}>
+              {t('View in store')} →
+            </Link>
+          )}
+          {user.isAdmin && (
+            <Popover
+              className={classnames('operation', styles.operationIcon)}
+              content={this.renderAppHandleMenu(appDetail)}
+            >
+              <Icon name="more" />
+            </Popover>
+          )}
         </div>
       </Card>
     );
@@ -302,11 +474,14 @@ export default class AppDetail extends Component {
               monthDepoly={clusterStore.monthCount}
             />
             <DetailTabs tabs={tags} changeTab={this.changeTab} />
-            {detailTab === 'instance' && this.renderInstance()}
-            {detailTab === 'online' && <Versions isAppDetail />}
-            {detailTab === 'record' && this.renderRecord()}
+            <Card>
+              {detailTab === 'instance' && this.renderInstance()}
+              {detailTab === 'online' && this.renderVersions()}
+              {detailTab === 'record' && this.renderRecord()}
+            </Card>
           </Section>
         </Grid>
+        {this.renderSuspendDialog()}
       </Layout>
     );
   }

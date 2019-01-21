@@ -440,6 +440,7 @@ export default class AppDeploy extends Component {
         stepOption={{
           activeStep,
           disableNextStep,
+          steps: 1,
           btnText: t('Deploy'),
           nextStep: this.handleSubmit
         }}

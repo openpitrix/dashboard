@@ -157,5 +157,10 @@
   "SERVICE_ACCOMMODATION":"Service Provider Accommodation Agreement",
   "SERVICE_MANAGEMENT":"Service Provider Management Specification",
   "SERVICE_PLATFORM":"Service Provider Platform Agreement",
-  "SHELF_APP_TOTAL": "The shelf has {{total}} application"
+  "SHELF_APP_TOTAL": "The shelf has {{total}} application",
+
+  "suspend-app-note-desc": "After the app is off the shelf, users can't buy it from the store. Are you sure offline the app?",
+  "recover-app-note-desc": "After the app goes on the shelf, the relevant Off-Shelf version will become on the shelf. Are you sure go on the shelf?",
+  "suspend-version-note-desc": "After the version is off the shelf, the associated app will not display the version. Are you sure offline the version?",
+  "recover-version-note-desc": "After the version goes on the shelf, , the associated app will display the version. Are you sure go on the shelf?"
 }
