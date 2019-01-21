@@ -7,7 +7,8 @@ import { translate } from 'react-i18next';
 import {
   Icon, Button, Table, Popover
 } from 'components/Base';
-import Layout, { TitleBanner, Dialog } from 'components/Layout';
+import Layout, { Dialog } from 'components/Layout';
+import Banner from 'components/Banner';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -371,7 +372,7 @@ export default class Clusters extends Component {
     return (
       <Layout listenToJob={this.listenToJob} pageTitle={pageTitle}>
         {user.isNormal && (
-          <TitleBanner
+          <Banner
             title={t('My Instances')}
             description={t('基于应用创建出的实例列表。')}
           />

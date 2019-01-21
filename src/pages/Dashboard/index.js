@@ -4,7 +4,6 @@ export AppDetail from './Apps/Detail';
 export AppDeploy from './Apps/Deploy';
 export MyApps from './Apps/MyApps';
 export Audits from './Apps/Audits';
-export AuditRecord from './Audit/Record';
 export Versions from './Versions';
 export VersionDetail from './Versions/Detail';
 export AppInfo from './Apps/Info';
@@ -22,8 +21,6 @@ export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 
 export Repos from './Repos';
-export RepoAdd from './Repos/Add';
-export RepoDetail from './Repos/Detail';
 
 export Overview from './Overview';
 
@@ -31,9 +28,6 @@ export Categories from './Categories';
 
 export Users from './Users';
 export UserDetail from './Users/Detail';
-
-export Purchased from './Purchased';
-export PurchasedDetail from './Purchased/Detail';
 
 export Runtimes from './Runtimes';
 export CreateRuntime from './Runtimes/Create';

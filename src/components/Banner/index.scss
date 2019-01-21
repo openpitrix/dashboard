@@ -1,0 +1,117 @@
+@import "~scss/vars";
+
+.banner {
+  //position: sticky;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  top: $header-height;
+  padding: 30px 0;
+  background-color: $N500;
+  transition: height .3s ease-in-out;
+
+  &.stretch {
+    padding: 64px 0;
+    .search {
+      float: none;
+      top: 0;
+    }
+  }
+
+  &.shrink {
+    padding: 30px 0 !important;
+    .search {
+      transition: all .3s ease-in-out;
+      float: right;
+      top: -15px;
+    }
+  }
+
+  .wrapper {
+    width: $content-width;
+    margin: 0 auto;
+
+    .words {
+      display: inline-block;
+    }
+  }
+
+  .image,
+  .icon {
+    float: left;
+    margin-right: 12px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .image {
+    line-height: 48px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .icon {
+    box-sizing: border-box;
+    padding: 12px;
+    background-color: $N400;
+    border-radius: 3px;
+  }
+
+  .name {
+    margin-bottom: 4px;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: $N0;
+  }
+
+  .description {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N65;
+    overflow: hidden;
+  }
+
+  .search {
+    position: relative;
+    width: 303px;
+
+    input {
+      color: $N0;
+      padding-left: 36px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease-in-out;
+
+      &::placeholder {
+        font-size: 12px;
+        color: $N65;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      &:focus, &:hover {
+        border: solid 1px $P75;
+      }
+    }
+
+    svg {
+      --primary-color: #{$N0};
+      --secondary-color: #{$N0};
+      opacity: 0.5;
+
+      &:hover,
+      &:focus {
+        opacity: 1;
+      }
+    }
+  }
+}

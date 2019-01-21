@@ -2,14 +2,16 @@ import React, { lazy } from 'react';
 import _ from 'lodash';
 import { compile } from 'path-to-regexp';
 
+import user from 'providers/user';
 import routeNames, { portals } from './names';
 
-// fixme
-const noHeaderPath = ['/dashboard/provider/submit'];
+const noHeaderPaths = ['/login', '/user/provider/apply'];
 
-const commonRoutes = ['', 'apps', 'login', 'profile'];
+const noFooterPaths = ['/login', '/user/provider/apply'];
 
-export const toRoute = name => {
+const commonRoutes = ['', 'apps', 'login', 'logout', 'profile'];
+
+export const getRouteByName = name => {
   const route = _.get(routeNames, name);
   if (!route) {
     throw Error(`invalid route: ${name}`);
@@ -17,16 +19,25 @@ export const toRoute = name => {
   return route;
 };
 
-export const toUrl = (route, params = {}) => {
-  const portal = getPortalFromPath();
-  if (route.indexOf('.')) {
-    route = toRoute(route);
+export const toRoute = (route = '', params = {}) => {
+  if (typeof params === 'string') {
+    params = {
+      portal: params
+    };
   }
-  route = withPrefix(portal, route);
+  const guessPortal = getPortalFromPath();
+  const portal = params.portal || guessPortal;
+
+  if (route.indexOf('.') > 0) {
+    route = getRouteByName(route);
+  }
+  if (portal && guessPortal && portal !== guessPortal) {
+    route = withPrefix(route, portal);
+  }
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }
-  return compile(route)(params);
+  return compile(route)(Object.assign(params, { portal: portal || 'user' }));
 };
 
 export const getPortalFromPath = (path = location.pathname) => {
@@ -37,16 +48,18 @@ export const getPortalFromPath = (path = location.pathname) => {
   if (portals.includes(p)) {
     return p;
   }
-  // throw Error(`invalid portal ${p}`);
-  console.warn(`invalid portal ${p}`);
+  // console.warn(`invalid portal ${p}`);
   return '';
 };
 
-export const needAuth = path => false;
+export const needAuth = (path, portal) => portals.includes(portal) || path === '/profile';
 
-export const pathWithHeader = path => path !== '/login' && !noHeaderPath.includes(path);
+export const pathWithoutHeader = path => {
+  const portal = getPortalFromPath();
+  return noHeaderPaths.includes(path) || (portal && portal !== 'user');
+};
 
-export const pathWithFooter = path => pathWithHeader(path);
+export const pathWithoutFooter = path => noFooterPaths.includes(path);
 
 export const withPrefix = (url, prefix = '') => {
   if (prefix) {

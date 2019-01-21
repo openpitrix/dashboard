@@ -1,62 +1,58 @@
 export const portals = ['user', 'dev', 'isv', 'admin'];
 
-// name=> path
+// route name => route path
 export default {
   // common routes
   home: '/',
   appDetail: '/apps/:appId',
   login: '/login',
+  logout: '/logout',
   profile: '/profile',
 
-  // portals
-  user: {
-    deployedApps: '/deployed-apps',
-    deployedAppDetail: '/deployed-apps/:appId',
-    clusters: '/clusters',
-    clusterDetail: '/cluster/:clusterId',
-    runtimes: '/runtimes',
-    deploy: '/apps/:appId/deploy/:versionId?',
-    providerApply: '/provider/apply'
-  },
-  dev: {
-    apps: '/apps',
-    appCreate: '/apps/create',
-    appDetail: '/apps/:appId/info',
-    appVersions: '/apps/:appId/versions',
-    appVersionDetail: '/apps/:appId/versions/:versionId',
-    appVersionCreate: '/apps/:appId/versions/create',
-    appAudits: '/apps/:appId/audits',
-    // deploy: '/apps/:appId/deploy/:versionId?',
-    userInstances: '/apps/:appId/instances',
-    userInstanceDetail: '/apps/:appId/instances/:clusterId',
-    sandboxInstances: '/apps/:appId/sandbox-instances',
-    sandboxInstanceDetail: '/apps/:appId/sandbox-instances/:clusterId'
-  },
-  isv: {
-    apps: '/apps',
-    appDetail: '/apps/:appId',
-    appsReview: '/apps/review',
-    appReviewDetail: '/apps/review/:reviewId',
-    // deploy: '/apps/:appId/deploy/:versionId?',
-    provider: '/provider',
-    providerApply: '/provider/apply'
-  },
-  admin: {
-    apps: '/apps',
-    appDetail: '/apps/:appId',
-    appsReview: '/apps/review',
-    appReviewDetail: '/apps/review/:reviewId',
-    // deploy: '/apps/:appId/deploy/:versionId?',
-    clusters: '/clusters',
-    clusterDetail: '/clusters/:clusterId',
-    runtimes: '/runtimes',
-    runtimeDetail: '/runtimes/:runtimeId',
-    categories: '/categories',
-    users: '/users',
-    userDetail: '/users/:userId',
-    providers: '/providers',
-    providerDetail: '/providers/:providerId',
-    providerApply: '/providers/apply',
-    providerApplyDetail: '/providers/apply/:applyId'
+  portal: {
+    // portal common keys
+    overview: '/:portal',
+    apps: '/:portal/apps',
+    appDetail: '/:portal/apps/:appId',
+    runtimes: '/:portal/runtimes',
+    runtimeCreate: '/:portal/runtimes/create',
+    deploy: '/:portal/apps/:appId/deploy/:versionId?',
+
+    // if key prefix with _, means portal section
+    _user: {
+      clusters: '/:portal/clusters',
+      clusterDetail: '/:portal/clusters/:clusterId',
+      providerApply: '/:portal/provider/apply'
+    },
+    _dev: {
+      appCreate: '/:portal/apps/create',
+      appAudits: '/:portal/apps/:appId/audits',
+      versions: '/:portal/apps/:appId/versions',
+      versionCreate: '/:portal/apps/:appId/versions/create',
+      versionDetail: '/:portal/apps/:appId/versions/:versionId',
+      userInstances: '/:portal/apps/:appId/instances',
+      userInstanceDetail: '/:portal/apps/:appId/instances/:clusterId',
+      sandboxInstances: '/:portal/apps/:appId/sandbox-instances',
+      sandboxInstanceDetail: '/:portal/apps/:appId/sandbox-instances/:clusterId'
+    },
+    _isv: {
+      appsReview: '/:portal/apps/review',
+      appReviewDetail: '/:portal/apps/review/:reviewId',
+      provider: '/:portal/provider',
+      providerApply: '/:portal/provider/apply'
+    },
+    _admin: {
+      appsReview: '/:portal/apps/review',
+      appReviewDetail: '/:portal/apps/review/:reviewId',
+      clusters: '/:portal/clusters',
+      clusterDetail: '/:portal/clusters/:clusterId',
+      categories: '/:portal/categories',
+      users: '/:portal/users',
+      userDetail: '/:portal/users/:userId',
+      providers: '/:portal/providers',
+      providerDetail: '/:portal/providers/:providerId',
+      providerApply: '/:portal/providers/apply',
+      providerApplyDetail: '/:portal/providers/apply/:applyId'
+    }
   }
 };

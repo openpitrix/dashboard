@@ -1,13 +1,14 @@
 import React, { lazy } from 'react';
 import {
-  Router, Switch, Route, NavLink
+  Router, Switch, Route, Redirect
 } from 'react-router-dom';
 
 import LazyLoad from 'components/LazyLoad';
 import NotFound from 'components/NotFound';
+
 import Home from 'pages/Home';
 import { Account } from 'pages/Dashboard';
-import routes, {
+import {
   UserRoutes, DevRoutes, IsvRoutes, AdminRoutes
 } from 'routes';
 import WrapRoute from 'routes/WrapRoute';
@@ -19,28 +20,17 @@ import './scss/index.scss';
 const Login = lazy(() => import('./pages/Login'));
 const AppDetail = lazy(() => import('./pages/AppDetail'));
 
-// todo: mock
-const Nav = () => (
-  <ul>
-    <li>
-      <NavLink to="/">Dashboard</NavLink>
-    </li>
-  </ul>
-);
-
 export default class App extends React.Component {
   render() {
     return (
       <Router history={history}>
         <LazyLoad>
           <div className="main">
-            {/* <Nav/> */}
-
             <Switch>
-              <WrapRoute path={routes.home} exact component={Home} />
-              <WrapRoute path={routes.login} component={Login} />
-              <WrapRoute path={routes.appDetail} component={AppDetail} />
-              <WrapRoute path={routes.profile} component={Account} />
+              <WrapRoute path="/" component={Home} />
+              <WrapRoute path="/login" component={Login} />
+              <WrapRoute path="/apps/:appId" component={AppDetail} />
+              <WrapRoute path="/profile" component={Account} />
 
               <Route
                 path="/user"
@@ -62,7 +52,8 @@ export default class App extends React.Component {
                 render={({ match }) => <AdminRoutes prefix={match.path} />}
               />
 
-              <Route component={NotFound} />
+              <Redirect from="/apps" exact to="/" />
+              <WrapRoute component={NotFound} />
             </Switch>
           </div>
         </LazyLoad>

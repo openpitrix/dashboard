@@ -5,9 +5,8 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import { Icon, Table, Button } from 'components/Base';
-import Layout, {
-  Grid, Section, Card, TitleBanner
-} from 'components/Layout';
+import Layout, { Grid, Section, Card } from 'components/Layout';
+import Banner from 'components/Banner';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -226,7 +225,7 @@ export default class PurchasedDetail extends Component {
     return (
       <Layout>
         {user.isNormal && (
-          <TitleBanner
+          <Banner
             title={t('已部署应用')}
             description={t('所有你部署过的应用都会展示在此。')}
           />

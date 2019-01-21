@@ -14,6 +14,4 @@ export SideNav from './SideNav';
 export BreadCrumb from './BreadCrumb';
 export Stepper from './Stepper';
 
-export TitleBanner from './TitleBanner';
-
 export default Layout;

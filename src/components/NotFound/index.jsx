@@ -1,6 +1,11 @@
 import React from 'react';
 
-// todo
-const NotFound = () => <div>Page 404</div>;
+import styles from './index.scss';
+
+const NotFound = () => (
+  <div className={styles.page}>
+    <p className={styles.txt}>Page Not Found</p>
+  </div>
+);
 
 export default NotFound;

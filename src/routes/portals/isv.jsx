@@ -1,14 +1,37 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 import WrapRoute from 'routes/WrapRoute';
-import * as Dash from 'pages/Dashboard';
 import NotFound from 'components/NotFound';
+import {
+  Overview,
+  ApplicationDetail,
+  ProviderCreate,
+  Apps,
+  AppDetail,
+  Reviews,
+  ReviewDetail,
+  Runtimes,
+  CreateRuntime
+} from 'pages/Dashboard';
 
-const Routes = ({ prefix }) => (
+export default ({ prefix }) => (
   <Switch>
-    <Route component={NotFound} />
+    <WrapRoute path={prefix} component={Overview} />
+
+    <WrapRoute path={`${prefix}/provider`} component={ApplicationDetail} />
+    <WrapRoute path={`${prefix}/provider/apply`} component={ProviderCreate} />
+    <WrapRoute path={`${prefix}/apps`} component={Apps} />
+    <WrapRoute path={`${prefix}/apps/:appId`} component={AppDetail} />
+    <WrapRoute path={`${prefix}/apps/review`} component={Reviews} />
+    <WrapRoute
+      path={`${prefix}/apps/review/:reviewId`}
+      component={ReviewDetail}
+    />
+
+    <WrapRoute path={`${prefix}/runtimes`} component={Runtimes} />
+    <WrapRoute path={`${prefix}/runtimes/create`} component={CreateRuntime} />
+
+    <WrapRoute component={NotFound} />
   </Switch>
 );
-
-export default Routes;

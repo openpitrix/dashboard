@@ -33,8 +33,8 @@ if (typeof window !== 'undefined') {
 
   store.setUser(user);
 
-  // window._getUser = () => Object.assign({}, user);
-  // window._getStore = () => Object.assign({}, store);
+  window._getUser = () => Object.assign({}, user);
+  window._getStore = () => Object.assign({}, store);
 
   ReactDOM.render(
     <I18nextProvider i18n={i18n}>

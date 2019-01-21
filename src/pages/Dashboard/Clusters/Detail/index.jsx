@@ -7,13 +7,9 @@ import classnames from 'classnames';
 import { Icon, Popover, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
 import Layout, {
-  Grid,
-  Section,
-  Card,
-  Panel,
-  Dialog,
-  TitleBanner
+  Grid, Section, Card, Panel, Dialog
 } from 'components/Layout';
+import Banner from 'components/Banner';
 import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
@@ -351,7 +347,7 @@ export default class ClusterDetail extends Component {
         hasBack
       >
         {isNormal && (
-          <TitleBanner
+          <Banner
             title={t('已部署应用')}
             description={t('所有你部署过的应用都会展示在此。')}
           />

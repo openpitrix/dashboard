@@ -49,7 +49,7 @@ export default class RootStore extends Store {
 
   @action
   setNavFix = fixNav => {
-    if (Date.now() - this.lastSetFixStamp < 150) {
+    if (Date.now() - this.lastSetFixStamp < 500) {
       // fixNav在临界值造成的抖动，忽略此次设置
       return;
     }

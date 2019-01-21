@@ -20,7 +20,9 @@ describe('Home', () => {
         getCategoryApps: () => {},
         categories: []
       },
-      user: {}
+      user: {
+        isLoggedIn: () => false
+      }
     });
   });
 

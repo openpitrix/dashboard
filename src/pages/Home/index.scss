@@ -2,9 +2,12 @@
 
 .content {
   position: relative;
-  margin: 0 auto;
   min-height: $content-height;
-  width: $content-width;
+  top: 280px;
+
+  &.fixNav {
+    top: $header-height + 30 *2 + 52;
+  }
 
   .homeLoad {
     margin-left: $nav-width;
@@ -16,12 +19,12 @@
 
   .nav {
     position: fixed;
-    top: $header-height + $title-banner-height-orig;
+    top: 278px;
     width: $nav-width;
     height: 100%;
 
     &.fixNav {
-      top: $header-height + $title-banner-height;
+      top: $header-height + 30 *2 + 52;
     }
 
     padding-top: 32px;
@@ -75,23 +78,5 @@
     margin-left: $nav-width;
     padding-left: 24px;
     padding-bottom: $page-bottom;
-  }
-}
-
-.banner {
-  height: $banner-height;
-  padding-top: 120px;
-  background-color: $N0;
-  .wrapper {
-    position: relative;
-    width: $content-width;
-    margin: 0 auto;
-  }
-  .title {
-    width: 552px;
-    font-size: $font32;
-    font-weight: 500;
-    line-height: 1.25;
-    color: $P400;
   }
 }

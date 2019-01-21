@@ -6,18 +6,20 @@ import { inject, observer } from 'mobx-react';
 
 import { Image } from 'components/Base';
 import SearchBox from 'pages/Home/SearchBox';
+import { getPortalFromPath } from 'routes';
 
 import styles from './index.scss';
 
 @translate()
 @inject('rootStore')
 @observer
-export default class TitleBanner extends Component {
+export default class Banner extends Component {
   static propTypes = {
     className: PropTypes.string,
     description: PropTypes.string,
     hasSearch: PropTypes.bool,
     icon: PropTypes.string,
+    shrink: PropTypes.bool,
     stretch: PropTypes.bool,
     title: PropTypes.string
   };
@@ -27,7 +29,8 @@ export default class TitleBanner extends Component {
     title: '',
     description: '',
     hasSearch: false,
-    stretch: false
+    stretch: false,
+    shrink: false
   };
 
   render() {
@@ -38,18 +41,23 @@ export default class TitleBanner extends Component {
       hasSearch,
       className,
       stretch,
+      shrink,
       rootStore,
       t
     } = this.props;
+
+    if (!['', 'user'].includes(getPortalFromPath())) {
+      return null;
+    }
 
     return (
       <div
         className={classnames(
           'banner',
-          styles.titleBanner,
+          styles.banner,
           {
             [styles.stretch]: stretch,
-            [styles.shrink]: rootStore.fixNav
+            [styles.shrink]: shrink || rootStore.fixNav
           },
           className
         )}

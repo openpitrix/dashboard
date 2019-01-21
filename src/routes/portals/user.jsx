@@ -1,62 +1,46 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 import WrapRoute from 'routes/WrapRoute';
-import routes, { withPrefix } from 'routes';
+import NotFound from 'components/NotFound';
 
 import {
-  Purchased,
-  PurchasedDetail,
-  Clusters,
-  ClusterDetail,
-  Runtimes,
+  Overview,
+  CreateRuntime,
   ProviderCreate,
   AppDeploy
 } from 'pages/Dashboard';
 
-import NotFound from 'components/NotFound';
+import {
+  Apps as Purchased,
+  AppDetail as PurchasedDetail,
+  Clusters,
+  ClusterDetail,
+  Runtimes
+} from 'portals/user/pages';
 
-const Routes = ({ prefix }) => (
+export default ({ prefix }) => (
   <Switch>
+    <WrapRoute path={prefix} component={Overview} />
+
+    <WrapRoute path={`${prefix}/apps`} component={Purchased} />
+    <WrapRoute path={`${prefix}/apps/:appId`} component={PurchasedDetail} />
     <WrapRoute
-      path={withPrefix(routes.user.deployedApps, prefix)}
-      component={Purchased}
-    />
-    <WrapRoute
-      path={withPrefix(routes.user.deployedAppDetail, prefix)}
-      component={PurchasedDetail}
-    />
-    <WrapRoute
-      path={withPrefix(routes.user.deploy, prefix)}
+      path={`${prefix}/apps/:appId/deploy/:versionId?`}
       component={AppDeploy}
     />
 
+    <WrapRoute path={`${prefix}/clusters`} component={Clusters} />
     <WrapRoute
-      path={withPrefix(routes.user.clusters, prefix)}
-      component={Clusters}
-    />
-    <WrapRoute
-      path={withPrefix(routes.user.clusterDetail)}
+      path={`${prefix}/clusters/:clusterId`}
       component={ClusterDetail}
     />
 
-    <WrapRoute
-      path={withPrefix(routes.user.runtimes, prefix)}
-      component={Runtimes}
-    />
+    <WrapRoute path={`${prefix}/runtimes`} component={Runtimes} />
+    <WrapRoute path={`${prefix}/runtimes/create`} component={CreateRuntime} />
 
-    <WrapRoute
-      path={withPrefix(routes.user.providerApply, prefix)}
-      component={ProviderCreate}
-    />
+    <WrapRoute path={`${prefix}/provider/apply`} component={ProviderCreate} />
 
-    <Redirect
-      from={prefix}
-      exact
-      to={withPrefix(routes.user.deployedApps, prefix)}
-    />
-    <Route component={NotFound} />
+    <WrapRoute component={NotFound} />
   </Switch>
 );
-
-export default Routes;

@@ -8,6 +8,7 @@ import {
   Form, Input, Button, Checkbox, Notification
 } from 'components/Base';
 import { getUrlParam } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -36,7 +37,7 @@ export default class Login extends Component {
       await store.fetchDetail(res.user.sub, true);
     }
 
-    const defaultUrl = user.isDev ? '/dashboard/my/apps' : '/dashboard/apps';
+    const defaultUrl = toRoute(routes.portal.apps, user.defaultPortal);
 
     if (!(res && res.err)) {
       localStorage.removeItem('menuApps'); // clear newest visited menu apps
