@@ -52,7 +52,6 @@ export default class Overview extends React.Component {
     const {
       appStore,
       clusterStore,
-      repoStore,
       runtimeStore,
       categoryStore,
       userStore,
@@ -101,14 +100,15 @@ export default class Overview extends React.Component {
     runtimeStore.reset();
   }
 
-  handleClickTotalCard = label => {
+  handleClickTotalCard = (label, type) => {
     const { user } = this.props;
 
     if (user.isDev && label === 'runtimes') {
       this.props.history.push('/runtimes');
     } else {
-      //
-      this.props.history.push(toRoute(routes.portal[label.toLowerCase()]));
+      this.props.history.push(
+        toRoute(routes.portal[type][label.toLowerCase()])
+      );
     }
   };
 
@@ -150,7 +150,7 @@ export default class Overview extends React.Component {
                   name={label}
                   iconName={iconName[label]}
                   total={summary[label]}
-                  onClick={this.handleClickTotalCard.bind(this, label)}
+                  onClick={() => this.handleClickTotalCard(label, '_admin')}
                 />
               </Section>
             ))}
@@ -348,7 +348,7 @@ export default class Overview extends React.Component {
                 iconName={`cloud`}
                 iconSize={64}
                 total={repoStore.totalCount}
-                onClick={this.handleClickTotalCard.bind(this, 'repos')}
+                onClick={() => this.handleClickTotalCard('repos', '_dev')}
               />
             </Section>
             <Section>
@@ -357,7 +357,7 @@ export default class Overview extends React.Component {
                 iconName={`stateful-set`}
                 iconSize={64}
                 total={runtimeStore.totalCount}
-                onClick={this.handleClickTotalCard.bind(this, 'runtimes')}
+                onClick={() => this.handleClickTotalCard('runtimes', '_dev')}
               />
             </Section>
           </Grid>

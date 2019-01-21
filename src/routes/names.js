@@ -17,9 +17,6 @@ export default {
     runtimes: '/:portal/runtimes',
     runtimeCreate: '/:portal/runtimes/create',
     deploy: '/:portal/apps/:appId/deploy/:versionId?',
-    clusters: '/:portal/clusters',
-    categories: '/:portal/categories',
-    users: '/:portal/users',
 
     // if key prefix with _, means portal section
     _user: {
