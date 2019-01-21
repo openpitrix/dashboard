@@ -4,12 +4,14 @@ import '../lib/blob/Blob';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { I18nextProvider } from 'react-i18next';
+import { Provider as MobxProvider } from 'mobx-react';
 
 import App from './App';
 import RootStore from './stores/RootStore';
 import SockClient from './utils/sock-client';
 import i18n from './i18n';
-import UserProvider from './providers/user';
+import user from './providers/user';
 
 const store = new RootStore(window.__INITIAL_STATE__);
 store.registerStores();
@@ -18,8 +20,6 @@ store.registerStores();
 store.notifications = [];
 
 if (typeof window !== 'undefined') {
-  const user = new UserProvider();
-
   let sc = null;
   // when logged in, setup socket client
   if (user.isLoggedIn()) {

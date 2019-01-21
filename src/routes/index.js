@@ -1,8 +1,6 @@
-import React, { lazy } from 'react';
 import _ from 'lodash';
 import { compile } from 'path-to-regexp';
 
-import user from 'providers/user';
 import routeNames, { portals } from './names';
 
 const noHeaderPaths = ['/login', '/user/provider/apply'];

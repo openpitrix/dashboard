@@ -1,14 +1,6 @@
-import React from 'react';
-import { toUrl } from 'utils/url';
-import { roleTypes as r } from 'config/roles';
-
-export const isLazyComponent = comp => typeof comp === 'object'
-  && typeof comp.$$typeof === 'symbol'
-  && comp.$$typeof.toString() === 'Symbol(react.lazy)';
-
-export const isValidComponent = comp => isLazyComponent(comp)
-  || (typeof comp === 'function'
-    && Object.getPrototypeOf(comp) === React.Component);
+// import React from 'react';
+// import { toUrl } from 'utils/url';
+// import { roleTypes as r } from 'config/roles';
 
 // acl
 // const routes = {

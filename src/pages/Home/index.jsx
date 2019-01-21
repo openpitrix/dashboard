@@ -32,10 +32,6 @@ export default class Home extends Component {
     cate: ''
   };
 
-  get needFixNav() {
-    return Boolean(this.category || this.searchWord);
-  }
-
   async componentDidMount() {
     const { rootStore, appStore, categoryStore } = this.props;
 
@@ -109,6 +105,10 @@ export default class Home extends Component {
 
   get category() {
     return this.state.cate || getUrlParam('cate');
+  }
+
+  get needFixNav() {
+    return Boolean(this.category || this.searchWord);
   }
 
   getThreshold() {

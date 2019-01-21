@@ -3,7 +3,7 @@ import { map } from 'lodash';
 
 const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'developer';
-const ROLE_ISV = 'isv';
+// const ROLE_ISV = 'isv';
 const ROLE_NORMAL = 'user';
 
 // singleton
