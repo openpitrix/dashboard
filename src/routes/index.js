@@ -35,7 +35,12 @@ export const toRoute = (route = '', params = {}) => {
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }
-  return compile(route)(Object.assign(params, { portal: portal || 'user' }));
+  // map params keys
+  params = _.mapValues(
+    Object.assign(params, { portal: portal || 'user' }),
+    val => `${val}`
+  );
+  return compile(route)(params);
 };
 
 export const getPortalFromPath = (path = location.pathname) => {

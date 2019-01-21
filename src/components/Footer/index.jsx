@@ -7,7 +7,7 @@ import { pathWithoutFooter } from 'routes';
 import styles from './index.scss';
 
 @translate()
-export default class Footer extends PureComponent {
+export class Footer extends PureComponent {
   getCurrentLocale = () => typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
 
   changeLocale = (lang, e) => {
@@ -79,3 +79,5 @@ export default class Footer extends PureComponent {
     );
   }
 }
+
+export default withRouter(Footer);

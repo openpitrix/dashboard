@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
+import Layout from 'portals/user/Layout';
 import { Icon, Table, Button } from 'components/Base';
-import Layout, { Grid, Section, Card } from 'components/Layout';
+import { Grid, Section, Card } from 'components/Layout';
 import Banner from 'components/Banner';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -14,6 +15,7 @@ import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
 import { formatTime, getObjName } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -51,6 +53,11 @@ export default class PurchasedDetail extends Component {
     clusterStore.reset();
   }
 
+  goDeploy = () => {
+    const { match, history } = this.props;
+    history.push(toRoute(routes.portal.deploy, { appId: match.params.appId }));
+  };
+
   renderVersionInfo(item) {
     const { versions } = this.props.appVersionStore;
     const version = _.find(versions, { version_id: item.version_id }) || {};
@@ -80,7 +87,7 @@ export default class PurchasedDetail extends Component {
         onClear={onClearSearch}
         onRefresh={onRefresh}
       >
-        <Button type="primary" className="pull-right">
+        <Button type="primary" className="pull-right" onClick={this.goDeploy}>
           <Icon name="add" type="white" />
           {t('Deploy')}
         </Button>
@@ -134,7 +141,10 @@ export default class PurchasedDetail extends Component {
             </dd>
           </dl>
         </div>
-        <Link to={`/apps/${appDetail.app_id}`} className={styles.link}>
+        <Link
+          to={toRoute(routes.appDetail, { appId: appDetail.app_id })}
+          className={styles.link}
+        >
           {t('去商店中查看')} →
         </Link>
       </Card>
@@ -165,7 +175,9 @@ export default class PurchasedDetail extends Component {
           <TdName
             name={item.name}
             description={item.cluster_id}
-            linkUrl={`/purchased/${item.cluster_id}`}
+            linkUrl={toRoute(routes.portal._user.clusterDetail, {
+              clusterId: item.cluster_id
+            })}
             noIcon
           />
         )
@@ -181,17 +193,15 @@ export default class PurchasedDetail extends Component {
         key: 'runtime_id',
         width: '120px',
         render: item => (
-          <Link to={`/dashboard/runtime/${item.runtime_id}`}>
-            <ProviderName
-              name={getObjName(runtimes, 'runtime_id', item.runtime_id, 'name')}
-              provider={getObjName(
-                runtimes,
-                'runtime_id',
-                item.runtime_id,
-                'provider'
-              )}
-            />
-          </Link>
+          <ProviderName
+            name={getObjName(runtimes, 'runtime_id', item.runtime_id, 'name')}
+            provider={getObjName(
+              runtimes,
+              'runtime_id',
+              item.runtime_id,
+              'provider'
+            )}
+          />
         )
       },
       {
@@ -223,13 +233,14 @@ export default class PurchasedDetail extends Component {
     };
 
     return (
-      <Layout>
-        {user.isNormal && (
+      <Layout
+        banner={
           <Banner
             title={t('已部署应用')}
             description={t('所有你部署过的应用都会展示在此。')}
           />
-        )}
+        }
+      >
         <Grid>
           <Section size={3}>{this.renderAppBase()}</Section>
           <Section size={9}>

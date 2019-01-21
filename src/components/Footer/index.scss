@@ -1,8 +1,8 @@
 @import "~scss/vars";
 
 .footer {
-  position: static;
-  //bottom: 0;
+  position: fixed;
+  bottom: 0;
   width: 100%;
   padding-top: $footer-padding-top;
 

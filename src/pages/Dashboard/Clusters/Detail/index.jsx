@@ -2,14 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
-import classnames from 'classnames';
 
 import { Icon, Popover, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
-import Layout, {
+import {
   Grid, Section, Card, Panel, Dialog
 } from 'components/Layout';
-import Banner from 'components/Banner';
 import Loading from 'components/Loading';
 import TimeAxis from 'components/TimeAxis';
 import ClusterCard from 'components/DetailCard/ClusterCard';
@@ -39,6 +37,7 @@ export default class ClusterDetail extends Component {
 
   async componentDidMount() {
     const {
+      rootStore,
       clusterDetailStore,
       runtimeStore,
       appStore,
@@ -74,14 +73,17 @@ export default class ClusterDetail extends Component {
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
+
+    rootStore.listenToJob(this.handleJobs);
   }
 
   componentWillUnmount() {
-    const { clusterDetailStore } = this.props;
+    const { rootStore, clusterDetailStore } = this.props;
+    rootStore.cleanSock();
     clusterDetailStore.reset();
   }
 
-  listenToJob = async ({
+  handleJobs = async ({
     op, rtype, rid, values = {}
   }) => {
     const { clusterStore, clusterDetailStore, match } = this.props;
@@ -333,25 +335,15 @@ export default class ClusterDetail extends Component {
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
     const { isNormal } = user;
-    const pageTitle = match.path.endsWith('sandbox-instance')
-      ? t('Sandbox-Instance detail')
-      : t('Customer-Instance detail');
+
+    // const pageTitle = match.path.endsWith('sandbox-instance')
+    //   ? t('Sandbox-Instance detail')
+    //   : t('Customer-Instance detail');
 
     const { isRuntimeTypeFetched } = this.state;
 
     return (
-      <Layout
-        className={classnames({ [styles.clusterDetail]: !isNormal })}
-        listenToJob={this.listenToJob}
-        pageTitle={pageTitle}
-        hasBack
-      >
-        {isNormal && (
-          <Banner
-            title={t('已部署应用')}
-            description={t('所有你部署过的应用都会展示在此。')}
-          />
-        )}
+      <Fragment>
         <Grid>
           <Section>
             <Card>
@@ -397,7 +389,7 @@ export default class ClusterDetail extends Component {
         </Grid>
 
         {this.renderModals()}
-      </Layout>
+      </Fragment>
     );
   }
 }

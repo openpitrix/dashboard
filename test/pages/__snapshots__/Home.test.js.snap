@@ -124,5 +124,64 @@ Array [
       </div>
     </div>
   </div>,
+  <div
+    class="footer"
+  >
+    <div
+      class="wrapper"
+    >
+      <div
+        class="inner"
+      >
+        <span
+          class="logo"
+        >
+          <img
+            alt="logo"
+            height="100%"
+            src="/logo_grey.svg"
+          />
+        </span>
+        <ul
+          class="terms"
+        >
+          <li>
+            <a
+              href="https://docs.openpitrix.io/home/"
+              rel="noopener noreferrer"
+              target="_blank"
+            />
+          </li>
+          <li>
+            <a
+              href="https://openpitrix.io"
+              rel="noopener noreferrer"
+              target="_blank"
+            />
+          </li>
+          <li>
+            OpenPitrix © 2018
+          </li>
+          <li>
+            <a
+              class="toggleLocale"
+              href="#"
+            >
+              中文
+            </a>
+            <span
+              class="dot"
+            />
+            <a
+              class="toggleLocale"
+              href="#"
+            >
+              English
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>,
 ]
 `;

@@ -12,6 +12,8 @@ import Stars from 'components/Stars';
 import { formatTime } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
 
+import routes, { toRoute } from 'routes';
+
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -69,7 +71,7 @@ export default class Purchased extends Component {
           <TdName
             name={item.name}
             description={item.abstraction || item.description}
-            linkUrl={`/dashboard/purchased/${item.app_id}`}
+            linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
             image={item.icon}
             noCopy
           />
@@ -106,7 +108,7 @@ export default class Purchased extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/apps/${item.app_id}/deploy`}>
+            <Link to={toRoute(routes.portal.deploy, { appId: item.app_id })}>
               <Button>{t('Deploy Instance')}</Button>
             </Link>
           </div>

@@ -7,9 +7,9 @@ import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Provider as MobxProvider } from 'mobx-react';
 
+import { getSock } from 'providers/sock-client';
 import App from './App';
 import RootStore from './stores/RootStore';
-import SockClient from './utils/sock-client';
 import i18n from './i18n';
 import user from './providers/user';
 
@@ -20,25 +20,14 @@ store.registerStores();
 store.notifications = [];
 
 if (typeof window !== 'undefined') {
-  let sc = null;
-  // when logged in, setup socket client
-  if (user.isLoggedIn()) {
-    const sockEndpoint = SockClient.composeEndpoint(
-      store.socketUrl,
-      user.accessToken
-    );
-    sc = new SockClient(sockEndpoint);
-    sc.setUp();
-  }
-
   store.setUser(user);
-
-  window._getUser = () => Object.assign({}, user);
-  window._getStore = () => Object.assign({}, store);
+  store.sock = user.isLoggedIn()
+    ? getSock(store.socketUrl, user.accessToken)
+    : null;
 
   ReactDOM.render(
     <I18nextProvider i18n={i18n}>
-      <MobxProvider rootStore={store} sock={sc}>
+      <MobxProvider rootStore={store}>
         <App />
       </MobxProvider>
     </I18nextProvider>,
