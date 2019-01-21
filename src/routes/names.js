@@ -11,12 +11,15 @@ export default {
 
   portal: {
     // portal common keys
-    overview: '/:portal',
+    overview: '/:portal/dashboard',
     apps: '/:portal/apps',
     appDetail: '/:portal/apps/:appId',
     runtimes: '/:portal/runtimes',
     runtimeCreate: '/:portal/runtimes/create',
     deploy: '/:portal/apps/:appId/deploy/:versionId?',
+    clusters: '/:portal/clusters',
+    categories: '/:portal/categories',
+    users: '/:portal/users',
 
     // if key prefix with _, means portal section
     _user: {
@@ -52,7 +55,9 @@ export default {
       providers: '/:portal/providers',
       providerDetail: '/:portal/providers/:providerId',
       providerApply: '/:portal/providers/apply',
-      providerApplyDetail: '/:portal/providers/apply/:applyId'
+      providerApplyDetail: '/:portal/providers/apply/:applyId',
+      cloudEnv: '/:portal/settings/cloud-env',
+      notificationServer: '/:portal/settings/notification-server'
     }
   }
 };

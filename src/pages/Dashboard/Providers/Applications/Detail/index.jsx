@@ -34,8 +34,8 @@ const statusTime = {
 export default class Applications extends Component {
   async componentDidMount() {
     const { vendorStore, user, match } = this.props;
-    const { providerId } = match.params;
-    const userId = providerId || user.user_id;
+    const { applyId } = match.params;
+    const userId = applyId || user.user_id;
     await vendorStore.fetch(userId);
   }
 

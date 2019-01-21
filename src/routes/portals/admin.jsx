@@ -19,14 +19,16 @@ import {
   Applications,
   ApplicationDetail,
   Reviews,
-  ReviewDetail
+  ReviewDetail,
+  CloudEnv,
+  NotificationServer
 } from 'pages/Dashboard';
 
 export default ({ prefix }) => (
   <Switch>
-    <WrapRoute path={prefix} component={Overview} />
+    <WrapRoute path={`${prefix}/dashboard`} component={Overview} />
 
-    <WrapRoute path={`${prefix}/apps}`} component={Apps} />
+    <WrapRoute path={`${prefix}/apps`} component={Apps} />
     <WrapRoute path={`${prefix}/apps/review`} component={Reviews} />
     <WrapRoute
       path={`${prefix}/apps/review/:reviewId`}
@@ -58,7 +60,11 @@ export default ({ prefix }) => (
       path={`${prefix}/providers/:providerId`}
       component={ProviderDetail}
     />
-
+    <WrapRoute path={`${prefix}/settings/cloud-env`} component={CloudEnv} />
+    <WrapRoute
+      path={`${prefix}/settings/notification-server`}
+      component={NotificationServer}
+    />
     <WrapRoute component={NotFound} />
   </Switch>
 );

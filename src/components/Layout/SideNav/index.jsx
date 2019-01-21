@@ -19,8 +19,6 @@ import {
 import styles from './index.scss';
 
 const keys = [
-  'applications',
-  'app',
   'review',
   'cluster',
   'runtime',

@@ -11,6 +11,7 @@ import TableTypes from 'components/TableTypes';
 import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
 
+import routes, { toRoute } from 'routes';
 import styles from './index.scss';
 
 const types = [
@@ -60,7 +61,11 @@ export default class Reviews extends Component {
         width: '120px',
         className: 'number',
         render: item => (
-          <Link to={`/dashboard/app-review/${item.review_id}`}>
+          <Link
+            to={toRoute(routes.portal._admin.appReviewDetail, {
+              reviewId: item.review_id
+            })}
+          >
             {item.review_id}
           </Link>
         )
@@ -77,7 +82,7 @@ export default class Reviews extends Component {
         width: '150px',
         render: item => (
           <AppName
-            linkUrl={`/dashboard/app/${item.app_id}`}
+            linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
             icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
             name={getObjName(apps, 'app_id', item.app_id, 'name')}
             versionName={item.version_name}
