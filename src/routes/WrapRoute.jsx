@@ -54,7 +54,8 @@ WrapRoute.propTypes = {
 };
 
 WrapRoute.defaultProps = {
-  exact: true
+  exact: true,
+  path: ''
 };
 
 export default WrapRoute;
