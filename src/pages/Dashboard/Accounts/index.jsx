@@ -57,7 +57,6 @@ export default class Users extends Component {
       e.stopPropagation();
     }
     e.preventDefault();
-    console.log(type);
   }
 
   renderTreeTitle = node => {

@@ -86,9 +86,9 @@ export const getNavs = {
       title: 'Financial Center'
     },
     {
-      link: '#',
+      link: '/dashboard/team_members',
       iconName: 'group',
-      active: 'user',
+      active: 'team_member',
       title: 'Team Members'
     },
     {
@@ -262,6 +262,17 @@ export const subNavMap = {
           link: toRoute(routes.portal.appsReview, { portal: 'isv' }),
           active: 'review'
         }
+      ]
+    },
+    team_member: {
+      title: 'Team and member',
+      links: [
+        {
+          name: 'All members',
+          link: '/dashboard/team_members',
+          active: '/team_member'
+        },
+        { name: 'Role', link: '/dashboard/team_roles', active: '/team_role' }
       ]
     }
   }

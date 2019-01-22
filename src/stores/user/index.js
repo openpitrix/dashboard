@@ -231,7 +231,7 @@ export default class UserStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    // const result = await this.request.get('iam/groups');
+    const result = await this.request.get('groups');
     this.groups = get(dataGroup, 'op_group_set', []);
     // this.groups = get(result, 'group_set', []);
     this.isLoading = false;

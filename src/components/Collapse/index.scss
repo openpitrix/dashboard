@@ -1,0 +1,28 @@
+@import '~scss/vars';
+
+.container {
+  border: 1px solid $N10;
+  padding: 16px 24px;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  @include title-font;
+}
+.header {
+  flex: 1;
+}
+
+.content {
+  height: 0;
+  opacity: 0;
+  transition: all .3s ease;
+}
+
+.isCheck {
+  .content {
+    opacity: 1;
+    height: auto;
+  }
+}
