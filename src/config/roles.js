@@ -38,4 +38,11 @@ export const portalToRole = {
   user: 'user'
 };
 
+export const roleToPortal = {
+  global_admin: 'admin',
+  isv: 'isv',
+  developer: 'dev',
+  user: 'user'
+};
+
 export default roles;

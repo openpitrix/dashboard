@@ -1,13 +1,15 @@
 import _ from 'lodash';
 import { compile } from 'path-to-regexp';
 
+import user from 'providers/user';
+import { roleToPortal } from 'config/roles';
 import routeNames, { portals } from './names';
 
 const noHeaderPaths = ['/login', '/user/provider/apply'];
 
 const noFooterPaths = ['/login', '/user/provider/apply'];
 
-const commonRoutes = ['', 'apps', 'login', 'logout', 'profile'];
+const commonRoutes = ['', 'apps', 'login', 'logout'];
 
 export const getRouteByName = name => {
   const route = _.get(routeNames, name);
@@ -49,10 +51,14 @@ export const getPortalFromPath = (path = location.pathname) => {
   if (commonRoutes.includes(p)) {
     return '';
   }
+  if (path.startsWith('/profile')) {
+    // to fix
+    const role = user.isISV ? 'isv' : user.role;
+    return roleToPortal[role];
+  }
   if (portals.includes(p)) {
     return p;
   }
-  // console.warn(`invalid portal ${p}`);
   return '';
 };
 
