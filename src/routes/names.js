@@ -10,6 +10,9 @@ export default {
   profile: '/profile',
 
   portal: {
+    appsReview: '/:portal/apps/review',
+    appReviewDetail: '/:portal/apps/review/:reviewId',
+
     // portal common keys
     overview: '/:portal',
     apps: '/:portal/apps',
@@ -38,14 +41,10 @@ export default {
       sandboxInstanceDetail: '/:portal/apps/:appId/sandbox-instances/:clusterId'
     },
     _isv: {
-      appsReview: '/:portal/apps/review',
-      appReviewDetail: '/:portal/apps/review/:reviewId',
       provider: '/:portal/provider',
       providerApply: '/:portal/provider/apply'
     },
     _admin: {
-      appsReview: '/:portal/apps/review',
-      appReviewDetail: '/:portal/apps/review/:reviewId',
       categories: '/:portal/categories',
       users: '/:portal/users',
       userDetail: '/:portal/users/:userId',

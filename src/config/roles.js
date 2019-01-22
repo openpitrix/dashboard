@@ -31,4 +31,11 @@ export const roleTypes = {
   user: 'Normal'
 };
 
+export const portalToRole = {
+  admin: 'global_admin',
+  isv: 'isv',
+  dev: 'developer',
+  user: 'user'
+};
+
 export default roles;

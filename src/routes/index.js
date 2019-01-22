@@ -40,6 +40,7 @@ export const toRoute = (route = '', params = {}) => {
     Object.assign(params, { portal: portal || 'user' }),
     val => `${val}`
   );
+
   return compile(route)(params);
 };
 
@@ -66,13 +67,7 @@ export const pathWithoutFooter = path => noFooterPaths.includes(path);
 
 export const withPrefix = (url, prefix = '') => {
   if (prefix) {
-    if (url.startsWith('/')) {
-      url = url.substring(1);
-    }
-    if (prefix.endsWith('/')) {
-      prefix = prefix.substring(0, prefix.length - 1);
-    }
-    return [prefix, url].join('/');
+    return url.replace(':protal', prefix);
   }
 
   return url;
