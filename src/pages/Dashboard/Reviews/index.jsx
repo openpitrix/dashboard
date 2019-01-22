@@ -62,7 +62,7 @@ export default class Reviews extends Component {
         className: 'number',
         render: item => (
           <Link
-            to={toRoute(routes.portal._admin.appReviewDetail, {
+            to={toRoute(routes.portal.appReviewDetail, {
               reviewId: item.review_id
             })}
           >
@@ -121,7 +121,11 @@ export default class Reviews extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/app-review/${item.review_id}`}>
+            <Link
+              to={toRoute(routes.portal.appReviewDetail, {
+                reviewId: item.review_id
+              })}
+            >
               {isUnprocessed ? (
                 <Button>{t('Start process')}</Button>
               ) : (
