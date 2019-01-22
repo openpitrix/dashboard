@@ -227,11 +227,7 @@ export default class AppAdd extends Component {
               <Button
                 onClick={() => {
                   if (isCreateApp) {
-                    history.replace(
-                      toRoute(routes.portal._dev.versionDetail, {
-                        appId: appDetail.app_id
-                      })
-                    );
+                    history.replace(toRoute(routes.portal._dev.appCreate));
                   } else {
                     appCreateStore.reload({ isCreateApp, appId });
                   }

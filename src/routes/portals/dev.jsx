@@ -36,7 +36,7 @@ export default ({ prefix }) => (
       component={VersionDetail}
     />
     <WrapRoute
-      path={`${prefix}/apps/:appId/deploy/:versionId`}
+      path={`${prefix}/apps/:appId/deploy/:versionId？`}
       component={Deploy}
     />
 

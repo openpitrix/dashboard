@@ -14,7 +14,7 @@ import Loading from 'components/Loading';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
-import routes, { toRoute } from 'routes';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 
 import styles from './index.scss';
 
@@ -173,8 +173,7 @@ export default class AppDeploy extends Component {
 
     if (res && _.get(res, 'cluster_id')) {
       appDeployStore.success(t('Deploy app successfully'));
-      // to fix: portal judge
-      const path = user.isDev
+      const path = getPortalFromPath() === 'user'
         ? toRoute(routes.portal._dev.sandboxInstances, { appId })
         : toRoute(routes.portal._user.clusters);
       setTimeout(() => history.push(path), 1000);
