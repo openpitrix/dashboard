@@ -4,6 +4,8 @@ import { translate } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
 import { getFilterObj } from 'utils';
+import routes, { toRoute } from 'routes';
+
 import styles from './index.scss';
 
 @translate()
@@ -43,7 +45,7 @@ export default class AppList extends PureComponent {
                 imageSize={24}
                 name={item.name || app.name}
                 description={item.description || app.description}
-                linkUrl={`/app/${item.app_id}`}
+                linkUrl={toRoute(routes.appDetail, { appId: item.app_id })}
                 noCopy={true}
               />
             </li>

@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Layout, {
   Grid, Section, Row, BreadCrumb
 } from 'components/Layout';
+import UserLayout from 'portals/user/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
@@ -101,15 +102,9 @@ export default class Overview extends React.Component {
   }
 
   handleClickTotalCard = (label, type) => {
-    const { user } = this.props;
-
-    if (user.isDev && label === 'runtimes') {
-      this.props.history.push('/runtimes');
-    } else {
-      this.props.history.push(
-        toRoute(routes.portal[type][label.toLowerCase()])
-      );
-    }
+    label = `${label}`.toLocaleLowerCase();
+    const guessRoute = routes.portal[type][label] || routes.portal[label];
+    this.props.history.push(toRoute(guessRoute));
   };
 
   adminView = () => {
@@ -143,7 +138,6 @@ export default class Overview extends React.Component {
             <Section>
               <UserInfo {...this.userInfo} />
             </Section>
-
             {Object.keys(summary).map(label => (
               <Section size={2} key={label}>
                 <TotalCard
@@ -163,7 +157,7 @@ export default class Overview extends React.Component {
               <Panel
                 type="app"
                 title="Top Apps"
-                linkTo="/dashboard/apps"
+                linkTo={toRoute(routes.portal.apps)}
                 len={topApps.length}
                 isAdmin
               >
@@ -175,7 +169,7 @@ export default class Overview extends React.Component {
               <Panel
                 type="cluster"
                 title="Latest Clusters"
-                linkTo="/dashboard/clusters"
+                linkTo={toRoute(routes.portal.clusters)}
                 len={latestClusters.length}
               >
                 <ClusterList clusters={latestClusters} />
@@ -199,7 +193,7 @@ export default class Overview extends React.Component {
     const clusterList = clusterStore.clusters.slice(0, 5);
 
     return (
-      <Layout isLoading={isLoading}>
+      <UserLayout isLoading={isLoading}>
         <Row>
           <div className={styles.userInfo}>
             <div className={styles.userName}>{t('greet words', { name })}</div>
@@ -211,7 +205,7 @@ export default class Overview extends React.Component {
             <Panel
               type="app"
               title="Latest Apps"
-              linkTo="/apps"
+              linkTo={toRoute(routes.portal.apps)}
               len={appList.length}
             >
               <AppList apps={appList} />
@@ -222,8 +216,8 @@ export default class Overview extends React.Component {
             <Panel
               type="runtime"
               title="My Runtimes"
-              linkTo="/runtimes"
-              buttonTo="/dashboard/runtime/create"
+              linkTo={toRoute(routes.portal.runtimes)}
+              buttonTo={toRoute(routes.portal.runtimeCreate)}
               len={runtimteList.length}
             >
               <RepoList
@@ -238,14 +232,14 @@ export default class Overview extends React.Component {
             <Panel
               type="cluster"
               title="Latest Clusters"
-              linkTo="/purchased"
+              linkTo={toRoute(routes.portal.clusters)}
               len={clusterList.length}
             >
               <ClusterList clusters={clusterList} isNormal />
             </Panel>
           </Section>
         </Grid>
-      </Layout>
+      </UserLayout>
     );
   };
 
@@ -266,7 +260,10 @@ export default class Overview extends React.Component {
           <TdName
             name={item.name}
             description={item.cluster_id}
-            linkUrl={`/dashboard/cluster/${item.cluster_id}`}
+            linkUrl={toRoute(routes.portal.clusterDetail, {
+              portal: 'dev',
+              clusterId: item.cluster_id
+            })}
           />
         )
       },
@@ -281,7 +278,12 @@ export default class Overview extends React.Component {
         key: 'app_id',
         width: '100px',
         render: item => (
-          <Link to={`/dashboard/app/${item.app_id}`}>
+          <Link
+            to={toRoute(routes.portal.appDetail, {
+              portal: 'dev',
+              appId: item.app_id
+            })}
+          >
             {getObjName(appStore.apps, 'app_id', item.app_id, 'name')}
           </Link>
         )
@@ -290,7 +292,7 @@ export default class Overview extends React.Component {
         title: 'Runtime',
         key: 'runtime_id',
         render: item => (
-          <Link to={`/dashboard/runtime/${item.runtime_id}`}>
+          <Link to={toRoute(routes.portal.runtimes, { portal: 'dev' })}>
             <ProviderName
               name={getObjName(
                 runtimeStore.runtimes,
@@ -369,7 +371,7 @@ export default class Overview extends React.Component {
               <Panel
                 type="app"
                 title="Latest Apps"
-                linkTo="/dashboard/apps"
+                linkTo={toRoute(routes.portal.apps)}
                 len={appList.length}
               >
                 <AppList apps={appList} isDev />
@@ -380,7 +382,7 @@ export default class Overview extends React.Component {
               <Panel
                 type="cluster"
                 title="Latest Clusters"
-                linkTo="/dashboard/clusters"
+                linkTo={toRoute(routes.portal.clusters)}
                 len={clusterList.length}
                 iconName="cluster"
               >
@@ -398,14 +400,17 @@ export default class Overview extends React.Component {
   };
 
   render() {
-    const { isAdmin, isDev } = this.props.user;
+    const { user } = this.props;
+    // todo: need check isv
 
-    if (isAdmin) {
-      return this.adminView();
+    if (user.isNormal) {
+      return this.normalView();
     }
-    if (isDev) {
+
+    if (user.isDev) {
       return this.developerView();
     }
-    return this.normalView();
+
+    return this.adminView();
   }
 }

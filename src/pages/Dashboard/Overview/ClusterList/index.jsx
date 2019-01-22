@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { translate } from 'react-i18next';
 
 import { getPastTime } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -33,11 +34,9 @@ export default class ClusterList extends PureComponent {
             <div className={styles.word}>
               <Link
                 className={styles.name}
-                to={
-                  isNormal
-                    ? `/purchased/${cluster.cluster_id}`
-                    : `/dashboard/cluster/${cluster.cluster_id}`
-                }
+                to={toRoute(routes.portal.clusterDetail, {
+                  clusterId: cluster.cluster_id
+                })}
               >
                 {cluster.name}
               </Link>
