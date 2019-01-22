@@ -53,6 +53,9 @@ export default class Reviews extends Component {
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const isUnprocessed = activeType === 'unprocessed';
+    const linkReview = reviewId => toRoute(routes.portal.appReviewDetail, {
+      reviewId
+    });
 
     const columns = [
       {
@@ -61,13 +64,7 @@ export default class Reviews extends Component {
         width: '120px',
         className: 'number',
         render: item => (
-          <Link
-            to={toRoute(routes.portal._admin.appReviewDetail, {
-              reviewId: item.review_id
-            })}
-          >
-            {item.review_id}
-          </Link>
+          <Link to={linkReview(item.review_id)}>{item.review_id}</Link>
         )
       },
       {
@@ -121,7 +118,7 @@ export default class Reviews extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/app-review/${item.review_id}`}>
+            <Link to={linkReview(item.review_id)}>
               {isUnprocessed ? (
                 <Button>{t('Start process')}</Button>
               ) : (
