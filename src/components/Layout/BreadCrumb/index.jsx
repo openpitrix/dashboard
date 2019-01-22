@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { toUrl } from 'utils/url';
+import { toRoute } from 'routes';
 import pathLink from './path-link';
 
 import styles from './index.scss';
@@ -23,24 +23,38 @@ export default class BreadCrumb extends Component {
     linkPath: ''
   };
 
+  genPath = (path, end = false) => {
+    const { t } = this.props;
+
+    if (!end) {
+      if (pathLink[path] !== undefined) {
+        return (
+          <label>
+            <Link to={toRoute(pathLink[path])}>{t(path)}</Link>
+            <span> / </span>
+          </label>
+        );
+      }
+      return (
+        <label>
+          <span>{t(path)}</span>
+          <span> / </span>
+        </label>
+      );
+    }
+    return <label>{t(path)}</label>;
+  };
+
   render() {
-    const {
-      children, linkPath, user, t
-    } = this.props;
+    const { children, linkPath, t } = this.props;
     const paths = linkPath.split('>').map(s => s.trim());
     const linkLen = paths.length - 1;
-    const pathToLink = pathLink(user.isDev);
 
     return (
       <div className={styles.breadCrumb}>
         {paths.map((path, index) => (
-          <Fragment key={path}>
-            {index !== linkLen && (
-              <label>
-                <Link to={toUrl(pathToLink[path]) || '/'}>{t(path)}</Link> /{' '}
-              </label>
-            )}
-            {index === linkLen && <label>{t(path)}</label>}
+          <Fragment key={index}>
+            {this.genPath(path, linkLen === index)}
           </Fragment>
         ))}
         {children}

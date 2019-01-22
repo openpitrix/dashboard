@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
@@ -7,13 +7,14 @@ import { translate } from 'react-i18next';
 import {
   Icon, Button, Table, Popover
 } from 'components/Base';
-import Layout, { TitleBanner, Dialog } from 'components/Layout';
+import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import { setPage } from 'mixins';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -31,7 +32,12 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   async componentDidMount() {
     const {
-      clusterStore, runtimeStore, userStore, user, match
+      rootStore,
+      clusterStore,
+      runtimeStore,
+      userStore,
+      user,
+      match
     } = this.props;
     const { appId } = match.params;
     const { isAdmin } = user;
@@ -56,14 +62,17 @@ export default class Clusters extends Component {
       status: ['active', 'deleted'],
       noLimit: true
     });
+
+    rootStore.listenToJob(this.handleJobs);
   }
 
   componentWillUnmount() {
-    const { clusterStore } = this.props;
+    const { rootStore, clusterStore } = this.props;
+    rootStore.cleanSock();
     clusterStore.reset();
   }
 
-  listenToJob = async ({
+  handleJobs = async ({
     op, rtype, rid, values = {}
   }) => {
     const { clusterStore } = this.props;
@@ -95,18 +104,18 @@ export default class Clusters extends Component {
     }
   };
 
-  getDetailUrl = clusterId => {
-    const { match } = this.props;
-    const { appId } = match.params;
-    let url = `/dashboard/cluster/${clusterId}`;
-    if (appId) {
-      const type = match.path.endsWith('sandbox-instances')
-        ? `sandbox-instance`
-        : 'user-instance';
-      url = `/dashboard/app/${appId}/${type}/${clusterId}`;
-    }
-    return url;
-  };
+  // getDetailUrl = clusterId => {
+  //   const { match } = this.props;
+  //   const { appId } = match.params;
+  //   let url = `/dashboard/cluster/${clusterId}`;
+  //   if (appId) {
+  //     const type = match.path.endsWith('sandbox-instances')
+  //       ? `sandbox-instance`
+  //       : 'user-instance';
+  //     url = `/dashboard/app/${appId}/${type}/${clusterId}`;
+  //   }
+  //   return url;
+  // };
 
   getAppTdShow = (appId, apps) => {
     const app = apps.find(item => item.app_id === appId);
@@ -130,7 +139,13 @@ export default class Clusters extends Component {
 
     return (
       <div id={cluster_id} className="operate-menu">
-        <Link to={`/dashboard/cluster/${cluster_id}`}>{t('View detail')}</Link>
+        <Link
+          to={toRoute(routes.portal.clusterDetail, {
+            clusterId: cluster_id
+          })}
+        >
+          {t('View detail')}
+        </Link>
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>
             {t('Start cluster')}
@@ -240,7 +255,7 @@ export default class Clusters extends Component {
     );
   }
 
-  render() {
+  renderMain() {
     const {
       clusterStore, appStore, userStore, user, match, t
     } = this.props;
@@ -267,7 +282,9 @@ export default class Clusters extends Component {
           <TdName
             name={cl.name}
             description={cl.cluster_id}
-            linkUrl={this.getDetailUrl(cl.cluster_id)}
+            linkUrl={toRoute(routes.portal.clusterDetail, {
+              clusterId: cl.cluster_id
+            })}
             noIcon
           />
         )
@@ -283,17 +300,15 @@ export default class Clusters extends Component {
         key: 'runtime_id',
         width: '130px',
         render: cl => (
-          <Link to={`/dashboard/runtime/${cl.runtime_id}`}>
-            <ProviderName
-              name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
-              provider={getObjName(
-                runtimes,
-                'runtime_id',
-                cl.runtime_id,
-                'provider'
-              )}
-            />
-          </Link>
+          <ProviderName
+            name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
+            provider={getObjName(
+              runtimes,
+              'runtime_id',
+              cl.runtime_id,
+              'provider'
+            )}
+          />
         )
       },
       {
@@ -364,19 +379,8 @@ export default class Clusters extends Component {
       noCancel: false
     };
 
-    const pageTitle = match.path.endsWith('sandbox-instances')
-      ? t('Sandbox-Instances')
-      : t('Customer-Instances');
-
     return (
-      <Layout listenToJob={this.listenToJob} pageTitle={pageTitle}>
-        {user.isNormal && (
-          <TitleBanner
-            title={t('My Instances')}
-            description={t('基于应用创建出的实例列表。')}
-          />
-        )}
-
+      <Fragment>
         <div>
           {this.renderToolbar()}
           <Table
@@ -390,7 +394,21 @@ export default class Clusters extends Component {
         </div>
 
         {this.renderDeleteModal()}
-      </Layout>
+      </Fragment>
     );
+  }
+
+  render() {
+    const { user, match, t } = this.props;
+
+    if (user.isUserPortal) {
+      return this.renderMain();
+    }
+
+    const pageTitle = match.path.endsWith('sandbox-instances')
+      ? t('Sandbox-Instances')
+      : t('Customer-Instances');
+
+    return <Layout pageTitle={pageTitle}>{this.renderMain()}</Layout>;
   }
 }

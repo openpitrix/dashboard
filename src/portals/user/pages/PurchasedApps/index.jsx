@@ -3,13 +3,16 @@ import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
+import Layout from 'portals/user/Layout';
 import { Button, Table } from 'components/Base';
-import Layout, { TitleBanner } from 'components/Layout';
+import Banner from 'components/Banner';
 import Toolbar from 'components/Toolbar';
 import TdName from 'components/TdName';
 import Stars from 'components/Stars';
 import { formatTime } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
+
+import routes, { toRoute } from 'routes';
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -55,9 +58,7 @@ export default class Purchased extends Component {
   }
 
   render() {
-    const {
-      appStore, clusterStore, user, t
-    } = this.props;
+    const { appStore, clusterStore, t } = this.props;
     const { apps, isLoading } = appStore;
     const { clusters } = clusterStore;
 
@@ -70,7 +71,7 @@ export default class Purchased extends Component {
           <TdName
             name={item.name}
             description={item.abstraction || item.description}
-            linkUrl={`/dashboard/purchased/${item.app_id}`}
+            linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
             image={item.icon}
             noCopy
           />
@@ -107,7 +108,7 @@ export default class Purchased extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/apps/${item.app_id}/deploy`}>
+            <Link to={toRoute(routes.portal.deploy, { appId: item.app_id })}>
               <Button>{t('Deploy Instance')}</Button>
             </Link>
           </div>
@@ -124,14 +125,14 @@ export default class Purchased extends Component {
     };
 
     return (
-      <Layout>
-        {user.isNormal && (
-          <TitleBanner
+      <Layout
+        banner={
+          <Banner
             title={t('已部署应用')}
             description={t('所有你部署过的应用都会展示在此。')}
           />
-        )}
-
+        }
+      >
         {this.renderToolbar()}
         <Table
           columns={columns}

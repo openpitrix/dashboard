@@ -2,8 +2,9 @@
 // see compat list: https://caniuse.com/#search=websocket
 
 import EventEmitter from 'events';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
+let inst = null;
 let sockInst; // singleton socket client
 
 const readyStates = ['connecting', 'open', 'closing', 'closed'];
@@ -12,7 +13,17 @@ const defaultOptions = {
 };
 let reopenCount = 0;
 
-class SockClient extends EventEmitter {
+export const getSock = (sockUrl, token) => {
+  if (inst && inst instanceof SockClient) {
+    return inst;
+  }
+  inst = new SockClient(SockClient.composeEndpoint(sockUrl, token));
+  inst.setUp();
+
+  return inst;
+};
+
+export default class SockClient extends EventEmitter {
   static composeEndpoint = (socketUrl, accessToken = '') => {
     const re = /wss?:\/\/([^\\?]+)/;
     const suffix = `?sid=${accessToken}`;
@@ -99,6 +110,23 @@ class SockClient extends EventEmitter {
     this.initClient();
     this.attachEvents();
   }
-}
 
-export default SockClient;
+  listenToJob(cb) {
+    this.on('ops-resource', (payload = {}) => {
+      const { type } = payload;
+      const { resource = {} } = payload;
+
+      cb({
+        op: `${type}:${resource.rtype}`,
+        type,
+        ...resource
+      });
+    });
+  }
+
+  clean() {
+    if (!isEmpty(this._events)) {
+      this._events = {};
+    }
+  }
+}

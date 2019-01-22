@@ -88,14 +88,11 @@
     }
 
     &.dev {
-      height: 40px;
-      > label {
-        line-height: 40px;
-      }
+      padding: 4px 0;
       @extend %has-bottom;
 
       .iconImg {
-        margin: 12px 8px 12px 15px;
+        margin: 8px 8px 8px 15px;
       }
     }
   }

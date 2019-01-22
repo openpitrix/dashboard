@@ -1,6 +1,5 @@
 import React from 'react';
 import { I18n } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
@@ -43,17 +42,15 @@ export default (runtimes, versions) => [
     key: 'runtime_id',
     width: '100px',
     render: obj => (
-      <Link to={`/dashboard/runtime/${obj.runtime_id}`}>
-        <ProviderName
-          name={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'name')}
-          provider={getObjName(
-            runtimes,
-            'runtime_id',
-            obj.runtime_id,
-            'provider'
-          )}
-        />
-      </Link>
+      <ProviderName
+        name={getObjName(runtimes, 'runtime_id', obj.runtime_id, 'name')}
+        provider={getObjName(
+          runtimes,
+          'runtime_id',
+          obj.runtime_id,
+          'provider'
+        )}
+      />
     )
   },
   {

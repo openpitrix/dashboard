@@ -1,16 +1,15 @@
-export default isDev => ({
-  Dashboard: '/:dash',
-  Store: '/:dash/apps',
-  'All Apps': '/:dash/apps',
-  'App Reviews': '/:dash/reviews',
-  Categories: '/:dash/categories',
-  Platform: '/:dash/repos',
-  Repos: '/:dash/repos',
-  Runtimes: isDev ? '/runtimes' : '/:dash/runtimes',
-  'All Clusters': '/:dash/clusters',
-  Users: '/:dash/users',
-  'All Users': '/:dash/users',
-  'My Apps': '/:dash/apps',
-  Test: '/:dash/clusters',
-  'Cloud Provider': '/:dash/cloud-providers'
-});
+export default {
+  Dashboard: '/:portal',
+  Store: '/',
+  'All Apps': '/:portal/apps',
+  'App Reviews': '/:portal/reviews',
+  Categories: '/:portal/categories',
+  Platform: '/:portal/repos',
+  // Repos: '/:portal/repos',
+  Runtimes: '/:portal/runtimes',
+  'All Clusters': '/:portal/clusters',
+  Users: '/:portal/users',
+  'All Users': '/:portal/users',
+  'My Apps': '/:portal/apps',
+  Test: '/:portal/clusters'
+};

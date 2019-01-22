@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
+
+import { pathWithoutFooter } from 'routes';
 
 import styles from './index.scss';
 
 @translate()
-export default class Footer extends PureComponent {
+export class Footer extends PureComponent {
   getCurrentLocale = () => typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
 
   changeLocale = (lang, e) => {
@@ -15,7 +18,11 @@ export default class Footer extends PureComponent {
   };
 
   render() {
-    const { t } = this.props;
+    const { t, match } = this.props;
+
+    if (pathWithoutFooter(match.path)) {
+      return null;
+    }
 
     return (
       <div className={styles.footer}>
@@ -72,3 +79,5 @@ export default class Footer extends PureComponent {
     );
   }
 }
+
+export default withRouter(Footer);

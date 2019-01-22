@@ -2,13 +2,9 @@
 
 .appList {
   position: relative;
-  margin-top: -10px;
   overflow: hidden;
   _zoom: 1;
-
-  &.fixNav {
-    top: 132px;
-  }
+  top: 30px;
 
   > div {
     &:nth-child(3n+4) {

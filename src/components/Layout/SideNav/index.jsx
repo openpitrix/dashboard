@@ -10,6 +10,8 @@ import { Icon, Popover, Image } from 'components/Base';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 
+import routes, { toRoute } from 'routes';
+
 import {
   subNavMap, getNavs, getDevSubNavs, getBottomNavs
 } from './navMap';
@@ -17,7 +19,7 @@ import {
 import styles from './index.scss';
 
 const keys = [
-  'applications',
+  'apply',
   'app',
   'review',
   'cluster',
@@ -31,6 +33,7 @@ const keys = [
   'provider',
   'setting',
   'cloud-env',
+  'admin',
   'dashboard'
 ];
 const changeKey = {
@@ -39,7 +42,8 @@ const changeKey = {
   runtime: 'repo',
   categories: 'app',
   category: 'app',
-  applications: 'provider'
+  admin: 'dashboard',
+  apply: 'provider'
 };
 
 @translate()
@@ -75,18 +79,6 @@ export class SideNav extends React.Component {
     }
   }
 
-  becomeDeveloper = type => {
-    const { rootStore } = this.props;
-
-    if (type === 'wrench' || type === 'back') {
-      rootStore.updateUser({
-        changedRole: type === 'back' ? '' : 'developer'
-      });
-      const url = type === 'back' ? '/dashboard/apps' : '/dashboard/my/apps';
-      location.replace(url);
-    }
-  };
-
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
@@ -106,19 +98,19 @@ export class SideNav extends React.Component {
   };
 
   renderSubsDev() {
-    const { t } = this.props;
-    const { url } = this.props.match;
-    const { appDetail, resetAppDetail } = this.props.appStore;
+    const { match, appStore, t } = this.props;
+    const { appDetail, resetAppDetail } = appStore;
+    const overviewLink = toRoute(routes.overview, 'dev');
 
-    if (url === '/dashboard') {
+    if (match.url === overviewLink) {
       return (
         <div className={styles.subNav}>
           <div className={styles.title}>{t('Dashboard')}</div>
           <Link
             className={classnames(styles.link, {
-              [styles.active]: url.indexOf('dashboard') > -1
+              [styles.active]: match.url.indexOf('/dev') > -1
             })}
-            to="/dashboard"
+            to={overviewLink}
           >
             {t('Overview')}
           </Link>
@@ -144,7 +136,7 @@ export class SideNav extends React.Component {
               <Link
                 key={item.name}
                 className={classnames(styles.link, {
-                  [styles.active]: url.indexOf(item.active) > -1,
+                  [styles.active]: match.url.indexOf(item.active) > -1,
                   [styles.disabled]: item.disabled
                 })}
                 to={item.link}
@@ -190,11 +182,10 @@ export class SideNav extends React.Component {
 
   renderNavsBottom() {
     const { t } = this.props;
-    const bottomNavs = getBottomNavs;
 
     return (
       <ul className={styles.bottomNav}>
-        {bottomNavs.map(
+        {getBottomNavs.map(
           nav => (nav.iconName === 'human' ? (
               <li key={nav.iconName}>
                 <Popover content={<MenuLayer />} className={styles.iconOuter}>
@@ -240,8 +231,8 @@ export class SideNav extends React.Component {
       <div className={styles.nav}>
         <ul className={styles.topNav}>
           {hasBack ? (
-            <li onClick={() => this.becomeDeveloper('back')}>
-              <Link to="#">
+            <li>
+              <Link to={toRoute(routes.portal.apps, { portal: 'isv' })}>
                 <Icon
                   className={styles.icon}
                   size={20}
@@ -263,7 +254,9 @@ export class SideNav extends React.Component {
           )}
           {menuApps.map(nav => (
             <li key={nav.app_id} className={styles.devItem}>
-              <Link to={`/dashboard/app/${nav.app_id}/versions`}>
+              <Link
+                to={toRoute(routes.portal._dev.versions, { appId: nav.app_id })}
+              >
                 <span
                   className={classnames(styles.imageOuter, {
                     [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
@@ -277,7 +270,10 @@ export class SideNav extends React.Component {
                   />
                 </span>
               </Link>
-              <NavLink exact to={`/dashboard/app/${nav.app_id}/versions`}>
+              <NavLink
+                exact
+                to={toRoute(routes.portal._dev.versions, { appId: nav.app_id })}
+              >
                 <label className={styles.title}>{t(nav.name)}</label>
               </NavLink>
             </li>
@@ -286,26 +282,36 @@ export class SideNav extends React.Component {
             <NavLink
               className={styles.addOuter}
               exact
-              to="/dashboard/app/create"
+              to={toRoute(routes.portal._dev.appCreate)}
             >
               <Icon name="add" size={20} type="dark" className={styles.icon} />
             </NavLink>
-            <NavLink exact to="/dashboard/app/create" className={styles.title}>
+            <NavLink
+              exact
+              to={toRoute(routes.portal._dev.appCreate)}
+              className={styles.title}
+            >
               {t('Create app')}
             </NavLink>
           </li>
           <li>
-            <NavLink exact to="/dashboard/my/apps">
+            <NavLink exact to={toRoute(routes.portal.apps)}>
               <Icon
                 name="more"
                 size={20}
                 className={styles.icon}
                 type={
-                  pathname.indexOf('/dashboard/my/apps') > -1 ? 'light' : 'dark'
+                  pathname.indexOf(toRoute(routes.portal.apps)) > -1
+                    ? 'light'
+                    : 'dark'
                 }
               />
             </NavLink>
-            <NavLink exact to="/dashboard/my/apps" className={styles.title}>
+            <NavLink
+              exact
+              to={toRoute(routes.portal.apps)}
+              className={styles.title}
+            >
               {t('View all')}
             </NavLink>
           </li>
@@ -333,7 +339,6 @@ export class SideNav extends React.Component {
           {navs.map(nav => (
             <li
               key={nav.iconName}
-              onClick={() => this.becomeDeveloper(nav.iconName)}
               className={classnames(styles.navItem, {
                 [styles.disabled]: nav.disabled
               })}

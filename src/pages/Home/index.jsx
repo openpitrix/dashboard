@@ -4,8 +4,9 @@ import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 import { translate } from 'react-i18next';
 
+import Layout from 'portals/user/Layout';
 import { Icon } from 'components/Base';
-import Layout, { TitleBanner } from 'components/Layout';
+import Banner from 'components/Banner';
 import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
@@ -26,8 +27,6 @@ const cateLatest = 'latest';
 }))
 @observer
 export default class Home extends Component {
-  static isHome = true;
-
   state = {
     pageLoading: true,
     cate: ''
@@ -36,11 +35,11 @@ export default class Home extends Component {
   async componentDidMount() {
     const { rootStore, appStore, categoryStore } = this.props;
 
-    rootStore.setNavFix(Boolean(this.category || this.searchWord));
+    rootStore.setNavFix(this.needFixNav);
 
     if (!(this.category || this.searchWord)) {
       this.threshold = this.getThreshold();
-      window.onscroll = _.debounce(this.handleScroll, 100);
+      window.onscroll = _.debounce(this.handleScroll, 200);
     }
     window.scroll({ top: 0 });
 
@@ -108,6 +107,10 @@ export default class Home extends Component {
     return this.state.cate || getUrlParam('cate');
   }
 
+  get needFixNav() {
+    return Boolean(this.category || this.searchWord);
+  }
+
   getThreshold() {
     const headerNode = document.querySelector('.header');
     const bannerNode = document.querySelector('.banner');
@@ -124,7 +127,7 @@ export default class Home extends Component {
       return;
     }
 
-    const needFixNav = getScrollTop() > this.threshold;
+    const needFixNav = getScrollTop() > this.threshold || this.needFixNav;
 
     if (needFixNav && !fixNav) {
       rootStore.setNavFix(true);
@@ -219,44 +222,43 @@ export default class Home extends Component {
     );
 
     return (
-      <Layout isHome>
-        <div
-          className={classnames(styles.content, { [styles.fixNav]: fixNav })}
-        >
-          <TitleBanner
+      <Layout
+        className={classnames(styles.content, { [styles.fixNav]: fixNav })}
+        banner={
+          <Banner
             title="App Store"
             description={t('APP_STORE_DESC', { total: countStoreApps })}
             hasSearch
             stretch
           />
-          {this.renderCateMenu()}
+        }
+      >
+        {this.renderCateMenu()}
+        <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
+          <InfiniteScroll
+            className={styles.apps}
+            pageStart={currentPage}
+            loadMore={loadMore}
+            isLoading={isLoading}
+            hasMore={Boolean(this.category || this.searchWord) && hasMore}
+          >
+            <AppList
+              apps={apps}
+              title={categoryTitle}
+              search={this.searchWord}
+              isLoading={pageLoading}
+              fixNav={fixNav}
+            />
+          </InfiniteScroll>
 
-          <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
-            <InfiniteScroll
-              className={styles.apps}
-              pageStart={currentPage}
-              loadMore={loadMore}
-              isLoading={isLoading}
-              hasMore={Boolean(this.category || this.searchWord) && hasMore}
-            >
-              <AppList
-                apps={apps}
-                title={categoryTitle}
-                search={this.searchWord}
-                isLoading={pageLoading}
-                fixNav={fixNav}
-              />
-            </InfiniteScroll>
-
-            {isProgressive && (
-              <div className={styles.loading}>
-                <div className={styles.loadOuter}>
-                  <div className={styles.loader} />
-                </div>
+          {isProgressive && (
+            <div className={styles.loading}>
+              <div className={styles.loadOuter}>
+                <div className={styles.loader} />
               </div>
-            )}
-          </Loading>
-        </div>
+            </div>
+          )}
+        </Loading>
       </Layout>
     );
   }

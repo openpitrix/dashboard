@@ -11,6 +11,7 @@ import {
 } from 'components/Base';
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -411,7 +412,7 @@ export default class Info extends Component {
           <div className={styles.auditNote}>
             <Icon name="exclamation" size={20} className={styles.icon} />
             {t('UNDER_REVIEW_TIPS')}
-            <Link to={`/dashboard/app/${appId}/versions`}>
+            <Link to={toRoute(routes.portal._dev.versions, { appId })}>
               {t('View version record')} →
             </Link>
           </div>

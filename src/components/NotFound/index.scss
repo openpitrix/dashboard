@@ -1,0 +1,11 @@
+@import "~scss/vars";
+
+.page {
+  margin-top: $header-height + 20px;
+  @include centerAll;
+
+  .txt {
+    font-size: 2rem;
+    color: #aaa;
+  }
+}

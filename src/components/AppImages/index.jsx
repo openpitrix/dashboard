@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 import { inject } from 'mobx-react';
 
 import { Image } from 'components/Base';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -34,7 +35,7 @@ export default class AppImages extends Component {
             <Link
               className={styles.image}
               key={app_id}
-              to={`/apps/${app_id}`}
+              to={toRoute(routes.appDetail, { appId: app_id })}
               title={name}
             >
               <Image src={icon} iconLetter={name} className={styles.img} />

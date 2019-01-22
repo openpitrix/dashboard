@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64';
 import yamlJs from 'js-yaml';
 
 import { flattenObject } from 'utils';
+
 import Store from '../Store';
 
 export default class AppDeployStore extends Store {
@@ -42,7 +43,7 @@ export default class AppDeployStore extends Store {
   }
 
   get createActionName() {
-    return this.getUser().isNormal
+    return this.getUser.isUserPortal
       ? 'clusters/create'
       : 'debug_clusters/create';
   }

@@ -13,9 +13,9 @@ import SideNav from './SideNav';
 import styles from './index.scss';
 
 @translate()
-@inject(({ rootStore, sock }) => ({
-  user: rootStore.user,
-  sock
+@inject(({ rootStore }) => ({
+  rootStore,
+  user: rootStore.user
 }))
 export class Layout extends Component {
   static propTypes = {
@@ -46,30 +46,6 @@ export class Layout extends Component {
     hasBack: false,
     centerWidth: 1200
   };
-
-  componentDidMount() {
-    const { sock, listenToJob } = this.props;
-
-    sock
-      && sock.on('ops-resource', (payload = {}) => {
-        const { type } = payload;
-        const { resource = {} } = payload;
-
-        listenToJob({
-          op: `${type}:${resource.rtype}`,
-          type,
-          ...resource
-        });
-      });
-  }
-
-  componentWillUnmount() {
-    const { sock } = this.props;
-
-    if (sock && !isEmpty(sock._events)) {
-      sock._events = {};
-    }
-  }
 
   goBack = () => {
     const { history } = this.props;

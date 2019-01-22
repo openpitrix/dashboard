@@ -47,9 +47,21 @@ export default class RootStore extends Store {
     return key ? appConf[key] : appConf;
   };
 
+  listenToJob = cb => {
+    if (this.sock) {
+      this.sock.listenToJob(cb);
+    }
+  };
+
+  cleanSock = () => {
+    if (this.sock) {
+      this.sock.clean();
+    }
+  };
+
   @action
   setNavFix = fixNav => {
-    if (Date.now() - this.lastSetFixStamp < 150) {
+    if (Date.now() - this.lastSetFixStamp < 500) {
       // fixNav在临界值造成的抖动，忽略此次设置
       return;
     }

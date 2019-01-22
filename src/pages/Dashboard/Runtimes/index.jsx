@@ -5,12 +5,7 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
-import Layout, {
-  Grid,
-  Section,
-  BreadCrumb,
-  TitleBanner
-} from 'components/Layout';
+import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
 import { providers, tabs } from 'config/runtimes';
@@ -136,39 +131,40 @@ export default class Runtimes extends React.Component {
     );
   }
 
+  renderMain() {
+    return (
+      <div className={styles.page}>
+        <BreadCrumb linkPath="Cloud Provider > Platform" />
+
+        <Grid>
+          <Section size={3} className={styles.leftPanel}>
+            {this.renderPlatforms()}
+          </Section>
+          <Section size={9} className={styles.rightPanel}>
+            {this.renderContent()}
+          </Section>
+        </Grid>
+      </div>
+    );
+  }
+
   render() {
-    const { user, t } = this.props;
-    const title = user.isNormal ? 'My Runtimes' : 'Testing env';
+    const { user } = this.props;
+
+    if (user.isUserPortal) {
+      return this.renderMain();
+    }
 
     return (
       <Layout
         noSubMenu
-        pageTitle={title}
+        pageTitle="Testing env"
         titleCls={styles.pageTitle}
         className={classnames(styles.layout, {
           [styles.isNormal]: user.isNormal
         })}
       >
-        <div className={styles.page}>
-          {user.isNormal && (
-            <TitleBanner
-              title={t('我的环境')}
-              description={t(
-                '平台同时支持多种云环境，可以在这里进行统一管理。'
-              )}
-            />
-          )}
-          <BreadCrumb linkPath="Cloud Provider > Platform" />
-
-          <Grid>
-            <Section size={3} className={styles.leftPanel}>
-              {this.renderPlatforms()}
-            </Section>
-            <Section size={9} className={styles.rightPanel}>
-              {this.renderContent()}
-            </Section>
-          </Grid>
-        </div>
+        {this.renderMain()}
       </Layout>
     );
   }

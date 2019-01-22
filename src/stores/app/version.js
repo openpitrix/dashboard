@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
 import { reviewStatus } from 'config/version';
+
 import Store from '../Store';
 
 const defaultStatus = [
@@ -97,6 +98,10 @@ export default class AppVersionStore extends Store {
 
   get userStore() {
     return this.getStore('user');
+  }
+
+  get describeVersionName() {
+    return this.getUser.isUserPortal ? 'active_app_versions' : 'app_versions';
   }
 
   @action
@@ -524,10 +529,9 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  fetchTypeVersions = async (appId, isActive) => {
-    const url = isActive ? 'active_app_versions' : 'app_versions';
+  fetchTypeVersions = async appId => {
     this.isLoading = true;
-    const result = await this.request.get(url, {
+    const result = await this.request.get(this.describeVersionName, {
       limit: this.maxLimit,
       app_id: appId
     });

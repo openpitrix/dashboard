@@ -12,12 +12,14 @@ import { versionTypes } from 'config/version-types';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { getUrlParam } from 'utils';
+import routes, { toRoute } from 'routes';
 import Card from './Card';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   appStore: rootStore.appStore,
   appCreateStore: rootStore.appCreateStore,
   user: rootStore.user
@@ -213,7 +215,11 @@ export default class AppAdd extends Component {
             <Button
               type="primary"
               onClick={() => {
-                history.push(`/dashboard/apps/${appDetail.app_id}/deploy`);
+                history.push(
+                  toRoute(routes.portal.deploy, {
+                    appId: appDetail.app_id
+                  })
+                );
               }}
             >
               {t('Deploy Test')}
@@ -222,9 +228,7 @@ export default class AppAdd extends Component {
               <Button
                 onClick={() => {
                   if (isCreateApp) {
-                    history.replace(
-                      `/dashboard/app/${appDetail.app_id}/create-version`
-                    );
+                    history.replace(toRoute(routes.portal._dev.appCreate));
                   } else {
                     appCreateStore.reload({ isCreateApp, appId });
                   }

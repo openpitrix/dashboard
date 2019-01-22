@@ -14,6 +14,7 @@ import Loading from 'components/Loading';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 
 import styles from './index.scss';
 
@@ -132,7 +133,7 @@ export default class AppDeploy extends Component {
 
   handleSubmit = async () => {
     const {
-      appDeployStore, user, history, match, t
+      appDeployStore, history, match, t
     } = this.props;
     const {
       isK8s, runtimeId, versionId, create
@@ -169,18 +170,12 @@ export default class AppDeploy extends Component {
       runtime_id: runtimeId,
       conf: conf.replace(/>>>>>>/g, '.')
     });
-    console.log({
-      app_id: appId,
-      version_id: versionId,
-      runtime_id: runtimeId,
-      conf: conf.replace(/>>>>>>/g, '.')
-    });
 
     if (res && _.get(res, 'cluster_id')) {
       appDeployStore.success(t('Deploy app successfully'));
-      const path = user.isDev
-        ? `/dashboard/app/${appId}/sandbox-instances`
-        : '/dashboard/clusters';
+      const path = getPortalFromPath() === 'dev'
+        ? toRoute(routes.portal._dev.sandboxInstances, { appId })
+        : toRoute(routes.portal.clusters, { portal: 'user' });
       setTimeout(() => history.push(path), 1000);
     }
   };
@@ -323,7 +318,7 @@ export default class AppDeploy extends Component {
             </Select.Option>
           ))}
         </Select>
-        <Link to={`/dashboard/runtime/create${createK8S}`}>
+        <Link to={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}>
           {t('Create Runtime')}
         </Link>
       </Card>

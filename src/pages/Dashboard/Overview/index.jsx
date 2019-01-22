@@ -12,6 +12,7 @@ import TdName, { ProviderName } from 'components/TdName';
 import { Table } from 'components/Base';
 import { getObjName, getPastTime } from 'utils';
 
+import routes, { toRoute } from 'routes';
 import UserInfo from './UserInfo';
 import TotalCard from './TotalCard';
 import Panel from './Panel';
@@ -51,7 +52,6 @@ export default class Overview extends React.Component {
     const {
       appStore,
       clusterStore,
-      repoStore,
       runtimeStore,
       categoryStore,
       userStore,
@@ -60,9 +60,6 @@ export default class Overview extends React.Component {
     if (user.isAdmin) {
       // query top repos
       await appStore.fetchStatistics();
-      const topRepoIds = _.get(appStore, 'summaryInfo.topRepos', []).map(
-        item => item.id
-      );
       // query top apps, cluster number
       await clusterStore.fetchStatistics();
       const topAppIds = _.get(clusterStore, 'summaryInfo.topApps', []).map(
@@ -75,11 +72,6 @@ export default class Overview extends React.Component {
       });
       // query app total, top apps name
       await appStore.fetchAll({ app_id: topAppIds });
-      // query app total, top repos name
-      await repoStore.fetchAll({
-        repo_id: topRepoIds,
-        status: ['active', 'deleted']
-      });
       // query category total
       await categoryStore.fetchAll({ limit: 1 });
       // query user total
@@ -93,7 +85,6 @@ export default class Overview extends React.Component {
     }
 
     if (user.isDev) {
-      await repoStore.fetchAll({ visibility: ['private'], limit: 1 });
       await runtimeStore.fetchAll({ noLimit: true });
       await appStore.fetchAll({ limit: 5 });
       await clusterStore.fetchAll({ limit: 5 });
@@ -102,33 +93,28 @@ export default class Overview extends React.Component {
   }
 
   componentWillUnmount() {
-    const {
-      appStore, clusterStore, runtimeStore, repoStore
-    } = this.props;
+    const { appStore, clusterStore, runtimeStore } = this.props;
 
     appStore.reset();
     clusterStore.reset();
     runtimeStore.reset();
-    repoStore.reset();
   }
 
-  handleClickTotalCard = label => {
+  handleClickTotalCard = (label, type) => {
     const { user } = this.props;
 
     if (user.isDev && label === 'runtimes') {
       this.props.history.push('/runtimes');
     } else {
-      this.props.history.push(`/dashboard/${label.toLowerCase()}`);
+      this.props.history.push(
+        toRoute(routes.portal[type][label.toLowerCase()])
+      );
     }
   };
 
   adminView = () => {
     const {
-      appStore,
-      clusterStore,
-      repoStore,
-      categoryStore,
-      userStore
+      appStore, clusterStore, categoryStore, userStore
     } = this.props;
     const { isLoading } = this.state;
 
@@ -145,7 +131,6 @@ export default class Overview extends React.Component {
       Users: 'group'
     };
 
-    const topRepos = _.get(appStore, 'summaryInfo.topRepos', []);
     const topApps = _.get(clusterStore, 'summaryInfo.topApps', []);
     const latestClusters = clusterStore.clusters.slice(0, 5);
 
@@ -165,7 +150,7 @@ export default class Overview extends React.Component {
                   name={label}
                   iconName={iconName[label]}
                   total={summary[label]}
-                  onClick={this.handleClickTotalCard.bind(this, label)}
+                  onClick={() => this.handleClickTotalCard(label, '_admin')}
                 />
               </Section>
             ))}
@@ -174,23 +159,7 @@ export default class Overview extends React.Component {
 
         <Row>
           <Grid>
-            <Section>
-              <Panel
-                type="repo"
-                title="Top Repos"
-                linkTo="/dashboard/repos"
-                buttonTo="/dashboard/repo/create"
-                len={topRepos.length}
-              >
-                <RepoList
-                  topRepos={topRepos}
-                  repos={repoStore.repos}
-                  type="repo"
-                />
-              </Panel>
-            </Section>
-
-            <Section>
+            <Section size={6}>
               <Panel
                 type="app"
                 title="Top Apps"
@@ -202,7 +171,7 @@ export default class Overview extends React.Component {
               </Panel>
             </Section>
 
-            <Section>
+            <Section size={6}>
               <Panel
                 type="cluster"
                 title="Latest Clusters"
@@ -379,7 +348,7 @@ export default class Overview extends React.Component {
                 iconName={`cloud`}
                 iconSize={64}
                 total={repoStore.totalCount}
-                onClick={this.handleClickTotalCard.bind(this, 'repos')}
+                onClick={() => this.handleClickTotalCard('repos', '_dev')}
               />
             </Section>
             <Section>
@@ -388,7 +357,7 @@ export default class Overview extends React.Component {
                 iconName={`stateful-set`}
                 iconSize={64}
                 total={runtimeStore.totalCount}
-                onClick={this.handleClickTotalCard.bind(this, 'runtimes')}
+                onClick={() => this.handleClickTotalCard('runtimes', '_dev')}
               />
             </Section>
           </Grid>

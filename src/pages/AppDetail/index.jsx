@@ -7,15 +7,16 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import Layout, {
-  Grid, Section, Card, TitleBanner
-} from 'components/Layout';
+import Layout from 'portals/user/Layout';
+import { Grid, Section, Card } from 'components/Layout';
 import { Button, Image } from 'components/Base';
+import Banner from 'components/Banner';
 import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
 import { formatTime } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute } from 'routes';
 import Screenshots from './Screenshots';
 import Versions from './Versions';
 
@@ -208,7 +209,10 @@ export default class AppDetail extends Component {
     const versions = selectItem.versions || [];
     const selectVersion = activeVersion || _.get(versions, '[0].version_id');
 
-    const url = `/dashboard/apps/${appDetail.app_id}/deploy/${selectVersion}`;
+    const deployUrl = toRoute(routes.portal.deploy, {
+      appId: appDetail.app_id,
+      versionId: selectVersion
+    });
 
     return (
       <div className={styles.typeVersions}>
@@ -249,11 +253,11 @@ export default class AppDetail extends Component {
           <dt />
           <dd>
             {user.user_id ? (
-              <Link to={url}>
+              <Link to={deployUrl}>
                 <Button type="primary">{t('Deploy now')}</Button>
               </Link>
             ) : (
-              <Link to={`/login?redirect_url=${url}`}>
+              <Link to={`/login?redirect_url=${deployUrl}`}>
                 <Button type="primary">{t('Deploy after login')}</Button>
               </Link>
             )}
@@ -301,14 +305,17 @@ export default class AppDetail extends Component {
     const { isLoading } = this.state;
 
     return (
-      <Layout className={classnames({ [styles.createOuter]: isCreate })} isHome>
-        {!isCreate && (
-          <TitleBanner
+      <Layout
+        className={classnames({ [styles.createOuter]: isCreate })}
+        banner={
+          <Banner
             hasSearch
+            shrink
             title={t('App Store')}
             description={t('APP_TOTAL_DESCRIPTION', { total: totalCount })}
           />
-        )}
+        }
+      >
         <Grid>
           <Section size={8}>
             <Loading isLoading={isLoading}>

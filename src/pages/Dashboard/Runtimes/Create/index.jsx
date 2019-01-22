@@ -5,7 +5,8 @@ import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 import { isHelm } from 'utils';
-import { toUrl, getUrlParam } from 'utils/url';
+import { getUrlParam } from 'utils/url';
+import routes, { toRoute } from 'routes';
 
 import {
   Icon, Button, Notification, Input
@@ -50,7 +51,7 @@ export default class CreateTestingEnv extends React.Component {
     }
 
     if (activeStep === 2 && (this.doneCreateRt || this.doneCreateCredential)) {
-      history.push(toUrl(`/:dash/runtimes`));
+      history.push(toRoute(routes.portal.runtimes));
     }
   }
 
@@ -87,7 +88,7 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   handleEsc = () => {
-    this.props.history.push(toUrl(`/:dash/runtimes`));
+    this.props.history.push(toRoute(routes.portal.runtimes));
   };
 
   renderCredentialForm() {

@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import Status from 'components/Status';
 import TableTypes from 'components/TableTypes';
 import { formatTime } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -50,17 +51,14 @@ export default class Applications extends Component {
     const { vendors, activeType } = vendorStore;
     const isUnreviewed = activeType === 'unreviewed';
 
+    const linkUrl = id => toRoute(routes.portal._admin.providerApplyDetail, { applyId: id });
     let columns = [
       {
         title: t('Apply No'),
         key: 'number',
         width: '135px',
         className: 'number',
-        render: item => (
-          <Link to={`/dashboard/application/${item.user_id}`}>
-            {item.user_id}
-          </Link>
-        )
+        render: item => <Link to={linkUrl(item.user_id)}>{item.user_id}</Link>
       },
       {
         title: t('Review result'),
@@ -74,9 +72,7 @@ export default class Applications extends Component {
         render: item => (
           <div className={styles.company}>
             <div className={styles.name}>
-              <Link to={`/dashboard/application/${item.user_id}`}>
-                {item.company_name}
-              </Link>
+              <Link to={linkUrl(item.user_id)}>{item.company_name}</Link>
             </div>
             <div className={styles.introduce}>{item.company_profile}</div>
           </div>
@@ -109,7 +105,7 @@ export default class Applications extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={`/dashboard/application/${item.user_id}`}>
+            <Link to={linkUrl(item.user_id)}>
               {isUnreviewed ? (
                 <Button>{t('Start process')}</Button>
               ) : (

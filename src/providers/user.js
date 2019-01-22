@@ -1,11 +1,17 @@
 import { getCookie, setCookie } from 'utils';
 import { map } from 'lodash';
 
+import { getPortalFromPath } from 'routes';
+
 const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'developer';
+// const ROLE_ISV = 'isv';
 const ROLE_NORMAL = 'user';
 
-export default class UserProvider {
+// singleton
+let user = null;
+
+class UserProvider {
   constructor() {
     this.role = getCookie('role');
     this.username = getCookie('username');
@@ -34,22 +40,40 @@ export default class UserProvider {
   }
 
   get isDev() {
-    return (
-      this.changedRole === ROLE_DEV
-      || (this.role === ROLE_DEV && this.changedRole !== ROLE_NORMAL)
-    );
+    return this.role === ROLE_DEV;
   }
 
   get isNormal() {
-    return this.changedRole === ROLE_NORMAL || this.role === ROLE_NORMAL;
+    return this.role === ROLE_NORMAL;
   }
 
   // fixme: mock isv role
   get isISV() {
-    return (
-      this.changedRole !== ROLE_DEV
-      && this.role === ROLE_ADMIN
-      && this.username === 'isv'
-    );
+    return this.role === ROLE_ADMIN && this.username === 'isv';
+  }
+
+  get isUserPortal() {
+    return ['', 'user'].includes(getPortalFromPath());
+  }
+
+  get defaultPortal() {
+    if (this.isAdmin) {
+      return 'admin';
+    }
+    if (this.isISV) {
+      return 'isv';
+    }
+    if (this.isDev) {
+      return 'dev';
+    }
+    return 'user';
   }
 }
+
+export default (() => {
+  if (!user) {
+    user = new UserProvider();
+  }
+
+  return user;
+})();

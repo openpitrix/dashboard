@@ -39,7 +39,7 @@ export default class RuntimeStore extends Store {
   @observable runtimeDeleted = null;
 
   get actionName() {
-    return this.getUser().isDev ? 'debug_runtimes' : 'runtimes';
+    return this.getUser.isUserPortal ? 'runtimes' : 'debug_runtimes';
   }
 
   @action

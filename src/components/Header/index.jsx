@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 
 import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
-import { toUrl } from 'utils/url';
+import routes, { toRoute, pathWithoutHeader } from 'routes';
 
 import styles from './index.scss';
 
@@ -26,7 +26,11 @@ const LinkItem = ({ to, title }) => (
 @observer
 export class Header extends Component {
   static propTypes = {
-    isHome: PropTypes.bool
+    alwaysShow: PropTypes.bool
+  };
+
+  static defaultProps = {
+    alwaysShow: false
   };
 
   renderMenus = () => {
@@ -39,18 +43,23 @@ export class Header extends Component {
     return (
       <div className={styles.menus}>
         <LinkItem to="/" title={t('App Store')} />
-        <LinkItem to={toUrl('/:dash/purchased')} title={t('Purchased')} />
-        <LinkItem to={toUrl('/:dash/clusters')} title={t('My Instances')} />
-        <LinkItem to={toUrl('/:dash/runtimes')} title={t('My Runtimes')} />
+        <LinkItem to={toRoute(routes.portal.apps)} title={t('Purchased')} />
+        <LinkItem
+          to={toRoute(routes.portal.clusters, { portal: 'user' })}
+          title={t('My Instances')}
+        />
+        <LinkItem
+          to={toRoute(routes.portal.runtimes)}
+          title={t('My Runtimes')}
+        />
       </div>
     );
   };
 
   renderMenuBtns() {
-    const { t } = this.props;
-    const { username } = this.props.user;
+    const { t, user } = this.props;
 
-    if (!username) {
+    if (!user.isLoggedIn()) {
       return (
         <NavLink to="/login" className={styles.login}>
           {t('Sign In')}
@@ -61,7 +70,7 @@ export class Header extends Component {
     return (
       <div className={styles.user}>
         <Popover content={<MenuLayer />}>
-          {username}
+          {user.username}
           <Icon name="caret-down" className={styles.icon} type="dark" />
         </Popover>
       </div>
@@ -69,12 +78,18 @@ export class Header extends Component {
   }
 
   render() {
-    const { t, user } = this.props;
+    const {
+      t, user, match, alwaysShow
+    } = this.props;
+
+    if (!alwaysShow && pathWithoutHeader(match.path)) {
+      return null;
+    }
 
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
-          {user.user_id ? (
+          {user.isLoggedIn() ? (
             <Link className={styles.logoIcon} to="/">
               <Icon
                 className={styles.icon}
@@ -92,7 +107,7 @@ export class Header extends Component {
           {this.renderMenus()}
           {this.renderMenuBtns()}
 
-          {user.user_id && (
+          {user.isLoggedIn() && (
             <Fragment>
               <Icon
                 name="mail"
@@ -100,7 +115,10 @@ export class Header extends Component {
                 type="white"
                 className={styles.mail}
               />
-              <Link to="/dashboard/provider/submit" className={styles.upgrade}>
+              <Link
+                to={toRoute(routes.portal._user.providerApply, 'user')}
+                className={styles.upgrade}
+              >
                 <Icon
                   name="shield"
                   size={16}

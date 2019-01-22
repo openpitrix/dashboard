@@ -6,12 +6,12 @@ import { Image } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
-import { toUrl } from 'utils/url';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-const clusterLink = id => toUrl(`/:dash/cluster/${id}`);
+const clusterLink = id => toRoute(routes.portal.clusterDetail, { clusterId: id });
 
 const columns = (t, apps, isDev) => [
   {
@@ -36,7 +36,6 @@ const columns = (t, apps, isDev) => [
   {
     title: t('App / Delivery type / Version'),
     key: 'app_id',
-    width: '150px',
     render: cl => {
       const app = _.find(apps, { app_id: cl.app_id }) || {};
       const {
@@ -48,7 +47,11 @@ const columns = (t, apps, isDev) => [
           <span className={styles.icon}>
             <Image src={icon} iconLetter={name} />
             <Link
-              to={isDev ? toUrl(`/:dash/app/${app_id}`) : `/store/${app_id}`}
+              to={
+                isDev
+                  ? toRoute(routes.portal.appDetail, { appId: app_id })
+                  : toRoute(routes.appDetail, { appId: app_id })
+              }
             >
               {name}
             </Link>
