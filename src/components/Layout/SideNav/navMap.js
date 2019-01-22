@@ -93,10 +93,10 @@ export const getNavs = {
       title: 'Team Members'
     },
     {
-      link: '/dashboard/provider-detail',
+      link: toRoute(routes.portal._isv.provider),
       iconName: 'shield',
       active: 'provider-detail',
-      title: '服务商详情'
+      title: 'Service Provider Detail'
     }
   ],
   developer: [

@@ -128,7 +128,7 @@ class AppStore extends Store {
       const params = {
         sort_key: 'status_time',
         limit: 5,
-        status: defaultStatus
+        status: this.defaultStatus
       };
       const result = await this.request.get('apps', params);
 
