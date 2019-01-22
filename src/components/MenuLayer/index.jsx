@@ -7,11 +7,11 @@ import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import { userMenus } from 'components/Layout/SideNav/navMap';
-import routes, { toRoute, isUserPortal } from 'routes';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-const roleToProtal = {
+const roleToPortal = {
   developer: {
     icon: 'wrench',
     name: 'Develop Center',
@@ -24,7 +24,7 @@ const roleToProtal = {
   },
   global_admin: {
     icon: 'dashboard',
-    name: 'Manage console',
+    name: 'Manage Console',
     url: toRoute(routes.portal.apps, { portal: 'admin' })
   },
   user: {
@@ -47,8 +47,8 @@ export class MenuLayer extends Component {
 
   render() {
     const { user, className, t } = this.props;
-    const { isNormal, role } = user;
-    const protal = isUserPortal() ? roleToProtal[role] || {} : roleToProtal.user;
+    const { isNormal, role, isUserPortal } = user;
+    const portal = isUserPortal ? roleToPortal[role] || {} : roleToPortal.user;
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>
@@ -65,7 +65,7 @@ export class MenuLayer extends Component {
           {!isNormal && (
             <span className={styles.devIconOuter}>
               <Icon
-                name={protal.icon}
+                name={portal.icon}
                 type="white"
                 size={8}
                 className={styles.devIcon}
@@ -77,12 +77,12 @@ export class MenuLayer extends Component {
         {!isNormal && (
           <li className={styles.dev}>
             <Icon
-              name={protal.icon}
+              name={portal.icon}
               type="dark"
               size={16}
               className={styles.iconImg}
             />
-            <Link to={protal.url}>{t(protal.name)}</Link>
+            <Link to={portal.url}>{t(portal.name)}</Link>
           </li>
         )}
 

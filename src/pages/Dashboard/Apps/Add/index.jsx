@@ -19,6 +19,7 @@ import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
+  rootStore,
   appStore: rootStore.appStore,
   appCreateStore: rootStore.appCreateStore,
   user: rootStore.user

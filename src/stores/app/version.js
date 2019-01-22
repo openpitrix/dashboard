@@ -4,7 +4,6 @@ import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
 import { reviewStatus } from 'config/version';
-import { isUserPortal } from 'routes';
 
 import Store from '../Store';
 
@@ -102,7 +101,7 @@ export default class AppVersionStore extends Store {
   }
 
   get describeVersionName() {
-    return isUserPortal ? 'active_app_versions' : 'app_versions';
+    return this.getUser.isUserPortal ? 'active_app_versions' : 'app_versions';
   }
 
   @action
@@ -530,7 +529,7 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  fetchTypeVersions = async (appId) => {
+  fetchTypeVersions = async appId => {
     this.isLoading = true;
     const result = await this.request.get(this.describeVersionName, {
       limit: this.maxLimit,

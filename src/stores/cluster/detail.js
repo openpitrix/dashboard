@@ -3,7 +3,6 @@ import _ from 'lodash';
 import yaml from 'js-yaml';
 
 import { sleep } from 'utils';
-import { isUserPortal } from 'routes';
 
 import Store from 'stores/Store';
 
@@ -46,7 +45,7 @@ export default class ClusterDetailStore extends Store {
   @observable env = '';
 
   get describeActionName() {
-    return isUserPortal() ? 'clusters' : 'debug_clusters';
+    return this.getUser.isUserPortal ? 'clusters' : 'debug_clusters';
   }
 
   @action

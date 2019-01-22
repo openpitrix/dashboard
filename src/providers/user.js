@@ -50,6 +50,11 @@ class UserProvider {
     return this.role === ROLE_ADMIN && this.username === 'isv';
   }
 
+  get isUserPortal() {
+    const portal = location.pathname.split('/')[1];
+    return (portal || 'user') === 'user';
+  }
+
   get defaultPortal() {
     if (this.isAdmin) {
       return 'admin';
