@@ -97,6 +97,15 @@ export class SideNav extends React.Component {
     return _.get(subNavMap, `${role}.${key}`, {});
   };
 
+  isActiveSubNav(item) {
+    const { path } = this.props.match;
+    const subNavData = this.getSudNavData();
+    if (_.some(subNavData.links, o => o.link === path)) {
+      return item.link === path;
+    }
+    return path.includes(item.active);
+  }
+
   renderSubsDev() {
     const { match, appStore, t } = this.props;
     const { appDetail, resetAppDetail } = appStore;
@@ -169,7 +178,7 @@ export class SideNav extends React.Component {
             key={link.name}
             className={classnames(styles.link, {
               [styles.disabled]: link.disabled,
-              [styles.active]: path.indexOf(link.active) > -1
+              [styles.active]: this.isActiveSubNav(link)
             })}
             to={link.link}
           >
