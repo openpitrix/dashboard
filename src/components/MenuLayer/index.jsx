@@ -7,9 +7,32 @@ import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import { userMenus } from 'components/Layout/SideNav/navMap';
-import { toUrl } from 'utils/url';
+import routes, { toRoute, isUserPortal } from 'routes';
 
 import styles from './index.scss';
+
+const roleToProtal = {
+  developer: {
+    icon: 'wrench',
+    name: 'Develop Center',
+    url: toRoute(routes.portal.apps, { portal: 'dev' })
+  },
+  isv: {
+    icon: 'shield',
+    name: 'Provider Center',
+    url: toRoute(routes.portal.apps, { portal: 'isv' })
+  },
+  global_admin: {
+    icon: 'dashboard',
+    name: 'Manage console',
+    url: toRoute(routes.portal.apps, { portal: 'admin' })
+  },
+  user: {
+    icon: 'appcenter',
+    name: 'App Center',
+    url: '/'
+  }
+};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -22,18 +45,10 @@ export class MenuLayer extends Component {
     className: PropTypes.string
   };
 
-  becomeDeveloper = isNormal => {
-    this.props.user.update({
-      changedRole: isNormal ? '' : 'user'
-    });
-    location.replace('/dashboard');
-  };
-
   render() {
     const { user, className, t } = this.props;
-    const { isNormal } = user;
-    const changeWord = isNormal ? t('Develop Center') : t('App Center');
-    const isDeveloper = user.role === 'developer';
+    const { isNormal, role } = user;
+    const protal = isUserPortal() ? roleToProtal[role] || {} : roleToProtal.user;
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>
@@ -47,10 +62,10 @@ export class MenuLayer extends Component {
             />
           </span>
           {user.username}
-          {isDeveloper && (
+          {!isNormal && (
             <span className={styles.devIconOuter}>
               <Icon
-                name="wrench"
+                name={protal.icon}
                 type="white"
                 size={8}
                 className={styles.devIcon}
@@ -59,18 +74,15 @@ export class MenuLayer extends Component {
           )}
         </li>
 
-        {isDeveloper && (
-          <li
-            className={styles.dev}
-            onClick={() => this.becomeDeveloper(isNormal)}
-          >
+        {!isNormal && (
+          <li className={styles.dev}>
             <Icon
-              name={isNormal ? 'wrench' : 'appcenter'}
+              name={protal.icon}
               type="dark"
               size={16}
               className={styles.iconImg}
             />
-            <label>{changeWord}</label>
+            <Link to={protal.url}>{t(protal.name)}</Link>
           </li>
         )}
 
@@ -96,7 +108,7 @@ export class MenuLayer extends Component {
                 size={16}
                 className={styles.iconImg}
               />
-              <Link to={toUrl(item.link)}>{t(item.name)}</Link>
+              <Link to={item.link}>{t(item.name)}</Link>
             </li>
           );
         })}

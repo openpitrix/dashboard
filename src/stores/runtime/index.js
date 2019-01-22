@@ -3,6 +3,7 @@ import { get } from 'lodash';
 
 import { useTableActions } from 'mixins';
 import { getProgress } from 'utils';
+import { isUserPortal } from 'routes';
 
 import Store from '../Store';
 
@@ -39,7 +40,7 @@ export default class RuntimeStore extends Store {
   @observable runtimeDeleted = null;
 
   get actionName() {
-    return this.getUser().isDev ? 'debug_runtimes' : 'runtimes';
+    return isUserPortal() ? 'runtimes' : 'debug_runtimes';
   }
 
   @action

@@ -50,6 +50,7 @@ export const getPortalFromPath = (path = location.pathname) => {
   return '';
 };
 
+export const isUserPortal = () => (getPortalFromPath() || 'user') === 'user';
 export const needAuth = (path, portal) => portals.includes(portal) || path === '/profile';
 
 export const pathWithoutHeader = path => {

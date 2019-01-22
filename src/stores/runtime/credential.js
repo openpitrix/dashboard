@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
+import { isUserPortal } from 'routes';
+
 import Store from '../Store';
 
 export default class RuntimeCredentialStore extends Store {
@@ -18,9 +20,7 @@ export default class RuntimeCredentialStore extends Store {
   @observable credentialCount = 0;
 
   get actionName() {
-    return this.getUser().isDev
-      ? 'debug_runtimes/credentials'
-      : 'runtimes/credentials';
+    return isUserPortal() ? 'runtimes/credentials' : 'debug_runtimes/credentials';
   }
 
   @action

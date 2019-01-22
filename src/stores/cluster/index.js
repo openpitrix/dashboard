@@ -3,8 +3,10 @@ import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
 import { useTableActions } from 'mixins';
+import { isUserPortal } from 'routes';
 
 import Store from '../Store';
+
 
 @useTableActions
 export default class ClusterStore extends Store {
@@ -66,7 +68,7 @@ export default class ClusterStore extends Store {
   }
 
   get describeActionName() {
-    return this.getUser().isDev ? 'debug_clusters' : 'clusters';
+    return isUserPortal() ? 'clusters' : 'debug_clusters';
   }
 
   @action
