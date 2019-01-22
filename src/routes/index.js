@@ -39,7 +39,7 @@ export const toRoute = (route = '', params = {}) => {
     const portalInPath = portals.includes(getPortalFromPath(route)) || route.startsWith('/:portal');
     if (portalInPath) {
       // replace current portal
-      route = route.replace(/(\:?\w+)/i, portal);
+      route = route.replace(/(:?\w+)/i, portal);
     } else {
       route = withPrefix(route, portal);
     }
