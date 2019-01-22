@@ -264,17 +264,17 @@ export const getDevSubNavs = appId => [
     items: [
       {
         name: 'Version',
-        link: `/dashboard/app/${appId}/versions`,
+        link: toRoute(routes.portal._dev.versions, { appId }),
         active: 'versions'
       },
       {
         name: 'App information',
-        link: `/dashboard/app/${appId}/info`,
+        link: toRoute(routes.portal.appDetail, { appId }),
         active: 'info'
       },
       {
         name: 'Record',
-        link: `/dashboard/app/${appId}/audits`,
+        link: toRoute(routes.portal._dev.appAudits, { appId }),
         active: 'audits'
       }
     ]
@@ -291,7 +291,7 @@ export const getDevSubNavs = appId => [
     items: [
       {
         name: 'Instance',
-        link: `/dashboard/app/${appId}/user-instances`,
+        link: toRoute(routes.portal._dev.userInstances, { appId }),
         active: 'user-instances'
       }
     ]
@@ -301,7 +301,7 @@ export const getDevSubNavs = appId => [
     items: [
       {
         name: 'Instance',
-        link: `/dashboard/app/${appId}/sandbox-instances`,
+        link: toRoute(routes.portal._dev.sandboxInstances, { appId }),
         active: 'sandbox-instances'
       }
     ]

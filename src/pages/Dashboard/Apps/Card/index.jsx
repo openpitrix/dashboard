@@ -7,6 +7,7 @@ import { Image } from 'components/Base';
 import Status from 'components/Status';
 import { getPastTime } from 'src/utils';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -32,7 +33,11 @@ export class AppCard extends Component {
       <div
         className={classnames(styles.container, className)}
         onClick={() => {
-          this.props.history.push(`/dashboard/app/${app_id}/versions`);
+          this.props.history.push(
+            toRoute(routes.portal._dev.versions, {
+              appId: app_id
+            })
+          );
         }}
       >
         <div className={styles.title}>

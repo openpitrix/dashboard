@@ -20,8 +20,9 @@ import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { versionTypes } from 'config/version-types';
-import { formatTime } from 'utils';
 import AppDetail from 'pages/AppDetail';
+import { formatTime, sleep } from 'utils';
+import routes, { toRoute } from 'routes';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
 
@@ -152,7 +153,12 @@ export default class VersionDetail extends Component {
     const result = await appVersionStore.handle('delete', versionId);
 
     if (!(result && result.err)) {
-      setTimeout(() => history.push(`/dashboard/app/${appId}/versions`), 1000);
+      await sleep(1000);
+      history.push(
+        toRoute(routes.portal._dev.versions, {
+          appId
+        })
+      );
     }
     appVersionStore.hideModal();
   };
@@ -167,7 +173,12 @@ export default class VersionDetail extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/apps/${appId}/deploy/${versionId}`}>
+        <Link
+          to={toRoute(routes.portal.deploy, {
+            appId,
+            versionId
+          })}
+        >
           <Icon name="stateful-set" type="dark" />
           {t('Deploy App')}
         </Link>

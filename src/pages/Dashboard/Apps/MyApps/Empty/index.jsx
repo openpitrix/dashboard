@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
 
 import { Button } from 'components/Base';
+import routes, { toRoute } from 'routes';
+
 import styles from './index.scss';
 
 @translate()
@@ -16,7 +18,7 @@ export default class Loading extends PureComponent {
           <div className={styles.title}>{t('APPS_EMPTY_TITLE')}</div>
           <div className={styles.description}>{t('APPS_EMPTY_DESCRIBER')}</div>
           <div className={styles.btn}>
-            <Link to={'/dashboard/app/create'}>
+            <Link to={toRoute(routes.portal._dev.appCreate)}>
               <Button type="primary">{t('Create the first app')}</Button>
             </Link>
           </div>
