@@ -1,11 +1,10 @@
 import React from 'react';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import Layout from 'portals/user/Layout';
 import Banner from 'components/Banner';
 import { Clusters } from 'pages/Dashboard';
-
-// import styles from './index.scss';
 
 @translate()
 export default class UserClusters extends React.Component {
@@ -21,7 +20,7 @@ export default class UserClusters extends React.Component {
           />
         }
       >
-        <Clusters />
+        <Clusters {..._.pick(this.props, ['location', 'match'])} />
       </Layout>
     );
   }

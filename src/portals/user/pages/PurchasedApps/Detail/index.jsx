@@ -175,8 +175,9 @@ export default class PurchasedDetail extends Component {
           <TdName
             name={item.name}
             description={item.cluster_id}
-            linkUrl={toRoute(routes.portal._user.clusterDetail, {
-              clusterId: item.cluster_id
+            linkUrl={toRoute(routes.portal.clusterDetail, {
+              clusterId: item.cluster_id,
+              portal: 'user'
             })}
             noIcon
           />

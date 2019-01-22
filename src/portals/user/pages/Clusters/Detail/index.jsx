@@ -7,8 +7,6 @@ import Banner from 'components/Banner';
 
 import { ClusterDetail } from 'pages/Dashboard';
 
-// import styles from './index.scss';
-
 @translate()
 export default class UserClusterDetail extends React.Component {
   render() {

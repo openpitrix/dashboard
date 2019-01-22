@@ -18,10 +18,12 @@ export default {
     runtimeCreate: '/:portal/runtimes/create',
     deploy: '/:portal/apps/:appId/deploy/:versionId?',
 
+    // partial common routes
+    clusters: '/:portal/clusters',
+    clusterDetail: '/:portal/clusters/:clusterId',
+
     // if key prefix with _, means portal section
     _user: {
-      clusters: '/:portal/clusters',
-      clusterDetail: '/:portal/clusters/:clusterId',
       providerApply: '/:portal/provider/apply'
     },
     _dev: {
@@ -44,8 +46,6 @@ export default {
     _admin: {
       appsReview: '/:portal/apps/review',
       appReviewDetail: '/:portal/apps/review/:reviewId',
-      clusters: '/:portal/clusters',
-      clusterDetail: '/:portal/clusters/:clusterId',
       categories: '/:portal/categories',
       users: '/:portal/users',
       userDetail: '/:portal/users/:userId',

@@ -1,13 +1,15 @@
 import React from 'react';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import Layout from 'portals/user/Layout';
 import Banner from 'components/Banner';
+import { Runtimes } from 'pages/Dashboard';
 
-import styles from './index.scss';
+// import styles from './index.scss';
 
 @translate()
-export default class Runtimes extends React.Component {
+export default class UserRuntimes extends React.Component {
   render() {
     const { t } = this.props;
 
@@ -19,7 +21,9 @@ export default class Runtimes extends React.Component {
             description={t('平台同时支持多种云环境，可以在这里进行统一管理。')}
           />
         }
-      />
+      >
+        <Runtimes {..._.pick(this.props, ['location', 'match'])} />
+      </Layout>
     );
   }
 }

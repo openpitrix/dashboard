@@ -7,6 +7,7 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { providers } from 'config/runtimes';
+import routes, { toRoute } from 'routes';
 
 import {
   Icon, Button, Popover, Input
@@ -59,7 +60,8 @@ export class Runtime extends React.Component {
 
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
-    this.props.history.push(`/dashboard/runtime/create?provider=${platform}`);
+    const page = toRoute(routes.portal.runtimeCreate);
+    this.props.history.push(`${page}?provider=${platform}`);
   };
 
   renderMenu(runtime_id) {

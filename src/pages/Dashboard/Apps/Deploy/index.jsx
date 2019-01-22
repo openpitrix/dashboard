@@ -175,7 +175,7 @@ export default class AppDeploy extends Component {
       appDeployStore.success(t('Deploy app successfully'));
       const path = getPortalFromPath() === 'dev'
         ? toRoute(routes.portal._dev.sandboxInstances, { appId })
-        : toRoute(routes.portal._user.clusters);
+        : toRoute(routes.portal.clusters, { portal: 'user' });
       setTimeout(() => history.push(path), 1000);
     }
   };

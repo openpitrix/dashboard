@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
-import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
+import { Grid, Section, BreadCrumb } from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
 import { providers, tabs } from 'config/runtimes';
@@ -132,31 +132,47 @@ export default class Runtimes extends React.Component {
   }
 
   render() {
-    const { user, t } = this.props;
-    const title = user.isNormal ? 'My Runtimes' : 'Testing env';
+    // const { user, t } = this.props;
+    // const title = user.isNormal ? 'My Runtimes' : 'Testing env';
 
     return (
-      <Layout
-        noSubMenu
-        pageTitle={title}
-        titleCls={styles.pageTitle}
-        className={classnames(styles.layout, {
-          [styles.isNormal]: user.isNormal
-        })}
-      >
-        <div className={styles.page}>
-          <BreadCrumb linkPath="Cloud Provider > Platform" />
+      <div className={styles.page}>
+        <BreadCrumb linkPath="Cloud Provider > Platform" />
 
-          <Grid>
-            <Section size={3} className={styles.leftPanel}>
-              {this.renderPlatforms()}
-            </Section>
-            <Section size={9} className={styles.rightPanel}>
-              {this.renderContent()}
-            </Section>
-          </Grid>
-        </div>
-      </Layout>
+        <Grid>
+          <Section size={3} className={styles.leftPanel}>
+            {this.renderPlatforms()}
+          </Section>
+          <Section size={9} className={styles.rightPanel}>
+            {this.renderContent()}
+          </Section>
+        </Grid>
+      </div>
     );
+
+    // return (
+    //   <Layout
+    //     noSubMenu
+    //     pageTitle={title}
+    //     titleCls={styles.pageTitle}
+    //     className={classnames(styles.layout, {
+    //       [styles.isNormal]: user.isNormal
+    //     })}
+    //   >
+    //     <div className={styles.page}>
+    //       <BreadCrumb linkPath="Cloud Provider > Platform" />
+    //
+    //       <Grid>
+    //         <Section size={3} className={styles.leftPanel}>
+    //           {this.renderPlatforms()}
+    //         </Section>
+    //         <Section size={9} className={styles.rightPanel}>
+    //           {this.renderContent()}
+    //         </Section>
+    //       </Grid>
+    //     </div>
+    //
+    //   </Layout>
+    // );
   }
 }

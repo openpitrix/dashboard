@@ -140,7 +140,7 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link
-          to={toRoute(routes.portal._user.clusterDetail, {
+          to={toRoute(routes.portal.clusterDetail, {
             clusterId: cluster_id
           })}
         >
@@ -282,7 +282,7 @@ export default class Clusters extends Component {
           <TdName
             name={cl.name}
             description={cl.cluster_id}
-            linkUrl={toRoute(routes.portal._user.clusterDetail, {
+            linkUrl={toRoute(routes.portal.clusterDetail, {
               clusterId: cl.cluster_id
             })}
             noIcon

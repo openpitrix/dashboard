@@ -327,19 +327,11 @@ export default class ClusterDetail extends Component {
       clusterDetailStore,
       runtimeStore,
       userStore,
-      user,
-      match,
       t
     } = this.props;
 
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
-    const { isNormal } = user;
-
-    // const pageTitle = match.path.endsWith('sandbox-instance')
-    //   ? t('Sandbox-Instance detail')
-    //   : t('Customer-Instance detail');
-
     const { isRuntimeTypeFetched } = this.state;
 
     return (

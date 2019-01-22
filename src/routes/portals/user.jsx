@@ -9,8 +9,7 @@ import {
   CreateRuntime,
   ProviderCreate,
   AppDeploy
-  // Clusters,
-  // ClusterDetail
+  // Runtimes,
 } from 'pages/Dashboard';
 
 import {
