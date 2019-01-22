@@ -19,7 +19,7 @@ import {
 import styles from './index.scss';
 
 const keys = [
-  'applications',
+  'apply',
   'app',
   'review',
   'cluster',
@@ -33,6 +33,7 @@ const keys = [
   'provider',
   'setting',
   'cloud-env',
+  'admin',
   'dashboard'
 ];
 const changeKey = {
@@ -41,7 +42,8 @@ const changeKey = {
   runtime: 'repo',
   categories: 'app',
   category: 'app',
-  applications: 'provider'
+  admin: 'dashboard',
+  apply: 'provider'
 };
 
 @translate()
@@ -92,6 +94,7 @@ export class SideNav extends React.Component {
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
+    console.log(key, changeKey[key]);
 
     return changeKey[key] || key;
   };

@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 import qs from 'query-string';
-import { isEmpty } from 'lodash';
+import { isEmpty, omitBy } from 'lodash';
 
 import history from 'createHistory';
 
@@ -13,10 +13,11 @@ export default {
   @observable currentPage: 1,
 
   appendQuery(params = {}, ret = false) {
-    const searchVals = qs.parse(location.search);
+    let searchVals = qs.parse(location.search);
     if (!isEmpty(params)) {
       Object.assign(searchVals, params);
     }
+    searchVals = omitBy(searchVals, str => str === '');
 
     const str = qs.stringify(searchVals);
     if (ret) {
@@ -25,16 +26,16 @@ export default {
 
     history.push(`?${str}`);
   },
-
   onChangeSelect(selectedRowKeys, selectedRows) {
     this.selectedRowKeys = selectedRowKeys;
     // todo
     this.selectIds = selectedRows.map(row => row.app_id);
   },
 
-  async onChangeStatus(status) {
+  async onChangeStatus(nextStatus) {
     this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
+    const status = this.selectStatus === nextStatus ? '' : nextStatus;
+    this.selectStatus = status;
     this.appendQuery({ status });
     await this.fetchAll();
   },

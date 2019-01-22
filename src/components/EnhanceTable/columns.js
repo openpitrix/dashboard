@@ -1,6 +1,7 @@
 import React from 'react';
 import { I18n } from 'react-i18next';
 
+import routes, { toRoute } from 'routes';
 import LessText from 'components/LessText';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
@@ -8,7 +9,7 @@ import { getObjName } from 'utils';
 import _ from 'lodash';
 
 // inject
-export default ({ users = [], urlPrefix = '' }) => [
+export default ({ users = [] }) => [
   {
     title: 'App Name',
     key: 'name',
@@ -18,7 +19,7 @@ export default ({ users = [], urlPrefix = '' }) => [
         name={item.name}
         description={item.app_id}
         image={item.icon}
-        linkUrl={urlPrefix + item.app_id}
+        linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
       />
     )
   },

@@ -52,7 +52,9 @@ export default {
       providers: '/:portal/providers',
       providerDetail: '/:portal/providers/:providerId',
       providerApply: '/:portal/providers/apply',
-      providerApplyDetail: '/:portal/providers/apply/:applyId'
+      providerApplyDetail: '/:portal/providers/apply/:applyId',
+      cloudEnv: '/:portal/settings/cloud-env',
+      notificationServer: '/:portal/settings/notification-server'
     }
   }
 };

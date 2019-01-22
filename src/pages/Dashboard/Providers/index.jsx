@@ -8,6 +8,7 @@ import { Table } from 'components/Base';
 import Layout from 'components/Layout';
 import TitleSearch from 'components/TitleSearch';
 import { formatTime } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -36,15 +37,15 @@ export default class Providers extends Component {
       vendors, statistics, searchWord, onSearch, onClear
     } = vendorStore;
 
+    const linkUrl = id => toRoute(routes.portal._admin.providerDetail, { providerId: id });
+
     const columns = [
       {
         title: t('Number'),
         key: 'number',
         width: '120px',
         className: 'number',
-        render: item => (
-          <Link to={`/dashboard/provider/${item.user_id}`}>{item.user_id}</Link>
-        )
+        render: item => <Link to={linkUrl(item.user_id)}>{item.user_id}</Link>
       },
       {
         title: t('Company name'),
@@ -52,9 +53,7 @@ export default class Providers extends Component {
         width: '180px',
         className: 'fold',
         render: item => (
-          <Link to={`/dashboard/provider/${item.user_id}`}>
-            {item.company_name}
-          </Link>
+          <Link to={linkUrl(item.user_id)}>{item.company_name}</Link>
         )
       },
       {
@@ -95,9 +94,7 @@ export default class Providers extends Component {
         className: 'actions',
         render: item => (
           <div className={styles.actions}>
-            <Link to={`/dashboard/provider/${item.user_id}`}>
-              {t('View detail')} →
-            </Link>
+            <Link to={linkUrl(item.user_id)}>{t('View detail')} →</Link>
           </div>
         )
       }
