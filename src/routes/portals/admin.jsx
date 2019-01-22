@@ -26,7 +26,7 @@ import {
 
 export default ({ prefix }) => (
   <Switch>
-    <WrapRoute path={`${prefix}/dashboard`} component={Overview} />
+    <WrapRoute path={`${prefix}`} component={Overview} />
 
     <WrapRoute path={`${prefix}/apps`} component={Apps} />
     <WrapRoute path={`${prefix}/apps/review`} component={Reviews} />

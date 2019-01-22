@@ -31,6 +31,7 @@ const keys = [
   'provider',
   'setting',
   'cloud-env',
+  'admin',
   'dashboard'
 ];
 const changeKey = {
@@ -39,6 +40,7 @@ const changeKey = {
   runtime: 'repo',
   categories: 'app',
   category: 'app',
+  admin: 'dashboard',
   applications: 'provider'
 };
 

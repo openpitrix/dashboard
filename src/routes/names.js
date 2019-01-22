@@ -11,7 +11,7 @@ export default {
 
   portal: {
     // portal common keys
-    overview: '/:portal/dashboard',
+    overview: '/:portal',
     apps: '/:portal/apps',
     appDetail: '/:portal/apps/:appId',
     runtimes: '/:portal/runtimes',

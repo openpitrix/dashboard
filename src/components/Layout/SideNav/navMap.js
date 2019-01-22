@@ -152,7 +152,7 @@ export const subNavMap = {
         {
           name: 'Overview',
           link: toRoute(routes.portal.overview),
-          active: 'dashboard'
+          active: 'admin'
         }
       ]
     },
