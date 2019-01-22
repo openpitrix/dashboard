@@ -30,7 +30,7 @@ export default class App extends React.Component {
               <WrapRoute path="/" component={Home} />
               <WrapRoute path="/login" component={Login} />
               <WrapRoute path="/apps/:appId" component={AppDetail} />
-              <WrapRoute path="/profile" component={Account} />
+              <WrapRoute path="/profile/:type?" component={Account} />
 
               <Route
                 path="/user"

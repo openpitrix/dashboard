@@ -65,12 +65,11 @@ export class SideNav extends React.Component {
     const {
       appStore, user, match, hasSubNav
     } = this.props;
-    const { isDev } = user;
     const { fetchMenuApps, fetchMeunApp } = appStore;
 
     const { appId } = match.params;
 
-    if (isDev) {
+    if (user.isDevPortal) {
       await fetchMenuApps();
 
       if (hasSubNav && appId) {
@@ -231,8 +230,7 @@ export class SideNav extends React.Component {
     } = this.props;
     const { pathname } = history.location;
     const { menuApps } = appStore;
-    const { changedRole, isDev } = user;
-    const hasBack = changedRole === 'developer' && isDev;
+    const hasBack = user.isISV && user.isDevPortal;
 
     return (
       <div className={styles.nav}>
@@ -370,7 +368,7 @@ export class SideNav extends React.Component {
   render() {
     const { hasSubNav, user } = this.props;
 
-    if (user.isDev) {
+    if (user.isDevPortal) {
       return (
         <Fragment>
           {this.renderNavsDev()}

@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import { needAuth, getPortalFromPath } from 'routes';
-import { roleTypes } from 'config/roles';
+import { portalToRole } from 'config/roles';
 import user from '../providers/user';
 
 const WrapRoute = ({ component: Comp, ...rest }) => {
@@ -16,7 +16,7 @@ const WrapRoute = ({ component: Comp, ...rest }) => {
   }
 
   // check current portal and control page access
-  if (curPortal && curPortal !== 'user' && !user[`is${roleTypes[curPortal]}`]) {
+  if (!user.isAccessPortal(portalToRole[curPortal])) {
     return <Redirect to="/" />;
   }
 

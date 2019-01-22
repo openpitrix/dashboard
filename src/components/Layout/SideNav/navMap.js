@@ -166,7 +166,7 @@ export const subNavMap = {
         },
         {
           name: 'App Reviews',
-          link: toRoute(routes.portal._admin.appsReview),
+          link: toRoute(routes.portal.appsReview),
           active: 'review'
         },
         {
@@ -246,10 +246,14 @@ export const subNavMap = {
     app: {
       title: 'App Manage',
       links: [
-        { name: 'All Apps', link: '/dashboard/apps', active: '/apps' },
+        {
+          name: 'All Apps',
+          link: toRoute(routes.portal.apps),
+          active: '/apps'
+        },
         {
           name: 'App Reviews',
-          link: '/dashboard/app-reviews',
+          link: toRoute(routes.portal.appsReview),
           active: 'review'
         }
       ]
@@ -312,12 +316,12 @@ export const getDevSubNavs = appId => [
 export const userMenus = [
   {
     name: 'Account Info',
-    link: '/dashboard/account',
+    link: '/profile',
     iconName: 'folder'
   },
   {
     name: 'Change Password',
-    link: '/dashboard/account/password',
+    link: '/profile/password',
     iconName: 'lock'
   },
   {
@@ -335,12 +339,12 @@ export const userMenus = [
   },
   {
     name: 'Testing env',
-    link: '/:dash/runtimes',
+    link: toRoute(routes.portal.runtimes),
     iconName: 'image'
   },
   {
     name: 'SSH Keys',
-    link: '/dashboard/account/ssh',
+    link: '/profile/ssh',
     iconName: 'ssh',
     divider: true,
     only: ['user']

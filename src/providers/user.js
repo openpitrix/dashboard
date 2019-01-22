@@ -35,6 +35,14 @@ class UserProvider {
     });
   }
 
+  isAccessPortal(portal) {
+    // fixme: mock isv role
+    if (this.isISV) {
+      portal = 'global_admin';
+    }
+    return portal === this.role || this.isUserPortal;
+  }
+
   get isAdmin() {
     return this.role === ROLE_ADMIN && this.username !== 'isv';
   }
@@ -54,6 +62,10 @@ class UserProvider {
 
   get isUserPortal() {
     return ['', 'user'].includes(getPortalFromPath());
+  }
+
+  get isDevPortal() {
+    return getPortalFromPath() === 'dev';
   }
 
   get defaultPortal() {
