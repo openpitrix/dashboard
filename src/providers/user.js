@@ -1,6 +1,8 @@
 import { getCookie, setCookie } from 'utils';
 import { map } from 'lodash';
 
+import { getPortalFromPath } from 'routes';
+
 const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'developer';
 // const ROLE_ISV = 'isv';
@@ -51,8 +53,7 @@ class UserProvider {
   }
 
   get isUserPortal() {
-    const portal = location.pathname.split('/')[1];
-    return (portal || 'user') === 'user';
+    return ['', 'user'].includes(getPortalFromPath());
   }
 
   get defaultPortal() {

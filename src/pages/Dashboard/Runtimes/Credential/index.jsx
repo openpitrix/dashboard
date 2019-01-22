@@ -10,6 +10,7 @@ import { formatTime } from 'utils';
 import { Icon, Popover, Input } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
+import routes, { toRoute } from 'routes';
 
 import styles from '../index.scss';
 
@@ -46,9 +47,8 @@ export class Credential extends React.Component {
 
   goPage = () => {
     const { platform = 'qingcloud' } = this.props.envStore;
-    this.props.history.push(
-      `/dashboard/runtime/create?type=credential&provider=${platform}`
-    );
+    const link = toRoute(routes.portal.runtimeCreate);
+    this.props.history.push(`${link}?type=credential&provider=${platform}`);
   };
 
   renderMenu(credential_id) {

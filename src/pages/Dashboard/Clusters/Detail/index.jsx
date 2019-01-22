@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
+import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Icon, Popover, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
-import {
+import Layout, {
   Grid, Section, Card, Panel, Dialog
 } from 'components/Layout';
 import Loading from 'components/Loading';
@@ -321,7 +322,7 @@ export default class ClusterDetail extends Component {
     );
   };
 
-  render() {
+  renderMain() {
     const {
       appStore,
       clusterDetailStore,
@@ -382,6 +383,29 @@ export default class ClusterDetail extends Component {
 
         {this.renderModals()}
       </Fragment>
+    );
+  }
+
+  render() {
+    const { user, match, t } = this.props;
+    const pageTitle = match.path.endsWith('sandbox-instance')
+      ? t('Sandbox-Instance detail')
+      : t('Customer-Instance detail');
+
+    if (user.isUserPortal) {
+      return this.renderMain();
+    }
+
+    return (
+      <Layout
+        className={classnames({
+          [styles.clusterDetail]: !user.isNormal
+        })}
+        pageTitle={pageTitle}
+        hasBack
+      >
+        {this.renderMain()}
+      </Layout>
     );
   }
 }

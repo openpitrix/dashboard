@@ -12,7 +12,8 @@ import {
   Reviews,
   ReviewDetail,
   Runtimes,
-  CreateRuntime
+  CreateRuntime,
+  AppDeploy
 } from 'pages/Dashboard';
 
 export default ({ prefix }) => (
@@ -31,6 +32,11 @@ export default ({ prefix }) => (
 
     <WrapRoute path={`${prefix}/runtimes`} component={Runtimes} />
     <WrapRoute path={`${prefix}/runtimes/create`} component={CreateRuntime} />
+
+    <WrapRoute
+      path={`${prefix}/apps/:appId/deploy/:versionId?`}
+      component={AppDeploy}
+    />
 
     <WrapRoute component={NotFound} />
   </Switch>

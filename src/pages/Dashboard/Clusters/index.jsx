@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import {
   Icon, Button, Table, Popover
 } from 'components/Base';
-import { Dialog } from 'components/Layout';
+import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
@@ -255,7 +255,7 @@ export default class Clusters extends Component {
     );
   }
 
-  render() {
+  renderMain() {
     const {
       clusterStore, appStore, userStore, user, match, t
     } = this.props;
@@ -396,5 +396,19 @@ export default class Clusters extends Component {
         {this.renderDeleteModal()}
       </Fragment>
     );
+  }
+
+  render() {
+    const { user, match, t } = this.props;
+
+    if (user.isUserPortal) {
+      return this.renderMain();
+    }
+
+    const pageTitle = match.path.endsWith('sandbox-instances')
+      ? t('Sandbox-Instances')
+      : t('Customer-Instances');
+
+    return <Layout pageTitle={pageTitle}>{this.renderMain()}</Layout>;
   }
 }
