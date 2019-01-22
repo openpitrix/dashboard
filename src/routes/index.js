@@ -2,14 +2,13 @@ import _ from 'lodash';
 import { compile } from 'path-to-regexp';
 
 import user from 'providers/user';
-import { roleToPortal } from 'config/roles';
 import routeNames, { portals } from './names';
 
 const noHeaderPaths = ['/login', '/user/provider/apply'];
 
 const noFooterPaths = ['/login', '/user/provider/apply'];
 
-const commonRoutes = ['', 'apps', 'login', 'logout'];
+const commonRoutes = ['', 'apps', 'login', 'logout', 'profile'];
 
 export const getRouteByName = name => {
   const route = _.get(routeNames, name);
@@ -25,7 +24,12 @@ export const toRoute = (route = '', params = {}) => {
       portal: params
     };
   }
-  const guessPortal = getPortalFromPath();
+
+  let guessPortal = getPortalFromPath();
+  if (!guessPortal && location.pathname.startsWith('/profile')) {
+    guessPortal = user.defaultPortal;
+  }
+
   const portal = params.portal || guessPortal;
 
   if (route.indexOf('.') > 0) {
@@ -40,6 +44,7 @@ export const toRoute = (route = '', params = {}) => {
       route = withPrefix(route, portal);
     }
   }
+
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }
@@ -48,7 +53,6 @@ export const toRoute = (route = '', params = {}) => {
     Object.assign(params, { portal: portal || 'user' }),
     val => `${val}`
   );
-
   return compile(route)(params);
 };
 
@@ -57,18 +61,14 @@ export const getPortalFromPath = (path = location.pathname) => {
   if (commonRoutes.includes(p)) {
     return '';
   }
-  if (path.startsWith('/profile')) {
-    // to fix
-    const role = user.isISV ? 'isv' : user.role;
-    return roleToPortal[role];
-  }
   if (portals.includes(p)) {
     return p;
   }
+  // console.warn(`invalid portal ${p}`);
   return '';
 };
 
-export const needAuth = (path, portal) => portals.includes(portal) || path === '/profile';
+export const needAuth = (path, portal) => portals.includes(portal) || path.startsWith('/profile');
 
 export const pathWithoutHeader = path => {
   const portal = getPortalFromPath();
@@ -79,7 +79,13 @@ export const pathWithoutFooter = path => noFooterPaths.includes(path);
 
 export const withPrefix = (url, prefix = '') => {
   if (prefix) {
-    return url.replace(':protal', prefix);
+    if (url.startsWith('/')) {
+      url = url.substring(1);
+    }
+    if (prefix.endsWith('/')) {
+      prefix = prefix.substring(0, prefix.length - 1);
+    }
+    return [prefix, url].join('/');
   }
 
   return url;
