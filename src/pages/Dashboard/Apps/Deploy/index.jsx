@@ -173,7 +173,7 @@ export default class AppDeploy extends Component {
 
     if (res && _.get(res, 'cluster_id')) {
       appDeployStore.success(t('Deploy app successfully'));
-      const path = getPortalFromPath() === 'user'
+      const path = getPortalFromPath() === 'dev'
         ? toRoute(routes.portal._dev.sandboxInstances, { appId })
         : toRoute(routes.portal._user.clusters);
       setTimeout(() => history.push(path), 1000);
