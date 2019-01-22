@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.4"></a>
+## [0.3.4](https://github.com/openpitrix/dashboard/compare/v0.3.3...v0.3.4) (2019-01-22)
+
+
+### Bug Fixes
+
+* App link in provider detail page ([#697](https://github.com/openpitrix/dashboard/issues/697)) ([e7c3524](https://github.com/openpitrix/dashboard/commit/e7c3524))
+* App version not update when changed url ([#669](https://github.com/openpitrix/dashboard/issues/669)) ([cb3942c](https://github.com/openpitrix/dashboard/commit/cb3942c))
+* Category app count ([#681](https://github.com/openpitrix/dashboard/issues/681)) ([171cdbf](https://github.com/openpitrix/dashboard/commit/171cdbf))
+* Overview page routes ([#694](https://github.com/openpitrix/dashboard/issues/694)) ([b8893ff](https://github.com/openpitrix/dashboard/commit/b8893ff))
+* Page access role check, app card version type label ([#677](https://github.com/openpitrix/dashboard/issues/677)) ([8aacb5d](https://github.com/openpitrix/dashboard/commit/8aacb5d))
+* Portal issues ([#696](https://github.com/openpitrix/dashboard/issues/696)) ([16fd95f](https://github.com/openpitrix/dashboard/commit/16fd95f))
+* SideNav active style check ([#693](https://github.com/openpitrix/dashboard/issues/693)) ([762124c](https://github.com/openpitrix/dashboard/commit/762124c))
+* SideNav routes, dev links in isv portal redirect wrong place ([#695](https://github.com/openpitrix/dashboard/issues/695)) ([9323674](https://github.com/openpitrix/dashboard/commit/9323674))
+* WrapRoute path default val ([#698](https://github.com/openpitrix/dashboard/issues/698)) ([05fcf3a](https://github.com/openpitrix/dashboard/commit/05fcf3a))
+
+
+### Features
+
+* Add cloud env setting page and notification server page ([#682](https://github.com/openpitrix/dashboard/issues/682)) ([2f824a9](https://github.com/openpitrix/dashboard/commit/2f824a9))
+* Portal design ([#688](https://github.com/openpitrix/dashboard/issues/688)) ([cb05f32](https://github.com/openpitrix/dashboard/commit/cb05f32)), closes [#690](https://github.com/openpitrix/dashboard/issues/690) [#691](https://github.com/openpitrix/dashboard/issues/691) [#692](https://github.com/openpitrix/dashboard/issues/692)
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/openpitrix/dashboard/compare/v0.3.2...v0.3.3) (2019-01-14)
 
