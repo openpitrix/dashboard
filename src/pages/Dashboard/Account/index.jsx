@@ -7,6 +7,7 @@ import {
   Icon, Button, Input, Select
 } from 'components/Base';
 import Layout from 'components/Layout';
+import UserLayout from 'portals/user/Layout';
 import DetailTabs from 'components/DetailTabs';
 import { getLoginDate } from 'utils';
 import SSHKeys from './SSHKeys';
@@ -225,39 +226,48 @@ export default class Account extends Component {
     );
   }
 
+  renderMain() {
+    const { user } = this.props;
+    const { activeTab } = this.state;
+    const { isNormal } = user;
+
+    return (
+      <div
+        className={classnames(styles.account, {
+          [styles.accountBg]: !isNormal,
+          [styles.accountNormal]: isNormal
+        })}
+      >
+        {activeTab === 'account' && this.renderBasic()}
+        {activeTab === 'password' && this.renderPassword()}
+        {activeTab === 'ssh' && <SSHKeys />}
+      </div>
+    );
+  }
+
   render() {
     const { user, t } = this.props;
     const { activeTab } = this.state;
-    const { isNormal } = user;
     const filterTabs = tabs.filter(
       tab => !['payment', 'ssh'].includes(tab.value)
     );
 
-    return (
-      <Layout
-        pageTitle={isNormal ? '' : t('Personal Center')}
-        isCenterPage
-        noSubMenu
-      >
-        {isNormal && this.renderBanner()}
+    if (user.defaultPortal === 'user') {
+      return (
+        <UserLayout banner={this.renderBanner()}>
+          {this.renderMain()}
+        </UserLayout>
+      );
+    }
 
-        {!isNormal && (
-          <DetailTabs
-            tabs={filterTabs}
-            defaultTab={activeTab}
-            changeTab={this.changeTab}
-          />
-        )}
-        <div
-          className={classnames(styles.account, {
-            [styles.accountBg]: !isNormal,
-            [styles.accountNormal]: isNormal
-          })}
-        >
-          {activeTab === 'account' && this.renderBasic()}
-          {activeTab === 'password' && this.renderPassword()}
-          {activeTab === 'ssh' && <SSHKeys />}
-        </div>
+    return (
+      <Layout pageTitle={t('Personal Center')} isCenterPage noSubMenu>
+        <DetailTabs
+          tabs={filterTabs}
+          defaultTab={activeTab}
+          changeTab={this.changeTab}
+        />
+        {this.renderMain()}
       </Layout>
     );
   }

@@ -22,20 +22,12 @@ export const roleMap = {
   user: 'Normal User'
 };
 
-// matching user provider's getter
-// i.e admin => user.isAdmin
+// portal => user getter
 export const roleTypes = {
   admin: 'Admin',
   isv: 'ISV',
   dev: 'Dev',
   user: 'Normal'
-};
-
-export const portalToRole = {
-  admin: 'global_admin',
-  isv: 'isv',
-  dev: 'developer',
-  user: 'user'
 };
 
 export const roleToPortal = {
