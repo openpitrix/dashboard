@@ -30,7 +30,13 @@ export const toRoute = (route = '', params = {}) => {
     route = getRouteByName(route);
   }
   if (portal && guessPortal && portal !== guessPortal) {
-    route = withPrefix(route, portal);
+    const portalInPath = portals.includes(getPortalFromPath(route));
+    if (portalInPath) {
+      // replace current portal
+      route = route.replace(/\w+/i, portal);
+    } else {
+      route = withPrefix(route, portal);
+    }
   }
   if (!route.startsWith('/')) {
     route = `/${route}`;
