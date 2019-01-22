@@ -11,6 +11,7 @@ import DetailTabs from 'components/DetailTabs';
 import AppStatistics from 'components/AppStatistics';
 import { formatTime, getPastTime } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
+import routes, { toRoute } from 'routes';
 import CertificateInfo from '../CertificateInfo';
 
 import styles from './index.scss';
@@ -94,6 +95,7 @@ export default class ProviderDetail extends Component {
   renderApps() {
     const { appStore, t } = this.props;
     const { apps, totalCount, isLoading } = appStore;
+    const linkUrl = id => toRoute(routes.portal.appDetail, { appId: id });
 
     return (
       <Card className={styles.appsInfo}>
@@ -114,10 +116,7 @@ export default class ProviderDetail extends Component {
                     />
                   </span>
                   <span className={styles.info}>
-                    <Link
-                      to={`/dashboard/app/${item.app_id}`}
-                      className={styles.name}
-                    >
+                    <Link to={linkUrl(item.app_id)} className={styles.name}>
                       {item.name}
                     </Link>
                     <div className={styles.description}>
@@ -142,10 +141,7 @@ export default class ProviderDetail extends Component {
                   <label className={styles.time}>
                     {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
                   </label>
-                  <Link
-                    to={`/dashboard/app/${item.app_id}`}
-                    className={styles.link}
-                  >
+                  <Link to={linkUrl(item.app_id)} className={styles.link}>
                     {t('View detail')} →
                   </Link>
                 </div>
