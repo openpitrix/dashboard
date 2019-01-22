@@ -133,7 +133,7 @@ export default class AppDeploy extends Component {
 
   handleSubmit = async () => {
     const {
-      appDeployStore, user, history, match, t
+      appDeployStore, history, match, t
     } = this.props;
     const {
       isK8s, runtimeId, versionId, create

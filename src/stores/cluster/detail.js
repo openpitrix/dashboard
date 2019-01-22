@@ -2,8 +2,9 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 import yaml from 'js-yaml';
 
-import Store from 'stores/Store';
 import { sleep } from 'utils';
+
+import Store from 'stores/Store';
 
 // separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
@@ -44,7 +45,7 @@ export default class ClusterDetailStore extends Store {
   @observable env = '';
 
   get describeActionName() {
-    return this.getUser().isDev ? 'debug_clusters' : 'clusters';
+    return this.getUser.isUserPortal ? 'clusters' : 'debug_clusters';
   }
 
   @action

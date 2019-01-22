@@ -57,13 +57,13 @@ export const getNavs = {
   ],
   isv: [
     {
-      link: '/dashboard/apps',
+      link: toRoute(routes.portal.apps),
       iconName: 'appcenter',
       active: 'app',
       title: 'App Manage'
     },
     {
-      link: '#',
+      link: toRoute(routes.portal.apps, { portal: 'dev' }),
       iconName: 'wrench',
       active: 'develop',
       title: 'App Develop'
@@ -101,13 +101,13 @@ export const getNavs = {
   ],
   developer: [
     {
-      link: '/dashboard/app/create',
+      link: toRoute(routes.portal._dev.appCreate),
       iconName: 'plus-square',
       active: 'create',
       title: 'Create app'
     },
     {
-      link: '/dashboard/my/apps',
+      link: toRoute(routes.portal.apps),
       iconName: 'more',
       active: 'app',
       title: 'View all'

@@ -79,22 +79,9 @@ export class SideNav extends React.Component {
     }
   }
 
-  becomeDeveloper = type => {
-    const { rootStore } = this.props;
-
-    if (type === 'wrench' || type === 'back') {
-      rootStore.updateUser({
-        changedRole: type === 'back' ? '' : 'developer'
-      });
-      const url = type === 'back' ? '/dashboard/apps' : '/dashboard/my/apps';
-      location.replace(url);
-    }
-  };
-
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
-    console.log(key, changeKey[key]);
 
     return changeKey[key] || key;
   };
@@ -244,8 +231,8 @@ export class SideNav extends React.Component {
       <div className={styles.nav}>
         <ul className={styles.topNav}>
           {hasBack ? (
-            <li onClick={() => this.becomeDeveloper('back')}>
-              <Link to="#">
+            <li>
+              <Link to={toRoute(routes.portal.apps, { portal: 'isv' })}>
                 <Icon
                   className={styles.icon}
                   size={20}
@@ -352,7 +339,6 @@ export class SideNav extends React.Component {
           {navs.map(nav => (
             <li
               key={nav.iconName}
-              onClick={() => this.becomeDeveloper(nav.iconName)}
               className={classnames(styles.navItem, {
                 [styles.disabled]: nav.disabled
               })}
