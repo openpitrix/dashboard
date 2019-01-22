@@ -40,7 +40,6 @@ class UserProvider {
     if (this.isISV) {
       portal = 'global_admin';
     }
-    console.log(portal, this.role);
     return portal === this.role || this.isUserPortal;
   }
 
