@@ -161,7 +161,6 @@ export class SideNav extends React.Component {
   renderSubs() {
     const { t } = this.props;
     const subNavData = this.getSudNavData();
-    const { path } = this.props.match;
 
     if (!subNavData.title) {
       return null;
