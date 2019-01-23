@@ -1,16 +1,6 @@
-import qs from 'query-string';
-
-const dashboardPrefix = '/dashboard';
-
-export const toUrl = path => {
-  if (!path) return dashboardPrefix;
-  if (path.startsWith('/:dash')) {
-    path = path.replace('/:dash', dashboardPrefix);
-  }
-  return path;
-};
+import { qs2Obj } from 'utils';
 
 export const getUrlParam = key => {
-  const query = qs.parse(location.search);
+  const query = qs2Obj(location.search);
   return key ? query[key] : query;
 };

@@ -3,6 +3,7 @@ import qs from 'query-string';
 import { isEmpty, omitBy } from 'lodash';
 
 import history from 'createHistory';
+import { qs2Obj } from 'utils';
 
 export default {
   @observable selectedRowKeys: [],
@@ -13,7 +14,7 @@ export default {
   @observable currentPage: 1,
 
   appendQuery(params = {}, ret = false) {
-    let searchVals = qs.parse(location.search);
+    let searchVals = qs2Obj(location.search);
     if (!isEmpty(params)) {
       Object.assign(searchVals, params);
     }

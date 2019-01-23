@@ -67,6 +67,16 @@ export function getPastTime(time) {
     : `${parseInt(diff)} ${t('hours ago')}`;
 }
 
+// simple query-string
+export const qs2Obj = (str = location.search) => str
+  .substring(1)
+  .split('&')
+  .map(p => p.split('='))
+  .reduce(
+    (obj, [key, value]) => ({ ...obj, [key]: decodeURIComponent(value) }),
+    {}
+  );
+
 export function toQueryString(params) {
   return `${Object.keys(params)
     .map(k => {

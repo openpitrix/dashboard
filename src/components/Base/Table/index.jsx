@@ -6,6 +6,7 @@ import _, { isEqual, find } from 'lodash';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
+import { qs2Obj } from 'utils';
 
 import {
   Checkbox, Radio, Popover, Icon, Pagination
@@ -52,7 +53,7 @@ export class Table extends React.Component {
     super(props);
 
     const { location } = props;
-    const values = qs.parse(location.search);
+    const values = qs2Obj(location.search);
     const reverse = values.reverse !== '0';
     this.state = {
       selectedRowKeys: (props.rowSelection || {}).selectedRowKeys || [],
@@ -321,7 +322,7 @@ export class Table extends React.Component {
       () => {
         const { reverse } = this.state;
         const { history, location } = this.props;
-        const values = qs.parse(location.search);
+        const values = qs2Obj(location.search);
         values.reverse = reverse ? 1 : 0;
         values.sort_key = sort_key;
         history.push({
