@@ -32,7 +32,7 @@ import styles from './index.scss';
   userStore: rootStore.userStore
 }))
 @observer
-export default class Users extends Component {
+class Users extends Component {
   state = {
     isLoading: true
   };
@@ -457,3 +457,4 @@ export default class Users extends Component {
     );
   }
 }
+export default Users;

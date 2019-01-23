@@ -86,9 +86,9 @@ export const getNavs = {
       title: 'Financial Center'
     },
     {
-      link: '/dashboard/team_members',
+      link: toRoute(routes.portal._isv.users),
       iconName: 'group',
-      active: 'team_member',
+      active: 'user',
       title: 'Team Members'
     },
     {
@@ -213,15 +213,16 @@ export const subNavMap = {
     user: {
       title: 'Users and Permission',
       links: [
-        // { name: 'All Users', link: '/dashboard/users', active: 'user' },
-        // { name: 'Roles', link: '/dashboard/roles', active: 'role' },
-        // { name: 'Permission and Policy', link: '#', active: 'policy' }
         {
           name: 'All Users',
           link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
           active: 'user'
         },
-        { name: 'Roles', link: '#', active: 'role' }
+        {
+          name: 'Roles',
+          link: toRoute(routes.portal._admin.roles),
+          active: 'role'
+        }
       ]
     },
     setting: {
@@ -264,15 +265,19 @@ export const subNavMap = {
         }
       ]
     },
-    team_member: {
+    user: {
       title: 'Team and member',
       links: [
         {
           name: 'All members',
-          link: '/dashboard/team_members',
-          active: '/team_member'
+          link: toRoute(routes.portal._isv.users),
+          active: 'user'
         },
-        { name: 'Role', link: '/dashboard/team_roles', active: '/team_role' }
+        {
+          name: 'Role',
+          link: toRoute(routes.portal._isv.roles),
+          active: 'role'
+        }
       ]
     }
   }

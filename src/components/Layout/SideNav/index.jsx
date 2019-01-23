@@ -220,7 +220,7 @@ export class SideNav extends React.Component {
                   <label className={styles.title}>{t(nav.title)}</label>
                 </Link>
               </li>
-            )
+          )
           )
         )}
       </ul>

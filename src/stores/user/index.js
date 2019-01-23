@@ -231,7 +231,7 @@ export default class UserStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    const result = await this.request.get('groups');
+    // const result = await this.request.get('groups');
     this.groups = get(dataGroup, 'op_group_set', []);
     // this.groups = get(result, 'group_set', []);
     this.isLoading = false;
@@ -453,8 +453,10 @@ export default class UserStore extends Store {
         title: root.group_name
       }
     ];
-    const filter = (dataSet, parent_group_id) => _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
-      (a, b) => a.seq_order - b.seq_order
+    const filter = (dataSet, parent_group_id) => (
+      _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
+        (a, b) => a.seq_order - b.seq_order
+      )
     );
     const setChildren = (dataSet, treeDataNode) => {
       const children = filter(dataSet, treeDataNode.group_id);

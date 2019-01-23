@@ -16,6 +16,11 @@ import {
   AppDeploy
 } from 'pages/Dashboard';
 
+import {
+  Users,
+  Roles,
+} from 'portals/isv/pages';
+
 export default ({ prefix }) => (
   <Switch>
     <WrapRoute path={prefix} component={Overview} />
@@ -37,6 +42,9 @@ export default ({ prefix }) => (
       path={`${prefix}/apps/:appId/deploy/:versionId?`}
       component={AppDeploy}
     />
+
+    <WrapRoute path={`${prefix}/users`} component={Users} />
+    <WrapRoute path={`${prefix}/roles`} component={Roles} />
 
     <WrapRoute component={NotFound} />
   </Switch>

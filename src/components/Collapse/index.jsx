@@ -30,16 +30,6 @@ export default class SingleCollapse extends Component {
     isCheck: this.props.checked
   };
 
-  /* getDerivedStateFromProps(nextProps) {
-   *   debugger;
-   *   if (this.props.checked !== nextProps.checked) {
-   *     return {
-   *       isCheck: nextProps.checked
-   *     };
-   *   }
-   *   return this.state;
-   * } */
-
   renderIcon() {
     const { iconType, toggleType } = this.props;
     const { isCheck } = this.state;
@@ -47,9 +37,15 @@ export default class SingleCollapse extends Component {
     const props = {};
     if (toggleType === 'icon') {
       props.onClick = this.toggleCheck;
+      props.className = styles.cursorPointer;
     }
     if (iconType === 'switch') {
-      return <Switch checked={isCheck} {...props} />;
+      return (
+        <Switch
+          checked={isCheck}
+          {...props}
+        />
+      );
     }
 
     props.type = 'dark';
@@ -71,7 +67,9 @@ export default class SingleCollapse extends Component {
     const { iconPosition, header, toggleType } = this.props;
     const onClick = toggleType === 'header' ? this.toggleCheck : _.noop;
     return (
-      <div onClick={onClick} className={styles.headerContainer}>
+      <div onClick={onClick} className={classnames(styles.headerContainer, {
+        [styles.cursorPointer]: toggleType === 'header'
+      })}>
         {iconPosition === 'left' && this.renderIcon()}
         <span className={styles.header}>{header}</span>
         {iconPosition === 'right' && this.renderIcon()}
