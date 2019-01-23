@@ -122,8 +122,8 @@ export default class RuntimeInstances extends React.Component {
 
     return (
       <div>
-        <div className={styles.toolbar}>
-          <Icon onClick={this.goBack} name="back" size={24} type="dark" />
+        <div className={styles.toolbar} onClick={this.goBack}>
+          <Icon name="back" size={24} type="dark" />
           <span className={styles.backTxt}>{t('Back')}</span>
         </div>
         <div className={styles.title}>

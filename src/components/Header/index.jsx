@@ -45,7 +45,7 @@ export class Header extends Component {
         <LinkItem to="/" title={t('App Store')} />
         <LinkItem to={toRoute(routes.portal.apps)} title={t('Purchased')} />
         <LinkItem
-          to={toRoute(routes.portal.clusters, { portal: 'user' })}
+          to={toRoute(routes.portal.clusters)}
           title={t('My Instances')}
         />
         <LinkItem

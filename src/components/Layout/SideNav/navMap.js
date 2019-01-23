@@ -323,7 +323,7 @@ export const getDevSubNavs = appId => [
 ];
 
 // User menus layer for all roles
-export const userMenus = [
+export const userMenus = portal => [
   {
     name: 'Account Info',
     link: toRoute(routes.profile),
@@ -349,7 +349,7 @@ export const userMenus = [
   },
   {
     name: 'Testing env',
-    link: toRoute(routes.portal.runtimes),
+    link: toRoute(routes.portal.runtimes, { portal }),
     iconName: 'image'
   },
   {

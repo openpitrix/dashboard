@@ -1,12 +1,3 @@
-// original
-// export const providers={
-//   // key => label
-//   qingcloud: 'QingCloud',
-//   aws: 'AWS',
-//   aliyun: 'Aliyun',
-//   kubernetes: 'Kubernetes'
-// };
-
 export const providers = [
   { name: 'QingCloud', icon: 'qingcloud', key: 'qingcloud' },
   { name: 'Aliyun', icon: 'aliyun', key: 'aliyun' },
@@ -32,4 +23,12 @@ export const providers = [
   }
 ];
 
-export const tabs = ['Testing env', 'Authorization info'];
+export const userTabs = [
+  { name: 'My runtimes', value: 'runtime' },
+  { name: 'Authorization info', value: 'runtime_credential' }
+];
+
+export const nonUserTabs = [
+  { name: 'Testing env', value: 'runtime' },
+  { name: 'Authorization info', value: 'runtime_credential' }
+];

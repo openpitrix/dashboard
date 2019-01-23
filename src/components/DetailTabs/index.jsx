@@ -13,33 +13,28 @@ export default class DetailTabs extends Component {
     className: PropTypes.string,
     defaultTab: PropTypes.string,
     isAccount: PropTypes.bool,
-    tabs: PropTypes.array,
-    triggerFirst: PropTypes.bool
+    tabs: PropTypes.array
   };
 
   static defaultProps = {
     changeTab: noop,
     tabs: [],
     defaultTab: '',
-    isAccount: false,
-    triggerFirst: true
+    isAccount: false
   };
 
   constructor(props) {
     super(props);
 
-    const curTabValue = _.isObject(props.tabs[0])
-      ? props.tabs[0].value
-      : props.tabs[0];
+    const firstTab = props.tabs[0];
     this.state = {
-      curTab: props.defaultTab || curTabValue
+      curTab:
+        props.defaultTab || _.isObject(firstTab) ? firstTab.value : firstTab
     };
   }
 
   componentDidMount() {
-    const { triggerFirst } = this.props;
-    const { curTab } = this.state;
-    triggerFirst && this.props.changeTab(curTab);
+    this.props.changeTab(this.state.curTab);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -72,18 +67,23 @@ export default class DetailTabs extends Component {
           className
         )}
       >
-        {tabs.map(tab => (
-          <label
-            className={classnames({
-              [styles.active]: (tab.value || tab) === curTab,
-              [styles.disabled]: tab.disabled
-            })}
-            key={tab.value || tab}
-            onClick={() => this.handleChange(tab)}
-          >
-            {t(tab.name || tab)}
-          </label>
-        ))}
+        {tabs.map((tab, idx) => {
+          const tabVal = _.isObject(tab) ? tab.value : tab;
+          const tabName = _.isObject(tab) ? tab.name : tab;
+
+          return (
+            <label
+              className={classnames({
+                [styles.active]: tabVal === curTab,
+                [styles.disabled]: _.isObject(tab) && tab.disabled
+              })}
+              key={idx}
+              onClick={() => this.handleChange(tab)}
+            >
+              {t(tabName)}
+            </label>
+          );
+        })}
       </div>
     );
   }

@@ -1,1 +1,7 @@
-{}
+{
+  "Modify runtime successfully": "修改环境成功",
+  "Switch runtime credential successfully": "切换授权信息成功",
+  "Delete runtime successfully": "删除环境成功",
+  "Modify runtime credential successfully": "修改授权信息成功",
+  "Delete runtime credential successfully": "删除授权信息成功"
+}

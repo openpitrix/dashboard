@@ -75,7 +75,7 @@ const columns = (t, apps, isDev) => [
   {
     title: t('Created At'),
     key: 'create_time',
-    width: '80px',
+    width: '180px',
     render: cl => <TimeShow time={cl.create_time} />
   }
 ];

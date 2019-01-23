@@ -15,7 +15,7 @@ module.exports = {
   resources: translations,
 
   // lng: 'zh',
-  fallbackLng: 'zh',
+  // fallbackLng: 'zh',
   // debug: process.env.NODE_ENV !== 'production',
 
   whitelist: ['en', 'zh'],

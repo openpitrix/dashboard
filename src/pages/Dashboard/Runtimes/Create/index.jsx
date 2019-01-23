@@ -32,7 +32,13 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
+    const { envStore, createEnvStore } = this.props;
+    await envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
+
+    const queryCredential = getUrlParam('credential_id');
+    if (queryCredential) {
+      createEnvStore.selectCredential(queryCredential);
+    }
   }
 
   async componentDidUpdate(prevProps) {
@@ -88,7 +94,7 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   handleEsc = () => {
-    this.props.history.push(toRoute(routes.portal.runtimes));
+    this.props.history.goBack();
   };
 
   renderCredentialForm() {

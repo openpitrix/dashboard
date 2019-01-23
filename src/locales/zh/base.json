@@ -463,5 +463,6 @@
   "Delete category successfully": "删除分类成功",
   "days ago": " 天前",
   "hours ago": " 小时前",
-  "Service provider": "服务商"
+  "Service provider": "服务商",
+  "Data not changed": "数据未修改"
 }

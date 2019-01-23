@@ -17,13 +17,13 @@ $card-height: 188px;
   margin-top: $pg-margin !important;
 
   // fix normal layout
-  &.isNormal {
+  &.nonUserPortal {
     margin-top: 0 !important;
     .leftPanel {
-      max-width: 220px;
+      max-width: 205px;
     }
     .page {
-      margin: 0 auto;
+      margin: 0 $body-margin - 30px;
     }
   }
 
@@ -48,10 +48,6 @@ $card-height: 188px;
 }
 
 .page {
-  display: block;
-  margin-left: $body-margin - 30px;
-  margin-right: $body-margin - 30px;
-
   .platforms {
     border-right: 1px solid $N10;
     .provider {

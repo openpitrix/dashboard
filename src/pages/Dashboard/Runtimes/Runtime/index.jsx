@@ -10,7 +10,7 @@ import { providers } from 'config/runtimes';
 import routes, { toRoute } from 'routes';
 
 import {
-  Icon, Button, Popover, Input
+  Icon, Button, Popover, Input, Notification
 } from 'components/Base';
 import {
   Grid, Section, Card, Dialog
@@ -100,9 +100,9 @@ export class Runtime extends React.Component {
       handleOperation
     } = envStore;
     const { runtimes } = runtimeStore;
+    const rt = _.find(runtimes, { runtime_id: selectId });
 
     if (modalType === 'modify_runtime') {
-      const rt = _.find(runtimes, { runtime_id: selectId });
       return (
         <Dialog
           title={t('Modify Runtime')}
@@ -132,6 +132,7 @@ export class Runtime extends React.Component {
     if (modalType === 'switch_auth') {
       const { credentials } = credentialStore;
       const { selectCredentialId, setCredentialId } = envStore;
+
       return (
         <Dialog
           title={t('Switch authorization info')}
@@ -143,7 +144,9 @@ export class Runtime extends React.Component {
           {_.map(
             credentials,
             ({ name, description, runtime_credential_id }, idx) => {
-              const checked = selectCredentialId === runtime_credential_id;
+              const checked = !selectCredentialId
+                ? rt.runtime_credential_id === runtime_credential_id
+                : selectCredentialId === runtime_credential_id;
 
               return (
                 <Card
@@ -299,6 +302,7 @@ export class Runtime extends React.Component {
 
     return (
       <Loading isLoading={isLoading}>
+        <Notification />
         {this.renderContent()}
         {this.renderModals()}
       </Loading>
