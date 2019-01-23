@@ -53,17 +53,6 @@ export default class TestingEnvStore extends Store {
   };
 
   @action
-  showModal = type => {
-    this.modalType = type;
-    this.isModalOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isModalOpen = false;
-  };
-
-  @action
   setCurrentId = id => {
     this.selectId = id;
   };
@@ -82,11 +71,27 @@ export default class TestingEnvStore extends Store {
   handleOperation = async (e, formData) => {
     this.isLoading = true;
 
+    const curHandleRt = _.find(this.runtimeStore.runtimes, {
+      runtime_id: this.selectId
+    });
+    const curHandleCredential = _.find(this.credentialStore.credentials, {
+      runtime_credential_id: this.selectCredentialId
+    });
+
     // runtime ops
     if (this.modalType === 'modify_runtime') {
+      const pickKeys = ['name', 'description'];
+      const data = _.pick(formData, pickKeys);
+      if (
+        JSON.stringify(data) === JSON.stringify(_.pick(curHandleRt, pickKeys))
+      ) {
+        this.isLoading = false;
+        return this.warn('Data not changed');
+      }
+
       const res = await this.request.patch(
         'runtimes',
-        _.extend(_.pick(formData, ['name', 'description']), {
+        _.extend(data, {
           runtime_id: this.selectId
         })
       );
@@ -96,9 +101,14 @@ export default class TestingEnvStore extends Store {
         await this.updateProviderCounts();
       }
     }
+
     if (this.modalType === 'switch_auth') {
-      if (!this.selectCredentialId) {
-        return this.error('Please select a credential info');
+      if (
+        !this.selectCredentialId
+        || this.selectCredentialId === curHandleRt.runtime_credential_id
+      ) {
+        this.isLoading = false;
+        return this.warn('Data not changed');
       }
       const res = await this.request.patch('runtimes', {
         runtime_credential_id: this.selectCredentialId,
@@ -106,11 +116,13 @@ export default class TestingEnvStore extends Store {
       });
       if (res && res.runtime_id) {
         this.hideModal();
+        this.selectCredentialId = '';
         this.success('Switch runtime credential successfully');
         await this.updateProviderCounts();
         await this.fetchCredentials();
       }
     }
+
     if (this.modalType === 'delete_runtime') {
       const res = await this.request.delete('runtimes', {
         runtime_id: [this.selectId]
@@ -126,9 +138,19 @@ export default class TestingEnvStore extends Store {
 
     // credential ops
     if (this.modalType === 'modify_auth_info') {
+      const pickKeys = ['name', 'description'];
+      const data = _.pick(formData, pickKeys);
+      if (
+        JSON.stringify(data)
+        === JSON.stringify(_.pick(curHandleCredential, pickKeys))
+      ) {
+        this.isLoading = false;
+        return this.warn('Data not changed');
+      }
+
       const res = await this.request.patch(
         'runtimes/credentials',
-        _.extend(_.pick(formData, ['name', 'description']), {
+        _.extend(data, {
           runtime_credential_id: this.selectCredentialId
         })
       );
@@ -138,9 +160,7 @@ export default class TestingEnvStore extends Store {
         await this.fetchData();
       }
     }
-    if (this.modalType === 'add_runtime') {
-      // todo
-    }
+
     if (this.modalType === 'delete_auth_info') {
       const res = await this.request.delete('runtimes/credentials', {
         runtime_credential_id: [this.selectCredentialId]
@@ -179,12 +199,12 @@ export default class TestingEnvStore extends Store {
   fetchData = async () => {
     this.isLoading = true;
 
-    if (this.curTab === 'Testing env') {
+    if (this.curTab === 'runtime') {
       await this.fetchClusters();
       await this.fetchCredentials();
     }
 
-    if (this.curTab === 'Authorization info') {
+    if (this.curTab === 'runtime_credential') {
       await this.fetchCredentials();
     }
 

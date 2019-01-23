@@ -119,7 +119,6 @@ export default class Runtimes extends React.Component {
           className={styles.tabs}
           tabs={this.props.user.isUserPortal ? userTabs : nonUserTabs}
           defaultTab={curTab}
-          triggerFirst={false}
           changeTab={this.handleChangeTab}
         />
         <div className={styles.body}>

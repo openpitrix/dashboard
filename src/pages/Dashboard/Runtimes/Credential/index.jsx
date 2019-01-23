@@ -5,12 +5,15 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
-import { formatTime } from 'utils';
+import qs from 'query-string';
 
-import { Icon, Popover, Input } from 'components/Base';
+import {
+  Icon, Popover, Input, Notification
+} from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import routes, { toRoute } from 'routes';
+import { formatTime } from 'utils';
 
 import styles from '../index.scss';
 
@@ -39,16 +42,36 @@ export class Credential extends React.Component {
     }
   }
 
-  handleClickAction = (type, id) => {
+  handleClickAction = (type, credential_id) => {
     const { showModal, setCredentialId } = this.props.envStore;
-    showModal(type);
-    setCredentialId(id);
+    if (type === 'add_runtime') {
+      this.goPage({
+        type: 'runtime',
+        credential_id
+      });
+    } else {
+      showModal(type);
+      setCredentialId(credential_id);
+    }
   };
 
-  goPage = () => {
-    const { platform = 'qingcloud' } = this.props.envStore;
-    const link = toRoute(routes.portal.runtimeCreate);
-    this.props.history.push(`${link}?type=credential&provider=${platform}`);
+  /**
+   *
+   * @param params | query string
+   */
+  goPage = (params = {}) => {
+    const { envStore } = this.props;
+    const page = toRoute(routes.portal.runtimeCreate);
+    const query = {
+      type: 'credential',
+      provider: envStore.platform || 'qingcloud'
+    };
+
+    if (!_.isEmpty(params)) {
+      Object.assign(query, params);
+    }
+
+    this.props.history.push([page, qs.stringify(query)].join('?'));
   };
 
   renderMenu(credential_id) {
@@ -120,18 +143,7 @@ export class Credential extends React.Component {
         </Dialog>
       );
     }
-    if (modalType === 'add_runtime') {
-      return (
-        <Dialog
-          title={t('Add runtime')}
-          isOpen={isModalOpen}
-          onCancel={hideModal}
-          onSubmit={handleOperation}
-        >
-          <p>Add runtime</p>
-        </Dialog>
-      );
-    }
+
     if (modalType === 'delete_auth_info') {
       return (
         <Dialog
@@ -193,6 +205,7 @@ export class Credential extends React.Component {
 
     return (
       <Loading isLoading={isLoading}>
+        <Notification />
         {this.renderContent()}
         {this.renderModals()}
       </Loading>

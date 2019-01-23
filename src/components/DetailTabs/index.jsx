@@ -13,16 +13,14 @@ export default class DetailTabs extends Component {
     className: PropTypes.string,
     defaultTab: PropTypes.string,
     isAccount: PropTypes.bool,
-    tabs: PropTypes.array,
-    triggerFirst: PropTypes.bool
+    tabs: PropTypes.array
   };
 
   static defaultProps = {
     changeTab: noop,
     tabs: [],
     defaultTab: '',
-    isAccount: false,
-    triggerFirst: true
+    isAccount: false
   };
 
   constructor(props) {
@@ -36,9 +34,7 @@ export default class DetailTabs extends Component {
   }
 
   componentDidMount() {
-    const { triggerFirst } = this.props;
-    const { curTab } = this.state;
-    triggerFirst && this.props.changeTab(curTab);
+    this.props.changeTab(this.state.curTab);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
