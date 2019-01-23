@@ -139,7 +139,7 @@ export default class AppDeployStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
       version_id: versionId,
-      files: this.isK8s ? ['values.yaml'] : ['config.json']
+      // files: this.isK8s ? ['values.yaml'] : ['config.json']
     });
 
     const files = _.get(result, 'files', {});

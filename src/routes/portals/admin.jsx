@@ -20,6 +20,7 @@ import {
   ApplicationDetail,
   Reviews,
   ReviewDetail,
+  AppDeploy,
   CloudEnv,
   NotificationServer
 } from 'pages/Dashboard';
@@ -33,6 +34,10 @@ export default ({ prefix }) => (
     <WrapRoute
       path={`${prefix}/apps/review/:reviewId`}
       component={ReviewDetail}
+    />
+    <WrapRoute
+      path={`${prefix}/apps/:appId/deploy/:versionId?`}
+      component={AppDeploy}
     />
     <WrapRoute path={`${prefix}/apps/:appId`} component={AppDetail} />
 
