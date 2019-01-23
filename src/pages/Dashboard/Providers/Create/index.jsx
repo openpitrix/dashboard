@@ -7,6 +7,7 @@ import {
   Button, Input, Checkbox, Icon, Notification
 } from 'components/Base';
 import { Stepper } from 'components/Layout';
+import routes, { toRoute } from 'routes';
 import CertificateInfo from '../CertificateInfo';
 
 import styles from './index.scss';
@@ -34,7 +35,7 @@ export default class ApplicationCreate extends Component {
   }
 
   renderSuccessMessage() {
-    const { t } = this.props;
+    const { user, t } = this.props;
 
     return (
       <div className={styles.successMessage}>
@@ -42,11 +43,20 @@ export default class ApplicationCreate extends Component {
         <div className={styles.textTip}>{t('Submit successful')}</div>
         <div className={styles.textHeader}>{t('SUBMIT_SUCCESS_HEADER')}</div>
         <div className={styles.textTip}>{t('SUBMIT_SUCCESS_TIP')}</div>
-        <Link className={styles.successBtns} to="/dashboard/provider-detail">
-          <Button type="primary">
-            {t('View app service provider detail')}
-          </Button>
-        </Link>
+        {user.isNormal ? (
+          <Link className={styles.successBtns} to="/">
+            <Button type="primary">{t('Back to App Store')}</Button>
+          </Link>
+        ) : (
+          <Link
+            className={styles.successBtns}
+            to={toRoute(routes.portal._isv.provider)}
+          >
+            <Button type="primary">
+              {t('View app service provider detail')}
+            </Button>
+          </Link>
+        )}
         <div className={styles.certificateInfo}>
           <CertificateInfo />
         </div>

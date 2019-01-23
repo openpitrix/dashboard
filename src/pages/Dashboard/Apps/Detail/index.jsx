@@ -18,6 +18,7 @@ import TimeShow from 'components/TimeShow';
 import VersionType from 'components/VersionType';
 import AppStatistics from 'components/AppStatistics';
 import { formatTime, mappingStatus } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -102,7 +103,7 @@ export default class AppDetail extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/apps/${appId}/deploy`}>
+        <Link to={toRoute(routes.portal.deploy, { appId })}>
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
         {appDetail.status === 'active' && (
@@ -128,7 +129,12 @@ export default class AppDetail extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/apps/${appId}/deploy/${item.version_id}`}>
+        <Link
+          to={toRoute(routes.portal.deploy, {
+            appId,
+            versionId: item.version_id
+          })}
+        >
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
         {item.status === 'active' && (

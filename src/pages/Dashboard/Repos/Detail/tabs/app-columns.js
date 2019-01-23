@@ -6,6 +6,7 @@ import TdName from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import { getObjName, mappingStatus } from 'utils';
+import routes, { toRoute } from 'routes';
 
 export default function (users, isDev) {
   return [
@@ -18,9 +19,9 @@ export default function (users, isDev) {
           name={item.name}
           description={item.app_id}
           image={item.icon || 'appcenter'}
-          linkUrl={
-            isDev ? `/dashboard/app/${item.app_id}` : `/store/${item.app_id}`
-          }
+          linkUrl={toRoute(routes.portal.appDetail, {
+            appId: item.app_id
+          })}
         />
       )
     },

@@ -4,6 +4,7 @@ import TdName from 'components/TdName';
 import Status from 'components/Status';
 import Configuration from 'pages/Dashboard/Clusters/Detail/Configuration';
 import { getObjName } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -24,7 +25,9 @@ export default (clusters, t) => [
       <TdName
         name={getObjName(clusters, 'cluster_id', item.cluster_id, 'name')}
         description={item.cluster_id}
-        linkUrl={`/dashboard/cluster/${item.cluster_id}`}
+        linkUrl={toRoute(routes.portal.clusterDetail, {
+          clusterId: item.cluster_id
+        })}
         noIcon
       />
     )
