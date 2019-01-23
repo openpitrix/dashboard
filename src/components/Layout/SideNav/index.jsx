@@ -237,14 +237,14 @@ export class SideNav extends React.Component {
         <ul className={styles.topNav}>
           {hasBack ? (
             <li>
-              <a href={toRoute(routes.portal.apps, { portal: 'isv' })}>
+              <Link to={toRoute(routes.portal.apps, { portal: 'isv' })}>
                 <Icon
                   className={styles.icon}
                   size={20}
                   name="back"
                   type="dark"
                 />
-              </a>
+              </Link>
               <label className={styles.title}>{t('Back')}</label>
             </li>
           ) : (
