@@ -88,7 +88,7 @@ export default class CreateTestingEnv extends React.Component {
   };
 
   handleEsc = () => {
-    this.props.history.push(toRoute(routes.portal.runtimes));
+    this.props.history.goBack();
   };
 
   renderCredentialForm() {

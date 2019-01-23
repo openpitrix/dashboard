@@ -1,14 +1,14 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import { providers as providersConf, tabs } from 'config/runtimes';
+import { providers as providersConf } from 'config/runtimes';
 import Store from '../Store';
 
 export default class TestingEnvStore extends Store {
   // runtime provider
   @observable platform = _.get(providersConf, '[0].key', '');
 
-  @observable curTab = tabs[0] || '';
+  @observable curTab = 'runtime';
 
   @observable providerCounts = {};
 

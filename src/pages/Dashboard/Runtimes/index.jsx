@@ -8,7 +8,7 @@ import { Icon, Tooltip } from 'components/Base';
 import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
-import { providers, tabs } from 'config/runtimes';
+import { providers, userTabs, nonUserTabs } from 'config/runtimes';
 
 import Runtime from './Runtime';
 import Credential from './Credential';
@@ -32,6 +32,10 @@ export default class Runtimes extends React.Component {
     this.setState({
       loadedRt: true
     });
+  }
+
+  get inRuntimeTab() {
+    return this.props.envStore.curTab === 'runtime';
   }
 
   handleClickPlatform = (curPlatform, disabled) => {
@@ -102,7 +106,7 @@ export default class Runtimes extends React.Component {
     const { curTab, platform, runtimeToShowInstances } = this.props.envStore;
 
     if (
-      curTab === 'Testing env'
+      this.inRuntimeTab
       && _.isObject(runtimeToShowInstances)
       && runtimeToShowInstances.runtime_id
     ) {
@@ -113,14 +117,14 @@ export default class Runtimes extends React.Component {
       <Fragment>
         <Tabs
           className={styles.tabs}
-          tabs={tabs}
+          tabs={this.props.user.isUserPortal ? userTabs : nonUserTabs}
           defaultTab={curTab}
           triggerFirst={false}
           changeTab={this.handleChangeTab}
         />
         <div className={styles.body}>
           <Loading isLoading={!loadedRt}>
-            {curTab === 'Testing env' ? (
+            {this.inRuntimeTab ? (
               <Runtime platform={platform} />
             ) : (
               <Credential platform={platform} />
@@ -161,7 +165,7 @@ export default class Runtimes extends React.Component {
         pageTitle="Testing env"
         titleCls={styles.pageTitle}
         className={classnames(styles.layout, {
-          [styles.isNormal]: user.isNormal
+          [styles.nonUserPortal]: !user.isNormal
         })}
       >
         {this.renderMain()}

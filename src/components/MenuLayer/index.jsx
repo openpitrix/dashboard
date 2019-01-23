@@ -88,7 +88,7 @@ export class MenuLayer extends Component {
           </li>
         )}
 
-        {userMenus.map((item, idx) => {
+        {userMenus(this.props.user.defaultPortal).map((item, idx) => {
           if (Array.isArray(item.only) && !item.only.includes(user.role)) {
             return null;
           }
@@ -123,4 +123,5 @@ export class MenuLayer extends Component {
     );
   }
 }
+
 export default withRouter(MenuLayer);
