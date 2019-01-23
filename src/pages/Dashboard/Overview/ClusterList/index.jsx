@@ -22,7 +22,7 @@ export default class ClusterList extends PureComponent {
   }
 
   render() {
-    const { clusters, isNormal, t } = this.props;
+    const { clusters, t } = this.props;
 
     return (
       <ul className={styles.clusterList}>

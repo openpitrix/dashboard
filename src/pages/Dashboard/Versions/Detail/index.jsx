@@ -281,7 +281,11 @@ export default class VersionDetail extends Component {
         <div className={styles.releaseContent}>
           <p className={styles.title}>{t('Congratulations on you')} </p>
           <p className={styles.description}> {t('APP_SHELF_AND_SELL')}</p>
-          <Link to="/">
+          <Link
+            to={toRoute(routes.appDetail, {
+              appId
+            })}
+          >
             <Button type="primary">{t('View in store')}</Button>
           </Link>
         </div>

@@ -3,7 +3,7 @@ import _, { get, assign } from 'lodash';
 import { t } from 'i18next';
 
 import { useTableActions } from 'mixins';
-import { getProgress, getCookie, getFormData } from 'utils';
+import { getProgress, getCookie } from 'utils';
 
 import Store from '../Store';
 

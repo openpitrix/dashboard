@@ -46,7 +46,7 @@ export default class BreadCrumb extends Component {
   };
 
   render() {
-    const { children, linkPath, t } = this.props;
+    const { children, linkPath } = this.props;
     const paths = linkPath.split('>').map(s => s.trim());
     const linkLen = paths.length - 1;
 

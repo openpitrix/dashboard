@@ -257,7 +257,7 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, appStore, userStore, user, match, t
+      clusterStore, appStore, userStore, user, t
     } = this.props;
     const { clusters, isLoading, onlyView } = clusterStore;
 
