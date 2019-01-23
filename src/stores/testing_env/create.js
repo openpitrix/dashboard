@@ -75,7 +75,7 @@ export default class CreateEnvStore extends Store {
   }
 
   get createRuntimeAction() {
-    return this.getUser().isDev ? 'debug_runtimes' : 'runtimes';
+    return this.getUser().isUserPortal ? 'runtimes' : 'debug_runtimes';
   }
 
   getCredentialContent() {
