@@ -23,8 +23,8 @@ export default ({ prefix }) => (
     <WrapRoute path={`${prefix}/provider`} component={ApplicationDetail} />
     <WrapRoute path={`${prefix}/provider/apply`} component={ProviderCreate} />
     <WrapRoute path={`${prefix}/apps`} component={Apps} />
-    <WrapRoute path={`${prefix}/apps/:appId`} component={AppDetail} />
     <WrapRoute path={`${prefix}/apps/review`} component={Reviews} />
+    <WrapRoute path={`${prefix}/apps/:appId`} component={AppDetail} />
     <WrapRoute
       path={`${prefix}/apps/review/:reviewId`}
       component={ReviewDetail}

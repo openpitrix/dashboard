@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import { noop, isEmpty } from 'lodash';
+import { noop } from 'lodash';
 import { translate } from 'react-i18next';
 
 import { Notification, Icon } from 'components/Base';

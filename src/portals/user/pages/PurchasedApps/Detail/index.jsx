@@ -152,9 +152,7 @@ export default class PurchasedDetail extends Component {
   }
 
   render() {
-    const {
-      clusterStore, runtimeStore, user, t
-    } = this.props;
+    const { clusterStore, runtimeStore, t } = this.props;
     const { clusters, isLoading } = clusterStore;
     const { runtimes } = runtimeStore;
 

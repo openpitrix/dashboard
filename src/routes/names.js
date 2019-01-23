@@ -7,7 +7,7 @@ export default {
   appDetail: '/apps/:appId',
   login: '/login',
   logout: '/logout',
-  profile: '/profile',
+  profile: '/profile/:type?',
 
   portal: {
     appsReview: '/:portal/apps/review',

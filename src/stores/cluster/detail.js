@@ -45,7 +45,7 @@ export default class ClusterDetailStore extends Store {
   @observable env = '';
 
   get describeActionName() {
-    return this.getUser.isUserPortal ? 'clusters' : 'debug_clusters';
+    return this.getUser().isUserPortal ? 'clusters' : 'debug_clusters';
   }
 
   @action

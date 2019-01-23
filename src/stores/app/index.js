@@ -1,9 +1,10 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
-import { getProgress, getCookie } from 'utils';
 import { t } from 'i18next';
 
 import { useTableActions } from 'mixins';
+import { getProgress, getCookie } from 'utils';
+
 import Store from '../Store';
 
 const maxsize = 2 * 1024 * 1024;
@@ -128,7 +129,7 @@ class AppStore extends Store {
       const params = {
         sort_key: 'status_time',
         limit: 5,
-        status: defaultStatus
+        status: this.defaultStatus
       };
       const result = await this.request.get('apps', params);
 

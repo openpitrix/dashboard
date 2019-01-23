@@ -18,7 +18,7 @@ export default class RuntimeCredentialStore extends Store {
   @observable credentialCount = 0;
 
   get actionName() {
-    return this.getUser.isUserPortal
+    return this.getUser().isUserPortal
       ? 'runtimes/credentials'
       : 'debug_runtimes/credentials';
   }

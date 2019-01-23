@@ -8,6 +8,7 @@ import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import { formatTime } from 'utils';
+import routes, { toRoute } from 'routes';
 import CertificateInfo from '../../CertificateInfo';
 
 import styles from './index.scss';
@@ -89,7 +90,7 @@ export default class Applications extends Component {
                 {t(statusMap[status] || status)}
               </span>
               {isSubmit && (
-                <Link to="/dashboard/provider/submit">
+                <Link to={toRoute(routes.portal._isv.providerApply)}>
                   {t(status === 'new' ? 'Submit immediately' : 'Re-submit')}
                 </Link>
               )}
