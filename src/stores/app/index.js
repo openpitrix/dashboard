@@ -1,9 +1,10 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
-import { getProgress, getCookie } from 'utils';
 import { t } from 'i18next';
 
 import { useTableActions } from 'mixins';
+import { getProgress, getCookie, getFormData } from 'utils';
+
 import Store from '../Store';
 
 const maxsize = 2 * 1024 * 1024;

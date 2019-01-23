@@ -101,7 +101,7 @@ export default class AppVersionStore extends Store {
   }
 
   get describeVersionName() {
-    return this.getUser.isUserPortal ? 'active_app_versions' : 'app_versions';
+    return this.getUser().isUserPortal ? 'active_app_versions' : 'app_versions';
   }
 
   @action

@@ -43,7 +43,7 @@ export default class AppDeployStore extends Store {
   }
 
   get createActionName() {
-    return this.getUser.isUserPortal
+    return this.getUser().isUserPortal
       ? 'clusters/create'
       : 'debug_clusters/create';
   }

@@ -10,7 +10,7 @@ import {
   AppAdd,
   Versions,
   VersionDetail,
-  Deploy,
+  AppDeploy,
   Audits,
   AppInfo,
   Clusters,
@@ -36,8 +36,8 @@ export default ({ prefix }) => (
       component={VersionDetail}
     />
     <WrapRoute
-      path={`${prefix}/apps/:appId/deploy/:versionId？`}
-      component={Deploy}
+      path={`${prefix}/apps/:appId/deploy/:versionId?`}
+      component={AppDeploy}
     />
 
     <WrapRoute path={`${prefix}/apps/:appId`} component={AppInfo} />

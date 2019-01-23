@@ -316,12 +316,12 @@ export const getDevSubNavs = appId => [
 export const userMenus = [
   {
     name: 'Account Info',
-    link: '/profile',
+    link: toRoute(routes.profile),
     iconName: 'folder'
   },
   {
     name: 'Change Password',
-    link: '/profile/password',
+    link: toRoute(routes.profile, { type: 'password' }),
     iconName: 'lock'
   },
   {
@@ -344,7 +344,7 @@ export const userMenus = [
   },
   {
     name: 'SSH Keys',
-    link: '/profile/ssh',
+    link: toRoute(routes.profile, { type: 'ssh' }),
     iconName: 'ssh',
     divider: true,
     only: ['user']

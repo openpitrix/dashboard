@@ -66,7 +66,7 @@ export default class ClusterStore extends Store {
   }
 
   get describeActionName() {
-    return this.getUser.isUserPortal ? 'clusters' : 'debug_clusters';
+    return this.getUser().isUserPortal ? 'clusters' : 'debug_clusters';
   }
 
   @action

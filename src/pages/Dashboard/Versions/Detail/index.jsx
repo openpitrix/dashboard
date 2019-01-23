@@ -281,7 +281,7 @@ export default class VersionDetail extends Component {
         <div className={styles.releaseContent}>
           <p className={styles.title}>{t('Congratulations on you')} </p>
           <p className={styles.description}> {t('APP_SHELF_AND_SELL')}</p>
-          <Link to={`/apps/${appId}`}>
+          <Link to="/">
             <Button type="primary">{t('View in store')}</Button>
           </Link>
         </div>
@@ -364,7 +364,11 @@ export default class VersionDetail extends Component {
           </div>
         </div>
         <div className={styles.link}>
-          <Link to={`/dashboard/app/${version.app_id}/audits`}>
+          <Link
+            to={toRoute(routes.portal._dev.appAudits, {
+              appId: version.app_id
+            })}
+          >
             {t('View all records')} →
           </Link>
         </div>
