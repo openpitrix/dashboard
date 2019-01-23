@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import qs from 'query-string';
+import { qs2Obj } from 'utils';
 
 function createSetPage(storeName, WrapComponent) {
   const displayName = `setPage-${WrapComponent.displayName
@@ -17,7 +17,7 @@ function createSetPage(storeName, WrapComponent) {
     constructor(props) {
       super(props);
       const store = this.props[storeName];
-      const values = qs.parse(this.props.location.search);
+      const values = qs2Obj(this.props.location.search);
       const currentPage = Number(values.page);
       _.assign(originSource, _.pick(store, keys));
       if (!_.isNaN(currentPage)) {

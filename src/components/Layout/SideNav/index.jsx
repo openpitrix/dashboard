@@ -201,9 +201,7 @@ export class SideNav extends React.Component {
                     name={nav.iconName}
                     type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                   />
-                  <Link to="#">
-                    <label className={styles.title}>{t(nav.title)}</label>
-                  </Link>
+                  <label className={styles.title}>{t(nav.title)}</label>
                 </Popover>
               </li>
           ) : (
