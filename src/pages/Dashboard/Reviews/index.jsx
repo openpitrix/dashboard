@@ -10,8 +10,8 @@ import AppName from 'components/AppName';
 import TableTypes from 'components/TableTypes';
 import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
-
 import routes, { toRoute } from 'routes';
+
 import styles from './index.scss';
 
 const types = [

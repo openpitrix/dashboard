@@ -15,6 +15,7 @@ import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
 import { formatTime, mappingStatus } from 'utils';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -202,7 +203,11 @@ export default class ReviewDetail extends Component {
           </div>
           <div className={styles.opreateButtons}>
             {user.username === 'develop_admin' && (
-              <Link to={`/dashboard/apps/${reviewDetail.app_id}/deploy`}>
+              <Link
+                to={toRoute(routes.portal.deploy, {
+                  appId: reviewDetail.app_id
+                })}
+              >
                 <Button>{t('Deploy Test')}</Button>
               </Link>
             )}
@@ -355,9 +360,10 @@ export default class ReviewDetail extends Component {
             )}
             <Link
               className={styles.link}
-              to={`/dashboard/app/${appDetail.app_id}/deploy/${
-                version.version_id
-              }`}
+              to={toRoute(routes.portal.deploy, {
+                appId: appDetail.app_id,
+                versionId: version.version_id
+              })}
             >
               {t('Deploy App')}
             </Link>

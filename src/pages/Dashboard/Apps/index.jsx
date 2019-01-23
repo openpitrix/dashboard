@@ -55,7 +55,6 @@ export default class Apps extends Component {
     } = appStore;
     const { users } = userStore;
     const { isAdmin } = user;
-    const urlPrefix = '/dashboard/app/';
     const columnsFilter = columns => {
       const excludeKeys = isAdmin ? 'owner' : 'maintainers';
       return columns.filter(item => item.key !== excludeKeys);
@@ -78,8 +77,7 @@ export default class Apps extends Component {
           columnsFilter={columnsFilter}
           inject={{
             users,
-            isAdmin,
-            urlPrefix
+            isAdmin
           }}
         />
       </Layout>

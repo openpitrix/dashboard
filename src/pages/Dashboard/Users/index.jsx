@@ -20,6 +20,7 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TimeShow from 'components/TimeShow';
 import roles, { roleMap } from 'config/roles';
+import routes, { toRoute } from 'routes';
 import GroupCard from './GroupCard';
 
 import styles from './index.scss';
@@ -81,7 +82,13 @@ export default class Users extends Component {
 
     return (
       <div className="operate-menu">
-        <Link to={`/dashboard/user/${user.user_id}`}>{t('View detail')}</Link>
+        <Link
+          to={toRoute(routes.portal._admin.userDetail, {
+            userId: user.user_id
+          })}
+        >
+          {t('View detail')}
+        </Link>
         <span onClick={() => showModifyUser(user)}>{t('Modify User')}</span>
         <span onClick={() => showDeleteUser(user.user_id)}>{t('Delete')}</span>
       </div>
@@ -236,7 +243,13 @@ export default class Users extends Component {
         title: t('Username'),
         key: 'username',
         render: item => (
-          <Link to={`/dashboard/user/${item.user_id}`}>{item.username}</Link>
+          <Link
+            to={toRoute(routes.portal._admin.userDetail, {
+              userId: item.user_id
+            })}
+          >
+            {item.username}
+          </Link>
         )
       },
       {

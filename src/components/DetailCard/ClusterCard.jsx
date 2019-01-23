@@ -7,6 +7,7 @@ import { translate } from 'react-i18next';
 import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import routes, { toRoute } from 'routes';
 import CopyId from './CopyId';
 
 import styles from './index.scss';
@@ -52,7 +53,9 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('App')}</span>
-            <Link to={`/dashboard/app/${detail.app_id}`}>
+            <Link
+              to={toRoute(routes.portal.appDetail, { appId: detail.app_id })}
+            >
               {appName || t('None')}
             </Link>
           </li>
@@ -62,12 +65,11 @@ export default class ClusterCard extends Component {
           </li>
           <li className={styles.setHeight}>
             <span className={styles.name}>{t('Runtime')}</span>
-            <Link
+            <ProviderName
+              provider={provider}
+              name={runtimeName}
               className={styles.value}
-              to={`/dashboard/runtime/${detail.runtime_id}`}
-            >
-              <ProviderName provider={provider} name={runtimeName} />
-            </Link>
+            />
           </li>
           <li>
             <span className={styles.name}>{t('Creator')}</span>
