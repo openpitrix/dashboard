@@ -39,7 +39,6 @@ export default class Apps extends Component {
   componentWillUnmount() {
     const { appStore } = this.props;
     appStore.reset();
-    appStore.defaultStatus = '';
   }
 
   render() {
