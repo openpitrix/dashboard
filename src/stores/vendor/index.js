@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
 
 import _, { assign, get } from 'lodash';
-import { t } from 'i18next';
 import Store from '../Store';
 
 export default class VendorStore extends Store {
@@ -64,7 +63,7 @@ export default class VendorStore extends Store {
     this.isLoading = true;
 
     const result = await this.request.get(
-      'vendor_verify_infos',
+      'app_vendors',
       assign(defaultParams, params)
     );
 
@@ -82,12 +81,10 @@ export default class VendorStore extends Store {
   @action
   fetch = async (userId = '') => {
     this.isLoading = true;
-    const result = await this.request.get('vendor_verify_infos/user_id=*', {
+    const result = await this.request.get('app_vendors', {
       user_id: userId
     });
-    if (_.get(result, 'user_id')) {
-      this.vendorDetail = result;
-    }
+    this.vendorDetail = get(result, 'vendor_verify_info_set[0]', {});
     this.isLoading = false;
   };
 
@@ -95,7 +92,7 @@ export default class VendorStore extends Store {
   fetchStatistics = async (params = {}) => {
     this.isLoading = true;
     const result = await this.request.get(
-      'DescribeAppVendorStatistics',
+      'app_vendors/app_vendor_statistics',
       params
     );
 
@@ -107,8 +104,8 @@ export default class VendorStore extends Store {
   create = async (userId, params = {}) => {
     this.isLoading = true;
     const result = await this.request.post(
-      `vendor_verify_infos/${userId}`,
-      params
+      'app_vendors',
+      _.assign(params, { user_id: userId })
     );
     this.isLoading = false;
     return result;
@@ -117,36 +114,32 @@ export default class VendorStore extends Store {
   @action
   applyPass = async userId => {
     this.isLoading = true;
-    const result = await this.request.post(
-      'vendor_verify_infos/user_id=*/action:pass',
-      { user_id: userId }
-    );
+    const result = await this.request.post('app_vendors/pass', {
+      user_id: userId
+    });
     this.isLoading = false;
 
     if (_.get(result, 'user_id')) {
-      this.fetch(userId);
+      await this.fetch(userId);
     }
   };
 
   @action
   applyReject = async userId => {
     if (!this.rejectMessage) {
-      return this.error(t('请您填写拒绝原因'));
+      return this.error('Please input the reason for reject');
     }
 
     this.isLoading = true;
-    const result = await this.request.post(
-      'vendor_verify_infos/user_id=*/action:reject',
-      {
-        user_id: userId,
-        reject_message: this.rejectMessage
-      }
-    );
+    const result = await this.request.post('app_vendors/reject', {
+      user_id: userId,
+      reject_message: this.rejectMessage
+    });
     this.isLoading = false;
 
     if (_.get(result, 'user_id')) {
       this.isMessageOpen = false;
-      this.fetch(userId);
+      await this.fetch(userId);
     }
   };
 
