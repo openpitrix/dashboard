@@ -37,7 +37,7 @@ export default class Home extends Component {
 
     if (!(this.category || this.searchWord)) {
       this.threshold = this.getThreshold();
-      window.onscroll = _.debounce(this.handleScroll, 200);
+      window.onscroll = _.debounce(this.handleScroll, 100);
     }
     window.scroll({ top: 0 });
 
