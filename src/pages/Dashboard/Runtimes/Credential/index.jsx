@@ -66,7 +66,7 @@ export class Credential extends React.Component {
       provider: envStore.platform || 'qingcloud'
     };
 
-    if (!_.isEmpty(params)) {
+    if (_.isObject(params) && !params.nativeEvent) {
       Object.assign(query, params);
     }
 
