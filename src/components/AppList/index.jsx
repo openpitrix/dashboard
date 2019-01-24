@@ -63,7 +63,6 @@ export default class AppList extends PureComponent {
               desc={description}
               link={`/apps/${app_id}`}
               key={idx}
-              canToggle
               maintainer={maintainers}
               type={app_version_types}
             />

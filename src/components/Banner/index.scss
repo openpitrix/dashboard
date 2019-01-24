@@ -1,14 +1,15 @@
 @import "~scss/vars";
 
+$speed: 0.2s;
+
 .banner {
-  //position: sticky;
   position: fixed;
   width: 100%;
   z-index: 2;
   top: $header-height;
   padding: 30px 0;
   background-color: $N500;
-  transition: height .3s ease-in-out;
+  transition: all $speed ease-in-out;
 
   &.stretch {
     padding: 64px 0;
@@ -21,7 +22,7 @@
   &.shrink {
     padding: 30px 0 !important;
     .search {
-      transition: all .3s ease-in-out;
+      transition: all $speed ease-in-out;
       float: right;
       top: -15px;
     }
@@ -89,7 +90,7 @@
       border-radius: 16px;
       border: 1px solid transparent;
       background-color: rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease-in-out;
+      transition: all $speed ease-in-out;
 
       &::placeholder {
         font-size: 12px;
