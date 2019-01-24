@@ -350,7 +350,8 @@ export const userMenus = portal => [
   {
     name: 'Testing env',
     link: toRoute(routes.portal.runtimes, { portal }),
-    iconName: 'image'
+    iconName: 'image',
+    userPortalShow: true
   },
   {
     name: 'SSH Keys',

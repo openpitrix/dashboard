@@ -40,7 +40,7 @@ export class Table extends React.Component {
     pagination: {},
     rowKey: 'key',
     rowSelection: {
-      selectedRowKeys: [],
+      // selectedRowKeys: [],
       onChange: _.noop,
       onSelect: _.noop,
       onSelectAll: _.noop

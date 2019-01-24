@@ -92,7 +92,8 @@ export class MenuLayer extends Component {
           if (Array.isArray(item.only) && !item.only.includes(user.role)) {
             return null;
           }
-          if (typeof item.only === 'string' && user.role !== item.only) {
+
+          if (isUserPortal && item.userPortalShow && user.role !== 'user') {
             return null;
           }
 
