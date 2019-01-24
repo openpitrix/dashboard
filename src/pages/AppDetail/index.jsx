@@ -72,7 +72,7 @@ export default class AppDetail extends Component {
       // todo
       // await vendorStore.fetch(appDetail.vendor_id);
 
-      await appStore.fetchActiveApps();
+      await appStore.fetchActiveApps({ status: 'active' });
 
       this.setState({ isLoading: false });
     }
