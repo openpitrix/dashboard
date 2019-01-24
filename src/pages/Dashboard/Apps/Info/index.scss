@@ -142,6 +142,23 @@
       margin-right: 12px;
     }
   }
+
+  .error {
+    position: relative;
+
+    input {
+      border-color: $R300;
+    }
+
+    .errorInfo {
+      position: absolute;
+      top: 36px;
+      left: 270px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $R300;
+    }
+  }
 }
 
 .screenshot {
@@ -212,6 +229,10 @@
 
     &::placeholder {
       color: $N30;
+    }
+
+    &:focus {
+      box-shadow: none;
     }
   }
 

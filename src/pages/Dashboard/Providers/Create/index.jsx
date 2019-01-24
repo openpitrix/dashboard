@@ -98,7 +98,7 @@ export default class ApplicationCreate extends Component {
               maxLength={100}
             />
           </dd>
-          <p>{checkResult.company_name}</p>
+          <p>{t(checkResult.company_name)}</p>
         </dl>
         <dl
           className={classnames({
@@ -135,13 +135,12 @@ export default class ApplicationCreate extends Component {
           <dt>{t('Contact information')}</dt>
           <dd>{t('CONTACT_INFORMATION_NOTE')}</dd>
         </dl>
-        <dl
-          className={classnames({
-            [styles.error]:
-              checkResult.authorizer_name || checkResult.authorizer_email
-          })}
-        >
-          <div className={styles.column}>
+        <dl>
+          <div
+            className={classnames(styles.column, {
+              [styles.error]: checkResult.authorizer_name
+            })}
+          >
             <dt>{t('name_provider')}</dt>
             <dd>
               <Input
@@ -155,7 +154,11 @@ export default class ApplicationCreate extends Component {
             </dd>
             <p>{checkResult.authorizer_name}</p>
           </div>
-          <div className={styles.column}>
+          <div
+            className={classnames(styles.column, {
+              [styles.error]: checkResult.authorizer_email
+            })}
+          >
             <dt>{t('Office mailbox')}</dt>
             <dd>
               <Input
@@ -193,7 +196,7 @@ export default class ApplicationCreate extends Component {
           <dd>{t('PUBLIC_ACCOUNT_NOTE')}</dd>
         </dl>
         <dl
-          className={classnames({
+          className={classnames(styles.bankName, {
             [styles.error]: checkResult.bank_name
           })}
         >

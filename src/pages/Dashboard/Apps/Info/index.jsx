@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
+import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
@@ -254,14 +255,20 @@ export default class Info extends Component {
       appDetail,
       modifyApp,
       changeApp,
+      checkApp,
+      checkResult,
       changeCategory,
       resetBaseInfo,
       isEdit
     } = appStore;
 
     return (
-      <form id="infoForm" className={styles.createForm} onSubmit={modifyApp}>
-        <div className={styles.item}>
+      <form className={styles.createForm} onSubmit={modifyApp}>
+        <div
+          className={classnames(styles.item, {
+            [styles.error]: checkResult.name
+          })}
+        >
           <div className={styles.name}>
             <label>{t('Name')}</label>
             <p className={styles.noteWord}>
@@ -272,10 +279,12 @@ export default class Info extends Component {
             name="name"
             value={appDetail.name}
             onChange={e => changeApp(e, 'name')}
+            onBlur={e => checkApp(e, 'name')}
+            onFocus={e => checkApp(e, 'name', true)}
             maxLength={50}
-            required
             disabled={!isEdit}
           />
+          <p className={styles.errorInfo}>{t(checkResult.name)}</p>
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
@@ -345,7 +354,11 @@ export default class Info extends Component {
             ))}
           </Select>
         </div>
-        <div className={styles.item}>
+        <div
+          className={classnames(styles.item, {
+            [styles.error]: checkResult.home
+          })}
+        >
           <div className={styles.name}>
             <label>{t('Service provider website')}</label>
             <p className={styles.noteWord}>
@@ -358,8 +371,11 @@ export default class Info extends Component {
             maxLength={200}
             value={appDetail.home}
             onChange={e => changeApp(e, 'home')}
+            onBlur={e => checkApp(e, 'home')}
+            onFocus={e => checkApp(e, 'home', true)}
             disabled={!isEdit}
           />
+          <p className={styles.errorInfo}>{t(checkResult.home)}</p>
         </div>
         {!isCheckInfo && (
           <div className={styles.operateBtns}>

@@ -3,36 +3,52 @@ import _ from 'lodash';
 export const checkConfig = {
   vendor: {
     company_name: {
-      required: '公司名称不能为空'
+      required_info: 'Company name cannot be empty'
     },
     company_website: {
-      required: '公司官网不能为空',
+      required_info: 'Company website cannot be empty',
       regex: /[a-zA-z]+:\/\/[^\s]*/,
-      regex_info: '输入格式错误，正确格式如：http://www.example.com'
+      regex_info: 'WEBSITE_FORMAT_INFO'
     },
     authorizer_name: {
-      required: '姓名不能为空'
+      required_info: 'Name cannot be empty'
     },
     authorizer_email: {
-      required: '办公邮箱不能为空',
+      required_info: 'Office mailboxes cannot be empty',
       regex: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
-      regex_info: '输入格式错误，正确格式如：name@example.com'
+      regex_info: 'AUTHORIZER_EMAIL_FORMAT_INFO'
     },
     authorizer_phone: {
-      required: '手机号不能为空',
+      required_info: 'Mobile phone number cannot be empty',
       regex: /^1[0-9]{10}$/,
-      regex_info: '输入格式错误，正确格式为1开始的11位数字'
+      regex_info: 'AUTHORIZER_PHONE_FORMAT_INFO'
     },
     bank_name: {
-      required: '开户银行不能为空'
+      required_info: 'Opening bank cannot be empty'
     },
     bank_account_name: {
-      required: '开户名不能为空'
+      required_info: 'Account name cannot be empty'
     },
     bank_account_number: {
-      required: '账号不能为空',
+      required_info: 'Account number cannot be empty',
       regex: /\d{12}|\d{15}|\d{16}|\d{17}|\d{18}|\d{19}/,
-      regex_info: '输入格式错误，正确格式为12到19位的数字'
+      regex_info: 'BANK_ACCOUNT_NUMBER_FORMAT_INFO'
+    }
+  },
+  app: {
+    name: {
+      required_info: 'Name should not be empty'
+    },
+    home: {
+      regex: /[a-zA-z]+:\/\/[^\s]*/,
+      regex_info: 'WEBSITE_FORMAT_INFO'
+    }
+  },
+  version: {
+    name: {
+      required_info: 'Version No should not be empty"',
+      regex: /^\d+((\.|\d)*)+(\d$)/,
+      regex_info: 'VERSION_NO_FORMAT_INFO'
     }
   }
 };
@@ -44,12 +60,16 @@ export const fromCheck = (formName, submitData) => {
   _.map(config, (check, key) => {
     const value = submitData[key];
 
-    if (check.required) {
-      result[key] = value ? '' : check.required;
+    if (check.required_info) {
+      result[key] = value ? '' : check.required_info;
     }
 
     if (check.regex && value) {
       result[key] = check.regex.test(value) ? '' : check.regex_info;
+    }
+
+    if (!result[key]) {
+      delete result[key];
     }
   });
 
@@ -60,8 +80,8 @@ export const fieldCheck = (formName, fieldName, value) => {
   const result = {};
   const check = _.get(checkConfig, `${formName}.${fieldName}`, {});
 
-  if (check.required) {
-    result[fieldName] = value ? '' : check.required;
+  if (check.required_info) {
+    result[fieldName] = value ? '' : check.required_info;
   }
 
   if (check.regex && value) {

@@ -86,5 +86,12 @@
   "suspend-app-note-desc": "应用下架后，用户无法从商店中购买到此应用，你确定要下架该应用吗？",
   "recover-app-note-desc": "应用上架后，相关的下架版本都将变成上架，你确定要上架该应用吗？",
   "suspend-version-note-desc": "版本下架后，关联的应用将不显示该版本，你确定要下架吗？",
-  "recover-version-note-desc": "版本上架后，关联的应用将显示出该版本，你确定要上架吗？"
+  "recover-version-note-desc": "版本上架后，关联的应用将显示出该版本，你确定要上架吗？",
+
+  "Not editable": "不可修改",
+  "Significant identity of app version": "应用版本的重要标识",
+  "Used to describe in detail the specific content of this update": "用于详细描述此次更新的具体内容",
+  "Pricing information": "定价信息",
+  "App pricing is not supported for the time being": "暂时不支持应用定价",
+  "VERSION_NO_FORMAT_INFO": "输入格式错误，正确格式为小数点和数字组成"
 }

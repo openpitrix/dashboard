@@ -197,6 +197,7 @@ export default class VendorStore extends Store {
 
     if (_.isEmpty(this.checkResult)) {
       const result = await this.create(this.userId, _.assign({}, data));
+
       if (_.get(result, 'user_id')) {
         this.activeStep++;
       }

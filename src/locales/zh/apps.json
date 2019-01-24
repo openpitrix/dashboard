@@ -21,6 +21,7 @@
   "file_format_note": "文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP",
   "file_format_loading": "文件正在上传中，请稍等…",
   "The file size cannot exceed 2M": "文件大小不能超过2M",
+  "MAX_UPLOAD_SCREENSHOTS": "最多只能上传6张界面截图",
   "view_guide_1": "查看",
   "view_guide_2": "《Openpitrix开发指南》",
   "view_guide_3": "并了解如何制作配置文件",
