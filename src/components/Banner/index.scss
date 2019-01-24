@@ -1,14 +1,13 @@
 @import "~scss/vars";
 
 .banner {
-  //position: sticky;
   position: fixed;
   width: 100%;
   z-index: 2;
   top: $header-height;
   padding: 30px 0;
   background-color: $N500;
-  transition: height .3s ease-in-out;
+  transition: all .3s ease-in-out;
 
   &.stretch {
     padding: 64px 0;

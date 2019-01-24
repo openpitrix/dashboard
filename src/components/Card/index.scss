@@ -1,15 +1,17 @@
 @import '~scss/vars';
 
+$card-width: 303px;
+$card-height: 208px;
+
 .card {
    float: left;
    display: inline-block;
    position: relative;
-   width: $app-card-width;
-   height: $app-card-height;
-   padding: 40px 20px 20px;
+   width: $card-width;
+   height: $card-height;
+   padding: 32px 44px;
    margin: 0 24px 24px 0;
    border-radius: 2px;
-   //border: 1px solid $border-light;
    border: 1px solid $N0;
    background-color: $N0;
    transition: all .3s ease-in-out;
@@ -27,7 +29,7 @@
     position: relative;
   }
   .name {
-    font-family: Roboto;
+    font-family: Roboto sans-serif;
     font-size: 14px;
     color: #343945;
     text-align: center;
@@ -42,12 +44,16 @@
     top: 12px;
   }
   .desc {
-    font-size: 12px;
+    font-family: Roboto-Regular sans-serif;
+    font-size: $size-small;
     color: #8C96AD;
     text-align: center;
     line-height: 20px;
     position: relative;
     top: 8px;
+    p {
+      @include textCut;
+    }
   }
   .attrs {
     display: block;
@@ -55,39 +61,37 @@
     position: relative;
     bottom: -50px;
     transition:all 0.3s ease;
-
-    .type {
+    dt {
+      font-size: 12px;
+      color: #8C96AD;
+      line-height: 20px;
       display: inline-block;
-      padding: 0 4px;
-      margin-right: 2px;
+    }
+
+    dd {
+      font-size: 12px;
+      color: #576075;
+      line-height: 20px;
+      display: inline-block;
+      margin-left: 0;
+    }
+    dl {
+      margin: 0;
+    }
+    .label {
+      margin-right: 4px;
     }
   }
 
-  dt {
-    font-size: 12px;
-    color: #8C96AD;
-    line-height: 20px;
-    display: inline-block;
-  }
-
-  dd {
-    font-size: 12px;
-    color: #576075;
-    line-height: 20px;
-    display: inline-block;
-    margin-left: 0;
-  }
-  dl {
-    margin: 0;
-  }
 
   &:hover {
-    background: #FFFFFF;
-    border: 1px solid #B79DE2;
+    background: $N0;
+    border: 1px solid $P45;
     border-position: inside;
     box-shadow: 0 3px 4px 0 rgba(134,145,156,0.04), 0 0 8px 0 rgba(119,133,146,0.04);
     cursor: pointer;
     text-align: left;
+    padding: 28px 24px;
 
     .icon {
       margin: 0;
@@ -109,8 +113,6 @@
       height: 28px;
     }
     .desc {
-      font-family: Roboto-Regular;
-      font-size: 12px;
       color: #8C96AD;
       line-height: 20px;
       text-align: left;
@@ -123,44 +125,6 @@
       opacity: 1;
     }
   }
-
-  .label {
-    font-size: $size-small;
-    color: $N75;
-
-    &+span {
-      margin-left: 4px;
-      font-size: $size-small;
-      color: $N300;
-    }
-  }
  }
 
-//.foldCard {
-//  height: 72px;
-//  padding: 18px 16px;
-//  text-align: left;
-//  position: relative;
-//  margin: 0 24px 24px 0;
-//
-//  .title{
-//    .icon {
-//      float: left;
-//      width: 36px;
-//      height: 36px;
-//      line-height: 36px;
-//    }
-//    .name {
-//      margin-left: 48px;
-//      margin-bottom: 0;
-//      width: auto;
-//    }
-//    .desc {
-//      //height: auto;
-//      margin-top: 0px;
-//      margin-left: 48px;
-//     @include textCut;
-//    }
-//  }
-//}
 

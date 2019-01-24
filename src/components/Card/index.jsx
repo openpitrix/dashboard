@@ -48,35 +48,38 @@ export class Card extends PureComponent {
 
   render() {
     const {
-      icon, name, desc, fold, maintainer, type, className, t
+      icon,
+      name,
+      desc,
+      fold,
+      maintainer,
+      type,
+      className,
+      t
     } = this.props;
 
     const iconSize = fold ? 36 : 48;
 
     return (
-      <div className={classnames(styles.card, className)} onClick={this.handleClick}>
+      <div
+        className={classnames(styles.card, className)}
+        onClick={this.handleClick}
+      >
         <div className={styles.icon}>
-          <Image
-            src={icon}
-            alt="Icon"
-            iconSize={iconSize}
-            iconLetter={name}
-          />
+          <Image src={icon} alt="Icon" iconSize={iconSize} iconLetter={name} />
         </div>
         <div className={styles.name}>{name}</div>
         <div className={styles.desc} title={desc}>
-          {desc}
+          {desc.split('\n').map((line, idx) => <p key={idx}>{line}</p>)}
         </div>
         <div className={styles.attrs}>
-          <dl className={styles.maintainer}>
+          <dl>
             <dt className={styles.label}>{t('Service provider')}:</dt>
             <dd className={styles.val}>{this.transMaintainers(maintainer)}</dd>
           </dl>
-          <dl className={styles.type}>
+          <dl>
             <dt className={styles.label}>{t('Delivery type')}:</dt>
-            <dd className={styles.val}>
-              {getVersionTypesName(type)}
-            </dd>
+            <dd className={styles.val}>{getVersionTypesName(type)}</dd>
           </dl>
         </div>
       </div>
