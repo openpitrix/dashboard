@@ -2,6 +2,7 @@ import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import { t } from 'i18next';
 import { saveAs } from 'file-saver';
+import FormSerializer from '@lib/form-serializer';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
@@ -67,29 +68,32 @@ export function getPastTime(time) {
     : `${parseInt(diff)} ${t('hours ago')}`;
 }
 
-// simple query-string
-export const qs2Obj = (str = location.search) => str
-  .substring(1)
-  .split('&')
-  .map(p => p.split('='))
-  .reduce(
-    (obj, [key, value]) => ({ ...obj, [key]: decodeURIComponent(value) }),
-    {}
-  );
+export const qs2Obj = (str = location.search) => {
+  if (str.startsWith('?')) {
+    str = str.substring(1);
+  }
 
-export function toQueryString(params) {
-  return `${Object.keys(params)
-    .map(k => {
-      const name = encodeURIComponent(k);
-      if (Array.isArray(params[k])) {
-        return params[k]
-          .map(val => `${name}[]=${encodeURIComponent(val)}`)
-          .join('&');
-      }
-      return `${name}=${encodeURIComponent(params[k])}`;
-    })
-    .join('&')}`;
-}
+  return str
+    .split('&')
+    .filter(Boolean)
+    .map(p => p.split('='))
+    .reduce(
+      (obj, [key, value]) => ({ ...obj, [key]: decodeURIComponent(value) }),
+      {}
+    );
+};
+
+export const obj2Qs = (params = {}) => Object.keys(params)
+  .map(k => {
+    const name = encodeURIComponent(k);
+    if (Array.isArray(params[k])) {
+      return params[k]
+        .map(val => `${name}[]=${encodeURIComponent(val)}`)
+        .join('&');
+    }
+    return `${name}=${encodeURIComponent(params[k])}`;
+  })
+  .join('&');
 
 // isomorphic: get session info from server ctx or client cookie
 export function getSessInfo(key, store) {
@@ -111,13 +115,18 @@ export function getLoginDate(timestamp = Date.now(), locale = 'zh') {
 }
 
 export function getFormData(form) {
-  const data = {};
-  const fd = new FormData(form);
-  for (const p of fd.entries()) {
-    data[p[0]] = p[1];
+  // if browser support FormData, apply it first
+  if (window.FormData && FormData.prototype.entries) {
+    const data = {};
+    const fd = new FormData(form);
+    for (const p of fd.entries()) {
+      data[p[0]] = p[1];
+    }
+    return data;
   }
-
-  return data;
+  // polyfill FormData entries
+  const serializer = new FormSerializer(form);
+  return serializer.toJson();
 }
 
 export function getObjName(datas, key, value, name) {

@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
-import qs from 'query-string';
 
 import {
   Icon, Popover, Input, Notification
@@ -13,7 +12,7 @@ import {
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import routes, { toRoute } from 'routes';
-import { formatTime } from 'utils';
+import { formatTime, obj2Qs } from 'utils';
 
 import styles from '../index.scss';
 
@@ -71,7 +70,7 @@ export class Credential extends React.Component {
       Object.assign(query, params);
     }
 
-    this.props.history.push([page, qs.stringify(query)].join('?'));
+    this.props.history.push([page, obj2Qs(query)].join('?'));
   };
 
   renderMenu(credential_id) {

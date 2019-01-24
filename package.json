@@ -31,7 +31,6 @@
     "path-to-regexp": "^3.0.0",
     "promise-polyfill": "^7.0.0",
     "prop-types": "^15.6.0",
-    "query-string": "^6.2.0",
     "rc-table": "^6.1.2",
     "react": "^16.6.0",
     "react-codemirror": "^1.0.0",

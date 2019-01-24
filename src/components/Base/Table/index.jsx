@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import _, { isEqual, find } from 'lodash';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import qs from 'query-string';
-import { qs2Obj } from 'utils';
+import { obj2Qs, qs2Obj } from 'utils';
 
 import {
   Checkbox, Radio, Popover, Icon, Pagination
@@ -326,7 +325,7 @@ export class Table extends React.Component {
         values.reverse = reverse ? 1 : 0;
         values.sort_key = sort_key;
         history.push({
-          search: qs.stringify(values)
+          search: obj2Qs(values)
         });
 
         typeof cb === 'function'
