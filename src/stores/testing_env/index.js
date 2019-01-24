@@ -224,15 +224,10 @@ export default class TestingEnvStore extends Store {
 
   @action
   fetchCredentials = async () => {
-    const platformRts = _.map(
-      _.filter(this.runtimeStore.runtimes, r => r.provider === this.platform),
-      'runtime_credential_id'
-    );
     await this.credentialStore.fetchAll({
       owner: this.userId,
       noLimit: true,
-      runtime_credential_id: platformRts.length ? platformRts : ['-'],
-      provider: this.platform
+      provider: this.platform,
     });
   };
 
