@@ -6,6 +6,10 @@
   flex-direction: row;
   height: 100%;
   align-items: center;
+
+  .name {
+    margin-left: 4px;
+  }
 }
 
 .icon {

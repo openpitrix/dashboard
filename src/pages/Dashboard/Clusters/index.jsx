@@ -14,7 +14,7 @@ import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import { setPage } from 'mixins';
-import routes, { toRoute } from 'routes';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 
 import styles from './index.scss';
 
@@ -103,19 +103,6 @@ export default class Clusters extends Component {
       });
     }
   };
-
-  // getDetailUrl = clusterId => {
-  //   const { match } = this.props;
-  //   const { appId } = match.params;
-  //   let url = `/dashboard/cluster/${clusterId}`;
-  //   if (appId) {
-  //     const type = match.path.endsWith('sandbox-instances')
-  //       ? `sandbox-instance`
-  //       : 'user-instance';
-  //     url = `/dashboard/app/${appId}/${type}/${clusterId}`;
-  //   }
-  //   return url;
-  // };
 
   getAppTdShow = (appId, apps) => {
     const app = apps.find(item => item.app_id === appId);
@@ -264,6 +251,9 @@ export default class Clusters extends Component {
     const { runtimes } = this.props.runtimeStore;
     const { apps } = appStore;
     const { users } = userStore;
+    const transMap = {
+      active: 'normal'
+    };
 
     let columns = [
       {
@@ -271,7 +261,7 @@ export default class Clusters extends Component {
         key: 'status',
         width: '90px',
         render: cl => (
-          <Status type={cl.status} transition={cl.transition_status} />
+          <Status type={cl.status} transition={cl.transition_status} transMap={transMap} />
         )
       },
       {
@@ -290,13 +280,13 @@ export default class Clusters extends Component {
         )
       },
       {
-        title: t('Version'),
+        title: user.isUserPortal ? t('App / Delivery type / Version') : t('Version'),
         key: 'app_id',
         width: '120px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
-        title: t('Test Runtime'),
+        title: user.isUserPortal ? t('Deploy Runtime') : t('Test Runtime'),
         key: 'runtime_id',
         width: '130px',
         render: cl => (
@@ -318,7 +308,7 @@ export default class Clusters extends Component {
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
-        title: t('Creater'),
+        title: t('Creator'),
         key: 'owner',
         width: '100px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
@@ -344,7 +334,7 @@ export default class Clusters extends Component {
       }
     ];
 
-    if (!user.isAdmin) {
+    if (getPortalFromPath() !== 'admin') {
       columns = columns.filter(item => item.key !== 'owner');
     }
 
@@ -360,7 +350,7 @@ export default class Clusters extends Component {
         key: 'status',
         conditions: [
           { name: t('Pending'), value: 'pending' },
-          { name: t('Active'), value: 'active' },
+          { name: t('Normal'), value: 'active' },
           { name: t('Stopped'), value: 'stopped' },
           { name: t('Suspended'), value: 'suspended' },
           { name: t('Deleted'), value: 'deleted' },
