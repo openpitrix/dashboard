@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import { fromCheck, fieldCheck } from 'config/form-check';
+import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
@@ -193,7 +193,7 @@ export default class VendorStore extends Store {
   @action
   nextStep = async () => {
     const data = this.vendorDetail;
-    this.checkResult = _.assign({}, fromCheck('vendor', data));
+    this.checkResult = _.assign({}, formCheck('vendor', data));
 
     if (_.isEmpty(this.checkResult)) {
       const result = await this.create(this.userId, _.assign({}, data));

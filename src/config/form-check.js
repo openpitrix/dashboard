@@ -53,20 +53,25 @@ export const checkConfig = {
   }
 };
 
-export const fromCheck = (formName, submitData) => {
+const checkInput = (check = {}, value = '') => {
+  let result = '';
+  if (check.required_info) {
+    result = value ? '' : check.required_info;
+  }
+
+  if (check.regex && value) {
+    result = check.regex.test(value) ? '' : check.regex_info;
+  }
+
+  return result;
+};
+
+export const formCheck = (formName, submitData) => {
   const result = {};
   const config = checkConfig[formName];
 
   _.map(config, (check, key) => {
-    const value = submitData[key];
-
-    if (check.required_info) {
-      result[key] = value ? '' : check.required_info;
-    }
-
-    if (check.regex && value) {
-      result[key] = check.regex.test(value) ? '' : check.regex_info;
-    }
+    result[key] = checkInput(check, submitData[key]);
 
     if (!result[key]) {
       delete result[key];
@@ -77,16 +82,7 @@ export const fromCheck = (formName, submitData) => {
 };
 
 export const fieldCheck = (formName, fieldName, value) => {
-  const result = {};
   const check = _.get(checkConfig, `${formName}.${fieldName}`, {});
 
-  if (check.required_info) {
-    result[fieldName] = value ? '' : check.required_info;
-  }
-
-  if (check.regex && value) {
-    result[fieldName] = check.regex.test(value) ? '' : check.regex_info;
-  }
-
-  return result;
+  return { [fieldName]: checkInput(check, value) };
 };

@@ -4,7 +4,7 @@ import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
 import { reviewStatus } from 'config/version';
-import { fromCheck, fieldCheck } from 'config/form-check';
+import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
@@ -680,7 +680,7 @@ export default class AppVersionStore extends Store {
     } else if (this.activeStep === 2) {
       const data = _.pick(this.version, ['version_id', 'name', 'description']);
 
-      this.checkResult = _.assign({}, fromCheck('version', data));
+      this.checkResult = _.assign({}, formCheck('version', data));
 
       if (_.isEmpty(this.checkResult)) {
         await this.modify(data);

@@ -3,7 +3,7 @@ import _, { get, assign } from 'lodash';
 
 import { useTableActions } from 'mixins';
 import { getProgress, getCookie } from 'utils';
-import { fromCheck, fieldCheck } from 'config/form-check';
+import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
@@ -357,7 +357,7 @@ class AppStore extends Store {
       'icon'
     ]);
 
-    this.checkResult = _.assign({}, fromCheck('app', data));
+    this.checkResult = _.assign({}, formCheck('app', data));
 
     if (_.isEmpty(this.checkResult)) {
       await this.modify(
