@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
@@ -12,7 +12,6 @@ import styles from './index.scss';
 @translate()
 export class Card extends PureComponent {
   static propTypes = {
-    canToggle: PropTypes.bool,
     className: PropTypes.string,
     desc: PropTypes.string,
     fold: PropTypes.bool,
@@ -47,79 +46,39 @@ export class Card extends PureComponent {
     }
   }
 
-  renderContent() {
+  render() {
     const {
-      icon, name, desc, fold, maintainer, type, t
+      icon, name, desc, fold, maintainer, type, className, t
     } = this.props;
+
     const iconSize = fold ? 36 : 48;
 
     return (
-      <Fragment>
-        <div className={styles.basicCard}>
-          <div className={styles.title}>
-            <span className={styles.icon}>
-              <Image
-                src={icon}
-                alt="Icon"
-                iconSize={iconSize}
-                iconLetter={name}
-              />
-            </span>
-            <p className={styles.name}>{name}</p>
-            <p
-              className={classnames(styles.desc, { [styles.hide]: !fold })}
-              title={desc}
-            >
-              {desc}
-            </p>
-          </div>
-          <p
-            className={classnames(styles.desc, { [styles.hide]: fold })}
-            title={desc}
-          >
-            {desc}
-          </p>
+      <div className={classnames(styles.card, className)} onClick={this.handleClick}>
+        <div className={styles.icon}>
+          <Image
+            src={icon}
+            alt="Icon"
+            iconSize={iconSize}
+            iconLetter={name}
+          />
         </div>
-
-        <div className={styles.toggleCard}>
-          <div className={styles.title}>
-            <span className={styles.icon}>
-              <Image src={icon} alt="Icon" iconSize={36} iconLetter={name} />
-            </span>
-            <p className={styles.name}>{name}</p>
-          </div>
-          <p className={styles.desc} title={desc}>
-            {desc}
-          </p>
-          <p className={styles.maintainer}>
-            <span className={styles.label}>{t('Service provider')}: </span>
-            <span>{this.transMaintainers(maintainer)}</span>
-          </p>
-          <p className={styles.type}>
-            <span className={styles.label}>{t('Delivery type')}: </span>
-            <span>{getVersionTypesName(type)}</span>
-          </p>
+        <div className={styles.name}>{name}</div>
+        <div className={styles.desc} title={desc}>
+          {desc}
         </div>
-      </Fragment>
-    );
-  }
-
-  render() {
-    const { fold, className, canToggle } = this.props;
-
-    return (
-      <div
-        className={classnames(
-          styles.card,
-          {
-            [styles.foldCard]: fold,
-            [styles.canToggle]: canToggle
-          },
-          className
-        )}
-        onClick={this.handleClick}
-      >
-        {this.renderContent()}
+        <div className={styles.attrs}>
+          <dl className={styles.maintainer}>
+            <dt className={styles.label}>{t('Service provider')}:</dt>
+            <dd className={styles.val}>{this.transMaintainers(maintainer)}</dd>
+          </dl>
+          <dl className={styles.type}>
+            <dt className={styles.label}>{t('Delivery type')}:</dt>
+            <dd className={styles.val}>
+              {getVersionTypesName(type)}
+            </dd>
+          </dl>
+        </div>
       </div>
     );
   }

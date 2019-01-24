@@ -10,6 +10,7 @@
    margin: 0 24px 24px 0;
    border-radius: 2px;
    //border: 1px solid $border-light;
+   border: 1px solid $N0;
    background-color: $N0;
    transition: all .3s ease-in-out;
    text-align: center;
@@ -17,156 +18,149 @@
    cursor: pointer;
    overflow: hidden;
 
+  .icon {
+    width: 48px;
+    height: 48px;
+    top: 20px;
+    margin: 0 auto 12px;
+    transition:all 0.3s ease;
+    position: relative;
+  }
+  .name {
+    font-family: Roboto;
+    font-size: 14px;
+    color: #343945;
+    text-align: center;
+    line-height: 28px;
+    margin-bottom: 8px;
+    transition-delay: 1s;
+    transition:all 0.3s ease;
+    position: relative;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    top: 12px;
+  }
+  .desc {
+    font-size: 12px;
+    color: #8C96AD;
+    text-align: center;
+    line-height: 20px;
+    position: relative;
+    top: 8px;
+  }
+  .attrs {
+    display: block;
+    opacity: 0;
+    position: relative;
+    bottom: -50px;
+    transition:all 0.3s ease;
+
+    .type {
+      display: inline-block;
+      padding: 0 4px;
+      margin-right: 2px;
+    }
+  }
+
+  dt {
+    font-size: 12px;
+    color: #8C96AD;
+    line-height: 20px;
+    display: inline-block;
+  }
+
+  dd {
+    font-size: 12px;
+    color: #576075;
+    line-height: 20px;
+    display: inline-block;
+    margin-left: 0;
+  }
+  dl {
+    margin: 0;
+  }
+
+  &:hover {
+    background: #FFFFFF;
+    border: 1px solid #B79DE2;
+    border-position: inside;
+    box-shadow: 0 3px 4px 0 rgba(134,145,156,0.04), 0 0 8px 0 rgba(119,133,146,0.04);
+    cursor: pointer;
+    text-align: left;
+
+    .icon {
+      margin: 0;
+      vertical-align: middle;
+      background-position: left;
+      left: -6px;
+      transform: scale(0.75);
+      float: left;
+      top: -6px;
+    }
+
+    .name {
+      text-align: left;
+      left: 2px;
+      top: 4px;
+      line-height: 28px;
+      vertical-align: middle;
+      margin-left: 8px;
+      height: 28px;
+    }
+    .desc {
+      font-family: Roboto-Regular;
+      font-size: 12px;
+      color: #8C96AD;
+      line-height: 20px;
+      text-align: left;
+      margin-top: 4px;
+      margin-bottom: 28px;
+      clear: both;
+    }
+    .attrs {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
   .label {
     font-size: $size-small;
     color: $N75;
+
     &+span {
       margin-left: 4px;
       font-size: $size-small;
       color: $N300;
     }
   }
-
-  .toggleCard, .basicCard{
-    position: relative;
-    left: 0;
-    transition: all .3s ease-in-out;
-  }
-
-  .toggleCard {
-    top: -1000px;
-  }
-
-  // mimic toggle card effect
-  &.canToggle {
-    &:hover {
-      padding: 28px 24px;
-      border: 1px solid $P45;
-      box-shadow: 0 0 8px 0 rgba(119, 133, 146, 0.04), 0 3px 4px 0 rgba(134, 145, 156, 0.04);
-
-      .basicCard {
-        top: -1000px;
-      }
-
-      .toggleCard {
-        top: -132px;
-        text-align: left;
-
-        .title {
-          .icon {
-            float: left;
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            margin-top: -16px;
-            border-radius: 2px;
-            line-height: 48px;
-            text-align: center;
-            img{
-              max-width: 100%;
-              max-height: 100%;
-              vertical-align: middle;
-            }
-          }
-          .name{
-            display: inline-block;
-            float: left;
-            margin-left: 8px;
-            font-weight: bold;
-            color: $N500;
-            width: 170px;
-            @include textCut;
-            word-break: break-word;
-          }
-        }
-        .desc{
-          clear: both;
-          text-align: left;
-        }
-        .maintainer {
-          margin-top: 48px;
-        }
-        .type {
-          margin-top: 4px;
-        }
-      }
-    }
-  }
-
-  p {
-     margin: 0;
-   }
-   .title{
-     .icon {
-       display: inline-block;
-       width: 48px;
-       height: 48px;
-       margin-bottom: 12px;
-       border-radius: 2px;
-       line-height: 48px;
-       text-align: center;
-       img{
-         max-width: 100%;
-         max-height: 100%;
-         vertical-align: middle;
-       }
-     }
-     .name{
-       line-height: 16px;
-       margin-bottom: 12px;
-       font-weight: bold;
-       color: $N500;
-       width: 100%;
-       @include textCut;
-     }
-   }
-
-   .line {
-     height: 1px;
-     border-radius: 3px;
-     background-color: $N10;
-   }
-   .desc{
-     margin-top: 12px;
-     font-size: $font12;
-     letter-spacing: 0;
-     color: $N100;
-     @include descHide(20px, 2);
-   }
-   &:hover {
-     transform: translate3d(0, -12px, 0);
-     box-shadow:  0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);;
-   }
  }
 
-.foldCard {
-  height: 72px;
-  padding: 18px 16px;
-  text-align: left;
-  position: relative;
-  margin: 0 24px 24px 0;
+//.foldCard {
+//  height: 72px;
+//  padding: 18px 16px;
+//  text-align: left;
+//  position: relative;
+//  margin: 0 24px 24px 0;
+//
+//  .title{
+//    .icon {
+//      float: left;
+//      width: 36px;
+//      height: 36px;
+//      line-height: 36px;
+//    }
+//    .name {
+//      margin-left: 48px;
+//      margin-bottom: 0;
+//      width: auto;
+//    }
+//    .desc {
+//      //height: auto;
+//      margin-top: 0px;
+//      margin-left: 48px;
+//     @include textCut;
+//    }
+//  }
+//}
 
-  .title{
-    .icon {
-      float: left;
-      width: 36px;
-      height: 36px;
-      line-height: 36px;
-    }
-    .name {
-      margin-left: 48px;
-      margin-bottom: 0;
-      width: auto;
-    }
-    .desc {
-      //height: auto;
-      margin-top: 0px;
-      margin-left: 48px;
-     @include textCut;
-    }
-  }
-}
-
-.hide {
-  display: none;
-}
