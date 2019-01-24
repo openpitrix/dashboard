@@ -32,20 +32,12 @@ export default class RootStore extends Store {
     username: ''
   };
 
-  @observable searchWord = ''; // home page search word
-
   lastSetFixStamp = Date.now();
 
   constructor(initialState) {
     super(initialState);
     this.state = initialState;
   }
-
-  // get client side config
-  getAppConfig = key => {
-    const appConf = _.get(this, 'config.app', {});
-    return key ? appConf[key] : appConf;
-  };
 
   listenToJob = cb => {
     if (this.sock) {
@@ -67,11 +59,6 @@ export default class RootStore extends Store {
     }
     this.lastSetFixStamp = Date.now();
     this.fixNav = !!fixNav;
-  };
-
-  @action
-  setSearchWord = (word = '') => {
-    this.searchWord = word;
   };
 
   @action

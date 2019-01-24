@@ -11,7 +11,7 @@ import AppList from 'components/AppList';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
 
-import { getScrollTop } from 'utils';
+import { getScrollTop, qs2Obj } from 'utils';
 import { getUrlParam } from 'utils/url';
 
 import styles from './index.scss';
@@ -22,14 +22,12 @@ const cateLatest = 'latest';
 @inject(({ rootStore }) => ({
   rootStore,
   categoryStore: rootStore.categoryStore,
-  appStore: rootStore.appStore,
-  search: rootStore.searchWord
+  appStore: rootStore.appStore
 }))
 @observer
 export default class Home extends Component {
   state = {
-    pageLoading: true,
-    cate: ''
+    pageLoading: true
   };
 
   async componentDidMount() {
@@ -64,47 +62,37 @@ export default class Home extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { appStore, search } = this.props;
-    const { cate } = this.state;
+    const { rootStore, appStore, location } = this.props;
 
-    if (prevState.cate !== cate) {
+    if (prevProps.location.search !== location.search) {
+      const qs = qs2Obj(location.search);
+
       Object.assign(appStore, {
-        currentPage: 1,
-        searchWord: ''
+        currentPage: 1
       });
 
       await appStore.fetchActiveApps({
-        category_id: cate === cateLatest ? '' : cate
-      });
-    } else if (prevProps.search !== search) {
-      Object.assign(appStore, {
-        currentPage: 1,
-        searchWord: search,
-        category_id: ''
+        search_word: qs.q || '',
+        category_id: !qs.cate || qs.cate === cateLatest ? '' : qs.cate
       });
 
-      if (!search) {
-        this.setState({ cate: cateLatest });
-      }
-
-      await appStore.fetchActiveApps();
+      rootStore.setNavFix(this.needFixNav);
     }
   }
 
   componentWillUnmount() {
-    const { appStore, rootStore } = this.props;
+    const { appStore } = this.props;
 
     window.onscroll = null;
     appStore.reset();
-    rootStore.setSearchWord();
   }
 
   get searchWord() {
-    return this.props.search || getUrlParam('q');
+    return getUrlParam('q');
   }
 
   get category() {
-    return this.state.cate || getUrlParam('cate');
+    return getUrlParam('cate');
   }
 
   get needFixNav() {
@@ -113,9 +101,8 @@ export default class Home extends Component {
 
   getThreshold() {
     const headerNode = document.querySelector('.header');
-    const bannerNode = document.querySelector('.banner');
-    if (headerNode && bannerNode) {
-      return bannerNode.clientHeight - headerNode.clientHeight;
+    if (headerNode) {
+      return headerNode.clientHeight;
     }
     return 0;
   }
@@ -139,11 +126,7 @@ export default class Home extends Component {
   handleClickCate = cate => {
     const { rootStore, history } = this.props;
 
-    this.setState({
-      cate
-    });
     rootStore.setNavFix(true);
-    rootStore.setSearchWord();
     history.push(`/?cate=${cate}`);
   };
 

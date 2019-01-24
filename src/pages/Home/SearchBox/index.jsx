@@ -22,14 +22,12 @@ export class SearchBox extends React.Component {
   };
 
   onSearch = value => {
-    this.props.rootStore.setSearchWord(value);
     this.props.history.push(`/?q=${value}`);
   };
 
   onClearSearch = () => {
-    const { rootStore, appStore, history } = this.props;
+    const { appStore, history } = this.props;
     appStore.currentPage = 1;
-    rootStore.setSearchWord('');
     history.push('/');
   };
 
