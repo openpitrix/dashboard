@@ -4,7 +4,7 @@ import routes, { toRoute } from 'routes';
 export const getNavs = {
   global_admin: [
     {
-      link: toRoute(routes.portal.overviews, { portal: 'admin' }),
+      link: toRoute(routes.portal.overview, { portal: 'admin' }),
       iconName: 'dashboard',
       active: 'dashboard',
       title: 'My dashboard'

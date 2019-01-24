@@ -223,6 +223,7 @@ class AppStore extends Store {
     this.hasMore = totalCount > apps.length;
 
     if (noMutate) {
+      this.isLoading = false;
       return {
         apps,
         totalCount
@@ -548,9 +549,6 @@ class AppStore extends Store {
   };
 
   reset = () => {
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
     this.categoryId = '';
     this.repoId = '';
     this.userId = '';
@@ -558,6 +556,8 @@ class AppStore extends Store {
     this.apps = [];
     this.appDetail = {};
     this.showActiveApps = false;
+
+    this.resetTableParams();
   };
 
   @action

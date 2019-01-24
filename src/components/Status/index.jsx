@@ -12,20 +12,7 @@ export default class Status extends PureComponent {
     className: PropTypes.string,
     name: PropTypes.string,
     style: PropTypes.string,
-    transition: PropTypes.oneOf([
-      '',
-      'starting',
-      'updating',
-      'stopping',
-      'deleting',
-      'creating',
-      'upgrading',
-      'rollbacking',
-      'recovering',
-      'ceasing',
-      'resizing',
-      'scaling'
-    ]),
+    transMap: PropTypes.object,
     /* type: PropTypes.oneOf([
      *   'draft',
      *   'running',
@@ -44,25 +31,42 @@ export default class Status extends PureComponent {
 
      *   'published'
      * ]), */
+    transition: PropTypes.oneOf([
+      '',
+      'starting',
+      'updating',
+      'stopping',
+      'deleting',
+      'creating',
+      'upgrading',
+      'rollbacking',
+      'recovering',
+      'ceasing',
+      'resizing',
+      'scaling'
+    ]),
     type: PropTypes.string
   };
 
   static defaultProps = {
     type: 'pending',
-    transition: ''
+    transition: '',
+    transMap: {}
   };
 
   render() {
     const {
-      style, className, name, type, transition, t
+      style, className, name, type, transition, transMap, t
     } = this.props;
     const status = String(transition || type).toLowerCase();
-    const normalizeName = t(capitalize(name || status));
+    let transName = name || status;
+    transName = transMap[transName] || transName;
+    const normalizeName = t(capitalize(transName));
 
     return (
       <span className={classnames(styles.status, className)} style={style}>
         <i className={classnames(styles.icon, styles[status])} />
-        {normalizeName}
+        <span className={styles.name}>{normalizeName}</span>
       </span>
     );
   }

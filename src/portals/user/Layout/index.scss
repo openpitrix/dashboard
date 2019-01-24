@@ -7,5 +7,6 @@ $offset-top: $header-height + 30 *2 + 52;
   position: relative;
   top: $offset-top;
   width: $page-width;
-  margin: 36px auto 80px auto;
+  margin: 36px auto;
+  padding-bottom: 80px;
 }
