@@ -1,9 +1,8 @@
 import { observable } from 'mobx';
-import qs from 'query-string';
 import { isEmpty, omitBy } from 'lodash';
 
 import history from 'createHistory';
-import { qs2Obj } from 'utils';
+import { obj2Qs, qs2Obj } from 'utils';
 
 export default {
   @observable selectedRowKeys: [],
@@ -20,7 +19,7 @@ export default {
     }
     searchVals = omitBy(searchVals, str => str === '');
 
-    const str = qs.stringify(searchVals);
+    const str = obj2Qs(searchVals);
     if (ret) {
       return str;
     }
