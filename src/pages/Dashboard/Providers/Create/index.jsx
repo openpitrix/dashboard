@@ -116,7 +116,7 @@ export default class ApplicationCreate extends Component {
               maxLength={100}
             />
           </dd>
-          <p>{checkResult.company_website}</p>
+          <p>{t(checkResult.company_website)}</p>
         </dl>
         <dl className={styles.blockMargin}>
           <dt>{t('Business introduction')}</dt>
@@ -152,7 +152,7 @@ export default class ApplicationCreate extends Component {
                 maxLength={50}
               />
             </dd>
-            <p>{checkResult.authorizer_name}</p>
+            <p>{t(checkResult.authorizer_name)}</p>
           </div>
           <div
             className={classnames(styles.column, {
@@ -170,7 +170,7 @@ export default class ApplicationCreate extends Component {
                 maxLength={50}
               />
             </dd>
-            <p>{checkResult.authorizer_email}</p>
+            <p>{t(checkResult.authorizer_email)}</p>
           </div>
         </dl>
         <dl
@@ -189,7 +189,7 @@ export default class ApplicationCreate extends Component {
               maxLength={13}
             />
           </dd>
-          <p>{checkResult.authorizer_phone}</p>
+          <p>{t(checkResult.authorizer_phone)}</p>
         </dl>
         <dl>
           <dt>{t('Public account information')}</dt>
@@ -212,7 +212,7 @@ export default class ApplicationCreate extends Component {
             />
           </dd>
           <p className={styles.note}>{t('OPENING_BANK_NOTE')}</p>
-          <p>{checkResult.bank_name}</p>
+          <p>{t(checkResult.bank_name)}</p>
         </dl>
         <dl
           className={classnames({
@@ -230,7 +230,7 @@ export default class ApplicationCreate extends Component {
               maxLength={100}
             />
           </dd>
-          <p>{checkResult.bank_account_name}</p>
+          <p>{t(checkResult.bank_account_name)}</p>
         </dl>
         <dl
           className={classnames(styles.blockMargin, {
@@ -248,7 +248,7 @@ export default class ApplicationCreate extends Component {
               maxLength={100}
             />
           </dd>
-          <p>{checkResult.bank_account_number}</p>
+          <p>{t(checkResult.bank_account_number)}</p>
         </dl>
         <dl>
           <dt>{t('Relevant Agreement')}</dt>
