@@ -38,7 +38,7 @@
 
   .name {
     float: left;
-    width: 270px;
+    width: 250px;
     margin-right: 20px;
 
     > label {
@@ -54,6 +54,23 @@
       line-height: 20px;
       font-size: 12px;
       color: $N75;
+    }
+  }
+
+  .error {
+    position: relative;
+
+    input {
+      border-color: $R300;
+    }
+
+    .errorInfo {
+      position: absolute;
+      top: 36px;
+      left: 270px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $R300;
     }
   }
 }

@@ -159,6 +159,14 @@
   "SERVICE_PLATFORM":"Service Provider Platform Agreement",
   "SHELF_APP_TOTAL": "The shelf has {{total}} application",
 
+  "MAX_UPLOAD_SCREENSHOTS": "Up to 6 screenshots can only be uploaded ",
+
+  "WEBSITE_FORMAT_INFO": "Input format error, correct format such as: http://www.example.com",
+  "AUTHORIZER_EMAIL_FORMAT_INFO": "Input format error, correct format such as: name@example.com",
+  "AUTHORIZER_PHONE_FORMAT_INFO": "Input format error, correct format for the first 11 digits",
+  "BANK_ACCOUNT_NUMBER_FORMAT_INFO": "Input format error, correct format for 12 to 19 digits",
+  "VERSION_NO_FORMAT_INFO": "Input format error, correct format for decimal point and digital composition",
+
   "suspend-app-note-desc": "After the app is off the shelf, users can't buy it from the store. Are you sure offline the app?",
   "recover-app-note-desc": "After the app goes on the shelf, the relevant Off-Shelf version will become on the shelf. Are you sure go on the shelf?",
   "suspend-version-note-desc": "After the version is off the shelf, the associated app will not display the version. Are you sure offline the version?",

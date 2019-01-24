@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
 import { reviewStatus } from 'config/version';
+import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
@@ -89,6 +90,8 @@ export default class AppVersionStore extends Store {
   @observable activeStep = 1;
 
   @observable disableNextStep = false;
+
+  @observable checkResult = {};
 
   steps = 3;
 
@@ -642,6 +645,18 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  checkVersion = async (event, field, isFocus) => {
+    if (isFocus) {
+      this.checkResult = _.assign(this.checkResult, { [field]: '' });
+    } else {
+      this.checkResult = _.assign(
+        this.checkResult,
+        fieldCheck('version', field, event.target.value)
+      );
+    }
+  };
+
+  @action
   goBack = () => {
     this.isSubmitCheck = false;
     this.activeStep = 1;
@@ -658,21 +673,33 @@ export default class AppVersionStore extends Store {
 
   @action
   nextStep = async () => {
+    let isActionSuccess = false;
+
     if (this.activeStep === 1) {
-      await this.appStore.modifyApp();
+      isActionSuccess = await this.appStore.modifyApp();
     } else if (this.activeStep === 2) {
       const data = _.pick(this.version, ['version_id', 'name', 'description']);
-      await this.modify(data);
 
-      // get data for app detail page
-      const { appDetail, fetchActiveApps } = this.appStore;
-      await this.fetchTypeVersions(appDetail.app_id);
-      await fetchActiveApps();
+      this.checkResult = _.assign({}, formCheck('version', data));
+
+      if (_.isEmpty(this.checkResult)) {
+        await this.modify(data);
+
+        // get data for app detail page
+        const { appDetail, fetchActiveApps } = this.appStore;
+        await this.fetchTypeVersions(appDetail.app_id);
+        await fetchActiveApps();
+
+        isActionSuccess = true;
+      }
     } else if (this.activeStep === 3) {
-      await this.handle('submit', this.version.version_id);
+      const result = await this.handle('submit', this.version.version_id);
+      isActionSuccess = !(result && result.err);
     }
 
-    this.activeStep++;
+    if (isActionSuccess) {
+      this.activeStep++;
+    }
   };
 
   reset = () => {
@@ -694,5 +721,7 @@ export default class AppVersionStore extends Store {
 
     this.reviews = [];
     this.activeType = 'unprocessed';
+
+    this.checkResult = {};
   };
 }

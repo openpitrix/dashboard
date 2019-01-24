@@ -36,6 +36,7 @@
   "STEPPER_FOOTER_CREATE_PROVIDER_1": "以上是平台审核的重要信息，请准确填写。",
 
   "Submit successful": "提交成功",
+  "Save successful": "保存成功",
   "SUBMIT_SUCCESS_HEADER": "你的认证信息我们已经收到，会尽快完成审核。",
   "SUBMIT_SUCCESS_TIP": "请留意审核结果通知。",
   "View app service provider detail": "查看应用商详情",
@@ -55,5 +56,18 @@
 
   "SHELF_APP_TOTAL": "已上架 {{total}} 款应用",
   "Business introduction": "业务介绍",
-  "App Service Provider Detail": "应用服务商详情"
+  "App Service Provider Detail": "应用服务商详情",
+
+  "Company name cannot be empty": "公司名称不能为空",
+  "Company website cannot be empty": "公司官网不能为空",
+  "WEBSITE_FORMAT_INFO": "输入格式错误，正确格式如：http://www.example.com",
+  "Name cannot be empty": "姓名不能为空",
+  "Office mailboxes cannot be empty": "办公邮箱不能为空",
+  "AUTHORIZER_EMAIL_FORMAT_INFO": "正确输入格式如：name@example.com",
+  "Mobile phone number cannot be empty": "手机号不能为空",
+  "AUTHORIZER_PHONE_FORMAT_INFO": "输入格式错误，正确格式为1开始的11位数字",
+  "Opening bank cannot be empty": "开户银行不能为空",
+  "Account name cannot be empty": "开户名不能为空",
+  "Account number cannot be empty": "账号不能为空",
+  "BANK_ACCOUNT_NUMBER_FORMAT_INFO": "输入格式错误，正确格式为12到19位的数字"
 }

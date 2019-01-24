@@ -107,7 +107,7 @@ export class Header extends Component {
           {this.renderMenus()}
           {this.renderMenuBtns()}
 
-          {user.isNoraml && (
+          {user.isNormal && (
             <Fragment>
               <Icon
                 name="mail"

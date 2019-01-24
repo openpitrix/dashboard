@@ -1,9 +1,9 @@
 import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
-import { t } from 'i18next';
 
 import { useTableActions } from 'mixins';
 import { getProgress, getCookie } from 'utils';
+import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
@@ -105,6 +105,8 @@ class AppStore extends Store {
   @observable countStoreApps = 0;
 
   @observable showActiveApps = false;
+
+  @observable checkResult = {};
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -335,12 +337,14 @@ class AppStore extends Store {
     this.isLoading = false;
 
     if (hasNote && get(this.createResult, 'app_id')) {
-      this.info('应用信息保存成功');
+      this.info('Save successful');
     }
   };
 
   @action
   modifyApp = async event => {
+    let isActionSuccess = false;
+
     if (event) {
       event.preventDefault();
     }
@@ -353,24 +357,43 @@ class AppStore extends Store {
       'icon'
     ]);
 
-    await this.modify(
-      _.assign(data, {
-        app_id: this.appDetail.app_id,
-        category_id: this.appDetail.category_id,
-        icon: this.appDetail.icon
-      }),
-      Boolean(event)
-    );
+    this.checkResult = _.assign({}, formCheck('app', data));
 
-    // update the meun app show
-    if (get(this.createResult, 'app_id')) {
-      this.fetchMeunApp(this.appDetail.app_id, true);
+    if (_.isEmpty(this.checkResult)) {
+      await this.modify(
+        _.assign(data, {
+          app_id: this.appDetail.app_id,
+          category_id: this.appDetail.category_id,
+          icon: this.appDetail.icon
+        }),
+        Boolean(event)
+      );
+
+      // update the meun app show
+      if (get(this.createResult, 'app_id')) {
+        isActionSuccess = true;
+        this.fetchMeunApp(this.appDetail.app_id, true);
+      }
     }
+
+    return isActionSuccess;
   };
 
   @action
   changeApp = (event, type) => {
     this.appDetail[type] = event.target.value;
+  };
+
+  @action
+  checkApp = async (event, field, isFocus) => {
+    if (isFocus) {
+      this.checkResult = _.assign(this.checkResult, { [field]: '' });
+    } else {
+      this.checkResult = _.assign(
+        this.checkResult,
+        fieldCheck('app', field, event.target.value)
+      );
+    }
   };
 
   @action
@@ -397,12 +420,12 @@ class AppStore extends Store {
   @action
   checkIcon = file => {
     if (!/\.(png)$/.test(file.name.toLocaleLowerCase())) {
-      this.error(t('icon_format_note'));
+      this.error('icon_format_note');
       return false;
     }
 
     if (file.size > maxsize) {
-      this.error(t('The file size cannot exceed 2M'));
+      this.error('The file size cannot exceed 2M');
       return false;
     }
 
@@ -432,12 +455,12 @@ class AppStore extends Store {
   @action
   checkScreenshot = file => {
     if (!/\.(png|jpg)$/.test(file.name.toLocaleLowerCase())) {
-      this.error(t('screenshot_format_note'));
+      this.error('screenshot_format_note');
       return false;
     }
 
     if (file.size > maxsize) {
-      this.error(t('The file size cannot exceed 2M'));
+      this.error('The file size cannot exceed 2M');
       return false;
     }
 
@@ -449,7 +472,7 @@ class AppStore extends Store {
     const { screenshots } = this.appDetail;
     const len = _.isArray(screenshots) ? screenshots.length : 0;
     if (len >= 6) {
-      return this.error(t('最多只能上传6张界面截图'));
+      return this.error('MAX_UPLOAD_SCREENSHOTS');
     }
 
     const result = await this.attachment({
@@ -556,6 +579,7 @@ class AppStore extends Store {
     this.apps = [];
     this.appDetail = {};
     this.showActiveApps = false;
+    this.checkResult = {};
 
     this.resetTableParams();
   };

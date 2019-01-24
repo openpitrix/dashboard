@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
+import _ from 'lodash';
 
-import _, { assign, get } from 'lodash';
+import { formCheck, fieldCheck } from 'config/form-check';
+
 import Store from '../Store';
 
 export default class VendorStore extends Store {
@@ -45,6 +47,8 @@ export default class VendorStore extends Store {
     bank_account_number: ''
   };
 
+  @observable checkResult = {};
+
   steps = 1;
 
   btnText = 'Submit';
@@ -64,17 +68,19 @@ export default class VendorStore extends Store {
 
     const result = await this.request.get(
       'app_vendors',
-      assign(defaultParams, params)
+      _.assign(defaultParams, params)
     );
 
-    this.vendors = get(result, 'vendor_verify_info_set', []);
+    this.vendors = _.get(result, 'vendor_verify_info_set', []);
 
     const userIds = this.vendors.map(item => item.user_id);
     if (this.attchStatictics && userIds.length > 0) {
-      await this.fetchStatistics({ user_id: _.uniq(userIds) });
+      await this.fetchStatistics({
+        user_id: _.uniq(userIds)
+      });
     }
 
-    this.totalCount = get(result, 'total_count', 0);
+    this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
@@ -84,7 +90,7 @@ export default class VendorStore extends Store {
     const result = await this.request.get('app_vendors', {
       user_id: userId
     });
-    this.vendorDetail = get(result, 'vendor_verify_info_set[0]', {});
+    this.vendorDetail = _.get(result, 'vendor_verify_info_set[0]', {});
     this.isLoading = false;
   };
 
@@ -96,7 +102,7 @@ export default class VendorStore extends Store {
       params
     );
 
-    this.statistics = get(result, 'vendor_verify_statistics_set', []);
+    this.statistics = _.get(result, 'vendor_verify_statistics_set', []);
     this.isLoading = false;
   };
 
@@ -159,8 +165,20 @@ export default class VendorStore extends Store {
   };
 
   @action
-  changeVendor = (event, type) => {
+  changeVendor = async (event, type) => {
     this.vendorDetail[type] = event.target.value;
+  };
+
+  @action
+  checkVendor = async (event, field, isFocus) => {
+    if (isFocus) {
+      this.checkResult = _.assign(this.checkResult, { [field]: '' });
+    } else {
+      this.checkResult = _.assign(
+        this.checkResult,
+        fieldCheck('vendor', field, event.target.value)
+      );
+    }
   };
 
   @action
@@ -175,10 +193,14 @@ export default class VendorStore extends Store {
   @action
   nextStep = async () => {
     const data = this.vendorDetail;
-    const result = await this.create(this.userId, _.assign({}, data));
+    this.checkResult = _.assign({}, formCheck('vendor', data));
 
-    if (_.get(result, 'user_id')) {
-      this.activeStep++;
+    if (_.isEmpty(this.checkResult)) {
+      const result = await this.create(this.userId, _.assign({}, data));
+
+      if (_.get(result, 'user_id')) {
+        this.activeStep++;
+      }
     }
   };
 

@@ -14,6 +14,10 @@
 
   dl {
     margin-bottom: 24px;
+
+    &.bankName {
+      height: 88px;
+    }
   }
 
   dt  {
@@ -44,6 +48,27 @@
 
   .protocol {
     @include normal-font($line-height: 20px)
+  }
+
+  .error{
+    position: relative;
+
+    input {
+      border-color: $R300;
+    }
+
+    >p {
+      position: absolute;
+      left: 0;
+      margin-top: 8px;
+      line-height: 20px;
+      font-size: 12px;
+      color: $R300;
+
+      &.note {
+        display: none;
+      }
+    }
   }
 }
 
