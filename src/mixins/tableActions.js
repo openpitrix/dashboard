@@ -29,7 +29,7 @@ export default {
   onChangeSelect(selectedRowKeys, selectedRows) {
     this.selectedRowKeys = selectedRowKeys;
     // todo
-    this.selectIds = selectedRows.map(row => row.app_id);
+    this.selectIds = selectedRows.map(row => row[this.idAttribute]);
   },
 
   async onChangeStatus(nextStatus) {

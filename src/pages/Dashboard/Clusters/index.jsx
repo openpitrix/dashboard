@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import {
-  Icon, Button, Table, Popover
-} from 'components/Base';
+import { Icon, Button, Popover } from 'components/Base';
+import Table from 'components/EnhanceTable';
 import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -171,7 +170,7 @@ export default class Clusters extends Component {
     );
   };
 
-  handleCluster = () => {
+  handleSubmit = () => {
     const {
       clusterId,
       clusterIds,
@@ -203,7 +202,7 @@ export default class Clusters extends Component {
     showOperateCluster(clusterIds, type);
   };
 
-  renderDeleteModal = () => {
+  renderOpsModal = () => {
     const { t } = this.props;
     const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
 
@@ -212,7 +211,7 @@ export default class Clusters extends Component {
         title={t(`${capitalize(modalType)} cluster`)}
         isOpen={isModalOpen}
         onCancel={hideModal}
-        onSubmit={this.handleCluster}
+        onSubmit={this.handleSubmit}
       >
         <div className={styles.noteWord}>
           {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
@@ -265,7 +264,7 @@ export default class Clusters extends Component {
     const {
       clusterStore, appStore, userStore, user, t
     } = this.props;
-    const { clusters, isLoading, onlyView } = clusterStore;
+    const { isLoading, onlyView } = clusterStore;
     const { runtimes } = this.props.runtimeStore;
     const { apps } = appStore;
     const { users } = userStore;
@@ -273,7 +272,7 @@ export default class Clusters extends Component {
       active: 'normal'
     };
 
-    let columns = [
+    const columns = [
       {
         title: t('Status'),
         key: 'status',
@@ -356,56 +355,34 @@ export default class Clusters extends Component {
       }
     ];
 
-    if (getPortalFromPath() !== 'admin') {
-      columns = columns.filter(item => item.key !== 'owner');
-    }
-
-    const rowSelection = {
-      type: 'checkbox',
-      selectType: 'onSelect',
-      selectedRowKeys: clusterStore.selectedRowKeys,
-      onChange: clusterStore.onChangeSelect
-    };
-
-    const filterList = [
-      {
-        key: 'status',
-        conditions: [
-          { name: t('Pending'), value: 'pending' },
-          { name: t('Normal'), value: 'active' },
-          { name: t('Stopped'), value: 'stopped' },
-          { name: t('Suspended'), value: 'suspended' },
-          { name: t('Deleted'), value: 'deleted' },
-          { name: t('Ceased'), value: 'ceased' }
-        ],
-        onChangeFilter: clusterStore.onChangeStatus,
-        selectValue: clusterStore.selectStatus
-      }
-    ];
-
-    const pagination = {
-      tableType: 'Clusters',
-      onChange: clusterStore.changePagination,
-      total: clusterStore.totalCount,
-      current: clusterStore.currentPage,
-      noCancel: false
-    };
-
     return (
       <Fragment>
-        <div>
-          {this.renderToolbar()}
-          <Table
-            columns={columns}
-            dataSource={clusters.toJSON()}
-            rowSelection={onlyView ? {} : rowSelection}
-            isLoading={isLoading}
-            filterList={filterList}
-            pagination={pagination}
-          />
-        </div>
+        {this.renderToolbar()}
 
-        {this.renderDeleteModal()}
+        <Table
+          tableType="Clusters"
+          columns={columns}
+          columnsFilter={cols => {
+            if (getPortalFromPath() !== 'admin') {
+              return cols.filter(item => item.key !== 'owner');
+            }
+            return cols;
+          }}
+          store={clusterStore}
+          data={clusterStore.clusters}
+          hasRowSelection={!onlyView}
+          isLoading={isLoading}
+          replaceFilterConditions={[
+            { name: t('Pending'), value: 'pending' },
+            { name: t('Normal'), value: 'active' },
+            { name: t('Stopped'), value: 'stopped' },
+            { name: t('Suspended'), value: 'suspended' },
+            { name: t('Deleted'), value: 'deleted' },
+            { name: t('Ceased'), value: 'ceased' }
+          ]}
+        />
+
+        {this.renderOpsModal()}
       </Fragment>
     );
   }
