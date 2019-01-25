@@ -42,7 +42,7 @@ export default class Applications extends Component {
 
   renderMessageDialog = () => {
     const { vendorStore, match, t } = this.props;
-    const { providerId } = match.params;
+    const { applyId } = match.params;
     const {
       isMessageOpen,
       hideModal,
@@ -55,7 +55,7 @@ export default class Applications extends Component {
         title={t('Why refuse this application?')}
         isOpen={isMessageOpen}
         onCancel={hideModal}
-        onSubmit={() => applyReject(providerId)}
+        onSubmit={() => applyReject(applyId)}
       >
         <div className={styles.rejectMessage}>
           <textarea
@@ -74,7 +74,7 @@ export default class Applications extends Component {
     const {
       vendorStore, user, match, t
     } = this.props;
-    const { providerId } = match.params;
+    const { applyId } = match.params;
     const { isISV } = user;
     const { vendorDetail, applyPass, applyRejectShow } = vendorStore;
     const { status } = vendorDetail;
@@ -128,7 +128,7 @@ export default class Applications extends Component {
             <Button type="delete" onClick={applyRejectShow}>
               {t('Reject')}
             </Button>
-            <Button type="primary" onClick={() => applyPass(providerId)}>
+            <Button type="primary" onClick={() => applyPass(applyId)}>
               {t('Pass')}
             </Button>
           </dl>

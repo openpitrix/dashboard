@@ -84,11 +84,11 @@ export default class ReviewDetail extends Component {
       appVersionStore.isTipsOpen = true;
     } else {
       // todo: after username should modify role
-      await appVersionStore.versionReview(
+      await appVersionStore.versionReview({
         handleType,
-        version.version_id,
-        user.username
-      );
+        versionId: version.version_id,
+        role: user.username
+      });
     }
   };
 
