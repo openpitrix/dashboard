@@ -12,7 +12,7 @@ export default class ClusterStore extends Store {
    * used on tableAction mixin when fetch value by id
    * @type {string}
    */
-  idAttribute = 'cluster_id';
+  idKey = 'cluster_id';
 
   defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 

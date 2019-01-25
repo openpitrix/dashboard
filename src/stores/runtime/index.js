@@ -8,7 +8,7 @@ import Store from '../Store';
 
 @useTableActions
 export default class RuntimeStore extends Store {
-  idAttribute = 'runtime_id';
+  idKey = 'runtime_id';
 
   sortKey = 'status_time';
 

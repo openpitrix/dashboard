@@ -12,7 +12,7 @@ let sequence = 0; // app screenshot for sort
 
 @useTableActions
 class AppStore extends Store {
-  idAttribute = 'app_id';
+  idKey = 'app_id';
 
   sortKey = 'status_time';
 

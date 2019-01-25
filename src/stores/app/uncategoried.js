@@ -7,7 +7,7 @@ import Store from '../Store';
 
 @useTableActions
 class UncategoriedStore extends Store {
-  idAttribute = 'category_id';
+  idKey = 'category_id';
 
   defaultStatus = ['active'];
 
