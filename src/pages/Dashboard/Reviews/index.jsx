@@ -48,6 +48,27 @@ export default class Reviews extends Component {
     }
   };
 
+  handleReview = async item => {
+    const { appVersionStore, user, history } = this.props;
+    const isReviewed = item.status.indexOf('in-review') > -1;
+
+    if (!isReviewed) {
+      // todo: after username should modify role
+      await appVersionStore.versionReview({
+        handleType: 'review',
+        versionId: item.version_id,
+        role: user.username,
+        noTips: true
+      });
+    }
+
+    history.push(
+      toRoute(routes.portal.appReviewDetail, {
+        reviewId: item.review_id
+      })
+    );
+  };
+
   render() {
     const { appVersionStore, appStore, t } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
@@ -118,13 +139,15 @@ export default class Reviews extends Component {
         className: 'actions',
         render: item => (
           <div>
-            <Link to={linkReview(item.review_id)}>
-              {isUnprocessed ? (
-                <Button>{t('Start process')}</Button>
-              ) : (
+            {isUnprocessed ? (
+              <Button onClick={() => this.handleReview(item)}>
+                {t('Start process')}
+              </Button>
+            ) : (
+              <Link to={linkReview(item.review_id)}>
                 <span>{t('View detail')} →</span>
-              )}
-            </Link>
+              </Link>
+            )}
           </div>
         )
       }

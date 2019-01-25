@@ -324,29 +324,37 @@ export default class AppVersionStore extends Store {
    * @returns {Promise<*>}
    */
   @action
-  versionReview = async (handleType, versionId, role) => {
+  versionReview = async (params = {}) => {
+    const {
+      handleType, versionId, role, noTips
+    } = params;
+
     if (handleType === 'reject' && !this.reason) {
       return this.error('Please input the reason for reject');
     }
 
-    const params = { version_id: versionId };
+    const data = { version_id: versionId };
     if (handleType === 'reject') {
-      params.message = this.reason;
+      data.message = this.reason;
     }
 
     this.isLoading = true;
     const result = await this.request.post(
       `app_version/action/${role}/${handleType}`,
-      params
+      data
     );
 
     if (get(result, 'version_id')) {
-      this.hideModal();
-      await this.fetch(versionId);
-      await this.fetchReviewDetail(this.reviewDetail.review_id);
+      if (!noTips) {
+        this.hideModal();
+        await this.fetch(versionId);
+        await this.fetchReviewDetail(this.reviewDetail.review_id);
+      }
 
       if (handleType === 'review') {
-        this.isTipsOpen = true;
+        this.isTipsOpen = !noTips;
+      } else if (handleType === 'reject') {
+        this.success(`${role.toUpperCase()}_REJECT_PASS`);
       } else {
         this.success(`${role.toUpperCase()}_REVIEW_PASS`);
       }
