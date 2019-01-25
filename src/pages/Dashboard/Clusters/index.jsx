@@ -119,6 +119,25 @@ export default class Clusters extends Component {
     ) : null;
   };
 
+  getDetailLink = clusterId => {
+    const { match } = this.props;
+    const { appId } = match.params;
+
+    let route;
+    if (match.path.endsWith('/:appId/instances')) {
+      route = routes.portal._dev.userInstanceDetail;
+    } else if (match.path.endsWith('/:appId/sandbox-instances')) {
+      route = routes.portal._dev.sandboxInstanceDetail;
+    } else {
+      route = routes.portal.clusterDetail;
+    }
+
+    return toRoute(route, {
+      appId,
+      clusterId
+    });
+  };
+
   renderHandleMenu = item => {
     const { t } = this.props;
     const { showOperateCluster } = this.props.clusterStore;
@@ -247,7 +266,6 @@ export default class Clusters extends Component {
       clusterStore, appStore, userStore, user, t
     } = this.props;
     const { clusters, isLoading, onlyView } = clusterStore;
-
     const { runtimes } = this.props.runtimeStore;
     const { apps } = appStore;
     const { users } = userStore;
@@ -261,7 +279,11 @@ export default class Clusters extends Component {
         key: 'status',
         width: '90px',
         render: cl => (
-          <Status type={cl.status} transition={cl.transition_status} transMap={transMap} />
+          <Status
+            type={cl.status}
+            transition={cl.transition_status}
+            transMap={transMap}
+          />
         )
       },
       {
@@ -272,15 +294,15 @@ export default class Clusters extends Component {
           <TdName
             name={cl.name}
             description={cl.cluster_id}
-            linkUrl={toRoute(routes.portal.clusterDetail, {
-              clusterId: cl.cluster_id
-            })}
+            linkUrl={this.getDetailLink(cl.cluster_id)}
             noIcon
           />
         )
       },
       {
-        title: user.isUserPortal ? t('App / Delivery type / Version') : t('Version'),
+        title: user.isUserPortal
+          ? t('App / Delivery type / Version')
+          : t('Version'),
         key: 'app_id',
         width: '120px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
