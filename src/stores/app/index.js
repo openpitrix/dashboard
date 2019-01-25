@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
 import { useTableActions } from 'mixins';
-import { getProgress, getCookie } from 'utils';
+import { getProgress, getCookie, sleep } from 'utils';
 import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
@@ -38,7 +38,7 @@ class AppStore extends Store {
     readme: '',
     tos: '',
     icon: '',
-    screenshots: []
+    screenshots: ''
   };
 
   @observable summaryInfo = {};
@@ -92,8 +92,6 @@ class AppStore extends Store {
   resetAppDetail = {};
 
   @observable iconShow = '';
-
-  @observable screenshotsShow = '';
 
   // menu actions logic
   @observable
@@ -471,11 +469,16 @@ class AppStore extends Store {
 
   @action
   uploadScreenshot = async base64Str => {
-    const { screenshots } = this.appDetail;
-    const len = _.isArray(screenshots) ? screenshots.length : 0;
-    if (len >= 6) {
+    const screenshotStr = _.get(this.appDetail, 'screenshots', '');
+    const screenshots = screenshotStr ? screenshotStr.split(',') : [];
+    sequence = screenshots.length - 1;
+    sequence++;
+
+    if (sequence >= 6) {
       return this.error('MAX_UPLOAD_SCREENSHOTS');
     }
+
+    this.appDetail.screenshots = sequence === 0 ? base64Str : `${screenshotStr},${base64Str}`;
 
     const result = await this.attachment({
       app_id: this.appDetail.app_id,
@@ -483,22 +486,29 @@ class AppStore extends Store {
       attachment_content: base64Str,
       sequence
     });
+    await sleep(sequence * 200);
 
-    if (result && result.errDetail) {
+    if (result && result.err) {
+      sequence--;
       return false;
-    }
-
-    sequence++;
-    if (_.isArray(screenshots)) {
-      this.appDetail.screenshots.push(base64Str);
-    } else {
-      this.appDetail.screenshots = [base64Str];
     }
   };
 
   @action
-  deleteScreenshot = () => {
-    this.appDetail.screenshots = [];
+  deleteScreenshot = async () => {
+    const screenshotStr = _.get(this.appDetail, 'screenshots', '');
+    const screenshots = screenshotStr ? screenshotStr.split(',') : [];
+
+    this.appDetail.screenshots = '';
+    for (let i = 0; i < screenshots.length; i++) {
+      await this.attachment({
+        app_id: this.appDetail.app_id,
+        type: 'screenshot',
+        attachment_content: '',
+        sequence: 0
+      });
+      await sleep(200);
+    }
   };
 
   @action

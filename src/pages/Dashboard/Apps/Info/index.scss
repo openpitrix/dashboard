@@ -163,19 +163,19 @@
 
 .screenshot {
   margin-left: 270px;
-  width: calc(100% - 270px);
-  height: 170px;
+  width: 512px;
   padding: 20px 0 20px 20px;
   border-radius: 2px;
   background-color: $background-color;
   overflow: hidden;
 
   .pictrues {
-    margin-bottom: 20px;
-    width: 1150px;
+    // margin-bottom: 20px;
+    // width: 1150px;
     li {
       display: inline-block;
       margin-right: 20px;
+      margin-bottom: 20px;
       width: 144px;
       height: 90px;
       line-height: 90px;
