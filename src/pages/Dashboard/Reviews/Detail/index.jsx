@@ -443,7 +443,6 @@ export default class ReviewDetail extends Component {
         <dl>
           <dt>{t('Screenshot of the interface')}</dt>
           <dd>
-            {' '}
             <Screenshots
               app={appDetail}
               currentPic={currentPic}

@@ -64,6 +64,7 @@
       left: 0;
       bottom: 0;
       width: ($picture-width + $picture-margin*3)*6;
+      transition: all 0.5s ease-in-out;
     }
   }
 
