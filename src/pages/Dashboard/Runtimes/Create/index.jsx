@@ -13,6 +13,7 @@ import {
 } from 'components/Base';
 import { Card, Stepper } from 'components/Layout';
 import Loading from 'components/Loading';
+import { providers } from 'config/runtimes';
 
 import styles from './index.scss';
 
@@ -235,6 +236,11 @@ export default class CreateTestingEnv extends React.Component {
       credentialName,
       changeCredentialName
     } = createEnvStore;
+    const platformName = _.get(
+      _.find(providers, { key: this.platform }),
+      'name',
+      this.platform
+    );
 
     if (!validatePassed) {
       return (
@@ -244,9 +250,11 @@ export default class CreateTestingEnv extends React.Component {
             {t('How to get these tips?')}
           </p>
           <ol>
-            <li>登录QingCloud控制台</li>
-            <li>进入API密钥管理界面</li>
-            <li>点击创建，并下载密钥文件</li>
+            <li>
+              {t('TIPS_LOGIN_PLATFORM_CONSOLE', { platform: platformName })}
+            </li>
+            <li>{t('TIPS_ADD_CREDENTIAL_1')}</li>
+            <li>{t('TIPS_ADD_CREDENTIAL_2')}</li>
           </ol>
         </div>
       );

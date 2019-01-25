@@ -3,5 +3,8 @@
   "Switch runtime credential successfully": "切换授权信息成功",
   "Delete runtime successfully": "删除环境成功",
   "Modify runtime credential successfully": "修改授权信息成功",
-  "Delete runtime credential successfully": "删除授权信息成功"
+  "Delete runtime credential successfully": "删除授权信息成功",
+  "TIPS_LOGIN_PLATFORM_CONSOLE": "登录{{platform}}控制台",
+  "TIPS_ADD_CREDENTIAL_1": "进入API密钥管理界面",
+  "TIPS_ADD_CREDENTIAL_2": "点击创建，并下载密钥文件"
 }
