@@ -7,6 +7,8 @@ import Store from '../Store';
 
 @useTableActions
 class UncategoriedStore extends Store {
+  idKey = 'category_id';
+
   defaultStatus = ['active'];
 
   @observable isLoading = false;

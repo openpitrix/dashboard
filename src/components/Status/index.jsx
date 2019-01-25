@@ -56,10 +56,16 @@ export default class Status extends PureComponent {
 
   render() {
     const {
-      style, className, name, type, transition, transMap, t
+      style,
+      className,
+      name,
+      type,
+      transition,
+      transMap,
+      t
     } = this.props;
     const status = String(transition || type).toLowerCase();
-    let transName = name || status;
+    let transName = status || name;
     transName = transMap[transName] || transName;
     const normalizeName = t(capitalize(transName));
 

@@ -12,6 +12,8 @@ let sequence = 0; // app screenshot for sort
 
 @useTableActions
 class AppStore extends Store {
+  idKey = 'app_id';
+
   sortKey = 'status_time';
 
   defaultStatus = ['draft', 'active', 'suspended'];

@@ -1,3 +1,14 @@
 {
-  "Normal": "正常"
+  "Normal": "正常",
+  "Starting":  "启动中",
+  "Updating":  "更新中",
+  "Stopping":  "停止中",
+  "Deleting":  "删除中",
+  "Creating":  "创建中",
+  "Upgrading":  "升级中",
+  "Rollbacking":  "回滚中",
+  "Recovering":  "恢复中",
+  "Ceasing":  "销毁中",
+  "Resizing":  "扩容中",
+  "Scaling": "扩容中"
 }
