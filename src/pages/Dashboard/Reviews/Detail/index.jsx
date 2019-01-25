@@ -14,6 +14,7 @@ import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
+import Screenshots from 'pages/AppDetail/Screenshots';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 
@@ -402,8 +403,16 @@ export default class ReviewDetail extends Component {
 
   renderBaseInfo() {
     const { appStore, t } = this.props;
-    const { appDetail } = appStore;
+    const { appDetail, currentPic, changePicture } = appStore;
     const categoryName = _.get(appDetail, 'category_set.name', '');
+
+    const { screenshots } = appDetail;
+    let pictrues = [];
+    try {
+      pictrues = JSON.parse(screenshots) || [];
+    } catch (err) {
+      pictrues = screenshots ? screenshots.split(',') : [];
+    }
 
     return (
       <div className={styles.baseInfo}>
@@ -433,7 +442,14 @@ export default class ReviewDetail extends Component {
         </dl>
         <dl>
           <dt>{t('Screenshot of the interface')}</dt>
-          <dd>{appDetail.screenshots || t('None')}</dd>
+          <dd>
+            <Screenshots
+              app={appDetail}
+              currentPic={currentPic}
+              changePicture={changePicture}
+              pictures={pictrues}
+            />
+          </dd>
         </dl>
         <dl>
           <dt>{t('Category')}</dt>

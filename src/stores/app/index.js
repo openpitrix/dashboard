@@ -612,6 +612,20 @@ class AppStore extends Store {
   setCreateStep = step => {
     this.createStep = step;
   };
+
+  @action
+  changePicture = (type, number, pictures) => {
+    const len = pictures.length;
+    if (type === 'dot') {
+      this.currentPic = 2 * number + 1;
+    }
+    if (type === 'pre' && this.currentPic > 2) {
+      this.currentPic -= 2;
+    }
+    if (type === 'next' && this.currentPic + 1 < len) {
+      this.currentPic += 2;
+    }
+  };
 }
 
 export default AppStore;

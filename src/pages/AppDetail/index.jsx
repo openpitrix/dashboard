@@ -101,22 +101,6 @@ export default class AppDetail extends Component {
     }
   };
 
-  changePicture = (type, number, pictures) => {
-    const { appStore } = this.props;
-    let { currentPic } = appStore;
-    if (type === 'dot') {
-      currentPic = number;
-    }
-    if (type === 'pre' && currentPic > 2) {
-      currentPic -= 2;
-    }
-    if (type === 'next' && currentPic + 2 < pictures.length) {
-      currentPic += 2;
-    }
-    appStore.currentPic = currentPic;
-    return currentPic;
-  };
-
   renderProviderInfo() {
     const { vendorStore, t } = this.props;
     const { vendorDetail } = vendorStore;
@@ -165,16 +149,15 @@ export default class AppDetail extends Component {
 
   renderAppDetail() {
     const { appStore, appVersionStore, t } = this.props;
-    const { appDetail, currentPic } = appStore;
+    const { appDetail, currentPic, changePicture } = appStore;
     const { typeVersions } = appVersionStore;
 
-    let screenshots = [];
-    if (appDetail.screenshots) {
-      try {
-        screenshots = JSON.parse(appDetail.screenshots) || [];
-      } catch (err) {
-        screenshots = [];
-      }
+    const { screenshots } = appDetail;
+    let pictrues = [];
+    try {
+      pictrues = JSON.parse(screenshots) || [];
+    } catch (err) {
+      pictrues = screenshots ? screenshots.split(',') : [];
     }
 
     return (
@@ -187,8 +170,8 @@ export default class AppDetail extends Component {
         <Screenshots
           app={appDetail}
           currentPic={currentPic}
-          changePicture={this.changePicture}
-          pictures={screenshots}
+          changePicture={changePicture}
+          pictures={pictrues}
         />
         <div className={styles.title}>{t('Versions')}</div>
         <Versions typeVersions={typeVersions} />

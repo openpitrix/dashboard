@@ -8,6 +8,8 @@ import { Icon, Image } from 'components/Base';
 
 import styles from './index.scss';
 
+const pictrueWidth = 320;
+
 @translate()
 @observer
 export default class Screenshots extends React.Component {
@@ -109,8 +111,8 @@ export default class Screenshots extends React.Component {
     if (typeof pictures === 'string') {
       pictures = pictures.split(',').map(v => v.trim());
     }
-    const picWidth = 276 * pictures.length;
-    const picLeft = (1 - currentPic) * 276;
+    const picWidth = pictrueWidth * pictures.length;
+    const picLeft = (1 - currentPic) * pictrueWidth;
 
     if (pictures.length === 0) {
       return <div className={styles.screenshots}>{t('None')}</div>;
@@ -119,24 +121,40 @@ export default class Screenshots extends React.Component {
     return (
       <div className={styles.screenshots}>
         <label className={styles.pre} onClick={() => this.changePicture('pre')}>
-          <Icon name="chevron-left" size={24} type="dark" />
+          <Icon
+            className={classnames({
+              [styles.prohibited]: currentPic === 1
+            })}
+            name="chevron-left"
+            size={24}
+            type="dark"
+          />
         </label>
         <label
           className={styles.next}
           onClick={() => this.changePicture('next')}
         >
-          <Icon name="chevron-right" size={24} type="dark" />
+          <Icon
+            className={classnames({
+              [styles.prohibited]: currentPic > pictures.length - 2
+            })}
+            name="chevron-right"
+            size={24}
+            type="dark"
+          />
         </label>
         <div className={styles.dotList}>
-          {pictures.filter((v, idx) => idx % 2 === 1).map((data, index) => (
-            <label
-              key={data}
-              className={classnames(styles.dot, {
-                [styles.active]: currentPic - 1 === index
-              })}
-              onClick={() => this.changePicture('dot', index + 1)}
-            />
-          ))}
+          {pictures
+            .filter((v, idx) => (idx + 1) % 2 === 1)
+            .map((data, index) => (
+              <label
+                key={data}
+                className={classnames(styles.dot, {
+                  [styles.active]: (currentPic - 1) / 2 === index
+                })}
+                onClick={() => this.changePicture('dot', index)}
+              />
+            ))}
         </div>
         <div className={styles.listOuter}>
           <ul

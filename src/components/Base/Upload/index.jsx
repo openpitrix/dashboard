@@ -99,6 +99,7 @@ export default class Upload extends Component {
 
   uploadFiles = files => {
     const postFiles = [...files];
+
     postFiles.forEach(file => {
       const fileWithId = Object.assign(file, { uid: getUid() });
       this.upload(fileWithId);
