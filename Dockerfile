@@ -1,4 +1,4 @@
-FROM openpitrix/dashboard-env-slim as builder
+FROM openpitrix/dashboard-env-slim:v0.1.0 as builder
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
 ARG SKIP_NODE_SASS_TESTS=true
