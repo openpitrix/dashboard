@@ -1,8 +1,8 @@
-FROM node:9-alpine as builder
+FROM openpitrix/dashboard-env-slim:v0.1.0 as builder
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
-# see: https://github.com/sass/node-sass/#binary-configuration-parameters
-ENV SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass/
+ARG SKIP_NODE_SASS_TESTS=true
+
 ENV PATH=$PATH:/app/node_modules/.bin
 
 WORKDIR /app
