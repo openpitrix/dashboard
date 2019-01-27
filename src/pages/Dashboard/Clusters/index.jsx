@@ -145,9 +145,7 @@ export default class Clusters extends Component {
     return (
       <div id={cluster_id} className="operate-menu">
         <Link
-          to={toRoute(routes.portal.clusterDetail, {
-            clusterId: cluster_id
-          })}
+          to={this.getDetailLink(cluster_id)}
         >
           {t('View detail')}
         </Link>
