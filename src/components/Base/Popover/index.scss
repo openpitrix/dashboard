@@ -1,149 +1,144 @@
 @import '~scss/vars';
 
-.popover {
-  :global {
-    .pi-popover-popper {
-      min-width: 100px;
-      padding: 4px 0;
-      font-size: $body-size;
-      border-radius: 2px;
-      background-color: $N0;
-      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
-      border: solid 1px $N30;
+:global(.pi-popover-popper) {
+  min-width: 100px;
+  padding: 4px 0;
+  font-size: $body-size;
+  border-radius: 2px;
+  background-color: $N0;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
+  border: solid 1px $N30;
 
-      .pi-popover-popper_arrow {
-        width: 16px;
-        height: 16px;
+  .pi-popover-popper_arrow {
+    width: 16px;
+    height: 16px;
 
-        &::before, &::after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 0;
-          border-style: solid;
-          box-sizing: border-box;
-        }
+    &::before, &::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      box-sizing: border-box;
+    }
+  }
+
+  &[data-placement^="top"] {
+    margin-bottom: 4px;
+
+    .pi-popover-popper_arrow {
+      bottom: -15px;
+
+      &::before {
+        left: 0;
+        top: 2px;
+        border-width: 8px;
+        border-color: $border transparent transparent transparent;
+        z-index: 1;
       }
-
-      &[data-placement^="top"] {
-        margin-bottom: 4px;
-
-        .pi-popover-popper_arrow {
-          bottom: -15px;
-
-          &::before {
-            left: 0;
-            top: 2px;
-            border-width: 8px;
-            border-color: $border transparent transparent transparent;
-            z-index: 1;
-          }
-          &::after {
-            left: 1px;
-            top: 1px;
-            border-width: 7px;
-            border-color: #fff transparent transparent transparent;
-            z-index: 2;
-          }
-        }
-      }
-      &[data-placement^="bottom"] {
-        margin-top: 4px;
-        margin-left: -30px;
-
-        .pi-popover-popper_arrow {
-          top: -15px;
-
-          &::before {
-            left: 0;
-            bottom: 2px;
-            border-width: 8px;
-            border-color: transparent transparent $border transparent;
-            z-index: 1;
-          }
-          &::after {
-            left: 1px;
-            bottom: 1px;
-            border-width: 7px;
-            border-color: transparent transparent #fff transparent;
-            z-index: 2;
-          }
-        }
-      }
-      &[data-placement^="left"] {
-        margin-right: 4px;
-
-        .pi-popover-popper_arrow {
-          right: -15px;
-
-          &::before {
-            left: 2px;
-            border-width: 8px;
-            border-color: transparent transparent transparent $border;
-            z-index: 1;
-          }
-          &::after {
-            left: 1px;
-            top: 1px;
-            border-width: 7px;
-            border-color: transparent transparent transparent #fff;
-            z-index: 2;
-          }
-        }
-      }
-      &[data-placement^="right"] {
-        margin-left: 4px;
-
-        .pi-popover-popper_arrow {
-          left: -15px;
-
-          &::before {
-            right: 2px;
-            border-width: 8px;
-            border-color: transparent $border transparent transparent;
-            z-index: 1;
-          }
-          &::after {
-            right: 1px;
-            top: 1px;
-            border-width: 7px;
-            border-color: transparent #fff transparent transparent;
-            z-index: 2;
-          }
-        }
+      &::after {
+        left: 1px;
+        top: 1px;
+        border-width: 7px;
+        border-color: #fff transparent transparent transparent;
+        z-index: 2;
       }
     }
+  }
+  &[data-placement^="bottom"] {
+    margin-top: 4px;
+    margin-left: -30px;
 
-    .operate-menu {
-      //margin: 0 -5px;
-      a {
-        color: $N300;
-      }
-      li,a,span {
-        display: block;
-        min-width: 105px;
-        padding: 0 12px;
-        height: 32px;
-        font-size: 12px;
-        line-height: 32px;
-        color: $N300;
-        background-color: $N0;
-        cursor: pointer;
-        transition: all $transition-speed;
-        &:hover {
-          color: $N500;
-          background-color: $N10;
-        }
+    .pi-popover-popper_arrow {
+      top: -15px;
 
-        .icon {
-          display: inline-block;
-          min-width: auto;
-          padding-left: 0;
-          padding-right: 4px;
-          background-color: transparent;
-          vertical-align: sub;
-        }
+      &::before {
+        left: 0;
+        bottom: 2px;
+        border-width: 8px;
+        border-color: transparent transparent $border transparent;
+        z-index: 1;
       }
+      &::after {
+        left: 1px;
+        bottom: 1px;
+        border-width: 7px;
+        border-color: transparent transparent #fff transparent;
+        z-index: 2;
+      }
+    }
+  }
+  &[data-placement^="left"] {
+    margin-right: 4px;
+
+    .pi-popover-popper_arrow {
+      right: -15px;
+
+      &::before {
+        left: 2px;
+        border-width: 8px;
+        border-color: transparent transparent transparent $border;
+        z-index: 1;
+      }
+      &::after {
+        left: 1px;
+        top: 1px;
+        border-width: 7px;
+        border-color: transparent transparent transparent #fff;
+        z-index: 2;
+      }
+    }
+  }
+  &[data-placement^="right"] {
+    margin-left: 4px;
+
+    .pi-popover-popper_arrow {
+      left: -15px;
+
+      &::before {
+        right: 2px;
+        border-width: 8px;
+        border-color: transparent $border transparent transparent;
+        z-index: 1;
+      }
+      &::after {
+        right: 1px;
+        top: 1px;
+        border-width: 7px;
+        border-color: transparent #fff transparent transparent;
+        z-index: 2;
+      }
+    }
+  }
+}
+
+:global(.operate-menu) {
+  a {
+    color: $N300;
+  }
+  li,a,span {
+    display: block;
+    min-width: 105px;
+    padding: 0 12px;
+    height: 32px;
+    font-size: 12px;
+    line-height: 32px;
+    color: $N300;
+    background-color: $N0;
+    cursor: pointer;
+    transition: all $transition-speed;
+    &:hover {
+      color: $N500;
+      background-color: $N10;
+    }
+
+    .icon {
+      display: inline-block;
+      min-width: auto;
+      padding-left: 0;
+      padding-right: 4px;
+      background-color: transparent;
+      vertical-align: sub;
     }
   }
 }

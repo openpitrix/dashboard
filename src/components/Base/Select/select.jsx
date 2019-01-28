@@ -10,6 +10,7 @@ export default class Select extends React.Component {
   static propTypes = {
     children: PropTypes.any,
     className: PropTypes.string,
+    defaultValue: PropTypes.string,
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
@@ -23,7 +24,8 @@ export default class Select extends React.Component {
   };
 
   state = {
-    isOpen: false
+    isOpen: false,
+    value: this.props.defaultValue
   };
 
   componentWillUnmount() {
@@ -43,11 +45,16 @@ export default class Select extends React.Component {
   handleOptionClick = e => {
     const { onChange, value } = this.props;
     const curVal = e.currentTarget.getAttribute('value');
+    const state = {
+      isOpen: false,
+      value: curVal
+    };
 
-    if (isFunction(onChange) && value !== curVal) {
-      onChange(curVal);
-    }
-    this.setState({ isOpen: false });
+    this.setState(state, () => {
+      if (isFunction(onChange) && value !== curVal) {
+        onChange(curVal);
+      }
+    });
   };
 
   handleControlClick = () => {
@@ -67,7 +74,8 @@ export default class Select extends React.Component {
   };
 
   setChildNodes = () => {
-    const { children, value } = this.props;
+    const { children } = this.props;
+    const value = this.props.value || this.state.value;
 
     this.currentLabel = '';
     this.childNodes = React.Children.map(children, child => {
@@ -121,9 +129,8 @@ export default class Select extends React.Component {
   }
 
   render() {
-    const {
-      className, disabled, name, value
-    } = this.props;
+    const { className, disabled, name } = this.props;
+    const value = this.props.value || this.state.value;
 
     this.setChildNodes();
 

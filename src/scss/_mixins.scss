@@ -109,9 +109,27 @@
   color: $N500;
 }
 
-@mixin normal-font  ($line-height: 20px, $font-size: 12px) {
+@mixin normal-font ($line-height: 20px, $font-size: 12px) {
   line-height:$line-height;
   font-weight: normal;
   font-size: $font-size;
   color: $N300;
+}
+
+@mixin form-item ($align-items: center) {
+  display: flex;
+  align-items: $align-items;
+  margin-bottom: $form-item-margin-bottom;
+  > label {
+    width: $form-label-width;
+    margin-right: $form-label-margin-right;
+    text-align: right;
+    @include title-font;
+  }
+  > input {
+    width: $form-input-normal;
+  }
+}
+@mixin form-textarea () {
+  @include form-item($align-items: flex-start);
 }

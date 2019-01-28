@@ -42,11 +42,14 @@ export default {
     },
     _isv: {
       provider: '/:portal/provider',
+      users: '/:portal/users',
+      roles: '/:portal/roles',
       providerApply: '/:portal/provider/apply'
     },
     _admin: {
       categories: '/:portal/categories',
       users: '/:portal/users',
+      roles: '/:portal/roles',
       userDetail: '/:portal/users/:userId',
       providers: '/:portal/providers',
       providerDetail: '/:portal/providers/:providerId',

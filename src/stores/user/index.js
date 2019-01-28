@@ -1,13 +1,17 @@
 import { observable, action } from 'mobx';
-import { get, pick, assign } from 'lodash';
+import _, { get, pick, assign } from 'lodash';
 
 import { getFormData } from 'utils';
+import { useTableActions } from 'mixins';
 
 import Store from '../Store';
 
 const defaultStatus = ['active'];
 
+@useTableActions
 export default class UserStore extends Store {
+  idKey = 'user_id';
+
   @observable users = [];
 
   @observable groups = [];
@@ -22,15 +26,6 @@ export default class UserStore extends Store {
 
   @observable currentPage = 1;
 
-  // user table query params
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
-
-  @observable totalCount = 0;
-
-  @observable selectGroupId = '';
-
   @observable selectRoleId = '';
 
   @observable selectName = '';
@@ -41,21 +36,29 @@ export default class UserStore extends Store {
 
   @observable treeFlag = false;
 
-  @observable organizations = [];
-
   @observable summaryInfo = {};
 
   @observable operateType = '';
-
-  @observable isCreateOpen = false;
-
-  @observable isDeleteOpen = false;
 
   @observable cookieTime = 2 * 60 * 60 * 1000;
 
   @observable rememberMe = false;
 
+  @observable userNames = [];
+
   @observable language = localStorage.getItem('i18nextLng') || 'zh';
+
+  @observable groupTreeData = [];
+
+  @observable groupName = '';
+
+  @observable selectedGroupIds = [];
+
+  @observable noGroupUsers = [];
+
+  get modal() {
+    return this.getStore('modal');
+  }
 
   @observable
   userDetail = {
@@ -77,7 +80,8 @@ export default class UserStore extends Store {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
+      status: this.selectStatus ? this.selectStatus : defaultStatus,
+      group_id: this.selectedGroupIds
     };
 
     if (params.noLimit) {
@@ -99,13 +103,23 @@ export default class UserStore extends Store {
       assign(defaultParams, params)
     );
     this.users = get(result, 'user_set', []);
+    this.setUserGroupName();
     this.totalCount = get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
+  setUserGroupName() {
+    this.users.forEach(user => {
+      if (!(_.isArray(user.group_id) && user.group_id.length > 0)) {
+        return;
+      }
+      const groups = _.filter(this.groups, g => user.group_id.includes(g.group_id));
+      user.groupName = _.flatMap(groups, 'name').join(',');
+    });
+  }
+
   @action
   fetchStatistics = async () => {
-    // this.isLoading = true;
     const result = await this.request.get('users/statistics');
     this.summaryInfo = {
       name: 'Users',
@@ -116,7 +130,6 @@ export default class UserStore extends Store {
       progress: get(result, 'top_ten_repos', {}),
       histograms: get(result, 'last_two_week_created', {})
     };
-    // this.isLoading = false;
   };
 
   @action
@@ -135,8 +148,17 @@ export default class UserStore extends Store {
   };
 
   @action
-  createOrModify = async () => {
-    const params = pick({ ...this.userDetail }, [
+  fetchNoGroupUser = async () => {
+    const result = await this.request.get('users');
+    const users = get(result, 'user_set', []);
+    this.noGroupUsers = users.filter(
+      u => !(_.isArray(u.group_id) && u.group_id.length > 0)
+    );
+  };
+
+  @action
+  createOrModify = async (e, data) => {
+    const params = pick({ ...data }, [
       'user_id',
       'username',
       'email',
@@ -144,6 +166,7 @@ export default class UserStore extends Store {
       'role',
       'description'
     ]);
+    console.log(params);
 
     if (!params.email) {
       return this.error('Empty email');
@@ -153,7 +176,6 @@ export default class UserStore extends Store {
     }
 
     if (params.user_id) {
-      // modify user
       if (!params.password) {
         delete params.password;
       }
@@ -165,14 +187,27 @@ export default class UserStore extends Store {
       }
 
       // fixme
-      delete params.username;
+      // delete params.username;
       await this.create(params);
     }
 
     if (get(this.operateResult, 'user_id')) {
-      this.hideModal();
+      this.modal.hide();
+      this.userDetail = {};
       await this.fetchAll();
     }
+  };
+
+  @action
+  showModifyUser = user => {
+    this.userDetail = user;
+    this.userDetail.password = '';
+    this.modal.show('renderModalCreateUser');
+  };
+
+  hideModifyUser = () => {
+    this.userDetail = {};
+    this.modal.hide();
   };
 
   @action
@@ -198,7 +233,7 @@ export default class UserStore extends Store {
     });
 
     if (get(result, 'user_id')) {
-      this.hideModal();
+      this.modal.hide();
       await this.fetchAll();
     } else {
       const { err, errDetail } = result;
@@ -207,26 +242,19 @@ export default class UserStore extends Store {
   };
 
   @action
-  fetchOrganizations = async () => {
-    this.isLoading = true;
-    const result = await this.request.get('organizations');
-    this.organizations = get(result, 'organization_set', []);
-    this.isLoading = false;
-  };
-
-  @action
   fetchGroups = async () => {
     this.isLoading = true;
     const result = await this.request.get('groups');
     this.groups = get(result, 'group_set', []);
+    this.getGroupTree();
     this.isLoading = false;
   };
 
   @action
   fetchRoles = async () => {
     this.isLoading = true;
-    const result = await this.request.get('roles');
-    this.roles = get(result, 'role_set', []);
+    // const result = await this.request.get('iam/roles');
+    // this.roles = get(result, 'role_set', []);
     this.isLoading = false;
   };
 
@@ -295,79 +323,6 @@ export default class UserStore extends Store {
   changePassword = async (params = {}) => await this.request.post('users/password:change', params);
 
   @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll();
-  };
-
-  @action
-  showCreateUser = () => {
-    this.operateType = 'create';
-    this.isCreateOpen = true;
-    this.userDetail = {
-      username: '',
-      email: '',
-      password: '',
-      role: '',
-      description: ''
-    };
-  };
-
-  @action
-  showModifyUser = user => {
-    this.operateType = 'modify';
-    this.isCreateOpen = true;
-    this.userDetail = user;
-    this.userDetail.password = '';
-  };
-
-  @action
-  showDeleteUser = userId => {
-    this.userId = userId;
-    this.isDeleteOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isCreateOpen = false;
-    this.isDeleteOpen = false;
-  };
-
-  @action
-  changeUser = (event, type) => {
-    this.userDetail[type] = event.target.value;
-  };
-
-  @action
-  changeUserRole = role => {
-    this.userDetail.role = role;
-  };
-
-  @action
   changeLanguage = lan => {
     this.language = lan;
   };
@@ -390,6 +345,131 @@ export default class UserStore extends Store {
       role: '',
       description: ''
     };
+  };
+
+  @action
+  onSelectOrg = (keys, info) => {
+    this.selectedGroupIds = keys;
+    this.selectedRowKeys = [];
+    this.groupName = keys.length ? get(info, 'node.props.title') : '';
+    this.fetchAll();
+  };
+
+  getGroupTree = () => {
+    const { groups } = this;
+    if (groups.length === 0) {
+      return [];
+    }
+
+    const root = _.find(groups, g => !g.parent_group_id);
+    if (_.isEmpty(root)) {
+      throw new Error('No root group');
+    }
+    const data = [
+      {
+        group_id: root.group_id,
+        key: root.group_id,
+        title: root.name
+      }
+    ];
+    const filter = (dataSet, parent_group_id) => _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
+      (a, b) => a.seq_order - b.seq_order
+    );
+    const setChildren = (dataSet, treeDataNode) => {
+      const children = filter(dataSet, treeDataNode.group_id);
+      if (children.length === 0) {
+        return [];
+      }
+      return children.map(node => ({
+        key: node.group_id,
+        title: node.name,
+        children: setChildren(dataSet, node)
+      }));
+    };
+
+    data[0].children = setChildren(groups, data[0]);
+    this.groupTreeData = data;
+  };
+
+  @action
+  createGroup = async (e, data) => {
+    this.operateResult = await this.request.post('groups', data);
+    if (get(this.operateResult, 'group_id')) {
+      this.modal.hide();
+      await this.fetchGroups();
+    }
+  };
+
+  @action
+  deleteGroup = async (e, data) => {
+    this.operateResult = await this.request.delete('groups', {
+      group_id: [data.group_id]
+    });
+    if (get(this.operateResult, 'group_id')) {
+      this.modal.hide();
+      await this.fetchGroups();
+    }
+  };
+
+  @action
+  renameGroup = async (e, data) => {
+    this.operateResult = await this.request.patch('groups', data);
+    if (get(this.operateResult, 'group_id')) {
+      this.groupName = data.name;
+      this.modal.hide();
+      await this.fetchGroups();
+    }
+  };
+
+  @action
+  joinGroup = async () => {
+    const data = {
+      group_id: this.selectedGroupIds,
+      user_id: this.selectIds
+    };
+    this.operateResult = await this.request.post('groups:join', data);
+    if (get(this.operateResult, 'group_id')) {
+      this.selectIds = [];
+      this.selectedRowKeys = [];
+      this.modal.hide();
+      this.fetchAll();
+    }
+  };
+
+  @action
+  leaveGroup = async () => {
+    let groupIds = _.flatMap(
+      this.users.filter(user => this.selectIds.includes(user.user_id)),
+      'group_id'
+    );
+    groupIds = _.uniq(groupIds);
+    groupIds.forEach(async groupId => {
+      const data = {
+        group_id: [groupId],
+        user_id: this.selectIds
+      };
+      await this.request.post('groups:leave', data);
+    });
+
+    this.selectIds = [];
+    this.selectedRowKeys = [];
+    this.modal.hide();
+    await this.fetchAll();
+  };
+
+  @action
+  leaveGroupOnce = async user => {
+    const data = {
+      group_id: user.group_id,
+      user_id: [user.user_id]
+    };
+    this.operateResult = await this.request.post('groups:leave', data);
+    if (get(this.operateResult, 'group_id')) {
+      this.selectIds = [];
+      this.selectedRowKeys = [];
+      this.modal.hide();
+      this.fetchAll();
+    }
   };
 }
 

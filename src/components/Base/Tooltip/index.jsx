@@ -4,6 +4,7 @@ import {
 } from 'react-popper';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PortalPopover from './Portal';
 
 import styles from './index.scss';
 
@@ -15,6 +16,7 @@ export default class Tooltip extends React.Component {
     onVisibleChange: PropTypes.func,
     placement: PropTypes.string,
     popperCls: PropTypes.string,
+    portal: PropTypes.bool,
     prefixCls: PropTypes.string,
     showBorder: PropTypes.bool,
     targetCls: PropTypes.string,
@@ -28,6 +30,7 @@ export default class Tooltip extends React.Component {
     placement: 'bottom',
     visible: false,
     showBorder: false,
+    portal: false,
     onVisibleChange() {}
   };
 
@@ -138,9 +141,25 @@ export default class Tooltip extends React.Component {
       placement,
       children,
       isShowArrow,
+      portal,
       showBorder
     } = this.props;
     const visible = this.state.visible;
+    const PopoverComponent = portal ? PortalPopover : Popper;
+    const popProps = {
+      positionFixed: true,
+      className: classNames(styles.popper, popperCls, `${prefixCls}-popper`, {
+        [styles.active]: visible
+      }),
+      placement,
+      innerRef: c => {
+        this.popper = c;
+      }
+    };
+    if (portal) {
+      popProps.visible = visible;
+      popProps.onClick = this.handleTogglePopper;
+    }
 
     return (
       <Manager
@@ -159,21 +178,7 @@ export default class Tooltip extends React.Component {
         >
           {children}
         </Target>
-        <Popper
-          positionFixed={true}
-          className={classNames(
-            styles.popper,
-            popperCls,
-            `${prefixCls}-popper`,
-            {
-              [styles.active]: visible
-            }
-          )}
-          placement={placement}
-          innerRef={c => {
-            this.popper = c;
-          }}
-        >
+        <PopoverComponent {...popProps}>
           {content}
           {isShowArrow
             && content && (
@@ -184,7 +189,7 @@ export default class Tooltip extends React.Component {
                 )}
               />
           )}
-        </Popper>
+        </PopoverComponent>
       </Manager>
     );
   }
