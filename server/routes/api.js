@@ -49,7 +49,6 @@ router.post('/api/*', async ctx => {
   }
 
   const { referer } = ctx.headers;
-  debug(`referer url: %s`, referer);
 
   const urlParts = require('url').parse(referer);
   const usingNoAuthToken = urlParts.pathname === '/'
@@ -87,7 +86,7 @@ router.post('/api/*', async ctx => {
 
   if (!access_token || (expires_in && parseInt(expires_in) < Date.now())) {
     const res = await agent.post([apiServer, authEndpoint].join('/'), payload);
-    debug(`Using refresh token to exchange auth info: %O`, res);
+    logger.info(`Using refresh token to exchange auth info: %O`, res);
 
     if (!res || !res.access_token) {
       ctx.throw(401, 'Retrieve access token failed');

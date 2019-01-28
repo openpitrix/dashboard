@@ -1,4 +1,4 @@
-const debug = require('debug')('app');
+const logger = require('../logger');
 
 const authPages = ['dashboard', 'store'];
 
@@ -10,7 +10,7 @@ module.exports = async (ctx, next) => {
     return;
   }
 
-  debug('PAGE: %s', url);
+  logger.info('PAGE: %s', url);
 
   // check if user logged in
   const loggedIn = cookies.get('access_token')
