@@ -54,7 +54,7 @@
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
     "prod:build": "npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
-    "prod:serve": "NODE_ENV=production DEBUG=app node dist/server.js",
+    "prod:serve": "NODE_ENV=production node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
     "build:prod-client": "node build.js --prod-client",
     "build:prod-server": "node build.js --prod-server",
@@ -67,7 +67,7 @@
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
     "locale": "node ./bin/locale.js merge all",
-    "watch:locale": "DEBUG=app npm run locale -- --watch"
+    "watch:locale": "npm run locale -- --watch"
   },
   "lint-staged": {
     "*.{js,jsx,md}": [

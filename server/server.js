@@ -16,9 +16,9 @@ const mount = require('koa-mount');
 const serve = require('koa-static');
 const helmet = require('koa-helmet');
 const { get } = require('lodash');
-const debug = require('debug')('app');
 const { reportErr, renderErrPage } = require('./report-error');
 const { root, getServerConfig, watchConfig } = require('../lib/utils');
+const logger = require('./logger');
 
 const app = new Koa();
 const config = getServerConfig();
@@ -31,7 +31,8 @@ global.PORT = get(config, 'port', 8000);
 
 // centralize error handling
 app.on('error', (err, ctx) => {
-  debug('server err: %O', err);
+  logger.error(`server err: %s`, err.stack);
+
   ctx.status = err.status || 500;
   ctx.body = renderErrPage(err);
 });
@@ -75,8 +76,11 @@ app.use(require('./routes/api').routes());
 app.use(require('./middleware/render'));
 
 app.listen(PORT, err => {
-  if (err) throw err;
-  debug(`OpenPitrix Dashboard running at %s`, `${HOSTNAME}:${PORT}`);
+  if (err) {
+    logger.error(`Start app failed: %s`, err.stack);
+    throw err;
+  }
+  logger.info(`OpenPitrix Dashboard running at %s`, `${HOSTNAME}:${PORT}`);
 });
 
 watchConfig(() => {

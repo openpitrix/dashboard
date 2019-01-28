@@ -15,7 +15,6 @@ const myFormat = printf(info => {
 
 const logger = createLogger({
   level: 'info',
-  // format: format.json(),
   format: combine(timestamp(), splat(), myFormat),
   exitOnError: false,
   transports: [
@@ -24,15 +23,15 @@ const logger = createLogger({
       level: 'error',
       maxsize: 1024 * 1024 * 10 // bytes
     }),
-    new transports.File({
-      filename: root('logs/app.log'),
-      maxsize: 1024 * 1024 * 20
-    })
+    // when using logger.info, just output to console
+    // so `docker logs` will catch it
+    new transports.Console()
+    // todo: disable write info message to file, delegate to docker logs
+    // new transports.File({
+    //   filename: root('logs/app.log'),
+    //   maxsize: 1024 * 1024 * 20
+    // })
   ]
 });
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new transports.Console());
-}
 
 module.exports = logger;
