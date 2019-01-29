@@ -1,5 +1,7 @@
 @import "~scss/vars";
 
+$form-item-width: 389px;
+
 .pgHeader{
   font-size: $size-small !important;
   color: $N75 !important;
@@ -35,6 +37,7 @@
           margin-bottom: 8px;
         }
         .input {
+          width: $form-item-width;
           height: 32px;
           border-radius: 2px;
           background-color: $N0;
@@ -42,15 +45,20 @@
         .txtCredential {
           min-height: 232px;
         }
+        textarea {
+          width: $form-item-width;
+        }
       }
       .btnVerify {
 
+      }
+      .selectZones {
+        width: $form-item-width;
       }
       .zones {
         display: flex;
         flex-wrap: wrap;
         li {
-          width: 71px;
           background-color: $N0;
           border-radius: 2px;
           border: 1px solid $N30;
