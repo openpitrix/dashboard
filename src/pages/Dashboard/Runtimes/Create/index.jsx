@@ -9,7 +9,7 @@ import { getUrlParam } from 'utils/url';
 import routes, { toRoute } from 'routes';
 
 import {
-  Icon, Button, Notification, Input
+  Icon, Button, Notification, Input, Select
 } from 'components/Base';
 import { Card, Stepper } from 'components/Layout';
 import Loading from 'components/Loading';
@@ -364,19 +364,33 @@ export default class CreateTestingEnv extends React.Component {
               ) : (
                 <Fragment>
                   <label className={styles.label}>{t('Zone')}</label>
-                  <ul className={styles.zones}>
-                    {runtimeZones.map((zone, idx) => (
-                      <li
-                        key={idx}
-                        className={classnames({
-                          [styles.activeZone]: selectZone === zone
-                        })}
-                        onClick={() => changeRuntimeZone(zone)}
-                      >
-                        {zone}
-                      </li>
-                    ))}
-                  </ul>
+                  {runtimeZones.length > 5 ? (
+                    <Select
+                      value={selectZone}
+                      onChange={changeRuntimeZone}
+                      className={styles.selectZones}
+                    >
+                      {runtimeZones.map((zone, idx) => (
+                        <Select.Option value={zone} key={idx}>
+                          {t(zone)}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  ) : (
+                    <ul className={styles.zones}>
+                      {runtimeZones.map((zone, idx) => (
+                        <li
+                          key={idx}
+                          className={classnames({
+                            [styles.activeZone]: selectZone === zone
+                          })}
+                          onClick={() => changeRuntimeZone(zone)}
+                        >
+                          {zone}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </Fragment>
               )}
             </div>
