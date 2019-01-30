@@ -63,9 +63,10 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   componentWillUnmount() {
-    const { rootStore, createEnvStore } = this.props;
+    const { rootStore, createEnvStore, credentialStore } = this.props;
     createEnvStore.reset();
     rootStore.clearNotify();
+    credentialStore.reset();
   }
 
   @computed
