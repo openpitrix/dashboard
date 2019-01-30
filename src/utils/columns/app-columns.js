@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import TdName from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
+import routes, { toRoute } from 'routes';
 
 export default [
   {
@@ -16,7 +17,7 @@ export default [
         name={item.name}
         description={item.app_id}
         image={item.icon || 'appcenter'}
-        linkUrl={`/store/${item.app_id}`}
+        linkUrl={toRoute(routes.appDetail, { appId: item.app_id })}
       />
     )
   },

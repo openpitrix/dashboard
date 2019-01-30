@@ -5,16 +5,17 @@ import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
+import routes, { toRoute } from 'routes';
 
 export default (runtimes, versions) => [
   {
     title: <I18n>{t => <span>{t('Cluster Name')}</span>}</I18n>,
     key: 'name',
-    render: obj => (
+    render: ({ name, cluster_id }) => (
       <TdName
-        name={obj.name}
-        description={obj.cluster_id}
-        linkUrl={`/dashboard/cluster/${obj.cluster_id}`}
+        name={name}
+        description={cluster_id}
+        linkUrl={toRoute(routes.portal.clusterDetail, { clusterId: cluster_id })}
       />
     )
   },

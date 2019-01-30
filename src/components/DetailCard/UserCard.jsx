@@ -43,11 +43,15 @@ export default class UserCard extends React.Component {
           </li>
           <li>
             <span className={styles.name}>{t('Role')}</span>
-            {t(roleMap[userDetail.role] || 'None')}
+            <span className={styles.val}>
+              {t(roleMap[userDetail.role] || 'None')}
+            </span>
           </li>
           <li>
             <span className={styles.name}>{t('Email')}</span>
-            {userDetail.email}
+            <span className={styles.val}>
+              {userDetail.email}
+            </span>
           </li>
           <li>
             <span className={styles.name}>{t('Date Updated')}</span>
