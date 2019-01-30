@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -11,9 +12,11 @@ import 'rc-tree/assets/index.css';
 
 import styles from './index.scss';
 
+@observer
 export default class Tree extends Component {
   static propTypes = {
     checkable: PropTypes.bool,
+    keyName: PropTypes.string,
     onSelect: PropTypes.func,
     sameHeight: PropTypes.bool,
     showIcon: PropTypes.bool,
@@ -26,6 +29,7 @@ export default class Tree extends Component {
     sameHeight: false,
     showIcon: false,
     showLine: false,
+    keyName: 'key',
     treeData: [],
     onSelect: _.noop
   };

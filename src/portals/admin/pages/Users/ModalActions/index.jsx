@@ -15,9 +15,9 @@ const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 @observer
 export default class UserModalActions extends Component {
   renderModalCreateGroup() {
-    const { t, modalStore, userStore } = this.props;
+    const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { createGroup, selectedGroupIds } = userStore;
+    const { createGroup, selectedGroupIds } = groupStore;
 
     return (
       <Dialog
@@ -42,9 +42,9 @@ export default class UserModalActions extends Component {
   }
 
   renderModalDeleteGroup() {
-    const { t, modalStore, userStore } = this.props;
+    const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { deleteGroup, selectedGroupIds, groupName } = userStore;
+    const { deleteGroup, selectedGroupIds, groupName } = groupStore;
     return (
       <Dialog
         title={t('Delete group')}
@@ -65,9 +65,9 @@ export default class UserModalActions extends Component {
   }
 
   renderModalRenameGroup() {
-    const { t, modalStore, userStore } = this.props;
+    const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { renameGroup, selectedGroupIds, groupName } = userStore;
+    const { renameGroup, selectedGroupIds, groupName } = groupStore;
     return (
       <Dialog
         title={t('Rename group')}
@@ -90,9 +90,9 @@ export default class UserModalActions extends Component {
   }
 
   renderModalJoinGroup() {
-    const { t, modalStore, userStore } = this.props;
+    const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { joinGroup, noGroupUsers } = userStore;
+    const { joinGroup, users } = groupStore;
     return (
       <Dialog
         width={744}
@@ -103,10 +103,9 @@ export default class UserModalActions extends Component {
       >
         <EnhanceTable
           hasRowSelection
-          rowKey="user_id"
-          isLoading={userStore.isLoading}
-          store={userStore}
-          data={noGroupUsers}
+          isLoading={groupStore.isLoading}
+          store={groupStore}
+          data={users}
           columns={columns(t)}
         />
       </Dialog>
@@ -114,9 +113,12 @@ export default class UserModalActions extends Component {
   }
 
   renderModalLeaveGroup() {
-    const { t, modalStore, userStore } = this.props;
+    const {
+      t, modalStore, groupStore, userStore
+    } = this.props;
     const { hide, isOpen } = modalStore;
-    const { leaveGroup, users, selectedRowKeys } = userStore;
+    const { users, selectedRowKeys } = userStore;
+    const { leaveGroup } = groupStore;
     let names = _.flatMap(
       users.filter(user => selectedRowKeys.includes(user.user_id)),
       'username'
@@ -145,20 +147,47 @@ export default class UserModalActions extends Component {
     );
   }
 
+  renderModalSetRole() {
+    const { userStore, modalStore, t } = this.props;
+    const { isOpen, hide, item } = modalStore;
+    const { setRoleOnce, roles } = userStore;
+    const roleId = _.get(item, 'role');
+    const userId = _.get(item, 'user_id');
+
+    return (
+      <Dialog
+        width={744}
+        title={t('Set role')}
+        isOpen={isOpen}
+        onCancel={hide}
+        onSubmit={setRoleOnce}
+      >
+        <div className={styles.formItem}>
+          <input name="user_id" value={userId} type="hidden" />
+          <label>{t('Role')}</label>
+          <Select defaultValue={roleId} name="role_id">
+            {roles.map(({ role_id, role_name }) => (
+              <Select.Option key={role_id} value={role_id}>
+                {t(role_name)}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      </Dialog>
+    );
+  }
+
   renderModalCreateUser() {
     const { userStore, modalStore, t } = this.props;
     const { isOpen } = modalStore;
     const {
-      userDetail,
-      operateType,
-      hideModifyUser,
-      createOrModify
+      userDetail, roles, hideModifyUser, createOrModify
     } = userStore;
     const {
       user_id, role, username, email
     } = userDetail;
 
-    const title = operateType === 'modify' ? t('Modify User') : t('Create New User');
+    const title = !user_id === 'modify' ? t('Create New User') : t('Modify User');
 
     return (
       <Dialog
@@ -190,17 +219,18 @@ export default class UserModalActions extends Component {
             required
           />
         </div>
-        <div className={styles.formItem}>
-          <label>{t('Role')}</label>
-          <Select defaultValue={role} name="role">
-            <Select.Option value="user">{t('Normal User')}</Select.Option>
-            <Select.Option value="developer">{t('Developer')}</Select.Option>
-            <Select.Option value="global_admin">
-              {t('Administrator')}
-            </Select.Option>
-            <Select.Option value="isv">{t('ISV')}</Select.Option>
-          </Select>
-        </div>
+        {!user_id && (
+          <div className={styles.formItem}>
+            <label>{t('Role')}</label>
+            <Select defaultValue={role} name="role">
+              {roles.map(({ role_id, role_name }) => (
+                <Select.Option key={role_id} value={role_id}>
+                  {t(role_name)}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        )}
         <div className={styles.formItem}>
           <label>{t('Password')}</label>
           <Input name="password" type="password" maxLength={50} />
@@ -209,6 +239,24 @@ export default class UserModalActions extends Component {
           <label>{t('Description')}</label>
           <textarea name="description" maxLength={500} />
         </div>
+      </Dialog>
+    );
+  }
+
+  renderModalDeleteUser() {
+    const { t, modalStore, userStore } = this.props;
+    const { hide, isOpen, item } = modalStore;
+    const { remove } = userStore;
+    userStore.userId = item.type === 'one' ? [item.user_id] : userStore.selectIds;
+
+    return (
+      <Dialog
+        title={t('Create group')}
+        visible={isOpen}
+        onSubmit={remove}
+        onCancel={hide}
+      >
+        {t('delete_user_desc')}
       </Dialog>
     );
   }

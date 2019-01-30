@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import _, { pick } from 'lodash';
+import { pick } from 'lodash';
 
 import Store from './Store';
 
@@ -13,7 +13,7 @@ import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
 import Runtime, { Credential as RuntimeCredential } from './runtime';
-import User, { Role } from './user';
+import User, { Role, Group } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 import Vendor from './vendor';
@@ -181,6 +181,7 @@ export default class RootStore extends Store {
     // user, role
     this.register('user', User);
     this.register('role', Role);
+    this.register('group', Group);
 
     this.register('sshKey', sshKey);
 

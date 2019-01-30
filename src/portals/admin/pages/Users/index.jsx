@@ -22,6 +22,7 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
+  groupStore: rootStore.groupStore,
   modalStore: rootStore.modalStore
 }))
 @setPage('userStore')
@@ -32,9 +33,9 @@ export default class Users extends Component {
   };
 
   async componentDidMount() {
-    const { userStore } = this.props;
+    const { userStore, groupStore } = this.props;
 
-    await userStore.fetchGroups();
+    await groupStore.fetchGroups();
     await userStore.fetchAll();
     await userStore.fetchRoles();
     this.setState({ isLoading: false });
@@ -48,9 +49,9 @@ export default class Users extends Component {
   handleAction(type, e) {
     e.stopPropagation();
     e.preventDefault();
-    const { modalStore, userStore } = this.props;
+    const { modalStore, groupStore } = this.props;
     if (type === 'renderModalJoinGroup') {
-      userStore.fetchNoGroupUser();
+      groupStore.fetchAll();
     }
     modalStore.show(type);
   }
@@ -70,19 +71,19 @@ export default class Users extends Component {
       <div key={`${key}-operates`} className="operate-menu">
         <span
           key={`${key}-rename`}
-          onClickCapture={e => this.handleAction('renderModalRenameGroup', e)}
+          onClick={e => this.handleAction('renderModalRenameGroup', e)}
         >
           {t('Rename')}
         </span>
         <span
           key={`${key}-join-user`}
-          onClickCapture={e => this.handleAction('renderModalJoinGroup', e)}
+          onClick={e => this.handleAction('renderModalJoinGroup', e)}
         >
           {t('Add user')}
         </span>
         <span
           key={`${key}-delete`}
-          onClickCapture={e => this.handleAction('renderModalDeleteGroup', e)}
+          onClick={e => this.handleAction('renderModalDeleteGroup', e)}
         >
           {t('Delete')}
         </span>
@@ -97,6 +98,7 @@ export default class Users extends Component {
       </span>
       <Popover
         portal
+        trigger="hover"
         key={`${key}-operate`}
         content={this.renderHandleGroupNode({ key })}
         className={classnames(styles.groupPopver)}
@@ -123,17 +125,38 @@ export default class Users extends Component {
   );
 
   renderUserHandleMenu = user => {
-    const { userStore, t } = this.props;
+    const { groupStore, modalStore, t } = this.props;
     const { group_id } = user;
-    const { showDeleteUser, showModifyUser, leaveGroupOnce } = userStore;
+    const { leaveGroupOnce } = groupStore;
 
     return (
       <div className="operate-menu">
-        <span onClick={() => showModifyUser(user)}>{t('Edit info')}</span>
+        <span
+          onClick={() => modalStore.show(
+            'renderModalCreateUser',
+            _.assign({}, user, {
+              password: null
+            })
+          )
+          }
+        >
+          {t('Edit info')}
+        </span>
+        <span onClick={() => modalStore.show('renderModalSetRole', user)}>
+          {t('Set role')}
+        </span>
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
-        <span onClick={() => showDeleteUser(user.user_id)}>{t('Delete')}</span>
+        <span
+          onClick={() => modalStore.show(
+            'renderModalDeleteUser',
+            _.assign({}, user, { type: 'one' })
+          )
+          }
+        >
+          {t('Delete')}
+        </span>
       </div>
     );
   };
@@ -200,11 +223,12 @@ export default class Users extends Component {
   }
 
   render() {
-    const { userStore, modalStore, t } = this.props;
-    const { isLoading } = this.state;
     const {
-      selectName, groupName, onSelectOrg, groupTreeData
-    } = userStore;
+      userStore, groupStore, modalStore, t
+    } = this.props;
+    const { isLoading } = this.state;
+    const { selectName, groupName } = userStore;
+    const { groupTreeData, onSelectOrg } = groupStore;
 
     return (
       <Layout className={styles.usersContent} isLoading={isLoading}>
@@ -256,7 +280,12 @@ export default class Users extends Component {
             </Section>
           </Grid>
         </Panel>
-        <ModalActions t={t} modalStore={modalStore} userStore={userStore} />
+        <ModalActions
+          t={t}
+          modalStore={modalStore}
+          userStore={userStore}
+          groupStore={groupStore}
+        />
       </Layout>
     );
   }

@@ -142,14 +142,16 @@ export default class Tooltip extends React.Component {
       children,
       isShowArrow,
       portal,
-      showBorder
+      showBorder,
+      trigger
     } = this.props;
     const visible = this.state.visible;
     const PopoverComponent = portal ? PortalPopover : Popper;
     const popProps = {
       positionFixed: true,
       className: classNames(styles.popper, popperCls, `${prefixCls}-popper`, {
-        [styles.active]: visible
+        [styles.active]: visible,
+        'hover-popper': trigger === 'hover'
       }),
       placement,
       innerRef: c => {

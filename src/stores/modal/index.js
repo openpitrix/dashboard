@@ -7,15 +7,21 @@ export default class ModalStore extends Store {
 
   @observable type = '';
 
+  item = {};
+
   @action
-  show = type => {
+  show = (type, item) => {
     this.type = type;
     this.isOpen = true;
+    if (item) {
+      this.item = item;
+    }
   };
 
   @action
   hide = () => {
     this.type = '';
+    this.item = {};
     this.isOpen = false;
   };
 }

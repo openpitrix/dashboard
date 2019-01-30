@@ -23,7 +23,7 @@ import {
   NotificationServer
 } from 'pages/Dashboard';
 
-import { Users } from 'portals/admin/pages';
+import { Users, Roles } from 'portals/admin/pages';
 
 export default ({ prefix }) => (
   <Switch>
@@ -53,6 +53,7 @@ export default ({ prefix }) => (
     <WrapRoute path={`${prefix}/categories`} component={Categories} />
 
     <WrapRoute path={`${prefix}/users`} component={Users} />
+    <WrapRoute path={`${prefix}/roles`} component={Roles} />
 
     <WrapRoute path={`${prefix}/providers`} component={Providers} />
     <WrapRoute path={`${prefix}/providers/apply`} component={Applications} />

@@ -111,6 +111,11 @@
     }
   }
 }
+:global(.hover-popper.pi-popover-popper) {
+  &[data-placement^="bottom"] {
+    margin-top: 0;
+  }
+}
 
 :global(.operate-menu) {
   a {
