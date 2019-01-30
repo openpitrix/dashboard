@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import _, { pick } from 'lodash';
+import { pick } from 'lodash';
 
 import Store from './Store';
 

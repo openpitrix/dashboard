@@ -52,6 +52,7 @@ const tags = [
   rootStore,
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
+  clusterStore: rootStore.clusterStore,
   appCreateStore: rootStore.appCreateStore,
   categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore
@@ -64,6 +65,7 @@ export default class VersionDetail extends Component {
       appStore,
       categoryStore,
       userStore,
+      clusterStore,
       match
     } = this.props;
     const { appId, versionId } = match.params;
@@ -86,6 +88,9 @@ export default class VersionDetail extends Component {
 
     // query categories data for category select
     await categoryStore.fetchAll();
+
+    // query deploy test instances
+    await clusterStore.fetchAll({ app_id: appId, noLimit: true });
   }
 
   componentWillUnmount() {
@@ -309,7 +314,7 @@ export default class VersionDetail extends Component {
             <br />
             <div
               onClick={() => this.toggleReason(record)}
-              className={styles.expand}
+              className={styles.collapse}
             >
               {t('Collapse')}
             </div>
@@ -330,14 +335,42 @@ export default class VersionDetail extends Component {
   }
 
   renderTestInstance() {
-    const { t } = this.props;
+    const { clusterStore, match, t } = this.props;
+    const { clusters } = clusterStore;
+    const { appId } = match.params;
+
+    if (clusters.length === 0) {
+      return (
+        <Card className={styles.testInstance}>
+          <div className={styles.title}>{t('Test instance')}</div>
+          <div className={styles.note}>
+            {t('There are no deployment test instances in this release')}
+          </div>
+        </Card>
+      );
+    }
 
     return (
       <Card className={styles.testInstance}>
         <div className={styles.title}>{t('Test instance')}</div>
-        <div className={styles.note}>
-          {t('There are no deployment test instances in this release')}
-        </div>
+        <ul className={styles.list}>
+          {clusters.map(item => (
+            <li key={item.cluster_id}>
+              <Link
+                to={toRoute(routes.portal._dev.sandboxInstanceDetail, {
+                  appId,
+                  clusterId: item.cluster_id
+                })}
+                className={styles.name}
+              >
+                {item.name}
+              </Link>
+              <span className={styles.status}>
+                <Status type={item.status} name={item.status} />
+              </span>
+            </li>
+          ))}
+        </ul>
       </Card>
     );
   }

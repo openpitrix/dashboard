@@ -2,6 +2,7 @@
 
 .tdName {
   display: flex;
+  height: 36px;
   :global {
     .icon {
       float: left;
@@ -11,7 +12,7 @@
   .image {
     display: inline-block;
     float: left;
-    margin: 6px 8px 6px 0;
+    margin-right: 8px;
     width: 36px;
     height: 36px;
     line-height: 36px;
@@ -34,7 +35,7 @@
     }
     .name {
       display: block;
-      line-height: 28px;
+      line-height: 20px;
       font-weight: 500;
       font-size: 14px;
       text-align: left;
@@ -59,7 +60,7 @@
     }
     .description {
       display: inline-block;
-      line-height: 20px;
+      line-height: 16px;
       font-size: 12px;
       color: $N75;
       max-width: 150px;

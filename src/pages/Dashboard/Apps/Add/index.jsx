@@ -202,7 +202,7 @@ export default class AppAdd extends Component {
       : 'Your app has been created successfully';
 
     return (
-      <Fragment>
+      <div className={styles.successMsg}>
         <div className={styles.successMsg}>
           <Icon
             className={styles.checkedIcon}
@@ -248,7 +248,7 @@ export default class AppAdd extends Component {
             className={styles.appCard}
           />
         </div>
-      </Fragment>
+      </div>
     );
   }
 

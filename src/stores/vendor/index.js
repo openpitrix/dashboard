@@ -5,6 +5,8 @@ import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
+const defaultStatus = ['submitted', 'passed', 'rejected'];
+
 export default class VendorStore extends Store {
   @observable checkedProtocol = false;
 
@@ -56,6 +58,7 @@ export default class VendorStore extends Store {
   @action
   fetchAll = async (params = {}) => {
     const defaultParams = {
+      status: defaultStatus,
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize
     };
@@ -193,6 +196,17 @@ export default class VendorStore extends Store {
   @action
   nextStep = async () => {
     const data = this.vendorDetail;
+    if (data.status === 'submitted') {
+      return this.info(
+        'The application is under review and cannot be submitted repeatedly.'
+      );
+    }
+    if (data.status === 'passed') {
+      return this.info(
+        'The application is pass review and cannot be submitted repeatedly.'
+      );
+    }
+
     this.checkResult = _.assign({}, formCheck('vendor', data));
 
     if (_.isEmpty(this.checkResult)) {
@@ -237,5 +251,6 @@ export default class VendorStore extends Store {
     this.checkedProtocol = true;
 
     this.vendors = [];
+    this.attchStatictics = false;
   };
 }

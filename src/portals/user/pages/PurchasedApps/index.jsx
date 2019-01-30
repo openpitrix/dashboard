@@ -29,7 +29,7 @@ export default class Purchased extends Component {
     await clusterStore.fetchAll({ noLimit: true });
     const appIds = clusterStore.clusters.map(cluster => cluster.app_id);
     if (appIds.length > 0) {
-      await appStore.fetchAll({ app_id: appIds });
+      await appStore.fetchActiveApps({ app_id: appIds });
     } else {
       appStore.apps = [];
     }

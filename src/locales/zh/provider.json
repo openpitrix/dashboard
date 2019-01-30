@@ -69,5 +69,8 @@
   "Opening bank cannot be empty": "开户银行不能为空",
   "Account name cannot be empty": "开户名不能为空",
   "Account number cannot be empty": "账号不能为空",
-  "BANK_ACCOUNT_NUMBER_FORMAT_INFO": "输入格式错误，正确格式为12到19位的数字"
+  "BANK_ACCOUNT_NUMBER_FORMAT_INFO": "输入格式错误，正确格式为12到19位的数字",
+
+  "The application is under review and cannot be submitted repeatedly.": "当前申请正在审核当中，不能重复提交。",
+  "The application is pass review and cannot be submitted repeatedly.": "当前申请已经通过审核，不能重复提交。"
 }

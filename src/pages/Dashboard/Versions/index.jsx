@@ -9,7 +9,7 @@ import _ from 'lodash';
 import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
-import { formatTime } from 'utils';
+import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
@@ -173,11 +173,11 @@ export default class Versions extends Component {
               })}
             >
               <Status
-                type={item.status}
+                type={mappingStatus(item.status)}
                 name={item.name}
                 className={styles.status}
               />
-              {t(_.capitalize(item.status))}
+              {t(_.capitalize(mappingStatus(item.status)))}
             </Link>
           ))}
         </div>

@@ -2,7 +2,6 @@
 
 .createApp {
   background: $background-color;
-  text-align: center;
   .upload {
     width: 552px;
   }
@@ -11,6 +10,7 @@
 .uploadConf {
   width: 744px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .config {
