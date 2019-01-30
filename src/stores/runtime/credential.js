@@ -77,4 +77,11 @@ export default class RuntimeCredentialStore extends Store {
     this.isLoading = false;
     return this.runtimeZones;
   };
+
+  reset = () => {
+    this.credentials = [];
+    this.credential = {};
+    this.runtimeZones = [];
+    this.credentialCount = 0;
+  };
 }
