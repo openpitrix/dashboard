@@ -182,7 +182,9 @@ export default class Users extends Component {
               {t('Leave group')}
             </Button>
           )}
-
+          <Button onClick={e => this.handleAction('renderModalSetRole', e)}>
+            {t('Set role')}
+          </Button>
           <Button
             type="delete"
             onClick={e => this.handleAction('renderModalDeleteUser', e)}

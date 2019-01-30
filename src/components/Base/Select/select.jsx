@@ -32,6 +32,10 @@ export default class Select extends React.Component {
     document.removeEventListener('click', this.handleOutsideClick.bind(this));
   }
 
+  get value() {
+    return this.props.value || this.state.value;
+  }
+
   childNodes = [];
 
   currentLabel = '';
@@ -130,7 +134,7 @@ export default class Select extends React.Component {
 
   render() {
     const { className, disabled, name } = this.props;
-    const value = this.props.value || this.state.value;
+    const { value } = this;
 
     this.setChildNodes();
 
@@ -142,7 +146,7 @@ export default class Select extends React.Component {
           this.wrapper = ref;
         }}
       >
-        <input name={name} value={value} type="hidden" />
+        <input name={name} defaultValue={value} type="hidden" />
         {this.renderControl()}
         {this.renderOptions()}
       </div>

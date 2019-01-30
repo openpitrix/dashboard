@@ -19,7 +19,8 @@ const roles = [
 export const roleMap = {
   global_admin: 'Administrator',
   developer: 'Developer',
-  user: 'Normal User'
+  user: 'Normal User',
+  isv: 'ISV'
 };
 
 // portal => user getter

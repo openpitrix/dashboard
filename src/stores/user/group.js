@@ -152,14 +152,6 @@ export default class GroupStore extends Store {
   };
 
   @action
-  setRoleOnce = async (e, data) => {
-    this.operateResult = await this.request.post('am/user:role', {
-      user_id: [data.user_id],
-      role_id: [data.role_id]
-    });
-  };
-
-  @action
   onSelectOrg = (keys, info) => {
     this.selectedGroupIds = keys;
     this.selectedRowKeys = [];

@@ -54,7 +54,7 @@ export default class UserModalActions extends Component {
         onCancel={hide}
       >
         <div>
-          {t('Do you sure to delete $groupName', {
+          {t('Do you sure to delete groupName', {
             groupName
           })}
         </div>
@@ -150,9 +150,9 @@ export default class UserModalActions extends Component {
   renderModalSetRole() {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, hide, item } = modalStore;
-    const { setRoleOnce, roles } = userStore;
+    const { setRole, roles } = userStore;
     const roleId = _.get(item, 'role');
-    const userId = _.get(item, 'user_id');
+    const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
 
     return (
       <Dialog
@@ -160,7 +160,7 @@ export default class UserModalActions extends Component {
         title={t('Set role')}
         isOpen={isOpen}
         onCancel={hide}
-        onSubmit={setRoleOnce}
+        onSubmit={setRole}
       >
         <div className={styles.formItem}>
           <input name="user_id" value={userId} type="hidden" />

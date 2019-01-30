@@ -338,6 +338,21 @@ export default class UserStore extends Store {
       description: ''
     };
   };
+
+  @action
+  setRole = async (e, data) => {
+    this.operateResult = await this.request.post('user:role', {
+      user_id: data.user_id.split(','),
+      role_id: [data.role_id]
+    });
+    const { err } = this.operateResult;
+    if (!err) {
+      this.modal.hide();
+      this.selectedIds = [];
+      this.selectedRowKeys = [];
+      this.fetchAll();
+    }
+  };
 }
 
 export Role from './role';
