@@ -1,0 +1,104 @@
+@import '~scss/vars';
+
+.header {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  margin: 18px 0;
+  color: $N500;
+}
+
+.noShadow {
+  box-shadow: none;
+  background: transparent;
+}
+
+.selectedRoleTitle {
+  padding-bottom: 16px;
+  display: flex;
+
+  .roleTitle {
+    flex: 1;
+  }
+
+  button + button {
+    margin-left: 20px;
+  }
+}
+
+.moduleName {
+  color: $N75;
+  font-size: 12px;
+  padding-top: 20px;
+  padding-left: 6px;
+}
+
+.module {
+  display: flex;
+  border-top: 1px solid $N10;
+
+  .moduleTree {
+    margin-right: 20px;
+    min-width: 220px;
+  }
+  .actions {
+    flex: 1;
+    padding-top: 20px;
+    padding-left: 20px;
+    border-left: 1px solid $N10;
+  }
+}
+
+.form {
+  .fmCtrl {
+    margin-bottom: 24px;
+  }
+  label {
+    display: inline-block;
+    margin-right: 24px;
+    width: 168px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.14;
+    text-align: right;
+    color: $N500;
+  }
+  .input {
+    width: 256px;
+    height: 32px;
+    border-radius: 2px;
+  }
+  .textareaItem {
+    height: 80px;
+    > label {
+      float: left;
+      position: relative;
+      top: 10px;
+    }
+  }
+  :global(.modal-footer) {
+    text-indent: 192px;
+    text-align: left;
+  }
+}
+
+.roleSuccess {
+  text-align: center;
+  .checkedIcon {
+    :global {
+      svg {
+        --primary-color: #{$G100};
+        --secondary-color: #{$G30};
+      }
+    }
+  }
+  h3, div {
+    margin: 4px 0;
+  }
+  div:last-child {
+    margin: 15px auto 32px;
+  }
+}

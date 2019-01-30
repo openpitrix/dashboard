@@ -10,7 +10,7 @@ exports[`Base/Tooltip basic render 1`] = `
     hover me
   </div>
   <div
-    class="popper pi-tooltip-popper"
+    class="popper pi-tooltip-popper hover-popper"
     style="position:absolute;pointer-events:none;opacity:0"
   >
     test

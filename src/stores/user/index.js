@@ -1,16 +1,18 @@
 import { observable, action } from 'mobx';
-import { get, pick, assign } from 'lodash';
+import _ from 'lodash';
 
 import { getFormData } from 'utils';
+import { useTableActions } from 'mixins';
 
 import Store from '../Store';
 
 const defaultStatus = ['active'];
 
+@useTableActions
 export default class UserStore extends Store {
-  @observable users = [];
+  idKey = 'user_id';
 
-  @observable groups = [];
+  @observable users = [];
 
   @observable roles = [];
 
@@ -22,15 +24,6 @@ export default class UserStore extends Store {
 
   @observable currentPage = 1;
 
-  // user table query params
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
-
-  @observable totalCount = 0;
-
-  @observable selectGroupId = '';
-
   @observable selectRoleId = '';
 
   @observable selectName = '';
@@ -41,15 +34,9 @@ export default class UserStore extends Store {
 
   @observable treeFlag = false;
 
-  @observable organizations = [];
-
   @observable summaryInfo = {};
 
   @observable operateType = '';
-
-  @observable isCreateOpen = false;
-
-  @observable isDeleteOpen = false;
 
   @observable cookieTime = 2 * 60 * 60 * 1000;
 
@@ -71,13 +58,43 @@ export default class UserStore extends Store {
 
   @observable operateResult = null;
 
+  get modal() {
+    return this.getStore('modal');
+  }
+
+  get groupStore() {
+    return this.getStore('group');
+  }
+
+  get selectedGroupIds() {
+    return this.getStore('group').selectedGroupIds;
+  }
+
+  get groups() {
+    return this.getStore('group').groups;
+  }
+
+  get groupName() {
+    return this.getStore('group').groupName;
+  }
+
+  get userNames() {
+    if (_.isEmpty(this.selectIds)) {
+      return '';
+    }
+
+    const users = _.filter(this.users, user => this.selectIds.includes(user.user_id));
+    return _.flatMap(users, 'username');
+  }
+
   @action
   fetchAll = async (params = {}) => {
     const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
+      status: this.selectStatus ? this.selectStatus : defaultStatus,
+      group_id: this.selectedGroupIds
     };
 
     if (params.noLimit) {
@@ -96,38 +113,47 @@ export default class UserStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(
       'users',
-      assign(defaultParams, params)
+      _.assign(defaultParams, params)
     );
-    this.users = get(result, 'user_set', []);
-    this.totalCount = get(result, 'total_count', 0);
+    this.users = _.get(result, 'user_set', []);
+    this.setUserGroupName();
+    this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
 
+  setUserGroupName() {
+    this.users.forEach(user => {
+      if (!(_.isArray(user.group_id) && user.group_id.length > 0)) {
+        return;
+      }
+      const groups = _.filter(this.groups, g => user.group_id.includes(g.group_id));
+      user.groupName = _.flatMap(groups, 'name').join(',');
+    });
+  }
+
   @action
   fetchStatistics = async () => {
-    // this.isLoading = true;
     const result = await this.request.get('users/statistics');
     this.summaryInfo = {
       name: 'Users',
       iconName: 'group',
       centerName: 'Roles',
-      total: get(result, 'app_count', 0),
-      progressTotal: get(result, 'repo_count', 0),
-      progress: get(result, 'top_ten_repos', {}),
-      histograms: get(result, 'last_two_week_created', {})
+      total: _.get(result, 'app_count', 0),
+      progressTotal: _.get(result, 'repo_count', 0),
+      progress: _.get(result, 'top_ten_repos', {}),
+      histograms: _.get(result, 'last_two_week_created', {})
     };
-    // this.isLoading = false;
   };
 
   @action
   fetchDetail = async (userId, isLogin) => {
     this.isLoading = true;
     const result = await this.request.get(`users`, { user_id: userId });
-    this.userDetail = get(result, 'user_set[0]', {});
+    this.userDetail = _.get(result, 'user_set[0]', {});
 
     if (isLogin) {
       this.updateUser(
-        pick(this.userDetail, ['user_id', 'username', 'email', 'role'])
+        _.pick(this.userDetail, ['user_id', 'username', 'email', 'role'])
       );
     }
 
@@ -135,8 +161,8 @@ export default class UserStore extends Store {
   };
 
   @action
-  createOrModify = async () => {
-    const params = pick({ ...this.userDetail }, [
+  createOrModify = async (e, data) => {
+    const params = _.pick({ ...data }, [
       'user_id',
       'username',
       'email',
@@ -153,7 +179,6 @@ export default class UserStore extends Store {
     }
 
     if (params.user_id) {
-      // modify user
       if (!params.password) {
         delete params.password;
       }
@@ -165,14 +190,32 @@ export default class UserStore extends Store {
       }
 
       // fixme
-      delete params.username;
+      // delete params.username;
       await this.create(params);
+      const userId = _.get(this.operateResult, 'user_id');
+      if (!_.isEmpty(this.selectedGroupIds) && !!userId) {
+        this.groupStore.selectIds = [userId];
+        await this.groupStore.joinGroup();
+      }
     }
 
-    if (get(this.operateResult, 'user_id')) {
-      this.hideModal();
+    if (_.get(this.operateResult, 'user_id')) {
+      this.modal.hide();
+      this.userDetail = {};
       await this.fetchAll();
     }
+  };
+
+  @action
+  showModifyUser = user => {
+    this.userDetail = user;
+    this.userDetail.password = '';
+    this.modal.show('renderModalCreateUser');
+  };
+
+  hideModifyUser = () => {
+    this.userDetail = {};
+    this.modal.hide();
   };
 
   @action
@@ -194,11 +237,13 @@ export default class UserStore extends Store {
   @action
   remove = async () => {
     const result = await this.request.delete('users', {
-      user_id: [this.userId]
+      user_id: this.userId
     });
 
-    if (get(result, 'user_id')) {
-      this.hideModal();
+    if (_.get(result, 'user_id')) {
+      this.selectIds = [];
+      this.selectedRowKeys = [];
+      this.modal.hide();
       await this.fetchAll();
     } else {
       const { err, errDetail } = result;
@@ -207,34 +252,16 @@ export default class UserStore extends Store {
   };
 
   @action
-  fetchOrganizations = async () => {
-    this.isLoading = true;
-    const result = await this.request.get('organizations');
-    this.organizations = get(result, 'organization_set', []);
-    this.isLoading = false;
-  };
-
-  @action
-  fetchGroups = async () => {
-    this.isLoading = true;
-    const result = await this.request.get('groups');
-    this.groups = get(result, 'group_set', []);
-    this.isLoading = false;
-  };
-
-  @action
   fetchRoles = async () => {
-    this.isLoading = true;
-    const result = await this.request.get('roles');
-    this.roles = get(result, 'role_set', []);
-    this.isLoading = false;
+    const result = await this.request.get('am/roles');
+    this.roles = _.get(result, 'value', []);
   };
 
   @action
   fetchAuthorities = async () => {
     this.isLoading = true;
     const result = await this.request.get('authorities');
-    this.authorities = get(result, 'authority_set', []);
+    this.authorities = _.get(result, 'authority_set', []);
     this.isLoading = false;
   };
 
@@ -254,7 +281,7 @@ export default class UserStore extends Store {
     data.user_id = this.userDetail.user_id;
     const result = await this.modify(data);
 
-    if (get(result, 'user_id')) {
+    if (_.get(result, 'user_id')) {
       this.success('Modify user successful');
       return { username: data.username };
     }
@@ -275,14 +302,14 @@ export default class UserStore extends Store {
       password: data.password
     });
 
-    const resetId = get(resetResult, 'reset_id');
+    const resetId = _.get(resetResult, 'reset_id');
     if (resetId) {
       const result = await this.changePassword({
         new_password: data.new_password,
         reset_id: resetId
       });
 
-      if (get(result, 'user_id')) {
+      if (_.get(result, 'user_id')) {
         this.success('Change password successful');
       }
     }
@@ -293,79 +320,6 @@ export default class UserStore extends Store {
 
   @action
   changePassword = async (params = {}) => await this.request.post('users/password:change', params);
-
-  @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll();
-  };
-
-  @action
-  showCreateUser = () => {
-    this.operateType = 'create';
-    this.isCreateOpen = true;
-    this.userDetail = {
-      username: '',
-      email: '',
-      password: '',
-      role: '',
-      description: ''
-    };
-  };
-
-  @action
-  showModifyUser = user => {
-    this.operateType = 'modify';
-    this.isCreateOpen = true;
-    this.userDetail = user;
-    this.userDetail.password = '';
-  };
-
-  @action
-  showDeleteUser = userId => {
-    this.userId = userId;
-    this.isDeleteOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isCreateOpen = false;
-    this.isDeleteOpen = false;
-  };
-
-  @action
-  changeUser = (event, type) => {
-    this.userDetail[type] = event.target.value;
-  };
-
-  @action
-  changeUserRole = role => {
-    this.userDetail.role = role;
-  };
 
   @action
   changeLanguage = lan => {
@@ -391,6 +345,23 @@ export default class UserStore extends Store {
       description: ''
     };
   };
+
+  @action
+  setRole = async (e, data) => {
+    this.operateResult = await this.request.post('user:role', {
+      user_id: data.user_id.split(','),
+      role_id: [data.role_id]
+    });
+    const { err } = this.operateResult;
+    if (!err) {
+      this.modal.hide();
+      this.selectedIds = [];
+      this.selectedRowKeys = [];
+      this.fetchAll();
+    }
+  };
 }
 
 export Role from './role';
+
+export Group from './group';

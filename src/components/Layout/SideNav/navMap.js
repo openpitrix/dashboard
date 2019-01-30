@@ -87,7 +87,7 @@ export const getNavs = {
       title: 'Financial Center'
     },
     {
-      link: '#',
+      link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
       iconName: 'group',
       active: 'user',
       title: 'Team Members'
@@ -219,7 +219,11 @@ export const subNavMap = {
           link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
           active: 'user'
         },
-        { name: 'Roles', link: '#', active: 'role' }
+        {
+          name: 'Roles',
+          link: toRoute(routes.portal._admin.roles, { portal: 'admin' }),
+          active: 'role'
+        }
       ]
     },
     setting: {
@@ -259,6 +263,21 @@ export const subNavMap = {
           name: 'App Reviews',
           link: toRoute(routes.portal.appsReview, { portal: 'isv' }),
           active: 'review'
+        }
+      ]
+    },
+    user: {
+      title: 'Team and member',
+      links: [
+        {
+          name: 'All members',
+          link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
+          active: 'user'
+        },
+        {
+          name: 'Roles',
+          link: toRoute(routes.portal._isv.roles, { portal: 'isv' }),
+          active: 'role'
         }
       ]
     }

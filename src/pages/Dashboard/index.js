@@ -26,9 +26,6 @@ export Overview from './Overview';
 
 export Categories from './Categories';
 
-export Users from './Users';
-export UserDetail from './Users/Detail';
-
 export Runtimes from './Runtimes';
 export CreateRuntime from './Runtimes/Create';
 

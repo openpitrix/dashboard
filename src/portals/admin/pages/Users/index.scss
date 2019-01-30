@@ -1,0 +1,173 @@
+@import '~scss/vars';
+
+.header {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.75;
+  letter-spacing: normal;
+  margin: 18px 0;
+  color: $N500;
+}
+
+.title {
+  color: $N75;
+  font-size: 12px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.67;
+  margin-bottom: 12px;
+  strong {
+    color: $N500;
+    margin-left: 8px;
+  }
+}
+
+.centerText {
+  text-align: center;
+}
+
+.noPadding {
+  padding: 0;
+}
+
+.tooltip {
+  width: 30px;
+  height: 22px;
+}
+.tips {
+  @include normal-font;
+  margin: 8px auto;
+}
+
+.usersContent {
+  .selectInfo {
+    padding-right: 0;
+    margin-bottom: 24px;
+    line-height: 20px;
+    color: $N500;
+  }
+
+  .select {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .table {
+    border-left: 1px solid $N10;
+  }
+
+  .noShadow {
+    box-shadow: none;
+    background: transparent;
+  }
+  .groupHeader {
+    > span {
+      width: inherit;
+    }
+  }
+
+  .groupTitleContainer {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    .groupTitle {
+      flex: 1;
+    }
+    > span:last-child {
+      margin-right: 10px;
+    }
+    .groupPopver {
+      display: none;
+      :global(.icon) {
+        position: static;
+      }
+    }
+    .groupPopverTarget {
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+    }
+  }
+  .titleEventIcon {
+    display: none;
+    position: static;
+  }
+  :global(.rc-tree-node-selected) {
+    .titleEventIcon {
+      display: inline-flex;
+    }
+    .groupPopver {
+      display: inline-flex;
+    }
+  }
+
+  :global(.actions) {
+    height: 50px;
+  }
+}
+
+.list {
+  padding: 0 24px;
+  margin: 0;
+
+  .listItem {
+    display: table;
+    width: 100%;
+    padding: 7px 0;
+    border-top: 1px solid $border-lighter;
+
+    .icon {
+      float: left;
+      width: 48px;
+      height: 48px;
+      border-radius: 3px;
+    }
+
+    .name {
+      display: table-cell;
+      width: 100%;
+      padding: 0 200px 0 24px;
+      line-height: 1.15;
+      vertical-align: middle;
+      word-break: break-word;
+
+      a {
+        color: $title-color;
+      }
+    }
+
+    .handle {
+      float: right;
+      width: 167px;
+      padding: 0 16px;
+      text-align: right;
+      margin: 0 0 8px 0;
+
+      .handlePop {
+        display: inline-block;
+        margin-left: 16px;
+      }
+    }
+  }
+}
+
+.groupPopover {
+  float: right;
+  :global(.icon) {
+    left: auto;
+    margin-left: 5px;
+  }
+}
+
+.formItem {
+  @include form-item;
+}
+.formItemText {
+  @include form-textarea;
+}
+
+.formTitle {
+  margin-bottom: 20px;
+}

@@ -1,0 +1,76 @@
+@import '~scss/vars';
+
+.main {
+  color: $N75;
+  font-size: $size-small;
+
+  strong {
+    color: $N500;
+    font-weight: 500;
+  }
+  .actions + .actions {
+    border-top: 1px solid $N10;
+  }
+}
+
+.header {
+  font-size: $size-normal;
+  color: $N500;
+  margin: 16px 0;
+}
+
+.actions {
+  margin: 16px 0;
+  strong {
+    display: inline-block;
+    color: $N300;
+    margin-left: 5px;
+  }
+}
+
+.tree {
+  margin: 5px 0 10px;
+  ul ul {
+    li {
+      margin-right: 10px;
+    }
+    li:last-child {
+      margin-right: 0;
+    }
+  }
+
+  ul ul:global(.rc-tree-child-tree-open) {
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+  }
+
+  > li > ul > li:global(.rc-tree-treenode-switcher-open) {
+    display: flex;
+  }
+  > li > ul > li:global(.rc-tree-treenode-switcher-open .rc-tree-node-content-wrapper) {
+    width: auto;
+  }
+
+  > li > ul > li > span:global(.rc-tree-switcher) {
+    display: none;
+  }
+  > li > ul > li > span:global(.rc-tree-checkbox) {
+    display: none;
+  }
+  > li > ul > li > span:global(.rc-tree-node-content-wrapper-open) {
+    margin-left: 4px;
+    color: $N75;
+  }
+}
+.disabledTree {
+  :global(.checkbox-inner) {
+    display: none;
+  }
+}
+
+.actionText {
+  @include note-font;
+  display: inline-block;
+  margin-left: 8px;
+}

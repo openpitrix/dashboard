@@ -9,11 +9,9 @@ import {
   AppDetail,
   Clusters,
   ClusterDetail,
+  Categories,
   Runtimes,
   CreateRuntime,
-  Categories,
-  Users,
-  UserDetail,
   Providers,
   ProviderDetail,
   Applications,
@@ -24,6 +22,8 @@ import {
   CloudEnv,
   NotificationServer
 } from 'pages/Dashboard';
+
+import { Users, Roles } from 'portals/admin/pages';
 
 export default ({ prefix }) => (
   <Switch>
@@ -53,7 +53,7 @@ export default ({ prefix }) => (
     <WrapRoute path={`${prefix}/categories`} component={Categories} />
 
     <WrapRoute path={`${prefix}/users`} component={Users} />
-    <WrapRoute path={`${prefix}/users/:userId`} component={UserDetail} />
+    <WrapRoute path={`${prefix}/roles`} component={Roles} />
 
     <WrapRoute path={`${prefix}/providers`} component={Providers} />
     <WrapRoute path={`${prefix}/providers/apply`} component={Applications} />

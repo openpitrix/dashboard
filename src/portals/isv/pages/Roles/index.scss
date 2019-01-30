@@ -1,0 +1,10 @@
+@import '~scss/vars';
+
+.container {
+  .roleContainer + .roleContainer {
+    margin-top: 20px;
+  }
+}
+.describtion {
+  color: $N75;
+}

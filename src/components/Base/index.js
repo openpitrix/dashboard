@@ -12,6 +12,7 @@ export Select from './Select';
 export Slider from './Slider';
 export Switch from './Switch';
 export Table from './Table';
+export Tree, { TreeNode } from './Tree';
 export Timeline from './Timeline';
 export Tooltip from './Tooltip';
 export Image from './Image';

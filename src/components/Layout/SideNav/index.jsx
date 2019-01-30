@@ -28,6 +28,7 @@ const keys = [
   'categories',
   'category',
   'user',
+  'role',
   'create',
   'provider-detail',
   'provider',
@@ -43,7 +44,8 @@ const changeKey = {
   categories: 'app',
   category: 'app',
   admin: 'dashboard',
-  apply: 'provider'
+  apply: 'provider',
+  role: 'user'
 };
 
 @translate()

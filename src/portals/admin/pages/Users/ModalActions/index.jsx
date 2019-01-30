@@ -1,0 +1,284 @@
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import _ from 'lodash';
+
+import { Input, Select } from 'components/Base';
+
+import { Dialog } from 'components/Layout';
+import EnhanceTable from 'components/EnhanceTable';
+
+import columns from '../columns';
+import styles from '../index.scss';
+
+const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
+
+@observer
+export default class UserModalActions extends Component {
+  renderModalCreateGroup() {
+    const { t, modalStore, groupStore } = this.props;
+    const { hide, isOpen } = modalStore;
+    const { createGroup, selectedGroupIds } = groupStore;
+
+    return (
+      <Dialog
+        title={t('Create group')}
+        visible={isOpen}
+        width={744}
+        onSubmit={createGroup}
+        onCancel={hide}
+      >
+        <Input
+          name="parent_group_id"
+          type="hidden"
+          value={_.first(selectedGroupIds)}
+        />
+        <Input name="description" type="hidden" />
+        <div className={styles.formItem}>
+          <label>{t('Group name')}</label>
+          <Input name="name" />
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalDeleteGroup() {
+    const { t, modalStore, groupStore } = this.props;
+    const { hide, isOpen } = modalStore;
+    const { deleteGroup, selectedGroupIds, groupName } = groupStore;
+    return (
+      <Dialog
+        title={t('Delete group')}
+        visible={isOpen}
+        width={744}
+        onSubmit={deleteGroup}
+        onCancel={hide}
+      >
+        <div>
+          {t('Do you sure to delete groupName', {
+            groupName
+          })}
+        </div>
+        <div className={styles.tips}>{t('DELETE_GROUP_TIP')}</div>
+        <Input name="group_id" type="hidden" value={selectedGroupIds} />
+      </Dialog>
+    );
+  }
+
+  renderModalRenameGroup() {
+    const { t, modalStore, groupStore } = this.props;
+    const { hide, isOpen } = modalStore;
+    const { renameGroup, selectedGroupIds, groupName } = groupStore;
+    return (
+      <Dialog
+        title={t('Rename group')}
+        visible={isOpen}
+        width={744}
+        onSubmit={renameGroup}
+        onCancel={hide}
+      >
+        <Input
+          name="group_id"
+          type="hidden"
+          value={_.first(selectedGroupIds)}
+        />
+        <div className={styles.formItem}>
+          <label>{t('Group name')}</label>
+          <Input name="name" defaultValue={groupName} />
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalJoinGroup() {
+    const { t, modalStore, groupStore } = this.props;
+    const { hide, isOpen } = modalStore;
+    const { joinGroup, users } = groupStore;
+    return (
+      <Dialog
+        width={744}
+        title={t('Add user')}
+        visible={isOpen}
+        onSubmit={joinGroup}
+        onCancel={hide}
+      >
+        <EnhanceTable
+          hasRowSelection
+          isLoading={groupStore.isLoading}
+          store={groupStore}
+          data={users}
+          columns={columns(t)}
+        />
+      </Dialog>
+    );
+  }
+
+  renderModalLeaveGroup() {
+    const {
+      t, modalStore, groupStore, userStore
+    } = this.props;
+    const { hide, isOpen } = modalStore;
+    const { users, selectedRowKeys } = userStore;
+    const { leaveGroup } = groupStore;
+    let names = _.flatMap(
+      users.filter(user => selectedRowKeys.includes(user.user_id)),
+      'username'
+    );
+    let count = null;
+    if (names.length > 3) {
+      count = `${names.length} ${t('count')}`;
+      names = names.slice(3);
+    }
+
+    return (
+      <Dialog
+        width={744}
+        title={t('Leave group')}
+        visible={isOpen}
+        onSubmit={leaveGroup}
+        onCancel={hide}
+      >
+        <div>
+          {t('Do you sure to leaveGroup $groupName', {
+            names,
+            count
+          })}
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalSetRole() {
+    const { userStore, modalStore, t } = this.props;
+    const { isOpen, hide, item } = modalStore;
+    const { setRole, roles, userNames } = userStore;
+    const roleId = _.get(item, 'role');
+    const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
+    const names = roleId ? item.username : userNames;
+    const text = roleId
+      ? t('Set_Role_Title', { names })
+      : t('Set_Role_Title_For_Multi_User', {
+        count: names.length,
+        names: names.slice(0, 3).join(',')
+      });
+
+    return (
+      <Dialog
+        width={744}
+        title={t('Set role')}
+        isOpen={isOpen}
+        onCancel={hide}
+        onSubmit={setRole}
+      >
+        <div className={styles.formTitle}>{text}</div>
+        <div>
+          <input name="user_id" value={userId} type="hidden" />
+          <Select defaultValue={roleId} name="role_id">
+            {roles.map(({ role_id, role_name }) => (
+              <Select.Option key={role_id} value={role_id}>
+                {t(role_name)}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalCreateUser() {
+    const { userStore, modalStore, t } = this.props;
+    const { isOpen } = modalStore;
+    const {
+      userDetail, roles, hideModifyUser, createOrModify
+    } = userStore;
+    const {
+      user_id, role, username, email
+    } = userDetail;
+
+    const title = !user_id === 'modify' ? t('Create New User') : t('Modify User');
+
+    return (
+      <Dialog
+        width={744}
+        title={title}
+        isOpen={isOpen}
+        onCancel={hideModifyUser}
+        onSubmit={createOrModify}
+      >
+        {user_id && (
+          <div className={styles.formItem}>
+            <label>{t('Name')}</label>
+            <Input
+              name="name"
+              maxLength="50"
+              defaultValue={username}
+              required
+            />
+          </div>
+        )}
+        <div className={styles.formItem}>
+          <label>{t('Email')}</label>
+          <Input
+            name="email"
+            maxLength={50}
+            placeholer="username@example.com"
+            defaultValue={email}
+            pattern={emailRegexp}
+            required
+          />
+        </div>
+        {!user_id && (
+          <div className={styles.formItem}>
+            <label>{t('Role')}</label>
+            <Select defaultValue={role} name="role">
+              {roles.map(({ role_id, role_name }) => (
+                <Select.Option key={role_id} value={role_id}>
+                  {t(role_name)}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        )}
+        <div className={styles.formItem}>
+          <label>{t('Password')}</label>
+          <Input name="password" type="password" maxLength={50} />
+        </div>
+        <div className={styles.formItemText}>
+          <label>{t('Description')}</label>
+          <textarea name="description" maxLength={500} />
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalDeleteUser() {
+    const { t, modalStore, userStore } = this.props;
+    const { hide, isOpen, item } = modalStore;
+    const { remove } = userStore;
+    userStore.userId = item.type === 'one' ? [item.user_id] : userStore.selectIds;
+
+    return (
+      <Dialog
+        title={t('Create group')}
+        visible={isOpen}
+        onSubmit={remove}
+        onCancel={hide}
+      >
+        {t('delete_user_desc')}
+      </Dialog>
+    );
+  }
+
+  render() {
+    const { modalStore } = this.props;
+    const { isOpen, type } = modalStore;
+    if (!isOpen || !type) {
+      return null;
+    }
+
+    if (typeof this[type] === 'function') {
+      return this[type]();
+    }
+
+    return null;
+  }
+}
