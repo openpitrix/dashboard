@@ -48,7 +48,7 @@ export class MenuLayer extends Component {
   render() {
     const { user, className, t } = this.props;
     const { isNormal, isISV, isUserPortal } = user;
-    // to fix
+    // todo
     const role = isISV ? 'isv' : user.role;
     const portal = isUserPortal ? roleToPortal[role] || {} : roleToPortal.user;
 
