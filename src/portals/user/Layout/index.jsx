@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import { Notification } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -22,6 +23,7 @@ export default class UserPortalLayout extends React.PureComponent {
 
     return (
       <Fragment>
+        <Notification />
         <Header />
         {banner}
         <div className={classnames(styles.page, className)}>{children}</div>
