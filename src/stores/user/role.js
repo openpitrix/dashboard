@@ -335,7 +335,7 @@ export default class RoleStore extends Store {
   @action
   createRole = async (e, data) => {
     const handleType = !data.role_id ? 'post' : 'patch';
-    const result = await this.request[handleType](`am/roles`, data);
+    const result = await this.request[handleType](`roles`, data);
 
     const roleId = _.get(result, 'role_id');
     if (roleId) {
@@ -408,7 +408,7 @@ export default class RoleStore extends Store {
         module
       }
     };
-    await this.request.patch(`am/roles:module`, data);
+    await this.request.patch(`roles:module`, data);
     await sleep(300);
     this.isLoading = false;
     this.setHandleType('');
@@ -425,7 +425,7 @@ export default class RoleStore extends Store {
   @action
   deleteRole = async () => {
     this.isLoading = true;
-    const result = await this.request.delete(`am/roles`, {
+    const result = await this.request.delete(`roles`, {
       role_id: this.selectedRoleKeys
     });
     const roleId = _.get(result, 'role_id');
