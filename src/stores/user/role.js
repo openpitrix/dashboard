@@ -139,7 +139,7 @@ export default class RoleStore extends Store {
     if (_.isEmpty(keys)) {
       this.selectedRole = {};
     } else if (key === KeyCreateRoll) {
-      this.modal.show('renderModalCreateRoleSuccess');
+      this.modal.show('renderModalCreateRole');
       return;
     } else {
       this.fetchRoleModule(_.find(keys));
