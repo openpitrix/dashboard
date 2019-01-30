@@ -39,6 +39,7 @@ export default class ClusterDetail extends Component {
   async componentDidMount() {
     const {
       rootStore,
+      clusterStore,
       clusterDetailStore,
       runtimeStore,
       appStore,
@@ -47,6 +48,11 @@ export default class ClusterDetail extends Component {
       user,
       match
     } = this.props;
+
+    if (match.path.endsWith('instances/:clusterId')) {
+      clusterStore.onlyView = true;
+    }
+
     const { clusterId } = match.params;
 
     await clusterDetailStore.fetch(clusterId);
@@ -79,8 +85,9 @@ export default class ClusterDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { rootStore, clusterDetailStore } = this.props;
+    const { rootStore, clusterStore, clusterDetailStore } = this.props;
     rootStore.cleanSock();
+    clusterStore.reset();
     clusterDetailStore.reset();
   }
 
@@ -324,6 +331,7 @@ export default class ClusterDetail extends Component {
 
   renderMain() {
     const {
+      clusterStore,
       appStore,
       clusterDetailStore,
       runtimeStore,
@@ -334,6 +342,7 @@ export default class ClusterDetail extends Component {
     const { cluster, clusterJobs } = clusterDetailStore;
     const { runtimeDetail, isK8s } = runtimeStore;
     const { isRuntimeTypeFetched } = this.state;
+    const { onlyView } = clusterStore;
 
     return (
       <Fragment>
@@ -347,13 +356,14 @@ export default class ClusterDetail extends Component {
                 provider={_.get(runtimeDetail, 'provider', '')}
                 userName={_.get(userStore.userDetail, 'username', '')}
               />
-              {cluster.status !== 'deleted' && (
-                <Popover
-                  className="operation"
-                  content={this.renderHandleMenu()}
-                >
-                  <Icon name="more" />
-                </Popover>
+              {cluster.status !== 'deleted'
+                && !onlyView && (
+                  <Popover
+                    className="operation"
+                    content={this.renderHandleMenu()}
+                  >
+                    <Icon name="more" />
+                  </Popover>
               )}
             </Card>
 

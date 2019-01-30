@@ -44,7 +44,16 @@ export default class ClusterDetailStore extends Store {
 
   @observable env = '';
 
+  get clusterStore() {
+    return this.getStore('cluster');
+  }
+
   get describeActionName() {
+    // developer query user instances relatived runtiems
+    if (this.clusterStore.onlyView) {
+      return 'clusters';
+    }
+
     return this.getUser().isUserPortal ? 'clusters' : 'debug_clusters';
   }
 

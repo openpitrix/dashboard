@@ -72,6 +72,11 @@ export default class ClusterStore extends Store {
   }
 
   get describeActionName() {
+    // developer query user instances
+    if (this.onlyView) {
+      return 'clusters';
+    }
+
     return this.getUser().isUserPortal ? 'clusters' : 'debug_clusters';
   }
 

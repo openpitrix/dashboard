@@ -109,12 +109,12 @@ export class Header extends Component {
 
           {user.isNormal && (
             <Fragment>
-              <Icon
+              {/*  <Icon
                 name="mail"
                 size={20}
                 type="white"
                 className={styles.mail}
-              />
+              /> */}
               <Link
                 to={toRoute(routes.portal._user.providerApply, 'user')}
                 className={styles.upgrade}
