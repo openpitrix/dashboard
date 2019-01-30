@@ -15,16 +15,15 @@ export default class RoleModalActions extends Component {
 
     return (
       <Dialog
-        className={styles.form}
         title={t('Delete role')}
         width={744}
         isOpen={isOpen}
         onCancel={hide}
         onSubmit={deleteRole}
       >
-        <div className={styles.roleSuccess}>
+        <div>
           <h3>
-            {t('Do you sure to delete $roleName', {
+            {t('Do you sure to delete roleName', {
               roleName: getRoleName()
             })}
           </h3>
