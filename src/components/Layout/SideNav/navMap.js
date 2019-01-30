@@ -348,7 +348,7 @@ export const userMenus = portal => [
     divider: true // show divide line
   },
   {
-    name: 'Testing env',
+    name: portal === 'user' ? 'User runtime' : 'Testing env',
     link: toRoute(routes.portal.runtimes, { portal }),
     iconName: 'image',
     userPortalShow: true
