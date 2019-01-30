@@ -75,6 +75,10 @@ export default class ClusterStore extends Store {
     return this.getUser().isUserPortal ? 'clusters' : 'debug_clusters';
   }
 
+  get describeAppsAction() {
+    return this.getUser().isUserPortal ? 'active_apps' : 'apps';
+  }
+
   @action
   fetchAll = async (params = {}) => {
     const attachApps = Boolean(params.attachApps);
@@ -109,7 +113,10 @@ export default class ClusterStore extends Store {
     if (attachApps) {
       const appIds = this.clusters.map(cluster => cluster.app_id);
       if (appIds.length) {
-        await this.appStore.fetchAll({ app_id: appIds });
+        await this.appStore.fetchAll({
+          app_id: appIds,
+          action: this.describeAppsAction
+        });
       }
     }
 
