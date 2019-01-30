@@ -86,6 +86,8 @@ $form-item-width: 389px;
       width: 80%;
 
       .msg {
+        position: absolute;
+        top: 4px;
         display: inline-block;;
         margin-left: 5px;
         font-size: $size-small;
