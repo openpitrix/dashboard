@@ -167,3 +167,7 @@
 .formItemText {
   @include form-textarea;
 }
+
+.formTitle {
+  margin-bottom: 20px;
+}

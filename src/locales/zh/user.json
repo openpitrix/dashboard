@@ -4,6 +4,8 @@
   "Helm runtime namespace is empty": "命名空间为空",
   "Selected organization": "所选组织",
   "Set role": "设置角色",
+  "Set_Role_Title": "请为 {{names}} 账户设置角色",
+  "Set_Role_Title_For_Multi_User": "请为已选择的 {{names}} 等 {{count}} 个账户设置新角色",
   "Role Name": "角色名称",
   "Data range": "数据范围",
   "data_level_all": "所有数据",

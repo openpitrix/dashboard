@@ -177,9 +177,7 @@ export default class GroupStore extends Store {
         title: root.name
       }
     ];
-    const filter = (dataSet, parent_group_id) => _.filter(dataSet, g => g.parent_group_id === parent_group_id).sort(
-      (a, b) => a.seq_order - b.seq_order
-    );
+    const filter = (dataSet, parentId) => _.filter(dataSet, g => g.parent_group_id === parentId);
     const setChildren = (dataSet, treeDataNode) => {
       const children = filter(dataSet, treeDataNode.group_id);
       if (children.length === 0) {

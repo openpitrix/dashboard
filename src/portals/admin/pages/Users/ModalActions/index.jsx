@@ -150,9 +150,16 @@ export default class UserModalActions extends Component {
   renderModalSetRole() {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, hide, item } = modalStore;
-    const { setRole, roles } = userStore;
+    const { setRole, roles, userNames } = userStore;
     const roleId = _.get(item, 'role');
     const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
+    const names = roleId ? item.username : userNames;
+    const text = roleId
+      ? t('Set_Role_Title', { names })
+      : t('Set_Role_Title_For_Multi_User', {
+        count: names.length,
+        names: names.slice(0, 3).join(',')
+      });
 
     return (
       <Dialog
@@ -162,9 +169,9 @@ export default class UserModalActions extends Component {
         onCancel={hide}
         onSubmit={setRole}
       >
-        <div className={styles.formItem}>
+        <div className={styles.formTitle}>{text}</div>
+        <div>
           <input name="user_id" value={userId} type="hidden" />
-          <label>{t('Role')}</label>
           <Select defaultValue={roleId} name="role_id">
             {roles.map(({ role_id, role_name }) => (
               <Select.Option key={role_id} value={role_id}>

@@ -42,9 +42,21 @@ export default class UserStore extends Store {
 
   @observable rememberMe = false;
 
-  @observable userNames = [];
-
   @observable language = localStorage.getItem('i18nextLng') || 'zh';
+
+  @observable
+  userDetail = {
+    user_id: '',
+    username: '',
+    email: '',
+    password: '',
+    role: '',
+    description: ''
+  };
+
+  @observable userId = '';
+
+  @observable operateResult = null;
 
   get modal() {
     return this.getStore('modal');
@@ -66,19 +78,14 @@ export default class UserStore extends Store {
     return this.getStore('group').groupName;
   }
 
-  @observable
-  userDetail = {
-    user_id: '',
-    username: '',
-    email: '',
-    password: '',
-    role: '',
-    description: ''
-  };
+  get userNames() {
+    if (_.isEmpty(this.selectIds)) {
+      return '';
+    }
 
-  @observable userId = '';
-
-  @observable operateResult = null;
+    const users = _.filter(this.users, user => this.selectIds.includes(user.user_id));
+    return _.flatMap(users, 'username');
+  }
 
   @action
   fetchAll = async (params = {}) => {
