@@ -40,7 +40,16 @@ export default class RuntimeStore extends Store {
 
   @observable runtimeDeleted = null;
 
+  get clusterStore() {
+    return this.getStore('cluster');
+  }
+
   get actionName() {
+    // developer query user instances relatived runtiems
+    if (this.clusterStore.onlyView) {
+      return 'runtimes';
+    }
+
     return this.getUser().isUserPortal ? 'runtimes' : 'debug_runtimes';
   }
 

@@ -30,19 +30,34 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   async componentDidMount() {
+    await this.queryPageData();
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { match } = this.props;
+    const oldPath = _.get(prevProps, 'match.path', '');
+
+    if (match.path !== oldPath) {
+      await this.queryPageData();
+    }
+  }
+
+  componentWillUnmount() {
+    const { rootStore, clusterStore } = this.props;
+    rootStore.cleanSock();
+    clusterStore.reset();
+  }
+
+  queryPageData = async () => {
     const {
-      rootStore,
-      clusterStore,
-      runtimeStore,
-      userStore,
-      user,
-      match
+      rootStore, clusterStore, runtimeStore, match
     } = this.props;
     const { appId } = match.params;
-    const { isAdmin } = user;
 
-    if (match.path.endsWith('user-instances')) {
+    if (match.path.endsWith('/instances')) {
       clusterStore.onlyView = true;
+    } else {
+      clusterStore.onlyView = false;
     }
 
     if (appId) {
@@ -53,23 +68,13 @@ export default class Clusters extends Component {
       attachApps: true
     });
 
-    if (isAdmin) {
-      await clusterStore.fetchStatistics();
-      await userStore.fetchAll({ noLimit: true });
-    }
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
       noLimit: true
     });
 
     rootStore.listenToJob(this.handleJobs);
-  }
-
-  componentWillUnmount() {
-    const { rootStore, clusterStore } = this.props;
-    rootStore.cleanSock();
-    clusterStore.reset();
-  }
+  };
 
   handleJobs = async ({
     op, rtype, rid, values = {}
@@ -144,11 +149,7 @@ export default class Clusters extends Component {
 
     return (
       <div id={cluster_id} className="operate-menu">
-        <Link
-          to={this.getDetailLink(cluster_id)}
-        >
-          {t('View detail')}
-        </Link>
+        <Link to={this.getDetailLink(cluster_id)}>{t('View detail')}</Link>
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>
             {t('Start cluster')}
@@ -305,7 +306,10 @@ export default class Clusters extends Component {
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
-        title: user.isUserPortal ? t('Deploy Runtime') : t('Test Runtime'),
+        title:
+          user.isUserPortal || onlyView
+            ? t('Deploy Runtime')
+            : t('Test Runtime'),
         key: 'runtime_id',
         width: '130px',
         render: cl => (

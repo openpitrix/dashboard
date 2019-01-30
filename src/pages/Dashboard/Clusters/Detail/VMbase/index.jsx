@@ -240,7 +240,8 @@ export default class VMbasedCluster extends React.Component {
   renderDetailTabs = () => <DetailTabs tabs={['Nodes']} />;
 
   renderToolbar() {
-    const { detailStore, t } = this.props;
+    const { clusterStore, detailStore, t } = this.props;
+    const { onlyView } = clusterStore;
     const {
       searchNode,
       onSearchNode,
@@ -273,21 +274,24 @@ export default class VMbasedCluster extends React.Component {
         onClear={onClearNode}
         onRefresh={onRefreshNode}
       >
-        <Button
-          type="primary"
-          className={styles.addNodesBtn}
-          onClick={this.onClickAddNodes}
-          disabled={cluster.status !== 'active'}
-        >
-          <Icon name="add" size="mini" type="white" />
-          {t('Add')}
-        </Button>
+        {!onlyView && (
+          <Button
+            type="primary"
+            className={styles.addNodesBtn}
+            onClick={this.onClickAddNodes}
+            disabled={cluster.status !== 'active'}
+          >
+            <Icon name="add" size="mini" type="white" />
+            {t('Add')}
+          </Button>
+        )}
       </Toolbar>
     );
   }
 
   renderTable() {
-    const { detailStore, t } = this.props;
+    const { clusterStore, detailStore, t } = this.props;
+    const { onlyView } = clusterStore;
 
     const {
       clusterNodes,
@@ -299,6 +303,13 @@ export default class VMbasedCluster extends React.Component {
       totalNodeCount,
       isLoading
     } = detailStore;
+
+    const rowSelection = {
+      type: 'checkbox',
+      selectType: 'onSelect',
+      selectedRowKeys: selectedNodeKeys,
+      onChange: onChangeSelectNodes
+    };
 
     return (
       <Table
@@ -317,12 +328,7 @@ export default class VMbasedCluster extends React.Component {
           current: 1,
           noCancel: false
         }}
-        rowSelection={{
-          type: 'checkbox',
-          selectType: 'onSelect',
-          selectedRowKeys: selectedNodeKeys,
-          onChange: onChangeSelectNodes
-        }}
+        rowSelection={onlyView ? {} : rowSelection}
       />
     );
   }

@@ -189,10 +189,14 @@ export class SideNav extends React.Component {
   }
 
   renderNavsBottom() {
-    const { t } = this.props;
+    const { user, t } = this.props;
 
     return (
-      <ul className={styles.bottomNav}>
+      <ul
+        className={classnames(styles.bottomNav, {
+          [styles.userBottomNav]: user.isDevPortal
+        })}
+      >
         {getBottomNavs.map(
           nav => (nav.iconName === 'human' ? (
               <li key={nav.iconName}>

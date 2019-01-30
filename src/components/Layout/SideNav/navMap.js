@@ -309,13 +309,13 @@ export const getDevSubNavs = appId => [
       }
     ]
   },
-  {
+  /* {
     title: 'Operation and maintenance',
     items: [
       { name: 'Monitor', link: '#', disabled: true },
       { name: 'Event', link: '#', disabled: true }
     ]
-  },
+  }, */
   {
     title: 'User',
     items: [
