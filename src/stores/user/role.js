@@ -264,7 +264,6 @@ export default class RoleStore extends Store {
     }
 
     const moduleItem = this.getModule();
-    console.log(toJS(moduleItem));
     if (type === TypeModule) {
       const selectedActions = this.getActionCount({
         module: moduleItem,

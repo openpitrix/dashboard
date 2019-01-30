@@ -50,7 +50,6 @@ export default class ActionGroup extends Component {
     const { handelType, selectAction } = roleStore;
     const { name, treeData } = data;
     const disabled = handelType !== 'setBindAction';
-    console.log(toJS(keys));
 
     return (
       <div className={styles.actions}>
