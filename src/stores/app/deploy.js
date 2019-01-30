@@ -57,6 +57,7 @@ export default class AppDeployStore extends Store {
     this.errMsg = '';
     this.configJson = {};
     this.yamlStr = '';
+    this.isK8s = false;
   }
 
   normalizeRuntime = () => this.runtimes.map(({ runtime_id, name }) => ({
@@ -138,7 +139,7 @@ export default class AppDeployStore extends Store {
   fetchFilesByVersion = async versionId => {
     this.isLoading = true;
     const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId,
+      version_id: versionId
       // files: this.isK8s ? ['values.yaml'] : ['config.json']
     });
 

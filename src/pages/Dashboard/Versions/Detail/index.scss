@@ -118,7 +118,7 @@
   font-size: 12px;
   color: $N300;
 
-  >p {
+  > p {
     margin-bottom: 12px;
     line-height: 20px;
     color: $N75;
@@ -131,7 +131,7 @@
   }
 
   .submitButtons {
-    button{
+    button {
       margin-right: 12px;
     }
   }
@@ -182,7 +182,7 @@
 
   .hideReason {
     display: inline-block;
-    width: calc(100% - 52px);
+    width: calc(100% - 70px);
     @include textCut;
     vertical-align: middle;
   }
@@ -192,6 +192,10 @@
     line-height: 20px;
     color: $P75;
     cursor: pointer;
+  }
+
+  .expand {
+    float: right;
   }
 
   .collapse {
@@ -213,6 +217,40 @@
     line-height: 18px;
     font-size: 12px;
     color: $N75;
+  }
+
+  .list {
+    border-top: 1px solid $N10;
+
+    li {
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      height: 32px;
+      line-height: 32px;
+      border-bottom: 1px solid $N10;
+
+      .name {
+        display: inline-block;
+        float: left;
+        width: 50%;
+        color: $N300;
+        @include textCut;
+      }
+
+      .status {
+        float: right;
+        display: inline-block;
+      }
+
+      &:hover {
+        background-color: $background-color;
+        .name {
+          &:hover {
+            color: $P75;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -245,7 +283,7 @@
     @include note-font;
     margin-top: 24px;
 
-    >label {
+    > label {
       display: inline-block;
       margin-right: 6px;
       width: 32px;

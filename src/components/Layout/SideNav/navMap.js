@@ -72,18 +72,21 @@ export const getNavs = {
       link: '#',
       iconName: 'ticket',
       active: '',
+      disabled: true,
       title: 'Work list'
     },
     {
       link: '#',
       iconName: 'linechart',
       active: '',
+      disabled: true,
       title: 'Operation Center'
     },
     {
       link: '#',
       iconName: 'wallet',
       active: '',
+      disabled: true,
       title: 'Financial Center'
     },
     {
@@ -128,13 +131,13 @@ export const getBottomNavs = [
     iconName: 'bell',
     active: '',
     title: 'Alarms'
-  }, */
+  },
   {
     link: '#',
     iconName: 'mail',
     active: '',
     title: 'My news'
-  },
+  }, */
   {
     link: '/profile',
     iconName: 'human',

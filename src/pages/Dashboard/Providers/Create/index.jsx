@@ -24,10 +24,7 @@ export default class ApplicationCreate extends Component {
   async componentDidMount() {
     const { vendorStore, user } = this.props;
     vendorStore.userId = user.user_id;
-
-    if (user.isISV) {
-      await vendorStore.fetch(user.user_id);
-    }
+    await vendorStore.fetch(user.user_id);
   }
 
   componentWillUnmount() {

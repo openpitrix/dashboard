@@ -169,7 +169,7 @@
     }
 
     &-tbody > tr > td {
-      padding: 6px 5px;
+      padding: 14px 5px;
       line-height: 16px;
       box-shadow: inset 0 -1px 0 0 $N10;
       transition: all $transition-speed;
@@ -186,7 +186,7 @@
       }
 
       &:last-child {
-        //padding-right: 20px;
+        // padding-right: 20px;
       }
 
       &.actions {

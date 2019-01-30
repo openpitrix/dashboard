@@ -244,8 +244,8 @@ export class SideNav extends React.Component {
                   name="back"
                   type="dark"
                 />
+                <label className={styles.title}>{t('Back')}</label>
               </Link>
-              <label className={styles.title}>{t('Back')}</label>
             </li>
           ) : (
             <li>

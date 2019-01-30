@@ -102,6 +102,7 @@
   }
 
   .disabled {
+    display: none;
     opacity: 0.5;
     a {
       cursor: not-allowed;
