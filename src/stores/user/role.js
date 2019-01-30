@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { t } from 'i18next';
 import { sleep } from 'utils';

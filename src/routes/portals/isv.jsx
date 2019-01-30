@@ -16,6 +16,8 @@ import {
   AppDeploy
 } from 'pages/Dashboard';
 
+import { Users, Roles } from 'portals/isv/pages';
+
 export default ({ prefix }) => (
   <Switch>
     <WrapRoute path={prefix} component={Overview} />
@@ -29,6 +31,9 @@ export default ({ prefix }) => (
       path={`${prefix}/apps/review/:reviewId`}
       component={ReviewDetail}
     />
+
+    <WrapRoute path={`${prefix}/users`} component={Users} />
+    <WrapRoute path={`${prefix}/roles`} component={Roles} />
 
     <WrapRoute path={`${prefix}/runtimes`} component={Runtimes} />
     <WrapRoute path={`${prefix}/runtimes/create`} component={CreateRuntime} />
