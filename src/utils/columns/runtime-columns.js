@@ -4,6 +4,7 @@ import { I18n } from 'react-i18next';
 import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
+import routes, { toRoute } from 'routes';
 
 export default clusters => [
   {
@@ -14,7 +15,7 @@ export default clusters => [
       <TdName
         name={item.name}
         description={item.runtime_id}
-        linkUrl={`/dashboard/runtime/${item.runtime_id}`}
+        linkUrl={toRoute(routes.portal.runtimes)}
         noIcon
       />
     )
