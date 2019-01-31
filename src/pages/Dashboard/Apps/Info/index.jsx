@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
@@ -12,6 +11,7 @@ import {
 } from 'components/Base';
 import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
+import NoteLink from 'components/NoteLink';
 import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
@@ -426,13 +426,12 @@ export default class Info extends Component {
             {t('MODIFY_VERSION_TIPS')}
           </div>
         ) : (
-          <div className={styles.auditNote}>
-            <Icon name="exclamation" size={20} className={styles.icon} />
-            {t('UNDER_REVIEW_TIPS')}
-            <Link to={toRoute(routes.portal._dev.versions, { appId })}>
-              {t('View version record')} →
-            </Link>
-          </div>
+          <NoteLink
+            className={styles.auditNote}
+            noteWord="UNDER_REVIEW_TIPS"
+            linkWord="View version record"
+            link={toRoute(routes.portal._dev.versions, { appId })}
+          />
         )}
 
         {this.renderContent()}

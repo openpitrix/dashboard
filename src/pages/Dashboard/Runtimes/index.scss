@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 $body-margin: 132px;
 $pg-margin: 18px;
@@ -20,7 +20,7 @@ $card-height: 188px;
   &.nonUserPortal {
     margin-top: 0 !important;
     .leftPanel {
-      max-width: 205px;
+      // max-width: 205px;
     }
     .page {
       margin: 0 $body-margin - 30px;
@@ -28,20 +28,20 @@ $card-height: 188px;
   }
 
   .leftPanel {
-    max-width: 205px;
+    //max-width: 205px;
     border-right: 1px solid $N10;
   }
 
   // fix left/right panel width not match design
   @media screen and (min-width: 1200px) {
     .rightPanel {
-      width: 885px;
+      // width: 885px;
     }
   }
 
   .pageTitle {
     font-size: $size-medium;
-    color:$N500;
+    color: $N500;
     margin-bottom: $pg-margin;
     margin-left: 102px;
   }
@@ -55,7 +55,8 @@ $card-height: 188px;
       padding-left: 12px;
       cursor: pointer;
 
-      &.active, &:hover {
+      &.active,
+      &:hover {
         box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
         background-color: $N0;
       }
@@ -100,7 +101,7 @@ $card-height: 188px;
     margin-top: -40px;
     margin-bottom: 12px;
 
-    &>div {
+    & > div {
       font-size: $size-normal;
       line-height: 1.14;
       padding-bottom: 10px;
@@ -169,14 +170,16 @@ $card-height: 188px;
         }
         .desc {
           display: block;
-          font-size: $size-small;
-          line-height: 1.67;
-          color: $N75;
+          height: 40px;
+          @include note-font;
         }
 
         .bottomInfo {
-          margin-top: 40px;
+          display: flex;
+          margin-top: 20px;
+
           .info {
+            flex: 1;
             display: inline-block;
             margin-right: 20px;
 
@@ -205,14 +208,13 @@ $card-height: 188px;
           color: $N300;
         }
       }
-
     }
 
     .authInfos {
       .info {
         padding: 14px auto;
         font-size: $size-small;
-        &>span {
+        & > span {
           display: inline-block;
           margin-right: 20px;
         }
@@ -222,7 +224,7 @@ $card-height: 188px;
           min-width: 50px;
           width: 20%;
         }
-        .desc{
+        .desc {
           min-width: 100px;
           width: 20%;
           color: $N75;
@@ -244,7 +246,7 @@ $card-height: 188px;
             vertical-align: sub;
           }
         }
-        &>.btnAdd {
+        & > .btnAdd {
           font-size: $size-small;
           color: $P75;
           cursor: pointer;
@@ -254,7 +256,6 @@ $card-height: 188px;
     }
   }
 }
-
 
 // modify runtime and credential
 .fmCtrl {
@@ -276,10 +277,12 @@ $card-height: 188px;
   .item {
     padding: 10px;
     border-radius: 2px;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
     background-color: $N0;
     cursor: pointer;
-    &:hover, &.checked {
+    &:hover,
+    &.checked {
       border: 1px solid $P75;
     }
     .icon {
@@ -287,5 +290,3 @@ $card-height: 188px;
     }
   }
 }
-
-

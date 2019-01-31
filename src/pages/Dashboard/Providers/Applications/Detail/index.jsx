@@ -78,7 +78,7 @@ export default class Applications extends Component {
     const { isISV } = user;
     const { vendorDetail, applyPass, applyRejectShow } = vendorStore;
     const { status } = vendorDetail;
-    const isSubmit = ['new', 'rejected'].includes(status);
+    const isSubmit = ['new', 'rejected'].includes(status) || !status;
 
     if (isISV) {
       return (
@@ -91,7 +91,9 @@ export default class Applications extends Component {
               </span>
               {isSubmit && (
                 <Link to={toRoute(routes.portal._isv.providerApply)}>
-                  {t(status === 'new' ? 'Submit immediately' : 'Re-submit')}
+                  {t(
+                    status === 'rejected' ? 'Re-submit' : 'Submit immediately'
+                  )}
                 </Link>
               )}
             </dd>
