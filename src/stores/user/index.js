@@ -178,17 +178,15 @@ export default class UserStore extends Store {
     if (!params.email) {
       return this.error('Empty email');
     }
-    if (!params.role) {
-      return this.error('Empty role');
-    }
-
     if (params.user_id) {
       if (!params.password) {
         delete params.password;
       }
       await this.modify(params);
     } else {
-      // create user
+      if (!params.role) {
+        return this.error('Empty role');
+      }
       if (!params.password) {
         return this.error('Empty password');
       }
@@ -236,6 +234,15 @@ export default class UserStore extends Store {
     this.isLoading = false;
     this.operateResult = result;
     return result;
+  };
+
+  @action
+  changePwd = async (e, data) => {
+    const result = await this.changePassword(data);
+    if (_.get(result, 'user_id')) {
+      this.success('Change password successful');
+      this.modal.hide();
+    }
   };
 
   @action
