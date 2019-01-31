@@ -6,6 +6,7 @@ import { Input, Select } from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
+import Toolbar from 'components/Toolbar';
 
 import columns, { filterList } from '../columns';
 
@@ -102,13 +103,20 @@ export default class UserModalActions extends Component {
         onSubmit={joinGroup}
         onCancel={hide}
       >
+        <Toolbar
+          noRefreshBtn
+          placeholder={t('Search users')}
+          searchWord={groupStore.searchWord}
+          onSearch={groupStore.onSearch}
+          onClear={groupStore.onClearSearch}
+        />
         <EnhanceTable
           hasRowSelection
           isLoading={groupStore.isLoading}
           store={groupStore}
           data={users}
-          columns={columns()}
-          filterList={filterList(groupStore)}
+          columns={columns(t)}
+          filterList={filterList(t, groupStore)}
         />
       </Dialog>
     );
@@ -140,7 +148,7 @@ export default class UserModalActions extends Component {
         onCancel={hide}
       >
         <div>
-          {t('Do you sure to leaveGroup $groupName', {
+          {t('Do you sure to leaveGroup groupName', {
             names,
             count
           })}
@@ -264,8 +272,11 @@ export default class UserModalActions extends Component {
         onSubmit={changePwd}
         onCancel={hide}
       >
+        <div className={styles.formTitle}>
+          {t('Change password for user', item)}
+        </div>
+
         <div className={styles.formItem}>
-          <label>{t('Password')}</label>
           <Input name="user_id" type="hidden" defaultValue={item.user_id} />
           <Input name="password" type="password" maxLength={50} />
         </div>

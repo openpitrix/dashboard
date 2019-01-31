@@ -48,6 +48,10 @@ export default class GroupStore extends Store {
       status: this.selectStatus ? this.selectStatus : defaultStatus
     };
 
+    if (this.searchWord) {
+      defaultParams.search_word = this.searchWord;
+    }
+
     const result = await this.request.get(
       'users',
       _.assign(defaultParams, params)
