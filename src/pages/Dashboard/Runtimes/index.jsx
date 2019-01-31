@@ -160,6 +160,7 @@ export default class Runtimes extends React.Component {
 
     return (
       <Layout
+        isCenterPage
         noSubMenu
         pageTitle="Testing env"
         titleCls={styles.pageTitle}

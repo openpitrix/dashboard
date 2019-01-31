@@ -3,12 +3,12 @@ import routes, { toRoute } from 'routes';
 // First level navigation(top) for admin, isv and developer
 export const getNavs = {
   admin: [
-    {
+    /* {
       link: toRoute(routes.portal.overview, { portal: 'admin' }),
       iconName: 'dashboard',
       active: 'dashboard',
       title: 'My dashboard'
-    },
+    }, */
     {
       link: toRoute(routes.portal.apps, { portal: 'admin' }),
       iconName: 'components',

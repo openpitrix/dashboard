@@ -18,6 +18,7 @@ export class Stepper extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    header: PropTypes.string,
     headerCls: PropTypes.string,
     name: PropTypes.string,
     stepOption: PropTypes.shape({
@@ -99,7 +100,7 @@ export class Stepper extends Component {
 
   renderTitle() {
     const {
-      name, stepOption, headerCls, titleCls, t
+      name, stepOption, header, headerCls, titleCls, t
     } = this.props;
     const { activeStep, steps } = stepOption;
 
@@ -108,15 +109,18 @@ export class Stepper extends Component {
     }
 
     const nameKey = name.toUpperCase();
-    const header = t(`STEPPER_NAME_${nameKey}_HEADER`, {
-      activeStep,
-      steps
-    });
+    const headerName = header
+      || t(`STEPPER_NAME_${nameKey}_HEADER`, {
+        activeStep,
+        steps
+      });
     const title = t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
 
     return (
       <div className={classnames(styles.stepContent)}>
-        <div className={classnames(styles.stepName, headerCls)}>{header}</div>
+        <div className={classnames(styles.stepName, headerCls)}>
+          {headerName}
+        </div>
         <div className={classnames(styles.stepExplain, titleCls)}>{title}</div>
       </div>
     );

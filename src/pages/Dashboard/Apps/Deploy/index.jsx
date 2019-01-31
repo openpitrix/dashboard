@@ -11,6 +11,7 @@ import {
 } from 'components/Layout';
 import { Group as DeployGroup } from 'components/Deploy';
 import Loading from 'components/Loading';
+import NoteLink from 'components/NoteLink';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
@@ -303,6 +304,19 @@ export default class AppDeploy extends Component {
     const { runtimes, changeRuntime, isK8s } = appDeployStore;
     const createK8S = isK8s ? '?provider=kubernetes' : '';
 
+    if (runtimes.length === 0) {
+      return (
+        <Card>
+          <NoteLink
+            className={styles.auditNote}
+            noteWord="NO_RUNTIME_TO_DEPLOY"
+            linkWord="Create test runtime"
+            link={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}
+          />
+        </Card>
+      );
+    }
+
     return (
       <Card className={styles.selectRuntime}>
         <label className={styles.name}>{t('My Runtimes')}</label>
@@ -423,15 +437,17 @@ export default class AppDeploy extends Component {
   }
 
   render() {
-    const { appDeployStore, t } = this.props;
+    const { appStore, appDeployStore, t } = this.props;
     const {
       activeStep, versionId, runtimeId, subnets, isK8s
     } = appDeployStore;
+    const { appDetail } = appStore;
     const disableNextStep = !versionId || !runtimeId || (!isK8s && subnets.length === 0);
 
     return (
       <Stepper
         name="APP_DEPLOY"
+        header={appDetail.name}
         stepOption={{
           activeStep,
           disableNextStep,
