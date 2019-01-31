@@ -279,8 +279,8 @@ export default class Users extends Component {
                   isLoading={userStore.isLoading}
                   store={userStore}
                   data={userStore.users}
-                  columns={columns(this.renderUserHandleMenu)}
-                  filterList={filterList(userStore)}
+                  columns={columns(t, this.renderUserHandleMenu)}
+                  filterList={filterList(t, userStore)}
                 />
               </Card>
             </Section>

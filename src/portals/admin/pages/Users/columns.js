@@ -5,9 +5,8 @@ import _ from 'lodash';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import LessText from 'components/LessText';
-import { t } from 'i18next';
 
-export default renderHandleMenu => {
+export default (t, renderHandleMenu) => {
   const columns = [
     {
       title: t('Status'),
@@ -59,7 +58,7 @@ export default renderHandleMenu => {
   return columns;
 };
 
-export const filterList = store => [
+export const filterList = (t, store) => [
   {
     key: 'status',
     conditions: [
