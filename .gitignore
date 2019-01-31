@@ -39,3 +39,5 @@ reports/
 src/locales/**/translation.json
 
 logs/*.log
+
+tmp/

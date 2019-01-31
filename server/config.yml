@@ -28,6 +28,5 @@ clientSecret: ''
 
 # client side config
 app:
-  title: 'OpenPitrix Dashboard'
-  doc_link: 'https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/openpitrix-developer-guide/'
+  title: OpenPitrix Dashboard
 
