@@ -254,7 +254,7 @@ export default class UserStore extends Store {
   @action
   fetchRoles = async () => {
     const result = await this.request.get('roles');
-    this.roles = _.get(result, 'value', []);
+    this.roles = _.get(result, 'role', []);
   };
 
   @action
