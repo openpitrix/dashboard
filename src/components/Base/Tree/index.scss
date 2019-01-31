@@ -45,12 +45,12 @@
   }
 }
 
+.tree.hoverTree li {
+  padding: 6px;
+  position: relative;
+}
 .hoverTree {
   :global {
-    li {
-      padding: 6px;
-      position: relative;
-    }
     .rc-tree-node-content-wrapper {
       &::before {
         content: '';

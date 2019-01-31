@@ -253,7 +253,7 @@ export default class UserStore extends Store {
 
   @action
   fetchRoles = async () => {
-    const result = await this.request.get('am/roles');
+    const result = await this.request.get('roles');
     this.roles = _.get(result, 'value', []);
   };
 
