@@ -2,7 +2,7 @@ import routes, { toRoute } from 'routes';
 
 // First level navigation(top) for admin, isv and developer
 export const getNavs = {
-  global_admin: [
+  admin: [
     {
       link: toRoute(routes.portal.overview, { portal: 'admin' }),
       iconName: 'dashboard',
@@ -102,7 +102,7 @@ export const getNavs = {
       title: 'Service Provider Detail'
     }
   ],
-  developer: [
+  dev: [
     {
       link: toRoute(routes.portal._dev.appCreate, { portal: 'dev' }),
       iconName: 'plus-square',
@@ -148,7 +148,7 @@ export const getBottomNavs = [
 
 // Secondary navigation for admin and isv
 export const subNavMap = {
-  global_admin: {
+  admin: {
     dashboard: {
       title: 'Dashboard',
       links: [
