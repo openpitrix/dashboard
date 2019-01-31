@@ -15,7 +15,7 @@ import Layout, {
 import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
 import ModalActions from './ModalActions';
-import columns from './columns';
+import columns, { filterList } from './columns';
 
 import styles from './index.scss';
 
@@ -148,6 +148,9 @@ export default class Users extends Component {
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
+        <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
+          {t('Change Password')}
+        </span>
         <span
           onClick={() => modalStore.show(
             'renderModalDeleteUser',
@@ -277,6 +280,7 @@ export default class Users extends Component {
                   store={userStore}
                   data={userStore.users}
                   columns={columns(t, this.renderUserHandleMenu)}
+                  filterList={filterList(t, userStore)}
                 />
               </Card>
             </Section>

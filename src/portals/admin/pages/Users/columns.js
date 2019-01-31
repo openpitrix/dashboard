@@ -57,3 +57,15 @@ export default (t, renderHandleMenu) => {
 
   return columns;
 };
+
+export const filterList = (t, store) => [
+  {
+    key: 'status',
+    conditions: [
+      { name: t('Activation'), value: 'active' },
+      { name: t('Not activation'), value: 'deleted' }
+    ],
+    onChangeFilter: store.onChangeStatus,
+    selectValue: store.selectStatus
+  }
+];

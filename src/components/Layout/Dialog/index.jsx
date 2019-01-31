@@ -60,6 +60,9 @@ export default class Dialog extends React.PureComponent {
             ref={node => {
               this.form = node;
             }}
+            onSubmit={e => {
+              e.preventDefault();
+            }}
           >
             {children}
           </form>

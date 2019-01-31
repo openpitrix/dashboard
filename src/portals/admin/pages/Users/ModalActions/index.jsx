@@ -6,8 +6,10 @@ import { Input, Select } from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
+import Toolbar from 'components/Toolbar';
 
-import columns from '../columns';
+import columns, { filterList } from '../columns';
+
 import styles from '../index.scss';
 
 const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
@@ -101,12 +103,20 @@ export default class UserModalActions extends Component {
         onSubmit={joinGroup}
         onCancel={hide}
       >
+        <Toolbar
+          noRefreshBtn
+          placeholder={t('Search users')}
+          searchWord={groupStore.searchWord}
+          onSearch={groupStore.onSearch}
+          onClear={groupStore.onClearSearch}
+        />
         <EnhanceTable
           hasRowSelection
           isLoading={groupStore.isLoading}
           store={groupStore}
           data={users}
           columns={columns(t)}
+          filterList={filterList(t, groupStore)}
         />
       </Dialog>
     );
@@ -138,7 +148,7 @@ export default class UserModalActions extends Component {
         onCancel={hide}
       >
         <div>
-          {t('Do you sure to leaveGroup $groupName', {
+          {t('Do you sure to leaveGroup groupName', {
             names,
             count
           })}
@@ -151,7 +161,7 @@ export default class UserModalActions extends Component {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, hide, item } = modalStore;
     const { setRole, roles, userNames } = userStore;
-    const roleId = _.get(item, 'role');
+    const roleId = _.get(item, 'role[0].role_id', '');
     const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
     const names = userId ? item.username : userNames;
     const text = userId
@@ -209,6 +219,7 @@ export default class UserModalActions extends Component {
               defaultValue={username}
               required
             />
+            <Input name="user_id" type="hidden" defaultValue={user_id} />
           </div>
         )}
         <div className={styles.formItem}>
@@ -243,6 +254,31 @@ export default class UserModalActions extends Component {
         <div className={styles.formItemText}>
           <label>{t('Description')}</label>
           <textarea name="description" maxLength={500} />
+        </div>
+      </Dialog>
+    );
+  }
+
+  renderModalResetPassword() {
+    const { t, modalStore, userStore } = this.props;
+    const { hide, isOpen, item } = modalStore;
+    const { changePwd } = userStore;
+
+    return (
+      <Dialog
+        title={t('Change Password')}
+        visible={isOpen}
+        width={744}
+        onSubmit={changePwd}
+        onCancel={hide}
+      >
+        <div className={styles.formTitle}>
+          {t('Change password for user', item)}
+        </div>
+
+        <div className={styles.formItem}>
+          <Input name="user_id" type="hidden" defaultValue={item.user_id} />
+          <Input name="password" type="password" maxLength={50} />
         </div>
       </Dialog>
     );
