@@ -188,9 +188,7 @@ export default class UserModalActions extends Component {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, item } = modalStore;
     const { roles, hideModifyUser, createOrModify } = userStore;
-    const {
-      user_id, role, username, email
-    } = item;
+    const { user_id, username, email } = item;
 
     const title = !user_id === 'modify' ? t('Create New User') : t('Modify User');
 
@@ -228,7 +226,7 @@ export default class UserModalActions extends Component {
           <Fragment>
             <div className={styles.formItem}>
               <label>{t('Role')}</label>
-              <Select defaultValue={role} name="role">
+              <Select name="role">
                 {roles.map(({ role_id, role_name }) => (
                   <Select.Option key={role_id} value={role_id}>
                     {t(role_name)}
