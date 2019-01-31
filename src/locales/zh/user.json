@@ -18,6 +18,8 @@
   "Normal Role Title Count": "终端角色({{count}})",
   "Operation list": "操作列表",
   "Edit info": "编辑信息",
+  "isv": "应用服务商",
+  "user": "用户",
   "Set permission": "设置权限",
   "Delete role": "删除角色",
   "Disable": "禁用",

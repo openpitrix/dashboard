@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import _ from 'lodash';
 
@@ -153,8 +153,8 @@ export default class UserModalActions extends Component {
     const { setRole, roles, userNames } = userStore;
     const roleId = _.get(item, 'role');
     const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
-    const names = roleId ? item.username : userNames;
-    const text = roleId
+    const names = userId ? item.username : userNames;
+    const text = userId
       ? t('Set_Role_Title', { names })
       : t('Set_Role_Title_For_Multi_User', {
         count: names.length,
@@ -186,13 +186,11 @@ export default class UserModalActions extends Component {
 
   renderModalCreateUser() {
     const { userStore, modalStore, t } = this.props;
-    const { isOpen } = modalStore;
-    const {
-      userDetail, roles, hideModifyUser, createOrModify
-    } = userStore;
+    const { isOpen, item } = modalStore;
+    const { roles, hideModifyUser, createOrModify } = userStore;
     const {
       user_id, role, username, email
-    } = userDetail;
+    } = item;
 
     const title = !user_id === 'modify' ? t('Create New User') : t('Modify User');
 
@@ -227,21 +225,23 @@ export default class UserModalActions extends Component {
           />
         </div>
         {!user_id && (
-          <div className={styles.formItem}>
-            <label>{t('Role')}</label>
-            <Select defaultValue={role} name="role">
-              {roles.map(({ role_id, role_name }) => (
-                <Select.Option key={role_id} value={role_id}>
-                  {t(role_name)}
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
+          <Fragment>
+            <div className={styles.formItem}>
+              <label>{t('Role')}</label>
+              <Select defaultValue={role} name="role">
+                {roles.map(({ role_id, role_name }) => (
+                  <Select.Option key={role_id} value={role_id}>
+                    {t(role_name)}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+            <div className={styles.formItem}>
+              <label>{t('Password')}</label>
+              <Input name="password" type="password" maxLength={50} />
+            </div>
+          </Fragment>
         )}
-        <div className={styles.formItem}>
-          <label>{t('Password')}</label>
-          <Input name="password" type="password" maxLength={50} />
-        </div>
         <div className={styles.formItemText}>
           <label>{t('Description')}</label>
           <textarea name="description" maxLength={500} />
