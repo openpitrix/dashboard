@@ -152,8 +152,12 @@ export default class UserStore extends Store {
     this.userDetail = _.get(result, 'user_set[0]', {});
 
     if (isLogin) {
+      const role = _.get(this.userDetail, 'role[0]', {});
       this.updateUser(
-        _.pick(this.userDetail, ['user_id', 'username', 'email', 'role'])
+        _.extend(_.pick(this.userDetail, ['user_id', 'username', 'email']), {
+          role: role.role_name,
+          portal: role.portal || 'user'
+        })
       );
     }
 

@@ -12,7 +12,7 @@ import routes, { toRoute } from 'routes';
 import styles from './index.scss';
 
 const roleToPortal = {
-  developer: {
+  dev: {
     icon: 'wrench',
     name: 'Develop Center',
     url: toRoute(routes.portal.apps, { portal: 'dev' })
@@ -22,7 +22,7 @@ const roleToPortal = {
     name: 'Provider Center',
     url: toRoute(routes.portal.apps, { portal: 'isv' })
   },
-  global_admin: {
+  admin: {
     icon: 'dashboard',
     name: 'Manage Console',
     url: toRoute(routes.portal.apps, { portal: 'admin' })
@@ -47,10 +47,10 @@ export class MenuLayer extends Component {
 
   render() {
     const { user, className, t } = this.props;
-    const { isNormal, isISV, isUserPortal } = user;
-    // todo
-    const role = isISV ? 'isv' : user.role;
-    const portal = isUserPortal ? roleToPortal[role] || {} : roleToPortal.user;
+    const { isNormal, isUserPortal } = user;
+    const portal = isUserPortal
+      ? roleToPortal[user.portal] || {}
+      : roleToPortal.user;
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>

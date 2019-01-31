@@ -91,11 +91,9 @@ export class SideNav extends React.Component {
 
   getSudNavData = () => {
     const { user } = this.props;
-    const { isISV } = user;
-    const role = isISV ? 'isv' : user.role;
     const key = this.getMatchKey();
 
-    return _.get(subNavMap, `${role}.${key}`, {});
+    return _.get(subNavMap, `${user.portal}.${key}`, {});
   };
 
   isActiveSubNav(item, subNavData) {
@@ -332,9 +330,8 @@ export class SideNav extends React.Component {
 
   renderNavs() {
     const { user, t } = this.props;
-    const { isISV, role } = user;
-    const viewRole = isISV ? 'isv' : role;
-    const navs = getNavs[viewRole] || [];
+    const { portal } = user;
+    const navs = getNavs[portal] || [];
 
     return (
       <div className={styles.nav}>

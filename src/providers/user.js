@@ -3,9 +3,9 @@ import { map } from 'lodash';
 
 import { getPortalFromPath } from 'routes';
 
-const ROLE_ADMIN = 'global_admin';
-const ROLE_DEV = 'developer';
-// const ROLE_ISV = 'isv';
+const ROLE_ADMIN = 'admin';
+const ROLE_DEV = 'dev';
+const ROLE_ISV = 'isv';
 const ROLE_NORMAL = 'user';
 
 // singleton
@@ -13,6 +13,7 @@ let user = null;
 
 class UserProvider {
   constructor() {
+    this.portal = getCookie('portal');
     this.role = getCookie('role');
     this.username = getCookie('username');
     this.user_id = getCookie('user_id');
@@ -36,20 +37,19 @@ class UserProvider {
   }
 
   get isAdmin() {
-    return this.role === ROLE_ADMIN && this.username !== 'isv';
+    return this.portal === ROLE_ADMIN;
   }
 
   get isDev() {
-    return this.role === ROLE_DEV;
+    return this.portal === ROLE_DEV;
   }
 
   get isNormal() {
-    return this.role === ROLE_NORMAL;
+    return this.portal === ROLE_NORMAL;
   }
 
-  // fixme: mock isv role
   get isISV() {
-    return this.role === ROLE_ADMIN && this.username === 'isv';
+    return this.portal === ROLE_ISV;
   }
 
   get isUserPortal() {

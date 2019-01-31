@@ -84,11 +84,10 @@ export default class ReviewDetail extends Component {
     if (handleType === 'review' && isReviewed) {
       appVersionStore.isTipsOpen = true;
     } else {
-      // todo: after username should modify role
       await appVersionStore.versionReview({
         handleType,
         versionId: version.version_id,
-        role: user.username
+        role: user.role
       });
     }
   };
