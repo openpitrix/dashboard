@@ -11,7 +11,6 @@ module.exports = {
   ],
   output: {
     filename: '[name].js',
-    // chunkFilename: "[name].[chunkhash].js",
     path: resolve(__dirname, 'build/'),
     publicPath: '/build/',
     pathinfo: false
@@ -89,28 +88,17 @@ module.exports = {
       excludeWarnings: true
     }),
     new webpack.DefinePlugin({
-      'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
   optimization: {
     splitChunks: {
       cacheGroups: {
-        vendors: {
+        vendor_js: {
           name: 'vendors',
           chunks: 'initial',
-          test: /[\\/]node_modules[\\/]/,
+          test: /\/node_modules\//,
           priority: -10
-        },
-        commons: {
-          name: 'commons',
-          chunks: 'all',
-          minChunks: 2
-        },
-        default: {
-          minSize: 0,
-          minChunks: 1,
-          reuseExistingChunk: true
         }
       }
     }

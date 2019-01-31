@@ -1,10 +1,10 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const CompressionPlugin = require('compression-webpack-plugin');
 const postCssOptions = require('./config/postcss.options');
-const WriteHashPlugin = require('./lib/webpack-plugin/WriteHash');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const resolveModules = {
   extensions: ['.js', '.jsx', '.scss', '.css'],
@@ -25,7 +25,8 @@ const clientConfig = {
   entry: './src/index.js',
   output: {
     path: distDir,
-    filename: 'main.js',
+    filename: '[name].[contenthash:6].js',
+    chunkFilename: '[name].[chunkhash:6].js',
     pathinfo: false,
     publicPath: '/dist/'
   },
@@ -68,30 +69,31 @@ const clientConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true,
-                importLoaders: 2,
-                localIdentName: '[folder]__[local]--[hash:base64:5]',
-                modules: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: postCssOptions
-            },
-            { loader: 'sass-loader' }
-          ]
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true,
+              importLoaders: 2,
+              localIdentName: '[folder]__[local]--[hash:base64:5]',
+              modules: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: postCssOptions
+          },
+          'sass-loader'
+        ]
       }
     ]
   },
   resolve: resolveModules,
   plugins: [
+    new ManifestPlugin({
+      publicPath: '/dist/'
+    }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -99,30 +101,26 @@ const clientConfig = {
       test: /\.(js|css)$/,
       threshold: 1024 * 10 // bytes
     }),
-    new ExtractTextPlugin({
-      filename: 'bundle.css',
-      allChunks: true
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].css'
     }),
-    new WriteHashPlugin(),
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   parallel: 4,
-    //   uglifyOptions: {
-    //     compressor: {
-    //       ecma: 6,
-    //       screw_ie8: true,
-    //       warnings: false,
-    //     },
-    //     output: {
-    //       comments: false,
-    //     },
-    //   },
-    // }),
     new webpack.DefinePlugin({
-      'process.env.BROWSER': true,
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor_js: {
+          name: 'vendors',
+          chunks: 'initial',
+          test: /\/node_modules\//,
+          priority: -10
+        }
+      }
+    }
+  }
 };
 
 const serverConfig = {

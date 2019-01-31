@@ -26,7 +26,7 @@ const renderPage = (options = {}) => {
   let manifest = {};
 
   if (isProd) {
-    manifest = readManifest('build-hash.json', bundlePrefix);
+    manifest = readManifest('manifest.json', bundlePrefix);
   }
 
   const normalizeCssFilePath = css_file => {
@@ -38,9 +38,10 @@ const renderPage = (options = {}) => {
     }
 
     if (isProd) {
-      css_file = `${css_file}?${manifest.hash}`;
+      return manifest[css_file];
     }
 
+    // dev mode
     return path.join(bundlePrefix, css_file);
   };
 
@@ -59,15 +60,11 @@ const renderPage = (options = {}) => {
 
   const renderJs = () => {
     // todo
-    const files = isProd ? ['main.js'] : ['vendors.js', 'main.js'];
+    const files = ['vendors.js', 'main.js'];
 
     return files
       .map(file => {
-        file = `${bundlePrefix}/${file}`;
-        if (isProd) {
-          file += `?${manifest.hash}`;
-        }
-
+        file = !isProd ? `${bundlePrefix}/${file}` : manifest[file];
         return `<script defer src="${file}"></script>`;
       })
       .join('\n');
@@ -84,7 +81,7 @@ const renderPage = (options = {}) => {
     <link rel="stylesheet" href="/css/normalize.min.css" />
     <link rel="stylesheet" href="/fonts/roboto/roboto.css" />
     
-    ${renderCss(isProd && 'bundle.css')}
+    ${renderCss(isProd && 'main.css')}
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app</noscript>
