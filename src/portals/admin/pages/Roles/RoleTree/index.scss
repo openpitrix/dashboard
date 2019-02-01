@@ -13,6 +13,12 @@
         background-color: transparent;
         border: 1px solid transparent;
       }
+      &:hover {
+        &:before {
+          background: $N0;
+          box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+        }
+      }
     }
     .rc-tree-treenode-selected {
       > .rc-tree-node-content-wrapper {
@@ -45,8 +51,18 @@
       }
     }
   }
-  li + li {
-    margin-top: 10px;
+  & > li > ul > li {
+    &::before {
+      content: '';
+      border: 1px solid $N10;
+      position: absolute;
+      margin-top: -6px;
+      left: -24px;
+      right: -6px;
+    }
+  }
+  .treeNodeAdmin {
+    margin-bottom: 10px;
   }
 }
 .roleItem {
@@ -69,6 +85,7 @@
   color: $P75;
   font-size: $size-normal;
   line-height: 1;
+  cursor: pointer;
 }
 .lockIcon {
   top: 5px;

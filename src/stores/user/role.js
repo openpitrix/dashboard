@@ -8,11 +8,10 @@ const KeyFeatureAll = 'all';
 const KeyCreateRoll = 'create_role';
 const TypeModule = 'module';
 const TypeFeature = 'feature';
-const KeysRoleDisabled = ['admin_role', 'not_admin_role'];
 
 const sortModule = id => (a, b) => {
-  const numA = Number(_.last(a[id].split('_')));
-  const numB = Number(_.last(b[id].split('_')));
+  const numA = Number(_.last(a[id].split(id[0])));
+  const numB = Number(_.last(b[id].split(id[0])));
   return numA - numB;
 };
 
@@ -106,8 +105,8 @@ export default class RoleStore extends Store {
             children: this.actions
               .filter(item => feature_id === item.feature_id)
               .map(item => ({
-                key: item.action_id,
-                title: item.action_name
+                key: item.action_bundle_id,
+                title: item.action_bundle_name
               }))
           }
         ]
@@ -133,9 +132,9 @@ export default class RoleStore extends Store {
   @action
   onSelectRole = keys => {
     const key = _.first(keys);
-    if (KeysRoleDisabled.includes(key)) {
-      return null;
-    }
+    // if (KeysRoleDisabled.includes(key)) {
+    //   return null;
+    // }
     if (_.isEmpty(keys)) {
       this.selectedRole = {};
     } else if (key === KeyCreateRoll) {
@@ -166,11 +165,11 @@ export default class RoleStore extends Store {
     if (key === KeyFeatureAll) {
       return KeyFeatureAll;
     }
-    if (_.startsWith(key, 'm_')) {
-      return TypeModule;
-    }
-    if (_.startsWith(key, 'f_')) {
+    if (key.includes('--')) {
       return TypeFeature;
+    }
+    if (_.startsWith(key, 'm')) {
+      return TypeModule;
     }
 
     throw new Error('Module type error');
@@ -188,12 +187,12 @@ export default class RoleStore extends Store {
           .map(feature => ({
             key: feature.feature_id,
             title: feature.feature_name,
-            children: _.uniqBy(feature.action, 'action_id')
+            children: _.uniqBy(feature.action_bundle, 'action_bundle_id')
               .slice()
-              .sort(sortModule('action_id'))
+              .sort(sortModule('action_bundle_id'))
               .map(item => ({
-                key: item.action_id,
-                title: item.action_name
+                key: item.action_bundle_id,
+                title: item.action_bundle_name
               }))
           }))
       }
@@ -236,7 +235,10 @@ export default class RoleStore extends Store {
   };
 
   @action
-  getUniqActions = feature => _.flatMap(_.uniqBy(feature.action, 'action_id'), 'action_id');
+  getUniqActions = feature => _.flatMap(
+    _.uniqBy(feature.action_bundle, 'action_bundle_id'),
+    'action_bundle_id'
+  );
 
   @action
   getActionTreeData = () => {
@@ -373,7 +375,7 @@ export default class RoleStore extends Store {
       this.selectedActionKeys[index],
       key => _.startsWith(key, 'f_') || key === 'all'
     );
-    const featureActions = _.flatMap(feature.action, 'action_id');
+    const featureActions = _.flatMap(feature.action_bundle, 'action_bundle_id');
     feature.checked_action_id = _.intersection(
       this.selectedActionKeys[index],
       featureActions
@@ -381,8 +383,27 @@ export default class RoleStore extends Store {
   };
 
   @action
+  setCheckall = modules => {
+    console.log(modules.length);
+    modules
+      .slice()
+      .sort(sortModule('module_id'))
+      .forEach((module, index) => {
+        const selectedActions = this.getActionCount({
+          module,
+          index,
+          features: module.feature
+        });
+        const { total } = selectedActions;
+        const checkActions = _.filter(this.selectedActionKeys[index], key => key.includes('.a'));
+        module.is_check_all = (total === checkActions.length) === total;
+      });
+  };
+
+  @action
   changeRoleModule = async () => {
     this.isLoading = true;
+    console.log(this.selectedActionKeys);
     const { type } = this.selectedFeatureModule;
     let module = [];
     if (type === KeyFeatureAll) {
@@ -408,8 +429,12 @@ export default class RoleStore extends Store {
         module
       }
     };
-    await this.request.patch(`roles:module`, data);
+    this.setCheckall(module);
+    const result = await this.request.patch(`roles:module`, data);
     await sleep(300);
+    if (_.get(result, 'role_module.role_id')) {
+      this.fetchRoleModule(_.first(this.selectedRoleKeys));
+    }
     this.isLoading = false;
     this.setHandleType('');
   };

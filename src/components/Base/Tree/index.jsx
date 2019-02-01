@@ -51,7 +51,7 @@ export default class Tree extends Component {
   };
 
   renderTreeNodes = data => data.map(node => (
-      <TreeNode key={node.key} title={this.renderTitle(node)}>
+      <TreeNode key={node.key} {...node} title={this.renderTitle(node)}>
         {node.children && this.renderTreeNodes(node.children)}
       </TreeNode>
   ));

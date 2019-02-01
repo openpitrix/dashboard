@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
@@ -7,6 +7,32 @@ import styles from './index.scss';
 
 @translate()
 export default class RoleItem extends Component {
+  get isGlobalAdmin() {
+    return this.props.role_id === 'global_admin';
+  }
+
+  get description() {
+    const {
+      t, description, isAdmin, role_id
+    } = this.props;
+    const text = this.isGlobalAdmin
+      ? t('Global Admin Role description')
+      : description;
+    return (
+      <span>
+        {text}
+        {!isAdmin && (
+          <Fragment>
+            {t(`Normal_Role_Description_${role_id}`)}
+            <span className={styles.normalPermission}>
+              {t("Can't delete, can edit")}
+            </span>
+          </Fragment>
+        )}
+      </span>
+    );
+  }
+
   showCreateModal = () => {
     this.props.modalStore.show('renderModalCreateRole');
   };
@@ -22,9 +48,8 @@ export default class RoleItem extends Component {
   }
 
   render() {
-    const {
-      t, title, description, type, isGlobalAdmin, isAdmin
-    } = this.props;
+    const { isGlobalAdmin, description } = this;
+    const { t, title, type } = this.props;
     if (type === 'create_btn') {
       return this.renderCreateBtn();
     }
@@ -37,12 +62,7 @@ export default class RoleItem extends Component {
           )}
         </strong>
         <br />
-        <span>
-          {description}
-          {!isAdmin && (
-            <span className={styles.normalPermission}>不可删除，可以编辑</span>
-          )}
-        </span>
+        {description}
       </span>
     );
   }
