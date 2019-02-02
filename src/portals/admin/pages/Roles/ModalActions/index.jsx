@@ -11,7 +11,7 @@ export default class RoleModalActions extends Component {
   renderModalDeleteRole() {
     const { modalStore, roleStore, t } = this.props;
     const { isOpen, hide } = modalStore;
-    const { getRoleName, deleteRole } = roleStore;
+    const { roleName, deleteRole } = roleStore;
 
     return (
       <Dialog
@@ -24,7 +24,7 @@ export default class RoleModalActions extends Component {
         <div>
           <h3>
             {t('Do you sure to delete roleName', {
-              roleName: getRoleName()
+              roleName
             })}
           </h3>
         </div>

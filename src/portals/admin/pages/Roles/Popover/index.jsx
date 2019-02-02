@@ -55,7 +55,7 @@ export default class RolePopover extends Component {
 
   renderHandleGroupNode = () => {
     const { t, roleStore } = this.props;
-    const role = roleStore.getRole();
+    const { role } = roleStore;
     const isSystem = role.owner_path === ':system';
 
     return (

@@ -5,7 +5,6 @@ import { sleep } from 'utils';
 import Store from '../Store';
 
 const KeyFeatureAll = 'all';
-const KeyCreateRoll = 'create_role';
 const TypeModule = 'module';
 const TypeFeature = 'feature';
 
@@ -46,6 +45,22 @@ export default class RoleStore extends Store {
 
   get modal() {
     return this.getStore('modal');
+  }
+
+  get role() {
+    return _.find(this.roles, { role_id: _.first(this.selectedRoleKeys) });
+  }
+
+  get module() {
+    return _.find(this.modules, { module_id: this.selectedModuleId }, {});
+  }
+
+  get roleName() {
+    return _.get(this.role, 'role_name', '');
+  }
+
+  get selectedFeatureId() {
+    return _.get(this.features, '0.feature_id');
   }
 
   @action
@@ -132,14 +147,8 @@ export default class RoleStore extends Store {
   @action
   onSelectRole = keys => {
     const key = _.first(keys);
-    // if (KeysRoleDisabled.includes(key)) {
-    //   return null;
-    // }
     if (_.isEmpty(keys)) {
       this.selectedRole = {};
-    } else if (key === KeyCreateRoll) {
-      this.modal.show('renderModalCreateRole');
-      return;
     } else {
       this.fetchRoleModule(_.find(keys));
       const roles = _.filter(this.roles, role => role.role_id === key);
@@ -265,7 +274,7 @@ export default class RoleStore extends Store {
       return;
     }
 
-    const moduleItem = this.getModule();
+    const moduleItem = this.module;
     if (type === TypeModule) {
       const selectedActions = this.getActionCount({
         module: moduleItem,
@@ -358,7 +367,6 @@ export default class RoleStore extends Store {
     this.selectedRoleKeys = keys;
     this.modal.hide();
     this.onSelectRole(keys);
-    // this.onSelectRole(['role-mxcrg3ghvr6']);
   };
 
   @action
@@ -384,26 +392,29 @@ export default class RoleStore extends Store {
 
   @action
   setCheckall = modules => {
-    console.log(modules.length);
     modules
       .slice()
       .sort(sortModule('module_id'))
       .forEach((module, index) => {
+        const { type } = this.selectedFeatureModule;
+        const features = type === TypeFeature ? this.features : module.feature;
         const selectedActions = this.getActionCount({
           module,
           index,
-          features: module.feature
+          features
         });
         const { total } = selectedActions;
         const checkActions = _.filter(this.selectedActionKeys[index], key => key.includes('.a'));
-        module.is_check_all = (total === checkActions.length) === total;
+        const isCheckAll = total === checkActions.length;
+        if (!isCheckAll) {
+          module.is_check_all = isCheckAll;
+        }
       });
   };
 
   @action
   changeRoleModule = async () => {
     this.isLoading = true;
-    console.log(this.selectedActionKeys);
     const { type } = this.selectedFeatureModule;
     let module = [];
     if (type === KeyFeatureAll) {
@@ -417,9 +428,11 @@ export default class RoleStore extends Store {
           return item;
         });
     } else {
-      const item = _.find(this.modules, { module_id: this.selectedModuleId });
+      const item = this.module;
       item.feature.forEach(f => {
-        this.getCheckedAction(f);
+        if (type === TypeFeature && this.selectedFeatureId === f.feature_id) {
+          this.getCheckedAction(f);
+        }
       });
       module.push(item);
     }
@@ -434,18 +447,11 @@ export default class RoleStore extends Store {
     await sleep(300);
     if (_.get(result, 'role_module.role_id')) {
       this.fetchRoleModule(_.first(this.selectedRoleKeys));
+      this.onSelectModule([]);
     }
     this.isLoading = false;
     this.setHandleType('');
   };
-
-  @action
-  getRole = () => _.find(this.roles, { role_id: _.first(this.selectedRoleKeys) });
-
-  @action
-  getModule = () => _.find(this.modules, { module_id: this.selectedModuleId }, {});
-
-  @action getRoleName = () => _.get(this.getRole(), 'role_name', '');
 
   @action
   deleteRole = async () => {
@@ -463,9 +469,8 @@ export default class RoleStore extends Store {
 
   @action
   showEditRole = () => {
-    const role = this.getRole();
     this.modal.show('renderModalCreateRole', {
-      ...role,
+      ...this.role,
       handleType: 'edit'
     });
   };
