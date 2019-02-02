@@ -10,7 +10,7 @@ import styles from './index.scss';
 @observer
 export default class ActionGroup extends Component {
   renderActionCount() {
-    const { data, t } = this.props;
+    const { t, data } = this.props;
     const { selectedActions } = data;
     const { total, selectedCount } = selectedActions;
     const textCount = total === selectedCount
@@ -41,7 +41,7 @@ export default class ActionGroup extends Component {
 
   render() {
     const {
-      data, keys, index, roleStore, t
+      keys, data, index, roleStore, t
     } = this.props;
     if (_.isEmpty(data)) {
       return null;
