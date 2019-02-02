@@ -22,6 +22,7 @@ export default class RoleTree extends Component {
     );
     const navData = [
       {
+        className: styles.treeNodeAdmin,
         title: t('Admin Role Title Count', {
           count: adminRoles.length
         }),
@@ -42,6 +43,7 @@ export default class RoleTree extends Component {
         <Item
           isAdmin
           key={`title_${role.role_id}`}
+          role_id={role.role_id}
           title={role.role_name}
           description={role.description}
           portal={role.portal}
@@ -54,8 +56,8 @@ export default class RoleTree extends Component {
       disabled: true,
       title: (
         <Item
-          type="create_btn"
           key={`title_create_role`}
+          type="create_btn"
           title="自定义"
           roleStore={roleStore}
           modalStore={modalStore}
@@ -67,6 +69,7 @@ export default class RoleTree extends Component {
       title: (
         <Item
           key={`title_${role.role_id}`}
+          role_id={role.role_id}
           title={role.role_name}
           description={role.description}
           portal={role.portal}
