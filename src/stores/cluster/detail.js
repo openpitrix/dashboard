@@ -42,7 +42,7 @@ export default class ClusterDetailStore extends Store {
 
   @observable selectNodeStatus = '';
 
-  @observable env = '';
+  env = {};
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -229,28 +229,32 @@ export default class ClusterDetailStore extends Store {
     this.extendedRowKeys = _.union([], this.extendedRowKeys);
   };
 
-  /**
-   * string to yaml
-   * @param str
-   * @returns {XML|string}
-   */
-  @action
-  toYaml = str => {
-    const yamlStr = yaml.safeDump(JSON.parse(str || '{}'));
-    // fixme : some helm app with leading strings will cause deploy error
-    // return yamlStr.replace(/^---\n?/, '').replace(/\s+(.*)/g, '$1');
-
-    return yamlStr;
-  };
-
   @action
   setEnv = () => {
     const { env } = this.cluster;
-    if (env) {
-      this.env = this.toYaml(env);
-    } else {
-      this.env = '';
+    // transform raw cluster.env as js object
+    if (!env) {
+      this.env = {};
+      return;
     }
+
+    this.env = yaml.safeLoad(
+      typeof env === 'object' ? JSON.stringify(env) : env
+    );
+  };
+
+  formatEnv = (env_obj = this.env) => {
+    if (typeof env_obj === 'string') {
+      // first transform arg into obj
+      env_obj = yaml.safeLoad(env_obj);
+    }
+
+    if (this.isHelm) {
+      // output yaml
+      return yaml.safeDump(env_obj);
+    }
+    // output json string
+    return JSON.stringify(env_obj, null, 2);
   };
 
   @action
@@ -321,8 +325,8 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  changeEnv = env => {
-    this.env = env;
+  changeEnv = (env = '') => {
+    this.env = yaml.safeLoad(this.formatEnv(env));
   };
 
   cancelChangeEnv = () => {
@@ -341,14 +345,5 @@ export default class ClusterDetailStore extends Store {
     this.cluster = {};
     this.helmClusterNodes = [];
     this.clusterNodes = [];
-  };
-
-  @action
-  envJson = () => {
-    let { env } = this;
-    if (env) {
-      env = JSON.stringify(yaml.safeLoad(env));
-    }
-    return env;
   };
 }
