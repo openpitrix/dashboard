@@ -7,6 +7,13 @@ import Loading from 'components/Loading';
 
 @observer
 export default class ModuleTree extends Component {
+  componentDidUpdate() {
+    const { onSelectModule, selectedFeatureModule } = this.props.roleStore;
+    if (_.isEmpty(selectedFeatureModule)) {
+      onSelectModule(['all']);
+    }
+  }
+
   render() {
     const { roleStore } = this.props;
     const { onSelectModule, moduleTreeData, selectedModuleKeys } = roleStore;

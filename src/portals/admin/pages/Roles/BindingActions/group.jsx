@@ -59,6 +59,7 @@ export default class ActionGroup extends Component {
           defaultExpandAll
           disabled={disabled}
           selectable={false}
+          checkStrictly
           checkedKeys={keys}
           className={classnames(styles.tree, {
             [styles.disabledTree]: disabled

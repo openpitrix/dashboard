@@ -29,15 +29,16 @@ export default class Roles extends Component {
     await roleStore.fetchAll();
   }
 
-  componenetWillUnmount() {
+  componentWillUnmount() {
     this.props.roleStore.reset();
   }
 
   render() {
     const { t, roleStore, modalStore } = this.props;
-    const { isLoading, selectedRole } = roleStore;
+    const { selectedRole } = roleStore;
+
     return (
-      <Layout isLoading={isLoading}>
+      <Layout>
         <h2 className={styles.header}>{t('Role')}</h2>
         <Panel className={classnames(styles.noShadow)}>
           <Grid>

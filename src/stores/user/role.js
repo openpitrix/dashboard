@@ -21,7 +21,7 @@ export default class RoleStore extends Store {
 
   @observable selectedFeatureModule = {};
 
-  @observable isLoading = true;
+  @observable isLoading = false;
 
   @observable bingActions = [];
 
@@ -72,11 +72,13 @@ export default class RoleStore extends Store {
   }
 
   async fetchRoleModule(roleId) {
+    this.isLoading = true;
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
     });
     this.modules = _.get(result, 'role_module.module', []);
     this.getModuleTreeData();
+    this.isLoading = false;
   }
 
   @action
@@ -141,16 +143,17 @@ export default class RoleStore extends Store {
     this.features = [];
     this.selectedRoleKeys = [];
     this.selectedActionKeys = [];
+    this.selectedFeatureModule = {};
     this.handelType = '';
   };
 
   @action
-  onSelectRole = keys => {
+  onSelectRole = async keys => {
     const key = _.first(keys);
     if (_.isEmpty(keys)) {
       this.selectedRole = {};
     } else {
-      this.fetchRoleModule(_.find(keys));
+      await this.fetchRoleModule(_.find(keys));
       const roles = _.filter(this.roles, role => role.role_id === key);
       this.selectedRole = _.first(roles);
       this.onSelectModule([]);
