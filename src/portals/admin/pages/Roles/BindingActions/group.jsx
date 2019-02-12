@@ -29,14 +29,15 @@ export default class ActionGroup extends Component {
     const { t, roleStore } = this.props;
     const { handelType } = roleStore;
     const disabled = handelType !== 'setBindAction';
-    if (node.title === t('All actions')) {
+
+    if (node.title === 'All actions') {
       return this.renderActionCount();
     }
 
     if (disabled) {
       return null;
     }
-    return node.title;
+    return t(node.title);
   };
 
   render() {
@@ -52,7 +53,7 @@ export default class ActionGroup extends Component {
 
     return (
       <div className={styles.actions}>
-        {!_.isEmpty(name) && <h3 className={styles.header}>{name}</h3>}
+        {!_.isEmpty(name) && <h3 className={styles.header}>{t(name)}</h3>}
         <div>{t('Operation list')}</div>
         <Tree
           checkable

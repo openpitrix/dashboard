@@ -14,7 +14,7 @@
   "data_level_self": "自己",
   "Create admin role": "创建管理后台角色",
   "BIND_ACTION_COUNT": "共 {{total}} 项，开启 {{selectedCount}} 项目",
-  "BIND_ACTION_COUNT_ALL": "共 {{total}} 项，开全部开启",
+  "BIND_ACTION_COUNT_ALL": "共 {{total}} 项，全部开启",
   "Admin Role Title Count": "管理员后台角色({{count}})",
   "Normal Role Title Count": "终端角色({{count}})",
   "Operation list": "操作列表",

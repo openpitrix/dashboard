@@ -10,38 +10,42 @@ import styles from './index.scss';
 
 @observer
 export default class BindingActions extends Component {
+  getActionKeys(idx) {
+    const { selectedActionKeys } = this.props.roleStore;
+    if (!selectedActionKeys.length) {
+      return [];
+    }
+
+    return idx < selectedActionKeys.length ? selectedActionKeys[idx] : [];
+  }
+
   render() {
     const { roleStore, t } = this.props;
-    const {
-      selectedFeatureModule,
-      isLoading,
-      bingActions,
-      selectedActionKeys
-    } = roleStore;
+    const { selectedFeatureModule, isLoading, bindActions } = roleStore;
 
     if (_.isEmpty(selectedFeatureModule)) {
       return null;
     }
-    if (isLoading) {
-      return <Loading isLoading />;
-    }
+
     const { name } = selectedFeatureModule;
 
     return (
       <div className={styles.main}>
         <div>
-          {t('Selected')}： <strong>「{name}」</strong>
+          {t('Selected')}： <strong>「{t(name)}」</strong>
         </div>
-        {bingActions.map((data, index) => (
-          <ActionGroup
-            roleStore={roleStore}
-            key={`${data.name}-${index}`}
-            index={index}
-            t={t}
-            data={data}
-            keys={selectedActionKeys[index]}
-          />
-        ))}
+        <Loading isLoading={isLoading}>
+          {bindActions.map((data, index) => (
+            <ActionGroup
+              roleStore={roleStore}
+              key={`${data.name}-${index}`}
+              index={index}
+              t={t}
+              data={data}
+              keys={this.getActionKeys(index)}
+            />
+          ))}
+        </Loading>
       </div>
     );
   }

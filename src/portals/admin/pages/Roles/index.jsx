@@ -24,20 +24,20 @@ import styles from './index.scss';
 }))
 @observer
 export default class Roles extends Component {
-  async componentDidMount() {
-    const { roleStore } = this.props;
-    await roleStore.fetchAll();
+  componentDidMount() {
+    this.props.roleStore.fetchAll();
   }
 
-  componenetWillUnmount() {
+  componentWillUnmount() {
     this.props.roleStore.reset();
   }
 
   render() {
     const { t, roleStore, modalStore } = this.props;
-    const { isLoading, selectedRole } = roleStore;
+    const { selectedRole } = roleStore;
+
     return (
-      <Layout isLoading={isLoading}>
+      <Layout>
         <h2 className={styles.header}>{t('Role')}</h2>
         <Panel className={classnames(styles.noShadow)}>
           <Grid>
