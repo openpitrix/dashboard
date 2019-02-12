@@ -59,7 +59,7 @@ export default class ClusterStore extends Store {
   }
 
   get clusterEnv() {
-    return this.getStore('clusterDetail').envJson();
+    return JSON.stringify(this.getStore('clusterDetail').env);
   }
 
   get fetchJobs() {

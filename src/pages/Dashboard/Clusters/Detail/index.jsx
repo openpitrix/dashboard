@@ -216,7 +216,14 @@ export default class ClusterDetail extends Component {
     }
 
     if (modalType === 'update_env') {
-      const { changeEnv, env, cancelChangeEnv } = clusterDetailStore;
+      // vmbased using json, helm type using yaml
+      const {
+        changeEnv,
+        env,
+        cancelChangeEnv,
+        formatEnv,
+        isHelm
+      } = clusterDetailStore;
 
       return (
         <Dialog
@@ -226,7 +233,11 @@ export default class ClusterDetail extends Component {
           onCancel={cancelChangeEnv}
           onSubmit={this.handleCluster}
         >
-          <CodeMirror code={env} onChange={changeEnv} mode="yaml" />
+          <CodeMirror
+            code={formatEnv(env)}
+            onChange={changeEnv}
+            mode={isHelm ? 'yaml' : 'javascript'}
+          />
         </Dialog>
       );
     }
