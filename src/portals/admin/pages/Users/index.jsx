@@ -61,7 +61,7 @@ export default class Users extends Component {
     const { selectedGroupIds } = userStore;
     return selectedGroupIds.includes(node.key)
       ? this.renderGroupTitle(node, t)
-      : node.title;
+      : t(node.title);
   };
 
   renderHandleGroupNode = ({ key }) => {
@@ -94,7 +94,7 @@ export default class Users extends Component {
   renderGroupTitle = ({ title, key }, t) => (
     <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
       <span key={`title-${key}-${title}`} className={styles.groupTitle}>
-        {title}
+        {t(title)}
       </span>
       <Popover
         portal

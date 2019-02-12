@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
-import { t } from 'i18next';
 import { sleep } from 'utils';
 import Store from '../Store';
 
@@ -14,16 +13,21 @@ const sortModule = id => (a, b) => {
   return numA - numB;
 };
 
+const defaultCheck = {
+  type: KeyFeatureAll,
+  name: 'All'
+};
+
 export default class RoleStore extends Store {
   @observable roles = [];
 
   @observable selectedRole = {};
 
-  @observable selectedFeatureModule = {};
+  @observable selectedFeatureModule = { ...defaultCheck };
 
   @observable isLoading = false;
 
-  @observable bingActions = [];
+  @observable bindActions = [];
 
   @observable moduleTreeData = [];
 
@@ -83,14 +87,14 @@ export default class RoleStore extends Store {
 
   @action
   getModuleTreeData = () => {
-    const { modules } = this;
     const data = [
       {
         key: KeyFeatureAll,
-        title: t('All')
+        title: 'All'
       }
     ];
-    data[0].children = modules
+
+    data[0].children = this.modules
       .slice()
       .sort(sortModule('module_id'))
       .map(item => ({
@@ -110,53 +114,51 @@ export default class RoleStore extends Store {
   };
 
   @action
-  getFeatureActionData = (feature_id, name) => {
-    const data = [
-      {
-        key: KeyFeatureAll,
-        title: t('All actions'),
-        children: [
-          {
-            key: feature_id,
-            title: name,
-            children: this.actions
-              .filter(item => feature_id === item.feature_id)
-              .map(item => ({
-                key: item.action_bundle_id,
-                title: item.action_bundle_name
-              }))
-          }
-        ]
-      }
-    ];
-    return data;
-  };
+  getFeatureActionData = (feature_id, name) => [
+    {
+      key: KeyFeatureAll,
+      title: 'All actions',
+      children: [
+        {
+          key: feature_id,
+          title: name,
+          children: this.actions
+            .filter(item => feature_id === item.feature_id)
+            .map(item => ({
+              key: item.action_bundle_id,
+              title: item.action_bundle_name
+            }))
+        }
+      ]
+    }
+  ];
 
   @action
   reset = () => {
     this.isLoading = true;
     this.roles = [];
     this.selectedRole = {};
-    this.bingActions = [];
+    this.bindActions = [];
     this.moduleTreeData = [];
     this.modules = [];
     this.features = [];
     this.selectedRoleKeys = [];
     this.selectedActionKeys = [];
-    this.selectedFeatureModule = {};
+    Object.assign(this.selectedFeatureModule, defaultCheck);
     this.handelType = '';
   };
 
   @action
-  onSelectRole = async keys => {
-    const key = _.first(keys);
+  onSelectRole = async (keys = []) => {
     if (_.isEmpty(keys)) {
       this.selectedRole = {};
     } else {
-      await this.fetchRoleModule(_.find(keys));
-      const roles = _.filter(this.roles, role => role.role_id === key);
+      const roleKey = _.first(keys);
+
+      await this.fetchRoleModule(roleKey);
+      const roles = _.filter(this.roles, role => role.role_id === roleKey);
       this.selectedRole = _.first(roles);
-      this.onSelectModule([]);
+      this.onSelectModule(['all']);
       this.selectedActionKeys = [];
     }
     this.selectedRoleKeys = keys;
@@ -170,7 +172,7 @@ export default class RoleStore extends Store {
 
   getSelectType = (keys, key) => {
     if (_.isEmpty(keys)) {
-      this.selectedFeatureModule = {};
+      Object.assign(this.selectedFeatureModule, defaultCheck);
       return '';
     }
 
@@ -192,7 +194,7 @@ export default class RoleStore extends Store {
     const data = [
       {
         key: KeyFeatureAll,
-        title: t('All actions'),
+        title: 'All actions',
         children: this.features
           .slice()
           .sort(sortModule('feature_id'))
@@ -223,7 +225,7 @@ export default class RoleStore extends Store {
         actionKeys = _.concat(actionKeys, f.checked_action_id);
       }
     });
-    this.selectedActionKeys[index] = actionKeys;
+    this.selectedActionKeys[index] = actionKeys.filter(Boolean);
   };
 
   @action
@@ -257,7 +259,7 @@ export default class RoleStore extends Store {
     const { name, type } = this.selectedFeatureModule;
 
     if (type === KeyFeatureAll) {
-      this.bingActions = this.modules
+      this.bindActions = this.modules
         .slice()
         .sort(sortModule('module_id'))
         .map((module, index) => {
@@ -283,7 +285,7 @@ export default class RoleStore extends Store {
         module: moduleItem,
         features: moduleItem.feature
       });
-      this.bingActions = [
+      this.bindActions = [
         {
           name,
           data_level: moduleItem.data_level,
@@ -297,7 +299,7 @@ export default class RoleStore extends Store {
         module: moduleItem,
         features: this.features.slice()
       });
-      this.bingActions = [
+      this.bindActions = [
         {
           name,
           data_level: moduleItem.data_level,
@@ -310,24 +312,22 @@ export default class RoleStore extends Store {
   };
 
   @action
-  onSelectModule = keys => {
+  onSelectModule = (keys = []) => {
     const key = _.first(keys);
     this.selectedModuleKeys = keys;
     const type = this.getSelectType(keys, key);
+
     if (type === KeyFeatureAll) {
-      this.selectedFeatureModule = {
-        type: KeyFeatureAll,
-        name: t('All')
-      };
+      Object.assign(this.selectedFeatureModule, defaultCheck);
     } else if (type === TypeModule) {
       const module = _.find(this.modules, { module_id: key });
       if (!module) {
         return null;
       }
-      this.selectedFeatureModule = {
+      Object.assign(this.selectedFeatureModule, {
         type: TypeModule,
         name: module.module_name
-      };
+      });
       this.selectedModuleId = module.module_id;
       this.features = module.feature;
     } else if (type === TypeFeature) {
@@ -336,13 +336,15 @@ export default class RoleStore extends Store {
       const featureId = _.first(names);
       const module = _.find(this.modules, { module_id: moduleId });
       const feature = _.find(module.feature, { feature_id: featureId });
-      this.selectedFeatureModule = {
+      Object.assign(this.selectedFeatureModule, {
         type: TypeFeature,
         name: feature.feature_name
-      };
+      });
+
       this.features = [feature];
       this.selectedModuleId = module.module_id;
     }
+
     this.getActionTreeData();
   };
 

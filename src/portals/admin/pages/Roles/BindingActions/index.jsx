@@ -21,7 +21,7 @@ export default class BindingActions extends Component {
 
   render() {
     const { roleStore, t } = this.props;
-    const { selectedFeatureModule, isLoading, bingActions } = roleStore;
+    const { selectedFeatureModule, isLoading, bindActions } = roleStore;
 
     if (_.isEmpty(selectedFeatureModule)) {
       return null;
@@ -32,10 +32,10 @@ export default class BindingActions extends Component {
     return (
       <div className={styles.main}>
         <div>
-          {t('Selected')}： <strong>「{name}」</strong>
+          {t('Selected')}： <strong>「{t(name)}」</strong>
         </div>
         <Loading isLoading={isLoading}>
-          {bingActions.map((data, index) => (
+          {bindActions.map((data, index) => (
             <ActionGroup
               roleStore={roleStore}
               key={`${data.name}-${index}`}

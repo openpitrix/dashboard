@@ -24,9 +24,8 @@ import styles from './index.scss';
 }))
 @observer
 export default class Roles extends Component {
-  async componentDidMount() {
-    const { roleStore } = this.props;
-    await roleStore.fetchAll();
+  componentDidMount() {
+    this.props.roleStore.fetchAll();
   }
 
   componentWillUnmount() {

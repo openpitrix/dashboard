@@ -28,13 +28,11 @@ exports[`Base/Tree basic render 1`] = `
     </span>
     <span
       class="rc-tree-node-content-wrapper rc-tree-node-content-wrapper-close"
-      title="parent 1"
+      title=""
     >
       <span
         class="rc-tree-title"
-      >
-        parent 1
-      </span>
+      />
     </span>
   </li>
 </ul>
