@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.5"></a>
+## [0.3.5](https://github.com/openpitrix/dashboard/compare/v0.3.4...v0.3.5) (2019-02-12)
+
+
+### Bug Fixes
+
+* Admin user filterList ([1ce8426](https://github.com/openpitrix/dashboard/commit/1ce8426))
+* App info screenshots error ([#741](https://github.com/openpitrix/dashboard/issues/741)) ([75b85e9](https://github.com/openpitrix/dashboard/commit/75b85e9))
+* Cluster page actions failed due to tableAction mixin ([#740](https://github.com/openpitrix/dashboard/issues/740)) ([6dfd12f](https://github.com/openpitrix/dashboard/commit/6dfd12f))
+* Create runtime credential not reset last credential ([#763](https://github.com/openpitrix/dashboard/issues/763)) ([6e2daf4](https://github.com/openpitrix/dashboard/commit/6e2daf4))
+* Deploy and runtime page api query ([#710](https://github.com/openpitrix/dashboard/issues/710)) ([9691a21](https://github.com/openpitrix/dashboard/commit/9691a21))
+* Deploy app show note link when no runtimes ([#784](https://github.com/openpitrix/dashboard/issues/784)) ([3dfe90e](https://github.com/openpitrix/dashboard/commit/3dfe90e))
+* Fetch runtime credential ([#725](https://github.com/openpitrix/dashboard/issues/725)) ([a7b83fa](https://github.com/openpitrix/dashboard/commit/a7b83fa))
+* Pages dashboard link change to  toRoute ([#711](https://github.com/openpitrix/dashboard/issues/711)) ([c2d6824](https://github.com/openpitrix/dashboard/commit/c2d6824))
+* Portal review issues ([#709](https://github.com/openpitrix/dashboard/issues/709)) ([ffc9ea5](https://github.com/openpitrix/dashboard/commit/ffc9ea5))
+* Provider interface method modify by new api ([#721](https://github.com/openpitrix/dashboard/issues/721)) ([9f3d33e](https://github.com/openpitrix/dashboard/commit/9f3d33e))
+* Role api ([#774](https://github.com/openpitrix/dashboard/issues/774)) ([f5c7493](https://github.com/openpitrix/dashboard/commit/f5c7493))
+* Sandbox and user instances query for dev ([#771](https://github.com/openpitrix/dashboard/issues/771)) ([4fd7363](https://github.com/openpitrix/dashboard/commit/4fd7363))
+* SideNav routes ([#699](https://github.com/openpitrix/dashboard/issues/699)) ([0cf3061](https://github.com/openpitrix/dashboard/commit/0cf3061))
+* **role mgmt:** Expand all module actions when switch role ([#791](https://github.com/openpitrix/dashboard/issues/791)) ([9c0530f](https://github.com/openpitrix/dashboard/commit/9c0530f))
+* User get role and portal by new api ([#775](https://github.com/openpitrix/dashboard/issues/775)) ([3ff2eef](https://github.com/openpitrix/dashboard/commit/3ff2eef))
+* User or sandbox instance detail page link ([#734](https://github.com/openpitrix/dashboard/issues/734)) ([72771a9](https://github.com/openpitrix/dashboard/commit/72771a9))
+* User portal issues ([#722](https://github.com/openpitrix/dashboard/issues/722)) ([f957879](https://github.com/openpitrix/dashboard/commit/f957879))
+* User portal top nav runtime label ([#764](https://github.com/openpitrix/dashboard/issues/764)) ([09b4de1](https://github.com/openpitrix/dashboard/commit/09b4de1))
+* Version review and  ISV apply review error ([#739](https://github.com/openpitrix/dashboard/issues/739)) ([1a3218f](https://github.com/openpitrix/dashboard/commit/1a3218f))
+
+
+### Features
+
+* Add admin user and role mgmt pages ([#747](https://github.com/openpitrix/dashboard/issues/747)) ([d9a8276](https://github.com/openpitrix/dashboard/commit/d9a8276))
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://github.com/openpitrix/dashboard/compare/v0.3.3...v0.3.4) (2019-01-22)
 
