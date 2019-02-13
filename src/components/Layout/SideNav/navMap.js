@@ -366,20 +366,19 @@ export const userMenus = portal => [
     name: 'Payment',
     link: '#',
     iconName: 'creditcard',
-    disabled: true,
-    divider: true // show divide line
+    disabled: true
   },
   {
     name: portal === 'user' ? 'User runtime' : 'Testing env',
     link: toRoute(routes.portal.runtimes, { portal }),
     iconName: 'image',
-    userPortalShow: true
+    userPortalShow: true,
+    only: ['isv', 'dev', 'admin']
   },
   {
     name: 'SSH Keys',
     link: toRoute(routes.profile, { type: 'ssh' }),
     iconName: 'ssh',
-    divider: true,
     only: ['user']
   }
 ];

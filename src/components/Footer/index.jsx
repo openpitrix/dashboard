@@ -54,7 +54,7 @@ export class Footer extends PureComponent {
                  <span className={styles.dot} />
                  <a href="javascript:void(0)">{t('Terms')}</a> */}
               </li>
-              <li>OpenPitrix &copy; 2018</li>
+              <li>OpenPitrix &copy; 2019</li>
               <li>
                 <a
                   href="#"

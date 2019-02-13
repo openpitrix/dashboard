@@ -23,10 +23,10 @@
       font-size: $size-medium;
       line-height: $footer-height;
       text-transform: uppercase;
-      :global {
-        img {
-          height: 16px;
-        }
+
+      img {
+        height: 16px;
+        vertical-align: middle;
       }
     }
     .terms {

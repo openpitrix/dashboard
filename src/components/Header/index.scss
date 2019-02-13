@@ -26,14 +26,37 @@ $profile-hover-color: #efe6f8;
     margin: 0 auto;
   }
 
-  .logo {
+  .logoIcon {
     float: left;
-    width: auto;
-    height: $logo-height;
     display: inline-block;
-    margin-top: $header-height / 2;
-    transform: translateY(-50%);
-    vertical-align: middle;
+    margin-top: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: $N500;
+
+    .icon {
+      margin: 7px;
+      cursor: pointer;
+
+      svg {
+        --primary-color: #{$Y200};
+        --secondary-color: #{$N0};
+      }
+    }
+  }
+
+  .logoName {
+    display: inline-block;
+    margin: 14px 12px;
+    line-height: 20px;
+    font-size: 14px;
+    color: $N0;
+    cursor: pointer;
+  }
+
+  .logo {
+    margin: 4px;
   }
 
   .search {
@@ -101,12 +124,11 @@ $profile-hover-color: #efe6f8;
     margin: 16px 0;
     line-height: 16px;
     font-size: 12px;
-    color: $N0;
+    color: $Y100;
     font-weight: 500;
-    opacity: 0.9;
 
-    &:hover{
-      opacity: 1;
+    &:hover {
+      color: $Y65;
     }
   }
 
@@ -126,7 +148,8 @@ $profile-hover-color: #efe6f8;
 
       .icon {
         float: right;
-        margin-left: 2px;
+        margin-left: 4px;
+        margin-top: 2px;
         svg {
           --primary-color: #{$N65};
           --secondary-color: #{$N65};
@@ -145,33 +168,14 @@ $profile-hover-color: #efe6f8;
   }
 
   :global{
-    .pi-popover-popper{
-      margin-left: -95px !important;
-      margin-top: 6px !important;
+    .pi-popover-popper {
+      margin-left: -145px !important;
+      margin-top: 12px !important;
     }
   }
 }
 
 .menusHeader {
-  .logoIcon {
-    float: left;
-    display: inline-block;
-    margin-top: 12px;
-    width: 24px;
-    height: 24px;
-    border-radius: 2px;
-    background-color: $N500;
-
-    .icon {
-      margin: 7px;
-
-      svg {
-        --primary-color: #{$N0};
-        --secondary-color: #{$Y200};
-      }
-    }
-  }
-
   .menus {
     display: inline-block;
     margin-left: 8px;
@@ -182,13 +186,13 @@ $profile-hover-color: #efe6f8;
       font-size: 12px;
       line-height: 16px;
       color: $N65;
+      font-weight: 500;
 
       &:hover {
         color: $N30;
       }
 
       &.active {
-        font-weight: 500;
         color: $N10;
       }
     }

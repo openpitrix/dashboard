@@ -1,5 +1,5 @@
-$content-width: 1280px;
-$page-min-width: 1280px;
+$content-width: 1276px;
+$page-min-width: 1276px;
 $menu-nav-width: 64px;
 $menu-sub-nav-width: 192px;
 $menu-width: $menu-nav-width + $menu-sub-nav-width;
@@ -8,7 +8,7 @@ $columns: 12;
 $max-center-page-width: 1200px;
 $min-center-page-margin: 30px;
 
-$grid-gap: 24px;  // gap for normal layout
+$grid-gap: 20px;  // gap for normal layout
 $grid-gap-dev: 20px;  // gap for dev/admin layout
 //$grid-width: 72px;
 $grid-width: calc(100% + #{$grid-gap}) / 12;
@@ -20,10 +20,11 @@ $layout-margin: 156px;
 $nav-width: 264px;
 $header-height: 48px;
 $title-banner-height: 108px;
+$search-banner-height: 240px;
 $layout-top: $header-height + $title-banner-height + 40px;
 $tabNavs-height: 48px;
 $banner-height: 400px;
-$footer-height: 64px;
+$footer-height: 72px;
 $footer-padding-top: 84px;
 $content-height: calc(100vh - #{$footer-height} - #{$footer-padding-top});
 $base-margin: 24px;
@@ -42,3 +43,10 @@ $app-card-height: 207px;
 // logo
 $logo-width: 142px;
 $logo-height: 16px;
+
+// screenshots picture setting
+$picture-width: 290px;
+$picture-height: 200px;
+$picture-margin: 10px;
+
+$menu-layer-width: 180px;

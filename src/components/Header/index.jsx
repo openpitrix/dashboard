@@ -71,7 +71,12 @@ export class Header extends Component {
       <div className={styles.user}>
         <Popover content={<MenuLayer />}>
           {user.username}
-          <Icon name="caret-down" className={styles.icon} type="dark" />
+          <Icon
+            name="caret-down"
+            className={styles.icon}
+            type="dark"
+            size={12}
+          />
         </Popover>
       </div>
     );
@@ -89,25 +94,20 @@ export class Header extends Component {
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
-          {user.isLoggedIn() ? (
-            <Link className={styles.logoIcon} to="/">
-              <Icon
-                className={styles.icon}
-                name="op-logo"
-                type="white"
-                size={16}
-              />
-            </Link>
-          ) : (
-            <NavLink className={styles.logo} to="/">
-              <img src="/logo_light.svg" height="100%" />
-            </NavLink>
-          )}
+          <Link to="/">
+            <label className={styles.logoIcon}>
+              <img src="/op-logo.svg" className={styles.logo} />
+              {/* <Icon className={styles.icon} name="op-logo" size={16} /> */}
+            </label>
+            {!user.isLoggedIn() && (
+              <label className={styles.logoName}>OpenPitrix 应用中心</label>
+            )}
+          </Link>
 
           {this.renderMenus()}
           {this.renderMenuBtns()}
 
-          {user.isNormal && (
+          {(user.isNormal || !user.isLoggedIn()) && (
             <Fragment>
               {/*  <Icon
                 name="mail"

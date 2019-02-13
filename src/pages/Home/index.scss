@@ -3,10 +3,11 @@
 .content {
   position: relative;
   min-height: $content-height;
-  top: 280px;
+  top: $header-height + $search-banner-height;
+  margin: 0 auto;
 
   &.fixNav {
-    top: $header-height + 30 *2 + 52;
+    top: $header-height + $title-banner-height;
   }
 
   .homeLoad {
@@ -19,22 +20,18 @@
 
   .nav {
     position: fixed;
-    top: 278px;
+    top: $header-height + $search-banner-height;
     width: $nav-width;
+    margin-top: 32px;
     height: 100%;
 
     &.fixNav {
-      top: $header-height + 30 *2 + 52;
+      top: $header-height + $title-banner-height;
     }
 
-    padding-top: 32px;
-
     .caption {
-      margin-bottom: 14px;
-      line-height: 20px;
-      font-size: $font16;
-      font-weight: bold;
-      color: $N500;
+      @include title-font($font-size: 16px);
+      margin-bottom: 12px;
     }
 
     .menu {
@@ -46,19 +43,21 @@
 
       .item {
         margin-bottom: 12px;
-        height: 20px;
-        line-height: 20px;
+
+        line-height: 28px;
+        font-size: 14px;
         list-style: none;
         color: $N400;
+        cursor: pointer;
 
-        &:hover, &.active {
+        &:hover,
+        &.active {
           color: $P75;
-          font-weight: bold;
-          cursor: pointer;
+          font-weight: 500;
 
           svg {
-            --primary-color: #{$P75};
-            --secondary-color: #{$P75};
+            --primary-color: #{$P300};
+            --secondary-color: #{$P30};
           }
         }
 

@@ -22,7 +22,8 @@ const cateLatest = 'latest';
 @inject(({ rootStore }) => ({
   rootStore,
   categoryStore: rootStore.categoryStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  user: rootStore.user
 }))
 @observer
 export default class Home extends Component {
@@ -61,7 +62,7 @@ export default class Home extends Component {
     });
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps) {
     const { rootStore, appStore, location } = this.props;
 
     if (prevProps.location.search !== location.search) {
@@ -131,13 +132,13 @@ export default class Home extends Component {
   };
 
   renderCateMenu() {
-    const { categoryStore, rootStore, t } = this.props;
+    const { categoryStore, user, t } = this.props;
     const { categories } = categoryStore;
 
     return (
       <div
         className={classnames(styles.nav, {
-          [styles.fixNav]: rootStore.fixNav
+          [styles.fixNav]: user.isLoggedIn()
         })}
       >
         <div className={styles.navGrp}>
@@ -184,10 +185,9 @@ export default class Home extends Component {
 
   render() {
     const {
-      rootStore, appStore, categoryStore, t
+      appStore, categoryStore, user, t
     } = this.props;
     const { pageLoading } = this.state;
-    const { fixNav } = rootStore;
     const {
       apps,
       isProgressive,
@@ -206,13 +206,16 @@ export default class Home extends Component {
 
     return (
       <Layout
-        className={classnames(styles.content, { [styles.fixNav]: fixNav })}
+        className={classnames(styles.content, {
+          [styles.fixNav]: user.isLoggedIn()
+        })}
         banner={
           <Banner
             title="App Store"
             description={t('APP_STORE_DESC', { total: countStoreApps })}
             hasSearch
-            stretch
+            shrink={user.isLoggedIn()}
+            stretch={!user.isLoggedIn()}
           />
         }
       >
@@ -230,7 +233,7 @@ export default class Home extends Component {
               title={categoryTitle}
               search={this.searchWord}
               isLoading={pageLoading}
-              fixNav={fixNav}
+              fixNav={user.isLoggedIn()}
             />
           </InfiniteScroll>
 

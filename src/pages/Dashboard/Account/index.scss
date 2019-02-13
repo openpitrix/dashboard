@@ -80,7 +80,7 @@
   }
 
   .userInfo {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 
     .name {
       margin-bottom: 4px;
@@ -91,10 +91,15 @@
     }
 
     .loginInfo {
-      margin-bottom: 21px;
       line-height: 20px;
       font-size: 12px;
       color: $N65;
     }
   }
+}
+
+.userAccount {
+  top: 188px;
+  margin: 32px auto;
+  width: 420px;
 }

@@ -7,12 +7,14 @@ $speed: 0.2s;
   width: 100%;
   z-index: 2;
   top: $header-height;
-  padding: 30px 0;
   background-color: $N500;
   transition: all $speed ease-in-out;
 
   &.stretch {
-    padding: 64px 0;
+    .wrapper {
+      padding: 68px 0;
+      height: $search-banner-height;
+    }
     .search {
       float: none;
       top: 0;
@@ -20,7 +22,6 @@ $speed: 0.2s;
   }
 
   &.shrink {
-    padding: 30px 0 !important;
     .search {
       transition: all $speed ease-in-out;
       float: right;
@@ -31,9 +32,12 @@ $speed: 0.2s;
   .wrapper {
     width: $content-width;
     margin: 0 auto;
+    padding: 28px 0;
+    height: $title-banner-height;
 
     .words {
       display: inline-block;
+      height: 52px;
     }
   }
 
@@ -63,10 +67,9 @@ $speed: 0.2s;
   }
 
   .name {
-    margin-bottom: 4px;
     font-size: 20px;
     font-weight: 500;
-    line-height: 24px;
+    line-height: 32px;
     letter-spacing: 0;
     color: $N0;
   }
