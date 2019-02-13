@@ -1,7 +1,7 @@
 // websocket client wrapper
 // see compat list: https://caniuse.com/#search=websocket
 
-import EventEmitter from 'events';
+import Mitt from 'mitt';
 import { get, isEmpty } from 'lodash';
 
 let inst = null;
@@ -13,6 +13,8 @@ const defaultOptions = {
 };
 let reopenCount = 0;
 
+const emitter = new Mitt();
+
 export const getSock = (sockUrl, token) => {
   if (inst && inst instanceof SockClient) {
     return inst;
@@ -23,7 +25,7 @@ export const getSock = (sockUrl, token) => {
   return inst;
 };
 
-export default class SockClient extends EventEmitter {
+export default class SockClient {
   static composeEndpoint = (socketUrl, accessToken = '') => {
     const re = /wss?:\/\/([^\\?]+)/;
     const suffix = `?sid=${accessToken}`;
@@ -37,7 +39,6 @@ export default class SockClient extends EventEmitter {
   };
 
   constructor(endpoint, options = {}) {
-    super();
     this.endpoint = endpoint;
     this.options = Object.assign(defaultOptions, options);
 
@@ -82,8 +83,7 @@ export default class SockClient extends EventEmitter {
           data = JSON.parse(data);
         }
 
-        // console.log('sock message: ', data);
-        this.emit(`ops-resource`, data);
+        emitter.emit(`ops-resource`, data);
       };
     }
 
@@ -91,7 +91,7 @@ export default class SockClient extends EventEmitter {
       this.client.onclose = () => {
         // if sock will close, try to keep alive
         if (reopenCount < this.options.reopenLimit) {
-          setTimeout(this.setUp.bind(this), 1500);
+          setTimeout(this.setUp.bind(this), 2000);
           reopenCount++;
         }
       };
@@ -112,7 +112,7 @@ export default class SockClient extends EventEmitter {
   }
 
   listenToJob(cb) {
-    this.on('ops-resource', (payload = {}) => {
+    emitter.on('ops-resource', (payload = {}) => {
       const { type } = payload;
       const { resource = {} } = payload;
 
@@ -128,5 +128,7 @@ export default class SockClient extends EventEmitter {
     if (!isEmpty(this._events)) {
       this._events = {};
     }
+
+    emitter.off('*');
   }
 }
