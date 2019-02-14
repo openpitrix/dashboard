@@ -27,7 +27,6 @@ export class Layout extends Component {
     isCenterPage: PropTypes.bool,
     isHome: PropTypes.bool,
     isLoading: PropTypes.bool,
-    listenToJob: PropTypes.func,
     loadClass: PropTypes.string,
     noNotification: PropTypes.bool,
     noSubMenu: PropTypes.bool,
@@ -38,7 +37,6 @@ export class Layout extends Component {
   static defaultProps = {
     noNotification: false,
     backBtn: null,
-    listenToJob: noop,
     pageTitle: '',
     noSubMenu: false,
     isHome: false,

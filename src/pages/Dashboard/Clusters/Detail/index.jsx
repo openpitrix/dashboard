@@ -81,25 +81,25 @@ export default class ClusterDetail extends Component {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
 
-    rootStore.listenToJob(this.handleJobs);
+    rootStore.sock.listenToJob(this.handleJobs);
   }
 
   componentWillUnmount() {
     const { rootStore, clusterStore, clusterDetailStore } = this.props;
-    rootStore.cleanSock();
+    rootStore.sock.unlisten(this.handleJobs);
     clusterStore.reset();
     clusterDetailStore.reset();
   }
 
   handleJobs = async ({
-    op, rtype, rid, values = {}
+    type, resource = {}, rid, values = {}
   }) => {
+    const { rtype } = resource;
+    const op = `${type}:${rtype}`;
     const { clusterStore, clusterDetailStore, match } = this.props;
     const { clusterId } = match.params;
     const { jobs } = clusterStore;
-
     const status = _.pick(values, ['status', 'transition_status']);
-    // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
 
     if (op === 'create:job' && values.cluster_id === clusterId) {
       // new job

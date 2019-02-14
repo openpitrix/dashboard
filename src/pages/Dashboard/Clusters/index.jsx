@@ -44,7 +44,7 @@ export default class Clusters extends Component {
 
   componentWillUnmount() {
     const { rootStore, clusterStore } = this.props;
-    rootStore.cleanSock();
+    rootStore.sock.unlisten(this.handleJobs);
     clusterStore.reset();
   }
 
@@ -73,16 +73,17 @@ export default class Clusters extends Component {
       noLimit: true
     });
 
-    rootStore.listenToJob(this.handleJobs);
+    rootStore.sock.listenToJob(this.handleJobs);
   };
 
   handleJobs = async ({
-    op, rtype, rid, values = {}
+    type, resource = {}, rid, values = {}
   }) => {
+    const { rtype } = resource;
+    const op = `${type}:${rtype}`;
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
     const status = _.pick(values, ['status', 'transition_status']);
-    // const logJobs = () => clusterStore.info(`${op}: ${rid}, ${JSON.stringify(status)}`);
     const clusterIds = clusterStore.clusters.map(cl => cl.cluster_id);
 
     if (op === 'create:job' && clusterIds.includes(values.cluster_id)) {

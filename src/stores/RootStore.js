@@ -40,18 +40,6 @@ export default class RootStore extends Store {
     this.state = initialState;
   }
 
-  listenToJob = cb => {
-    if (this.sock) {
-      this.sock.listenToJob(cb);
-    }
-  };
-
-  cleanSock = () => {
-    if (this.sock) {
-      this.sock.clean();
-    }
-  };
-
   @action
   setNavFix = fixNav => {
     if (Date.now() - this.lastSetFixStamp < 500) {

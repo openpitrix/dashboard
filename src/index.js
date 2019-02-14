@@ -25,6 +25,9 @@ if (typeof window !== 'undefined') {
     ? getSock(store.socketUrl, user.accessToken)
     : null;
 
+  // fixme
+  window._getSock = () => store.sock;
+
   ReactDOM.render(
     <I18nextProvider i18n={i18n}>
       <MobxProvider rootStore={store}>

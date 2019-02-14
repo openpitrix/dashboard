@@ -14,6 +14,7 @@ const defaultOptions = {
 let reopenCount = 0;
 
 const emitter = new Mitt();
+const evName = 'ops-resource';
 
 export const getSock = (sockUrl, token) => {
   if (inst && inst instanceof SockClient) {
@@ -71,35 +72,26 @@ export default class SockClient {
   }
 
   attachEvents() {
-    // todo
-    if (!this.client.onopen) {
-      this.client.onopen = ev => console.log('open socket: ', ev);
-    }
+    this.client.onopen = () => console.log('open socket: ', this);
 
-    if (!this.client.onmessage) {
-      this.client.onmessage = message => {
-        let data = message.data || {};
-        if (typeof data === 'string') {
-          data = JSON.parse(data);
-        }
+    this.client.onmessage = message => {
+      let data = message.data || {};
+      if (typeof data === 'string') {
+        data = JSON.parse(data);
+      }
 
-        emitter.emit(`ops-resource`, data);
-      };
-    }
+      emitter.emit(evName, data);
+    };
 
-    if (!this.client.onclose) {
-      this.client.onclose = () => {
-        // if sock will close, try to keep alive
-        if (reopenCount < this.options.reopenLimit) {
-          setTimeout(this.setUp.bind(this), 2000);
-          reopenCount++;
-        }
-      };
-    }
+    this.client.onclose = () => {
+      // if sock will close, try to keep alive
+      if (reopenCount < this.options.reopenLimit) {
+        setTimeout(this.setUp.bind(this), 2000);
+        reopenCount++;
+      }
+    };
 
-    if (!this.client.onerror) {
-      this.client.onerror = ev => console.error('sock err: ', ev);
-    }
+    this.client.onerror = ev => console.error('sock err: ', ev);
   }
 
   send(data) {
@@ -112,9 +104,8 @@ export default class SockClient {
   }
 
   listenToJob(cb) {
-    emitter.on('ops-resource', (payload = {}) => {
-      const { type } = payload;
-      const { resource = {} } = payload;
+    emitter.on(evName, (payload = {}) => {
+      const { type, resource = {} } = payload;
 
       cb({
         op: `${type}:${resource.rtype}`,
@@ -124,11 +115,13 @@ export default class SockClient {
     });
   }
 
-  clean() {
+  unlisten(cb) {
     if (!isEmpty(this._events)) {
       this._events = {};
     }
 
-    emitter.off('*');
+    if (typeof cb === 'function') {
+      emitter.off(evName, cb);
+    }
   }
 }
