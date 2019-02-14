@@ -11,21 +11,25 @@ $speed: 0.2s;
   transition: all $speed ease-in-out;
 
   &.stretch {
+    height: $search-banner-height;
     .wrapper {
       padding: 68px 0;
       height: $search-banner-height;
     }
     .search {
+      transition: all $speed ease-in-out;
       float: none;
-      top: 0;
+      bottom: 0;
     }
   }
 
   &.shrink {
+    height: $title-banner-height;
+
     .search {
       transition: all $speed ease-in-out;
       float: right;
-      top: -15px;
+      bottom: 10px;
     }
   }
 

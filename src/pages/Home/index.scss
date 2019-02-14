@@ -21,7 +21,6 @@
   .nav {
     position: fixed;
     top: $header-height + $search-banner-height;
-    width: $nav-width;
     margin-top: 32px;
     height: 100%;
 
@@ -74,8 +73,6 @@
   }
 
   .apps {
-    margin-left: $nav-width;
-    padding-left: 24px;
     padding-bottom: $page-bottom;
   }
 }

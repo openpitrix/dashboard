@@ -138,6 +138,7 @@
   "Activated": "已激活",
 
   "In-review": "审核中",
+  "in-review": "审核中",
   "public": "公共",
   "private": "私有",
   "Basic Settings": "基本设置",
@@ -290,6 +291,7 @@
   "PURCHASED_DESC": "所有你购买过的应用都会展示在此，包括应用对应的实例。",
   "MY_RUNTIMES_DESC": "平台同时支持多种云环境，可以在这里进行统一管理。",
   "UPGRADE_PROVIDER": "升级成为「应用提供商」",
+  "Become App Provider": "成为应用服务商",
   "EMPTY_APP_TIPS": "如果OpenPitrix管理员设置完毕仓库，所有的应用会自动导入。作为OpenPitrix用户，可以浏览所有公有应用，可以通过标签和类别来过滤应用。",
   "EMPTY_REPO_TIPS": "应用开发者可以非常轻松的创建OpenPitrix规范的打包应用，该应用通过yaml或者json格式来描述，并可以上传应用到http服务器或者对象存储系统。",
   "EMPTY_CLUSTER_TIPS": "OpenPitrix管理应用的生命周期，贯穿始终。应用的状态(通常以集群方式运行)例如：阻塞，活跃，关闭，删除。如果管理员想停止集群，只需要告诉OpenPitrix， 它将帮助云运维人员完成后续工作。",
@@ -320,6 +322,7 @@
   "Back to user": "普通用户",
   "Back to developer": "开发中心",
   "App Center": "应用中心",
+  "QingCloud App Center": "QingCloud 应用中心",
   "Develop Center": "开发中心",
   "Provider Center": "服务商中心",
   "Manage Console": "管理控制台",

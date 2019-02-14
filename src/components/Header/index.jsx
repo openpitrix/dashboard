@@ -11,11 +11,19 @@ import routes, { toRoute, pathWithoutHeader } from 'routes';
 
 import styles from './index.scss';
 
-const LinkItem = ({ to, title }) => (
-  <NavLink to={to} exact activeClassName={styles.active}>
-    {title}
-  </NavLink>
-);
+const LinkItem = ({ to, title, path }) => {
+  const isActive = to === '/' ? ['/', '/apps/:appId'].includes(path) : path.startsWith(to);
+
+  return (
+    <NavLink
+      to={to}
+      exact
+      className={classnames({ [styles.active]: isActive })}
+    >
+      {title}
+    </NavLink>
+  );
+};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -34,7 +42,8 @@ export class Header extends Component {
   };
 
   renderMenus = () => {
-    const { t, user } = this.props;
+    const { t, user, match } = this.props;
+    const { path } = match;
 
     if (!user.isLoggedIn()) {
       return null;
@@ -42,15 +51,21 @@ export class Header extends Component {
 
     return (
       <div className={styles.menus}>
-        <LinkItem to="/" title={t('App Store')} />
-        <LinkItem to={toRoute(routes.portal.apps)} title={t('Purchased')} />
+        <LinkItem to="/" title={t('App Store')} path={path} />
+        <LinkItem
+          to={toRoute(routes.portal.apps)}
+          title={t('Purchased')}
+          path={path}
+        />
         <LinkItem
           to={toRoute(routes.portal.clusters)}
           title={t('My Instances')}
+          path={path}
         />
         <LinkItem
           to={toRoute(routes.portal.runtimes)}
           title={t('My Runtimes')}
+          path={path}
         />
       </div>
     );
@@ -100,7 +115,9 @@ export class Header extends Component {
               {/* <Icon className={styles.icon} name="op-logo" size={16} /> */}
             </label>
             {!user.isLoggedIn() && (
-              <label className={styles.logoName}>OpenPitrix 应用中心</label>
+              <label className={styles.logoName}>
+                {t('QingCloud App Center')}
+              </label>
             )}
           </Link>
 

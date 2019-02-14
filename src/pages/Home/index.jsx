@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { translate } from 'react-i18next';
 
 import Layout from 'portals/user/Layout';
+import { Grid, Section } from 'components/Layout';
 import { Icon } from 'components/Base';
 import Banner from 'components/Banner';
 import AppList from 'components/AppList';
@@ -34,12 +35,13 @@ export default class Home extends Component {
   async componentDidMount() {
     const { rootStore, appStore, categoryStore } = this.props;
 
-    rootStore.setNavFix(this.needFixNav);
-
     if (!(this.category || this.searchWord)) {
       this.threshold = this.getThreshold();
       window.onscroll = _.debounce(this.handleScroll, 100);
+    } else {
+      rootStore.setNavFix(true);
     }
+
     window.scroll({ top: 0 });
 
     await categoryStore.fetchAll({ noLimit: true });
@@ -77,7 +79,9 @@ export default class Home extends Component {
         category_id: !qs.cate || qs.cate === cateLatest ? '' : qs.cate
       });
 
-      rootStore.setNavFix(this.needFixNav);
+      if (!_.get(prevProps, 'location.search', '')) {
+        rootStore.setNavFix(this.needFixNav);
+      }
     }
   }
 
@@ -101,7 +105,8 @@ export default class Home extends Component {
   }
 
   getThreshold() {
-    const headerNode = document.querySelector('.header');
+    const headerNode = document.querySelector('.banner');
+
     if (headerNode) {
       return headerNode.clientHeight;
     }
@@ -132,13 +137,16 @@ export default class Home extends Component {
   };
 
   renderCateMenu() {
-    const { categoryStore, user, t } = this.props;
+    const {
+      rootStore, categoryStore, user, t
+    } = this.props;
     const { categories } = categoryStore;
+    const fixNav = rootStore.fixNav || user.isLoggedIn() || this.needFixNav;
 
     return (
       <div
         className={classnames(styles.nav, {
-          [styles.fixNav]: user.isLoggedIn()
+          [styles.fixNav]: fixNav
         })}
       >
         <div className={styles.navGrp}>
@@ -185,7 +193,7 @@ export default class Home extends Component {
 
   render() {
     const {
-      appStore, categoryStore, user, t
+      appStore, categoryStore, rootStore, user, t
     } = this.props;
     const { pageLoading } = this.state;
     const {
@@ -203,48 +211,53 @@ export default class Home extends Component {
       'name',
       ''
     );
+    const fixNav = rootStore.fixNav || user.isLoggedIn() || this.needFixNav;
 
     return (
       <Layout
         className={classnames(styles.content, {
-          [styles.fixNav]: user.isLoggedIn()
+          [styles.fixNav]: fixNav
         })}
         banner={
           <Banner
             title="App Store"
             description={t('APP_STORE_DESC', { total: countStoreApps })}
             hasSearch
-            shrink={user.isLoggedIn()}
-            stretch={!user.isLoggedIn()}
+            shrink={fixNav}
+            stretch={!fixNav}
           />
         }
       >
-        {this.renderCateMenu()}
-        <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
-          <InfiniteScroll
-            className={styles.apps}
-            pageStart={currentPage}
-            loadMore={loadMore}
-            isLoading={isLoading}
-            hasMore={Boolean(this.category || this.searchWord) && hasMore}
-          >
-            <AppList
-              apps={apps}
-              title={categoryTitle}
-              search={this.searchWord}
-              isLoading={pageLoading}
-              fixNav={user.isLoggedIn()}
-            />
-          </InfiniteScroll>
+        <Grid>
+          <Section size={3}>{this.renderCateMenu()}</Section>
+          <Section size={9}>
+            <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
+              <InfiniteScroll
+                className={styles.apps}
+                pageStart={currentPage}
+                loadMore={loadMore}
+                isLoading={isLoading}
+                hasMore={Boolean(this.category || this.searchWord) && hasMore}
+              >
+                <AppList
+                  apps={apps}
+                  title={categoryTitle}
+                  search={this.searchWord}
+                  isLoading={pageLoading}
+                  fixNav={fixNav}
+                />
+              </InfiniteScroll>
 
-          {isProgressive && (
-            <div className={styles.loading}>
-              <div className={styles.loadOuter}>
-                <div className={styles.loader} />
-              </div>
-            </div>
-          )}
-        </Loading>
+              {isProgressive && (
+                <div className={styles.loading}>
+                  <div className={styles.loadOuter}>
+                    <div className={styles.loader} />
+                  </div>
+                </div>
+              )}
+            </Loading>
+          </Section>
+        </Grid>
       </Layout>
     );
   }

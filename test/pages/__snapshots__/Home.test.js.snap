@@ -12,20 +12,44 @@ Array [
       class="wrapper"
     >
       <a
-        aria-current="true"
-        class="logo active"
         href="/"
       >
-        <img
-          height="100%"
-          src="/logo_light.svg"
-        />
+        <label
+          class="logoIcon"
+        >
+          <img
+            class="logo"
+            src="/op-logo.svg"
+          />
+        </label>
+        <label
+          class="logoName"
+        >
+          OpenPitrix 应用中心
+        </label>
       </a>
       <a
         aria-current="false"
         class="login"
         href="/login"
       />
+      <a
+        class="upgrade"
+        href="/user/provider/apply"
+      >
+        <span
+          class="icon icon-shield shield"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-shield qicon-white"
+          >
+            <use
+              href="#qui-shield"
+            />
+          </svg>
+        </span>
+      </a>
     </div>
   </div>,
   <div
@@ -163,7 +187,7 @@ Array [
             />
           </li>
           <li>
-            OpenPitrix © 2018
+            OpenPitrix © 2019
           </li>
           <li>
             <a

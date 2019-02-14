@@ -560,7 +560,7 @@ export default class VersionDetail extends Component {
         {hasOperate && (
           <div className={styles.operateBtns}>
             <Button
-              disabled={version.status === 'submitted'}
+              disabled={['submitted', 'in-review'].includes(version.status)}
               type="primary"
               onClick={() => this.handleVersion(handleType)}
             >

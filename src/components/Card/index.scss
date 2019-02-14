@@ -7,15 +7,14 @@ $card-height: 208px;
    float: left;
    display: inline-block;
    position: relative;
-   width: $card-width;
+   width: calc(33.3% - 13.3px);
    height: $card-height;
    padding: 32px 44px;
-   margin: 0 24px 24px 0;
+   margin: 0 20px 20px 0;
    border-radius: 2px;
    border: 1px solid $N0;
    background-color: $N0;
    transition: all .3s ease-in-out;
-   text-align: center;
    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
    cursor: pointer;
    overflow: hidden;
@@ -27,11 +26,15 @@ $card-height: 208px;
     margin: 0 auto 12px;
     transition:all 0.3s ease;
     position: relative;
+
+    img {
+      border-radius: 3px;
+    }
   }
   .name {
-    font-family: Roboto sans-serif;
     font-size: 14px;
-    color: #343945;
+    color: $N500;
+    font-weight: 500;
     text-align: center;
     line-height: 28px;
     margin-bottom: 8px;

@@ -111,7 +111,9 @@ export default class AppDetail extends Component {
         <div className={styles.number}>
           {t('Provider No')}: &nbsp; {vendorDetail.user_id || t('None')}
         </div>
-        <div className={styles.company}>{vendorDetail.company_name}</div>
+        <div className={styles.company}>
+          {vendorDetail.company_name || t('unknown')}
+        </div>
 
         <dl>
           <dt>{t('Evaluation stars')}</dt>
@@ -227,7 +229,7 @@ export default class AppDetail extends Component {
                   [styles.active]: selectVersion === item.version_id
                 })}
               >
-                {item.name}
+                {item.name || t('None')}
               </label>
             ))}
           </dd>

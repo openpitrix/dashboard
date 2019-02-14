@@ -117,24 +117,28 @@
   }
 }
 
-:global(.operate-menu) {
-  a {
-    color: $N300;
-  }
-  li,a,span {
-    display: block;
-    min-width: 105px;
-    padding: 0 12px;
-    height: 32px;
-    font-size: 12px;
-    line-height: 32px;
-    color: $N300;
-    background-color: $N0;
-    cursor: pointer;
-    transition: all $transition-speed;
-    &:hover {
-      color: $N500;
-      background-color: $N10;
+:global{
+  .operate-menu {
+    a {
+      color: $N300;
+    }
+
+    >li,>a,>span {
+      display: block;
+      min-width: 105px;
+      padding: 0 12px;
+      height: 32px;
+      font-size: 12px;
+      line-height: 32px;
+      color: $N300;
+      background-color: $N0;
+      cursor: pointer;
+      transition: all $transition-speed;
+
+      &:hover {
+        color: $N500;
+        background-color: $N10;
+      }
     }
 
     .icon {
