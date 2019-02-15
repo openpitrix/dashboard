@@ -45,7 +45,7 @@
   "Create role success": "角色创建成功",
   "Create_Role_Success_Tip": "新角色默认是停用状态，请完成权限设置后再启用。",
   "Do you sure to delete groupName": "您确定要删除组织 {{groupName}} 吗？",
-  "Do you sure to delete roleName": "您确定要删除组织 {{roleName}} 吗？",
+  "Do you sure to delete roleName": "您确定要删除角色 {{roleName}} 吗？",
   "Do you sure to leaveGroup groupName": "确定为选中的 {{names}} {{count}} 账号离开组织",
   "DELETE_GROUP_TIP": "提示：删除操作会将所有子级组织以及其绑定的用户关系",
   "Group name": "组织名称",
