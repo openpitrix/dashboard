@@ -1,58 +1,37 @@
 // websocket client wrapper
 // see compat list: https://caniuse.com/#search=websocket
 
-import EventEmitter from 'events';
+import Mitt from 'mitt';
 import { get, isEmpty } from 'lodash';
 
-let inst = null;
 let sockInst; // singleton socket client
 
-const readyStates = ['connecting', 'open', 'closing', 'closed'];
 const defaultOptions = {
   reopenLimit: 2
 };
 let reopenCount = 0;
 
-export const getSock = (sockUrl, token) => {
-  if (inst && inst instanceof SockClient) {
-    return inst;
-  }
-  inst = new SockClient(SockClient.composeEndpoint(sockUrl, token));
-  inst.setUp();
+const emitter = new Mitt();
+const evName = 'ops-resource';
 
-  return inst;
+export const getEndpoint = (port, token = '') => {
+  const { protocol } = location;
+  const ws = protocol === 'http:' ? 'ws:' : 'wss:';
+  // todo
+  const pathname = '/v1/io';
+  return `${ws}//127.0.0.1:${port}${pathname}?sid=${token}`;
 };
 
-export default class SockClient extends EventEmitter {
-  static composeEndpoint = (socketUrl, accessToken = '') => {
-    const re = /wss?:\/\/([^\\?]+)/;
-    const suffix = `?sid=${accessToken}`;
-    const matchParts = `${socketUrl}`.match(re);
-
-    if (!matchParts) {
-      throw Error(`Invalid socket url: ${socketUrl}`);
-    }
-
-    return `${matchParts[0]}${suffix}`;
-  };
-
+export default class SockClient {
   constructor(endpoint, options = {}) {
-    super();
     this.endpoint = endpoint;
     this.options = Object.assign(defaultOptions, options);
 
     if (!this.endpoint) {
       throw Error(`invalid websocket endpoint: ${this.endpoint}`);
     }
-    this.initClient();
-  }
 
-  getSockState(readyState) {
-    if (readyState === undefined) {
-      readyState = this.client.readyState;
-    }
-
-    return readyStates[readyState];
+    this.setUp();
   }
 
   initClient() {
@@ -70,36 +49,26 @@ export default class SockClient extends EventEmitter {
   }
 
   attachEvents() {
-    // todo
-    if (!this.client.onopen) {
-      this.client.onopen = ev => console.log('open socket: ', ev);
-    }
+    this.client.onopen = () => console.log('open socket: ', this);
 
-    if (!this.client.onmessage) {
-      this.client.onmessage = message => {
-        let data = message.data || {};
-        if (typeof data === 'string') {
-          data = JSON.parse(data);
-        }
+    this.client.onmessage = message => {
+      let data = message.data || {};
+      if (typeof data === 'string') {
+        data = JSON.parse(data);
+      }
 
-        // console.log('sock message: ', data);
-        this.emit(`ops-resource`, data);
-      };
-    }
+      emitter.emit(evName, data);
+    };
 
-    if (!this.client.onclose) {
-      this.client.onclose = () => {
-        // if sock will close, try to keep alive
-        if (reopenCount < this.options.reopenLimit) {
-          setTimeout(this.setUp.bind(this), 1500);
-          reopenCount++;
-        }
-      };
-    }
+    this.client.onclose = () => {
+      // if sock will close, try to keep alive
+      if (reopenCount < this.options.reopenLimit) {
+        setTimeout(this.setUp.bind(this), 2000);
+        reopenCount++;
+      }
+    };
 
-    if (!this.client.onerror) {
-      this.client.onerror = ev => console.error('sock err: ', ev);
-    }
+    this.client.onerror = ev => console.error('sock err: ', ev);
   }
 
   send(data) {
@@ -111,22 +80,13 @@ export default class SockClient extends EventEmitter {
     this.attachEvents();
   }
 
-  listenToJob(cb) {
-    this.on('ops-resource', (payload = {}) => {
-      const { type } = payload;
-      const { resource = {} } = payload;
-
-      cb({
-        op: `${type}:${resource.rtype}`,
-        type,
-        ...resource
-      });
-    });
+  listenToJob(handler) {
+    emitter.on(evName, handler);
   }
 
-  clean() {
-    if (!isEmpty(this._events)) {
-      this._events = {};
+  unlisten(handler) {
+    if (typeof handler === 'function') {
+      emitter.off(evName, handler);
     }
   }
 }
