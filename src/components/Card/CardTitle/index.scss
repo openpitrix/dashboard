@@ -2,7 +2,7 @@
 
 .title {
   @include title-font($font-size: 16px);
-  margin: 32px 0 12px;
+  margin-bottom: 12px;
 
   .more {
     display: none;

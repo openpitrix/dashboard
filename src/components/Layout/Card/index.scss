@@ -1,10 +1,10 @@
-$card-padding: 24px;
+@import "~scss/vars";
 
 .card {
   position: relative;
   box-sizing: border-box;
   padding: $card-padding;
-  margin-bottom: 24px;
+  margin-bottom: $card-bottom;
 
   :global {
     .operation{

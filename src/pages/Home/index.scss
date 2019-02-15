@@ -1,13 +1,11 @@
 @import '~scss/vars';
 
 .content {
-  position: relative;
+  margin-top: $header-height + $search-banner-height;
   min-height: $content-height;
-  top: $header-height + $search-banner-height;
-  margin: 0 auto;
 
   &.fixNav {
-    top: $header-height + $title-banner-height;
+    margin-top: $header-height + $title-banner-height;
   }
 
   .homeLoad {
@@ -15,17 +13,23 @@
   }
 
   .navGrp {
-    margin-bottom: 42px;
+    margin-top: 40px;
+
+    &:first-child {
+      margin-top: 32px;
+    }
   }
 
   .nav {
     position: fixed;
     top: $header-height + $search-banner-height;
-    margin-top: 32px;
-    height: 100%;
+    height: calc(100vh - #{$header-height} - #{$search-banner-height});
+    width: $home-nav-width;
+    overflow: auto;
 
     &.fixNav {
       top: $header-height + $title-banner-height;
+      height: calc(100vh - #{$header-height} - #{$title-banner-height});
     }
 
     .caption {
@@ -36,13 +40,13 @@
     .menu {
       padding: 0;
       margin-top: $base-margin;
+
       &:first-of-type {
         margin-top: 0;
       }
 
       .item {
         margin-bottom: 12px;
-
         line-height: 28px;
         font-size: 14px;
         list-style: none;
@@ -52,12 +56,15 @@
         &:hover,
         &.active {
           color: $P75;
-          font-weight: 500;
 
           svg {
             --primary-color: #{$P300};
             --secondary-color: #{$P30};
           }
+        }
+
+        &.active {
+          font-weight: 500;
         }
 
         .name {
@@ -70,9 +77,5 @@
         }
       }
     }
-  }
-
-  .apps {
-    padding-bottom: $page-bottom;
   }
 }

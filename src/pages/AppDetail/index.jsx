@@ -14,8 +14,8 @@ import Banner from 'components/Banner';
 import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
+import TypeVersions from 'components/TypeVersions';
 import { formatTime } from 'utils';
-import { getVersionTypesName } from 'config/version-types';
 import routes, { toRoute } from 'routes';
 import Screenshots from './Screenshots';
 import Versions from './Versions';
@@ -201,39 +201,13 @@ export default class AppDetail extends Component {
 
     return (
       <div className={styles.typeVersions}>
-        <dl>
-          <dt>{t('Delivery type')}:</dt>
-          <dd className={styles.types}>
-            {types.map(type => (
-              <label
-                key={type}
-                onClick={() => this.changeType(type, 'activeType')}
-                className={classnames({
-                  [styles.active]: (activeType || types[0]) === type
-                })}
-              >
-                {getVersionTypesName(type) || t('None')}
-              </label>
-            ))}
-          </dd>
-        </dl>
-        <dl>
-          <dt>{t('Version No')}:</dt>
-          <dd className={styles.types}>
-            {versions.map(item => (
-              <label
-                key={item.version_id}
-                onClick={() => this.changeType(item.version_id, 'activeVersion')
-                }
-                className={classnames({
-                  [styles.active]: selectVersion === item.version_id
-                })}
-              >
-                {item.name || t('None')}
-              </label>
-            ))}
-          </dd>
-        </dl>
+        <TypeVersions
+          types={types}
+          versions={versions}
+          activeType={selectItem}
+          activeVersion={selectVersion}
+          changeType={this.changeType}
+        />
         <dl>
           <dt />
           <dd>

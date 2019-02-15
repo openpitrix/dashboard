@@ -2,7 +2,7 @@
 
 .stepper {
   .normalUser {
-    top: $header-height + 5px;
+    // top: $header-height + 5px;
   }
 }
 
@@ -10,6 +10,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 2;
   height: 2px;
 }
 
@@ -24,8 +25,8 @@
 .operate {
   position: fixed;
   top: 20px;
-  left: 20px;
-  right: 20px;
+  right: 8px;
+  z-index: 2;
   height: 32px;
 
   > label {

@@ -1,0 +1,52 @@
+@import '~scss/vars';
+
+.typeVersions {
+  dl {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  dt {
+    @include normal-font;
+    display: inline-block;
+    width: 72px;
+    padding: 6px 12px 6px 0;
+    text-align: right;
+  }
+
+  dd {
+    display: inline-block;
+    float: right;
+    width: calc(100% - 85px);
+  }
+
+  .types {
+    // margin-bottom: 16px;
+
+    > label {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: $N0;
+      border: 1px solid $N10;
+      font-size: 14px;
+      line-height: 14px;
+      color: $N300;
+      cursor: pointer;
+
+      &:first-child {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      &.active {
+        color: $P75;
+        border-color: $P75;
+      }
+    }
+  }
+}
