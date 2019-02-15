@@ -12,6 +12,7 @@
     "debug": "^3.1.0",
     "file-saver": "^2.0.0",
     "history": "^4.7.2",
+    "http-proxy": "^1.17.0",
     "i18next": "^11.3.3",
     "i18next-browser-languagedetector": "^2.2.3",
     "js-base64": "^2.4.5",
@@ -45,7 +46,6 @@
     "react-router-dom": "^4.2.2",
     "semver": "^5.4.1",
     "serve-favicon": "^2.4.5",
-    "socket.io": "^2.2.0",
     "superagent": "^3.8.3",
     "winston": "^3.1.0"
   },

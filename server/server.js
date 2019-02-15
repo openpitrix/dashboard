@@ -19,6 +19,7 @@ const { get } = require('lodash');
 const { reportErr, renderErrPage } = require('./report-error');
 const { root, getServerConfig, watchConfig } = require('../lib/utils');
 const logger = require('./logger');
+const proxyServer = require('./proxy-server');
 
 const app = new Koa();
 const config = getServerConfig();
@@ -86,3 +87,6 @@ app.listen(PORT, err => {
 watchConfig(() => {
   app.config = getServerConfig();
 });
+
+// setup websocket proxy server
+proxyServer.run(config.socketUrl, config.socketProxyPort);

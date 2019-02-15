@@ -4,10 +4,8 @@
 import Mitt from 'mitt';
 import { get, isEmpty } from 'lodash';
 
-let inst = null;
 let sockInst; // singleton socket client
 
-const readyStates = ['connecting', 'open', 'closing', 'closed'];
 const defaultOptions = {
   reopenLimit: 2
 };
@@ -16,29 +14,15 @@ let reopenCount = 0;
 const emitter = new Mitt();
 const evName = 'ops-resource';
 
-export const getSock = (sockUrl, token) => {
-  if (inst && inst instanceof SockClient) {
-    return inst;
-  }
-  inst = new SockClient(SockClient.composeEndpoint(sockUrl, token));
-  inst.setUp();
-
-  return inst;
+export const getEndpoint = (port, token = '') => {
+  const { protocol } = location;
+  const ws = protocol === 'http:' ? 'ws:' : 'wss:';
+  // todo
+  const pathname = '/v1/io';
+  return `${ws}//127.0.0.1:${port}${pathname}?sid=${token}`;
 };
 
 export default class SockClient {
-  static composeEndpoint = (socketUrl, accessToken = '') => {
-    const re = /wss?:\/\/([^\\?]+)/;
-    const suffix = `?sid=${accessToken}`;
-    const matchParts = `${socketUrl}`.match(re);
-
-    if (!matchParts) {
-      throw Error(`Invalid socket url: ${socketUrl}`);
-    }
-
-    return `${matchParts[0]}${suffix}`;
-  };
-
   constructor(endpoint, options = {}) {
     this.endpoint = endpoint;
     this.options = Object.assign(defaultOptions, options);
@@ -46,15 +30,8 @@ export default class SockClient {
     if (!this.endpoint) {
       throw Error(`invalid websocket endpoint: ${this.endpoint}`);
     }
-    this.initClient();
-  }
 
-  getSockState(readyState) {
-    if (readyState === undefined) {
-      readyState = this.client.readyState;
-    }
-
-    return readyStates[readyState];
+    this.setUp();
   }
 
   initClient() {
@@ -103,25 +80,13 @@ export default class SockClient {
     this.attachEvents();
   }
 
-  listenToJob(cb) {
-    emitter.on(evName, (payload = {}) => {
-      const { type, resource = {} } = payload;
-
-      cb({
-        op: `${type}:${resource.rtype}`,
-        type,
-        ...resource
-      });
-    });
+  listenToJob(handler) {
+    emitter.on(evName, handler);
   }
 
-  unlisten(cb) {
-    if (!isEmpty(this._events)) {
-      this._events = {};
-    }
-
-    if (typeof cb === 'function') {
-      emitter.off(evName, cb);
+  unlisten(handler) {
+    if (typeof handler === 'function') {
+      emitter.off(evName, handler);
     }
   }
 }

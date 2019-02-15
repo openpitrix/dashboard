@@ -21,6 +21,7 @@ serverUrl: ''
 
 # socket server
 socketUrl: ''
+socketProxyPort: 9100
 
 # authorization config
 clientId: ''
