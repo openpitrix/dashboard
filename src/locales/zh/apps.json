@@ -108,6 +108,7 @@
   "Continue testing": "继续测试",
   "Edit": "编辑",
   "Test instance": "测试实例",
+  "test instance": "测试实例",
   "There are no deployment test instances in this release": "此版本没有部署测试实例",
   "View all records": "查看全部记录",
   "Used to describe the detailed update of this version": "用于描述该版本详细的更新内容",
@@ -248,5 +249,5 @@
   "view detail standard": "查看详细标准",
 
   "Create test runtime": "创建测试环境",
-  "NO_RUNTIME_TO_DEPLOY": "当前没有可用的环境用来部署测试实例。"
+  "NO_RUNTIME_TO_DEPLOY": "当前没有可用的环境用来部署{{instance}}。"
 }

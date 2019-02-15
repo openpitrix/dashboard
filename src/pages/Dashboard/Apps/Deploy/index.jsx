@@ -5,17 +5,20 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 import _ from 'lodash';
 
-import { Select, Image, Notification } from 'components/Base';
+import {
+  Select, Image, Icon, Notification
+} from 'components/Base';
 import {
   Section, Grid, Card, Stepper
 } from 'components/Layout';
 import { Group as DeployGroup } from 'components/Deploy';
 import Loading from 'components/Loading';
 import NoteLink from 'components/NoteLink';
+import TypeVersions from 'components/TypeVersions';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
-import { getVersionTypesName } from 'config/version-types';
 import routes, { toRoute, getPortalFromPath } from 'routes';
+import { providers } from 'config/runtimes';
 
 import styles from './index.scss';
 
@@ -124,6 +127,11 @@ export default class AppDeploy extends Component {
       }
 
       await appDeployStore.changeVersion(versonId);
+
+      if (type === 'activeType' && !_.isEmpty(appDeployStore.configJson)) {
+        this.vmParser.setConfig(appDeployStore.configJson);
+        this.forceUpdate();
+      }
     }
   };
 
@@ -300,17 +308,20 @@ export default class AppDeploy extends Component {
   }
 
   renderRuntimes() {
-    const { appDeployStore, t } = this.props;
+    const { appDeployStore, user, t } = this.props;
     const { runtimes, changeRuntime, isK8s } = appDeployStore;
     const createK8S = isK8s ? '?provider=kubernetes' : '';
+    const instanceName = user.isUserPortal ? t('instance') : t('test instance');
 
     if (runtimes.length === 0) {
       return (
         <Card>
           <NoteLink
             className={styles.auditNote}
-            noteWord="NO_RUNTIME_TO_DEPLOY"
-            linkWord="Create test runtime"
+            noteWord={t('NO_RUNTIME_TO_DEPLOY', { instance: instanceName })}
+            linkWord={
+              user.isUserPortal ? 'Create Runtime' : 'Create test runtime'
+            }
             link={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}
           />
         </Card>
@@ -326,11 +337,16 @@ export default class AppDeploy extends Component {
           onChange={changeRuntime}
           disabled={runtimes.length === 0}
         >
-          {runtimes.map(item => (
-            <Select.Option key={item.runtime_id} value={item.runtime_id}>
-              {item.name}
-            </Select.Option>
-          ))}
+          {runtimes.map(item => {
+            const provider = _.find(providers, { key: item.provider }) || providers[0];
+
+            return (
+              <Select.Option key={item.runtime_id} value={item.runtime_id}>
+                <Icon name={provider.icon} size={20} type="dark" />
+                {item.name}
+              </Select.Option>
+            );
+          })}
         </Select>
         <Link to={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}>
           {t('Create Runtime')}
@@ -340,7 +356,7 @@ export default class AppDeploy extends Component {
   }
 
   renderTypeVersions() {
-    const { appVersionStore, t } = this.props;
+    const { appVersionStore } = this.props;
     const { typeVersions } = appVersionStore;
     const { activeType, activeVersion } = this.state;
 
@@ -348,41 +364,13 @@ export default class AppDeploy extends Component {
     const versions = (_.find(typeVersions, { type: activeType }) || {}).versions || [];
 
     return (
-      <div className={styles.typeVersions}>
-        <dl>
-          <dt>{t('Delivery type')}:</dt>
-          <dd className={styles.types}>
-            {types.map(type => (
-              <label
-                key={type}
-                onClick={() => this.changeType(type, 'activeType')}
-                className={classnames({
-                  [styles.active]: (activeType || types[0]) === type
-                })}
-              >
-                {getVersionTypesName(type) || t('None')}
-              </label>
-            ))}
-          </dd>
-        </dl>
-        <dl>
-          <dt>{t('Version No')}:</dt>
-          <dd className={styles.types}>
-            {versions.map(item => (
-              <label
-                key={item.version_id}
-                onClick={() => this.changeType(item.version_id, 'activeVersion')
-                }
-                className={classnames({
-                  [styles.active]: activeVersion === item.version_id
-                })}
-              >
-                {item.name || t('None')}
-              </label>
-            ))}
-          </dd>
-        </dl>
-      </div>
+      <TypeVersions
+        types={types}
+        versions={versions}
+        activeType={activeType}
+        activeVersion={activeVersion}
+        changeType={this.changeType}
+      />
     );
   }
 

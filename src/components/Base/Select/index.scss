@@ -45,6 +45,13 @@
     display: inline-block;
     line-height: 24px;
     color: $N300;
+
+    :global {
+      .icon {
+        float: left;
+        margin-right: 4px;
+      }
+    }
   }
   &:hover {
     background-color: $N10;
@@ -92,6 +99,11 @@
       background-color: $N10;
     }
     :global{
+      .icon:first-child {
+        float: left;
+        margin: 2px 4px 2px 0;
+      }
+
       .icon-check{
         float: right;
         position: relative;

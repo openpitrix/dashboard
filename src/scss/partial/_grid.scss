@@ -1,13 +1,19 @@
 $content-width: 1276px;
 $page-min-width: 1276px;
+$content-top: 32px;
+$content-bottom: 84px;
 $menu-nav-width: 64px;
 $menu-sub-nav-width: 192px;
 $menu-width: $menu-nav-width + $menu-sub-nav-width;
 $columns: 12;
 
+$home-nav-width: 280px;
+
 $max-center-page-width: 1200px;
 $min-center-page-margin: 30px;
 
+$card-padding: 24px;
+$card-bottom: 24px;
 $grid-gap: 20px;  // gap for normal layout
 $grid-gap-dev: 20px;  // gap for dev/admin layout
 //$grid-width: 72px;
@@ -31,7 +37,6 @@ $base-margin: 24px;
 $card-width: 264px;
 $create-content-width: 1128px;
 
-$page-bottom: 48px;
 $main-height: calc(100vh);
 $main-min-height: 650px;
 

@@ -8,9 +8,8 @@
 
   &.hasMenu,
   &.hasNav {
-    margin: 0 20px 32px $menu-width + 20px;
-    //min-width: 950px;
-    min-height: calc(100vh - 100px);
+    margin: 0 20px ($content-bottom - $card-bottom) ($menu-width + 20px);
+    min-height: calc(100vh - #{$content-bottom});
     padding-top: 0;
   }
 

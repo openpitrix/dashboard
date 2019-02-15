@@ -233,7 +233,6 @@ export default class Home extends Component {
           <Section size={9}>
             <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
               <InfiniteScroll
-                className={styles.apps}
                 pageStart={currentPage}
                 loadMore={loadMore}
                 isLoading={isLoading}

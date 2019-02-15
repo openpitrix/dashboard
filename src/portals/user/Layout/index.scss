@@ -1,9 +1,8 @@
 @import "~scss/vars";
 
 .page {
-  position: relative;
-  top: $header-height + $title-banner-height;
   width: $content-width;
-  margin: 36px auto;
-  padding-bottom: 80px;
+  margin: ($header-height + $title-banner-height) auto 0;
+  padding: $content-top 0 ($content-bottom - $card-bottom);
+  min-height: calc(100vh - #{$header-height} - #{$title-banner-height} - #{$footer-height});
 }

@@ -24,9 +24,7 @@ Array [
         </label>
         <label
           class="logoName"
-        >
-          OpenPitrix 应用中心
-        </label>
+        />
       </a>
       <a
         aria-current="false"
@@ -96,58 +94,70 @@ Array [
     class="page content"
   >
     <div
-      class="nav"
+      class="container"
     >
       <div
-        class="navGrp"
-      >
-        <p
-          class="caption"
-        />
-        <ul
-          class="menu"
-        >
-          <li
-            class="item"
-          >
-            <span
-              class="icon icon-cart icon"
-              style="width:24px;height:24px"
-            >
-              <svg
-                class="qicon qicon-cart qicon-dark"
-              >
-                <use
-                  href="#qui-cart"
-                />
-              </svg>
-            </span>
-            <span
-              class="name"
-            />
-          </li>
-        </ul>
-      </div>
-      <div
-        class="navGrp"
-      >
-        <p
-          class="caption"
-        />
-        <ul
-          class="menu"
-        />
-      </div>
-    </div>
-    <div
-      class="apps"
-    >
-      <div
-        class="appList fixNav"
+        class="section section-size-dev-3 section-offset-dev-0"
       >
         <div
-          class="title"
-        />
+          class="nav"
+        >
+          <div
+            class="navGrp"
+          >
+            <p
+              class="caption"
+            />
+            <ul
+              class="menu"
+            >
+              <li
+                class="item"
+              >
+                <span
+                  class="icon icon-cart icon"
+                  style="width:24px;height:24px"
+                >
+                  <svg
+                    class="qicon qicon-cart qicon-dark"
+                  >
+                    <use
+                      href="#qui-cart"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="name"
+                />
+              </li>
+            </ul>
+          </div>
+          <div
+            class="navGrp"
+          >
+            <p
+              class="caption"
+            />
+            <ul
+              class="menu"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="section section-size-dev-9 section-offset-dev-0"
+      >
+        <div
+          class="apps"
+        >
+          <div
+            class="appList fixNav"
+          >
+            <div
+              class="title"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>,
@@ -181,6 +191,11 @@ Array [
           </li>
           <li>
             <a
+              href="/user/provider/apply"
+            />
+          </li>
+          <li>
+            <a
               href="https://openpitrix.io"
               rel="noopener noreferrer"
               target="_blank"
@@ -188,23 +203,6 @@ Array [
           </li>
           <li>
             OpenPitrix © 2019
-          </li>
-          <li>
-            <a
-              class="toggleLocale"
-              href="#"
-            >
-              中文
-            </a>
-            <span
-              class="dot"
-            />
-            <a
-              class="toggleLocale"
-              href="#"
-            >
-              English
-            </a>
           </li>
         </ul>
       </div>

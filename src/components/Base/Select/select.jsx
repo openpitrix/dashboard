@@ -84,8 +84,9 @@ export default class Select extends React.Component {
     this.currentLabel = '';
     this.childNodes = React.Children.map(children, child => {
       const checked = String(value) === child.props.value;
+
       if (checked) {
-        this.currentLabel = child.props.children.toString();
+        this.currentLabel = child.props.children;
       }
 
       return React.cloneElement(child, {

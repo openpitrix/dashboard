@@ -159,7 +159,7 @@
   "SERVICE_PLATFORM":"Service Provider Platform Agreement",
   "SHELF_APP_TOTAL": "The shelf has {{total}} application",
 
-  "NO_RUNTIME_TO_DEPLOY": "There is currently no runtime available to deploy test instances.",
+  "NO_RUNTIME_TO_DEPLOY": "There is currently no runtime available to deploy {{instance}}.",
 
   "MAX_UPLOAD_SCREENSHOTS": "Up to 6 screenshots can only be uploaded ",
 
