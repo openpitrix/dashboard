@@ -377,7 +377,7 @@ export default class AppDeploy extends Component {
                   [styles.active]: activeVersion === item.version_id
                 })}
               >
-                {item.name}
+                {item.name || t('None')}
               </label>
             ))}
           </dd>

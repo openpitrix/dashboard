@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import { Image } from 'components/Base';
 import SearchBox from 'pages/Home/SearchBox';
@@ -11,7 +11,9 @@ import { getPortalFromPath } from 'routes';
 import styles from './index.scss';
 
 @translate()
-@inject('rootStore')
+@inject(({ rootStore }) => ({
+  user: rootStore.user
+}))
 @observer
 export default class Banner extends Component {
   static propTypes = {
@@ -42,13 +44,17 @@ export default class Banner extends Component {
       className,
       stretch,
       shrink,
-      rootStore,
+      user,
       t
     } = this.props;
 
     if (!['', 'user'].includes(getPortalFromPath())) {
       return null;
     }
+
+    const titleShow = user.isLoggedIn()
+      ? `${t('QingCloud App Center')} - ${t(title)}`
+      : t(title);
 
     return (
       <div
@@ -57,7 +63,7 @@ export default class Banner extends Component {
           styles.banner,
           {
             [styles.stretch]: stretch,
-            [styles.shrink]: shrink || rootStore.fixNav
+            [styles.shrink]: shrink
           },
           className
         )}
@@ -69,7 +75,7 @@ export default class Banner extends Component {
                 <Image src={icon} iconSize={48} iconLetter={title} />
               </span>
             )}
-            <div className={styles.name}>{t(title)}</div>
+            <div className={styles.name}>{titleShow}</div>
             <div className={styles.description}>{t(description)}</div>
           </div>
 

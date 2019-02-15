@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { translate } from 'react-i18next';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-import { pathWithoutFooter } from 'routes';
+import routes, { toRoute, pathWithoutFooter } from 'routes';
 
 import styles from './index.scss';
 
@@ -42,6 +42,11 @@ export class Footer extends PureComponent {
                 </a>
               </li>
               <li>
+                <Link to={toRoute(routes.portal._user.providerApply, 'user')}>
+                  {t('Become App Provider')}
+                </Link>
+              </li>
+              <li>
                 <a
                   target="_blank"
                   href="https://openpitrix.io"
@@ -54,8 +59,8 @@ export class Footer extends PureComponent {
                  <span className={styles.dot} />
                  <a href="javascript:void(0)">{t('Terms')}</a> */}
               </li>
-              <li>OpenPitrix &copy; 2018</li>
-              <li>
+              <li>OpenPitrix &copy; 2019</li>
+              {/* <li>
                 <a
                   href="#"
                   onClick={this.changeLocale.bind(null, 'zh')}
@@ -71,7 +76,7 @@ export class Footer extends PureComponent {
                 >
                   English
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

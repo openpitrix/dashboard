@@ -11,11 +11,19 @@ import routes, { toRoute, pathWithoutHeader } from 'routes';
 
 import styles from './index.scss';
 
-const LinkItem = ({ to, title }) => (
-  <NavLink to={to} exact activeClassName={styles.active}>
-    {title}
-  </NavLink>
-);
+const LinkItem = ({ to, title, path }) => {
+  const isActive = to === '/' ? ['/', '/apps/:appId'].includes(path) : path.startsWith(to);
+
+  return (
+    <NavLink
+      to={to}
+      exact
+      className={classnames({ [styles.active]: isActive })}
+    >
+      {title}
+    </NavLink>
+  );
+};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -34,7 +42,8 @@ export class Header extends Component {
   };
 
   renderMenus = () => {
-    const { t, user } = this.props;
+    const { t, user, match } = this.props;
+    const { path } = match;
 
     if (!user.isLoggedIn()) {
       return null;
@@ -42,15 +51,21 @@ export class Header extends Component {
 
     return (
       <div className={styles.menus}>
-        <LinkItem to="/" title={t('App Store')} />
-        <LinkItem to={toRoute(routes.portal.apps)} title={t('Purchased')} />
+        <LinkItem to="/" title={t('App Store')} path={path} />
+        <LinkItem
+          to={toRoute(routes.portal.apps)}
+          title={t('Purchased')}
+          path={path}
+        />
         <LinkItem
           to={toRoute(routes.portal.clusters)}
           title={t('My Instances')}
+          path={path}
         />
         <LinkItem
           to={toRoute(routes.portal.runtimes)}
           title={t('My Runtimes')}
+          path={path}
         />
       </div>
     );
@@ -71,7 +86,12 @@ export class Header extends Component {
       <div className={styles.user}>
         <Popover content={<MenuLayer />}>
           {user.username}
-          <Icon name="caret-down" className={styles.icon} type="dark" />
+          <Icon
+            name="caret-down"
+            className={styles.icon}
+            type="dark"
+            size={12}
+          />
         </Popover>
       </div>
     );
@@ -89,25 +109,22 @@ export class Header extends Component {
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>
         <div className={styles.wrapper}>
-          {user.isLoggedIn() ? (
-            <Link className={styles.logoIcon} to="/">
-              <Icon
-                className={styles.icon}
-                name="op-logo"
-                type="white"
-                size={16}
-              />
-            </Link>
-          ) : (
-            <NavLink className={styles.logo} to="/">
-              <img src="/logo_light.svg" height="100%" />
-            </NavLink>
-          )}
+          <Link to="/">
+            <label className={styles.logoIcon}>
+              <img src="/op-logo.svg" className={styles.logo} />
+              {/* <Icon className={styles.icon} name="op-logo" size={16} /> */}
+            </label>
+            {!user.isLoggedIn() && (
+              <label className={styles.logoName}>
+                {t('QingCloud App Center')}
+              </label>
+            )}
+          </Link>
 
           {this.renderMenus()}
           {this.renderMenuBtns()}
 
-          {user.isNormal && (
+          {(user.isNormal || !user.isLoggedIn()) && (
             <Fragment>
               {/*  <Icon
                 name="mail"

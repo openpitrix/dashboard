@@ -22,6 +22,7 @@ router.get('/logout', ctx => {
     'username',
     'user_id',
     'role',
+    'portal',
     'email',
     'login_time',
     'changedRole',

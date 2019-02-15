@@ -254,7 +254,10 @@ export default class Account extends Component {
 
     if (user.defaultPortal === 'user') {
       return (
-        <UserLayout banner={this.renderBanner()}>
+        <UserLayout
+          className={classnames({ [styles.userAccount]: activeTab !== 'ssh' })}
+          banner={this.renderBanner()}
+        >
           {this.renderMain()}
         </UserLayout>
       );

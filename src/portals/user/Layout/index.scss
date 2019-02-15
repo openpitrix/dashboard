@@ -1,12 +1,9 @@
 @import "~scss/vars";
 
-$page-width: 1280px;
-$offset-top: $header-height + 30 *2 + 52;
-
 .page {
   position: relative;
-  top: $offset-top;
-  width: $page-width;
+  top: $header-height + $title-banner-height;
+  width: $content-width;
   margin: 36px auto;
   padding-bottom: 80px;
 }

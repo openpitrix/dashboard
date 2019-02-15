@@ -32,13 +32,16 @@
 
 .accountTabs {
   padding: 0;
-  height: 41px;
+  height: 32px;
   background-color: $N500;
   border-bottom: 0 none;
 
   >label {
-    padding: 12px 0;
+    margin-right: 40px;
+    line-height: 20px;
+    padding: 0 0 11px 0;
     color: $N30;
+    border-bottom: 1px solid transparent;
 
     &.active {
       color: $N0;

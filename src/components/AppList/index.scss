@@ -1,10 +1,8 @@
 @import '~scss/vars';
 
 .appList {
-  position: relative;
   overflow: hidden;
   _zoom: 1;
-  top: 30px;
 
   > div {
     &:nth-child(3n+4) {

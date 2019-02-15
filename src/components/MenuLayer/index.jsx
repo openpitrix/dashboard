@@ -116,7 +116,7 @@ export class MenuLayer extends Component {
           );
         })}
 
-        <li>
+        <li className={styles.divider}>
           <Icon name="previous" type="dark" className={styles.iconImg} />
           <a href="/logout">{t('Log out')}</a>
         </li>

@@ -5,7 +5,7 @@
 }
 
 .menuLayer {
-  min-width: 140px;
+  min-width: $menu-layer-width;
 
   li {
     height: 32px;
@@ -39,11 +39,12 @@
 
     &:first-child {
       padding: 12px 15px 15px;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 32px;
       font-weight: 500;
       color: $N500;
       @extend %has-bottom;
+      margin-bottom: 4px;
 
       .userIcon {
         float: left;
@@ -88,8 +89,9 @@
     }
 
     &.dev {
-      padding: 4px 0;
       @extend %has-bottom;
+      padding-bottom: 4px;
+      margin-bottom: 4px;
 
       .iconImg {
         margin: 8px 8px 8px 15px;
@@ -98,7 +100,11 @@
   }
 
   .divider {
-    @extend %has-bottom;
+    border-top: 1px solid $N10;
+    box-sizing: border-box;
+    height: 37px;
+    margin-top: 4px;
+    padding-top: 4px;
   }
 
   .disabled {
