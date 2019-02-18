@@ -15,7 +15,7 @@ export default class ActionGroup extends Component {
     const { total, selectedCount } = selectedActions;
     const textCount = total === selectedCount
       ? t('BIND_ACTION_COUNT_ALL', selectedActions)
-      : t('BIND_ACTION_COUNT', selectedCount);
+      : t('BIND_ACTION_COUNT', selectedActions);
 
     return (
       <span>
