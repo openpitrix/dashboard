@@ -44,17 +44,12 @@ export default class Banner extends Component {
       className,
       stretch,
       shrink,
-      user,
       t
     } = this.props;
 
     if (!['', 'user'].includes(getPortalFromPath())) {
       return null;
     }
-
-    const titleShow = user.isLoggedIn()
-      ? `${t('QingCloud App Center')} - ${t(title)}`
-      : t(title);
 
     return (
       <div
@@ -75,7 +70,7 @@ export default class Banner extends Component {
                 <Image src={icon} iconSize={48} iconLetter={title} />
               </span>
             )}
-            <div className={styles.name}>{titleShow}</div>
+            <div className={styles.name}>{t(title)}</div>
             <div className={styles.description}>{t(description)}</div>
           </div>
 
