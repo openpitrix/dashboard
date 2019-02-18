@@ -237,6 +237,7 @@ export default class RoleStore extends Store {
 
     features.forEach(feature => {
       const total = this.getUniqActions(feature).length;
+      feature.checked_action_id = feature.checked_action_id || [];
       const selectedCount = _.uniq(feature.checked_action_id).length;
       result.total += total;
       if (module.is_check_all) {
