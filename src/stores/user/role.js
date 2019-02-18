@@ -33,6 +33,8 @@ export default class RoleStore extends Store {
 
   @observable modules = [];
 
+  @observable moduleNames = {};
+
   @observable features = [];
 
   @observable selectedRoleKeys = [];
@@ -75,6 +77,7 @@ export default class RoleStore extends Store {
     this.isLoading = false;
   }
 
+  @action
   async fetchRoleModule(roleId) {
     this.isLoading = true;
     const result = await this.request.get(`roles:module`, {
@@ -82,6 +85,16 @@ export default class RoleStore extends Store {
     });
     this.modules = _.get(result, 'role_module.module', []);
     this.getModuleTreeData();
+    this.isLoading = false;
+  }
+
+  @action
+  async fetchRoleModuleName(roleId) {
+    this.isLoading = true;
+    const result = await this.request.get(`roles:module`, {
+      role_id: roleId
+    });
+    this.moduleNames[roleId] = _.get(result, 'role_module.module', []);
     this.isLoading = false;
   }
 

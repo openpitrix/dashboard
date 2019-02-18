@@ -1,0 +1,26 @@
+@import '~scss/vars';
+
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  @include normal-font;
+
+  > div {
+    width: 25%;
+    margin-bottom: 15px;
+  }
+}
+
+.moduleName {
+  color: $N500;
+  font-weight: 500;
+}
+.gray {
+  color: $N75;
+  font-weight: normal;
+}
+
+.item {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
