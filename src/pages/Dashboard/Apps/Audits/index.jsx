@@ -99,7 +99,7 @@ export default class Audits extends Component {
     const { t } = this.props;
 
     if (!audit.message) {
-      return null;
+      return <span>{audit.review_id}</span>;
     }
 
     return (
@@ -132,9 +132,17 @@ export default class Audits extends Component {
 
     return (
       <ul className={styles.auditRecords}>
+        <li>
+          <label className={styles.status}>{t('Status')}</label>
+          <label className={styles.operator}>{t('Operator')}</label>
+          <label className={styles.reason}>
+            {t('Apply No')} / {t('Reject reason')}
+          </label>
+          <label className={styles.time}>{t('Update time')}</label>
+        </li>
         {auditRecords.map(audit => (
           <li
-            key={audit.status_time}
+            key={audit.review_id || audit.status_time}
             className={classnames({ [styles.active]: audit.isExpand })}
           >
             <label className={styles.status}>

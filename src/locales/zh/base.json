@@ -105,6 +105,7 @@
   "View in Store": "在商店中查看",
   "Tips": "提示",
   "Operations": "操作",
+  "Operator": "操作者",
   "Preview in Catalog": "在目录中预览",
   "Date Updated": "更新时间",
   "Total": "总计",
@@ -479,5 +480,8 @@
   "days ago": " 天前",
   "hours ago": " 小时前",
   "Service provider": "服务商",
-  "Data not changed": "数据未修改"
+  "Data not changed": "数据未修改",
+
+  "Back home": " 返回首页",
+  "Sorry, the page you visited does not exist": "抱歉，您访问的页面不存在。"
 }

@@ -1,11 +1,30 @@
 @import "~scss/vars";
 
-.page {
-  margin-top: $header-height + 20px;
+.notFound {
   @include centerAll;
+  margin-top: $header-height;
+  height: calc(100vh - #{$footer-height} - #{$header-height});
+  min-height: 200px;
 
-  .txt {
-    font-size: 2rem;
-    color: #aaa;
+  .content {
+    text-align: left;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: 500;
+    color: $N500;
+  }
+
+  .noteWord {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: $N300;
+  }
+
+  .back {
+    font-size: 14px;
+    color: $P75;
   }
 }

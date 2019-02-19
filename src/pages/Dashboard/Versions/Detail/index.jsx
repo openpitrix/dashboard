@@ -131,12 +131,23 @@ export default class VersionDetail extends Component {
   }
 
   handleVersion = async (handleType, noDailog) => {
-    const { appVersionStore, match, history } = this.props;
+    const {
+      appVersionStore, appStore, match, history
+    } = this.props;
     const { appId, versionId } = match.params;
 
     if (handleType === 'active') {
       history.push(`/apps/${appId}`);
       return false;
+    }
+
+    // judge you can edit app info
+    if (!noDailog && handleType === 'submit') {
+      await appVersionStore.fetchAll({ app_id: appId });
+      const { versions } = appVersionStore;
+      const { appDetail } = appStore;
+      appStore.isEdit = !_.find(versions, { status: 'in-review' })
+        && appDetail.status !== 'deleted';
     }
 
     const hasDailog = ['delete', 'submit', 'cancel'].includes(handleType);
