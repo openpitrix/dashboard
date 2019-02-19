@@ -114,7 +114,7 @@ export default class SSHKeys extends Component {
   };
 
   renderOperateMenu = pair => {
-    const { t, sshKeyStore } = this.props;
+    const { t } = this.props;
 
     return (
       <div className="operate-menu">
