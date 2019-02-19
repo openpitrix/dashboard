@@ -283,6 +283,8 @@
   "Detach SSH Key": "解绑SSH密钥",
   "detach_key_desc": "您确定要解绑该SSH密钥与所选节点的绑定吗?",
   "detach_all_key_desc": "您确定要解绑该SSH密钥下所有节点的绑定吗?",
+  "No SSH key is available": "没有可用的 SSH 密钥",
+  "Please click the create button below to add": "请点击下方创建按钮进行添加",
   "Detach all nodes": "解绑所有节点",
   "Create SSH key": "创建新的 SSH 密钥",
   "Attach": "绑定",

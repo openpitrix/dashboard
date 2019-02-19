@@ -395,8 +395,10 @@ export default class SSHKeys extends Component {
       return (
         <div className={styles.nullKeys}>
           <Icon name="ssh" size={192} type="dark" />
-          <p className={styles.word1}>{t('没有可用的 SSH 密钥')}</p>
-          <p className={styles.word2}>{t('请点击下方创建按钮进行添加')}</p>
+          <p className={styles.word1}>{t('No SSH key is available')}</p>
+          <p className={styles.word2}>
+            {t('Please click the create button below to add')}
+          </p>
           <Button type="primary" onClick={() => this.showCreateModal()}>
             <Icon name="add" size={20} type="white" />
             {t('Create')}
