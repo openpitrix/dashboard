@@ -9,9 +9,9 @@ import { providers } from 'config/runtimes';
 import routes, { toRoute } from 'routes';
 
 import { Icon, Button, Notification } from 'components/Base';
-import { Grid, Section } from 'components/Layout';
+import { Card, Grid, Section } from 'components/Layout';
 import Loading from 'components/Loading';
-import Card from '../Card';
+import RuntimeCard from '../Card';
 
 import styles from '../index.scss';
 
@@ -92,7 +92,7 @@ export class Runtime extends React.Component {
       <Grid className={styles.envs}>
         {_.map(validRts, props => (
           <Section size={6} key={props.runtime_id}>
-            <Card
+            <RuntimeCard
               {...props}
               onClick={() => this.handleClickClusterCnt(props)}
             />
