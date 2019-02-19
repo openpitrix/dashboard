@@ -135,7 +135,7 @@ export default class CreateTestingEnv extends React.Component {
                   <span className={styles.name}>{name}</span>
                   <span className={styles.desc}>{description}</span>
                   <span className={styles.icon}>
-                    {checked && <Icon name="check" />}
+                    {checked && <Icon name="check" size={24} />}
                   </span>
                 </Card>
               );

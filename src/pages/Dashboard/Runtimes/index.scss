@@ -159,45 +159,6 @@ $card-height: 188px;
     .envs {
       flex-flow: wrap;
 
-      .envItem {
-        height: $card-height;
-        .name {
-          display: inline-block;
-          font-size: $size-normal;
-          font-weight: 500;
-          line-height: 2;
-          color: $N500;
-        }
-        .desc {
-          display: block;
-          height: 40px;
-          @include note-font;
-        }
-
-        .bottomInfo {
-          display: flex;
-          margin-top: 20px;
-
-          .info {
-            flex: 1;
-            display: inline-block;
-            margin-right: 20px;
-
-            .label {
-              font-size: $size-small;
-              line-height: 1.67;
-              color: $N75;
-            }
-            .val {
-              font-size: $size-small;
-              font-weight: 500;
-              line-height: 1.67;
-              color: $N500;
-            }
-          }
-        }
-      }
-
       .cardAddEnv {
         height: $card-height;
         background: $N10;
@@ -255,6 +216,47 @@ $card-height: 188px;
       }
     }
   }
+}
+.envItem {
+  height: $card-height;
+  .name {
+    display: inline-block;
+    font-size: $size-normal;
+    font-weight: 500;
+    line-height: 2;
+    color: $N500;
+  }
+  .desc {
+    display: block;
+    height: 40px;
+    @include note-font;
+  }
+
+  .bottomInfo {
+    display: flex;
+    margin-top: 20px;
+
+    .info {
+      width: 84px;
+      display: inline-block;
+      margin-right: 20px;
+
+      .label {
+        font-size: $size-small;
+        line-height: 1.67;
+        color: $N75;
+      }
+      .val {
+        font-size: $size-small;
+        font-weight: 500;
+        line-height: 1.67;
+        color: $N500;
+      }
+    }
+  }
+}
+.clickable {
+  cursor: pointer;
 }
 
 // modify runtime and credential
