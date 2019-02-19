@@ -84,6 +84,8 @@ export default class Runtimes extends React.Component {
             >
               {disabled ? (
                 <Tooltip
+                  isShowArrow
+                  portal
                   placement="top"
                   content={t('Not support currently')}
                   key={key}
