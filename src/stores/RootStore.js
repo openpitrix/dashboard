@@ -12,7 +12,10 @@ import App, {
 import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
-import Runtime, { Credential as RuntimeCredential } from './runtime';
+import Runtime, {
+  Credential as RuntimeCredential,
+  RuntimeCluster
+} from './runtime';
 import User, { Role, Group } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
@@ -153,6 +156,7 @@ export default class RootStore extends Store {
     // runtime
     this.register('runtime', Runtime);
     this.register('runtimeCredential', RuntimeCredential);
+    this.register('runtimeCluster', RuntimeCluster);
 
     // fixme: testing env contains runtime logic
     // testing env, authorization

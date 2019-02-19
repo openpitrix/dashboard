@@ -66,6 +66,7 @@ $form-item-width: 389px;
           text-align: center;
           padding: 9px 12px;
           cursor: pointer;
+          border: 1px solid transparent;
           &:hover, &.activeZone {
             color: $P75;
             border: 1px solid $P75;
@@ -163,12 +164,22 @@ $form-item-width: 389px;
     box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
     background-color: $N0;
     cursor: pointer;
+    border: 1px solid transparent;
+    @include normal-font;
     &:hover, &.checked {
       border: 1px solid $P75;
+    }
+    .name {
+      margin-right: 20px;
+      font-weight: 500;
+    }
+    .desc {
+      color: $N75;
     }
 
     .icon {
       float: right;
+      margin-top: -3px;
     }
   }
 }

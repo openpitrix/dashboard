@@ -40,6 +40,8 @@ export default class RuntimeStore extends Store {
 
   @observable runtimeDeleted = null;
 
+  @observable runtimeTab = '0';
+
   get clusterStore() {
     return this.getStore('cluster');
   }
@@ -110,6 +112,13 @@ export default class RuntimeStore extends Store {
     this.runtimes = [];
     this.runtimeDetail = {};
   };
+
+  @action
+  changeRuntimeTab = value => {
+    this.runtimeTab = value;
+  };
 }
 
 export Credential from './credential';
+
+export RuntimeCluster from './cluster';
