@@ -4,12 +4,9 @@
   &.accountBg {
     padding: 24px;
     border-radius: 2px;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-    background-color:$N0;
-  }
-
-  &.accountNormal {
-    margin-top: 24px;
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background-color: $N0;
   }
 
   .form {
@@ -25,6 +22,8 @@
 
     & > div {
       margin-bottom: 24px;
+      height: 32px;
+
       label {
         margin-bottom: 0;
       }
@@ -60,7 +59,7 @@
   position: fixed;
   top: 48px;
   left: 0;
-  z-index: 3;
+  z-index: 4;
   width: 100%;
   background-color: $N500;
 
@@ -98,8 +97,12 @@
   }
 }
 
+.userAccount,
+.sshPage {
+  margin: 188px auto 0;
+  min-height: calc(100vh - 188px - #{$footer-height});
+}
+
 .userAccount {
-  top: 188px;
-  margin: 32px auto;
   width: 420px;
 }
