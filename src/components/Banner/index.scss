@@ -5,7 +5,7 @@ $speed: 0.2s;
 .banner {
   position: fixed;
   width: 100%;
-  z-index: 2;
+  z-index: 4;
   top: $header-height;
   background-color: $N500;
   transition: all $speed ease-in-out;

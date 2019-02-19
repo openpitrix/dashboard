@@ -50,6 +50,7 @@
   "ssh_key_guide": " SSH keys allow you to establish a secure connection between your computer and Cluster Nodes.",
   "delete_key_desc": "Are you sure delete this SSH Key?",
   "detach_key_desc": "Are you sure detach the SSH Key from the selected node?",
+  "detach_all_key_desc": "Are you sure detach the SSH Key from the all nodes?",
   "app_review_desc": "This application version [{{version}}] has been",
   "EMPTY_APP_TIPS": "If OpenPitrix administrator setting repo done, all applications can imported automatically. As OpenPitrix user, can browse all public applications. and browse by label or categories",
   "EMPTY_REPO_TIPS": "Application developer create OpenPitrix packaged apps very easy, it's used yaml or json format for description language, and upload to http server or object storage",

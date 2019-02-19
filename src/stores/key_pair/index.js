@@ -29,17 +29,6 @@ export default class KeyPairStore extends Store {
   @observable nodeIds = '';
 
   @action
-  showModal = type => {
-    this.modalType = type;
-    this.isModalOpen = true;
-  };
-
-  @action
-  hideModal = () => {
-    this.isModalOpen = false;
-  };
-
-  @action
   fetchKeyPairs = async (params = {}) => {
     this.isLoading = true;
     const result = await this.request.get(
