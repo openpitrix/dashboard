@@ -38,6 +38,6 @@ reports/
 
 src/locales/**/translation.json
 
-logs/*.log
+logs/
 
 tmp/
