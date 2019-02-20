@@ -133,7 +133,7 @@ export default class Versions extends Component {
                     className={styles.status}
                   />
                   <label className={styles.description}>
-                    {item.description}
+                    {item.description || t('None')}
                   </label>
                   <label className={styles.time}>
                     {t('Suspended time')}:&nbsp;

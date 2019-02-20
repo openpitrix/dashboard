@@ -50,7 +50,7 @@ export default class Info extends Component {
       // judge you can edit app info
       const { versions } = appVersionStore;
       const { appDetail } = appStore;
-      appStore.isEdit = !_.find(versions, { status: 'in-view' })
+      appStore.isEdit = !_.find(versions, { status: 'in-review' })
         && appDetail.status !== 'deleted';
 
       // query categories data for category select

@@ -684,7 +684,7 @@ export default class AppVersionStore extends Store {
     let isActionSuccess = false;
 
     if (this.activeStep === 1) {
-      isActionSuccess = await this.appStore.modifyApp();
+      isActionSuccess = !this.appStore.isEdit || (await this.appStore.modifyApp());
     } else if (this.activeStep === 2) {
       const data = _.pick(this.version, ['version_id', 'name', 'description']);
 

@@ -34,7 +34,8 @@
     border-radius: 2px;
 
     &:hover {
-      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+        0 4px 8px 0 rgba(35, 35, 36, 0.04);
 
       .button {
         display: inline-block;
@@ -82,7 +83,6 @@
       color: $N300;
     }
 
-
     .version {
       float: left;
       display: inline-block;
@@ -97,32 +97,67 @@
       color: $N75;
       cursor: pointer;
 
-      &.draft:hover {
-        border-color: $Y300;
+      &:hover,
+      &:active {
+        border-color: transparent;
       }
 
+      &.draft:hover,
       &.submitted:hover {
-        border-color: $B75;
+        color: $B100;
+        background-color: rgba($B30, 0.5);
+      }
+
+      &.in-review:hover {
+        color: $Y300;
+        background-color: rgba($Y30, 0.5);
       }
 
       &.passed:hover {
-        border-color: $G75;
+        color: $G75;
+        background-color: rgba($G30, 0.5);
       }
 
       &.active:hover {
-        border-color: $P75;
+        color: $P75;
+        background-color: rgba($P30, 0.5);
+      }
+
+      &.rejected:hover,
+      &.deleted:hover {
+        color: $R100;
+        background-color: rgba($R30, 0.5);
       }
 
       &.suspended:hover {
-        border-color: $N500;
+        color: $N75;
+        background-color: rgba($N30, 0.5);
       }
 
-      &.draft:hover {
-        border-color: $B75;
+      &.draft:active,
+      &.submitted:active {
+        background-color: rgba($B30, 0.6);
       }
 
-      &.rejected:hover, &.deleted:hover {
-        border-color: $R200;
+      &.in-review:active {
+        background-color: rgba($Y30, 0.6);
+      }
+
+      &.passed:active {
+        background-color: rgba($G30, 0.6);
+      }
+
+      &.active:active {
+        background-color: rgba($P30, 0.6);
+      }
+
+      &.rejected:active,
+      &.deleted:active {
+        background-color: rgba($R30, 0.6);
+      }
+
+      &.suspended:active {
+        background-color: rgba($N30, 0.6);
       }
     }
 
@@ -130,7 +165,7 @@
       display: inline-block;
       margin-right: 8px;
       font-weight: 500;
-      color: $N300
+      color: $N300;
     }
   }
 
@@ -141,17 +176,22 @@
       height: 40px;
       padding: 10px 20px;
       border-radius: 2px;
-      background-color: rgba(239, 240, 245, 0.3);
+      background-color: rgba($N10, 0.3);
 
       &:hover {
-        background-color: rgba(239, 240, 245, 0.6);
+        background-color: $N10;
 
-        .link {
-          display: inline-block;
+        a > label {
+          color: $N300;
+
+          &.link {
+            display: inline-block;
+            color: $P75;
+          }
         }
       }
 
-      a>label {
+      a > label {
         display: inline-block;
         float: left;
         height: 20px;
@@ -229,7 +269,8 @@
     &:hover {
       background-color: $N0;
       border-color: $N0;
-      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+        0 4px 8px 0 rgba(35, 35, 36, 0.04);
 
       .button {
         display: inline-block;
@@ -257,7 +298,8 @@
   padding: 24px 32px;
   background-color: $N0;
   border-radius: 2px;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
 
   .addedVersion {
     margin-bottom: 0;
