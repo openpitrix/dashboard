@@ -1,9 +1,11 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const webpackNotifier = require('webpack-notifier');
 const postCssOptions = require('./config/postcss.options');
+const baseConfig = require('./webpack.base');
 
-module.exports = {
+module.exports = merge(baseConfig, {
   mode: 'development',
   entry: [
     // 'webpack-hot-middleware/client',
@@ -12,8 +14,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: resolve(__dirname, 'build/'),
-    publicPath: '/build/',
-    pathinfo: false
+    publicPath: '/build/'
   },
   performance: {
     hints: 'warning'
@@ -22,28 +23,12 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: '.cache/babel-loader'
-            }
-          }
-        ],
-        include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
-      },
-      {
-        test: /\.jsx?$/,
         enforce: 'pre',
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
           fix: true
         }
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
@@ -69,17 +54,6 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    extensions: ['.js', '.jsx', '.scss', '.css'],
-    alias: {
-      scss: resolve(__dirname, 'src/scss')
-    },
-    modules: [
-      resolve(__dirname, 'src'),
-      resolve(__dirname, 'lib'),
-      'node_modules'
-    ]
-  },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     new webpackNotifier({
@@ -90,17 +64,5 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
-  ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor_js: {
-          name: 'vendors',
-          chunks: 'initial',
-          test: /\/node_modules\//,
-          priority: -10
-        }
-      }
-    }
-  }
-};
+  ]
+});

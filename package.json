@@ -42,7 +42,6 @@
     "react-modal": "^3.3.1",
     "react-popper": ">=0.10",
     "react-router": "^4.2.0",
-    "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
     "semver": "^5.4.1",
     "serve-favicon": "^2.4.5",
@@ -68,7 +67,7 @@
     "dbg": "cross-env BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
-    "locale": "node ./bin/locale.js merge all",
+    "locale": "node ./src/bin/locale.js merge all",
     "watch:locale": "npm run locale -- --watch"
   },
   "lint-staged": {
@@ -131,9 +130,9 @@
     "standard-version": "^4.4.0",
     "style-loader": "^0.19.1",
     "url-loader": "0.5.9",
-    "webpack": "4.17.1",
+    "webpack": "4.29.5",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "3.1.0",
+    "webpack-cli": "3.2.3",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2",

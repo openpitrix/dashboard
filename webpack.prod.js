@@ -1,33 +1,32 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
 const CompressionPlugin = require('compression-webpack-plugin');
 const postCssOptions = require('./config/postcss.options');
+const baseConfig = require('./webpack.base');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const resolveModules = {
-  extensions: ['.js', '.jsx', '.scss', '.css'],
-  alias: {
-    scss: resolve(__dirname, 'src/scss')
-  },
-  modules: [
-    resolve(__dirname, 'src'),
-    resolve(__dirname, 'lib'),
-    'node_modules'
-  ]
+const staticFileRule = {
+  test: /\.(jpg|png|svg)(\?.+)?$/,
+  loader: 'url-loader?limit=100000',
+  include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
 };
 
-const distDir = resolve(__dirname, 'dist');
+const fontRule = {
+  test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
+  loader: 'file-loader',
+  include: [resolve(__dirname, 'public'), resolve(__dirname, 'src/components')]
+};
 
-const clientConfig = {
+const clientConfig = merge.smart(baseConfig, {
   mode: 'production',
   entry: './src/index.js',
   output: {
-    path: distDir,
+    path: resolve(__dirname, 'dist'),
     filename: '[name].[contenthash:6].js',
     chunkFilename: '[name].[chunkhash:6].js',
-    pathinfo: false,
     publicPath: '/dist/'
   },
   performance: {
@@ -35,38 +34,8 @@ const clientConfig = {
   },
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: '.cache/babel-loader'
-            }
-          }
-        ],
-        include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
-      },
-      {
-        test: /\.(jpg|png|svg)(\?.+)?$/,
-        use: 'url-loader?limit=100000',
-        include: [
-          resolve(__dirname, 'public'),
-          resolve(__dirname, 'src/components')
-        ]
-      },
-      {
-        test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
-        use: 'file-loader',
-        include: [
-          resolve(__dirname, 'public'),
-          resolve(__dirname, 'src/components')
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
+      { ...staticFileRule },
+      { ...fontRule },
       {
         test: /\.scss$/,
         use: [
@@ -89,7 +58,6 @@ const clientConfig = {
       }
     ]
   },
-  resolve: resolveModules,
   plugins: [
     new ManifestPlugin({
       publicPath: '/dist/'
@@ -108,28 +76,19 @@ const clientConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor_js: {
-          name: 'vendors',
-          chunks: 'initial',
-          test: /\/node_modules\//,
-          priority: -10
-        }
-      }
-    }
-  }
-};
+  ]
+});
 
-const serverConfig = {
+const serverConfig = merge.smartStrategy({
+  'module.rules': 'replace',
+  optimization: 'replace'
+})(baseConfig, {
   mode: 'production',
   entry: './server/server.js',
   target: 'node',
   externals: [nodeExternals()],
   output: {
-    path: distDir,
+    path: resolve(__dirname, 'dist'),
     filename: 'server.js',
     libraryTarget: 'commonjs2'
   },
@@ -147,28 +106,16 @@ const serverConfig = {
         ],
         exclude: /(node_modules)/
       },
-      {
-        test: /\.(jpg|png|svg)(\?.+)?$/,
-        loader: 'url-loader?limit=100000',
-        include: [
-          resolve(__dirname, 'public'),
-          resolve(__dirname, 'src/components')
-        ],
+      merge(staticFileRule, {
         options: {
-          emit: false // don't copy the files
+          emit: false // don't copy files when pack server code
         }
-      },
-      {
-        test: /\.(ttf|otf|eot|woff2?)(\?.+)?$/,
-        loader: 'file-loader',
-        include: [
-          resolve(__dirname, 'public'),
-          resolve(__dirname, 'src/components')
-        ],
+      }),
+      merge(fontRule, {
         options: {
           emit: false
         }
-      },
+      }),
       {
         test: /\.scss$/,
         use: [
@@ -185,12 +132,12 @@ const serverConfig = {
       }
     ]
   },
-  resolve: resolveModules,
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     })
-  ]
-};
+  ],
+  optimization: {}
+});
 
 module.exports = [clientConfig, serverConfig];

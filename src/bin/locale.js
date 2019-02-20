@@ -5,7 +5,7 @@ const path = require('path');
 const program = require('commander');
 const chokidar = require('chokidar');
 const debug = require('debug')('app');
-const { root } = require('../lib/utils');
+const { root } = require('../../lib/utils');
 
 const baseDir = 'src/locales';
 const reserveFile = 'translation.json';
