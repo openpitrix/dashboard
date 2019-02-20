@@ -34,6 +34,6 @@ export const nonUserTabs = [
 ];
 
 export const runtimeTabs = [
-  { name: 'Instance', value: '0' },
-  { name: 'Agent', value: '1' }
+  { name: 'Instance', value: 0 },
+  { name: 'Agent', value: 1 }
 ];

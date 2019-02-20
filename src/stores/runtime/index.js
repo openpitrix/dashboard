@@ -6,6 +6,8 @@ import { getProgress } from 'utils';
 
 import Store from '../Store';
 
+const InstanceCluster = 0;
+
 @useTableActions
 export default class RuntimeStore extends Store {
   idKey = 'runtime_id';
@@ -40,7 +42,7 @@ export default class RuntimeStore extends Store {
 
   @observable runtimeDeleted = null;
 
-  @observable runtimeTab = '0';
+  @observable runtimeTab = InstanceCluster;
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -111,7 +113,7 @@ export default class RuntimeStore extends Store {
     this.runtimeDeleted = null;
     this.runtimes = [];
     this.runtimeDetail = {};
-    this.runtimeTab = '0';
+    this.runtimeTab = InstanceCluster;
   };
 
   @action

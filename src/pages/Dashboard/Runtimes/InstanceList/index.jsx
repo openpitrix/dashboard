@@ -30,13 +30,13 @@ export default class RuntimeInstances extends React.Component {
     } = this.props;
     const { apps } = appStore;
 
-    return runtimeStore.runtimeTab === '0'
+    return runtimeStore.runtimeTab === 0
       ? instanceCols(t, apps, user.isDev)
       : frontgateCols(t);
   }
 
   get isAgent() {
-    return this.props.runtimeStore.runtimeTab === '1';
+    return this.props.runtimeStore.runtimeTab === 1;
   }
 
   handleClickToolbar = () => {
