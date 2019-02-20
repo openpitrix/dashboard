@@ -85,4 +85,10 @@
   :global(.icon) {
     margin-right: 4px;
   }
+  .error {
+    position: static;
+    transform: translateY(0) scale(1);
+    background: $R30;
+    border-radius: 50%;
+  }
 }

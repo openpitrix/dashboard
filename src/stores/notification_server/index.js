@@ -5,12 +5,12 @@ import { sleep } from 'utils';
 import Store from '../Store';
 
 const emailConfig = {
-  type: 'smtp',
-  server_name: '',
-  server_port: '',
-  ssl_connect: true,
+  protocol: 'smtp',
+  email_host: '',
+  port: '',
+  ssl_enable: true,
+  display_email: '',
   email: '',
-  username: '',
   password: ''
 };
 
@@ -23,7 +23,7 @@ export default class NotificationServerStore extends Store {
 
   @action
   onChangeSelect = value => {
-    this.formData.type = value;
+    this.formData.protocol = value;
   };
 
   @action
@@ -42,15 +42,27 @@ export default class NotificationServerStore extends Store {
   };
 
   @action
+  fetchEmailConfig = async () => {
+    await this.request.get('service_configs/get', {
+      service_type: 'email'
+    });
+  };
+
+  @action
   testConnect = async () => {
     this.testStatus = 'loading';
     await sleep(1800);
-    this.testStatus = 'success';
+    this.testStatus = 'error';
   };
 
   @action
   save = async () => {
     this.isLoading = true;
+    await this.request.post('service_configs/set', {
+      notification_config: {
+        email_service_config: this.formData
+      }
+    });
     await sleep(300);
     this.isLoading = false;
   };
