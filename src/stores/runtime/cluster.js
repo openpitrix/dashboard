@@ -53,4 +53,9 @@ export default class RuntimeClusterStore extends Store {
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
+
+  @action
+  reset = () => {
+    this.clusters = [];
+  };
 }

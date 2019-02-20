@@ -111,6 +111,7 @@ export default class RuntimeStore extends Store {
     this.runtimeDeleted = null;
     this.runtimes = [];
     this.runtimeDetail = {};
+    this.runtimeTab = '0';
   };
 
   @action
