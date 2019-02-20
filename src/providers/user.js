@@ -20,6 +20,7 @@ class UserProvider {
     this.email = getCookie('email');
     this.changedRole = getCookie('changedRole');
     this.accessToken = getCookie('access_token');
+    this.loginTime = getCookie('login_time');
   }
 
   isLoggedIn() {

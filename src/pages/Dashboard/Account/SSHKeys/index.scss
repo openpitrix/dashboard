@@ -1,10 +1,18 @@
 @import '~scss/vars';
 
+.sshPage {
+  margin-top: 32px;
+}
+
 .createForm {
   display: block;
 
   & > div {
     margin-bottom: 24px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .name {
@@ -126,10 +134,6 @@
   }
 }
 
-.addButton {
-  width: 100%;
-}
-
 .downloadWord {
   margin-bottom: 20px;
   font-size: 14px;
@@ -143,5 +147,81 @@
 
   .eip {
     color: $N100;
+  }
+}
+
+.sshKeys {
+  border-right: 1px solid $N10;
+
+  li {
+    padding: 12px 20px;
+    line-height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+
+    &.active {
+      background-color: $N0;
+      box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+      color: $N500;
+      font-weight: 500;
+    }
+
+    &:hover {
+      background-color: $N0;
+      box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+    }
+  }
+
+  .total {
+    display: inline-block;
+    margin-left: 8px;
+    color: $N75;
+  }
+
+  .operation {
+    float: right;
+    margin-top: -6px;
+
+    :global {
+      .icon-close {
+        position: static;
+        transform: translate(0);
+      }
+
+      .pi-popover-popper {
+        margin-left: -95px !important;
+        margin-top: 2px !important;
+      }
+    }
+  }
+}
+
+.addKey {
+  margin-top: 12px;
+  line-height: 20px;
+  font-size: 12px;
+  color: $P75;
+  text-align: center;
+  cursor: pointer;
+
+  .icon {
+    vertical-align: top;
+    margin-right: 4px;
+    margin-top: 2px;
+  }
+}
+
+.nullKeys {
+  margin-top: 16px;
+  text-align: center;
+
+  .word1 {
+    @include title-font;
+    margin-top: 24px;
+  }
+
+  .word2 {
+    @include note-font;
+    margin: 8px 0 20px;
   }
 }

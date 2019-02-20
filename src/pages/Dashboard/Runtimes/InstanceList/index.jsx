@@ -6,15 +6,13 @@ import { inject, observer } from 'mobx-react';
 import { Icon, Button } from 'components/Base';
 import Toolbar from 'components/Toolbar';
 import EnhanceTable from 'components/EnhanceTable';
-import columns from './columns';
-
-import styles from './index.scss';
+import instanceCols, { frontgateCols } from './columns';
 
 @translate()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,
-  clusterStore: rootStore.clusterStore,
+  runtimeClusterStore: rootStore.runtimeClusterStore,
   appStore: rootStore.appStore
 }))
 @observer
@@ -26,32 +24,30 @@ export default class RuntimeInstances extends React.Component {
     })
   };
 
-  async componentDidMount() {
-    const { clusterStore, runtime, user } = this.props;
-    const { runtime_id } = runtime;
+  get columns() {
+    const {
+      appStore, runtimeStore, user, t
+    } = this.props;
+    const { apps } = appStore;
 
-    clusterStore.runtimeId = runtime_id;
-
-    await clusterStore.fetchAll({
-      attachApps: true,
-      runtime_id: runtime.runtime_id,
-      owner: user.user_id
-    });
+    return runtimeStore.runtimeTab === '0'
+      ? instanceCols(t, apps, user.isDev)
+      : frontgateCols(t);
   }
 
-  componentWillUnmount() {
-    this.props.clusterStore.reset();
+  get isAgent() {
+    return this.props.runtimeStore.runtimeTab === '1';
   }
-
-  goBack = () => {
-    this.props.envStore.changeRuntimeToShowInstances();
-  };
 
   handleClickToolbar = () => {
     // todo
   };
 
   renderToolbar() {
+    if (this.isAgent) {
+      return null;
+    }
+
     const { t } = this.props;
     const {
       searchWord,
@@ -59,7 +55,7 @@ export default class RuntimeInstances extends React.Component {
       onClearSearch,
       onRefresh,
       clusterIds
-    } = this.props.clusterStore;
+    } = this.props.runtimeClusterStore;
 
     if (clusterIds.length) {
       return (
@@ -92,19 +88,15 @@ export default class RuntimeInstances extends React.Component {
   }
 
   renderTable() {
-    const {
-      clusterStore, appStore, user, t
-    } = this.props;
-    const { clusters } = clusterStore;
-    const { apps } = appStore;
+    const { runtimeClusterStore } = this.props;
 
     return (
       <EnhanceTable
         tableType="Clusters"
-        columns={columns(t, apps, user.isDev)}
-        data={clusters}
-        store={clusterStore}
-        isLoading={clusterStore.isLoading}
+        columns={this.columns}
+        data={runtimeClusterStore.clusters}
+        store={runtimeClusterStore}
+        isLoading={runtimeClusterStore.isLoading}
         replaceFilterConditions={[
           { name: 'Pending', value: 'pending' },
           { name: 'Active', value: 'active' },
@@ -118,23 +110,10 @@ export default class RuntimeInstances extends React.Component {
   }
 
   render() {
-    const { runtime, t } = this.props;
-
     return (
       <div>
-        <div className={styles.toolbar} onClick={this.goBack}>
-          <Icon name="back" size={24} type="dark" />
-          <span className={styles.backTxt}>{t('Back')}</span>
-        </div>
-        <div className={styles.title}>
-          <span className={styles.tip}>{t('Selected runtime')}: </span>
-          <span className={styles.txt}>{runtime.name}</span>
-        </div>
-
-        <div>
-          {this.renderToolbar()}
-          {this.renderTable()}
-        </div>
+        {this.renderToolbar()}
+        {this.renderTable()}
       </div>
     );
   }

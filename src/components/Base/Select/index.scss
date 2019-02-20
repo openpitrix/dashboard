@@ -104,8 +104,9 @@
         margin: 2px 4px 2px 0;
       }
 
-      .icon-check{
-        float: right;
+      .icon-check {
+        float: right !important;
+        margin: 0 !important;
         position: relative;
         top: 4px;
       }

@@ -7,12 +7,9 @@ import { get } from 'lodash';
 import {
   Table, Popover, Button, Input, Icon
 } from 'components/Base';
-import {
-  Dialog, Grid, Section, Card
-} from 'components/Layout';
+import { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
-import { formatTime } from 'utils';
 
 import { clusterStatus } from 'config/resource-status';
 import columns from './columns';
@@ -37,8 +34,10 @@ export default class SSHKeys extends Component {
     sshKeyStore.userId = user.user_id;
     await sshKeyStore.fetchKeyPairs();
 
-    const nodeIds = get(sshKeyStore.keyPairs.slice(), '[0].node_id', '');
-    clusterDetailStore.nodeIds = nodeIds || ['0'];
+    const nodeIds = get(sshKeyStore.keyPairs.slice(), '[0].node_id', '') || [
+      '0'
+    ];
+    clusterDetailStore.nodeIds = nodeIds;
     if (nodeIds) {
       await clusterStore.fetchAll({
         noLimit: true,
@@ -66,9 +65,15 @@ export default class SSHKeys extends Component {
     if (currentPairId !== item.key_pair_id) {
       cancelSelectNodes();
       sshKeyStore.currentPairId = item.key_pair_id;
-      clusterDetailStore.nodeIds = item.node_id || ['0'];
+      // clusterDetailStore.nodeIds = item.node_id || ['0'];
       fetchNodes();
     }
+  };
+
+  detachAllKeysShow = nodeIds => {
+    const { clusterDetailStore, sshKeyStore } = this.props;
+    clusterDetailStore.selectedNodeIds = nodeIds || [];
+    sshKeyStore.showModal('detachAllKey');
   };
 
   detachKeyPairs = async () => {
@@ -108,12 +113,19 @@ export default class SSHKeys extends Component {
     sshKeyStore.showModal('addKey');
   };
 
-  renderOperateMenu = pairId => {
+  renderOperateMenu = pair => {
     const { t } = this.props;
 
     return (
       <div className="operate-menu">
-        <span onClick={e => this.showDeleteModal(e, pairId)}>
+        {!pair.nodeIds && (
+          <span onClick={() => this.detachAllKeysShow(pair.nodeIds)}>
+            <Icon name="close" type="dark" />
+            {t('Detach all nodes')}
+          </span>
+        )}
+        <span onClick={e => this.showDeleteModal(e, pair.key_pair_id)}>
+          <Icon name="trash" type="dark" />
           {t('Delete')}
         </span>
       </div>
@@ -128,9 +140,11 @@ export default class SSHKeys extends Component {
     let title = t('Delete SSH Key'),
       desc = t('delete_key_desc'),
       submit = removeKeyPairs;
-    if (modalType === 'detachKey') {
+    if (['detachKey', 'detachAllKey'].includes(modalType)) {
       title = t('Detach SSH Key');
-      desc = t('detach_key_desc');
+      desc = modalType === 'detachAllKey'
+        ? t('detach_all_key_desc')
+        : t('detach_key_desc');
       submit = this.detachKeyPairs;
     }
 
@@ -167,6 +181,7 @@ export default class SSHKeys extends Component {
         isOpen={isModalOpen}
         onCancel={hideModal}
         onSubmit={addKeyPairs}
+        isDialog={false}
       >
         <div className={styles.createForm}>
           <div>
@@ -218,20 +233,43 @@ export default class SSHKeys extends Component {
     );
   };
 
-  renderCard(pair) {
-    const { t } = this.props;
+  renderKeyPairs() {
+    const { sshKeyStore, t } = this.props;
+    const { keyPairs, currentPairId } = sshKeyStore;
 
     return (
-      <div className={styles.sshCard}>
-        <div className={styles.title}>{pair.name}</div>
-        <div className={styles.pubKey} title={pair.pub_key}>
-          {pair.pub_key}
+      <Section size={3} className={styles.sshKeys}>
+        <ul>
+          {keyPairs.map(pair => (
+            <li
+              key={pair.key_pair_id}
+              onClick={() => this.onClickPair(pair)}
+              className={classnames({
+                [styles.active]: pair.key_pair_id === currentPairId
+              })}
+            >
+              {pair.name}
+              <span className={styles.total}>
+                ({(pair.nodeIds && pair.nodeIds.length) || 0})
+              </span>
+              <Popover
+                className={styles.operation}
+                content={this.renderOperateMenu(pair)}
+              >
+                <Icon name="more" type="dark" size={20} />
+              </Popover>
+            </li>
+          ))}
+        </ul>
+        <div
+          onClick={() => this.showCreateModal()}
+          className={styles.addKey}
+          type="primary"
+        >
+          <Icon name="add" size={16} className={styles.icon} />
+          <span>{t('Create SSH Key')}</span>
         </div>
-        <div className={styles.time}>
-          {t('Created on')}:{' '}
-          {formatTime(pair.create_time, 'YYYY/MM/DD HH:mm:ss')}
-        </div>
-      </div>
+      </Section>
     );
   }
 
@@ -270,10 +308,7 @@ export default class SSHKeys extends Component {
   }
 
   renderDetail() {
-    const {
-      clusterStore, clusterDetailStore, sshKeyStore, t
-    } = this.props;
-    const { keyPairs, currentPairId } = sshKeyStore;
+    const { clusterStore, clusterDetailStore, t } = this.props;
     const {
       isLoading,
       onChangeNodeStatus,
@@ -320,46 +355,19 @@ export default class SSHKeys extends Component {
 
     return (
       <Grid>
-        <Section size={3}>
-          {keyPairs.map(pair => (
-            <Card
-              key={pair.key_pair_id}
-              onClick={() => this.onClickPair(pair)}
-              className={classnames(styles.sshCardOuter, {
-                [styles.active]: pair.key_pair_id === currentPairId
-              })}
-            >
-              {this.renderCard(pair)}
-              <Popover
-                className="operation"
-                content={this.renderOperateMenu(pair.key_pair_id)}
-              >
-                <Icon name="more" />
-              </Popover>
-            </Card>
-          ))}
-          <Button
-            onClick={() => this.showCreateModal()}
-            className={styles.addButton}
-            type="primary"
-          >
-            {t('Add')}
-          </Button>
-        </Section>
+        {this.renderKeyPairs()}
 
         <Section size={9}>
-          <Card>
-            {this.renderToolbar()}
+          {this.renderToolbar()}
 
-            <Table
-              columns={columns(clusters, t)}
-              dataSource={clusterNodes.toJSON()}
-              isLoading={isLoading}
-              rowSelection={rowSelection}
-              filterList={filterList}
-              pagination={pagination}
-            />
-          </Card>
+          <Table
+            columns={columns(clusters, t)}
+            dataSource={clusterNodes.toJSON()}
+            isLoading={isLoading}
+            rowSelection={rowSelection}
+            filterList={filterList}
+            pagination={pagination}
+          />
         </Section>
       </Grid>
     );
@@ -371,7 +379,7 @@ export default class SSHKeys extends Component {
     if (modalType === 'addKey') {
       return this.renderAddModal();
     }
-    if (modalType === 'deleteKey' || modalType === 'detachKey') {
+    if (['deleteKey', 'detachKey', 'detachAllKey'].includes(modalType)) {
       return this.renderDeleteModal();
     }
     if (modalType === 'download') {
@@ -379,12 +387,35 @@ export default class SSHKeys extends Component {
     }
   }
 
+  renderContent() {
+    const { sshKeyStore, t } = this.props;
+    const { keyPairs } = sshKeyStore;
+
+    if (keyPairs.length === 0) {
+      return (
+        <div className={styles.nullKeys}>
+          <Icon name="ssh" size={192} type="dark" />
+          <p className={styles.word1}>{t('No SSH key is available')}</p>
+          <p className={styles.word2}>
+            {t('Please click the create button below to add')}
+          </p>
+          <Button type="primary" onClick={() => this.showCreateModal()}>
+            <Icon name="add" size={20} type="white" />
+            {t('Create')}
+          </Button>
+        </div>
+      );
+    }
+
+    return this.renderDetail();
+  }
+
   render() {
     const { sshKeyStore } = this.props;
 
     return (
-      <Loading isLoading={sshKeyStore.isLoading}>
-        {this.renderDetail()}
+      <Loading isLoading={sshKeyStore.isLoading} className={styles.sshPage}>
+        {this.renderContent()}
         {this.renderModals()}
       </Loading>
     );

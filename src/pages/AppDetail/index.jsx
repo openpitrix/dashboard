@@ -204,7 +204,7 @@ export default class AppDetail extends Component {
         <TypeVersions
           types={types}
           versions={versions}
-          activeType={activeType}
+          activeType={activeType || types[0]}
           activeVersion={selectVersion}
           changeType={this.changeType}
         />

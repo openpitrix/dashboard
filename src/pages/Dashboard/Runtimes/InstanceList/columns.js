@@ -23,7 +23,7 @@ const columns = (t, apps, isDev) => [
   {
     title: t('Instance Name ID'),
     key: 'name',
-    width: '155px',
+    width: '220px',
     render: cl => (
       <TdName
         name={cl.name}
@@ -81,3 +81,54 @@ const columns = (t, apps, isDev) => [
 ];
 
 export default columns;
+
+export const frontgateCols = t => [
+  {
+    title: t('Status'),
+    key: 'status',
+    width: '100px',
+    render: cl => <Status type={cl.status} transition={cl.transition_status} />
+  },
+  {
+    title: t('Instance Name ID'),
+    key: 'name',
+    width: '155px',
+    render: cl => <TdName name={cl.name} description={cl.cluster_id} noIcon />
+  },
+  {
+    title: t('Subnet'),
+    key: 'Subnet',
+    width: '155px',
+    render: cl => cl.subnet_id
+  },
+  {
+    title: t('IP address'),
+    key: 'ip_address',
+    width: '155px',
+    render: cl => {
+      const nodeSet = _.get(cl, 'cluster_node_set[0]');
+      if (!nodeSet) return null;
+
+      return _.get(nodeSet, 'public_ip') || _.get(nodeSet, 'private_ip');
+    }
+  },
+  {
+    title: t('Configuration'),
+    key: 'Configuration',
+    width: '155px',
+    render: cl => {
+      const roleSet = _.get(cl, 'cluster_role_set[0]');
+      if (!roleSet) return null;
+      const text = `${roleSet.cpu}-Core${roleSet.memory / 1024}GB${
+        roleSet.storage_size
+      }GB`;
+      return <div>{text}</div>;
+    }
+  },
+  {
+    title: t('Created At'),
+    key: 'create_time',
+    width: '180px',
+    render: cl => <TimeShow time={cl.create_time} />
+  }
+];

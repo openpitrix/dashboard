@@ -88,5 +88,6 @@ watchConfig(() => {
   app.config = getServerConfig();
 });
 
+const socketUrl = process.env.socketUrl || config.socketUrl;
 // setup websocket proxy server
-proxyServer.run(config.socketUrl, config.socketProxyPort);
+proxyServer.run(socketUrl, config.socketProxyPort);

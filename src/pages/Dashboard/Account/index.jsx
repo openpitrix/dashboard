@@ -45,7 +45,9 @@ export default class Account extends Component {
   async componentDidMount() {
     const { userStore, user } = this.props;
 
-    await userStore.fetchDetail(user.user_id);
+    if (this.state.activeTab !== 'ssh') {
+      await userStore.fetchDetail(user.user_id);
+    }
   }
 
   goBack = () => {
@@ -227,15 +229,13 @@ export default class Account extends Component {
   }
 
   renderMain() {
-    const { user } = this.props;
     const { activeTab } = this.state;
-    const { isNormal } = user;
+    const { user } = this.props;
 
     return (
       <div
         className={classnames(styles.account, {
-          [styles.accountBg]: !isNormal,
-          [styles.accountNormal]: isNormal
+          [styles.accountBg]: user.role !== 'user'
         })}
       >
         {activeTab === 'account' && this.renderBasic()}
@@ -255,7 +255,10 @@ export default class Account extends Component {
     if (user.defaultPortal === 'user') {
       return (
         <UserLayout
-          className={classnames({ [styles.userAccount]: activeTab !== 'ssh' })}
+          className={classnames({
+            [styles.userAccount]: activeTab !== 'ssh',
+            [styles.sshPage]: activeTab === 'ssh'
+          })}
           banner={this.renderBanner()}
         >
           {this.renderMain()}

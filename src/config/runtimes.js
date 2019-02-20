@@ -32,3 +32,8 @@ export const nonUserTabs = [
   { name: 'Testing env', value: 'runtime' },
   { name: 'Authorization info', value: 'runtime_credential' }
 ];
+
+export const runtimeTabs = [
+  { name: 'Instance', value: '0' },
+  { name: 'Agent', value: '1' }
+];

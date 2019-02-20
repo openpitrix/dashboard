@@ -37,7 +37,7 @@
   }
 }
 
-.autoHeight {
+.tree.autoHeight {
   :global {
     li .rc-tree-node-content-wrapper {
       height: auto;
@@ -95,7 +95,7 @@
 
 .tree {
   :global {
-    li span.rc-tree-checkbox {
+    li.rc-tree-treenode-disabled span.rc-tree-checkbox {
       background-image: none;
       margin: 4px 4px 0 2px;
       position: relative;
