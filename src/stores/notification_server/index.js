@@ -59,9 +59,7 @@ export default class NotificationServerStore extends Store {
   save = async () => {
     this.isLoading = true;
     await this.request.post('service_configs/set', {
-      notification_config: {
-        email_service_config: this.formData
-      }
+      email_service_config: this.formData
     });
     await sleep(300);
     this.isLoading = false;
