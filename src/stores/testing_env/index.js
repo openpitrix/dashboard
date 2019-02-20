@@ -68,6 +68,12 @@ export default class TestingEnvStore extends Store {
   };
 
   @action
+  reset = () => {
+    this.runtimeToShowInstances = {};
+    this.platform = _.get(providersConf, '[0].key', '');
+  };
+
+  @action
   handleOperation = async (e, formData) => {
     this.isLoading = true;
 
@@ -227,7 +233,7 @@ export default class TestingEnvStore extends Store {
     await this.credentialStore.fetchAll({
       owner: this.userId,
       noLimit: true,
-      provider: this.platform,
+      provider: this.platform
     });
   };
 

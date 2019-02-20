@@ -8,6 +8,9 @@ import Toolbar from 'components/Toolbar';
 import EnhanceTable from 'components/EnhanceTable';
 import instanceCols, { frontgateCols } from './columns';
 
+const InstanceCluster = 0;
+const AgentCluster = 1;
+
 @translate()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
@@ -30,13 +33,13 @@ export default class RuntimeInstances extends React.Component {
     } = this.props;
     const { apps } = appStore;
 
-    return runtimeStore.runtimeTab === '0'
+    return runtimeStore.runtimeTab === InstanceCluster
       ? instanceCols(t, apps, user.isDev)
       : frontgateCols(t);
   }
 
   get isAgent() {
-    return this.props.runtimeStore.runtimeTab === '1';
+    return this.props.runtimeStore.runtimeTab === AgentCluster;
   }
 
   handleClickToolbar = () => {

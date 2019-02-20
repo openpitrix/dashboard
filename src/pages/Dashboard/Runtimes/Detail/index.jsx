@@ -21,13 +21,6 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeInstances extends React.Component {
-  /* componentDidMount() {
-   *   this.fetchInstance();
-   * } */
-  componentWillUnmount() {
-    this.props.clusterStore.reset();
-  }
-
   fetchInstance() {
     const {
       runtime, runtimeStore, runtimeClusterStore, user

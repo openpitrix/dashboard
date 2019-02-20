@@ -20,7 +20,10 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
-  envStore: rootStore.testingEnvStore
+  envStore: rootStore.testingEnvStore,
+  clusterStore: rootStore.clusterStore,
+  runtimeStore: rootStore.runtimeStore,
+  runtimeClusterStore: rootStore.runtimeClusterStore
 }))
 @observer
 export default class Runtimes extends React.Component {
@@ -33,6 +36,19 @@ export default class Runtimes extends React.Component {
     this.setState({
       loadedRt: true
     });
+  }
+
+  componentWillUnmount() {
+    const {
+      clusterStore,
+      envStore,
+      runtimeStore,
+      runtimeClusterStore
+    } = this.props;
+    clusterStore.reset();
+    envStore.reset();
+    runtimeStore.reset();
+    runtimeClusterStore.reset();
   }
 
   get inRuntimeTab() {
