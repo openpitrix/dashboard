@@ -108,6 +108,8 @@ export default class Users extends Component {
         <Icon type="dark" name="more" />
       </Popover>
       <Tooltip
+        portal
+        isShowArrow
         placement="top"
         targetCls={classnames(styles.tooltip)}
         content={t('Add the child node')}

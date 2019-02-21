@@ -1,14 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 
 import _ from 'lodash';
 
-import { Tree } from 'components/Base';
+import { Tree, Select } from 'components/Base';
+import { moduleDataLevels } from 'config/roles';
+
 import styles from './index.scss';
 
 @observer
 export default class ActionGroup extends Component {
+  get disabled() {
+    return _.get(this.props, 'roleStore.handelType') !== 'setBindAction';
+  }
+
   renderActionCount() {
     const { t, data } = this.props;
     const { selectedActions } = data;
@@ -40,21 +46,73 @@ export default class ActionGroup extends Component {
     return t(node.title);
   };
 
-  render() {
+  renderHeader() {
+    const { data, t, hideHeader } = this.props;
+    const { name } = data;
+    if (hideHeader) {
+      return null;
+    }
+
+    return (
+      <Fragment>
+        {!_.isEmpty(name) && <h3 className={styles.header}>{t(name)}</h3>}
+        <div>{t('Operation list')}</div>
+      </Fragment>
+    );
+  }
+
+  renderDataLevel() {
+    const { disabled } = this;
     const {
-      keys, data, index, roleStore, t
+      data, t, roleStore, hideDataLevel
+    } = this.props;
+    const { dataLevelMap } = roleStore;
+    const moduleId = _.first(data.id.split('.'));
+    if (hideDataLevel) {
+      return null;
+    }
+
+    if (disabled) {
+      return (
+        <div className={styles.dataLevel}>
+          {t('Data range')}:
+          <strong>{t(`data_level_${data.data_level}`)}</strong>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.dataLevel}>
+        {t('Data range')}:
+        <Select
+          className={styles.select}
+          value={dataLevelMap[moduleId]}
+          onChange={value => roleStore.changeDataLevelMap(moduleId, value)}
+        >
+          {moduleDataLevels.map(item => (
+            <Select.Option key={item} value={item}>
+              {t(`data_level_${item}`)}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
+    );
+  }
+
+  render() {
+    const { disabled } = this;
+    const {
+      keys, data, index, roleStore
     } = this.props;
     if (_.isEmpty(data)) {
       return null;
     }
-    const { handelType, selectAction } = roleStore;
-    const { name, treeData } = data;
-    const disabled = handelType !== 'setBindAction';
+    const { selectAction } = roleStore;
+    const { treeData } = data;
 
     return (
       <div className={styles.actions}>
-        {!_.isEmpty(name) && <h3 className={styles.header}>{t(name)}</h3>}
-        <div>{t('Operation list')}</div>
+        {this.renderHeader()}
         <Tree
           checkable
           defaultExpandAll
@@ -69,10 +127,7 @@ export default class ActionGroup extends Component {
           renderTreeTitle={this.renderTreeTitle}
           switcherIcon={this.renderSwitchIcon}
         />
-        <div>
-          {t('Data range')}:
-          <strong>{t(`data_level_${data.data_level}`)}</strong>
-        </div>
+        {this.renderDataLevel()}
       </div>
     );
   }

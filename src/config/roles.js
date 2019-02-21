@@ -38,4 +38,6 @@ export const roleToPortal = {
   user: 'user'
 };
 
+export const moduleDataLevels = ['self', 'group', 'all'];
+
 export default roles;

@@ -4,20 +4,36 @@ import { translate } from 'react-i18next';
 import Layout from 'components/Layout';
 import Collapse from 'components/Collapse';
 import ModuleFeature from './ModuleFeatures';
+import Modals from './Modals';
 
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  roleStore: rootStore.roleStore
+  roleStore: rootStore.roleStore,
+  modalStore: rootStore.modalStore
 }))
 @observer
 export default class TeamRole extends Component {
   async componentDidMount() {
     const { roleStore } = this.props;
 
-    await roleStore.fetchAll();
+    await roleStore.fetchAll({
+      portal: 'isv'
+    });
   }
+
+  onChange = (role, isCheck) => {
+    if (!isCheck) return null;
+
+    const { roleStore } = this.props;
+    roleStore.fetchRoleModuleName(role.role_id);
+  };
+
+  onClick = () => {
+    this.props.roleStore.initIsv('isv');
+    this.props.modalStore.show('renderModalCreateRole');
+  };
 
   renderTitle({ role_name, description }) {
     return (
@@ -28,15 +44,21 @@ export default class TeamRole extends Component {
     );
   }
 
-  onChange = (role, isCheck) => {
-    if (!isCheck) return null;
-
-    const { roleStore } = this.props;
-    roleStore.fetchRoleModuleName(role.role_id);
-  };
+  renderCreateTip() {
+    const { t } = this.props;
+    return (
+      <div className={styles.createTip}>
+        <span className={styles.tips}>{t('Tips')}</span>
+        <span>{t('ISV_ROLE_CREATE_TIP')}</span>
+        <span className={styles.activeText} onClick={this.onClick}>
+          {t('Create a role')}
+        </span>
+      </div>
+    );
+  }
 
   render() {
-    const { roleStore } = this.props;
+    const { roleStore, modalStore, t } = this.props;
     const { roles } = roleStore;
     return (
       <Layout
@@ -56,6 +78,8 @@ export default class TeamRole extends Component {
             <ModuleFeature roleId={role.role_id} roleStore={roleStore} />
           </Collapse>
         ))}
+        {this.renderCreateTip()}
+        <Modals t={t} modalStore={modalStore} roleStore={roleStore} />
       </Layout>
     );
   }
