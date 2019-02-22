@@ -192,6 +192,8 @@ export default class RoleStore extends Store {
   @action
   selectAction = index => keys => {
     this.selectedActionKeys[index] = keys;
+
+    this.bindActions[index].selectedActions.selectedCount = keys.filter(a => a.includes('.a')).length;
   };
 
   getSelectType = (keys, key) => {
