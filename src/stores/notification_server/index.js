@@ -46,8 +46,8 @@ export default class NotificationServerStore extends Store {
 
   @action
   fetchEmailConfig = async () => {
-    const result = await this.request.get('service_configs/get', {
-      service_type: 'notification'
+    const result = await this.request.post('service_configs/get', {
+      service_type: ['notification']
     });
     this.emailConfig = _.get(
       result,

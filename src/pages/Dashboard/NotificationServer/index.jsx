@@ -116,7 +116,7 @@ export default class NotificationServer extends Component {
                       name="email_host"
                       placeholder="server name"
                       onChange={onChangeFormItem}
-                      value={formData.server_name}
+                      value={formData.email_host}
                     />
                   </div>
 
@@ -132,7 +132,7 @@ export default class NotificationServer extends Component {
                       type="number"
                       className={styles.smallInput}
                       onChange={onChangeFormItem}
-                      value={formData.server_port}
+                      value={formData.port}
                     />
                   </div>
                   <div className={styles.paddingTop}>
