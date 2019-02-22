@@ -7,6 +7,7 @@ const utils = require('../utils');
 
 const router = new Router();
 const authEndpoint = 'oauth2/token';
+const resourcesBypassAuth = ['apps', 'active_apps', 'categories', 'attachment'];
 
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
@@ -20,7 +21,7 @@ router.post('/api/*', async ctx => {
   const { method } = body;
   const url = [apiServer, endpoint].join('/');
 
-  logger.info(`%s: %s`, method.toUpperCase(), url, { body });
+  logger.info(`%s: %s, %s`, method.toUpperCase(), url, endpoint, { body });
 
   delete body.method;
 
@@ -51,12 +52,13 @@ router.post('/api/*', async ctx => {
   const { referer } = ctx.headers;
 
   const urlParts = require('url').parse(referer);
-  const usingNoAuthToken = urlParts.pathname === '/'
-    || urlParts.pathname.startsWith('/cat/')
-    || body.isGlobalQuery;
 
-  if ('isGlobalQuery' in body) {
-    delete body.isGlobalQuery;
+  const usingNoAuthToken = urlParts.pathname === '/'
+    || resourcesBypassAuth.includes(endpoint)
+    || body.bypass_auth;
+
+  if ('bypass_auth' in body) {
+    delete body.bypass_auth;
   }
 
   const authParams = {

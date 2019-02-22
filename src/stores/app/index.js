@@ -288,7 +288,7 @@ class AppStore extends Store {
     this.isLoading = true;
     const result = await this.request.get(`apps`, {
       app_id: appId,
-      isGlobalQuery: true
+      bypass_auth: true
     });
     const appDetail = get(result, 'app_set[0]', {});
     this.appDetail = _.assign(appDetail, {
