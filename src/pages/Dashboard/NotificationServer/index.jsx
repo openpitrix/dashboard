@@ -148,13 +148,10 @@ export default class NotificationServer extends Component {
 
                 <div>
                   <div>
-                    <label>{t('Sender address')}</label>
+                    <label>{t('Sender nickname')}</label>
                     <Input
-                      name="email"
-                      placeholder={`${t(
-                        'for example'
-                      )}：cn=admin,dc=example,dc=org`}
-                      value={formData.email}
+                      name="display_email"
+                      value={formData.display_email}
                       onChange={onChangeFormItem}
                     />
                   </div>
@@ -164,9 +161,9 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Server username')}</label>
                     <Input
-                      name="display_email"
+                      name="email"
                       placeholder={`${t('for example')}：name@example.com`}
-                      value={formData.username}
+                      value={formData.email}
                       onChange={onChangeFormItem}
                     />
                   </div>

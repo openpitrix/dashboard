@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import _ from 'lodash';
 
 import { sleep } from 'utils';
 
@@ -18,6 +19,8 @@ export default class NotificationServerStore extends Store {
   @observable isLoading = false;
 
   @observable testStatus = '';
+
+  @observable emailConfig = Object.assign({}, emailConfig);
 
   @observable formData = Object.assign({}, emailConfig);
 
@@ -43,9 +46,16 @@ export default class NotificationServerStore extends Store {
 
   @action
   fetchEmailConfig = async () => {
-    await this.request.get('service_configs/get', {
-      service_type: 'email'
+    const result = await this.request.get('service_configs/get', {
+      service_type: 'notification'
     });
+    this.emailConfig = _.get(
+      result,
+      'notification_config.email_service_config'
+    );
+    if (this.emailConfig) {
+      this.formData = Object.assign({}, this.emailConfig);
+    }
   };
 
   @action
@@ -58,15 +68,19 @@ export default class NotificationServerStore extends Store {
   @action
   save = async () => {
     this.isLoading = true;
-    await this.request.post('service_configs/set', {
-      email_service_config: this.formData
+    const result = await this.request.post('service_configs/set', {
+      notification_config: {
+        email_service_config: this.formData
+      }
     });
-    await sleep(300);
+    if (_.get(result, 'is_succ')) {
+      await this.fetchEmailConfig();
+    }
     this.isLoading = false;
   };
 
   @action
   cancleSave = () => {
-    Object.assign(this.formData, emailConfig);
+    Object.assign(this.formData, this.emailConfig);
   };
 }
