@@ -104,7 +104,7 @@ export default class AppDeployStore extends Store {
         'suspended'
       ];
     }
-    params.isGlobalQuery = true;
+    params.bypass_auth = true;
     const result = await this.request.get('app_versions', params);
     this.versions = _.get(result, 'app_version_set', []);
     this.isLoading = false;
