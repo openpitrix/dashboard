@@ -32,15 +32,13 @@ export default class ActionGroup extends Component {
   }
 
   renderTreeTitle = node => {
-    const { t, roleStore } = this.props;
-    const { handelType } = roleStore;
-    const disabled = handelType !== 'setBindAction';
+    const { t } = this.props;
 
     if (node.title === 'All actions') {
       return this.renderActionCount();
     }
 
-    if (disabled) {
+    if (this.disabled) {
       return null;
     }
     return t(node.title);
@@ -62,7 +60,6 @@ export default class ActionGroup extends Component {
   }
 
   renderDataLevel() {
-    const { disabled } = this;
     const {
       data, t, roleStore, hideDataLevel
     } = this.props;
@@ -72,7 +69,7 @@ export default class ActionGroup extends Component {
       return null;
     }
 
-    if (disabled) {
+    if (this.disabled) {
       return (
         <div className={styles.dataLevel}>
           {t('Data range')}:
@@ -100,7 +97,6 @@ export default class ActionGroup extends Component {
   }
 
   render() {
-    const { disabled } = this;
     const {
       keys, data, index, roleStore
     } = this.props;
@@ -116,11 +112,11 @@ export default class ActionGroup extends Component {
         <Tree
           checkable
           defaultExpandAll
-          disabled={disabled}
+          disabled={this.disabled}
           selectable={false}
           checkedKeys={keys}
           className={classnames(styles.tree, {
-            [styles.disabledTree]: disabled
+            [styles.disabledTree]: this.disabled
           })}
           treeData={treeData}
           onCheck={selectAction(index)}

@@ -542,8 +542,19 @@ export default class RoleStore extends Store {
   @action
   initIsv = async () => {
     await this.fetchRoleModule('isv');
+    this.emptyCheckAction();
     this.onSelectModule([KeyFeatureAll]);
     this.setHandleType('setBindAction');
+  };
+
+  @action
+  emptyCheckAction = () => {
+    _.forEach(this.modules, module => {
+      module.is_check_all = false;
+      _.forEach(module.feature, feature => {
+        feature.checked_action_id = [];
+      });
+    });
   };
 
   @action

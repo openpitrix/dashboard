@@ -22,7 +22,7 @@ export default class SingleCollapse extends Component {
     disabled: false,
     iconPosition: 'left',
     iconType: 'chevron-right',
-    toggleType: 'header',
+    toggleType: 'icon',
     onChange: _.noop
   };
 
@@ -40,6 +40,7 @@ export default class SingleCollapse extends Component {
       props.className = styles.cursorPointer;
     }
     if (iconType === 'switch') {
+      props.onChange = this.toggleCheck;
       return <Switch checked={isCheck} {...props} />;
     }
 
@@ -60,12 +61,13 @@ export default class SingleCollapse extends Component {
 
   renderHeader() {
     const { iconPosition, header, toggleType } = this.props;
-    const onClick = toggleType === 'header' ? this.toggleCheck : _.noop;
+    const clickable = toggleType === 'header' || this.state.isCheck;
+    const onClick = clickable ? this.toggleCheck : _.noop;
     return (
       <div
         onClick={onClick}
         className={classnames(styles.headerContainer, {
-          [styles.cursorPointer]: toggleType === 'header'
+          [styles.cursorPointer]: clickable
         })}
       >
         {iconPosition === 'left' && this.renderIcon()}
