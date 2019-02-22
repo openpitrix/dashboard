@@ -152,7 +152,13 @@ export default class UserStore extends Store {
     this.userDetail = _.get(result, 'user_set[0]', {});
 
     if (isLogin) {
-      const role = _.get(this.userDetail, 'role[0]', {});
+      // fetch user detail
+      const detailRes = await this.request.get('users_detail', {
+        user_id: userId
+      });
+      const userDetail = _.get(detailRes, 'user_detail_set[0]', {});
+      const role = _.get(userDetail, 'role_set[0]', {});
+
       this.updateUser(
         _.extend(_.pick(this.userDetail, ['user_id', 'username', 'email']), {
           role: role.role_name,
@@ -226,6 +232,8 @@ export default class UserStore extends Store {
     this.operateResult = await this.request.post('users', params);
     this.isLoading = false;
   };
+
+  @action createIsvUser = () => {};
 
   @action
   modify = async (params = {}) => {

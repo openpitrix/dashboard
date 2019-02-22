@@ -3,7 +3,7 @@ import { map } from 'lodash';
 
 import { getPortalFromPath } from 'routes';
 
-const ROLE_ADMIN = 'admin';
+const ROLE_ADMIN = 'global_admin';
 const ROLE_DEV = 'dev';
 const ROLE_ISV = 'isv';
 const ROLE_NORMAL = 'user';
@@ -21,6 +21,7 @@ class UserProvider {
     this.changedRole = getCookie('changedRole');
     this.accessToken = getCookie('access_token');
     this.loginTime = getCookie('login_time');
+    this.fixAdminPortal();
   }
 
   isLoggedIn() {
@@ -29,6 +30,7 @@ class UserProvider {
 
   update(props = {}) {
     Object.assign(this, props);
+    this.fixAdminPortal();
 
     // save own props to cookie
     const expires_in = parseInt(getCookie('expires_in'));
@@ -37,20 +39,26 @@ class UserProvider {
     });
   }
 
+  fixAdminPortal() {
+    if (this.portal === ROLE_ADMIN) {
+      this.portal = 'admin';
+    }
+  }
+
   get isAdmin() {
-    return this.portal === ROLE_ADMIN;
+    return this.role === ROLE_ADMIN;
   }
 
   get isDev() {
-    return this.portal === ROLE_DEV;
+    return this.role === ROLE_DEV;
   }
 
   get isNormal() {
-    return this.portal === ROLE_NORMAL;
+    return this.role === ROLE_NORMAL;
   }
 
   get isISV() {
-    return this.portal === ROLE_ISV;
+    return this.role === ROLE_ISV;
   }
 
   get isUserPortal() {

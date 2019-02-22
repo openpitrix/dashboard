@@ -200,7 +200,7 @@ export default class UserModalActions extends Component {
     const { roles, hideModifyUser, createOrModify } = userStore;
     const { user_id, username, email } = item;
 
-    const title = !user_id === 'modify' ? t('Create New User') : t('Modify User');
+    const title = !user_id ? t('Create New User') : t('Modify User');
 
     return (
       <Dialog
