@@ -18,7 +18,7 @@ export default class RoleTree extends Component {
       ({ portal }) => portal === 'admin'
     );
     const normalRoles = roleStore.roles.filter(
-      ({ portal, owner_path }) => normalPortal.includes(portal) && owner_path === ':system'
+      ({ portal, owner }) => normalPortal.includes(portal) && owner === 'system'
     );
     const navData = [
       {

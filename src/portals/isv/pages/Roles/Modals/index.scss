@@ -1,0 +1,57 @@
+@import '~scss/vars';
+
+$formLabelWidth: 100px;
+$formLabelMarginRight: 20px;
+
+.form {
+  min-height: 600px;
+}
+.fmCtrl {
+  margin-bottom: 32px;
+  label {
+    display: inline-block;
+    text-align: right;
+    margin-right: $formLabelMarginRight;
+    width: $formLabelWidth;
+  }
+
+  .input {
+    width: 256px;
+  }
+}
+
+.fmPermission {
+  display: flex;
+  .label {
+    text-align: right;
+    margin-right: $formLabelMarginRight;
+    width: $formLabelWidth;
+  }
+  .permissions {
+    flex: 1;
+    margin-right: 75px;
+  }
+}
+
+.roleContainer {
+  border-left: 0;
+  border-right: 0;
+  &:hover {
+    box-shadow: inset 0 -1px 0 0 $N10, inset 0 1px 0 0 $N10;
+    background-color: $background-color;
+  }
+}
+
+.selectCtrl {
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+  .select {
+    width: 130px;
+  }
+}
+
+.footer {
+  display: flex;
+  margin-left: $formLabelWidth + $formLabelMarginRight;
+}

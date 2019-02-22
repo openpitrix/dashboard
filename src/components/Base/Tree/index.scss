@@ -170,4 +170,7 @@
       box-sizing: border-box;
     }
   }
+  &:global(.rc-tree li span.rc-tree-checkbox) {
+    margin-right: 8px;
+  }
 }

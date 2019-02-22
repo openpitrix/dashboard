@@ -8,3 +8,21 @@
 .describtion {
   color: $N75;
 }
+
+.createTip {
+  margin-top: 12px;
+  @include normal-font
+}
+.tips {
+  @include note-font
+  border-radius: 1px;
+  padding: 4px;
+  margin-right: 4px;
+  background-color: $N30;
+}
+
+.activeText {
+  color: $P75;
+  margin-left: 6px;
+  cursor: pointer;
+}

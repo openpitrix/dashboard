@@ -18,6 +18,8 @@ const defaultCheck = {
   name: 'All'
 };
 
+const defaultDataLevel = 'all';
+
 export default class RoleStore extends Store {
   @observable roles = [];
 
@@ -45,6 +47,12 @@ export default class RoleStore extends Store {
 
   @observable handelType = '';
 
+  @observable dataLevelMap = {};
+
+  @observable dataLevel = defaultDataLevel;
+
+  @observable openModuleMap = {};
+
   selectedModuleId = '';
 
   actions = [];
@@ -70,9 +78,9 @@ export default class RoleStore extends Store {
   }
 
   @action
-  async fetchAll() {
+  async fetchAll(param = {}) {
     this.isLoading = true;
-    const result = await this.request.get(`roles`);
+    const result = await this.request.get(`roles`, param);
     this.roles = _.get(result, 'role');
     this.isLoading = false;
   }
@@ -85,6 +93,7 @@ export default class RoleStore extends Store {
     });
     this.modules = _.get(result, 'role_module.module', []);
     this.getModuleTreeData();
+    this.setDataLevelMap();
     this.isLoading = false;
   }
 
@@ -158,22 +167,24 @@ export default class RoleStore extends Store {
     this.selectedRoleKeys = [];
     this.selectedActionKeys = [];
     Object.assign(this.selectedFeatureModule, defaultCheck);
+    this.dataLevelMap = {};
+    this.dataLevel = defaultDataLevel;
+    this.openModuleMap = {};
     this.handelType = '';
   };
 
   @action
   onSelectRole = async (keys = []) => {
     if (_.isEmpty(keys)) {
-      this.selectedRole = {};
-    } else {
-      const roleKey = _.first(keys);
-
-      await this.fetchRoleModule(roleKey);
-      const roles = _.filter(this.roles, role => role.role_id === roleKey);
-      this.selectedRole = _.first(roles);
-      this.onSelectModule(['all']);
-      this.selectedActionKeys = [];
+      return null;
     }
+    const roleKey = _.first(keys);
+
+    await this.fetchRoleModule(roleKey);
+    const roles = _.filter(this.roles, role => role.role_id === roleKey);
+    this.selectedRole = _.first(roles);
+    this.onSelectModule([KeyFeatureAll]);
+
     this.selectedRoleKeys = keys;
     this.handelType = '';
   };
@@ -181,6 +192,8 @@ export default class RoleStore extends Store {
   @action
   selectAction = index => keys => {
     this.selectedActionKeys[index] = keys;
+
+    this.bindActions[index].selectedActions.selectedCount = keys.filter(a => a.includes('.a')).length;
   };
 
   getSelectType = (keys, key) => {
@@ -270,7 +283,7 @@ export default class RoleStore extends Store {
 
   @action
   getActionTreeData = () => {
-    const { name, type } = this.selectedFeatureModule;
+    const { name, id, type } = this.selectedFeatureModule;
 
     if (type === KeyFeatureAll) {
       this.bindActions = this.modules
@@ -285,6 +298,7 @@ export default class RoleStore extends Store {
           });
           return {
             name: module.module_name,
+            id: module.module_id,
             data_level: module.data_level,
             treeData: this.getModuleActionData(),
             selectedActions
@@ -302,6 +316,7 @@ export default class RoleStore extends Store {
       this.bindActions = [
         {
           name,
+          id,
           data_level: moduleItem.data_level,
           treeData: this.getModuleActionData(),
           selectedActions
@@ -316,6 +331,7 @@ export default class RoleStore extends Store {
       this.bindActions = [
         {
           name,
+          id,
           data_level: moduleItem.data_level,
           treeData: this.getModuleActionData(),
           selectedActions
@@ -327,6 +343,9 @@ export default class RoleStore extends Store {
 
   @action
   onSelectModule = (keys = []) => {
+    if (_.isEmpty(keys)) {
+      return null;
+    }
     const key = _.first(keys);
     this.selectedModuleKeys = keys;
     const type = this.getSelectType(keys, key);
@@ -340,6 +359,7 @@ export default class RoleStore extends Store {
       }
       Object.assign(this.selectedFeatureModule, {
         type: TypeModule,
+        id: module.module_id,
         name: module.module_name
       });
       this.selectedModuleId = module.module_id;
@@ -352,6 +372,7 @@ export default class RoleStore extends Store {
       const feature = _.find(module.feature, { feature_id: featureId });
       Object.assign(this.selectedFeatureModule, {
         type: TypeFeature,
+        id: feature.feature_id,
         name: feature.feature_name
       });
 
@@ -381,7 +402,6 @@ export default class RoleStore extends Store {
 
   @action
   setBindAction = () => {
-    // this.selectedRoleKeys = [this.createRoleId];
     const keys = [this.createRoleId];
     this.selectedRoleKeys = keys;
     this.modal.hide();
@@ -462,11 +482,12 @@ export default class RoleStore extends Store {
       }
     };
     this.setCheckall(module);
+    this.setDataLevel(module);
     const result = await this.request.patch(`roles:module`, data);
     await sleep(300);
     if (_.get(result, 'role_module.role_id')) {
-      this.fetchRoleModule(_.first(this.selectedRoleKeys));
       this.onSelectModule([]);
+      await this.fetchRoleModule(_.first(this.selectedRoleKeys));
     }
     this.isLoading = false;
     this.setHandleType('');
@@ -480,7 +501,9 @@ export default class RoleStore extends Store {
     });
     const roleId = _.get(result, 'role_id');
     if (roleId) {
+      this.selectedRole = {};
       this.fetchAll();
+      this.modal.hide();
     }
 
     this.isLoading = false;
@@ -492,5 +515,98 @@ export default class RoleStore extends Store {
       ...this.role,
       handleType: 'edit'
     });
+  };
+
+  @action
+  setDataLevel = modules => {
+    _.forEach(modules, module => {
+      const dataLevel = this.dataLevelMap[module.module_id];
+      if (dataLevel) {
+        module.data_level = dataLevel;
+      }
+    });
+  };
+
+  @action
+  setDataLevelMap = () => {
+    _.forEach(this.modules, module => {
+      this.dataLevelMap[module.module_id] = module.data_level;
+    });
+  };
+
+  @action
+  changeDataLevelMap = (id, dataLevel) => {
+    this.dataLevelMap[id] = dataLevel;
+  };
+
+  @action
+  initIsv = async () => {
+    await this.fetchRoleModule('isv');
+    this.emptyCheckAction();
+    this.onSelectModule([KeyFeatureAll]);
+    this.setHandleType('setBindAction');
+  };
+
+  @action
+  emptyCheckAction = () => {
+    _.forEach(this.modules, module => {
+      module.is_check_all = false;
+      _.forEach(module.feature, feature => {
+        feature.checked_action_id = [];
+      });
+    });
+  };
+
+  @action
+  createISVRole = async (e, data) => {
+    this.isLoading = true;
+    const handleType = !data.role_id ? 'post' : 'patch';
+    const result = await this.request[handleType](`roles`, data);
+
+    const roleId = _.get(result, 'role_id');
+    if (roleId) {
+      this.createRoleId = roleId;
+
+      await this.changeISVRoleModule(roleId);
+      await this.fetchAll({ portal: 'isv' });
+      this.modal.hide();
+    }
+    this.isLoading = false;
+  };
+
+  @action
+  changeISVRoleModule = async roleId => {
+    const module = this.modules
+      .slice()
+      .filter(m => this.openModuleMap[m.module_id])
+      .sort(sortModule('module_id'))
+      .map((item, index) => {
+        item.data_level = this.dataLevel;
+        item.feature.forEach(f => {
+          this.getCheckedAction(f, index);
+        });
+        return item;
+      });
+    const data = {
+      role_module: {
+        role_id: roleId,
+        module
+      }
+    };
+    this.setCheckall(module);
+    const result = await this.request.patch(`roles:module`, data);
+    if (_.get(result, 'role_module.role_id')) {
+      this.onSelectModule([]);
+      await this.fetchRoleModule(_.first(this.selectedRoleKeys));
+    }
+  };
+
+  @action
+  changeDataLevel = dataLevel => {
+    this.dataLevel = dataLevel;
+  };
+
+  changeOpenModuleMap = (id, value) => {
+    this.openModuleMap[id] = value;
   };
 }
