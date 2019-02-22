@@ -20,7 +20,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
-package-lock.json
 
 # local config
 /server/local_config.yml
