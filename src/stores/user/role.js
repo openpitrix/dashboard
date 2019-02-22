@@ -176,16 +176,15 @@ export default class RoleStore extends Store {
   @action
   onSelectRole = async (keys = []) => {
     if (_.isEmpty(keys)) {
-      this.selectedRole = {};
-    } else {
-      const roleKey = _.first(keys);
-
-      await this.fetchRoleModule(roleKey);
-      const roles = _.filter(this.roles, role => role.role_id === roleKey);
-      this.selectedRole = _.first(roles);
-      this.onSelectModule([KeyFeatureAll]);
-      this.selectedActionKeys = [];
+      return null;
     }
+    const roleKey = _.first(keys);
+
+    await this.fetchRoleModule(roleKey);
+    const roles = _.filter(this.roles, role => role.role_id === roleKey);
+    this.selectedRole = _.first(roles);
+    this.onSelectModule([KeyFeatureAll]);
+
     this.selectedRoleKeys = keys;
     this.handelType = '';
   };
