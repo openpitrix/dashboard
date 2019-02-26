@@ -13,21 +13,25 @@ import styles from './index.scss';
 
 const roleToPortal = {
   dev: {
-    icon: 'wrench',
+    roleIcon: 'wrench',
+    icon: 'hammer',
     name: 'Develop Center',
     url: toRoute(routes.portal.apps, { portal: 'dev' })
   },
   isv: {
+    roleIcon: 'shield',
     icon: 'shield',
     name: 'Provider Center',
     url: toRoute(routes.portal.apps, { portal: 'isv' })
   },
   admin: {
+    roleIcon: 'enterprise',
     icon: 'dashboard',
     name: 'Manage Console',
     url: toRoute(routes.portal.apps, { portal: 'admin' })
   },
   user: {
+    roleIcon: 'appcenter',
     icon: 'appcenter',
     name: 'App Center',
     url: '/'
@@ -51,6 +55,7 @@ export class MenuLayer extends Component {
     const portal = isUserPortal
       ? roleToPortal[user.portal] || {}
       : roleToPortal.user;
+    const roleIcon = (roleToPortal[user.portal] || {}).roleIcon || 'enterprise';
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>
@@ -65,9 +70,11 @@ export class MenuLayer extends Component {
           </span>
           {user.username}
           {!isNormal && (
-            <span className={styles.devIconOuter}>
+            <span
+              className={classnames(styles.devIconOuter, [styles[user.protal]])}
+            >
               <Icon
-                name={portal.icon}
+                name={roleIcon}
                 type="white"
                 size={8}
                 className={styles.devIcon}

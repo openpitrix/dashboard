@@ -7,7 +7,13 @@ const utils = require('../utils');
 
 const router = new Router();
 const authEndpoint = 'oauth2/token';
-const resourcesBypassAuth = ['apps', 'active_apps', 'categories', 'attachment'];
+const resourcesBypassAuth = [
+  'apps',
+  'active_apps',
+  'active_app_versions',
+  'categories',
+  'attachment'
+];
 
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');

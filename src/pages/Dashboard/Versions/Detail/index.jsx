@@ -137,7 +137,7 @@ export default class VersionDetail extends Component {
     const { appId, versionId } = match.params;
 
     if (handleType === 'active') {
-      history.push(`/apps/${appId}`);
+      history.push(toRoute(routes.appDetail, { appId }));
       return false;
     }
 
