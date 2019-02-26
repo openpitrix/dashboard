@@ -7,7 +7,6 @@ import { useTableActions } from 'mixins';
 import {
   normalUserID,
   ISVID,
-  platformUserID,
   rootName,
   normalUserName,
   ISVName
@@ -124,6 +123,12 @@ export default class UserStore extends Store {
 
     const users = _.filter(this.users, user => this.selectIds.includes(user.user_id));
     return _.flatMap(users, 'username');
+  }
+
+  get isvRoles() {
+    return this.roles
+      .filter(r => r.portal === 'isv' && r.role_id !== 'isv')
+      .sort(this.sortRole);
   }
 
   @action

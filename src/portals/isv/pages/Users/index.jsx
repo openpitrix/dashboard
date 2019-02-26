@@ -7,11 +7,14 @@ import Layout from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
 import columns from './columns';
+import Modals from './Modals';
+
 import styles from './index.scss';
 
 @translate()
 @inject(({ rootStore }) => ({
-  userStore: rootStore.userStore
+  userStore: rootStore.userStore,
+  modalStore: rootStore.modalStore
 }))
 @observer
 export default class Users extends Component {
@@ -19,10 +22,18 @@ export default class Users extends Component {
     const { userStore } = this.props;
 
     await userStore.fetchAll();
+    await userStore.fetchRoles();
   }
 
   renderHandleMenu() {
     return null;
+  }
+
+  handleAction(type, e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const { modalStore } = this.props;
+    modalStore.show(type);
   }
 
   renderToolbar() {
@@ -30,7 +41,11 @@ export default class Users extends Component {
 
     return (
       <Toolbar placeholder={t('Search app name or ID')} noRefreshBtn>
-        <Button type="primary" className={styles.floatRight}>
+        <Button
+          onClick={e => this.handleAction('renderModalCreateUser', e)}
+          type="primary"
+          className={styles.floatRight}
+        >
           <Icon name="add" type="white" />
           {t('Add')}
         </Button>
@@ -39,7 +54,7 @@ export default class Users extends Component {
   }
 
   render() {
-    const { userStore, t } = this.props;
+    const { userStore, modalStore, t } = this.props;
     const { users, isLoading } = userStore;
 
     return (
@@ -56,6 +71,7 @@ export default class Users extends Component {
           data={users}
           store={userStore}
         />
+        <Modals t={t} userStore={userStore} modalStore={modalStore} />
       </Layout>
     );
   }

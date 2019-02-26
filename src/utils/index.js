@@ -298,7 +298,6 @@ export const getRoleName = (role = {}, portal = 'global_admin') => {
   }
   if (portal === 'isv') {
     name = isvRoleNameMap[role.role_id];
-    console.log(role);
   }
   if (!name) {
     name = role.role_name;

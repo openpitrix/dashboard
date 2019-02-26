@@ -42,7 +42,7 @@ export default class GroupStore extends Store {
   }
 
   get formatUserDetail() {
-    return this.getStore('userDetail').formatUserDetail;
+    return this.getStore('user').formatUserDetail;
   }
 
   get userSelectedIds() {
@@ -101,6 +101,7 @@ export default class GroupStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
+    params.group_id = [];
     this.isLoading = true;
     const result = await this.fetchUserDetail(params);
     this.users = this.formatUserDetail(_.get(result, 'user_detail_set', []));
