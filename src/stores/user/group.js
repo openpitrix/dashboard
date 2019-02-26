@@ -166,7 +166,6 @@ export default class GroupStore extends Store {
       this.userStore.users.filter(user => this.userSelectedIds.includes(user.user_id)),
       'group_id'
     );
-    debugger;
     groupIds = _.uniq(groupIds);
     await groupIds.forEach(async groupId => {
       const data = {
