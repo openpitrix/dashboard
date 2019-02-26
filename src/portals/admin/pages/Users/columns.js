@@ -27,7 +27,7 @@ export default (t, renderHandleMenu) => {
     {
       title: t('Group'),
       key: 'group',
-      render: item => <LessText txt={item.groupName} limit={10} />
+      render: item => <LessText txt={t(item.groupName)} limit={10} />
     },
     {
       title: t('Role'),
