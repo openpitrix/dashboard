@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 
 import { Input, Button, Icon } from 'components/Base';
 
+import { AdminPortal } from 'config/roles';
 import { Dialog } from 'components/Layout';
 import styles from '../index.scss';
 
@@ -94,7 +95,7 @@ export default class RoleModalActions extends Component {
         {handleType === 'edit' && (
           <Input name="role_id" value={item.role_id} type="hidden" />
         )}
-        <Input name="portal" value="global_admin" type="hidden" />
+        <Input name="portal" value={AdminPortal} type="hidden" />
       </Dialog>
     );
   }

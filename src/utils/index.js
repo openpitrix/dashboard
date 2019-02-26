@@ -3,7 +3,6 @@ import day from 'dayjs';
 import { t } from 'i18next';
 import { saveAs } from 'file-saver';
 import FormSerializer from '@lib/form-serializer';
-import { adminRoleNameMap, isvRoleNameMap } from 'config/roles';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',

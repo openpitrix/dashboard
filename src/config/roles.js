@@ -53,12 +53,16 @@ export const isvRoleNameMap = {
 
 export default roles;
 
+export const AdminPortal = 'global_admin';
+export const ISVPortal = 'isv';
+export const UserPortal = 'user';
+
 export const getRoleName = (role = {}, portal = 'global_admin') => {
   let name = '';
-  if (portal === 'global_admin') {
+  if (portal === AdminPortal) {
     name = adminRoleNameMap[role.role_id];
   }
-  if (portal === 'isv') {
+  if (portal === ISVPortal) {
     name = isvRoleNameMap[role.role_id];
   }
   if (!name) {

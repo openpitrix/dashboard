@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Tree } from 'components/Base';
-import { getRoleName, CannotEditController } from 'config/roles';
+import { getRoleName, CannotEditController, AdminPortal } from 'config/roles';
 
 import Item from './item';
 
@@ -15,13 +15,12 @@ export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {
     const { t } = this.props;
     const { sortRole } = roleStore;
-    const normalPortal = ['user', 'isv'];
     const adminRoles = roleStore.roles
-      .filter(({ portal }) => portal === 'global_admin')
+      .filter(({ portal }) => portal === AdminPortal)
       .sort(sortRole);
 
     const normalRoles = roleStore.roles.filter(
-      ({ portal, controller }) => normalPortal.includes(portal) && controller === CannotEditController
+      ({ controller }) => controller === CannotEditController
     );
     const navData = [
       {

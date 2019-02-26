@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { getFormData } from 'utils';
 import { useTableActions } from 'mixins';
+import { AdminPortal } from 'config/roles';
 
 import {
   normalUserID,
@@ -99,9 +100,7 @@ export default class UserStore extends Store {
       return this.roles.filter(r => r.portal === 'isv');
     }
 
-    return this.roles
-      .filter(r => r.portal === 'global_admin')
-      .sort(this.sortRole);
+    return this.roles.filter(r => r.portal === AdminPortal).sort(this.sortRole);
   }
 
   get fetchAllDetail() {
