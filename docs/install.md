@@ -13,7 +13,13 @@ See [https://nodejs.org](https://nodejs.org)
 
 ## Install yarn (optional)
 
-### 1. install yarn using local tar file
+### - install yarn using npm
+
+```bash
+npm i yarn -g
+```
+
+### - install yarn using local tar file
 > without hitting internet on every build, good for local dev
 
 ```shell
@@ -21,7 +27,7 @@ ADD docker/yarn.tar.gz /opt/
 ENV PATH "$PATH:/opt/yarn-v1.5.1/bin"
 ```
 
-### 2. install yarn using official shell
+### - install yarn using official shell
 > need curl files on every build, will set yarn include path automatically
 
 ```shell
@@ -29,7 +35,7 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 ENV PATH "$PATH:$HOME/.yarn/bin"
 ```
 
-### 3. install yarn using apt-get
+### - install yarn using apt-get
 > need modify linux distro's source.list, more complex
 > for example: on `debian` machine
 
