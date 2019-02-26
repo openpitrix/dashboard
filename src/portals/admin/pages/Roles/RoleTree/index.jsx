@@ -15,12 +15,14 @@ export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {
     const { t } = this.props;
     const { sortRole } = roleStore;
+    const normalPortal = ['user', 'isv'];
     const adminRoles = roleStore.roles
       .filter(({ portal }) => portal === AdminPortal)
       .sort(sortRole);
 
+    const isAdmin = item => item.controller === CannotEditController;
     const normalRoles = roleStore.roles.filter(
-      ({ controller }) => controller === CannotEditController
+      ({ portal, controller }) => normalPortal.includes(portal) && isAdmin({ controller })
     );
     const navData = [
       {
