@@ -27,7 +27,6 @@ Array [
         />
       </a>
       <a
-        aria-current="false"
         class="login"
         href="/login"
       />
@@ -74,7 +73,7 @@ Array [
           style="width:16px;height:16px"
         >
           <svg
-            class="qicon qicon-magnifier qicon-light"
+            class="qicon qicon-magnifier qicon-dark"
           >
             <use
               href="#qui-magnifier"

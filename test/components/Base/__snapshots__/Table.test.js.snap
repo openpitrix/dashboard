@@ -71,7 +71,8 @@ exports[`Base/Table basic render 1`] = `
             class="pi-table-tbody"
           >
             <tr
-              class="pi-table-row  pi-table-row-level-0"
+              class="pi-table-row pi-table-row-level-0"
+              data-row-key="1"
             >
               <td
                 class="selectionColumn"
@@ -100,7 +101,8 @@ exports[`Base/Table basic render 1`] = `
               </td>
             </tr>
             <tr
-              class="pi-table-row  pi-table-row-level-0"
+              class="pi-table-row pi-table-row-level-0"
+              data-row-key="2"
             >
               <td
                 class="selectionColumn"
@@ -268,10 +270,10 @@ exports[`Base/Table render emptyText 1`] = `
         >
           <span
             class="icon icon-cluster"
-            style="width:120px;height:120px"
+            style="width:84px;height:84px"
           >
             <svg
-              class="qicon qicon-cluster qicon-light"
+              class="qicon qicon-cluster qicon-dark"
             >
               <use
                 href="#qui-cluster"

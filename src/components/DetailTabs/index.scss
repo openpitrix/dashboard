@@ -12,18 +12,18 @@
     margin-right: 24px;
     line-height: 16px;
     font-size: 14px;
-    font-weight: 500;
-    color: $N300;
+    color: $N75;
     cursor: pointer;
 
     &.active {
       color: $P75;
       border-bottom: 1px solid $P75;
+      font-weight: 500;
     }
 
     &.disabled {
       display: none;
-      color: $N100;
+      color: $N75;
       opacity: 0.5;
       cursor: not-allowed;
     }
@@ -46,6 +46,7 @@
     &.active {
       color: $N0;
       border-color:$Y200;
+      font-weight: 500;
     }
   }
 }

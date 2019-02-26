@@ -1,6 +1,6 @@
 @import "~scss/vars";
 
-$form-item-width: 389px;
+$form-item-width: 387px;
 
 .pgHeader{
   font-size: $size-small !important;
@@ -16,6 +16,7 @@ $form-item-width: 389px;
   .info {
     margin: 0 auto;
     width: 453px;
+    padding: 32px;
     //min-height: 508px;
     height: auto;
 
@@ -49,6 +50,7 @@ $form-item-width: 389px;
           width: $form-item-width;
         }
       }
+      
       .btnVerify {
 
       }
@@ -133,11 +135,12 @@ $form-item-width: 389px;
         margin-top: 24px;
         font-size: $size-small;
         font-weight: 500;
-        line-height: 1.67;
+        line-height: 20px;
         color: $N300;
         :global {
           .icon {
             vertical-align: sub;
+            margin-right: 4px;
           }
         }
       }
@@ -148,7 +151,7 @@ $form-item-width: 389px;
           list-style-type: decimal;
           font-size: $size-small;
           color: $N300;
-          margin-bottom: 5px;
+          margin-bottom: 8px;
         }
       }
     }
@@ -165,7 +168,9 @@ $form-item-width: 389px;
     background-color: $N0;
     cursor: pointer;
     border: 1px solid transparent;
+    padding: 14px 24px;
     @include normal-font;
+    margin-bottom: 8px;
     &:hover, &.checked {
       border: 1px solid $P75;
     }
@@ -196,9 +201,11 @@ $form-item-width: 389px;
 }
 .tipChoose {
   margin-bottom: 12px;
+  line-height: 20px;
 }
 .tipAdd {
   margin-top: 49px;
+  line-height: 20px;
 }
 .linkAdd {
   font-size: $size-small;

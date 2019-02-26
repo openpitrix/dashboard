@@ -58,7 +58,7 @@ export class MenuLayer extends Component {
           <span className={styles.userIcon}>
             <Icon
               name="human"
-              size={32}
+              size={20}
               type="dark"
               className={styles.iconImg}
             />

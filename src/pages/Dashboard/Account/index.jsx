@@ -204,7 +204,7 @@ export default class Account extends Component {
         <div className={styles.wrapper}>
           <div>
             <div className={styles.userImg}>
-              <Icon name="human" type="dark" size={48} />
+              <Icon name="human" type="dark" size={32} />
             </div>
             <div className={styles.userInfo}>
               <div className={styles.name}>{username}</div>
