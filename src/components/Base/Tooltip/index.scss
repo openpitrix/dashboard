@@ -8,10 +8,10 @@ $bgcolor: $text-color;
 }
 
 .target {
-  width: 40px;
-  height: 32px;
+  width: 24px;
+  height: 20px;
   border-radius: 2px;
-  border: 1px solid transparent;
+  text-align: center;
   cursor: pointer;
 
   &:hover {
@@ -25,8 +25,6 @@ $bgcolor: $text-color;
   :global{
     .icon-more{
       position: relative;
-      top: 6px;
-      left: 12px;
     }
   }
 }
@@ -35,7 +33,7 @@ $bgcolor: $text-color;
   //padding: 8px 0;
   padding: 8px 12px;
   border-radius: 3px;
-  font-size: $size-small;
+  font-size: 12px;
   line-height: 1.5;
   color: #fff;
   background-color: $bgcolor;

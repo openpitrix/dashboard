@@ -394,7 +394,7 @@ export default class SSHKeys extends Component {
     if (keyPairs.length === 0) {
       return (
         <div className={styles.nullKeys}>
-          <Icon name="ssh" size={192} type="dark" />
+          <Icon name="ssh" size={84} type="dark" />
           <p className={styles.word1}>{t('No SSH key is available')}</p>
           <p className={styles.word2}>
             {t('Please click the create button below to add')}

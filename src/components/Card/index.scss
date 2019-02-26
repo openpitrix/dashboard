@@ -9,7 +9,7 @@ $card-height: 208px;
    position: relative;
    width: calc(33.3% - 13.3px);
    height: $card-height;
-   padding: 32px 44px;
+   padding: 24px;
    margin: 0 20px 20px 0;
    border-radius: 2px;
    border: 1px solid $N0;
@@ -23,7 +23,8 @@ $card-height: 208px;
     width: 48px;
     height: 48px;
     top: 20px;
-    margin: 0 auto 12px;
+    left: 104px;
+    margin-bottom: 12px;
     transition:all 0.3s ease;
     position: relative;
 
@@ -47,7 +48,6 @@ $card-height: 208px;
     top: 12px;
   }
   .desc {
-    font-family: Roboto-Regular sans-serif;
     font-size: $size-small;
     color: #8C96AD;
     text-align: center;
@@ -121,6 +121,7 @@ $card-height: 208px;
       text-align: left;
       margin-top: 4px;
       margin-bottom: 28px;
+      height: 40px;
       clear: both;
     }
     .attrs {

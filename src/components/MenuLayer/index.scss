@@ -56,7 +56,7 @@
         border-radius: 50%;
 
         .iconImg {
-          margin: 0;
+          margin: 6px;
           svg {
             --primary-color: #{$N300};
             --secondary-color: #{$N45};
@@ -71,6 +71,7 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
+        vertical-align: middle;
         background-color: $P75;
 
         .devIcon {

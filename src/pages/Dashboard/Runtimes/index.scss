@@ -5,7 +5,6 @@ $pg-margin: 18px;
 $card-height: 188px;
 
 %btnAdd {
-  margin-top: 20px;
   :global {
     .icon {
       vertical-align: bottom;
@@ -51,25 +50,27 @@ $card-height: 188px;
   .platforms {
     border-right: 1px solid $N10;
     .provider {
-      height: 40px;
       padding-left: 12px;
       cursor: pointer;
+      line-height: 20px;
+      padding: 10px 12px;
 
       &.active,
       &:hover {
         box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
         background-color: $N0;
+        font-weight: 500;
       }
       &.disabled {
         opacity: 0.5;
         cursor: default;
         box-shadow: none;
         background-color: transparent;
+        text-align: left;
       }
 
       span {
         display: inline-block;
-        padding: 12px 0 !important;
         vertical-align: middle;
 
         &.proName {
@@ -79,7 +80,7 @@ $card-height: 188px;
         &.proCount {
           font-size: $size-small;
           float: right;
-          margin-right: 23px;
+          margin-right: 10px;
           clear: both;
         }
       }
@@ -101,7 +102,7 @@ $card-height: 188px;
     background: none;
     border: none;
     margin-top: -40px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 
     & > div {
       font-size: $size-normal;
@@ -109,6 +110,15 @@ $card-height: 188px;
       padding-bottom: 10px;
       margin-right: 20px;
     }
+
+    >label {
+      padding: 16px 0 8px 0;
+    }
+
+    >label:last-child {
+      margin-right: 0;
+    }
+
   }
 
   .body {
@@ -128,6 +138,7 @@ $card-height: 188px;
           font-size: $size-small;
           line-height: 1.67;
           color: $N75;
+          margin-bottom: 12px;
         }
       }
       .btnAddEnv {
@@ -175,8 +186,10 @@ $card-height: 188px;
 
     .authInfos {
       .info {
-        padding: 14px auto;
+        padding: 14px 24px;
+        line-height: 20px;
         font-size: $size-small;
+        margin-bottom: 8px;
         & > span {
           display: inline-block;
           margin-right: 20px;
@@ -203,7 +216,7 @@ $card-height: 188px;
         }
       }
       .addAuthInfo {
-        margin-top: 25px;
+        margin-top: 24px;
         :global {
           .icon {
             vertical-align: sub;
@@ -225,12 +238,14 @@ $card-height: 188px;
     display: inline-block;
     font-size: $size-normal;
     font-weight: 500;
-    line-height: 2;
+    line-height: 28px;
+    margin-bottom: 8px;
     color: $N500;
   }
   .desc {
     display: block;
     height: 40px;
+    margin-bottom: 20px;
     @include note-font;
   }
 
@@ -239,7 +254,7 @@ $card-height: 188px;
     margin-top: 20px;
 
     .info {
-      width: 84px;
+      min-width: 84px;
       display: inline-block;
       margin-right: 20px;
 
