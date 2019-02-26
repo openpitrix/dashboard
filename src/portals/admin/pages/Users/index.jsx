@@ -58,9 +58,9 @@ export default class Users extends Component {
 
   renderTreeTitle = node => {
     const { userStore, groupStore, t } = this.props;
-    const { unmodifiableGroupIds } = groupStore;
+    const { protectedGroupsIds } = groupStore;
     const { selectedGroupIds } = userStore;
-    const modifiable = !unmodifiableGroupIds.includes(node.key)
+    const modifiable = !protectedGroupsIds.includes(node.key)
       && selectedGroupIds.includes(node.key);
     return modifiable ? this.renderGroupTitle(node, t) : t(node.title);
   };

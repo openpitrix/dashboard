@@ -52,3 +52,19 @@ export const isvRoleNameMap = {
 };
 
 export default roles;
+
+export const getRoleName = (role = {}, portal = 'global_admin') => {
+  let name = '';
+  if (portal === 'global_admin') {
+    name = adminRoleNameMap[role.role_id];
+  }
+  if (portal === 'isv') {
+    name = isvRoleNameMap[role.role_id];
+  }
+  if (!name) {
+    name = role.role_name;
+  }
+  return name;
+};
+
+export const CannotEditController = 'pitrix';

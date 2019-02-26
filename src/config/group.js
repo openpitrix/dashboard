@@ -1,9 +1,9 @@
 export const platformUserID = 'gid-platform';
 export const normalUserID = 'gid-user';
 export const ISVID = 'gid-isv';
-export const rootName = '管理用户';
-export const normalUserName = '普通用户';
-export const ISVName = '应用服务商';
+export const rootName = 'Admin users';
+export const normalUserName = 'Normal User';
+export const ISVName = 'ISV';
 
 const rootGroup = [
   {
@@ -12,7 +12,7 @@ const rootGroup = [
   {
     group_id: platformUserID,
     key: platformUserID,
-    title: '平台用户',
+    title: 'Platform user',
     children: [
       {
         group_id: normalUserID,

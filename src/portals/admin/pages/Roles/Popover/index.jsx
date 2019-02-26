@@ -5,10 +5,10 @@ import _ from 'lodash';
 
 import { Popover, Icon, Button } from 'components/Base';
 
+import { CannotEditController } from 'config/roles';
 import styles from '../index.scss';
 
 const createEditRole = 'renderModalCreateRole';
-const CannotEditController = 'pitrix';
 
 @observer
 export default class RolePopover extends Component {

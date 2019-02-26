@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import Layout from 'components/Layout';
 import Collapse from 'components/Collapse';
-import { getRoleName } from 'utils';
+import { getRoleName } from 'config/roles';
 import ModuleFeature from './ModuleFeatures';
 import Modals from './Modals';
 
@@ -37,9 +37,10 @@ export default class TeamRole extends Component {
   };
 
   renderTitle(role) {
+    const { t } = this.props;
     return (
       <div>
-        <h3 className={styles.title}>{getRoleName(role, 'isv')}</h3>
+        <h3 className={styles.title}>{t(getRoleName(role, 'isv'))}</h3>
         <div className={styles.describtion}>{role.description}</div>
       </div>
     );

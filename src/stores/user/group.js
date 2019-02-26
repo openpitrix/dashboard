@@ -49,7 +49,7 @@ export default class GroupStore extends Store {
     return this.getStore('user').selectIds;
   }
 
-  get unmodifiableGroupIds() {
+  get protectedGroupsIds() {
     return [platformUserID, normalUserID, ISVID];
   }
 
@@ -63,16 +63,15 @@ export default class GroupStore extends Store {
     const root = _.find(this.groups, g => !g.parent_group_id);
 
     return (
-      key && !this.unmodifiableGroupIds.includes(key) && key !== root.group_id
+      key && !this.protectedGroupsIds.includes(key) && key !== root.group_id
     );
   }
 
   get selectedRoleId() {
-    const { unmodifiableGroupIds, selectedGroupIds } = this;
-    const key = _.first(selectedGroupIds);
+    const key = _.first(this.selectedGroupIds);
 
     let role_id = '';
-    if (!unmodifiableGroupIds.includes(key)) {
+    if (!this.protectedGroupsIds.includes(key)) {
       return role_id;
     }
 
@@ -87,12 +86,11 @@ export default class GroupStore extends Store {
   }
 
   get validGroupIds() {
-    const { unmodifiableGroupIds, selectedGroupIds } = this;
-    const key = _.first(selectedGroupIds);
-    if (unmodifiableGroupIds.includes(key)) {
+    const key = _.first(this.selectedGroupIds);
+    if (this.protectedGroupsIds.includes(key)) {
       return [];
     }
-    return selectedGroupIds;
+    return this.selectedGroupIds;
   }
 
   get rootGroup() {
