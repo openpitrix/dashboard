@@ -95,6 +95,10 @@ export default class GroupStore extends Store {
     return selectedGroupIds;
   }
 
+  get rootGroup() {
+    return _.find(this.groups, g => !g.parent_group_id);
+  }
+
   @action
   fetchAll = async (params = {}) => {
     this.isLoading = true;

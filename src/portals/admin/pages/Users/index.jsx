@@ -66,16 +66,19 @@ export default class Users extends Component {
   };
 
   renderHandleGroupNode = ({ key }) => {
-    const { t } = this.props;
+    const { groupStore, t } = this.props;
+    const canEidt = key !== _.get(groupStore, 'rootGroup.group_id');
 
     return (
       <div key={`${key}-operates`} className="operate-menu">
-        <span
-          key={`${key}-rename`}
-          onClick={e => this.handleAction('renderModalRenameGroup', e)}
-        >
-          {t('Rename')}
-        </span>
+        {canEidt && (
+          <span
+            key={`${key}-rename`}
+            onClick={e => this.handleAction('renderModalRenameGroup', e)}
+          >
+            {t('Rename')}
+          </span>
+        )}
         <span
           key={`${key}-join-user`}
           onClick={e => this.handleAction('renderModalJoinGroup', e)}
