@@ -11,36 +11,30 @@
 
 ## Installation
 
-Using `git`:
+### Using git
+
+We prefer using `yarn` as our package manager, see [How to install requsites](./docs/install.md)
 
 ```
 git clone https://github.com/openpitrix/dashboard.git
 cd dashboard
-npm install
-npm run dev
+yarn 
+yarn dev
 ```
 
-Using `docker`:
+### Using docker
 
 ```
 docker pull openpitrix/dashboard
-docker run -d --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
+docker run -d --name openpitrix-dashborad -p 80:8000 openpitrix/dashboard
 ```
 
-Then open your browser: `http://localhost:8000`
+Then open your browser: `http://localhost`
 
 ## Quick start
 
 * [Deploy wordpress on QingCloud using openpitrix](./docs/quick-start.md)
 
-## Documentation
-
-* [How to install requsites](./docs/install.md)
-
-## Contributing
-
-* [Code of Conduct](./CODE_OF_CONDUCT.md)
-* [Contributing Guide](./CONTRIBUTING.md)
 
 ## License
 
