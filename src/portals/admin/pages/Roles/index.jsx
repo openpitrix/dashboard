@@ -8,6 +8,7 @@ import _ from 'lodash';
 import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
+import { getRoleName } from 'utils';
 import ModalActions from './ModalActions';
 import RoleTree from './RoleTree';
 import ModuleTree from './ModuleTree';
@@ -52,7 +53,7 @@ export default class Roles extends Component {
                     {t('Role')}
                     {!_.isEmpty(selectedRole) && (
                       <span>
-                        「{selectedRole.role_name}」{t('of setting')}
+                        「{getRoleName(selectedRole)}」{t('of setting')}
                       </span>
                     )}
                   </span>

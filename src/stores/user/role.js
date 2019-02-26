@@ -82,15 +82,24 @@ export default class RoleStore extends Store {
     return (a, b) => {
       const portals = ['global_admin', 'isv', 'user'];
       const controllers = ['pitrix', 'self'];
-      const o1 = controllers.indexOf(a.controller);
-      const o2 = controllers.indexOf(b.controller);
       const p1 = portals.indexOf(a.portal);
       const p2 = portals.indexOf(b.portal);
+      const o1 = controllers.indexOf(a.controller);
+      const o2 = controllers.indexOf(b.controller);
 
       if (p1 < p2) return -1;
       if (p1 > p2) return 1;
       if (o1 < o2) return -1;
       if (o1 > o2) return 1;
+
+      if (a.portal === 'isv') {
+        const isvSort = ['developer', 'isv'];
+        const isv1 = isvSort.indexOf(a.role_id);
+        const isv2 = isvSort.indexOf(b.role_id);
+
+        if (isv1 < isv2) return 1;
+        if (isv1 > isv2) return -1;
+      }
       return 0;
     };
   }
@@ -105,7 +114,9 @@ export default class RoleStore extends Store {
       `roles`,
       _.assign(defaultParams, param)
     );
-    this.roles = _.get(result, 'role_set');
+    this.roles = _.get(result, 'role_set', [])
+      .slice()
+      .sort(this.sortRole);
     this.setSelectedRole();
     this.isLoading = false;
   }
@@ -128,7 +139,7 @@ export default class RoleStore extends Store {
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
     });
-    this.moduleNames[roleId] = _.get(result, 'role_module.module', []);
+    this.moduleNames[roleId] = _.get(result, 'module.module_elem_set', []);
     this.isLoading = false;
   }
 
@@ -615,17 +626,13 @@ export default class RoleStore extends Store {
         return item;
       });
     const data = {
-      role_module: {
-        role_id: roleId,
-        module
+      role_id: roleId,
+      module: {
+        module_elem_set: module
       }
     };
     this.setCheckall(module);
-    const result = await this.request.post(`roles:module`, data);
-    if (_.get(result, 'role_module.role_id')) {
-      this.onSelectModule([]);
-      await this.fetchRoleModule(_.first(this.selectedRoleKeys));
-    }
+    this.request.post(`roles:module`, data);
   };
 
   @action

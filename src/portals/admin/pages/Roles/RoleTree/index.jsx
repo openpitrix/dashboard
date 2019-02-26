@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Tree } from 'components/Base';
+import { getRoleName } from 'utils';
 
 import Item from './item';
 
@@ -48,7 +49,7 @@ export default class RoleTree extends Component {
           isAdmin
           key={`title_${role.role_id}`}
           role_id={role.role_id}
-          title={role.role_name}
+          title={getRoleName(role)}
           description={role.description}
           portal={role.portal}
           roleStore={roleStore}
@@ -74,7 +75,7 @@ export default class RoleTree extends Component {
         <Item
           key={`title_${role.role_id}`}
           role_id={role.role_id}
-          title={role.role_name}
+          title={getRoleName(role)}
           description={role.description}
           portal={role.portal}
           roleStore={roleStore}

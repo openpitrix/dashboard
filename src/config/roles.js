@@ -40,4 +40,15 @@ export const roleToPortal = {
 
 export const moduleDataLevels = ['self', 'group', 'all'];
 
+export const adminRoleNameMap = {
+  global_admin: 'Super admin',
+  isv: 'ISV',
+  user: 'Normal User'
+};
+
+export const isvRoleNameMap = {
+  isv: 'Super admin',
+  developer: 'Developer'
+};
+
 export default roles;

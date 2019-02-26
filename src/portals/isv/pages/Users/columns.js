@@ -3,7 +3,7 @@ import React from 'react';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 
-import { roleMap } from 'config/roles';
+import { getRoleName } from 'utils';
 
 export default t => [
   {
@@ -19,7 +19,7 @@ export default t => [
   {
     title: t('Role'),
     key: 'role',
-    render: item => t(roleMap[item.role])
+    render: item => getRoleName(item.role, 'isv')
   },
   {
     title: t('Status'),

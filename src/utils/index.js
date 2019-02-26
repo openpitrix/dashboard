@@ -3,6 +3,7 @@ import day from 'dayjs';
 import { t } from 'i18next';
 import { saveAs } from 'file-saver';
 import FormSerializer from '@lib/form-serializer';
+import { adminRoleNameMap, isvRoleNameMap } from 'config/roles';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',
@@ -288,4 +289,19 @@ export const downloadFileFromBase64 = (base64_str = '', filename) => {
 
   // Alternatively, you could redirect to the blob to open it in the browser.
   // document.location.href = window.URL.createObjectURL(blob);
+};
+
+export const getRoleName = (role = {}, portal = 'global_admin') => {
+  let name = '';
+  if (portal === 'global_admin') {
+    name = adminRoleNameMap[role.role_id];
+  }
+  if (portal === 'isv') {
+    name = isvRoleNameMap[role.role_id];
+    console.log(role);
+  }
+  if (!name) {
+    name = role.role_name;
+  }
+  return t(name);
 };

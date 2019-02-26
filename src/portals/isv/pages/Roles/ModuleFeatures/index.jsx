@@ -46,7 +46,7 @@ export default class ModuleFeatures extends Component {
             <div className={classnames(styles.item, styles.moduleName)}>
               {module.module_name}
             </div>
-            {getArray(module.feature, 'feature_id').map(feature => (
+            {getArray(module.feature_set, 'feature_id').map(feature => (
               <div
                 key={feature.feature_id}
                 className={classnames(styles.item, {
