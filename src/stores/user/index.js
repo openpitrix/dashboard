@@ -103,10 +103,6 @@ export default class UserStore extends Store {
     return this.roles.filter(r => r.portal === AdminPortal).sort(this.sortRole);
   }
 
-  get fetchAllDetail() {
-    return this.getStore('userDetail').fetchAll;
-  }
-
   get selectedGroupIds() {
     return this.getStore('group').validGroupIds;
   }
@@ -267,7 +263,7 @@ export default class UserStore extends Store {
     if (_.get(this.operateResult, 'user_id')) {
       this.modal.hide();
       this.userDetail = {};
-      await this.fetchAllDetail();
+      await this.fetchAll();
     }
   };
 
@@ -313,7 +309,7 @@ export default class UserStore extends Store {
       this.selectIds = [];
       this.selectedRowKeys = [];
       this.modal.hide();
-      await this.fetchAllDetail();
+      await this.fetchAll();
     } else {
       const { err, errDetail } = result;
       this.error(errDetail || err);
@@ -433,7 +429,7 @@ export default class UserStore extends Store {
     const { err } = this.operateResult;
     if (!err) {
       this.modal.hide();
-      this.fetchAllDetail();
+      this.fetchAll();
     }
   };
 }
