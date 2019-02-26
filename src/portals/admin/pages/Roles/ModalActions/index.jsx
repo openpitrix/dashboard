@@ -94,7 +94,7 @@ export default class RoleModalActions extends Component {
         {handleType === 'edit' && (
           <Input name="role_id" value={item.role_id} type="hidden" />
         )}
-        <Input name="portal" value="admin" type="hidden" />
+        <Input name="portal" value="global_admin" type="hidden" />
       </Dialog>
     );
   }

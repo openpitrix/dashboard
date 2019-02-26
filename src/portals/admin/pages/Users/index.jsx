@@ -57,11 +57,12 @@ export default class Users extends Component {
   }
 
   renderTreeTitle = node => {
-    const { userStore, t } = this.props;
+    const { userStore, groupStore, t } = this.props;
+    const { unmodifiableGroupIds } = groupStore;
     const { selectedGroupIds } = userStore;
-    return selectedGroupIds.includes(node.key)
-      ? this.renderGroupTitle(node, t)
-      : t(node.title);
+    const modifiable = !unmodifiableGroupIds.includes(node.key)
+      && selectedGroupIds.includes(node.key);
+    return modifiable ? this.renderGroupTitle(node, t) : t(node.title);
   };
 
   renderHandleGroupNode = ({ key }) => {
@@ -167,7 +168,7 @@ export default class Users extends Component {
   };
 
   renderToolbar() {
-    const { userStore, t } = this.props;
+    const { userStore, groupStore, t } = this.props;
     const {
       searchWord,
       onSearch,
@@ -200,6 +201,13 @@ export default class Users extends Component {
       );
     }
 
+    const withCreateBtn = groupStore.canCreateUser
+      ? {
+        name: t('Add'),
+        onClick: e => this.handleAction('renderModalCreateUser', e)
+      }
+      : {};
+
     return (
       <Toolbar
         placeholder={t('Search users')}
@@ -207,10 +215,7 @@ export default class Users extends Component {
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
-        withCreateBtn={{
-          name: t('Add'),
-          onClick: e => this.handleAction('renderModalCreateUser', e)
-        }}
+        withCreateBtn={withCreateBtn}
       />
     );
   }
@@ -221,7 +226,7 @@ export default class Users extends Component {
       <div>
         <Button
           type="primary"
-          onClick={e => this.handleAction('renderModalCreateUser', e)}
+          onClick={e => this.handleAction('renderModalCreateGroup', e)}
         >
           {t('Create group')}
         </Button>

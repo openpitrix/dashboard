@@ -32,7 +32,7 @@ export default (t, renderHandleMenu) => {
     {
       title: t('Role'),
       key: 'role',
-      render: item => t(_.get(item, 'role[0].role_name', ''))
+      render: item => t(_.get(item, 'role.role_name', ''))
     },
     {
       title: t('Updated At'),

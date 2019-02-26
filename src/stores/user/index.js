@@ -4,6 +4,14 @@ import _ from 'lodash';
 import { getFormData } from 'utils';
 import { useTableActions } from 'mixins';
 
+import {
+  normalUserID,
+  ISVID,
+  platformUserID,
+  rootName,
+  normalUserName,
+  ISVName
+} from 'config/group';
 import Store from '../Store';
 
 const defaultStatus = ['active'];
@@ -50,7 +58,7 @@ export default class UserStore extends Store {
     username: '',
     email: '',
     password: '',
-    role: '',
+    role_id: '',
     description: ''
   };
 
@@ -66,16 +74,47 @@ export default class UserStore extends Store {
     return this.getStore('group');
   }
 
-  get selectedGroupIds() {
-    return this.getStore('group').selectedGroupIds;
-  }
-
   get groups() {
     return this.getStore('group').groups;
   }
 
   get groupName() {
     return this.getStore('group').groupName;
+  }
+
+  get needJoinGroup() {
+    return this.getStore('group').needJoinGroup;
+  }
+
+  get sortRole() {
+    return this.getStore('role').sortRole;
+  }
+
+  get createRoles() {
+    const { selectedGroupIds } = this.getStore('group');
+    const key = _.first(selectedGroupIds);
+    if (key === normalUserID) {
+      return this.roles.filter(r => r.portal === 'user');
+    }
+    if (key === ISVID) {
+      return this.roles.filter(r => r.portal === 'isv');
+    }
+
+    return this.roles
+      .filter(r => r.portal === 'global_admin')
+      .sort(this.sortRole);
+  }
+
+  get fetchAllDetail() {
+    return this.getStore('userDetail').fetchAll;
+  }
+
+  get selectedGroupIds() {
+    return this.getStore('group').validGroupIds;
+  }
+
+  get selectedRoleId() {
+    return this.getStore('group').selectedRoleId;
   }
 
   get userNames() {
@@ -88,48 +127,67 @@ export default class UserStore extends Store {
   }
 
   @action
-  fetchAll = async (params = {}) => {
+  formatUserDetail = arr => {
+    arr = _.map(
+      arr,
+      item => {
+        const user = item.user;
+        const role = _.get(item, 'role_set[0]');
+        user.role = role;
+        if (role && (role.portal === 'isv' || role.portal === 'user')) {
+          user.groupName = role.portal === 'user' ? normalUserName : ISVName;
+          return user;
+        }
+        const group = _.get(item, 'group_set[0]');
+        if (!group) {
+          return user;
+        }
+        const groupName = group.name;
+        Object.assign(user, {
+          group_id: group.group_id,
+          groupName: groupName === 'root' ? rootName : groupName
+        });
+        return user;
+      },
+      []
+    );
+    return arr;
+  };
+
+  @action
+  fetchUserDetail = (params = {}) => {
     const defaultParams = {
       sort_key: 'status_time',
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
       status: this.selectStatus ? this.selectStatus : defaultStatus,
-      group_id: this.selectedGroupIds
+      group_id: this.selectedGroupIds,
+      role_id: this.selectedRoleId
     };
-
     if (params.noLimit) {
       defaultParams.limit = this.maxLimit;
       defaultParams.offset = 0;
       delete params.noLimit;
     }
-
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
     }
-    if (this.selectRoleId) {
-      defaultParams.role = [this.selectRoleId];
-    }
-
-    this.isLoading = true;
-    const result = await this.request.get(
-      'users',
-      _.assign(defaultParams, params)
+    return this.request.get(
+      'users_detail',
+      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
     );
-    this.users = _.get(result, 'user_set', []);
-    this.setUserGroupName();
+  };
+
+  @action
+  fetchAll = async (params = {}) => {
+    this.selectedIds = [];
+    this.selectedRowKeys = [];
+    this.isLoading = true;
+    const result = await this.fetchUserDetail(params);
+    this.users = this.formatUserDetail(_.get(result, 'user_detail_set', []));
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
-
-  setUserGroupName() {
-    this.users.forEach(user => {
-      if (!(_.isArray(user.group_id) && user.group_id.length > 0)) {
-        return;
-      }
-      const groups = _.filter(this.groups, g => user.group_id.includes(g.group_id));
-      user.groupName = _.flatMap(groups, 'name').join(',');
-    });
-  }
 
   @action
   fetchStatistics = async () => {
@@ -148,17 +206,12 @@ export default class UserStore extends Store {
   @action
   fetchDetail = async (userId, isLogin) => {
     this.isLoading = true;
-    const result = await this.request.get(`users`, { user_id: userId });
-    this.userDetail = _.get(result, 'user_set[0]', {});
+    const result = await this.request.get(`users_detail`, { user_id: userId });
+    const detailRes = _.get(result, 'user_detail_set[0]');
+    this.userDetail = _.get(detailRes, 'user', {});
 
     if (isLogin) {
-      // fetch user detail
-      const detailRes = await this.request.get('users_detail', {
-        user_id: userId
-      });
-      const userDetail = _.get(detailRes, 'user_detail_set[0]', {});
-      const role = _.get(userDetail, 'role_set[0]', {});
-
+      const role = _.get(detailRes, 'role_set[0]', {});
       this.updateUser(
         _.extend(_.pick(this.userDetail, ['user_id', 'username', 'email']), {
           role: role.role_name,
@@ -177,7 +230,7 @@ export default class UserStore extends Store {
       'username',
       'email',
       'password',
-      'role',
+      'role_id',
       'description'
     ]);
 
@@ -190,7 +243,7 @@ export default class UserStore extends Store {
       }
       await this.modify(params);
     } else {
-      if (!params.role) {
+      if (!params.role_id) {
         return this.error('Empty role');
       }
       if (!params.password) {
@@ -201,7 +254,7 @@ export default class UserStore extends Store {
       // delete params.username;
       await this.create(params);
       const userId = _.get(this.operateResult, 'user_id');
-      if (!_.isEmpty(this.selectedGroupIds) && !!userId) {
+      if (!!userId && this.needJoinGroup) {
         this.groupStore.selectIds = [userId];
         await this.groupStore.joinGroup();
       }
@@ -210,15 +263,8 @@ export default class UserStore extends Store {
     if (_.get(this.operateResult, 'user_id')) {
       this.modal.hide();
       this.userDetail = {};
-      await this.fetchAll();
+      await this.fetchAllDetail();
     }
-  };
-
-  @action
-  showModifyUser = user => {
-    this.userDetail = user;
-    this.userDetail.password = '';
-    this.modal.show('renderModalCreateUser');
   };
 
   hideModifyUser = () => {
@@ -263,7 +309,7 @@ export default class UserStore extends Store {
       this.selectIds = [];
       this.selectedRowKeys = [];
       this.modal.hide();
-      await this.fetchAll();
+      await this.fetchAllDetail();
     } else {
       const { err, errDetail } = result;
       this.error(errDetail || err);
@@ -271,9 +317,18 @@ export default class UserStore extends Store {
   };
 
   @action
-  fetchRoles = async () => {
-    const result = await this.request.get('roles');
-    this.roles = _.get(result, 'role', []);
+  fetchRoles = async (params = {}) => {
+    const result = await this.request.get(
+      'roles',
+      _.assign(
+        {
+          status: 'active'
+        },
+        params
+      )
+    );
+    this.roles = _.get(result, 'role_set', []);
+    this.roles.slice().sort(this.sortRole);
   };
 
   @action
@@ -374,9 +429,7 @@ export default class UserStore extends Store {
     const { err } = this.operateResult;
     if (!err) {
       this.modal.hide();
-      this.selectedIds = [];
-      this.selectedRowKeys = [];
-      this.fetchAll();
+      this.fetchAllDetail();
     }
   };
 }

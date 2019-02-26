@@ -8,17 +8,21 @@ import Item from './item';
 
 import styles from './index.scss';
 
+const CannotEditController = 'pitrix';
+
 @translate()
 @observer
 export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {
     const { t } = this.props;
+    const { sortRole } = roleStore;
     const normalPortal = ['user', 'isv'];
-    const adminRoles = roleStore.roles.filter(
-      ({ portal }) => portal === 'admin'
-    );
+    const adminRoles = roleStore.roles
+      .filter(({ portal }) => portal === 'global_admin')
+      .sort(sortRole);
+
     const normalRoles = roleStore.roles.filter(
-      ({ portal, owner }) => normalPortal.includes(portal) && owner === 'system'
+      ({ portal, controller }) => normalPortal.includes(portal) && controller === CannotEditController
     );
     const navData = [
       {

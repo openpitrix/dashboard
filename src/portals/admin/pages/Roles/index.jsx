@@ -65,7 +65,9 @@ export default class Roles extends Component {
                 {!_.isEmpty(selectedRole) && (
                   <div className={styles.module}>
                     <div className={styles.moduleTree}>
-                      <div className={styles.moduleName}>{t('模块权限')}</div>
+                      <div className={styles.moduleName}>
+                        {t('Module permission')}
+                      </div>
                       <ModuleTree t={t} roleStore={roleStore} />
                     </div>
                     <div className={styles.actions}>

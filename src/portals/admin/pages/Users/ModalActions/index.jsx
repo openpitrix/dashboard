@@ -16,10 +16,22 @@ const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
 @observer
 export default class UserModalActions extends Component {
+  get selectedIds() {
+    return this.props.userStore.selectedIds;
+  }
+
+  get userNames() {
+    return this.props.userStore.userNames;
+  }
+
+  get selectedGroupIds() {
+    return this.props.groupStore.selectedGroupIds;
+  }
+
   renderModalCreateGroup() {
     const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { createGroup, selectedGroupIds } = groupStore;
+    const { createGroup } = groupStore;
 
     return (
       <Dialog
@@ -32,7 +44,7 @@ export default class UserModalActions extends Component {
         <Input
           name="parent_group_id"
           type="hidden"
-          value={_.first(selectedGroupIds)}
+          value={_.first(this.selectedGroupIds)}
         />
         <Input name="description" type="hidden" />
         <div className={styles.formItem}>
@@ -46,7 +58,7 @@ export default class UserModalActions extends Component {
   renderModalDeleteGroup() {
     const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { deleteGroup, selectedGroupIds, groupName } = groupStore;
+    const { deleteGroup, groupName } = groupStore;
     return (
       <Dialog
         title={t('Delete group')}
@@ -61,7 +73,7 @@ export default class UserModalActions extends Component {
           })}
         </div>
         <div className={styles.tips}>{t('DELETE_GROUP_TIP')}</div>
-        <Input name="group_id" type="hidden" value={selectedGroupIds} />
+        <Input name="group_id" type="hidden" value={this.selectedGroupIds} />
       </Dialog>
     );
   }
@@ -69,7 +81,7 @@ export default class UserModalActions extends Component {
   renderModalRenameGroup() {
     const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { renameGroup, selectedGroupIds, groupName } = groupStore;
+    const { renameGroup, groupName } = groupStore;
     return (
       <Dialog
         title={t('Rename group')}
@@ -81,7 +93,7 @@ export default class UserModalActions extends Component {
         <Input
           name="group_id"
           type="hidden"
-          value={_.first(selectedGroupIds)}
+          value={_.first(this.selectedGroupIds)}
         />
         <div className={styles.formItem}>
           <label>{t('Group name')}</label>
@@ -127,10 +139,10 @@ export default class UserModalActions extends Component {
       t, modalStore, groupStore, userStore
     } = this.props;
     const { hide, isOpen } = modalStore;
-    const { users, selectedRowKeys } = userStore;
+    const { users } = userStore;
     const { leaveGroup } = groupStore;
     let names = _.flatMap(
-      users.filter(user => selectedRowKeys.includes(user.user_id)),
+      users.filter(user => this.selectedIds.includes(user.user_id)),
       'username'
     );
     let count = null;
@@ -160,11 +172,11 @@ export default class UserModalActions extends Component {
   renderModalSetRole() {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, hide, item } = modalStore;
-    const { setRole, roles, userNames } = userStore;
-    const roleId = _.get(item, 'role[0].role_id', '');
-    const userId = _.get(item, 'user_id') || userStore.selectIds.join(',');
-    const names = userId ? item.username : userNames;
-    const text = userId
+    const { setRole, createRoles } = userStore;
+    const roleId = _.get(item, 'role.role_id', '');
+    const userId = _.get(item, 'user_id') || this.selectedIds.join(',');
+    const names = roleId ? item.username : this.userNames;
+    const text = roleId
       ? t('Set_Role_Title', { names })
       : t('Set_Role_Title_For_Multi_User', {
         count: names.length,
@@ -183,7 +195,7 @@ export default class UserModalActions extends Component {
         <div>
           <input name="user_id" value={userId} type="hidden" />
           <Select defaultValue={roleId} name="role_id">
-            {roles.map(({ role_id, role_name }) => (
+            {createRoles.map(({ role_id, role_name }) => (
               <Select.Option key={role_id} value={role_id}>
                 {t(role_name)}
               </Select.Option>
@@ -197,8 +209,9 @@ export default class UserModalActions extends Component {
   renderModalCreateUser() {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, item } = modalStore;
-    const { roles, hideModifyUser, createOrModify } = userStore;
+    const { hideModifyUser, createOrModify } = userStore;
     const { user_id, username, email } = item;
+    const roles = userStore.createRoles;
 
     const title = !user_id ? t('Create New User') : t('Modify User');
 
@@ -237,7 +250,7 @@ export default class UserModalActions extends Component {
           <Fragment>
             <div className={styles.formItem}>
               <label>{t('Role')}</label>
-              <Select name="role">
+              <Select defaultValue={_.get(roles, '[0].role_id')} name="role_id">
                 {roles.map(({ role_id, role_name }) => (
                   <Select.Option key={role_id} value={role_id}>
                     {t(role_name)}
@@ -288,7 +301,7 @@ export default class UserModalActions extends Component {
     const { t, modalStore, userStore } = this.props;
     const { hide, isOpen, item } = modalStore;
     const { remove } = userStore;
-    userStore.userId = item.type === 'one' ? [item.user_id] : userStore.selectIds;
+    userStore.userId = item.type === 'one' ? [item.user_id] : this.selectedIds;
 
     return (
       <Dialog
