@@ -1,4 +1,4 @@
-FROM openpitrix/dashboard-env-slim:v0.1.0 as builder
+FROM openpitrix/dashboard-env-slim:v0.2.0 as builder
 MAINTAINER sunnyw <sunnywang@yunify.com>
 
 ARG SKIP_NODE_SASS_TESTS=true
@@ -21,7 +21,7 @@ RUN cd /tmp && mkdir -p node_modules \
 COPY . /app
 RUN cd /app && ln -fs /tmp/node_modules && yarn prod:build
 
-FROM node:9-alpine
+FROM node:8-alpine
 
 ENV NODE_ENV=production
 
