@@ -175,8 +175,9 @@ export default class UserModalActions extends Component {
     const { setRole, createRoles } = userStore;
     const roleId = _.get(item, 'role.role_id', '');
     const userId = _.get(item, 'user_id') || this.selectedIds.join(',');
-    const names = roleId ? item.username : this.userNames;
-    const text = roleId
+    const isMultip = _.get(item, 'user_id');
+    const names = isMultip ? item.username : this.userNames;
+    const text = isMultip
       ? t('Set_Role_Title', { names })
       : t('Set_Role_Title_For_Multi_User', {
         count: names.length,
