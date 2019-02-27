@@ -93,6 +93,30 @@ export default class GroupStore extends Store {
     return this.selectedGroupIds;
   }
 
+  get groupIdWithChildren() {
+    const ids = [];
+    const selectedId = _.first(this.validGroupIds);
+    if (!selectedId) {
+      return ids;
+    }
+    ids.push(selectedId);
+    const addChildrenId = (dataSet, parentId) => {
+      const data = _.filter(dataSet, g => g.parent_group_id === parentId);
+
+      if (data.length === 0) {
+        return;
+      }
+      _.forEach(data, group => {
+        const id = group.group_id;
+        ids.push(id);
+        addChildrenId(dataSet, id);
+      });
+    };
+    addChildrenId(this.groups, selectedId);
+
+    return ids;
+  }
+
   get rootGroup() {
     return _.find(this.groups, g => !g.parent_group_id);
   }

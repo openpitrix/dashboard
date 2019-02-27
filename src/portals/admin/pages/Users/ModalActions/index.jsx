@@ -17,7 +17,7 @@ const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 @observer
 export default class UserModalActions extends Component {
   get selectedIds() {
-    return this.props.userStore.selectedIds;
+    return this.props.userStore.selectIds;
   }
 
   get userNames() {

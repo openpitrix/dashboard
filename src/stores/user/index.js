@@ -104,7 +104,7 @@ export default class UserStore extends Store {
   }
 
   get selectedGroupIds() {
-    return this.getStore('group').validGroupIds;
+    return this.getStore('group').groupIdWithChildren;
   }
 
   get selectedRoleId() {
