@@ -7,7 +7,9 @@ services:
 
 language: node_js
 
-node_js: 8
+node_js:
+  - "8"
+  - "10"
 
 env:
   SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
