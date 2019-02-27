@@ -3,3 +3,14 @@
 .floatRight {
   float: right;
 }
+
+.formItem {
+  @include form-item;
+}
+.formItemText {
+  @include form-textarea;
+}
+
+.formTitle {
+  margin-bottom: 20px;
+}

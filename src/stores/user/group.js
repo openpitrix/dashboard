@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { sleep } from 'utils';
 import { useTableActions } from 'mixins';
 
+import rootGroup, { platformUserID, normalUserID, ISVID } from 'config/group';
+
 import Store from '../Store';
 
 const defaultStatus = ['active'];
@@ -31,35 +33,100 @@ export default class GroupStore extends Store {
     return this.getStore('user');
   }
 
-  get fetchUser() {
+  get fetchAllUser() {
     return this.getStore('user').fetchAll;
+  }
+
+  get fetchUserDetail() {
+    return this.getStore('user').fetchUserDetail;
+  }
+
+  get formatUserDetail() {
+    return this.getStore('user').formatUserDetail;
   }
 
   get userSelectedIds() {
     return this.getStore('user').selectIds;
   }
 
-  @action
-  fetchAll = async (params = {}) => {
-    const defaultParams = {
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize,
-      status: this.selectStatus ? this.selectStatus : defaultStatus
-    };
+  get protectedGroupsIds() {
+    return [platformUserID, normalUserID, ISVID];
+  }
 
-    if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+  get canCreateUser() {
+    const key = _.first(this.selectedGroupIds);
+    return key && key !== platformUserID;
+  }
+
+  get needJoinGroup() {
+    const key = _.first(this.selectedGroupIds);
+    const root = _.find(this.groups, g => !g.parent_group_id);
+
+    return (
+      key && !this.protectedGroupsIds.includes(key) && key !== root.group_id
+    );
+  }
+
+  get selectedRoleId() {
+    const key = _.first(this.selectedGroupIds);
+
+    let role_id = '';
+    if (!this.protectedGroupsIds.includes(key)) {
+      return role_id;
     }
 
-    const result = await this.request.get(
-      'users',
-      _.assign(defaultParams, params)
-    );
-    const users = _.get(result, 'user_set', []);
-    this.users = users.filter(
-      u => !(_.isArray(u.group_id) && u.group_id.length > 0)
-    );
+    if (key === platformUserID) {
+      role_id = ['isv', 'user'];
+    } else if (key === normalUserID) {
+      role_id = 'user';
+    } else {
+      role_id = 'isv';
+    }
+    return role_id;
+  }
+
+  get validGroupIds() {
+    const key = _.first(this.selectedGroupIds);
+    if (this.protectedGroupsIds.includes(key)) {
+      return [];
+    }
+    return this.selectedGroupIds;
+  }
+
+  get groupIdWithChildren() {
+    const ids = [];
+    const selectedId = _.first(this.validGroupIds);
+    if (!selectedId) {
+      return ids;
+    }
+    ids.push(selectedId);
+    const addChildrenId = (dataSet, parentId) => {
+      const data = _.filter(dataSet, g => g.parent_group_id === parentId);
+
+      if (data.length === 0) {
+        return;
+      }
+      _.forEach(data, group => {
+        const id = group.group_id;
+        ids.push(id);
+        addChildrenId(dataSet, id);
+      });
+    };
+    addChildrenId(this.groups, selectedId);
+
+    return ids;
+  }
+
+  get rootGroup() {
+    return _.find(this.groups, g => !g.parent_group_id);
+  }
+
+  @action
+  fetchAll = async (params = {}) => {
+    params.group_id = [];
+    this.isLoading = true;
+    const result = await this.fetchUserDetail(params);
+    this.users = this.formatUserDetail(_.get(result, 'user_detail_set', []));
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -67,7 +134,9 @@ export default class GroupStore extends Store {
   @action
   fetchGroups = async () => {
     this.isLoading = true;
-    const result = await this.request.get('groups');
+    const result = await this.request.get('groups', {
+      status: defaultStatus
+    });
     this.groups = _.get(result, 'group_set', []);
     this.getGroupTree();
     this.isLoading = false;
@@ -114,7 +183,7 @@ export default class GroupStore extends Store {
       this.selectIds = [];
       this.selectedRowKeys = [];
       this.modal.hide();
-      this.fetchUser();
+      this.fetchAllUser();
     }
   };
 
@@ -137,7 +206,7 @@ export default class GroupStore extends Store {
     this.userStore.selectedRowKeys = [];
     this.modal.hide();
     await sleep(300);
-    await this.fetchUser();
+    await this.fetchAllUser();
   };
 
   @action
@@ -151,20 +220,21 @@ export default class GroupStore extends Store {
       this.userStore.selectIds = [];
       this.userStore.selectedRowKeys = [];
       this.modal.hide();
-      this.fetchUser();
+      this.fetchAllUser();
     }
   };
 
   @action
   onSelectOrg = (keys, info) => {
+    this.groupName = keys.length ? _.get(info, 'node.props.title') : '';
+
     this.selectedGroupIds = keys;
     this.selectedRowKeys = [];
     _.assign(this.userStore, {
       selectIds: [],
       selectedRowKeys: []
     });
-    this.groupName = keys.length ? _.get(info, 'node.props.title') : '';
-    this.fetchUser();
+    this.fetchAllUser();
   };
 
   @action
@@ -178,13 +248,7 @@ export default class GroupStore extends Store {
     if (_.isEmpty(root)) {
       throw new Error('No root group');
     }
-    const data = [
-      {
-        group_id: root.group_id,
-        key: root.group_id,
-        title: root.name
-      }
-    ];
+    const data = [...rootGroup];
     const filter = (dataSet, parentId) => _.filter(dataSet, g => g.parent_group_id === parentId);
     const setChildren = (dataSet, treeDataNode) => {
       const children = filter(dataSet, treeDataNode.group_id);
@@ -198,7 +262,11 @@ export default class GroupStore extends Store {
       }));
     };
 
-    data[0].children = setChildren(groups, data[0]);
+    Object.assign(data[0], {
+      group_id: root.group_id,
+      key: root.group_id
+    });
+    data[0].children = setChildren(groups, root);
     this.groupTreeData = data;
   };
 }

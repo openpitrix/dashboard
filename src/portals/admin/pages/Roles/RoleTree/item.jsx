@@ -3,12 +3,14 @@ import { translate } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 
+import { AdminPortal } from 'config/roles';
+
 import styles from './index.scss';
 
 @translate()
 export default class RoleItem extends Component {
   get isGlobalAdmin() {
-    return this.props.role_id === 'global_admin';
+    return this.props.role_id === AdminPortal;
   }
 
   get description() {

@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Tree } from 'components/Base';
+import { getRoleName, CannotEditController, AdminPortal } from 'config/roles';
 
 import Item from './item';
 
@@ -13,12 +14,15 @@ import styles from './index.scss';
 export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {
     const { t } = this.props;
+    const { sortRole } = roleStore;
     const normalPortal = ['user', 'isv'];
-    const adminRoles = roleStore.roles.filter(
-      ({ portal }) => portal === 'admin'
-    );
+    const adminRoles = roleStore.roles
+      .filter(({ portal }) => portal === AdminPortal)
+      .sort(sortRole);
+
+    const isAdmin = item => item.controller === CannotEditController;
     const normalRoles = roleStore.roles.filter(
-      ({ portal, owner }) => normalPortal.includes(portal) && owner === 'system'
+      ({ portal, controller }) => normalPortal.includes(portal) && isAdmin({ controller })
     );
     const navData = [
       {
@@ -44,7 +48,7 @@ export default class RoleTree extends Component {
           isAdmin
           key={`title_${role.role_id}`}
           role_id={role.role_id}
-          title={role.role_name}
+          title={t(getRoleName(role))}
           description={role.description}
           portal={role.portal}
           roleStore={roleStore}
@@ -70,7 +74,7 @@ export default class RoleTree extends Component {
         <Item
           key={`title_${role.role_id}`}
           role_id={role.role_id}
-          title={role.role_name}
+          title={t(getRoleName(role))}
           description={role.description}
           portal={role.portal}
           roleStore={roleStore}

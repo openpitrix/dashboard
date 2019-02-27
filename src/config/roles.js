@@ -40,4 +40,35 @@ export const roleToPortal = {
 
 export const moduleDataLevels = ['self', 'group', 'all'];
 
+export const adminRoleNameMap = {
+  global_admin: 'Super admin',
+  isv: 'ISV',
+  user: 'Normal User'
+};
+
+export const isvRoleNameMap = {
+  isv: 'Super admin',
+  developer: 'Developer'
+};
+
 export default roles;
+
+export const AdminPortal = 'global_admin';
+export const ISVPortal = 'isv';
+export const UserPortal = 'user';
+
+export const getRoleName = (role = {}, portal = 'global_admin') => {
+  let name = '';
+  if (portal === AdminPortal) {
+    name = adminRoleNameMap[role.role_id];
+  }
+  if (portal === ISVPortal) {
+    name = isvRoleNameMap[role.role_id];
+  }
+  if (!name) {
+    name = role.role_name;
+  }
+  return name;
+};
+
+export const CannotEditController = 'pitrix';

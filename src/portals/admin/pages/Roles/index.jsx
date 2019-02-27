@@ -8,6 +8,7 @@ import _ from 'lodash';
 import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
+import { getRoleName } from 'config/roles';
 import ModalActions from './ModalActions';
 import RoleTree from './RoleTree';
 import ModuleTree from './ModuleTree';
@@ -52,7 +53,7 @@ export default class Roles extends Component {
                     {t('Role')}
                     {!_.isEmpty(selectedRole) && (
                       <span>
-                        「{selectedRole.role_name}」{t('of setting')}
+                        「{t(getRoleName(selectedRole))}」{t('of setting')}
                       </span>
                     )}
                   </span>
@@ -65,7 +66,9 @@ export default class Roles extends Component {
                 {!_.isEmpty(selectedRole) && (
                   <div className={styles.module}>
                     <div className={styles.moduleTree}>
-                      <div className={styles.moduleName}>{t('模块权限')}</div>
+                      <div className={styles.moduleName}>
+                        {t('Module permission')}
+                      </div>
                       <ModuleTree t={t} roleStore={roleStore} />
                     </div>
                     <div className={styles.actions}>

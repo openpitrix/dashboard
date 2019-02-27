@@ -27,12 +27,12 @@ export default (t, renderHandleMenu) => {
     {
       title: t('Group'),
       key: 'group',
-      render: item => <LessText txt={item.groupName} limit={10} />
+      render: item => <LessText txt={t(item.groupName)} limit={10} />
     },
     {
       title: t('Role'),
       key: 'role',
-      render: item => t(_.get(item, 'role[0].role_name', ''))
+      render: item => t(_.get(item, 'role.role_name', ''))
     },
     {
       title: t('Updated At'),

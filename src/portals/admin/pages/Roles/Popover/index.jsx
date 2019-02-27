@@ -5,12 +5,22 @@ import _ from 'lodash';
 
 import { Popover, Icon, Button } from 'components/Base';
 
+import { CannotEditController } from 'config/roles';
 import styles from '../index.scss';
 
 const createEditRole = 'renderModalCreateRole';
 
 @observer
 export default class RolePopover extends Component {
+  get canEdit() {
+    const { roleStore } = this.props;
+    const isEmpty = _.isEmpty(roleStore.selectedRoleKeys);
+    return (
+      !isEmpty
+      && _.get(roleStore, 'selectedRole.controller') !== CannotEditController
+    );
+  }
+
   handleAction(type, e) {
     e.stopPropagation();
     e.preventDefault();
@@ -83,8 +93,8 @@ export default class RolePopover extends Component {
 
   render() {
     const { roleStore } = this.props;
-    const { handelType, selectedRoleKeys } = roleStore;
-    if (_.isEmpty(selectedRoleKeys)) {
+    const { handelType } = roleStore;
+    if (!this.canEdit) {
       return null;
     }
 
