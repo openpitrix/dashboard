@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import { pick } from 'lodash';
 
 import Store from './Store';
@@ -31,10 +31,7 @@ export default class RootStore extends Store {
 
   @observable notifications = [];
 
-  @observable
-  user = {
-    username: ''
-  };
+  user = {};
 
   lastSetFixStamp = Date.now();
 

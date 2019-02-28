@@ -50,8 +50,6 @@ export default class UserStore extends Store {
 
   @observable rememberMe = false;
 
-  @observable language = localStorage.getItem('i18nextLng') || 'zh';
-
   @observable
   userDetail = {
     user_id: '',
@@ -348,12 +346,9 @@ export default class UserStore extends Store {
   });
 
   @action
-  modifyUser = async e => {
-    e.preventDefault();
-
-    const data = getFormData(e.target);
+  modifyUser = async data => {
     data.user_id = this.userDetail.user_id;
-    const result = await this.modify(data);
+    const result = await this.modify(_.omit(data, 'language'));
 
     if (_.get(result, 'user_id')) {
       this.success('Modify user successful');
@@ -394,11 +389,6 @@ export default class UserStore extends Store {
 
   @action
   changePassword = async (params = {}) => await this.request.post('users/password:change', params);
-
-  @action
-  changeLanguage = lan => {
-    this.language = lan;
-  };
 
   @action
   toggleRememberMe = () => {

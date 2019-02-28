@@ -9,7 +9,7 @@ import {
 import Layout from 'components/Layout';
 import UserLayout from 'portals/user/Layout';
 import DetailTabs from 'components/DetailTabs';
-import { getLoginDate } from 'utils';
+import { getLoginDate, getFormData } from 'utils';
 import SSHKeys from './SSHKeys';
 
 import styles from './index.scss';
@@ -34,52 +34,60 @@ export default class Account extends Component {
     super(props);
 
     const language = props.i18n.language || 'zh';
-    const { type } = props.match.params;
 
     this.state = {
-      language,
-      activeTab: type || 'account'
+      language
     };
   }
 
   async componentDidMount() {
-    const { userStore, user } = this.props;
+    const { userStore, rootStore } = this.props;
+    const { user } = rootStore;
+    const { type: activeTab } = this.props.match.params;
 
-    if (this.state.activeTab !== 'ssh') {
+    if (activeTab !== 'ssh') {
       await userStore.fetchDetail(user.user_id);
     }
   }
 
   goBack = () => {
-    const { history } = this.props;
-    history.goBack();
+    this.setState(
+      {
+        hide: true
+      },
+      () => {
+        window.setTimeout(() => {
+          this.setState({ hide: false });
+        }, 10);
+      }
+    );
   };
 
+  cancle = () => {};
+
   changeTab = tab => {
-    this.setState({
-      activeTab: tab
-    });
+    this.props.history.push(`/profile/${tab}`);
   };
 
   modifyUser = async e => {
-    const { userStore, rootStore, i18n } = this.props;
-    const result = await userStore.modifyUser(e);
+    e.preventDefault();
 
-    if (result && result.username) {
+    const { userStore, rootStore, i18n } = this.props;
+    const data = getFormData(e.target);
+    const { username } = await userStore.modifyUser(data);
+
+    if (username) {
       const { language } = this.state;
-      const newLanguage = userStore.language;
+      const newLanguage = data.language;
       if (newLanguage !== language) {
         i18n.changeLanguage(newLanguage);
         this.setState({
           language: newLanguage
         });
       }
-
       rootStore.updateUser({
-        username: result.username
+        username
       });
-
-      rootStore.user.username = result.username;
     }
   };
 
@@ -139,7 +147,7 @@ export default class Account extends Component {
   renderBasic() {
     const { userStore, t } = this.props;
     const { language } = this.state;
-    const { userDetail, changeUser, changeLanguage } = userStore;
+    const { userDetail } = userStore;
 
     return (
       <form
@@ -155,10 +163,7 @@ export default class Account extends Component {
             className={styles.input}
             name="username"
             maxLength={50}
-            value={userDetail.username}
-            onChange={e => {
-              changeUser(e, 'username');
-            }}
+            defaultValue={userDetail.username}
             required
           />
         </div>
@@ -174,7 +179,7 @@ export default class Account extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Language setting')}</label>
-          <Select onChange={changeLanguage} value={userStore.language}>
+          <Select name="language" defaultValue={language}>
             <Select.Option value="zh">简体中文</Select.Option>
             <Select.Option value="en">English</Select.Option>
           </Select>
@@ -195,8 +200,7 @@ export default class Account extends Component {
 
   renderBanner() {
     const { user, i18n, t } = this.props;
-    const { activeTab } = this.state;
-    const { username, loginTime } = user;
+    const { type: activeTab } = this.props.match.params;
     const language = i18n.language || 'zh';
 
     return (
@@ -207,10 +211,10 @@ export default class Account extends Component {
               <Icon name="human" type="dark" size={32} />
             </div>
             <div className={styles.userInfo}>
-              <div className={styles.name}>{username}</div>
+              <div className={styles.name}>{user.username}</div>
               <div className={styles.loginInfo}>
                 {t('last login time', {
-                  last_login: getLoginDate(loginTime, language)
+                  last_login: getLoginDate(user.loginTime, language)
                 })}
               </div>
             </div>
@@ -219,7 +223,7 @@ export default class Account extends Component {
           <DetailTabs
             className={styles.detailTabs}
             tabs={tabs}
-            defaultTab={activeTab}
+            activeTab={activeTab}
             changeTab={this.changeTab}
             isAccount
           />
@@ -229,8 +233,13 @@ export default class Account extends Component {
   }
 
   renderMain() {
-    const { activeTab } = this.state;
     const { user } = this.props;
+    const { type: activeTab } = this.props.match.params;
+    const { hide } = this.state;
+
+    if (hide) {
+      return null;
+    }
 
     return (
       <div
@@ -247,7 +256,7 @@ export default class Account extends Component {
 
   render() {
     const { user, t } = this.props;
-    const { activeTab } = this.state;
+    const { type: activeTab } = this.props.match.params;
     const filterTabs = tabs.filter(
       tab => !['payment', 'ssh'].includes(tab.value)
     );
@@ -270,7 +279,7 @@ export default class Account extends Component {
       <Layout pageTitle={t('Personal Center')} isCenterPage noSubMenu>
         <DetailTabs
           tabs={filterTabs}
-          defaultTab={activeTab}
+          activeTab={activeTab}
           changeTab={this.changeTab}
         />
         {this.renderMain()}
