@@ -34,6 +34,7 @@ $profile-hover-color: #efe6f8;
     height: 24px;
     border-radius: 2px;
     background-color: $N500;
+    cursor: pointer;
 
     .icon {
       margin: 7px;
@@ -48,7 +49,7 @@ $profile-hover-color: #efe6f8;
 
   .logoName {
     display: inline-block;
-    margin: 14px 12px;
+    margin: 14px 8px;
     line-height: 20px;
     font-size: 14px;
     color: $N0;

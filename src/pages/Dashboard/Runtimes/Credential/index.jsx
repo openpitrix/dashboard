@@ -7,12 +7,13 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import {
-  Icon, Popover, Input, Notification
+  Icon, Popover, Button, Input, Notification
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import routes, { toRoute } from 'routes';
 import { formatTime, obj2Qs } from 'utils';
+import { providers } from 'config/runtimes';
 
 import styles from '../index.scss';
 
@@ -157,9 +158,36 @@ export class Credential extends React.Component {
     }
   }
 
+  renderEmpty() {
+    const { envStore, t } = this.props;
+    const platformName = _.get(
+      _.find(providers, { key: envStore.platform }),
+      'name',
+      ''
+    );
+
+    return (
+      <Card className={styles.emptyData}>
+        <p>{t('No authorization info')}</p>
+        <p>{t('TIPS_NOT_ADD_AUTH', { env: platformName })}</p>
+        <Button
+          type="primary"
+          className={styles.btnAddEnv}
+          onClick={this.goPage}
+        >
+          <Icon name="add" type="white" />
+          {t('Add')}
+        </Button>
+      </Card>
+    );
+  }
+
   renderContent() {
     const { credentialStore, t } = this.props;
     const { credentials } = credentialStore;
+    if (credentials.length === 0) {
+      return this.renderEmpty();
+    }
 
     return (
       <div className={styles.authInfos}>

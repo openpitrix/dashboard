@@ -104,7 +104,7 @@ export default class UserStore extends Store {
   }
 
   get selectedGroupIds() {
-    return this.getStore('group').groupIdWithChildren;
+    return this.getStore('group').validGroupIds;
   }
 
   get selectedRoleId() {
@@ -161,7 +161,7 @@ export default class UserStore extends Store {
       limit: this.pageSize,
       offset: (this.currentPage - 1) * this.pageSize,
       status: this.selectStatus ? this.selectStatus : defaultStatus,
-      group_id: this.selectedGroupIds,
+      root_group_id: this.selectedGroupIds,
       role_id: this.selectedRoleId
     };
     if (params.noLimit) {

@@ -42,8 +42,8 @@ export default class Users extends Component {
   }
 
   componentWillUnmount() {
-    const { userStore } = this.props;
-    userStore.reset();
+    this.props.userStore.reset();
+    this.props.groupStore.reset();
   }
 
   handleAction(type, e) {
@@ -243,7 +243,7 @@ export default class Users extends Component {
     } = this.props;
     const { isLoading } = this.state;
     const { selectName, groupName } = userStore;
-    const { groupTreeData, onSelectOrg } = groupStore;
+    const { groupTreeData, onSelectOrg, selectedGroupIds } = groupStore;
 
     return (
       <Layout className={styles.usersContent} isLoading={isLoading}>
@@ -262,6 +262,7 @@ export default class Users extends Component {
                   defaultExpandAll
                   showLine
                   hoverLine
+                  selectedKeys={selectedGroupIds}
                   renderTreeTitle={this.renderTreeTitle}
                   onSelect={onSelectOrg}
                   treeData={groupTreeData}

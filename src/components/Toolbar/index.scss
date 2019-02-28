@@ -18,7 +18,7 @@
 
   .search {
     display: inline-block;
-    width: 100%;
+    width: 320px;
     border-radius: 2px;
 
     input {
@@ -36,6 +36,10 @@
         cursor: default;
       }
     }
+  }
+
+  .largeSearch {
+    width: 100%;
   }
 
   .refreshBtn {
