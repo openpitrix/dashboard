@@ -1,8 +1,8 @@
 export const providers = [
-  { name: 'QingCloud', icon: 'qingcloud', key: 'qingcloud' },
-  { name: 'Aliyun', icon: 'aliyun', key: 'aliyun' },
-  { name: 'Amazon Web Service', icon: 'aws', key: 'aws' },
-  { name: 'Kubernetes', icon: 'kubernetes', key: 'kubernetes' },
+  { name: 'qingcloud', icon: 'qingcloud', key: 'qingcloud' },
+  { name: 'aliyun', icon: 'aliyun', key: 'aliyun' },
+  { name: 'aws', icon: 'aws', key: 'aws' },
+  { name: 'kubernetes', icon: 'kubernetes', key: 'kubernetes' },
   {
     name: 'OpenStack',
     icon: 'openstack',

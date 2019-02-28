@@ -11,10 +11,14 @@
   &:hover {
     background: $N0;
   }
-
 }
 .disabled {
   opacity: 0.3;
+  .item {
+    width: auto;
+    height: auto;
+    text-align: left;
+  }
 }
 .itemName {
   flex: 1;
