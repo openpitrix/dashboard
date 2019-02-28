@@ -1,4 +1,4 @@
-import { observable, computed, action } from 'mobx';
+import { observable, action } from 'mobx';
 import { pick } from 'lodash';
 
 import Store from './Store';
