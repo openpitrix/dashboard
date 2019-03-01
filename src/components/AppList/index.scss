@@ -1,7 +1,6 @@
 @import '~scss/vars';
 
 .appList {
-  overflow: hidden;
   _zoom: 1;
 
   > div {
@@ -15,5 +14,6 @@
     text-align: center;
     font-size: 12px;
     color: $N75;
+    line-height: 20px;
   }
 }

@@ -154,10 +154,11 @@
   border-right: 1px solid $N10;
 
   li {
-    padding: 12px 20px;
+    padding: 6px 20px;
     line-height: 20px;
     font-size: 12px;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
 
     &.active {
       background-color: $N0;
@@ -176,22 +177,7 @@
     display: inline-block;
     margin-left: 8px;
     color: $N75;
-  }
-
-  .operation {
-    float: right;
-    font-weight: normal;
-    :global {
-      .icon-close {
-        position: static;
-        transform: translate(0);
-      }
-
-      .pi-popover-popper {
-        margin-left: -95px !important;
-        margin-top: 2px !important;
-      }
-    }
+    flex: 1;
   }
 }
 

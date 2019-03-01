@@ -2,6 +2,8 @@
   "IP address": "IP 地址",
   "Instance count": "实例数",
   "Agent Instance count": "代理数",
+  "Checked this": "当前选中",
+  "Switch": "切换",
   "Modify runtime successfully": "修改环境成功",
   "Switch runtime credential successfully": "切换授权信息成功",
   "Delete runtime successfully": "删除环境成功",

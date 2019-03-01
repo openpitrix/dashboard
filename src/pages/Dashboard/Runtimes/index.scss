@@ -146,25 +146,6 @@ $card-height: 188px;
       }
     }
 
-    .actionPop {
-      .actionBar {
-        transform: rotate(90deg);
-      }
-      :global {
-        .operate-menu {
-          font-size: $size-small;
-          .icon {
-            display: inline-block;
-            min-width: auto;
-            background-color: transparent;
-            padding-left: 0;
-            padding-right: 4px;
-            vertical-align: sub;
-          }
-        }
-      }
-    }
-
     .fixMenu {
       margin-top: -10px;
     }
@@ -234,6 +215,10 @@ $card-height: 188px;
 }
 .envItem {
   height: $card-height;
+  border: 1px solid transparent;
+  &:hover {
+    border: 1px solid $P45;
+  }
   .name {
     display: inline-block;
     font-size: $size-normal;
@@ -294,18 +279,31 @@ $card-height: 188px;
 
 .dialog {
   .item {
-    padding: 10px;
+    padding: 14px 24px;
     border-radius: 2px;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
-      0 4px 8px 0 rgba(35, 35, 36, 0.04);
-    background-color: $N0;
-    cursor: pointer;
-    &:hover,
+    .name {
+      display: inline-block;
+      width: 40%;
+    }
+    .checkedTxt {
+      margin: 0 10px;
+      color: $N75;
+    }
+    .desc {
+      color: $N75;
+    }
     &.checked {
+      border-radius: 2px;
+      background-color: $N10;
+    }
+    &.selected {
       border: 1px solid $P75;
     }
-    .icon {
-      float: right;
+    &.enable {
+      cursor: pointer;
+      &:hover {
+        border: 1px solid $P75;
+      }
     }
   }
 }

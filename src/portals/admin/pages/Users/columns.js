@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Popover } from 'components/Base';
+import { PopoverIcon } from 'components/Base';
 import _ from 'lodash';
 
 import Status from 'components/Status';
@@ -48,9 +48,7 @@ export default (t, renderHandleMenu) => {
       width: '84px',
       className: 'actions',
       render: item => (
-        <Popover portal content={renderHandleMenu(item)}>
-          <Icon name="more" />
-        </Popover>
+        <PopoverIcon size="Large" portal content={renderHandleMenu(item)} />
       )
     });
   }

@@ -41,13 +41,8 @@ export default class Account extends Component {
   }
 
   async componentDidMount() {
-    const { userStore, rootStore } = this.props;
-    const { user } = rootStore;
-    const { type: activeTab } = this.props.match.params;
-
-    if (activeTab !== 'ssh') {
-      await userStore.fetchDetail(user.user_id);
-    }
+    const { userStore, user } = this.props;
+    await userStore.fetchDetail(user.user_id);
   }
 
   cancleEdit = () => {
@@ -253,9 +248,7 @@ export default class Account extends Component {
   render() {
     const { user, t } = this.props;
     const { type: activeTab } = this.props.match.params;
-    const filterTabs = tabs.filter(
-      tab => !['payment', 'ssh'].includes(tab.value)
-    );
+    const filterTabs = tabs.filter(tab => !['payment'].includes(tab.value));
 
     if (user.defaultPortal === 'user') {
       return (

@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { setPage } from 'mixins';
 
 import {
-  Button, Tree, Icon, Popover, Tooltip
+  Button, Tree, Icon, PopoverIcon, Tooltip
 } from 'components/Base';
 import Layout, {
   Grid, Section, Panel, Card
@@ -85,12 +85,14 @@ export default class Users extends Component {
         >
           {t('Add user')}
         </span>
-        <span
-          key={`${key}-delete`}
-          onClick={e => this.handleAction('renderModalDeleteGroup', e)}
-        >
-          {t('Delete')}
-        </span>
+        {canEidt && (
+          <span
+            key={`${key}-delete`}
+            onClick={e => this.handleAction('renderModalDeleteGroup', e)}
+          >
+            {t('Delete')}
+          </span>
+        )}
       </div>
     );
   };
@@ -100,17 +102,15 @@ export default class Users extends Component {
       <span key={`title-${key}-${title}`} className={styles.groupTitle}>
         {t(title)}
       </span>
-      <Popover
+      <PopoverIcon
         portal
         trigger="hover"
+        size="Small"
         key={`${key}-operate`}
         content={this.renderHandleGroupNode({ key })}
         className={classnames(styles.groupPopver)}
         targetCls={classnames(styles.groupPopverTarget)}
-        popperCls={classnames(styles.groupPopverPopper)}
-      >
-        <Icon type="dark" name="more" />
-      </Popover>
+      />
       <Tooltip
         portal
         isShowArrow
@@ -154,9 +154,6 @@ export default class Users extends Component {
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
-        <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
-          {t('Change Password')}
-        </span>
         <span
           onClick={() => modalStore.show(
             'renderModalDeleteUser',

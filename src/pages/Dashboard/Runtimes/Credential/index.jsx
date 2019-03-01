@@ -7,7 +7,11 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import {
-  Icon, Popover, Button, Input, Notification
+  PopoverIcon,
+  Icon,
+  Button,
+  Input,
+  Notification
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
@@ -202,17 +206,14 @@ export class Credential extends React.Component {
               <span className={styles.time}>
                 {formatTime(create_time, `YYYY年MM月DD日 HH:mm:ss`)}
               </span>
-              <Popover
-                showBorder
+              <PopoverIcon
                 className={classnames(
                   'operation',
                   styles.actionPop,
                   styles.fixMenu
                 )}
                 content={this.renderMenu(runtime_credential_id)}
-              >
-                <Icon name="more" type="dark" className={styles.actionBar} />
-              </Popover>
+              />
             </Card>
           )
         )}

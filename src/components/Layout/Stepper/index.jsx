@@ -86,7 +86,8 @@ export class Stepper extends Component {
       >
         {activeStep > 1 && (
           <label onClick={prevStep}>
-            ←&nbsp;{t('Back')}&nbsp;
+            <Icon name="previous" size={20} type="dark" />
+            {t('Back')}&nbsp;
             <span className={styles.operateText}>{text}</span>
           </label>
         )}
@@ -157,10 +158,10 @@ export class Stepper extends Component {
           type="primary"
           onClick={this.nextStep}
         >
+          <span>{t(btnText || buttonText)}</span>
           {!btnText && (
             <Icon className={styles.icon} name={iconName} size={20} />
           )}
-          <span>{t(btnText || buttonText)}</span>
         </button>
       </div>
     );

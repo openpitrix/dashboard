@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import { get } from 'lodash';
 
 import {
-  Table, Popover, Button, Input, Icon
+  Table, PopoverIcon, Button, Input, Icon
 } from 'components/Base';
 import { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
@@ -252,12 +252,10 @@ export default class SSHKeys extends Component {
               <span className={styles.total}>
                 ({(pair.nodeIds && pair.nodeIds.length) || 0})
               </span>
-              <Popover
+              <PopoverIcon
                 className={styles.operation}
                 content={this.renderOperateMenu(pair)}
-              >
-                <Icon name="more" type="dark" size={20} />
-              </Popover>
+              />
             </li>
           ))}
         </ul>

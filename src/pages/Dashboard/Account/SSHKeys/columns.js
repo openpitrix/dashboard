@@ -64,16 +64,4 @@ export default (clusters, t) => [
     width: '110px',
     render: item => <Configuration configuration={item.cluster_role || {}} />
   }
-  // {
-  //   title: t('Actions'),
-  //   key: 'actions',
-  //   width: '84px',
-  //   render: item => (
-  //     <div className={styles.actions}>
-  //       <Popover className="actions">
-  //         <Icon name="more"/>
-  //       </Popover>
-  //     </div>
-  //   )
-  // }
 ];
