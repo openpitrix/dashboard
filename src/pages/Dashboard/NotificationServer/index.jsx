@@ -33,7 +33,7 @@ export default class NotificationServer extends Component {
     const iconType = {
       loading: 'loading',
       success: 'checked-circle',
-      error: 'close'
+      failed: 'close'
     };
     const type = testStatus === 'loading' ? 'light' : testStatus;
 

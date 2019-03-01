@@ -21,7 +21,7 @@
     --primary-opacity: 0.9;
     --secondary-opacity: 0.4;
   }
-  .#{$icon-prefix}-error {
+  .#{$icon-prefix}-failed {
     --primary-color: #{$R400};
     --secondary-color: #{$R30};
   }

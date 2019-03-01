@@ -62,7 +62,7 @@ export default class NotificationServerStore extends Store {
   testConnect = async () => {
     this.testStatus = 'loading';
     await sleep(1800);
-    this.testStatus = 'error';
+    this.testStatus = 'failed';
   };
 
   @action

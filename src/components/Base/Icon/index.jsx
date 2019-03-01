@@ -49,7 +49,7 @@ class Icon extends React.PureComponent {
     prefix: PropTypes.string,
     size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     style: PropTypes.object,
-    type: PropTypes.oneOf(['light', 'dark', 'white', 'error', 'success'])
+    type: PropTypes.oneOf(['light', 'dark', 'white', 'failed', 'success'])
   };
 
   static defaultProps = {
