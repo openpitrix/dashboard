@@ -50,20 +50,16 @@ export default class Account extends Component {
     }
   }
 
-  goBack = () => {
+  cancleEdit = () => {
     this.setState(
       {
         hide: true
       },
       () => {
-        window.setTimeout(() => {
-          this.setState({ hide: false });
-        }, 10);
+        this.setState({ hide: false });
       }
     );
   };
-
-  cancle = () => {};
 
   changeTab = tab => {
     this.props.history.push(`/profile/${tab}`);
@@ -138,7 +134,7 @@ export default class Account extends Component {
           <Button type={`primary`} htmlType="submit">
             {t('Save')}
           </Button>
-          <Button onClick={this.goBack}>{t('Cancel')}</Button>
+          <Button onClick={this.cancleEdit}>{t('Cancel')}</Button>
         </div>
       </form>
     );
@@ -192,7 +188,7 @@ export default class Account extends Component {
           <Button type="primary" htmlType="submit">
             {t('Save')}
           </Button>
-          <Button onClick={this.goBack}>{t('Cancel')}</Button>
+          <Button onClick={this.cancleEdit}>{t('Cancel')}</Button>
         </div>
       </form>
     );
