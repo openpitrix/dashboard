@@ -1,16 +1,17 @@
 import { observable, action } from 'mobx';
+import _ from 'lodash';
 
 import { sleep } from 'utils';
 
 import Store from '../Store';
 
 const emailConfig = {
-  type: 'smtp',
-  server_name: '',
-  server_port: '',
-  ssl_connect: true,
+  protocol: 'smtp',
+  email_host: '',
+  port: '',
+  ssl_enable: true,
+  display_email: '',
   email: '',
-  username: '',
   password: ''
 };
 
@@ -19,11 +20,13 @@ export default class NotificationServerStore extends Store {
 
   @observable testStatus = '';
 
+  @observable emailConfig = Object.assign({}, emailConfig);
+
   @observable formData = Object.assign({}, emailConfig);
 
   @action
   onChangeSelect = value => {
-    this.formData.type = value;
+    this.formData.protocol = value;
   };
 
   @action
@@ -42,21 +45,42 @@ export default class NotificationServerStore extends Store {
   };
 
   @action
+  fetchEmailConfig = async () => {
+    const result = await this.request.post('service_configs/get', {
+      service_type: ['notification']
+    });
+    this.emailConfig = _.get(
+      result,
+      'notification_config.email_service_config'
+    );
+    if (this.emailConfig) {
+      this.formData = Object.assign({}, this.emailConfig);
+    }
+  };
+
+  @action
   testConnect = async () => {
     this.testStatus = 'loading';
     await sleep(1800);
-    this.testStatus = 'success';
+    this.testStatus = 'failed';
   };
 
   @action
   save = async () => {
     this.isLoading = true;
-    await sleep(300);
+    const result = await this.request.post('service_configs/set', {
+      notification_config: {
+        email_service_config: this.formData
+      }
+    });
+    if (_.get(result, 'is_succ')) {
+      await this.fetchEmailConfig();
+    }
     this.isLoading = false;
   };
 
   @action
   cancleSave = () => {
-    Object.assign(this.formData, emailConfig);
+    Object.assign(this.formData, this.emailConfig);
   };
 }

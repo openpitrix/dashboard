@@ -14,6 +14,7 @@
   "Server password": "服务器密码",
   "SSL secure connection": "SSL 安全连接",
   "Sender address": "发件人地址",
+  "Sender nickname": "发件人昵称",
   "Connect test": "测试连接",
   "Connect loading": "测试中...",
   "Connect success": "连接成功！",

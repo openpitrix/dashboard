@@ -21,6 +21,14 @@
     --primary-opacity: 0.9;
     --secondary-opacity: 0.4;
   }
+  .#{$icon-prefix}-failed {
+    --primary-color: #{$R400};
+    --secondary-color: #{$R30};
+  }
+  .#{$icon-prefix}-success {
+    --primary-color: #{$G75};
+    --secondary-color: #{$G30};
+  }
 
   .icon {
     display: inline-block;

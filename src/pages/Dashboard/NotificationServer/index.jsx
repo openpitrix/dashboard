@@ -18,6 +18,11 @@ import styles from './index.scss';
 }))
 @observer
 export default class NotificationServer extends Component {
+  componentDidMount() {
+    const { notificationServerStore } = this.props;
+    notificationServerStore.fetchEmailConfig();
+  }
+
   renderConnectStatus() {
     const { t, notificationServerStore } = this.props;
     const { testStatus } = notificationServerStore;
@@ -30,9 +35,15 @@ export default class NotificationServer extends Component {
       success: 'checked-circle',
       failed: 'close'
     };
+    const type = testStatus === 'loading' ? 'light' : testStatus;
+
     return (
       <div className={styles.testConnect}>
-        <Icon name={t(iconType[testStatus])} />
+        <Icon
+          className={styles[testStatus]}
+          name={t(iconType[testStatus])}
+          type={type}
+        />
         {t(`Connect ${testStatus}`)}
       </div>
     );
@@ -84,46 +95,50 @@ export default class NotificationServer extends Component {
                     <label>{t('Server protocol')}</label>
                     <Select
                       onChange={onChangeSelect}
-                      name="type"
-                      value={formData.type}
+                      name="protocol"
+                      value={formData.protocol}
                     >
                       <Select.Option value="smtp">SMTP</Select.Option>
-                      <Select.Option disabled value="pop3">
-                        POP3
-                      </Select.Option>
-                      <Select.Option disabled value="imap">
-                        IMAP
-                      </Select.Option>
+                      <Select.Option value="pop3">POP3</Select.Option>
+                      <Select.Option value="imap">IMAP</Select.Option>
                     </Select>
                   </div>
                 </div>
 
                 <div>
                   <div>
-                    <label>SMTP {t('Server host name')}</label>
+                    <label>
+                      {`${formData.protocol.toUpperCase()} ${t(
+                        'Server host name'
+                      )}`}
+                    </label>
                     <Input
-                      name="server_name"
+                      name="email_host"
                       placeholder="server name"
                       onChange={onChangeFormItem}
-                      value={formData.server_name}
+                      value={formData.email_host}
                     />
                   </div>
 
                   <div>
-                    <label>SMTP {t('Server host port')}</label>
+                    <label>
+                      {`${formData.protocol.toUpperCase()} ${t(
+                        'Server host port'
+                      )}`}
+                    </label>
                     <Input
-                      name="server_port"
+                      name="port"
                       placeholder="1000"
                       type="number"
                       className={styles.smallInput}
                       onChange={onChangeFormItem}
-                      value={formData.server_port}
+                      value={formData.port}
                     />
                   </div>
                   <div className={styles.paddingTop}>
                     <Checkbox
-                      name="ssl_connect"
-                      checked={formData.ssl_connect}
+                      name="ssl_enable"
+                      checked={formData.ssl_enable}
                       onChange={onChangeFormItem}
                     >
                       {t('SSL 安全连接')}
@@ -133,13 +148,10 @@ export default class NotificationServer extends Component {
 
                 <div>
                   <div>
-                    <label>{t('Sender address')}</label>
+                    <label>{t('Sender nickname')}</label>
                     <Input
-                      name="email"
-                      placeholder={`${t(
-                        'for example'
-                      )}：cn=admin,dc=example,dc=org`}
-                      value={formData.email}
+                      name="display_email"
+                      value={formData.display_email}
                       onChange={onChangeFormItem}
                     />
                   </div>
@@ -149,9 +161,9 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Server username')}</label>
                     <Input
-                      name="username"
+                      name="email"
                       placeholder={`${t('for example')}：name@example.com`}
-                      value={formData.username}
+                      value={formData.email}
                       onChange={onChangeFormItem}
                     />
                   </div>

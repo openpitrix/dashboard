@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import Layout from 'components/Layout';
 
-import { Icon, Switch } from 'components/Base';
+import { Icon, Tooltip, Switch } from 'components/Base';
 
 import styles from './index.scss';
 
@@ -22,24 +22,45 @@ export default class CloudEnvironment extends Component {
     await cloudEnvStore.fetchAll();
   }
 
-  renderItem = ({
-    key, name, icon, disabled
-  }) => {
-    const { cloudEnvStore } = this.props;
+  renderItem({
+    key, name, icon, disabled, enable
+  }) {
+    const { cloudEnvStore, t } = this.props;
     const { changeEnv } = cloudEnvStore;
     return (
       <div
         key={key}
-        className={classnames(styles.item, {
-          [styles.disabled]: disabled
+        className={classnames({
+          [styles.disabled]: !enable,
+          [styles.item]: !disabled
         })}
       >
-        <Icon name={icon} />
-        <span className={styles.itemName}>{name}</span>
-        <Switch checked={!disabled} onChange={changeEnv(key)} />
+        {disabled ? (
+          <Tooltip
+            isShowArrow
+            portal
+            placement="top"
+            content={t('Not support currently')}
+            key={key}
+            targetCls={styles.item}
+            popperCls={styles.popper}
+          >
+            <Icon name={icon} />
+            <span className={styles.itemName}>{name}</span>
+          </Tooltip>
+        ) : (
+          <Fragment>
+            <Icon name={icon} />
+            <span className={styles.itemName}>{name}</span>
+            <Switch
+              checked={enable}
+              onChange={checked => changeEnv(checked, key)}
+            />
+          </Fragment>
+        )}
       </div>
     );
-  };
+  }
 
   render() {
     const { t, cloudEnvStore } = this.props;
