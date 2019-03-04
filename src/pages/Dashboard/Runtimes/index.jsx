@@ -4,11 +4,13 @@ import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
+import routes, { toRoute } from 'routes';
+
 import { Icon, Tooltip } from 'components/Base';
 import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
-import { providers, userTabs, nonUserTabs } from 'config/runtimes';
+import { userTabs, nonUserTabs } from 'config/runtimes';
 
 import Modals from './Modals';
 import Runtime from './Runtime';
@@ -21,6 +23,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,
+  cloudEnv: rootStore.cloudEnvStore,
   clusterStore: rootStore.clusterStore,
   runtimeStore: rootStore.runtimeStore,
   runtimeClusterStore: rootStore.runtimeClusterStore
@@ -32,7 +35,9 @@ export default class Runtimes extends React.Component {
   };
 
   async componentDidMount() {
-    await this.props.envStore.updateProviderCounts();
+    const { envStore, cloudEnv } = this.props;
+    await envStore.updateProviderCounts();
+    await cloudEnv.fetchAll();
     this.setState({
       loadedRt: true
     });
@@ -67,15 +72,15 @@ export default class Runtimes extends React.Component {
   };
 
   renderPlatforms() {
-    const { envStore, t } = this.props;
+    const { envStore, cloudEnv, t } = this.props;
     const { providerCounts, platform } = envStore;
 
     return (
       <ul className={styles.platforms}>
-        {_.map(providers, ({
-          name, icon, disabled, count, key
+        {_.map(cloudEnv.environment, ({
+          name, icon, enable, count, key
         }) => {
-          disabled = Boolean(disabled);
+          const disabled = !enable;
           if (!count) {
             count = providerCounts[key];
           }

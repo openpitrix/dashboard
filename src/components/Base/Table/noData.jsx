@@ -19,6 +19,7 @@ export default class NoData extends PureComponent {
     const { type, t } = this.props;
     const iconMap = {
       Apps: 'appcenter',
+      apps: 'cluster',
       Clusters: 'cluster',
       Runtimes: 'stateful-set',
       Repos: 'stateful-set',

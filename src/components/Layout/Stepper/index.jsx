@@ -20,6 +20,7 @@ export class Stepper extends Component {
     className: PropTypes.string,
     header: PropTypes.string,
     headerCls: PropTypes.string,
+    i18nObj: PropTypes.object,
     name: PropTypes.string,
     stepOption: PropTypes.shape({
       activeStep: PropTypes.number,
@@ -31,6 +32,11 @@ export class Stepper extends Component {
     }),
     titleCls: PropTypes.string
   };
+
+  t(keys, options) {
+    const { i18nObj, t } = this.props;
+    return t(keys, _.assign({}, options, i18nObj));
+  }
 
   // if next stop button is disabled, can't execution click method
   nextStep = () => {
@@ -62,7 +68,7 @@ export class Stepper extends Component {
 
   renderTopNav() {
     const {
-      name, stepOption, t, history, rootStore
+      name, stepOption, history, rootStore
     } = this.props;
     const {
       activeStep, steps, prevStep, goBack
@@ -75,7 +81,7 @@ export class Stepper extends Component {
 
     let text = '';
     if (activeStep > 1 && !!name) {
-      text = t(`STEPPER_HEADER_${name.toUpperCase()}_${activeStep}`);
+      text = this.t(`STEPPER_HEADER_${name.toUpperCase()}_${activeStep}`);
     }
 
     return (
@@ -87,12 +93,12 @@ export class Stepper extends Component {
         {activeStep > 1 && (
           <label onClick={prevStep}>
             <Icon name="previous" size={20} type="dark" />
-            {t('Back')}&nbsp;
+            {this.t('Back')}&nbsp;
             <span className={styles.operateText}>{text}</span>
           </label>
         )}
         <label className="pull-right" onClick={funcBack}>
-          {t('Esc')}&nbsp;
+          {this.t('Esc')}&nbsp;
           <Icon name="close" size={20} type="dark" />
         </label>
       </div>
@@ -101,7 +107,7 @@ export class Stepper extends Component {
 
   renderTitle() {
     const {
-      name, stepOption, header, headerCls, titleCls, t
+      name, stepOption, header, headerCls, titleCls
     } = this.props;
     const { activeStep, steps } = stepOption;
 
@@ -111,11 +117,11 @@ export class Stepper extends Component {
 
     const nameKey = name.toUpperCase();
     const headerName = header
-      || t(`STEPPER_NAME_${nameKey}_HEADER`, {
+      || this.t(`STEPPER_NAME_${nameKey}_HEADER`, {
         activeStep,
         steps
       });
-    const title = t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
+    const title = this.t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
 
     return (
       <div className={classnames(styles.stepContent)}>
@@ -138,16 +144,16 @@ export class Stepper extends Component {
     }
 
     const keyName = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
-    const tipText = t(keyName);
+    const tipText = this.t(keyName);
     const tipLink = <DocLink name={keyName} />;
 
-    const buttonText = activeStep === steps ? t('Done') : t('Go on');
+    const buttonText = activeStep === steps ? this.t('Done') : this.t('Go on');
     const iconName = activeStep === steps ? 'checked-icon' : 'next-icon';
 
     return (
       <div className={styles.footer}>
         <span className={styles.footerTips}>
-          <span className={styles.footerTipsButton}>{t('Tips')}</span>
+          <span className={styles.footerTipsButton}>{this.t('Tips')}</span>
           {tipText}
           {tipLink}
         </span>
@@ -158,7 +164,7 @@ export class Stepper extends Component {
           type="primary"
           onClick={this.nextStep}
         >
-          <span>{t(btnText || buttonText)}</span>
+          <span>{this.t(btnText || buttonText)}</span>
           {!btnText && (
             <Icon className={styles.icon} name={iconName} size={20} />
           )}

@@ -125,6 +125,7 @@ export default class Repos extends Component {
         visible={showDeleteRepo}
         onSubmit={deleteRepo}
         onCancel={deleteRepoClose}
+        okText={t('Delete')}
       >
         {t('Delete Repo desc')}
       </Dialog>

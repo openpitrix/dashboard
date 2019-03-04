@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
+import routes, { toRoute } from 'routes';
 import {
   Icon, Button, Input, Select
 } from 'components/Base';
@@ -57,7 +58,7 @@ export default class Account extends Component {
   };
 
   changeTab = tab => {
-    this.props.history.push(`/profile/${tab}`);
+    this.props.history.push(toRoute(routes.profile, { type: tab }));
   };
 
   modifyUser = async e => {

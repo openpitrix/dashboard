@@ -6,13 +6,12 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 import { isHelm } from 'utils';
 import { getUrlParam } from 'utils/url';
-import routes, { toRoute } from 'routes';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 
 import {
   Icon, Button, Notification, Input, Select
 } from 'components/Base';
 import { Card, Stepper } from 'components/Layout';
-import Loading from 'components/Loading';
 import { providers } from 'config/runtimes';
 
 import styles from './index.scss';
@@ -86,6 +85,15 @@ export default class CreateTestingEnv extends React.Component {
 
   get isCreateVmRt() {
     return !isHelm(this.platform) && !this.isCredential;
+  }
+
+  get i18nObj() {
+    const { t, envStore } = this.props;
+    const curPortal = getPortalFromPath();
+    return {
+      runtime_name: envStore.platformName,
+      env_name: curPortal === 'user' ? t('Runtimes') : t('Testing env')
+    };
   }
 
   handleSubmit = async e => {
@@ -204,25 +212,30 @@ export default class CreateTestingEnv extends React.Component {
     const { createEnvStore, credentialStore, t } = this.props;
     const { validatePassed, validateMsg } = createEnvStore;
     const { isLoading } = credentialStore;
+    const iconType = {
+      loading: 'loading',
+      a: 'checked-circle',
+      error: ''
+    };
 
     return (
       <Fragment>
-        <Loading
-          isLoading={isLoading}
-          className={styles.spinner}
-          loaderCls={styles.loading}
-        />
         {validatePassed && (
           <Icon name="checked-circle" className={styles.iconSuccess} />
         )}
         {!validatePassed
           && validateMsg && <Icon name="error" className={styles.iconFailed} />}
+        {isLoading && (
+          <Fragment>
+            <Icon name="loading" />
+            {t('Validating')}
+          </Fragment>
+        )}
         <span
           className={classnames(styles.msg, {
             [styles.fixLoadingPos]: isLoading
           })}
         >
-          {isLoading && t('Validating')}
           {validatePassed && t('Validate successfully')}
           {!validatePassed && validateMsg && t(validateMsg)}
         </span>
@@ -476,6 +489,7 @@ export default class CreateTestingEnv extends React.Component {
           goBack: this.handleEsc,
           disableNextStep: !(selectCredentialId || validatePassed)
         }}
+        i18nObj={this.i18nObj}
       >
         <Notification />
         <div className={styles.form}>
