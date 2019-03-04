@@ -48,6 +48,7 @@ export default class PopoverIcon extends Component {
       iconCls,
       targetCls,
       popperCls,
+      onClick,
       ...props
     } = this.props;
 
@@ -79,13 +80,11 @@ export default class PopoverIcon extends Component {
           name={icon}
           className={classnames(
             styles.icon,
-            {
-              [styles.iconNormal]: size === 'normal',
-              [styles.iconSmall]: size === 'small'
-            },
+            styles[`target${size}`],
             targetCls
           )}
           type={iconType}
+          onClick={onClick}
         />
       </Popover>
     );

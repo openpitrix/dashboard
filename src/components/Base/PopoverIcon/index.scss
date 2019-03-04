@@ -37,6 +37,8 @@
 }
 
 .container {
+  display: inline-flex;
+  align-items: center;
   &.visible {
     display: inline-flex !important;
   }

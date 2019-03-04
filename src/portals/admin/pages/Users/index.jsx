@@ -111,22 +111,19 @@ export default class Users extends Component {
         className={classnames(styles.groupPopver)}
         targetCls={classnames(styles.groupPopverTarget)}
       />
-      <Tooltip
+      <PopoverIcon
         portal
         isShowArrow
+        trigger="hover"
+        icon="add"
         placement="top"
+        prefixCls="add"
+        key={`${key}-operate-add`}
+        iconCls={styles.titleEventIcon}
         targetCls={classnames(styles.tooltip)}
+        onClick={e => this.handleAction('renderModalCreateGroup', e)}
         content={t('Add the child node')}
-      >
-        <Icon
-          key={`${key}-create`}
-          size={20}
-          type="dark"
-          name="plus-square"
-          className={styles.titleEventIcon}
-          onClick={e => this.handleAction('renderModalCreateGroup', e)}
-        />
-      </Tooltip>
+      />
     </span>
   );
 

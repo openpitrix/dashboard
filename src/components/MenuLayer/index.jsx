@@ -27,7 +27,7 @@ const roleToPortal = {
   admin: {
     roleIcon: 'enterprise',
     icon: 'dashboard',
-    name: 'Manage Console',
+    name: 'Manage backstage',
     url: toRoute(routes.portal.apps, { portal: 'admin' })
   },
   user: {
