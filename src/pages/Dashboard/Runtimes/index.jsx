@@ -4,8 +4,6 @@ import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import routes, { toRoute } from 'routes';
-
 import { Icon, Tooltip } from 'components/Base';
 import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
 import Loading from 'components/Loading';

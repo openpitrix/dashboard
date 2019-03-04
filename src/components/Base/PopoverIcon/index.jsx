@@ -65,7 +65,8 @@ export default class PopoverIcon extends Component {
         targetCls={classnames(
           styles.target,
           {
-            [styles.visible]: this.state.visible
+            [styles.visible]: this.state.visible,
+            [styles.hoverTarget]: this.props.trigger === 'hover'
           },
           styles[`target${size}`],
           targetCls

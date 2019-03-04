@@ -212,11 +212,6 @@ export default class CreateTestingEnv extends React.Component {
     const { createEnvStore, credentialStore, t } = this.props;
     const { validatePassed, validateMsg } = createEnvStore;
     const { isLoading } = credentialStore;
-    const iconType = {
-      loading: 'loading',
-      a: 'checked-circle',
-      error: ''
-    };
 
     return (
       <Fragment>

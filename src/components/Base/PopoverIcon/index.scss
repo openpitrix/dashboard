@@ -30,6 +30,11 @@
     position: static;
   }
 }
+.hoverTarget {
+  &:hover {
+    background: $N30;
+  }
+}
 
 .container {
   &.visible {
