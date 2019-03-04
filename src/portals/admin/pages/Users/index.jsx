@@ -6,9 +6,7 @@ import _ from 'lodash';
 
 import { setPage } from 'mixins';
 
-import {
-  Button, Tree, Icon, PopoverIcon, Tooltip
-} from 'components/Base';
+import { Button, Tree, PopoverIcon } from 'components/Base';
 import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
@@ -108,7 +106,7 @@ export default class Users extends Component {
         size="Small"
         key={`${key}-operate`}
         content={this.renderHandleGroupNode({ key })}
-        className={classnames(styles.groupPopver)}
+        className={classnames(styles.groupPopver, styles.iconMore)}
         targetCls={classnames(styles.groupPopverTarget)}
       />
       <PopoverIcon
@@ -121,6 +119,7 @@ export default class Users extends Component {
         key={`${key}-operate-add`}
         iconCls={styles.titleEventIcon}
         targetCls={classnames(styles.tooltip)}
+        className={classnames(styles.iconCreate)}
         onClick={e => this.handleAction('renderModalCreateGroup', e)}
         content={t('Add the child node')}
       />
