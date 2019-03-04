@@ -36,8 +36,7 @@ export default class Switch extends PureComponent {
 
   toggleSwitch = () => {
     const on = !this.state.on;
-    this.setState({ on });
-    this.props.onChange(on);
+    this.setState({ on }, () => this.props.onChange(on));
   };
 
   render() {

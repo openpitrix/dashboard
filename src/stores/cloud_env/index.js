@@ -15,7 +15,7 @@ export default class CloudEnvironmentStore extends Store {
     const result = await this.request.post('service_configs/get', {
       service_type: ['runtime']
     });
-    this.config_set = _.get(result, 'runtime_config.config_set');
+    this.config_set = _.get(result, 'runtime_config.config_set', []);
 
     this.environment = this.intersection(providers, this.config_set);
   };
