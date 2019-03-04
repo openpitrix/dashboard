@@ -42,7 +42,7 @@ export default class Select extends React.Component {
   }
 
   get noValue() {
-    const defaultValue = this.props.value || this.props.defaultProps;
+    const defaultValue = this.props.value || this.props.defaultValue;
     return typeof defaultValue === 'undefined' || defaultValue === null;
   }
 
