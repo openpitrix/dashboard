@@ -32,6 +32,23 @@ exports[`Base/Select basic render 1`] = `
   >
     <div
       class="option"
+      disabled=""
+    >
+      <span
+        class="icon icon-check"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-check qicon-dark"
+        >
+          <use
+            href="#qui-check"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      class="option"
     >
       item1
     </div>
@@ -80,6 +97,23 @@ exports[`Base/Select disabled render 1`] = `
   <div
     class="options"
   >
+    <div
+      class="option"
+      disabled=""
+    >
+      <span
+        class="icon icon-check"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-check qicon-dark"
+        >
+          <use
+            href="#qui-check"
+          />
+        </svg>
+      </span>
+    </div>
     <div
       class="option"
     >
