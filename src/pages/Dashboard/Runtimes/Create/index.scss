@@ -97,7 +97,7 @@ $form-item-width: 387px;
         color: $N75;
 
         &.fixLoadingPos {
-          margin-left: 20px;
+          margin-left: 14px;
         }
       }
       .spinner {
@@ -204,7 +204,9 @@ $form-item-width: 387px;
   line-height: 20px;
 }
 .tipAdd {
-  margin-top: 49px;
+  border-top: 1px solid $N10;
+  margin-top: 24px;
+  padding-top: 24px;
   line-height: 20px;
 }
 .linkAdd {

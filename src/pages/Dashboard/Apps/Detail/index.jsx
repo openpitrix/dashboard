@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Input, Table, Image, Icon, Popover
+  Input, Table, Image, Icon, PopoverIcon
 } from 'components/Base';
 import Layout, {
   Grid, Section, Card, Dialog
@@ -281,12 +281,12 @@ export default class AppDetail extends Component {
         width: '70px',
         className: 'actions',
         render: item => (
-          <Popover
+          <PopoverIcon
+            size="Large"
+            portal
             className={styles.operationVersion}
             content={this.renderVersionHandleMenu(item)}
-          >
-            <Icon name="more" />
-          </Popover>
+          />
         )
       }
     ];
@@ -449,12 +449,12 @@ export default class AppDetail extends Component {
             </Link>
           )}
           {user.isAdmin && (
-            <Popover
+            <PopoverIcon
+              portal
+              size="Large"
               className={classnames('operation', styles.operationIcon)}
               content={this.renderAppHandleMenu(appDetail)}
-            >
-              <Icon name="more" />
-            </Popover>
+            />
           )}
         </div>
       </Card>

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { noop } from 'lodash';
+import _, { noop } from 'lodash';
 import { Link, withRouter } from 'react-router-dom';
 
 import { Icon, Button, Input } from 'components/Base';
@@ -45,6 +45,15 @@ export class Toolbar extends React.Component {
     changeView: noop
   };
 
+  get searchClass() {
+    const { withCreateBtn, children } = this.props;
+    const noCreate = !withCreateBtn.linkTo && !_.isFunction(withCreateBtn.onClick);
+    const noChildren = _.isEmpty(children);
+    return classnames(styles.search, {
+      [styles.largeSearch]: noCreate && noChildren
+    });
+  }
+
   onSearch = word => {
     const { history, onSearch } = this.props;
     history.push({
@@ -78,7 +87,7 @@ export class Toolbar extends React.Component {
       <div className={classnames(styles.toolbar, className)}>
         {!noSearchBox && (
           <Input.Search
-            className={styles.search}
+            className={this.searchClass}
             placeholder={placeholder}
             value={searchWord}
             onSearch={this.onSearch}

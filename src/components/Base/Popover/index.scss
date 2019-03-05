@@ -148,6 +148,8 @@
       padding-right: 4px;
       background-color: transparent;
       vertical-align: sub;
+      position: static;
+      transform: translateY(0) scale(1);
     }
   }
 }

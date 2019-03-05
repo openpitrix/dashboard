@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Icon, Popover } from 'components/Base';
+import { Icon, PopoverIcon } from 'components/Base';
 import { Card } from 'components/Layout';
 
 import styles from '../index.scss';
@@ -94,13 +94,12 @@ export default class RuntimeCard extends Component {
       >
         <div>
           <span className={styles.name}>{name}</span>
-          <Popover
+          <PopoverIcon
             showBorder
+            iconCls={styles.actionBar}
             className={classnames('operation', styles.actionPop)}
             content={this.renderMenu(runtime_id)}
-          >
-            <Icon name="more" type="dark" className={styles.actionBar} />
-          </Popover>
+          />
         </div>
         <div className={styles.desc}>{description || ''}</div>
         <div className={styles.bottomInfo}>

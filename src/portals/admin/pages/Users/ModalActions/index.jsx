@@ -65,6 +65,7 @@ export default class UserModalActions extends Component {
         visible={isOpen}
         width={744}
         onSubmit={deleteGroup}
+        okText={t('Delete')}
         onCancel={hide}
       >
         <div>
@@ -310,6 +311,7 @@ export default class UserModalActions extends Component {
         visible={isOpen}
         onSubmit={remove}
         onCancel={hide}
+        okText={t('Delete')}
       >
         {t('delete_user_desc')}
       </Dialog>

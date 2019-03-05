@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import { Icon, Input } from 'components/Base';
+import { Input } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 
 import styles from '../index.scss';
@@ -62,36 +62,46 @@ export default class RuntimeModal extends Component {
     }
     if (modalType === 'switch_auth') {
       const { credentials } = credentialStore;
-      const { selectCredentialId, setCredentialId } = envStore;
+      const { selectCredentialId, setCredentialId, runtimeName } = envStore;
 
       return (
         <Dialog
-          title={t('Switch authorization info')}
+          title={t('Switch runtime authorization info', { runtimeName })}
+          width={550}
           isOpen={isModalOpen}
           onCancel={hideModal}
           onSubmit={handleOperation}
           className={styles.dialog}
+          okText={t('Switch')}
         >
           {_.map(
             credentials,
             ({ name, description, runtime_credential_id }, idx) => {
-              const checked = !selectCredentialId
-                ? rt.runtime_credential_id === runtime_credential_id
-                : selectCredentialId === runtime_credential_id;
+              const selected = selectCredentialId === runtime_credential_id;
+              const checked = rt.runtime_credential_id === runtime_credential_id;
+              const onClick = checked
+                ? _.noop
+                : () => setCredentialId(runtime_credential_id);
 
               return (
                 <Card
                   className={classnames(styles.item, {
-                    [styles.checked]: checked
+                    [styles.checked]: checked,
+                    [styles.enable]: !checked,
+                    [styles.selected]: selected
                   })}
                   key={idx}
-                  onClick={() => setCredentialId(runtime_credential_id)}
+                  onClick={onClick}
                 >
-                  <span className={styles.name}>{name}</span>
-                  <span className={styles.desc}>{description}</span>
-                  <span className={styles.icon}>
-                    {checked && <Icon name="check" />}
+                  <span className={styles.name}>
+                    {name}
+                    {checked && (
+                      <span className={styles.checkedTxt}>
+                        ({t('Checked this')})
+                      </span>
+                    )}
                   </span>
+                  <span className={styles.desc}>{description}</span>
                 </Card>
               );
             }

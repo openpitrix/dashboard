@@ -84,7 +84,6 @@ $speed: 0.2s;
     line-height: 20px;
     font-size: 12px;
     color: $N65;
-    overflow: hidden;
   }
 
   .search {
@@ -100,7 +99,7 @@ $speed: 0.2s;
       transition: all $speed ease-in-out;
 
       &::placeholder {
-        font-size: 12px;
+        font-size: 14px;
         color: $N65;
         line-height: 1;
         letter-spacing: 0;

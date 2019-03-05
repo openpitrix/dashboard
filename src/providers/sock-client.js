@@ -2,7 +2,7 @@
 // see compat list: https://caniuse.com/#search=websocket
 
 import Mitt from 'mitt';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 
 let sockInst; // singleton socket client
 

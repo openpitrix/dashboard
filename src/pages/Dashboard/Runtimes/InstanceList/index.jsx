@@ -27,6 +27,10 @@ export default class RuntimeInstances extends React.Component {
     })
   };
 
+  async componentDidMount() {
+    await this.props.runtimeClusterStore.fetchAll();
+  }
+
   get columns() {
     const {
       appStore, runtimeStore, user, t

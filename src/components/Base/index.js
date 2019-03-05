@@ -7,6 +7,7 @@ export Modal from './Modal';
 export Notification from './Notification';
 export Pagination from './Pagination';
 export Popover from './Popover';
+export PopoverIcon from './PopoverIcon';
 export Radio from './Radio';
 export Select from './Select';
 export Slider from './Slider';

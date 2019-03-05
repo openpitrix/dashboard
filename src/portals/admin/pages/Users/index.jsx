@@ -6,9 +6,7 @@ import _ from 'lodash';
 
 import { setPage } from 'mixins';
 
-import {
-  Button, Tree, Icon, Popover, Tooltip
-} from 'components/Base';
+import { Button, Tree, PopoverIcon } from 'components/Base';
 import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
@@ -42,8 +40,8 @@ export default class Users extends Component {
   }
 
   componentWillUnmount() {
-    const { userStore } = this.props;
-    userStore.reset();
+    this.props.userStore.reset();
+    this.props.groupStore.reset();
   }
 
   handleAction(type, e) {
@@ -85,12 +83,14 @@ export default class Users extends Component {
         >
           {t('Add user')}
         </span>
-        <span
-          key={`${key}-delete`}
-          onClick={e => this.handleAction('renderModalDeleteGroup', e)}
-        >
-          {t('Delete')}
-        </span>
+        {canEidt && (
+          <span
+            key={`${key}-delete`}
+            onClick={e => this.handleAction('renderModalDeleteGroup', e)}
+          >
+            {t('Delete')}
+          </span>
+        )}
       </div>
     );
   };
@@ -100,33 +100,29 @@ export default class Users extends Component {
       <span key={`title-${key}-${title}`} className={styles.groupTitle}>
         {t(title)}
       </span>
-      <Popover
+      <PopoverIcon
         portal
         trigger="hover"
+        size="Small"
         key={`${key}-operate`}
         content={this.renderHandleGroupNode({ key })}
-        className={classnames(styles.groupPopver)}
+        className={classnames(styles.groupPopver, styles.iconMore)}
         targetCls={classnames(styles.groupPopverTarget)}
-        popperCls={classnames(styles.groupPopverPopper)}
-      >
-        <Icon type="dark" name="more" />
-      </Popover>
-      <Tooltip
+      />
+      <PopoverIcon
         portal
         isShowArrow
+        trigger="hover"
+        icon="add"
         placement="top"
+        prefixCls="add"
+        key={`${key}-operate-add`}
+        iconCls={styles.titleEventIcon}
         targetCls={classnames(styles.tooltip)}
+        className={classnames(styles.iconCreate)}
+        onClick={e => this.handleAction('renderModalCreateGroup', e)}
         content={t('Add the child node')}
-      >
-        <Icon
-          key={`${key}-create`}
-          size={20}
-          type="dark"
-          name="plus-square"
-          className={styles.titleEventIcon}
-          onClick={e => this.handleAction('renderModalCreateGroup', e)}
-        />
-      </Tooltip>
+      />
     </span>
   );
 
@@ -154,9 +150,6 @@ export default class Users extends Component {
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
-        <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
-          {t('Change Password')}
-        </span>
         <span
           onClick={() => modalStore.show(
             'renderModalDeleteUser',
@@ -243,7 +236,7 @@ export default class Users extends Component {
     } = this.props;
     const { isLoading } = this.state;
     const { selectName, groupName } = userStore;
-    const { groupTreeData, onSelectOrg } = groupStore;
+    const { groupTreeData, onSelectOrg, selectedGroupIds } = groupStore;
 
     return (
       <Layout className={styles.usersContent} isLoading={isLoading}>
@@ -262,6 +255,7 @@ export default class Users extends Component {
                   defaultExpandAll
                   showLine
                   hoverLine
+                  selectedKeys={selectedGroupIds}
                   renderTreeTitle={this.renderTreeTitle}
                   onSelect={onSelectOrg}
                   treeData={groupTreeData}

@@ -348,7 +348,7 @@ export const getDevSubNavs = appId => [
 export const userMenus = portal => [
   {
     name: 'Account Info',
-    link: toRoute(routes.profile),
+    link: toRoute(routes.profile, { type: 'account' }),
     iconName: 'folder'
   },
   {
@@ -379,6 +379,6 @@ export const userMenus = portal => [
     name: 'SSH Keys',
     link: toRoute(routes.profile, { type: 'ssh' }),
     iconName: 'ssh',
-    only: ['user']
+    divider: true
   }
 ];

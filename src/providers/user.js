@@ -1,4 +1,5 @@
 import { getCookie, setCookie } from 'utils';
+import { observable, action } from 'mobx';
 import { map } from 'lodash';
 
 import { getPortalFromPath } from 'routes';
@@ -12,6 +13,8 @@ const ROLE_NORMAL = 'user';
 let user = null;
 
 class UserProvider {
+  @observable username = '';
+
   constructor() {
     this.portal = getCookie('portal');
     this.role = getCookie('role');
@@ -28,6 +31,7 @@ class UserProvider {
     return Boolean(this.accessToken && this.user_id);
   }
 
+  @action
   update(props = {}) {
     Object.assign(this, props);
     this.fixAdminPortal();

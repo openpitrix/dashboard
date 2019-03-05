@@ -8,7 +8,7 @@ import TimeShow from 'components/TimeShow';
 import { getObjName, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 
-export default function (users, isDev) {
+export default function (users) {
   return [
     {
       title: <I18n>{t => <span>{t('App Name')}</span>}</I18n>,

@@ -61,6 +61,7 @@
   .noShadow {
     box-shadow: none;
     background: transparent;
+    border: 0;
   }
   .groupHeader {
     > span {
@@ -78,12 +79,12 @@
     > span:last-child {
       margin-right: 10px;
     }
-    .groupPopver {
-      display: none;
-      :global(.icon) {
-        position: static;
-      }
-    }
+    // .groupPopver {
+    //   display: none;
+    //   :global(.icon) {
+    //     position: static;
+    //   }
+    // }
     .groupPopverTarget {
       width: 20px;
       height: 20px;
@@ -91,6 +92,8 @@
     }
   }
   .titleEventIcon {
+    width: 24px;
+    height: 20px;
     display: none;
     position: static;
   }

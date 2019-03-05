@@ -21,6 +21,13 @@ export default class RuntimeClusterStore extends Store {
     return this.getStore('cluster').describeActionName;
   }
 
+  get runtimeId() {
+    return _.get(
+      this.getStore('testingEnv'),
+      'runtimeToShowInstances.runtime_id'
+    );
+  }
+
   get clusterType() {
     return this.getStore('runtime').runtimeTab;
   }
@@ -40,12 +47,7 @@ export default class RuntimeClusterStore extends Store {
     if (this.userId) {
       params.owner = this.userId;
     }
-    if (this.userId) {
-      params.owner = this.userId;
-    }
-    if (this.clusterType) {
-      params.cluster_type = this.clusterType;
-    }
+    params.cluster_type = this.clusterType;
 
     this.isLoading = true;
     const result = await this.request.get(this.describeActionName, params);

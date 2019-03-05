@@ -122,6 +122,24 @@ export default class GroupStore extends Store {
   }
 
   @action
+  reset = () => {
+    this.isLoading = false;
+    this.users = [];
+    this.groupTreeData = [];
+    this.operateResult = null;
+    this.selectedGroupIds = [];
+    this.groupName = '';
+  };
+
+  @action
+  setDefaultGroupId = () => {
+    const root = _.find(this.groups, g => !g.parent_group_id);
+    if (_.isEmpty(this.selectedGroupIds)) {
+      this.selectedGroupIds = [root.group_id];
+    }
+  };
+
+  @action
   fetchAll = async (params = {}) => {
     params.group_id = [];
     this.isLoading = true;
@@ -226,6 +244,9 @@ export default class GroupStore extends Store {
 
   @action
   onSelectOrg = (keys, info) => {
+    if (_.isEmpty(keys)) {
+      return null;
+    }
     this.groupName = keys.length ? _.get(info, 'node.props.title') : '';
 
     this.selectedGroupIds = keys;
@@ -268,5 +289,6 @@ export default class GroupStore extends Store {
     });
     data[0].children = setChildren(groups, root);
     this.groupTreeData = data;
+    this.setDefaultGroupId();
   };
 }

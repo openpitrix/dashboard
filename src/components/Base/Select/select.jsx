@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 import isFunction from 'lodash/isFunction';
 import { Icon } from 'components/Base';
 
+import Option from './option';
+
 import styles from './index.scss';
 
+@translate()
 export default class Select extends React.Component {
   static propTypes = {
     children: PropTypes.any,
@@ -25,7 +29,8 @@ export default class Select extends React.Component {
 
   state = {
     isOpen: false,
-    value: this.props.defaultValue
+    value: this.props.defaultValue,
+    noValue: this.noValue
   };
 
   componentWillUnmount() {
@@ -34,6 +39,11 @@ export default class Select extends React.Component {
 
   get value() {
     return this.props.value || this.state.value;
+  }
+
+  get noValue() {
+    const defaultValue = this.props.value || this.props.defaultValue;
+    return typeof defaultValue === 'undefined' || defaultValue === null;
   }
 
   childNodes = [];
@@ -78,7 +88,7 @@ export default class Select extends React.Component {
   };
 
   setChildNodes = () => {
-    const { children } = this.props;
+    const { children, t } = this.props;
     const value = this.props.value || this.state.value;
 
     this.currentLabel = '';
@@ -96,6 +106,23 @@ export default class Select extends React.Component {
       });
     });
 
+    if (this.state.noValue) {
+      const txt = t('Please select');
+      const isSelected = this.noValue;
+      const option = React.cloneElement(
+        <Option disabled key="please-select">
+          {txt}
+        </Option>,
+        {
+          isSelected
+        }
+      );
+      if (isSelected) {
+        this.currentLabel = txt;
+      }
+
+      this.childNodes.unshift(option);
+    }
     if (!this.currentLabel) {
       this.currentLabel = value;
     }

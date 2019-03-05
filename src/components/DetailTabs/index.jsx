@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _, { noop } from 'lodash';
@@ -7,8 +8,10 @@ import { translate } from 'react-i18next';
 import styles from './index.scss';
 
 @translate()
+@observer
 export default class DetailTabs extends Component {
   static propTypes = {
+    activeTab: PropTypes.string,
     changeTab: PropTypes.func,
     className: PropTypes.string,
     defaultTab: PropTypes.string,
@@ -33,29 +36,19 @@ export default class DetailTabs extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.changeTab(this.state.curTab);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.curTab !== this.state.curTab;
-  }
-
-  componentDidUpdate() {
-    this.props.changeTab(this.state.curTab);
-  }
-
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
     if (!tab.disabled) {
-      this.setState({ curTab: tabValue });
+      this.setState({ curTab: tabValue }, () => {
+        this.props.changeTab(tabValue);
+      });
     }
   };
 
   render() {
     const {
-      tabs, className, isAccount, t
+      tabs, className, isAccount, t, activeTab
     } = this.props;
     const { curTab } = this.state;
 
@@ -70,11 +63,12 @@ export default class DetailTabs extends Component {
         {tabs.map((tab, idx) => {
           const tabVal = _.isObject(tab) ? tab.value : tab;
           const tabName = _.isObject(tab) ? tab.name : tab;
+          const value = activeTab || curTab;
 
           return (
             <label
               className={classnames({
-                [styles.active]: tabVal === curTab,
+                [styles.active]: tabVal === value,
                 [styles.disabled]: _.isObject(tab) && tab.disabled
               })}
               key={idx}

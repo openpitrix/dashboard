@@ -22,17 +22,8 @@ import styles from './index.scss';
 @observer
 export default class RuntimeInstances extends React.Component {
   fetchInstance() {
-    const {
-      runtime, runtimeStore, runtimeClusterStore, user
-    } = this.props;
-    const { runtime_id } = runtime;
-
-    runtimeClusterStore.runtimeId = runtime_id;
-
+    const { runtimeClusterStore, user } = this.props;
     runtimeClusterStore.fetchAll({
-      attachApps: true,
-      runtime_id: runtime.runtime_id,
-      cluster_type: runtimeStore.runtimeTab,
       owner: user.user_id
     });
   }

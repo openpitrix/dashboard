@@ -25,21 +25,28 @@
 .operate {
   position: fixed;
   top: 20px;
-  right: 8px;
+  left: 20px;
+  right: 20px;
   z-index: 2;
   height: 32px;
 
   > label {
-    display: inline-block;
+    display: inline-flex;
     font-size: 12px;
     line-height: 32px;
     color: $N300;
     border-radius: 2px;
     cursor: pointer;
     padding: 0 12px;
-    // background: $N10;
+    align-items: center;
+    &:hover {
+      background: $N10;
+    }
   }
   :global {
+    .icon {
+      margin-right: 5px;
+    }
     .icon-close {
       position: static;
       transform: none;

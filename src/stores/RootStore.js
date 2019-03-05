@@ -31,10 +31,7 @@ export default class RootStore extends Store {
 
   @observable notifications = [];
 
-  @observable
-  user = {
-    username: ''
-  };
+  user = {};
 
   lastSetFixStamp = Date.now();
 

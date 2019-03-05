@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
-import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Popover, Icon, Button } from 'components/Base';
+import { PopoverIcon, Button } from 'components/Base';
 
 import { CannotEditController } from 'config/roles';
-import styles from '../index.scss';
 
 const createEditRole = 'renderModalCreateRole';
 
@@ -104,15 +102,7 @@ export default class RolePopover extends Component {
 
     return (
       <div>
-        <Popover
-          portal
-          content={this.renderHandleGroupNode()}
-          className={classnames(styles.groupPopver)}
-          targetCls={classnames(styles.groupPopverTarget)}
-          popperCls={classnames(styles.groupPopverPopper)}
-        >
-          <Icon type="dark" name="more" />
-        </Popover>
+        <PopoverIcon portal content={this.renderHandleGroupNode()} />
       </div>
     );
   }
