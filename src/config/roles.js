@@ -51,6 +51,14 @@ export const isvRoleNameMap = {
   developer: 'Developer'
 };
 
+export const adminRoleDesMap = {};
+
+export const isvRoleDesMap = {
+  isv: 'Global Admin Role description',
+  developer:
+    'Responsible for development, testing, operation and maintenance applications'
+};
+
 export default roles;
 
 export const AdminPortal = 'global_admin';
@@ -61,14 +69,26 @@ export const getRoleName = (role = {}, portal = 'global_admin') => {
   let name = '';
   if (portal === AdminPortal) {
     name = adminRoleNameMap[role.role_id];
-  }
-  if (portal === ISVPortal) {
+  } else if (portal === ISVPortal) {
     name = isvRoleNameMap[role.role_id];
   }
   if (!name) {
     name = role.role_name;
   }
   return name;
+};
+
+export const getRoleDescription = (role = {}, portal = 'global_admin') => {
+  let description = '';
+  if (portal === AdminPortal) {
+    description = adminRoleDesMap[role.role_id];
+  } else if (portal === ISVPortal) {
+    description = isvRoleDesMap[role.role_id];
+  }
+  if (!description) {
+    description = role.description;
+  }
+  return description;
 };
 
 export const CannotEditController = 'pitrix';

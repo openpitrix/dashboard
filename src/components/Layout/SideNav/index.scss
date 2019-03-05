@@ -13,7 +13,7 @@
   z-index: 4;
   width: $menu-nav-width;
   height: 100vh;
-  background-color: $N0;
+  background-color: $N10;
   border-right: 1px solid $N10;
   transition: all 0.3s ease-out 0s;
 
@@ -28,6 +28,7 @@
   li {
     height: 40px;
     overflow: hidden;
+    margin: auto 12px;
 
     a {
       color: $N300;
@@ -35,11 +36,12 @@
 
     .icon {
       float: left;
-      margin: 10px 22px;
+      //margin: 10px 12px;
+      padding: 10px;
     }
 
     .title {
-      margin-left: -4px;
+      margin-left: 8px;
       line-height: 40px;
       cursor: pointer;
     }
@@ -72,6 +74,19 @@
 }
 
 .topNav {
+  &> .navItem {
+    &.active {
+      //height: 40px;
+      border-radius: 2px;
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+      background-color: $N0;
+    }
+
+    .platformLabel {
+      margin-left: 10px;
+    }
+  }
+
   > li {
     .imageOuter {
       float: left;
@@ -136,12 +151,12 @@
     }
 
     &:nth-child(1) {
-      margin-bottom: 14px;
-      height: 63px;
-      border-bottom: 1px solid $N10;
+      margin-bottom: 36px;
 
       .icon {
-        margin: 22px;
+        margin-top: 22px;
+        padding-top: 0;
+        padding-bottom: 0;
       }
 
       .title {

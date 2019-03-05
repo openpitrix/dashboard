@@ -195,33 +195,31 @@ export class SideNav extends React.Component {
           [styles.userBottomNav]: user.isDevPortal
         })}
       >
-        {getBottomNavs.map(
-          nav => (nav.iconName === 'human' ? (
-              <li key={nav.iconName}>
-                <Popover content={<MenuLayer />} className={styles.iconOuter}>
-                  <Icon
-                    className={styles.icon}
-                    size={20}
-                    name={nav.iconName}
-                    type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-                  />
-                  <label className={styles.title}>{t(nav.title)}</label>
-                </Popover>
-              </li>
-          ) : (
-              <li key={nav.iconName}>
+        {getBottomNavs.map(nav => (nav.iconName === 'human' ? (
+            <li key={nav.iconName}>
+              <Popover content={<MenuLayer />} className={styles.iconOuter}>
                 <Icon
                   className={styles.icon}
                   size={20}
                   name={nav.iconName}
                   type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
                 />
-                <Link to="#">
-                  <label className={styles.title}>{t(nav.title)}</label>
-                </Link>
-              </li>
-          ))
-        )}
+                <label className={styles.title}>{t(nav.title)}</label>
+              </Popover>
+            </li>
+        ) : (
+            <li key={nav.iconName}>
+              <Icon
+                className={styles.icon}
+                size={20}
+                name={nav.iconName}
+                type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+              />
+              <Link to="#">
+                <label className={styles.title}>{t(nav.title)}</label>
+              </Link>
+            </li>
+        )))}
       </ul>
     );
   }
@@ -336,17 +334,20 @@ export class SideNav extends React.Component {
     return (
       <div className={styles.nav}>
         <ul className={styles.topNav}>
-          <li>
+          <li className={styles.navItem}>
             <Link to="/">
               <img src="/logo_icon.svg" className={styles.icon} />
             </Link>
-            <label className={styles.title}>{t('QingCloud App Center')}</label>
+            <label className={classnames(styles.title, styles.platformLabel)}>
+              {t('QingCloud App Center')}
+            </label>
           </li>
           {navs.map(nav => (
             <li
               key={nav.iconName}
               className={classnames(styles.navItem, {
-                [styles.disabled]: nav.disabled
+                [styles.disabled]: nav.disabled,
+                [styles.active]: this.isLinkActive(nav.active)
               })}
             >
               <Icon
