@@ -78,7 +78,9 @@ export default class SingleCollapse extends Component {
   }
 
   render() {
-    const { children, className, disabled } = this.props;
+    const {
+      children, className, checkCls, disabled
+    } = this.props;
     const { isCheck } = this.state;
     return (
       <div
@@ -86,7 +88,8 @@ export default class SingleCollapse extends Component {
           styles.container,
           {
             [styles.disabled]: disabled,
-            [styles.isCheck]: isCheck
+            [styles.isCheck]: isCheck,
+            [checkCls]: isCheck
           },
           className
         )}
