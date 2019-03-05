@@ -212,7 +212,9 @@ export default class UserModalActions extends Component {
     const { userStore, modalStore, t } = this.props;
     const { isOpen, item } = modalStore;
     const { hideModifyUser, createOrModify } = userStore;
-    const { user_id, username, email } = item;
+    const {
+      user_id, username, description, email
+    } = item;
     const roles = userStore.createRoles;
 
     const title = !user_id ? t('Create New User') : t('Modify User');
@@ -268,7 +270,11 @@ export default class UserModalActions extends Component {
         )}
         <div className={styles.formItemText}>
           <label>{t('Description')}</label>
-          <textarea name="description" maxLength={500} />
+          <textarea
+            name="description"
+            maxLength={500}
+            defaultValue={description}
+          />
         </div>
       </Dialog>
     );

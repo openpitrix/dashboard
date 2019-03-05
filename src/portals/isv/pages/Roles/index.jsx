@@ -65,12 +65,7 @@ export default class TeamRole extends Component {
     const { roleStore, modalStore, t } = this.props;
     const { roles } = roleStore;
     return (
-      <Layout
-        className={styles.container}
-        isCenterPage
-        centerWidth={772}
-        pageTitle="Role"
-      >
+      <Layout className={styles.container} isCenterPage pageTitle="Role">
         {roles.map(role => (
           <Collapse
             key={role.role_id}
