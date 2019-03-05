@@ -239,7 +239,11 @@ export default class Users extends Component {
     const { groupTreeData, onSelectOrg, selectedGroupIds } = groupStore;
 
     return (
-      <Layout className={styles.usersContent} isLoading={isLoading}>
+      <Layout
+        isCenterPage
+        className={styles.usersContent}
+        isLoading={isLoading}
+      >
         <h2 className={styles.header}>{t('All Accounts')}</h2>
         <Panel className={classnames(styles.noShadow, styles.noPadding)}>
           <Grid>
