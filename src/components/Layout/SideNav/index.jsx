@@ -9,8 +9,8 @@ import _ from 'lodash';
 import { Icon, Popover, Image } from 'components/Base';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
-
 import routes, { toRoute } from 'routes';
+import NavItem from './NavItem';
 
 import {
   subNavMap, getNavs, getDevSubNavs, getBottomNavs
@@ -104,7 +104,7 @@ export class SideNav extends React.Component {
     return path.includes(item.active);
   }
 
-  renderSubsDev() {
+  renderSubNavsForDev() {
     const { match, appStore, t } = this.props;
     const { appDetail, resetAppDetail } = appStore;
     const overviewLink = toRoute(routes.overview, 'dev');
@@ -157,7 +157,7 @@ export class SideNav extends React.Component {
     );
   }
 
-  renderSubs() {
+  renderSubNavsForOthers() {
     const { t } = this.props;
     const subNavData = this.getSudNavData();
 
@@ -186,7 +186,20 @@ export class SideNav extends React.Component {
     );
   }
 
-  renderNavsBottom() {
+  renderPlatformLogo() {
+    const { t } = this.props;
+    return (
+      <NavItem
+        to="/"
+        label={t('QingCloud App Center')}
+        className={styles.firstElem}
+      >
+        <img src="/logo_icon.svg" className={styles.icon} />
+      </NavItem>
+    );
+  }
+
+  renderBottomNavs() {
     const { user, t } = this.props;
 
     return (
@@ -224,7 +237,7 @@ export class SideNav extends React.Component {
     );
   }
 
-  renderNavsDev() {
+  renderMainNavsForDev() {
     const {
       appStore, history, user, t
     } = this.props;
@@ -233,156 +246,116 @@ export class SideNav extends React.Component {
     const hasBack = user.isISV && user.isDevPortal;
 
     return (
-      <div className={styles.nav}>
-        <ul className={styles.topNav}>
-          {hasBack ? (
-            <li>
-              <Link to={toRoute(routes.portal.apps, { portal: 'isv' })}>
-                <Icon
-                  className={styles.icon}
-                  size={20}
-                  name="back"
-                  type="dark"
-                />
-                <label className={styles.title}>{t('Back')}</label>
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link to="/">
-                <img src="/logo_icon.svg" className={styles.icon} />
-              </Link>
-              <label className={styles.title}>
-                {t('QingCloud App Center')}
-              </label>
-            </li>
-          )}
-          {menuApps.map(nav => (
-            <li key={nav.app_id} className={styles.devItem}>
-              <Link
-                to={toRoute(routes.portal._dev.versions, { appId: nav.app_id })}
-              >
-                <span
-                  className={classnames(styles.imageOuter, {
-                    [styles.activeApp]: pathname.indexOf(nav.app_id) > -1
-                  })}
-                >
-                  <Image
-                    src={nav.icon}
-                    iconLetter={t(nav.name)}
-                    iconSize={32}
-                    className={styles.image}
-                  />
-                </span>
-              </Link>
-              <NavLink
-                exact
-                to={toRoute(routes.portal._dev.versions, { appId: nav.app_id })}
-              >
-                <label className={styles.title}>{t(nav.name)}</label>
-              </NavLink>
-            </li>
-          ))}
-          <li className={styles.devItem}>
-            <NavLink
-              className={styles.addOuter}
-              exact
-              to={toRoute(routes.portal._dev.appCreate)}
+      <Fragment>
+        {hasBack ? (
+          <NavItem
+            to={toRoute(routes.portal.apps, { portal: 'isv' })}
+            iconProps={{
+              name: 'back'
+            }}
+            label={t('Back')}
+            className={styles.firstElem}
+          />
+        ) : (
+          this.renderPlatformLogo()
+        )}
+
+        {menuApps.map(nav => {
+          const link = toRoute(routes.portal._dev.versions, {
+            appId: nav.app_id
+          });
+
+          return (
+            <NavItem
+              key={nav.app_id}
+              to={link}
+              label={t(nav.name)}
+              wrapLabelInLink
+              className={classnames({
+                [styles.active]: link === pathname
+              })}
+              iconLinkCls={styles.iconLink}
             >
-              <Icon name="add" size={20} type="dark" className={styles.icon} />
-            </NavLink>
-            <NavLink
-              exact
-              to={toRoute(routes.portal._dev.appCreate)}
-              className={styles.title}
-            >
-              {t('Create app')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink exact to={toRoute(routes.portal.apps)}>
-              <Icon
-                name="more"
-                size={20}
-                className={styles.icon}
-                type={
-                  pathname.indexOf(toRoute(routes.portal.apps)) > -1
-                    ? 'light'
-                    : 'dark'
-                }
+              <Image
+                src={nav.icon}
+                iconLetter={t(nav.name)}
+                iconSize={24}
+                className={styles.image}
               />
-            </NavLink>
-            <NavLink
-              exact
-              to={toRoute(routes.portal.apps)}
-              className={styles.title}
-            >
-              {t('View all')}
-            </NavLink>
-          </li>
-        </ul>
-        {this.renderNavsBottom()}
-      </div>
+            </NavItem>
+          );
+        })}
+
+        <NavItem
+          to={toRoute(routes.portal._dev.appCreate)}
+          label={t('Create app')}
+          wrapLabelInLink
+          iconProps={{
+            name: 'add'
+          }}
+        />
+        <NavItem
+          to={toRoute(routes.portal.apps)}
+          label={t('View all')}
+          wrapLabelInLink
+          className={classnames({
+            [styles.active]: pathname === toRoute(routes.portal.apps)
+          })}
+          iconProps={{
+            name: 'more',
+            type: pathname === toRoute(routes.portal.apps) ? 'light' : 'dark'
+          }}
+        />
+      </Fragment>
     );
   }
 
-  renderNavs() {
+  renderMainNavsForOthers() {
     const { user, t } = this.props;
     const { portal } = user;
     const navs = getNavs[portal] || [];
 
     return (
-      <div className={styles.nav}>
-        <ul className={styles.topNav}>
-          <li className={styles.navItem}>
-            <Link to="/">
-              <img src="/logo_icon.svg" className={styles.icon} />
-            </Link>
-            <label className={classnames(styles.title, styles.platformLabel)}>
-              {t('QingCloud App Center')}
-            </label>
-          </li>
-          {navs.map(nav => (
-            <li
-              key={nav.iconName}
-              className={classnames(styles.navItem, {
-                [styles.disabled]: nav.disabled,
-                [styles.active]: this.isLinkActive(nav.active)
-              })}
-            >
-              <Icon
-                className={styles.icon}
-                size={20}
-                name={nav.iconName}
-                type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
-              />
-              <NavLink exact to={nav.link}>
-                <label className={styles.title}>{t(nav.title)}</label>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-        {this.renderNavsBottom()}
-      </div>
+      <Fragment>
+        {this.renderPlatformLogo()}
+        {navs.map((nav, idx) => (
+          <NavItem
+            key={idx}
+            className={classnames({
+              [styles.disabled]: nav.disabled,
+              [styles.active]: this.isLinkActive(nav.active)
+            })}
+            iconProps={{
+              name: nav.iconName,
+              type: this.isLinkActive(nav.active) ? 'light' : 'dark'
+            }}
+            wrapLabelInLink
+            label={t(nav.title)}
+            to={nav.link}
+          />
+        ))}
+      </Fragment>
     );
   }
 
   render() {
     const { hasSubNav, user } = this.props;
 
-    if (user.isDevPortal) {
-      return (
-        <Fragment>
-          {this.renderNavsDev()}
-          {hasSubNav && this.renderSubsDev()}
-        </Fragment>
-      );
-    }
-
     return (
       <Fragment>
-        {this.renderNavs()}
-        {hasSubNav && this.renderSubs()}
+        <div className={styles.nav}>
+          <ul className={styles.topNav}>
+            {user.isDevPortal
+              ? this.renderMainNavsForDev()
+              : this.renderMainNavsForOthers()}
+          </ul>
+          {this.renderBottomNavs()}
+        </div>
+
+        {hasSubNav
+          && (user.isDevPortal
+            ? this.renderSubNavsForDev()
+            : this.renderSubNavsForOthers())}
       </Fragment>
     );
   }
