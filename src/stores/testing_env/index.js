@@ -48,7 +48,6 @@ export default class TestingEnvStore extends Store {
 
   get platformName() {
     const { environment } = this.getStore('cloudEnv');
-    console.log(environment);
     return _.get(_.find(environment, { key: this.platform }), 'name');
   }
 
