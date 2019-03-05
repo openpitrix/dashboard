@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -43,19 +43,32 @@ export default class ModuleFeatures extends Component {
       <div className={styles.container}>
         {getArray(modules, 'module_id').map(module => (
           <div key={module.module_id}>
-            <div className={classnames(styles.item, styles.moduleName)}>
-              {module.module_name}
-            </div>
             {getArray(module.feature_set, 'feature_id').map(feature => (
-              <div
-                key={feature.feature_id}
-                className={classnames(styles.item, {
-                  [styles.gray]: !isCheckAll(module, feature),
-                  [styles.moduleName]: isCheckAll(module, feature)
-                })}
-              >
-                {feature.feature_name}
-              </div>
+              <Fragment key={`${module.module_id}-${feature.feature_id}`}>
+                <div
+                  key={feature.feature_id}
+                  className={classnames(styles.item, {
+                    [styles.gray]: !isCheckAll(module, feature),
+                    [styles.moduleName]: isCheckAll(module, feature)
+                  })}
+                >
+                  {feature.feature_name}
+                </div>
+                {getArray(feature.action_bundle_set, 'action_bundle_id').map(
+                  action => (
+                    <div
+                      key={action.action_bundle_id}
+                      className={classnames(styles.item, styles.gray)}
+                    >
+                      {feature.checked_action_bundle_id_set.includes(
+                        action.action_bundle_id
+                      )
+                        ? action.action_bundle_name
+                        : null}
+                    </div>
+                  )
+                )}
+              </Fragment>
             ))}
           </div>
         ))}
