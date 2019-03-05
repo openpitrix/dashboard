@@ -71,8 +71,7 @@ exports[`Base/Table basic render 1`] = `
             class="pi-table-tbody"
           >
             <tr
-              class="pi-table-row pi-table-row-level-0"
-              data-row-key="1"
+              class="pi-table-row  pi-table-row-level-0"
             >
               <td
                 class="selectionColumn"
@@ -101,8 +100,7 @@ exports[`Base/Table basic render 1`] = `
               </td>
             </tr>
             <tr
-              class="pi-table-row pi-table-row-level-0"
-              data-row-key="2"
+              class="pi-table-row  pi-table-row-level-0"
             >
               <td
                 class="selectionColumn"

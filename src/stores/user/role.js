@@ -104,6 +104,17 @@ export default class RoleStore extends Store {
     };
   }
 
+  get moduleSession() {
+    let modules = sessionStorage.getItem('module_elem_set');
+    try {
+      modules = JSON.parse(modules);
+      return modules;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   @action
   async fetchAll(param = {}) {
     const defaultParams = {
@@ -642,5 +653,50 @@ export default class RoleStore extends Store {
 
   changeOpenModuleMap = (id, value) => {
     this.openModuleMap[id] = value;
+  };
+
+  setRoleModule = async () => {
+    const roleId = _.get(this.getUser(), 'role');
+    const result = await this.request.get(`roles:module`, {
+      role_id: roleId
+    });
+    const modules = _.get(result, 'module.module_elem_set', []);
+    sessionStorage.setItem('module_elem_set', JSON.stringify(modules));
+    return modules;
+  };
+
+  checkActionOnce = action_bundle_id => {
+    let modules = this.moduleSession;
+    if (!modules) {
+      modules = this.setRoleModule();
+    }
+    let canDo = false;
+    _.some(modules, module => {
+      const checkAll = module.is_check_all;
+      return _.some(module.feature_set, feature => {
+        const actionSet = _.find(feature.action_bundle_set, {
+          action_bundle_id
+        });
+        if (actionSet) {
+          const checkedAction = feature.checked_action_bundle_id_set;
+          canDo = checkAll || checkedAction.includes(actionSet.action_bundle_id);
+          return true;
+        }
+      });
+    });
+
+    return canDo;
+  };
+
+  checkAction = actionId => {
+    let modules = this.moduleSession;
+    if (!modules) {
+      modules = this.setRoleModule();
+    }
+
+    if (_.isArray(actionId)) {
+      return _.every(actionId, id => this.checkActionOnce(id));
+    }
+    return this.checkActionOnce(actionId);
   };
 }
