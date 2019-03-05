@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import Layout from 'components/Layout';
 import Collapse from 'components/Collapse';
-import { getRoleName } from 'config/roles';
+import { getRoleName, getRoleDescription } from 'config/roles';
 import ModuleFeature from './ModuleFeatures';
 import Modals from './Modals';
 
@@ -41,7 +41,9 @@ export default class TeamRole extends Component {
     return (
       <div>
         <h3 className={styles.title}>{t(getRoleName(role, 'isv'))}</h3>
-        <div className={styles.describtion}>{role.description}</div>
+        <div className={styles.describtion}>
+          {t(getRoleDescription(role, 'isv'))}
+        </div>
       </div>
     );
   }
@@ -73,8 +75,10 @@ export default class TeamRole extends Component {
           <Collapse
             key={role.role_id}
             className={styles.roleContainer}
+            checkCls={styles.checkedContainer}
             header={this.renderTitle(role)}
             onChange={isCheck => this.onChange(role, isCheck)}
+            toggleType="header"
             iconPosition="right"
           >
             <ModuleFeature roleId={role.role_id} roleStore={roleStore} />

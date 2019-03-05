@@ -8,6 +8,7 @@
   "Set_Role_Title_For_Multi_User": "请为已选择的 {{names}} 等 {{count}} 个账户设置新角色",
   "Role Name": "角色名称",
   "Global Admin Role description": "最高权限管理员，不可删除和修改",
+  "Responsible for development, testing, operation and maintenance applications": "负责开发、测试、运维应用。",
   "Data range": "数据范围",
   "data_level_all": "所有数据",
   "data_level_group": "部门内",

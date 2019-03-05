@@ -26,3 +26,15 @@
   margin-left: 6px;
   cursor: pointer;
 }
+
+.roleContainer {
+  border-radius: 2px;
+  &:hover {
+    border-color: $P45;
+    box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  }
+}
+.checkedContainer {
+  border-color: $P45;
+  box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+}
