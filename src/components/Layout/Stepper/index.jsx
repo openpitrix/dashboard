@@ -134,7 +134,7 @@ export class Stepper extends Component {
   }
 
   renderFooter() {
-    const { t, stepOption, name } = this.props;
+    const { stepOption, name } = this.props;
     const {
       activeStep, steps, disableNextStep, btnText
     } = stepOption;
