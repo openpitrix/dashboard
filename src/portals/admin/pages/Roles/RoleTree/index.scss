@@ -50,6 +50,13 @@
         content: none;
       }
     }
+    & > :global(.rc-tree-node-content-wrapper) {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    & > :global(.rc-tree-switcher) {
+      margin-top: 15px;
+    }
   }
   & > li > ul > li {
     &::before {
@@ -101,4 +108,8 @@
   margin-left: 5px;
   padding-left: 5px;
   border-left: 1px solid $N30;
+}
+
+.description {
+  min-height: 14px;
 }

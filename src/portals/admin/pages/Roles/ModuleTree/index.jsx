@@ -5,6 +5,8 @@ import _ from 'lodash';
 import { Tree } from 'components/Base';
 import Loading from 'components/Loading';
 
+import styles from '../index.scss';
+
 @observer
 export default class ModuleTree extends Component {
   componentDidUpdate() {
@@ -28,6 +30,7 @@ export default class ModuleTree extends Component {
           defaultExpandAll
           hoverLine
           showLine
+          className={styles.moduleTree}
           selectedKeys={selectedModuleKeys}
           onSelect={onSelectModule}
           treeData={moduleTreeData}

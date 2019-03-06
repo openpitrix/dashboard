@@ -62,10 +62,17 @@
     margin-left: 4px;
     color: $N75;
   }
+  .grayColor {
+    color: $N75;
+  }
 }
 .disabledTree {
   :global(.checkbox-inner) {
     display: none;
+  }
+  :global(.rc-tree-treenode-disabled > span:not(.rc-tree-switcher)) {
+    cursor: default;
+    color: $N300;
   }
 }
 
