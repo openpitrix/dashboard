@@ -40,7 +40,7 @@ export const getNavs = {
     {
       link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
       iconName: 'group',
-      title: 'Users'
+      title: 'Users and Permission'
     },
     {
       link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
