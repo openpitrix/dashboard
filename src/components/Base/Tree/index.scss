@@ -27,9 +27,13 @@
       margin-top: 2px;
     }
 
-    .rc-tree-node-content-wrapper {
+    .rc-tree-switcher + .rc-tree-node-content-wrapper {
+      width: calc(100% - 22px);
+    }
+    .rc-tree-switcher-noop + .rc-tree-node-content-wrapper {
       width: 100%;
     }
+
     .rc-tree-title {
       display: inline-flex;
       width: 100%;
@@ -55,9 +59,9 @@
       &::before {
         content: '';
         position: absolute;
-        left: 0;
+        left: 8px;
         right: 0;
-        height: 24px;
+        height: 32px;
         transition: all .3s;
         background: transparent;
       }
@@ -89,6 +93,13 @@
     .rc-tree-title {
       position: relative;
       z-index: 1;
+    }
+  }
+  & > li {
+    & > :global(.rc-tree-node-content-wrapper) {
+      &::before {
+        left: 0px;
+      }
     }
   }
 }
@@ -172,5 +183,70 @@
   }
   &:global(.rc-tree li span.rc-tree-checkbox) {
     margin-right: 8px;
+  }
+}
+
+.tree.showLine {
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+  ul li {
+    padding-left: 10px;
+  }
+  ul li:not(:last-child):before {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    width: 0;
+    height: calc(100% + 16px);
+    border-left: 1px solid $N30;
+    margin: 0;
+    content: " ";
+  }
+
+  ul li:after {
+    position: absolute;
+    top: 16px;
+    left: -5px;
+    width: 10px;
+    height: 1px;
+    border-top: 1px solid $N30;
+    content: " ";
+    z-index: auto;
+  }
+
+
+  ul li:only-of-type:before {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    width: 0;
+    height: 17px;
+    border-left: 1px solid $N30;
+    margin: 0;
+    content: " ";
+  }
+  :global {
+    .rc-tree-switcher {
+      margin-top: 8px;
+      margin-left: 5px;
+    }
+    .rc-tree-title {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      height: 32px;
+      padding: 0;
+      border-radius: 2px;
+      margin: 0;
+      margin-left: 5px;
+      vertical-align: top;
+      text-decoration: none;
+      transition: all .1s;
+      cursor: pointer;
+    }
+    // .rc-tree-switcher + 
   }
 }

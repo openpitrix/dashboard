@@ -67,6 +67,7 @@ export default class Tree extends Component {
       switcherIcon,
       children,
       treeData,
+      showLine,
       ...resetProps
     } = this.props;
 
@@ -76,7 +77,8 @@ export default class Tree extends Component {
           styles.tree,
           {
             [styles.hoverTree]: hoverLine,
-            [styles.autoHeight]: !sameHeight
+            [styles.autoHeight]: !sameHeight,
+            [styles.showLine]: showLine
           },
           className
         )}
