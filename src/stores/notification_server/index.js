@@ -10,7 +10,7 @@ const emailConfig = {
   email_host: '',
   port: '',
   ssl_enable: true,
-  display_email: '',
+  display_sender: '',
   email: '',
   password: ''
 };
