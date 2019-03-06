@@ -87,11 +87,19 @@ export default class CreateTestingEnv extends React.Component {
     return !isHelm(this.platform) && !this.isCredential;
   }
 
+  get platformName() {
+    return _.get(
+      _.find(providers, { key: this.platform }),
+      'name',
+      this.platform
+    );
+  }
+
   get i18nObj() {
-    const { t, envStore } = this.props;
+    const { t } = this.props;
     const curPortal = getPortalFromPath();
     return {
-      runtime_name: envStore.platformName,
+      runtime_name: this.platformName,
       env_name: curPortal === 'user' ? t('Runtimes') : t('Testing env')
     };
   }
@@ -245,12 +253,6 @@ export default class CreateTestingEnv extends React.Component {
       credentialName,
       changeCredentialName
     } = createEnvStore;
-    const platformName = _.get(
-      _.find(providers, { key: this.platform }),
-      'name',
-      this.platform
-    );
-
     if (!validatePassed) {
       return (
         <div className={styles.tips}>
@@ -260,7 +262,9 @@ export default class CreateTestingEnv extends React.Component {
           </p>
           <ol>
             <li>
-              {t('TIPS_LOGIN_PLATFORM_CONSOLE', { platform: platformName })}
+              {t('TIPS_LOGIN_PLATFORM_CONSOLE', {
+                platform: this.platformName
+              })}
             </li>
             <li>{t('TIPS_ADD_CREDENTIAL_1')}</li>
             <li>{t('TIPS_ADD_CREDENTIAL_2')}</li>
