@@ -16,6 +16,7 @@ export default class DetailTabs extends Component {
     className: PropTypes.string,
     defaultTab: PropTypes.string,
     isAccount: PropTypes.bool,
+    isCardTab: PropTypes.bool,
     tabs: PropTypes.array
   };
 
@@ -48,7 +49,7 @@ export default class DetailTabs extends Component {
 
   render() {
     const {
-      tabs, className, isAccount, t, activeTab
+      tabs, className, isAccount, isCardTab, t, activeTab
     } = this.props;
     const { curTab } = this.state;
 
@@ -56,7 +57,10 @@ export default class DetailTabs extends Component {
       <div
         className={classnames(
           styles.detailTabs,
-          { [styles.accountTabs]: isAccount },
+          {
+            [styles.accountTabs]: isAccount,
+            [styles.cardTabs]: isCardTab
+          },
           className
         )}
       >

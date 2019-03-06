@@ -475,18 +475,17 @@ export default class ReviewDetail extends Component {
       <Layout pageTitle={t('App review detail')} hasBack>
         <Grid>
           <Section size={8}>
-            <Card className={styles.reviewTitle}>
-              <div className={styles.name}>{t('Audit content')}</div>
-              <div className={styles.note}>
-                {t('AUDIT_CONTENT_INTRODUCE')}
-                <a href="#" target="_blank">
-                  {t('view detail standard')} →
-                </a>
-              </div>
-            </Card>
-
-            <DetailTabs tabs={tabs} changeTab={this.changeTab} />
             <Card>
+              <div className={styles.reviewTitle}>
+                <div className={styles.name}>{t('Audit content')}</div>
+                <div className={styles.note}>
+                  {t('AUDIT_CONTENT_INTRODUCE')}
+                  <a href="#" target="_blank">
+                    {t('view detail standard')} →
+                  </a>
+                </div>
+              </div>
+              <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
               {detailTab === 'baseInfo' && this.renderBaseInfo()}
               {detailTab === 'readme' && this.renderReadme()}
               {detailTab === 'service' && this.renderService()}

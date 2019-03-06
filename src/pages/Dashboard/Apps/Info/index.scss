@@ -8,6 +8,7 @@
     color: $N75;
 
     label {
+      float: left;
       display: inline-block;
       box-sizing: border-box;
       margin-right: 4px;
@@ -15,6 +16,7 @@
       padding: 4px;
       line-height: 12px;
       background: $N30;
+      vertical-align: middle;
     }
   }
 
@@ -192,6 +194,10 @@
 
     button {
       margin-left: 12px;
+    }
+
+    .icon {
+      margin-top: -2px;
     }
   }
 

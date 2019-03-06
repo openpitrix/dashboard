@@ -65,17 +65,28 @@
     font-size: 12px;
 
     &:first-child {
-      border-top: 1px solid $N10;
+      box-sizing: border-box;
       min-height: 32px;
-      line-height: 12px;
-      padding: 10px 24px;
+      padding: 9px 24px;
+      border-top: 1px solid $N10;
 
-      &:hover, &.active {
+      &:hover,
+      &.active {
         background-color: $background-color;
+      }
+
+      > label {
+        line-height: 12px;
+        height: 12px;
+      }
+
+      .operator {
+        color: $N75;
       }
     }
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       background-color: $N0;
     }
 
@@ -98,11 +109,11 @@
   }
 
   .reason {
-    width: 40%;
+    width: 38%;
   }
 
   .time {
-    width: 16%;
+    width: 18%;
     margin-left: 4%;
   }
 

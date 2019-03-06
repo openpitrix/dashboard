@@ -431,7 +431,7 @@ export default class VersionDetail extends Component {
 
     if (isEdit) {
       return (
-        <Card className={styles.updateLog}>
+        <div className={styles.updateLog}>
           <p>{t('Used to describe the detailed update of this version')}:</p>
           <textarea
             className={styles.description}
@@ -449,7 +449,7 @@ export default class VersionDetail extends Component {
             </Button>
             <Button onClick={this.resetLog}>{t('Reset')}</Button>
           </div>
-        </Card>
+        </div>
       );
     }
 
@@ -481,7 +481,7 @@ export default class VersionDetail extends Component {
     const pkgName = packageName || `${appDetail.name}-${version.name}`;
 
     return (
-      <Card className={styles.configFile}>
+      <div className={styles.configFile}>
         {!isShowUpload && (
           <div className={styles.fileInfo}>
             <div className={styles.name}>{pkgName}</div>
@@ -525,7 +525,7 @@ export default class VersionDetail extends Component {
           errorFiles={errorFiles}
           isShowNote
         />
-      </Card>
+      </div>
     );
   }
 
@@ -638,9 +638,11 @@ export default class VersionDetail extends Component {
         {this.renderTopInfo()}
         <Grid>
           <Section size={8}>
-            <DetailTabs tabs={tags} changeTab={this.changeTab} />
-            {detailTab === 'configFile' && this.renderFileConfig()}
-            {detailTab === 'updateLog' && this.renderUpdateLog()}
+            <Card>
+              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+              {detailTab === 'configFile' && this.renderFileConfig()}
+              {detailTab === 'updateLog' && this.renderUpdateLog()}
+            </Card>
           </Section>
 
           <Section>
