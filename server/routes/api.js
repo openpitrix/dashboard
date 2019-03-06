@@ -8,7 +8,6 @@ const utils = require('../utils');
 const router = new Router();
 const authEndpoint = 'oauth2/token';
 const resourcesBypassAuth = [
-  'apps',
   'active_apps',
   'active_app_versions',
   'categories',
