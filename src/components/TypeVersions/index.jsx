@@ -47,35 +47,39 @@ export default class TypeVersions extends Component {
       <div className={classnames(styles.typeVersions, className)}>
         <dl>
           <dt>{t('Delivery type')}:</dt>
-          <dd className={styles.types}>
-            {types.map(type => (
-              <label
-                key={type}
-                onClick={() => this.changeType(type, 'activeType')}
-                className={classnames({
-                  [styles.active]: (activeType || types[0]) === type
-                })}
-              >
-                {getVersionTypesName(type) || t('None')}
-              </label>
-            ))}
+          <dd>
+            <div className={styles.types}>
+              {types.map(type => (
+                <label
+                  key={type}
+                  onClick={() => this.changeType(type, 'activeType')}
+                  className={classnames({
+                    [styles.active]: (activeType || types[0]) === type
+                  })}
+                >
+                  {getVersionTypesName(type) || t('None')}
+                </label>
+              ))}
+            </div>
           </dd>
         </dl>
         <dl>
           <dt>{t('Version No')}:</dt>
-          <dd className={styles.types}>
-            {versions.map(item => (
-              <label
-                key={item.version_id}
-                onClick={() => this.changeType(item.version_id, 'activeVersion')
-                }
-                className={classnames({
-                  [styles.active]: activeVersion === item.version_id
-                })}
-              >
-                {item.name || t('None')}
-              </label>
-            ))}
+          <dd>
+            <div className={styles.types}>
+              {versions.map(item => (
+                <label
+                  key={item.version_id}
+                  onClick={() => this.changeType(item.version_id, 'activeVersion')
+                  }
+                  className={classnames({
+                    [styles.active]: activeVersion === item.version_id
+                  })}
+                >
+                  {item.name || t('None')}
+                </label>
+              ))}
+            </div>
           </dd>
         </dl>
       </div>

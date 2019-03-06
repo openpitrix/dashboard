@@ -182,13 +182,23 @@ export default class Info extends Component {
             {t('Save')}
           </Button>
           <Button disabled={!isEdit} onClick={() => this.changePreview(type)}>
-            <Icon name={isPreview ? 'pen' : 'eye'} size={20} type="dark" />
+            <Icon
+              name={isPreview ? 'pen' : 'eye'}
+              size={20}
+              type="dark"
+              className={styles.icon}
+            />
             {t(isPreview ? 'Edit' : 'Preview')}
           </Button>
           {type === 'readme' && (
             <a href="#" target="_blank">
               <Button>
-                <Icon name="documentation" size={20} type="dark" />
+                <Icon
+                  name="documentation"
+                  size={20}
+                  type="dark"
+                  className={styles.icon}
+                />
                 {t('View example')}
               </Button>
             </a>
@@ -397,8 +407,8 @@ export default class Info extends Component {
 
     return (
       <Fragment>
-        <DetailTabs tabs={tags} changeTab={this.changeTab} />
         <Card>
+          <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
           {detailTab === 'Base Info' && this.renderBaseInfo()}
           {detailTab === 'Instructions' && this.renderInstructions()}
           {detailTab === 'Terms of service' && this.renderService()}

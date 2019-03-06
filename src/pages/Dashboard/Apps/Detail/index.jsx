@@ -479,8 +479,8 @@ export default class AppDetail extends Component {
               totalDepoly={clusterStore.totalCount}
               monthDepoly={clusterStore.monthCount}
             />
-            <DetailTabs tabs={tags} changeTab={this.changeTab} />
             <Card>
+              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
               {detailTab === 'instance' && this.renderInstance()}
               {detailTab === 'online' && this.renderVersions()}
               {detailTab === 'record' && this.renderRecord()}
