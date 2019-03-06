@@ -37,6 +37,10 @@ export default class DetailTabs extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.changeTab(this.state.curTab);
+  }
+
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
