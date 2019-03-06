@@ -21,13 +21,18 @@
   }
 
   .types {
+    display: inline-block;
     // margin-bottom: 16px;
+    border: 1px solid $N30;
+    border-radius: 2px;
+    background-color: $N0;
+    box-shadow: 0 1px 3px 0 rgba($N400, 0.07);
 
     > label {
       display: inline-block;
+      margin: -1px 0;
       padding: 8px 12px;
-      background-color: $N0;
-      border: 1px solid $N30;
+      border-right: 1px solid $N30;
       font-size: 14px;
       line-height: 14px;
       color: $N300;
@@ -41,11 +46,12 @@
       &:last-child {
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
+        border-right: 0 none;
       }
 
       &.active {
         color: $P75;
-        border-color: $P75;
+        border: 1px solid $P75;
       }
     }
   }

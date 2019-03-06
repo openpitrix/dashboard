@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .card {
   position: relative;
@@ -7,7 +7,7 @@
   margin-bottom: $card-bottom;
 
   :global {
-    .operation{
+    .operation {
       position: absolute;
       right: 32px;
       top: 24px;
@@ -15,6 +15,12 @@
       .pi-popover-popper {
         margin-left: -90px !important;
       }
+    }
+  }
+  // for fix no data table style of card background
+  :global {
+    [class*='noData'] {
+      box-shadow: none;
     }
   }
 }
