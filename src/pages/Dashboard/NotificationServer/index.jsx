@@ -151,7 +151,7 @@ export default class NotificationServer extends Component {
                     <label>{t('Sender nickname')}</label>
                     <Input
                       name="display_email"
-                      value={formData.display_email}
+                      value={formData.display_sender}
                       onChange={onChangeFormItem}
                     />
                   </div>
