@@ -92,6 +92,19 @@ export class SideNav extends React.Component {
     }
   }
 
+  async componentDidUpdate(prevProps) {
+    const {
+      appStore, user, hasSubNav, match
+    } = this.props;
+    const { fetchMeunApp } = appStore;
+    const appId = _.get(match, 'params.appId', '');
+    const prevAppId = _.get(prevProps.match, 'params.appId', '');
+
+    if (user.isDevPortal && hasSubNav && appId !== prevAppId) {
+      fetchMeunApp(appId);
+    }
+  }
+
   getMatchKey = () => {
     const { path } = this.props.match;
     const key = _.find(keys, k => path.indexOf(k) > -1) || '';
