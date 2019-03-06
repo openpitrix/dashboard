@@ -50,7 +50,7 @@ class UserProvider {
   }
 
   get isAdmin() {
-    return this.role === ROLE_ADMIN;
+    return this.portal === 'admin';
   }
 
   get isDev() {
