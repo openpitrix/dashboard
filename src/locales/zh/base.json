@@ -415,7 +415,7 @@
   "STEPPER_FOOTER_CREATE_RUNTIME_2": "关于授权信息的保密与安全问题请参看",
   "LINK_STEPPER_FOOTER_CREATE_RUNTIME_2": "《平台服务条款》",
   "STEPPER_NAME_CREATE_CREDENTIAL_HEADER": "添加授权信息 {{activeStep}}/{{steps}}",
-  "STEPPER_TITLE_CREATE_CREDENTIAL_1": "提供环境授权信息",
+  "STEPPER_TITLE_CREATE_CREDENTIAL_1": "提供{{runtime_name}}环境授权信息",
   "STEPPER_TITLE_CREATE_CREDENTIAL_2": "设置名称、备注",
   "STEPPER_HEADER_CREATE_CREDENTIAL_2": "「提供环境授权信息」",
   "STEPPER_FOOTER_CREATE_CREDENTIAL_1": "关于授权信息的保密与安全问题请参看",

@@ -56,16 +56,11 @@ export class Runtime extends React.Component {
 
   renderEmpty() {
     const { envStore, t } = this.props;
-    const platformName = _.get(
-      _.find(providers, { key: envStore.platform }),
-      'name',
-      ''
-    );
 
     return (
       <Card className={styles.emptyData}>
         <p>{t('No env')}</p>
-        <p>{t('TIPS_NOT_ADD_ENV', { env: platformName })}</p>
+        <p>{t('TIPS_NOT_ADD_ENV', { env: envStore.platformName })}</p>
         <Button
           type="primary"
           className={styles.btnAddEnv}

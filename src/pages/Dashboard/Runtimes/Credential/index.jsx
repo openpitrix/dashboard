@@ -164,16 +164,11 @@ export class Credential extends React.Component {
 
   renderEmpty() {
     const { envStore, t } = this.props;
-    const platformName = _.get(
-      _.find(providers, { key: envStore.platform }),
-      'name',
-      ''
-    );
 
     return (
       <Card className={styles.emptyData}>
         <p>{t('No authorization info')}</p>
-        <p>{t('TIPS_NOT_ADD_AUTH', { env: platformName })}</p>
+        <p>{t('TIPS_NOT_ADD_AUTH', { env: envStore.platformName })}</p>
         <Button
           type="primary"
           className={styles.btnAddEnv}
