@@ -36,7 +36,6 @@
 
     .icon {
       float: left;
-      //margin: 10px 12px;
       padding: 10px;
     }
 
@@ -75,99 +74,55 @@
 
 .topNav {
   &> .navItem {
+    //margin-bottom: 10px;
+
     &.active {
-      //height: 40px;
       border-radius: 2px;
       box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
       background-color: $N0;
     }
 
-    .platformLabel {
-      margin-left: 10px;
-    }
-  }
-
-  > li {
-    .imageOuter {
-      float: left;
-      display: inline-block;
-      margin: 10px 16px;
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
-      opacity: 0.5;
-
-      &.activeApp {
-        opacity: 1;
-        .image {
-          border-color: $P75;
-        }
-      }
-    }
-
-    &:hover {
-      .imageOuter {
-        opacity: 1;
-        .image {
-          border-color: $N30;
-        }
-      }
-    }
-
-    :global {
-      .icon-more {
-        float: left;
-        margin: 10px 22px;
-        transform: rotate(90deg);
-      }
-    }
-
-    &.devItem {
-      height: 52px;
-
-      .icon {
-        margin: 10px 16px;
-      }
+    &.firstElem{
+      margin-bottom: 24px;
+      margin-top: 14px;
 
       .title {
-        line-height: 52px;
-      }
-
-      .addOuter {
-        float: left;
-        display: inline-block;
-        box-sizing: border-box;
-        margin: 10px 16px;
-        width: 32px;
-        height: 32px;
-
-        border-radius: 2px;
-        background-color: $N10;
-
-        .icon {
-          margin: 6px;
-        }
-      }
-    }
-
-    &:nth-child(1) {
-      margin-bottom: 36px;
-
-      .icon {
-        margin-top: 22px;
-        padding-top: 0;
-        padding-bottom: 0;
-      }
-
-      .title {
-        line-height: 20px;
-        padding: 22px 0;
-        display: inline-block;
         font-size: 16px;
         color: $N500;
         font-weight: 500;
         cursor: default;
       }
+    }
+
+    .platformLabel {
+      margin-left: 10px;
+    }
+
+    .iconLink{
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+
+      &> span {
+        position: relative;
+        top: 3px;
+        left: -3px;
+      }
+
+      &> img {
+        position: relative;
+        top: 8px;
+        width: 24px !important;
+        height: 24px !important;
+      }
+    }
+
+    .image {
+      font-size: 24px !important;
+      background: none;
+      border: none;
     }
   }
 }
@@ -287,83 +242,4 @@
       @extend %disabledLink;
     }
   }
-}
-
-.header {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 4;
-  width: 100%;
-  /* position: static;
-  margin: -68px -20px 20px;*/
-  height: 48px;
-  background-color: $background-color;
-
-  .user [class*='target'] {
-    float: right;
-    margin: 12px 24px;
-    height: 20px;
-    width: auto;
-    line-height: 20px;
-    color: $N500;
-    font-weight: 500;
-    border: 0 none;
-    &:hover {
-      border: 0 none;
-      box-shadow: none;
-      opacity: 1;
-    }
-    :global {
-      .icon-caret-down {
-        position: relative;
-        top: 3px;
-        left: 2px;
-        svg {
-          --primary-color: #{$N500};
-          --secondary-color: #{$N500};
-        }
-      }
-    }
-  }
-
-  :global {
-    .pi-popover-popper {
-      margin-left: -85px !important;
-      margin-top: 6px !important;
-    }
-  }
-
-  .operateItems {
-    min-width: 120px;
-    li {
-      > a,
-      > label {
-        display: block;
-        height: 32px;
-        padding: 0 12px;
-        //width: 100%;
-        line-height: 32px;
-        font-size: $font14;
-        font-weight: normal;
-        color: $N300;
-        border-radius: 0;
-        cursor: pointer;
-      }
-
-      &:hover {
-        background-color: $N10;
-        color: $N500;
-      }
-
-      &.line {
-        border-bottom: 1px solid $N10;
-      }
-    }
-  }
-}
-
-.headerShadow {
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
-    0 4px 8px 0 rgba(35, 35, 36, 0.04);
 }
