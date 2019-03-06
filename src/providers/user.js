@@ -3,11 +3,7 @@ import { observable, action } from 'mobx';
 import { map } from 'lodash';
 
 import { getPortalFromPath } from 'routes';
-
-const ROLE_ADMIN = 'global_admin';
-const ROLE_DEV = 'dev';
-const ROLE_ISV = 'isv';
-const ROLE_NORMAL = 'user';
+import { PORTAL_NAME } from 'config/roles';
 
 // singleton
 let user = null;
@@ -24,7 +20,7 @@ class UserProvider {
     this.changedRole = getCookie('changedRole');
     this.accessToken = getCookie('access_token');
     this.loginTime = getCookie('login_time');
-    this.fixAdminPortal();
+    // this.fixAdminPortal();
   }
 
   isLoggedIn() {
@@ -34,7 +30,7 @@ class UserProvider {
   @action
   update(props = {}) {
     Object.assign(this, props);
-    this.fixAdminPortal();
+    // this.fixAdminPortal();
 
     // save own props to cookie
     const expires_in = parseInt(getCookie('expires_in'));
@@ -43,47 +39,47 @@ class UserProvider {
     });
   }
 
-  fixAdminPortal() {
-    if (this.portal === ROLE_ADMIN) {
+  /* fixAdminPortal() {
+    if (this.portal === PORTAL_NAME.admin) {
       this.portal = 'admin';
     }
-  }
+  } */
 
   get isAdmin() {
-    return this.role === ROLE_ADMIN;
+    return this.portal === PORTAL_NAME.admin;
   }
 
   get isDev() {
-    return this.role === ROLE_DEV;
+    return this.portal === PORTAL_NAME.dev;
   }
 
   get isNormal() {
-    return this.role === ROLE_NORMAL;
+    return this.portal === PORTAL_NAME.user;
   }
 
   get isISV() {
-    return this.role === ROLE_ISV;
+    return this.portal === PORTAL_NAME.isv;
   }
 
   get isUserPortal() {
-    return ['', 'user'].includes(getPortalFromPath());
+    return ['', PORTAL_NAME.user].includes(getPortalFromPath());
   }
 
   get isDevPortal() {
-    return getPortalFromPath() === 'dev';
+    return getPortalFromPath() === PORTAL_NAME.dev;
   }
 
   get defaultPortal() {
     if (this.isAdmin) {
-      return 'admin';
+      return PORTAL_NAME.admin;
     }
     if (this.isISV) {
-      return 'isv';
+      return PORTAL_NAME.isv;
     }
     if (this.isDev) {
-      return 'dev';
+      return PORTAL_NAME.dev;
     }
-    return 'user';
+    return PORTAL_NAME.user;
   }
 }
 
