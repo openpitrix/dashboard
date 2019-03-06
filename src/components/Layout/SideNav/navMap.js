@@ -6,52 +6,44 @@ export const getNavs = {
     /* {
       link: toRoute(routes.portal.overview, { portal: 'admin' }),
       iconName: 'dashboard',
-      active: 'dashboard',
       title: 'My dashboard'
     }, */
     {
       link: toRoute(routes.portal.apps, { portal: 'admin' }),
       iconName: 'components',
-      active: 'app',
       title: 'App Store'
     },
     {
       link: toRoute(routes.portal._admin.providers, { portal: 'admin' }),
       iconName: 'shield',
-      active: 'provider',
       title: 'App service provider'
     },
     {
       link: '#',
       iconName: 'ticket',
-      active: '',
       title: 'Work list',
       disabled: true
     },
     {
       link: '#',
       iconName: 'wallet',
-      active: '',
       title: 'Financial Center',
       disabled: true
     },
     {
       link: '#',
       iconName: 'linechart',
-      active: '',
       title: 'Message and monitoring',
       disabled: true
     },
     {
       link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
       iconName: 'group',
-      active: 'user',
       title: 'Users'
     },
     {
       link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
       iconName: 'cogwheel',
-      active: 'setting',
       title: 'Settings'
     }
   ],
@@ -59,46 +51,39 @@ export const getNavs = {
     {
       link: toRoute(routes.portal.apps, { portal: 'isv' }),
       iconName: 'appcenter',
-      active: 'app',
       title: 'App Manage'
     },
     {
       link: toRoute(routes.portal.apps, { portal: 'dev' }),
       iconName: 'wrench',
-      active: 'develop',
       title: 'App Develop'
     },
     {
       link: '#',
       iconName: 'ticket',
-      active: '',
       disabled: true,
       title: 'Work list'
     },
     {
       link: '#',
       iconName: 'linechart',
-      active: '',
       disabled: true,
       title: 'Operation Center'
     },
     {
       link: '#',
       iconName: 'wallet',
-      active: '',
       disabled: true,
       title: 'Financial Center'
     },
     {
       link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
       iconName: 'group',
-      active: 'user',
       title: 'Team Members'
     },
     {
       link: toRoute(routes.portal._isv.provider, { portal: 'isv' }),
       iconName: 'shield',
-      active: 'provider-detail',
       title: 'Service Provider Detail'
     }
   ],
@@ -106,13 +91,11 @@ export const getNavs = {
     {
       link: toRoute(routes.portal._dev.appCreate, { portal: 'dev' }),
       iconName: 'plus-square',
-      active: 'create',
       title: 'Create app'
     },
     {
       link: toRoute(routes.portal.apps, { portal: 'dev' }),
       iconName: 'more',
-      active: 'app',
       title: 'View all'
     }
   ]
@@ -123,25 +106,21 @@ export const getBottomNavs = [
   /* {
     link: '#',
     iconName: 'magnifier',
-    active: '',
     title: 'Global search'
   },
   {
     link: '#',
     iconName: 'bell',
-    active: '',
     title: 'Alarms'
   },
   {
     link: '#',
     iconName: 'mail',
-    active: '',
     title: 'My news'
   }, */
   {
     link: '/profile',
     iconName: 'human',
-    active: 'profile',
     title: 'My account'
   }
 ];
@@ -154,8 +133,7 @@ export const subNavMap = {
       links: [
         {
           name: 'Overview',
-          link: toRoute(routes.portal.overview, { portal: 'admin' }),
-          active: 'admin'
+          link: toRoute(routes.portal.overview, { portal: 'admin' })
         }
       ]
     },
@@ -164,23 +142,19 @@ export const subNavMap = {
       links: [
         {
           name: 'All Apps',
-          link: toRoute(routes.portal.apps, { portal: 'admin' }),
-          active: '/apps'
+          link: toRoute(routes.portal.apps, { portal: 'admin' })
         },
         {
           name: 'App Reviews',
-          link: toRoute(routes.portal.appsReview, { portal: 'admin' }),
-          active: 'review'
+          link: toRoute(routes.portal.appsReview, { portal: 'admin' })
         },
         {
           name: 'App Category',
-          link: toRoute(routes.portal._admin.categories, { portal: 'admin' }),
-          active: 'categories'
+          link: toRoute(routes.portal._admin.categories, { portal: 'admin' })
         },
         {
           name: 'Store Appearance',
           link: '#',
-          active: 'appearance',
           disabled: true
         }
       ]
@@ -190,26 +164,22 @@ export const subNavMap = {
       links: [
         {
           name: 'All Providers',
-          link: toRoute(routes.portal._admin.providers, { portal: 'admin' }),
-          active: 'provider'
+          link: toRoute(routes.portal._admin.providers, { portal: 'admin' })
         },
         {
           name: 'Apply for Residence',
           link: toRoute(routes.portal._admin.providerApply, {
             portal: 'admin'
-          }),
-          active: 'apply'
+          })
         },
         {
           name: 'Contract',
           link: '#',
-          active: '#',
           disabled: true
         },
         {
           name: 'Margin',
           link: '#',
-          active: '#',
           disabled: true
         }
       ]
@@ -219,13 +189,11 @@ export const subNavMap = {
       links: [
         {
           name: 'All Users',
-          link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
-          active: 'user'
+          link: toRoute(routes.portal._admin.users, { portal: 'admin' })
         },
         {
           name: 'Roles',
-          link: toRoute(routes.portal._admin.roles, { portal: 'admin' }),
-          active: 'role'
+          link: toRoute(routes.portal._admin.roles, { portal: 'admin' })
         }
       ]
     },
@@ -235,20 +203,17 @@ export const subNavMap = {
         {
           name: 'User authentication',
           link: '#',
-          active: 'user-auth',
           disabled: true
         },
         {
           name: 'Cloud environment',
-          link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
-          active: 'cloud-env'
+          link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' })
         },
         {
           name: 'Notification server',
           link: toRoute(routes.portal._admin.notificationServer, {
             portal: 'admin'
-          }),
-          active: 'notification-server'
+          })
         }
       ]
     }
@@ -259,13 +224,11 @@ export const subNavMap = {
       links: [
         {
           name: 'All Apps',
-          link: toRoute(routes.portal.apps, { portal: 'isv' }),
-          active: '/apps'
+          link: toRoute(routes.portal.apps, { portal: 'isv' })
         },
         {
           name: 'App Reviews',
-          link: toRoute(routes.portal.appsReview, { portal: 'isv' }),
-          active: 'review'
+          link: toRoute(routes.portal.appsReview, { portal: 'isv' })
         }
       ]
     },
@@ -274,13 +237,11 @@ export const subNavMap = {
       links: [
         {
           name: 'All members',
-          link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
-          active: 'user'
+          link: toRoute(routes.portal._isv.users, { portal: 'isv' })
         },
         {
           name: 'Roles',
-          link: toRoute(routes.portal._isv.roles, { portal: 'isv' }),
-          active: 'role'
+          link: toRoute(routes.portal._isv.roles, { portal: 'isv' })
         }
       ]
     }
@@ -294,18 +255,15 @@ export const getDevSubNavs = appId => [
     items: [
       {
         name: 'Version',
-        link: toRoute(routes.portal._dev.versions, { portal: 'dev', appId }),
-        active: 'versions'
+        link: toRoute(routes.portal._dev.versions, { portal: 'dev', appId })
       },
       {
         name: 'App information',
-        link: toRoute(routes.portal.appDetail, { portal: 'dev', appId }),
-        active: 'info'
+        link: toRoute(routes.portal.appDetail, { portal: 'dev', appId })
       },
       {
         name: 'Record',
-        link: toRoute(routes.portal._dev.appAudits, { portal: 'dev', appId }),
-        active: 'audits'
+        link: toRoute(routes.portal._dev.appAudits, { portal: 'dev', appId })
       }
     ]
   },
@@ -324,8 +282,7 @@ export const getDevSubNavs = appId => [
         link: toRoute(routes.portal._dev.userInstances, {
           portal: 'dev',
           appId
-        }),
-        active: 'user-instances'
+        })
       }
     ]
   },
@@ -337,8 +294,7 @@ export const getDevSubNavs = appId => [
         link: toRoute(routes.portal._dev.sandboxInstances, {
           portal: 'dev',
           appId
-        }),
-        active: 'sandbox-instances'
+        })
       }
     ]
   }

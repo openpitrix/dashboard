@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
@@ -68,7 +68,7 @@ export class MenuLayer extends Component {
               className={styles.iconImg}
             />
           </span>
-          {user.username}
+          <span className={styles.username}>{user.username}</span>
           {!isNormal && (
             <span
               className={classnames(styles.devIconOuter, [styles[user.protal]])}
@@ -85,13 +85,15 @@ export class MenuLayer extends Component {
 
         {!isNormal && (
           <li className={styles.dev}>
-            <Icon
-              name={portal.icon}
-              type="dark"
-              size={16}
-              className={styles.iconImg}
-            />
-            <Link to={portal.url}>{t(portal.name)}</Link>
+            <Link to={portal.url}>
+              <Icon
+                name={portal.icon}
+                type="dark"
+                size={16}
+                className={styles.icon}
+              />
+              <span className={styles.label}>{t(portal.name)}</span>
+            </Link>
           </li>
         )}
 
@@ -112,20 +114,24 @@ export class MenuLayer extends Component {
                 [styles.disabled]: Boolean(item.disabled)
               })}
             >
-              <Icon
-                name={item.iconName}
-                type="dark"
-                size={16}
-                className={styles.iconImg}
-              />
-              <Link to={item.link}>{t(item.name)}</Link>
+              <NavLink to={item.link} exact activeClassName={styles.active}>
+                <Icon
+                  name={item.iconName}
+                  type="dark"
+                  size={16}
+                  className={styles.icon}
+                />
+                <span className={styles.label}>{t(item.name)}</span>
+              </NavLink>
             </li>
           );
         })}
 
         <li className={styles.divider}>
-          <Icon name="previous" type="dark" className={styles.iconImg} />
-          <a href="/logout">{t('Log out')}</a>
+          <a href="/logout">
+            <Icon name="previous" type="dark" className={styles.icon} />
+            <span>{t('Log out')}</span>
+          </a>
         </li>
       </ul>
     );

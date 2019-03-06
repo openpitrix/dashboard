@@ -24,7 +24,6 @@ const keys = [
   'review',
   'cluster',
   'runtime',
-  'repo',
   'categories',
   'category',
   'user',
@@ -39,8 +38,6 @@ const keys = [
 ];
 const changeKey = {
   review: 'app',
-  cluster: 'repo',
-  runtime: 'repo',
   categories: 'app',
   category: 'app',
   admin: 'dashboard',
@@ -63,6 +60,21 @@ export class SideNav extends React.Component {
 
   static defaultProps = {};
 
+  state = {
+    subNavChildLinks: []
+  };
+
+  componentWillMount() {
+    const subNavChildLinks = _.map(
+      _.get(this.getSudNavData(), 'links', []),
+      'link'
+    );
+
+    this.setState({
+      subNavChildLinks
+    });
+  }
+
   async componentDidMount() {
     const {
       appStore, user, match, hasSubNav
@@ -82,12 +94,12 @@ export class SideNav extends React.Component {
 
   getMatchKey = () => {
     const { path } = this.props.match;
-    const key = _.find(keys, k => path.indexOf(k) > -1) || 'app';
+    const key = _.find(keys, k => path.indexOf(k) > -1) || '';
 
     return changeKey[key] || key;
   };
 
-  isLinkActive = activeName => activeName === this.getMatchKey();
+  isActiveLink = link => link === location.pathname || this.state.subNavChildLinks.includes(link);
 
   getSudNavData = () => {
     const { user } = this.props;
@@ -95,14 +107,6 @@ export class SideNav extends React.Component {
 
     return _.get(subNavMap, `${user.portal}.${key}`, {});
   };
-
-  isActiveSubNav(item, subNavData) {
-    const { path } = this.props.match;
-    if (_.some(subNavData.links, o => o.link === path)) {
-      return item.link === path;
-    }
-    return path.includes(item.active);
-  }
 
   renderSubNavsForDev() {
     const { match, appStore, t } = this.props;
@@ -140,16 +144,17 @@ export class SideNav extends React.Component {
           <div key={nav.title} className={styles.subContent}>
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
-              <Link
+              <NavLink
                 key={item.name}
+                exact
+                activeClassName={styles.active}
                 className={classnames(styles.link, {
-                  [styles.active]: match.url.indexOf(item.active) > -1,
                   [styles.disabled]: item.disabled
                 })}
                 to={item.link}
               >
                 {t(item.name)}
-              </Link>
+              </NavLink>
             ))}
           </div>
         ))}
@@ -171,36 +176,41 @@ export class SideNav extends React.Component {
           <div className={styles.name}>{t(subNavData.title)}</div>
         </div>
         {subNavData.links.map(link => (
-          <Link
+          <NavLink
             key={link.name}
+            exact
+            activeClassName={styles.active}
             className={classnames(styles.link, {
-              [styles.disabled]: link.disabled,
-              [styles.active]: this.isActiveSubNav(link, subNavData)
+              [styles.disabled]: link.disabled
             })}
             to={link.link}
           >
             {t(link.name)}
-          </Link>
+          </NavLink>
         ))}
       </div>
     );
   }
 
   renderPlatformLogo() {
-    const { t } = this.props;
+    const { user, t } = this.props;
+    let label = 'QingCloud App Center';
+
+    if (user.isAdmin) {
+      label = 'Manage Console';
+    } else if (user.isISV) {
+      label = 'Provider Center';
+    }
+
     return (
-      <NavItem
-        to="/"
-        label={t('QingCloud App Center')}
-        className={styles.firstElem}
-      >
+      <NavItem to="/" label={t(label)} className={styles.firstElem}>
         <img src="/logo_icon.svg" className={styles.icon} />
       </NavItem>
     );
   }
 
   renderBottomNavs() {
-    const { user, t } = this.props;
+    const { user, location, t } = this.props;
 
     return (
       <ul
@@ -215,7 +225,9 @@ export class SideNav extends React.Component {
                   className={styles.icon}
                   size={20}
                   name={nav.iconName}
-                  type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                  type={
+                    location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
+                  }
                 />
                 <label className={styles.title}>{t(nav.title)}</label>
               </Popover>
@@ -226,7 +238,9 @@ export class SideNav extends React.Component {
                 className={styles.icon}
                 size={20}
                 name={nav.iconName}
-                type={this.isLinkActive(nav.active) ? 'light' : 'dark'}
+                type={
+                  location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
+                }
               />
               <Link to="#">
                 <label className={styles.title}>{t(nav.title)}</label>
@@ -253,32 +267,35 @@ export class SideNav extends React.Component {
             iconProps={{
               name: 'back'
             }}
-            label={t('Back')}
+            label={t('App Develop')}
             className={styles.firstElem}
           />
         ) : (
           this.renderPlatformLogo()
         )}
 
-        {menuApps.map(nav => {
+        {menuApps.map(({ app_id, name, icon }) => {
           const link = toRoute(routes.portal._dev.versions, {
-            appId: nav.app_id
+            appId: app_id
           });
 
           return (
             <NavItem
-              key={nav.app_id}
+              key={app_id}
               to={link}
-              label={t(nav.name)}
+              label={t(name)}
               wrapLabelInLink
               className={classnames({
-                [styles.active]: link === pathname
+                [styles.active]:
+                  pathname.indexOf(
+                    link.substring(0, link.lastIndexOf('/versions'))
+                  ) > -1
               })}
               iconLinkCls={styles.iconLink}
             >
               <Image
-                src={nav.icon}
-                iconLetter={t(nav.name)}
+                src={icon}
+                iconLetter={t(name)}
                 iconSize={24}
                 className={styles.image}
               />
@@ -323,11 +340,11 @@ export class SideNav extends React.Component {
             key={idx}
             className={classnames({
               [styles.disabled]: nav.disabled,
-              [styles.active]: this.isLinkActive(nav.active)
+              [styles.active]: this.isActiveLink(nav.link)
             })}
             iconProps={{
               name: nav.iconName,
-              type: this.isLinkActive(nav.active) ? 'light' : 'dark'
+              type: this.isActiveLink(nav.link) ? 'light' : 'dark'
             }}
             wrapLabelInLink
             label={t(nav.title)}
