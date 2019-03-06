@@ -2,16 +2,21 @@
 
 .container {
   .roleContainer + .roleContainer {
-    margin-top: 20px;
+    margin-top: 12px;
   }
 }
 .describtion {
   color: $N75;
+  font-weight: normal;
+  line-height: 20px;
+  margin-top: 4px;
 }
 
 .createTip {
   margin-top: 12px;
   @include normal-font
+  color: $N75;
+  line-height: 20px;
 }
 .tips {
   @include note-font
@@ -23,18 +28,24 @@
 
 .activeText {
   color: $P75;
-  margin-left: 6px;
+  margin-left: 4px;
   cursor: pointer;
 }
 
 .roleContainer {
   border-radius: 2px;
+  padding: 16px 24px 24px 24px;
   &:hover {
     border-color: $P45;
     box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    background: $N0;
   }
 }
 .checkedContainer {
   border-color: $P45;
+  background: $N0;
   box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  .describtion {
+    margin-bottom: 24px;
+  }
 }

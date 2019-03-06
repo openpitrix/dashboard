@@ -19,7 +19,9 @@ const NavItem = ({
   ...rest
 }) => {
   const labelElem = <label className={styles.title}>{label}</label>;
-  const childElem = children || <Icon className={styles.icon} {...iconProps} />;
+  const childElem = children || (
+    <Icon className={styles.icon} size={20} type="dark" {...iconProps} />
+  );
 
   return (
     <li className={classnames(styles.navItem, className)} {...rest}>
@@ -50,10 +52,7 @@ NavItem.propTypes = {
 };
 
 NavItem.defaultProps = {
-  iconProps: {
-    size: 20,
-    type: 'dark'
-  },
+  iconProps: {},
   to: '',
   wrapIconInLink: true
 };

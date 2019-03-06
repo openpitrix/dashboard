@@ -12,8 +12,6 @@ import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
 import routes, { toRoute } from 'routes';
 
-import styles from './index.scss';
-
 const types = [
   { name: 'Unprocessed', value: 'unprocessed' },
   { name: 'Processed', value: 'processed' }
@@ -162,7 +160,7 @@ export default class Reviews extends Component {
     };
 
     return (
-      <Layout pageTitle={t('App Reviews')} className={styles.reviewList}>
+      <Layout pageTitle={t('App Reviews')}>
         <TableTypes
           types={types}
           activeType={activeType}

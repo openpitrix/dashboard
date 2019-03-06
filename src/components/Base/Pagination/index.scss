@@ -2,12 +2,12 @@
 
 .pagination {
   font-family: Roboto;
-  height: 28px;
-  font-size: 14px;
-  line-height: 2;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
   letter-spacing: normal;
-  color: $N75;
-  margin-top: 18px;
+  color: $N300;
+  margin-top: 12px;
 
   .total {
     float: left;
@@ -33,13 +33,7 @@
       display: inline-block;
       box-sizing: border-box;
       cursor: pointer;
-      width: 40px;
-      height: 32px;
-      border-radius: 2px;
       text-align: center;
-      &:hover {
-        box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
-      }
 
       :global {
         .icon {
