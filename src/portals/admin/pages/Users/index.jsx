@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
@@ -60,7 +60,7 @@ export default class Users extends Component {
     const { selectedGroupIds } = userStore;
     const modifiable = !protectedGroupsIds.includes(node.key)
       && selectedGroupIds.includes(node.key);
-    return modifiable ? this.renderGroupTitle(node, t) : t(node.title);
+    return this.renderGroupTitle(node, t, modifiable);
   };
 
   renderHandleGroupNode = ({ key }) => {
@@ -95,34 +95,38 @@ export default class Users extends Component {
     );
   };
 
-  renderGroupTitle = ({ title, key }, t) => (
+  renderGroupTitle = ({ title, key }, t, modifiable) => (
     <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
       <span key={`title-${key}-${title}`} className={styles.groupTitle}>
         {t(title)}
       </span>
-      <PopoverIcon
-        portal
-        trigger="hover"
-        size="Small"
-        key={`${key}-operate`}
-        content={this.renderHandleGroupNode({ key })}
-        className={classnames(styles.groupPopver, styles.iconMore)}
-        targetCls={classnames(styles.groupPopverTarget)}
-      />
-      <PopoverIcon
-        portal
-        isShowArrow
-        trigger="hover"
-        icon="add"
-        placement="top"
-        prefixCls="add"
-        key={`${key}-operate-add`}
-        iconCls={styles.titleEventIcon}
-        targetCls={classnames(styles.tooltip)}
-        className={classnames(styles.iconCreate)}
-        onClick={e => this.handleAction('renderModalCreateGroup', e)}
-        content={t('Add the child node')}
-      />
+      {modifiable && (
+        <Fragment>
+          <PopoverIcon
+            portal
+            trigger="hover"
+            size="Small"
+            key={`${key}-operate`}
+            content={this.renderHandleGroupNode({ key })}
+            className={classnames(styles.groupPopver, styles.iconMore)}
+            targetCls={classnames(styles.groupPopverTarget)}
+          />
+          <PopoverIcon
+            portal
+            isShowArrow
+            trigger="hover"
+            icon="add"
+            placement="top"
+            prefixCls="add"
+            key={`${key}-operate-add`}
+            iconCls={styles.titleEventIcon}
+            targetCls={classnames(styles.tooltip)}
+            className={classnames(styles.iconCreate)}
+            onClick={e => this.handleAction('renderModalCreateGroup', e)}
+            content={t('Add the child node')}
+          />
+        </Fragment>
+      )}
     </span>
   );
 

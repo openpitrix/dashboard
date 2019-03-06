@@ -64,7 +64,7 @@ export default class RoleItem extends Component {
           )}
         </strong>
         <br />
-        {description}
+        <p className={styles.description}>{description}</p>
       </span>
     );
   }
