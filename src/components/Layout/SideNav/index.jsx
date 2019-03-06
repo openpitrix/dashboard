@@ -194,13 +194,16 @@ export class SideNav extends React.Component {
 
   renderPlatformLogo() {
     const { user, t } = this.props;
+    let label = 'QingCloud App Center';
+
+    if (user.isAdmin) {
+      label = 'Manage Console';
+    } else if (user.isISV) {
+      label = 'Provider Center';
+    }
 
     return (
-      <NavItem
-        to="/"
-        label={!user.isISV ? t('QingCloud App Center') : t('Provider Center')}
-        className={styles.firstElem}
-      >
+      <NavItem to="/" label={t(label)} className={styles.firstElem}>
         <img src="/logo_icon.svg" className={styles.icon} />
       </NavItem>
     );
