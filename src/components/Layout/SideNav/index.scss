@@ -29,17 +29,24 @@
     height: 40px;
     overflow: hidden;
     margin: auto 12px;
+    line-height: 40px;
+    vertical-align: middle;
 
     a {
       color: $N300;
+      line-height: 40px;
+      vertical-align: middle;
+      display: inline-block;
     }
 
     .icon {
       float: left;
       padding: 10px;
+      line-height: 20px;
     }
 
     .title {
+      font-size: 14px;
       margin-left: 8px;
       line-height: 40px;
       cursor: pointer;
@@ -104,24 +111,23 @@
       height: 40px;
       text-align: center;
       vertical-align: middle;
-
-      &> span {
-        position: relative;
-        top: 3px;
-        left: -3px;
-      }
+      line-height: 40px;
 
       &> img {
         position: relative;
-        top: 8px;
         width: 24px !important;
         height: 24px !important;
       }
     }
 
     .image {
-      font-size: 24px !important;
+      font-size: 16px !important;
       background: none;
+      border: none;
+    }
+    span.image {
+      font-size: 16px !important;
+      background: $N30;
       border: none;
     }
   }
