@@ -47,8 +47,11 @@ export default class TestingEnvStore extends Store {
   }
 
   get platformName() {
-    const { environment } = this.getStore('cloudEnv');
-    return _.get(_.find(environment, { key: this.platform }), 'name');
+    return _.get(
+      _.find(providersConf, { key: this.platform }),
+      'name',
+      this.platform
+    );
   }
 
   @action
