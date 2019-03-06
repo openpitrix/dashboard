@@ -1,8 +1,9 @@
 import routes, { toRoute } from 'routes';
+import { PORTAL_NAME } from 'config/roles';
 
 // First level navigation(top) for admin, isv and developer
 export const getNavs = {
-  admin: [
+  [PORTAL_NAME.admin]: [
     /* {
       link: toRoute(routes.portal.overview, { portal: 'admin' }),
       iconName: 'dashboard',
@@ -47,7 +48,7 @@ export const getNavs = {
       title: 'Settings'
     }
   ],
-  isv: [
+  [PORTAL_NAME.isv]: [
     {
       link: toRoute(routes.portal.apps, { portal: 'isv' }),
       iconName: 'appcenter',
@@ -87,7 +88,7 @@ export const getNavs = {
       title: 'Service Provider Detail'
     }
   ],
-  dev: [
+  [PORTAL_NAME.dev]: [
     {
       link: toRoute(routes.portal._dev.appCreate, { portal: 'dev' }),
       iconName: 'plus-square',
@@ -127,7 +128,7 @@ export const getBottomNavs = [
 
 // Secondary navigation for admin and isv
 export const subNavMap = {
-  admin: {
+  [PORTAL_NAME.admin]: {
     dashboard: {
       title: 'Dashboard',
       links: [
@@ -218,7 +219,7 @@ export const subNavMap = {
       ]
     }
   },
-  isv: {
+  [PORTAL_NAME.isv]: {
     app: {
       title: 'App Manage',
       links: [
@@ -325,11 +326,11 @@ export const userMenus = portal => [
     disabled: true
   },
   {
-    name: portal === 'user' ? 'User runtime' : 'Testing env',
+    name: portal === PORTAL_NAME.user ? 'User runtime' : 'Testing env',
     link: toRoute(routes.portal.runtimes, { portal }),
     iconName: 'image',
     userPortalShow: true,
-    only: ['isv', 'dev', 'admin']
+    only: [PORTAL_NAME.isv, PORTAL_NAME.dev, PORTAL_NAME.admin]
   },
   {
     name: 'SSH Keys',

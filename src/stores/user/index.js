@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { getFormData } from 'utils';
 import { useTableActions } from 'mixins';
-import { AdminPortal } from 'config/roles';
+import { PORTAL_NAME, AdminPortal } from 'config/roles';
 
 import {
   normalUserID,
@@ -210,10 +210,14 @@ export default class UserStore extends Store {
 
     if (isLogin) {
       const role = _.get(detailRes, 'role_set[0]', {});
+      const { role_name, portal } = role;
+      const portalName = portal === PORTAL_NAME.isv && role_name !== PORTAL_NAME.isv
+        ? PORTAL_NAME.dev
+        : portal;
       this.updateUser(
         _.extend(_.pick(this.userDetail, ['user_id', 'username', 'email']), {
-          role: role.role_name,
-          portal: role.portal || 'user'
+          role: role_name,
+          portal: portalName || PORTAL_NAME.user
         })
       );
     }

@@ -8,29 +8,30 @@ import { translate } from 'react-i18next';
 import { Icon } from 'components/Base';
 import { userMenus } from 'components/Layout/SideNav/navMap';
 import routes, { toRoute } from 'routes';
+import { PORTAL_NAME } from 'config/roles';
 
 import styles from './index.scss';
 
-const roleToPortal = {
-  dev: {
+const portalData = {
+  [PORTAL_NAME.dev]: {
     roleIcon: 'wrench',
     icon: 'hammer',
     name: 'Develop Center',
     url: toRoute(routes.portal.apps, { portal: 'dev' })
   },
-  isv: {
+  [PORTAL_NAME.isv]: {
     roleIcon: 'shield',
     icon: 'shield',
     name: 'Provider Center',
     url: toRoute(routes.portal.apps, { portal: 'isv' })
   },
-  admin: {
+  [PORTAL_NAME.admin]: {
     roleIcon: 'enterprise',
     icon: 'dashboard',
     name: 'Manage backstage',
     url: toRoute(routes.portal.apps, { portal: 'admin' })
   },
-  user: {
+  [PORTAL_NAME.user]: {
     roleIcon: 'appcenter',
     icon: 'appcenter',
     name: 'App Center',
@@ -53,9 +54,9 @@ export class MenuLayer extends Component {
     const { user, className, t } = this.props;
     const { isNormal, isUserPortal } = user;
     const portal = isUserPortal
-      ? roleToPortal[user.portal] || {}
-      : roleToPortal.user;
-    const roleIcon = (roleToPortal[user.portal] || {}).roleIcon || 'enterprise';
+      ? portalData[user.portal] || {}
+      : portalData.user;
+    const roleIcon = (portalData[user.portal] || {}).roleIcon || 'enterprise';
 
     return (
       <ul className={classnames(styles.menuLayer, className)}>
@@ -98,11 +99,15 @@ export class MenuLayer extends Component {
         )}
 
         {userMenus(this.props.user.defaultPortal).map((item, idx) => {
-          if (Array.isArray(item.only) && !item.only.includes(user.role)) {
+          if (Array.isArray(item.only) && !item.only.includes(user.portal)) {
             return null;
           }
 
-          if (isUserPortal && item.userPortalShow && user.role !== 'user') {
+          if (
+            isUserPortal
+            && item.userPortalShow
+            && user.portal !== PORTAL_NAME.user
+          ) {
             return null;
           }
 

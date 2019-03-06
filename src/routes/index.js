@@ -2,13 +2,16 @@ import _ from 'lodash';
 import { compile } from 'path-to-regexp';
 
 import user from 'providers/user';
-import routeNames, { portals } from './names';
+import { FRONT_END_PORTAL, transferPortal } from 'config/roles';
+import routeNames from './names';
 
 const noHeaderPaths = ['/login', '/user/provider/apply'];
 
 const noFooterPaths = ['/login', '/user/provider/apply'];
 
 const commonRoutes = ['', 'apps', 'login', 'logout', 'profile'];
+
+const portals = _.map(FRONT_END_PORTAL, value => value);
 
 export const getRouteByName = name => {
   const route = _.get(routeNames, name);
@@ -30,13 +33,14 @@ export const toRoute = (route = '', params = {}) => {
     guessPortal = user.defaultPortal;
   }
 
-  const portal = params.portal || guessPortal;
+  const portal = transferPortal(params.portal) || guessPortal;
 
   if (route.indexOf('.') > 0) {
     route = getRouteByName(route);
   }
   if (portal && guessPortal && portal !== guessPortal) {
-    const portalInPath = portals.includes(getPortalFromPath(route)) || route.startsWith('/:portal');
+    const portalInPath = portals.includes(getPortalFromPath(route))
+      || route.startsWith('/:portal');
     if (portalInPath) {
       // replace current portal
       route = route.replace(/(:?\w+)/i, portal);

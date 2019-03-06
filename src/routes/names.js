@@ -1,5 +1,3 @@
-export const portals = ['user', 'dev', 'isv', 'admin'];
-
 // route name => route path
 export default {
   // common routes
