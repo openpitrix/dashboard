@@ -21,8 +21,7 @@ export default class Input extends React.Component {
     icon: '',
     iconType: 'light',
     iconSize: 16,
-    disabled: false,
-    value: ''
+    disabled: false
   };
 
   render() {
