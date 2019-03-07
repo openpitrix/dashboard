@@ -149,7 +149,7 @@ export default class Audits extends Component {
               <Status type={audit.status} name={audit.status} />
             </label>
             <label className={styles.operator}>
-              {t(audit.role)}:&nbsp;{
+              {t(audit.operator_type)}:&nbsp;{
                 (_.find(users, { user_id: audit.operator }) || {}).username
               }
             </label>

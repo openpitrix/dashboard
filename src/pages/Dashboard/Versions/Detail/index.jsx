@@ -402,7 +402,7 @@ export default class VersionDetail extends Component {
         />
         <div className={styles.record}>
           <div className={styles.operator}>
-            {t(audit.role)}:&nbsp;{(
+            {t(audit.operator_type)}:&nbsp;{(
               _.find(users, { user_id: audit.operator }) || {}
             ).username || audit.operator}
           </div>
