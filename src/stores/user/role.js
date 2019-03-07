@@ -697,48 +697,8 @@ export default class RoleStore extends Store {
     }
 
     if (_.isArray(actionId)) {
-      return await _.every(actionId, id => this.checkActionOnce(id));
+      return _.every(actionId, id => this.checkActionOnce(id));
     }
-    return await this.checkActionOnce(actionId);
-  };
-
-  getBundleActionId = async id => {
-    if (!this.moduleSession) {
-      await this.setRoleSession();
-    }
-    let actionIds = [];
-    const type = !id.includes('.f') ? 'module' : 'feature';
-
-    _.some(this.moduleSession, module => {
-      const checkAll = module.is_check_all;
-      if (type === 'module') {
-        if (id === module.module_id) {
-          _.forEach(module.feature_set, feature => {
-            if (checkAll) {
-              _.forEach(feature.action_bundle_set, a => actionIds.push(a.action_bundle_id));
-            } else {
-              actionIds = _.concat(
-                actionIds,
-                feature.checked_action_bundle_id_set
-              );
-            }
-          });
-
-          return true;
-        }
-      } else {
-        return _.some(module.feature_set, feature => {
-          if (feature.feature_id === id) {
-            if (checkAll) {
-              _.forEach(feature.action_bundle_set, a => actionIds.push(a.action_bundle_id));
-            } else {
-              actionIds = feature.checked_action_bundle_id_set;
-            }
-            return true;
-          }
-        });
-      }
-    });
-    return actionIds;
+    return this.checkActionOnce(actionId);
   };
 }

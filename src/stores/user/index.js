@@ -88,10 +88,6 @@ export default class UserStore extends Store {
     return this.getStore('role').sortRole;
   }
 
-  get setRoleSession() {
-    return this.getStore('role').setRoleSession;
-  }
-
   get createRoles() {
     const { selectedGroupIds } = this.getStore('group');
     const key = _.first(selectedGroupIds);
@@ -224,7 +220,6 @@ export default class UserStore extends Store {
           portal: portalName || PORTAL_NAME.user
         })
       );
-      await this.setRoleSession();
     }
 
     this.isLoading = false;
