@@ -30,6 +30,7 @@ export default class Reviews extends Component {
   async componentDidMount() {
     const { appVersionStore } = this.props;
 
+    await appVersionStore.setReviewTypes();
     await appVersionStore.fetchReviews();
   }
 
@@ -47,15 +48,14 @@ export default class Reviews extends Component {
   };
 
   handleReview = async item => {
-    const { appVersionStore, user, history } = this.props;
+    const { appVersionStore, history } = this.props;
     const isReviewed = item.status.indexOf('in-review') > -1;
 
     if (!isReviewed) {
-      // todo: after username should modify role
       await appVersionStore.versionReview({
         handleType: 'review',
         versionId: item.version_id,
-        role: user.username,
+        currentStatus: item.status,
         noTips: true
       });
     }
@@ -83,7 +83,15 @@ export default class Reviews extends Component {
         width: '120px',
         className: 'number',
         render: item => (
-          <Link to={linkReview(item.review_id)}>{item.review_id}</Link>
+          <div>
+            {isUnprocessed ? (
+              <Link onClick={() => this.handleReview(item)} to="#">
+                {item.review_id}
+              </Link>
+            ) : (
+              <Link to={linkReview(item.review_id)}>{item.review_id}</Link>
+            )}
+          </div>
         )
       },
       {

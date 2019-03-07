@@ -17,6 +17,13 @@ import CheckFiles from 'components/CheckFiles';
 import Screenshots from 'pages/AppDetail/Screenshots';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
+import {
+  reviewStatus,
+  rejectStatus,
+  reviewTitle,
+  reviewPassNote,
+  getReviewType
+} from 'config/version';
 
 import styles from './index.scss';
 
@@ -28,26 +35,6 @@ const tabs = [
   { name: 'Set Price', value: 'price', disabled: true },
   { name: 'Update Log', value: 'updateLog' }
 ];
-const reviewStatus = {
-  isv: ['submitted', 'isv-in-review'],
-  business_admin: ['isv-passed', 'business-in-review'],
-  develop_admin: ['business-passed', 'dev-in-review']
-};
-const rejectStatus = {
-  isv: 'isv-rejected',
-  business_admin: 'business-rejected',
-  develop_admin: 'dev-rejected'
-};
-const reviewTitle = {
-  isv: 'App service provider review',
-  business_admin: 'Platform business review',
-  develop_admin: 'Platform technology review'
-};
-const reviewPassNote = {
-  isv: 'ISV_PASS_NOTE',
-  business_admin: 'BUSINESS_PASS_NOTE',
-  develop_admin: 'TECHNICAL_PASS_NOTE'
-};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -64,8 +51,9 @@ export default class ReviewDetail extends Component {
     const { appStore, appVersionStore, match } = this.props;
     const { reviewId } = match.params;
 
-    await appVersionStore.fetchReviewDetail(reviewId);
+    await appVersionStore.setReviewTypes();
 
+    await appVersionStore.fetchReviewDetail(reviewId);
     const { reviewDetail } = appVersionStore;
     await appStore.fetch(reviewDetail.app_id);
     await appVersionStore.fetch(reviewDetail.version_id);
@@ -77,17 +65,18 @@ export default class ReviewDetail extends Component {
   };
 
   handleReview = async handleType => {
-    const { appVersionStore, user } = this.props;
-    const { version, reviewDetail } = appVersionStore;
-    const isReviewed = reviewDetail.status.indexOf('in-review') > -1;
+    const { appVersionStore } = this.props;
+    const { reviewDetail } = appVersionStore;
+    const { status, version_id } = reviewDetail;
+    const isReviewed = status.indexOf('in-review') > -1;
 
     if (handleType === 'review' && isReviewed) {
       appVersionStore.isTipsOpen = true;
     } else {
       await appVersionStore.versionReview({
         handleType,
-        versionId: version.version_id,
-        role: user.role
+        versionId: version_id,
+        currentStatus: status
       });
     }
   };
@@ -126,8 +115,8 @@ export default class ReviewDetail extends Component {
   };
 
   renderReviewNoteDialog = () => {
-    const { appVersionStore, user, t } = this.props;
-    const { isTipsOpen, hideModal } = appVersionStore;
+    const { appVersionStore, t } = this.props;
+    const { reviewDetail, isTipsOpen, hideModal } = appVersionStore;
 
     return (
       <Dialog
@@ -138,7 +127,7 @@ export default class ReviewDetail extends Component {
         okText={t('Pass')}
         cancelText={t('Look again')}
       >
-        {t(reviewPassNote[user.username])}
+        {t(reviewPassNote[getReviewType(reviewDetail.status)])}
       </Dialog>
     );
   };
@@ -156,39 +145,43 @@ export default class ReviewDetail extends Component {
     );
   }
 
-  renderReviewCard(role) {
+  renderReviewCard(type) {
     const { appVersionStore, user, t } = this.props;
-    const { reviewDetail } = appVersionStore;
+    const { reviewDetail, reveiwTypes } = appVersionStore;
     const { status, phase } = reviewDetail;
     const phaseKeys = _.keys(phase);
-    const record = _.get(reviewDetail, `phase.${role}`, {});
+    const record = _.get(reviewDetail, `phase.${type}`, {});
+
+    const hasOperateAuth = reveiwTypes.includes(type);
+    const activeCard = reviewStatus[type].includes(status);
+    const hasCompleted = phaseKeys.includes(type);
 
     // not start
-    if (!phaseKeys.includes(role) && !reviewStatus[role].includes(status)) {
+    if (!activeCard && !hasCompleted) {
       return (
         <Card className={styles.unReview}>
-          <span className={styles.name}> {t(reviewTitle[role])}</span>
+          <span className={styles.name}> {t(reviewTitle[type])}</span>
           <label className={styles.status}>{t('Not yet started')}</label>
         </Card>
       );
     }
 
     // wait review
-    if (reviewStatus[role].includes(status) && user.username !== role) {
+    if (activeCard && !hasOperateAuth) {
       return (
         <Card className={styles.waitReview}>
-          <span className={styles.name}> {t(reviewTitle[role])}</span>
+          <span className={styles.name}> {t(reviewTitle[type])}</span>
           <label className={styles.status}>{t('Waiting for review')}</label>
         </Card>
       );
     }
 
     // review，pass, reject action
-    if (reviewStatus[role].includes(status) && user.username === role) {
+    if (activeCard && hasOperateAuth) {
       return (
         <Card className={styles.pendingReview}>
           <div className={styles.name}>
-            {t(reviewTitle[role])}
+            {t(reviewTitle[type])}
             <label className={styles.status}>{t('In-review')}</label>
           </div>
           <div className={styles.reviewInfo}>
@@ -223,15 +216,15 @@ export default class ReviewDetail extends Component {
     }
 
     // passed, rejectd
-    if (phaseKeys.includes(role) && !reviewStatus[role].includes(status)) {
-      const isReject = status === rejectStatus[role];
+    if (!activeCard && hasCompleted) {
+      const isReject = status === rejectStatus[type];
 
       return (
         <Card
           className={classnames(styles.passed, { [styles.rejectd]: isReject })}
         >
           <div className={styles.name}>
-            {t(reviewTitle[role])}
+            {t(reviewTitle[type])}
             <label className={styles.status}>
               {isReject ? t('Rejected') : t('Passed')}
             </label>
@@ -292,8 +285,8 @@ export default class ReviewDetail extends Component {
         </Card>
 
         {reviewDetail.status
-          && reviewRoles.map(role => (
-            <div key={role}>{this.renderReviewCard(role)}</div>
+          && reviewRoles.map(type => (
+            <div key={type}>{this.renderReviewCard(type)}</div>
           ))}
       </div>
     );

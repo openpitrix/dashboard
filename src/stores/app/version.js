@@ -3,7 +3,7 @@ import _, { get, assign, assignIn } from 'lodash';
 import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
-import { reviewStatus } from 'config/version';
+import { getReviewType, getFilterStatus } from 'config/version';
 import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
@@ -93,6 +93,8 @@ export default class AppVersionStore extends Store {
 
   @observable checkResult = {};
 
+  @observable reveiwTypes = [];
+
   steps = 3;
 
   get appStore() {
@@ -101,6 +103,10 @@ export default class AppVersionStore extends Store {
 
   get userStore() {
     return this.getStore('user');
+  }
+
+  get roleStore() {
+    return this.getStore('role');
   }
 
   get describeVersionName() {
@@ -189,13 +195,30 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  fetchReviews = async (params = {}) => {
-    const loginUser = this.getUser();
-    const status = _.get(
-      reviewStatus,
-      `${this.activeType}.${loginUser.username}`,
-      'none'
+  setReviewTypes = async () => {
+    const hasISVReview = await this.roleStore.checkAction('isv_review');
+    const hasBussinessReview = await this.roleStore.checkAction(
+      'business_review'
     );
+    const hasDevelopReview = await this.roleStore.checkAction(
+      'technical_review'
+    );
+
+    this.reveiwTypes = [];
+    if (hasISVReview) {
+      this.reveiwTypes.push('isv');
+    }
+    if (hasBussinessReview) {
+      this.reveiwTypes.push('business');
+    }
+    if (hasDevelopReview) {
+      this.reveiwTypes.push('technical');
+    }
+  };
+
+  @action
+  fetchReviews = async (params = {}) => {
+    const status = getFilterStatus(this.activeType, this.reveiwTypes);
 
     const defaultParams = {
       status: this.selectStatus ? this.selectStatus : status,
@@ -227,9 +250,7 @@ export default class AppVersionStore extends Store {
       await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
     }
 
-    const userIds = this.reviews
-      .filter(item => item.reviewer)
-      .map(item => item.reviewer);
+    const userIds = _.uniq(this.reviews.filter(item => item.reviewer));
     if (userIds.length > 0) {
       await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
@@ -320,13 +341,12 @@ export default class AppVersionStore extends Store {
    *
    * @param handleType: review, pass, reject
    * @param versionId
-   * @param role: isv, business_admin, develop_admin
    * @returns {Promise<*>}
    */
   @action
   versionReview = async (params = {}) => {
     const {
-      handleType, versionId, role, noTips
+      handleType, versionId, currentStatus, noTips
     } = params;
 
     if (handleType === 'reject' && !this.reason) {
@@ -339,8 +359,9 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = true;
+    const reviewType = getReviewType(currentStatus);
     const result = await this.request.post(
-      `app_version/action/${role}/${handleType}`,
+      `app_version/action/${handleType}/${reviewType}`,
       data
     );
 
@@ -354,9 +375,9 @@ export default class AppVersionStore extends Store {
       if (handleType === 'review') {
         this.isTipsOpen = !noTips;
       } else if (handleType === 'reject') {
-        this.success(`${role.toUpperCase()}_REJECT_PASS`);
+        this.success(`${reviewType.toUpperCase()}_REJECT_PASS`);
       } else {
-        this.success(`${role.toUpperCase()}_REVIEW_PASS`);
+        this.success(`${reviewType.toUpperCase()}_REVIEW_PASS`);
       }
     } else {
       return result;
@@ -413,7 +434,7 @@ export default class AppVersionStore extends Store {
 
     this.reviewDetail = _.get(result, 'app_version_review_set[0]', {});
     const { phase } = this.reviewDetail;
-    const userIds = _.map(phase, o => o.operator);
+    const userIds = _.uniq(_.map(phase, o => o.operator));
     await this.userStore.fetchAll({ user_id: userIds });
   };
 

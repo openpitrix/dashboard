@@ -1,8 +1,16 @@
-export const reviewStatus = {
+import _ from 'lodash';
+
+export const reviewFilter = {
   unprocessed: {
     isv: ['submitted', 'isv-in-review'],
-    business_admin: ['isv-passed', 'business-in-review'],
-    develop_admin: ['business-passed', 'dev-in-review']
+    business: ['isv-passed', 'business-in-review'],
+    technical: ['business-passed', 'develop-in-review'],
+    all: [
+      'isv-passed',
+      'business-in-review',
+      'business-passed',
+      'develop-in-review'
+    ]
   },
   processed: {
     isv: [
@@ -11,18 +19,27 @@ export const reviewStatus = {
       'business-in-review',
       'business-passed',
       'business-rejected',
-      'dev-in-review',
-      'dev-passed',
-      'dev-rejected'
+      'develop-in-review',
+      'develop-passed',
+      'develop-rejected'
     ],
-    business_admin: [
+    business: [
       'business-passed',
       'business-rejected',
-      'dev-in-review',
-      'dev-passed',
-      'dev-rejected'
+      'develop-in-review',
+      'develop-passed',
+      'develop-rejected'
     ],
-    develop_admin: ['dev-passed', 'dev-rejected']
+    technical: ['develop-passed', 'develop-rejected'],
+    all: [
+      'business-passed',
+      'business-rejected',
+      'develop-in-review',
+      'develop-passed',
+      'develop-rejected',
+      'develop-passed',
+      'develop-rejected'
+    ]
   }
 };
 
@@ -34,7 +51,58 @@ export const reviewShowStatus = {
   'business-in-review': 'in-review',
   'business-rejected': 'rejected',
   'business-passed': 'submitted',
-  'dev-rejected': 'rejected',
-  'dev-in-review': 'in-review',
-  'dev-passed': 'passed'
+  'develop-rejected': 'rejected',
+  'develop-in-review': 'in-review',
+  'develop-passed': 'passed'
+};
+
+export const reviewStatus = {
+  isv: ['submitted', 'isv-in-review'],
+  business: ['isv-passed', 'business-in-review'],
+  technical: ['business-passed', 'develop-in-review']
+};
+
+export const rejectStatus = {
+  isv: 'isv-rejected',
+  business: 'business-rejected',
+  technical: 'develop-rejected'
+};
+
+export const reviewTitle = {
+  isv: 'App service provider review',
+  business: 'Platform business review',
+  technical: 'Platform technology review'
+};
+
+export const reviewPassNote = {
+  isv: 'ISV_PASS_NOTE',
+  business: 'BUSINESS_PASS_NOTE',
+  technical: 'TECHNICAL_PASS_NOTE'
+};
+
+export const getReviewType = status => {
+  let result = '';
+  _.forIn(reviewStatus, (value, key) => {
+    if (value.includes(status)) {
+      result = key;
+    }
+  });
+
+  return result;
+};
+
+export const getFilterStatus = (activeType, reveiwTypes) => {
+  if (_.isEmpty(reveiwTypes)) {
+    return 'none'; // if status is '' will query all data
+  }
+
+  let status = [];
+  reveiwTypes.forEach(type => {
+    status = _.concat(
+      status,
+      _.get(reviewFilter, `${activeType}.${type}`, 'none')
+    );
+  });
+
+  return _.uniq(status);
 };
