@@ -5,6 +5,7 @@ import WrapRoute from 'routes/WrapRoute';
 import NotFound from 'components/NotFound';
 import {
   Overview,
+  Account,
   Apps,
   AppDetail,
   Clusters,
@@ -29,6 +30,7 @@ export default ({ prefix }) => (
   <Switch>
     <WrapRoute path={`${prefix}`} component={Overview} />
 
+    <WrapRoute path={`${prefix}/profile/:type?`} component={Account} />
     <WrapRoute path={`${prefix}/apps`} component={Apps} />
     <WrapRoute path={`${prefix}/apps/review`} component={Reviews} />
     <WrapRoute

@@ -6,6 +6,7 @@ import NotFound from 'components/NotFound';
 
 import {
   Overview,
+  Account,
   CreateRuntime,
   ProviderCreate,
   AppDeploy
@@ -23,6 +24,7 @@ export default ({ prefix }) => (
   <Switch>
     <WrapRoute path={prefix} component={Overview} />
 
+    <WrapRoute path={`${prefix}/profile/:type?`} component={Account} />
     <WrapRoute path={`${prefix}/apps`} component={Purchased} />
     <WrapRoute path={`${prefix}/apps/:appId`} component={PurchasedDetail} />
     <WrapRoute

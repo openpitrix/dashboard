@@ -7,7 +7,6 @@ import LazyLoad from 'components/LazyLoad';
 import NotFound from 'components/NotFound';
 
 import Home from 'pages/Home';
-import { Account } from 'pages/Dashboard';
 import {
   UserRoutes, DevRoutes, IsvRoutes, AdminRoutes
 } from 'routes';
@@ -30,7 +29,6 @@ export default class App extends React.Component {
               <WrapRoute path="/" component={Home} />
               <WrapRoute path="/login" component={Login} />
               <WrapRoute path="/apps/:appId" component={AppDetail} />
-              <WrapRoute path="/profile/:type?" component={Account} />
 
               <Route
                 path="/user"

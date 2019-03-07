@@ -5,11 +5,11 @@ export default {
   appDetail: '/apps/:appId',
   login: '/login',
   logout: '/logout',
-  profile: '/profile/:type?',
 
   portal: {
     appsReview: '/:portal/apps/review',
     appReviewDetail: '/:portal/apps/review/:reviewId',
+    profile: '/:portal/profile/:type?',
 
     // portal common keys
     overview: '/:portal',
