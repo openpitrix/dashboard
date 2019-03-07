@@ -5,7 +5,6 @@ import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import { providers } from 'config/runtimes';
 import routes, { toRoute } from 'routes';
 
 import { Icon, Button, Notification } from 'components/Base';

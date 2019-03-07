@@ -132,7 +132,7 @@ export default class GroupStore extends Store {
     this.groupTreeData = [];
     this.operateResult = null;
     this.selectedGroupIds = [];
-    // this.groupName = '';
+    this.groupName = '';
   };
 
   @action
