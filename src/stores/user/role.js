@@ -106,6 +106,10 @@ export default class RoleStore extends Store {
 
   get moduleSession() {
     let modules = sessionStorage.getItem('module_elem_set');
+    if (_.isEmpty(modules)) {
+      return null;
+    }
+
     try {
       modules = JSON.parse(modules);
       return modules;
@@ -655,7 +659,7 @@ export default class RoleStore extends Store {
     this.openModuleMap[id] = value;
   };
 
-  setRoleModule = async () => {
+  setRoleSession = async () => {
     const roleId = _.get(this.getUser(), 'role');
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
@@ -665,13 +669,12 @@ export default class RoleStore extends Store {
     return modules;
   };
 
-  checkActionOnce = action_bundle_id => {
-    let modules = this.moduleSession;
-    if (!modules) {
-      modules = this.setRoleModule();
+  checkActionOnce = async action_bundle_id => {
+    if (!this.moduleSession) {
+      await this.setRoleSession();
     }
     let canDo = false;
-    _.some(modules, module => {
+    _.some(this.moduleSession, module => {
       const checkAll = module.is_check_all;
       return _.some(module.feature_set, feature => {
         const actionSet = _.find(feature.action_bundle_set, {
@@ -688,10 +691,9 @@ export default class RoleStore extends Store {
     return canDo;
   };
 
-  checkAction = actionId => {
-    let modules = this.moduleSession;
-    if (!modules) {
-      modules = this.setRoleModule();
+  checkAction = async actionId => {
+    if (!this.moduleSession) {
+      await this.setRoleSession();
     }
 
     if (_.isArray(actionId)) {

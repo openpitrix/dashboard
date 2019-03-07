@@ -51,11 +51,11 @@
       }
     }
     & > :global(.rc-tree-node-content-wrapper) {
-      padding-top: 12px;
-      padding-bottom: 12px;
+      padding-top: 6px !important;
+      padding-bottom: 12px !important;
     }
     & > :global(.rc-tree-switcher) {
-      margin-top: 15px;
+      margin-top: 9px !important;
     }
   }
   & > li > ul > li {

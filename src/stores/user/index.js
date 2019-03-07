@@ -181,8 +181,25 @@ export default class UserStore extends Store {
     this.selectedIds = [];
     this.selectedRowKeys = [];
     this.isLoading = true;
-    const result = await this.fetchUserDetail(params);
-    this.users = this.formatUserDetail(_.get(result, 'user_detail_set', []));
+    const defaultParams = {
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : defaultStatus
+    };
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+    if (this.searchWord) {
+      defaultParams.search_word = this.searchWord;
+    }
+    const result = await this.request.get(
+      'users',
+      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
+    );
+    this.users = _.get(result, 'user_detail_set', []);
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };
@@ -431,3 +448,5 @@ export default class UserStore extends Store {
 export Role from './role';
 
 export Group from './group';
+
+export Detail from './detail';

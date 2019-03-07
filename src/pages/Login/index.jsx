@@ -27,6 +27,7 @@ export default class Login extends Component {
     if (props.rootStore.user.isLoggedIn()) {
       props.history.replace('/');
     }
+    sessionStorage.removeItem('module_elem_set');
   }
 
   handleSubmit = async params => {

@@ -17,7 +17,6 @@ import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import routes, { toRoute } from 'routes';
 import { formatTime, obj2Qs } from 'utils';
-import { providers } from 'config/runtimes';
 
 import styles from '../index.scss';
 

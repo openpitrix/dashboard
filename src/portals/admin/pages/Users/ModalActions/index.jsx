@@ -74,7 +74,11 @@ export default class UserModalActions extends Component {
           })}
         </div>
         <div className={styles.tips}>{t('DELETE_GROUP_TIP')}</div>
-        <Input name="group_id" type="hidden" value={this.selectedGroupIds} />
+        <Input
+          name="group_id"
+          type="hidden"
+          defaultValue={_.first(this.selectedGroupIds)}
+        />
       </Dialog>
     );
   }
@@ -94,7 +98,7 @@ export default class UserModalActions extends Component {
         <Input
           name="group_id"
           type="hidden"
-          value={_.first(this.selectedGroupIds)}
+          defaultValue={_.first(this.selectedGroupIds)}
         />
         <div className={styles.formItem}>
           <label>{t('Group name')}</label>

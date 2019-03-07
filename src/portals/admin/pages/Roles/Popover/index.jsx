@@ -102,7 +102,11 @@ export default class RolePopover extends Component {
 
     return (
       <div>
-        <PopoverIcon portal content={this.renderHandleGroupNode()} />
+        <PopoverIcon
+          portal
+          size="Large"
+          content={this.renderHandleGroupNode()}
+        />
       </div>
     );
   }
