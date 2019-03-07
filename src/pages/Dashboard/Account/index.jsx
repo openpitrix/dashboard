@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import routes, { toRoute } from 'routes';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 import {
   Icon, Button, Input, Select
 } from 'components/Base';
@@ -58,7 +58,10 @@ export default class Account extends Component {
   };
 
   changeTab = tab => {
-    this.props.history.push(toRoute(routes.profile, { type: tab }));
+    const { type: activeTab } = this.props.match.params;
+    if (tab !== activeTab) {
+      this.props.history.push(toRoute(routes.portal.profile, { type: tab }));
+    }
   };
 
   modifyUser = async e => {
@@ -247,11 +250,11 @@ export default class Account extends Component {
   }
 
   render() {
-    const { user, t } = this.props;
+    const { t } = this.props;
     const { type: activeTab } = this.props.match.params;
     const filterTabs = tabs.filter(tab => !['payment'].includes(tab.value));
 
-    if (user.defaultPortal === 'user') {
+    if (getPortalFromPath() === 'user') {
       return (
         <UserLayout
           className={classnames({
