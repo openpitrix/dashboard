@@ -79,12 +79,6 @@
     > span:last-child {
       margin-right: 10px;
     }
-    // .groupPopver {
-    //   display: none;
-    //   :global(.icon) {
-    //     position: static;
-    //   }
-    // }
     .groupPopverTarget {
       width: 20px;
       height: 20px;
@@ -109,6 +103,9 @@
   :global(.actions) {
     height: 50px;
   }
+}
+.iconCreate {
+  margin-right: 8px;
 }
 
 .list {

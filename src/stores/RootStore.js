@@ -16,7 +16,7 @@ import Runtime, {
   Credential as RuntimeCredential,
   RuntimeCluster
 } from './runtime';
-import User, { Role, Group } from './user';
+import User, { Role, Group, Detail as UserDetail } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
 import Vendor from './vendor';
@@ -171,6 +171,7 @@ export default class RootStore extends Store {
     this.register('user', User);
     this.register('role', Role);
     this.register('group', Group);
+    this.register('userDetail', UserDetail);
 
     this.register('sshKey', sshKey);
 

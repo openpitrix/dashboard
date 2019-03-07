@@ -20,10 +20,11 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
+  userDetailStore: rootStore.userDetailStore,
   groupStore: rootStore.groupStore,
   modalStore: rootStore.modalStore
 }))
-@setPage('userStore')
+@setPage('userDetailStore')
 @observer
 export default class Users extends Component {
   state = {
@@ -31,16 +32,17 @@ export default class Users extends Component {
   };
 
   async componentDidMount() {
-    const { userStore, groupStore } = this.props;
+    const { userStore, userDetailStore, groupStore } = this.props;
 
     await groupStore.fetchGroups();
-    await userStore.fetchAll();
+    await userDetailStore.fetchAll();
     await userStore.fetchRoles();
     this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {
     this.props.userStore.reset();
+    this.props.userDetailStore.reset();
     this.props.groupStore.reset();
   }
 
@@ -168,7 +170,7 @@ export default class Users extends Component {
   };
 
   renderToolbar() {
-    const { userStore, groupStore, t } = this.props;
+    const { userDetailStore, groupStore, t } = this.props;
     const {
       searchWord,
       onSearch,
@@ -176,7 +178,7 @@ export default class Users extends Component {
       onRefresh,
       selectedRowKeys,
       selectedGroupIds
-    } = userStore;
+    } = userDetailStore;
 
     if (selectedRowKeys.length) {
       return (
@@ -236,11 +238,20 @@ export default class Users extends Component {
 
   render() {
     const {
-      userStore, groupStore, modalStore, t
+      userDetailStore,
+      userStore,
+      groupStore,
+      modalStore,
+      t
     } = this.props;
     const { isLoading } = this.state;
-    const { selectName, groupName } = userStore;
-    const { groupTreeData, onSelectOrg, selectedGroupIds } = groupStore;
+    const { selectName } = userStore;
+    const {
+      groupTreeData,
+      groupName,
+      onSelectOrg,
+      selectedGroupIds
+    } = groupStore;
 
     return (
       <Layout
@@ -288,11 +299,11 @@ export default class Users extends Component {
                 <EnhanceTable
                   hasRowSelection
                   rowKey="user_id"
-                  isLoading={userStore.isLoading}
-                  store={userStore}
-                  data={userStore.users}
+                  isLoading={userDetailStore.isLoading}
+                  store={userDetailStore}
+                  data={userDetailStore.users}
                   columns={columns(t, this.renderUserHandleMenu)}
-                  filterList={filterList(t, userStore)}
+                  filterList={filterList(t, userDetailStore)}
                 />
               </Card>
             </Section>

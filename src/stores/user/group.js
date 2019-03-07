@@ -30,15 +30,11 @@ export default class GroupStore extends Store {
   }
 
   get userStore() {
-    return this.getStore('user');
+    return this.getStore('userDetail');
   }
 
   get fetchAllUser() {
-    return this.getStore('user').fetchAll;
-  }
-
-  get fetchUserDetail() {
-    return this.getStore('user').fetchUserDetail;
+    return this.getStore('userDetail').fetchAll;
   }
 
   get formatUserDetail() {
@@ -46,7 +42,7 @@ export default class GroupStore extends Store {
   }
 
   get userSelectedIds() {
-    return this.getStore('user').selectIds;
+    return this.getStore('userDetail').selectIds;
   }
 
   get protectedGroupsIds() {
@@ -56,6 +52,14 @@ export default class GroupStore extends Store {
   get canCreateUser() {
     const key = _.first(this.selectedGroupIds);
     return key && key !== platformUserID;
+  }
+
+  get name() {
+    const group = _.find(
+      this.groups,
+      g => g.group_id === _.first(this.selectedGroupIds)
+    );
+    return _.get(group, 'name');
   }
 
   get needJoinGroup() {
@@ -128,7 +132,7 @@ export default class GroupStore extends Store {
     this.groupTreeData = [];
     this.operateResult = null;
     this.selectedGroupIds = [];
-    this.groupName = '';
+    // this.groupName = '';
   };
 
   @action
@@ -137,6 +141,28 @@ export default class GroupStore extends Store {
     if (_.isEmpty(this.selectedGroupIds)) {
       this.selectedGroupIds = [root.group_id];
     }
+  };
+
+  @action
+  fetchUserDetail = (params = {}) => {
+    const defaultParams = {
+      sort_key: 'status_time',
+      limit: this.pageSize,
+      offset: (this.currentPage - 1) * this.pageSize,
+      status: this.selectStatus ? this.selectStatus : defaultStatus
+    };
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+    if (this.searchWord) {
+      defaultParams.search_word = this.searchWord;
+    }
+    return this.request.get(
+      'users_detail',
+      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
+    );
   };
 
   @action
@@ -243,11 +269,10 @@ export default class GroupStore extends Store {
   };
 
   @action
-  onSelectOrg = (keys, info) => {
+  onSelectOrg = keys => {
     if (_.isEmpty(keys)) {
       return null;
     }
-    this.groupName = keys.length ? _.get(info, 'node.props.title') : '';
 
     this.selectedGroupIds = keys;
     this.selectedRowKeys = [];
@@ -255,6 +280,7 @@ export default class GroupStore extends Store {
       selectIds: [],
       selectedRowKeys: []
     });
+    this.groupName = this.name;
     this.fetchAllUser();
   };
 
