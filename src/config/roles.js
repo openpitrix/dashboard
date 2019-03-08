@@ -70,9 +70,9 @@ export const isvRoleDesMap = {
 
 export default roles;
 
-export const AdminPortal = 'global_admin';
-export const ISVPortal = 'isv';
-export const UserPortal = 'user';
+export const AdminPortal = PORTAL_NAME.admin;
+export const ISVPortal = PORTAL_NAME.isv;
+export const UserPortal = PORTAL_NAME.user;
 
 export const getRoleName = (role = {}, portal = 'global_admin') => {
   let name = '';

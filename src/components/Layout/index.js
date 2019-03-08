@@ -1,5 +1,3 @@
-import Layout from './index.jsx';
-
 export CreateResource from './CreateResource';
 export Dialog from './Dialog';
 export BackBtn from './BackBtn';
@@ -14,4 +12,4 @@ export SideNav from './SideNav';
 export BreadCrumb from './BreadCrumb';
 export Stepper from './Stepper';
 
-export default Layout;
+export default from './index.jsx';

@@ -17,11 +17,11 @@ const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 @observer
 export default class UserModalActions extends Component {
   get selectedIds() {
-    return this.props.userStore.selectIds;
+    return this.props.userDetailStore.selectIds;
   }
 
   get userNames() {
-    return this.props.userStore.userNames;
+    return this.props.userDetailStore.userNames;
   }
 
   get selectedGroupIds() {
@@ -141,10 +141,10 @@ export default class UserModalActions extends Component {
 
   renderModalLeaveGroup() {
     const {
-      t, modalStore, groupStore, userStore
+      t, modalStore, groupStore, userDetailStore
     } = this.props;
     const { hide, isOpen } = modalStore;
-    const { users } = userStore;
+    const { users } = userDetailStore;
     const { leaveGroup } = groupStore;
     let names = _.flatMap(
       users.filter(user => this.selectedIds.includes(user.user_id)),
@@ -175,9 +175,9 @@ export default class UserModalActions extends Component {
   }
 
   renderModalSetRole() {
-    const { userStore, modalStore, t } = this.props;
+    const { userDetailStore, modalStore, t } = this.props;
     const { isOpen, hide, item } = modalStore;
-    const { setRole, createRoles } = userStore;
+    const { setRole, createRoles } = userDetailStore;
     const roleId = _.get(item, 'role.role_id', '');
     const userId = _.get(item, 'user_id') || this.selectedIds.join(',');
     const isMultip = _.get(item, 'user_id');
@@ -213,13 +213,15 @@ export default class UserModalActions extends Component {
   }
 
   renderModalCreateUser() {
-    const { userStore, modalStore, t } = this.props;
+    const {
+      userStore, userDetailStore, modalStore, t
+    } = this.props;
     const { isOpen, item } = modalStore;
     const { hideModifyUser, createOrModify } = userStore;
     const {
       user_id, username, description, email
     } = item;
-    const roles = userStore.createRoles;
+    const { createRoles } = userDetailStore;
 
     const title = !user_id ? t('Create New User') : t('Modify User');
 
@@ -258,8 +260,11 @@ export default class UserModalActions extends Component {
           <Fragment>
             <div className={styles.formItem}>
               <label>{t('Role')}</label>
-              <Select defaultValue={_.get(roles, '[0].role_id')} name="role_id">
-                {roles.map(({ role_id, role_name }) => (
+              <Select
+                defaultValue={_.get(createRoles, '[0].role_id')}
+                name="role_id"
+              >
+                {createRoles.map(({ role_id, role_name }) => (
                   <Select.Option key={role_id} value={role_id}>
                     {t(role_name)}
                   </Select.Option>
@@ -310,10 +315,10 @@ export default class UserModalActions extends Component {
   }
 
   renderModalDeleteUser() {
-    const { t, modalStore, userStore } = this.props;
+    const { t, modalStore, userDetailStore } = this.props;
     const { hide, isOpen, item } = modalStore;
-    const { remove } = userStore;
-    userStore.userId = item.type === 'one' ? [item.user_id] : this.selectedIds;
+    const { remove } = userDetailStore;
+    userDetailStore.userId = item.type === 'one' ? [item.user_id] : this.selectedIds;
 
     return (
       <Dialog
