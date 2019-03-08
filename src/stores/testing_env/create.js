@@ -80,10 +80,6 @@ export default class CreateEnvStore extends Store {
     return this.getUser().isUserPortal ? 'runtimes' : 'debug_runtimes';
   }
 
-  get checkStoreWhenInitPage() {
-    return this.getStore('testingEnv');
-  }
-
   getCredentialContent() {
     return JSON.stringify({
       access_key_id: this.accessKey,
