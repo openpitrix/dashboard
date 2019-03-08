@@ -25,6 +25,7 @@ export class Stepper extends Component {
     stepOption: PropTypes.shape({
       activeStep: PropTypes.number,
       steps: PropTypes.number,
+      stepBase: PropTypes.number,
       prevStep: PropTypes.func,
       disableNextStep: PropTypes.bool,
       isLoading: PropTypes.bool,
@@ -32,6 +33,14 @@ export class Stepper extends Component {
     }),
     titleCls: PropTypes.string
   };
+
+  get activeStep() {
+    const { activeStep, stepBase } = this.props.stepOption;
+    if (!_.isNumber(stepBase)) {
+      return activeStep;
+    }
+    return activeStep + 1 - stepBase;
+  }
 
   t(keys, options) {
     const { i18nObj, t } = this.props;
@@ -80,7 +89,7 @@ export class Stepper extends Component {
     }
 
     let text = '';
-    if (activeStep > 1 && !!name) {
+    if (this.activeStep > 1 && !!name) {
       text = this.t(`STEPPER_HEADER_${name.toUpperCase()}_${activeStep}`);
     }
 
@@ -90,7 +99,7 @@ export class Stepper extends Component {
           [styles.normalUser]: rootStore.user.isNormal
         })}
       >
-        {activeStep > 1 && (
+        {this.activeStep > 1 && (
           <label onClick={prevStep}>
             <Icon name="previous" size={20} type="dark" />
             {this.t('Back')}&nbsp;
@@ -111,14 +120,14 @@ export class Stepper extends Component {
     } = this.props;
     const { activeStep, steps } = stepOption;
 
-    if (activeStep > steps) {
+    if (this.activeStep > steps) {
       return null;
     }
 
     const nameKey = name.toUpperCase();
     const headerName = header
       || this.t(`STEPPER_NAME_${nameKey}_HEADER`, {
-        activeStep,
+        activeStep: this.activeStep,
         steps
       });
     const title = this.t(`STEPPER_TITLE_${nameKey}_${activeStep}`);
@@ -139,7 +148,7 @@ export class Stepper extends Component {
       activeStep, steps, disableNextStep, btnText
     } = stepOption;
 
-    if (activeStep > steps) {
+    if (this.activeStep > steps) {
       return null;
     }
 

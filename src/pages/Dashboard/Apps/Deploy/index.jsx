@@ -18,7 +18,7 @@ import TypeVersions from 'components/TypeVersions';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
 import routes, { toRoute, getPortalFromPath } from 'routes';
-import { providers } from 'config/runtimes';
+import { providers, providerMap } from 'config/runtimes';
 
 import styles from './index.scss';
 
@@ -31,10 +31,6 @@ const keysShouldBeNumber = [
   'instance_class',
   'count'
 ];
-const providerMap = {
-  vmbased: ['qingcloud', 'aws', 'aliyun'],
-  helm: ['kubernetes']
-};
 
 @translate()
 @inject(({ rootStore }) => ({
@@ -42,6 +38,7 @@ const providerMap = {
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   appDeployStore: rootStore.appDeployStore,
+  cloudEnv: rootStore.cloudEnvStore,
   user: rootStore.user
 }))
 @observer
@@ -62,11 +59,13 @@ export default class AppDeploy extends Component {
       appVersionStore,
       appDeployStore,
       match,
-      user
+      user,
+      cloudEnv
     } = this.props;
     const { appId } = match.params;
 
     await appStore.fetch(appId);
+    await cloudEnv.fetchAll();
 
     // get typeversions
     await appVersionStore.fetchTypeVersions(appId);
@@ -108,6 +107,21 @@ export default class AppDeploy extends Component {
 
   componentWillUnmount() {
     this.props.appDeployStore.reset();
+  }
+
+  get runtimeLink() {
+    const { activeType } = this.state;
+    const provider = this.props.cloudEnv.getActiveKey(activeType);
+    let querystring = `?goback=1`;
+    if (!provider) {
+      querystring += '';
+    } else if (provider.length === 1) {
+      querystring += `&provider=${provider[0]}`;
+    } else {
+      querystring += `&versionType=${activeType}`;
+    }
+
+    return `${toRoute(routes.portal.runtimeCreate)}${querystring}`;
   }
 
   changeType = async (value, type) => {
@@ -314,8 +328,7 @@ export default class AppDeploy extends Component {
 
   renderRuntimes() {
     const { appDeployStore, user, t } = this.props;
-    const { runtimes, changeRuntime, isK8s } = appDeployStore;
-    const createK8S = isK8s ? '?provider=kubernetes' : '';
+    const { runtimes, changeRuntime } = appDeployStore;
     const instanceName = user.isUserPortal ? t('instance') : t('test instance');
 
     if (runtimes.length === 0) {
@@ -327,7 +340,7 @@ export default class AppDeploy extends Component {
             linkWord={
               user.isUserPortal ? 'Create Runtime' : 'Create test runtime'
             }
-            link={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}
+            link={this.runtimeLink}
           />
         </Card>
       );
@@ -353,9 +366,7 @@ export default class AppDeploy extends Component {
             );
           })}
         </Select>
-        <Link to={`${toRoute(routes.portal.runtimeCreate)}${createK8S}`}>
-          {t('Create Runtime')}
-        </Link>
+        <Link to={this.runtimeLink}>{t('Create Runtime')}</Link>
       </Card>
     );
   }

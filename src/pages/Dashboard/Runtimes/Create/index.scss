@@ -177,6 +177,7 @@ $form-item-width: 387px;
     .name {
       margin-right: 20px;
       font-weight: 500;
+      flex: 1;
     }
     .desc {
       color: $N75;
@@ -232,4 +233,21 @@ $form-item-width: 387px;
 }
 .fixWrap {
   display: block;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+}
+
+.platformIcon {
+  margin-right: 8px;
+}
+
+.validateMsg {
+  max-width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
 }

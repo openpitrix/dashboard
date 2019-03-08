@@ -251,6 +251,9 @@ export default class TestingEnvStore extends Store {
   };
 
   checkStoreWhenInitPage = async provider => {
+    if (_.isArray(provider)) {
+      this.changePlatform(_.first(provider));
+    }
     if (_.isEmpty(this.runtimeStore.runtimes)) {
       await this.updateProviderCounts(provider);
     }

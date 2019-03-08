@@ -1,7 +1,7 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import _ from 'lodash';
 
-import { providers } from 'config/runtimes';
+import { providers, providerMap } from 'config/runtimes';
 
 import Store from '../Store';
 
@@ -9,6 +9,22 @@ export default class CloudEnvironmentStore extends Store {
   @observable environment = [];
 
   @observable config_set = [];
+
+  @observable versionType = '';
+
+  @computed
+  get activeEnv() {
+    if (!this.versionType) {
+      return this.environment.filter(item => item.enable);
+    }
+    const arr = providerMap[this.versionType];
+    if (!_.isArray(arr)) {
+      return [];
+    }
+    return this.environment.filter(
+      item => item.enable && arr.includes(item.key)
+    );
+  }
 
   @action
   fetchAll = async () => {
@@ -50,4 +66,13 @@ export default class CloudEnvironmentStore extends Store {
       config_set: this.config_set
     }
   });
+
+  @action
+  getActiveEnv = versionType => {
+    this.versionType = versionType;
+    return this.activeEnv;
+  };
+
+  @action
+  getActiveKey = versionType => this.getActiveEnv(versionType).map(item => item.key);
 }
