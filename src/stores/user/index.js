@@ -3,15 +3,9 @@ import _ from 'lodash';
 
 import { getFormData } from 'utils';
 import { useTableActions } from 'mixins';
-import { PORTAL_NAME, AdminPortal } from 'config/roles';
+import { PORTAL_NAME } from 'config/roles';
 
-import {
-  normalUserID,
-  ISVID,
-  rootName,
-  normalUserName,
-  ISVName
-} from 'config/group';
+import { rootName, normalUserName, ISVName } from 'config/group';
 import Store from '../Store';
 
 const defaultStatus = ['active'];
@@ -88,19 +82,6 @@ export default class UserStore extends Store {
     return this.getStore('role').sortRole;
   }
 
-  get createRoles() {
-    const { selectedGroupIds } = this.getStore('group');
-    const key = _.first(selectedGroupIds);
-    if (key === normalUserID) {
-      return this.roles.filter(r => r.portal === 'user');
-    }
-    if (key === ISVID) {
-      return this.roles.filter(r => r.portal === 'isv');
-    }
-
-    return this.roles.filter(r => r.portal === AdminPortal).sort(this.sortRole);
-  }
-
   get selectedGroupIds() {
     return this.getStore('group').validGroupIds;
   }
@@ -122,6 +103,10 @@ export default class UserStore extends Store {
     return this.roles
       .filter(r => r.portal === 'isv' && r.role_id !== 'isv')
       .sort(this.sortRole);
+  }
+
+  get fetchDetailStore() {
+    return this.getStore('userDetail').fetchAll;
   }
 
   @action
@@ -282,7 +267,7 @@ export default class UserStore extends Store {
     if (_.get(this.operateResult, 'user_id')) {
       this.modal.hide();
       this.userDetail = {};
-      await this.fetchAll();
+      await this.fetchDetailStore();
     }
   };
 
@@ -429,19 +414,6 @@ export default class UserStore extends Store {
       role: '',
       description: ''
     };
-  };
-
-  @action
-  setRole = async (e, data) => {
-    this.operateResult = await this.request.post('user:role', {
-      user_id: data.user_id.split(','),
-      role_id: [data.role_id]
-    });
-    const { err } = this.operateResult;
-    if (!err) {
-      this.modal.hide();
-      this.fetchAll();
-    }
   };
 }
 

@@ -313,6 +313,7 @@ export default class Users extends Component {
           t={t}
           modalStore={modalStore}
           userStore={userStore}
+          userDetailStore={userDetailStore}
           groupStore={groupStore}
         />
       </Layout>

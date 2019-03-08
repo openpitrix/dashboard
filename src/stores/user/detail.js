@@ -1,6 +1,9 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { useTableActions } from 'mixins';
+
+import { PORTAL_NAME } from 'config/roles';
+import { normalUserID, ISVID } from 'config/group';
 
 import Store from '../Store';
 
@@ -26,6 +29,27 @@ export default class UserDetailStore extends Store {
     return this.getStore('group').selectedRoleId;
   }
 
+  get sortRole() {
+    return this.getStore('role').sortRole;
+  }
+
+  get roles() {
+    return this.getStore('user').roles;
+  }
+
+  get modal() {
+    return this.getStore('modal');
+  }
+
+  get userNames() {
+    if (_.isEmpty(this.selectIds)) {
+      return '';
+    }
+
+    const users = _.filter(this.users, user => this.selectIds.includes(user.user_id));
+    return _.flatMap(users, 'username');
+  }
+
   fetchUserDetail = (params = {}) => {
     const defaultParams = {
       sort_key: 'status_time',
@@ -49,6 +73,21 @@ export default class UserDetailStore extends Store {
     );
   };
 
+  get createRoles() {
+    const { selectedGroupIds } = this.getStore('group');
+    const key = _.first(selectedGroupIds);
+    if (key === normalUserID) {
+      return this.roles.filter(r => r.portal === PORTAL_NAME.user);
+    }
+    if (key === ISVID) {
+      return this.roles.filter(r => r.portal === PORTAL_NAME.isv);
+    }
+
+    return this.roles
+      .filter(r => r.portal === PORTAL_NAME.admin)
+      .sort(this.sortRole);
+  }
+
   fetchAll = async (params = {}) => {
     this.selectedIds = [];
     this.selectedRowKeys = [];
@@ -64,5 +103,35 @@ export default class UserDetailStore extends Store {
     this.currentPage = 1;
     this.selectStatus = '';
     this.searchWord = '';
+  };
+
+  @action
+  setRole = async (e, data) => {
+    this.operateResult = await this.request.post('user:role', {
+      user_id: data.user_id.split(','),
+      role_id: [data.role_id]
+    });
+    const { err } = this.operateResult;
+    if (!err) {
+      this.modal.hide();
+      this.fetchAll();
+    }
+  };
+
+  @action
+  remove = async () => {
+    const result = await this.request.delete('users', {
+      user_id: this.userId
+    });
+
+    if (_.get(result, 'user_id')) {
+      this.selectIds = [];
+      this.selectedRowKeys = [];
+      this.modal.hide();
+      await this.fetchAll();
+    } else {
+      const { err, errDetail } = result;
+      this.error(errDetail || err);
+    }
   };
 }
