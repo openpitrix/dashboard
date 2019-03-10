@@ -209,7 +209,7 @@ export default class AppAdd extends Component {
     const {
       appCreateStore, t, rootStore, history
     } = this.props;
-    const { isCreateApp, isAddVersion, appId } = this.state;
+    const { isCreateApp, isAddVersion } = this.state;
     const { appDetail } = appCreateStore;
     const successInfo = isAddVersion
       ? 'New version has been created successfully'
@@ -241,11 +241,15 @@ export default class AppAdd extends Component {
             {!isAddVersion && (
               <Button
                 onClick={() => {
+                  const appId = appDetail.app_id;
                   if (isCreateApp) {
-                    history.replace(toRoute(routes.portal._dev.appCreate));
-                  } else {
-                    appCreateStore.reload({ isCreateApp, appId });
+                    history.replace(
+                      toRoute(routes.portal._dev.versionCreate, {
+                        appId
+                      })
+                    );
                   }
+                  appCreateStore.reload({ isCreateApp: false, appId });
                 }}
                 className={styles.addBtn}
               >

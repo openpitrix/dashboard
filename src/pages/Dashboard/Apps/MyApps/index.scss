@@ -40,7 +40,7 @@
     input {
       background: $background-color;
       border-color: transparent;
-      color: $N45;
+      color: $N300;
 
       &:hover {
        border-color: $N10;
@@ -48,6 +48,10 @@
 
       &:focus {
         border-color: $P75;
+        & ~ :global(span .qicon) {
+          --primary-color: $P30;
+          --second-color: $P75;
+        }
       }
     }
   }

@@ -148,7 +148,6 @@ export class Stepper extends Component {
     const tipLink = <DocLink name={keyName} />;
 
     const buttonText = activeStep === steps ? this.t('Done') : this.t('Go on');
-    const iconName = activeStep === steps ? 'checked-icon' : 'next-icon';
 
     return (
       <div className={styles.footer}>
@@ -164,9 +163,14 @@ export class Stepper extends Component {
           type="primary"
           onClick={this.nextStep}
         >
+          {!btnText
+            && activeStep === steps && (
+              <Icon className={styles.icon} name="checked-icon" size={20} />
+          )}
           <span>{this.t(btnText || buttonText)}</span>
-          {!btnText && (
-            <Icon className={styles.icon} name={iconName} size={20} />
+          {!btnText
+            && activeStep !== steps && (
+              <Icon className={styles.icon} name="next-icon" size={20} />
           )}
         </button>
       </div>

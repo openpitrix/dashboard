@@ -35,7 +35,7 @@
     }
   }
   &.selected {
-    border: solid 1px $N75;
+    border: solid 1px $P45;
   }
   &.added {
     cursor: none;
@@ -69,6 +69,7 @@
   line-height: 1.75;
   letter-spacing: normal;
   color: $N500;
+  margin-bottom: 10px;
 }
 .intro {
   font-size: 12px;

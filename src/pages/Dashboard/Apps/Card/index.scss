@@ -7,8 +7,12 @@
   width: calc(25% - 20px);
   margin: 0 10px 20px;
   cursor: pointer;
+  border: 1px solid transparent;
   .status {
     height: inherit;
+  }
+  &:hover {
+    border: 1px solid $P45;
   }
 }
 
@@ -46,6 +50,7 @@
   -webkit-box-orient: vertical;
   /* autoprefixer: on */
   -webkit-line-clamp: 3;
+  font-family: $family-primary;
 
   margin: 20px 0;
   height: 60px;

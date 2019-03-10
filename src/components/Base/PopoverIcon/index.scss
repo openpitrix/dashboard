@@ -43,6 +43,10 @@
     display: inline-flex !important;
   }
 }
+.showBorder {
+  border: 1px solid $N30;
+  box-shadow: 0 1px 3px 0 rgba($N400, 0.7);
+}
 
 .popover {
   &[data-placement^="bottom"] {

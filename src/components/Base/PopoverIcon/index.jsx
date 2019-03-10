@@ -18,6 +18,7 @@ export default class PopoverIcon extends Component {
       PropTypes.element
     ]),
     placement: PropTypes.string,
+    showBorder: PropTypes.bool,
     size: PropTypes.oneOf(['Large', 'Normal', 'Small'])
   };
 
@@ -26,6 +27,7 @@ export default class PopoverIcon extends Component {
     iconType: 'dark',
     placement: 'bottom-end',
     size: 'Normal',
+    showBorder: false,
     absolute: true
   };
 
@@ -49,6 +51,7 @@ export default class PopoverIcon extends Component {
       targetCls,
       popperCls,
       onClick,
+      showBorder,
       ...props
     } = this.props;
 
@@ -57,7 +60,8 @@ export default class PopoverIcon extends Component {
         className={classnames(
           styles.container,
           {
-            [styles.visible]: this.state.visible
+            [styles.visible]: this.state.visible,
+            [styles.showBorder]: showBorder
           },
           className
         )}
