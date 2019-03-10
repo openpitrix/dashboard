@@ -184,7 +184,7 @@ export default class UserStore extends Store {
       'users',
       _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
     );
-    this.users = _.get(result, 'user_detail_set', []);
+    this.users = _.get(result, 'user_set', []);
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
   };

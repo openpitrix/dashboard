@@ -32,7 +32,7 @@ export default class AppAdd extends Component {
     const { match, appCreateStore } = props;
     const appId = _.get(match, 'params.appId');
     const type = getUrlParam('type');
-    let name = appId ? 'create_app' : 'create_app_version';
+    let name = !appId ? 'create_app' : 'create_app_version';
     if (type) {
       appCreateStore.modifyVersionType = type;
       name = 'add_app_version';
@@ -53,6 +53,20 @@ export default class AppAdd extends Component {
     if (app_id) {
       await appCreateStore.fetchOneApp({ app_id });
     }
+  }
+
+  get appName() {
+    const { appCreateStore } = this.props;
+    return _.get(appCreateStore, 'appDetail.name', '');
+  }
+
+  get i18nObj() {
+    const { appCreateStore } = this.props;
+
+    return {
+      appName: this.appName,
+      versionTypeName: appCreateStore.versionTypeName
+    };
   }
 
   onUploadClick = () => {
@@ -265,6 +279,7 @@ export default class AppAdd extends Component {
           name={name}
           stepOption={appCreateStore}
           disableNextStep={disableNextStep}
+          i18nObj={this.i18nObj}
         >
           {activeStep === 1 && this.renderUploadConf()}
           {activeStep === 2 && this.renderSuccessMsg()}
@@ -279,6 +294,7 @@ export default class AppAdd extends Component {
         name={name}
         stepOption={appCreateStore}
         disableNextStep={disableNextStep}
+        i18nObj={this.i18nObj}
       >
         {activeStep === 1 && this.renderVersionTypes()}
         {activeStep === 2 && this.renderUploadConf()}

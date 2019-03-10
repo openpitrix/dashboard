@@ -23,19 +23,15 @@ import styles from './index.scss';
 @observer
 export default class Versions extends Component {
   async componentDidMount() {
-    const { appVersionStore, match } = this.props;
-
-    const appId = _.get(match, 'params.appId', '');
-    await appVersionStore.fetchTypeVersions(appId);
+    await this.props.appVersionStore.fetchTypeVersions(this.appId);
   }
 
   async componentDidUpdate(prevProps) {
-    const { match, appVersionStore } = this.props;
-    const appId = _.get(match, 'params.appId', '');
+    const { appVersionStore } = this.props;
     const prevAppId = _.get(prevProps.match, 'params.appId', '');
 
-    if (appId !== prevAppId) {
-      await appVersionStore.fetchTypeVersions(appId);
+    if (this.appId !== prevAppId) {
+      await appVersionStore.fetchTypeVersions(this.appId);
     }
   }
 
@@ -43,6 +39,11 @@ export default class Versions extends Component {
     const { appVersionStore } = this.props;
 
     appVersionStore.reset();
+  }
+
+  get appId() {
+    const { match } = this.props;
+    return _.get(match, 'params.appId', '');
   }
 
   toggleHistoryVersions(typeVersion) {
@@ -77,7 +78,7 @@ export default class Versions extends Component {
             />
             <div className={styles.name}>{t(item.name)}</div>
             <div className={styles.description}>{t(item.intro)}</div>
-            <Link to={`${createUrl}?type=${item.value}`}>
+            <Link to={`${createUrl}?type=${item.value}&appId=${this.appId}`}>
               <Button className={styles.button} type="primary">
                 <Icon name="add" type="white" className={styles.addIcon} />
                 {t('New version')}
@@ -229,7 +230,7 @@ export default class Versions extends Component {
           <div key={item.type} className={styles.addedVersion}>
             <div className={styles.title}>
               {(_.find(versionTypes, { value: item.type }) || {}).name}
-              <Link to={`${createUrl}?type=${item.type}`}>
+              <Link to={`${createUrl}?type=${item.type}&appId=${this.appId}`}>
                 <Button className={styles.button} type="default">
                   <Icon name="add" type="dark" className={styles.addIcon} />
                   {t('New version')}
