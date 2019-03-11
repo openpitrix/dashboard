@@ -49,11 +49,7 @@ export default class Users extends Component {
   handleAction(type, e) {
     e.stopPropagation();
     e.preventDefault();
-    const { modalStore, groupStore } = this.props;
-    if (type === 'renderModalJoinGroup') {
-      groupStore.fetchAll();
-    }
-    modalStore.show(type);
+    this.props.modalStore.show(type);
   }
 
   renderTreeTitle = node => {
@@ -65,72 +61,63 @@ export default class Users extends Component {
     return this.renderGroupTitle(node, t, modifiable);
   };
 
-  renderHandleGroupNode = ({ key }) => {
-    const { groupStore, t } = this.props;
-    const canEidt = key !== _.get(groupStore, 'rootGroup.group_id');
+  renderHandleGroupNode = ({ key, t }) => (
+    <div key={`${key}-operates`} className="operate-menu">
+      <span
+        key={`${key}-rename`}
+        onClick={e => this.handleAction('renderModalRenameGroup', e)}
+      >
+        {t('Rename')}
+      </span>
+      <span
+        key={`${key}-delete`}
+        onClick={e => this.handleAction('renderModalDeleteGroup', e)}
+      >
+        {t('Delete')}
+      </span>
+    </div>
+  );
 
+  renderGroupTitle = ({ title, key }, t, modifiable) => {
+    const { groupStore } = this.props;
+    const canEidt = key !== _.get(groupStore, 'rootGroup.group_id');
     return (
-      <div key={`${key}-operates`} className="operate-menu">
-        {canEidt && (
-          <span
-            key={`${key}-rename`}
-            onClick={e => this.handleAction('renderModalRenameGroup', e)}
-          >
-            {t('Rename')}
-          </span>
-        )}
-        <span
-          key={`${key}-join-user`}
-          onClick={e => this.handleAction('renderModalJoinGroup', e)}
-        >
-          {t('Add user')}
+      <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
+        <span key={`title-${key}-${title}`} className={styles.groupTitle}>
+          {t(title)}
         </span>
-        {canEidt && (
-          <span
-            key={`${key}-delete`}
-            onClick={e => this.handleAction('renderModalDeleteGroup', e)}
-          >
-            {t('Delete')}
-          </span>
+        {modifiable && (
+          <Fragment>
+            {canEidt && (
+              <PopoverIcon
+                portal
+                trigger="hover"
+                size="Small"
+                key={`${key}-operate`}
+                content={this.renderHandleGroupNode({ key, t })}
+                className={classnames(styles.groupPopver, styles.iconMore)}
+                targetCls={classnames(styles.groupPopverTarget)}
+              />
+            )}
+            <PopoverIcon
+              portal
+              isShowArrow
+              trigger="hover"
+              icon="add"
+              placement="top"
+              prefixCls="add"
+              key={`${key}-operate-add`}
+              iconCls={styles.titleEventIcon}
+              targetCls={classnames(styles.tooltip)}
+              className={classnames(styles.iconCreate)}
+              onClick={e => this.handleAction('renderModalCreateGroup', e)}
+              content={t('Add the child node')}
+            />
+          </Fragment>
         )}
-      </div>
+      </span>
     );
   };
-
-  renderGroupTitle = ({ title, key }, t, modifiable) => (
-    <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
-      <span key={`title-${key}-${title}`} className={styles.groupTitle}>
-        {t(title)}
-      </span>
-      {modifiable && (
-        <Fragment>
-          <PopoverIcon
-            portal
-            trigger="hover"
-            size="Small"
-            key={`${key}-operate`}
-            content={this.renderHandleGroupNode({ key })}
-            className={classnames(styles.groupPopver, styles.iconMore)}
-            targetCls={classnames(styles.groupPopverTarget)}
-          />
-          <PopoverIcon
-            portal
-            isShowArrow
-            trigger="hover"
-            icon="add"
-            placement="top"
-            prefixCls="add"
-            key={`${key}-operate-add`}
-            iconCls={styles.titleEventIcon}
-            targetCls={classnames(styles.tooltip)}
-            className={classnames(styles.iconCreate)}
-            onClick={e => this.handleAction('renderModalCreateGroup', e)}
-            content={t('Add the child node')}
-          />
-        </Fragment>
-      )}
-    </span>
-  );
 
   renderUserHandleMenu = user => {
     const { groupStore, modalStore, t } = this.props;
@@ -149,6 +136,9 @@ export default class Users extends Component {
           }
         >
           {t('Edit info')}
+        </span>
+        <span onClick={() => modalStore.show('renderModalSetGroup', user)}>
+          {t('Set group')}
         </span>
         <span onClick={() => modalStore.show('renderModalSetRole', user)}>
           {t('Set role')}
@@ -184,10 +174,8 @@ export default class Users extends Component {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           {!_.isEmpty(selectedGroupIds) && (
-            <Button
-              onClick={e => this.handleAction('renderModalLeaveGroup', e)}
-            >
-              {t('Leave group')}
+            <Button onClick={e => this.handleAction('renderModalSetGroup', e)}>
+              {t('Set group')}
             </Button>
           )}
           <Button onClick={e => this.handleAction('renderModalSetRole', e)}>

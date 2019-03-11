@@ -52,11 +52,22 @@ export default class Tree extends Component {
     return typeof node.title === 'string' ? t(node.title) : node.title;
   };
 
-  renderTreeNodes = data => data.map(node => (
-      <TreeNode key={node.key} {...node} title={this.renderTitle(node)}>
-        {node.children && this.renderTreeNodes(node.children)}
-      </TreeNode>
-  ));
+  renderTreeNodes = data => data.map(node => {
+    const title = this.renderTitle(node);
+    const hide = typeof title === 'undefined' || title === null;
+    return (
+        <TreeNode
+          key={node.key}
+          className={classnames({
+            [styles.hide]: hide
+          })}
+          {...node}
+          title={title}
+        >
+          {node.children && this.renderTreeNodes(node.children)}
+        </TreeNode>
+    );
+  });
 
   render() {
     const {

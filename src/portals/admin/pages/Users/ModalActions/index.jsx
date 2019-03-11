@@ -2,13 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import _ from 'lodash';
 
-import { Input, Select } from 'components/Base';
+import { Input, Select, Tree } from 'components/Base';
 
 import { Dialog } from 'components/Layout';
-import EnhanceTable from 'components/EnhanceTable';
-import Toolbar from 'components/Toolbar';
-
-import columns, { filterList } from '../columns';
 
 import styles from '../index.scss';
 
@@ -108,68 +104,31 @@ export default class UserModalActions extends Component {
     );
   }
 
-  renderModalJoinGroup() {
+  renderModalSetGroup() {
     const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
-    const { joinGroup, users } = groupStore;
+    const { joinGroup, joinGroupTreeData, onSelectJoinGroupOrg } = groupStore;
     return (
       <Dialog
         width={744}
-        title={t('Add user')}
+        title={t('Set group')}
         visible={isOpen}
         onSubmit={joinGroup}
-        onCancel={hide}
+        onCancel={() => {
+          groupStore.selectedJoinGroupIds = [];
+          hide();
+        }}
       >
-        <Toolbar
-          noRefreshBtn
-          placeholder={t('Search users')}
-          searchWord={groupStore.searchWord}
-          onSearch={groupStore.onSearch}
-          onClear={groupStore.onClearSearch}
+        <Tree
+          defaultExpandAll
+          showLine
+          hoverLine
+          className={styles.setRoleTree}
+          selectedKeys={groupStore.selectedJoinGroupIds}
+          renderTreeTitle={node => t(node.title)}
+          onSelect={onSelectJoinGroupOrg}
+          treeData={joinGroupTreeData}
         />
-        <EnhanceTable
-          hasRowSelection
-          isLoading={groupStore.isLoading}
-          store={groupStore}
-          data={users}
-          columns={columns(t)}
-          filterList={filterList(t, groupStore)}
-        />
-      </Dialog>
-    );
-  }
-
-  renderModalLeaveGroup() {
-    const {
-      t, modalStore, groupStore, userDetailStore
-    } = this.props;
-    const { hide, isOpen } = modalStore;
-    const { users } = userDetailStore;
-    const { leaveGroup } = groupStore;
-    let names = _.flatMap(
-      users.filter(user => this.selectedIds.includes(user.user_id)),
-      'username'
-    );
-    let count = null;
-    if (names.length > 3) {
-      count = `${names.length} ${t('count')}`;
-      names = names.slice(3);
-    }
-
-    return (
-      <Dialog
-        width={744}
-        title={t('Leave group')}
-        visible={isOpen}
-        onSubmit={leaveGroup}
-        onCancel={hide}
-      >
-        <div>
-          {t('Do you sure to leaveGroup groupName', {
-            names,
-            count
-          })}
-        </div>
       </Dialog>
     );
   }
