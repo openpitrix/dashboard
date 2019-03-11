@@ -5,6 +5,7 @@ import { downloadFileFromBase64 } from 'utils';
 
 import { getReviewType, getFilterStatus } from 'config/version';
 import { formCheck, fieldCheck } from 'config/form-check';
+import ACTION from 'config/action-id';
 
 import Store from '../Store';
 
@@ -196,12 +197,12 @@ export default class AppVersionStore extends Store {
 
   @action
   setReviewTypes = async () => {
-    const hasISVReview = await this.roleStore.checkAction('isv_review');
+    const hasISVReview = await this.roleStore.checkAction(ACTION.isv_review);
     const hasBussinessReview = await this.roleStore.checkAction(
-      'business_review'
+      ACTION.business_review
     );
     const hasDevelopReview = await this.roleStore.checkAction(
-      'technical_review'
+      ACTION.technical_review
     );
 
     this.reveiwTypes = [];

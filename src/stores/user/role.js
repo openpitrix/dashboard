@@ -690,7 +690,7 @@ export default class RoleStore extends Store {
           action_bundle_id
         });
         if (actionSet) {
-          const checkedAction = feature.checked_action_bundle_id_set;
+          const checkedAction = feature.checked_action_bundle_id_set || [];
           canDo = checkAll || checkedAction.includes(actionSet.action_bundle_id);
           return true;
         }

@@ -1,6 +1,8 @@
 import routes, { toRoute } from 'routes';
 import { PORTAL_NAME } from 'config/roles';
 
+import ACTION from 'config/action-id';
+
 // First level navigation(top) for admin, isv and developer
 export const getNavs = {
   [PORTAL_NAME.admin]: [
@@ -171,7 +173,8 @@ export const subNavMap = {
           name: 'Apply for Residence',
           link: toRoute(routes.portal._admin.providerApply, {
             portal: 'admin'
-          })
+          }),
+          actionId: ACTION.isv_auth
         },
         {
           name: 'Contract',

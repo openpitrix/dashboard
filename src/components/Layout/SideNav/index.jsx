@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Icon, Popover, Image } from 'components/Base';
+import {
+  Icon, Popover, Image, Link
+} from 'components/Base';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
@@ -157,9 +159,11 @@ export class SideNav extends React.Component {
           <div key={nav.title} className={styles.subContent}>
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
-              <NavLink
+              <Link
                 key={item.name}
                 exact
+                navLink
+                actionId={item.actionId}
                 activeClassName={styles.active}
                 className={classnames(styles.link, {
                   [styles.disabled]: item.disabled
@@ -167,7 +171,7 @@ export class SideNav extends React.Component {
                 to={item.link}
               >
                 {t(item.name)}
-              </NavLink>
+              </Link>
             ))}
           </div>
         ))}
@@ -189,9 +193,11 @@ export class SideNav extends React.Component {
           <div className={styles.name}>{t(subNavData.title)}</div>
         </div>
         {subNavData.links.map(link => (
-          <NavLink
+          <Link
             key={link.name}
             exact
+            navLink
+            actionId={link.actionId}
             activeClassName={styles.active}
             className={classnames(styles.link, {
               [styles.disabled]: link.disabled
@@ -199,7 +205,7 @@ export class SideNav extends React.Component {
             to={link.link}
           >
             {t(link.name)}
-          </NavLink>
+          </Link>
         ))}
       </div>
     );
@@ -231,9 +237,25 @@ export class SideNav extends React.Component {
           [styles.userBottomNav]: user.isDevPortal
         })}
       >
-        {getBottomNavs.map(nav => (nav.iconName === 'human' ? (
-            <li key={nav.iconName}>
-              <Popover content={<MenuLayer />} className={styles.iconOuter}>
+        {getBottomNavs.map(
+          nav => (nav.iconName === 'human' ? (
+              <li key={nav.iconName}>
+                <Popover content={<MenuLayer />} className={styles.iconOuter}>
+                  <Icon
+                    className={styles.icon}
+                    size={20}
+                    name={nav.iconName}
+                    type={
+                      location.pathname.indexOf(nav.link) > -1
+                        ? 'light'
+                        : 'dark'
+                    }
+                  />
+                  <label className={styles.title}>{t(nav.title)}</label>
+                </Popover>
+              </li>
+          ) : (
+              <li key={nav.iconName}>
                 <Icon
                   className={styles.icon}
                   size={20}
@@ -242,24 +264,12 @@ export class SideNav extends React.Component {
                     location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
                   }
                 />
-                <label className={styles.title}>{t(nav.title)}</label>
-              </Popover>
-            </li>
-        ) : (
-            <li key={nav.iconName}>
-              <Icon
-                className={styles.icon}
-                size={20}
-                name={nav.iconName}
-                type={
-                  location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
-                }
-              />
-              <Link to="#">
-                <label className={styles.title}>{t(nav.title)}</label>
-              </Link>
-            </li>
-        )))}
+                <Link to="#">
+                  <label className={styles.title}>{t(nav.title)}</label>
+                </Link>
+              </li>
+          ))
+        )}
       </ul>
     );
   }
