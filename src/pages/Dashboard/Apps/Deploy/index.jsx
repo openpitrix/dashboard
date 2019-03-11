@@ -58,7 +58,11 @@ export default class AppDeploy extends Component {
 
   async componentDidMount() {
     const {
-      appStore, appVersionStore, appDeployStore, match
+      appStore,
+      appVersionStore,
+      appDeployStore,
+      match,
+      user
     } = this.props;
     const { appId } = match.params;
 
@@ -92,7 +96,8 @@ export default class AppDeploy extends Component {
 
     // fetch runtimes
     await appDeployStore.fetchRuntimes({
-      provider: providerMap[version.type] || ''
+      provider: providerMap[version.type] || '',
+      owner: user.user_id
     });
 
     if (!_.isEmpty(appDeployStore.configJson)) {
