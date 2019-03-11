@@ -6,9 +6,11 @@ import { getUrlParam } from 'utils/url';
 import Store from '../Store';
 
 const STEPS = 2;
+const NO_PROVIDER_STEPS = 3;
 
 const defaultStepOption = {
   steps: STEPS,
+  stepBase: 1,
   activeStep: 1,
   disableNextStep: true,
   isLoading: false
@@ -99,6 +101,23 @@ export default class CreateEnvStore extends Store {
   }
 
   @action
+  initSteps = hasProvider => {
+    if (hasProvider) {
+      _.assign(this.stepOption, {
+        steps: STEPS,
+        activeStep: 1,
+        stepBase: 1
+      });
+    } else {
+      _.assign(this.stepOption, {
+        steps: NO_PROVIDER_STEPS,
+        activeStep: 0,
+        stepBase: 0
+      });
+    }
+  };
+
+  @action
   toggleNewlyCreate = () => {
     if (!this.showNewlyCreate) {
       this.selectCredentialId = '';
@@ -109,14 +128,22 @@ export default class CreateEnvStore extends Store {
 
   @action
   prevStep = () => {
-    if (this.stepOption.activeStep > 1) {
+    if (this.stepOption.activeStep > this.stepOption.stepBase) {
       this.stepOption.activeStep--;
     }
   };
 
   @action
   nextStep = async () => {
-    if (this.stepOption.activeStep < STEPS) {
+    const { activeStep, steps } = this.stepOption;
+    if (steps === NO_PROVIDER_STEPS && activeStep === 0) {
+      this.credentialStore.credentials = [];
+      await this.envStore.checkStoreWhenInitPage([this.platform]);
+      this.stepOption.activeStep++;
+      return;
+    }
+
+    if (activeStep < STEPS) {
       if (this.selectCredentialId) {
         // todo
       } else {

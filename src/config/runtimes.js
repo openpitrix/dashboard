@@ -37,3 +37,8 @@ export const runtimeTabs = [
   { name: 'Instance', value: 0 },
   { name: 'Agent', value: 1 }
 ];
+
+export const providerMap = {
+  vmbased: ['qingcloud', 'aws', 'aliyun'],
+  helm: ['kubernetes']
+};

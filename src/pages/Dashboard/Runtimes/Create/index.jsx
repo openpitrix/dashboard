@@ -4,7 +4,7 @@ import { translate } from 'react-i18next';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
-import { isHelm } from 'utils';
+import { isHelm, qs2Obj, obj2Qs } from 'utils';
 import { getUrlParam } from 'utils/url';
 import routes, { toRoute, getPortalFromPath } from 'routes';
 
@@ -16,10 +16,14 @@ import { providers } from 'config/runtimes';
 
 import styles from './index.scss';
 
+const CreateRuntime = 'create_runtime';
+const CreateCredential = 'create_credential';
+
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
   envStore: rootStore.testingEnvStore,
+  cloudEnvStore: rootStore.cloudEnvStore,
   createEnvStore: rootStore.testingEnvCreateStore,
   credentialStore: rootStore.runtimeCredentialStore,
   activeStep: rootStore.testingEnvCreateStore.stepOption.activeStep
@@ -29,11 +33,20 @@ export default class CreateTestingEnv extends React.Component {
   constructor(props) {
     super(props);
     this.isCredential = getUrlParam('type') === 'credential';
+    this.hasProvider = !!this.platform;
+    this.props.cloudEnvStore.versionType = getUrlParam('versionType');
+    this.props.createEnvStore.initSteps(this.hasProvider);
   }
 
   async componentDidMount() {
-    const { envStore, createEnvStore } = this.props;
-    await envStore.checkStoreWhenInitPage([getUrlParam('provider')]);
+    const { envStore, cloudEnvStore, createEnvStore } = this.props;
+    if (this.platform) {
+      await envStore.checkStoreWhenInitPage([this.platform]);
+    }
+
+    if (!this.hasProvider) {
+      await cloudEnvStore.fetchAll();
+    }
 
     const queryCredential = getUrlParam('credential_id');
     if (queryCredential) {
@@ -57,7 +70,11 @@ export default class CreateTestingEnv extends React.Component {
     }
 
     if (activeStep === 2 && (this.doneCreateRt || this.doneCreateCredential)) {
-      history.push(toRoute(routes.portal.runtimes));
+      if (getUrlParam('goback')) {
+        history.goBack();
+      } else {
+        history.push(toRoute(routes.portal.runtimes));
+      }
     }
   }
 
@@ -78,9 +95,8 @@ export default class CreateTestingEnv extends React.Component {
     return this.props.createEnvStore.doneCreateCredential;
   }
 
-  @computed
   get platform() {
-    return getUrlParam('provider') || this.props.envStore.platform;
+    return getUrlParam('provider');
   }
 
   get platformName() {
@@ -104,6 +120,30 @@ export default class CreateTestingEnv extends React.Component {
     };
   }
 
+  get activeEnv() {
+    return this.props.cloudEnvStore.activeEnv;
+  }
+
+  get stepName() {
+    return this.isCredential ? CreateCredential : CreateRuntime;
+  }
+
+  get disableNextStep() {
+    const { activeStep } = this.props;
+    const { validatePassed, selectCredentialId } = this.props.createEnvStore;
+    if (activeStep === 0) {
+      return !getUrlParam('provider');
+    }
+
+    return !(selectCredentialId || validatePassed);
+  }
+
+  onClick = key => {
+    const qs = qs2Obj();
+    qs.provider = key;
+    this.props.history.replace(`?${obj2Qs(qs)}`);
+  };
+
   handleSubmit = async e => {
     const { createEnvStore } = this.props;
     e.preventDefault();
@@ -114,6 +154,34 @@ export default class CreateTestingEnv extends React.Component {
   handleEsc = () => {
     this.props.history.goBack();
   };
+
+  renderProvider() {
+    return (
+      <div className={styles.credentialList}>
+        {_.map(this.activeEnv, env => {
+          const checked = getUrlParam('provider') === env.key;
+          return (
+            <Card
+              className={classnames(styles.item, styles.flexCenter, {
+                [styles.checked]: checked
+              })}
+              key={env.key}
+              onClick={() => this.onClick(env.key)}
+            >
+              <Icon
+                className={styles.platformIcon}
+                name={env.icon}
+                type="dark"
+                size={24}
+              />
+              <span className={styles.name}>{env.name}</span>
+              {checked && <Icon name="check" size={24} />}
+            </Card>
+          );
+        })}
+      </div>
+    );
+  }
 
   renderCredentialForm() {
     const { createEnvStore, credentialStore, t } = this.props;
@@ -226,9 +294,8 @@ export default class CreateTestingEnv extends React.Component {
         {validatePassed && (
           <Icon name="checked-circle" className={styles.iconSuccess} />
         )}
-        {!validatePassed && validateMsg && (
-          <Icon name="error" className={styles.iconFailed} />
-        )}
+        {!validatePassed
+          && validateMsg && <Icon name="error" className={styles.iconFailed} />}
         {isLoading && (
           <Fragment>
             <Icon name="loading" />
@@ -241,7 +308,12 @@ export default class CreateTestingEnv extends React.Component {
           })}
         >
           {validatePassed && t('Validate successfully')}
-          {!validatePassed && validateMsg && t(validateMsg)}
+          {!validatePassed
+            && validateMsg && (
+              <span className={styles.validateMsg} title={t(validateMsg)}>
+                {t(validateMsg)}
+              </span>
+          )}
         </span>
       </Fragment>
     );
@@ -467,33 +539,25 @@ export default class CreateTestingEnv extends React.Component {
   }
 
   render() {
-    const { createEnvStore } = this.props;
-    const {
-      stepOption,
-      prevStep,
-      nextStep,
-      validatePassed,
-      selectCredentialId
-    } = createEnvStore;
-    const { activeStep } = stepOption;
-    const title = this.isCredential ? 'create_credential' : 'create_runtime';
-
+    const { createEnvStore, activeStep } = this.props;
+    const { stepOption, prevStep, nextStep } = createEnvStore;
     return (
       <Stepper
         headerCls={styles.pgHeader}
         titleCls={styles.pgTitle}
-        name={title}
+        name={this.stepName}
         stepOption={{
           ...stepOption,
           prevStep,
           nextStep,
           goBack: this.handleEsc,
-          disableNextStep: !(selectCredentialId || validatePassed)
+          disableNextStep: this.disableNextStep
         }}
         i18nObj={this.i18nObj}
       >
         <Notification />
         <div className={styles.form}>
+          {activeStep === 0 && !this.hasProvider && this.renderProvider()}
           {activeStep === 1 && this.renderCredentialForm()}
           {activeStep === 2
             && (!this.isCredential
