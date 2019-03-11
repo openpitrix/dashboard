@@ -32,20 +32,22 @@ export default class ActionGroup extends Component {
   }
 
   renderTreeTitle = node => {
-    const { t, keys } = this.props;
+    const { t, keys, roleStore } = this.props;
 
     if (node.title === 'All actions') {
       return this.renderActionCount();
     }
 
-    const hasFeatureAction = !node.key.includes('.a')
-      && _.some(keys, key => key.includes(`${node.key}.a`));
+    if (this.disabled) {
+      const hasFeatureAction = roleStore.hasFeatureAction(node.key);
 
-    if (hasFeatureAction) {
-      return <span className={styles.grayColor}>{t(node.title)}</span>;
-    }
-    if (this.disabled && !keys.includes(node.key)) {
-      return null;
+      if (hasFeatureAction) {
+        return <span className={styles.grayColor}>{t(node.title)}</span>;
+      }
+
+      if (!keys.includes(node.key)) {
+        return null;
+      }
     }
     return t(node.title);
   };

@@ -21,6 +21,10 @@ const defaultStatus = ['active'];
 
 const defaultDataLevel = 'all';
 
+const regFeatureIdReg = /^m\d*\.f\d*$/;
+
+const regNotAction = /^m\d*(.f\d*)?$/;
+
 export default class RoleStore extends Store {
   @observable roles = [];
 
@@ -249,7 +253,9 @@ export default class RoleStore extends Store {
   selectAction = index => keys => {
     this.selectedActionKeys[index] = keys;
 
-    this.bindActions[index].selectedActions.selectedCount = keys.filter(a => a.includes('.a')).length;
+    this.bindActions[index].selectedActions.selectedCount = keys.filter(
+      a => !regNotAction.test(a)
+    ).length;
   };
 
   getSelectType = (keys, key) => {
@@ -502,7 +508,10 @@ export default class RoleStore extends Store {
           features
         });
         const { total } = selectedActions;
-        const checkActions = _.filter(this.selectedActionKeys[index], key => key.includes('.a'));
+        const checkActions = _.filter(
+          this.selectedActionKeys[index],
+          key => !regNotAction.test(key)
+        );
         const isCheckAll = total === checkActions.length;
         if (!isCheckAll) {
           module.is_check_all = isCheckAll;
@@ -700,5 +709,26 @@ export default class RoleStore extends Store {
       return _.every(actionId, id => this.checkActionOnce(id));
     }
     return this.checkActionOnce(actionId);
+  };
+
+  hasFeatureAction = featureId => {
+    if (!regFeatureIdReg.test(featureId)) {
+      return false;
+    }
+    const module_id = featureId.split('.')[0];
+    const module = _.find(this.modules, {
+      module_id
+    });
+    if (!module || !_.isArray(module.feature_set)) {
+      return false;
+    }
+    const feature = _.find(module.feature_set, {
+      feature_id: featureId
+    });
+    const { selectedCount } = this.getActionCount({
+      module,
+      features: [feature]
+    });
+    return _.isNumber(selectedCount) && selectedCount > 0;
   };
 }

@@ -23,6 +23,10 @@ export default class GroupStore extends Store {
 
   @observable selectedGroupIds = [];
 
+  @observable selectedJoinGroupIds = [];
+
+  @observable setGroupTreeData = [];
+
   @observable groupName = '';
 
   get modal() {
@@ -218,13 +222,16 @@ export default class GroupStore extends Store {
 
   @action
   joinGroup = async () => {
+    const { item } = this.modal;
+    const user_id = item.user_id ? [item.user_id] : this.userSelectedIds;
+
     const data = {
-      group_id: this.selectedGroupIds,
-      user_id: this.selectIds
+      group_id: this.selectedJoinGroupIds,
+      user_id
     };
     this.operateResult = await this.request.post('groups:join', data);
     if (_.get(this.operateResult, 'group_id')) {
-      this.selectIds = [];
+      this.selectedJoinGroupIds = [];
       this.selectedRowKeys = [];
       this.modal.hide();
       this.fetchAllUser();
@@ -275,6 +282,7 @@ export default class GroupStore extends Store {
     }
 
     this.selectedGroupIds = keys;
+    this.selectJoinGroupIds = keys;
     this.selectedRowKeys = [];
     _.assign(this.userStore, {
       selectIds: [],
@@ -282,6 +290,14 @@ export default class GroupStore extends Store {
     });
     this.groupName = this.name;
     this.fetchAllUser();
+  };
+
+  @action
+  onSelectJoinGroupOrg = keys => {
+    if (_.isEmpty(keys)) {
+      return null;
+    }
+    this.selectedJoinGroupIds = keys;
   };
 
   @action
@@ -314,7 +330,9 @@ export default class GroupStore extends Store {
       key: root.group_id
     });
     data[0].children = setChildren(groups, root);
+
     this.groupTreeData = data;
+    this.joinGroupTreeData = [data[0]];
     this.setDefaultGroupId();
   };
 }
