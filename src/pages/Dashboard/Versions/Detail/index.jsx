@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import {
-  Icon, Image, Button, Popover, Upload
+  Icon, Image, Button, PopoverIcon, Upload
 } from 'components/Base';
 import Layout, {
   Grid,
@@ -577,13 +577,12 @@ export default class VersionDetail extends Component {
             >
               {t(actionName[handleType] || version.status)}
             </Button>
-            <Popover
+            <PopoverIcon
+              showBorder
+              size="Large"
               className={styles.operation}
               content={this.renderHandleMenu()}
-              showBorder
-            >
-              <Icon name="more" />
-            </Popover>
+            />
           </div>
         )}
       </Card>

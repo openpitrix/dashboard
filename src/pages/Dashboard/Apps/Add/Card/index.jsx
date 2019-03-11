@@ -42,6 +42,7 @@ export default class CreateAppCard extends Component {
         onClick={() => !isAdded && !disable && selectVersionType(value)}
         className={classNames(styles.container, className, {
           [styles.addedContainer]: isAdded,
+          [styles.selected]: isSelected,
           [styles.disabledContainer]: disable
         })}
       >
@@ -58,12 +59,6 @@ export default class CreateAppCard extends Component {
         <div className={styles.intro}>{t(intro)}</div>
         <DocLink name={'Create_App_Linkto_Intro_App'}>
           {t('Linkto_Intro_App')}
-          <Icon
-            className={styles.linkIcon}
-            name="next-icon"
-            type="light"
-            size={20}
-          />
         </DocLink>
       </div>
     );

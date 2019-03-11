@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 
 import _ from 'lodash';
 import { t } from 'i18next';
+import { versionTypes } from 'config/version-types';
 
 import Store from '../Store';
 
@@ -49,6 +50,12 @@ export default class AppCreateStore extends Store {
   isAddVersion = false;
 
   modifyVersionType = '';
+
+  get versionTypeName() {
+    const type = this.getVersionType();
+    const item = _.find(versionTypes, { value: type });
+    return _.get(item, 'name', '');
+  }
 
   @action
   nextStep = async () => {

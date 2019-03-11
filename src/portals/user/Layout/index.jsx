@@ -11,10 +11,12 @@ import styles from './index.scss';
 export default class UserPortalLayout extends React.PureComponent {
   static propTypes = {
     banner: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    hideFooter: PropTypes.bool
   };
 
   static defaultProps = {
+    hideFooter: false,
     banner: null
   };
 
@@ -27,7 +29,7 @@ export default class UserPortalLayout extends React.PureComponent {
         <Header />
         {banner}
         <div className={classnames(styles.page, className)}>{children}</div>
-        <Footer />
+        {!this.props.hideFooter && <Footer />}
       </Fragment>
     );
   }

@@ -265,6 +265,7 @@ export default class AppDetail extends Component {
 
     return (
       <Layout
+        hideFooter={isCreate}
         className={classnames({ [styles.createOuter]: isCreate })}
         banner={
           <Banner

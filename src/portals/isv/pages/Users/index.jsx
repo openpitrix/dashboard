@@ -14,14 +14,15 @@ import styles from './index.scss';
 @translate()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
+  userDetailStore: rootStore.userDetailStore,
   modalStore: rootStore.modalStore
 }))
 @observer
 export default class Users extends Component {
   async componentDidMount() {
-    const { userStore } = this.props;
+    const { userStore, userDetailStore } = this.props;
 
-    await userStore.fetchAll();
+    await userDetailStore.fetchAll();
     await userStore.fetchRoles();
   }
 
@@ -54,8 +55,10 @@ export default class Users extends Component {
   }
 
   render() {
-    const { userStore, modalStore, t } = this.props;
-    const { users, isLoading } = userStore;
+    const {
+      userStore, userDetailStore, modalStore, t
+    } = this.props;
+    const { users, isLoading } = userDetailStore;
 
     return (
       <Layout isCenterPage isLoading={isLoading} pageTitle="All members">
@@ -64,10 +67,15 @@ export default class Users extends Component {
           tableType="TeamMembers"
           columns={columns(t, this.renderHandleMenu)}
           data={users}
-          store={userStore}
-          filterList={filterList(t, userStore)}
+          store={userDetailStore}
+          filterList={filterList(t, userDetailStore)}
         />
-        <Modals t={t} userStore={userStore} modalStore={modalStore} />
+        <Modals
+          t={t}
+          userStore={userStore}
+          userDetailStore={userDetailStore}
+          modalStore={modalStore}
+        />
       </Layout>
     );
   }
