@@ -3,3 +3,7 @@
 .panel {
   @include bg-panel();
 }
+
+.panel.paddingTop0 {
+  padding-top: 0;
+}
