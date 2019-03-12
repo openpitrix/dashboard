@@ -47,10 +47,6 @@ export default class Can extends React.Component {
     }
   }
 
-  get defaultAllow() {
-    return true;
-  }
-
   get defaultHide() {
     return !!this.props.action;
   }
