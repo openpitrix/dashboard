@@ -1,15 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link, NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
 import { Popover, Icon } from 'components/Base';
-import Link from 'components/Link';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute, pathWithoutHeader } from 'routes';
-import ACTION from 'config/action-id';
 
 import styles from './index.scss';
 
@@ -17,14 +15,13 @@ const LinkItem = ({ to, title, path }) => {
   const isActive = to === '/' ? ['/', '/apps/:appId'].includes(path) : path.startsWith(to);
 
   return (
-    <Link
+    <NavLink
       to={to}
-      isNavLink
       exact
       className={classnames({ [styles.active]: isActive })}
     >
       {title}
-    </Link>
+    </NavLink>
   );
 };
 
@@ -79,9 +76,9 @@ export class Header extends Component {
 
     if (!user.isLoggedIn()) {
       return (
-        <Link isNavLink to="/login" className={styles.login}>
+        <NavLink to="/login" className={styles.login}>
           {t('Sign In')}
-        </Link>
+        </NavLink>
       );
     }
 
@@ -138,7 +135,6 @@ export class Header extends Component {
               <Link
                 to={toRoute(routes.portal._user.providerApply, 'user')}
                 className={styles.upgrade}
-                actionId={ACTION.isv_apply}
               >
                 <Icon
                   name="shield"

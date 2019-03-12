@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link, NavLink } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Icon, Popover, Image } from 'components/Base';
-import Link from 'components/Link';
+import Can from 'components/Can';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
@@ -158,19 +158,18 @@ export class SideNav extends React.Component {
           <div key={nav.title} className={styles.subContent}>
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
-              <Link
-                key={item.name}
-                exact
-                isNavLink
-                actionId={item.actionId}
-                activeClassName={styles.active}
-                className={classnames(styles.link, {
-                  [styles.disabled]: item.disabled
-                })}
-                to={item.link}
-              >
-                {t(item.name)}
-              </Link>
+              <Can do="show" action={item.actionId} key={item.name}>
+                <NavLink
+                  exact
+                  activeClassName={styles.active}
+                  className={classnames(styles.link, {
+                    [styles.disabled]: item.disabled
+                  })}
+                  to={item.link}
+                >
+                  {t(item.name)}
+                </NavLink>
+              </Can>
             ))}
           </div>
         ))}
@@ -192,19 +191,18 @@ export class SideNav extends React.Component {
           <div className={styles.name}>{t(subNavData.title)}</div>
         </div>
         {subNavData.links.map(link => (
-          <Link
-            key={link.name}
-            exact
-            isNavLink
-            actionId={link.actionId}
-            activeClassName={styles.active}
-            className={classnames(styles.link, {
-              [styles.disabled]: link.disabled
-            })}
-            to={link.link}
-          >
-            {t(link.name)}
-          </Link>
+          <Can do="show" action={link.actionId} key={link.name}>
+            <NavLink
+              exact
+              activeClassName={styles.active}
+              className={classnames(styles.link, {
+                [styles.disabled]: link.disabled
+              })}
+              to={link.link}
+            >
+              {t(link.name)}
+            </NavLink>
+          </Can>
         ))}
       </div>
     );

@@ -31,6 +31,23 @@ Array [
         class="login"
         href="/login"
       />
+      <a
+        class="upgrade"
+        href="/user/provider/apply"
+      >
+        <span
+          class="icon icon-shield shield"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-shield qicon-white"
+          >
+            <use
+              href="#qui-shield"
+            />
+          </svg>
+        </span>
+      </a>
     </div>
   </div>,
   <div
