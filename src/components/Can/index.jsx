@@ -8,7 +8,6 @@ import { inject } from 'mobx-react';
 export default class Can extends React.Component {
   static propTypes = {
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    children: PropTypes.any.isRequired,
     condition: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     do: PropTypes.oneOf(['show']),
     not: PropTypes.bool,
@@ -27,7 +26,7 @@ export default class Can extends React.Component {
     return !!this.props.action;
   }
 
-  get isVisible() {
+  get allowed() {
     const {
       action, not, roleStore, condition
     } = this.props;
@@ -48,14 +47,11 @@ export default class Can extends React.Component {
 
   renderChildren() {
     const { children } = this.props;
-    return typeof children === 'function'
-      ? children(this.state.allowed)
-      : children;
+    return typeof children === 'function' ? children(this.allowed) : children;
   }
 
   render() {
-    console.log(this.isVisible, this.props.action);
-    return this.props.passThrough || this.isVisible
+    return this.props.passThrough || this.allowed
       ? this.renderChildren()
       : null;
   }
