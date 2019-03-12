@@ -676,6 +676,9 @@ export default class RoleStore extends Store {
 
   setRoleSession = async () => {
     const roleId = _.get(this.getUser(), 'role');
+    if (!roleId) {
+      return [];
+    }
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
     });

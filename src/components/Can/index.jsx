@@ -9,7 +9,7 @@ export default class Can extends React.Component {
   static propTypes = {
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     children: PropTypes.any.isRequired,
-    condition: PropTypes.oneOf(['or', 'and']),
+    condition: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     do: PropTypes.oneOf(['show']),
     not: PropTypes.bool,
     passThrough: PropTypes.bool
@@ -23,32 +23,27 @@ export default class Can extends React.Component {
     passThrough: false
   };
 
-  state = {
-    allowed: !this.defaultHide,
-    hide: this.defaultHide
-  };
+  get defaultHide() {
+    return !!this.props.action;
+  }
 
-  async componentDidMount() {
+  get isVisible() {
     const {
       action, not, roleStore, condition
     } = this.props;
     if (!this.defaultHide) {
-      return;
+      return true;
     }
-    let allowed = await roleStore.checkAction(action, condition);
+    let allowed;
+    if (typeof condition === 'function') {
+      allowed = condition(action, roleStore.muduleSession);
+    } else {
+      allowed = roleStore.checkAction(action, condition);
+    }
     if (not) {
       allowed = !allowed;
     }
-    if (allowed) {
-      this.setState({
-        hide: false,
-        allowed
-      });
-    }
-  }
-
-  get defaultHide() {
-    return !!this.props.action;
+    return allowed;
   }
 
   renderChildren() {
@@ -59,7 +54,8 @@ export default class Can extends React.Component {
   }
 
   render() {
-    return this.props.passThrough || !this.state.hide
+    console.log(this.isVisible, this.props.action);
+    return this.props.passThrough || this.isVisible
       ? this.renderChildren()
       : null;
   }
