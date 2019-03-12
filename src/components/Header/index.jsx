@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 
-import { Popover, Icon, Link } from 'components/Base';
+import { Popover, Icon } from 'components/Base';
+import Link from 'components/Link';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute, pathWithoutHeader } from 'routes';
 import ACTION from 'config/action-id';
@@ -18,7 +19,7 @@ const LinkItem = ({ to, title, path }) => {
   return (
     <Link
       to={to}
-      navLink
+      isNavLink
       exact
       className={classnames({ [styles.active]: isActive })}
     >
@@ -78,7 +79,7 @@ export class Header extends Component {
 
     if (!user.isLoggedIn()) {
       return (
-        <Link navLink to="/login" className={styles.login}>
+        <Link isNavLink to="/login" className={styles.login}>
           {t('Sign In')}
         </Link>
       );

@@ -11,11 +11,11 @@ import { NavLink, Link } from 'react-router-dom';
 export default class BaseLink extends Component {
   static propTypes = {
     actionId: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    navLink: PropTypes.bool
+    isNavLink: PropTypes.bool
   };
 
   static defaultProps = {
-    navLink: false,
+    isNavLink: false,
     actionId: ''
   };
 
@@ -38,7 +38,7 @@ export default class BaseLink extends Component {
 
   render() {
     const {
-      navLink,
+      isNavLink,
       children,
       actionId,
       tRead,
@@ -49,7 +49,7 @@ export default class BaseLink extends Component {
       return null;
     }
 
-    const Container = navLink ? NavLink : Link;
+    const Container = isNavLink ? NavLink : Link;
     return <Container {...props}>{children}</Container>;
   }
 }

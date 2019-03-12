@@ -6,9 +6,8 @@ import { translate } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {
-  Icon, Popover, Image, Link
-} from 'components/Base';
+import { Icon, Popover, Image } from 'components/Base';
+import Link from 'components/Link';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
@@ -162,7 +161,7 @@ export class SideNav extends React.Component {
               <Link
                 key={item.name}
                 exact
-                navLink
+                isNavLink
                 actionId={item.actionId}
                 activeClassName={styles.active}
                 className={classnames(styles.link, {
@@ -196,7 +195,7 @@ export class SideNav extends React.Component {
           <Link
             key={link.name}
             exact
-            navLink
+            isNavLink
             actionId={link.actionId}
             activeClassName={styles.active}
             className={classnames(styles.link, {

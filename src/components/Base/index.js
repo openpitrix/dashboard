@@ -19,4 +19,3 @@ export Tooltip from './Tooltip';
 export Image from './Image';
 export Upload from './Upload';
 export DocLink from './DocLink';
-export Link from './Link';
