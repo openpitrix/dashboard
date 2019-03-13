@@ -20,7 +20,7 @@ apiVersion: v1
 serverUrl: ''
 
 # socket server
-socketUrl: ''
+socketUrl: 'ws://openpitrix-api-gateway/v1/io'
 socketProxyPort: 9100
 
 # authorization config

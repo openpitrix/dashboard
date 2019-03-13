@@ -9,6 +9,7 @@
 
 const parseUrl = require('url').parse;
 const httpProxy = require('http-proxy');
+const debug = require('debug')('app');
 const logger = require('./logger');
 
 /**
@@ -18,7 +19,7 @@ const logger = require('./logger');
  */
 const runProxyServer = (targetUrl, proxyPort) => {
   if (!targetUrl) {
-    throw Error('bad socket url endpoint');
+    logger.error('bad socket url endpoint');
   }
 
   const urlParts = parseUrl(targetUrl);
@@ -34,10 +35,7 @@ const runProxyServer = (targetUrl, proxyPort) => {
   });
 
   proxy.listen(proxyPort, HOSTNAME);
-  logger.info(
-    `Websocket proxy server running at %s`,
-    `${HOSTNAME}:${proxyPort}`
-  );
+  debug(`Websocket proxy server running at %s`, `${HOSTNAME}:${proxyPort}`);
 
   // proxy.on('proxyReqWs', (proxyReq, req, res)=> {
   //   logger.info('send proxy request');
@@ -48,10 +46,10 @@ const runProxyServer = (targetUrl, proxyPort) => {
   // })
 
   proxy.on('open', proxySock => {
-    logger.info('open proxy sock');
+    debug('open proxy sock');
 
     proxySock.on('data', data => {
-      logger.info('proxy recv data: ', data);
+      debug('proxy recv data: %O', data);
     });
   });
 
