@@ -79,7 +79,8 @@ export default class VendorStore extends Store {
     const userIds = this.vendors.map(item => item.user_id);
     if (this.attchStatictics && userIds.length > 0) {
       await this.fetchStatistics({
-        user_id: _.uniq(userIds)
+        // user_id: _.uniq(userIds),
+        status: ['passed']
       });
     }
 
