@@ -51,12 +51,12 @@
   "scripts": {
     "dev:client": "cross-env DEBUG=app NODE_ENV=development npm run locale && webpack --config webpack.dev.js --progress",
     "dev:serve": "cross-env DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "dev": "npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
+    "dev": "cross-env npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
     "clean:dev": "rimraf build",
     "clean:prod": "rimraf dist",
-    "prod:build": "npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
-    "prod:serve": "NODE_ENV=production node dist/server.js",
-    "prod": "npm run prod:build && npm run prod:serve",
+    "prod:build": "cross-env npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
+    "prod:serve": "cross-env NODE_ENV=production node dist/server.js",
+    "prod": "cross-env npm run prod:build && npm run prod:serve",
     "build:prod-client": "node build.js --prod-client",
     "build:prod-server": "node build.js --prod-server",
     "lint-fix": "eslint --fix --ext js,jsx .",
@@ -68,7 +68,7 @@
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
     "locale": "node ./src/bin/locale.js merge all",
-    "watch:locale": "npm run locale -- --watch"
+    "watch:locale": "cross-env npm run locale -- --watch"
   },
   "lint-staged": {
     "*.{js,jsx,md}": [
