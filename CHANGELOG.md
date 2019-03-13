@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.6"></a>
+## [0.3.6](https://github.com/openpitrix/dashboard/compare/v0.3.4...v0.3.6) (2019-03-13)
+
+
+### Bug Fixes
+
+* Add runtime credential page bottom tips ([#737](https://github.com/openpitrix/dashboard/issues/737)) ([8c8be46](https://github.com/openpitrix/dashboard/commit/8c8be46))
+* Admin nav label ([#866](https://github.com/openpitrix/dashboard/issues/866)) ([ed05584](https://github.com/openpitrix/dashboard/commit/ed05584))
+* Am api url ([#772](https://github.com/openpitrix/dashboard/issues/772)) ([f42b9cc](https://github.com/openpitrix/dashboard/commit/f42b9cc))
+* Api role:module no checked_action_id ([#801](https://github.com/openpitrix/dashboard/issues/801)) ([aefa8d7](https://github.com/openpitrix/dashboard/commit/aefa8d7))
+* Banner and app detail type version ([#804](https://github.com/openpitrix/dashboard/issues/804)) ([e02b3c6](https://github.com/openpitrix/dashboard/commit/e02b3c6))
+* Cluster page actions failed due to tableAction mixin ([#740](https://github.com/openpitrix/dashboard/issues/740)) ([6dfd12f](https://github.com/openpitrix/dashboard/commit/6dfd12f))
+* Create runtime credential not reset last credential ([#763](https://github.com/openpitrix/dashboard/issues/763)) ([6e2daf4](https://github.com/openpitrix/dashboard/commit/6e2daf4))
+* Deploy app show note link when no runtimes ([#784](https://github.com/openpitrix/dashboard/issues/784)) ([3dfe90e](https://github.com/openpitrix/dashboard/commit/3dfe90e))
+* Fetch runtime credential ([#725](https://github.com/openpitrix/dashboard/issues/725)) ([a7b83fa](https://github.com/openpitrix/dashboard/commit/a7b83fa))
+* Npm script add cross-env prefix ([#879](https://github.com/openpitrix/dashboard/issues/879)) ([d496c00](https://github.com/openpitrix/dashboard/commit/d496c00))
+* Provider interface method modify by new api ([#721](https://github.com/openpitrix/dashboard/issues/721)) ([9f3d33e](https://github.com/openpitrix/dashboard/commit/9f3d33e))
+* Role api ([#774](https://github.com/openpitrix/dashboard/issues/774)) ([f5c7493](https://github.com/openpitrix/dashboard/commit/f5c7493))
+* Security problems in packages ([#825](https://github.com/openpitrix/dashboard/issues/825)) ([ceb5609](https://github.com/openpitrix/dashboard/commit/ceb5609))
+* SideNav routes ([#699](https://github.com/openpitrix/dashboard/issues/699)) ([0cf3061](https://github.com/openpitrix/dashboard/commit/0cf3061))
+* SSH page style by new design ([#805](https://github.com/openpitrix/dashboard/issues/805)) ([33ddae8](https://github.com/openpitrix/dashboard/commit/33ddae8))
+* Travis build failed due to slim image ([#831](https://github.com/openpitrix/dashboard/issues/831)) ([a16e453](https://github.com/openpitrix/dashboard/commit/a16e453))
+* User get role and portal by new api ([#775](https://github.com/openpitrix/dashboard/issues/775)) ([3ff2eef](https://github.com/openpitrix/dashboard/commit/3ff2eef))
+* User portal issues ([#722](https://github.com/openpitrix/dashboard/issues/722)) ([f957879](https://github.com/openpitrix/dashboard/commit/f957879))
+* Version review and  ISV apply review error ([#739](https://github.com/openpitrix/dashboard/issues/739)) ([1a3218f](https://github.com/openpitrix/dashboard/commit/1a3218f))
+* Change runtime page ([#808](https://github.com/openpitrix/dashboard/issues/808)) ([a506da2](https://github.com/openpitrix/dashboard/commit/a506da2))
+
+
+### Features
+
+* Add admin user and role pages ([#747](https://github.com/openpitrix/dashboard/issues/747)) ([d9a8276](https://github.com/openpitrix/dashboard/commit/d9a8276))
+* Add websocket proxy server, refine socket client  ([#794](https://github.com/openpitrix/dashboard/issues/794)) ([fca7393](https://github.com/openpitrix/dashboard/commit/fca7393))
+* ISV create role ([#817](https://github.com/openpitrix/dashboard/issues/817)) ([36d3699](https://github.com/openpitrix/dashboard/commit/36d3699))
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://github.com/openpitrix/dashboard/compare/v0.3.4...v0.3.5) (2019-02-12)
 
