@@ -93,8 +93,12 @@ export class Runtime extends React.Component {
           </Section>
         ))}
         <Section size={6} className={styles.cardAddEnv}>
-          <Button className={styles.btnAdd} onClick={this.goPage}>
-            <Icon name="add" type="dark" />
+          <Button
+            className={styles.btnAdd}
+            onClick={this.goPage}
+            type="primary"
+          >
+            <Icon name="add" type="white" />
             {t('Add new env')}
           </Button>
         </Section>

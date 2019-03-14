@@ -95,7 +95,7 @@ export default class CreateEnvStore extends Store {
         : this.getCredentialContent(),
       provider: this.platform,
       // using random string for credential name when type is helm
-      name: isHelm(this.platform) ? `rtc-${Date.now()}` : this.credentialName,
+      name: isHelm(this.platform) && !this.credentialName ? `rtc-${Date.now()}` : this.credentialName,
       description: ''
     };
   }
