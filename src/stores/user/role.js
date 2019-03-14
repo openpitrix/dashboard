@@ -330,7 +330,6 @@ export default class RoleStore extends Store {
       if (!feature) {
         return;
       }
-      debugger;
       const total = this.getUniqActions(feature).length;
       feature.checked_action_bundle_id_set = feature.checked_action_bundle_id_set || [];
       const selectedCount = _.uniq(feature.checked_action_bundle_id_set).length;
