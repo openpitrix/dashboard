@@ -2,6 +2,9 @@
 
 .panel {
   @include bg-panel();
+  .panel {
+    box-shadow: none;
+  }
 }
 
 .panel.paddingTop0 {
