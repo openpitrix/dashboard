@@ -13,6 +13,7 @@ export Select from './Select';
 export Slider from './Slider';
 export Switch from './Switch';
 export Table from './Table';
+export NoData from './Table/noData';
 export Tree, { TreeNode } from './Tree';
 export Timeline from './Timeline';
 export Tooltip from './Tooltip';

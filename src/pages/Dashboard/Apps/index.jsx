@@ -26,6 +26,7 @@ export default class Apps extends Component {
     } = this.props;
     const { isAdmin } = user;
 
+    appStore.isAllApp = true;
     await appStore.fetchAll();
 
     // todo

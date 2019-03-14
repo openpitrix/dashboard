@@ -44,8 +44,8 @@ export default class CertificateInfo extends Component {
 
     return (
       <Fragment>
-        {isISV && <DetailTabs tabs={tags} />}
-        <Card
+        {isISV && <DetailTabs tabs={tags} isCardTab />}
+        <div
           className={classnames(styles.certificateInfo, {
             [styles.enInfo]: language === 'en'
           })}
@@ -93,7 +93,7 @@ export default class CertificateInfo extends Component {
               <dd>{vendorDetail.bank_account_number}</dd>
             </dl>
           </div>
-        </Card>
+        </div>
       </Fragment>
     );
   }

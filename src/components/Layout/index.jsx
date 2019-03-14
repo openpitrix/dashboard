@@ -45,8 +45,10 @@ export class Layout extends Component {
   };
 
   goBack = () => {
-    const { history } = this.props;
-    history.goBack();
+    const { history, hasBack } = this.props;
+    if (hasBack) {
+      history.goBack();
+    }
   };
 
   renderTitle() {
@@ -59,15 +61,16 @@ export class Layout extends Component {
     }
 
     return (
-      <div className={classnames(styles.pageTitle, titleCls)}>
+      <div
+        onClick={this.goBack}
+        className={classnames(
+          styles.pageTitle,
+          { [styles.backTitle]: hasBack },
+          titleCls
+        )}
+      >
         {hasBack && (
-          <Icon
-            onClick={this.goBack}
-            name="back"
-            size={24}
-            type="dark"
-            className={styles.backIcon}
-          />
+          <Icon name="back" size={24} type="dark" className={styles.backIcon} />
         )}
         {t(pageTitle)}
       </div>

@@ -22,6 +22,7 @@ const types = [
 @inject(({ rootStore }) => ({
   rootStore,
   user: rootStore.user,
+  userStore: rootStore.userStore,
   vendorStore: rootStore.vendorStore
 }))
 @observer
@@ -44,6 +45,18 @@ export default class Applications extends Component {
       const typeMap = _.find(types, { value: type });
       await vendorStore.fetchAll({ status: typeMap.status });
     }
+  };
+
+  renderAuditor = auditorId => {
+    const { users } = this.props.userStore;
+    const user = _.find(users, { user_id: auditorId }) || {};
+
+    return (
+      <div className={styles.auditorInfo}>
+        <label className={styles.name}>{user.username || auditorId}</label>
+        {user.email}
+      </div>
+    );
   };
 
   render() {
@@ -69,6 +82,7 @@ export default class Applications extends Component {
       {
         title: t('Company name, introduction'),
         key: 'company',
+        width: '200px',
         render: item => (
           <div className={styles.company}>
             <div className={styles.name}>
@@ -96,12 +110,12 @@ export default class Applications extends Component {
         title: t('Auditor'),
         key: 'auditor',
         width: '130px',
-        render: item => item.auditor
+        render: item => this.renderAuditor(item.approver)
       },
       {
         title: isUnreviewed ? t('Auditor') : '',
         key: 'actions',
-        width: '100px',
+        width: '80px',
         className: 'actions',
         render: item => (
           <div>

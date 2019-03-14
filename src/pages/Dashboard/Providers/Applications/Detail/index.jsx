@@ -188,7 +188,10 @@ export default class Applications extends Component {
         centerWidth={760}
       >
         {this.renderBaseInfo()}
-        <CertificateInfo />
+
+        <Card>
+          <CertificateInfo />
+        </Card>
 
         {this.renderMessageDialog()}
       </Layout>

@@ -59,6 +59,10 @@
   font-weight: 500;
   color: $N500;
 
+  &.backTitle {
+    cursor: pointer;
+  }
+
   .backIcon {
     float: left;
     margin-left: -40px;
