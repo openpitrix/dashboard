@@ -55,6 +55,10 @@ export default class VendorStore extends Store {
 
   btnText = 'Submit';
 
+  get userStore() {
+    return this.getStore('user');
+  }
+
   @action
   fetchAll = async (params = {}) => {
     const defaultParams = {
@@ -81,6 +85,13 @@ export default class VendorStore extends Store {
       await this.fetchStatistics({
         // user_id: _.uniq(userIds),
         status: ['passed']
+      });
+    }
+
+    const approvers = this.vendors.map(item => item.approver);
+    if (approvers.length > 0 && this.activeType === 'reviewed') {
+      await this.userStore.fetchAll({
+        user_id: _.uniq(approvers)
       });
     }
 

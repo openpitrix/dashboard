@@ -138,6 +138,8 @@
 
     &-thead > tr > th {
       position: relative;
+      box-sizing: border-box;
+      height: 32px;
       padding: 10px 5px;
       line-height: 12px;
       font-weight: normal;

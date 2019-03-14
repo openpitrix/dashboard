@@ -5,7 +5,9 @@ import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 import Layout, { Grid, Section, Card } from 'components/Layout';
-import { Button, Icon, Image } from 'components/Base';
+import {
+  Button, Icon, Image, NoData
+} from 'components/Base';
 import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import AppStatistics from 'components/AppStatistics';
@@ -58,7 +60,7 @@ export default class ProviderDetail extends Component {
     const { t } = this.props;
 
     return (
-      <Card className={styles.margin}>
+      <div className={styles.margin}>
         <div className={styles.title}>
           {t('Current status')}：{t('Not paid')}
           <Button type="default">
@@ -88,7 +90,7 @@ export default class ProviderDetail extends Component {
             <dd>Zhenzhen zhenzhen@yunify.com</dd>
           </dl>
         </div>
-      </Card>
+      </div>
     );
   }
 
@@ -97,13 +99,16 @@ export default class ProviderDetail extends Component {
     const { apps, totalCount, isLoading } = appStore;
     const linkUrl = id => toRoute(routes.portal.appDetail, { appId: id });
 
+    if (apps.length === 0) {
+      return <NoData type="appcenter" />;
+    }
+
     return (
-      <Card className={styles.appsInfo}>
+      <div className={styles.appsInfo}>
         <Loading isLoading={isLoading}>
           <div className={styles.total}>
             {t('SHELF_APP_TOTAL', { total: totalCount })}
           </div>
-
           <ul>
             {apps.map(item => (
               <li key={item.app_id}>
@@ -149,7 +154,7 @@ export default class ProviderDetail extends Component {
             ))}
           </ul>
         </Loading>
-      </Card>
+      </div>
     );
   }
 
@@ -208,10 +213,12 @@ export default class ProviderDetail extends Component {
               totalDepoly={totalMap.cluster_count_month}
               monthDepoly={totalMap.cluster_count_total}
             />
-            <DetailTabs tabs={tags} changeTab={this.changeTab} />
-            {detailTab === 'app' && this.renderApps()}
-            {detailTab === 'certificationInfo' && <CertificateInfo />}
-            {detailTab === 'margin' && this.renderMargin()}
+            <Card>
+              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+              {detailTab === 'app' && this.renderApps()}
+              {detailTab === 'certificationInfo' && <CertificateInfo />}
+              {detailTab === 'margin' && this.renderMargin()}
+            </Card>
           </Section>
         </Grid>
       </Layout>
