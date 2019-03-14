@@ -163,7 +163,7 @@ export default class UserStore extends Store {
       'users_detail',
       _.pickBy(
         _.assign(defaultParams, params),
-        a => !_.isArray(a) || !_.isEmpty(a)
+        a => !(_.isArray(a) && _.isEmpty(a))
       )
     );
   };
@@ -191,7 +191,7 @@ export default class UserStore extends Store {
       'users',
       _.pickBy(
         _.assign(defaultParams, params),
-        a => !_.isArray(a) || !_.isEmpty(a)
+        a => !(_.isArray(a) && _.isEmpty(a))
       )
     );
     this.users = _.get(result, 'user_set', []);
