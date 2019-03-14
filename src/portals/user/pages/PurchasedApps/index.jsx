@@ -14,6 +14,8 @@ import { getVersionTypesName } from 'config/version-types';
 
 import routes, { toRoute } from 'routes';
 
+import styles from './index.scss';
+
 @translate()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -104,10 +106,10 @@ export default class Purchased extends Component {
       {
         title: t('Actions'),
         key: 'actions',
-        width: '60px',
+        width: '75px',
         className: 'actions',
         render: item => (
-          <div>
+          <div className={styles.deployButton}>
             <Link to={toRoute(routes.portal.deploy, { appId: item.app_id })}>
               <Button>{t('Deploy Instance')}</Button>
             </Link>

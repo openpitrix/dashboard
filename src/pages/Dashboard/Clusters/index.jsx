@@ -349,7 +349,7 @@ export default class Clusters extends Component {
       {
         title: '',
         key: 'actions',
-        width: '70px',
+        width: '75px',
         className: 'actions',
         render: cl => (
           <Popover content={this.renderHandleMenu(cl)} className="actions">

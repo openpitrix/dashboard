@@ -10,8 +10,6 @@ import Store from '../Store';
 const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
 
-const allAppStatus = ['active', 'suspended'];
-
 @useTableActions
 class AppStore extends Store {
   idKey = 'app_id';
@@ -90,8 +88,6 @@ class AppStore extends Store {
   @observable hasMore = false;
 
   isEdit = true;
-
-  isAllApp = false;
 
   resetAppDetail = {};
 
@@ -189,8 +185,6 @@ class AppStore extends Store {
     const noMutate = Boolean(params.noMutate);
     const fetchAction = params.action || 'apps';
 
-    this.defaultStatus = this.isAllApp ? allAppStatus : this.defaultStatus;
-
     params = this.normalizeParams(_.omit(params, ['noMutate', 'action']));
 
     if (params.app_id) {
@@ -257,6 +251,7 @@ class AppStore extends Store {
       this.apps = [];
       await apps.forEach(async app => {
         await clusterStore.fetchAll({
+          isUserAction: true,
           app_id: app.app_id,
           display_columns: ['']
         });
@@ -598,7 +593,6 @@ class AppStore extends Store {
     this.appDetail = {};
     this.showActiveApps = false;
     this.checkResult = {};
-    this.isAllApp = false;
 
     this.resetTableParams();
   };

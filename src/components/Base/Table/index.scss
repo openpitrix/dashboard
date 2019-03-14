@@ -173,6 +173,8 @@
     &-tbody > tr > td {
       padding: 14px 5px;
       line-height: 16px;
+      box-sizing: border-box;
+      height: 68px;
       box-shadow: inset 0 -1px 0 0 $N10;
       transition: all $transition-speed;
       word-wrap: break-word;
@@ -194,6 +196,8 @@
       &.actions {
         > div {
           display: none;
+          float: right;
+          margin-right: 20px;
         }
         button {
           font-size: 12px;

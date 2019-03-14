@@ -187,6 +187,11 @@ export default class UserStore extends Store {
     if (this.searchWord) {
       defaultParams.search_word = this.searchWord;
     }
+
+    // if params has user_id, use system auth query data
+    if (params.user_id) {
+      params.bypass_auth = true;
+    }
     const result = await this.request.get(
       'users',
       _.pickBy(

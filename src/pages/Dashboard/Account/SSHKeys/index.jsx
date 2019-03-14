@@ -234,11 +234,16 @@ export default class SSHKeys extends Component {
   };
 
   renderKeyPairs() {
-    const { sshKeyStore, t } = this.props;
+    const { sshKeyStore, user, t } = this.props;
     const { keyPairs, currentPairId } = sshKeyStore;
 
     return (
-      <Section size={3} className={styles.sshKeys}>
+      <Section
+        size={3}
+        className={classnames(styles.sshKeys, {
+          [styles.greyBg]: !user.isUserPortal
+        })}
+      >
         <ul>
           {keyPairs.map(pair => (
             <li

@@ -5,6 +5,7 @@ import routes, { toRoute } from 'routes';
 import LessText from 'components/LessText';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import VersionType from 'components/VersionType';
 import { getObjName } from 'utils';
 import _ from 'lodash';
 
@@ -52,14 +53,13 @@ export default ({ users = [] }) => [
     title: 'Delivery type',
     key: 'delivery_type',
     width: '80px',
-    render: item => <I18n>{t => item.app_version_types || t('unknown')}</I18n>
+    render: item => <VersionType types={item.app_version_types} />
   },
   {
     title: 'Count deploy',
     key: 'cnt_deploy',
     width: '80px',
-    // todo
-    render: () => <I18n>{t => t('unknown')}</I18n>
+    render: item => item.deploy_total
   },
   {
     title: 'Developer',

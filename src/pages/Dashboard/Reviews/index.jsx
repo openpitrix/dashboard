@@ -108,7 +108,7 @@ export default class Reviews extends Component {
           <AppName
             linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
             icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
-            name={getObjName(apps, 'app_id', item.app_id, 'name')}
+            name={item.app_name}
             versionName={item.version_name}
             type={item.version_type || 'VM'}
           />

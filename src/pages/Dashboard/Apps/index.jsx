@@ -13,6 +13,7 @@ import styles from './index.scss';
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
+  clusterStore: rootStore.clusterStore,
   categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore,
   user: rootStore.user
@@ -26,7 +27,8 @@ export default class Apps extends Component {
     } = this.props;
     const { isAdmin } = user;
 
-    appStore.isAllApp = true;
+    appStore.defaultStatus = ['active', 'suspended'];
+    appStore.attchDeployTotal = true; // for query deploy total
     await appStore.fetchAll();
 
     // todo
@@ -38,8 +40,9 @@ export default class Apps extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore } = this.props;
+    const { appStore, clusterStore } = this.props;
     appStore.reset();
+    clusterStore.reset();
   }
 
   render() {
