@@ -14,29 +14,24 @@ import styles from './index.scss';
   rootStore,
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
-  categoryStore: rootStore.categoryStore,
   userStore: rootStore.userStore,
+  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @setPage('appStore')
 @observer
 export default class Apps extends Component {
   async componentDidMount() {
-    const {
-      appStore, userStore, user, categoryStore
-    } = this.props;
-    const { isAdmin } = user;
+    const { appStore, user } = this.props;
 
     appStore.defaultStatus = ['active', 'suspended'];
     appStore.attchDeployTotal = true; // for query deploy total
-    await appStore.fetchAll();
-
-    // todo
-    if (isAdmin) {
-      await userStore.fetchAll({ noLimit: true });
+    if (user.isAdmin) {
+      appStore.attchISV = true;
+    } else if (user.isISV) {
+      appStore.attchUser = true;
     }
-
-    await categoryStore.fetchAll();
+    await appStore.fetchAll();
   }
 
   componentWillUnmount() {
@@ -47,7 +42,7 @@ export default class Apps extends Component {
 
   render() {
     const {
-      appStore, userStore, user, t
+      appStore, userStore, vendorStore, user, t
     } = this.props;
     const {
       apps,
@@ -58,12 +53,14 @@ export default class Apps extends Component {
       onRefresh
     } = appStore;
     const { users } = userStore;
+    const { vendors } = vendorStore;
     const { isAdmin } = user;
     const columnsFilter = columns => {
       const excludeKeys = isAdmin ? 'owner' : 'maintainers';
       return columns.filter(item => item.key !== excludeKeys);
     };
 
+    console.log(vendors);
     return (
       <Layout pageTitle={t('All Apps')} className={styles.appList}>
         <Toolbar
@@ -81,6 +78,7 @@ export default class Apps extends Component {
           columnsFilter={columnsFilter}
           inject={{
             users,
+            vendors,
             isAdmin
           }}
         />

@@ -206,6 +206,13 @@
         }
       }
 
+      &.boldFont {
+        @include textCut;
+        max-width: 150px;
+        font-weight: 500;
+        color: $N500;
+      }
+
       &.number {
         color: $N100;
         & > a {

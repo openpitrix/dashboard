@@ -1,0 +1,14 @@
+@import '~scss/vars';
+
+.userShow {
+  display: inline-block;
+  font-size: 12px;
+  color: $N75;
+
+  .name {
+    display: inline-block;
+    margin-right: 4px;
+    font-weight: 500;
+    color: $N500;
+  }
+}
