@@ -64,9 +64,9 @@ export default class Clusters extends Component {
       clusterStore.appId = appId;
     }
 
+    clusterStore.cluster_type = 0;
     await clusterStore.fetchAll({
-      attachApps: true,
-      cluster_type: 0
+      attachApps: true
     });
 
     await runtimeStore.fetchAll({

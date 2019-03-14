@@ -101,6 +101,9 @@ export default class ClusterStore extends Store {
     if (this.userId) {
       params.owner = this.userId;
     }
+    if (!_.isUndefined(this.cluster_type)) {
+      params.cluster_type = this.cluster_type;
+    }
 
     this.isLoading = true;
     const result = await this.request.get(this.describeActionName, params);
