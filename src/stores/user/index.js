@@ -66,6 +66,10 @@ export default class UserStore extends Store {
     return this.getStore('group');
   }
 
+  get userDetailStore() {
+    return this.getStore('userDetail');
+  }
+
   get groups() {
     return this.getStore('group').groups;
   }
@@ -228,7 +232,7 @@ export default class UserStore extends Store {
   };
 
   @action
-  createOrModify = async (e, data) => {
+  createOrModify = async (e, data, isIsv = false) => {
     const params = _.pick({ ...data }, [
       'user_id',
       'username',
@@ -256,10 +260,10 @@ export default class UserStore extends Store {
 
       // fixme
       // delete params.username;
-      await this.create(params);
+      await this.create(params, isIsv);
       const userId = _.get(this.operateResult, 'user_id');
       if (!!userId && this.needJoinGroup) {
-        this.groupStore.selectIds = [userId];
+        this.userDetailStore.selectIds = [userId];
         await this.groupStore.joinGroup();
       }
     }
@@ -277,9 +281,10 @@ export default class UserStore extends Store {
   };
 
   @action
-  create = async (params = {}) => {
+  create = async (params = {}, isIsv) => {
     this.isLoading = true;
-    this.operateResult = await this.request.post('users', params);
+    const url = !isIsv ? 'users' : 'isv_users';
+    this.operateResult = await this.request.post(url, params);
     this.isLoading = false;
   };
 

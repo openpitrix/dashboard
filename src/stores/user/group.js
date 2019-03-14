@@ -285,7 +285,7 @@ export default class GroupStore extends Store {
     }
 
     this.selectedGroupIds = keys;
-    this.selectJoinGroupIds = keys;
+    this.selectedJoinGroupIds = keys;
     this.selectedRowKeys = [];
     _.assign(this.userStore, {
       selectIds: [],
