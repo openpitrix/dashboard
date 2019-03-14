@@ -61,9 +61,9 @@
 .versionName {
   @include normal-font($line-height: 20px, $font-size: 12px);
 
-  .type {
+  .name {
     display: inline-block;
-    margin-right: 4px;
+    margin-left: 4px;
     color: $N75;
   }
 }

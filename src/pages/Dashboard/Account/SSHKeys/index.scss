@@ -152,15 +152,32 @@
 
 .sshKeys {
   border-right: 1px solid $N10;
+  border-top: 1px solid $N10;
+
+  &.greyBg {
+    li {
+      &.active {
+        margin-right: 0;
+        background-color: $background-color;
+      }
+
+      &:hover {
+        margin-right: 0;
+        background-color: $background-color;
+      }
+    }
+  }
 
   li {
-    padding: 6px 20px;
+    padding: 12px 20px;
     line-height: 20px;
     font-size: 12px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 
     &.active {
+      margin-right: 1px;
       background-color: $N0;
       box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
       color: $N500;
@@ -168,6 +185,7 @@
     }
 
     &:hover {
+      margin-right: 1px;
       background-color: $N0;
       box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
     }
@@ -182,11 +200,10 @@
 }
 
 .addKey {
-  margin-top: 12px;
+  margin: 20px 0 0 20px;
   line-height: 20px;
   font-size: 12px;
   color: $P75;
-  text-align: center;
   cursor: pointer;
 
   .icon {

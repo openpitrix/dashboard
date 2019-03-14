@@ -3,11 +3,11 @@ import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
 import classnames from 'classnames';
 
-import routes, { toRoute, getPortalFromPath } from 'routes';
+import routes, { toRoute } from 'routes';
 import {
   Icon, Button, Input, Select
 } from 'components/Base';
-import Layout from 'components/Layout';
+import Layout, { Card } from 'components/Layout';
 import UserLayout from 'portals/user/Layout';
 import DetailTabs from 'components/DetailTabs';
 import { getLoginDate, getFormData } from 'utils';
@@ -239,7 +239,7 @@ export default class Account extends Component {
     return (
       <div
         className={classnames(styles.account, {
-          [styles.accountBg]: user.role !== 'user'
+          [styles.accountBg]: !user.isUserPortal && activeTab !== 'ssh'
         })}
       >
         {activeTab === 'account' && this.renderBasic()}
@@ -250,11 +250,11 @@ export default class Account extends Component {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, user } = this.props;
     const { type: activeTab } = this.props.match.params;
     const filterTabs = tabs.filter(tab => !['payment'].includes(tab.value));
 
-    if (getPortalFromPath() === 'user') {
+    if (user.isUserPortal) {
       return (
         <UserLayout
           className={classnames({
@@ -270,12 +270,15 @@ export default class Account extends Component {
 
     return (
       <Layout pageTitle={t('Personal Center')} isCenterPage noSubMenu>
-        <DetailTabs
-          tabs={filterTabs}
-          activeTab={activeTab}
-          changeTab={this.changeTab}
-        />
-        {this.renderMain()}
+        <Card>
+          <DetailTabs
+            tabs={filterTabs}
+            activeTab={activeTab}
+            changeTab={this.changeTab}
+            isCardTab
+          />
+          {this.renderMain()}
+        </Card>
       </Layout>
     );
   }

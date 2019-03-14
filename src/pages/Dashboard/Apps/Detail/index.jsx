@@ -58,13 +58,28 @@ export default class AppDetail extends Component {
 
     clusterStore.appId = appId;
     // get month deploy total
-    await clusterStore.fetchAll({ app_id: appId, created_date: 30, limit: 1 });
+    await clusterStore.fetchAll({
+      app_id: appId,
+      created_date: 30,
+      limit: 1,
+      isUserAction: true
+    });
     // get deploy total and user instance
-    await clusterStore.fetchAll({ app_id: appId });
+    await clusterStore.fetchAll({
+      app_id: appId,
+      limit: 1,
+      isUserAction: true
+    });
 
     // to fix: should query provider info
     const { appDetail } = appStore;
     await userStore.fetchDetail({ user_id: appDetail.owner });
+  }
+
+  componentWillUnmount() {
+    const { appStore, clusterStore } = this.props;
+    appStore.reset();
+    clusterStore.reset();
   }
 
   changeTab = async tab => {
@@ -174,8 +189,8 @@ export default class AppDetail extends Component {
 
     return (
       <div className={styles.versionName}>
-        <VersionType className={styles.type} types={version.type} />
-        {version.name}
+        <VersionType types={version.type} />
+        <span className={styles.name}>{version.name}</span>
       </div>
     );
   };
@@ -256,7 +271,7 @@ export default class AppDetail extends Component {
       {
         title: t('Delivery type'),
         key: 'app_id',
-        width: '80px',
+        width: '100px',
         render: item => (
           <VersionType className={styles.versionType} types={item.type} />
         )
@@ -264,7 +279,7 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '80px',
+        width: '100px',
         render: item => (
           <Status type={item.status} name={mappingStatus(item.status)} />
         )
@@ -272,7 +287,7 @@ export default class AppDetail extends Component {
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '100px',
+        width: '120px',
         render: item => <TimeShow time={item.create_time} />
       },
       {
@@ -322,7 +337,7 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
+        width: '80px',
         render: item => (
           <Status type={item.status} transition={item.transition_status} />
         )
@@ -344,13 +359,13 @@ export default class AppDetail extends Component {
       {
         title: t('User'),
         key: 'owner',
-        width: '80px',
+        width: '100px',
         render: item => (_.find(users, { user_id: item.owner }) || {}).email
       },
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '80px',
+        width: '70px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {

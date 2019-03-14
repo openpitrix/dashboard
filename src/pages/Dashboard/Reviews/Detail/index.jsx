@@ -274,20 +274,22 @@ export default class ReviewDetail extends Component {
     return (
       <div className={styles.versionReview}>
         <div className={styles.title}>{t('Review progress')}</div>
-        <Card className={styles.submit}>
-          <span className={styles.name}>{t('Submit')}</span>
-          <label className={styles.time}>
-            {formatTime(
-              _.get(phase, 'developer.review_time'),
-              'YYYY/MM/DD HH:mm:ss'
-            )}
-          </label>
-        </Card>
+        <div className={styles.progressLine}>
+          <Card className={styles.submit}>
+            <span className={styles.name}>{t('Submit')}</span>
+            <label className={styles.time}>
+              {formatTime(
+                _.get(phase, 'developer.review_time'),
+                'YYYY/MM/DD HH:mm:ss'
+              )}
+            </label>
+          </Card>
 
-        {reviewDetail.status
-          && reviewRoles.map(type => (
-            <div key={type}>{this.renderReviewCard(type)}</div>
-          ))}
+          {reviewDetail.status
+            && reviewRoles.map(type => (
+              <div key={type}>{this.renderReviewCard(type)}</div>
+            ))}
+        </div>
       </div>
     );
   }
