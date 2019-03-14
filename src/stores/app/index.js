@@ -9,6 +9,7 @@ import Store from '../Store';
 
 const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
+const defaultStatus = ['draft', 'active', 'suspended'];
 
 @useTableActions
 class AppStore extends Store {
@@ -16,7 +17,7 @@ class AppStore extends Store {
 
   sortKey = 'status_time';
 
-  defaultStatus = ['draft', 'active', 'suspended'];
+  defaultStatus = defaultStatus;
 
   @observable apps = [];
 
@@ -110,6 +111,14 @@ class AppStore extends Store {
 
   get clusterStore() {
     return this.getStore('cluster');
+  }
+
+  get vendorStore() {
+    return this.getStore('vendor');
+  }
+
+  get userStore() {
+    return this.getStore('user');
   }
 
   @action
@@ -245,11 +254,28 @@ class AppStore extends Store {
       this.appCount = this.totalCount;
     }
 
+    // query provider name
+    if (this.attchISV && apps.length > 0) {
+      const isvIds = this.apps.map(item => item.isv);
+      await this.vendorStore.fetchAll({
+        user_id: _.uniq(isvIds)
+      });
+    }
+
+    // query user name
+    if (this.attchUser && apps.length > 0) {
+      const userIds = this.apps.map(item => item.owner);
+      await this.userStore.fetchAll({
+        user_id: _.uniq(userIds)
+      });
+    }
+
     // query app deploy times
     if (this.attchDeployTotal && apps.length > 0) {
       const clusterStore = this.clusterStore;
       this.apps = [];
-      await apps.forEach(async app => {
+      for (let i = 0; i < apps.length; i++) {
+        const app = apps[i];
         await clusterStore.fetchAll({
           isUserAction: true,
           app_id: app.app_id,
@@ -258,7 +284,7 @@ class AppStore extends Store {
         this.apps.push(
           _.assign(app, { deploy_total: clusterStore.totalCount })
         );
-      });
+      }
     }
 
     this.isLoading = false;
@@ -593,6 +619,10 @@ class AppStore extends Store {
     this.appDetail = {};
     this.showActiveApps = false;
     this.checkResult = {};
+    this.attchISV = false;
+    this.attchDeployTotal = false;
+    this.attchUser = false;
+    this.defaultStatus = defaultStatus;
 
     this.resetTableParams();
   };

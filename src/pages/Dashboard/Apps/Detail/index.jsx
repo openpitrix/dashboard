@@ -128,7 +128,7 @@ export default class AppDetail extends Component {
         )}
         {appDetail.status === 'suspended' && (
           <span onClick={() => appStore.showModal('recover-app')}>
-            <Icon name="sort-ascending" type="dark" /> {t('Record app')}
+            <Icon name="sort-ascending" type="dark" /> {t('Recover app')}
           </span>
         )}
       </div>

@@ -6,11 +6,11 @@ import LessText from 'components/LessText';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import VersionType from 'components/VersionType';
-import { getObjName } from 'utils';
+import TdUser from 'components/TdUser';
 import _ from 'lodash';
 
 // inject
-export default ({ users = [] }) => [
+export default ({ users = [], vendors = [] }) => [
   {
     title: 'App Name',
     key: 'name',
@@ -64,23 +64,15 @@ export default ({ users = [] }) => [
   {
     title: 'Developer',
     key: 'owner',
-    width: '80px',
-    render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
+    width: '120px',
+    render: item => <TdUser userId={item.owner} users={users} />
   },
   {
     title: 'App service provider',
     key: 'maintainers',
-    width: '80px',
-    render: item => {
-      let { maintainers } = item;
-      if (maintainers && _.isString(maintainers)) {
-        try {
-          maintainers = _.map(JSON.parse(maintainers), 'name').join(', ');
-        } catch (e) {}
-      }
-
-      return maintainers;
-    }
+    className: 'boldFont',
+    width: '120px',
+    render: item => (_.find(vendors, { user_id: item.isv }) || {}).company_name || item.isv
   },
   {
     title: 'Publish time',

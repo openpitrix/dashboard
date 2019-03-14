@@ -564,10 +564,15 @@ export default class AppVersionStore extends Store {
   @action
   fetchTypeVersions = async appId => {
     this.isLoading = true;
-    const result = await this.request.get(this.describeVersionName, {
+    const data = {
       limit: this.maxLimit,
       app_id: appId
-    });
+    };
+
+    if (this.getUser().isUserPortal) {
+      data.status = ['active'];
+    }
+    const result = await this.request.get(this.describeVersionName, data);
     const versions = get(result, 'app_version_set', []);
 
     // get all unique version types
