@@ -29,7 +29,7 @@ export default class RoleModalActions extends Component {
         title={title}
         isOpen={isOpen}
         onCancel={hideModifyUser}
-        onSubmit={createOrModify}
+        onSubmit={(e, data) => createOrModify(e, data, true)}
       >
         {user_id && (
           <div className={styles.formItem}>
