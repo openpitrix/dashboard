@@ -42,3 +42,5 @@ export const providerMap = {
   vmbased: ['qingcloud', 'aws', 'aliyun'],
   helm: ['kubernetes']
 };
+
+export const regExpNamespace = /^[a-z0-9]([a-z0-9]*[a-z0-9])?$/;

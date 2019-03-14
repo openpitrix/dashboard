@@ -4,6 +4,7 @@
   "Agent Instance count": "代理数",
   "Checked this": "当前选中",
   "Switch": "切换",
+  "TIP_HELM_NAMESPACE": "命名空间的输入字符只包含小写字母和数字",
   "Modify runtime successfully": "修改环境成功",
   "Switch runtime credential successfully": "切换授权信息成功",
   "Delete runtime successfully": "删除环境成功",

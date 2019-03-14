@@ -294,8 +294,9 @@ export default class CreateTestingEnv extends React.Component {
         {validatePassed && (
           <Icon name="checked-circle" className={styles.iconSuccess} />
         )}
-        {!validatePassed
-          && validateMsg && <Icon name="error" className={styles.iconFailed} />}
+        {!validatePassed && validateMsg && (
+          <Icon name="error" className={styles.iconFailed} />
+        )}
         {isLoading && (
           <Fragment>
             <Icon name="loading" />
@@ -308,11 +309,10 @@ export default class CreateTestingEnv extends React.Component {
           })}
         >
           {validatePassed && t('Validate successfully')}
-          {!validatePassed
-            && validateMsg && (
-              <span className={styles.validateMsg} title={t(validateMsg)}>
-                {t(validateMsg)}
-              </span>
+          {!validatePassed && validateMsg && (
+            <span className={styles.validateMsg} title={t(validateMsg)}>
+              {t(validateMsg)}
+            </span>
           )}
         </span>
       </Fragment>
@@ -447,6 +447,9 @@ export default class CreateTestingEnv extends React.Component {
                     value={helmNamespace}
                     onChange={changeRuntimeNamespace}
                   />
+                  <div className={styles.tipNamespace}>
+                    {t('TIP_HELM_NAMESPACE')}
+                  </div>
                 </Fragment>
               ) : (
                 <Fragment>
