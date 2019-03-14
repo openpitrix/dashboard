@@ -161,7 +161,10 @@ export default class UserStore extends Store {
     }
     return this.request.get(
       'users_detail',
-      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
+      _.pickBy(
+        _.assign(defaultParams, params),
+        a => !_.isArray(a) || !_.isEmpty(a)
+      )
     );
   };
 
@@ -186,7 +189,10 @@ export default class UserStore extends Store {
     }
     const result = await this.request.get(
       'users',
-      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
+      _.pickBy(
+        _.assign(defaultParams, params),
+        a => !_.isArray(a) || !_.isEmpty(a)
+      )
     );
     this.users = _.get(result, 'user_set', []);
     this.totalCount = _.get(result, 'total_count', 0);
