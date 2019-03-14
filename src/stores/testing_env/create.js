@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { isHelm } from 'utils';
 import { getUrlParam } from 'utils/url';
+import { regExpNamespace } from 'config/runtimes';
 import Store from '../Store';
 
 const STEPS = 2;
@@ -284,9 +285,18 @@ export default class CreateEnvStore extends Store {
     this.runtimeInfo.desc = this.getValueFromEvent(desc);
   };
 
+  warnTipNamespace = _.throttle(() => {
+    this.warn('TIP_HELM_NAMESPACE');
+  }, 2000);
+
   @action
   changeRuntimeNamespace = ns => {
-    this.helmNamespace = this.getValueFromEvent(ns);
+    const value = this.getValueFromEvent(ns);
+    if (value !== '' && !regExpNamespace.test(value)) {
+      this.warnTipNamespace();
+      return;
+    }
+    this.helmNamespace = value;
   };
 
   @action
