@@ -224,6 +224,9 @@ export default class GroupStore extends Store {
   joinGroup = async () => {
     const { item } = this.modal;
     const user_id = item.user_id ? [item.user_id] : this.userSelectedIds;
+    if (_.isEmpty(this.selectedJoinGroupIds)) {
+      return this.error('Please select a group');
+    }
 
     const data = {
       group_id: this.selectedJoinGroupIds,

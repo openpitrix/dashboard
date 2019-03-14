@@ -254,7 +254,7 @@ export default class RoleStore extends Store {
     this.selectedActionKeys[index] = keys;
 
     this.bindActions[index].selectedActions.selectedCount = keys.filter(
-      a => !regNotAction.test(a)
+      a => !regNotAction.test(a) && a !== defaultDataLevel
     ).length;
   };
 
@@ -289,7 +289,10 @@ export default class RoleStore extends Store {
           .map(feature => ({
             key: feature.feature_id,
             title: feature.feature_name,
-            children: _.uniqBy(feature.action_bundle_set, 'action_bundle_id')
+            children: _.uniqBy(
+              feature.action_bundle_set || [],
+              'action_bundle_id'
+            )
               .slice()
               .sort(sortModule('action_bundle_id'))
               .map(item => ({
@@ -323,7 +326,10 @@ export default class RoleStore extends Store {
       selectedCount: 0
     };
 
-    features.forEach(feature => {
+    _.forEach(features, feature => {
+      if (!feature) {
+        return;
+      }
       const total = this.getUniqActions(feature).length;
       feature.checked_action_bundle_id_set = feature.checked_action_bundle_id_set || [];
       const selectedCount = _.uniq(feature.checked_action_bundle_id_set).length;
@@ -485,7 +491,7 @@ export default class RoleStore extends Store {
       key => _.startsWith(key, 'f_') || key === 'all'
     );
     const featureActions = _.flatMap(
-      feature.action_bundle_set,
+      feature.action_bundle_set || [],
       'action_bundle_id'
     );
     feature.checked_action_bundle_id_set = _.intersection(
@@ -670,6 +676,9 @@ export default class RoleStore extends Store {
 
   setRoleSession = async () => {
     const roleId = _.get(this.getUser(), 'role');
+    if (!roleId) {
+      return [];
+    }
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
     });
@@ -678,10 +687,7 @@ export default class RoleStore extends Store {
     return modules;
   };
 
-  checkActionOnce = async action_bundle_id => {
-    if (!this.moduleSession) {
-      await this.setRoleSession();
-    }
+  checkActionOnce = action_bundle_id => {
     let canDo = false;
     _.some(this.moduleSession, module => {
       const checkAll = module.is_check_all;
@@ -690,7 +696,7 @@ export default class RoleStore extends Store {
           action_bundle_id
         });
         if (actionSet) {
-          const checkedAction = feature.checked_action_bundle_id_set;
+          const checkedAction = feature.checked_action_bundle_id_set || [];
           canDo = checkAll || checkedAction.includes(actionSet.action_bundle_id);
           return true;
         }
@@ -700,13 +706,12 @@ export default class RoleStore extends Store {
     return canDo;
   };
 
-  checkAction = async actionId => {
-    if (!this.moduleSession) {
-      await this.setRoleSession();
-    }
-
+  checkAction = (actionId, condiction = 'and') => {
     if (_.isArray(actionId)) {
-      return _.every(actionId, id => this.checkActionOnce(id));
+      if (condiction === 'and') {
+        return _.every(actionId, id => this.checkActionOnce(id));
+      }
+      return _.some(actionId, id => this.checkActionOnce(id));
     }
     return this.checkActionOnce(actionId);
   };

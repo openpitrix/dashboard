@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import {
   Router, Switch, Route, Redirect
 } from 'react-router-dom';
+import { inject } from 'mobx-react';
 
 import LazyLoad from 'components/LazyLoad';
 import NotFound from 'components/NotFound';
@@ -19,8 +20,29 @@ import './scss/index.scss';
 const Login = lazy(() => import('./pages/Login'));
 const AppDetail = lazy(() => import('./pages/AppDetail'));
 
+@inject(({ rootStore }) => ({
+  roleStore: rootStore.roleStore
+}))
 export default class App extends React.Component {
+  state = {
+    isLoading: true
+  };
+
+  async componentDidMount() {
+    const { roleStore } = this.props;
+    if (!roleStore.moduleSession) {
+      await roleStore.setRoleSession();
+    }
+    this.setState({
+      isLoading: false
+    });
+  }
+
   render() {
+    if (this.state.isLoading) {
+      return null;
+    }
+
     return (
       <Router history={history}>
         <LazyLoad>

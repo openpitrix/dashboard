@@ -33,7 +33,9 @@ export default class DetailTabs extends Component {
     const firstTab = props.tabs[0];
     this.state = {
       curTab:
-        props.defaultTab || (_.isObject(firstTab) ? firstTab.value : firstTab)
+        props.defaultTab
+        || props.activeTab
+        || (_.isObject(firstTab) ? firstTab.value : firstTab)
     };
   }
 
