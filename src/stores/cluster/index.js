@@ -42,6 +42,8 @@ export default class ClusterStore extends Store {
 
   @observable onlyView = false; // user-instances only view, can't operate
 
+  cluster_type = null;
+
   // cluster job queue
   @observable
   jobs = {
@@ -101,7 +103,7 @@ export default class ClusterStore extends Store {
     if (this.userId) {
       params.owner = this.userId;
     }
-    if (!_.isUndefined(this.cluster_type)) {
+    if (this.cluster_type !== null) {
       params.cluster_type = this.cluster_type;
     }
 
@@ -263,6 +265,7 @@ export default class ClusterStore extends Store {
     this.clusters = [];
     this.attachVersions = false;
     this.resetTableParams();
+    this.cluster_type = null;
   };
 
   @action
