@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import { Button, Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
+import { PORTAL_NAME } from 'config/roles';
+import Modals from 'portals/admin/pages/Users/Modals';
 import columns, { filterList } from './columns';
-import Modals from './Modals';
 
 import styles from './index.scss';
 
@@ -26,9 +28,34 @@ export default class Users extends Component {
     await userStore.fetchRoles();
   }
 
-  renderHandleMenu() {
-    return null;
-  }
+  renderHandleMenu = user => {
+    const { modalStore, t } = this.props;
+    const isISVAdmin = _.get(user, 'role.role_id') === PORTAL_NAME.isv;
+
+    return (
+      <div className="operate-menu">
+        <span
+          onClick={() => modalStore.show(
+            'renderModalCreateUser',
+            _.assign({}, user, {
+              password: null
+            })
+          )
+          }
+        >
+          {t('Edit info')}
+        </span>
+        <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
+          {t('Change Password')}
+        </span>
+        {!isISVAdmin && (
+          <span onClick={() => modalStore.show('renderModalSetRole', user)}>
+            {t('Set role')}
+          </span>
+        )}
+      </div>
+    );
+  };
 
   handleAction(type, e) {
     e.stopPropagation();
@@ -71,6 +98,7 @@ export default class Users extends Component {
           filterList={filterList(t, userDetailStore)}
         />
         <Modals
+          isISV
           t={t}
           userStore={userStore}
           userDetailStore={userDetailStore}

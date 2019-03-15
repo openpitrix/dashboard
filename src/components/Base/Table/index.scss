@@ -171,15 +171,17 @@
     }
 
     &-tbody > tr > td {
-      padding: 14px 5px;
+      padding: 16px 5px;
       line-height: 16px;
       box-sizing: border-box;
-      height: 68px;
       box-shadow: inset 0 -1px 0 0 $N10;
       transition: all $transition-speed;
       word-wrap: break-word;
       word-break: break-all;
       font-size: 12px;
+      &:global(.actions) {
+        padding: 8px 5px;
+      }
 
       a {
         color: $N500;

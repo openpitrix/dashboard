@@ -1,10 +1,11 @@
 import React from 'react';
-import { PopoverIcon } from 'components/Base';
 import _ from 'lodash';
 
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import LessText from 'components/LessText';
+import { PopoverIcon } from 'components/Base';
+import { getRoleName } from 'config/roles';
 
 export default (t, renderHandleMenu) => {
   const columns = [
@@ -32,7 +33,7 @@ export default (t, renderHandleMenu) => {
     {
       title: t('Role'),
       key: 'role',
-      render: item => t(_.get(item, 'role.role_name', ''))
+      render: item => t(getRoleName(_.get(item, 'role', {})))
     },
     {
       title: t('Updated At'),

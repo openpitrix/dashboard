@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
-import isFunction from 'lodash/isFunction';
+import _, { isFunction } from 'lodash';
 import { Icon } from 'components/Base';
 
 import Option from './option';
@@ -135,7 +135,13 @@ export default class Select extends React.Component {
     const { disabled } = this.props;
 
     return (
-      <div className={styles.control} onClick={this.handleControlClick}>
+      <div
+        ref={ref => {
+          this.control = ref;
+        }}
+        className={styles.control}
+        onClick={this.handleControlClick}
+      >
         <div className={styles.controlLabel}>{this.currentLabel}</div>
         <Icon
           name={isOpen && !disabled ? 'caret-up' : 'caret-down'}
@@ -148,12 +154,18 @@ export default class Select extends React.Component {
   renderOptions() {
     const { isOpen } = this.state;
     const { disabled } = this.props;
+    const dimensions = this.control
+      ? this.control.getBoundingClientRect()
+      : null;
 
     return this.childNodes.length > 0 ? (
       <div
         className={classnames(styles.options, {
           [styles.show]: isOpen && !disabled
         })}
+        style={{
+          width: _.get(dimensions, 'width', 'auto')
+        }}
       >
         {this.childNodes}
       </div>
