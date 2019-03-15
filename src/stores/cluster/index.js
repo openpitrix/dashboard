@@ -44,6 +44,8 @@ export default class ClusterStore extends Store {
 
   cluster_type = null;
 
+  with_detail = false;
+
   // cluster job queue
   @observable
   jobs = {
@@ -105,6 +107,9 @@ export default class ClusterStore extends Store {
     }
     if (this.cluster_type !== null) {
       params.cluster_type = this.cluster_type;
+    }
+    if (this.with_detail) {
+      params.with_detail = true;
     }
 
     if (params.isUserAction) {
@@ -272,6 +277,7 @@ export default class ClusterStore extends Store {
     this.attachVersions = false;
     this.resetTableParams();
     this.cluster_type = null;
+    this.with_detail = false;
   };
 
   @action
