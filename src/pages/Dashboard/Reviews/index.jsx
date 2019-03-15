@@ -95,7 +95,7 @@ export default class Reviews extends Component {
 
   render() {
     const {
-      appVersionStore, appStore, vendorStore, user, t
+      appVersionStore, appStore, user, t
     } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
@@ -103,7 +103,6 @@ export default class Reviews extends Component {
     const linkReview = reviewId => toRoute(routes.portal.appReviewDetail, {
       reviewId
     });
-    const { vendors } = vendorStore;
 
     const columns = [
       {
