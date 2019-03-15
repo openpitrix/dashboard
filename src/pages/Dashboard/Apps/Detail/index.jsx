@@ -112,6 +112,13 @@ export default class AppDetail extends Component {
     await versionSuspend(versionIds, operateType[0]);
   };
 
+  openSuspendDialog = (versionId, type) => {
+    const { appStore, appVersionStore } = this.props;
+    appVersionStore.versionId = versionId;
+
+    appStore.showModal(type);
+  };
+
   renderAppHandleMenu = appDetail => {
     const { appStore, match, t } = this.props;
     const { appId } = match.params;
@@ -136,11 +143,8 @@ export default class AppDetail extends Component {
   };
 
   renderVersionHandleMenu = item => {
-    const {
-      appStore, appVersionStore, match, t
-    } = this.props;
+    const { match, t } = this.props;
     const { appId } = match.params;
-    appVersionStore.versionId = item.version_id;
 
     return (
       <div className="operate-menu">
@@ -153,12 +157,18 @@ export default class AppDetail extends Component {
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
         {item.status === 'active' && (
-          <span onClick={() => appStore.showModal('suspend-version')}>
+          <span
+            onClick={() => this.openSuspendDialog(item.version_id, 'suspend-version')
+            }
+          >
             <Icon name="sort-descending" type="dark" /> {t('Suspend version')}
           </span>
         )}
         {item.status === 'suspended' && (
-          <span onClick={() => appStore.showModal('recover-version')}>
+          <span
+            onClick={() => this.openSuspendDialog(item.version_id, 'recover-version')
+            }
+          >
             <Icon name="sort-ascending" type="dark" /> {t('Recover version')}
           </span>
         )}

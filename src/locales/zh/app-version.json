@@ -81,6 +81,8 @@
   "specification and application development": "规范和应用程序开发",
   "Suspend app": "下架应用",
   "Recover app": "重新上架应用",
+  "Suspend successfully": "下架操作成功",
+  "Recover successfully": "上架操作成功",
   "Suspend version": "下架版本",
   "Recover version": "上架版本",
   "suspend-app-note-desc": "应用下架后，用户无法从商店中购买到此应用，你确定要下架该应用吗？",
