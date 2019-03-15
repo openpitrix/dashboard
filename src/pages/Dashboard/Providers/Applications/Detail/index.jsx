@@ -7,6 +7,7 @@ import { translate } from 'react-i18next';
 import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
+import TdUser from 'components/Tduser';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
 import CertificateInfo from '../../CertificateInfo';
@@ -29,15 +30,21 @@ const statusTime = {
 @inject(({ rootStore }) => ({
   rootStore,
   vendorStore: rootStore.vendorStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
 export default class Applications extends Component {
   async componentDidMount() {
-    const { vendorStore, user, match } = this.props;
+    const {
+      vendorStore, userStore, user, match
+    } = this.props;
     const { applyId } = match.params;
     const userId = applyId || user.user_id;
     await vendorStore.fetch(userId);
+
+    const { vendorDetail } = vendorStore;
+    await userStore.fetchAll({ user_id: vendorDetail.approver });
   }
 
   renderMessageDialog = () => {
@@ -72,7 +79,7 @@ export default class Applications extends Component {
 
   renderStatusInfo() {
     const {
-      vendorStore, user, match, t
+      vendorStore, userStore, user, match, t
     } = this.props;
     const { applyId } = match.params;
     const { isISV } = user;
@@ -138,8 +145,7 @@ export default class Applications extends Component {
           <dl>
             <dt>{t('Auditor')}:&nbsp;</dt>
             <dd>
-              <label>{user.username}</label>
-              <span className={styles.email}>{user.email}</span>
+              <TdUser users={userStore.users} userId={vendorDetail.approver} />
             </dd>
           </dl>
         )}

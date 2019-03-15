@@ -80,7 +80,7 @@ export default class Purchased extends Component {
         )
       },
       {
-        title: t('交付方式'),
+        title: t('Delivery type'),
         key: 'version_type',
         width: '102px',
         render: item => (getVersionTypesName(item.app_version_types) || []).join(' ')
@@ -92,10 +92,10 @@ export default class Purchased extends Component {
         render: item => clusters.filter(cluster => cluster.app_id === item.app_id).length
       },
       {
-        title: t('我的评价'),
+        title: t('My Evaluation'),
         key: 'star',
         width: '130px',
-        render: () => <Stars starTotal={4} />
+        render: () => <Stars starTotal={5} />
       },
       {
         title: t('上次部署时间'),

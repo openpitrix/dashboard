@@ -81,6 +81,7 @@ export default class Reviews extends Component {
     const { vendors } = vendorStore;
     const { apps } = appStore;
     const app = _.find(apps, { app_id: id }) || {};
+    const vendor = (_.find(vendors, { user_id: app.isv }) || {}).company_name;
 
     if (user.isISV) {
       return <TdUser users={userStore.users} userId={id} />;
@@ -151,7 +152,7 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('Audit status'),
+        title: isUnprocessed ? t('Audit status') : t('Review result'),
         key: 'status',
         width: '100px',
         render: item => (
@@ -162,7 +163,7 @@ export default class Reviews extends Component {
         )
       },
       {
-        title: t('Submit time'),
+        title: isUnprocessed ? t('Submit time') : t('Update time'),
         key: 'status_time',
         width: '120px',
         className: 'time',

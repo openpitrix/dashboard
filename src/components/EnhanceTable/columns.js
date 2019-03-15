@@ -59,7 +59,7 @@ export default ({ users = [], vendors = [], appsDeployTotal = [] }) => [
     title: 'Count deploy',
     key: 'cnt_deploy',
     width: '80px',
-    render: item => (_.find(appsDeployTotal, { app_id: item.app_id }) || {}).deploy_total
+    render: item => item.deploy_total
   },
   {
     title: 'Developer',

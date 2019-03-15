@@ -14,6 +14,7 @@ import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
+import TdUser from 'components/TdUser';
 import Screenshots from 'pages/AppDetail/Screenshots';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
@@ -132,21 +133,11 @@ export default class ReviewDetail extends Component {
     );
   };
 
-  renderOperator(operatorId) {
-    const { userStore, user } = this.props;
-    const { users } = userStore;
-    const operator = _.find(users, { user_id: operatorId }) || user;
-
-    return (
-      <div className={styles.operator}>
-        <label className={styles.name}>{operator.username}</label>&nbsp;
-        {operator.email}
-      </div>
-    );
-  }
-
   renderReviewCard(type) {
-    const { appVersionStore, user, t } = this.props;
+    const {
+      appVersionStore, userStore, user, t
+    } = this.props;
+    const { users } = userStore;
     const { reviewDetail, reveiwTypes } = appVersionStore;
     const { status, phase } = reviewDetail;
     const phaseKeys = _.keys(phase);
@@ -187,7 +178,9 @@ export default class ReviewDetail extends Component {
           <div className={styles.reviewInfo}>
             <dl>
               <dt>{t('Auditor')}:</dt>
-              <dd>{this.renderOperator(record.operator)}</dd>
+              <dd>
+                <TdUser userId={record.operator} users={users} />
+              </dd>
             </dl>
             <dl>
               <dt>{t('Start time')}:</dt>
@@ -195,7 +188,7 @@ export default class ReviewDetail extends Component {
             </dl>
           </div>
           <div className={styles.opreateButtons}>
-            {user.username === 'develop_admin' && (
+            {reviewStatus.technical.includes(status) && (
               <Link
                 to={toRoute(routes.portal.deploy, {
                   appId: reviewDetail.app_id
@@ -232,7 +225,10 @@ export default class ReviewDetail extends Component {
           <div className={styles.reviewInfo}>
             <dl>
               <dt>{t('Auditor')}:</dt>
-              <dd>{this.renderOperator(record.operator)}</dd>
+              <dd>
+                {' '}
+                <TdUser userId={record.operator} users={users} />
+              </dd>
             </dl>
             <dl>
               <dt>{t('Start time')}:</dt>
