@@ -11,6 +11,9 @@ const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
 const defaultStatus = ['draft', 'active', 'suspended'];
 
+const allAppStatus = ['active', 'suspended'];
+const defaultStatus = ['draft', 'active', 'suspended'];
+
 @useTableActions
 class AppStore extends Store {
   idKey = 'app_id';
@@ -108,6 +111,8 @@ class AppStore extends Store {
   @observable showActiveApps = false;
 
   @observable checkResult = {};
+
+  @observable appsDeployTotal = [];
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -262,7 +267,7 @@ class AppStore extends Store {
       });
     }
 
-    // query user name
+    // query developer name and email
     if (this.attchUser && apps.length > 0) {
       const userIds = this.apps.map(item => item.owner);
       await this.userStore.fetchAll({
@@ -273,18 +278,18 @@ class AppStore extends Store {
     // query app deploy times
     if (this.attchDeployTotal && apps.length > 0) {
       const clusterStore = this.clusterStore;
-      this.apps = [];
-      for (let i = 0; i < apps.length; i++) {
-        const app = apps[i];
+      this.appsDeployTotal = [];
+      await apps.forEach(async app => {
         await clusterStore.fetchAll({
           isUserAction: true,
           app_id: app.app_id,
           display_columns: ['']
         });
-        this.apps.push(
-          _.assign(app, { deploy_total: clusterStore.totalCount })
-        );
-      }
+        this.appsDeployTotal.push({
+          app_id: app.app_id,
+          deploy_total: clusterStore.totalCount
+        });
+      });
     }
 
     this.isLoading = false;
@@ -619,11 +624,12 @@ class AppStore extends Store {
     this.appDetail = {};
     this.showActiveApps = false;
     this.checkResult = {};
-    this.attchISV = false;
-    this.attchDeployTotal = false;
-    this.attchUser = false;
     this.defaultStatus = defaultStatus;
+    this.isAllApp = false;
 
+    this.attchISV = false;
+    this.attchUser = false;
+    this.attchDeployTotal = false;
     this.resetTableParams();
   };
 
