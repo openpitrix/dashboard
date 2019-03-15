@@ -4,5 +4,8 @@
   "Instance ID": "实例 ID",
   "Deploy Runtime": "部署环境",
   "Deploy Instance": "部署实例",
+  "Search Deployment Pods": "搜索部署节点",
+  "Search StatefuleSet Pods": "搜索有状态副本集节点",
+  "Search DaemonSet Pods": "搜索有状态副本集节点",
   "My Instances": "我的实例"
 }
