@@ -5,6 +5,8 @@ import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
 import { Image } from 'components/Base';
+import VersionType from 'components/VersionType';
+
 import styles from './index.scss';
 
 @translate()
@@ -42,7 +44,9 @@ export default class AppName extends React.Component {
 
           {Boolean(type || versionName) && (
             <div className={styles.description}>
-              <span className={styles.type}>{type}</span>
+              <span className={styles.type}>
+                <VersionType types={type} />
+              </span>
               &nbsp;/&nbsp;<span className={styles.versionName}>
                 {versionName}
               </span>

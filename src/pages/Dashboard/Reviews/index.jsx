@@ -139,7 +139,7 @@ export default class Reviews extends Component {
             icon={getObjName(apps, 'app_id', item.app_id, 'icon')}
             name={item.app_name}
             versionName={item.version_name}
-            type={item.version_type || 'VM'}
+            type={item.version_type}
           />
         )
       },

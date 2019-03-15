@@ -469,7 +469,10 @@ export default class AppDetail extends Component {
           {isSuspend ? (
             <label className={styles.suspended}>{t('Recalled')}</label>
           ) : (
-            <Link to="/" className={styles.link}>
+            <Link
+              to={toRoute(routes.appDetail, { appId: appDetail.app_id })}
+              className={styles.link}
+            >
               {t('View in store')} →
             </Link>
           )}
