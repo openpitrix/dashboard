@@ -7,6 +7,8 @@ import _ from 'lodash';
 import { Icon, PopoverIcon } from 'components/Base';
 import { Card } from 'components/Layout';
 
+import { CLUSTER_TYPE } from 'config/runtimes';
+
 import styles from '../index.scss';
 
 @translate()
@@ -71,7 +73,8 @@ export default class RuntimeCard extends Component {
     } = this.props;
     const cntCluster = _.filter(
       clusterStore.clusters,
-      cl => cl.cluster_type === 0 && cl.runtime_id === runtime_id
+      cl => cl.cluster_type === CLUSTER_TYPE.instance
+        && cl.runtime_id === runtime_id
     ).length;
     const { credentials } = credentialStore;
     const credentialName = _.get(
@@ -81,7 +84,8 @@ export default class RuntimeCard extends Component {
     const agentCluster = this.isDetialCard
       ? _.filter(
         clusterStore.clusters,
-        cl => cl.cluster_type === 0 && cl.runtime_id === runtime_id
+        cl => cl.cluster_type === CLUSTER_TYPE.agent
+            && cl.runtime_id === runtime_id
       ).length
       : 0;
 

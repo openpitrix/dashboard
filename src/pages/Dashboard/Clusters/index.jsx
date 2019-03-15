@@ -14,6 +14,7 @@ import TimeShow from 'components/TimeShow';
 import { getObjName } from 'utils';
 import { setPage } from 'mixins';
 import routes, { toRoute, getPortalFromPath } from 'routes';
+import { CLUSTER_TYPE } from 'config/runtimes';
 
 import styles from './index.scss';
 
@@ -66,7 +67,7 @@ export default class Clusters extends Component {
 
     Object.assign(clusterStore, {
       with_detail: true,
-      cluster_type: 0
+      cluster_type: CLUSTER_TYPE.instance,
     });
     await clusterStore.fetchAll({
       attachApps: true

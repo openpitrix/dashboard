@@ -14,6 +14,7 @@ import { Table } from 'components/Base';
 import { getObjName, getPastTime } from 'utils';
 
 import routes, { toRoute } from 'routes';
+import { CLUSTER_TYPE } from 'config/runtimes';
 import UserInfo from './UserInfo';
 import TotalCard from './TotalCard';
 import Panel from './Panel';
@@ -68,7 +69,7 @@ export default class Overview extends React.Component {
       );
       // query latest clusters
       await clusterStore.fetchAll({
-        cluster_type: 0,
+        cluster_type: CLUSTER_TYPE.instance,
         limit: 5
       });
       // query app total, top apps name
