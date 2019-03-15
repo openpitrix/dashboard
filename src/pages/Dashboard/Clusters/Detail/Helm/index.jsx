@@ -31,12 +31,6 @@ export default class HelmCluster extends React.Component {
     cluster: {}
   };
 
-  constructor(props) {
-    super(props);
-
-    // props.clusterDetailStore.clusterStore = props.clusterStore;
-  }
-
   renderDetailTabs() {
     const { onChangeK8sTag } = this.props.clusterDetailStore;
 
@@ -70,7 +64,7 @@ export default class HelmCluster extends React.Component {
     return (
       <Toolbar
         className={styles.toolbar}
-        placeholder={t('Search Pods')}
+        placeholder={t(`Search ${nodeType} Pods`)}
         searchWord={searchNode}
         onSearch={onSearchNode}
         onClear={onClearNode}
