@@ -9,9 +9,7 @@ import Store from '../Store';
 
 const maxsize = 2 * 1024 * 1024;
 let sequence = 0; // app screenshot for sort
-const defaultStatus = ['draft', 'active', 'suspended'];
 
-const allAppStatus = ['active', 'suspended'];
 const defaultStatus = ['draft', 'active', 'suspended'];
 
 @useTableActions
