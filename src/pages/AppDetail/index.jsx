@@ -57,6 +57,7 @@ export default class AppDetail extends Component {
       rootStore,
       appStore,
       appVersionStore,
+      vendorStore,
       match,
       isCreate
     } = this.props;
@@ -69,8 +70,8 @@ export default class AppDetail extends Component {
       await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
 
-      // todo
-      // await vendorStore.fetch(appDetail.vendor_id);
+      const { appDetail } = appStore;
+      await vendorStore.fetch(appDetail.isv);
 
       await appStore.fetchActiveApps({ status: 'active' });
 
