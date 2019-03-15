@@ -31,12 +31,6 @@ export default class HelmCluster extends React.Component {
     cluster: {}
   };
 
-  constructor(props) {
-    super(props);
-
-    // props.clusterDetailStore.clusterStore = props.clusterStore;
-  }
-
   renderDetailTabs() {
     const { onChangeK8sTag } = this.props.clusterDetailStore;
 
