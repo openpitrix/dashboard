@@ -61,6 +61,7 @@ export default class ClusterDetailStore extends Store {
   fetch = async clusterId => {
     this.isLoading = true;
     const result = await this.request.get(this.describeActionName, {
+      with_detail: true,
       cluster_id: clusterId
     });
     this.cluster = _.get(result, 'cluster_set[0]', {});

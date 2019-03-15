@@ -110,6 +110,10 @@ export default class AppVersionStore extends Store {
     return this.getStore('role');
   }
 
+  get vendorStore() {
+    return this.getStore('vendor');
+  }
+
   get describeVersionName() {
     return this.getUser().isUserPortal ? 'active_app_versions' : 'app_versions';
   }
@@ -247,12 +251,19 @@ export default class AppVersionStore extends Store {
 
     // query app review table relative data
     const appIds = this.reviews.map(item => item.app_id);
+    const user = this.getUser();
     if (appIds.length > 0) {
-      await this.appStore.fetchAll({ app_id: _.uniq(appIds) });
+      const appStore = this.appStore;
+      await appStore.fetchAll({ app_id: _.uniq(appIds) });
+
+      if (user.isAdmin) {
+        const isvIds = appStore.apps.map(item => item.isv);
+        this.vendorStore.fetchAll({ user_id: isvIds });
+      }
     }
 
-    const userIds = _.uniq(this.reviews.filter(item => item.reviewer));
-    if (userIds.length > 0) {
+    const userIds = this.reviews.map(item => _.get(item, 'phase.developer.operator'));
+    if (user.isIsv && userIds.length > 0) {
       await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
   };
