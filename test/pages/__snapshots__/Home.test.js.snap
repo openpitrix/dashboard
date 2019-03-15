@@ -27,7 +27,6 @@ Array [
         />
       </a>
       <a
-        aria-current="false"
         class="login"
         href="/login"
       />

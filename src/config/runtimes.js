@@ -43,4 +43,9 @@ export const providerMap = {
   helm: ['kubernetes']
 };
 
+export const CLUSTER_TYPE = {
+  instance: 0,
+  agent: 1
+};
+
 export const regExpNamespace = /^[a-z0-9]([a-z0-9]*[a-z0-9])?$/;
