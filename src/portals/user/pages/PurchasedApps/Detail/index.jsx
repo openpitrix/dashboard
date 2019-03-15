@@ -137,7 +137,7 @@ export default class PurchasedDetail extends Component {
           <dl>
             <dt>{t('我的评价')}</dt>
             <dd>
-              <Stars starTotal={4} />
+              <Stars starTotal={5} />
             </dd>
           </dl>
         </div>

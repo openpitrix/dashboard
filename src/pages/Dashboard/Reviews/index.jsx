@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
 import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
 import TableTypes from 'components/TableTypes';
+import TdUser from 'components/TdUser';
 import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
 import routes, { toRoute } from 'routes';
+
+import styles from './index.scss';
 
 const types = [
   { name: 'Unprocessed', value: 'unprocessed' },
@@ -23,6 +27,8 @@ const types = [
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
+  vendorStore: rootStore.vendorStore,
+  userStore: rootStore.userStore,
   user: rootStore.user
 }))
 @observer
@@ -35,8 +41,9 @@ export default class Reviews extends Component {
   }
 
   componentWillUnmount() {
-    const { appVersionStore } = this.props;
+    const { appStore, appVersionStore } = this.props;
     appVersionStore.reset();
+    appStore.reset();
   }
 
   changeType = type => {
@@ -67,14 +74,36 @@ export default class Reviews extends Component {
     );
   };
 
+  renderSubmitter(id) {
+    const {
+      user, appStore, userStore, vendorStore
+    } = this.props;
+    const { vendors } = vendorStore;
+    const { apps } = appStore;
+    const app = _.find(apps, { app_id: id }) || {};
+
+    if (user.isISV) {
+      return <TdUser users={userStore.users} userId={id} />;
+    }
+
+    return (
+      <div className={styles.submitter}>
+        {(_.find(vendors, { user_id: app.isv }) || {}).company_name}
+      </div>
+    );
+  }
+
   render() {
-    const { appVersionStore, appStore, t } = this.props;
+    const {
+      appVersionStore, appStore, vendorStore, user, t
+    } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
     const isUnprocessed = activeType === 'unprocessed';
     const linkReview = reviewId => toRoute(routes.portal.appReviewDetail, {
       reviewId
     });
+    const { vendors } = vendorStore;
 
     const columns = [
       {
@@ -118,7 +147,9 @@ export default class Reviews extends Component {
         title: t('Submitter'),
         key: 'submitter',
         width: '150px',
-        render: item => item.submitter
+        render: item => this.renderSubmitter(
+          user.isISV ? _.get(item, 'phase.developer.operator') : item.app_id
+        )
       },
       {
         title: t('Audit status'),

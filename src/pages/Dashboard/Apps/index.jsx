@@ -61,7 +61,6 @@ export default class Apps extends Component {
       return columns.filter(item => item.key !== excludeKeys);
     };
 
-    console.log(vendors);
     return (
       <Layout pageTitle={t('All Apps')} className={styles.appList}>
         <Toolbar

@@ -623,7 +623,6 @@ class AppStore extends Store {
     this.showActiveApps = false;
     this.checkResult = {};
     this.defaultStatus = defaultStatus;
-    this.isAllApp = false;
 
     this.attchISV = false;
     this.attchUser = false;
