@@ -21,9 +21,9 @@ const defaultStatus = ['active'];
 
 const defaultDataLevel = 'all';
 
-const regModuleIdReg = /^m\d*$/;
+const regModuleId = /^m\d+$/;
 
-const regFeatureIdReg = /^m\d*\.f\d*$/;
+const regFeatureId = /^m\d+\.f\d+$/;
 
 const regNotAction = /^m\d*(.f\d*)?$/;
 
@@ -723,10 +723,10 @@ export default class RoleStore extends Store {
   };
 
   hasFeatureAction = (id, type = 'feature') => {
-    if (type === 'feature' && !regFeatureIdReg.test(id)) {
+    if (type === 'feature' && !regFeatureId.test(id)) {
       return false;
     }
-    if (type === 'module' && !regModuleIdReg.test(id)) {
+    if (type === 'module' && !regModuleId.test(id)) {
       return false;
     }
     const module_id = id.split('.')[0];

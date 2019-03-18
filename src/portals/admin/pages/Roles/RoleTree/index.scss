@@ -2,7 +2,7 @@
 
 .tree {
   :global {
-    li .rc-tree-node-content-wrapper {
+    li .op-tree-node-content-wrapper {
       width: 100%;
       &::before {
         height: auto;
@@ -20,8 +20,8 @@
         }
       }
     }
-    .rc-tree-treenode-selected {
-      > .rc-tree-node-content-wrapper {
+    .op-tree-treenode-selected {
+      > .op-tree-node-content-wrapper {
         &::before {
           border: 1px solid $P75;
           background-color: #fff;
@@ -30,14 +30,14 @@
         }
       }
     }
-    .rc-tree-title {
+    .op-tree-title {
       display: inline-block;
       width: 100%;
     }
 
-    .rc-tree-treenode-disabled > span:not(.rc-tree-switcher),
-    .rc-tree-treenode-disabled > a,
-    .rc-tree-treenode-disabled > a span {
+    .op-tree-treenode-disabled > span:not(.op-tree-switcher),
+    .op-tree-treenode-disabled > a,
+    .op-tree-treenode-disabled > a span {
       color: $N75;
       cursor: default;
     }
@@ -45,16 +45,16 @@
   & > li {
     border: 1px solid $N10;
     border-radius: 2px;
-    & > :global(.rc-tree-node-content-wrapper) {
+    & > :global(.op-tree-node-content-wrapper) {
       &::before {
         content: none;
       }
     }
-    & > :global(.rc-tree-node-content-wrapper) {
+    & > :global(.op-tree-node-content-wrapper) {
       padding-top: 6px !important;
       padding-bottom: 12px !important;
     }
-    & > :global(.rc-tree-switcher) {
+    & > :global(.op-tree-switcher) {
       margin-top: 9px !important;
     }
   }

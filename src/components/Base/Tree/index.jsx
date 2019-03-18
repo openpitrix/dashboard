@@ -9,7 +9,6 @@ import RcTree, { TreeNode } from 'rc-tree';
 
 import { Icon } from 'components/Base';
 
-import './index.css';
 import styles from './index.scss';
 
 @translate()
@@ -19,6 +18,7 @@ export default class Tree extends Component {
     checkable: PropTypes.bool,
     keyName: PropTypes.string,
     onSelect: PropTypes.func,
+    prefixCls: PropTypes.string,
     sameHeight: PropTypes.bool,
     showIcon: PropTypes.bool,
     showLine: PropTypes.bool,
@@ -32,7 +32,8 @@ export default class Tree extends Component {
     showLine: false,
     keyName: 'key',
     treeData: [],
-    onSelect: _.noop
+    onSelect: _.noop,
+    prefixCls: 'op-tree'
   };
 
   renderSwitcherIcon = ({ expanded, isLeaf }) => {

@@ -16,25 +16,25 @@
     font-size: 12px;
     line-height: 2;
     color: $N300;
-    li span.rc-tree-switcher.rc-tree-switcher_open,
-    li span.rc-tree-switcher.rc-tree-switcher_close {
+    li span.op-tree-switcher.op-tree-switcher_open,
+    li span.op-tree-switcher.op-tree-switcher_close {
       background-image: none;
     }
-    li > .rc-tree-switcher-noop {
+    li > .op-tree-switcher-noop {
       position: absolute;
       z-index: 1;
       margin-left: -24px;
       margin-top: 2px;
     }
 
-    .rc-tree-switcher + .rc-tree-node-content-wrapper {
+    .op-tree-switcher + .op-tree-node-content-wrapper {
       width: calc(100% - 22px);
     }
-    .rc-tree-switcher-noop + .rc-tree-node-content-wrapper {
+    .op-tree-switcher-noop + .op-tree-node-content-wrapper {
       width: 100%;
     }
 
-    .rc-tree-title {
+    .op-tree-title {
       display: inline-flex;
       width: 100%;
     }
@@ -43,7 +43,7 @@
 
 .tree.autoHeight {
   :global {
-    li .rc-tree-node-content-wrapper {
+    li .op-tree-node-content-wrapper {
       height: auto;
     }
   }
@@ -55,7 +55,7 @@
 }
 .hoverTree {
   :global {
-    .rc-tree-node-content-wrapper {
+    .op-tree-node-content-wrapper {
       &::before {
         content: '';
         position: absolute;
@@ -77,26 +77,26 @@
       position: absolute;
       z-index: 1;
     }
-    .rc-tree-node-selected {
+    .op-tree-node-selected {
       background: transparent;
       border: 0;
     }
-    .rc-tree-treenode-selected {
-      > .rc-tree-node-content-wrapper::before {
+    .op-tree-treenode-selected {
+      > .op-tree-node-content-wrapper::before {
         background: $N10;
       }
-      > .rc-tree-node-content-wrapper .rc-tree-title {
+      > .op-tree-node-content-wrapper .op-tree-title {
         font-weight: 500;
         color: $N500;
       }
     }
-    .rc-tree-title {
+    .op-tree-title {
       position: relative;
       z-index: 1;
     }
   }
   & > li {
-    & > :global(.rc-tree-node-content-wrapper) {
+    & > :global(.op-tree-node-content-wrapper) {
       &::before {
         left: 0px;
       }
@@ -106,7 +106,7 @@
 
 .tree {
   :global {
-    li.rc-tree-treenode-disabled span.rc-tree-checkbox {
+    li.op-tree-treenode-disabled span.op-tree-checkbox {
       background-image: none;
       margin: 4px 4px 0 2px;
       position: relative;
@@ -115,7 +115,7 @@
       width: auto;
       height: auto;
     }
-    .rc-tree-checkbox-checked {
+    .op-tree-checkbox-checked {
       .checkbox-inner {
         background-color: $P75;
         border-color: $P75;
@@ -140,7 +140,7 @@
       box-sizing: border-box;
     }
   }
-  &:global(.rc-tree li span.rc-tree-checkbox) {
+  &:global(.op-tree li span.op-tree-checkbox) {
     margin-right: 8px;
   }
 }
@@ -188,11 +188,11 @@
     content: " ";
   }
   :global {
-    .rc-tree-switcher {
+    .op-tree-switcher {
       margin-top: 8px;
       margin-left: 5px;
     }
-    .rc-tree-title {
+    .op-tree-title {
       display: inline-flex;
       align-items: center;
       width: 100%;
@@ -206,10 +206,71 @@
       transition: all .1s;
       cursor: pointer;
     }
-    // .rc-tree-switcher + 
   }
 }
 
 .hide {
   display: none;
+}
+
+:global {
+  .op-tree {
+    margin: 0;
+    padding: 5px;
+  }
+  .op-tree li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    white-space: nowrap;
+    outline: 0;
+
+    .op-tree-node-content-wrapper {
+      display: inline-block;
+      padding: 1px 3px 0 0;
+      margin: 0;
+      cursor: pointer;
+      height: 17px;
+      text-decoration: none;
+      vertical-align: top;
+    }
+    ul {
+      margin: 0;
+      padding: 0 0 0 18px;
+    }
+    span.op-tree-switcher,
+    span.op-tree-checkbox,
+    span.op-tree-iconEle {
+      line-height: 16px;
+      margin-right: 2px;
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      border: 0 none;
+      cursor: pointer;
+      outline: none;
+      background-color: transparent;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+    }
+    span.op-tree-icon_loading {
+      margin-right: 2px;
+      vertical-align: top;
+    }
+    span.op-tree-switcher.op-tree-switcher-noop {
+      cursor: auto;
+    }
+  }
+  .op-tree-child-tree {
+    display: none;
+  }
+  .op-tree-child-tree-open {
+    display: block;
+  }
+  .op-tree-treenode-disabled > span:not(.op-tree-switcher),
+  .op-tree-treenode-disabled > a,
+  .op-tree-treenode-disabled > a span {
+    cursor: not-allowed;
+  }
 }
