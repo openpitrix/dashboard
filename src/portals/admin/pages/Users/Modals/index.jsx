@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import _ from 'lodash';
+import classnames from 'classnames';
 
 import { Input, Select, Tree } from 'components/Base';
 
 import { Dialog } from 'components/Layout';
+import { PORTAL_NAME, getRoleName, getRoleDescription } from 'config/roles';
 
 import styles from '../index.scss';
 
@@ -12,6 +14,10 @@ const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
 @observer
 export default class UserModalActions extends Component {
+  state = {
+    roleId: ''
+  };
+
   get selectedIds() {
     return this.props.userDetailStore.selectIds;
   }
@@ -22,6 +28,10 @@ export default class UserModalActions extends Component {
 
   get selectedGroupIds() {
     return this.props.groupStore.selectedGroupIds;
+  }
+
+  get roleProtal() {
+    return this.props.isISV ? PORTAL_NAME.isv : PORTAL_NAME.admin;
   }
 
   renderModalCreateGroup() {
@@ -133,10 +143,23 @@ export default class UserModalActions extends Component {
     );
   }
 
+  onChangeRole = roleId => {
+    this.setState({ roleId });
+  };
+
+  resetRoleId = () => {
+    this.setState({
+      roleId: ''
+    });
+  };
+
   renderModalSetRole() {
-    const { userDetailStore, modalStore, t } = this.props;
+    const {
+      userStore, userDetailStore, modalStore, t
+    } = this.props;
     const { isOpen, hide, item } = modalStore;
     const { setRole, createRoles } = userDetailStore;
+    const roles = this.props.isISV ? userStore.isvRoles : createRoles;
     const roleId = _.get(item, 'role.role_id', '');
     const userId = _.get(item, 'user_id') || this.selectedIds.join(',');
     const isMultip = _.get(item, 'user_id');
@@ -145,27 +168,43 @@ export default class UserModalActions extends Component {
       ? t('Set_Role_Title', { names })
       : t('Set_Role_Title_For_Multi_User', {
         count: names.length,
-        names: names.slice(0, 3).join(',')
+        names: names.slice(0, 3).join(','),
+        interpolation: {
+          escapeValue: false
+        }
       });
-
+    const defaultRole = _.get(item, 'role', {});
+    const selectedRole = _.find(roles, { role_id: this.state.roleId });
     return (
       <Dialog
         width={744}
         title={t('Set role')}
         isOpen={isOpen}
-        onCancel={hide}
+        onCancel={() => {
+          this.resetRoleId();
+          hide();
+        }}
         onSubmit={setRole}
       >
         <div className={styles.formTitle}>{text}</div>
         <div>
           <input name="user_id" value={userId} type="hidden" />
-          <Select defaultValue={roleId} name="role_id">
-            {createRoles.map(({ role_id, role_name }) => (
-              <Select.Option key={role_id} value={role_id}>
-                {t(role_name)}
+          <Select
+            defaultValue={roleId}
+            onChange={this.onChangeRole}
+            name="role_id"
+          >
+            {roles.map(role => (
+              <Select.Option key={role.role_id} value={role.role_id}>
+                {t(getRoleName(role, this.roleProtal))}
               </Select.Option>
             ))}
           </Select>
+          <div className={styles.description}>
+            {t(
+              getRoleDescription(selectedRole || defaultRole, this.roleProtal)
+            )}
+          </div>
         </div>
       </Dialog>
     );
@@ -173,7 +212,7 @@ export default class UserModalActions extends Component {
 
   renderModalCreateUser() {
     const {
-      userStore, userDetailStore, modalStore, t
+      userStore, userDetailStore, modalStore, isISV, t
     } = this.props;
     const { isOpen, item } = modalStore;
     const { hideModifyUser, createOrModify } = userStore;
@@ -181,22 +220,28 @@ export default class UserModalActions extends Component {
       user_id, username, description, email
     } = item;
     const { createRoles } = userDetailStore;
+    const roles = this.props.isISV ? userStore.isvRoles : createRoles;
 
     const title = !user_id ? t('Create New User') : t('Modify User');
+    const defaultRole = _.get(roles, '[0]', {});
+    const selectedRole = _.find(roles, { role_id: this.state.roleId });
 
     return (
       <Dialog
         width={744}
         title={title}
         isOpen={isOpen}
-        onCancel={hideModifyUser}
-        onSubmit={createOrModify}
+        onCancel={() => {
+          this.resetRoleId();
+          hideModifyUser();
+        }}
+        onSubmit={(e, data) => createOrModify(e, data, isISV)}
       >
         {user_id && (
           <div className={styles.formItem}>
             <label>{t('Name')}</label>
             <Input
-              name="name"
+              name="username"
               maxLength="50"
               defaultValue={username}
               required
@@ -217,18 +262,30 @@ export default class UserModalActions extends Component {
         </div>
         {!user_id && (
           <Fragment>
-            <div className={styles.formItem}>
+            <div className={classnames(styles.formItem, styles.setRoleFrom)}>
               <label>{t('Role')}</label>
               <Select
-                defaultValue={_.get(createRoles, '[0].role_id')}
+                defaultValue={_.get(roles, '[0].role_id')}
                 name="role_id"
+                onChange={this.onChangeRole}
               >
-                {createRoles.map(({ role_id, role_name }) => (
-                  <Select.Option key={role_id} value={role_id}>
-                    {t(role_name)}
+                {roles.map(role => (
+                  <Select.Option key={role.role_id} value={role.role_id}>
+                    {t(getRoleName(role, this.roleProtal))}
                   </Select.Option>
                 ))}
               </Select>
+            </div>
+            <div className={styles.formItem}>
+              <label />
+              <div className={styles.description}>
+                {t(
+                  getRoleDescription(
+                    selectedRole || defaultRole,
+                    this.roleProtal
+                  )
+                )}
+              </div>
             </div>
             <div className={styles.formItem}>
               <label>{t('Password')}</label>
@@ -251,14 +308,14 @@ export default class UserModalActions extends Component {
   renderModalResetPassword() {
     const { t, modalStore, userStore } = this.props;
     const { hide, isOpen, item } = modalStore;
-    const { changePwd } = userStore;
+    const { createOrModify } = userStore;
 
     return (
       <Dialog
         title={t('Change Password')}
         visible={isOpen}
         width={744}
-        onSubmit={changePwd}
+        onSubmit={createOrModify}
         onCancel={hide}
       >
         <div className={styles.formTitle}>
@@ -268,6 +325,12 @@ export default class UserModalActions extends Component {
         <div className={styles.formItem}>
           <Input name="user_id" type="hidden" defaultValue={item.user_id} />
           <Input name="password" type="password" maxLength={50} />
+          <Input
+            name="email"
+            type="hidden"
+            defaultValue={item.email}
+            required
+          />
         </div>
       </Dialog>
     );

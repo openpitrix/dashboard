@@ -12,7 +12,7 @@ import Layout, {
 } from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
 import Toolbar from 'components/Toolbar';
-import ModalActions from './ModalActions';
+import Modals from './Modals';
 import columns, { filterList } from './columns';
 
 import styles from './index.scss';
@@ -142,6 +142,9 @@ export default class Users extends Component {
         </span>
         <span onClick={() => modalStore.show('renderModalSetRole', user)}>
           {t('Set role')}
+        </span>
+        <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
+          {t('Change Password')}
         </span>
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
@@ -297,7 +300,7 @@ export default class Users extends Component {
             </Section>
           </Grid>
         </Panel>
-        <ModalActions
+        <Modals
           t={t}
           modalStore={modalStore}
           userStore={userStore}

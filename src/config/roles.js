@@ -60,7 +60,9 @@ export const isvRoleNameMap = {
   developer: 'Developer'
 };
 
-export const adminRoleDesMap = {};
+export const adminRoleDesMap = {
+  global_admin: 'Global Admin Role description'
+};
 
 export const isvRoleDesMap = {
   isv: 'Global Admin Role description',
@@ -74,7 +76,7 @@ export const AdminPortal = PORTAL_NAME.admin;
 export const ISVPortal = PORTAL_NAME.isv;
 export const UserPortal = PORTAL_NAME.user;
 
-export const getRoleName = (role = {}, portal = 'global_admin') => {
+export const getRoleName = (role = {}, portal = PORTAL_NAME.admin) => {
   let name = '';
   if (portal === AdminPortal) {
     name = adminRoleNameMap[role.role_id];
@@ -87,7 +89,7 @@ export const getRoleName = (role = {}, portal = 'global_admin') => {
   return name;
 };
 
-export const getRoleDescription = (role = {}, portal = 'global_admin') => {
+export const getRoleDescription = (role = {}, portal = PORTAL_NAME.admin) => {
   let description = '';
   if (portal === AdminPortal) {
     description = adminRoleDesMap[role.role_id];

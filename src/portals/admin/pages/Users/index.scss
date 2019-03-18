@@ -99,10 +99,6 @@
       display: inline-flex;
     }
   }
-
-  :global(.actions) {
-    height: 50px;
-  }
 }
 .iconCreate {
   margin-right: 8px;
@@ -174,4 +170,14 @@
 
 .setRoleTree {
   width: 300px;
+}
+
+.description {
+  @include note-font();
+  min-height: 20px;
+  margin-top: 8px;
+}
+
+.setRoleFrom {
+  margin-bottom: 0;
 }
