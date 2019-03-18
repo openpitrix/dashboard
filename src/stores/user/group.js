@@ -2,7 +2,6 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
 import { useTableActions } from 'mixins';
-import { t } from 'i18next';
 
 import rootGroup, {
   rootName,
