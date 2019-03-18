@@ -62,6 +62,10 @@ export default class ClusterStore extends Store {
     return this.getStore('appVersion');
   }
 
+  get userStore() {
+    return this.getStore('user');
+  }
+
   get clusterEnv() {
     return JSON.stringify(this.getStore('clusterDetail').env);
   }
@@ -134,7 +138,7 @@ export default class ClusterStore extends Store {
       const appIds = this.clusters.map(cluster => cluster.app_id);
       if (appIds.length) {
         await this.appStore.fetchAll({
-          app_id: appIds,
+          app_id: _.uniq(appIds),
           action: this.describeAppsAction
         });
       }
@@ -143,8 +147,13 @@ export default class ClusterStore extends Store {
     if (this.attachVersions) {
       const versionIds = this.clusters.map(cluster => cluster.version_id);
       if (versionIds.length) {
-        await this.appVersionStore.fetchAll({ version_id: versionIds });
+        await this.appVersionStore.fetchAll({ version_id: _.uniq(versionIds) });
       }
+    }
+
+    const userIds = this.clusters.map(cluster => cluster.owner);
+    if (this.attachUsers && userIds.length > 0) {
+      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
 
     this.isLoading = false;
@@ -275,6 +284,7 @@ export default class ClusterStore extends Store {
     this.isUserAction = false;
     this.clusters = [];
     this.attachVersions = false;
+    this.attachUsers = false;
     this.resetTableParams();
     this.cluster_type = null;
     this.with_detail = false;

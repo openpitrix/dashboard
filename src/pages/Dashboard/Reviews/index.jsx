@@ -105,7 +105,6 @@ export default class Reviews extends Component {
       {
         title: t('Number'),
         key: 'review_id',
-        width: '120px',
         className: 'number',
         render: item => (
           <div>
@@ -122,13 +121,11 @@ export default class Reviews extends Component {
       {
         title: t('Audit type'),
         key: 'apply_type',
-        width: '80px',
         render: item => item.apply_type || t('App on the shelf')
       },
       {
         title: t('App Info'),
         key: 'appName',
-        width: '150px',
         render: item => (
           <AppName
             linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
@@ -142,7 +139,6 @@ export default class Reviews extends Component {
       {
         title: t('Submitter'),
         key: 'submitter',
-        width: '150px',
         render: item => this.renderSubmitter(
           user.isISV ? _.get(item, 'phase.developer.operator') : item.app_id
         )
@@ -150,7 +146,6 @@ export default class Reviews extends Component {
       {
         title: isUnprocessed ? t('Audit status') : t('Review result'),
         key: 'status',
-        width: '100px',
         render: item => (
           <Status
             type={reviewShowStatus[item.status] || item.status}
@@ -161,14 +156,13 @@ export default class Reviews extends Component {
       {
         title: isUnprocessed ? t('Submit time') : t('Update time'),
         key: 'status_time',
-        width: '120px',
         className: 'time',
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: isUnprocessed ? t('Auditor') : '',
         key: 'actions',
-        width: '75px',
+        width: '110px',
         className: 'actions',
         render: item => (
           <div>
