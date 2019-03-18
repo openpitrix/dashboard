@@ -62,13 +62,13 @@ export default class AppDetail extends Component {
     await clusterStore.fetchAll({
       app_id: appId,
       created_date: 30,
-      limit: 1,
+      // limit: 1,
       isUserAction: true
     });
     // get deploy total and user instance
     await clusterStore.fetchAll({
       app_id: appId,
-      limit: 1,
+      // limit: 1,
       isUserAction: true
     });
 

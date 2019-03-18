@@ -135,7 +135,7 @@ export default class ReviewDetail extends Component {
 
   renderReviewCard(type) {
     const {
-      appVersionStore, userStore, user, t
+      appVersionStore, userStore, t
     } = this.props;
     const { users } = userStore;
     const { reviewDetail, reveiwTypes } = appVersionStore;
@@ -226,7 +226,6 @@ export default class ReviewDetail extends Component {
             <dl>
               <dt>{t('Auditor')}:</dt>
               <dd>
-                {' '}
                 <TdUser userId={record.operator} users={users} />
               </dd>
             </dl>

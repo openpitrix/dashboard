@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { translate } from 'react-i18next';
 
-import { Icon, Button, Popover } from 'components/Base';
+import { Icon, PopoverIcon, Button } from 'components/Base';
 import Table from 'components/EnhanceTable';
 import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
@@ -151,20 +151,22 @@ export default class Clusters extends Component {
 
     return (
       <div id={cluster_id} className="operate-menu">
-        <Link to={this.getDetailLink(cluster_id)}>{t('View detail')}</Link>
+        <Link to={this.getDetailLink(cluster_id)}>
+          <Icon name="eye" size={16} type="dark" /> {t('View detail')}
+        </Link>
         {status === 'stopped' && (
           <span onClick={() => showOperateCluster(cluster_id, 'start')}>
-            {t('Start cluster')}
+            <Icon name="start" size={16} type="dark" /> {t('Start cluster')}
           </span>
         )}
         {status === 'active' && (
           <span onClick={() => showOperateCluster(cluster_id, 'stop')}>
-            {t('Stop cluster')}
+            <Icon name="stop" size={16} type="dark" /> {t('Stop cluster')}
           </span>
         )}
         {status !== 'deleted' && (
           <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
-            {t('Delete')}
+            <Icon name="trash" size={16} type="dark" /> {t('Delete')}
           </span>
         )}
       </div>
@@ -277,7 +279,6 @@ export default class Clusters extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '90px',
         render: cl => (
           <Status
             type={cl.status}
@@ -289,7 +290,6 @@ export default class Clusters extends Component {
       {
         title: t('Instance Name ID'),
         key: 'name',
-        width: '120px',
         render: cl => (
           <TdName
             name={cl.name}
@@ -304,7 +304,6 @@ export default class Clusters extends Component {
           ? t('App / Delivery type / Version')
           : t('Version'),
         key: 'app_id',
-        width: '120px',
         render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
       },
       {
@@ -313,7 +312,6 @@ export default class Clusters extends Component {
             ? t('Deploy Runtime')
             : t('Test Runtime'),
         key: 'runtime_id',
-        width: '130px',
         render: cl => (
           <ProviderName
             name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
@@ -329,19 +327,16 @@ export default class Clusters extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '60px',
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
         title: t('Creator'),
         key: 'owner',
-        width: '100px',
         render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
       },
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '140px',
         sorter: true,
         onChangeSort: this.onChangeSort,
         render: cl => <TimeShow time={cl.create_time} type="detailTime" />
@@ -349,13 +344,9 @@ export default class Clusters extends Component {
       {
         title: '',
         key: 'actions',
-        width: '75px',
         className: 'actions',
-        render: cl => (
-          <Popover content={this.renderHandleMenu(cl)} className="actions">
-            <Icon name="more" />
-          </Popover>
-        )
+        width: '80px',
+        render: cl => <PopoverIcon content={this.renderHandleMenu(cl)} />
       }
     ];
 
