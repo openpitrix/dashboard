@@ -10,7 +10,7 @@ import TdUser from 'components/TdUser';
 import _ from 'lodash';
 
 // inject
-export default ({ users = [], vendors = [], appsDeployTotal = [] }) => [
+export default ({ users = [], vendors = [] }) => [
   {
     title: 'App Name',
     key: 'name',
