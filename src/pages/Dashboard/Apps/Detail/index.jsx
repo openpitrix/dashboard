@@ -17,6 +17,7 @@ import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
 import VersionType from 'components/VersionType';
 import AppStatistics from 'components/AppStatistics';
+import TdUser from 'components/TdUser';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 
@@ -66,6 +67,7 @@ export default class AppDetail extends Component {
       isUserAction: true
     });
     // get deploy total and user instance
+    clusterStore.attachUsers = true;
     await clusterStore.fetchAll({
       app_id: appId,
       // limit: 1,
@@ -219,19 +221,16 @@ export default class AppDetail extends Component {
       {
         title: t('Apply No'),
         key: 'number',
-        width: '120px',
         render: item => item.version_id
       },
       {
         title: t('Apply Type'),
         key: 'type',
-        width: '60px',
         render: item => item.type || t('App on the shelf')
       },
       {
         title: t('Status'),
         key: 'status',
-        width: '80px',
         render: cl => (
           <Status type={cl.status} transition={cl.transition_status} />
         )
@@ -239,14 +238,13 @@ export default class AppDetail extends Component {
       {
         title: t('Update time'),
         key: 'status_time',
-        width: '100px',
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: t('Auditors'),
         key: 'operator',
-        width: '80px',
-        render: item => (_.find(users, { user_id: item.operator }) || {}).username
+        width: '180px',
+        render: item => <TdUser userId={item.operator} users={users} />
       }
     ];
 
@@ -275,13 +273,11 @@ export default class AppDetail extends Component {
       {
         title: t('Version No'),
         key: 'name',
-        width: '100px',
         render: item => item.name
       },
       {
         title: t('Delivery type'),
         key: 'app_id',
-        width: '100px',
         render: item => (
           <VersionType className={styles.versionType} types={item.type} />
         )
@@ -289,7 +285,6 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '100px',
         render: item => (
           <Status type={item.status} name={mappingStatus(item.status)} />
         )
@@ -297,7 +292,7 @@ export default class AppDetail extends Component {
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '120px',
+        width: '166px',
         render: item => <TimeShow time={item.create_time} />
       },
       {
@@ -347,7 +342,6 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        width: '80px',
         render: item => (
           <Status type={item.status} transition={item.transition_status} />
         )
@@ -355,7 +349,6 @@ export default class AppDetail extends Component {
       {
         title: t('Instance Name ID'),
         key: 'name',
-        width: '130px',
         render: item => (
           <TdName name={item.name} description={item.cluster_id} noIcon />
         )
@@ -363,25 +356,22 @@ export default class AppDetail extends Component {
       {
         title: t('Version'),
         key: 'app_id',
-        width: '100px',
         render: item => this.renderVersionName(item.version_id)
       },
       {
         title: t('User'),
         key: 'owner',
-        width: '100px',
         render: item => (_.find(users, { user_id: item.owner }) || {}).email
       },
       {
         title: t('Node Count'),
         key: 'node_count',
-        width: '70px',
         render: item => (item.cluster_node_set && item.cluster_node_set.length) || 0
       },
       {
         title: t('Created At'),
         key: 'create_time',
-        width: '120px',
+        width: '166px',
         render: item => <TimeShow time={item.create_time} />
       }
     ];

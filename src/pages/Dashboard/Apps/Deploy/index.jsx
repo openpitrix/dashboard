@@ -360,7 +360,7 @@ export default class AppDeploy extends Component {
 
             return (
               <Select.Option key={item.runtime_id} value={item.runtime_id}>
-                <Icon name={provider.icon} size={20} type="dark" />
+                <Icon name={provider.icon} size={16} type="dark" />
                 {item.name}
               </Select.Option>
             );

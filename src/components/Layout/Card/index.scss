@@ -16,6 +16,15 @@
         margin-left: -90px !important;
       }
     }
+
+    .pi-table {
+      &-tbody > tr {
+        &:hover {
+          box-shadow: inset 0 -1px 0 0 $N10;
+          background-color: $card-tr-hover-bg;
+        }
+      }
+    }
   }
   // for fix no data table style of card background
   :global {
