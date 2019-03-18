@@ -87,11 +87,7 @@ export default class Reviews extends Component {
       return <TdUser users={userStore.users} userId={id} />;
     }
 
-    return (
-      <div className={styles.submitter}>
-        {(_.find(vendors, { user_id: app.isv }) || {}).company_name}
-      </div>
-    );
+    return <div className={styles.submitter}>{vendor}</div>;
   }
 
   render() {
