@@ -93,7 +93,7 @@ export default class Clusters extends Component {
     }
 
     // job updated
-    if (op === 'update:job' && clusterIds.includes(jobs[rid])) {
+    if (op === 'update:job') {
       if (['successful', 'failed'].includes(status.status)) {
         delete jobs[rid];
         await clusterStore.fetchAll();

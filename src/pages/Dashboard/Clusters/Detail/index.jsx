@@ -107,8 +107,9 @@ export default class ClusterDetail extends Component {
       await clusterDetailStore.fetchJobs(clusterId);
     }
 
-    // job updated
-    if (op === 'update:job' && jobs[rid] === clusterId) {
+    // job updated, no need to check jobId
+    // because when refresh page, last jobId in store will be clear
+    if (op === 'update:job') {
       if (['successful', 'failed'].includes(status.status)) {
         // assume job is done
         await clusterDetailStore.fetch(clusterId);
@@ -367,14 +368,13 @@ export default class ClusterDetail extends Component {
                 provider={_.get(runtimeDetail, 'provider', '')}
                 userName={_.get(userStore.userDetail, 'username', '')}
               />
-              {cluster.status !== 'deleted'
-                && !onlyView && (
-                  <Popover
-                    className="operation"
-                    content={this.renderHandleMenu()}
-                  >
-                    <Icon name="more" />
-                  </Popover>
+              {cluster.status !== 'deleted' && !onlyView && (
+                <Popover
+                  className="operation"
+                  content={this.renderHandleMenu()}
+                >
+                  <Icon name="more" />
+                </Popover>
               )}
             </Card>
 

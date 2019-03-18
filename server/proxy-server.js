@@ -49,7 +49,7 @@ const runProxyServer = (targetUrl, proxyPort) => {
     debug('open proxy sock');
 
     proxySock.on('data', data => {
-      debug('proxy recv data: %O', data);
+      debug('proxy recv data: %s', data.toString('ascii'));
     });
   });
 
