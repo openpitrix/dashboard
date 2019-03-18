@@ -9,8 +9,7 @@ import RcTree, { TreeNode } from 'rc-tree';
 
 import { Icon } from 'components/Base';
 
-import 'rc-tree/assets/index.css';
-
+import './index.css';
 import styles from './index.scss';
 
 @translate()
@@ -42,6 +41,15 @@ export default class Tree extends Component {
     }
     return <Icon name={expanded ? 'caret-down' : 'caret-right'} type="dark" />;
   };
+
+  get checkBox() {
+    const { checkable, disabled } = this.props;
+    if (!checkable || disabled) {
+      return checkable;
+    }
+
+    return <Icon className="checkbox-inner" name="check" />;
+  }
 
   renderTitle = node => {
     const { renderTreeTitle, t } = this.props;
@@ -79,7 +87,7 @@ export default class Tree extends Component {
       children,
       treeData,
       showLine,
-      ...resetProps
+      ...restProps
     } = this.props;
 
     return (
@@ -93,9 +101,9 @@ export default class Tree extends Component {
           },
           className
         )}
-        checkable={checkable ? <span className="checkbox-inner" /> : checkable}
+        checkable={this.checkBox}
         switcherIcon={switcherIcon || this.renderSwitcherIcon}
-        {...resetProps}
+        {...restProps}
       >
         {children || this.renderTreeNodes(treeData)}
       </RcTree>

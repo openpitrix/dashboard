@@ -2,8 +2,14 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
 import { useTableActions } from 'mixins';
+import { t } from 'i18next';
 
-import rootGroup, { platformUserID, normalUserID, ISVID } from 'config/group';
+import rootGroup, {
+  rootName,
+  platformUserID,
+  normalUserID,
+  ISVID
+} from 'config/group';
 
 import Store from '../Store';
 
@@ -127,6 +133,50 @@ export default class GroupStore extends Store {
 
   get rootGroup() {
     return _.find(this.groups, g => !g.parent_group_id);
+  }
+
+  get position() {
+    const groupId = _.first(this.selectedGroupIds);
+    if (!groupId) {
+      return '';
+    }
+    const names = [];
+    this.getPosition(groupId, names);
+    return _.reverse(names).join(' / ');
+  }
+
+  get parentPosition() {
+    const groupId = _.first(this.selectedGroupIds);
+    if (!groupId) {
+      return '';
+    }
+    const names = [];
+    this.getPosition(groupId, names);
+    if (names.length === 0) {
+      return '';
+    }
+    return _.reverse(names)
+      .slice(0, -1)
+      .join(' / ');
+  }
+
+  getPosition(groupId, names) {
+    if (!groupId) {
+      return;
+    }
+
+    const group = _.find(this.groups, {
+      group_id: groupId
+    });
+    if (!group) {
+      return;
+    }
+    if (group.parent_group_id) {
+      names.push(group.name);
+    } else {
+      names.push(t(rootName));
+    }
+    this.getPosition(group.parent_group_id, names);
   }
 
   @action

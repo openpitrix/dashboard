@@ -38,13 +38,13 @@ export default class UserModalActions extends Component {
     const { t, modalStore, groupStore } = this.props;
     const { hide, isOpen } = modalStore;
     const { createGroup } = groupStore;
-
     return (
       <Dialog
-        title={t('Create group')}
+        title={t('Create new organization')}
         visible={isOpen}
         width={744}
         onSubmit={createGroup}
+        okText={t('Add')}
         onCancel={hide}
       >
         <Input
@@ -52,10 +52,15 @@ export default class UserModalActions extends Component {
           type="hidden"
           value={_.first(this.selectedGroupIds)}
         />
+        <div className={styles.formItem}>
+          {t('GROUP_POSITION', {
+            position: groupStore.position
+          })}
+        </div>
+
         <Input name="description" type="hidden" />
         <div className={styles.formItem}>
-          <label>{t('Group name')}</label>
-          <Input name="name" />
+          <Input placeholder={t('Group name')} name="name" />
         </div>
       </Dialog>
     );
@@ -67,17 +72,19 @@ export default class UserModalActions extends Component {
     const { deleteGroup, groupName } = groupStore;
     return (
       <Dialog
-        title={t('Delete group')}
+        title={t('Tips')}
         visible={isOpen}
         width={744}
         onSubmit={deleteGroup}
         okText={t('Delete')}
         onCancel={hide}
       >
-        <div>
-          {t('Do you sure to delete groupName', {
-            groupName
+        <div className={styles.formItem}>
+          {t('SELECT_GROUP', {
+            position: `${groupStore.parentPosition} / `
           })}
+
+          <strong>{groupName}</strong>
         </div>
         <div className={styles.tips}>{t('DELETE_GROUP_TIP')}</div>
         <Input
@@ -107,7 +114,11 @@ export default class UserModalActions extends Component {
           defaultValue={_.first(this.selectedGroupIds)}
         />
         <div className={styles.formItem}>
-          <label>{t('Group name')}</label>
+          {t('GROUP_POSITION', {
+            position: groupStore.parentPosition
+          })}
+        </div>
+        <div className={styles.formItem}>
           <Input name="name" defaultValue={groupName} />
         </div>
       </Dialog>
