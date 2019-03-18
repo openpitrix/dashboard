@@ -12,6 +12,7 @@ import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import DetailTabs from 'components/DetailTabs';
+import VersionType from 'components/VersionType';
 import Stars from 'components/Stars';
 import { formatTime, getObjName } from 'utils';
 import { getVersionTypesName } from 'config/version-types';
@@ -26,13 +27,18 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
+  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @observer
 export default class PurchasedDetail extends Component {
   async componentDidMount() {
     const {
-      clusterStore, appStore, runtimeStore, match
+      clusterStore,
+      appStore,
+      vendorStore,
+      runtimeStore,
+      match
     } = this.props;
     const { appId } = match.params;
     clusterStore.attachVersions = true;
@@ -46,6 +52,9 @@ export default class PurchasedDetail extends Component {
       status: ['active', 'deleted'],
       noLimit: true
     });
+
+    const { appDetail } = appStore;
+    await vendorStore.fetch(appDetail.isv);
   }
 
   componentWillUnmount() {
@@ -96,8 +105,9 @@ export default class PurchasedDetail extends Component {
   }
 
   renderAppBase() {
-    const { appStore, t } = this.props;
+    const { appStore, vendorStore, t } = this.props;
     const { appDetail } = appStore;
+    const { vendorDetail } = vendorStore;
 
     return (
       <Card className={styles.appBase}>
@@ -110,7 +120,7 @@ export default class PurchasedDetail extends Component {
         />
         <div className={styles.info}>
           <dl>
-            <dt>{t('应用编号')}</dt>
+            <dt>{t('App No')}</dt>
             <dd>{appDetail.app_id}</dd>
           </dl>
           <dl>
@@ -118,24 +128,26 @@ export default class PurchasedDetail extends Component {
             <dd>
               {_.get(appDetail, 'category_set', [])
                 .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => cate.name)
+                .map(cate => t(cate.name))
                 .join(', ')}
             </dd>
           </dl>
           <dl>
             <dt>{t('Delivery type')}</dt>
-            <dd>{appDetail.app_version_types}</dd>
+            <dd>
+              <VersionType types={appDetail.app_version_types} />
+            </dd>
           </dl>
           <dl>
-            <dt>{t('应用服务商')}</dt>
-            <dd>{appDetail.app_id}</dd>
+            <dt>{t('App service provider')}</dt>
+            <dd>{vendorDetail.company_name}</dd>
           </dl>
           <dl>
-            <dt>{t('上架时间')}</dt>
+            <dt>{t('Publish time')}</dt>
             <dd>{formatTime(appDetail.status_time, 'YYYY/MM/DD HH:mm:ss')}</dd>
           </dl>
           <dl>
-            <dt>{t('我的评价')}</dt>
+            <dt>{t('My Evaluation')}</dt>
             <dd>
               <Stars starTotal={5} />
             </dd>
@@ -145,7 +157,7 @@ export default class PurchasedDetail extends Component {
           to={toRoute(routes.appDetail, { appId: appDetail.app_id })}
           className={styles.link}
         >
-          {t('去商店中查看')} →
+          {t('View in Store')} →
         </Link>
       </Card>
     );
@@ -235,7 +247,7 @@ export default class PurchasedDetail extends Component {
       <Layout
         banner={
           <Banner
-            title={t('已部署应用')}
+            title={t('Purchased')}
             description={t('所有你部署过的应用都会展示在此。')}
           />
         }

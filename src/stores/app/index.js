@@ -273,21 +273,21 @@ class AppStore extends Store {
       });
     }
 
-    // query app deploy times
+    // query app deploy total
     if (this.attchDeployTotal && apps.length > 0) {
       const clusterStore = this.clusterStore;
-      this.appsDeployTotal = [];
-      await apps.forEach(async app => {
+      this.apps = [];
+      for (let i = 0; i < apps.length; i++) {
+        const app = apps[i];
         await clusterStore.fetchAll({
           isUserAction: true,
           app_id: app.app_id,
           display_columns: ['']
         });
-        this.appsDeployTotal.push({
-          app_id: app.app_id,
-          deploy_total: clusterStore.totalCount
-        });
-      });
+        this.apps.push(
+          _.extend(app, { deploy_total: clusterStore.totalCount })
+        );
+      }
     }
 
     this.isLoading = false;

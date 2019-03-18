@@ -10,7 +10,7 @@ import TdUser from 'components/TdUser';
 import _ from 'lodash';
 
 // inject
-export default ({ users = [], vendors = [], appsDeployTotal = [] }) => [
+export default ({ users = [], vendors = [] }) => [
   {
     title: 'App Name',
     key: 'name',
@@ -59,7 +59,7 @@ export default ({ users = [], vendors = [], appsDeployTotal = [] }) => [
     title: 'Count deploy',
     key: 'cnt_deploy',
     width: '80px',
-    render: item => (_.find(appsDeployTotal, { app_id: item.app_id }) || {}).deploy_total
+    render: item => item.deploy_total
   },
   {
     title: 'Developer',

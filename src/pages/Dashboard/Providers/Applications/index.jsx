@@ -8,6 +8,7 @@ import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import TableTypes from 'components/TableTypes';
+import TdUser from 'components/Tduser';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
 
@@ -47,21 +48,10 @@ export default class Applications extends Component {
     }
   };
 
-  renderAuditor = auditorId => {
-    const { users } = this.props.userStore;
-    const user = _.find(users, { user_id: auditorId }) || {};
-
-    return (
-      <div className={styles.auditorInfo}>
-        <label className={styles.name}>{user.username || auditorId}</label>
-        {user.email}
-      </div>
-    );
-  };
-
   render() {
-    const { vendorStore, t } = this.props;
+    const { vendorStore, userStore, t } = this.props;
     const { vendors, activeType } = vendorStore;
+    const { users } = userStore;
     const isUnreviewed = activeType === 'unreviewed';
 
     const linkUrl = id => toRoute(routes.portal._admin.providerApplyDetail, { applyId: id });
@@ -110,7 +100,7 @@ export default class Applications extends Component {
         title: t('Auditor'),
         key: 'auditor',
         width: '130px',
-        render: item => this.renderAuditor(item.approver)
+        render: item => <TdUser userId={item.approver} users={users} />
       },
       {
         title: isUnreviewed ? t('Auditor') : '',

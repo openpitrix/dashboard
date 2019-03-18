@@ -46,7 +46,6 @@ export default class Apps extends Component {
     } = this.props;
     const {
       apps,
-      appsDeployTotal,
       isLoading,
       searchWord,
       onSearch,
@@ -79,7 +78,6 @@ export default class Apps extends Component {
           inject={{
             users,
             vendors,
-            appsDeployTotal,
             isAdmin
           }}
         />

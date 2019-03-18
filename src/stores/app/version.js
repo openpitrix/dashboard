@@ -244,7 +244,6 @@ export default class AppVersionStore extends Store {
       'app_version_reviews',
       assign(defaultParams, params)
     );
-    this.isLoading = false;
 
     this.reviews = get(result, 'app_version_review_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -258,14 +257,16 @@ export default class AppVersionStore extends Store {
 
       if (user.isAdmin) {
         const isvIds = appStore.apps.map(item => item.isv);
-        this.vendorStore.fetchAll({ user_id: isvIds });
+        await this.vendorStore.fetchAll({ user_id: isvIds });
       }
     }
 
     const userIds = this.reviews.map(item => _.get(item, 'phase.developer.operator'));
-    if (user.isIsv && userIds.length > 0) {
+    if (user.isISV && userIds.length > 0) {
       await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
     }
+
+    this.isLoading = false;
   };
 
   @action

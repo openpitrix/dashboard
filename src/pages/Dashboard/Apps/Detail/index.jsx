@@ -33,6 +33,7 @@ const tags = [
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   clusterStore: rootStore.clusterStore,
+  vendorStore: rootStore.vendorStore,
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
@@ -43,7 +44,7 @@ export default class AppDetail extends Component {
       appStore,
       appVersionStore,
       clusterStore,
-      userStore,
+      vendorStore,
       match
     } = this.props;
     const { appId } = match.params;
@@ -61,19 +62,18 @@ export default class AppDetail extends Component {
     await clusterStore.fetchAll({
       app_id: appId,
       created_date: 30,
-      limit: 1,
+      // limit: 1,
       isUserAction: true
     });
     // get deploy total and user instance
     await clusterStore.fetchAll({
       app_id: appId,
-      limit: 1,
+      // limit: 1,
       isUserAction: true
     });
 
-    // to fix: should query provider info
     const { appDetail } = appStore;
-    await userStore.fetchDetail({ user_id: appDetail.owner });
+    await vendorStore.fetch(appDetail.isv);
   }
 
   componentWillUnmount() {
@@ -418,8 +418,12 @@ export default class AppDetail extends Component {
   }
 
   renderAppBase() {
-    const { appStore, user, t } = this.props;
+    const {
+      appStore, vendorStore, user, t
+    } = this.props;
     const { appDetail } = appStore;
+    const { vendorDetail } = vendorStore;
+
     const categories = _.get(appDetail, 'category_set', []);
     const isSuspend = appDetail.status === 'suspended';
 
@@ -442,13 +446,15 @@ export default class AppDetail extends Component {
           </dl>
           <dl>
             <dt>{t('App intro')}</dt>
-            <dd>{appDetail.abstraction || t('None')}</dd>
+            <dd>
+              {appDetail.abstraction || appDetail.description || t('None')}
+            </dd>
           </dl>
           <dl>
             <dt>{t('Category')}</dt>
             <dd>
               {categories.map(item => (
-                <label key={item.category_id}>{item.name}</label>
+                <label key={item.category_id}>{t(item.name)}</label>
               ))}
             </dd>
           </dl>
@@ -460,7 +466,7 @@ export default class AppDetail extends Component {
           </dl>
           <dl>
             <dt>{t('App service provider')}</dt>
-            <dd>{appDetail.provider || t('None')}</dd>
+            <dd>{vendorDetail.company_name || t('None')}</dd>
           </dl>
           <dl>
             <dt>{t(isSuspend ? 'Suspend time' : 'Publish time')}</dt>
