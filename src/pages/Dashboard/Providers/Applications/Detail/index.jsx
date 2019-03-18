@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
-import TdUser from 'components/Tduser';
+import TdUser from 'components/TdUser';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
 import CertificateInfo from '../../CertificateInfo';

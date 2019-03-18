@@ -8,7 +8,7 @@ import { Table, Button } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import TableTypes from 'components/TableTypes';
-import TdUser from 'components/Tduser';
+import TdUser from 'components/TdUser';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
 
