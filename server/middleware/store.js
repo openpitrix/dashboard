@@ -17,6 +17,7 @@ module.exports = async (ctx, next) => {
   const apiVer = process.env.apiVersion || config.apiVersion || 'v1';
 
   let socketUrl = process.env.socketUrl || config.socketUrl;
+  const socketProxyPort = process.env.socketProxyPort || config.socketProxyPort;
 
   if (!serverUrl.startsWith('http')) {
     serverUrl = `http://${serverUrl}`;
@@ -34,6 +35,7 @@ module.exports = async (ctx, next) => {
   Object.assign(store, {
     config,
     socketUrl,
+    socketProxyPort,
     apiServer,
     clientId: process.env.clientId || config.clientId,
     clientSecret: process.env.clientSecret || config.clientSecret
