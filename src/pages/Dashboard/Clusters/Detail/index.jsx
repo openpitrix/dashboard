@@ -91,10 +91,8 @@ export default class ClusterDetail extends Component {
     clusterDetailStore.reset();
   }
 
-  handleJobs = async ({
-    type, resource = {}, rid, values = {}
-  }) => {
-    const { rtype } = resource;
+  handleJobs = async ({ type = '', resource = {} }) => {
+    const { rtype = '', rid = '', values = {} } = resource;
     const op = `${type}:${rtype}`;
     const { clusterStore, clusterDetailStore, match } = this.props;
     const { clusterId } = match.params;

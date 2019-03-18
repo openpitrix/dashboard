@@ -77,10 +77,8 @@ export default class Clusters extends Component {
     rootStore.sock.listenToJob(this.handleJobs);
   };
 
-  handleJobs = async ({
-    type, resource = {}, rid, values = {}
-  }) => {
-    const { rtype } = resource;
+  handleJobs = async ({ type = '', resource = {} }) => {
+    const { rtype = '', rid = '', values = {} } = resource;
     const op = `${type}:${rtype}`;
     const { clusterStore } = this.props;
     const { jobs } = clusterStore;
