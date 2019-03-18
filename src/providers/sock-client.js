@@ -15,11 +15,11 @@ const emitter = new Mitt();
 const evName = 'ops-resource';
 
 export const getEndpoint = (port, token = '') => {
-  const { protocol } = location;
+  const { protocol, hostname } = location;
   const ws = protocol === 'http:' ? 'ws:' : 'wss:';
   // todo
   const pathname = '/v1/io';
-  return `${ws}//127.0.0.1:${port}${pathname}?sid=${token}`;
+  return `${ws}//${hostname}:${port}${pathname}?sid=${token}`;
 };
 
 export default class SockClient {

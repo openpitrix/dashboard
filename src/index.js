@@ -22,9 +22,7 @@ store.notifications = [];
 if (typeof window !== 'undefined') {
   store.setUser(user);
   store.sock = user.isLoggedIn()
-    ? new SockClient(
-      getEndpoint(store.config.socketProxyPort, user.accessToken)
-    )
+    ? new SockClient(getEndpoint(store.socketProxyPort, user.accessToken))
     : null;
 
   ReactDOM.render(
