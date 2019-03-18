@@ -16,8 +16,9 @@ const logger = require('./logger');
  *
  * @param targetUrl  target websocket endpoint, example: ws://139.198.4.179:9100
  * @param proxyPort
+ * @param proxyHost
  */
-const runProxyServer = (targetUrl, proxyPort) => {
+const runProxyServer = (targetUrl, proxyPort = 9100, proxyHost = '') => {
   if (!targetUrl) {
     logger.error('bad socket url endpoint');
   }
@@ -34,8 +35,10 @@ const runProxyServer = (targetUrl, proxyPort) => {
     // changeOrigin: true
   });
 
-  proxy.listen(proxyPort, HOSTNAME);
-  debug(`Websocket proxy server running at %s`, `${HOSTNAME}:${proxyPort}`);
+  proxyHost = process.env.socketProxyHost || proxyHost;
+
+  proxy.listen(proxyPort, proxyHost);
+  debug(`Websocket proxy server running at %s`, `${proxyHost}:${proxyPort}`);
 
   // proxy.on('proxyReqWs', (proxyReq, req, res)=> {
   //   logger.info('send proxy request');
@@ -49,7 +52,7 @@ const runProxyServer = (targetUrl, proxyPort) => {
     debug('open proxy sock');
 
     proxySock.on('data', data => {
-      debug('proxy recv data: %O', data);
+      debug('proxy recv data: %s', data.toString('ascii'));
     });
   });
 

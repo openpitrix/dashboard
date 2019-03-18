@@ -21,6 +21,9 @@ serverUrl: ''
 
 # socket server
 socketUrl: 'ws://openpitrix-api-gateway/v1/io'
+
+# socket proxy server
+socketProxyHost: 127.0.0.1
 socketProxyPort: 9100
 
 # authorization config

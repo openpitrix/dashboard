@@ -90,4 +90,4 @@ watchConfig(() => {
 
 const socketUrl = process.env.socketUrl || config.socketUrl;
 // setup websocket proxy server
-proxyServer.run(socketUrl, config.socketProxyPort);
+proxyServer.run(socketUrl, config.socketProxyPort, config.socketProxyHost);
