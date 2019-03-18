@@ -34,7 +34,7 @@ const runProxyServer = (targetUrl, proxyPort) => {
     // changeOrigin: true
   });
 
-  proxy.listen(proxyPort, HOSTNAME);
+  proxy.listen(proxyPort);
   debug(`Websocket proxy server running at %s`, `${HOSTNAME}:${proxyPort}`);
 
   // proxy.on('proxyReqWs', (proxyReq, req, res)=> {
