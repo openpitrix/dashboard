@@ -69,7 +69,14 @@ export default class GroupStore extends Store {
       this.groups,
       g => g.group_id === _.first(this.selectedGroupIds)
     );
-    return _.get(group, 'name');
+    if (!group) {
+      return '';
+    }
+
+    if (group.parent_group_id) {
+      return _.get(group, 'name');
+    }
+    return t(rootName);
   }
 
   get needJoinGroup() {
@@ -194,6 +201,7 @@ export default class GroupStore extends Store {
     const root = _.find(this.groups, g => !g.parent_group_id);
     if (_.isEmpty(this.selectedGroupIds)) {
       this.selectedGroupIds = [root.group_id];
+      this.groupName = this.name;
     }
   };
 
@@ -257,6 +265,8 @@ export default class GroupStore extends Store {
     if (_.get(this.operateResult, 'group_id')) {
       this.modal.hide();
       await this.fetchGroups();
+      this.selectedGroupIds = [this.rootGroup.group_id];
+      this.groupName = this.name;
     }
   };
 
