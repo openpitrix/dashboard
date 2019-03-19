@@ -352,6 +352,7 @@ export default class GroupStore extends Store {
       selectedRowKeys: []
     });
     this.groupName = this.name;
+    this.userStore.currentPage = 1;
     this.fetchAllUser();
   };
 

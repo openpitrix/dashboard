@@ -24,7 +24,6 @@ import styles from './index.scss';
   groupStore: rootStore.groupStore,
   modalStore: rootStore.modalStore
 }))
-@setPage('userDetailStore')
 @observer
 export default class Users extends Component {
   state = {
