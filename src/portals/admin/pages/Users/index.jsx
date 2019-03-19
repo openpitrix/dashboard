@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
-
-import { setPage } from 'mixins';
 
 import { Button, Tree, PopoverIcon } from 'components/Base';
 import Layout, {
@@ -17,7 +15,7 @@ import columns, { filterList } from './columns';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
   userDetailStore: rootStore.userDetailStore,

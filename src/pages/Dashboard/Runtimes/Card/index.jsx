@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -11,7 +11,7 @@ import { CLUSTER_TYPE } from 'config/runtimes';
 
 import styles from '../index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { get } from 'lodash';
 
 import { ProviderName } from 'components/TdName';
@@ -12,7 +12,7 @@ import CopyId from './CopyId';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppCard extends React.Component {
   static propTypes = {
     appDetail: PropTypes.object.isRequired,

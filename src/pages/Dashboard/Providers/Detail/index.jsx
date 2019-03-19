@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import Layout, { Grid, Section, Card } from 'components/Layout';
@@ -24,7 +24,7 @@ const tags = [
   { name: 'Contract', value: 'contract', disabled: true },
   { name: 'Margin', value: 'margin', disabled: true }
 ];
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   vendorStore: rootStore.vendorStore,

@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
@@ -20,7 +20,7 @@ import { formatTime, obj2Qs } from 'utils';
 
 import styles from '../index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   envStore: rootStore.testingEnvStore,
   credentialStore: rootStore.runtimeCredentialStore

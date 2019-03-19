@@ -181,7 +181,7 @@ export default class GroupStore extends Store {
     if (group.parent_group_id) {
       names.push(group.name);
     } else {
-      names.push(t(rootName));
+      names.push(rootName);
     }
     this.getPosition(group.parent_group_id, names);
   }

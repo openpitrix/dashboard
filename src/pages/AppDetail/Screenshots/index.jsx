@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon, Image } from 'components/Base';
 
@@ -10,7 +10,7 @@ import styles from './index.scss';
 
 const pictrueWidth = 320;
 
-@translate()
+@withTranslation()
 @observer
 export default class Screenshots extends React.Component {
   static propTypes = {

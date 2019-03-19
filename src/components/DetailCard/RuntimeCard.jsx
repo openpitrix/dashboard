@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import TimeShow from 'components/TimeShow';
 import { ProviderName } from 'components/TdName';
@@ -11,7 +11,7 @@ import TagShow from '../TagShow';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class RuntimeCard extends Component {
   static propTypes = {
     appCount: PropTypes.number,

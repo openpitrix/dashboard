@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
 import { Icon, Button } from 'components/Base';
@@ -11,7 +11,7 @@ import instanceCols, { frontgateCols } from './columns';
 const InstanceCluster = 0;
 const AgentCluster = 1;
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,

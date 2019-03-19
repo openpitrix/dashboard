@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -9,7 +9,7 @@ import typeFiles from './files';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class CheckFiles extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -64,9 +64,9 @@ export default class CheckFiles extends PureComponent {
             {t('See the complete app development specification')}
             <a to="#">
               《{linkType}
-              {t('specification and application development')}
-              》
-            </a>。
+              {t('specification and application development')}》
+            </a>
+            。
           </div>
         )}
       </div>

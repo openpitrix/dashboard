@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import _ from 'lodash';
 import classnames from 'classnames';
+import { Trans } from 'react-i18next';
 
 import { Input, Select, Tree } from 'components/Base';
 
@@ -173,23 +174,38 @@ export default class UserModalActions extends Component {
     const roles = this.props.isISV ? userStore.isvRoles : createRoles;
     const roleId = _.get(item, 'role.role_id', '');
     const userId = _.get(item, 'user_id') || this.selectedIds.join(',');
-    const isMultip = _.get(item, 'user_id');
-    const names = isMultip ? item.username : this.userNames;
-    const text = isMultip
-      ? t('Set_Role_Title', { names })
-      : t('Set_Role_Title_For_Multi_User', {
+    const isMultip = !_.get(item, 'user_id');
+    const names = !isMultip ? item.username : this.userNames;
+    const i18nObj = {
+      names
+    };
+    if (isMultip) {
+      Object.assign(i18nObj, {
         count: names.length,
         names: names.slice(0, 3).join(','),
-        interpolation: {
-          escapeValue: false
-        }
+        className: styles.activeColor
       });
+    }
+    const text = !isMultip ? (
+      <Trans i18nKey="Set_Role_Title" {...i18nObj}>
+        Please set a new role for <strong>{{ names: i18nObj.names }}</strong>
+      </Trans>
+    ) : (
+      <Trans i18nKey="Set_Role_Title_For_Multi_User" {...i18nObj}>
+        Please set a new role for{' '}
+        <strong className={i18nObj.className}>
+          {{ count: i18nObj.count }}
+        </strong>{' '}
+        accounts, such as selected {{ names: i18nObj.names }}, etc.
+      </Trans>
+    );
     const defaultRole = _.get(item, 'role', {});
     const selectedRole = _.find(roles, { role_id: this.state.roleId });
     return (
       <Dialog
         width={744}
         title={t('Set role')}
+        okText={t('Settings')}
         isOpen={isOpen}
         onCancel={() => {
           this.resetRoleId();
@@ -330,7 +346,10 @@ export default class UserModalActions extends Component {
         onCancel={hide}
       >
         <div className={styles.formTitle}>
-          {t('Change password for user', item)}
+          <Trans i18nKey="Change password for user" {...item}>
+            Please change the password for user{' '}
+            <strong>{{ username: item.username }}</strong>
+          </Trans>
         </div>
 
         <div className={styles.formItem}>
@@ -361,7 +380,10 @@ export default class UserModalActions extends Component {
         onCancel={hide}
         okText={t('Delete')}
       >
-        {t('delete_user_desc')}
+        <Trans i18nKey="DELETE_USER_DESC" {...item}>
+          Are you sure you want to delete user{' '}
+          <strong>{{ username: item.username }}</strong>
+        </Trans>
       </Dialog>
     );
   }

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class TableTypes extends Component {
   static propTypes = {
     activeType: PropTypes.string,

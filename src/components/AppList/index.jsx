@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import Card from '../Card';
 import CardTitle from '../Card/CardTitle';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppList extends PureComponent {
   static propTypes = {
     apps: PropTypes.array,
@@ -69,9 +69,8 @@ export default class AppList extends PureComponent {
           )
         )}
 
-        {!apps.length
-          && !isLoading && (
-            <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
+        {!apps.length && !isLoading && (
+          <div className={styles.noData}>{t('NO_SEARCH_DATA')}</div>
         )}
       </div>
     );

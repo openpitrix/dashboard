@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import styles from '../index.scss';
 
 const keysShouldBeNumber = ['cpu', 'memory', 'storage_size', 'volume_size'];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore,
   detailStore: rootStore.clusterDetailStore,

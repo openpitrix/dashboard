@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Image } from 'components/Base';
 import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export class Card extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -70,7 +70,9 @@ export class Card extends PureComponent {
         </div>
         <div className={styles.name}>{name}</div>
         <div className={styles.desc} title={desc}>
-          {desc.split('\n').map((line, idx) => <p key={idx}>{line}</p>)}
+          {desc.split('\n').map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
         </div>
         <div className={styles.attrs}>
           <dl>

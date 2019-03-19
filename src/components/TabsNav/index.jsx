@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { capitalize, keys, values } from 'lodash';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import { isArray } from 'src/utils/types';
 import { plural } from 'src/utils/plural';
@@ -47,7 +47,7 @@ const LinkItem = ({ link, label }) => {
   }
 
   return (
-    <I18n>
+    <Translation>
       {t => (
         <li>
           <NavLink
@@ -60,7 +60,7 @@ const LinkItem = ({ link, label }) => {
           </NavLink>
         </li>
       )}
-    </I18n>
+    </Translation>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import Layout from 'portals/user/Layout';
@@ -8,7 +8,7 @@ import { Runtimes } from 'pages/Dashboard';
 
 // import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class UserRuntimes extends React.Component {
   render() {
     const { t } = this.props;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import routes, { toRoute } from 'routes';
 import LessText from 'components/LessText';
@@ -37,7 +37,7 @@ export default ({ users = [], vendors = [] }) => [
     key: 'category',
     width: '100px',
     render: item => (
-      <I18n>
+      <Translation>
         {t => {
           const cateName = _.get(item, 'category_set', [])
             .filter(cate => cate.category_id && cate.status === 'enabled')
@@ -46,7 +46,7 @@ export default ({ users = [], vendors = [] }) => [
 
           return t(cateName);
         }}
-      </I18n>
+      </Translation>
     )
   },
   {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Layout from 'components/Layout';
 import Collapse from 'components/Collapse';
 import { getRoleName, getRoleDescription } from 'config/roles';
@@ -9,7 +9,7 @@ import Modals from './Modals';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   roleStore: rootStore.roleStore,
   modalStore: rootStore.modalStore

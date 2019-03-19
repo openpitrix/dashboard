@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import TdName from 'components/TdName/index';
 import { getFilterObj } from 'utils';
@@ -8,7 +8,7 @@ import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppList extends PureComponent {
   static propTypes = {
     apps: PropTypes.array,

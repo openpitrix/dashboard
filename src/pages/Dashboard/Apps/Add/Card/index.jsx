@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon, DocLink } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @observer
 export default class CreateAppCard extends Component {
   static propTypes = {

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import {
@@ -11,7 +11,7 @@ import Progress from './Progress';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class Statistics extends PureComponent {
   static propTypes = {
     centerName: PropTypes.string,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
@@ -9,7 +9,7 @@ import { Card, Dialog } from 'components/Layout';
 
 import styles from '../index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,

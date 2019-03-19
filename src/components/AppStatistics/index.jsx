@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Card } from 'components/Layout';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppStatistics extends Component {
   static propTypes = {
     appTotal: PropTypes.number,

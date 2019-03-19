@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
@@ -26,7 +26,7 @@ const statusTime = {
   rejected: 'Reject time'
 };
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   vendorStore: rootStore.vendorStore,

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 
@@ -11,7 +11,7 @@ import styles from './index.scss';
 const NoteLink = ({
   className, noteWord, linkWord, link
 }) => (
-  <I18n>
+  <Translation>
     {t => (
       <div className={classnames(styles.noteLink, className)}>
         <Icon name="exclamation" size={20} className={styles.icon} />
@@ -19,7 +19,7 @@ const NoteLink = ({
         <Link to={link}>{t(linkWord)} →</Link>
       </div>
     )}
-  </I18n>
+  </Translation>
 );
 
 NoteLink.propTypes = {

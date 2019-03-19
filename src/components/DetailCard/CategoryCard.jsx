@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import TimeShow from 'components/TimeShow';
 import CopyId from './CopyId';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class CategoryCard extends PureComponent {
   static propTypes = {
     appCount: PropTypes.number,

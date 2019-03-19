@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import { Button, Icon } from 'components/Base';
@@ -13,7 +13,7 @@ import columns, { filterList } from './columns';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
   userDetailStore: rootStore.userDetailStore,

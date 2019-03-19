@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
 import Status from 'components/Status';
@@ -11,7 +11,7 @@ import CopyId from './CopyId';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user
 }))
@@ -49,9 +49,7 @@ export default class UserCard extends React.Component {
           </li>
           <li>
             <span className={styles.name}>{t('Email')}</span>
-            <span className={styles.val}>
-              {userDetail.email}
-            </span>
+            <span className={styles.val}>{userDetail.email}</span>
           </li>
           <li>
             <span className={styles.name}>{t('Date Updated')}</span>

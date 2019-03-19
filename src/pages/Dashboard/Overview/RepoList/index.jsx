@@ -2,13 +2,13 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import { getFilterObj } from 'utils';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class RepoList extends PureComponent {
   static propTypes = {
     clusters: PropTypes.array,

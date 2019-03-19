@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -12,7 +12,7 @@ import CodeMirror from 'components/CodeMirror';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class Section extends React.Component {
   static propTypes = {
     className: PropTypes.string,

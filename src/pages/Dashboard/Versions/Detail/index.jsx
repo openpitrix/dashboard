@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -47,7 +47,7 @@ const tags = [
   { name: 'Update Log', value: 'updateLog' }
 ];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,
@@ -263,15 +263,22 @@ export default class VersionDetail extends Component {
             在正式提交审核之前，请确认你的应用已经通过了以下基本功能的测试：
           </p>
           <div className={styles.noteList}>
-            1. 成功部署实例<br />
-            2. 集群运行正常<br />
-            3. 增加节点正常<br />
+            1. 成功部署实例
+            <br />
+            2. 集群运行正常
+            <br />
+            3. 增加节点正常
+            <br />
             4. 删除节点正常 <br />
             5. 修改节点配置正常 <br />
-            6. 切换私有网络正常<br />
-            7. 暂停集群正常<br />
-            8. 删除集群正常<br />
-            9. 恢复集群正常<br />
+            6. 切换私有网络正常
+            <br />
+            7. 暂停集群正常
+            <br />
+            8. 删除集群正常
+            <br />
+            9. 恢复集群正常
+            <br />
           </div>
           <p>
             更全面的测试手册请参看<Link to={'#'}>《开发者测试指南》</Link>。
@@ -402,9 +409,9 @@ export default class VersionDetail extends Component {
         />
         <div className={styles.record}>
           <div className={styles.operator}>
-            {t(audit.operator_type)}:&nbsp;{(
-              _.find(users, { user_id: audit.operator }) || {}
-            ).username || audit.operator}
+            {t(audit.operator_type)}:&nbsp;
+            {(_.find(users, { user_id: audit.operator }) || {}).username
+              || audit.operator}
           </div>
           {this.renderReason(audit)}
           <div className={styles.time}>
