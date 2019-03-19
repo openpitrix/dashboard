@@ -159,6 +159,7 @@
 
 .formItem {
   @include form-item;
+  @include normal-font;
 }
 .formItemText {
   @include form-textarea;

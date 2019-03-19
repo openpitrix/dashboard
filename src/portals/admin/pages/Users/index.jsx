@@ -24,7 +24,6 @@ import styles from './index.scss';
   groupStore: rootStore.groupStore,
   modalStore: rootStore.modalStore
 }))
-@setPage('userDetailStore')
 @observer
 export default class Users extends Component {
   state = {
@@ -278,7 +277,7 @@ export default class Users extends Component {
               <Card className={styles.noShadow}>
                 <div className={styles.title}>
                   {t('Selected organization')}:
-                  <strong className={styles.groupHeader}>{groupName}</strong>
+                  <strong className={styles.groupHeader}>{t(groupName)}</strong>
                 </div>
 
                 {Boolean(selectName) && (

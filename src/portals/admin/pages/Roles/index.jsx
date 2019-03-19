@@ -9,7 +9,7 @@ import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
 import { getRoleName } from 'config/roles';
-import ModalActions from './ModalActions';
+import Modals from './Modals';
 import RoleTree from './RoleTree';
 import ModuleTree from './ModuleTree';
 import BindingActions from './BindingActions';
@@ -49,14 +49,14 @@ export default class Roles extends Component {
             <Section size={8}>
               <Card>
                 <div className={styles.selectedRoleTitle}>
-                  <span className={styles.roleTitle}>
+                  <strong className={styles.roleTitle}>
                     {t('Role')}
                     {!_.isEmpty(selectedRole) && (
                       <span>
                         「{t(getRoleName(selectedRole))}」{t('of setting')}
                       </span>
                     )}
-                  </span>
+                  </strong>
                   <Popover
                     t={t}
                     roleStore={roleStore}
@@ -80,7 +80,7 @@ export default class Roles extends Component {
             </Section>
           </Grid>
         </Panel>
-        <ModalActions t={t} modalStore={modalStore} roleStore={roleStore} />
+        <Modals t={t} modalStore={modalStore} roleStore={roleStore} />
       </Layout>
     );
   }

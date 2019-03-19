@@ -69,7 +69,10 @@ export default class UserDetailStore extends Store {
     }
     return this.request.get(
       'users_detail',
-      _.pickBy(_.assign(defaultParams, params), a => !_.isEmpty(a))
+      _.pickBy(
+        _.assign(defaultParams, params),
+        a => !(_.isArray(a) && _.isEmpty(a)) && a !== ''
+      )
     );
   };
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
+import classnames from 'classnames';
 import _ from 'lodash';
 
 import { Tree } from 'components/Base';
@@ -15,6 +16,19 @@ export default class ModuleTree extends Component {
       onSelectModule(['all']);
     }
   }
+
+  renderTreeTitle = node => {
+    const { t } = this.props;
+    return (
+      <span
+        className={classnames({
+          [styles.grayColor]: !node.hasCheck
+        })}
+      >
+        {t(node.title)}
+      </span>
+    );
+  };
 
   render() {
     const { roleStore } = this.props;
@@ -33,6 +47,7 @@ export default class ModuleTree extends Component {
           className={styles.moduleTree}
           selectedKeys={selectedModuleKeys}
           onSelect={onSelectModule}
+          renderTreeTitle={this.renderTreeTitle}
           treeData={moduleTreeData}
         />
       </div>

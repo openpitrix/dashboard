@@ -21,7 +21,9 @@ const defaultStatus = ['active'];
 
 const defaultDataLevel = 'all';
 
-const regFeatureIdReg = /^m\d*\.f\d*$/;
+const regModuleId = /^m\d+$/;
+
+const regFeatureId = /^m\d+\.f\d+$/;
 
 const regNotAction = /^m\d*(.f\d*)?$/;
 
@@ -167,7 +169,8 @@ export default class RoleStore extends Store {
     const data = [
       {
         key: KeyFeatureAll,
-        title: 'All'
+        title: 'All',
+        hasCheck: true
       }
     ];
 
@@ -177,12 +180,14 @@ export default class RoleStore extends Store {
       .map(item => ({
         key: item.module_id,
         title: item.module_name,
+        hasCheck: this.hasFeatureAction(item.module_id, 'module'),
         children: item.feature_set
           .slice()
           .sort(sortModule('feature_id'))
           .map(feature => ({
             key: `${feature.feature_id}--${item.module_id}`,
-            title: feature.feature_name
+            title: feature.feature_name,
+            hasCheck: this.hasFeatureAction(feature.feature_id)
           }))
       }));
     this.moduleTreeData = data;
@@ -469,11 +474,12 @@ export default class RoleStore extends Store {
   };
 
   @action
-  setBindAction = () => {
+  setBindAction = async () => {
     const keys = [this.createRoleId];
     this.selectedRoleKeys = keys;
     this.modal.hide();
-    this.onSelectRole(keys);
+    await this.onSelectRole(keys);
+    this.setHandleType('setBindAction');
   };
 
   @action
@@ -716,23 +722,31 @@ export default class RoleStore extends Store {
     return this.checkActionOnce(actionId);
   };
 
-  hasFeatureAction = featureId => {
-    if (!regFeatureIdReg.test(featureId)) {
+  hasFeatureAction = (id, type = 'feature') => {
+    if (type === 'feature' && !regFeatureId.test(id)) {
       return false;
     }
-    const module_id = featureId.split('.')[0];
+    if (type === 'module' && !regModuleId.test(id)) {
+      return false;
+    }
+    const module_id = id.split('.')[0];
     const module = _.find(this.modules, {
       module_id
     });
     if (!module || !_.isArray(module.feature_set)) {
       return false;
     }
-    const feature = _.find(module.feature_set, {
-      feature_id: featureId
-    });
+    let features = module.feature_set;
+    if (type === 'feature') {
+      features = [
+        _.find(module.feature_set, {
+          feature_id: id
+        })
+      ];
+    }
     const { selectedCount } = this.getActionCount({
       module,
-      features: [feature]
+      features
     });
     return _.isNumber(selectedCount) && selectedCount > 0;
   };
