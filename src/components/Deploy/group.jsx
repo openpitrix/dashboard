@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import factory from 'lib/config-parser/factory';
@@ -8,7 +8,7 @@ import Section from './section';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class DeployGroup extends React.Component {
   static propTypes = {
     detail: PropTypes.object,

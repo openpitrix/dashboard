@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import TdName, { ProviderName } from 'components/TdName';
 import Status from 'components/Status';
@@ -9,18 +9,20 @@ import routes, { toRoute } from 'routes';
 
 export default (runtimes, versions) => [
   {
-    title: <I18n>{t => <span>{t('Cluster Name')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('Cluster Name')}</span>}</Translation>,
     key: 'name',
     render: ({ name, cluster_id }) => (
       <TdName
         name={name}
         description={cluster_id}
-        linkUrl={toRoute(routes.portal.clusterDetail, { clusterId: cluster_id })}
+        linkUrl={toRoute(routes.portal.clusterDetail, {
+          clusterId: cluster_id
+        })}
       />
     )
   },
   {
-    title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('Status')}</span>}</Translation>,
     key: 'status',
     width: '80px',
     render: obj => (
@@ -28,18 +30,18 @@ export default (runtimes, versions) => [
     )
   },
   {
-    title: <I18n>{t => <span>{t('App Version')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('App Version')}</span>}</Translation>,
     key: 'version_id',
     width: '100px',
     render: obj => getObjName(versions, 'version_id', obj.version_id, 'name')
   },
   {
-    title: <I18n>{t => <span>{t('Node Count')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('Node Count')}</span>}</Translation>,
     key: 'cluster_node_set',
     render: ({ cluster_node_set }) => cluster_node_set && cluster_node_set.length
   },
   {
-    title: <I18n>{t => <span>{t('Runtime')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('Runtime')}</span>}</Translation>,
     key: 'runtime_id',
     width: '100px',
     render: obj => (
@@ -55,12 +57,12 @@ export default (runtimes, versions) => [
     )
   },
   {
-    title: <I18n>{t => <span>{t('User')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('User')}</span>}</Translation>,
     key: 'owner',
     dataIndex: 'owner'
   },
   {
-    title: <I18n>{t => <span>{t('Date Created')}</span>}</I18n>,
+    title: <Translation>{t => <span>{t('Date Created')}</span>}</Translation>,
     key: 'create_time',
     width: '90px',
     render: item => <TimeShow time={item.status_time} />

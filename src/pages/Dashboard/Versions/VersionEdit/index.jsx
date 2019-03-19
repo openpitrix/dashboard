@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Input, Select } from 'components/Base';
@@ -8,7 +8,7 @@ import { Card } from 'components/Layout';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore

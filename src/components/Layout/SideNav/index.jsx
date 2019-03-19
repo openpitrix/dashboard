@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link, NavLink } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -46,7 +46,7 @@ const changeKey = {
   role: 'user'
 };
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
@@ -234,25 +234,9 @@ export class SideNav extends React.Component {
           [styles.userBottomNav]: user.isDevPortal
         })}
       >
-        {getBottomNavs.map(
-          nav => (nav.iconName === 'human' ? (
-              <li key={nav.iconName}>
-                <Popover content={<MenuLayer />} className={styles.iconOuter}>
-                  <Icon
-                    className={styles.icon}
-                    size={20}
-                    name={nav.iconName}
-                    type={
-                      location.pathname.indexOf(nav.link) > -1
-                        ? 'light'
-                        : 'dark'
-                    }
-                  />
-                  <label className={styles.title}>{t(nav.title)}</label>
-                </Popover>
-              </li>
-          ) : (
-              <li key={nav.iconName}>
+        {getBottomNavs.map(nav => (nav.iconName === 'human' ? (
+            <li key={nav.iconName}>
+              <Popover content={<MenuLayer />} className={styles.iconOuter}>
                 <Icon
                   className={styles.icon}
                   size={20}
@@ -261,12 +245,24 @@ export class SideNav extends React.Component {
                     location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
                   }
                 />
-                <Link to="#">
-                  <label className={styles.title}>{t(nav.title)}</label>
-                </Link>
-              </li>
-          ))
-        )}
+                <label className={styles.title}>{t(nav.title)}</label>
+              </Popover>
+            </li>
+        ) : (
+            <li key={nav.iconName}>
+              <Icon
+                className={styles.icon}
+                size={20}
+                name={nav.iconName}
+                type={
+                  location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
+                }
+              />
+              <Link to="#">
+                <label className={styles.title}>{t(nav.title)}</label>
+              </Link>
+            </li>
+        )))}
       </ul>
     );
   }

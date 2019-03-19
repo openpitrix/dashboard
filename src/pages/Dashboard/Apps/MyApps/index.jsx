@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Icon, Button, Input } from 'components/Base';
@@ -14,7 +14,7 @@ import Empty from './Empty';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
@@ -113,7 +113,9 @@ export default class Apps extends Component {
             hasMore={appStore.hasMore}
           >
             <div className={styles.cards}>
-              {apps.map(item => <Card key={item.app_id} t={t} data={item} />)}
+              {apps.map(item => (
+                <Card key={item.app_id} t={t} data={item} />
+              ))}
             </div>
           </InfiniteScroll>
           {this.renderSearchEmpty()}

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import ClipboardJS from 'clipboard';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject('rootStore')
 @observer
 export default class CopyId extends React.Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 import classnames from 'classnames';
@@ -37,7 +37,7 @@ const tabs = [
   { name: 'Update Log', value: 'updateLog' }
 ];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,
@@ -134,9 +134,7 @@ export default class ReviewDetail extends Component {
   };
 
   renderReviewCard(type) {
-    const {
-      appVersionStore, userStore, t
-    } = this.props;
+    const { appVersionStore, userStore, t } = this.props;
     const { users } = userStore;
     const { reviewDetail, reveiwTypes } = appVersionStore;
     const { status, phase } = reviewDetail;
@@ -344,10 +342,8 @@ export default class ReviewDetail extends Component {
             {`${appDetail.name} ${version.name}`}
           </div>
           <div className={styles.time}>
-            {t('Upload time')}：{formatTime(
-              version.status_time,
-              'YYYY/MM/DD HH:mm:ss'
-            )}
+            {t('Upload time')}：
+            {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
             <Link
               className={styles.link}
               to={toRoute(routes.portal.deploy, {

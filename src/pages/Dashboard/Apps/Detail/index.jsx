@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -28,7 +28,7 @@ const tags = [
   { name: 'Online version', value: 'online' },
   { name: 'Audit record', value: 'record' }
 ];
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import Layout, { Dialog, BreadCrumb } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
@@ -10,7 +10,7 @@ import Loading from 'components/Loading';
 import { getScrollTop } from 'utils';
 import RepoList from './RepoList/index';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,

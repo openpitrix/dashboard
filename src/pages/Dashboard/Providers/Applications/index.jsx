@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import { Table, Button } from 'components/Base';
@@ -19,7 +19,7 @@ const types = [
   { name: 'Reviewed', value: 'reviewed', status: ['rejected', 'passed'] }
 ];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   user: rootStore.user,

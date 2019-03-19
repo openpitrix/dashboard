@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import {
@@ -13,7 +13,7 @@ import CertificateInfo from '../CertificateInfo';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   vendorStore: rootStore.vendorStore,
@@ -252,10 +252,9 @@ export default class ApplicationCreate extends Component {
           <dd>{t('RELEVANT_AGREEMENT_NOTE')}</dd>
         </dl>
         <div className={styles.protocol}>
-          <Checkbox checked={checkedProtocol} onChange={changeProtocol} />
-          《{t('SERVICE_ACCOMMODATION')}》《{t('SERVICE_MANAGEMENT')}》《{t(
-            'SERVICE_PLATFORM'
-          )}》
+          <Checkbox checked={checkedProtocol} onChange={changeProtocol} />《
+          {t('SERVICE_ACCOMMODATION')}》《{t('SERVICE_MANAGEMENT')}》《
+          {t('SERVICE_PLATFORM')}》
         </div>
       </div>
     );

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Checkbox, Icon, Image } from 'components/Base';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject('rootStore')
 @observer
 export default class TdName extends React.Component {

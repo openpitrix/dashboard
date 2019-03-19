@@ -2,7 +2,7 @@ import React from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { omit } from 'lodash';
 
 import Icon from '../Icon';
@@ -33,7 +33,7 @@ ReactModal.defaultStyles.content = Object.assign(
   customStyles.content
 );
 
-@translate()
+@withTranslation()
 export default class Modal extends React.Component {
   static propTypes = {
     btnType: PropTypes.string,

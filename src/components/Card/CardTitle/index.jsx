@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class CardTitle extends PureComponent {
   static propTypes = {
     categoryId: PropTypes.string,

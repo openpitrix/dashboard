@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Image } from 'components/Base';
 import VersionType from 'components/VersionType';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppName extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -47,9 +47,8 @@ export default class AppName extends React.Component {
               <span className={styles.type}>
                 <VersionType types={type} />
               </span>
-              &nbsp;/&nbsp;<span className={styles.versionName}>
-                {versionName}
-              </span>
+              &nbsp;/&nbsp;
+              <span className={styles.versionName}>{versionName}</span>
             </div>
           )}
         </span>

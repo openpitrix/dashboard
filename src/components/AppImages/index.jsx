@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject } from 'mobx-react';
 
 import { Image } from 'components/Base';
@@ -9,7 +9,7 @@ import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user
 }))

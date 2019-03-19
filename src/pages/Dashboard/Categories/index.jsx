@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -15,7 +15,7 @@ import { getIconList } from 'utils/icons';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,

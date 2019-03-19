@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
 import { Icon } from 'components/Base';
@@ -10,7 +10,7 @@ import InstallList from '../InstanceList';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import { get } from 'lodash';
 
 import TdName from 'components/TdName';
@@ -11,7 +11,7 @@ import routes, { toRoute } from 'routes';
 export default function (users) {
   return [
     {
-      title: <I18n>{t => <span>{t('App Name')}</span>}</I18n>,
+      title: <Translation>{t => <span>{t('App Name')}</span>}</Translation>,
       key: 'name',
       width: '165px',
       render: item => (
@@ -26,13 +26,15 @@ export default function (users) {
       )
     },
     {
-      title: <I18n>{t => <span>{t('Latest Version')}</span>}</I18n>,
+      title: (
+        <Translation>{t => <span>{t('Latest Version')}</span>}</Translation>
+      ),
       key: 'latest_version',
       width: '100px',
       render: item => get(item, 'latest_app_version.name', '')
     },
     {
-      title: <I18n>{t => <span>{t('Status')}</span>}</I18n>,
+      title: <Translation>{t => <span>{t('Status')}</span>}</Translation>,
       key: 'status',
       width: '100px',
       render: item => (
@@ -40,10 +42,10 @@ export default function (users) {
       )
     },
     {
-      title: <I18n>{t => <span>{t('Categories')}</span>}</I18n>,
+      title: <Translation>{t => <span>{t('Categories')}</span>}</Translation>,
       key: 'category',
       render: item => (
-        <I18n>
+        <Translation>
           {t => t(
             get(item, 'category_set', [])
               .filter(cate => cate.category_id && cate.status === 'enabled')
@@ -51,16 +53,16 @@ export default function (users) {
               .join(', ')
           )
           }
-        </I18n>
+        </Translation>
       )
     },
     {
-      title: <I18n>{t => <span>{t('Developer')}</span>}</I18n>,
+      title: <Translation>{t => <span>{t('Developer')}</span>}</Translation>,
       key: 'owner',
       render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
     },
     {
-      title: <I18n>{t => <span>{t('Updated At')}</span>}</I18n>,
+      title: <Translation>{t => <span>{t('Updated At')}</span>}</Translation>,
       key: 'status_time',
       width: '95px',
       render: item => <TimeShow time={item.status_time} />

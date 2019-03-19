@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import { versionTypes, getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @observer
 export default class Versions extends React.Component {
   static propTypes = {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Icon, Popover } from 'components/Base';
 import capitalize from 'lodash/capitalize';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import RepoCard from '../RepoCard/index';
 
 import styles from './index.scss';
@@ -12,7 +12,7 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
   repos = repos.filter(repo => repo.visibility === visibility);
 
   return (
-    <I18n>
+    <Translation>
       {t => (
         <div className={styles.repoList}>
           <div className={styles.category}>
@@ -54,7 +54,7 @@ const RepoList = ({ repos, visibility, actionMenu }) => {
           )}
         </div>
       )}
-    </I18n>
+    </Translation>
   );
 };
 

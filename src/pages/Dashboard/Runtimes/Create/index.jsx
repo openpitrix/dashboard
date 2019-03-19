@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
@@ -19,7 +19,7 @@ import styles from './index.scss';
 const CreateRuntime = 'create_runtime';
 const CreateCredential = 'create_credential';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   envStore: rootStore.testingEnvStore,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import routes, { toRoute } from 'routes';
@@ -23,7 +23,7 @@ const tabs = [
   { name: 'SSH Keys', value: 'ssh' }
 ];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   userStore: rootStore.userStore,

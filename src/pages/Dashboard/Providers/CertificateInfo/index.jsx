@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Card } from 'components/Layout';
@@ -12,7 +12,7 @@ const tags = [
   { name: 'Auth Information', value: 'certificate' },
   { name: 'Contract', value: 'contract', disabled: true }
 ];
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   vendorStore: rootStore.vendorStore,

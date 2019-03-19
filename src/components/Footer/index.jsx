@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { Link, withRouter } from 'react-router-dom';
 
 import routes, { toRoute, pathWithoutFooter } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export class Footer extends PureComponent {
   getCurrentLocale = () => typeof window !== 'undefined' && localStorage.getItem('i18nextLng');
 

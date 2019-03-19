@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import { Panel } from 'components/Layout';
@@ -25,7 +25,7 @@ export default class TotalCard extends PureComponent {
     } = this.props;
 
     return (
-      <I18n>
+      <Translation>
         {t => (
           <Panel>
             <div className={styles.totalCard} {...rest}>
@@ -37,7 +37,7 @@ export default class TotalCard extends PureComponent {
             </div>
           </Panel>
         )}
-      </I18n>
+      </Translation>
     );
   }
 }
