@@ -14,7 +14,7 @@ import styles from '../index.scss';
 @withTranslation()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
-  clusterStore: rootStore.clusterStore,
+  clusterStore: rootStore.runtimeClusterStore,
   envStore: rootStore.testingEnvStore,
   credentialStore: rootStore.runtimeCredentialStore
 }))
@@ -23,6 +23,15 @@ export default class RuntimeCard extends Component {
   get isDetailCard() {
     const { envStore } = this.props;
     return !!_.get(envStore, 'runtimeToShowInstances.runtime_id');
+  }
+
+  async componentDidMount() {
+    // fetch proxy count
+    if (this.isDetailCard) {
+      await this.props.clusterStore.fetchCount({
+        cluster_type: CLUSTER_TYPE.agent
+      });
+    }
   }
 
   handleClickAction = (type, id, e) => {
@@ -71,23 +80,13 @@ export default class RuntimeCard extends Component {
       onClick,
       t
     } = this.props;
-    const cntCluster = _.filter(
-      clusterStore.clusters,
-      cl => cl.cluster_type === CLUSTER_TYPE.instance
-        && cl.runtime_id === runtime_id
-    ).length;
+
+    const { countInstance, countProxy } = clusterStore;
     const { credentials } = credentialStore;
     const credentialName = _.get(
       _.find(credentials, { runtime_credential_id }) || {},
       'name'
     );
-    const agentCluster = this.isDetailCard
-      ? _.filter(
-        clusterStore.clusters,
-        cl => cl.cluster_type === CLUSTER_TYPE.agent
-            && cl.runtime_id === runtime_id
-      ).length
-      : 0;
 
     return (
       <Card
@@ -114,14 +113,14 @@ export default class RuntimeCard extends Component {
           <div className={styles.info}>
             <p className={styles.label}>{t('Instance count')}</p>
             <p className={styles.val} style={{ cursor: 'pointer' }}>
-              {cntCluster}
+              {countInstance}
             </p>
           </div>
           {this.isDetailCard && (
             <div className={styles.info}>
               <p className={styles.label}>{t('Agent Instance count')}</p>
               <p className={styles.val} style={{ cursor: 'pointer' }}>
-                {agentCluster}
+                {countProxy}
               </p>
             </div>
           )}

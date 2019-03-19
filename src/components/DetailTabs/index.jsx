@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _, { noop } from 'lodash';
@@ -7,7 +6,6 @@ import { Translation } from 'react-i18next';
 
 import styles from './index.scss';
 
-@observer
 export default class DetailTabs extends Component {
   static propTypes = {
     activeTab: PropTypes.string,
@@ -44,6 +42,10 @@ export default class DetailTabs extends Component {
     this.props.changeTab(this.state.curTab);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.curTab !== this.state.curTab;
+  }
+
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
@@ -56,7 +58,7 @@ export default class DetailTabs extends Component {
 
   render() {
     const {
-      tabs, className, isAccount, isCardTab, activeTab
+      tabs, className, isAccount, isCardTab
     } = this.props;
     const { curTab } = this.state;
 
@@ -74,12 +76,11 @@ export default class DetailTabs extends Component {
         {tabs.map((tab, idx) => {
           const tabVal = _.isObject(tab) ? tab.value : tab;
           const tabName = _.isObject(tab) ? tab.name : tab;
-          const value = activeTab || curTab;
 
           return (
             <label
               className={classnames({
-                [styles.active]: tabVal === value,
+                [styles.active]: tabVal === curTab,
                 [styles.disabled]: _.isObject(tab) && tab.disabled
               })}
               key={idx}
