@@ -92,16 +92,17 @@ export default class Reviews extends Component {
 
   render() {
     const {
-      appVersionStore, appStore, user, t
+      appVersionStore, appStore, userStore, user, t
     } = this.props;
     const { reviews, isLoading, activeType } = appVersionStore;
     const { apps } = appStore;
+    const { users } = userStore;
     const isUnprocessed = activeType === 'unprocessed';
     const linkReview = reviewId => toRoute(routes.portal.appReviewDetail, {
       reviewId
     });
 
-    const columns = [
+    let columns = [
       {
         title: t('Number'),
         key: 'review_id',
@@ -154,6 +155,16 @@ export default class Reviews extends Component {
         )
       },
       {
+        title: t('Operator'),
+        key: 'operator',
+        className: 'boldFont',
+        render: item => (item.status.indexOf('isv-') > -1 ? (
+            <TdUser users={users} userId={item.reviewer} />
+        ) : (
+          t('Platform')
+        ))
+      },
+      {
         title: isUnprocessed ? t('Submit time') : t('Update time'),
         key: 'status_time',
         className: 'time',
@@ -179,6 +190,10 @@ export default class Reviews extends Component {
         )
       }
     ];
+
+    if (isUnprocessed) {
+      columns = columns.filter(item => item.key !== 'operator');
+    }
 
     const pagination = {
       tableType: 'Apps',

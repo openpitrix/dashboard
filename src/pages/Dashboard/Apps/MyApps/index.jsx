@@ -31,11 +31,9 @@ export default class Apps extends Component {
   }
 
   async componentDidMount() {
-    const { appStore, user } = this.props;
-    const { user_id } = user;
+    const { appStore } = this.props;
 
     appStore.pageSize = 48;
-    appStore.userId = user_id;
     await appStore.fetchAll();
     this.setState({
       pageLoading: false
