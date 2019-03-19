@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
@@ -14,7 +14,7 @@ import RuntimeCard from '../Card';
 
 import styles from '../index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   runtimeStore: rootStore.runtimeStore,
   clusterStore: rootStore.clusterStore,

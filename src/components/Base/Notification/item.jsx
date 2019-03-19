@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { noop } from 'lodash';
 
 import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class NotificationItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,

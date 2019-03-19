@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { versionTypes } from 'config/version-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -14,7 +14,7 @@ import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,

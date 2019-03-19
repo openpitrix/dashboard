@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import Input from 'components/Base/Input';
 import Button from 'components/Base/Button';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class TodoList extends PureComponent {
   static propTypes = {
     changeLabel: PropTypes.func,

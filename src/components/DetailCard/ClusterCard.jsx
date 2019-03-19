@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
@@ -12,7 +12,7 @@ import CopyId from './CopyId';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class ClusterCard extends Component {
   static propTypes = {
     appName: PropTypes.string,

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -8,7 +8,7 @@ import Footer from 'components/Footer';
 import styles from './index.scss';
 
 const NotFound = () => (
-  <I18n>
+  <Translation>
     {t => (
       <Fragment>
         <Header alwaysShow />
@@ -26,7 +26,7 @@ const NotFound = () => (
         <Footer />
       </Fragment>
     )}
-  </I18n>
+  </Translation>
 );
 
 export default NotFound;

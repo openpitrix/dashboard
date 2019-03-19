@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 
@@ -16,7 +16,7 @@ import { getFilterOptions } from '../utils';
 
 import styles from '../index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore,
   clusterDetailStore: rootStore.clusterDetailStore

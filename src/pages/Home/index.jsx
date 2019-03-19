@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import Layout from 'portals/user/Layout';
 import { Grid, Section } from 'components/Layout';
@@ -19,7 +19,7 @@ import styles from './index.scss';
 
 const cateLatest = 'latest';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   categoryStore: rootStore.categoryStore,

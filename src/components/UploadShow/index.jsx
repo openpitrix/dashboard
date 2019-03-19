@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @observer
 export default class UploadShow extends Component {
   static propTypes = {
@@ -44,41 +44,31 @@ export default class UploadShow extends Component {
           [styles.bodyBg]: !!errorMessage
         })}
       >
-        {uploadStatus !== 'ok'
-          && !errorMessage && (
-            <div>
-              <Icon
-                name="upload"
-                size={48}
-                type="dark"
-                className={styles.icon}
-              />
-              <p className={styles.note}>{t('file_format_note')}</p>
-            </div>
+        {uploadStatus !== 'ok' && !errorMessage && (
+          <div>
+            <Icon name="upload" size={48} type="dark" className={styles.icon} />
+            <p className={styles.note}>{t('file_format_note')}</p>
+          </div>
         )}
 
-        {uploadStatus !== 'ok'
-          && errorMessage && (
-            <div className={styles.uploadError}>
-              <Icon name="error" size={48} className={styles.icon} />
-              <p>
-                {errorMessage}
-                <span className={styles.errorLink}>
-                  「{t('Upload again')}」
-                </span>
-              </p>
-            </div>
+        {uploadStatus !== 'ok' && errorMessage && (
+          <div className={styles.uploadError}>
+            <Icon name="error" size={48} className={styles.icon} />
+            <p>
+              {errorMessage}
+              <span className={styles.errorLink}>「{t('Upload again')}」</span>
+            </p>
+          </div>
         )}
-        {uploadStatus === 'ok'
-          && !errorMessage && (
-            <div className={styles.uploadSuccess}>
-              <Icon name="checked-circle" size={48} className={styles.icon} />
-              <p className={styles.successText}>
-                {t('File')}
-                <span className={styles.uploadFileName}>{fileName}</span>
-                {t('Successful upload')}
-              </p>
-            </div>
+        {uploadStatus === 'ok' && !errorMessage && (
+          <div className={styles.uploadSuccess}>
+            <Icon name="checked-circle" size={48} className={styles.icon} />
+            <p className={styles.successText}>
+              {t('File')}
+              <span className={styles.uploadFileName}>{fileName}</span>
+              {t('Successful upload')}
+            </p>
+          </div>
         )}
       </div>
     );

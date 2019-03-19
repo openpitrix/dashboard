@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { setPage } from 'mixins';
 
 import Layout from 'components/Layout';
@@ -9,7 +9,7 @@ import Toolbar from 'components/Toolbar';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,

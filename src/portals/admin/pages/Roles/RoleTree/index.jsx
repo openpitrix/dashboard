@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Tree } from 'components/Base';
 import { getRoleName, CannotEditController, AdminPortal } from 'config/roles';
@@ -9,7 +9,7 @@ import Item from './item';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @observer
 export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {

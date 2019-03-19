@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import styles from './index.scss';
 
-const TAB_NAME = 'Translate(DetailTabs)';
+const TAB_NAME = 'DetailTabs';
 
 const Panel = ({ className, children, ...rest }) => (
   <div

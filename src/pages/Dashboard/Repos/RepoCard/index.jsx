@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { ProviderName } from 'components/TdName';
 import AppImages from 'components/AppImages';
@@ -9,7 +9,7 @@ import TagShow from 'components/TagShow/index';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class RepoCard extends PureComponent {
   static propTypes = {
     apps: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),

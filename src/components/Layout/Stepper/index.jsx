@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import Loading from 'components/Loading';
 
@@ -11,7 +11,7 @@ import { DocLink, Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject('rootStore')
 @observer
 export class Stepper extends Component {
@@ -59,7 +59,7 @@ export class Stepper extends Component {
   renderTopProgress() {
     const { stepOption } = this.props;
     const { steps, activeStep } = stepOption;
-    const width = `${activeStep * 100 / steps}%`;
+    const width = `${(activeStep * 100) / steps}%`;
     const className = activeStep > steps ? 'headerStepFinished' : 'headerStepNotFinished';
 
     const style = {
@@ -172,14 +172,12 @@ export class Stepper extends Component {
           type="primary"
           onClick={this.nextStep}
         >
-          {!btnText
-            && activeStep === steps && (
-              <Icon className={styles.icon} name="checked-icon" size={20} />
+          {!btnText && activeStep === steps && (
+            <Icon className={styles.icon} name="checked-icon" size={20} />
           )}
           <span>{this.t(btnText || buttonText)}</span>
-          {!btnText
-            && activeStep !== steps && (
-              <Icon className={styles.icon} name="next-icon" size={20} />
+          {!btnText && activeStep !== steps && (
+            <Icon className={styles.icon} name="next-icon" size={20} />
           )}
         </button>
       </div>

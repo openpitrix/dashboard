@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { noop } from 'lodash';
 
 import { Input } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class AppStatistics extends Component {
   static propTypes = {
     onClear: PropTypes.func,

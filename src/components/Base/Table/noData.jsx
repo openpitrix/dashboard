@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class NoData extends PureComponent {
   static propTypes = {
     type: PropTypes.string

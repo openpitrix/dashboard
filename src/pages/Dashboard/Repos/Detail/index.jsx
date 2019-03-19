@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import { Icon, Table, Popover } from 'components/Base';
@@ -27,7 +27,7 @@ import eventsColumns from './tabs/event-columns';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   repoStore: rootStore.repoStore,
   appStore: rootStore.appStore,
@@ -108,10 +108,12 @@ export default class RepoDetail extends Component {
     }
   };
 
-  filterSelectors = items => items.filter(item => item.selector_key).map(item => ({
-    label_key: item.selector_key,
-    label_value: item.selector_value
-  }));
+  filterSelectors = items => items
+    .filter(item => item.selector_key)
+    .map(item => ({
+      label_key: item.selector_key,
+      label_value: item.selector_value
+    }));
 
   renderHandleMenu = id => {
     const { t } = this.props;
@@ -410,14 +412,11 @@ export default class RepoDetail extends Component {
                 changeTab={this.changeDetailTab}
               />
               <Card hasTable>
-                {curTagName === 'Runtimes'
-                  && selectors.length > 0 && (
-                    <div className={styles.selector}>
-                      <div className={styles.title}>
-                        {t('Runtime Selectors')}
-                      </div>
-                      <TagShow tags={selectors} tagStyle="yellow" />
-                    </div>
+                {curTagName === 'Runtimes' && selectors.length > 0 && (
+                  <div className={styles.selector}>
+                    <div className={styles.title}>{t('Runtime Selectors')}</div>
+                    <TagShow tags={selectors} tagStyle="yellow" />
+                  </div>
                 )}
                 {curTagName !== 'Events' && this.renderToolbar(toolbarOptions)}
                 {this.renderTable(tableOptions)}

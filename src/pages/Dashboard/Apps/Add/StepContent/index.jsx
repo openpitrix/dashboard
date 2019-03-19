@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 // import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class StepContent extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

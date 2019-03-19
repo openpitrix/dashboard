@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -12,7 +12,7 @@ import { formatTime } from 'utils';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appVersionStore: rootStore.appVersionStore,
@@ -149,9 +149,8 @@ export default class Audits extends Component {
               <Status type={audit.status} name={audit.status} />
             </label>
             <label className={styles.operator}>
-              {t(audit.operator_type)}:&nbsp;{
-                (_.find(users, { user_id: audit.operator }) || {}).username
-              }
+              {t(audit.operator_type)}:&nbsp;
+              {(_.find(users, { user_id: audit.operator }) || {}).username}
             </label>
             <label className={styles.reason}>{this.renderReason(audit)}</label>
             <label className={styles.time}>

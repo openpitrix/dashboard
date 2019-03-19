@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { I18n } from 'react-i18next';
+import { Translation } from 'react-i18next';
 
 import {
   Grid, Section, Panel, Card
@@ -30,7 +30,7 @@ const CreateResource = ({
     {aside && (
       <Section className={styles.aside}>
         <div className={styles.title}>
-          <I18n>{t => <span>{t(asideTitle)}</span>}</I18n>
+          <Translation>{t => <span>{t(asideTitle)}</span>}</Translation>
         </div>
         <div className={styles.content}>{aside}</div>
       </Section>

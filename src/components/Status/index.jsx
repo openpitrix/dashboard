@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { capitalize } from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class Status extends PureComponent {
   static propTypes = {
     className: PropTypes.string,

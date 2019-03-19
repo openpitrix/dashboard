@@ -2,14 +2,14 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { toRoute } from 'routes';
 import pathLink from './path-link';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user
 }))

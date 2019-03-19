@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import RcTree, { TreeNode } from 'rc-tree';
@@ -11,7 +11,7 @@ import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @observer
 export default class Tree extends Component {
   static propTypes = {

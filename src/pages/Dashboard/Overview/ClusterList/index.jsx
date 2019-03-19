@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { getPastTime } from 'utils';
 import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class ClusterList extends PureComponent {
   static propTypes = {
     clusters: PropTypes.array,

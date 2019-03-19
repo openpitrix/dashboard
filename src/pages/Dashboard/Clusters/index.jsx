@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon, PopoverIcon, Button } from 'components/Base';
 import Table from 'components/EnhanceTable';
@@ -18,7 +18,7 @@ import { CLUSTER_TYPE } from 'config/runtimes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   clusterStore: rootStore.clusterStore,

@@ -3,7 +3,7 @@ import RcTable from 'rc-table';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import _, { isEqual, find } from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { obj2Qs, qs2Obj } from 'utils';
 
@@ -15,7 +15,7 @@ import NoData from './noData';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export class Table extends React.Component {
   static propTypes = {
     columns: PropTypes.array,

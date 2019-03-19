@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 
 import { Image } from 'components/Base';
@@ -10,7 +10,7 @@ import { getPortalFromPath } from 'routes';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user
 }))

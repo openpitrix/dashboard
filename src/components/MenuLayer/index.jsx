@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 import { userMenus } from 'components/Layout/SideNav/navMap';
@@ -39,7 +39,7 @@ const portalData = {
   }
 };
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   user: rootStore.user

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import {
@@ -32,7 +32,7 @@ const keysShouldBeNumber = [
   'count'
 ];
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,

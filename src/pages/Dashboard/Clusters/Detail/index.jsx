@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon, Popover, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
@@ -18,7 +18,7 @@ import VMbase from './VMbase';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   clusterStore: rootStore.clusterStore,
   clusterDetailStore: rootStore.clusterDetailStore,

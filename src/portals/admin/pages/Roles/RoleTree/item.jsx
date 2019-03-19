@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
 
@@ -7,7 +7,7 @@ import { AdminPortal } from 'config/roles';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 export default class RoleItem extends Component {
   get isGlobalAdmin() {
     return this.props.role_id === AdminPortal;

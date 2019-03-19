@@ -748,7 +748,7 @@
     pirates "^4.0.0"
     source-map-support "^0.5.9"
 
-"@babel/runtime@^7.1.5":
+"@babel/runtime@^7.1.5", "@babel/runtime@^7.3.1":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
   integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
@@ -4997,10 +4997,12 @@ i18next-browser-languagedetector@^2.2.3:
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.2.4.tgz#b02412d7ab15d7d74e1b1317d67d8a244b219ee3"
   integrity sha512-wPbtH18FdOuB245I8Bhma5/XSDdN/HpYlX+wga1eMy+slhaFQSnrWX6fp+aYSL2eEuj0RlfHeEVz6Fo/lxAj6A==
 
-i18next@^11.3.3:
-  version "11.10.2"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-11.10.2.tgz#e5f10346f6320ecf15595419926c25255381a56c"
-  integrity sha512-1rowdX8PqrvsdFhYb3v0A/LlIHLQL1HTa4ia29IzhvNAg2fesNV7R1jXibWLmLQdz3FfTB8RuqSqDEjIawXruA==
+i18next@^15.0.7:
+  version "15.0.7"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.7.tgz#2f61240c8b2b6656233217a8eee07a09a5707fea"
+  integrity sha512-KCSmTOE0nsku53cI0sSBY21ftXhsAfCjcNQBx54Y0AxcTxSs+v+qGFQ38ab+vi6F4NZEm8JupO36vlWoeF47cA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
 
 iconv-lite@0.4.23:
   version "0.4.23"
@@ -8757,14 +8759,13 @@ react-dom@^16.6.0:
     prop-types "^15.6.2"
     scheduler "^0.13.3"
 
-react-i18next@^7.7.0:
-  version "7.13.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-7.13.0.tgz#a6f64fd749215ec70400f90da6cbde2a9c5b1588"
-  integrity sha512-35M+MZFPqHwVIas7tXWQKFrf+ozCJukNplUTiGqL8mczSk+VRBsHxxXuuQKRkz/4CcWkONGWbp/AzxfM6wZncg==
+react-i18next@^10.5.1:
+  version "10.5.1"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-10.5.1.tgz#551b6f34694059833ebf93823be27105d56dd3b2"
+  integrity sha512-kyRS7A1ihVZvoPvwpehio7fKf24H6DyYn+6XVU56ECyy/mBkOEfo7NGm5UiRkefkG7WkpdTow534L6/HhPy9zA==
   dependencies:
-    hoist-non-react-statics "^2.3.1"
+    "@babel/runtime" "^7.3.1"
     html-parse-stringify2 "2.0.1"
-    prop-types "^15.6.0"
 
 react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.3:
   version "16.8.3"

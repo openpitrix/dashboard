@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 import links from 'config/doc-link';
 
-@translate()
+@withTranslation()
 export default class DocLink extends Component {
   static propTypes = {
     children: PropTypes.node,
