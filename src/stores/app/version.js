@@ -191,12 +191,12 @@ export default class AppVersionStore extends Store {
 
   @action
   fetch = async (versionId = '') => {
-    this.isLoading = true;
+    // this.isLoading = true;
     const result = await this.request.get(this.describeVersionName, {
       version_id: versionId
     });
     this.version = get(result, 'app_version_set[0]', {});
-    this.isLoading = false;
+    // this.isLoading = false;
   };
 
   @action

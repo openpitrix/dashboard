@@ -23,7 +23,7 @@ export default class Loading extends PureComponent {
             </Link>
           </div>
           <div className={styles.tips}>
-            <span className={styles.tipsInfo}>{t('Tips')}:</span>
+            <span className={styles.tipsInfo}>{t('Tips')}</span>
             <span>{t('APPS_EMPTY_TIPS01')}</span>
             <Link to={'/'}>{t('APPS_EMPTY_TIPS02')}</Link>。
           </div>

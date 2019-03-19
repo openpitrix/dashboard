@@ -389,6 +389,8 @@
   "Record": "记录",
   "Version": "版本",
   "developer": "开发者",
+  "business": "商务审核者",
+  "technical": "技术审核者",
   "global_admin": "管理员",
   "Reason": "原因",
   "Expand": "展开",

@@ -410,7 +410,7 @@ export default class VersionDetail extends Component {
         <div className={styles.record}>
           <div className={styles.operator}>
             {t(audit.operator_type)}:&nbsp;
-            {(_.find(users, { user_id: audit.operator }) || {}).username
+            {(_.find(users, { user_id: audit.operator }) || {}).email
               || audit.operator}
           </div>
           {this.renderReason(audit)}
@@ -461,9 +461,9 @@ export default class VersionDetail extends Component {
     }
 
     return (
-      <Card className={styles.updateLog}>
+      <div className={styles.updateLog}>
         <pre>{description || t('None')}</pre>
-      </Card>
+      </div>
     );
   }
 

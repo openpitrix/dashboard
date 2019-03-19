@@ -83,7 +83,6 @@
 
   dl {
     @include note-font;
-    height: 20px;
     margin-bottom: 4px;
 
     &:last-child {
@@ -96,7 +95,16 @@
     }
 
     dt {
+      float: left;
       width: 60px;
+    }
+
+    dd {
+      width: 280px;
+
+      pre {
+        color: $N300;
+      }
     }
   }
 }

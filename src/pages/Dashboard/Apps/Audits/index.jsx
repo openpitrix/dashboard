@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { Icon } from 'components/Base';
+import { Table, Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import { versionTypes } from 'config/version-types';
@@ -103,11 +103,13 @@ export default class Audits extends Component {
     }
 
     return (
-      <div>
+      <div className={styles.reasonShow}>
         {t('Reason')}:
         {!audit.isExpand && (
           <Fragment>
-            <span className={styles.hideReason}>&nbsp;{audit.message}</span>
+            <span className={styles.hideReason} title={audit.message}>
+              &nbsp;{audit.message}
+            </span>
             <span
               onClick={() => this.toggleReason(audit)}
               className={styles.expand}
@@ -130,45 +132,43 @@ export default class Audits extends Component {
       return null;
     }
 
+    const columns = [
+      {
+        title: t('Status'),
+        key: 'status',
+        render: item => <Status type={item.status} name={item.status} />
+      },
+      {
+        title: t('Operator'),
+        key: 'operator',
+        render: item => `${t(item.operator_type)}: ${
+          (_.find(users, { user_id: item.operator }) || {}).email
+        }`
+      },
+      {
+        title: `${t('Apply No')} / ${t('Reject reason')}`,
+        key: 'reason',
+        render: item => this.renderReason(item)
+      },
+      {
+        title: t('Update time'),
+        key: 'status_time',
+        className: 'time',
+        width: '160px',
+        render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
+      }
+    ];
+
+    const pagination = {
+      hide: true
+    };
+
     return (
-      <ul className={styles.auditRecords}>
-        <li>
-          <label className={styles.status}>{t('Status')}</label>
-          <label className={styles.operator}>{t('Operator')}</label>
-          <label className={styles.reason}>
-            {t('Apply No')} / {t('Reject reason')}
-          </label>
-          <label className={styles.time}>{t('Update time')}</label>
-        </li>
-        {auditRecords.map(audit => (
-          <li
-            key={audit.review_id || audit.status_time}
-            className={classnames({ [styles.active]: audit.isExpand })}
-          >
-            <label className={styles.status}>
-              <Status type={audit.status} name={audit.status} />
-            </label>
-            <label className={styles.operator}>
-              {t(audit.operator_type)}:&nbsp;
-              {(_.find(users, { user_id: audit.operator }) || {}).username}
-            </label>
-            <label className={styles.reason}>{this.renderReason(audit)}</label>
-            <label className={styles.time}>
-              {formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}
-            </label>
-            {audit.isExpand && (
-              <pre
-                onClick={() => this.toggleReason(audit)}
-                className={styles.showReason}
-              >
-                {audit.message}
-                <br />
-                <span className={styles.collapse}>{t('Collapse')}</span>
-              </pre>
-            )}
-          </li>
-        ))}
-      </ul>
+      <Table
+        columns={columns}
+        dataSource={auditRecords}
+        pagination={pagination}
+      />
     );
   }
 
@@ -216,7 +216,7 @@ export default class Audits extends Component {
               >
                 <Icon
                   name={version.isShowAudits ? 'caret-down' : 'caret-right'}
-                  size={24}
+                  size={16}
                   className={styles.icon}
                 />
                 {t('Version')}&nbsp;{version.name}
