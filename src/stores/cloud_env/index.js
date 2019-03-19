@@ -12,6 +12,10 @@ export default class CloudEnvironmentStore extends Store {
 
   @observable versionType = '';
 
+  @observable handleType = '';
+
+  @observable cloudInfo = {};
+
   @computed
   get activeEnv() {
     if (!this.versionType) {
@@ -49,6 +53,24 @@ export default class CloudEnvironmentStore extends Store {
   };
 
   @action
+  fetchCloudInfo = async () => {
+    const result = await this.request.post('service_configs/get', {
+      service_type: ['basic_config']
+    });
+    this.cloudInfo = _.get(result, 'basic_config', {});
+  };
+
+  @action
+  saveCloudInfo = data => {
+    console.log(data);
+    this.request.post('service_configs/set', {
+      basic_config: data
+    });
+    this.handleType = '';
+    this.fetchCloudInfo();
+  };
+
+  @action
   changeEnv = async (checked, item) => {
     const set = _.find(this.config_set, { name: item });
     set.enable = checked;
@@ -75,4 +97,17 @@ export default class CloudEnvironmentStore extends Store {
 
   @action
   getActiveKey = versionType => this.getActiveEnv(versionType).map(item => item.key);
+
+  @action
+  reset = () => {
+    this.environment = [];
+    this.config_set = [];
+    this.versionType = '';
+    this.handleType = '';
+  };
+
+  @action
+  changeHandleType = async type => {
+    this.handleType = type;
+  };
 }

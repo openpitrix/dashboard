@@ -54,6 +54,7 @@ export default {
       providerApply: '/:portal/providers/apply',
       providerApplyDetail: '/:portal/providers/apply/:applyId',
       cloudEnv: '/:portal/settings/cloud-env',
+      cloudInfo: '/:portal/settings/cloud-info',
       notificationServer: '/:portal/settings/notification-server'
     }
   }
