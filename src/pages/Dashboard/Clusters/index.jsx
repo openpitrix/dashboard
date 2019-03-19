@@ -55,11 +55,7 @@ export default class Clusters extends Component {
     } = this.props;
     const { appId } = match.params;
 
-    if (match.path.endsWith('/instances')) {
-      clusterStore.onlyView = true;
-    } else {
-      clusterStore.onlyView = false;
-    }
+    clusterStore.onlyView = match.path.endsWith('/instances');
 
     if (appId) {
       clusterStore.appId = appId;
@@ -67,7 +63,7 @@ export default class Clusters extends Component {
 
     Object.assign(clusterStore, {
       with_detail: true,
-      cluster_type: CLUSTER_TYPE.instance,
+      cluster_type: CLUSTER_TYPE.instance
     });
     await clusterStore.fetchAll({
       attachApps: true

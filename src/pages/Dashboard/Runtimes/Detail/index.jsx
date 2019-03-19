@@ -21,12 +21,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeInstances extends React.Component {
-  fetchInstance() {
+  fetchInstances = () => {
     const { runtimeClusterStore, user } = this.props;
     runtimeClusterStore.fetchAll({
       owner: user.user_id
     });
-  }
+  };
 
   goBack = () => {
     this.props.envStore.changeRuntimeToShowInstances();
@@ -34,7 +34,7 @@ export default class RuntimeInstances extends React.Component {
 
   handleChangeTab = value => {
     this.props.runtimeStore.changeRuntimeTab(value);
-    this.fetchInstance();
+    this.fetchInstances();
   };
 
   render() {
@@ -53,7 +53,7 @@ export default class RuntimeInstances extends React.Component {
           tabs={runtimeTabs}
           changeTab={this.handleChangeTab}
         />
-        <InstallList {...this.props} />
+        <InstallList {...this.props} fetchAll={this.fetchInstances} />
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
+import _ from 'lodash';
 
 import { Icon, Button } from 'components/Base';
 import Toolbar from 'components/Toolbar';
@@ -16,19 +17,25 @@ const AgentCluster = 1;
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,
   runtimeClusterStore: rootStore.runtimeClusterStore,
-  appStore: rootStore.appStore
+  appStore: rootStore.appStore,
+  rootStore
 }))
 @observer
 export default class RuntimeInstances extends React.Component {
   static propTypes = {
+    fetchAll: PropTypes.func,
     runtime: PropTypes.shape({
       name: PropTypes.string,
       runtime_id: PropTypes.string
     })
   };
 
-  async componentDidMount() {
-    await this.props.runtimeClusterStore.fetchAll();
+  componentDidMount() {
+    this.props.rootStore.sock.listenToJob(this.handleJobs);
+  }
+
+  componentWillUnmount() {
+    this.props.rootStore.sock.unlisten(this.handleJobs);
   }
 
   get columns() {
@@ -45,6 +52,40 @@ export default class RuntimeInstances extends React.Component {
   get isAgent() {
     return this.props.runtimeStore.runtimeTab === AgentCluster;
   }
+
+  handleJobs = async ({ type = '', resource = {} }) => {
+    const { rtype = '', rid = '', values = {} } = resource;
+    const op = `${type}:${rtype}`;
+    const { runtimeClusterStore, fetchAll } = this.props;
+    const status = _.pick(values, ['status', 'transition_status']);
+    const clusterIds = runtimeClusterStore.clusters.map(cl => cl.cluster_id);
+    const nodeIds = runtimeClusterStore.clusters.map(cl => {
+      const all_nodes = (cl.cluster_node_set || []).map(
+        ({ node_id }) => node_id
+      );
+      return _.uniq(_.flatten(all_nodes));
+    });
+
+    // job updated
+    if (op === 'update:job') {
+      if (['successful', 'failed'].includes(status.status)) {
+        await fetchAll();
+      }
+    }
+
+    if (rtype === 'cluster' && clusterIds.includes(rid)) {
+      runtimeClusterStore.clusters = runtimeClusterStore.clusters.map(cl => {
+        if (cl.cluster_id === rid) {
+          Object.assign(cl, status);
+        }
+        return cl;
+      });
+    }
+
+    if (op === 'update:cluster_node' && nodeIds.includes(rid)) {
+      await fetchAll();
+    }
+  };
 
   handleClickToolbar = () => {
     // todo

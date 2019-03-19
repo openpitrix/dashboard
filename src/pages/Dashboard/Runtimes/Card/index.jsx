@@ -20,7 +20,7 @@ import styles from '../index.scss';
 }))
 @observer
 export default class RuntimeCard extends Component {
-  get isDetialCard() {
+  get isDetailCard() {
     const { envStore } = this.props;
     return !!_.get(envStore, 'runtimeToShowInstances.runtime_id');
   }
@@ -81,7 +81,7 @@ export default class RuntimeCard extends Component {
       _.find(credentials, { runtime_credential_id }) || {},
       'name'
     );
-    const agentCluster = this.isDetialCard
+    const agentCluster = this.isDetailCard
       ? _.filter(
         clusterStore.clusters,
         cl => cl.cluster_type === CLUSTER_TYPE.agent
@@ -92,7 +92,7 @@ export default class RuntimeCard extends Component {
     return (
       <Card
         className={classnames(styles.envItem, {
-          [styles.clickable]: !this.isDetialCard
+          [styles.clickable]: !this.isDetailCard
         })}
         onClick={onClick}
       >
@@ -117,7 +117,7 @@ export default class RuntimeCard extends Component {
               {cntCluster}
             </p>
           </div>
-          {this.isDetialCard && (
+          {this.isDetailCard && (
             <div className={styles.info}>
               <p className={styles.label}>{t('Agent Instance count')}</p>
               <p className={styles.val} style={{ cursor: 'pointer' }}>
