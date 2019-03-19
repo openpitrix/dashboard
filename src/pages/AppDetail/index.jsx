@@ -250,7 +250,7 @@ export default class AppDetail extends Component {
             <label>
               {_.get(appDetail, 'category_set', [])
                 .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => cate.name)
+                .map(cate => t(cate.name))
                 .join(', ')}
             </label>
           </div>

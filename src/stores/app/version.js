@@ -262,8 +262,11 @@ export default class AppVersionStore extends Store {
     }
 
     const userIds = this.reviews.map(item => _.get(item, 'phase.developer.operator'));
-    if (user.isISV && userIds.length > 0) {
-      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
+    const reviewers = this.reviews.map(item => item.reviewer);
+    if (userIds.length > 0) {
+      await this.userStore.fetchAll({
+        user_id: _.uniq(_.concat(userIds, reviewers))
+      });
     }
 
     this.isLoading = false;
