@@ -76,7 +76,7 @@ export default class GroupStore extends Store {
     if (group.parent_group_id) {
       return _.get(group, 'name');
     }
-    return rootName;
+    return t(rootName);
   }
 
   get needJoinGroup() {
@@ -181,7 +181,7 @@ export default class GroupStore extends Store {
     if (group.parent_group_id) {
       names.push(group.name);
     } else {
-      names.push(rootName);
+      names.push(t(rootName));
     }
     this.getPosition(group.parent_group_id, names);
   }
