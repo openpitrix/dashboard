@@ -32,6 +32,10 @@ export default class RuntimeClusterStore extends Store {
     return this.getStore('runtime').runtimeTab;
   }
 
+  get defaultStatus() {
+    return this.getStore('cluster').defaultStatus;
+  }
+
   @action
   fetchAll = async (params = {}) => {
     params = this.normalizeParams(_.omit(params, ['attachApps']));
