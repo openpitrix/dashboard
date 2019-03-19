@@ -76,7 +76,7 @@ export default class GroupStore extends Store {
     if (group.parent_group_id) {
       return _.get(group, 'name');
     }
-    return t(rootName);
+    return rootName;
   }
 
   get needJoinGroup() {
