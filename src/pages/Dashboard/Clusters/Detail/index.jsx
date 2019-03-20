@@ -4,9 +4,7 @@ import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
-import {
-  Icon, PopoverIcon, Popover, Select
-} from 'components/Base';
+import { Icon, PopoverIcon, Select } from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
 import Layout, {
   Grid, Section, Card, Panel, Dialog
