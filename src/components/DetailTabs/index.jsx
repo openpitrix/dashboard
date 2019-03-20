@@ -46,14 +46,24 @@ export default class DetailTabs extends Component {
     return nextState.curTab !== this.state.curTab;
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.activeTab !== this.props.activeTab) {
+      this.setState({
+        curTab: nextProps.activeTab
+      });
+    }
+  }
+
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
-    if (!tab.disabled) {
-      this.setState({ curTab: tabValue }, () => {
-        this.props.changeTab(tabValue);
-      });
+    if (_.isObject(tab) && tab.disabled) {
+      return;
     }
+
+    this.setState({ curTab: tabValue }, () => {
+      this.props.changeTab(tabValue);
+    });
   };
 
   render() {
