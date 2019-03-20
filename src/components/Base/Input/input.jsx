@@ -17,6 +17,7 @@ export default class Input extends React.Component {
   };
 
   static defaultProps = {
+    value: '',
     className: '',
     icon: '',
     iconType: 'light',
