@@ -1,12 +1,7 @@
-import React, { Fragment } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 import { withTranslation, Trans } from 'react-i18next';
-import { computed } from 'mobx';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import _ from 'lodash';
-import { isHelm, qs2Obj, obj2Qs } from 'utils';
-import { getUrlParam } from 'utils/url';
-import routes, { toRoute, getPortalFromPath } from 'routes';
 import { platformUrl, PLATFORM } from 'config/runtimes';
 
 import { Icon, DocLink } from 'components/Base';
