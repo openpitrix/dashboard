@@ -20,11 +20,6 @@ import styles from '../index.scss';
 }))
 @observer
 export default class RuntimeCard extends Component {
-  get isDetailCard() {
-    const { envStore } = this.props;
-    return !!_.get(envStore, 'runtimeToShowInstances.runtime_id');
-  }
-
   async componentDidMount() {
     // fetch proxy count
     if (this.isDetailCard) {
@@ -32,6 +27,11 @@ export default class RuntimeCard extends Component {
         cluster_type: CLUSTER_TYPE.agent
       });
     }
+  }
+
+  get isDetailCard() {
+    const { envStore } = this.props;
+    return !!_.get(envStore, 'runtimeToShowInstances.runtime_id');
   }
 
   handleClickAction = (type, id, e) => {
