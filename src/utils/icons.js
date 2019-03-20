@@ -7,6 +7,16 @@ const svgSprites = `
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
 >
+<defs>
+  <linearGradient id="spinner-a" x1="4.167%" x2="4.167%" y1="0%" y2="100%">
+    <stop offset="0%" stop-color="#E4EBF1"/>
+    <stop offset="100%" stop-color="#86919C"/>
+  </linearGradient>
+  <linearGradient id="spinner-b" x1="95.833%" x2="95.833%" y1="0%" y2="100%">
+    <stop offset="0%" stop-color="#324558"/>
+    <stop offset="100%" stop-color="#86919C"/>
+  </linearGradient>
+</defs>
 <symbol id="qui-add" viewBox="0 0 24 24">
   <path style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd" d="M13,11 L20,11 L20,13 L13,13 L13,20 L11,20 L11,13 L4,13 L4,11 L11,11 L11,4 L13,4 L13,11 Z"/>
 </symbol>
@@ -495,16 +505,6 @@ const svgSprites = `
   </g>
 </symbol>
 <symbol id="qui-loading" viewBox="0 0 48 48">
-  <defs>
-    <linearGradient id="spinner-a" x1="4.167%" x2="4.167%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#E4EBF1"/>
-      <stop offset="100%" stop-color="#86919C"/>
-    </linearGradient>
-    <linearGradient id="spinner-b" x1="95.833%" x2="95.833%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#324558"/>
-      <stop offset="100%" stop-color="#86919C"/>
-    </linearGradient>
-  </defs>
   <g fill="none" fill-rule="evenodd">
     <path d="M24,0 C37.254834,-2.4348735e-15 48,10.745166 48,24 C48,37.254834 37.254834,48 24,48 C10.745166,48 1.623249e-15,37.254834 0,24 C-1.623249e-15,10.745166 10.745166,2.4348735e-15 24,0 Z">
     <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1.2s" repeatCount="indefinite"/>
