@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
-import { translate } from 'react-i18next';
-import classnames from 'classnames';
-import _ from 'lodash';
+import { withTranslation } from 'react-i18next';
 
 import { getFormData } from 'utils';
 
@@ -12,7 +10,7 @@ import { Button, Input } from 'components/Base';
 
 import styles from './index.scss';
 
-@translate()
+@withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
   cloudEnvStore: rootStore.cloudEnvStore

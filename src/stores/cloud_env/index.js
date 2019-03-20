@@ -62,7 +62,6 @@ export default class CloudEnvironmentStore extends Store {
 
   @action
   saveCloudInfo = data => {
-    console.log(data);
     this.request.post('service_configs/set', {
       basic_config: data
     });
