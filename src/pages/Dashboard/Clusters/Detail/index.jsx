@@ -4,7 +4,9 @@ import { observer, inject } from 'mobx-react';
 import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
-import { Icon, Popover, Select } from 'components/Base';
+import {
+  Icon, PopoverIcon, Popover, Select
+} from 'components/Base';
 import CodeMirror from 'components/CodeMirror';
 import Layout, {
   Grid, Section, Card, Panel, Dialog
@@ -45,11 +47,12 @@ export default class ClusterDetail extends Component {
       appStore,
       appVersionStore,
       sshKeyStore,
+      userStore,
       user,
       match
     } = this.props;
 
-    if (match.path.endsWith('instances/:clusterId')) {
+    if (match.path.endsWith('/instances/:clusterId')) {
       clusterStore.onlyView = true;
     }
 
@@ -80,6 +83,8 @@ export default class ClusterDetail extends Component {
     if (!runtimeStore.isK8s) {
       await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
     }
+
+    await userStore.fetchAll({ user_id: cluster.owner });
 
     rootStore.sock.listenToJob(this.handleJobs);
   }
@@ -164,7 +169,10 @@ export default class ClusterDetail extends Component {
           onCancel={hideModal}
           noActions
         >
-          <TimeAxis timeList={clusterJobs.toJSON()} />
+          <TimeAxis
+            className={styles.operateLogs}
+            timeList={clusterJobs.toJSON()}
+          />
         </Dialog>
       );
     }
@@ -298,31 +306,38 @@ export default class ClusterDetail extends Component {
 
     const { isK8s } = runtimeStore;
 
-    const renderBtn = (type, text) => (
-      <span onClick={() => showOperateCluster(cluster_id, type)}>{text}</span>
+    const renderBtn = (type, text, iconName) => (
+      <span onClick={() => showOperateCluster(cluster_id, type)}>
+        <Icon name={iconName} type="dark" size={16} />
+        {text}
+      </span>
     );
 
     const renderMenuBtns = () => {
       if (isK8s) {
         return (
           <Fragment>
-            {status === 'deleted' && renderBtn('cease', t('Cease cluster'))}
+            {status === 'deleted'
+              && renderBtn('cease', t('Cease cluster'), 'stop')}
             {status !== 'deleted'
-              && renderBtn('rollback', t('Rollback cluster'))}
+              && renderBtn('rollback', t('Rollback cluster'), 'restart')}
             {status !== 'deleted'
-              && renderBtn('update_env', t('Update cluster env'))}
-            {status !== 'deleted' && renderBtn('upgrade', t('Upgrade cluster'))}
+              && renderBtn('update_env', t('Update cluster env'), 'pen')}
+            {status !== 'deleted'
+              && renderBtn('upgrade', t('Upgrade cluster'), 'pull')}
           </Fragment>
         );
       }
 
       return (
         <Fragment>
-          {status === 'stopped' && renderBtn('start', t('Start cluster'))}
-          {status === 'active' && renderBtn('stop', t('Stop cluster'))}
-          {status === 'active' && renderBtn('resize', t('Resize cluster'))}
+          {status === 'stopped'
+            && renderBtn('start', t('Start cluster'), 'start')}
+          {status === 'active' && renderBtn('stop', t('Stop cluster'), 'stop')}
+          {status === 'active'
+            && renderBtn('resize', t('Resize cluster'), 'restart')}
           {status !== 'deleted'
-            && renderBtn('update_env', t('Update cluster env'))}
+            && renderBtn('update_env', t('Update cluster env'), 'pen')}
         </Fragment>
       );
     };
@@ -332,6 +347,7 @@ export default class ClusterDetail extends Component {
         {renderMenuBtns()}
         {status !== 'deleted' && (
           <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            <Icon name="trash" type="dark" size={16} />
             {t('Delete cluster')}
           </span>
         )}
@@ -343,6 +359,7 @@ export default class ClusterDetail extends Component {
     const {
       clusterStore,
       appStore,
+      appVersionStore,
       clusterDetailStore,
       runtimeStore,
       userStore,
@@ -353,6 +370,8 @@ export default class ClusterDetail extends Component {
     const { runtimeDetail, isK8s } = runtimeStore;
     const { isRuntimeTypeFetched } = this.state;
     const { onlyView } = clusterStore;
+    const { versions } = appVersionStore;
+    const version = _.find(versions, { version_id: cluster.version_id }) || {};
 
     return (
       <Fragment>
@@ -361,18 +380,17 @@ export default class ClusterDetail extends Component {
             <Card>
               <ClusterCard
                 detail={cluster}
-                appName={_.get(appStore.appDetail, 'name', '')}
+                app={appStore.appDetail}
+                version={version}
                 runtimeName={_.get(runtimeDetail, 'name', '')}
                 provider={_.get(runtimeDetail, 'provider', '')}
-                userName={_.get(userStore.userDetail, 'username', '')}
+                users={userStore.users}
               />
               {cluster.status !== 'deleted' && !onlyView && (
-                <Popover
+                <PopoverIcon
                   className="operation"
                   content={this.renderHandleMenu()}
-                >
-                  <Icon name="more" />
-                </Popover>
+                />
               )}
             </Card>
 
@@ -406,10 +424,15 @@ export default class ClusterDetail extends Component {
   }
 
   render() {
-    const { user, match, t } = this.props;
-    const pageTitle = match.path.endsWith('sandbox-instance')
-      ? t('Sandbox-Instance detail')
-      : t('Customer-Instance detail');
+    const { user, clusterStore, t } = this.props;
+    const { onlyView } = clusterStore;
+    let pageTitle = onlyView
+      ? t('Customer-Instance detail')
+      : t('Sandbox-Instance detail');
+
+    if (user.isAdmin) {
+      pageTitle = t('Instance detail');
+    }
 
     if (user.isUserPortal) {
       return this.renderMain();

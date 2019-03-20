@@ -1,5 +1,5 @@
 @import '~scss/vars';
-$value-left: 134px;
+$value-left: 104px;
 
 .detailCard {
   .icon {
@@ -16,14 +16,13 @@ $value-left: 134px;
     }
   }
   .title {
-    margin-bottom: 20px;
-    padding-left: 36px;
-    padding-bottom: 24px;
+    margin: 0 -24px 24px;
+    padding: 0 24px 24px 60px;
     border-bottom: 1px solid $N10;
     .name {
       margin-bottom: 4px;
-      line-height: 24px;
-      font-size: 20px;
+      line-height: 28px;
+      font-size: 16px;
       font-weight: 500;
       color: $N500;
       max-width: calc(100% - 50px);
@@ -31,9 +30,8 @@ $value-left: 134px;
     }
     .id,
     .caId {
-      margin-bottom: 20px;
       font-size: 12px;
-      line-height: 14px;
+      line-height: 16px;
       color: $N75;
     }
     .caId {
@@ -59,7 +57,7 @@ $value-left: 134px;
     }
   }
   .noImg {
-    padding-left: 0;
+    padding-left: 24px
   }
   .detail {
     display: table;
@@ -67,16 +65,16 @@ $value-left: 134px;
 
     li {
       display: table-row;
-      margin-bottom: 8px;
-      font-size: 14px;
-      line-height: 24px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      line-height: 20px;
       vertical-align: middle;
       color: $N300;
       list-style: none;
       //@include textCut;
 
       &.setHeight {
-        height: 24px;
+        // height: 24px;
       }
 
       &:last-child {
@@ -98,25 +96,22 @@ $value-left: 134px;
     .name {
       float: left;
       display: inline-block;
-      width: 110px;
+      width: 80px;
+      margin-top: -2px;
       margin-right: 24px;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 24px;
       color: $N75;
       text-align: right;
       padding-bottom: 8px;
     }
-    .val {
+    .value {
       display: inline-block;
+      margin-bottom: 12px;
       width: calc(100% - #{$value-left});
       word-break: break-word;
       word-wrap: break-word;
     }
-    .value {
-      display: inline-block;
-      width: calc(100% - #{$value-left});
-    }
-
     .labels {
       margin-top: 0;
       margin-left: $value-left;
@@ -144,4 +139,26 @@ $value-left: 134px;
       }
     }
   }
+}
+
+.appName {
+  .appImage {
+    display: inline-block;
+    float: left;
+    width: 16px;
+    height: 16px;
+  }
+
+  .appName {
+    display: inline-block;
+    margin: 0 8px;
+    font-weight: 500;
+    color: $N300
+  }
+}
+
+.versionName {
+  display: inline-block;
+  margin-left: 8px;
+  color: $N75;
 }

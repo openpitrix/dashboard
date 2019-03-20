@@ -4,9 +4,12 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 
+import { Image } from 'components/Base';
 import Status from 'components/Status';
 import { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import VersionType from 'components/VersionType';
+import TdUser from 'components/TdUser';
 import routes, { toRoute } from 'routes';
 import CopyId from './CopyId';
 
@@ -15,20 +18,32 @@ import styles from './index.scss';
 @withTranslation()
 export default class ClusterCard extends Component {
   static propTypes = {
-    appName: PropTypes.string,
+    app: PropTypes.object,
     detail: PropTypes.object.isRequired,
     provider: PropTypes.string,
     runtimeName: PropTypes.string,
-    userName: PropTypes.string
+    users: PropTypes.arry,
+    version: PropTypes.object
   };
 
   static defaultProps = {
-    detail: {}
+    detail: {},
+    app: {},
+    version: {},
+    provider: '',
+    runtimeName: '',
+    users: []
   };
 
   render() {
     const {
-      detail, appName, runtimeName, provider, userName, t
+      detail,
+      app,
+      version,
+      runtimeName,
+      provider,
+      users,
+      t
     } = this.props;
 
     return (
@@ -38,12 +53,6 @@ export default class ClusterCard extends Component {
           <CopyId id={detail.cluster_id} />
         </div>
         <ul className={styles.detail}>
-          {detail.frontgate_id && (
-            <li>
-              <span className={styles.name}>{t('Frontgate ID')}</span>
-              <span className={styles.id}>{detail.frontgate_id}</span>
-            </li>
-          )}
           <li>
             <span className={styles.name}>{t('Status')}</span>
             <Status
@@ -53,15 +62,24 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('App')}</span>
-            <Link
-              to={toRoute(routes.portal.appDetail, { appId: detail.app_id })}
-            >
-              {appName || t('None')}
-            </Link>
+            <label className={styles.appName}>
+              <label className={styles.appImage}>
+                <Image src={app.icon} iconLetter={app.name} />
+              </label>
+              <Link
+                to={toRoute(routes.appDetail, { appId: app.app_id })}
+                className={styles.appName}
+              >
+                {app.name}
+              </Link>
+            </label>
           </li>
           <li>
             <span className={styles.name}>{t('Version')}</span>
-            {detail.version}
+            <label className={styles.value}>
+              <VersionType types={version.type} />
+              <span className={styles.versionName}>{version.name}</span>
+            </label>
           </li>
           <li className={styles.setHeight}>
             <span className={styles.name}>{t('Runtime')}</span>
@@ -73,7 +91,11 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('Creator')}</span>
-            {userName}
+            <TdUser
+              className={styles.value}
+              userId={detail.owner}
+              users={users}
+            />
           </li>
           <li>
             <span className={styles.name}>{t('Create Time')}</span>

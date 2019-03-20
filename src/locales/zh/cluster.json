@@ -7,5 +7,20 @@
   "Search Deployment Pods": "搜索部署节点",
   "Search StatefuleSet Pods": "搜索有状态副本集节点",
   "Search DaemonSet Pods": "搜索有状态副本集节点",
-  "My Instances": "我的实例"
+  "My Instances": "我的实例",
+
+  "CreateCluster": "创建实例",
+  "UpgradeCluster": "升级实例",
+  "RollbackCluster": "回滚实例",
+  "ResizeCluster": "扩容集群",
+  "AddClusterNodes": "增加节点",
+  "DeleteClusterNodes": "删除节点",
+  "StopClusters": "关闭实例",
+  "StartClusters": "运行实例",
+  "DeleteClusters": "删除实例",
+  "RecoverClusters": "恢复实例",
+  "CeaseClusters": "暂停实例",
+  "UpdateClusterEnv": "更新实例",
+  "AttachKeyPairs": "绑定密钥",
+  "DetachKeyPairs": "解绑密钥"
 }

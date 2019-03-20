@@ -26,10 +26,17 @@
       }
     }
   }
-  // for fix no data table style of card background
+
   :global {
+    // for fix no data table style of card background
     [class*='noData'] {
       box-shadow: none;
+    }
+
+    // for fix search input  style of card background
+    [class*='toolbar'] [class*='search'] input {
+      background-color: $N0;
+      border-color: $N0;
     }
   }
 }

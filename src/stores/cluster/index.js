@@ -94,9 +94,8 @@ export default class ClusterStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    const attachApps = Boolean(params.attachApps);
+    params = this.normalizeParams(params);
 
-    params = this.normalizeParams(_.omit(params, ['attachApps']));
     if (this.searchWord) {
       params.search_word = this.searchWord;
     }
@@ -134,7 +133,7 @@ export default class ClusterStore extends Store {
       this.monthCount = get(result, 'total_count', 0);
     }
 
-    if (attachApps) {
+    if (this.attachApps) {
       const appIds = this.clusters.map(cluster => cluster.app_id);
       if (appIds.length) {
         await this.appStore.fetchAll({
@@ -283,6 +282,7 @@ export default class ClusterStore extends Store {
     this.onlyView = false;
     this.isUserAction = false;
     this.clusters = [];
+    this.attachApps = false;
     this.attachVersions = false;
     this.attachUsers = false;
     this.resetTableParams();
