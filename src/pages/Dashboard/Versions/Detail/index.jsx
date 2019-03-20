@@ -21,7 +21,7 @@ import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { versionTypes } from 'config/version-types';
 import AppDetail from 'pages/AppDetail';
-import { formatTime, sleep } from 'utils';
+import { formatTime, sleep, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
@@ -59,6 +59,10 @@ const tags = [
 }))
 @observer
 export default class VersionDetail extends Component {
+  state = {
+    isLoading: false
+  };
+
   async componentDidMount() {
     const {
       appVersionStore,
@@ -70,6 +74,7 @@ export default class VersionDetail extends Component {
     } = this.props;
     const { appId, versionId } = match.params;
 
+    this.setState({ isLoading: true });
     // query this version version detail
     await appVersionStore.fetch(versionId);
     appVersionStore.description = _.get(appVersionStore, 'version.description');
@@ -79,6 +84,7 @@ export default class VersionDetail extends Component {
 
     // query this version submit record
     await appVersionStore.fetchAudits(appId, versionId);
+    this.setState({ isLoading: false });
 
     // query record relative operators name
     const userIds = _.get(appVersionStore.audits, versionId, []).map(
@@ -403,14 +409,14 @@ export default class VersionDetail extends Component {
       <Card className={styles.latestRecord}>
         <div className={styles.title}>{t('Latest record')}</div>
         <Status
-          type={audit.status}
+          type={mappingStatus(audit.status)}
           name={audit.status}
           className={styles.status}
         />
         <div className={styles.record}>
           <div className={styles.operator}>
             {t(audit.operator_type)}:&nbsp;
-            {(_.find(users, { user_id: audit.operator }) || {}).username
+            {(_.find(users, { user_id: audit.operator }) || {}).email
               || audit.operator}
           </div>
           {this.renderReason(audit)}
@@ -461,17 +467,17 @@ export default class VersionDetail extends Component {
     }
 
     return (
-      <Card className={styles.updateLog}>
+      <div className={styles.updateLog}>
         <pre>{description || t('None')}</pre>
-      </Card>
+      </div>
     );
   }
 
   renderFileConfig() {
     const { appVersionStore, appStore, t } = this.props;
+    const { isLoading } = this.state;
     const {
       version,
-      isLoading,
       createError,
       uploadError,
       packageName,
