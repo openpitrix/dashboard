@@ -145,7 +145,7 @@ $value-left: 104px;
   .appImage {
     display: inline-block;
     float: left;
-    width: 16px;
+    min-width: 16px;
     height: 16px;
   }
 

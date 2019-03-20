@@ -96,8 +96,12 @@ export default class PurchasedDetail extends Component {
         onClear={onClearSearch}
         onRefresh={onRefresh}
       >
-        <Button type="primary" className="pull-right" onClick={this.goDeploy}>
-          <Icon name="add" type="white" />
+        <Button
+          type="primary"
+          className={styles.addButton}
+          onClick={this.goDeploy}
+        >
+          <Icon name="add" type="white" className={styles.icon} />
           {t('Deploy')}
         </Button>
       </Toolbar>

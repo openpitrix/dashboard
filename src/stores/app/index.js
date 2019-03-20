@@ -124,6 +124,10 @@ class AppStore extends Store {
     return this.getStore('user');
   }
 
+  get describeAppsAction() {
+    return this.getUser().isUserPortal ? 'active_apps' : 'apps';
+  }
+
   @action
   fetchStoreAppsCount = async () => {
     const res = await this.request.get('active_apps', {
@@ -316,7 +320,7 @@ class AppStore extends Store {
   @action
   fetch = async (appId = '') => {
     this.isLoading = true;
-    const result = await this.request.get(`apps`, {
+    const result = await this.request.get(this.describeAppsAction, {
       app_id: appId,
       bypass_auth: true
     });

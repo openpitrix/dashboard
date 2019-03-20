@@ -206,9 +206,18 @@ export default class Clusters extends Component {
     const app = _.find(apps, { app_id: appId }) || {};
     const version = _.find(versions, { version_id: versionId }) || {};
 
-    if (user.isDevPortal) {
+    if (user.isUserPortal || user.isAdmin) {
       return (
         <div className={styles.appTdShow}>
+          <label className={styles.appImage}>
+            <Image src={app.icon} iconLetter={app.name} iconSize={20} />
+          </label>
+          <Link
+            to={toRoute(routes.appDetail, { appId: app.app_id })}
+            className={styles.appName}
+          >
+            {app.name}
+          </Link>
           <VersionType types={version.type} />
           <span className={styles.versionName}>{version.name}</span>
         </div>
@@ -217,15 +226,6 @@ export default class Clusters extends Component {
 
     return (
       <div className={styles.appTdShow}>
-        <label className={styles.appImage}>
-          <Image src={app.icon} iconLetter={app.name} />
-        </label>
-        <Link
-          to={toRoute(routes.appDetail, { appId: app.app_id })}
-          className={styles.appName}
-        >
-          {app.name}
-        </Link>
         <VersionType types={version.type} />
         <span className={styles.versionName}>{version.name}</span>
       </div>
@@ -284,7 +284,7 @@ export default class Clusters extends Component {
 
     return (
       <Toolbar
-        placeholder={t('Search Clusters')}
+        placeholder={t('Search Instances')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
@@ -447,7 +447,11 @@ export default class Clusters extends Component {
     }
 
     return (
-      <Layout pageTitle={pageTitle} noSubMenu={user.isAdmin}>
+      <Layout
+        pageTitle={pageTitle}
+        isCenterPage={user.isAdmin}
+        noSubMenu={user.isAdmin}
+      >
         {this.renderMain()}
       </Layout>
     );
