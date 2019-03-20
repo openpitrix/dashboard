@@ -217,6 +217,7 @@ export default class UserModalActions extends Component {
         <div>
           <input name="user_id" value={userId} type="hidden" />
           <Select
+            positionFixed
             defaultValue={roleId}
             onChange={this.onChangeRole}
             name="role_id"

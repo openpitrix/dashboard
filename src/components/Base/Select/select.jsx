@@ -18,12 +18,14 @@ export default class Select extends React.Component {
     disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
+    positionFixed: PropTypes.bool,
     value: PropTypes.string
   };
 
   static defaultProps = {
     className: '',
     disabled: false,
+    positionFixed: false,
     name: ''
   };
 
@@ -153,19 +155,25 @@ export default class Select extends React.Component {
 
   renderOptions() {
     const { isOpen } = this.state;
-    const { disabled } = this.props;
-    const dimensions = this.control
-      ? this.control.getBoundingClientRect()
-      : null;
+    const { disabled, positionFixed } = this.props;
+    const style = {
+      position: positionFixed ? 'fixed' : 'relative'
+    };
+    if (positionFixed) {
+      const dimensions = this.control
+        ? this.control.getBoundingClientRect()
+        : null;
+      Object.assign(style, {
+        width: _.get(dimensions, 'width', 'auto')
+      });
+    }
 
     return this.childNodes.length > 0 ? (
       <div
         className={classnames(styles.options, {
           [styles.show]: isOpen && !disabled
         })}
-        style={{
-          width: _.get(dimensions, 'width', 'auto')
-        }}
+        style={style}
       >
         {this.childNodes}
       </div>
