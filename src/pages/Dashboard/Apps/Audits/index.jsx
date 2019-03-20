@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import Status from 'components/Status';
 import { versionTypes } from 'config/version-types';
 import { formatTime, mappingStatus } from 'utils';
+import { ALL_VERSION_STATUS } from 'config/version';
 
 import styles from './index.scss';
 
@@ -34,7 +35,10 @@ export default class Audits extends Component {
     const { appId } = match.params;
 
     // query this app all versions
-    await appVersionStore.fetchAll({ app_id: appId });
+    await appVersionStore.fetchAll({
+      app_id: appId,
+      status: ALL_VERSION_STATUS
+    });
 
     // default show last version audit records
     const { versions } = appVersionStore;

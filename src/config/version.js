@@ -106,3 +106,14 @@ export const getFilterStatus = (activeType, reveiwTypes) => {
 
   return _.uniq(status);
 };
+
+export const ALL_VERSION_STATUS = [
+  'deleted',
+  'draft',
+  'submitted',
+  'in-review',
+  'passed',
+  'rejected',
+  'active',
+  'suspended'
+];
