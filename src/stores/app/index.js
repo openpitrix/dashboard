@@ -617,6 +617,7 @@ class AppStore extends Store {
     this.categoryId = '';
     this.repoId = '';
     this.userId = '';
+    this.appId = '';
 
     this.apps = [];
     this.appDetail = {};

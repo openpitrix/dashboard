@@ -45,9 +45,7 @@ export default class Apps extends Component {
 
   componentWillUnmount() {
     const { appStore } = this.props;
-    appStore.pageSize = 10;
-    appStore.searchWord = '';
-    appStore.userId = '';
+    appStore.reset();
   }
 
   showDeleteApp = (event, item) => {
