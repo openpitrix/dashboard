@@ -29,7 +29,7 @@ exports[`Base/Select basic render 1`] = `
   </div>
   <div
     class="options"
-    style="width:auto"
+    style="position:absolute"
   >
     <div
       class="option"
@@ -97,7 +97,7 @@ exports[`Base/Select disabled render 1`] = `
   </div>
   <div
     class="options"
-    style="width:auto"
+    style="position:absolute"
   >
     <div
       class="option"
