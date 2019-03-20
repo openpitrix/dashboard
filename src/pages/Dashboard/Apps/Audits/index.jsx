@@ -8,7 +8,7 @@ import { Table, Icon } from 'components/Base';
 import Layout from 'components/Layout';
 import Status from 'components/Status';
 import { versionTypes } from 'config/version-types';
-import { formatTime } from 'utils';
+import { formatTime, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 
@@ -136,7 +136,9 @@ export default class Audits extends Component {
       {
         title: t('Status'),
         key: 'status',
-        render: item => <Status type={item.status} name={item.status} />
+        render: item => (
+          <Status type={item.status} name={mappingStatus(item.status)} />
+        )
       },
       {
         title: t('Operator'),
@@ -212,7 +214,9 @@ export default class Audits extends Component {
             <div className={styles.version} key={version.version_id}>
               <div
                 onClick={() => this.showAudits(version)}
-                className={styles.name}
+                className={classnames(styles.name, {
+                  [styles.boldName]: version.isShowAudits
+                })}
               >
                 <Icon
                   name={version.isShowAudits ? 'caret-down' : 'caret-right'}

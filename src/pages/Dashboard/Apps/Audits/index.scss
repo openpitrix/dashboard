@@ -44,10 +44,14 @@
     .name {
       margin-bottom: 12px;
       font-size: 14px;
-      font-weight: 500;
       line-height: 28px;
-      color: $N500;
+      color: $N300;
       cursor: pointer;
+
+      &.boldName {
+        font-weight: 500;
+        color: $N500;
+      }
     }
 
     .icon {
@@ -58,6 +62,10 @@
         --primary-color: #{$N300};
         --secondary-color: #{$N300};
       }
+    }
+
+    table {
+      margin-bottom: 24px;
     }
   }
 }

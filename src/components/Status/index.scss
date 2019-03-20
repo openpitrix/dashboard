@@ -31,7 +31,7 @@
   &.dev-in-review {
     background-color: $Y300;
   }
-  &.published,
+
   &.passed,
   &.isv-passed,
   &.business-passed,
@@ -45,7 +45,7 @@
     background-color: $R200;
   }
   &.suspended {
-    background-color: #343945;
+    background-color: $N30;
   }
   &.ceased {
     background-color: $Y100;
@@ -66,6 +66,10 @@
   }
   &.disabled {
     background-color: $N75;
+  }
+
+  &.published {
+    background-color: $P65;
   }
 
   &.running,
