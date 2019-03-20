@@ -423,13 +423,11 @@ export class Table extends React.Component {
       <div className={classNames(styles.table, className)} style={style}>
         <Loading isLoading={isLoading}>
           {this.renderTable()}
-          {!pagination.hide && (
-            <Pagination
-              {...pagination}
-              selectedRows={selectedRowKeys}
-              onSelectRow={rowSelection.onChange}
-            />
-          )}
+          <Pagination
+            {...pagination}
+            selectedRows={selectedRowKeys}
+            onSelectRow={rowSelection.onChange}
+          />
         </Loading>
       </div>
     );

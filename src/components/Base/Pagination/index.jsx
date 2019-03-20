@@ -14,6 +14,7 @@ export default class Pagination extends React.Component {
     current: PropTypes.number,
     defaultCurrent: PropTypes.number,
     defaultPageSize: PropTypes.number,
+    hide: PropTypes.bool,
     noCancel: PropTypes.bool,
     onChange: PropTypes.func,
     onSelectRow: PropTypes.func,
@@ -29,7 +30,8 @@ export default class Pagination extends React.Component {
     selectedRows: [],
     onChange: noop,
     onSelectRow: noop,
-    noCancel: true
+    noCancel: true,
+    hide: false
   };
 
   constructor(props) {
@@ -135,11 +137,11 @@ export default class Pagination extends React.Component {
   }
 
   render() {
-    const { total, className } = this.props;
+    const { total, hide, className } = this.props;
     const { current } = this.state;
     const totalPage = this.calculatePage();
 
-    if (!total) {
+    if (!total || hide) {
       return null;
     }
 
