@@ -157,7 +157,7 @@ export default class Select extends React.Component {
     const { isOpen } = this.state;
     const { disabled, positionFixed } = this.props;
     const style = {
-      position: positionFixed ? 'fixed' : 'relative'
+      position: positionFixed ? 'fixed' : 'absolute'
     };
     if (positionFixed) {
       const dimensions = this.control
