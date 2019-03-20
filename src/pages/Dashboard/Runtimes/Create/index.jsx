@@ -14,6 +14,8 @@ import {
 import { Card, Stepper } from 'components/Layout';
 import { providers } from 'config/runtimes';
 
+import Tip from './Tip';
+
 import styles from './index.scss';
 
 const CreateRuntime = 'create_runtime';
@@ -328,23 +330,7 @@ export default class CreateTestingEnv extends React.Component {
     } = createEnvStore;
 
     if (!validatePassed) {
-      return (
-        <div className={styles.tips}>
-          <p>
-            <Icon name="question" type="dark" />
-            {t('How to get these tips?')}
-          </p>
-          <ol>
-            <li>
-              {t('TIPS_LOGIN_PLATFORM_CONSOLE', {
-                platform: this.platformName
-              })}
-            </li>
-            <li>{t('TIPS_ADD_CREDENTIAL_1')}</li>
-            <li>{t('TIPS_ADD_CREDENTIAL_2')}</li>
-          </ol>
-        </div>
-      );
+      return <Tip platform={this.platform} platformName={this.platformName} />;
     }
 
     if (this.isCreateVmRt) {

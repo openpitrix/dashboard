@@ -131,7 +131,7 @@ $form-item-width: 387px;
     }
 
     .tips{
-      &>p {
+      & > div {
         margin-top: 24px;
         font-size: $size-small;
         font-weight: 500;
@@ -144,10 +144,10 @@ $form-item-width: 387px;
           }
         }
       }
-      &>ol{
-        padding-left: 16px;
+      ol {
+        padding-left: 18px;
         margin-top: 8px;
-        &>li {
+        & > li {
           list-style-type: decimal;
           font-size: $size-small;
           color: $N300;
