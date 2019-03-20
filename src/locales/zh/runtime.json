@@ -10,8 +10,21 @@
   "Delete runtime successfully": "删除环境成功",
   "Modify runtime credential successfully": "修改授权信息成功",
   "Delete runtime credential successfully": "删除授权信息成功",
-  "TIPS_LOGIN_PLATFORM_CONSOLE": "登录{{platform}}控制台",
-  "TIPS_ADD_CREDENTIAL_1": "进入API密钥管理界面",
-  "TIPS_ADD_CREDENTIAL_2": "点击创建，并下载密钥文件",
+  "TIPS_ADD_CREDENTIAL_QINGCLOUD_1": "登录 QingCloud <2>控制台</2>;",
+  "TIPS_ADD_CREDENTIAL_QINGCLOUD_2": "进入<1>「API 密钥」</1>管理界面;",
+  "TIPS_ADD_CREDENTIAL_QINGCLOUD_3": "点击<1>创建</1>，并下载密钥文件",
+
+  "TIPS_ADD_CREDENTIAL_ALIYUN_1": "登录阿里云 <1>控制台</1>;",
+  "TIPS_ADD_CREDENTIAL_ALIYUN_2": "进入 <1>安全信息管理</1> 界面；",
+  "TIPS_ADD_CREDENTIAL_ALIYUN_3": "点击<1>创建</1>，并下载密钥文件",
+
+  "TIPS_ADD_CREDENTIAL_AWS_1": "登录 AWS <1>控制台</1>;",
+  "TIPS_ADD_CREDENTIAL_AWS_2": "找到可用区的 API Server 地址;",
+  "TIPS_ADD_CREDENTIAL_AWS_3": "进入<1>「您的安全凭证」</1>界面，展开<3>「访问密钥」</3>",
+  "TIPS_ADD_CREDENTIAL_AWS_4": "点击<1>创建</1>，并下载密钥文件",
+
+  "TIPS_ADD_CREDENTIAL_K8S_1": "进入 Kubernetes 环境；",
+  "TIPS_ADD_CREDENTIAL_K8S_2": "复制「~/.kube/config」下的内容。",
+
   "User runtime": "运行环境"
 }
