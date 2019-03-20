@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import { providers as providersConf } from 'config/runtimes';
+import { providers as providersConf, CLUSTER_TYPE } from 'config/runtimes';
 import Store from '../Store';
 
 export default class TestingEnvStore extends Store {
@@ -26,7 +26,7 @@ export default class TestingEnvStore extends Store {
 
   // register external store instance if you want access
   get clusterStore() {
-    return this.getStore('cluster');
+    return this.getStore('runtimeCluster');
   }
 
   get runtimeStore() {
@@ -219,7 +219,14 @@ export default class TestingEnvStore extends Store {
     this.isLoading = true;
 
     if (this.curTab === 'runtime') {
-      await this.fetchClusters();
+      await this.clusterStore.fetchCount({
+        owner: this.userId,
+        noLimit: true,
+        // ['-'] assume no runtime found
+        runtime_id: _.get(this.getProviderRuntimesMap(), this.platform, ['-']),
+        cluster_type: CLUSTER_TYPE.instance
+      });
+
       await this.fetchCredentials();
     }
 
@@ -228,17 +235,6 @@ export default class TestingEnvStore extends Store {
     }
 
     this.isLoading = false;
-  };
-
-  @action
-  fetchClusters = async (runtime_id = '') => {
-    await this.clusterStore.fetchAll({
-      owner: this.userId,
-      noLimit: true,
-      // ['-'] assume no runtime found
-      runtime_id:
-        runtime_id || _.get(this.getProviderRuntimesMap(), this.platform, ['-'])
-    });
   };
 
   @action

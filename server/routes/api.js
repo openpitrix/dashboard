@@ -10,6 +10,7 @@ const authEndpoint = 'oauth2/token';
 const resourcesBypassAuth = [
   'active_apps',
   'active_app_versions',
+  'app_vendors',
   'categories',
   'attachment'
 ];
@@ -26,7 +27,7 @@ router.post('/api/*', async ctx => {
   const { method } = body;
   const url = [apiServer, endpoint].join('/');
 
-  logger.info(`%s: %s, %s`, method.toUpperCase(), url, endpoint, { body });
+  logger.info(`%s: %s, %O`, method.toUpperCase(), url, body);
 
   delete body.method;
 
