@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _, { noop } from 'lodash';
@@ -7,7 +6,6 @@ import { Translation } from 'react-i18next';
 
 import styles from './index.scss';
 
-@observer
 export default class DetailTabs extends Component {
   static propTypes = {
     activeTab: PropTypes.string,
@@ -46,8 +44,7 @@ export default class DetailTabs extends Component {
 
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
-
-    if (!tab.disabled) {
+    if (!tab.disabled && tabValue !== this.state.curTab) {
       this.setState({ curTab: tabValue }, () => {
         this.props.changeTab(tabValue);
       });
