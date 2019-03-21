@@ -581,6 +581,7 @@ export default class AppVersionStore extends Store {
     this.isLoading = true;
     const data = {
       limit: this.maxLimit,
+      status: defaultStatus,
       app_id: appId
     };
 
