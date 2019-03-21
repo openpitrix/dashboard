@@ -45,7 +45,7 @@ export const getNavs = {
       title: 'Users and Permission'
     },
     {
-      link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
+      link: toRoute(routes.portal._admin.cloudInfo, { portal: 'admin' }),
       iconName: 'cogwheel',
       title: 'Settings'
     }
@@ -204,6 +204,10 @@ export const subNavMap = {
     setting: {
       title: 'Platform setting',
       links: [
+        {
+          name: 'Basic info',
+          link: toRoute(routes.portal._admin.cloudInfo, { portal: 'admin' })
+        },
         {
           name: 'User authentication',
           link: '#',

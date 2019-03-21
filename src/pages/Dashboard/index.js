@@ -30,6 +30,7 @@ export Runtimes from './Runtimes';
 export CreateRuntime from './Runtimes/Create';
 
 export CloudEnv from './CloudEnv';
+export CloudInfo from './CloudInfo';
 export NotificationServer from './NotificationServer';
 
 export Account from './Account';

@@ -21,6 +21,7 @@ import {
   ReviewDetail,
   AppDeploy,
   CloudEnv,
+  CloudInfo,
   NotificationServer
 } from 'pages/Dashboard';
 
@@ -68,6 +69,7 @@ export default ({ prefix }) => (
       component={ProviderDetail}
     />
     <WrapRoute path={`${prefix}/settings/cloud-env`} component={CloudEnv} />
+    <WrapRoute path={`${prefix}/settings/cloud-info`} component={CloudInfo} />
     <WrapRoute
       path={`${prefix}/settings/notification-server`}
       component={NotificationServer}
