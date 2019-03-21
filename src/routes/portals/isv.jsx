@@ -14,6 +14,7 @@ import {
   ReviewDetail,
   Runtimes,
   CreateRuntime,
+  ClusterDetail,
   AppDeploy
 } from 'pages/Dashboard';
 
@@ -32,6 +33,10 @@ export default ({ prefix }) => (
     <WrapRoute
       path={`${prefix}/apps/review/:reviewId`}
       component={ReviewDetail}
+    />
+    <WrapRoute
+      path={`${prefix}/clusters/:clusterId`}
+      component={ClusterDetail}
     />
 
     <WrapRoute path={`${prefix}/users`} component={Users} />
