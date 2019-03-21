@@ -1,11 +1,6 @@
 @import '~scss/vars';
 
 .account {
-  &.accountBg {
-    padding: 24px;
-    border-radius: 2px;
-    background-color: $N0;
-  }
   .form {
     &.fromEN {
       .name {

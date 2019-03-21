@@ -237,11 +237,7 @@ export default class Account extends Component {
     }
 
     return (
-      <div
-        className={classnames(styles.account, {
-          [styles.accountBg]: !user.isUserPortal && activeTab !== 'ssh'
-        })}
-      >
+      <div className={styles.account}>
         {activeTab === 'account' && this.renderBasic()}
         {activeTab === 'password' && this.renderPassword()}
         {activeTab === 'ssh' && <SSHKeys />}
@@ -269,7 +265,12 @@ export default class Account extends Component {
     }
 
     return (
-      <Layout pageTitle={t('Personal Center')} isCenterPage noSubMenu>
+      <Layout
+        pageTitle={t('Personal Center')}
+        centerWidth={activeTab !== 'ssh' ? 884 : 1200}
+        isCenterPage
+        noSubMenu
+      >
         <Card>
           <DetailTabs
             tabs={filterTabs}
