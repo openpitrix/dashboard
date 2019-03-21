@@ -27,18 +27,13 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
-  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @observer
 export default class PurchasedDetail extends Component {
   async componentDidMount() {
     const {
-      clusterStore,
-      appStore,
-      vendorStore,
-      runtimeStore,
-      match
+      clusterStore, appStore, runtimeStore, match
     } = this.props;
     const { appId } = match.params;
     clusterStore.attachVersions = true;
@@ -52,9 +47,6 @@ export default class PurchasedDetail extends Component {
       status: ['active', 'deleted'],
       noLimit: true
     });
-
-    const { appDetail } = appStore;
-    await vendorStore.fetch(appDetail.isv);
   }
 
   componentWillUnmount() {
@@ -109,9 +101,8 @@ export default class PurchasedDetail extends Component {
   }
 
   renderAppBase() {
-    const { appStore, vendorStore, t } = this.props;
+    const { appStore, t } = this.props;
     const { appDetail } = appStore;
-    const { vendorDetail } = vendorStore;
 
     return (
       <Card className={styles.appBase}>
@@ -146,7 +137,7 @@ export default class PurchasedDetail extends Component {
           </dl>
           <dl>
             <dt>{t('App service provider')}</dt>
-            <dd>{vendorDetail.company_name}</dd>
+            <dd>{appDetail.company_name}</dd>
           </dl>
           <dl>
             <dt>{t('Publish time')}</dt>

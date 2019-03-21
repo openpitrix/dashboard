@@ -15,7 +15,6 @@ import styles from './index.scss';
   appStore: rootStore.appStore,
   clusterStore: rootStore.clusterStore,
   userStore: rootStore.userStore,
-  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @setPage('appStore')
@@ -26,9 +25,8 @@ export default class Apps extends Component {
 
     appStore.defaultStatus = ['active', 'suspended'];
     appStore.attchDeployTotal = true; // for query deploy total
-    if (user.isAdmin) {
-      appStore.attchISV = true;
-    } else if (user.isISV) {
+
+    if (user.isISV) {
       appStore.attchUser = true;
     }
     await appStore.fetchAll();
@@ -42,7 +40,7 @@ export default class Apps extends Component {
 
   render() {
     const {
-      appStore, userStore, vendorStore, user, t
+      appStore, userStore, user, t
     } = this.props;
     const {
       apps,
@@ -53,7 +51,6 @@ export default class Apps extends Component {
       onRefresh
     } = appStore;
     const { users } = userStore;
-    const { vendors } = vendorStore;
     const { isAdmin } = user;
     const columnsFilter = columns => {
       const excludeKeys = isAdmin ? 'owner' : 'maintainers';
@@ -77,7 +74,6 @@ export default class Apps extends Component {
           columnsFilter={columnsFilter}
           inject={{
             users,
-            vendors,
             isAdmin
           }}
         />

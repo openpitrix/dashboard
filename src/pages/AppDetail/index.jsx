@@ -33,7 +33,6 @@ const tabs = [
   rootStore,
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
-  vendorStore: rootStore.vendorStore,
   user: rootStore.user
 }))
 @observer
@@ -57,7 +56,6 @@ export default class AppDetail extends Component {
       rootStore,
       appStore,
       appVersionStore,
-      vendorStore,
       match,
       isCreate
     } = this.props;
@@ -70,9 +68,7 @@ export default class AppDetail extends Component {
       await appStore.fetch(appId);
       await appVersionStore.fetchTypeVersions(appId);
 
-      const { appDetail } = appStore;
-      await vendorStore.fetch(appDetail.isv);
-
+      // for statistics app number
       await appStore.fetchActiveApps({ status: 'active' });
 
       this.setState({ isLoading: false });
@@ -103,17 +99,17 @@ export default class AppDetail extends Component {
   };
 
   renderProviderInfo() {
-    const { vendorStore, t } = this.props;
-    const { vendorDetail } = vendorStore;
+    const { appStore, t } = this.props;
+    const { appDetail } = appStore;
 
     return (
       <Card className={styles.providerInfo}>
         <div className={styles.title}>{t('App service provider')}</div>
         <div className={styles.number}>
-          {t('Provider No')}: &nbsp; {vendorDetail.user_id || t('None')}
+          {t('Provider No')}: &nbsp; {appDetail.isv || t('None')}
         </div>
         <div className={styles.company}>
-          {vendorDetail.company_name || t('unknown')}
+          {appDetail.company_name || t('unknown')}
         </div>
 
         <dl>
@@ -125,15 +121,15 @@ export default class AppDetail extends Component {
         </dl>
         <dl>
           <dt>{t('Business introduction')}</dt>
-          <dd>{vendorDetail.company_profile || t('None')}</dd>
+          <dd>{appDetail.company_profile || t('None')}</dd>
         </dl>
         <dl>
           <dt>{t('Company website')}</dt>
-          <dd>{vendorDetail.company_website || t('None')}</dd>
+          <dd>{appDetail.company_website || t('None')}</dd>
         </dl>
         <dl>
           <dt>{t('Time of entry')}</dt>
-          <dd>{formatTime(vendorDetail.submit_time)}</dd>
+          <dd>{formatTime(appDetail.company_join_time)}</dd>
         </dl>
       </Card>
     );

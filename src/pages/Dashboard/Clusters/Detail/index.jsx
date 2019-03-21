@@ -361,6 +361,7 @@ export default class ClusterDetail extends Component {
       clusterDetailStore,
       runtimeStore,
       userStore,
+      user,
       t
     } = this.props;
 
@@ -377,6 +378,7 @@ export default class ClusterDetail extends Component {
           <Section>
             <Card>
               <ClusterCard
+                isUserPortal={user.isUserPortal}
                 detail={cluster}
                 app={appStore.appDetail}
                 version={version}

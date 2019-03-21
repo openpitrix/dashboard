@@ -116,10 +116,6 @@ class AppStore extends Store {
     return this.getStore('cluster');
   }
 
-  get vendorStore() {
-    return this.getStore('vendor');
-  }
-
   get userStore() {
     return this.getStore('user');
   }
@@ -259,14 +255,6 @@ class AppStore extends Store {
     // appCount for show repo datail page "App Count"
     if (!this.searchWord && !this.selectStatus) {
       this.appCount = this.totalCount;
-    }
-
-    // query provider name
-    if (this.attchISV && apps.length > 0) {
-      const isvIds = this.apps.map(item => item.isv);
-      await this.vendorStore.fetchAll({
-        user_id: _.uniq(isvIds)
-      });
     }
 
     // query developer name and email
@@ -629,7 +617,6 @@ class AppStore extends Store {
     this.checkResult = {};
     this.defaultStatus = defaultStatus;
 
-    this.attchISV = false;
     this.attchUser = false;
     this.attchDeployTotal = false;
     this.resetTableParams();

@@ -10,7 +10,7 @@ import TdUser from 'components/TdUser';
 import _ from 'lodash';
 
 // inject
-export default ({ users = [], vendors = [] }) => [
+export default ({ users = [] }) => [
   {
     title: 'App Name',
     key: 'name',
@@ -72,7 +72,7 @@ export default ({ users = [], vendors = [] }) => [
     key: 'maintainers',
     className: 'boldFont',
     width: '120px',
-    render: item => (_.find(vendors, { user_id: item.isv }) || {}).company_name || item.isv
+    render: item => item.company_name
   },
   {
     title: 'Publish time',

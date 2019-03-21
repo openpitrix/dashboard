@@ -27,7 +27,6 @@ const types = [
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
   categoryStore: rootStore.categoryStore,
-  vendorStore: rootStore.vendorStore,
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
@@ -75,19 +74,15 @@ export default class Reviews extends Component {
   };
 
   renderSubmitter(id) {
-    const {
-      user, appStore, userStore, vendorStore
-    } = this.props;
-    const { vendors } = vendorStore;
+    const { user, appStore, userStore } = this.props;
     const { apps } = appStore;
     const app = _.find(apps, { app_id: id }) || {};
-    const vendor = (_.find(vendors, { user_id: app.isv }) || {}).company_name;
 
     if (user.isISV) {
       return <TdUser users={userStore.users} userId={id} />;
     }
 
-    return <div className={styles.submitter}>{vendor}</div>;
+    return <div className={styles.submitter}>{app.company_name}</div>;
   }
 
   render() {

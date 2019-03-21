@@ -53,17 +53,23 @@ export default class AppList extends PureComponent {
         {apps.map(
           (
             {
-              app_id, name, icon, description, app_version_types, maintainers
+              app_id,
+              name,
+              icon,
+              abstraction,
+              description,
+              app_version_types,
+              company_name
             },
             idx
           ) => (
             <Card
               icon={icon}
               name={name}
-              desc={description}
+              desc={abstraction || description}
               link={`/apps/${app_id}`}
               key={idx}
-              maintainer={maintainers}
+              maintainer={company_name}
               type={app_version_types}
             />
           )

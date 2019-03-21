@@ -20,6 +20,7 @@ export default class ClusterCard extends Component {
   static propTypes = {
     app: PropTypes.object,
     detail: PropTypes.object.isRequired,
+    isUserPortal: PropTypes.bool,
     provider: PropTypes.string,
     runtimeName: PropTypes.string,
     users: PropTypes.array,
@@ -27,6 +28,7 @@ export default class ClusterCard extends Component {
   };
 
   static defaultProps = {
+    isUserPortal: false,
     detail: {},
     app: {},
     version: {},
@@ -37,6 +39,7 @@ export default class ClusterCard extends Component {
 
   render() {
     const {
+      isUserPortal,
       detail,
       app,
       version,
@@ -45,6 +48,7 @@ export default class ClusterCard extends Component {
       users,
       t
     } = this.props;
+    const routeUrl = isUserPortal ? routes.appDetail : routes.portal.appDetail;
 
     return (
       <div className={styles.detailCard}>
@@ -67,7 +71,7 @@ export default class ClusterCard extends Component {
                 <Image src={app.icon} iconLetter={app.name} />
               </label>
               <Link
-                to={toRoute(routes.appDetail, { appId: app.app_id })}
+                to={toRoute(routeUrl, { appId: app.app_id })}
                 className={styles.appName}
               >
                 {app.name}
