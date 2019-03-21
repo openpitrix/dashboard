@@ -77,28 +77,59 @@
         }
       }
     }
+
+    &.active {
+      .icon svg {
+        --primary-color: #{$P300};
+        --secondary-color: #{$P45};
+      }
+    }
   }
 }
 
 .topNav {
-  &> .navItem {
-    //margin-bottom: 10px;
-
+  & > .navItem {
     &.active {
       border-radius: 2px;
-      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+      box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+        0 4px 8px 0 rgba(35, 35, 36, 0.04);
       background-color: $N0;
+
+      a {
+        font-weight: 500;
+        color: $P75;
+      }
     }
 
-    &.firstElem{
-      margin-bottom: 24px;
-      margin-top: 14px;
+    &.firstElem {
+      margin-bottom: 26px;
+      margin-top: 12px;
+
+      &:hover {
+        .hoverHide {
+          display: none;
+        }
+        .hoverShow {
+          display: block;
+        }
+      }
+
+      .hoverShow {
+        display: none;
+      }
+
+      > a:first-child {
+        float: left;
+        width: 40px;
+        height: 40px;
+      }
 
       .title {
+        display: inline-block;
+        line-height: 40px;
         font-size: 16px;
         color: $N500;
         font-weight: 500;
-        cursor: default;
       }
     }
 
@@ -106,7 +137,7 @@
       margin-left: 10px;
     }
 
-    .iconLink{
+    .iconLink {
       display: inline-block;
       width: 40px;
       height: 40px;
@@ -114,20 +145,23 @@
       vertical-align: middle;
       line-height: 40px;
 
-      &> span {
-        position: relative;
-        top: 3px;
-        left: -3px;
+      & > span {
+        padding: 0 !important;
+        line-height: 20px;
+        vertical-align: middle;
       }
 
-      &> img {
+      & > img {
         position: relative;
-        width: 24px !important;
-        height: 24px !important;
+        margin: 10px;
+        width: 20px !important;
+        height: 20px !important;
       }
     }
 
     .image {
+      float: left;
+      margin: 10px;
       font-size: 16px !important;
       background: none;
       border: none;

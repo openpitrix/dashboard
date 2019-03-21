@@ -11,12 +11,13 @@
   button {
     margin-left: 12px;
 
-    &:first-child{
+    &:first-child {
       margin-left: 0;
     }
 
     :global {
-      .icon {
+      .icon-start,
+      .icon-stop {
         margin-top: -2px;
       }
     }
@@ -38,7 +39,8 @@
 
       &:focus {
         border-color: $P75;
-        box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
+        box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05),
+          0 2px 2px 0 rgba(73, 33, 173, 0.1);
         cursor: default;
       }
     }
@@ -52,11 +54,11 @@
     @extend %pull-right;
   }
 
-  .btnRight{
+  .btnRight {
     @extend %pull-right;
   }
 
-  .viewIcon{
+  .viewIcon {
     @extend %pull-right;
     margin: 4px 0 4px 12px;
     cursor: pointer;

@@ -109,6 +109,7 @@ $value-left: 104px;
       display: inline-block;
       margin-bottom: 12px;
       width: calc(100% - #{$value-left});
+      max-width: calc(100% - #{$value-left});
       word-break: break-word;
       word-wrap: break-word;
     }
