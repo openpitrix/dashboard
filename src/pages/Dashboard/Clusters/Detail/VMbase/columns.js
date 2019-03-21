@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Icon } from 'components/Base';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import Configuration from '../Configuration';
@@ -36,8 +37,16 @@ export default t => [
     key: 'private_ip',
     render: item => (
       <div className="ipShow">
-        {item.private_ip}
-        <div className="eip"> {item.eip}</div>
+        <div title={t('Private network IP')}>
+          <Icon name="ip" type="dark" />
+          {item.private_ip}
+        </div>
+        {!item.eip && (
+          <div className="eip" title={t('Public network IP')}>
+            <Icon name="eip" type="dark" />
+            {item.eip}52.14.14.241
+          </div>
+        )}
       </div>
     )
   },
