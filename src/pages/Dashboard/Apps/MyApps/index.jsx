@@ -4,8 +4,10 @@ import classnames from 'classnames';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { Icon, Button, Input } from 'components/Base';
-import Layout from 'components/Layout';
+import {
+  Icon, PopoverIcon, Button, Input
+} from 'components/Base';
+import Layout, { Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import InfiniteScroll from 'components/InfiniteScroll';
 import Card from 'pages/Dashboard/Apps/Card';
@@ -43,10 +45,79 @@ export default class Apps extends Component {
 
   componentWillUnmount() {
     const { appStore } = this.props;
-    appStore.pageSize = 10;
-    appStore.searchWord = '';
-    appStore.userId = '';
+    appStore.reset();
   }
+
+  showDeleteApp = (event, item) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const { appStore } = this.props;
+    appStore.appId = item.app_id;
+    appStore.appTitle = item.name;
+
+    appStore.showModal();
+  };
+
+  skipLink = (event, url) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.props.history.push(url);
+  };
+
+  renderHandleMenu = item => {
+    const { t } = this.props;
+    return (
+      <div className="operate-menu">
+        <span
+          onClick={event => this.skipLink(
+            event,
+            toRoute(routes.portal._dev.versions, {
+              appId: item.app_id
+            })
+          )
+          }
+        >
+          <Icon name="application" type="dark" /> {t('Version manage')}
+        </span>
+        <span
+          onClick={event => this.skipLink(
+            event,
+            toRoute(routes.portal.appDetail, {
+              appId: item.app_id
+            })
+          )
+          }
+        >
+          <Icon name="pen" type="dark" /> {t('Edit')}
+        </span>
+        {item.status !== 'active' && (
+          <span onClick={event => this.showDeleteApp(event, item)}>
+            <Icon name="trash" type="dark" /> {t('Delete')}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  renderDeleteDialog = () => {
+    const { appStore, t } = this.props;
+    const {
+      isModalOpen, remove, hideModal, appTitle
+    } = appStore;
+
+    return (
+      <Dialog
+        title={t('Note')}
+        isOpen={isModalOpen}
+        onSubmit={remove}
+        onCancel={hideModal}
+      >
+        {t('DELETE_APP_DESCRIPTION', { appName: appTitle })}
+      </Dialog>
+    );
+  };
 
   renderHeader() {
     const { t, appStore } = this.props;
@@ -112,12 +183,15 @@ export default class Apps extends Component {
           >
             <div className={styles.cards}>
               {apps.map(item => (
-                <Card key={item.app_id} t={t} data={item} />
+                <Card key={item.app_id} t={t} data={item}>
+                  <PopoverIcon content={this.renderHandleMenu(item)} />
+                </Card>
               ))}
             </div>
           </InfiniteScroll>
           {this.renderSearchEmpty()}
         </Loading>
+        {this.renderDeleteDialog()}
       </Layout>
     );
   }

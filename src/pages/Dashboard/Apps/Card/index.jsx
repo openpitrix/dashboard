@@ -5,8 +5,8 @@ import { withRouter } from 'react-router';
 
 import { Image } from 'components/Base';
 import Status from 'components/Status';
-import { getPastTime } from 'src/utils';
-import { getVersionTypesName } from 'config/version-types';
+import VersionType from 'components/VersionType';
+import { getPastTime, mappingStatus } from 'src/utils';
 import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
@@ -19,11 +19,14 @@ export class AppCard extends Component {
   };
 
   render() {
-    const { className, data, t } = this.props;
+    const {
+      children, className, data, t
+    } = this.props;
     const {
       app_id,
       icon,
       name,
+      abstraction,
       description,
       status,
       status_time,
@@ -46,19 +49,24 @@ export class AppCard extends Component {
           </label>
           <div>
             <p className={styles.name}>{name}</p>
-            <Status className={styles.status} name={status} type={status} />
+            <Status
+              className={styles.status}
+              name={mappingStatus(status)}
+              type={status}
+            />
           </div>
         </div>
-        <pre className={styles.description}>{description}</pre>
+        <pre className={styles.description}>{abstraction || description}</pre>
         <div className={styles.deliverTypes}>
           <span>{t('Delivery type')}：</span>
           <span className={styles.deliverType}>
-            {(getVersionTypesName(app_version_types) || []).join(' ')}
+            <VersionType types={app_version_types} />
           </span>
         </div>
         <div>
           <span>{t('Updated At')}：</span>
           <span>{getPastTime(status_time)}</span>
+          <div className={styles.operateBtn}>{children}</div>
         </div>
       </div>
     );

@@ -250,5 +250,7 @@
   "view detail standard": "查看详细标准",
 
   "Create test runtime": "创建测试环境",
-  "NO_RUNTIME_TO_DEPLOY": "当前没有可用的环境用来部署{{instance}}。"
+  "NO_RUNTIME_TO_DEPLOY": "当前没有可用的环境用来部署{{instance}}。",
+
+  "DELETE_APP_DESCRIPTION": "您确定要删除应用【{{appName}}】吗?"
 }
