@@ -52,6 +52,7 @@ const tags = [
   rootStore,
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
+  vendorStore: rootStore.vendorStore,
   clusterStore: rootStore.clusterStore,
   appCreateStore: rootStore.appCreateStore,
   categoryStore: rootStore.categoryStore,
@@ -67,6 +68,7 @@ export default class VersionDetail extends Component {
     const {
       appVersionStore,
       appStore,
+      vendorStore,
       categoryStore,
       userStore,
       clusterStore,
@@ -97,6 +99,10 @@ export default class VersionDetail extends Component {
 
     // query deploy test instances
     await clusterStore.fetchAll({ app_id: appId, noLimit: true });
+
+    // for isv info of preview app detail page
+    const { appDetail } = appStore;
+    await vendorStore.fetch(appDetail.isv);
   }
 
   componentWillUnmount() {

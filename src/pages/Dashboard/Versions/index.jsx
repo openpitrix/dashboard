@@ -232,7 +232,7 @@ export default class Versions extends Component {
               {(_.find(versionTypes, { value: item.type }) || {}).name}
               <Link to={`${createUrl}?type=${item.type}&appId=${this.appId}`}>
                 <Button className={styles.button} type="default">
-                  <Icon name="add" type="dark" className={styles.addIcon} />
+                  <Icon name="add" type="dark" />
                   {t('New version')}
                 </Button>
               </Link>

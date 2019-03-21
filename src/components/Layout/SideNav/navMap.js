@@ -333,7 +333,15 @@ export const userMenus = portal => [
     link: toRoute(routes.portal.runtimes, { portal }),
     iconName: 'image',
     userPortalShow: true,
+    divider: true,
     only: [PORTAL_NAME.isv, PORTAL_NAME.dev, PORTAL_NAME.admin]
+  },
+  {
+    name: 'Test instance',
+    link: toRoute(routes.portal.clusters, { portal }),
+    iconName: 'cluster',
+    userPortalShow: true,
+    only: [PORTAL_NAME.admin]
   },
   {
     name: 'SSH Keys',

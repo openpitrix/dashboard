@@ -4,16 +4,20 @@ import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
-import { Icon, PopoverIcon, Button } from 'components/Base';
+import {
+  Image, Icon, PopoverIcon, Button
+} from 'components/Base';
 import Table from 'components/EnhanceTable';
 import Layout, { Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
 import TdName, { ProviderName } from 'components/TdName';
 import TimeShow from 'components/TimeShow';
+import VersionType from 'components/VersionType';
+import TdUser from 'components/TdUser';
 import { getObjName } from 'utils';
 import { setPage } from 'mixins';
-import routes, { toRoute, getPortalFromPath } from 'routes';
+import routes, { toRoute } from 'routes';
 import { CLUSTER_TYPE } from 'config/runtimes';
 
 import styles from './index.scss';
@@ -23,6 +27,7 @@ import styles from './index.scss';
   rootStore,
   clusterStore: rootStore.clusterStore,
   appStore: rootStore.appStore,
+  appVersionStore: rootStore.appVersionStore,
   runtimeStore: rootStore.runtimeStore,
   userStore: rootStore.userStore,
   user: rootStore.user
@@ -51,7 +56,7 @@ export default class Clusters extends Component {
 
   queryPageData = async () => {
     const {
-      rootStore, clusterStore, runtimeStore, match
+      rootStore, clusterStore, runtimeStore, user, match
     } = this.props;
     const { appId } = match.params;
 
@@ -61,13 +66,18 @@ export default class Clusters extends Component {
       clusterStore.appId = appId;
     }
 
+    if (!user.isUserPortal) {
+      clusterStore.attachUsers = true;
+    }
+    if (!user.isDevPortal) {
+      clusterStore.attachApps = true;
+    }
+    clusterStore.attachVersions = true;
     Object.assign(clusterStore, {
       with_detail: true,
       cluster_type: CLUSTER_TYPE.instance
     });
-    await clusterStore.fetchAll({
-      attachApps: true
-    });
+    await clusterStore.fetchAll();
 
     await runtimeStore.fetchAll({
       status: ['active', 'deleted'],
@@ -108,21 +118,6 @@ export default class Clusters extends Component {
     }
   };
 
-  getAppTdShow = (appId, apps) => {
-    const app = apps.find(item => item.app_id === appId);
-
-    return app ? (
-      <TdName
-        noCopy
-        className="smallId"
-        name={app.name}
-        description={_.get(app, 'latest_app_version.name')}
-        image={app.icon}
-        linkUrl={`/apps/${appId}`}
-      />
-    ) : null;
-  };
-
   getDetailLink = clusterId => {
     const { match } = this.props;
     const { appId } = match.params;
@@ -140,35 +135,6 @@ export default class Clusters extends Component {
       appId,
       clusterId
     });
-  };
-
-  renderHandleMenu = item => {
-    const { t } = this.props;
-    const { showOperateCluster } = this.props.clusterStore;
-    const { cluster_id, status } = item;
-
-    return (
-      <div id={cluster_id} className="operate-menu">
-        <Link to={this.getDetailLink(cluster_id)}>
-          <Icon name="eye" size={16} type="dark" /> {t('View detail')}
-        </Link>
-        {status === 'stopped' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'start')}>
-            <Icon name="start" size={16} type="dark" /> {t('Start cluster')}
-          </span>
-        )}
-        {status === 'active' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>
-            <Icon name="stop" size={16} type="dark" /> {t('Stop cluster')}
-          </span>
-        )}
-        {status !== 'deleted' && (
-          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
-            <Icon name="trash" size={16} type="dark" /> {t('Delete')}
-          </span>
-        )}
-      </div>
-    );
   };
 
   handleSubmit = () => {
@@ -203,6 +169,69 @@ export default class Clusters extends Component {
     showOperateCluster(clusterIds, type);
   };
 
+  renderHandleMenu = item => {
+    const { t } = this.props;
+    const { showOperateCluster } = this.props.clusterStore;
+    const { cluster_id, status } = item;
+
+    return (
+      <div id={cluster_id} className="operate-menu">
+        <Link to={this.getDetailLink(cluster_id)}>
+          <Icon name="eye" size={16} type="dark" /> {t('View detail')}
+        </Link>
+        {status === 'stopped' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'start')}>
+            <Icon name="start" size={16} type="dark" /> {t('Start cluster')}
+          </span>
+        )}
+        {status === 'active' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'stop')}>
+            <Icon name="stop" size={16} type="dark" /> {t('Stop cluster')}
+          </span>
+        )}
+        {status !== 'deleted' && (
+          <span onClick={() => showOperateCluster(cluster_id, 'delete')}>
+            <Icon name="trash" size={16} type="dark" /> {t('Delete')}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  renderAppTdShow = (appId, versionId) => {
+    const { appStore, appVersionStore, user } = this.props;
+    const { apps } = appStore;
+    const { versions } = appVersionStore;
+
+    const app = _.find(apps, { app_id: appId }) || {};
+    const version = _.find(versions, { version_id: versionId }) || {};
+
+    if (user.isUserPortal || user.isAdmin) {
+      return (
+        <div className={styles.appTdShow}>
+          <label className={styles.appImage}>
+            <Image src={app.icon} iconLetter={app.name} iconSize={20} />
+          </label>
+          <Link
+            to={toRoute(routes.appDetail, { appId: app.app_id })}
+            className={styles.appName}
+          >
+            {app.name}
+          </Link>
+          <VersionType types={version.type} />
+          <span className={styles.versionName}>{version.name}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.appTdShow}>
+        <VersionType types={version.type} />
+        <span className={styles.versionName}>{version.name}</span>
+      </div>
+    );
+  };
+
   renderOpsModal = () => {
     const { t } = this.props;
     const { hideModal, isModalOpen, modalType } = this.props.clusterStore;
@@ -222,14 +251,18 @@ export default class Clusters extends Component {
   };
 
   renderToolbar() {
-    const { clusterStore, t } = this.props;
+    const {
+      clusterStore, user, match, t
+    } = this.props;
     const {
       searchWord,
       onSearch,
       onClearSearch,
       onRefresh,
-      clusterIds
+      clusterIds,
+      onlyView
     } = clusterStore;
+    const { appId } = match.params;
 
     if (clusterIds.length) {
       return (
@@ -251,23 +284,30 @@ export default class Clusters extends Component {
 
     return (
       <Toolbar
-        placeholder={t('Search Clusters')}
+        placeholder={t('Search Instances')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
         onRefresh={onRefresh}
         noRefreshBtn
-      />
+      >
+        {user.isDevPortal && !onlyView && (
+          <Link to={toRoute(routes.portal.deploy, { appId })}>
+            <Button type="primary" className="pull-right">
+              {t('Deploy')}
+            </Button>
+          </Link>
+        )}
+      </Toolbar>
     );
   }
 
   renderMain() {
     const {
-      clusterStore, appStore, userStore, user, t
+      clusterStore, userStore, user, t
     } = this.props;
     const { isLoading, onlyView } = clusterStore;
     const { runtimes } = this.props.runtimeStore;
-    const { apps } = appStore;
     const { users } = userStore;
     const transMap = {
       active: 'normal'
@@ -302,7 +342,7 @@ export default class Clusters extends Component {
           ? t('App / Delivery type / Version')
           : t('Version'),
         key: 'app_id',
-        render: cl => this.getAppTdShow(cl.app_id, apps.toJSON())
+        render: cl => this.renderAppTdShow(cl.app_id, cl.version_id)
       },
       {
         title:
@@ -325,12 +365,15 @@ export default class Clusters extends Component {
       {
         title: t('Node Count'),
         key: 'node_count',
+        className: 'number',
         render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
       },
       {
         title: t('Creator'),
         key: 'owner',
-        render: item => getObjName(users, 'user_id', item.owner, 'username') || item.owner
+        render: cl => (
+          <TdUser className={styles.creator} users={users} userId={cl.owner} />
+        )
       },
       {
         title: t('Created At'),
@@ -343,8 +386,16 @@ export default class Clusters extends Component {
         title: '',
         key: 'actions',
         className: 'actions',
-        width: '80px',
-        render: cl => <PopoverIcon content={this.renderHandleMenu(cl)} />
+        width: onlyView ? '100px' : '80px',
+        render: cl => (onlyView ? (
+            <div>
+              <Link to={this.getDetailLink(cl.cluster_id)}>
+                {t('View detail')} →
+              </Link>
+            </div>
+        ) : (
+            <PopoverIcon content={this.renderHandleMenu(cl)} />
+        ))
       }
     ];
 
@@ -356,7 +407,7 @@ export default class Clusters extends Component {
           tableType="Clusters"
           columns={columns}
           columnsFilter={cols => {
-            if (getPortalFromPath() !== 'admin') {
+            if (user.isUserPortal) {
               return cols.filter(item => item.key !== 'owner');
             }
             return cols;
@@ -387,10 +438,22 @@ export default class Clusters extends Component {
       return this.renderMain();
     }
 
-    const pageTitle = match.path.endsWith('sandbox-instances')
+    let pageTitle = match.path.endsWith('sandbox-instances')
       ? t('Sandbox-Instances')
       : t('Customer-Instances');
 
-    return <Layout pageTitle={pageTitle}>{this.renderMain()}</Layout>;
+    if (user.isAdmin) {
+      pageTitle = t('Test instance');
+    }
+
+    return (
+      <Layout
+        pageTitle={pageTitle}
+        isCenterPage={user.isAdmin}
+        noSubMenu={user.isAdmin}
+      >
+        {this.renderMain()}
+      </Layout>
+    );
   }
 }

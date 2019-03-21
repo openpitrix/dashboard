@@ -12,3 +12,29 @@
     }
   }
 }
+
+.creator {
+  max-width: 170px;
+}
+
+.appTdShow {
+  .appImage {
+    display: inline-block;
+    float: left;
+    width: 16px;
+    height: 16px;
+  }
+
+  .appName {
+    display: inline-block;
+    margin: 0 8px;
+    font-weight: 500;
+    color: $N300
+  }
+
+  .versionName {
+    display: inline-block;
+    margin-left: 8px;
+    color: $N75;
+  }
+}
