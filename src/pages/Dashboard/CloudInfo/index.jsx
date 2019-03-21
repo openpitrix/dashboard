@@ -1,12 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
-
-import { getFormData } from 'utils';
-
 import Layout, { Panel } from 'components/Layout';
-
 import { Button, Input } from 'components/Base';
+import { getFormData } from 'utils';
 
 import styles from './index.scss';
 
