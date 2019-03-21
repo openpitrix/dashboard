@@ -8,6 +8,8 @@
   "Search StatefulSet Pods": "搜索有状态副本集节点",
   "Search DaemonSet Pods": "搜索有状态副本集节点",
   "My Instances": "我的实例",
+  "Private network IP": "私网IP",
+  "Public network IP": "公网IP",
 
   "CreateCluster": "创建实例",
   "UpgradeCluster": "升级实例",

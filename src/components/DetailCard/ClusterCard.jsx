@@ -22,7 +22,7 @@ export default class ClusterCard extends Component {
     detail: PropTypes.object.isRequired,
     provider: PropTypes.string,
     runtimeName: PropTypes.string,
-    users: PropTypes.arry,
+    users: PropTypes.array,
     version: PropTypes.object
   };
 
@@ -62,7 +62,7 @@ export default class ClusterCard extends Component {
           </li>
           <li>
             <span className={styles.name}>{t('App')}</span>
-            <label className={styles.appName}>
+            <label className={styles.appShow}>
               <label className={styles.appImage}>
                 <Image src={app.icon} iconLetter={app.name} />
               </label>
