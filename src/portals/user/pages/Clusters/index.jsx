@@ -16,7 +16,7 @@ export default class UserClusters extends React.Component {
         banner={
           <Banner
             title={t('My Instances')}
-            description={t('基于应用创建出的实例列表。')}
+            description={t('MY_INSTANCES_DESCRIPTION')}
           />
         }
       >

@@ -17,8 +17,8 @@ export default class UserRuntimes extends React.Component {
       <Layout
         banner={
           <Banner
-            title={t('我的环境')}
-            description={t('平台同时支持多种云环境，可以在这里进行统一管理。')}
+            title={t('My Runtimes')}
+            description={t('MY_RUNTIMES_DESC')}
           />
         }
       >

@@ -9,8 +9,8 @@ import Banner from 'components/Banner';
 import Toolbar from 'components/Toolbar';
 import TdName from 'components/TdName';
 import Stars from 'components/Stars';
+import VersionType from 'components/VersionType';
 import { formatTime } from 'utils';
-import { getVersionTypesName } from 'config/version-types';
 
 import routes, { toRoute } from 'routes';
 
@@ -50,7 +50,7 @@ export default class Purchased extends Component {
 
     return (
       <Toolbar
-        placeholder={t('搜索应用名称或 ID')}
+        placeholder={t('Search for app name or ID')}
         searchWord={searchWord}
         onSearch={onSearch}
         onClear={onClearSearch}
@@ -68,11 +68,10 @@ export default class Purchased extends Component {
       {
         title: t('App Name'),
         key: 'name',
-        width: '150px',
         render: item => (
           <TdName
             name={item.name}
-            description={item.abstraction || item.description}
+            description={item.abstraction || item.description || t('None')}
             linkUrl={toRoute(routes.portal.appDetail, { appId: item.app_id })}
             image={item.icon}
             noCopy
@@ -82,31 +81,28 @@ export default class Purchased extends Component {
       {
         title: t('Delivery type'),
         key: 'version_type',
-        width: '102px',
-        render: item => (getVersionTypesName(item.app_version_types) || []).join(' ')
+        render: item => <VersionType types={item.app_version_types} />
       },
       {
-        title: t('实例总数'),
+        title: t('Total of instances'),
         key: 'total',
-        width: '85px',
+        className: 'boldFont',
         render: item => clusters.filter(cluster => cluster.app_id === item.app_id).length
       },
       {
         title: t('My Evaluation'),
         key: 'star',
-        width: '130px',
         render: () => <Stars starTotal={5} />
       },
       {
-        title: t('上次部署时间'),
+        title: t('Last deploy time'),
         key: 'create_time',
-        width: '120px',
         render: item => formatTime(item.create_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
         title: t('Actions'),
         key: 'actions',
-        width: '75px',
+        width: '145px',
         className: 'actions',
         render: item => (
           <div className={styles.deployButton}>
@@ -130,8 +126,8 @@ export default class Purchased extends Component {
       <Layout
         banner={
           <Banner
-            title={t('已部署应用')}
-            description={t('所有你部署过的应用都会展示在此。')}
+            title={t('Purchased')}
+            description={t('DEPLOYED_APP_DESCRIPTION')}
           />
         }
       >

@@ -114,7 +114,9 @@ export default class PurchasedDetail extends Component {
         <TdName
           className={styles.title}
           name={appDetail.name}
-          description={appDetail.description}
+          description={
+            appDetail.abstraction || appDetail.description || t('None')
+          }
           image={appDetail.icon}
           noCopy
         />
@@ -248,7 +250,7 @@ export default class PurchasedDetail extends Component {
         banner={
           <Banner
             title={t('Purchased')}
-            description={t('所有你部署过的应用都会展示在此。')}
+            description={t('DEPLOYED_APP_DESCRIPTION')}
           />
         }
       >

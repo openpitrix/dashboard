@@ -288,7 +288,7 @@ export default class Info extends Component {
           </div>
           <Input
             name="name"
-            value={appDetail.name}
+            value={appDetail.name || ''}
             onChange={e => changeApp(e, 'name')}
             onBlur={e => checkApp(e, 'name')}
             onFocus={e => checkApp(e, 'name', true)}
@@ -307,7 +307,7 @@ export default class Info extends Component {
           <Input
             name="abstraction"
             maxLength={200}
-            value={appDetail.abstraction}
+            value={appDetail.abstraction || ''}
             onChange={e => changeApp(e, 'abstraction')}
             disabled={!isEdit}
           />
@@ -380,7 +380,7 @@ export default class Info extends Component {
             className={styles.input}
             name="home"
             maxLength={200}
-            value={appDetail.home}
+            value={appDetail.home || ''}
             onChange={e => changeApp(e, 'home')}
             onBlur={e => checkApp(e, 'home')}
             onFocus={e => checkApp(e, 'home', true)}
