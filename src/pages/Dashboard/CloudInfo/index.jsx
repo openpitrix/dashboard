@@ -57,16 +57,11 @@ export default class CloudEnvironment extends Component {
 
   cancelEdit = () => {
     this.props.cloudEnvStore.changeHandleType('');
-    this.setState(
-      {
-        hide: true
-      },
-      () => {
-        this.setState({
-          hide: false
-        });
-      }
-    );
+    this.setState({ hide: true }, () => {
+      this.setState({
+        hide: false
+      });
+    });
   };
 
   renderForm() {
