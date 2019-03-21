@@ -29,6 +29,10 @@ module.exports = {
     // formatSeparator: ","
   },
 
+  keySeparator: false,
+
+  nsSeparator: false,
+
   react: {
     wait: true // set wait to false when on SSR
   }
