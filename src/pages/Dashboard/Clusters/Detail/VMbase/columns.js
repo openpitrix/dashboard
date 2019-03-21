@@ -41,10 +41,10 @@ export default t => [
           <Icon name="ip" type="dark" />
           {item.private_ip}
         </div>
-        {!item.eip && (
+        {item.eip && (
           <div className="eip" title={t('Public network IP')}>
             <Icon name="eip" type="dark" />
-            {item.eip}52.14.14.241
+            {item.eip}
           </div>
         )}
       </div>
