@@ -37,8 +37,9 @@
       cursor: pointer;
       margin-right: -1px;
       margin-bottom: 10px;
-      max-width: 3rem;
+      max-width: 80%;
       overflow-x: auto;
+      word-break: break-word;
 
       &:first-child {
         border-top-left-radius: 2px;
