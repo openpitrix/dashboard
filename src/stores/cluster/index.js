@@ -3,6 +3,7 @@ import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
 import { useTableActions } from 'mixins';
+import { CLUSTER_TYPE } from 'config/runtimes';
 
 import Store from '../Store';
 
@@ -53,6 +54,8 @@ export default class ClusterStore extends Store {
   };
 
   @observable attachApps = false;
+
+  @observable clusterTab = CLUSTER_TYPE.instance;
 
   get appStore() {
     return this.getStore('app');
@@ -288,6 +291,7 @@ export default class ClusterStore extends Store {
     this.resetTableParams();
     this.cluster_type = null;
     this.with_detail = false;
+    this.clusterTab = CLUSTER_TYPE.instance;
   };
 
   @action

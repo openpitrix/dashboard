@@ -90,7 +90,7 @@ export default class EnhanceTable extends React.PureComponent {
       noCancel: !canCancelPager
     };
 
-    let normalizeCols = _.isEmpty(columns) ? defaultColumns : columns;
+    let normalizeCols = !_.isFunction(columns) && _.isEmpty(columns) ? defaultColumns : columns;
 
     if (_.isFunction(normalizeCols)) {
       normalizeCols = normalizeCols(inject);

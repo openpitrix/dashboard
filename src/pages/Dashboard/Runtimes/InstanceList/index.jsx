@@ -7,16 +7,13 @@ import _ from 'lodash';
 import { Icon, Button } from 'components/Base';
 import Toolbar from 'components/Toolbar';
 import EnhanceTable from 'components/EnhanceTable';
+import { CLUSTER_TYPE } from 'config/runtimes';
 import instanceCols, { frontgateCols } from './columns';
-
-const InstanceCluster = 0;
-const AgentCluster = 1;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
   user: rootStore.user,
   envStore: rootStore.testingEnvStore,
-  runtimeClusterStore: rootStore.runtimeClusterStore,
   appStore: rootStore.appStore,
   rootStore
 }))
@@ -24,10 +21,18 @@ const AgentCluster = 1;
 export default class RuntimeInstances extends React.Component {
   static propTypes = {
     fetchAll: PropTypes.func,
+    getColumns: PropTypes.any,
     runtime: PropTypes.shape({
       name: PropTypes.string,
       runtime_id: PropTypes.string
-    })
+    }),
+    store: PropTypes.object // injected cluster store
+  };
+
+  static defaultProps = {
+    getColumns: null,
+    store: {},
+    fetchAll: () => {}
   };
 
   componentDidMount() {
@@ -40,26 +45,30 @@ export default class RuntimeInstances extends React.Component {
 
   get columns() {
     const {
-      appStore, runtimeStore, user, t
+      appStore, store, user, getColumns, t
     } = this.props;
     const { apps } = appStore;
 
-    return runtimeStore.runtimeTab === InstanceCluster
+    if (_.isFunction(getColumns)) {
+      return getColumns;
+    }
+
+    return store.clusterTab === CLUSTER_TYPE.instance
       ? instanceCols(t, apps, user.isDev)
       : frontgateCols(t);
   }
 
   get isAgent() {
-    return this.props.runtimeStore.runtimeTab === AgentCluster;
+    return this.props.store.clusterTab === CLUSTER_TYPE.agent;
   }
 
   handleJobs = async ({ type = '', resource = {} }) => {
     const { rtype = '', rid = '', values = {} } = resource;
     const op = `${type}:${rtype}`;
-    const { runtimeClusterStore, fetchAll } = this.props;
+    const { store, fetchAll } = this.props;
     const status = _.pick(values, ['status', 'transition_status']);
-    const clusterIds = runtimeClusterStore.clusters.map(cl => cl.cluster_id);
-    const nodeIds = runtimeClusterStore.clusters.map(cl => {
+    const clusterIds = store.clusters.map(cl => cl.cluster_id);
+    const nodeIds = store.clusters.map(cl => {
       const all_nodes = (cl.cluster_node_set || []).map(
         ({ node_id }) => node_id
       );
@@ -74,7 +83,7 @@ export default class RuntimeInstances extends React.Component {
     }
 
     if (rtype === 'cluster' && clusterIds.includes(rid)) {
-      runtimeClusterStore.clusters = runtimeClusterStore.clusters.map(cl => {
+      store.clusters = store.clusters.map(cl => {
         if (cl.cluster_id === rid) {
           Object.assign(cl, status);
         }
@@ -103,7 +112,7 @@ export default class RuntimeInstances extends React.Component {
       onClearSearch,
       onRefresh,
       clusterIds
-    } = this.props.runtimeClusterStore;
+    } = this.props.store;
 
     if (clusterIds.length) {
       return (
@@ -136,15 +145,15 @@ export default class RuntimeInstances extends React.Component {
   }
 
   renderTable() {
-    const { runtimeClusterStore } = this.props;
+    const { store } = this.props;
 
     return (
       <EnhanceTable
         tableType="Clusters"
         columns={this.columns}
-        data={runtimeClusterStore.clusters}
-        store={runtimeClusterStore}
-        isLoading={runtimeClusterStore.isLoading}
+        data={store.clusters}
+        store={store}
+        isLoading={store.isLoading}
         replaceFilterConditions={[
           { name: 'Pending', value: 'pending' },
           { name: 'Active', value: 'active' },

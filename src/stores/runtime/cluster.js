@@ -34,7 +34,7 @@ export default class RuntimeClusterStore extends Store {
   }
 
   get clusterType() {
-    return this.getStore('runtime').runtimeTab;
+    return this.getStore('runtime').clusterTab;
   }
 
   get defaultStatus() {

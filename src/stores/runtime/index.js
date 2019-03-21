@@ -3,10 +3,9 @@ import { get } from 'lodash';
 
 import { useTableActions } from 'mixins';
 import { getProgress } from 'utils';
+import { CLUSTER_TYPE } from 'config/runtimes';
 
 import Store from '../Store';
-
-const InstanceCluster = 0;
 
 @useTableActions
 export default class RuntimeStore extends Store {
@@ -42,7 +41,7 @@ export default class RuntimeStore extends Store {
 
   @observable runtimeDeleted = null;
 
-  @observable runtimeTab = InstanceCluster;
+  @observable clusterTab = CLUSTER_TYPE.instance;
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -113,12 +112,12 @@ export default class RuntimeStore extends Store {
     this.runtimeDeleted = null;
     this.runtimes = [];
     this.runtimeDetail = {};
-    this.runtimeTab = InstanceCluster;
+    this.clusterTab = CLUSTER_TYPE.instance;
   };
 
   @action
-  changeRuntimeTab = value => {
-    this.runtimeTab = value;
+  changeClusterTab = value => {
+    this.clusterTab = value;
   };
 }
 
