@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import { withTranslation } from 'react-i18next';
 
 import { Image } from 'components/Base';
-import { getVersionTypesName } from 'config/version-types';
+import VersionType from 'components/VersionTYpe';
 
 import styles from './index.scss';
 
@@ -81,7 +81,9 @@ export class Card extends PureComponent {
           </dl>
           <dl>
             <dt className={styles.label}>{t('Delivery type')}:</dt>
-            <dd className={styles.val}>{getVersionTypesName(type)}</dd>
+            <dd className={styles.val}>
+              <VersionType types={type} />
+            </dd>
           </dl>
         </div>
       </div>
