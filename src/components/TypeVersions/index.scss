@@ -21,21 +21,25 @@
   }
 
   .types {
-    display: inline-block;
+    display: flex;
+    flex-flow: row wrap;
     border-radius: 2px;
     background-color: $N0;
-    //box-shadow: 0 1px 3px 0 rgba($N400, 0.07);
+    box-shadow: 0 1px 3px 0 rgba($N400, 0.07);
 
-    > label {
-      display: inline-block;
-      margin-bottom: 16px;
-      margin-right: -1px;
+    & > label {
+      display: inline-flex;
       padding: 8px 12px;
       border: 1px solid $N30;
       font-size: 14px;
       line-height: 14px;
       color: $N300;
       cursor: pointer;
+      margin-right: -1px;
+      margin-bottom: 10px;
+      max-width: 80%;
+      overflow-x: auto;
+      word-break: break-word;
 
       &:first-child {
         border-top-left-radius: 2px;
@@ -50,7 +54,7 @@
       &.active {
         color: $P75;
         border: 1px solid $P75;
-        margin-right: 0;
+        z-index: 2;
       }
     }
   }
