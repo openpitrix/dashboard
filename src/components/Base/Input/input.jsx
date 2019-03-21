@@ -13,7 +13,7 @@ export default class Input extends React.Component {
     icon: PropTypes.string,
     iconSize: PropTypes.number,
     iconType: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
   static defaultProps = {

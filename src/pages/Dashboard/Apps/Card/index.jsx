@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
+import routes, { toRoute } from 'routes';
 
 import { Image } from 'components/Base';
 import Status from 'components/Status';
 import VersionType from 'components/VersionType';
+
 import { getPastTime, mappingStatus } from 'src/utils';
-import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -32,6 +33,7 @@ export class AppCard extends Component {
       status_time,
       app_version_types
     } = data;
+
     return (
       <div
         className={classnames(styles.container, className)}

@@ -61,12 +61,12 @@ export default class CloudEnvironmentStore extends Store {
   };
 
   @action
-  saveCloudInfo = data => {
-    this.request.post('service_configs/set', {
+  saveCloudInfo = async data => {
+    await this.request.post('service_configs/set', {
       basic_config: data
     });
     this.handleType = '';
-    this.fetchCloudInfo();
+    await this.fetchCloudInfo();
   };
 
   @action
@@ -101,6 +101,7 @@ export default class CloudEnvironmentStore extends Store {
   reset = () => {
     this.environment = [];
     this.config_set = [];
+    this.cloudInfo = {};
     this.versionType = '';
     this.handleType = '';
   };

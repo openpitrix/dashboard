@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import Layout from 'components/Layout';
-
 import { Icon, Tooltip, Switch } from 'components/Base';
 
 import styles from './index.scss';
@@ -65,6 +64,7 @@ export default class CloudEnvironment extends Component {
   render() {
     const { t, cloudEnvStore } = this.props;
     const { environment } = cloudEnvStore;
+
     return (
       <Layout isCenterPage centerWidth={660} pageTitle={t('Cloud environment')}>
         <h3 className={styles.title}>{t('CLOUD-ENVIRONMENT-DESCRIBE')}</h3>

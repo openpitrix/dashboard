@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
+
 import Layout, { Panel } from 'components/Layout';
 import { Button, Input } from 'components/Base';
 import { getFormData } from 'utils';
@@ -37,7 +38,6 @@ export default class CloudEnvironment extends Component {
     if (!handleType) {
       return (
         <Fragment>
-          <span />
           <Button onClick={e => this.handleAction('edit', e)}>
             {t('Edit')}
           </Button>
@@ -82,9 +82,6 @@ export default class CloudEnvironment extends Component {
         ref={node => {
           this.form = node;
         }}
-        onSubmit={e => {
-          e.preventDefault();
-        }}
       >
         <div>
           <label>{t('Name')}</label>
@@ -112,6 +109,7 @@ export default class CloudEnvironment extends Component {
 
   render() {
     const { t } = this.props;
+
     return (
       <Layout pageTitle={t('Basic info')}>
         <Panel className={styles.layout}>
