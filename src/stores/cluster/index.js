@@ -43,8 +43,10 @@ export default class ClusterStore extends Store {
 
   @observable onlyView = false; // user-instances only view, can't operate
 
-  cluster_type = null;
+  @observable
+  cluster_type = CLUSTER_TYPE.instance;
 
+  @observable
   with_detail = false;
 
   // cluster job queue
@@ -54,6 +56,10 @@ export default class ClusterStore extends Store {
   };
 
   @observable attachApps = false;
+
+  @observable attachVersions = false;
+
+  @observable attachUsers = false;
 
   @observable clusterTab = CLUSTER_TYPE.instance;
 
@@ -153,9 +159,11 @@ export default class ClusterStore extends Store {
       }
     }
 
-    const userIds = this.clusters.map(cluster => cluster.owner);
-    if (this.attachUsers && userIds.length > 0) {
-      await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
+    if (this.attachUsers) {
+      const userIds = this.clusters.map(cluster => cluster.owner);
+      if (this.attachUsers && userIds.length > 0) {
+        await this.userStore.fetchAll({ user_id: _.uniq(userIds) });
+      }
     }
 
     this.isLoading = false;
@@ -289,7 +297,7 @@ export default class ClusterStore extends Store {
     this.attachVersions = false;
     this.attachUsers = false;
     this.resetTableParams();
-    this.cluster_type = null;
+    this.cluster_type = CLUSTER_TYPE.instance;
     this.with_detail = false;
     this.clusterTab = CLUSTER_TYPE.instance;
   };

@@ -10,7 +10,6 @@ import Layout, { Dialog } from 'components/Layout';
 import Tabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import VersionType from 'components/VersionType';
-import InstanceList from 'pages/Dashboard/Runtimes/InstanceList';
 
 import { setPage } from 'mixins';
 import routes, { toRoute } from 'routes';
@@ -36,23 +35,20 @@ export default class Clusters extends Component {
     const {
       rootStore, clusterStore, runtimeStore, user, match
     } = this.props;
+    const { cluster_type } = clusterStore;
     const { appId } = match.params;
 
+    // todo
     clusterStore.onlyView = match.path.endsWith('/instances');
 
     if (appId) {
       clusterStore.appId = appId;
     }
 
-    if (!user.isUserPortal) {
-      clusterStore.attachUsers = true;
-    }
-    if (!user.isDevPortal) {
-      clusterStore.attachApps = true;
-    }
-    clusterStore.attachVersions = true;
-
     Object.assign(clusterStore, {
+      attachUsers: !user.isUserPortal,
+      attachVersions: cluster_type === CLUSTER_TYPE.instance,
+      attachApps: !user.isDevPortal,
       with_detail: true,
       cluster_type: CLUSTER_TYPE.instance // default fetch instance
     });
@@ -159,7 +155,10 @@ export default class Clusters extends Component {
     const { clusterStore } = this.props;
 
     Object.assign(clusterStore, {
-      cluster_type: tab
+      cluster_type: tab,
+      onlyView: tab === CLUSTER_TYPE.agent,
+      attachVersions: tab === CLUSTER_TYPE.instance,
+      attachApps: tab === CLUSTER_TYPE.instance
     });
 
     await clusterStore.fetchAll();
@@ -260,7 +259,7 @@ export default class Clusters extends Component {
     } = clusterStore;
     const { appId } = match.params;
 
-    if (clusterIds.length) {
+    if (!onlyView && clusterIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           <Button type="default" onClick={() => this.operateSelected('start')}>
@@ -302,7 +301,7 @@ export default class Clusters extends Component {
     const {
       clusterStore, userStore, user, t
     } = this.props;
-    const { isLoading, onlyView } = clusterStore;
+    const { isLoading, onlyView, cluster_type } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { users } = userStore;
@@ -314,42 +313,45 @@ export default class Clusters extends Component {
           className={styles.tabs}
           changeTab={this.handleChangeTab}
         />
-        <InstanceList {...this.props} store={clusterStore} />
 
-        {/* {this.renderToolbar()} */}
+        {this.renderToolbar()}
 
-        {/* <Table */}
-        {/* tableType="Clusters" */}
-        {/* columns={columns} */}
-        {/* columnsFilter={cols => { */}
-        {/* if (user.isUserPortal) { */}
-        {/* return cols.filter(item => item.key !== 'owner'); */}
-        {/* } */}
-        {/* return cols; */}
-        {/* }} */}
-        {/* store={clusterStore} */}
-        {/* data={clusterStore.clusters} */}
-        {/* hasRowSelection={!onlyView} */}
-        {/* isLoading={isLoading} */}
-        {/* replaceFilterConditions={[ */}
-        {/* { name: t('Pending'), value: 'pending' }, */}
-        {/* { name: t('Normal'), value: 'active' }, */}
-        {/* { name: t('Stopped'), value: 'stopped' }, */}
-        {/* { name: t('Suspended'), value: 'suspended' }, */}
-        {/* { name: t('Deleted'), value: 'deleted' }, */}
-        {/* { name: t('Ceased'), value: 'ceased' } */}
-        {/* ]} */}
-        {/* inject={{ */}
-        {/* getDetailLink: this.getDetailLink, */}
-        {/* renderAppTdShow: this.renderAppTdShow, */}
-        {/* renderHandleMenu: this.renderHandleMenu, */}
-        {/* users, */}
-        {/* user, */}
-        {/* runtimes, */}
-        {/* onlyView, */}
-        {/* t */}
-        {/* }} */}
-        {/* /> */}
+        <Table
+          tableType="Clusters"
+          columns={columns}
+          columnsFilter={cols => {
+            if (user.isUserPortal) {
+              cols = cols.filter(item => item.key !== 'owner');
+              if (cluster_type === CLUSTER_TYPE.agent) {
+                return cols.filter(item => item.key !== 'app_id');
+              }
+              return cols;
+            }
+            return cols;
+          }}
+          store={clusterStore}
+          data={clusterStore.clusters}
+          hasRowSelection={!onlyView}
+          isLoading={isLoading}
+          replaceFilterConditions={[
+            { name: t('Pending'), value: 'pending' },
+            { name: t('Normal'), value: 'active' },
+            { name: t('Stopped'), value: 'stopped' },
+            { name: t('Suspended'), value: 'suspended' },
+            { name: t('Deleted'), value: 'deleted' },
+            { name: t('Ceased'), value: 'ceased' }
+          ]}
+          inject={{
+            getDetailLink: this.getDetailLink,
+            renderAppTdShow: this.renderAppTdShow,
+            renderHandleMenu: this.renderHandleMenu,
+            users,
+            user,
+            runtimes,
+            onlyView,
+            t
+          }}
+        />
 
         {this.renderOpsModal()}
       </Fragment>

@@ -54,6 +54,12 @@ export default class DetailTabs extends Component {
     return nextState.curTab !== this.state.curTab;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.curTab !== this.state.curTab) {
+      this.props.changeTab(this.state.curTab);
+    }
+  }
+
   handleChange = tab => {
     const tabValue = _.isObject(tab) ? tab.value : tab;
 
@@ -61,9 +67,7 @@ export default class DetailTabs extends Component {
       return;
     }
 
-    this.setState({ curTab: tabValue }, () => {
-      this.props.changeTab(tabValue);
-    });
+    this.setState({ curTab: tabValue });
   };
 
   render() {
