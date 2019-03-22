@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import { Icon } from 'components/Base';
-import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
