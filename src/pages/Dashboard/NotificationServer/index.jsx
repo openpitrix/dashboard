@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
@@ -6,9 +6,10 @@ import classnames from 'classnames';
 import {
   Button, Input, Select, Checkbox, Icon
 } from 'components/Base';
-
 import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
+
+import { TEST_STATUS } from 'config/cloud-env';
 
 import styles from './index.scss';
 
@@ -23,6 +24,10 @@ export default class NotificationServer extends Component {
     notificationServerStore.fetchEmailConfig();
   }
 
+  componentWillUnmount() {
+    this.props.notificationServerStore.reset();
+  }
+
   renderConnectStatus() {
     const { t, notificationServerStore } = this.props;
     const { testStatus } = notificationServerStore;
@@ -31,11 +36,11 @@ export default class NotificationServer extends Component {
     }
 
     const iconType = {
-      loading: 'loading',
-      success: 'checked-circle',
-      failed: 'close'
+      [TEST_STATUS.loading]: 'loading',
+      [TEST_STATUS.success]: 'checked-circle',
+      [TEST_STATUS.failed]: 'close'
     };
-    const type = testStatus === 'loading' ? 'light' : testStatus;
+    const type = testStatus === TEST_STATUS.loading ? 'light' : testStatus;
 
     return (
       <div className={styles.testConnect}>
@@ -55,12 +60,15 @@ export default class NotificationServer extends Component {
       onChangeSelect,
       onChangeFormItem,
       formData,
+      handleType,
       testStatus,
       isLoading,
       testConnect,
+      changeTypeEdit,
       save,
       cancleSave
     } = notificationServerStore;
+    const disabled = handleType !== 'edit';
 
     return (
       <Layout pageTitle={t('Notification server')}>
@@ -77,15 +85,22 @@ export default class NotificationServer extends Component {
           <Panel className={styles.panel}>
             <h3 className={styles.header}>
               <strong>{t('Mail server config')}</strong>
-              <Button
-                type={`primary`}
-                className={`primary`}
-                htmlType="submit"
-                onClick={save}
-              >
-                {t('Save')}
-              </Button>
-              <Button onClick={cancleSave}>{t('Cancel')}</Button>
+              {handleType === '' && (
+                <Button onClick={changeTypeEdit}>{t('Edit')}</Button>
+              )}
+              {handleType === 'edit' && (
+                <Fragment>
+                  <Button
+                    type={`primary`}
+                    className={`primary`}
+                    htmlType="submit"
+                    onClick={save}
+                  >
+                    {t('Save')}
+                  </Button>
+                  <Button onClick={cancleSave}>{t('Cancel')}</Button>
+                </Fragment>
+              )}
             </h3>
 
             <Loading isLoading={isLoading}>
@@ -94,6 +109,7 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Server protocol')}</label>
                     <Select
+                      disabled={disabled}
                       onChange={onChangeSelect}
                       name="protocol"
                       value={formData.protocol}
@@ -113,6 +129,7 @@ export default class NotificationServer extends Component {
                       )}`}
                     </label>
                     <Input
+                      disabled={disabled}
                       name="email_host"
                       placeholder="server name"
                       onChange={onChangeFormItem}
@@ -127,6 +144,7 @@ export default class NotificationServer extends Component {
                       )}`}
                     </label>
                     <Input
+                      disabled={disabled}
                       name="port"
                       placeholder="1000"
                       type="number"
@@ -137,6 +155,7 @@ export default class NotificationServer extends Component {
                   </div>
                   <div className={styles.paddingTop}>
                     <Checkbox
+                      disabled={disabled}
                       name="ssl_enable"
                       checked={formData.ssl_enable}
                       onChange={onChangeFormItem}
@@ -150,6 +169,7 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Sender nickname')}</label>
                     <Input
+                      disabled={disabled}
                       name="display_email"
                       value={formData.display_sender}
                       onChange={onChangeFormItem}
@@ -161,6 +181,7 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Server username')}</label>
                     <Input
+                      disabled={disabled}
                       name="email"
                       placeholder={`${t('for example')}：name@example.com`}
                       value={formData.email}
@@ -171,6 +192,7 @@ export default class NotificationServer extends Component {
                   <div>
                     <label>{t('Server password')}</label>
                     <Input
+                      disabled={disabled}
                       name="password"
                       type="password"
                       placeholder="**********"
@@ -182,7 +204,7 @@ export default class NotificationServer extends Component {
                 <div>
                   <Button
                     className={classnames({
-                      [styles.btnLoading]: testStatus === 'loading'
+                      [styles.btnLoading]: testStatus === TEST_STATUS.loading
                     })}
                     onClick={testConnect}
                   >

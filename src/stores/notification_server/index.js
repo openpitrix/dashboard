@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-import { sleep } from 'utils';
+import { TEST_STATUS } from 'config/cloud-env';
 
 import Store from '../Store';
 
@@ -20,9 +20,20 @@ export default class NotificationServerStore extends Store {
 
   @observable testStatus = '';
 
+  @observable handleType = '';
+
   @observable emailConfig = Object.assign({}, emailConfig);
 
   @observable formData = Object.assign({}, emailConfig);
+
+  @action
+  reset = () => {
+    this.isLoading = false;
+    this.testStatus = '';
+    this.emailConfig = Object.assign({}, emailConfig);
+    this.formData = Object.assign({}, emailConfig);
+    this.handleType = '';
+  };
 
   @action
   onChangeSelect = value => {
@@ -60,9 +71,21 @@ export default class NotificationServerStore extends Store {
 
   @action
   testConnect = async () => {
+    if (this.testStatus === 'loading') {
+      return;
+    }
     this.testStatus = 'loading';
-    await sleep(1800);
-    this.testStatus = 'failed';
+    const result = await this.request.post(
+      'service_configs/validate_email_service',
+      {
+        email_service_config: this.formData
+      }
+    );
+    if (_.get(result, 'is_succ')) {
+      this.testStatus = TEST_STATUS.success;
+    } else {
+      this.testStatus = TEST_STATUS.failed;
+    }
   };
 
   @action
@@ -81,6 +104,13 @@ export default class NotificationServerStore extends Store {
 
   @action
   cancleSave = () => {
+    this.handleType = '';
+    this.testStatus = '';
     Object.assign(this.formData, this.emailConfig);
+  };
+
+  @action
+  changeTypeEdit = () => {
+    this.handleType = 'edit';
   };
 }
