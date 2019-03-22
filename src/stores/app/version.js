@@ -406,25 +406,26 @@ export default class AppVersionStore extends Store {
   @action
   versionSuspend = async (versionIds, type) => {
     let isOperateSuccess = true;
-    await versionIds.forEach(async id => {
+
+    for (let i = 0; i < versionIds.length; i++) {
       const result = await this.request.post(`app_version/action/${type}`, {
-        version_id: id
+        version_id: versionIds[i]
       });
 
       if (!get(result, 'version_id')) {
         isOperateSuccess = false;
       }
-    });
+    }
 
     if (isOperateSuccess) {
       this.appStore.hideModal();
       const appId = _.get(this.appStore, 'appDetail.app_id', '');
-      await this.appStore.fetch(appId);
       await this.fetchAll({
         app_id: _.get(this.appStore, 'appDetail.app_id', ''),
         status: ['active', 'suspended'],
         noLimit: true
       });
+      await this.appStore.fetch(appId);
       this.success(`${_.capitalize(type)} successfully`);
     }
   };
