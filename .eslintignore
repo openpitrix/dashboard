@@ -11,3 +11,6 @@ coverage/
 webpack*.js
 
 lib/blob
+
+*.scss
+*.css
