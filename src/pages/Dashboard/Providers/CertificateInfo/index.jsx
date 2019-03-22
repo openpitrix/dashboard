@@ -31,7 +31,7 @@ export default class CertificateInfo extends Component {
     if (isISV && !vendorDetail.company_name) {
       return (
         <Fragment>
-          <DetailTabs tabs={tags} />
+          <DetailTabs tabs={tags} isCardTab className={styles.detailTabs} />
           <Card className={styles.blankInfo}>
             <Icon name="paper" size={48} type="dark" />
             <p className={styles.word}>
