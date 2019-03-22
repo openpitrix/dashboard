@@ -23,6 +23,10 @@ export default class CloudEnvironment extends Component {
     this.props.cloudEnvStore.fetchCloudInfo();
   }
 
+  componentWillUnmount() {
+    this.props.cloudEnvStore.reset();
+  }
+
   handleAction = type => {
     const { changeHandleType, saveCloudInfo } = this.props.cloudEnvStore;
     if (type === 'edit') {
@@ -84,7 +88,7 @@ export default class CloudEnvironment extends Component {
             disabled={!handleType}
             className={styles.normalWidth}
             name="platform_name"
-            placeholder="platform_name"
+            placeholder={t('Platform Name')}
             defaultValue={cloudInfo.platform_name}
           />
         </div>
@@ -94,7 +98,7 @@ export default class CloudEnvironment extends Component {
             disabled={!handleType}
             className={styles.largeWidth}
             name="platform_url"
-            placeholder="platform_url"
+            placeholder="https://lab.openpitrix.io"
             defaultValue={cloudInfo.platform_url}
           />
         </div>
