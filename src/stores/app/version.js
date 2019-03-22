@@ -142,7 +142,7 @@ export default class AppVersionStore extends Store {
 
     this.isLoading = true;
     const result = await this.request.get(
-      'app_versions',
+      this.describeVersionName,
       assign(defaultParams, params)
     );
     this.versions = get(result, 'app_version_set', []);
