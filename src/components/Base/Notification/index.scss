@@ -21,7 +21,7 @@ $bg-error: red;
     max-width: 600px;
     min-height:40px;
     padding: 7px 15px;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
 
     border-radius: 2px;
     background-color: $R10;
@@ -66,8 +66,35 @@ $bg-error: red;
       border: solid 1px $Y75;
       box-shadow: 0 2px 4px 0 rgba(239, 118, 43, 0.1);
     }
+    &.hide {
+      opacity: 0;
+      height: 0;
+      transition: all 500ms ease;
+    }
   }
 }
 
-
-
+:global {
+  .slide-down-enter {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+  .slide-down-enter-active {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top center;
+    transition: all 500ms ease-in;
+  }
+  .slide-down-exit {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top center;
+  }
+  .slide-down-exit-active {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: all 500ms ease;
+  }
+}

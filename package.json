@@ -43,6 +43,7 @@
     "react-popper": "^0.10.4",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-transition-group": "^2.6.1",
     "semver": "^5.4.1",
     "serve-favicon": "^2.4.5",
     "superagent": "^3.8.3",

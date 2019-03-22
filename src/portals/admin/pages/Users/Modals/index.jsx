@@ -375,7 +375,7 @@ export default class UserModalActions extends Component {
 
     return (
       <Dialog
-        title={t('Create group')}
+        title={t('Delete User')}
         visible={isOpen}
         onSubmit={remove}
         onCancel={hide}
