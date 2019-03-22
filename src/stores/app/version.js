@@ -574,11 +574,11 @@ export default class AppVersionStore extends Store {
   @action
   fetchTypeVersions = async appId => {
     this.isLoading = true;
-    const data = {
-      limit: this.maxLimit,
-      status: defaultStatus,
+
+    const data = this.normalizeParams({
+      noLimit: true,
       app_id: appId
-    };
+    });
 
     if (this.getUser().isUserPortal) {
       data.status = ['active'];

@@ -67,12 +67,17 @@ export default class AppDeploy extends Component {
     await appStore.fetch(appId);
     await cloudEnv.fetchAll();
 
-    // get typeversions
+    // get type versions
     await appVersionStore.fetchTypeVersions(appId);
 
     const { typeVersions } = appVersionStore;
     const defaultId = _.get(typeVersions, '[0].versions[0].version_id', '');
     const versionId = _.get(match, 'params.versionId', defaultId);
+
+    if (!versionId) {
+      appDeployStore.setErrMsg('No available version');
+      return;
+    }
 
     // get version detail for default type and version number
     await appVersionStore.fetch(versionId);

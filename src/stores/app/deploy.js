@@ -60,20 +60,15 @@ export default class AppDeployStore extends Store {
     this.isK8s = false;
   }
 
-  normalizeRuntime = () => this.runtimes.map(({ runtime_id, name }) => ({
-    name,
-    value: runtime_id
-  }));
-
-  normalizeVersions = () => this.versions.map(({ version_id, name }) => ({
-    name,
-    value: version_id
-  }));
-
   normalizeSubnets = () => this.subnets.map(({ subnet_id }) => ({
     name: subnet_id,
     value: subnet_id
   }));
+
+  @action
+  setErrMsg = (msg = '') => {
+    this.errMsg = msg;
+  };
 
   @action
   changeRuntime = async runtimeId => {
