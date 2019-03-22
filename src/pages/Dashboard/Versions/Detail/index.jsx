@@ -591,13 +591,15 @@ export default class VersionDetail extends Component {
         </div>
         {hasOperate && (
           <div className={styles.operateBtns}>
-            <Button
-              disabled={['submitted', 'in-review'].includes(version.status)}
-              type="primary"
-              onClick={() => this.handleVersion(handleType)}
-            >
-              {t(actionName[handleType] || version.status)}
-            </Button>
+            {version.status !== 'suspended' && (
+              <Button
+                disabled={['submitted', 'in-review'].includes(version.status)}
+                type="primary"
+                onClick={() => this.handleVersion(handleType)}
+              >
+                {t(actionName[handleType] || version.status)}
+              </Button>
+            )}
             <PopoverIcon
               showBorder
               size="Large"
