@@ -92,7 +92,11 @@ export default class TdName extends React.Component {
             onChange={onExtendedChange}
           />
         )}
-        <span className={styles.info}>
+        <span
+          className={classnames(styles.info, {
+            [styles.flexCenter]: noDescription && noCopy
+          })}
+        >
           {linkUrl && (
             <Link className={nameClass} to={linkUrl} title={name}>
               {name}&nbsp;

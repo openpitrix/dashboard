@@ -17,13 +17,13 @@ export default (t, onChangeExtend, extendedRowKeys) => [
     width: '220px',
     render: (item, row, index) => (
       <TdName
+        isFold
+        noIcon
+        noCopy
+        noDescription
         name={item.name}
-        noIcon={true}
-        noCopy={true}
-        noDescription={true}
         onExtendedChange={onChangeExtend}
         rowKey={index.toString()}
-        isFold={true}
         fold={extendedRowKeys.includes(index.toString())}
       />
     )
@@ -33,7 +33,10 @@ export default (t, onChangeExtend, extendedRowKeys) => [
     key: 'status',
     width: '400px',
     render: item => (
-      <Status type={item.status.toLowerCase()} name={`${t(item.status)} ${item.statusText}`} />
+      <Status
+        type={item.status.toLowerCase()}
+        name={`${t(item.status)} ${item.statusText}`}
+      />
     )
   },
   {
