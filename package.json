@@ -72,7 +72,7 @@
     "watch:locale": "cross-env npm run locale -- --watch"
   },
   "lint-staged": {
-    "*.{js,jsx,md}": [
+    "*.{js,jsx,md,scss,css}": [
       "prettier --write",
       "eslint --fix",
       "git add"
