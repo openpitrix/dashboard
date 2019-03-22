@@ -108,9 +108,11 @@ export default class AppDetail extends Component {
     const { modalType } = appStore;
     const { versions, versionId, versionSuspend } = appVersionStore;
     const operateType = modalType.split('-');
-    const versionIds = operateType[1] === 'version'
-      ? [versionId]
-      : versions.map(item => item.version_id);
+    const filterStatus = operateType[0] === 'suspend' ? 'active' : 'suspended';
+    const appVersionIds = versions
+      .filter(item => item.status === filterStatus)
+      .map(item => item.version_id);
+    const versionIds = operateType[1] === 'version' ? [versionId] : appVersionIds;
     await versionSuspend(versionIds, operateType[0]);
   };
 
@@ -248,7 +250,6 @@ export default class AppDetail extends Component {
       }
     ];
 
-    // todo
     const pagination = {
       tableType: 'Clusters',
       total: records.length,

@@ -117,3 +117,10 @@ export const ALL_VERSION_STATUS = [
   'active',
   'suspended'
 ];
+
+export const DELETE_VERSION_STATUS = [
+  'draft',
+  'passed',
+  'rejected',
+  'suspended'
+];

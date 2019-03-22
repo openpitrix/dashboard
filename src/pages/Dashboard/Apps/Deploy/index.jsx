@@ -126,7 +126,7 @@ export default class AppDeploy extends Component {
 
   changeType = async (value, type) => {
     if (value !== this.state[type]) {
-      const { appDeployStore, appVersionStore } = this.props;
+      const { appDeployStore, appVersionStore, user } = this.props;
       this.setState({ [type]: value });
 
       let versonId = '';
@@ -139,6 +139,7 @@ export default class AppDeploy extends Component {
         this.setState({ activeVersion: versonId });
 
         await appDeployStore.fetchRuntimes({
+          owner: user.user_id,
           provider: providerMap[value] || ''
         });
       } else {

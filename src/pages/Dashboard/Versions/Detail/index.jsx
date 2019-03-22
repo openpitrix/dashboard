@@ -23,6 +23,7 @@ import { versionTypes } from 'config/version-types';
 import AppDetail from 'pages/AppDetail';
 import { formatTime, sleep, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
+import { DELETE_VERSION_STATUS } from 'config/version.js';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
 
@@ -33,13 +34,15 @@ const actionType = {
   submitted: 'submit',
   passed: 'release',
   rejected: 'submit',
-  active: 'active'
+  active: 'active',
+  suspended: 'suspended'
 };
 const actionName = {
   submit: 'Submit review',
   submitted: 'Cancel review',
   release: 'Release to store',
-  active: 'View in store'
+  active: 'View in store',
+  suspended: 'View in store'
 };
 const tags = [
   { name: 'Config File', value: 'configFile' },
@@ -148,7 +151,7 @@ export default class VersionDetail extends Component {
     } = this.props;
     const { appId, versionId } = match.params;
 
-    if (handleType === 'active') {
+    if (['active', 'suspended'].includes(handleType)) {
       history.push(toRoute(routes.appDetail, { appId }));
       return false;
     }
@@ -196,8 +199,7 @@ export default class VersionDetail extends Component {
     const { appId, versionId } = match.params;
     const { version, showTypeDialog } = appVersionStore;
     const { status } = version;
-    const deleteStatus = ['draft', 'rejected', 'passed'];
-    const hasDeleteBtn = deleteStatus.includes(status);
+    const hasDeleteBtn = DELETE_VERSION_STATUS.includes(status);
 
     return (
       <div className="operate-menu">
@@ -415,8 +417,8 @@ export default class VersionDetail extends Component {
       <Card className={styles.latestRecord}>
         <div className={styles.title}>{t('Latest record')}</div>
         <Status
-          type={mappingStatus(audit.status)}
-          name={audit.status}
+          type={audit.status}
+          name={mappingStatus(audit.status)}
           className={styles.status}
         />
         <div className={styles.record}>
@@ -553,7 +555,7 @@ export default class VersionDetail extends Component {
     const { version } = appVersionStore;
     const { appDetail } = appStore;
     const handleType = actionType[version.status];
-    const hasOperate = !['suspended', 'deleted'].includes(version.status);
+    const hasOperate = version.status !== 'deleted';
 
     return (
       <Card>

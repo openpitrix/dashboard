@@ -26,9 +26,12 @@ import styles from './index.scss';
 @observer
 export default class Purchased extends Component {
   async componentDidMount() {
-    const { clusterStore, appStore } = this.props;
+    const { clusterStore, appStore, user } = this.props;
 
-    await clusterStore.fetchAll({ noLimit: true });
+    await clusterStore.fetchAll({
+      owner: user.user_id,
+      noLimit: true
+    });
     const appIds = clusterStore.clusters.map(cluster => cluster.app_id);
     if (appIds.length > 0) {
       await appStore.fetchActiveApps({ app_id: appIds });
