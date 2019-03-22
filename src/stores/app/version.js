@@ -250,15 +250,9 @@ export default class AppVersionStore extends Store {
 
     // query app review table relative data
     const appIds = this.reviews.map(item => item.app_id);
-    const user = this.getUser();
     if (appIds.length > 0) {
       const appStore = this.appStore;
       await appStore.fetchAll({ app_id: _.uniq(appIds) });
-
-      if (user.isAdmin) {
-        const isvIds = appStore.apps.map(item => item.isv);
-        await this.vendorStore.fetchAll({ user_id: isvIds });
-      }
     }
 
     const userIds = this.reviews.map(item => _.get(item, 'phase.developer.operator'));

@@ -18,7 +18,6 @@ import styles from './index.scss';
 @withTranslation()
 @inject(({ rootStore }) => ({
   appStore: rootStore.appStore,
-  vendorStore: rootStore.vendorStore,
   categoryStore: rootStore.categoryStore,
   uncateAppStore: rootStore.appUncategoriedStore
 }))
@@ -33,7 +32,6 @@ export default class Categories extends Component {
     await categoryStore.updateAppCategoryCounts();
 
     appStore.attchDeployTotal = true; // for query deploy total
-    appStore.attchISV = true; // for query isv info
     changeCategory(_.first(categoryStore.categories));
   }
 
@@ -319,10 +317,9 @@ export default class Categories extends Component {
   }
 
   renderContent() {
-    const { appStore, vendorStore, categoryStore } = this.props;
+    const { appStore, categoryStore } = this.props;
     const { apps, isLoading } = appStore;
     const { selectedCategory } = categoryStore;
-    const { vendors } = vendorStore;
     const displayCols = [
       'name',
       'delivery_type',
@@ -345,7 +342,6 @@ export default class Categories extends Component {
           hasRowSelection
           columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
           }
-          inject={{ vendors }}
         />
       </Fragment>
     );

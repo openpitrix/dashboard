@@ -34,7 +34,6 @@ const tags = [
   appStore: rootStore.appStore,
   appVersionStore: rootStore.appVersionStore,
   clusterStore: rootStore.clusterStore,
-  vendorStore: rootStore.vendorStore,
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
@@ -42,11 +41,7 @@ const tags = [
 export default class AppDetail extends Component {
   async componentDidMount() {
     const {
-      appStore,
-      appVersionStore,
-      clusterStore,
-      vendorStore,
-      match
+      appStore, appVersionStore, clusterStore, match
     } = this.props;
     const { appId } = match.params;
 
@@ -63,7 +58,7 @@ export default class AppDetail extends Component {
     await clusterStore.fetchAll({
       app_id: appId,
       created_date: 30,
-      // limit: 1,
+      limit: 1,
       isUserAction: true
     });
     // get deploy total and user instance
@@ -73,9 +68,6 @@ export default class AppDetail extends Component {
       // limit: 1,
       isUserAction: true
     });
-
-    const { appDetail } = appStore;
-    await vendorStore.fetch(appDetail.isv);
   }
 
   componentWillUnmount() {
@@ -409,11 +401,8 @@ export default class AppDetail extends Component {
   }
 
   renderAppBase() {
-    const {
-      appStore, vendorStore, user, t
-    } = this.props;
+    const { appStore, user, t } = this.props;
     const { appDetail } = appStore;
-    const { vendorDetail } = vendorStore;
 
     const categories = _.get(appDetail, 'category_set', []);
     const isSuspend = appDetail.status === 'suspended';
@@ -457,7 +446,7 @@ export default class AppDetail extends Component {
           </dl>
           <dl>
             <dt>{t('App service provider')}</dt>
-            <dd>{vendorDetail.company_name || t('None')}</dd>
+            <dd>{appDetail.company_name || t('None')}</dd>
           </dl>
           <dl>
             <dt>{t(isSuspend ? 'Suspend time' : 'Publish time')}</dt>
