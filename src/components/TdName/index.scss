@@ -26,6 +26,10 @@
   }
   .info {
     display: inline-block;
+    &.flexCenter {
+      display: inline-flex;
+      align-items: center;
+    }
     &:hover {
       :global {
         .copy {
