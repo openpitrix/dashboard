@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import { withTranslation } from 'react-i18next';
 
 import { Image } from 'components/Base';
-import VersionType from 'components/VersionTYpe';
+import VersionType from 'components/VersionType';
 
 import styles from './index.scss';
 
