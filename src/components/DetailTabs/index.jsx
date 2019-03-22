@@ -54,10 +54,8 @@ export default class DetailTabs extends Component {
     return nextState.curTab !== this.state.curTab;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.curTab !== this.state.curTab) {
-      this.props.changeTab(this.state.curTab);
-    }
+  componentDidUpdate() {
+    this.props.changeTab(this.state.curTab);
   }
 
   handleChange = tab => {
