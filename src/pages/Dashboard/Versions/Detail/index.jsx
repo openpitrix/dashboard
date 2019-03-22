@@ -417,8 +417,8 @@ export default class VersionDetail extends Component {
       <Card className={styles.latestRecord}>
         <div className={styles.title}>{t('Latest record')}</div>
         <Status
-          type={mappingStatus(audit.status)}
-          name={audit.status}
+          type={audit.status}
+          name={mappingStatus(audit.status)}
           className={styles.status}
         />
         <div className={styles.record}>
