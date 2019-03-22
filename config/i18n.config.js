@@ -29,8 +29,6 @@ module.exports = {
     // formatSeparator: ","
   },
 
-  keySeparator: false,
-
   nsSeparator: false,
 
   react: {
