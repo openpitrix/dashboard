@@ -95,15 +95,14 @@ export default class NotificationItem extends React.Component {
       secondary: this.colorMap[type]
     };
 
-    if (hidden) {
-      return null;
-    }
-
     return (
       <div
         className={classnames(
           styles.notification,
           styles[`notification-${type}`],
+          {
+            [styles.hide]: hidden
+          },
           className
         )}
         onClick={this.handleClick}

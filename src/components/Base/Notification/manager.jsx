@@ -2,6 +2,7 @@ import React from 'react';
 import PropType from 'prop-types';
 import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import NotificationItem from './item';
 
@@ -25,14 +26,22 @@ export default class NotificationManager extends React.Component {
 
     return (
       <div className={classnames(styles.wrapper, className)}>
-        {notifications.map((notification, idx) => (
-          <NotificationItem
-            className={itemClass}
-            {...notification}
-            key={idx}
-            detach={detachNotify}
-          />
-        ))}
+        <TransitionGroup>
+          {notifications.map((notification, idx) => (
+            <CSSTransition
+              unmountOnExit
+              key={idx}
+              timeout={500}
+              classNames="slide-down"
+            >
+              <NotificationItem
+                className={itemClass}
+                {...notification}
+                detach={detachNotify}
+              />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       </div>
     );
   }

@@ -51,7 +51,7 @@
   "ISV": "应用服务商",
   "Activation": "激活",
   "Not activation": "非激活",
-  "Change password for user": "请为用户 <1>{{username}}</1> 修改密码",
+  "Change password for user": "请为用户 <2>{{username}}</2> 修改密码",
   "Parent group groupName": "上一级组织名：{{groupName}}",
   "Create role success": "角色创建成功",
   "Create_Role_Success_Tip": "新角色默认是停用状态，请完成权限设置后再启用。",

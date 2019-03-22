@@ -262,7 +262,7 @@
   "Permission and Policy": "权限与策略",
   "Users and Permission": "用户与权限",
   "Email": "邮箱",
-  "DELETE_USER_DESC": "您确定要删除该用户<1>{{ username }}</1>吗?",
+  "DELETE_USER_DESC": "您确定要删除该用户<2> {{ username }} </2>吗?",
   "Organization": "机构",
   "Group": "团队",
   "Search users": "搜索用户",
