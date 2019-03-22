@@ -281,10 +281,12 @@ export class SideNav extends React.Component {
           <NavItem
             to={toRoute(routes.portal.apps, { portal: 'isv' })}
             iconProps={{
-              name: 'back'
+              name: 'wrench'
             }}
             label={t('App Develop')}
+            hoverLabel={t('Back to Provider Center')}
             className={styles.firstElem}
+            hasBack
           />
         ) : (
           this.renderPlatformLogo()
@@ -312,7 +314,7 @@ export class SideNav extends React.Component {
               <Image
                 src={icon}
                 iconLetter={t(name)}
-                iconSize={24}
+                iconSize={20}
                 className={styles.image}
               />
             </NavItem>
