@@ -312,6 +312,7 @@ export default class Clusters extends Component {
           tabs={runtimeTabs}
           className={styles.tabs}
           changeTab={this.handleChangeTab}
+          noFirstChange
         />
 
         {this.renderToolbar()}

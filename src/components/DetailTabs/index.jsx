@@ -14,6 +14,7 @@ export default class DetailTabs extends Component {
     defaultTab: PropTypes.string,
     isAccount: PropTypes.bool,
     isCardTab: PropTypes.bool,
+    noFirstChange: PropTypes.bool,
     tabs: PropTypes.array
   };
 
@@ -21,7 +22,8 @@ export default class DetailTabs extends Component {
     changeTab: noop,
     tabs: [],
     defaultTab: '',
-    isAccount: false
+    isAccount: false,
+    noFirstChange: false
   };
 
   static displayName = 'DetailTabs';
@@ -39,7 +41,8 @@ export default class DetailTabs extends Component {
   }
 
   componentDidMount() {
-    this.props.changeTab(this.state.curTab);
+    const { noFirstChange, changeTab } = this.props;
+    !noFirstChange && changeTab(this.state.curTab);
   }
 
   componentWillReceiveProps(nextProps) {
