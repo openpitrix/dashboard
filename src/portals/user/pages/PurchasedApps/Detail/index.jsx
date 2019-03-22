@@ -5,8 +5,9 @@ import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
 import Layout from 'portals/user/Layout';
-import { Icon, Table, Button } from 'components/Base';
+import { Icon, Button } from 'components/Base';
 import { Grid, Section, Card } from 'components/Layout';
+import Table from 'components/EnhanceTable';
 import Banner from 'components/Banner';
 import Status from 'components/Status';
 import Toolbar from 'components/Toolbar';
@@ -33,7 +34,11 @@ import styles from './index.scss';
 export default class PurchasedDetail extends Component {
   async componentDidMount() {
     const {
-      clusterStore, appStore, runtimeStore, match
+      rootStore,
+      clusterStore,
+      appStore,
+      runtimeStore,
+      match
     } = this.props;
     const { appId } = match.params;
     clusterStore.attachVersions = true;
@@ -47,12 +52,46 @@ export default class PurchasedDetail extends Component {
       status: ['active', 'deleted'],
       noLimit: true
     });
+
+    rootStore.sock.listenToJob(this.handleJobs);
   }
 
   componentWillUnmount() {
-    const { clusterStore } = this.props;
+    const { rootStore, clusterStore } = this.props;
     clusterStore.reset();
+    rootStore.sock.unlisten(this.handleJobs);
   }
+
+  handleJobs = async ({ type = '', resource = {} }) => {
+    const { rtype = '', rid = '', values = {} } = resource;
+    const op = `${type}:${rtype}`;
+    const { clusterStore } = this.props;
+    const { clusters, jobs } = clusterStore;
+    const status = _.pick(values, ['status', 'transition_status']);
+    const clusterIds = clusters.map(cl => cl.cluster_id);
+
+    if (op === 'create:job' && clusterIds.includes(values.cluster_id)) {
+      // new job
+      jobs[rid] = values.cluster_id;
+    }
+
+    // job updated
+    if (op === 'update:job') {
+      if (['successful', 'failed'].includes(status.status)) {
+        delete jobs[rid];
+        await clusterStore.fetchAll();
+      }
+    }
+
+    if (rtype === 'cluster' && clusterIds.includes(rid)) {
+      clusterStore.clusters = clusters.map(cl => {
+        if (cl.cluster_id === rid) {
+          Object.assign(cl, status);
+        }
+        return cl;
+      });
+    }
+  };
 
   goDeploy = () => {
     const { match, history } = this.props;
@@ -232,14 +271,6 @@ export default class PurchasedDetail extends Component {
       }
     ];
 
-    const pagination = {
-      tableType: 'Clusters',
-      onChange: clusterStore.changePagination,
-      total: clusterStore.totalCount,
-      current: clusterStore.currentPage,
-      noCancel: false
-    };
-
     return (
       <Layout
         banner={
@@ -256,10 +287,11 @@ export default class PurchasedDetail extends Component {
             <Card>
               {this.renderToolbar()}
               <Table
+                tableType="Cluster"
                 columns={columns}
-                dataSource={clusters.toJSON()}
+                store={clusterStore}
+                data={clusters}
                 isLoading={isLoading}
-                pagination={pagination}
               />
             </Card>
           </Section>
