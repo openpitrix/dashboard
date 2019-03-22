@@ -4,7 +4,9 @@ exports[`Home basic render 1`] = `
 Array [
   <div
     class="wrapper"
-  />,
+  >
+    <div />
+  </div>,
   <div
     class="header header menusHeader"
   >
