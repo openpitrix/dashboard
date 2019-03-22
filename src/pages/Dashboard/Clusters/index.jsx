@@ -73,10 +73,15 @@ export default class Clusters extends Component {
       clusterStore.attachApps = true;
     }
     clusterStore.attachVersions = true;
-    Object.assign(clusterStore, {
+
+    const params = {
       with_detail: true,
       cluster_type: CLUSTER_TYPE.instance
-    });
+    };
+    if (user.isUserPortal) {
+      params.userId = user.user_id;
+    }
+    Object.assign(clusterStore, params);
     await clusterStore.fetchAll();
 
     await runtimeStore.fetchAll({
