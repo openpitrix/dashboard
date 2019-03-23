@@ -6,7 +6,7 @@ import { Icon } from 'components/Base';
 import Tabs from 'components/DetailTabs';
 import { runtimeTabs } from 'config/runtimes';
 import Card from '../Card';
-import InstallList from '../InstanceList';
+import InstanceList from '../InstanceList';
 
 import styles from './index.scss';
 
@@ -33,7 +33,7 @@ export default class RuntimeInstances extends React.Component {
   };
 
   handleChangeTab = value => {
-    this.props.runtimeStore.changeRuntimeTab(value);
+    this.props.runtimeStore.changeClusterTab(value);
     this.fetchInstances();
   };
 
@@ -48,12 +48,17 @@ export default class RuntimeInstances extends React.Component {
         </div>
 
         <Card {...runtime} />
+
         <Tabs
           className={styles.tabs}
           tabs={runtimeTabs}
           changeTab={this.handleChangeTab}
         />
-        <InstallList {...this.props} fetchAll={this.fetchInstances} />
+        <InstanceList
+          {...this.props}
+          store={this.props.runtimeClusterStore}
+          fetchAll={this.fetchInstances}
+        />
       </div>
     );
   }

@@ -1,25 +1,22 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
-import {
-  Image, Icon, PopoverIcon, Button
-} from 'components/Base';
+import { Image, Icon, Button } from 'components/Base';
 import Table from 'components/EnhanceTable';
 import Layout, { Dialog } from 'components/Layout';
-import Status from 'components/Status';
+import Tabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import TdName, { ProviderName } from 'components/TdName';
-import TimeShow from 'components/TimeShow';
 import VersionType from 'components/VersionType';
-import TdUser from 'components/TdUser';
-import { getObjName } from 'utils';
+
 import { setPage } from 'mixins';
 import routes, { toRoute } from 'routes';
-import { CLUSTER_TYPE } from 'config/runtimes';
+import { CLUSTER_TYPE, runtimeTabs } from 'config/runtimes';
 
+import columns from './columns';
 import styles from './index.scss';
 
 @withTranslation()
@@ -35,17 +32,49 @@ import styles from './index.scss';
 @setPage('clusterStore')
 @observer
 export default class Clusters extends Component {
+  static propTypes = {
+    fetchData: PropTypes.func,
+    noTabs: PropTypes.bool,
+    title: PropTypes.string
+  };
+
+  static defaultProps = {
+    noTabs: false,
+    title: ''
+  };
+
   async componentDidMount() {
-    await this.queryPageData();
-  }
+    const {
+      rootStore,
+      clusterStore,
+      runtimeStore,
+      user,
+      fetchData
+    } = this.props;
 
-  async componentDidUpdate(prevProps) {
-    const { match } = this.props;
-    const oldPath = _.get(prevProps, 'match.path', '');
+    if (_.isFunction(fetchData)) {
+      fetchData();
+    } else {
+      const { cluster_type } = clusterStore;
 
-    if (match.path !== oldPath) {
-      await this.queryPageData();
+      Object.assign(clusterStore, {
+        attachUsers: !user.isUserPortal,
+        attachVersions: cluster_type === CLUSTER_TYPE.instance,
+        attachApps: !user.isDevPortal,
+        with_detail: true,
+        cluster_type: CLUSTER_TYPE.instance, // default fetch instance
+        userId: user.isUserPortal && user.user_id
+      });
+
+      await clusterStore.fetchAll();
+
+      await runtimeStore.fetchAll({
+        status: ['active', 'deleted'],
+        noLimit: true
+      });
     }
+
+    rootStore.sock.listenToJob(this.handleJobs);
   }
 
   componentWillUnmount() {
@@ -53,44 +82,6 @@ export default class Clusters extends Component {
     rootStore.sock.unlisten(this.handleJobs);
     clusterStore.reset();
   }
-
-  queryPageData = async () => {
-    const {
-      rootStore, clusterStore, runtimeStore, user, match
-    } = this.props;
-    const { appId } = match.params;
-
-    clusterStore.onlyView = match.path.endsWith('/instances');
-
-    if (appId) {
-      clusterStore.appId = appId;
-    }
-
-    if (!user.isUserPortal) {
-      clusterStore.attachUsers = true;
-    }
-    if (!user.isDevPortal) {
-      clusterStore.attachApps = true;
-    }
-    clusterStore.attachVersions = true;
-
-    const params = {
-      with_detail: true,
-      cluster_type: CLUSTER_TYPE.instance
-    };
-    if (user.isUserPortal) {
-      params.userId = user.user_id;
-    }
-    Object.assign(clusterStore, params);
-    await clusterStore.fetchAll();
-
-    await runtimeStore.fetchAll({
-      status: ['active', 'deleted'],
-      noLimit: true
-    });
-
-    rootStore.sock.listenToJob(this.handleJobs);
-  };
 
   handleJobs = async ({ type = '', resource = {} }) => {
     const { rtype = '', rid = '', values = {} } = resource;
@@ -172,6 +163,19 @@ export default class Clusters extends Component {
   operateSelected = type => {
     const { showOperateCluster, clusterIds } = this.props.clusterStore;
     showOperateCluster(clusterIds, type);
+  };
+
+  handleChangeTab = async tab => {
+    const { clusterStore } = this.props;
+
+    Object.assign(clusterStore, {
+      cluster_type: tab,
+      onlyView: tab === CLUSTER_TYPE.agent,
+      attachVersions: tab === CLUSTER_TYPE.instance,
+      attachApps: tab === CLUSTER_TYPE.instance
+    });
+
+    await clusterStore.fetchAll();
   };
 
   renderHandleMenu = item => {
@@ -269,7 +273,7 @@ export default class Clusters extends Component {
     } = clusterStore;
     const { appId } = match.params;
 
-    if (clusterIds.length) {
+    if (!onlyView && clusterIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           <Button type="default" onClick={() => this.operateSelected('start')}>
@@ -309,103 +313,24 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, t
+      clusterStore, userStore, user, noTabs, t
     } = this.props;
-    const { isLoading, onlyView } = clusterStore;
+    const { isLoading, onlyView, cluster_type } = clusterStore;
+
     const { runtimes } = this.props.runtimeStore;
     const { users } = userStore;
-    const transMap = {
-      active: 'normal'
-    };
-
-    const columns = [
-      {
-        title: t('Status'),
-        key: 'status',
-        render: cl => (
-          <Status
-            type={cl.status}
-            transition={cl.transition_status}
-            transMap={transMap}
-          />
-        )
-      },
-      {
-        title: t('Instance Name ID'),
-        key: 'name',
-        render: cl => (
-          <TdName
-            name={cl.name}
-            description={cl.cluster_id}
-            linkUrl={this.getDetailLink(cl.cluster_id)}
-            noIcon
-          />
-        )
-      },
-      {
-        title: user.isUserPortal
-          ? t('App / Delivery type / Version')
-          : t('Version'),
-        key: 'app_id',
-        render: cl => this.renderAppTdShow(cl.app_id, cl.version_id)
-      },
-      {
-        title:
-          user.isUserPortal || onlyView
-            ? t('Deploy Runtime')
-            : t('Test Runtime'),
-        key: 'runtime_id',
-        render: cl => (
-          <ProviderName
-            name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
-            provider={getObjName(
-              runtimes,
-              'runtime_id',
-              cl.runtime_id,
-              'provider'
-            )}
-          />
-        )
-      },
-      {
-        title: t('Node Count'),
-        key: 'node_count',
-        className: 'number',
-        render: cl => (cl.cluster_node_set && cl.cluster_node_set.length) || 0
-      },
-      {
-        title: t('Creator'),
-        key: 'owner',
-        render: cl => (
-          <TdUser className={styles.creator} users={users} userId={cl.owner} />
-        )
-      },
-      {
-        title: t('Created At'),
-        key: 'create_time',
-        sorter: true,
-        onChangeSort: this.onChangeSort,
-        render: cl => <TimeShow time={cl.create_time} type="detailTime" />
-      },
-      {
-        title: '',
-        key: 'actions',
-        className: 'actions',
-        width: onlyView ? '100px' : '80px',
-        render: cl => (onlyView ? (
-            <div>
-              <Link to={this.getDetailLink(cl.cluster_id)}>
-                {t('View detail')} →
-              </Link>
-            </div>
-        ) : (
-            <PopoverIcon content={this.renderHandleMenu(cl)} />
-        ))
-      }
-    ];
 
     return (
       <Fragment>
+        {!noTabs && (
+          <Tabs
+            tabs={runtimeTabs}
+            className={styles.tabs}
+            changeTab={this.handleChangeTab}
+            noFirstChange
+          />
+        )}
+
         {this.renderToolbar()}
 
         <Table
@@ -413,7 +338,11 @@ export default class Clusters extends Component {
           columns={columns}
           columnsFilter={cols => {
             if (user.isUserPortal) {
-              return cols.filter(item => item.key !== 'owner');
+              cols = cols.filter(item => item.key !== 'owner');
+              if (cluster_type === CLUSTER_TYPE.agent) {
+                return cols.filter(item => item.key !== 'app_id');
+              }
+              return cols;
             }
             return cols;
           }}
@@ -429,6 +358,16 @@ export default class Clusters extends Component {
             { name: t('Deleted'), value: 'deleted' },
             { name: t('Ceased'), value: 'ceased' }
           ]}
+          inject={{
+            getDetailLink: this.getDetailLink,
+            renderAppTdShow: this.renderAppTdShow,
+            renderHandleMenu: this.renderHandleMenu,
+            users,
+            user,
+            runtimes,
+            onlyView,
+            t
+          }}
         />
 
         {this.renderOpsModal()}
@@ -437,15 +376,13 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { user, match, t } = this.props;
+    const { user, title, t } = this.props;
 
     if (user.isUserPortal) {
       return this.renderMain();
     }
 
-    let pageTitle = match.path.endsWith('sandbox-instances')
-      ? t('Sandbox-Instances')
-      : t('Customer-Instances');
+    let pageTitle = title || '';
 
     if (user.isAdmin) {
       pageTitle = t('Test instance');
