@@ -17,7 +17,9 @@ import {
   Clusters,
   ClusterDetail,
   Runtimes,
-  CreateRuntime
+  CreateRuntime,
+  UserInstance,
+  UserSandbox
 } from 'pages/Dashboard';
 
 export default ({ prefix }) => (
@@ -45,7 +47,10 @@ export default ({ prefix }) => (
     <WrapRoute path={`${prefix}/apps/:appId`} component={AppInfo} />
     <WrapRoute path={`${prefix}/apps/:appId/audits`} component={Audits} />
 
-    <WrapRoute path={`${prefix}/apps/:appId/instances`} component={Clusters} />
+    <WrapRoute
+      path={`${prefix}/apps/:appId/instances`}
+      component={UserInstance}
+    />
     <WrapRoute
       path={`${prefix}/apps/:appId/instances/:clusterId`}
       component={ClusterDetail}
@@ -53,7 +58,7 @@ export default ({ prefix }) => (
 
     <WrapRoute
       path={`${prefix}/apps/:appId/sandbox-instances`}
-      component={Clusters}
+      component={UserSandbox}
     />
     <WrapRoute
       path={`${prefix}/apps/:appId/sandbox-instances/:clusterId`}

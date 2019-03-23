@@ -34,3 +34,6 @@ export CloudInfo from './CloudInfo';
 export NotificationServer from './NotificationServer';
 
 export Account from './Account';
+
+export UserInstance from './UserInstance';
+export UserSandbox from './UserSandbox';

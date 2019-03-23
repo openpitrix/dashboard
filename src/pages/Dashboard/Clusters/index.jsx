@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import _, { capitalize } from 'lodash';
@@ -31,34 +32,47 @@ import styles from './index.scss';
 @setPage('clusterStore')
 @observer
 export default class Clusters extends Component {
+  static propTypes = {
+    fetchData: PropTypes.func,
+    noTabs: PropTypes.bool,
+    title: PropTypes.string
+  };
+
+  static defaultProps = {
+    noTabs: false,
+    title: ''
+  };
+
   async componentDidMount() {
     const {
-      rootStore, clusterStore, runtimeStore, user, match
+      rootStore,
+      clusterStore,
+      runtimeStore,
+      user,
+      fetchData
     } = this.props;
-    const { cluster_type } = clusterStore;
-    const { appId } = match.params;
 
-    // todo
-    clusterStore.onlyView = match.path.endsWith('/instances');
+    if (_.isFunction(fetchData)) {
+      fetchData();
+    } else {
+      const { cluster_type } = clusterStore;
 
-    if (appId) {
-      clusterStore.appId = appId;
+      Object.assign(clusterStore, {
+        attachUsers: !user.isUserPortal,
+        attachVersions: cluster_type === CLUSTER_TYPE.instance,
+        attachApps: !user.isDevPortal,
+        with_detail: true,
+        cluster_type: CLUSTER_TYPE.instance, // default fetch instance
+        userId: user.isUserPortal && user.user_id
+      });
+
+      await clusterStore.fetchAll();
+
+      await runtimeStore.fetchAll({
+        status: ['active', 'deleted'],
+        noLimit: true
+      });
     }
-
-    Object.assign(clusterStore, {
-      attachUsers: !user.isUserPortal,
-      attachVersions: cluster_type === CLUSTER_TYPE.instance,
-      attachApps: !user.isDevPortal,
-      with_detail: true,
-      cluster_type: CLUSTER_TYPE.instance // default fetch instance
-    });
-
-    await clusterStore.fetchAll();
-
-    await runtimeStore.fetchAll({
-      status: ['active', 'deleted'],
-      noLimit: true
-    });
 
     rootStore.sock.listenToJob(this.handleJobs);
   }
@@ -299,7 +313,7 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, t
+      clusterStore, userStore, user, noTabs, t
     } = this.props;
     const { isLoading, onlyView, cluster_type } = clusterStore;
 
@@ -308,12 +322,14 @@ export default class Clusters extends Component {
 
     return (
       <Fragment>
-        <Tabs
-          tabs={runtimeTabs}
-          className={styles.tabs}
-          changeTab={this.handleChangeTab}
-          noFirstChange
-        />
+        {!noTabs && (
+          <Tabs
+            tabs={runtimeTabs}
+            className={styles.tabs}
+            changeTab={this.handleChangeTab}
+            noFirstChange
+          />
+        )}
 
         {this.renderToolbar()}
 
@@ -360,15 +376,13 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { user, match, t } = this.props;
+    const { user, title, t } = this.props;
 
     if (user.isUserPortal) {
       return this.renderMain();
     }
 
-    let pageTitle = match.path.endsWith('sandbox-instances')
-      ? t('Sandbox-Instances')
-      : t('Customer-Instances');
+    let pageTitle = title || '';
 
     if (user.isAdmin) {
       pageTitle = t('Test instance');
