@@ -155,35 +155,36 @@ class AppStore extends Store {
   };
 
   @action
-  fetchMeunApp = async (appId, isFetch) => {
+  fetchMeunApp = async (appId, isDelete) => {
     const userId = getCookie('user_id');
     const menuApps = localStorage.getItem(`${userId}-apps`);
     const apps = JSON.parse(menuApps || '[]');
     const appDetail = _.find(apps, { app_id: appId });
 
-    if (appDetail && !isFetch) {
-      this.appDetail = appDetail;
-      // modify info will change app info
-      this.resetAppDetail = appDetail;
-    } else {
+    if (!isDelete) {
       await this.fetch(appId);
 
       // if can't get app, should not storage app info
       if (!this.appDetail.app_id) {
         return;
       }
-
-      if (appDetail) {
-        const index = _.findIndex(apps, { app_id: appId });
-        apps.splice(index, 1, this.appDetail);
-      } else {
-        apps.unshift(this.appDetail);
-        apps.splice(5, 1);
-      }
-
-      localStorage.setItem(`${userId}-apps`, JSON.stringify(apps));
-      this.menuApps = apps;
     }
+
+    const index = _.findIndex(apps, { app_id: appId });
+    if (isDelete && index > -1) {
+      // remove the app from local storage
+      apps.splice(index, 1);
+    } else if (appDetail) {
+      // update the app from local storage
+      apps.splice(index, 1, this.appDetail);
+    } else {
+      // add the app from local storage
+      apps.unshift(this.appDetail);
+      apps.splice(5, 1);
+    }
+
+    localStorage.setItem(`${userId}-apps`, JSON.stringify(apps));
+    this.menuApps = apps;
   };
 
   @action
@@ -394,7 +395,7 @@ class AppStore extends Store {
       // update the meun app show
       if (get(this.createResult, 'app_id')) {
         isActionSuccess = true;
-        this.fetchMeunApp(this.appDetail.app_id, true);
+        this.fetchMeunApp(this.appDetail.app_id);
       }
     }
 
@@ -545,6 +546,9 @@ class AppStore extends Store {
         await this.fetchAll();
         this.cancelSelected();
         this.hideModal();
+
+        // need update nav apps info
+        this.fetchMeunApp(this.appId, true);
       }
       this.success('Delete app successfully');
     } else {

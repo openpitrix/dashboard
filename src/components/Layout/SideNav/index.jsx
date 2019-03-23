@@ -11,8 +11,8 @@ import Can from 'components/Can';
 import Status from 'components/Status';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
+import { mappingStatus } from 'utils';
 import NavItem from './NavItem';
-
 import {
   subNavMap, getNavs, getDevSubNavs, getBottomNavs
 } from './navMap';
@@ -149,7 +149,7 @@ export class SideNav extends React.Component {
           <div className={styles.name}>{resetAppDetail.name}</div>
           <Status
             className={styles.status}
-            name={appDetail.status}
+            name={mappingStatus(appDetail.status)}
             type={appDetail.status}
           />
         </div>
