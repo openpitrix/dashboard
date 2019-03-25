@@ -1,6 +1,8 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
+import { DATA_LEVEL } from 'config/roles';
+
 import Store from '../Store';
 
 const KeyFeatureAll = 'all';
@@ -525,9 +527,7 @@ export default class RoleStore extends Store {
           key => !regNotAction.test(key)
         );
         const isCheckAll = total === checkActions.length;
-        if (!isCheckAll) {
-          module.is_check_all = isCheckAll;
-        }
+        module.is_check_all = isCheckAll;
       });
   };
 
@@ -618,6 +618,7 @@ export default class RoleStore extends Store {
     await this.fetchRoleModule('isv');
     this.emptyCheckAction();
     this.onSelectModule([KeyFeatureAll]);
+    this.dataLevel = DATA_LEVEL.self;
     this.setHandleType('setBindAction');
   };
 
@@ -652,7 +653,6 @@ export default class RoleStore extends Store {
   changeISVRoleModule = async roleId => {
     const module = this.modules
       .slice()
-      .filter(m => this.openModuleMap[m.module_id])
       .sort(sortModule('module_id'))
       .map((item, index) => {
         item.data_level = this.dataLevel;
