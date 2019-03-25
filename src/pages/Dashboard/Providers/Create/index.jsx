@@ -25,6 +25,12 @@ export default class ApplicationCreate extends Component {
     const { vendorStore, user } = this.props;
     vendorStore.userId = user.user_id;
     await vendorStore.fetch(user.user_id);
+
+    // if isv in review, can't edit isv info
+    const { vendorDetail } = vendorStore;
+    if (vendorDetail.status === 'submitted') {
+      vendorStore.activeStep = 2;
+    }
   }
 
   componentWillUnmount() {

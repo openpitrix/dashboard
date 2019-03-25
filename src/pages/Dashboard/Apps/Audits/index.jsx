@@ -140,6 +140,7 @@ export default class Audits extends Component {
       {
         title: t('Status'),
         key: 'status',
+        width: '120px',
         render: item => (
           <Status type={item.status} name={mappingStatus(item.status)} />
         )
@@ -160,7 +161,7 @@ export default class Audits extends Component {
         title: t('Update time'),
         key: 'status_time',
         className: 'time',
-        width: '160px',
+        width: '175px',
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       }
     ];
