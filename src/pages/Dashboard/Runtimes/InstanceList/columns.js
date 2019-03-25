@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
-import { Image } from 'components/Base';
+import { Image, Icon } from 'components/Base';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
 import TimeShow from 'components/TimeShow';
@@ -109,7 +109,22 @@ export const frontgateCols = t => [
       const nodeSet = _.get(cl, 'cluster_node_set[0]');
       if (!nodeSet) return null;
 
-      return _.get(nodeSet, 'public_ip') || _.get(nodeSet, 'private_ip');
+      return (
+        <Fragment>
+          {nodeSet.private_ip && (
+            <div title={t('Private network IP')}>
+              <Icon name="ip" type="dark" />
+              {nodeSet.private_ip}
+            </div>
+          )}
+          {nodeSet.eip && (
+            <div className="eip" title={t('Public network IP')}>
+              <Icon name="eip" type="dark" />
+              {nodeSet.eip}
+            </div>
+          )}
+        </Fragment>
+      );
     }
   },
   {
@@ -119,9 +134,10 @@ export const frontgateCols = t => [
     render: cl => {
       const roleSet = _.get(cl, 'cluster_role_set[0]');
       if (!roleSet) return null;
-      const text = `${roleSet.cpu}-Core${roleSet.memory / 1024}GB${
+      const text = `${roleSet.cpu}-Core ${roleSet.memory / 1024}GB ${
         roleSet.storage_size
       }GB`;
+
       return <div>{text}</div>;
     }
   },
