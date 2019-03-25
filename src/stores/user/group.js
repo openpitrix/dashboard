@@ -8,7 +8,8 @@ import rootGroup, {
   rootName,
   platformUserID,
   normalUserID,
-  ISVID
+  ISVID,
+  GROUP_NAME_MAP
 } from 'config/group';
 
 import Store from '../Store';
@@ -165,6 +166,15 @@ export default class GroupStore extends Store {
     return _.reverse(names)
       .slice(0, -1)
       .join(' / ');
+  }
+
+  get selectGroupName() {
+    const { groupName } = this;
+    if (groupName) {
+      return groupName;
+    }
+
+    return GROUP_NAME_MAP[this.selectedGroupIds];
   }
 
   getPosition(groupId, names) {
