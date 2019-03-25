@@ -52,6 +52,7 @@ export default class RuntimeClusterStore extends Store {
     if (params.cluster_type === undefined) {
       params.cluster_type = this.clusterType;
     }
+    params.with_detail = true;
 
     return Object.assign(params, extra);
   };
