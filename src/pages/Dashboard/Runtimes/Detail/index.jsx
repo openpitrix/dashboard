@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Icon } from 'components/Base';
 import Tabs from 'components/DetailTabs';
-import { runtimeTabs } from 'config/runtimes';
+import { PLATFORM, runtimeTabs } from 'config/runtimes';
 import Card from '../Card';
 import InstanceList from '../InstanceList';
 
@@ -21,6 +21,10 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeInstances extends React.Component {
+  get hasTab() {
+    return this.props.envStore.platform !== PLATFORM.kubernetes;
+  }
+
   fetchInstances = () => {
     const { runtimeClusterStore, user } = this.props;
     runtimeClusterStore.fetchAll({
@@ -49,11 +53,14 @@ export default class RuntimeInstances extends React.Component {
 
         <Card {...runtime} />
 
-        <Tabs
-          className={styles.tabs}
-          tabs={runtimeTabs}
-          changeTab={this.handleChangeTab}
-        />
+        {this.hasTab && (
+          <Tabs
+            className={styles.tabs}
+            tabs={runtimeTabs}
+            changeTab={this.handleChangeTab}
+          />
+        )}
+
         <InstanceList
           {...this.props}
           store={this.props.runtimeClusterStore}
