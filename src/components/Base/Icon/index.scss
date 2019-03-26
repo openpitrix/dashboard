@@ -29,6 +29,20 @@
     --primary-color: #{$G75};
     --secondary-color: #{$G30};
   }
+  @each $platform in $platform-icon-colors {
+    .#{$icon-prefix}-#{nth($platform, 1)} {
+      --primary-color: #{nth($platform, 2)};
+      --secondary-color: #{nth($platform, 3)};
+    }
+  }
+  .disabled {
+    @each $platform in $platform-icon-colors {
+      .#{$icon-prefix}-#{nth($platform, 1)} {
+        --primary-color: #{$N300};
+        --secondary-color: #{$N300};
+      }
+    }
+  }
 
   .icon {
     display: inline-block;
@@ -66,5 +80,4 @@
       height: nth($tuple, 2);
     }
   }
-
 }

@@ -30,7 +30,7 @@ export default class CloudEnvironment extends Component {
       <div
         key={key}
         className={classnames({
-          [styles.disabled]: !enable,
+          disabled: !enable,
           [styles.item]: !disabled
         })}
       >

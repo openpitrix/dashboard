@@ -96,6 +96,7 @@ export default class Runtimes extends React.Component {
             <li
               key={key}
               className={classnames(styles.provider, {
+                disabled,
                 [styles.disabled]: disabled,
                 [styles.active]: platform === key
               })}

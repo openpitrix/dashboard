@@ -1,7 +1,7 @@
 @import '~scss/vars';
 
 .title {
-  @include normal-font;;
+  @include normal-font;
 }
 
 .item {
@@ -12,7 +12,7 @@
     background: $N0;
   }
 }
-.disabled {
+:global(.disabled) {
   opacity: 0.3;
   .item {
     width: auto;
