@@ -236,7 +236,7 @@ export default class Users extends Component {
     const { selectName } = userStore;
     const {
       groupTreeData,
-      groupName,
+      selectGroupName,
       onSelectOrg,
       selectedGroupIds
     } = groupStore;
@@ -275,7 +275,9 @@ export default class Users extends Component {
               <Card className={styles.noShadow}>
                 <div className={styles.title}>
                   {t('Selected organization')}:
-                  <strong className={styles.groupHeader}>{t(groupName)}</strong>
+                  <strong className={styles.groupHeader}>
+                    {t(selectGroupName)}
+                  </strong>
                 </div>
 
                 {Boolean(selectName) && (

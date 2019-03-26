@@ -16,7 +16,8 @@
       &:hover {
         &:before {
           background: $N0;
-          box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+          box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+            0 4px 8px 0 rgba(35, 35, 36, 0.04);
         }
       }
     }
@@ -26,7 +27,8 @@
           border: 1px solid $P75;
           background-color: #fff;
           opacity: 0.8;
-          box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+          box-shadow: 0 1px 4px 0 rgba($P400, 0.06),
+            0 4px 8px 0 rgba(35, 35, 36, 0.04);
         }
       }
     }
@@ -61,7 +63,7 @@
   & > li > ul > li {
     &::before {
       content: '';
-      border: 1px solid $N10;
+      border-bottom: 1px solid $N10;
       position: absolute;
       margin-top: -6px;
       left: -24px;
