@@ -47,7 +47,19 @@ export const roleTypes = {
   user: 'Normal'
 };
 
-export const moduleDataLevels = ['self', 'group', 'all'];
+export const DATA_LEVEL = {
+  self: 'self',
+  group: 'group',
+  all: 'all'
+};
+
+export const moduleDataLevels = [
+  DATA_LEVEL.self,
+  DATA_LEVEL.group,
+  DATA_LEVEL.all
+];
+
+export const isvDataLevels = [DATA_LEVEL.self, DATA_LEVEL.group];
 
 export const adminRoleNameMap = {
   global_admin: 'Super admin',

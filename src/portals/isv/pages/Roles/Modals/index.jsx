@@ -9,7 +9,7 @@ import { Dialog } from 'components/Layout';
 import Collapse from 'components/Collapse';
 import Loading from 'components/Loading';
 import ActionGroup from 'portals/admin/pages/Roles/BindingActions/group';
-import { moduleDataLevels } from 'config/roles';
+import { isvDataLevels } from 'config/roles';
 
 import styles from './index.scss';
 
@@ -119,7 +119,7 @@ export default class RoleModalActions extends Component {
               onChange={changeDataLevel}
               name="data_level"
             >
-              {moduleDataLevels.map(data => (
+              {isvDataLevels.map(data => (
                 <Select.Option key={data} value={data}>
                   {t(`data_level_${data}`)}
                 </Select.Option>
