@@ -10,7 +10,6 @@ const authEndpoint = 'oauth2/token';
 const resourcesBypassAuth = [
   'active_apps',
   'active_app_versions',
-  'app_vendors',
   'categories',
   'attachment'
 ];
