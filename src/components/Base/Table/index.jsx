@@ -418,12 +418,22 @@ export class Table extends React.Component {
       pagination,
       isLoading,
       rowSelection,
+      hasExtendedTr,
       noPagination
     } = this.props;
     const { selectedRowKeys } = this.state;
 
     return (
-      <div className={classNames(styles.table, className)} style={style}>
+      <div
+        className={classNames(
+          styles.table,
+          {
+            [styles.extendedTable]: hasExtendedTr
+          },
+          className
+        )}
+        style={style}
+      >
         <Loading isLoading={isLoading}>
           {this.renderTable()}
           {!noPagination && (

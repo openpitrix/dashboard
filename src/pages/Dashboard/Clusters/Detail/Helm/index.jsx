@@ -94,6 +94,7 @@ export default class HelmCluster extends React.Component {
         onChange: onChangeNodeStatus,
         selectValue: selectNodeStatus
       }),
+      hasExtendedTr: true,
       noPagination: true
     };
 

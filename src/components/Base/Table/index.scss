@@ -243,11 +243,20 @@
   }
 }
 
+.extendedTable {
+  :global(.pi-table) {
+    &-tbody > tr > td:first-child {
+      padding-left: 5px;
+    }
+  }
+}
+
 .noData {
   padding: 20px 0;
   text-align: center;
   border-radius: 2px;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
   background-color: $N0;
   .word {
     margin-bottom: 16px;
