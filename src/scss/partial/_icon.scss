@@ -1,10 +1,19 @@
 $icon-prefix: qicon;
-$icon-size-config: 'mini' 16px, 'small' 24px, 'medium' 32px, 'large' 64px, 'ex-large' 64px;
+$icon-size-config: 'mini' 16px, 'small' 24px, 'medium' 32px, 'large' 64px,
+  'ex-large' 64px;
 
 $icon-button-border-radius: 3px;
 // todo
 $icon-button-active-background-color: darken(#fff, 1%);
 $icon-button-hover-background-color: darken(#aaa, 1%);
-$icon-button-disabled-opacity: .5;
+$icon-button-disabled-opacity: 0.5;
 
-
+$platform-icon-colors: (
+  qingcloud #00a971 #00a971,
+  kubernetes #326de6 #326de6,
+  aliyun #000 #000,
+  aws #000 #ff9900,
+  openstack #ed1944 #ed1944,
+  kubesphere #51b484 #51b484,
+  vmware #576075 #576075
+);
