@@ -42,7 +42,10 @@ export default class ClusterDetailStore extends Store {
 
   @observable selectNodeStatus = '';
 
-  env = {};
+  @observable env = '';
+
+  // json string for current cluster env
+  @observable changedEnv = ''; // string for changed env
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -65,7 +68,7 @@ export default class ClusterDetailStore extends Store {
       cluster_id: clusterId
     });
     this.cluster = _.get(result, 'cluster_set[0]', {});
-    this.setEnv();
+    this.env = this.cluster.env || '';
     this.isLoading = false;
   };
 
@@ -230,32 +233,22 @@ export default class ClusterDetailStore extends Store {
     this.extendedRowKeys = _.union([], this.extendedRowKeys);
   };
 
-  @action
-  setEnv = () => {
-    const { env } = this.cluster;
-    // transform raw cluster.env as js object
-    if (!env) {
-      this.env = {};
-      return;
-    }
-
-    this.env = yaml.safeLoad(
-      typeof env === 'object' ? JSON.stringify(env) : env
-    );
-  };
-
-  formatEnv = (env_obj = this.env) => {
-    if (typeof env_obj === 'string') {
+  /**
+   * @param env
+   * @returns {*}
+   */
+  formatEnv = (env = '') => {
+    if (typeof env === 'string') {
       // first transform arg into obj
-      env_obj = yaml.safeLoad(env_obj);
+      env = yaml.safeLoad(env);
     }
 
     if (this.isHelm) {
-      // output yaml
-      return yaml.safeDump(env_obj);
+      // output yaml string
+      return yaml.safeDump(env);
     }
     // output json string
-    return JSON.stringify(env_obj, null, 2);
+    return JSON.stringify(env, null, 2);
   };
 
   @action
@@ -326,13 +319,14 @@ export default class ClusterDetailStore extends Store {
   };
 
   @action
-  changeEnv = (env = '') => {
-    this.env = yaml.safeLoad(this.formatEnv(env));
+  changeEnv = env => {
+    this.changedEnv = env;
   };
 
+  @action
   cancelChangeEnv = () => {
+    this.changedEnv = '';
     this.getStore('cluster').hideModal();
-    this.setEnv();
   };
 
   @action
@@ -346,5 +340,8 @@ export default class ClusterDetailStore extends Store {
     this.cluster = {};
     this.helmClusterNodes = [];
     this.clusterNodes = [];
+
+    this.env = '';
+    this.changedEnv = '';
   };
 }

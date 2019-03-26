@@ -75,8 +75,13 @@ export default class ClusterStore extends Store {
     return this.getStore('user');
   }
 
+  get detailStore() {
+    return this.getStore('clusterDetail');
+  }
+
   get clusterEnv() {
-    return JSON.stringify(this.getStore('clusterDetail').env);
+    const { changedEnv, env } = this.detailStore;
+    return JSON.stringify(changedEnv || env);
   }
 
   get fetchJobs() {
@@ -300,6 +305,10 @@ export default class ClusterStore extends Store {
     this.cluster_type = CLUSTER_TYPE.instance;
     this.with_detail = false;
     this.clusterTab = CLUSTER_TYPE.instance;
+
+    this.operateType = '';
+    this.modalType = '';
+    this.clusterId = '';
   };
 
   @action
@@ -307,18 +316,56 @@ export default class ClusterStore extends Store {
     this.versionId = type;
   };
 
+  /**
+   *
+   * @param clusterIds
+   * @param opts
+   * @returns {Promise<void>}
+   */
   @action
-  updateEnv = async clusterIds => {
+  updateEnv = async (clusterIds, opts = {}) => {
     const clusterId = [].concat(clusterIds)[0];
-    const result = await this.request.patch('clusters/update_env', {
+    const params = {
       cluster_id: clusterId,
       env: this.clusterEnv
-    });
+      // advanced_param: ['']
+    };
+
+    Object.assign(params, opts);
+
+    const result = await this.request.patch('clusters/update_env', params);
     if (get(result, 'cluster_id')) {
       this.hideModal();
-      // for refresh env
-      await this.getStore('clusterDetail').fetch(clusterId);
+      // refresh env
+      await this.detailStore.fetch(clusterId);
+      // clean up
+      this.detailStore.changedEnv = '';
       this.success('Update cluster env successfully');
+    }
+  };
+
+  @action
+  doActions = async (params = {}) => {
+    const ids = this.operateType === 'multiple'
+      ? this.clusterIds.toJSON()
+      : [this.clusterId];
+    const specialActionMap = {
+      update_env: this.updateEnv,
+      upgrade: this.upgradeVersion
+    };
+
+    const method = specialActionMap[this.modalType] || this[this.modalType];
+
+    if (!_.isFunction(method)) {
+      this.error('Invalid operation');
+      return;
+    }
+
+    // first arg maybe event object
+    if (_.isObject(params) && !params.nativeEvent) {
+      await method(ids, params);
+    } else {
+      await method(ids);
     }
   };
 }
