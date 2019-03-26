@@ -9,7 +9,7 @@ const TdUser = ({ className, users, userId }) => {
   const user = _.find(users, { user_id: userId }) || {};
 
   return (
-    <div className={classnames(styles.userShow, className)}>
+    <div className={classnames(styles.userShow, className)} title={user.email}>
       <label className={styles.name}>{user.username || userId}</label>
       {user.email}
     </div>

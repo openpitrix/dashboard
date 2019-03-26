@@ -153,11 +153,7 @@ export default class Reviews extends Component {
         title: t('Operator'),
         key: 'operator',
         className: 'boldFont',
-        render: item => (item.status.indexOf('isv-') > -1 ? (
-            <TdUser users={users} userId={item.reviewer} />
-        ) : (
-          t('Platform')
-        ))
+        render: item => <TdUser users={users} userId={item.reviewer} />
       },
       {
         title: isUnprocessed ? t('Submit time') : t('Update time'),

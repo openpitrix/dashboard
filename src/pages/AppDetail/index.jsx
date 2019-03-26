@@ -163,7 +163,7 @@ export default class AppDetail extends Component {
       <div className={styles.appDetail}>
         <div className={styles.title}>{t('Introduction')}</div>
         <pre className={styles.description}>
-          {appDetail.description || t('none')}
+          {appDetail.description || t('None')}
         </pre>
         <div className={styles.title}>{t('Screenshot')}</div>
         <Screenshots
@@ -243,12 +243,13 @@ export default class AppDetail extends Component {
           </div>
           <div className={styles.category}>
             {t('Category')}:&nbsp;
-            <label>
-              {_.get(appDetail, 'category_set', [])
-                .filter(cate => cate.category_id && cate.status === 'enabled')
-                .map(cate => t(cate.name))
-                .join(', ')}
-            </label>
+            {_.get(appDetail, 'category_set', [])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => (
+                <Link key={cate.category_id} to={`/?cate=${cate.category_id}`}>
+                  {t(cate.name)}
+                </Link>
+              ))}
           </div>
         </div>
       </div>

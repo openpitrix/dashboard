@@ -438,7 +438,19 @@ export default class ReviewDetail extends Component {
         </dl>
         <dl>
           <dt>{t('Category')}</dt>
-          <dd>{categoryName || t('None')}</dd>
+          <dd>
+            {_.get(appDetail, 'category_set', ['None'])
+              .filter(cate => cate.category_id && cate.status === 'enabled')
+              .map(cate => (
+                <label
+                  className={styles.category}
+                  key={cate.category_id}
+                  to={`/?cate=${cate.category_id}`}
+                >
+                  {t(cate.name)}
+                </label>
+              ))}
+          </dd>
         </dl>
         <dl>
           <dt>{t('Service provider website')}</dt>

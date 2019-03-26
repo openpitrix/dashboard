@@ -6,11 +6,17 @@ import { getVersionTypesName } from 'config/version-types';
 
 import styles from './index.scss';
 
-const VersionType = ({ className, types }) => (
-  <div className={classnames(styles.versionType, className)}>
-    {(getVersionTypesName(types) || []).join(' ')}
-  </div>
-);
+const VersionType = ({ className, types }) => {
+  const showTypes = getVersionTypesName(types) || [];
+
+  return (
+    <div className={classnames(styles.versionType, className)}>
+      {showTypes.map((type, index) => (
+        <label key={index}>{type}</label>
+      ))}
+    </div>
+  );
+};
 
 VersionType.propTypes = {
   className: PropTypes.string,
