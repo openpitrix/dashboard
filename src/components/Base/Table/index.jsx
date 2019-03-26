@@ -22,6 +22,7 @@ export class Table extends React.Component {
     dataSource: PropTypes.array,
     filterList: PropTypes.array,
     isLoading: PropTypes.bool,
+    noPagination: PropTypes.bool,
     pagination: PropTypes.object,
     prefixCls: PropTypes.string,
     rowSelection: PropTypes.shape({
@@ -38,6 +39,7 @@ export class Table extends React.Component {
     columns: [],
     pagination: {},
     rowKey: 'key',
+    noPagination: false,
     rowSelection: {
       // selectedRowKeys: [],
       onChange: _.noop,
@@ -415,7 +417,8 @@ export class Table extends React.Component {
       style,
       pagination,
       isLoading,
-      rowSelection
+      rowSelection,
+      noPagination
     } = this.props;
     const { selectedRowKeys } = this.state;
 
@@ -423,11 +426,13 @@ export class Table extends React.Component {
       <div className={classNames(styles.table, className)} style={style}>
         <Loading isLoading={isLoading}>
           {this.renderTable()}
-          <Pagination
-            {...pagination}
-            selectedRows={selectedRowKeys}
-            onSelectRow={rowSelection.onChange}
-          />
+          {!noPagination && (
+            <Pagination
+              {...pagination}
+              selectedRows={selectedRowKeys}
+              onSelectRow={rowSelection.onChange}
+            />
+          )}
         </Loading>
       </div>
     );
