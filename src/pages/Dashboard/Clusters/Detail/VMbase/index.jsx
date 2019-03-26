@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import _ from 'lodash';
-import yml from 'js-yaml';
 
 import {
   Button, Table, Radio, Input, Icon

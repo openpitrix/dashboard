@@ -17,4 +17,5 @@ export const sortObjByKeys = (obj = {}) => {
   }
 };
 
+// eslint-disable-next-line
 export const compareObj = (obj, compare) => JSON.stringify(sortObjByKeys(obj)) === JSON.stringify(sortObjByKeys(compare));
