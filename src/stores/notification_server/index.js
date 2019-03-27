@@ -60,10 +60,7 @@ export default class NotificationServerStore extends Store {
     const result = await this.request.post('service_configs/get', {
       service_type: ['notification']
     });
-    this.emailConfig = _.get(
-      result,
-      'notification_config.email_service_config'
-    );
+    this.emailConfig = _.get(result, 'notification_config.email_service_config');
     if (this.emailConfig) {
       this.formData = Object.assign({}, this.emailConfig);
     }
@@ -75,12 +72,9 @@ export default class NotificationServerStore extends Store {
       return;
     }
     this.testStatus = 'loading';
-    const result = await this.request.post(
-      'service_configs/validate_email_service',
-      {
-        email_service_config: this.formData
-      }
-    );
+    const result = await this.request.post('service_configs/validate_email_service', {
+      email_service_config: this.formData
+    });
     if (_.get(result, 'is_succ')) {
       this.testStatus = TEST_STATUS.success;
     } else {
@@ -99,6 +93,7 @@ export default class NotificationServerStore extends Store {
     if (_.get(result, 'is_succ')) {
       await this.fetchEmailConfig();
     }
+    this.handleType = '';
     this.isLoading = false;
   };
 
