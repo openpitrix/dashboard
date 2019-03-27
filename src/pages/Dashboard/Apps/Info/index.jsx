@@ -297,7 +297,7 @@ export default class Info extends Component {
         </div>
         <div className={styles.item}>
           <div className={styles.name}>
-            <label>{t('One-sentence introduction')}</label>
+            <label>{t('App intro')}</label>
             <p className={styles.noteWord}>
               {t('A general introduction to the application')}
             </p>
