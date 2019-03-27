@@ -4,16 +4,16 @@
   min-width: 1000px !important;
 }
 
-.activities{
+.activities {
   //margin: 24px 0;
 
-  .title{
+  .title {
     margin-bottom: 20px;
     line-height: 19px;
     font-size: 16px;
     font-weight: bold;
     color: $title-color;
-    .more{
+    .more {
       float: right;
       font-weight: normal;
       font-size: 12px;
@@ -23,8 +23,8 @@
   }
 }
 
-.parameters{
-  .name{
+.parameters {
+  .name {
     display: inline-block;
     float: left;
     width: 260px;
@@ -33,15 +33,15 @@
     text-align: right;
     color: $title-color;
   }
-  .info{
+  .info {
     margin: 0 0 20px 280px;
-    .value{
+    .value {
       margin-bottom: 3px;
       line-height: 16px;
       font-size: 14px;
       color: $text-color;
     }
-    .explain{
+    .explain {
       line-height: 17px;
       font-size: 12px;
       color: #626466;
@@ -160,7 +160,7 @@
   .formControl {
     margin-bottom: 10px;
 
-    &> label {
+    & > label {
       display: inline-block;
       width: 5em;
     }
@@ -185,7 +185,7 @@
     border: 1px solid $N10;
     cursor: pointer;
 
-    &:nth-child(2n+2) {
+    &:nth-child(2n + 2) {
       margin-right: 0;
     }
 
@@ -208,7 +208,7 @@
       @include textCut;
     }
 
-    .pubKey{
+    .pubKey {
       line-height: 20px;
       font-size: 12px;
       color: $N75;
@@ -269,4 +269,8 @@
 
 .operateLogs {
   margin-bottom: 40px;
+}
+
+.ipType {
+  margin-right: 3px;
 }

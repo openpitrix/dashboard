@@ -24,5 +24,8 @@
   "CeaseClusters": "暂停实例",
   "UpdateClusterEnv": "更新实例",
   "AttachKeyPairs": "绑定密钥",
-  "DetachKeyPairs": "解绑密钥"
+  "DetachKeyPairs": "解绑密钥",
+
+  "Private IP": "私网IP",
+  "Public IP": "公网IP"
 }
