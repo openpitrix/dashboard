@@ -3,7 +3,7 @@ import { observable, action } from 'mobx';
 import { map } from 'lodash';
 
 import { getPortalFromPath } from 'routes';
-import { PORTAL_NAME } from 'config/roles';
+import { PORTAL_NAME, FRONT_END_PORTAL } from 'config/roles';
 
 // singleton
 let user = null;
@@ -67,6 +67,10 @@ class UserProvider {
 
   get isDevPortal() {
     return getPortalFromPath() === PORTAL_NAME.dev;
+  }
+
+  get isAdminPortal() {
+    return getPortalFromPath() === FRONT_END_PORTAL[PORTAL_NAME.admin];
   }
 
   get defaultPortal() {

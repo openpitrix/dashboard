@@ -5,12 +5,11 @@ import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import routes, { toRoute, getPortalFromPath } from 'routes';
+import routes, { toRoute } from 'routes';
 
 import { Icon, Button, Notification } from 'components/Base';
 import { Card, Grid, Section } from 'components/Layout';
 import Loading from 'components/Loading';
-import { PORTAL_NAME, FRONT_END_PORTAL } from 'config/roles';
 import RuntimeCard from '../Card';
 
 import styles from '../index.scss';
@@ -45,8 +44,7 @@ export class Runtime extends React.Component {
   }
 
   get isTestingTxt() {
-    const portal = getPortalFromPath();
-    if (portal === FRONT_END_PORTAL[PORTAL_NAME.admin]) {
+    if (this.props.user.isAdminPortal) {
       return this.props.t('Test');
     }
     return '';
