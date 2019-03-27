@@ -43,11 +43,11 @@ export class Runtime extends React.Component {
     }
   }
 
-  get isTestingTxt() {
+  get env() {
     if (this.props.user.isAdminPortal) {
-      return this.props.t('Test');
+      return this.props.t('Testing env');
     }
-    return '';
+    return this.props.t('Runtimes');
   }
 
   handleClickClusterCnt = rt => {
@@ -68,8 +68,8 @@ export class Runtime extends React.Component {
         <p>{t('No env')}</p>
         <p>
           {t('TIPS_NOT_ADD_ENV', {
-            env: envStore.platformName,
-            isTestingTxt: this.isTestingTxt
+            platform: envStore.platformName,
+            env: this.env
           })}
         </p>
         <Button
