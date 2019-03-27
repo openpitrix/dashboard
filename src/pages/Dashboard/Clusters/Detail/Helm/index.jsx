@@ -5,11 +5,12 @@ import { observer, inject } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Table } from 'components/Base';
-import { Card } from 'components/Layout';
+import { Card, Dialog } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
 import NoData from 'components/Base/Table/noData';
+import CodeMirror from 'components/CodeMirror';
 
 import columns from './columns';
 import { getFilterOptions } from '../utils';
@@ -29,6 +30,18 @@ export default class HelmCluster extends React.Component {
 
   static defaultProps = {
     cluster: {}
+  };
+
+  handleUpdateEnv = async () => {
+    const { clusterStore, clusterDetailStore } = this.props;
+    const { changedEnv, env, formatEnv } = clusterDetailStore;
+
+    if (!changedEnv || changedEnv === env) {
+      clusterStore.info('Data not changed');
+      return;
+    }
+
+    await clusterStore.doActions({ env: formatEnv(changedEnv || env) });
   };
 
   renderDetailTabs() {
@@ -170,7 +183,34 @@ export default class HelmCluster extends React.Component {
   }
 
   renderModals() {
-    //
+    const { clusterStore, clusterDetailStore, t } = this.props;
+    const { modalType, isModalOpen } = clusterStore;
+
+    if (modalType === 'update_env') {
+      const {
+        changeEnv,
+        env,
+        changedEnv,
+        cancelChangeEnv,
+        formatEnv
+      } = clusterDetailStore;
+
+      return (
+        <Dialog
+          width={744}
+          title={t(`Update cluster env`)}
+          isOpen={isModalOpen}
+          onCancel={cancelChangeEnv}
+          onSubmit={this.handleUpdateEnv}
+        >
+          <CodeMirror
+            code={formatEnv(changedEnv || env)}
+            onChange={changeEnv}
+            mode="yaml"
+          />
+        </Dialog>
+      );
+    }
   }
 
   render() {

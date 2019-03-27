@@ -11,9 +11,10 @@ import {
 import { Card, Dialog } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import Toolbar from 'components/Toolbar';
-import DeploySection from 'components/Deploy';
+import DeploySection, { Group as DeployGroup } from 'components/Deploy';
 import Cache from 'lib/cache';
 import VMParser, { factory } from 'lib/config-parser';
+import { compareObj } from 'utils/object';
 import columns from './columns';
 import { getFilterOptions } from '../utils';
 
@@ -45,6 +46,7 @@ export default class VMbasedCluster extends React.Component {
     };
 
     this.cache = new Cache();
+    this.vmParser = new VMParser();
   }
 
   componentDidUpdate = async () => {
@@ -118,12 +120,13 @@ export default class VMbasedCluster extends React.Component {
   /**
    * transform role conf from config.json
    * @param data
+   * @param keyPrefix
    */
-  transformRoleConf(data = {}) {
+  transformRoleConf(data = {}, keyPrefix = 'node.') {
     // compose role conf from config.json
     const rawRoleConf = _.pickBy(
       data,
-      (val, key) => key.indexOf('node.') === 0
+      (val, key) => key.indexOf(keyPrefix) === 0
     );
 
     // transform raw conf
@@ -334,7 +337,9 @@ export default class VMbasedCluster extends React.Component {
   }
 
   renderModals = () => {
-    const { modalType, isModalOpen } = this.props.clusterStore;
+    const { clusterStore, detailStore, t } = this.props;
+    const { modalType, isModalOpen, hideModal } = clusterStore;
+    const { env } = detailStore;
 
     if (!isModalOpen) {
       return null;
@@ -355,6 +360,43 @@ export default class VMbasedCluster extends React.Component {
     if (modalType === 'resize') {
       return this.renderResize();
     }
+
+    if (modalType === 'update_env') {
+      this.vmParser.setConfig(env);
+      let envSettings = this.vmParser.getEnvSetting();
+      if (!Array.isArray(envSettings)) {
+        envSettings = [envSettings];
+      }
+
+      this.origEnvParams = this.vmParser.getEnvDefaultParams(envSettings);
+
+      return (
+        <Dialog
+          width={744}
+          title={t(`Update cluster env`)}
+          isOpen={isModalOpen}
+          onCancel={hideModal}
+          onSubmit={this.handleUpdateEnv}
+        >
+          {envSettings.map((group, idx) => (
+            <DeployGroup detail={group} seq={idx} key={idx} />
+          ))}
+        </Dialog>
+      );
+    }
+  };
+
+  handleUpdateEnv = (e, formData) => {
+    const { doActions } = this.props.clusterStore;
+    formData = this.transformRoleConf(formData, 'env.');
+    if (compareObj(formData, this.origEnvParams)) {
+      this.props.clusterStore.info('Data not changed');
+      return;
+    }
+
+    doActions({
+      env: JSON.stringify({ env: formData })
+    });
   };
 
   renderAddNodesModal = () => {
@@ -424,8 +466,8 @@ export default class VMbasedCluster extends React.Component {
       return <div>Loading..</div>;
     }
 
-    const vmParser = new VMParser(configJson);
-    const nodeSettings = vmParser.getNodeSetting();
+    this.vmParser.setConfig(configJson);
+    const nodeSettings = this.vmParser.getNodeSetting();
     const roleSetting = _.find(nodeSettings, { key: selectedNodeRole }) || {};
 
     return (
@@ -507,14 +549,12 @@ export default class VMbasedCluster extends React.Component {
     );
   };
 
-  renderKeyCard(pair) {
-    return (
-      <div className={styles.sshCard}>
-        <div className={styles.title}>{pair.name}</div>
-        <div className={styles.pubKey}>{pair.pub_key}</div>
-      </div>
-    );
-  }
+  renderKeyCard = pair => (
+    <div className={styles.sshCard}>
+      <div className={styles.title}>{pair.name}</div>
+      <div className={styles.pubKey}>{pair.pub_key}</div>
+    </div>
+  );
 
   renderAttachModal = () => {
     const { clusterStore, sshKeyStore, t } = this.props;

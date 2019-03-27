@@ -5,7 +5,6 @@ import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
 import { Icon, PopoverIcon, Select } from 'components/Base';
-import CodeMirror from 'components/CodeMirror';
 import Layout, {
   Grid, Section, Card, Panel, Dialog
 } from 'components/Layout';
@@ -150,7 +149,9 @@ export default class ClusterDetail extends Component {
     const {
       t, appVersionStore, clusterStore, clusterDetailStore
     } = this.props;
-    const { modalType, isModalOpen, hideModal } = clusterStore;
+    const {
+      modalType, isModalOpen, hideModal, doActions
+    } = clusterStore;
     const handleTypes = ['cease', 'delete', 'start', 'stop', 'rollback'];
 
     if (!isModalOpen) {
@@ -207,7 +208,7 @@ export default class ClusterDetail extends Component {
           title={t(`${capitalize(modalType)} cluster`)}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleCluster}
+          onSubmit={doActions}
         >
           <Select value={clusterStore.versionId} onChange={changeAppVersion}>
             {versions.map(({ version_id, name }) => (
@@ -220,80 +221,19 @@ export default class ClusterDetail extends Component {
       );
     }
 
-    if (modalType === 'update_env') {
-      // vmbased using json, helm type using yaml
-      const {
-        changeEnv,
-        env,
-        cancelChangeEnv,
-        formatEnv,
-        isHelm
-      } = clusterDetailStore;
-
-      return (
-        <Dialog
-          width={744}
-          title={t(`${capitalize(modalType)} cluster`)}
-          isOpen={isModalOpen}
-          onCancel={cancelChangeEnv}
-          onSubmit={this.handleCluster}
-        >
-          <CodeMirror
-            code={formatEnv(env)}
-            onChange={changeEnv}
-            mode={isHelm ? 'yaml' : 'javascript'}
-          />
-        </Dialog>
-      );
-    }
-
     if (handleTypes.includes(modalType)) {
       return (
         <Dialog
           title={t(`${capitalize(modalType)} cluster`)}
           isOpen={isModalOpen}
           onCancel={hideModal}
-          onSubmit={this.handleCluster}
+          onSubmit={doActions}
         >
           {t('operate cluster desc', { operate: t(capitalize(modalType)) })}
         </Dialog>
       );
     }
   }
-
-  handleCluster = () => {
-    const { clusterStore } = this.props;
-    const {
-      clusterId, clusterIds, modalType, operateType
-    } = clusterStore;
-    const ids = operateType === 'multiple' ? clusterIds.toJSON() : [clusterId];
-
-    switch (modalType) {
-      case 'cease':
-        clusterStore.cease(ids);
-        break;
-      case 'delete':
-        clusterStore.remove(ids);
-        break;
-      case 'start':
-        clusterStore.start(ids);
-        break;
-      case 'stop':
-        clusterStore.stop(ids);
-        break;
-      case 'rollback':
-        clusterStore.rollback(ids);
-        break;
-      case 'update_env':
-        clusterStore.updateEnv(ids);
-        break;
-      case 'upgrade':
-        clusterStore.upgradeVersion(ids);
-        break;
-      default:
-        break;
-    }
-  };
 
   renderHandleMenu = () => {
     const {
