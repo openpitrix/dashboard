@@ -5,11 +5,12 @@ import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-import routes, { toRoute } from 'routes';
+import routes, { toRoute, getPortalFromPath } from 'routes';
 
 import { Icon, Button, Notification } from 'components/Base';
 import { Card, Grid, Section } from 'components/Layout';
 import Loading from 'components/Loading';
+import { PORTAL_NAME, FRONT_END_PORTAL } from 'config/roles';
 import RuntimeCard from '../Card';
 
 import styles from '../index.scss';
@@ -43,6 +44,14 @@ export class Runtime extends React.Component {
     }
   }
 
+  get isTestingTxt() {
+    const portal = getPortalFromPath();
+    if (portal === FRONT_END_PORTAL[PORTAL_NAME.admin]) {
+      return this.props.t('Test');
+    }
+    return '';
+  }
+
   handleClickClusterCnt = rt => {
     this.props.envStore.changeRuntimeToShowInstances(rt);
   };
@@ -59,7 +68,12 @@ export class Runtime extends React.Component {
     return (
       <Card className={styles.emptyData}>
         <p>{t('No env')}</p>
-        <p>{t('TIPS_NOT_ADD_ENV', { env: envStore.platformName })}</p>
+        <p>
+          {t('TIPS_NOT_ADD_ENV', {
+            env: envStore.platformName,
+            isTestingTxt: this.isTestingTxt
+          })}
+        </p>
         <Button
           type="primary"
           className={styles.btnAddEnv}

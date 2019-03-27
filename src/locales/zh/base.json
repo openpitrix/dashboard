@@ -403,7 +403,7 @@
   "Testing env": "测试环境",
   "Not support currently": "暂不支持",
   "Authorization info": "授权信息",
-  "TIPS_NOT_ADD_ENV": "你还没有添加过 {{env}} 的测试环境",
+  "TIPS_NOT_ADD_ENV": "你还没有添加过 {{env}} 的{{isTestingTxt}}环境",
   "TIPS_NOT_ADD_AUTH": "你还没有添加过 {{env}} 的授权信息",
   "No env": "没有环境",
   "No authorization info": "没有授权信息",
