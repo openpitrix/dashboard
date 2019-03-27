@@ -16,7 +16,7 @@
   color: $N300;
   transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     width: 0;
     height: 0;
     opacity: 0;
@@ -32,11 +32,11 @@
       top: 50%;
       font-size: $size-small;
       color: #fff;
-      transform: translate(0 ,-50%) scale(0.7);
+      transform: translate(0, -50%) scale(0.7);
     }
   }
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 1px;
     top: 50%;
@@ -49,21 +49,22 @@
     border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.04);
     box-sizing: border-box;
-    transform: translate(0 ,-50%);
+    transform: translate(0, -50%);
     cursor: pointer;
   }
-  &:hover{
+  &:hover {
     &::before {
       background-color: $N10;
     }
   }
-  &:active{
+  &:active {
     &::before {
       border-color: $P100 !important;
     }
   }
 
   &.checked {
+    cursor: pointer;
     &::before {
       border-color: $P75;
       background-color: $P75;
@@ -78,12 +79,12 @@
         }
       }
     }
-    &:hover{
+    &:hover {
       &::before {
         background-color: $P65;
       }
     }
-    &:active{
+    &:active {
       &::before {
         background-color: $P100 !important;
       }
@@ -96,12 +97,12 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-  &:hover{
+  &:hover {
     &::before {
       background-color: $N0;
     }
   }
-  &:active{
+  &:active {
     &::before {
       border-color: $N30 !important;
     }
@@ -111,12 +112,12 @@
       border-color: $P75;
       background-color: $P75;
     }
-    &:hover{
+    &:hover {
       &::before {
         background-color: $P75;
       }
     }
-    &:active{
+    &:active {
       &::before {
         background-color: $P75 !important;
       }
@@ -132,7 +133,7 @@
   color: $N300;
   transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     width: 0;
     height: 0;
     opacity: 0;
@@ -151,7 +152,7 @@
       top: 50%;
       font-size: $size-small;
       color: #fff;
-      transform: translate(0 ,-50%) scale(0.7);
+      transform: translate(0, -50%) scale(0.7);
       cursor: pointer;
       svg {
         --primary-color: #{$N0};
