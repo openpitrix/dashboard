@@ -43,6 +43,13 @@ export class Runtime extends React.Component {
     }
   }
 
+  get env() {
+    if (this.props.user.isAdminPortal) {
+      return this.props.t('Testing env');
+    }
+    return this.props.t('Runtimes');
+  }
+
   handleClickClusterCnt = rt => {
     this.props.envStore.changeRuntimeToShowInstances(rt);
   };
@@ -59,7 +66,12 @@ export class Runtime extends React.Component {
     return (
       <Card className={styles.emptyData}>
         <p>{t('No env')}</p>
-        <p>{t('TIPS_NOT_ADD_ENV', { env: envStore.platformName })}</p>
+        <p>
+          {t('TIPS_NOT_ADD_ENV', {
+            platform: envStore.platformName,
+            env: this.env
+          })}
+        </p>
         <Button
           type="primary"
           className={styles.btnAddEnv}
