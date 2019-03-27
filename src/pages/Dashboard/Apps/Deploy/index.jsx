@@ -17,7 +17,7 @@ import NoteLink from 'components/NoteLink';
 import TypeVersions from 'components/TypeVersions';
 import VMParser from 'lib/config-parser/vm';
 import { getFormData } from 'utils';
-import routes, { toRoute, getPortalFromPath } from 'routes';
+import routes, { toRoute } from 'routes';
 import { providers, providerMap } from 'config/runtimes';
 
 import styles from './index.scss';
@@ -167,7 +167,7 @@ export default class AppDeploy extends Component {
 
   handleSubmit = async () => {
     const {
-      appDeployStore, history, match, t
+      appDeployStore, user, history, match, t
     } = this.props;
     const {
       isK8s, runtimeId, versionId, create
@@ -207,9 +207,12 @@ export default class AppDeploy extends Component {
 
     if (res && _.get(res, 'cluster_id')) {
       appDeployStore.success(t('Deploy app successfully'));
-      const path = getPortalFromPath() === 'dev'
-        ? toRoute(routes.portal._dev.sandboxInstances, { appId })
-        : toRoute(routes.portal.clusters, { portal: 'user' });
+      const path = user.isDevPortal || user.isISVPortal
+        ? toRoute(routes.portal._dev.sandboxInstances, {
+          portal: 'dev',
+          appId
+        })
+        : toRoute(routes.portal.clusters);
       setTimeout(() => history.push(path), 1000);
     }
   };

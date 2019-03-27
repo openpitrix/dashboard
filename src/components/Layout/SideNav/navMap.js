@@ -262,7 +262,7 @@ export const getDevSubNavs = appId => [
     title: 'Development',
     items: [
       {
-        name: 'Version',
+        name: 'Version management',
         link: toRoute(routes.portal._dev.versions, { portal: 'dev', appId })
       },
       {
@@ -270,7 +270,7 @@ export const getDevSubNavs = appId => [
         link: toRoute(routes.portal.appDetail, { portal: 'dev', appId })
       },
       {
-        name: 'Record',
+        name: 'Audit record',
         link: toRoute(routes.portal._dev.appAudits, { portal: 'dev', appId })
       }
     ]

@@ -189,7 +189,8 @@ export default class ReviewDetail extends Component {
             {reviewStatus.technical.includes(status) && (
               <Link
                 to={toRoute(routes.portal.deploy, {
-                  appId: reviewDetail.app_id
+                  appId: reviewDetail.app_id,
+                  versionId: reviewDetail.version_id
                 })}
               >
                 <Button>{t('Deploy Test')}</Button>

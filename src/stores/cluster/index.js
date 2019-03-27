@@ -95,7 +95,10 @@ export default class ClusterStore extends Store {
 
   get describeActionName() {
     // developer query user instances
-    if (this.onlyView || this.isUserAction) {
+    if (
+      (this.onlyView && this.cluster_type === CLUSTER_TYPE.instance)
+      || this.isUserAction
+    ) {
       return 'clusters';
     }
 

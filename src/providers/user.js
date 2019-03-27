@@ -69,6 +69,10 @@ class UserProvider {
     return getPortalFromPath() === PORTAL_NAME.dev;
   }
 
+  get isISVPortal() {
+    return getPortalFromPath() === PORTAL_NAME.isv;
+  }
+
   get isAdminPortal() {
     return getPortalFromPath() === FRONT_END_PORTAL[PORTAL_NAME.admin];
   }
