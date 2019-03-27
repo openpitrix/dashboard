@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Icon } from 'components/Base';
 import Status from 'components/Status';
 import TimeShow from 'components/TimeShow';
 import Configuration from '../Configuration';
+
+import styles from '../index.scss';
 
 /**
  *
@@ -23,9 +24,7 @@ export default t => [
   {
     title: t('Status'),
     key: 'status',
-    render: item => (
-      <Status type={item.status} transition={item.transition_status} />
-    )
+    render: item => <Status type={item.status} transition={item.transition_status} />
   },
   {
     title: t('Configuration'),
@@ -38,12 +37,12 @@ export default t => [
     render: item => (
       <div className="ipShow">
         <div title={t('Private network IP')}>
-          <Icon name="ip" type="dark" />
+          <span className={styles.ipType}>{t('Private IP')}:</span>
           {item.private_ip}
         </div>
         {item.eip && (
           <div className="eip" title={t('Public network IP')}>
-            <Icon name="eip" type="dark" />
+            <span className={styles.ipType}>{t('Public IP')}:</span>
             {item.eip}
           </div>
         )}
