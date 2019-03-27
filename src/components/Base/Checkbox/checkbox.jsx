@@ -44,16 +44,14 @@ export default class Checkbox extends Component {
     onChange && onChange(e);
   };
 
+  onClick = e => {
+    e.preventDefault();
+    this.checkbox.click();
+  };
+
   render() {
     const {
-      style,
-      className,
-      disabled,
-      children,
-      isFold,
-      fold,
-      name,
-      value
+      style, className, disabled, children, isFold, fold, name, value
     } = this.props;
     const { isChecked } = this.state;
     const labelClass = isFold ? styles.foldCheckbox : styles.checkbox;
@@ -65,12 +63,16 @@ export default class Checkbox extends Component {
         })}
         disabled={disabled}
         style={style}
+        onClick={this.onClick}
       >
         {isChecked && <Icon name="check" />}
         {isFold && fold && <Icon name="check-fold" size={28} />}
         {isFold && !fold && <Icon name="check-unfold" size={28} />}
         <input
           type="checkbox"
+          ref={element => {
+            this.checkbox = element;
+          }}
           value={value}
           checked={isChecked}
           name={name}
