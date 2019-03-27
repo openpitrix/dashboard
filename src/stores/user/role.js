@@ -133,14 +133,12 @@ export default class RoleStore extends Store {
       status: defaultStatus
     };
     this.isLoading = true;
-    const result = await this.request.get(
-      `roles`,
-      _.assign(defaultParams, param)
-    );
+    const result = await this.request.get(`roles`, _.assign(defaultParams, param));
     this.roles = _.get(result, 'role_set', [])
       .slice()
       .sort(this.sortRole);
-    this.setSelectedRole();
+    const firstId = _.get(_.first(this.roles), 'role_id');
+    this.onSelectRole([firstId]);
     this.isLoading = false;
   }
 
@@ -296,10 +294,7 @@ export default class RoleStore extends Store {
           .map(feature => ({
             key: feature.feature_id,
             title: feature.feature_name,
-            children: _.uniqBy(
-              feature.action_bundle_set || [],
-              'action_bundle_id'
-            )
+            children: _.uniqBy(feature.action_bundle_set || [], 'action_bundle_id')
               .slice()
               .sort(sortModule('action_bundle_id'))
               .map(item => ({
@@ -351,10 +346,7 @@ export default class RoleStore extends Store {
   };
 
   @action
-  getUniqActions = feature => _.flatMap(
-    _.uniqBy(feature.action_bundle_set, 'action_bundle_id'),
-    'action_bundle_id'
-  );
+  getUniqActions = feature => _.flatMap(_.uniqBy(feature.action_bundle_set, 'action_bundle_id'), 'action_bundle_id');
 
   @action
   getActionTreeData = () => {
@@ -494,14 +486,8 @@ export default class RoleStore extends Store {
 
   @action
   getCheckedAction = (feature, index = 0) => {
-    _.remove(
-      this.selectedActionKeys[index],
-      key => _.startsWith(key, 'f_') || key === 'all'
-    );
-    const featureActions = _.flatMap(
-      feature.action_bundle_set || [],
-      'action_bundle_id'
-    );
+    _.remove(this.selectedActionKeys[index], key => _.startsWith(key, 'f_') || key === 'all');
+    const featureActions = _.flatMap(feature.action_bundle_set || [], 'action_bundle_id');
     feature.checked_action_bundle_id_set = _.intersection(
       this.selectedActionKeys[index],
       featureActions
