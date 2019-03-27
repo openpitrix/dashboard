@@ -8,6 +8,21 @@ import { Icon } from 'components/Base';
 
 import styles from './index.scss';
 
+// based on font-awesome icons
+const iconMap = {
+  error: 'error',
+  success: 'information',
+  info: 'information',
+  warning: 'exclamation'
+};
+
+const colorMap = {
+  error: '#cf3939',
+  success: '#15934e',
+  info: '#1e6eeb',
+  warning: '#ef762b'
+};
+
 @withTranslation()
 export default class NotificationItem extends React.Component {
   static propTypes = {
@@ -29,7 +44,7 @@ export default class NotificationItem extends React.Component {
     message: null,
     timeOut: 3000,
     onClick: noop,
-    onHide: null,
+    onHide: noop,
     onClosed: noop,
     detach: noop,
     ts: Date.now()
@@ -39,11 +54,9 @@ export default class NotificationItem extends React.Component {
     hidden: false
   };
 
-  componentDidMount() {
-    const { timeOut } = this.props;
-    if (timeOut) {
-      this.timer = setTimeout(this.hideNotify, timeOut);
-    }
+  constructor(props) {
+    super(props);
+    this.timer = setTimeout(this.hideNotify, props.timeOut);
   }
 
   componentWillUnmount() {
@@ -51,23 +64,6 @@ export default class NotificationItem extends React.Component {
     this.timer = null;
     this.props.onClosed();
   }
-
-  timer = null;
-
-  // based on font-awesome icons
-  iconMap = {
-    error: 'error',
-    success: 'information',
-    info: 'information',
-    warning: 'exclamation'
-  };
-
-  colorMap = {
-    error: '#cf3939',
-    success: '#15934e',
-    info: '#1e6eeb',
-    warning: '#ef762b'
-  };
 
   hideNotify = () => {
     const { ts, detach, onHide } = this.props;
@@ -92,7 +88,7 @@ export default class NotificationItem extends React.Component {
 
     const colorStyles = {
       primary: '#fff',
-      secondary: this.colorMap[type]
+      secondary: colorMap[type]
     };
 
     return (
@@ -110,7 +106,7 @@ export default class NotificationItem extends React.Component {
           this.target = c;
         }}
       >
-        <Icon name={this.iconMap[type]} size={18} color={colorStyles} />
+        <Icon name={iconMap[type]} size={18} color={colorStyles} />
         {t(message)}
       </div>
     );
