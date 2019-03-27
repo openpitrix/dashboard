@@ -9,19 +9,11 @@ import ACTION from 'config/action-id';
 
 import Store from '../Store';
 
-const defaultStatus = [
-  'draft',
-  'submitted',
-  'in-review',
-  'passed',
-  'rejected',
-  'active',
-  'suspended'
-];
-
 const maxSize = 2 * 1024 * 1024;
 
 export default class AppVersionStore extends Store {
+  defaultStatus = ['draft', 'submitted', 'in-review', 'passed', 'rejected', 'active', 'suspended'];
+
   @observable versions = [];
 
   @observable reviews = [];
@@ -126,33 +118,26 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchAll = async (params = {}) => {
-    const defaultParams = {
-      status: this.selectStatus ? this.selectStatus : defaultStatus,
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize
-    };
+    params = this.normalizeParams(params);
 
     if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
+      params.limit = this.maxLimit;
+      params.offset = 0;
       delete params.noLimit;
     }
 
     if (this.searchWord) {
-      defaultParams.search_word = this.searchWord;
+      params.search_word = this.searchWord;
     }
     if (this.appId) {
-      defaultParams.app_id = this.appId;
+      params.app_id = this.appId;
     }
 
     this.isLoading = true;
-    const result = await this.request.get(
-      this.describeVersionName,
-      assign(defaultParams, params)
-    );
+    const result = await this.request.get(this.describeVersionName, params);
     this.versions = get(result, 'app_version_set', []);
     this.totalCount = get(result, 'total_count', 0);
+
     const version = this.versions[0];
     if (version && !this.currentVersion.version_id) {
       this.currentVersion = version;
@@ -164,35 +149,6 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = false;
-  };
-
-  @action
-  fetchActiveVersions = async (params = {}) => {
-    const defaultParams = {
-      sort_key: 'status_time',
-      limit: this.pageSize,
-      offset: (this.currentPage - 1) * this.pageSize
-    };
-
-    if (params.noLimit) {
-      defaultParams.limit = this.maxLimit;
-      defaultParams.offset = 0;
-      delete params.noLimit;
-    }
-
-    if (this.appId) {
-      defaultParams.app_id = this.appId;
-    }
-
-    this.isLoading = true;
-    const result = await this.request.get(
-      'active_app_versions',
-      assign(defaultParams, params)
-    );
-    this.isLoading = false;
-
-    this.versions = get(result, 'app_version_set', []);
-    this.totalCount = get(result, 'total_count', 0);
   };
 
   @action
@@ -208,12 +164,8 @@ export default class AppVersionStore extends Store {
   @action
   setReviewTypes = async () => {
     const hasISVReview = this.roleStore.checkAction(ACTION.isv_review);
-    const hasBussinessReview = this.roleStore.checkAction(
-      ACTION.business_review
-    );
-    const hasDevelopReview = this.roleStore.checkAction(
-      ACTION.technical_review
-    );
+    const hasBussinessReview = this.roleStore.checkAction(ACTION.business_review);
+    const hasDevelopReview = this.roleStore.checkAction(ACTION.technical_review);
 
     this.reveiwTypes = [];
     if (hasISVReview) {
@@ -246,10 +198,7 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get(
-      'app_version_reviews',
-      assign(defaultParams, params)
-    );
+    const result = await this.request.get('app_version_reviews', assign(defaultParams, params));
 
     this.reviews = get(result, 'app_version_review_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -376,10 +325,7 @@ export default class AppVersionStore extends Store {
 
     this.isLoading = true;
     const reviewType = getReviewType(currentStatus);
-    const result = await this.request.post(
-      `app_version/action/${handleType}/${reviewType}`,
-      data
-    );
+    const result = await this.request.post(`app_version/action/${handleType}/${reviewType}`, data);
 
     if (get(result, 'version_id')) {
       if (!noTips) {
@@ -444,10 +390,7 @@ export default class AppVersionStore extends Store {
       delete params.noLimit;
     }
 
-    const result = await this.request.get(
-      'app_version_audits',
-      _.extend(defaultParams, params)
-    );
+    const result = await this.request.get('app_version_audits', _.extend(defaultParams, params));
 
     const audits = get(result, 'app_version_audit_set', []);
     assignIn(this.audits, { [params.version_id]: audits });
@@ -594,22 +537,6 @@ export default class AppVersionStore extends Store {
     this.uploadFile = result.package;
 
     downloadFileFromBase64(this.uploadFile, pkgName);
-  };
-
-  @action
-  fetchActiveVersions = async (params = {}) => {
-    const defaultParams = {
-      limit: this.maxLimit
-    };
-
-    this.isLoading = true;
-    const result = await this.request.get(
-      'active_app_versions',
-      assign(defaultParams, params)
-    );
-    this.versions = get(result, 'app_version_set', []);
-    this.totalCount = get(result, 'total_count', 0);
-    this.isLoading = false;
   };
 
   @action

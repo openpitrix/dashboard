@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { observer, inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import _ from 'lodash';
 import classnames from 'classnames';
 
-import { Image, Button } from 'components/Base';
+import {
+  Button, Icon, Image, PopoverIcon
+} from 'components/Base';
 import Layout, {
-  Grid, Section, Card, Dialog
+  Card, Dialog, Grid, Section
 } from 'components/Layout';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
@@ -19,11 +21,11 @@ import Screenshots from 'pages/AppDetail/Screenshots';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
 import {
-  reviewStatus,
+  getReviewType,
   rejectStatus,
-  reviewTitle,
   reviewPassNote,
-  getReviewType
+  reviewStatus,
+  reviewTitle
 } from 'config/version';
 
 import styles from './index.scss';
@@ -86,6 +88,29 @@ export default class ReviewDetail extends Component {
     const { appVersionStore } = this.props;
     appVersionStore.reason = '';
     appVersionStore.isDialogOpen = true;
+  };
+
+  renderHandleMenu = pkgName => {
+    const { appVersionStore, t } = this.props;
+    const { reviewDetail, downloadPackage } = appVersionStore;
+
+    return (
+      <div className="operate-menu">
+        <Link
+          to={toRoute(routes.portal.deploy, {
+            appId: reviewDetail.app_id,
+            versionId: reviewDetail.version_id
+          })}
+        >
+          <Icon name="stateful-set" type="dark" />
+          {t('Deploy App')}
+        </Link>
+        <span onClick={() => downloadPackage(reviewDetail.version_id, pkgName)}>
+          <Icon name="download" type="dark" />
+          {t('Download')}
+        </span>
+      </div>
+    );
   };
 
   renderReasonDialog = () => {
@@ -212,14 +237,10 @@ export default class ReviewDetail extends Component {
       const isReject = status === rejectStatus[type];
 
       return (
-        <Card
-          className={classnames(styles.passed, { [styles.rejectd]: isReject })}
-        >
+        <Card className={classnames(styles.passed, { [styles.rejectd]: isReject })}>
           <div className={styles.name}>
             {t(reviewTitle[type])}
-            <label className={styles.status}>
-              {isReject ? t('Rejected') : t('Passed')}
-            </label>
+            <label className={styles.status}>{isReject ? t('Rejected') : t('Passed')}</label>
           </div>
           <div className={styles.reviewInfo}>
             <dl>
@@ -272,17 +293,12 @@ export default class ReviewDetail extends Component {
           <Card className={styles.submit}>
             <span className={styles.name}>{t('Submit')}</span>
             <label className={styles.time}>
-              {formatTime(
-                _.get(phase, 'developer.review_time'),
-                'YYYY/MM/DD HH:mm:ss'
-              )}
+              {formatTime(_.get(phase, 'developer.review_time'), 'YYYY/MM/DD HH:mm:ss')}
             </label>
           </Card>
 
           {reviewDetail.status
-            && reviewRoles.map(type => (
-              <div key={type}>{this.renderReviewCard(type)}</div>
-            ))}
+            && reviewRoles.map(type => <div key={type}>{this.renderReviewCard(type)}</div>)}
         </div>
       </div>
     );
@@ -313,10 +329,7 @@ export default class ReviewDetail extends Component {
           <dl>
             <dt>{t('Current status')}:</dt>
             <dd>
-              <Status
-                type={version.status}
-                name={mappingStatus(version.status)}
-              />
+              <Status type={version.status} name={mappingStatus(version.status)} />
             </dd>
           </dl>
         </div>
@@ -335,32 +348,18 @@ export default class ReviewDetail extends Component {
     const { appVersionStore, appStore, t } = this.props;
     const { appDetail } = appStore;
     const { version } = appVersionStore;
+    const pkgName = version.packageName || `${appDetail.name}-${version.name}`;
 
     return (
       <div className={styles.configFile}>
         <div className={styles.fileInfo}>
-          <div className={styles.name}>
-            {`${appDetail.name} ${version.name}`}
-          </div>
+          <div className={styles.name}>{pkgName}</div>
           <div className={styles.time}>
-            {t('Upload time')}：
-            {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
-            <Link
-              className={styles.link}
-              to={toRoute(routes.portal.deploy, {
-                appId: appDetail.app_id,
-                versionId: version.version_id
-              })}
-            >
-              {t('Deploy App')}
-            </Link>
+            {t('Upload time')}：{formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
+            <PopoverIcon className={styles.operation} content={this.renderHandleMenu(pkgName)} />
           </div>
         </div>
-        <CheckFiles
-          className={styles.checkFile}
-          type={version.type}
-          isShowNote
-        />
+        <CheckFiles className={styles.checkFile} type={version.type} isShowNote />
       </div>
     );
   }
@@ -418,11 +417,7 @@ export default class ReviewDetail extends Component {
         <dl>
           <dt>{t('Icon')}</dt>
           <dd className={styles.imageOuter}>
-            <Image
-              src={appDetail.icon}
-              iconLetter={appDetail.name}
-              iconSize={96}
-            />
+            <Image src={appDetail.icon} iconLetter={appDetail.name} iconSize={96} />
           </dd>
         </dl>
         <dl>
