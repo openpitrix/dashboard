@@ -82,6 +82,12 @@ export default class AppVersionStore extends Store {
 
   @observable audits = {}; // define object for not repeat query of the same version
 
+  @observable auditRecord = [];
+
+  @observable currentAuditPage = 1;
+
+  @observable totalAuditCount = 0;
+
   @observable typeVersions = [];
 
   @observable reviewDetail = {};
@@ -425,16 +431,51 @@ export default class AppVersionStore extends Store {
   };
 
   @action
-  fetchAudits = async (appId, versionId) => {
+  fetchAudits = async (params = {}) => {
     this.isLoading = true;
-    const result = await this.request.get('app_version_audits', {
-      app_id: appId,
-      version_id: versionId,
-      limit: this.maxLimit
-    });
+    const defaultParams = {
+      limit: this.pageSize,
+      offset: (this.currentAuditPage - 1) * this.pageSize
+    };
+
+    if (params.noLimit) {
+      defaultParams.limit = this.maxLimit;
+      defaultParams.offset = 0;
+      delete params.noLimit;
+    }
+
+    const result = await this.request.get(
+      'app_version_audits',
+      _.extend(defaultParams, params)
+    );
+
     const audits = get(result, 'app_version_audit_set', []);
-    assignIn(this.audits, { [versionId]: audits });
+    assignIn(this.audits, { [params.version_id]: audits });
+
+    this.auditRecord = audits;
+    this.totalAuditCount = get(result, 'total_count', 0);
+
+    // judge need query users again
+    const oldUserIds = this.userStore.users.map(item => item.user_id).sort();
+    const userIds = audits.map(item => item.operator);
+    const newUserIds = _.uniq(_.concat(oldUserIds, userIds)).sort();
+    if (!_.isEqual(oldUserIds, newUserIds)) {
+      await this.userStore.fetchAll({
+        user_id: newUserIds,
+        noLimit: true
+      });
+    }
+
     this.isLoading = false;
+  };
+
+  @action
+  changeAuditPagination = async page => {
+    this.currentAuditPage = page;
+    await this.fetchAudits({
+      app_id: this.appId,
+      version_id: this.versionId
+    });
   };
 
   @action
@@ -753,6 +794,7 @@ export default class AppVersionStore extends Store {
     this.selectStatus = '';
     this.searchWord = '';
     this.appId = '';
+    this.versionId = '';
 
     this.createError = '';
     this.createResult = null;
@@ -769,5 +811,9 @@ export default class AppVersionStore extends Store {
     this.activeType = 'unprocessed';
 
     this.checkResult = {};
+
+    this.auditRecord = [];
+    this.currentAuditPage = 1;
+    this.totalAuditCount = 0;
   };
 }

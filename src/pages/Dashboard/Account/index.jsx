@@ -228,7 +228,6 @@ export default class Account extends Component {
   }
 
   renderMain() {
-    const { user } = this.props;
     const { type: activeTab } = this.props.match.params;
     const { hide } = this.state;
 
