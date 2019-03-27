@@ -389,7 +389,6 @@ export default class ReviewDetail extends Component {
   renderBaseInfo() {
     const { appStore, t } = this.props;
     const { appDetail, currentPic, changePicture } = appStore;
-    const categoryName = _.get(appDetail, 'category_set.name', '');
 
     const { screenshots } = appDetail;
     let pictrues = [];

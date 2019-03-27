@@ -71,13 +71,14 @@ export default class AppDetail extends Component {
   }
 
   componentWillUnmount() {
-    const { appStore, clusterStore } = this.props;
+    const { appStore, appVersionStore, clusterStore } = this.props;
     appStore.reset();
+    appVersionStore.reset();
     clusterStore.reset();
   }
 
   changeTab = async tab => {
-    const { appStore, appVersionStore, userStore } = this.props;
+    const { appStore, appVersionStore } = this.props;
 
     if (tab !== appStore.detailTab) {
       appStore.detailTab = tab;
@@ -85,12 +86,12 @@ export default class AppDetail extends Component {
       if (tab === 'record') {
         const { appDetail } = appStore;
         const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
-        await appVersionStore.fetchAudits(appDetail.app_id, versionId);
-        // query record relative operators name
-        const userIds = _.get(appVersionStore.audits, versionId, []).map(
-          item => item.operator
-        );
-        await userStore.fetchAll({ user_id: _.uniq(userIds) });
+        appVersionStore.appId = appDetail.app_id;
+        appVersionStore.versionId = versionId;
+        await appVersionStore.fetchAudits({
+          app_id: appDetail.app_id,
+          version_id: versionId
+        });
       }
     }
   };
@@ -202,14 +203,15 @@ export default class AppDetail extends Component {
   };
 
   renderRecord() {
-    const {
-      appVersionStore, appStore, userStore, t
-    } = this.props;
-    const { appDetail } = appStore;
+    const { appVersionStore, userStore, t } = this.props;
     const { users } = userStore;
-    const { audits, isLoading } = appVersionStore;
-    const versionId = _.get(appDetail, 'latest_app_version.version_id', '');
-    const records = audits[versionId] || [];
+    const {
+      auditRecord,
+      totalAuditCount,
+      currentAuditPage,
+      changeAuditPagination,
+      isLoading
+    } = appVersionStore;
 
     const columns = [
       {
@@ -225,8 +227,8 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        render: cl => (
-          <Status type={cl.status} transition={cl.transition_status} />
+        render: item => (
+          <Status type={item.status} name={mappingStatus(item.status)} />
         )
       },
       {
@@ -244,15 +246,16 @@ export default class AppDetail extends Component {
 
     const pagination = {
       tableType: 'Clusters',
-      total: records.length,
-      current: 1
+      total: totalAuditCount,
+      onChange: changeAuditPagination,
+      current: currentAuditPage
     };
 
     return (
       <Table
         isLoading={isLoading}
         columns={columns}
-        dataSource={records}
+        dataSource={auditRecord}
         pagination={pagination}
       />
     );

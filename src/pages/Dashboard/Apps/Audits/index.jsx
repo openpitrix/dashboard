@@ -31,7 +31,7 @@ export default class Audits extends Component {
   }
 
   async componentDidMount() {
-    const { appVersionStore, userStore, match } = this.props;
+    const { appVersionStore, match } = this.props;
     const { appId } = match.params;
 
     // query this app all versions
@@ -43,16 +43,15 @@ export default class Audits extends Component {
     // default show last version audit records
     const { versions } = appVersionStore;
     const versionId = _.get(versions, '[0].version_id');
-    await appVersionStore.fetchAudits(appId, versionId);
+    await appVersionStore.fetchAudits({
+      app_id: appId,
+      version_id: versionId,
+      noLimit: true
+    });
+
     if (_.isObject(versions[0])) {
       versions[0].isShowAudits = true;
     }
-
-    // query audit relative operators name
-    const userIds = _.get(appVersionStore.audits, versionId, []).map(
-      item => item.operator
-    );
-    await userStore.fetchAll({ user_id: userIds });
   }
 
   componentWillUnmount() {
@@ -73,25 +72,18 @@ export default class Audits extends Component {
   };
 
   async showAudits(version, isShowAudits) {
-    const { appVersionStore, userStore } = this.props;
+    const { appVersionStore } = this.props;
     const { fetchAudits, audits } = appVersionStore;
     const versionId = version.version_id;
     version.isShowAudits = isShowAudits || !version.isShowAudits;
 
     // judge need query audits again
     if (!audits[versionId]) {
-      await fetchAudits(version.app_id, versionId);
-
-      // judge need query users again
-      const oldUserIds = userStore.users.map(item => item.user_id).sort();
-      const userIds = _.get(appVersionStore.audits, versionId, []).map(
-        item => item.operator
-      );
-      const newUserIds = _.concat(oldUserIds, userIds).sort();
-
-      if (!_.isEqual(oldUserIds, _.uniq(newUserIds))) {
-        await userStore.fetchAll({ user_id: newUserIds });
-      }
+      await fetchAudits({
+        app_id: version.app_id,
+        version_id: versionId,
+        noLimit: true
+      });
     }
   }
 

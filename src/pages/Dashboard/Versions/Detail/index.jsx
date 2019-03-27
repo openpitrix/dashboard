@@ -86,7 +86,10 @@ export default class VersionDetail extends Component {
     await appStore.fetch(appId);
 
     // query this version submit record
-    await appVersionStore.fetchAudits(appId, versionId);
+    await appVersionStore.fetchAudits({
+      app_id: appId,
+      version_id: versionId
+    });
     this.setState({ isLoading: false });
 
     // query record relative operators name
@@ -167,7 +170,10 @@ export default class VersionDetail extends Component {
 
       // after operate will has new audit
       if (!(result && result.err)) {
-        await appVersionStore.fetchAudits(appId, versionId);
+        await appVersionStore.fetchAudits({
+          app_id: appId,
+          version_id: versionId
+        });
       }
     }
   };
