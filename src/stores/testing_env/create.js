@@ -95,9 +95,8 @@ export default class CreateEnvStore extends Store {
         ? this.helmCredential
         : this.getCredentialContent(),
       provider: this.platform,
-      // using random string for credential name when type is helm
-      name: isHelm(this.platform) && !this.credentialName ? `rtc-${Date.now()}` : this.credentialName,
-      description: ''
+      name: this.credentialName || `rtc-${isHelm(this.platform) ? 'helm' : 'vm'}-${Date.now()}`,
+      description: this.credentialDesc
     };
   }
 
@@ -145,17 +144,13 @@ export default class CreateEnvStore extends Store {
     }
 
     if (activeStep < STEPS) {
-      if (this.selectCredentialId) {
-        // todo
-      } else {
+      if (!this.selectCredentialId) {
         // newly create
         if (!this.validatePassed) {
           return this.error('Please validate runtime credential');
         }
 
-        if (isHelm(this.platform)) {
-          // todo
-        } else {
+        if (!isHelm(this.platform)) {
           if (!this.isCredential && !this.credentialName) {
             return this.error('Auth info name is empty');
           }
@@ -177,10 +172,9 @@ export default class CreateEnvStore extends Store {
     }
     // modify exist credential
     return await this.credentialStore.modify(
-      _.extend(
-        _.omit(this.getCredentialParams(), ['runtime_url', 'provider']),
-        { runtime_credential_id }
-      )
+      _.extend(_.omit(this.getCredentialParams(), ['runtime_url', 'provider']), {
+        runtime_credential_id
+      })
     );
   };
 
@@ -328,9 +322,7 @@ export default class CreateEnvStore extends Store {
         return this.setValidateMsg('invalid url');
       }
       if (!(this.accessKey && this.secretKey)) {
-        return this.setValidateMsg(
-          'access key and secret key should not be empty'
-        );
+        return this.setValidateMsg('access key and secret key should not be empty');
       }
       _.extend(params, {
         runtime_url: this.runtimeUrl,
@@ -359,6 +351,7 @@ export default class CreateEnvStore extends Store {
     this.secretKey = '';
     this.helmCredential = '';
     this.credentialName = '';
+    this.credentialDesc = '';
     this.selectCredentialId = '';
     this.runtime = {};
     this.runtimeInfo = {
