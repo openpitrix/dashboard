@@ -30,10 +30,11 @@
     width: 168px;
     text-align: right;
     word-break: break-word;
+    color: $N300;
   }
 
   .item {
-    max-width: 488px;
+    max-width: 500px;
   }
 
   .tips {
@@ -73,13 +74,12 @@
 }
 
 .editorWrap {
-  width: 90%;
-  max-width: 95% !important;
+  width: 499px;
   padding-right: 10px;
-}
 
-.isYamlLabel {
-  width: auto;
-  word-break: normal !important;
-  color: $N500;
+  :global {
+    .CodeMirror {
+      font-family: RobotoMono-Regular monospace sans-serif;
+    }
+  }
 }
