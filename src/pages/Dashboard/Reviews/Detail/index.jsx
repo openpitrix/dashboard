@@ -32,8 +32,8 @@ import styles from './index.scss';
 
 const tabs = [
   { name: 'Base Info', value: 'baseInfo' },
-  { name: 'Instructions', value: 'readme' },
-  { name: 'Terms of service', value: 'service' },
+  { name: 'Instructions', value: 'readme', disabled: true },
+  { name: 'Terms of service', value: 'service', disabled: true },
   { name: 'Config File', value: 'configFile' },
   { name: 'Set Price', value: 'price', disabled: true },
   { name: 'Update Log', value: 'updateLog' }
@@ -471,12 +471,7 @@ export default class ReviewDetail extends Component {
             <Card>
               <div className={styles.reviewTitle}>
                 <div className={styles.name}>{t('Audit content')}</div>
-                <div className={styles.note}>
-                  {t('AUDIT_CONTENT_INTRODUCE')}
-                  <a href="#" target="_blank">
-                    {t('view detail standard')} →
-                  </a>
-                </div>
+                <div className={styles.note}>{t('AUDIT_CONTENT_INTRODUCE')}</div>
               </div>
               <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
               {detailTab === 'baseInfo' && this.renderBaseInfo()}
