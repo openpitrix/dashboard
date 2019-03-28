@@ -108,7 +108,7 @@ export default class Home extends Component {
     const headerNode = document.querySelector('.banner');
 
     if (headerNode) {
-      return headerNode.clientHeight;
+      return headerNode.clientHeight / 2;
     }
     return 0;
   }
@@ -176,12 +176,7 @@ export default class Home extends Component {
                 })}
                 onClick={() => this.handleClickCate(category_id)}
               >
-                <Icon
-                  name={description}
-                  size={24}
-                  type="dark"
-                  className={styles.icon}
-                />
+                <Icon name={description} size={24} type="dark" className={styles.icon} />
                 <span className={styles.name}>{t(name)}</span>
               </li>
             ))}
@@ -206,11 +201,7 @@ export default class Home extends Component {
       countStoreApps
     } = appStore;
     const { categories } = categoryStore;
-    const categoryTitle = _.get(
-      _.find(categories, { category_id: this.category }),
-      'name',
-      ''
-    );
+    const categoryTitle = _.get(_.find(categories, { category_id: this.category }), 'name', '');
     const fixNav = rootStore.fixNav || user.isLoggedIn() || this.needFixNav;
 
     return (

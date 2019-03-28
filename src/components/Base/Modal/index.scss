@@ -5,12 +5,11 @@ $padding-left: 24px;
 .modal {
   position: relative;
   width: 744px;
-  max-height: 67vh;
+  max-height: 80vh;
+  height: auto;
   margin: 0 auto;
   margin-top: 100px;
-  background-color: $N0;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
-    0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
   background-color: $N0;
   outline: none;
   overflow: auto;

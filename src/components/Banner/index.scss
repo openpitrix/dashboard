@@ -1,6 +1,6 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
-$speed: 0.2s;
+$speed: 0.3s;
 
 .banner {
   position: fixed;
@@ -105,7 +105,8 @@ $speed: 0.2s;
         letter-spacing: 0;
       }
 
-      &:focus, &:hover {
+      &:focus,
+      &:hover {
         border: solid 1px $P75;
       }
     }
