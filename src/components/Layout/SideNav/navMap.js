@@ -1,7 +1,7 @@
 import routes, { toRoute } from 'routes';
 import { PORTAL_NAME } from 'config/roles';
 
-import ACTION from 'config/action-id';
+import ACTION, { CONDITION } from 'config/action-id';
 
 // First level navigation(top) for admin, isv and developer
 export const getNavs = {
@@ -149,7 +149,9 @@ export const subNavMap = {
         },
         {
           name: 'App Reviews',
-          link: toRoute(routes.portal.appsReview, { portal: 'admin' })
+          link: toRoute(routes.portal.appsReview, { portal: 'admin' }),
+          actionId: [ACTION.technical_review, ACTION.business_review],
+          condition: CONDITION.or
         },
         {
           name: 'App Category',
