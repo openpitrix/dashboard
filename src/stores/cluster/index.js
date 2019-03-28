@@ -354,7 +354,8 @@ export default class ClusterStore extends Store {
       : [this.clusterId];
     const specialActionMap = {
       update_env: this.updateEnv,
-      upgrade: this.upgradeVersion
+      upgrade: this.upgradeVersion,
+      delete: this.remove
     };
 
     const method = specialActionMap[this.modalType] || this[this.modalType];
