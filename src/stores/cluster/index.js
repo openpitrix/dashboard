@@ -346,7 +346,8 @@ export default class ClusterStore extends Store {
     const ids = this.operateType === 'multiple' ? this.clusterIds.toJSON() : [this.clusterId];
     const specialActionMap = {
       update_env: this.updateEnv,
-      upgrade: this.upgradeVersion
+      upgrade: this.upgradeVersion,
+      delete: this.remove
     };
 
     const method = specialActionMap[this.modalType] || this[this.modalType];
