@@ -715,6 +715,14 @@ export default class AppVersionStore extends Store {
     } else if (this.activeStep === 3) {
       const result = await this.handle('submit', this.version.version_id);
       isActionSuccess = !(result && result.err);
+
+      // for refresh the version submit record
+      if (isActionSuccess) {
+        await this.fetchAudits({
+          app_id: this.version.app_id,
+          version_id: this.version.version_id
+        });
+      }
     }
 
     if (isActionSuccess) {
