@@ -14,13 +14,11 @@
 
 .createTip {
   margin-top: 12px;
-  @include normal-font
-  color: $N75;
+  @include normal-font color: $N75;
   line-height: 20px;
 }
 .tips {
-  @include note-font
-  border-radius: 1px;
+  @include note-font border-radius: 1px;
   padding: 4px;
   margin-right: 4px;
   background-color: $N30;
@@ -34,7 +32,7 @@
 
 .roleContainer {
   border-radius: 2px;
-  padding: 16px 24px 24px 24px;
+  padding: 24px;
   &:hover {
     border-color: $P45;
     box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
@@ -45,7 +43,52 @@
   border-color: $P45;
   background: $N0;
   box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-  .describtion {
-    margin-bottom: 24px;
+  .moduleContainer {
+    opacity: 1;
+    margin-top: 24px;
+  }
+}
+.title {
+  display: inline-flex;
+  align-items: center;
+}
+.lockIcon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 12px;
+}
+.flex {
+  flex: 1;
+}
+
+.moduleContainer {
+  display: flex;
+  flex-flow: row wrap;
+  @include normal-font;
+  opacity: 0;
+
+  > div {
+    width: 25%;
+    margin-bottom: 15px;
+  }
+}
+
+.moduleName {
+  color: $N500;
+  font-weight: 500;
+}
+.gray {
+  color: $N75;
+  font-weight: normal;
+}
+
+.item {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.actions {
+  button {
+    margin-right: 12px;
   }
 }

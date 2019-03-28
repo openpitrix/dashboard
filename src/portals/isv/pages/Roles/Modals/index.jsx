@@ -29,7 +29,7 @@ export default class RoleModalActions extends Component {
     return idx < selectedActionKeys.length ? selectedActionKeys[idx] : [];
   }
 
-  renderEditPermission() {
+  renderEditPermission(isEdit) {
     const { roleStore, t } = this.props;
     const { moduleTreeData, bindActions } = roleStore;
     if (_.isEmpty(bindActions)) {
@@ -48,6 +48,7 @@ export default class RoleModalActions extends Component {
               className={styles.roleContainer}
               header={m.title}
               onChange={isCheck => this.onChange(m, isCheck)}
+              checked={isEdit}
               iconType="switch"
               iconPosition="right"
             >
@@ -76,7 +77,8 @@ export default class RoleModalActions extends Component {
       createISVRole, changeDataLevel, isLoading, dataLevel
     } = roleStore;
     const { handleType } = item;
-    const title = handleType === 'edit' ? t('Edit info') : t('Create a role');
+    const isEdit = handleType === 'edit';
+    const title = isEdit ? t('Edit info') : t('Create a role');
 
     return (
       <Dialog
@@ -92,25 +94,15 @@ export default class RoleModalActions extends Component {
         <Loading isLoading={isLoading}>
           <div className={styles.fmCtrl}>
             <label>{t('Name')}</label>
-            <Input
-              className={styles.input}
-              name="role_name"
-              defaultValue={item.role_name}
-            />
+            <Input className={styles.input} name="role_name" defaultValue={item.role_name} />
           </div>
           <div className={styles.fmCtrl}>
             <label>{t('Backlog')}</label>
-            <Input
-              className={styles.input}
-              name="description"
-              defaultValue={item.description}
-            />
+            <Input className={styles.input} name="description" defaultValue={item.description} />
           </div>
-          {handleType === 'edit' && (
-            <Input name="role_id" value={item.role_id} type="hidden" />
-          )}
+          {isEdit && <Input name="role_id" value={item.role_id} type="hidden" />}
           <Input name="portal" value="isv" type="hidden" />
-          {this.renderEditPermission()}
+          {this.renderEditPermission(isEdit)}
           <div className={classnames(styles.fmCtrl, styles.selectCtrl)}>
             <label>{t('Data range')}</label>
             <Select
@@ -127,6 +119,33 @@ export default class RoleModalActions extends Component {
             </Select>
           </div>
         </Loading>
+      </Dialog>
+    );
+  }
+
+  renderModalDeleteRole() {
+    const { modalStore, roleStore, t } = this.props;
+    const { isOpen, hide, item } = modalStore;
+    const { deleteRole } = roleStore;
+    const roleName = item.role_name;
+
+    return (
+      <Dialog
+        title={t('Delete role')}
+        width={744}
+        isOpen={isOpen}
+        onCancel={hide}
+        onSubmit={deleteRole}
+        okText={t('Delete')}
+        btnType="delete"
+      >
+        <div>
+          <h3>
+            {t('Do you sure to delete roleName', {
+              roleName
+            })}
+          </h3>
+        </div>
       </Dialog>
     );
   }

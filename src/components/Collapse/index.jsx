@@ -61,7 +61,7 @@ export default class SingleCollapse extends Component {
 
   renderHeader() {
     const { iconPosition, header, toggleType } = this.props;
-    const clickable = toggleType === 'header' || this.state.isCheck;
+    const clickable = toggleType === 'header';
     const onClick = clickable ? this.toggleCheck : _.noop;
     return (
       <div
