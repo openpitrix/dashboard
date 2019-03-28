@@ -103,7 +103,7 @@ export default class ReviewDetail extends Component {
           })}
         >
           <Icon name="stateful-set" type="dark" />
-          {t('Deploy App')}
+          {t('Deploy Test')}
         </Link>
         <span onClick={() => downloadPackage(reviewDetail.version_id, pkgName)}>
           <Icon name="download" type="dark" />
@@ -211,7 +211,7 @@ export default class ReviewDetail extends Component {
             </dl>
           </div>
           <div className={styles.opreateButtons}>
-            {reviewStatus.technical.includes(status) && (
+            {!reviewStatus.business.includes(status) && (
               <Link
                 to={toRoute(routes.portal.deploy, {
                   appId: reviewDetail.app_id,
@@ -471,7 +471,12 @@ export default class ReviewDetail extends Component {
             <Card>
               <div className={styles.reviewTitle}>
                 <div className={styles.name}>{t('Audit content')}</div>
-                <div className={styles.note}>{t('AUDIT_CONTENT_INTRODUCE')}</div>
+                <div className={styles.note}>
+                  {t('AUDIT_CONTENT_INTRODUCE')}
+                  {/* <a href="#" target="_blank">
+                    {t('view detail standard')} →
+                  </a> */}
+                </div>
               </div>
               <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
               {detailTab === 'baseInfo' && this.renderBaseInfo()}

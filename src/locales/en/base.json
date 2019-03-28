@@ -120,6 +120,8 @@
   "STEPPER_NAME_APP_DEPLOY_HEADER": "Deploy",
   "STEPPER_TITLE_APP_DEPLOY_1": "Deploy Instance",
   "STEPPER_FOOTER_APP_DEPLOY_1": "The deployed instances will appear in the my instances list",
+  "STEPPER_TITLE_APP_DEPLOY_TEST_1": "Deploy Test Instance",
+  "STEPPER_FOOTER_APP_DEPLOY_TEST_1": "The deployed instances will appear in the test instances or sandbox instances list",
   "HELM_APP_NAME_TIP": "Beginning with lowercase letters, up to 14 characters (supporting numbers/lowercase letters/hyphens)",
 
   "DEPLOYED_APP_TOTAL": "Deployed {{total}} application instances",
@@ -128,7 +130,7 @@
   "BUSINESS_PASS_NOTE": "After approval, this app will be submitted to the platform for technical review.",
   "TECHNICAL_PASS_NOTE": "After approval, the app developer can publish this version to the app store.",
   "REJECT_REASON_NOTE": "The above reasons will be sent to the applicant by email, please fill in carefully.",
-  "AUDIT_CONTENT_INTRODUCE": "The following information must be true and accurate, the key operational instructions need to describe the details, and the rights and obligations in the clauses need to be clearly described,",
+  "AUDIT_CONTENT_INTRODUCE": "The following information must be true and accurate, the key operational instructions need to describe the details, and the rights and obligations in the clauses need to be clearly described.",
 
 
   "PACKAGE_FILE_DESC": "Package.json file, which describes the basic information of an application or version, including name version number, etc.",

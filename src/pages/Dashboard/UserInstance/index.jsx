@@ -19,8 +19,9 @@ export default class UserInstance extends React.Component {
 
     Object.assign(clusterStore, {
       appId,
-      onlyView: true,
-      attachVersions: true
+      attachVersions: true,
+      attachUsers: true,
+      onlyView: true
     });
 
     await clusterStore.fetchAll();
@@ -36,13 +37,6 @@ export default class UserInstance extends React.Component {
   render() {
     const { t } = this.props;
 
-    return (
-      <Clusters
-        fetchData={this.fetchData}
-        noTabs
-        title={t('Customer-Instances')}
-        {...this.props}
-      />
-    );
+    return <Clusters fetchData={this.fetchData} title={t('Customer-Instances')} {...this.props} />;
   }
 }

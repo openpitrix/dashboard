@@ -9,11 +9,7 @@ import {
   Icon, Image, Button, PopoverIcon, Upload
 } from 'components/Base';
 import Layout, {
-  Grid,
-  Section,
-  Card,
-  Dialog,
-  Stepper
+  Grid, Section, Card, Dialog, Stepper
 } from 'components/Layout';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
@@ -68,12 +64,7 @@ export default class VersionDetail extends Component {
 
   async componentDidMount() {
     const {
-      appVersionStore,
-      appStore,
-      categoryStore,
-      userStore,
-      clusterStore,
-      match
+      appVersionStore, appStore, categoryStore, userStore, clusterStore, match
     } = this.props;
     const { appId, versionId } = match.params;
 
@@ -93,9 +84,7 @@ export default class VersionDetail extends Component {
     this.setState({ isLoading: false });
 
     // query record relative operators name
-    const userIds = _.get(appVersionStore.audits, versionId, []).map(
-      item => item.operator
-    );
+    const userIds = _.get(appVersionStore.audits, versionId, []).map(item => item.operator);
     await userStore.fetchAll({ user_id: userIds });
 
     // query categories data for category select
@@ -158,8 +147,7 @@ export default class VersionDetail extends Component {
       await appVersionStore.fetchAll({ app_id: appId });
       const { versions } = appVersionStore;
       const { appDetail } = appStore;
-      appStore.isEdit = !_.find(versions, { status: 'in-review' })
-        && appDetail.status !== 'deleted';
+      appStore.isEdit = !_.find(versions, { status: 'in-review' }) && appDetail.status !== 'deleted';
     }
 
     const hasDailog = ['delete', 'submit', 'cancel'].includes(handleType);
@@ -210,7 +198,7 @@ export default class VersionDetail extends Component {
           })}
         >
           <Icon name="stateful-set" type="dark" />
-          {t('Deploy App')}
+          {t('Deploy Test')}
         </Link>
         {status === 'submitted' && (
           <span onClick={() => this.handleVersion('cancel')}>
@@ -273,9 +261,7 @@ export default class VersionDetail extends Component {
         cancelText={t('Continue testing')}
       >
         <div className={styles.noteContent}>
-          <p>
-            在正式提交审核之前，请确认你的应用已经通过了以下基本功能的测试：
-          </p>
+          <p>在正式提交审核之前，请确认你的应用已经通过了以下基本功能的测试：</p>
           <div className={styles.noteList}>
             1. 成功部署实例
             <br />
@@ -344,20 +330,14 @@ export default class VersionDetail extends Component {
           <div>
             <pre>{record.message}</pre>
             <br />
-            <div
-              onClick={() => this.toggleReason(record)}
-              className={styles.collapse}
-            >
+            <div onClick={() => this.toggleReason(record)} className={styles.collapse}>
               {t('Collapse')}
             </div>
           </div>
         ) : (
           <label>
             <span className={styles.hideReason}>&nbsp;{record.message}</span>
-            <span
-              onClick={() => this.toggleReason(record)}
-              className={styles.expand}
-            >
+            <span onClick={() => this.toggleReason(record)} className={styles.expand}>
               {t('Expand')}
             </span>
           </label>
@@ -416,21 +396,14 @@ export default class VersionDetail extends Component {
     return (
       <Card className={styles.latestRecord}>
         <div className={styles.title}>{t('Latest record')}</div>
-        <Status
-          type={audit.status}
-          name={mappingStatus(audit.status)}
-          className={styles.status}
-        />
+        <Status type={audit.status} name={mappingStatus(audit.status)} className={styles.status} />
         <div className={styles.record}>
           <div className={styles.operator}>
             {t(audit.operator_type)}:&nbsp;
-            {(_.find(users, { user_id: audit.operator }) || {}).email
-              || audit.operator}
+            {(_.find(users, { user_id: audit.operator }) || {}).email || audit.operator}
           </div>
           {this.renderReason(audit)}
-          <div className={styles.time}>
-            {formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}
-          </div>
+          <div className={styles.time}>{formatTime(audit.status_time, 'YYYY/MM/DD HH:mm:ss')}</div>
         </div>
         <div className={styles.link}>
           <Link
@@ -461,11 +434,7 @@ export default class VersionDetail extends Component {
             autoFocus
           />
           <div className={styles.submitButtons}>
-            <Button
-              onClick={this.updateLog}
-              type="primary"
-              disabled={!description}
-            >
+            <Button onClick={this.updateLog} type="primary" disabled={!description}>
               {t('Save')}
             </Button>
             <Button onClick={this.resetLog}>{t('Reset')}</Button>
@@ -516,10 +485,7 @@ export default class VersionDetail extends Component {
                 {t('Download')}
               </span>
               {isEdit && (
-                <span
-                  className={styles.link}
-                  onClick={() => this.onUploadClick()}
-                >
+                <span className={styles.link} onClick={() => this.onUploadClick()}>
                   {t('Modify')}
                 </span>
               )}
@@ -534,11 +500,7 @@ export default class VersionDetail extends Component {
           checkFile={checkPackageFile}
           uploadFile={uploadPackage}
         >
-          <UploadShow
-            isLoading={isLoading}
-            errorMessage={createError}
-            fileName={packageName}
-          />
+          <UploadShow isLoading={isLoading} errorMessage={createError} fileName={packageName} />
         </Upload>
         <CheckFiles
           className={styles.checkFile}
@@ -570,11 +532,7 @@ export default class VersionDetail extends Component {
               {t('Its application')}:&nbsp;
               <span className={styles.appName}>
                 <span className={styles.imgOuter}>
-                  <Image
-                    src={appDetail.icon}
-                    iconLetter={appDetail.name}
-                    iconSize={20}
-                  />
+                  <Image src={appDetail.icon} iconLetter={appDetail.name} iconSize={20} />
                 </span>
                 {appDetail.name}
               </span>
@@ -652,11 +610,7 @@ export default class VersionDetail extends Component {
     }
 
     return (
-      <Layout
-        className={styles.versionDetail}
-        pageTitle={t('Version detail')}
-        hasBack
-      >
+      <Layout className={styles.versionDetail} pageTitle={t('Version detail')} hasBack>
         {this.renderTopInfo()}
         <Grid>
           <Section size={8}>

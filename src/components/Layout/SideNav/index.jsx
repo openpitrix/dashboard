@@ -216,7 +216,12 @@ export class SideNav extends React.Component {
     }
 
     return (
-      <NavItem to="/" label={t(label)} className={styles.firstElem}>
+      <NavItem
+        to={toRoute(routes.portal.apps)}
+        label={t(label)}
+        className={styles.firstElem}
+        wrapLabelInLink
+      >
         <img src="/logo_icon.svg" className={styles.icon} />
       </NavItem>
     );

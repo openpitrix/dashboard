@@ -139,19 +139,19 @@ class AppStore extends Store {
     const userId = getCookie('user_id');
     const menuApps = localStorage.getItem(`${userId}-apps`);
 
-    if (!menuApps) {
-      const params = {
-        sort_key: 'status_time',
-        limit: 5,
-        status: this.defaultStatus
-      };
-      const result = await this.request.get('apps', params);
-
-      this.menuApps = get(result, 'app_set', []);
-      localStorage.setItem(`${userId}-apps`, JSON.stringify(this.menuApps));
-    } else {
-      this.menuApps = JSON.parse(menuApps);
+    const params = {
+      sort_key: 'status_time',
+      limit: 5,
+      status: this.defaultStatus
+    };
+    if (menuApps) {
+      const apps = JSON.parse(menuApps) || [];
+      params.app_id = apps.map(item => item.app_id);
     }
+    const result = await this.request.get('apps', params);
+
+    this.menuApps = get(result, 'app_set', []);
+    localStorage.setItem(`${userId}-apps`, JSON.stringify(this.menuApps));
   };
 
   @action
@@ -273,13 +273,11 @@ class AppStore extends Store {
       for (let i = 0; i < apps.length; i++) {
         const app = apps[i];
         await clusterStore.fetchAll({
-          isUserAction: true,
+          onlyView: true,
           app_id: app.app_id,
           display_columns: ['']
         });
-        this.apps.push(
-          _.extend(app, { deploy_total: clusterStore.totalCount })
-        );
+        this.apps.push(_.extend(app, { deploy_total: clusterStore.totalCount }));
       }
     }
 
@@ -372,13 +370,7 @@ class AppStore extends Store {
       event.preventDefault();
     }
 
-    const data = _.pick(this.appDetail, [
-      'name',
-      'abstraction',
-      'description',
-      'home',
-      'icon'
-    ]);
+    const data = _.pick(this.appDetail, ['name', 'abstraction', 'description', 'home', 'icon']);
 
     this.checkResult = _.assign({}, formCheck('app', data));
 
@@ -412,10 +404,7 @@ class AppStore extends Store {
     if (isFocus) {
       this.checkResult = _.assign(this.checkResult, { [field]: '' });
     } else {
-      this.checkResult = _.assign(
-        this.checkResult,
-        fieldCheck('app', field, event.target.value)
-      );
+      this.checkResult = _.assign(this.checkResult, fieldCheck('app', field, event.target.value));
     }
   };
 
@@ -602,9 +591,7 @@ class AppStore extends Store {
     if ('toJSON' in category_set) {
       category_set = category_set.toJSON();
     }
-    const availableCate = category_set.find(
-      cate => cate.category_id && cate.status === 'enabled'
-    );
+    const availableCate = category_set.find(cate => cate.category_id && cate.status === 'enabled');
     this.handleApp.selectedCategory = get(availableCate, 'category_id', '');
     this.isModalOpen = true;
   };

@@ -135,9 +135,7 @@ export default class Reviews extends Component {
       {
         title: t('Submitter'),
         key: 'submitter',
-        render: item => this.renderSubmitter(
-          user.isISV ? _.get(item, 'phase.developer.operator') : item.app_id
-        )
+        render: item => this.renderSubmitter(user.isISV ? _.get(item, 'phase.developer.operator') : item.app_id)
       },
       {
         title: isUnprocessed ? t('Audit status') : t('Review result'),
@@ -162,16 +160,14 @@ export default class Reviews extends Component {
         render: item => formatTime(item.status_time, 'YYYY/MM/DD HH:mm:ss')
       },
       {
-        title: isUnprocessed ? t('Auditor') : '',
+        title: isUnprocessed ? t('Actions') : '',
         key: 'actions',
         width: '110px',
         className: 'actions',
         render: item => (
           <div>
             {isUnprocessed ? (
-              <Button onClick={() => this.handleReview(item)}>
-                {t('Start process')}
-              </Button>
+              <Button onClick={() => this.handleReview(item)}>{t('Start process')}</Button>
             ) : (
               <Link to={linkReview(item.review_id)}>
                 <span>{t('View detail')} →</span>
@@ -188,7 +184,7 @@ export default class Reviews extends Component {
 
     const pagination = {
       tableType: 'Apps',
-      onChange: appVersionStore.changePagination,
+      onChange: appVersionStore.changeReviewPagination,
       total: appVersionStore.totalCount,
       current: appVersionStore.currentPage,
       noCancel: false
@@ -196,11 +192,7 @@ export default class Reviews extends Component {
 
     return (
       <Layout pageTitle={t('App Reviews')}>
-        <TableTypes
-          types={types}
-          activeType={activeType}
-          changeType={this.changeType}
-        />
+        <TableTypes types={types} activeType={activeType} changeType={this.changeType} />
         <Table
           columns={columns}
           dataSource={reviews.toJSON()}

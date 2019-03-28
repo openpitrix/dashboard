@@ -7,6 +7,7 @@ import { CLUSTER_TYPE } from 'config/runtimes';
 
 import Store from '../Store';
 
+const defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 @useTableActions
 export default class ClusterStore extends Store {
   /**
@@ -15,7 +16,7 @@ export default class ClusterStore extends Store {
    */
   idKey = 'cluster_id';
 
-  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  defaultStatus = defaultStatus;
 
   @observable clusters = [];
 
@@ -95,10 +96,7 @@ export default class ClusterStore extends Store {
 
   get describeActionName() {
     // developer query user instances
-    if (
-      (this.onlyView && this.cluster_type === CLUSTER_TYPE.instance)
-      || this.isUserAction
-    ) {
+    if (this.onlyView) {
       return 'clusters';
     }
 
@@ -130,11 +128,6 @@ export default class ClusterStore extends Store {
     }
     if (this.with_detail) {
       params.with_detail = true;
-    }
-
-    if (params.isUserAction) {
-      this.isUserAction = true;
-      delete params.isUserAction;
     }
 
     this.isLoading = true;
@@ -299,7 +292,6 @@ export default class ClusterStore extends Store {
     this.runtimeId = '';
     this.userId = '';
     this.onlyView = false;
-    this.isUserAction = false;
     this.clusters = [];
     this.attachApps = false;
     this.attachVersions = false;
@@ -312,6 +304,8 @@ export default class ClusterStore extends Store {
     this.operateType = '';
     this.modalType = '';
     this.clusterId = '';
+
+    this.defaultStatus = defaultStatus;
   };
 
   @action
@@ -349,9 +343,7 @@ export default class ClusterStore extends Store {
 
   @action
   doActions = async (params = {}) => {
-    const ids = this.operateType === 'multiple'
-      ? this.clusterIds.toJSON()
-      : [this.clusterId];
+    const ids = this.operateType === 'multiple' ? this.clusterIds.toJSON() : [this.clusterId];
     const specialActionMap = {
       update_env: this.updateEnv,
       upgrade: this.upgradeVersion

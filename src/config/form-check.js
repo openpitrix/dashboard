@@ -47,7 +47,7 @@ export const checkConfig = {
   version: {
     name: {
       required_info: 'Version No should not be empty"',
-      regex: /^\d+((\.|\d)*)+(\d$)/,
+      regex: /^\d+((\.|\d|^\s+|\s|\[)*)+((\d|\])$)/,
       regex_info: 'VERSION_NO_FORMAT_INFO'
     }
   }

@@ -34,12 +34,10 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static propTypes = {
     fetchData: PropTypes.func,
-    noTabs: PropTypes.bool,
     title: PropTypes.string
   };
 
   static defaultProps = {
-    noTabs: false,
     title: ''
   };
 
@@ -166,7 +164,7 @@ export default class Clusters extends Component {
 
     Object.assign(clusterStore, {
       cluster_type: tab,
-      onlyView: tab === CLUSTER_TYPE.agent,
+      isAgent: tab === CLUSTER_TYPE.agent,
       attachVersions: tab === CLUSTER_TYPE.instance,
       attachApps: tab === CLUSTER_TYPE.instance
     });
@@ -257,11 +255,17 @@ export default class Clusters extends Component {
       clusterStore, user, match, t
     } = this.props;
     const {
-      searchWord, onSearch, onClearSearch, onRefresh, clusterIds, onlyView
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      clusterIds,
+      onlyView,
+      isAgent
     } = clusterStore;
     const { appId } = match.params;
 
-    if (!onlyView && clusterIds.length) {
+    if (!(onlyView || isAgent) && clusterIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           <Button type="default" onClick={() => this.operateSelected('start')}>
@@ -301,48 +305,44 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, noTabs, t
+      clusterStore, userStore, user, t
     } = this.props;
-    const { isLoading, onlyView, cluster_type } = clusterStore;
+    const { isLoading, onlyView, isAgent } = clusterStore;
 
     const { runtimes } = this.props.runtimeStore;
     const { users } = userStore;
 
     return (
       <Fragment>
-        {!noTabs && (
-          <Tabs
-            tabs={runtimeTabs}
-            className={styles.tabs}
-            changeTab={this.handleChangeTab}
-            noFirstChange
-          />
-        )}
-
+        <Tabs
+          tabs={runtimeTabs}
+          className={styles.tabs}
+          changeTab={this.handleChangeTab}
+          noFirstChange
+          isCardTab
+        />
         {this.renderToolbar()}
-
         <Table
           tableType="Clusters"
           columns={columns}
           columnsFilter={cols => {
-            if (user.isUserPortal) {
+            if (user.isUserPortal || user.isAdminPortal) {
               cols = cols.filter(item => item.key !== 'owner');
-              if (cluster_type === CLUSTER_TYPE.agent) {
-                return cols.filter(item => item.key !== 'app_id');
-              }
-              return cols;
+            }
+            if (isAgent) {
+              cols = cols.filter(item => item.key !== 'app_id' && item.key !== 'actions');
             }
             return cols;
           }}
           store={clusterStore}
           data={clusterStore.clusters}
-          hasRowSelection={!onlyView}
+          hasRowSelection={!(onlyView || isAgent)}
           isLoading={isLoading}
           replaceFilterConditions={[
             { name: t('Pending'), value: 'pending' },
             { name: t('Normal'), value: 'active' },
-            { name: t('Stopped'), value: 'stopped' },
-            { name: t('Suspended'), value: 'suspended' },
+            /* { name: t('Stopped'), value: 'stopped' },
+            { name: t('Suspended'), value: 'suspended' }, */
             { name: t('Deleted'), value: 'deleted' },
             { name: t('Ceased'), value: 'ceased' }
           ]}
@@ -354,6 +354,7 @@ export default class Clusters extends Component {
             user,
             runtimes,
             onlyView,
+            isAgent,
             t
           }}
         />
