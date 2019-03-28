@@ -111,14 +111,13 @@ $card-height: 188px;
       margin-right: 20px;
     }
 
-    >label {
+    > label {
       padding: 16px 0 8px 0;
     }
 
-    >label:last-child {
+    > label:last-child {
       margin-right: 0;
     }
-
   }
 
   .body {
@@ -274,6 +273,10 @@ $card-height: 188px;
     height: 32px;
     border-radius: 2px;
     background-color: $N0;
+  }
+  .textArea {
+    min-height: 200px;
+    width: 100%;
   }
 }
 
