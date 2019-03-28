@@ -1,13 +1,13 @@
 @import '~scss/vars';
 
-.modalContent{
-  .noteWord{
+.modalContent {
+  .noteWord {
     font-size: 16px;
     margin-bottom: 30px;
   }
-  .operation{
+  .operation {
     text-align: center;
-    button{
+    button {
       margin: 0 6px;
     }
   }
@@ -29,7 +29,7 @@
     display: inline-block;
     margin: 0 8px;
     font-weight: 500;
-    color: $N300
+    color: $N300;
   }
 
   .versionName {
@@ -39,8 +39,12 @@
   }
 }
 
-.tabs{
+.tabs {
   background: none;
   border: none;
   margin-bottom: 16px;
+}
+
+.runtimeName {
+  max-width: 250px;
 }

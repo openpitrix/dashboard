@@ -46,9 +46,6 @@
       color: $N500;
       max-width: 150px;
       @include textCut;
-      &:hover {
-        color: $link-hover;
-      }
     }
     .foldName {
       display: block;
@@ -58,6 +55,9 @@
       color: $N500;
       width: 180px;
       @include textCut;
+    }
+    a.name,
+    a.foldName {
       &:hover {
         color: $link-hover;
       }

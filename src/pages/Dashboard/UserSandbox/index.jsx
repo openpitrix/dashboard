@@ -19,7 +19,8 @@ export default class UserSandbox extends React.Component {
 
     Object.assign(clusterStore, {
       appId,
-      attachVersions: true
+      attachVersions: true,
+      attachUsers: true
     });
 
     await clusterStore.fetchAll();
@@ -35,13 +36,6 @@ export default class UserSandbox extends React.Component {
   render() {
     const { t } = this.props;
 
-    return (
-      <Clusters
-        fetchData={this.fetchData}
-        noTabs
-        title={t('Sandbox-Instances')}
-        {...this.props}
-      />
-    );
+    return <Clusters fetchData={this.fetchData} title={t('Sandbox-Instances')} {...this.props} />;
   }
 }

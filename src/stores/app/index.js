@@ -148,7 +148,6 @@ class AppStore extends Store {
       const apps = JSON.parse(menuApps) || [];
       params.app_id = apps.map(item => item.app_id);
     }
-    console.log(menuApps, params.app_id);
     const result = await this.request.get('apps', params);
 
     this.menuApps = get(result, 'app_set', []);
@@ -274,7 +273,7 @@ class AppStore extends Store {
       for (let i = 0; i < apps.length; i++) {
         const app = apps[i];
         await clusterStore.fetchAll({
-          isUserAction: true,
+          onlyView: true,
           app_id: app.app_id,
           display_columns: ['']
         });

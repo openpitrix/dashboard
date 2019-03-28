@@ -96,7 +96,7 @@ export default class ClusterStore extends Store {
 
   get describeActionName() {
     // developer query user instances
-    if ((this.onlyView && this.cluster_type === CLUSTER_TYPE.instance) || this.isUserAction) {
+    if (this.onlyView) {
       return 'clusters';
     }
 
@@ -128,11 +128,6 @@ export default class ClusterStore extends Store {
     }
     if (this.with_detail) {
       params.with_detail = true;
-    }
-
-    if (params.isUserAction) {
-      this.isUserAction = true;
-      delete params.isUserAction;
     }
 
     this.isLoading = true;
@@ -297,7 +292,6 @@ export default class ClusterStore extends Store {
     this.runtimeId = '';
     this.userId = '';
     this.onlyView = false;
-    this.isUserAction = false;
     this.clusters = [];
     this.attachApps = false;
     this.attachVersions = false;

@@ -22,27 +22,22 @@ export default ({
   user,
   runtimes,
   onlyView,
+  isAgent,
   t
 }) => [
   {
     title: 'Status',
     key: 'status',
-    render: cl => (
-      <Status
-        type={cl.status}
-        transition={cl.transition_status}
-        transMap={transMap}
-      />
-    )
+    render: cl => <Status type={cl.status} transition={cl.transition_status} transMap={transMap} />
   },
   {
-    title: 'Instance Name ID',
+    title: isAgent ? 'Agent Name ID' : 'Instance Name ID',
     key: 'name',
     render: cl => (
       <TdName
         name={cl.name}
         description={cl.cluster_id}
-        linkUrl={getDetailLink(cl.cluster_id)}
+        linkUrl={isAgent ? '' : getDetailLink(cl.cluster_id)}
         noIcon
       />
     )
@@ -57,6 +52,7 @@ export default ({
     key: 'runtime_id',
     render: cl => (
       <ProviderName
+        className={styles.runtimeName}
         name={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'name')}
         provider={getObjName(runtimes, 'runtime_id', cl.runtime_id, 'provider')}
       />
@@ -71,9 +67,7 @@ export default ({
   {
     title: 'Creator',
     key: 'owner',
-    render: cl => (
-      <TdUser className={styles.creator} users={users} userId={cl.owner} />
-    )
+    render: cl => <TdUser className={styles.creator} users={users} userId={cl.owner} />
   },
   {
     title: 'Created At',
@@ -86,8 +80,8 @@ export default ({
     title: '',
     key: 'actions',
     className: 'actions',
-    width: onlyView ? '100px' : '80px',
-    render: cl => (onlyView ? (
+    width: isAgent || onlyView ? '100px' : '80px',
+    render: cl => (isAgent || onlyView ? (
         <div>
           <Link to={getDetailLink(cl.cluster_id)}>{t('View detail')} →</Link>
         </div>
