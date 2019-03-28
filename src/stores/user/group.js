@@ -65,11 +65,13 @@ export default class GroupStore extends Store {
     return key && key !== platformUserID;
   }
 
+  get isAdmin() {
+    const key = _.first(this.selectedGroupIds);
+    return !this.protectedGroupsIds.includes(key);
+  }
+
   get name() {
-    const group = _.find(
-      this.groups,
-      g => g.group_id === _.first(this.selectedGroupIds)
-    );
+    const group = _.find(this.groups, g => g.group_id === _.first(this.selectedGroupIds));
     if (!group) {
       return '';
     }
@@ -84,9 +86,7 @@ export default class GroupStore extends Store {
     const key = _.first(this.selectedGroupIds);
     const root = _.find(this.groups, g => !g.parent_group_id);
 
-    return (
-      key && !this.protectedGroupsIds.includes(key) && key !== root.group_id
-    );
+    return key && !this.protectedGroupsIds.includes(key) && key !== root.group_id;
   }
 
   get selectedRoleId() {

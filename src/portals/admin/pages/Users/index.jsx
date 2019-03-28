@@ -43,6 +43,10 @@ export default class Users extends Component {
     this.props.groupStore.reset();
   }
 
+  get isAdmin() {
+    return this.props.groupStore.isAdmin;
+  }
+
   handleAction(type, e) {
     e.stopPropagation();
     e.preventDefault();
@@ -53,23 +57,16 @@ export default class Users extends Component {
     const { userStore, groupStore, t } = this.props;
     const { protectedGroupsIds } = groupStore;
     const { selectedGroupIds } = userStore;
-    const modifiable = !protectedGroupsIds.includes(node.key)
-      && selectedGroupIds.includes(node.key);
+    const modifiable = !protectedGroupsIds.includes(node.key) && selectedGroupIds.includes(node.key);
     return this.renderGroupTitle(node, t, modifiable);
   };
 
   renderHandleGroupNode = ({ key, t }) => (
     <div key={`${key}-operates`} className="operate-menu">
-      <span
-        key={`${key}-rename`}
-        onClick={e => this.handleAction('renderModalRenameGroup', e)}
-      >
+      <span key={`${key}-rename`} onClick={e => this.handleAction('renderModalRenameGroup', e)}>
         {t('Rename')}
       </span>
-      <span
-        key={`${key}-delete`}
-        onClick={e => this.handleAction('renderModalDeleteGroup', e)}
-      >
+      <span key={`${key}-delete`} onClick={e => this.handleAction('renderModalDeleteGroup', e)}>
         {t('Delete')}
       </span>
     </div>
@@ -134,12 +131,14 @@ export default class Users extends Component {
         >
           {t('Edit info')}
         </span>
-        <span onClick={() => modalStore.show('renderModalSetGroup', user)}>
-          {t('Set group')}
-        </span>
-        <span onClick={() => modalStore.show('renderModalSetRole', user)}>
-          {t('Set role')}
-        </span>
+        {this.isAdmin && (
+          <Fragment>
+            <span onClick={() => modalStore.show('renderModalSetGroup', user)}>
+              {t('Set group')}
+            </span>
+            <span onClick={() => modalStore.show('renderModalSetRole', user)}>{t('Set role')}</span>
+          </Fragment>
+        )}
         <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
           {t('Change Password')}
         </span>
@@ -147,10 +146,7 @@ export default class Users extends Component {
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
         <span
-          onClick={() => modalStore.show(
-            'renderModalDeleteUser',
-            _.assign({}, user, { type: 'one' })
-          )
+          onClick={() => modalStore.show('renderModalDeleteUser', _.assign({}, user, { type: 'one' }))
           }
         >
           {t('Delete')}
@@ -178,13 +174,8 @@ export default class Users extends Component {
               {t('Set group')}
             </Button>
           )}
-          <Button onClick={e => this.handleAction('renderModalSetRole', e)}>
-            {t('Set role')}
-          </Button>
-          <Button
-            type="delete"
-            onClick={e => this.handleAction('renderModalDeleteUser', e)}
-          >
+          <Button onClick={e => this.handleAction('renderModalSetRole', e)}>{t('Set role')}</Button>
+          <Button type="delete" onClick={e => this.handleAction('renderModalDeleteUser', e)}>
             {t('Delete')}
           </Button>
         </Toolbar>
@@ -214,10 +205,7 @@ export default class Users extends Component {
     const { t } = this.props;
     return (
       <div>
-        <Button
-          type="primary"
-          onClick={e => this.handleAction('renderModalCreateGroup', e)}
-        >
+        <Button type="primary" onClick={e => this.handleAction('renderModalCreateGroup', e)}>
           {t('Create group')}
         </Button>
       </div>
@@ -226,38 +214,21 @@ export default class Users extends Component {
 
   render() {
     const {
-      userDetailStore,
-      userStore,
-      groupStore,
-      modalStore,
-      t
+      userDetailStore, userStore, groupStore, modalStore, t
     } = this.props;
     const { isLoading } = this.state;
     const { selectName } = userStore;
     const {
-      groupTreeData,
-      selectGroupName,
-      onSelectOrg,
-      selectedGroupIds
+      groupTreeData, selectGroupName, onSelectOrg, selectedGroupIds
     } = groupStore;
 
     return (
-      <Layout
-        isCenterPage
-        className={styles.usersContent}
-        isLoading={isLoading}
-      >
+      <Layout isCenterPage className={styles.usersContent} isLoading={isLoading}>
         <h2 className={styles.header}>{t('All Accounts')}</h2>
         <Panel className={classnames(styles.noShadow, styles.noPadding)}>
           <Grid>
             <Section size={3}>
-              <Card
-                className={classnames(
-                  styles.noShadow,
-                  styles.noPadding,
-                  styles.selectInfo
-                )}
-              >
+              <Card className={classnames(styles.noShadow, styles.noPadding, styles.selectInfo)}>
                 <Tree
                   defaultExpandAll
                   showLine
@@ -275,14 +246,10 @@ export default class Users extends Component {
               <Card className={styles.noShadow}>
                 <div className={styles.title}>
                   {t('Selected organization')}:
-                  <strong className={styles.groupHeader}>
-                    {t(selectGroupName)}
-                  </strong>
+                  <strong className={styles.groupHeader}>{t(selectGroupName)}</strong>
                 </div>
 
-                {Boolean(selectName) && (
-                  <div className={styles.selectInfo}>{t(selectName)}</div>
-                )}
+                {Boolean(selectName) && <div className={styles.selectInfo}>{t(selectName)}</div>}
 
                 {this.renderToolbar()}
 
@@ -292,7 +259,7 @@ export default class Users extends Component {
                   isLoading={userDetailStore.isLoading}
                   store={userDetailStore}
                   data={userDetailStore.users}
-                  columns={columns(t, this.renderUserHandleMenu)}
+                  columns={columns(t, this.renderUserHandleMenu, this.isAdmin)}
                   filterList={filterList(t, userDetailStore)}
                 />
               </Card>
