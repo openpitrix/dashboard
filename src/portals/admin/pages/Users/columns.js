@@ -7,7 +7,7 @@ import LessText from 'components/LessText';
 import { PopoverIcon } from 'components/Base';
 import { getRoleName } from 'config/roles';
 
-export default (t, renderHandleMenu) => {
+export default (t, renderHandleMenu, isAdmin) => {
   const columns = [
     {
       title: t('Status'),
@@ -25,16 +25,20 @@ export default (t, renderHandleMenu) => {
       key: 'email',
       render: item => item.email
     },
-    {
-      title: t('Group'),
-      key: 'group',
-      render: item => <LessText txt={t(item.groupName)} limit={10} />
-    },
-    {
-      title: t('Role'),
-      key: 'role',
-      render: item => t(getRoleName(_.get(item, 'role', {})))
-    },
+    isAdmin
+      ? {
+        title: t('Group'),
+        key: 'group',
+        render: item => <LessText txt={t(item.groupName)} limit={10} />
+      }
+      : null,
+    isAdmin
+      ? {
+        title: t('Role'),
+        key: 'role',
+        render: item => t(getRoleName(_.get(item, 'role', {})))
+      }
+      : null,
     {
       title: t('Updated At'),
       key: 'update_time',
@@ -48,13 +52,11 @@ export default (t, renderHandleMenu) => {
       key: 'actions',
       width: '84px',
       className: 'actions',
-      render: item => (
-        <PopoverIcon size="Large" portal content={renderHandleMenu(item)} />
-      )
+      render: item => <PopoverIcon size="Large" portal content={renderHandleMenu(item)} />
     });
   }
 
-  return columns;
+  return _.without(columns, null);
 };
 
 export const filterList = (t, store) => [
