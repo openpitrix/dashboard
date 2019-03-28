@@ -103,7 +103,7 @@ export default class ReviewDetail extends Component {
           })}
         >
           <Icon name="stateful-set" type="dark" />
-          {t('Deploy App')}
+          {t('Deploy Test')}
         </Link>
         <span onClick={() => downloadPackage(reviewDetail.version_id, pkgName)}>
           <Icon name="download" type="dark" />

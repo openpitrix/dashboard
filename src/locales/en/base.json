@@ -120,6 +120,8 @@
   "STEPPER_NAME_APP_DEPLOY_HEADER": "Deploy",
   "STEPPER_TITLE_APP_DEPLOY_1": "Deploy Instance",
   "STEPPER_FOOTER_APP_DEPLOY_1": "The deployed instances will appear in the my instances list",
+  "STEPPER_TITLE_APP_DEPLOY_TEST_1": "Deploy Test Instance",
+  "STEPPER_FOOTER_APP_DEPLOY_TEST_1": "The deployed instances will appear in the test instances or sandbox instances list",
   "HELM_APP_NAME_TIP": "Beginning with lowercase letters, up to 14 characters (supporting numbers/lowercase letters/hyphens)",
 
   "DEPLOYED_APP_TOTAL": "Deployed {{total}} application instances",
