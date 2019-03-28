@@ -51,10 +51,7 @@ export default class Applications extends Component {
     const { vendorStore, match, t } = this.props;
     const { applyId } = match.params;
     const {
-      isMessageOpen,
-      hideModal,
-      changeRejectMessage,
-      applyReject
+      isMessageOpen, hideModal, changeRejectMessage, applyReject
     } = vendorStore;
 
     return (
@@ -93,23 +90,12 @@ export default class Applications extends Component {
           <dl className={styles.status}>
             <dt>{t('Apply status')}:&nbsp;</dt>
             <dd>
-              <span className={classnames(styles[status])}>
-                {t(statusMap[status] || status)}
-              </span>
+              <span className={classnames(styles[status])}>{t(statusMap[status] || status)}</span>
               {isSubmit && (
                 <Link to={toRoute(routes.portal._isv.providerApply)}>
-                  {t(
-                    status === 'rejected' ? 'Re-submit' : 'Submit immediately'
-                  )}
+                  {t(status === 'rejected' ? 'Re-submit' : 'Submit immediately')}
                 </Link>
               )}
-            </dd>
-          </dl>
-          <dl>
-            <dt>{t('Margin')}:&nbsp;</dt>
-            <dd>
-              {t('Not paid')}
-              <Link to="#">{t('View payment method')}</Link>
             </dd>
           </dl>
           <dl>
@@ -164,9 +150,7 @@ export default class Applications extends Component {
         <div className={styles.number}>
           {numberTitle}: {vendorDetail.user_id || user.user_id}
         </div>
-        <div className={styles.name}>
-          {vendorDetail.company_name || user.username}
-        </div>
+        <div className={styles.name}>{vendorDetail.company_name || user.username}</div>
         {this.renderStatusInfo()}
         {vendorDetail.status === 'rejected' && (
           <div className={styles.reason}>
@@ -181,18 +165,10 @@ export default class Applications extends Component {
   render() {
     const { user, t } = this.props;
     const { isISV } = user;
-    const pagetTitle = isISV
-      ? t('Service Provider Detail')
-      : t('Details of app for residence');
+    const pagetTitle = isISV ? t('Service Provider Detail') : t('Details of app for residence');
 
     return (
-      <Layout
-        pageTitle={pagetTitle}
-        hasBack={!isISV}
-        isCenterPage
-        noSubMenu
-        centerWidth={760}
-      >
+      <Layout pageTitle={pagetTitle} hasBack={!isISV} isCenterPage noSubMenu centerWidth={760}>
         {this.renderBaseInfo()}
 
         <Card>
