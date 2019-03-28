@@ -67,7 +67,9 @@ export default class Account extends Component {
   modifyUser = async e => {
     e.preventDefault();
 
-    const { userStore, rootStore, i18n } = this.props;
+    const {
+      user, userStore, rootStore, i18n
+    } = this.props;
     const data = getFormData(e.target);
     const { username } = await userStore.modifyUser(data);
 
@@ -83,6 +85,7 @@ export default class Account extends Component {
       rootStore.updateUser({
         username
       });
+      await userStore.fetchDetail(user.user_id);
     }
   };
 
@@ -101,13 +104,7 @@ export default class Account extends Component {
       >
         <div>
           <label className={styles.name}>{t('Current Password')}</label>
-          <Input
-            className={styles.input}
-            name="password"
-            type="password"
-            maxLength={50}
-            required
-          />
+          <Input className={styles.input} name="password" type="password" maxLength={50} required />
         </div>
         <div>
           <label className={styles.name}>{t('New Password')}</label>
@@ -164,13 +161,7 @@ export default class Account extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Email')}</label>
-          <Input
-            className={styles.input}
-            name="email"
-            value={userDetail.email}
-            disabled
-            readOnly
-          />
+          <Input className={styles.input} name="email" value={userDetail.email} disabled readOnly />
         </div>
         <div>
           <label className={styles.name}>{t('Language setting')}</label>
