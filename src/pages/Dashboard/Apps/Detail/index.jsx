@@ -59,14 +59,14 @@ export default class AppDetail extends Component {
       app_id: appId,
       created_date: 30,
       limit: 1,
-      isUserAction: true
+      onlyView: true
     });
     // get deploy total and user instance
     clusterStore.attachUsers = true;
     await clusterStore.fetchAll({
       app_id: appId,
       // limit: 1,
-      isUserAction: true
+      onlyView: true
     });
   }
 
@@ -154,18 +154,12 @@ export default class AppDetail extends Component {
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
         {item.status === 'active' && (
-          <span
-            onClick={() => this.openSuspendDialog(item.version_id, 'suspend-version')
-            }
-          >
+          <span onClick={() => this.openSuspendDialog(item.version_id, 'suspend-version')}>
             <Icon name="sort-descending" type="dark" /> {t('Suspend version')}
           </span>
         )}
         {item.status === 'suspended' && (
-          <span
-            onClick={() => this.openSuspendDialog(item.version_id, 'recover-version')
-            }
-          >
+          <span onClick={() => this.openSuspendDialog(item.version_id, 'recover-version')}>
             <Icon name="sort-ascending" type="dark" /> {t('Recover version')}
           </span>
         )}
@@ -178,12 +172,7 @@ export default class AppDetail extends Component {
     const { isModalOpen, modalType, hideModal } = appStore;
 
     return (
-      <Dialog
-        title={t('Note')}
-        isOpen={isModalOpen}
-        onSubmit={this.handle}
-        onCancel={hideModal}
-      >
+      <Dialog title={t('Note')} isOpen={isModalOpen} onSubmit={this.handle} onCancel={hideModal}>
         {t(`${modalType}-note-desc`)}
       </Dialog>
     );
@@ -227,9 +216,7 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        render: item => (
-          <Status type={item.status} name={mappingStatus(item.status)} />
-        )
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
       },
       {
         title: t('Update time'),
@@ -274,16 +261,12 @@ export default class AppDetail extends Component {
       {
         title: t('Delivery type'),
         key: 'app_id',
-        render: item => (
-          <VersionType className={styles.versionType} types={item.type} />
-        )
+        render: item => <VersionType className={styles.versionType} types={item.type} />
       },
       {
         title: t('Status'),
         key: 'status',
-        render: item => (
-          <Status type={item.status} name={mappingStatus(item.status)} />
-        )
+        render: item => <Status type={item.status} name={mappingStatus(item.status)} />
       },
       {
         title: t('Created At'),
@@ -318,13 +301,7 @@ export default class AppDetail extends Component {
       noCancel: false
     };
 
-    return (
-      <Table
-        columns={columns}
-        dataSource={versions.toJSON()}
-        pagination={pagination}
-      />
-    );
+    return <Table columns={columns} dataSource={versions.toJSON()} pagination={pagination} />;
   }
 
   renderInstance() {
@@ -338,16 +315,12 @@ export default class AppDetail extends Component {
       {
         title: t('Status'),
         key: 'status',
-        render: item => (
-          <Status type={item.status} transition={item.transition_status} />
-        )
+        render: item => <Status type={item.status} transition={item.transition_status} />
       },
       {
         title: t('Instance Name ID'),
         key: 'name',
-        render: item => (
-          <TdName name={item.name} description={item.cluster_id} noIcon />
-        )
+        render: item => <TdName name={item.name} description={item.cluster_id} noIcon />
       },
       {
         title: t('Version'),
@@ -394,11 +367,7 @@ export default class AppDetail extends Component {
             onClear={onClearSearch}
           />
         </div>
-        <Table
-          columns={columns}
-          dataSource={clusters.toJSON()}
-          pagination={pagination}
-        />
+        <Table columns={columns} dataSource={clusters.toJSON()} pagination={pagination} />
       </Fragment>
     );
   }
@@ -414,11 +383,7 @@ export default class AppDetail extends Component {
       <Card className={styles.appBase}>
         <div className={styles.title}>
           <span className={styles.image}>
-            <Image
-              src={appDetail.icon}
-              iconLetter={appDetail.name}
-              iconSize={48}
-            />
+            <Image src={appDetail.icon} iconLetter={appDetail.name} iconSize={48} />
           </span>
           <span className={styles.appName}>{appDetail.name}</span>
         </div>
@@ -429,9 +394,7 @@ export default class AppDetail extends Component {
           </dl>
           <dl>
             <dt>{t('App intro')}</dt>
-            <dd>
-              {appDetail.abstraction || appDetail.description || t('None')}
-            </dd>
+            <dd>{appDetail.abstraction || appDetail.description || t('None')}</dd>
           </dl>
           <dl>
             <dt>{t('Category')}</dt>

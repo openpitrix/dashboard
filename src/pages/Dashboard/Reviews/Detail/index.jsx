@@ -471,7 +471,12 @@ export default class ReviewDetail extends Component {
             <Card>
               <div className={styles.reviewTitle}>
                 <div className={styles.name}>{t('Audit content')}</div>
-                <div className={styles.note}>{t('AUDIT_CONTENT_INTRODUCE')}</div>
+                <div className={styles.note}>
+                  {t('AUDIT_CONTENT_INTRODUCE')}
+                  {/* <a href="#" target="_blank">
+                    {t('view detail standard')} →
+                  </a> */}
+                </div>
               </div>
               <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
               {detailTab === 'baseInfo' && this.renderBaseInfo()}
