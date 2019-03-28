@@ -12,10 +12,7 @@ import App, {
 import Category from './category';
 import Cluster, { Detail as ClusterDetail } from './cluster';
 import Repo, { Create as RepoCreate } from './repo';
-import Runtime, {
-  Credential as RuntimeCredential,
-  RuntimeCluster
-} from './runtime';
+import Runtime, { Credential as RuntimeCredential, RuntimeCluster } from './runtime';
 import User, { Role, Group, Detail as UserDetail } from './user';
 import sshKey from './key_pair';
 import TestingEnv, { Create as TestingEnvCreate } from './testing_env';
@@ -42,7 +39,7 @@ export default class RootStore extends Store {
 
   @action
   setNavFix = fixNav => {
-    if (Date.now() - this.lastSetFixStamp < 500) {
+    if (Date.now() - this.lastSetFixStamp < 300) {
       // fixNav在临界值造成的抖动，忽略此次设置
       return;
     }
@@ -67,11 +64,7 @@ export default class RootStore extends Store {
     let notification = {};
 
     if (typeof msg[0] === 'object') {
-      notification = pick(Object.assign(defaultNotifyOption, msg[0]), [
-        'title',
-        'message',
-        'type'
-      ]);
+      notification = pick(Object.assign(defaultNotifyOption, msg[0]), ['title', 'message', 'type']);
     } else if (typeof msg[0] === 'string') {
       notification = Object.assign(defaultNotifyOption, {
         message: msg[0],
@@ -105,10 +98,7 @@ export default class RootStore extends Store {
     }
     if (typeof Ctor === 'function') {
       this[name] = new Ctor(withState ? this.state : '', name);
-    } else if (
-      typeof Ctor === 'object'
-      && Ctor.opStore.toString() === 'Symbol(op)'
-    ) {
+    } else if (typeof Ctor === 'object' && Ctor.opStore.toString() === 'Symbol(op)') {
       Ctor.setInitialState(withState ? this.state : '', name);
       this[name] = Ctor;
     } else {
