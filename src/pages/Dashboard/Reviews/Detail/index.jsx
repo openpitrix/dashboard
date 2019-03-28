@@ -211,7 +211,7 @@ export default class ReviewDetail extends Component {
             </dl>
           </div>
           <div className={styles.opreateButtons}>
-            {reviewStatus.technical.includes(status) && (
+            {!reviewStatus.business.includes(status) && (
               <Link
                 to={toRoute(routes.portal.deploy, {
                   appId: reviewDetail.app_id,
