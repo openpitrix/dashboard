@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
-import { DATA_LEVEL } from 'config/roles';
+import { PORTAL_NAME, DATA_LEVEL } from 'config/roles';
 import { CONDITION } from 'config/action-id';
 
 import Store from '../Store';
@@ -593,6 +593,7 @@ export default class RoleStore extends Store {
     _.forEach(this.modules, module => {
       this.dataLevelMap[module.module_id] = module.data_level;
     });
+    this.dataLevel = _.get(this.modules, '[0].data_level');
   };
 
   @action
@@ -601,11 +602,13 @@ export default class RoleStore extends Store {
   };
 
   @action
-  initIsv = async () => {
-    await this.fetchRoleModule('isv');
-    this.emptyCheckAction();
+  initIsv = async roleId => {
+    await this.fetchRoleModule(roleId);
+    if (roleId === PORTAL_NAME.isv) {
+      this.emptyCheckAction();
+      this.dataLevel = DATA_LEVEL.self;
+    }
     this.onSelectModule([KeyFeatureAll]);
-    this.dataLevel = DATA_LEVEL.self;
     this.setHandleType('setBindAction');
   };
 

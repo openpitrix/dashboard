@@ -21,6 +21,7 @@
   "Operation list": "操作列表",
   "Edit info": "编辑信息",
   "Can't delete, can edit": "无法删除，可以编辑",
+  "Can't delete and edit": "无法删除和修改",
   "Normal_Role_Description_isv": "应用服务商中心",
   "Normal_Role_Description_user": "应用中心",
   "Change password successful": "修改密码成功",

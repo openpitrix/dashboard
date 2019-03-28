@@ -53,11 +53,7 @@ export const DATA_LEVEL = {
   all: 'all'
 };
 
-export const moduleDataLevels = [
-  DATA_LEVEL.self,
-  DATA_LEVEL.group,
-  DATA_LEVEL.all
-];
+export const moduleDataLevels = [DATA_LEVEL.self, DATA_LEVEL.group, DATA_LEVEL.all];
 
 export const isvDataLevels = [DATA_LEVEL.self, DATA_LEVEL.group];
 
@@ -78,8 +74,7 @@ export const adminRoleDesMap = {
 
 export const isvRoleDesMap = {
   isv: 'Global Admin Role description',
-  developer:
-    'Responsible for development, testing, operation and maintenance applications'
+  developer: 'Responsible for development, testing, operation and maintenance applications'
 };
 
 export default roles;
@@ -115,3 +110,7 @@ export const getRoleDescription = (role = {}, portal = PORTAL_NAME.admin) => {
 };
 
 export const CannotEditController = 'pitrix';
+
+export const CONTROLLER = {
+  admin: CannotEditController
+};
