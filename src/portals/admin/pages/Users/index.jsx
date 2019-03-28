@@ -57,7 +57,10 @@ export default class Users extends Component {
     const { userStore, groupStore, t } = this.props;
     const { protectedGroupsIds } = groupStore;
     const { selectedGroupIds } = userStore;
-    const modifiable = !protectedGroupsIds.includes(node.key) && selectedGroupIds.includes(node.key);
+    // prettier-ignore
+    const modifiable = !protectedGroupsIds.includes(node.key)
+      && selectedGroupIds.includes(node.key);
+
     return this.renderGroupTitle(node, t, modifiable);
   };
 
