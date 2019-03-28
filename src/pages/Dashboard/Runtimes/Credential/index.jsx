@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -7,16 +7,12 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import {
-  PopoverIcon,
-  Icon,
-  Button,
-  Input,
-  Notification
+  PopoverIcon, Icon, Button, Input, Notification
 } from 'components/Base';
 import { Card, Dialog } from 'components/Layout';
 import Loading from 'components/Loading';
 import routes, { toRoute } from 'routes';
-import { formatTime, obj2Qs } from 'utils';
+import { formatTime, obj2Qs, isHelm } from 'utils';
 
 import styles from '../index.scss';
 
@@ -81,23 +77,15 @@ export class Credential extends React.Component {
     const { t } = this.props;
     return (
       <div className="operate-menu">
-        <span
-          onClick={() => this.handleClickAction('modify_auth_info', credential_id)
-          }
-        >
+        <span onClick={() => this.handleClickAction('modify_auth_info', credential_id)}>
           <Icon name="pen" type="dark" />
           {t('Modify')}
         </span>
-        <span
-          onClick={() => this.handleClickAction('add_runtime', credential_id)}
-        >
+        <span onClick={() => this.handleClickAction('add_runtime', credential_id)}>
           <Icon name="add" type="dark" />
           {t('Add runtime')}
         </span>
-        <span
-          onClick={() => this.handleClickAction('delete_auth_info', credential_id)
-          }
-        >
+        <span onClick={() => this.handleClickAction('delete_auth_info', credential_id)}>
           <Icon name="trash" type="dark" />
           {t('Delete')}
         </span>
@@ -106,13 +94,11 @@ export class Credential extends React.Component {
   }
 
   renderModals() {
-    const { envStore, credentialStore, t } = this.props;
     const {
-      isModalOpen,
-      modalType,
-      hideModal,
-      selectCredentialId,
-      handleOperation
+      envStore, credentialStore, platform, t
+    } = this.props;
+    const {
+      isModalOpen, modalType, hideModal, selectCredentialId, handleOperation
     } = envStore;
     const { credentials } = credentialStore;
 
@@ -120,6 +106,7 @@ export class Credential extends React.Component {
       const cr = _.find(credentials, {
         runtime_credential_id: selectCredentialId
       });
+
       return (
         <Dialog
           title={t('Modify authorization info')}
@@ -129,20 +116,29 @@ export class Credential extends React.Component {
         >
           <div className={styles.fmCtrl}>
             <label className={styles.label}>{t('Name')}</label>
-            <Input
-              className={styles.field}
-              name="name"
-              defaultValue={cr.name}
-            />
+            <Input className={styles.field} name="name" defaultValue={cr.name} />
           </div>
           <div className={styles.fmCtrl}>
             <label className={styles.label}>{t('Description')}</label>
-            <Input
-              className={styles.field}
-              name="description"
-              defaultValue={cr.description}
-            />
+            <Input className={styles.field} name="description" defaultValue={cr.description} />
           </div>
+          {!isHelm(platform) ? (
+            <Fragment>
+              <div className={styles.fmCtrl}>
+                <label className={styles.label}>{t('Access Key ID')}</label>
+                <Input className={styles.field} name="access_key" />
+              </div>
+              <div className={styles.fmCtrl}>
+                <label className={styles.label}>{t('Secret Access Key')}</label>
+                <Input className={styles.field} name="secret_key" />
+              </div>
+            </Fragment>
+          ) : (
+            <div className={styles.fmCtrl}>
+              <label className={styles.label}>{t('Credential')}</label>
+              <textarea name="credential" className={styles.textArea} />
+            </div>
+          )}
         </Dialog>
       );
     }
@@ -168,11 +164,7 @@ export class Credential extends React.Component {
       <Card className={styles.emptyData}>
         <p>{t('No authorization info')}</p>
         <p>{t('TIPS_NOT_ADD_AUTH', { platform: envStore.platformName })}</p>
-        <Button
-          type="primary"
-          className={styles.btnAddEnv}
-          onClick={this.goPage}
-        >
+        <Button type="primary" className={styles.btnAddEnv} onClick={this.goPage}>
           <Icon name="add" type="white" />
           {t('Add')}
         </Button>
@@ -189,28 +181,21 @@ export class Credential extends React.Component {
 
     return (
       <div className={styles.authInfos}>
-        {_.map(
-          credentials,
-          ({
-            name, description, runtime_credential_id, create_time
-          }, idx) => (
-            <Card className={styles.info} key={idx}>
-              <span className={styles.name}>{name}</span>
-              <span className={styles.desc}>{description}</span>
-              <span className={styles.time}>
-                {formatTime(create_time, `YYYY年MM月DD日 HH:mm:ss`)}
-              </span>
-              <PopoverIcon
-                className={classnames(
-                  'operation',
-                  styles.actionPop,
-                  styles.fixMenu
-                )}
-                content={this.renderMenu(runtime_credential_id)}
-              />
-            </Card>
-          )
-        )}
+        {_.map(credentials, ({
+          name, description, runtime_credential_id, create_time
+        }, idx) => (
+          <Card className={styles.info} key={idx}>
+            <span className={styles.name}>{name}</span>
+            <span className={styles.desc}>{description}</span>
+            <span className={styles.time}>
+              {formatTime(create_time, `YYYY年MM月DD日 HH:mm:ss`)}
+            </span>
+            <PopoverIcon
+              className={classnames('operation', styles.actionPop, styles.fixMenu)}
+              content={this.renderMenu(runtime_credential_id)}
+            />
+          </Card>
+        ))}
         <div className={styles.addAuthInfo}>
           <Icon name="add" />
           <span onClick={this.goPage} className={styles.btnAdd}>

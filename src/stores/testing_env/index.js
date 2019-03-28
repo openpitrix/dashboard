@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 import { providers as providersConf, CLUSTER_TYPE } from 'config/runtimes';
+import { isHelm } from 'utils';
 import Store from '../Store';
 
 export default class TestingEnvStore extends Store {
@@ -47,11 +48,7 @@ export default class TestingEnvStore extends Store {
   }
 
   get platformName() {
-    return _.get(
-      _.find(providersConf, { key: this.platform }),
-      'name',
-      this.platform
-    );
+    return _.get(_.find(providersConf, { key: this.platform }), 'name', this.platform);
   }
 
   @action
@@ -93,17 +90,12 @@ export default class TestingEnvStore extends Store {
     const curHandleRt = _.find(this.runtimeStore.runtimes, {
       runtime_id: this.selectId
     });
-    const curHandleCredential = _.find(this.credentialStore.credentials, {
-      runtime_credential_id: this.selectCredentialId
-    });
 
     // runtime ops
     if (this.modalType === 'modify_runtime') {
       const pickKeys = ['name', 'description'];
       const data = _.pick(formData, pickKeys);
-      if (
-        JSON.stringify(data) === JSON.stringify(_.pick(curHandleRt, pickKeys))
-      ) {
+      if (JSON.stringify(data) === JSON.stringify(_.pick(curHandleRt, pickKeys))) {
         this.isLoading = false;
         return this.warn('Data not changed');
       }
@@ -157,19 +149,38 @@ export default class TestingEnvStore extends Store {
 
     // credential ops
     if (this.modalType === 'modify_auth_info') {
-      const pickKeys = ['name', 'description'];
-      const data = _.pick(formData, pickKeys);
-      if (
-        JSON.stringify(data)
-        === JSON.stringify(_.pick(curHandleCredential, pickKeys))
-      ) {
-        this.isLoading = false;
-        return this.warn('Data not changed');
+      const {
+        name, description, access_key, secret_key, credential
+      } = formData;
+      const params = {
+        name,
+        description
+      };
+
+      let runtime_credential = '';
+      if (!isHelm(this.platformName)) {
+        if (access_key && secret_key) {
+          runtime_credential = JSON.stringify({
+            access_key_id: access_key,
+            secret_access_key: secret_key
+          });
+        }
+
+        if ((access_key && !secret_key) || (!access_key && secret_key)) {
+          this.isLoading = false;
+          return this.warn(`Access key or secret key is not completed`);
+        }
+      } else {
+        runtime_credential = credential || '';
+      }
+
+      if (runtime_credential) {
+        Object.assign(params, { runtime_credential_content: runtime_credential });
       }
 
       const res = await this.request.patch(
         'runtimes/credentials',
-        _.extend(data, {
+        Object.assign(params, {
           runtime_credential_id: this.selectCredentialId
         })
       );
@@ -207,10 +218,7 @@ export default class TestingEnvStore extends Store {
       owner: this.userId,
       noLimit: true
     });
-    this.providerCounts = _.mapValues(
-      this.getProviderRuntimesMap(),
-      v => v.length
-    );
+    this.providerCounts = _.mapValues(this.getProviderRuntimesMap(), v => v.length);
     this.isLoading = false;
   };
 
