@@ -1,6 +1,6 @@
 @import '~scss/vars';
 
-.wrapper{
+.wrapper {
   //margin: 0 auto 24px;
   //width: $content-width;
 
@@ -12,7 +12,7 @@
       box-shadow: none;
     }
 
-    .title{
+    .title {
       //padding: 20px 32px;
       padding: 20px 24px;
       line-height: 24px;
@@ -28,21 +28,21 @@
     }
   }
 
-  .aside{
-    .title{
+  .aside {
+    .title {
       margin-bottom: 16px;
       line-height: 24px;
-      font-size:20px;
+      font-size: 20px;
       font-weight: 500;
       color: $N500;
     }
 
-    .content{
+    .content {
       font-size: 14px;
       line-height: 1.43;
       text-align: left;
       color: #4c4752;
-      p{
+      p {
         margin-bottom: 20px;
         @include ParapraphRobotoLeftBlack;
       }

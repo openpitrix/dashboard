@@ -1,7 +1,9 @@
 /* Text styles */
 
-$family-sans-serif: "Roboto", "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", 微软雅黑, STHeitiSC-Light, simsun, 宋体, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
-$family-monospace: Inconsolata,Consolas,Monaco,monospace;
+$family-sans-serif: 'Roboto', 'PingFang SC', 'Lantinghei SC', 'Helvetica Neue',
+  Helvetica, Arial, 'Microsoft YaHei', 微软雅黑, STHeitiSC-Light, simsun, 宋体,
+  'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
+$family-monospace: Inconsolata, Consolas, Monaco, monospace;
 
 $family-primary: $family-sans-serif;
 
@@ -20,4 +22,4 @@ $font20: 20px;
 $font32: 32px;
 $font40: 40px;
 
-@import "./zeplin-text-mixins";
+@import './zeplin-text-mixins';

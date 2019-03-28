@@ -18,7 +18,7 @@ export default class Histogram extends PureComponent {
           <div className={styles.column} key={index}>
             <div
               className={styles.inner}
-              style={{ height: `${data.number * 100.0 / max}%` }}
+              style={{ height: `${(data.number * 100.0) / max}%` }}
             />
             <div className={styles.tips}>
               <span className={styles.arrow} />

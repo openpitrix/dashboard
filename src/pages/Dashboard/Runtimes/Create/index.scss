@@ -1,8 +1,8 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 $form-item-width: 387px;
 
-.pgHeader{
+.pgHeader {
   font-size: $size-small !important;
   color: $N75 !important;
 }
@@ -27,7 +27,7 @@ $form-item-width: 387px;
       min-height: 388px;
     }
 
-    .createForm{
+    .createForm {
       .formCtrl {
         margin-bottom: 32px;
         .label {
@@ -50,9 +50,8 @@ $form-item-width: 387px;
           width: $form-item-width;
         }
       }
-      
-      .btnVerify {
 
+      .btnVerify {
       }
       .selectZones {
         width: $form-item-width;
@@ -69,7 +68,8 @@ $form-item-width: 387px;
           padding: 9px 12px;
           cursor: pointer;
           border: 1px solid transparent;
-          &:hover, &.activeZone {
+          &:hover,
+          &.activeZone {
             color: $P75;
             border: 1px solid $P75;
             box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
@@ -82,7 +82,7 @@ $form-item-width: 387px;
       margin-top: 28px;
     }
 
-    .errMsg{
+    .errMsg {
       position: relative;
       display: inline-block;
       margin-left: 12px;
@@ -91,7 +91,7 @@ $form-item-width: 387px;
       .msg {
         position: absolute;
         top: 4px;
-        display: inline-block;;
+        display: inline-block;
         margin-left: 5px;
         font-size: $size-small;
         color: $N75;
@@ -130,7 +130,7 @@ $form-item-width: 387px;
       }
     }
 
-    .tips{
+    .tips {
       & > div {
         margin-top: 24px;
         font-size: $size-small;
@@ -164,14 +164,16 @@ $form-item-width: 387px;
   .item {
     width: 453px;
     border-radius: 2px;
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
     background-color: $N0;
     cursor: pointer;
     border: 1px solid transparent;
     padding: 14px 24px;
     @include normal-font;
     margin-bottom: 8px;
-    &:hover, &.checked {
+    &:hover,
+    &.checked {
       border: 1px solid $P75;
     }
     .name {
@@ -219,7 +221,7 @@ $form-item-width: 387px;
 .tipWrap {
   width: 453px;
   margin: 0 auto;
-  margin-bottom:12px;
+  margin-bottom: 12px;
   hr {
     margin: 24px 0;
     height: 1px;

@@ -1,51 +1,51 @@
 @import '~scss/vars';
 
-.clusterList{
-  .statusDot{
+.clusterList {
+  .statusDot {
     display: inline-block;
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background-color: $G75;
   }
-  .active{
+  .active {
     background-color: $G75;
   }
-  .pending{
+  .pending {
     background-color: $B75;
   }
-  .suspended{
+  .suspended {
     background-color: $Y100;
   }
-  .deleted{
+  .deleted {
     background-color: $R300;
   }
-  .stopped{
+  .stopped {
     background-color: $N30;
   }
-  li{
+  li {
     box-sizing: border-box;
     padding: 12px 12px 10px 12px;
     height: 60px;
     border-bottom: 1px solid $N10;
-    &:hover{
+    &:hover {
       background-color: $li-hover-bg;
-      .name{
+      .name {
         color: $link-hover;
       }
     }
   }
-  .dot{
-    float:left;
+  .dot {
+    float: left;
     margin: 9px 12px 0 0;
     width: 12px;
     height: 12px;
   }
-  .word{
+  .word {
     float: left;
     width: calc(100% - 100px);
 
-    .name{
+    .name {
       display: block;
       font-size: 14px;
       font-weight: 500;
@@ -54,23 +54,23 @@
       @include textCut;
     }
 
-    .description{
+    .description {
       font-size: 12px;
       line-height: 20px;
       color: $N100;
       @include textCut;
     }
   }
-  .total{
+  .total {
     float: right;
     min-width: 3em;
-    .nodes{
+    .nodes {
       margin-bottom: 4px;
       font-size: 12px;
-      line-height: 1.0;
+      line-height: 1;
       color: $N300;
     }
-    .time{
+    .time {
       font-size: 12px;
       line-height: 20px;
       text-align: right;
@@ -78,4 +78,3 @@
     }
   }
 }
-

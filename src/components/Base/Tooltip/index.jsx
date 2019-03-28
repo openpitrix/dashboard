@@ -182,14 +182,10 @@ export default class Tooltip extends React.Component {
         </Target>
         <PopoverComponent {...popProps}>
           {content}
-          {isShowArrow
-            && content && (
-              <Arrow
-                className={classNames(
-                  styles.arrow,
-                  `${prefixCls}-popper_arrow`
-                )}
-              />
+          {isShowArrow && content && (
+            <Arrow
+              className={classNames(styles.arrow, `${prefixCls}-popper_arrow`)}
+            />
           )}
         </PopoverComponent>
       </Manager>

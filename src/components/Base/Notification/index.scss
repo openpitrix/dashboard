@@ -17,9 +17,9 @@ $bg-error: red;
   .notification {
     position: relative;
     box-sizing: border-box;
-    min-width:320px;
+    min-width: 320px;
     max-width: 600px;
-    min-height:40px;
+    min-height: 40px;
     padding: 7px 15px;
     margin-bottom: 10px;
 
@@ -34,8 +34,8 @@ $bg-error: red;
     animation-duration: 2s;
     animation-name: slidein;
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 10px;
         margin-top: 2px;

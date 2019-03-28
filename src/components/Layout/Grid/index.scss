@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 $debug: false !default;
 $row-gap: 24px;
@@ -14,7 +14,7 @@ $row-gap: 24px;
   :global {
     @for $i from 1 through $columns {
       @include calc-section-size($i);
-      @include calc-section-offset($i - 1)
+      @include calc-section-offset($i - 1);
     }
   }
 

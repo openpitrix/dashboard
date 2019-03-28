@@ -8,6 +8,7 @@ fi
 
 failed=0
 for file in ${files}; do
+  prettier --write $file
   eslint --fix $file
   if [[ $? != 0 ]] ; then
     failed=1

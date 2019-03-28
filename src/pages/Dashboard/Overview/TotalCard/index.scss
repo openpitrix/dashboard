@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .totalCard {
   box-sizing: border-box;
@@ -7,8 +7,8 @@
   text-align: right;
   cursor: pointer;
 
-  :global{
-    .icon{
+  :global {
+    .icon {
       float: left;
     }
   }
@@ -28,5 +28,3 @@
     color: $N500;
   }
 }
-
-

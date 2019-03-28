@@ -43,7 +43,11 @@ export default class Clusters extends Component {
 
   async componentDidMount() {
     const {
-      rootStore, clusterStore, runtimeStore, user, fetchData
+      rootStore,
+      clusterStore,
+      runtimeStore,
+      user,
+      fetchData
     } = this.props;
 
     if (_.isFunction(fetchData)) {
@@ -215,7 +219,10 @@ export default class Clusters extends Component {
           <label className={styles.appImage}>
             <Image src={app.icon} iconLetter={app.name} iconSize={20} />
           </label>
-          <Link to={toRoute(routes.appDetail, { appId: app.app_id })} className={styles.appName}>
+          <Link
+            to={toRoute(routes.appDetail, { appId: app.app_id })}
+            className={styles.appName}
+          >
             {app.name}
           </Link>
           <VersionType types={version.type} />
@@ -330,7 +337,9 @@ export default class Clusters extends Component {
               cols = cols.filter(item => item.key !== 'owner');
             }
             if (isAgent) {
-              cols = cols.filter(item => item.key !== 'app_id' && item.key !== 'actions');
+              cols = cols.filter(
+                item => item.key !== 'app_id' && item.key !== 'actions'
+              );
             }
             return cols;
           }}
@@ -378,7 +387,11 @@ export default class Clusters extends Component {
     }
 
     return (
-      <Layout pageTitle={pageTitle} isCenterPage={user.isAdmin} noSubMenu={user.isAdmin}>
+      <Layout
+        pageTitle={pageTitle}
+        isCenterPage={user.isAdmin}
+        noSubMenu={user.isAdmin}
+      >
         {this.renderMain()}
       </Layout>
     );

@@ -6,7 +6,8 @@
   padding: 32px 64px;
   background-color: $N0;
   border-radius: 2px;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
 
   textarea {
     width: 100%;
@@ -20,7 +21,7 @@
     }
   }
 
-  dt  {
+  dt {
     @include title-font;
   }
 
@@ -47,17 +48,17 @@
   }
 
   .protocol {
-    @include normal-font($line-height: 20px)
+    @include normal-font($line-height: 20px);
   }
 
-  .error{
+  .error {
     position: relative;
 
     input {
       border-color: $R300;
     }
 
-    >p {
+    > p {
       position: absolute;
       left: 0;
       margin-top: 8px;
@@ -101,6 +102,10 @@
     width: 600px;
     text-align: left;
     opacity: 0.1;
-    background: linear-gradient(to bottom, rgba(249, 250, 251, 0.81), $background-color);
+    background: linear-gradient(
+      to bottom,
+      rgba(249, 250, 251, 0.81),
+      $background-color
+    );
   }
 }

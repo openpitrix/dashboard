@@ -1,5 +1,5 @@
-@import "./partial/color";
-@import "./partial/text";
+@import './partial/color';
+@import './partial/text';
 
 @mixin calc-section-size($size: 1) {
   .section-size-#{$size} {
@@ -12,7 +12,7 @@
   }
 }
 
-@mixin calc-section-offset($offset: 0){
+@mixin calc-section-offset($offset: 0) {
   .section-offset-#{$offset} {
     margin-left: calc((#{$grid-width} + #{$grid-gap}) * #{$offset});
   }
@@ -27,7 +27,8 @@
   background-color: $bg-color;
   //min-height: 100px;
   height: auto;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06),
+    0 4px 8px 0 rgba(0, 0, 0, 0.04);
   border: 1px solid $N0;
 
   &:hover {
@@ -78,16 +79,20 @@
 
 @mixin rotate-frames() {
   0% {
-    -webkit-transform:rotate(0deg);
-    transform:rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform:rotate(360deg);
-    transform:rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-@-webkit-keyframes rotate {@include rotate-frames;}
-@keyframes rotate {@include rotate-frames;}
+@-webkit-keyframes rotate {
+  @include rotate-frames;
+}
+@keyframes rotate {
+  @include rotate-frames;
+}
 
 @mixin centerAll {
   display: flex;
@@ -96,28 +101,28 @@
   flex-direction: column;
 }
 
-@mixin note-font ($line-height: 20px, $font-size: 12px){
+@mixin note-font($line-height: 20px, $font-size: 12px) {
   line-height: $line-height;
   font-weight: normal;
   font-size: $font-size;
   color: $N75;
 }
 
-@mixin title-font ($line-height: 28px, $font-size: 14px) {
+@mixin title-font($line-height: 28px, $font-size: 14px) {
   line-height: $line-height;
   font-size: $font-size;
   font-weight: 500;
   color: $N500;
 }
 
-@mixin normal-font ($line-height: 20px, $font-size: 12px) {
-  line-height:$line-height;
+@mixin normal-font($line-height: 20px, $font-size: 12px) {
+  line-height: $line-height;
   font-weight: normal;
   font-size: $font-size;
   color: $N300;
 }
 
-@mixin form-item ($align-items: center) {
+@mixin form-item($align-items: center) {
   display: flex;
   align-items: $align-items;
   margin-bottom: $form-item-margin-bottom;
@@ -131,6 +136,6 @@
     width: $form-input-normal;
   }
 }
-@mixin form-textarea () {
+@mixin form-textarea() {
   @include form-item($align-items: flex-start);
 }

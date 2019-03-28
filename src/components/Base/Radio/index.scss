@@ -33,13 +33,13 @@
     line-height: 16px;
     color: $N300;
   }
-  &:hover{
+  &:hover {
     .circle {
       background-color: $N10;
       border-color: $N30;
     }
   }
-  &:active{
+  &:active {
     .circle {
       border-color: $P100 !important;
     }
@@ -48,12 +48,12 @@
     .circle {
       border: solid 4px $P75;
     }
-    &:hover{
+    &:hover {
       .circle {
         border-color: $P65;
       }
     }
-    &:active{
+    &:active {
       .circle {
         border-color: $P100 !important;
       }
@@ -69,13 +69,13 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-  &:hover{
+  &:hover {
     .circle {
       background-color: $N0;
       border-color: $N30;
     }
   }
-  &:active{
+  &:active {
     .circle {
       border-color: $N30 !important;
     }
@@ -84,12 +84,12 @@
     .circle {
       border: solid 4px $P75;
     }
-    &:hover{
+    &:hover {
       .circle {
         border-color: $P75;
       }
     }
-    &:active{
+    &:active {
       .circle {
         border-color: $P75 !important;
       }

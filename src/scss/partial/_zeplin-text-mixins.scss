@@ -3,19 +3,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-@mixin descHide($line-height,$lines) {
-  position:relative;
+@mixin descHide($line-height, $lines) {
+  position: relative;
   line-height: $line-height;
-  height: $lines*$line-height;
-  overflow:hidden;
+  height: $lines * $line-height;
+  overflow: hidden;
 }
 @mixin descCutAfter {
-  content:"...";
-  font-weight:bold;
-  position:absolute;
-  bottom:0;
-  right:0;
-  padding:0 6px 0px 6px;
+  content: '...';
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 6px 0px 6px;
   background-color: #fff;
 }
 

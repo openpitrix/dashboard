@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .button {
   height: 32px;
@@ -10,7 +10,7 @@
   background-color: $N0;
   box-shadow: 0 1px 3px 0 rgba(71, 78, 93, 0.07);
   cursor: pointer;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   :global {
     .icon {
       float: left;
@@ -40,7 +40,8 @@
   &.primary {
     color: $N0;
     background-color: $P75;
-    box-shadow: 0 1px 3px 0 rgba(73, 33, 173, 0.16), 0 1px 2px 0 rgba(52, 57, 69, 0.03);
+    box-shadow: 0 1px 3px 0 rgba(73, 33, 173, 0.16),
+      0 1px 2px 0 rgba(52, 57, 69, 0.03);
 
     &:hover {
       background-color: $P100 !important;
@@ -66,7 +67,7 @@
       background-color: rgba(188, 194, 209, 0.3);
       border: solid 1px $N45;
     }
-    &:disabled{
+    &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
@@ -76,13 +77,13 @@
     color: $N0;
     background-color: $R75;
     box-shadow: 0 1px 2px 0 rgba(178, 42, 38, 0.19);
-    &:hover{
+    &:hover {
       background-color: $R65 !important;
     }
     &:active {
       background-color: $R200 !important;
     }
-    &:disabled{
+    &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }

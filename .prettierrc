@@ -4,4 +4,8 @@ semi: true
 singleQuote: true
 trailingComma: none
 bracketSpacing: true
-printWidth: 100
+printWidth: 80
+useTabs: false
+tabWidth: 2
+jsxBracketSameLine: false
+proseWrap: "always"

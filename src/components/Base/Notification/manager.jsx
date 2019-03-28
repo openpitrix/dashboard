@@ -28,8 +28,17 @@ export default class NotificationManager extends React.Component {
       <div className={classnames(styles.wrapper, className)}>
         <TransitionGroup>
           {notifications.map(item => (
-            <CSSTransition unmountOnExit key={item.ts} timeout={500} classNames="slide-down">
-              <NotificationItem className={itemClass} {...item} detach={detachNotify} />
+            <CSSTransition
+              unmountOnExit
+              key={item.ts}
+              timeout={500}
+              classNames="slide-down"
+            >
+              <NotificationItem
+                className={itemClass}
+                {...item}
+                detach={detachNotify}
+              />
             </CSSTransition>
           ))}
         </TransitionGroup>

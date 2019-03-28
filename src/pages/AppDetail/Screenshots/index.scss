@@ -56,23 +56,23 @@
   .listOuter {
     position: relative;
     margin: 0 36px;
-    height: $picture-height + $picture-margin*2;
-    width:  $picture-width *2 + $picture-margin*5;
+    height: $picture-height + $picture-margin * 2;
+    width: $picture-width * 2 + $picture-margin * 5;
     overflow: hidden;
 
     .pictureList {
       position: absolute;
       left: 0;
       bottom: 0;
-      width: ($picture-width + $picture-margin*3)*6;
+      width: ($picture-width + $picture-margin * 3) * 6;
       transition: all 0.5s ease-in-out;
     }
   }
 
   .pictureOuter {
     float: left;
-    width: $picture-width + $picture-margin*2;
-    height: $picture-height + $picture-margin*2;
+    width: $picture-width + $picture-margin * 2;
+    height: $picture-height + $picture-margin * 2;
     background-color: $background-color;
     margin-right: $picture-margin;
 

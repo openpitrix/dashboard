@@ -7,7 +7,8 @@
   overflow: hidden;
   border-radius: 2px;
   background-color: $N0;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
   &:hover {
     //box-shadow: 0 2px 8px 0 rgba(48, 14, 86, 0.08), 0 2px 10px 0 rgba(48, 14, 86, 0.04), 0 6px 20px 0 rgba(48, 14, 86, 0.16), 0 0 16px 0 rgba(48, 14, 86, 0.04);
   }
@@ -21,8 +22,10 @@
       @include moreText();
     }
   }
-  :global{
-    .pi-table-thead, .pi-pagination,[class*='_pagination']{
+  :global {
+    .pi-table-thead,
+    .pi-pagination,
+    [class*='_pagination'] {
       display: none;
     }
   }
@@ -50,7 +53,7 @@
      }
    }
  }*/
-.blankList{
+.blankList {
   position: relative;
   box-sizing: border-box;
   padding: 0 30px;
@@ -58,19 +61,20 @@
   overflow: hidden;
   border-radius: 3px;
   background-color: #fff;
-  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06), 0 4px 8px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(48, 14, 86, 0.06),
+    0 4px 8px 0 rgba(0, 0, 0, 0.04);
   text-align: center;
-  .iconName{
+  .iconName {
     margin: 60px 0 30px;
   }
-  .title{
+  .title {
     margin-bottom: 12px;
     font-size: 16px;
     line-height: 1.25;
     font-weight: 500;
     color: $N500;
   }
-  .description{
+  .description {
     height: 96px;
     font-size: 14px;
     line-height: 1.71;
@@ -78,7 +82,7 @@
     color: $N75;
     overflow: hidden;
   }
-  .button{
+  .button {
     position: absolute;
     bottom: 60px;
     left: 50%;

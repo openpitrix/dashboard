@@ -37,6 +37,12 @@ export default class UserInstance extends React.Component {
   render() {
     const { t } = this.props;
 
-    return <Clusters fetchData={this.fetchData} title={t('Customer-Instances')} {...this.props} />;
+    return (
+      <Clusters
+        fetchData={this.fetchData}
+        title={t('Customer-Instances')}
+        {...this.props}
+      />
+    );
   }
 }

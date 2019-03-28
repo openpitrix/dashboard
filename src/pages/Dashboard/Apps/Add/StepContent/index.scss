@@ -1,19 +1,23 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 @mixin load-frames() {
   0% {
-    -webkit-transform:rotate(0deg);
-    transform:rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform:rotate(360deg);
-    transform:rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-@-webkit-keyframes load {@include load-frames;}
-@keyframes load {@include load-frames;}
+@-webkit-keyframes load {
+  @include load-frames;
+}
+@keyframes load {
+  @include load-frames;
+}
 
-.stepContent{
+.stepContent {
   padding: 100px 0;
   /*position: fixed;
   top: calc(50% + 20px);
@@ -23,14 +27,14 @@
   //min-height: 500px;
   text-align: center;
 
-  .stepName{
+  .stepName {
     margin-bottom: 4px;
     font-size: 14px;
     line-height: 24px;
     color: $N300;
   }
 
-  .stepExplain{
+  .stepExplain {
     margin-bottom: 40px;
     font-size: 24px;
     font-weight: 500;
@@ -39,7 +43,7 @@
     color: $N500;
   }
 
-  .stepOperate{
+  .stepOperate {
     display: inline-block;
     margin: 60px 0 0;
     font-size: 14px;
@@ -47,13 +51,13 @@
     text-align: center;
     color: $P75;
     cursor: pointer;
-    &.noClick{
+    &.noClick {
       opacity: 0.5;
       cursor: not-allowed;
     }
   }
 
-  .upload{
+  .upload {
     position: relative;
     display: inline-block;
     box-sizing: border-box;
@@ -67,53 +71,53 @@
     text-align: left;
     cursor: pointer;
 
-    .word{
+    .word {
       margin-bottom: 4px;
       font-size: 14px;
       line-height: 24px;
       color: $N300;
     }
 
-    .note{
+    .note {
       font-size: 12px;
       line-height: 20px;
       color: $N100;
     }
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 12px;
       }
     }
   }
 
-  .uploading{
+  .uploading {
     opacity: 0.3;
     cursor: not-allowed;
-    .loading{
+    .loading {
       position: absolute;
       top: 28px;
       left: 244px;
       z-index: 2;
       width: 64px;
       height: 64px;
-      border-radius:50%;
+      border-radius: 50%;
       &:after {
         width: 64px;
         height: 64px;
-        border-radius:50%;
+        border-radius: 50%;
       }
       border-top: 2px solid $P300;
-      border-right: 2px solid  $P300;
+      border-right: 2px solid $P300;
       border-bottom: 2px solid $P10;
       border-left: 2px solid $P10;
-      animation:load 1s infinite linear;
+      animation: load 1s infinite linear;
       opacity: 3.33;
     }
   }
 
-  .errorNote{
+  .errorNote {
     display: inline-block;
     box-sizing: border-box;
     width: 552px;
@@ -128,8 +132,8 @@
     border: solid 1px $R45;
     text-align: left;
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 12px;
         svg {
@@ -140,15 +144,15 @@
     }
   }
 
-  .checkImg{
+  .checkImg {
     margin: 48px 0 40px;
-    >label{
+    > label {
       display: inline-block;
       width: 48px;
       height: 48px;
       border-radius: 50%;
       background-color: $G300;
-      :global{
+      :global {
         svg {
           --primary-color: #{$N0};
           --secondary-color: #{$N0};
@@ -157,19 +161,19 @@
     }
   }
 
-  .operateBtn{
+  .operateBtn {
     margin-bottom: 12px;
-    button{
+    button {
       margin: 0 6px;
     }
   }
 
-  .operateWord{
+  .operateWord {
     margin-bottom: 16px;
     font-size: 12px;
     line-height: 20px;
     color: $N100;
-    .link{
+    .link {
       color: $P75;
       cursor: pointer;
     }

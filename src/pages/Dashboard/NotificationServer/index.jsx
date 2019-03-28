@@ -44,7 +44,11 @@ export default class NotificationServer extends Component {
 
     return (
       <div className={styles.testConnect}>
-        <Icon className={styles[testStatus]} name={t(iconType[testStatus])} type={type} />
+        <Icon
+          className={styles[testStatus]}
+          name={t(iconType[testStatus])}
+          type={type}
+        />
         {t(`Connect ${testStatus}`)}
       </div>
     );
@@ -81,10 +85,17 @@ export default class NotificationServer extends Component {
           <Panel className={styles.panel}>
             <h3 className={styles.header}>
               <strong>{t('Mail server config')}</strong>
-              {handleType === '' && <Button onClick={changeTypeEdit}>{t('Edit')}</Button>}
+              {handleType === '' && (
+                <Button onClick={changeTypeEdit}>{t('Edit')}</Button>
+              )}
               {handleType === 'edit' && (
                 <Fragment>
-                  <Button type={`primary`} className={`primary`} htmlType="submit" onClick={save}>
+                  <Button
+                    type={`primary`}
+                    className={`primary`}
+                    htmlType="submit"
+                    onClick={save}
+                  >
                     {t('Save')}
                   </Button>
                   <Button onClick={cancleSave}>{t('Cancel')}</Button>
@@ -112,7 +123,9 @@ export default class NotificationServer extends Component {
 
                 <div>
                   <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t('Server host name')}`}</label>
+                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                      'Server host name'
+                    )}`}</label>
                     <Input
                       disabled={disabled}
                       name="email_host"
@@ -123,7 +136,9 @@ export default class NotificationServer extends Component {
                   </div>
 
                   <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t('Server host port')}`}</label>
+                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                      'Server host port'
+                    )}`}</label>
                     <Input
                       disabled={disabled}
                       name="port"

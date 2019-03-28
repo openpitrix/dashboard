@@ -49,7 +49,7 @@
     max-width: calc(100% - 192px);
   }
 
-  .textareaItem >label {
+  .textareaItem > label {
     float: left;
     position: relative;
     top: 10px;
@@ -106,7 +106,7 @@
   .pubKey {
     margin-bottom: 12px;
     height: 32px;
-    line-height: 16px
+    line-height: 16px;
   }
 
   .time {

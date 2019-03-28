@@ -1,24 +1,24 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
-.tagShow{
+.tagShow {
   display: inline-block;
   margin-right: 15px;
-  .inner{
+  .inner {
     display: inline-block;
     height: 20px;
     font-size: 12px;
-    line-height: 1.0;
+    line-height: 1;
     border-radius: 9.5px;
     background-color: $N0;
     border: solid 1px $Y45;
     color: $Y500;
   }
-  .name{
+  .name {
     display: inline-block;
     padding: 3px 5px 3px 12px;
     overflow: auto;
   }
-  .content{
+  .content {
     float: right;
     display: inline-block;
     padding: 3px 12px 3px 5px;
@@ -30,29 +30,29 @@
     white-space: nowrap;
   }
 }
-.purple{
+.purple {
   display: block;
   margin-right: 0;
-  &:last-child{
-    .inner{
+  &:last-child {
+    .inner {
       margin-bottom: 0;
     }
   }
-  .inner{
+  .inner {
     border: solid 1px $P30;
     color: $P100;
     margin-bottom: 10px;
   }
-  .content{
+  .content {
     background-color: $P30;
   }
 }
-.purple2{
-  .inner{
+.purple2 {
+  .inner {
     border: solid 1px $P30;
     color: $P100;
   }
-  .content{
+  .content {
     background-color: $P30;
   }
 }

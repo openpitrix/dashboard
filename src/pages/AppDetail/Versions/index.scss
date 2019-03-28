@@ -12,7 +12,8 @@
   border-spacing: 0;
   text-align: left;
 
-  th, td {
+  th,
+  td {
     border-right: 1px solid $N10;
     border-bottom: 1px solid $N10;
     vertical-align: top;
@@ -23,7 +24,6 @@
 
     &:nth-child(2) {
       width: 20%;
-
     }
 
     &:last-child {
@@ -50,7 +50,7 @@
     word-break: break-all;
 
     .type {
-      @include title-font ($line-height: 20px, $font-size: 12px);
+      @include title-font($line-height: 20px, $font-size: 12px);
       margin-bottom: 8px;
     }
 

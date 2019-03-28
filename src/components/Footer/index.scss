@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .footer {
   position: absolute;
@@ -30,10 +30,10 @@
       }
     }
     .terms {
-      display:inline-block;
+      display: inline-block;
       float: right;
       line-height: $footer-height;
-      & > li{
+      & > li {
         list-style-type: none;
         float: left;
         text-align: right;
@@ -49,7 +49,7 @@
   }
 
   .dot {
-    display:inline-block;
+    display: inline-block;
     height: 3px;
     width: 3px;
     background-color: $N100;

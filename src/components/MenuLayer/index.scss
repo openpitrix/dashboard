@@ -17,7 +17,7 @@
       }
     }
 
-    &>a {
+    & > a {
       display: block;
       line-height: 32px;
       font-size: 12px;
@@ -26,7 +26,8 @@
       border-radius: 0;
       cursor: pointer;
 
-      &.active , &:hover {
+      &.active,
+      &:hover {
         background-color: $N10;
         color: $N500;
       }
@@ -36,7 +37,6 @@
         margin: 4px 8px 8px 15px;
       }
       > .label {
-
       }
     }
 
@@ -68,7 +68,6 @@
             }
           }
         }
-
       }
 
       .devIconOuter {

@@ -104,7 +104,13 @@ export default class Account extends Component {
       >
         <div>
           <label className={styles.name}>{t('Current Password')}</label>
-          <Input className={styles.input} name="password" type="password" maxLength={50} required />
+          <Input
+            className={styles.input}
+            name="password"
+            type="password"
+            maxLength={50}
+            required
+          />
         </div>
         <div>
           <label className={styles.name}>{t('New Password')}</label>
@@ -161,7 +167,13 @@ export default class Account extends Component {
         </div>
         <div>
           <label className={styles.name}>{t('Email')}</label>
-          <Input className={styles.input} name="email" value={userDetail.email} disabled readOnly />
+          <Input
+            className={styles.input}
+            name="email"
+            value={userDetail.email}
+            disabled
+            readOnly
+          />
         </div>
         <div>
           <label className={styles.name}>{t('Language setting')}</label>

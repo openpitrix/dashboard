@@ -24,7 +24,6 @@
     margin-left: $menu-nav-width + 20px;
   }
 
-
   &.noTabs {
     padding-top: $header-height + 32px;
   }
@@ -48,7 +47,7 @@
 
 .centerPage {
   margin: 0 auto;
-  width: calc(100% - #{$min-center-page-margin}*2);
+  width: calc(100% - #{$min-center-page-margin}* 2);
   max-width: $max-center-page-width;
 }
 
