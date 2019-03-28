@@ -44,7 +44,7 @@
   .fileInfo {
     margin-bottom: 20px;
     padding: 46px 0 42px;
-    background-color: #f9fafb;
+    background-color: $background-color;
     border-radius: 2px;
     text-align: center;
 
@@ -67,6 +67,13 @@
       margin-left: 20px;
       color: $P75;
       cursor: pointer;
+    }
+
+    .operation {
+      position: relative;
+      top: 4px;
+      margin-left: 8px;
+      text-align: left;
     }
   }
 
