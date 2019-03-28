@@ -222,6 +222,12 @@ export default class AppVersionStore extends Store {
   };
 
   @action
+  changeReviewPagination = async page => {
+    this.currentPage = page;
+    await this.fetchReviews();
+  };
+
+  @action
   createOrModify = async (params = {}) => {
     const defaultParams = {
       package: this.uploadFile

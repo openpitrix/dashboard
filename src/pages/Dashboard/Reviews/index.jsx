@@ -184,7 +184,7 @@ export default class Reviews extends Component {
 
     const pagination = {
       tableType: 'Apps',
-      onChange: appVersionStore.changePagination,
+      onChange: appVersionStore.changeReviewPagination,
       total: appVersionStore.totalCount,
       current: appVersionStore.currentPage,
       noCancel: false
