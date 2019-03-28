@@ -66,10 +66,7 @@ export class SideNav extends React.Component {
   };
 
   componentWillMount() {
-    const subNavChildLinks = _.map(
-      _.get(this.getSudNavData(), 'links', []),
-      'link'
-    );
+    const subNavChildLinks = _.map(_.get(this.getSudNavData(), 'links', []), 'link');
 
     this.setState({
       subNavChildLinks
@@ -191,7 +188,7 @@ export class SideNav extends React.Component {
           <div className={styles.name}>{t(subNavData.title)}</div>
         </div>
         {subNavData.links.map(link => (
-          <Can do="show" action={link.actionId} key={link.name}>
+          <Can do="show" action={link.actionId} condition={link.condition} key={link.name}>
             <NavLink
               exact
               activeClassName={styles.active}
@@ -241,9 +238,7 @@ export class SideNav extends React.Component {
                   className={styles.icon}
                   size={20}
                   name={nav.iconName}
-                  type={
-                    location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
-                  }
+                  type={location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'}
                 />
                 <label className={styles.title}>{t(nav.title)}</label>
               </Popover>
@@ -254,9 +249,7 @@ export class SideNav extends React.Component {
                 className={styles.icon}
                 size={20}
                 name={nav.iconName}
-                type={
-                  location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'
-                }
+                type={location.pathname.indexOf(nav.link) > -1 ? 'light' : 'dark'}
               />
               <Link to="#">
                 <label className={styles.title}>{t(nav.title)}</label>
@@ -305,18 +298,11 @@ export class SideNav extends React.Component {
               wrapLabelInLink
               className={classnames({
                 [styles.active]:
-                  pathname.indexOf(
-                    link.substring(0, link.lastIndexOf('/versions'))
-                  ) > -1
+                  pathname.indexOf(link.substring(0, link.lastIndexOf('/versions'))) > -1
               })}
               iconLinkCls={styles.iconLink}
             >
-              <Image
-                src={icon}
-                iconLetter={t(name)}
-                iconSize={20}
-                className={styles.image}
-              />
+              <Image src={icon} iconLetter={t(name)} iconSize={20} className={styles.image} />
             </NavItem>
           );
         })}
@@ -380,17 +366,13 @@ export class SideNav extends React.Component {
       <Fragment>
         <div className={styles.nav}>
           <ul className={styles.topNav}>
-            {user.isDevPortal
-              ? this.renderMainNavsForDev()
-              : this.renderMainNavsForOthers()}
+            {user.isDevPortal ? this.renderMainNavsForDev() : this.renderMainNavsForOthers()}
           </ul>
           {this.renderBottomNavs()}
         </div>
 
         {hasSubNav
-          && (user.isDevPortal
-            ? this.renderSubNavsForDev()
-            : this.renderSubNavsForOthers())}
+          && (user.isDevPortal ? this.renderSubNavsForDev() : this.renderSubNavsForOthers())}
       </Fragment>
     );
   }

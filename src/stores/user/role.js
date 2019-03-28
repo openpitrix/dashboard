@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
 import { DATA_LEVEL } from 'config/roles';
+import { CONDITION } from 'config/action-id';
 
 import Store from '../Store';
 
@@ -698,9 +699,9 @@ export default class RoleStore extends Store {
     return canDo;
   };
 
-  checkAction = (actionId, condiction = 'and') => {
+  checkAction = (actionId, condiction = CONDITION.and) => {
     if (_.isArray(actionId)) {
-      if (condiction === 'and') {
+      if (condiction === CONDITION.and) {
         return _.every(actionId, id => this.checkActionOnce(id));
       }
       return _.some(actionId, id => this.checkActionOnce(id));
