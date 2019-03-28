@@ -47,10 +47,8 @@ export default class RoleTree extends Component {
         <Item
           isAdmin
           key={`title_${role.role_id}`}
-          role_id={role.role_id}
           title={t(getRoleName(role))}
-          description={role.description}
-          portal={role.portal}
+          {...role}
           roleStore={roleStore}
         />
       )
@@ -73,10 +71,8 @@ export default class RoleTree extends Component {
       title: (
         <Item
           key={`title_${role.role_id}`}
-          role_id={role.role_id}
           title={t(getRoleName(role))}
-          description={role.description}
-          portal={role.portal}
+          {...role}
           roleStore={roleStore}
         />
       )
