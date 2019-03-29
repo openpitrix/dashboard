@@ -156,15 +156,6 @@ export default class Users extends Component {
         {_.isArray(group_id) && (
           <span onClick={() => leaveGroupOnce(user)}>{t('Leave group')}</span>
         )}
-        <span
-          onClick={() => modalStore.show(
-            'renderModalDeleteUser',
-            _.assign({}, user, { type: 'one' })
-          )
-          }
-        >
-          {t('Delete')}
-        </span>
       </div>
     );
   };
@@ -190,12 +181,6 @@ export default class Users extends Component {
           )}
           <Button onClick={e => this.handleAction('renderModalSetRole', e)}>
             {t('Set role')}
-          </Button>
-          <Button
-            type="delete"
-            onClick={e => this.handleAction('renderModalDeleteUser', e)}
-          >
-            {t('Delete')}
           </Button>
         </Toolbar>
       );
