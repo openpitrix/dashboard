@@ -22,6 +22,7 @@ export default class RoleModalActions extends Component {
         onCancel={hide}
         onSubmit={deleteRole}
         okText={t('Delete')}
+        btnType="delete"
       >
         <div>
           <h3>
