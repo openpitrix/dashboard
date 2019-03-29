@@ -12,12 +12,12 @@
     margin-top: 40px;
 
     &:first-child {
-      margin-top: 32px;
+      margin-top: 0;
     }
   }
 
   .nav {
-    position: fixed;
+    position: sticky;
     top: $header-height + $search-banner-height;
     height: calc(100vh - #{$header-height} - #{$search-banner-height});
     width: $home-nav-width;
