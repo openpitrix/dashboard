@@ -64,7 +64,7 @@ export default class Clusters extends Component {
         runtimeId,
         attachUsers: !user.isUserPortal,
         attachVersions: cluster_type === CLUSTER_TYPE.instance,
-        attachApps: !user.isDevPortal,
+        attachApps: !user.isDevPortal || runtimeId,
         with_detail: true,
         cluster_type: CLUSTER_TYPE.instance, // default fetch instance
         userId: (user.isUserPortal || user.isAdminPortal) && user.user_id
@@ -214,14 +214,16 @@ export default class Clusters extends Component {
   };
 
   renderAppTdShow = (appId, versionId) => {
-    const { appStore, appVersionStore, user } = this.props;
+    const {
+      appStore, appVersionStore, runtimeId, user
+    } = this.props;
     const { apps } = appStore;
     const { versions } = appVersionStore;
 
     const app = _.find(apps, { app_id: appId }) || {};
     const version = _.find(versions, { version_id: versionId }) || {};
 
-    if (user.isUserPortal || user.isAdmin) {
+    if (user.isUserPortal || user.isAdmin || runtimeId) {
       return (
         <div className={styles.appTdShow}>
           <label className={styles.appImage}>
@@ -343,7 +345,7 @@ export default class Clusters extends Component {
           tableType="Clusters"
           columns={columns}
           columnsFilter={cols => {
-            if (user.isUserPortal || user.isAdminPortal) {
+            if (user.isUserPortal || user.isAdminPortal || runtimeId) {
               cols = cols.filter(item => item.key !== 'owner');
             }
             if (isAgent) {
@@ -374,6 +376,7 @@ export default class Clusters extends Component {
             getDetailLink: this.getDetailLink,
             renderAppTdShow: this.renderAppTdShow,
             renderHandleMenu: this.renderHandleMenu,
+            isRuntimeDetail: Boolean(runtimeId),
             users,
             user,
             runtimes,
