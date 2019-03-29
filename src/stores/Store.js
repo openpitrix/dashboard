@@ -1,4 +1,4 @@
-import { set, action } from 'mobx';
+import { set, action, extendObservable } from 'mobx';
 import agent from 'lib/request';
 import _ from 'lodash';
 
@@ -23,6 +23,8 @@ export default class Store {
 
 Store.prototype = {
   opStore: Symbol('op'), // flag
+  pageSize: 10,
+  maxLimit: 200, // fixme: api max returned data count
 
   setInitialState(initialState = {}, branch) {
     if (_.isEmpty(initialState)) {
@@ -43,8 +45,35 @@ Store.prototype = {
     }
   },
 
-  pageSize: 10,
-  maxLimit: 200, // fixme: api max returned data count
+  /**
+   *
+   * @param specs function | object
+   */
+  defineObservables(specs) {
+    // dynamic proxy current store instance's observables and reset method
+    const observables = {};
+    let reset = null;
+
+    if (_.isFunction(specs)) {
+      const ctx = {};
+      specs.call(ctx);
+      Object.assign(observables, ctx);
+
+      reset = specs;
+    } else if (_.isObject(specs)) {
+      Object.assign(observables, specs);
+
+      reset = () => {
+        Object.getOwnPropertyNames(specs).forEach(prop => {
+          this[prop] = specs[prop];
+        });
+      };
+    } else {
+      throw Error(`Bad observable specs: only accept plain object or function`);
+    }
+
+    extendObservable(this, { ...observables, reset }, { reset: action });
+  },
 
   info(message) {
     this.notify(message, 'info');

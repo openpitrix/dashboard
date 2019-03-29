@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _, { get } from 'lodash';
 
 import { sleep, makeArray } from 'utils';
@@ -8,42 +8,35 @@ import Store from '../Store';
 const RESERVE = 'ctg-uncategorized';
 
 export default class CategoryStore extends Store {
-  @observable categories = [];
+  constructor(...args) {
+    super(...args);
 
-  @observable totalCount = 0;
+    // normal props
+    this.initLoadNumber = 6;
 
-  @observable category = {};
-
-  @observable isLoading = false;
-
-  @observable name = '';
-
-  @observable description = '';
-
-  @observable isModalOpen = false;
-
-  @observable modalType = '';
-
-  @observable isDeleteOpen = false;
-
-  @observable isDetailPage = false;
-
-  initLoadNumber = 6;
-
-  @observable searchWord = '';
-
-  @observable selectedCategory = {};
-
-  @observable categoryToAdjust = '';
-
-  // cate_id=> app count
-  @observable cateAppsCount = {};
-
-  @observable
-  createdCate = {
-    name: '',
-    description: '' // can use as icon
-  };
+    this.defineObservables(() => {
+      // init observables, also as reset method
+      this.categories = [];
+      this.totalCount = 0;
+      this.category = {};
+      this.isLoading = false;
+      this.name = '';
+      this.description = '';
+      this.isModalOpen = false;
+      this.modalType = '';
+      this.isDeleteOpen = false;
+      this.isDetailPage = false;
+      this.searchWord = '';
+      this.selectedCategory = {};
+      this.categoryToAdjust = '';
+      // cate_id=> app count
+      this.cateAppsCount = {};
+      this.createdCate = {
+        name: '',
+        description: '' // can use as icon
+      };
+    });
+  }
 
   get appStore() {
     return this.getStore('appStore');
@@ -298,24 +291,4 @@ export default class CategoryStore extends Store {
     this.isModalOpen = false;
     this.isDeleteOpen = false;
   };
-
-  @action
-  reset() {
-    this.searchWord = '';
-    this.name = '';
-    this.description = '';
-    this.isLoading = false;
-    this.isDetailPage = false;
-    this.hideModal();
-
-    this.categories = [];
-    this.category = {};
-
-    this.appStore.categoryId = '';
-    this.createdCate = { name: '', description: '' };
-
-    this.selectedCategory = {};
-    this.cateAppsCount = {};
-    this.categoryToAdjust = '';
-  }
 }
