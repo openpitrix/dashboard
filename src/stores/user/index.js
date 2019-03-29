@@ -330,9 +330,6 @@ export default class UserStore extends Store {
       this.selectedRowKeys = [];
       this.modal.hide();
       await this.fetchAll();
-    } else {
-      const { err, errDetail } = result;
-      this.error(errDetail || err);
     }
   };
 

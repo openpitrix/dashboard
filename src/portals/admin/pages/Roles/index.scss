@@ -90,6 +90,11 @@
 
 .roleSuccess {
   text-align: center;
+  @include normal-font;
+  h3 {
+    @include title-font($size-large, $size-medium);
+  }
+
   .checkedIcon {
     :global {
       svg {

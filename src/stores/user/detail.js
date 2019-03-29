@@ -69,10 +69,7 @@ export default class UserDetailStore extends Store {
     }
     return this.request.get(
       'users_detail',
-      _.pickBy(
-        _.assign(defaultParams, params),
-        a => !(_.isArray(a) && _.isEmpty(a)) && a !== ''
-      )
+      _.pickBy(_.assign(defaultParams, params), a => !(_.isArray(a) && _.isEmpty(a)) && a !== '')
     );
   };
 
@@ -86,9 +83,7 @@ export default class UserDetailStore extends Store {
       return this.roles.filter(r => r.portal === PORTAL_NAME.isv);
     }
 
-    return this.roles
-      .filter(r => r.portal === PORTAL_NAME.admin)
-      .sort(this.sortRole);
+    return this.roles.filter(r => r.portal === PORTAL_NAME.admin).sort(this.sortRole);
   }
 
   fetchAll = async (params = {}) => {
@@ -132,9 +127,6 @@ export default class UserDetailStore extends Store {
       this.selectedRowKeys = [];
       this.modal.hide();
       await this.fetchAll();
-    } else {
-      const { err, errDetail } = result;
-      this.error(errDetail || err);
     }
   };
 }
