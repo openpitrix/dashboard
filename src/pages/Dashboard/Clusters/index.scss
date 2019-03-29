@@ -43,6 +43,12 @@
   background: none;
   border: none;
   margin-bottom: 16px;
+
+  &.appTabs {
+    margin-top: -24px;
+    width: auto;
+    border-bottom: 1px solid $N10;
+  }
 }
 
 .runtimeName {

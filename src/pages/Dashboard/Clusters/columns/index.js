@@ -23,12 +23,20 @@ export default ({
   runtimes,
   onlyView,
   isAgent,
+  isRuntimeDetail,
+  isAppDetail,
   t
 }) => [
   {
     title: 'Status',
     key: 'status',
-    render: cl => <Status type={cl.status} transition={cl.transition_status} transMap={transMap} />
+    render: cl => (
+      <Status
+        type={cl.status}
+        transition={cl.transition_status}
+        transMap={transMap}
+      />
+    )
   },
   {
     title: isAgent ? 'Agent Name ID' : 'Instance Name ID',
@@ -43,7 +51,10 @@ export default ({
     )
   },
   {
-    title: user.isUserPortal ? 'App / Delivery type / Version' : 'Version',
+    title:
+      (user.isUserPortal || isRuntimeDetail) && !isAppDetail
+        ? 'App / Delivery type / Version'
+        : 'Version',
     key: 'app_id',
     render: cl => renderAppTdShow(cl.app_id, cl.version_id)
   },
@@ -67,7 +78,9 @@ export default ({
   {
     title: 'Creator',
     key: 'owner',
-    render: cl => <TdUser className={styles.creator} users={users} userId={cl.owner} />
+    render: cl => (
+      <TdUser className={styles.creator} users={users} userId={cl.owner} />
+    )
   },
   {
     title: 'Created At',

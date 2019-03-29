@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Icon, PopoverIcon } from 'components/Base';
 import { Card } from 'components/Layout';
 
-import { CLUSTER_TYPE } from 'config/runtimes';
+import { CLUSTER_TYPE, PLATFORM } from 'config/runtimes';
 
 import styles from '../index.scss';
 
@@ -72,6 +72,7 @@ export default class RuntimeCard extends Component {
     const {
       clusterStore,
       credentialStore,
+      envStore,
       name,
       description,
       runtime_id,
@@ -87,6 +88,7 @@ export default class RuntimeCard extends Component {
       _.find(credentials, { runtime_credential_id }) || {},
       'name'
     );
+    const showAgentCount = this.isDetailCard && envStore.platform !== PLATFORM.kubernetes;
 
     return (
       <Card
@@ -116,7 +118,7 @@ export default class RuntimeCard extends Component {
               {countInstance}
             </p>
           </div>
-          {this.isDetailCard && (
+          {showAgentCount && (
             <div className={styles.info}>
               <p className={styles.label}>{t('Agent Instance count')}</p>
               <p className={styles.val} style={{ cursor: 'pointer' }}>

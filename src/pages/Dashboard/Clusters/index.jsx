@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 import _, { capitalize } from 'lodash';
 import { withTranslation } from 'react-i18next';
 
@@ -19,6 +20,8 @@ import { CLUSTER_TYPE, runtimeTabs } from 'config/runtimes';
 import columns from './columns';
 import styles from './index.scss';
 
+const appTabs = [{ name: 'Agent', value: 1 }];
+
 @withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -33,11 +36,17 @@ import styles from './index.scss';
 @observer
 export default class Clusters extends Component {
   static propTypes = {
+    appId: PropTypes.string,
     fetchData: PropTypes.func,
+    isK8S: PropTypes.bool,
+    runtimeId: PropTypes.string,
     title: PropTypes.string
   };
 
   static defaultProps = {
+    runtimeId: '',
+    appId: '',
+    isK8S: false,
     title: ''
   };
 
@@ -47,6 +56,8 @@ export default class Clusters extends Component {
       clusterStore,
       runtimeStore,
       user,
+      runtimeId,
+      appId,
       fetchData
     } = this.props;
 
@@ -56,9 +67,11 @@ export default class Clusters extends Component {
       const { cluster_type } = clusterStore;
 
       Object.assign(clusterStore, {
+        runtimeId,
+        appId,
         attachUsers: !user.isUserPortal,
         attachVersions: cluster_type === CLUSTER_TYPE.instance,
-        attachApps: !user.isDevPortal,
+        attachApps: (!user.isDevPortal || runtimeId) && !appId,
         with_detail: true,
         cluster_type: CLUSTER_TYPE.instance, // default fetch instance
         userId: (user.isUserPortal || user.isAdminPortal) && user.user_id
@@ -66,10 +79,12 @@ export default class Clusters extends Component {
 
       await clusterStore.fetchAll();
 
-      await runtimeStore.fetchAll({
-        status: ['active', 'deleted'],
-        noLimit: true
-      });
+      if (!runtimeId) {
+        await runtimeStore.fetchAll({
+          status: ['active', 'deleted'],
+          noLimit: true
+        });
+      }
     }
 
     rootStore.sock.listenToJob(this.handleJobs);
@@ -206,14 +221,17 @@ export default class Clusters extends Component {
   };
 
   renderAppTdShow = (appId, versionId) => {
-    const { appStore, appVersionStore, user } = this.props;
+    const {
+      appStore, appVersionStore, runtimeId, user
+    } = this.props;
     const { apps } = appStore;
     const { versions } = appVersionStore;
+    const isAppDetail = this.props.appId;
 
     const app = _.find(apps, { app_id: appId }) || {};
     const version = _.find(versions, { version_id: versionId }) || {};
 
-    if (user.isUserPortal || user.isAdmin) {
+    if ((user.isUserPortal || user.isAdmin || runtimeId) && !isAppDetail) {
       return (
         <div className={styles.appTdShow}>
           <label className={styles.appImage}>
@@ -259,7 +277,7 @@ export default class Clusters extends Component {
 
   renderToolbar() {
     const {
-      clusterStore, user, match, t
+      clusterStore, user, appId, match, t
     } = this.props;
     const {
       searchWord,
@@ -270,7 +288,8 @@ export default class Clusters extends Component {
       onlyView,
       isAgent
     } = clusterStore;
-    const { appId } = match.params;
+    const hasDeployButton = (user.isDevPortal && !onlyView) || appId;
+    const app_id = appId || _.get(match, 'params.appId', '');
 
     if (!(onlyView || isAgent) && clusterIds.length) {
       return (
@@ -299,9 +318,10 @@ export default class Clusters extends Component {
         onRefresh={onRefresh}
         noRefreshBtn
       >
-        {user.isDevPortal && !onlyView && (
-          <Link to={toRoute(routes.portal.deploy, { appId })}>
+        {hasDeployButton && (
+          <Link to={toRoute(routes.portal.deploy, { appId: app_id })}>
             <Button type="primary" className="pull-right">
+              <Icon name="add" type="white" className={styles.icon} />
               {t('Deploy')}
             </Button>
           </Link>
@@ -312,7 +332,13 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, t
+      clusterStore,
+      userStore,
+      user,
+      runtimeId,
+      appId,
+      isK8S,
+      t
     } = this.props;
     const { isLoading, onlyView, isAgent } = clusterStore;
 
@@ -321,19 +347,21 @@ export default class Clusters extends Component {
 
     return (
       <Fragment>
-        <Tabs
-          tabs={runtimeTabs}
-          className={styles.tabs}
-          changeTab={this.handleChangeTab}
-          noFirstChange
-          isCardTab
-        />
+        {!isK8S && (
+          <Tabs
+            tabs={appId ? appTabs : runtimeTabs}
+            className={classnames(styles.tabs, { [styles.appTabs]: appId })}
+            changeTab={this.handleChangeTab}
+            noFirstChange
+            isCardTab
+          />
+        )}
         {this.renderToolbar()}
         <Table
           tableType="Clusters"
           columns={columns}
           columnsFilter={cols => {
-            if (user.isUserPortal || user.isAdminPortal) {
+            if (user.isUserPortal || user.isAdminPortal || runtimeId) {
               cols = cols.filter(item => item.key !== 'owner');
             }
             if (isAgent) {
@@ -341,11 +369,16 @@ export default class Clusters extends Component {
                 item => item.key !== 'app_id' && item.key !== 'actions'
               );
             }
+            if (runtimeId) {
+              cols = cols.filter(
+                item => item.key !== 'actions' && item.key !== 'runtime_id'
+              );
+            }
             return cols;
           }}
           store={clusterStore}
           data={clusterStore.clusters}
-          hasRowSelection={!(onlyView || isAgent)}
+          hasRowSelection={!(onlyView || isAgent || runtimeId)}
           isLoading={isLoading}
           replaceFilterConditions={[
             { name: t('Pending'), value: 'pending' },
@@ -359,6 +392,8 @@ export default class Clusters extends Component {
             getDetailLink: this.getDetailLink,
             renderAppTdShow: this.renderAppTdShow,
             renderHandleMenu: this.renderHandleMenu,
+            isRuntimeDetail: Boolean(runtimeId),
+            isAppDetail: Boolean(appId),
             users,
             user,
             runtimes,
@@ -374,9 +409,11 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { user, title, t } = this.props;
+    const {
+      user, title, runtimeId, appId, t
+    } = this.props;
 
-    if (user.isUserPortal) {
+    if (user.isUserPortal || runtimeId || appId) {
       return this.renderMain();
     }
 

@@ -189,6 +189,12 @@
       background-color: $N0;
       box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
     }
+
+    .name {
+      @include textCut;
+      display: inline-block;
+      max-width: 180px;
+    }
   }
 
   .total {
