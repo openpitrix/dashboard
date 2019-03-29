@@ -273,7 +273,6 @@ export default class AppDeploy extends Component {
           title: t('Basic info'),
           items: this.vmParser.getDefaultBasicSetting({
             key: 'name',
-            matchRegex: /^[a-z][a-z0-9-]{0,13}$/,
             description: t('HELM_APP_NAME_TIP')
           })
         },
