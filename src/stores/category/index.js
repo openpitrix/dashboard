@@ -140,7 +140,9 @@ export default class CategoryStore extends Store {
       }
 
       // batch modify app category
-      const batch = this.appStore.selectIds.map(applyModify(this.categoryToAdjust));
+      const batch = this.appStore.selectIds.map(
+        applyModify(this.categoryToAdjust)
+      );
       await Promise.all(batch);
       this.success('Adjust apps category successfully');
       this.hideModal();
@@ -158,7 +160,9 @@ export default class CategoryStore extends Store {
       // first delete apps belong to cate, then delete cate
       const appIds = this.filterApps(curCategory).map(app => app.app_id);
       if (appIds.length) {
-        return this.warn('This category contains apps, please move those apps to another category');
+        return this.warn(
+          'This category contains apps, please move those apps to another category'
+        );
       }
 
       const res = await this.remove(curCategory);
@@ -193,7 +197,10 @@ export default class CategoryStore extends Store {
         this.success(`${isEdit ? 'Modify' : 'Create'} category successfully`);
         this.hideModal();
         if (isEdit) {
-          Object.assign(this.selectedCategory, _.pick(this.createdCate, ['name', 'description']));
+          Object.assign(
+            this.selectedCategory,
+            _.pick(this.createdCate, ['name', 'description'])
+          );
         }
         this.createdCate = { name: '', description: '' };
         await this.fetchAll({ noLimit: true });
@@ -306,5 +313,9 @@ export default class CategoryStore extends Store {
 
     this.appStore.categoryId = '';
     this.createdCate = { name: '', description: '' };
+
+    this.selectedCategory = {};
+    this.cateAppsCount = {};
+    this.categoryToAdjust = '';
   }
 }
