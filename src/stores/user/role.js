@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
 import { PORTAL_NAME, DATA_LEVEL } from 'config/roles';
@@ -31,41 +31,47 @@ const regFeatureId = /^m\d+\.f\d+$/;
 const regNotAction = /^m\d*(.f\d*)?$/;
 
 export default class RoleStore extends Store {
-  @observable roles = [];
-
-  @observable selectedRole = {};
-
-  @observable selectedFeatureModule = { ...defaultCheck };
-
-  @observable isLoading = false;
-
-  @observable bindActions = [];
-
-  @observable moduleTreeData = [];
-
-  @observable modules = [];
-
-  @observable moduleNames = {};
-
-  @observable features = [];
-
-  @observable selectedRoleKeys = [];
-
-  @observable selectedModuleKeys = [];
-
-  @observable selectedActionKeys = [];
-
-  @observable handelType = '';
-
-  @observable dataLevelMap = {};
-
-  @observable dataLevel = defaultDataLevel;
-
-  @observable openModuleMap = {};
-
   selectedModuleId = '';
 
   actions = [];
+
+  constructor(...args) {
+    super(...args);
+
+    this.defineObservables(function () {
+      this.roles = [];
+
+      this.selectedRole = {};
+
+      this.selectedFeatureModule = { ...defaultCheck };
+
+      this.isLoading = false;
+
+      this.bindActions = [];
+
+      this.moduleTreeData = [];
+
+      this.modules = [];
+
+      this.moduleNames = {};
+
+      this.features = [];
+
+      this.selectedRoleKeys = [];
+
+      this.selectedModuleKeys = [];
+
+      this.selectedActionKeys = [];
+
+      this.handelType = '';
+
+      this.dataLevelMap = {};
+
+      this.dataLevel = defaultDataLevel;
+
+      this.openModuleMap = {};
+    });
+  }
 
   get modal() {
     return this.getStore('modal');
@@ -134,7 +140,10 @@ export default class RoleStore extends Store {
       status: defaultStatus
     };
     this.isLoading = true;
-    const result = await this.request.get(`roles`, _.assign(defaultParams, param));
+    const result = await this.request.get(
+      `roles`,
+      _.assign(defaultParams, param)
+    );
     this.roles = _.get(result, 'role_set', [])
       .slice()
       .sort(this.sortRole);
@@ -217,24 +226,6 @@ export default class RoleStore extends Store {
   ];
 
   @action
-  reset = () => {
-    this.isLoading = true;
-    this.roles = [];
-    this.selectedRole = {};
-    this.bindActions = [];
-    this.moduleTreeData = [];
-    this.modules = [];
-    this.features = [];
-    this.selectedRoleKeys = [];
-    this.selectedActionKeys = [];
-    Object.assign(this.selectedFeatureModule, defaultCheck);
-    this.dataLevelMap = {};
-    this.dataLevel = defaultDataLevel;
-    this.openModuleMap = {};
-    this.handelType = '';
-  };
-
-  @action
   onSelectRole = async (keys = []) => {
     if (_.isEmpty(keys)) {
       return null;
@@ -295,7 +286,10 @@ export default class RoleStore extends Store {
           .map(feature => ({
             key: feature.feature_id,
             title: feature.feature_name,
-            children: _.uniqBy(feature.action_bundle_set || [], 'action_bundle_id')
+            children: _.uniqBy(
+              feature.action_bundle_set || [],
+              'action_bundle_id'
+            )
               .slice()
               .sort(sortModule('action_bundle_id'))
               .map(item => ({
@@ -347,7 +341,10 @@ export default class RoleStore extends Store {
   };
 
   @action
-  getUniqActions = feature => _.flatMap(_.uniqBy(feature.action_bundle_set, 'action_bundle_id'), 'action_bundle_id');
+  getUniqActions = feature => _.flatMap(
+    _.uniqBy(feature.action_bundle_set, 'action_bundle_id'),
+    'action_bundle_id'
+  );
 
   @action
   getActionTreeData = () => {
@@ -487,8 +484,14 @@ export default class RoleStore extends Store {
 
   @action
   getCheckedAction = (feature, index = 0) => {
-    _.remove(this.selectedActionKeys[index], key => _.startsWith(key, 'f_') || key === 'all');
-    const featureActions = _.flatMap(feature.action_bundle_set || [], 'action_bundle_id');
+    _.remove(
+      this.selectedActionKeys[index],
+      key => _.startsWith(key, 'f_') || key === 'all'
+    );
+    const featureActions = _.flatMap(
+      feature.action_bundle_set || [],
+      'action_bundle_id'
+    );
     feature.checked_action_bundle_id_set = _.intersection(
       this.selectedActionKeys[index],
       featureActions

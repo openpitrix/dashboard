@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { useTableActions } from 'mixins';
@@ -10,46 +10,51 @@ const defaultStatus = ['submitted', 'passed', 'rejected'];
 
 @useTableActions
 export default class VendorStore extends Store {
-  @observable checkedProtocol = false;
-
-  @observable activeStep = 1;
-
-  @observable disableNextStep = true;
-
-  @observable isLoading = false;
-
-  @observable vendors = [];
-
-  @observable statistics = [];
-
-  @observable userId = '';
-
-  @observable activeType = 'unreviewed';
-
-  @observable isMessageOpen = false;
-
-  @observable rejectMessage = '';
-
-  @observable detailTab = '';
-
-  @observable
-  vendorDetail = {
-    company_name: '',
-    company_website: '',
-    company_profile: '',
-    authorizer_name: '',
-    authorizer_email: '',
-    authorizer_phone: '',
-    bank_name: '',
-    bank_account_name: '',
-    bank_account_number: ''
-  };
-
-  @observable checkResult = {};
-
   steps = 1;
 
   btnText = 'Submit';
+
+  constructor(...args) {
+    super(...args);
+
+    this.defineObservables(function () {
+      this.checkedProtocol = false;
+
+      this.activeStep = 1;
+
+      this.disableNextStep = true;
+
+      this.isLoading = false;
+
+      this.vendors = [];
+
+      this.statistics = [];
+
+      this.userId = '';
+
+      this.activeType = 'unreviewed';
+
+      this.isMessageOpen = false;
+
+      this.rejectMessage = '';
+
+      this.detailTab = '';
+
+      this.vendorDetail = {
+        company_name: '',
+        company_website: '',
+        company_profile: '',
+        authorizer_name: '',
+        authorizer_email: '',
+        authorizer_phone: '',
+        bank_name: '',
+        bank_account_name: '',
+        bank_account_number: ''
+      };
+
+      this.checkResult = {};
+    });
+  }
 
   get userStore() {
     return this.getStore('user');
@@ -231,16 +236,5 @@ export default class VendorStore extends Store {
     this.currentPage = page;
     const status = this.activeType === 'unreviewed' ? ['submitted'] : ['rejected', 'passed'];
     await this.fetchAll({ status });
-  };
-
-  reset = () => {
-    this.resetTableParams();
-
-    this.userId = '';
-    this.activeType = 'unreviewed';
-    this.checkedProtocol = true;
-
-    this.vendors = [];
-    this.attchStatictics = false;
   };
 }

@@ -1,32 +1,44 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import Store from '../Store';
 
 export default class KeyPairStore extends Store {
-  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  constructor(...args) {
+    super(...args);
 
-  @observable isLoading = false;
+    this.defaultStatus = [
+      'active',
+      'stopped',
+      'ceased',
+      'pending',
+      'suspended'
+    ];
 
-  @observable modalType = '';
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  @observable isModalOpen = false;
+      this.modalType = '';
 
-  @observable keyPairs = [];
+      this.isModalOpen = false;
 
-  @observable pairId = '';
+      this.keyPairs = [];
 
-  @observable currentPairId = '';
+      this.pairId = '';
 
-  @observable userId = '';
+      this.currentPairId = '';
 
-  @observable name = '';
+      this.userId = '';
 
-  @observable pub_key = '';
+      this.name = '';
 
-  @observable description = '';
+      this.pub_key = '';
 
-  @observable nodeIds = '';
+      this.description = '';
+
+      this.nodeIds = '';
+    });
+  }
 
   @action
   fetchKeyPairs = async (params = {}) => {
@@ -108,13 +120,6 @@ export default class KeyPairStore extends Store {
     } else {
       return result;
     }
-  };
-
-  @action
-  resetKeyPair = () => {
-    this.name = '';
-    this.pub_key = '';
-    this.description = '';
   };
 
   @action

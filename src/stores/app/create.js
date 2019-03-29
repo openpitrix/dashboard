@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 
 import _ from 'lodash';
 import { t } from 'i18next';
@@ -21,35 +21,38 @@ const appVersionModel = {
 };
 
 export default class AppCreateStore extends Store {
-  @observable activeStep = 1;
+  constructor(...args) {
+    super(...args);
 
-  steps = 3;
+    this.steps = 3;
+    this.isCreateApp = true;
+    this.isAddVersion = false;
+    this.modifyVersionType = '';
 
-  @observable isLoading = false;
+    this.defineObservables(function () {
+      this.activeStep = 1;
 
-  @observable pageLoading = false;
+      this.isLoading = false;
 
-  @observable disableNextStep = true;
+      this.pageLoading = false;
 
-  @observable uploadStatus = 'init';
+      this.disableNextStep = true;
 
-  @observable errorMessage = '';
+      this.uploadStatus = 'init';
 
-  @observable attribute = {};
+      this.errorMessage = '';
 
-  @observable iconBase64 = '';
+      this.attribute = {};
 
-  @observable fileName = '';
+      this.iconBase64 = '';
 
-  @observable appDetail = {};
+      this.fileName = '';
 
-  @observable uploadError = {};
+      this.appDetail = {};
 
-  isCreateApp = true;
-
-  isAddVersion = false;
-
-  modifyVersionType = '';
+      this.uploadError = {};
+    });
+  }
 
   get versionTypeName() {
     const type = this.getVersionType();
@@ -112,7 +115,7 @@ export default class AppCreateStore extends Store {
   checkSelectedVersionType = name => this.getVersionType() === name;
 
   @action
-  reload = ({ appId, type }) => {
+  load = ({ appId, type }) => {
     this.isCreateApp = !appId;
     this.isAddVersion = Boolean(type);
     this.activeStep = 1;
@@ -130,11 +133,6 @@ export default class AppCreateStore extends Store {
     this.errorMessage = '';
     this.uploadStatus = 'init';
     this.disableNextStep = true;
-  };
-
-  @action
-  reset = ({ appId, type }) => {
-    this.reload({ appId, type });
     this.appDetail = {};
   };
 

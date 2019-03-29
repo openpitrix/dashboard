@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 import { sleep } from 'utils';
 import { useTableActions } from 'mixins';
@@ -20,21 +20,27 @@ const defaultStatus = ['active'];
 export default class GroupStore extends Store {
   idKey = 'user_id';
 
-  @observable isLoading = false;
+  constructor(...args) {
+    super(...args);
 
-  @observable users = [];
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  @observable groupTreeData = [];
+      this.users = [];
 
-  @observable operateResult = null;
+      this.groupTreeData = [];
 
-  @observable selectedGroupIds = [];
+      this.operateResult = null;
 
-  @observable selectedJoinGroupIds = [];
+      this.selectedGroupIds = [];
 
-  @observable setGroupTreeData = [];
+      this.selectedJoinGroupIds = [];
 
-  @observable groupName = '';
+      this.setGroupTreeData = [];
+
+      this.groupName = '';
+    });
+  }
 
   get modal() {
     return this.getStore('modal');
@@ -71,7 +77,10 @@ export default class GroupStore extends Store {
   }
 
   get name() {
-    const group = _.find(this.groups, g => g.group_id === _.first(this.selectedGroupIds));
+    const group = _.find(
+      this.groups,
+      g => g.group_id === _.first(this.selectedGroupIds)
+    );
     if (!group) {
       return '';
     }
@@ -86,7 +95,9 @@ export default class GroupStore extends Store {
     const key = _.first(this.selectedGroupIds);
     const root = _.find(this.groups, g => !g.parent_group_id);
 
-    return key && !this.protectedGroupsIds.includes(key) && key !== root.group_id;
+    return (
+      key && !this.protectedGroupsIds.includes(key) && key !== root.group_id
+    );
   }
 
   get selectedRoleId() {
@@ -195,16 +206,6 @@ export default class GroupStore extends Store {
     }
     this.getPosition(group.parent_group_id, names);
   }
-
-  @action
-  reset = () => {
-    this.isLoading = false;
-    this.users = [];
-    this.groupTreeData = [];
-    this.operateResult = null;
-    this.selectedGroupIds = [];
-    this.groupName = '';
-  };
 
   @action
   setDefaultGroupId = () => {

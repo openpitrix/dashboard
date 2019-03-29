@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { getFormData } from 'utils';
@@ -8,40 +8,46 @@ import Store from '../Store';
 const s3UrlPattern = /^s3:\/\/s3\.(.+)\.(.+)\/(.+)\/?$/; // s3.<zone>.<host>/<bucket>
 
 export default class RepoCreateStore extends Store {
-  @observable repoId = '';
+  constructor(...args) {
+    super(...args);
 
-  @observable name = '';
+    this.defineObservables(function () {
+      this.repoId = '';
 
-  @observable description = '';
+      this.name = '';
 
-  @observable providers = ['qingcloud'];
+      this.description = '';
 
-  @observable visibility = 'public';
+      this.providers = ['qingcloud'];
 
-  @observable protocolType = 'http';
+      this.visibility = 'public';
 
-  // http, https, s3
-  @observable url = '';
+      this.protocolType = 'http';
 
-  @observable accessKey = '';
+      // http, https, s3
+      this.url = '';
 
-  @observable secretKey = '';
+      this.accessKey = '';
 
-  @observable labels = [];
+      this.secretKey = '';
 
-  @observable curLabelKey = '';
+      this.labels = [];
 
-  @observable curLabelValue = '';
+      this.curLabelKey = '';
 
-  @observable selectors = [];
+      this.curLabelValue = '';
 
-  @observable curSelectorKey = '';
+      this.selectors = [];
 
-  @observable curSelectorValue = '';
+      this.curSelectorKey = '';
 
-  @observable repoCreated = null;
+      this.curSelectorValue = '';
 
-  @observable isLoading = false;
+      this.repoCreated = null;
+
+      this.isLoading = false;
+    });
+  }
 
   @action
   changeName = e => {
@@ -313,27 +319,6 @@ export default class RepoCreateStore extends Store {
   async modifyRepo(params) {
     params = typeof params === 'object' ? params : JSON.stringify(params);
     this.repoCreated = await this.request.patch('repos', params);
-    this.isLoading = false;
-  }
-
-  @action
-  reset() {
-    this.repoId = '';
-    this.name = '';
-    this.description = '';
-    this.url = '';
-    this.providers = ['qingcloud'];
-    this.visibility = 'public';
-    this.protocolType = 'http';
-    this.accessKey = '';
-    this.secretKey = '';
-    this.labels = [{ label_key: '', label_value: '' }];
-    this.curLabelKey = '';
-    this.curLabelValue = '';
-    this.selectors = [{ label_key: '', label_value: '' }];
-    this.curSelectorKey = '';
-    this.curSelectorValue = '';
-    this.repoCreated = null;
     this.isLoading = false;
   }
 

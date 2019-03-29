@@ -53,13 +53,22 @@ Store.prototype = {
     // dynamic proxy current store instance's observables and reset method
     const observables = {};
     let reset = null;
+    const hasResetFn = _.isFunction(this.reset);
+    // backup orig reset
+    const origReset = hasResetFn && this.reset;
 
     if (_.isFunction(specs)) {
       const ctx = {};
       specs.call(ctx);
       Object.assign(observables, ctx);
 
-      reset = specs;
+      reset = () => {
+        specs.call(this);
+        // also reset table params
+        _.isFunction(this.resetTableParams) && this.resetTableParams();
+
+        hasResetFn && origReset();
+      };
     } else if (_.isObject(specs)) {
       Object.assign(observables, specs);
 
@@ -67,12 +76,22 @@ Store.prototype = {
         Object.getOwnPropertyNames(specs).forEach(prop => {
           this[prop] = specs[prop];
         });
+
+        _.isFunction(this.resetTableParams) && this.resetTableParams();
       };
     } else {
-      throw Error(`Bad observable specs: only accept plain object or function`);
+      throw Error(
+        `Bad observable specs: only accept plain object or non-arrow function`
+      );
     }
 
-    extendObservable(this, { ...observables, reset }, { reset: action });
+    extendObservable(this, observables);
+
+    if (hasResetFn) {
+      set(this, { reset });
+    } else {
+      extendObservable(this, { reset }, { reset: action });
+    }
   },
 
   info(message) {

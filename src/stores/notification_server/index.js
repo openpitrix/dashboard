@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { TEST_STATUS } from 'config/cloud-env';
@@ -16,24 +16,21 @@ const emailConfig = {
 };
 
 export default class NotificationServerStore extends Store {
-  @observable isLoading = false;
+  constructor(...args) {
+    super(...args);
 
-  @observable testStatus = '';
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  @observable handleType = '';
+      this.testStatus = '';
 
-  @observable emailConfig = Object.assign({}, emailConfig);
+      this.handleType = '';
 
-  @observable formData = Object.assign({}, emailConfig);
+      this.emailConfig = Object.assign({}, emailConfig);
 
-  @action
-  reset = () => {
-    this.isLoading = false;
-    this.testStatus = '';
-    this.emailConfig = Object.assign({}, emailConfig);
-    this.formData = Object.assign({}, emailConfig);
-    this.handleType = '';
-  };
+      this.formData = Object.assign({}, emailConfig);
+    });
+  }
 
   @action
   onChangeSelect = value => {
@@ -60,7 +57,10 @@ export default class NotificationServerStore extends Store {
     const result = await this.request.post('service_configs/get', {
       service_type: ['notification']
     });
-    this.emailConfig = _.get(result, 'notification_config.email_service_config');
+    this.emailConfig = _.get(
+      result,
+      'notification_config.email_service_config'
+    );
     if (this.emailConfig) {
       this.formData = Object.assign({}, this.emailConfig);
     }
@@ -72,9 +72,12 @@ export default class NotificationServerStore extends Store {
       return;
     }
     this.testStatus = 'loading';
-    const result = await this.request.post('service_configs/validate_email_service', {
-      email_service_config: this.formData
-    });
+    const result = await this.request.post(
+      'service_configs/validate_email_service',
+      {
+        email_service_config: this.formData
+      }
+    );
     if (_.get(result, 'is_succ')) {
       this.testStatus = TEST_STATUS.success;
     } else {

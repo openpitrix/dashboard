@@ -1,5 +1,5 @@
 // uncategorized apps store, separate from app store
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { useTableActions } from 'mixins';
@@ -7,15 +7,21 @@ import Store from '../Store';
 
 @useTableActions
 class UncategoriedStore extends Store {
-  idKey = 'app_id';
+  constructor(...args) {
+    super(...args);
 
-  defaultStatus = ['active'];
+    this.idKey = 'app_id';
 
-  @observable isLoading = false;
+    this.defaultStatus = ['active'];
 
-  @observable apps = [];
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  @observable categoryId = '';
+      this.apps = [];
+
+      this.categoryId = '';
+    });
+  }
 
   @action
   fetchAll = async params => {
@@ -33,12 +39,6 @@ class UncategoriedStore extends Store {
     this.totalCount = _.get(res, 'total_count', 0);
 
     this.isLoading = false;
-  };
-
-  reset = () => {
-    this.categoryId = '';
-    this.apps = [];
-    this.resetTableParams();
   };
 }
 

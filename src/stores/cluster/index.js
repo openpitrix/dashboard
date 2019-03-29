@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _, { get } from 'lodash';
 
 import { getProgress } from 'utils';
@@ -7,62 +7,70 @@ import { CLUSTER_TYPE } from 'config/runtimes';
 
 import Store from '../Store';
 
-const defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
 @useTableActions
 export default class ClusterStore extends Store {
-  /**
-   * used on tableAction mixin when fetch value by id
-   * @type {string}
-   */
-  idKey = 'cluster_id';
+  constructor(...args) {
+    super(...args);
 
-  defaultStatus = defaultStatus;
+    /**
+     * used on tableAction mixin when fetch value by id
+     * @type {string}
+     */
+    this.idKey = 'cluster_id';
 
-  @observable clusters = [];
+    this.defaultStatus = [
+      'active',
+      'stopped',
+      'ceased',
+      'pending',
+      'suspended'
+    ];
 
-  @observable isLoading = false;
+    this.defineObservables(function () {
+      this.clusters = [];
 
-  @observable modalType = '';
+      this.isLoading = false;
 
-  @observable isModalOpen = false;
+      this.modalType = '';
 
-  @observable summaryInfo = {};
+      this.isModalOpen = false;
 
-  @observable clusterCount = 0;
+      this.summaryInfo = {};
 
-  @observable clusterId = '';
+      this.clusterCount = 0;
 
-  @observable operateType = '';
+      this.clusterId = '';
 
-  @observable appId = '';
+      this.operateType = '';
 
-  @observable runtimeId = '';
+      this.appId = '';
 
-  @observable userId = '';
+      this.runtimeId = '';
 
-  @observable versionId = '';
+      this.userId = '';
 
-  @observable onlyView = false; // user-instances only view, can't operate
+      this.versionId = '';
 
-  @observable
-  cluster_type = CLUSTER_TYPE.instance;
+      this.onlyView = false; // user-instances only view, can't operate
 
-  @observable
-  with_detail = false;
+      this.cluster_type = CLUSTER_TYPE.instance;
 
-  // cluster job queue
-  @observable
-  jobs = {
-    // job_id=> cluster_id
-  };
+      this.with_detail = false;
 
-  @observable attachApps = false;
+      // cluster job queue
+      this.jobs = {
+        // job_id=> cluster_id
+      };
 
-  @observable attachVersions = false;
+      this.attachApps = false;
 
-  @observable attachUsers = false;
+      this.attachVersions = false;
 
-  @observable clusterTab = CLUSTER_TYPE.instance;
+      this.attachUsers = false;
+
+      this.clusterTab = CLUSTER_TYPE.instance;
+    });
+  }
 
   get appStore() {
     return this.getStore('app');
@@ -287,28 +295,6 @@ export default class ClusterStore extends Store {
   };
 
   @action
-  reset = () => {
-    this.appId = '';
-    this.runtimeId = '';
-    this.userId = '';
-    this.onlyView = false;
-    this.clusters = [];
-    this.attachApps = false;
-    this.attachVersions = false;
-    this.attachUsers = false;
-    this.resetTableParams();
-    this.cluster_type = CLUSTER_TYPE.instance;
-    this.with_detail = false;
-    this.clusterTab = CLUSTER_TYPE.instance;
-
-    this.operateType = '';
-    this.modalType = '';
-    this.clusterId = '';
-
-    this.defaultStatus = defaultStatus;
-  };
-
-  @action
   changeAppVersion = type => {
     this.versionId = type;
   };
@@ -343,7 +329,9 @@ export default class ClusterStore extends Store {
 
   @action
   doActions = async (params = {}) => {
-    const ids = this.operateType === 'multiple' ? this.clusterIds.toJSON() : [this.clusterId];
+    const ids = this.operateType === 'multiple'
+      ? this.clusterIds.toJSON()
+      : [this.clusterId];
     const specialActionMap = {
       update_env: this.updateEnv,
       upgrade: this.upgradeVersion,

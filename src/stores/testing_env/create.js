@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { isHelm } from 'utils';
@@ -9,56 +9,59 @@ import Store from '../Store';
 const STEPS = 2;
 const NO_PROVIDER_STEPS = 3;
 
-const defaultStepOption = {
-  steps: STEPS,
-  stepBase: 1,
-  activeStep: 1,
-  disableNextStep: true,
-  isLoading: false
-};
-
 export default class CreateEnvStore extends Store {
-  @observable isLoading = false;
+  constructor(...args) {
+    super(...args);
 
-  @observable stepOption = { ...defaultStepOption };
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  @observable runtimeUrl = '';
+      this.stepOption = {
+        steps: STEPS,
+        stepBase: 1,
+        activeStep: 1,
+        disableNextStep: true,
+        isLoading: false
+      };
 
-  @observable accessKey = '';
+      this.runtimeUrl = '';
 
-  @observable secretKey = '';
+      this.accessKey = '';
 
-  @observable helmCredential = '';
+      this.secretKey = '';
 
-  @observable credentialName = '';
+      this.helmCredential = '';
 
-  @observable credentialDesc = '';
+      this.credentialName = '';
 
-  @observable validatePassed = false;
+      this.credentialDesc = '';
 
-  @observable validateMsg = '';
+      this.validatePassed = false;
 
-  // create runtime, provide runtime info
-  @observable
-  runtimeInfo = {
-    selectZone: '',
-    name: '',
-    desc: ''
-  };
+      this.validateMsg = '';
 
-  // last created runtime
-  @observable runtime = {};
+      // create runtime, provide runtime info
+      this.runtimeInfo = {
+        selectZone: '',
+        name: '',
+        desc: ''
+      };
 
-  @observable selectCredentialId = '';
+      // last created runtime
+      this.runtime = {};
 
-  @observable showNewlyCreate = false; // show create form if have credentials
+      this.selectCredentialId = '';
 
-  // flags
-  @observable doneCreateRt = false;
+      this.showNewlyCreate = false; // show create form if have credentials
 
-  @observable doneCreateCredential = false;
+      // flags
+      this.doneCreateRt = false;
 
-  @observable helmNamespace = '';
+      this.doneCreateCredential = false;
+
+      this.helmNamespace = '';
+    });
+  }
 
   get envStore() {
     return this.getStore('testingEnv');
@@ -95,7 +98,9 @@ export default class CreateEnvStore extends Store {
         ? this.helmCredential
         : this.getCredentialContent(),
       provider: this.platform,
-      name: this.credentialName || `rtc-${isHelm(this.platform) ? 'helm' : 'vm'}-${Date.now()}`,
+      name:
+        this.credentialName
+        || `rtc-${isHelm(this.platform) ? 'helm' : 'vm'}-${Date.now()}`,
       description: this.credentialDesc
     };
   }
@@ -172,9 +177,12 @@ export default class CreateEnvStore extends Store {
     }
     // modify exist credential
     return await this.credentialStore.modify(
-      _.extend(_.omit(this.getCredentialParams(), ['runtime_url', 'provider']), {
-        runtime_credential_id
-      })
+      _.extend(
+        _.omit(this.getCredentialParams(), ['runtime_url', 'provider']),
+        {
+          runtime_credential_id
+        }
+      )
     );
   };
 
@@ -322,7 +330,9 @@ export default class CreateEnvStore extends Store {
         return this.setValidateMsg('invalid url');
       }
       if (!(this.accessKey && this.secretKey)) {
-        return this.setValidateMsg('access key and secret key should not be empty');
+        return this.setValidateMsg(
+          'access key and secret key should not be empty'
+        );
       }
       _.extend(params, {
         runtime_url: this.runtimeUrl,
@@ -343,26 +353,4 @@ export default class CreateEnvStore extends Store {
   selectCredential = id => {
     this.selectCredentialId = id;
   };
-
-  reset() {
-    this.stepOption = { ...defaultStepOption };
-    this.runtimeUrl = '';
-    this.accessKey = '';
-    this.secretKey = '';
-    this.helmCredential = '';
-    this.credentialName = '';
-    this.credentialDesc = '';
-    this.selectCredentialId = '';
-    this.runtime = {};
-    this.runtimeInfo = {
-      selectZone: '',
-      name: '',
-      desc: ''
-    };
-    this.setValidateMsg();
-    this.selectCredentialId = '';
-    this.showNewlyCreate = false;
-    this.doneCreateRt = false;
-    this.doneCreateCredential = false;
-  }
 }

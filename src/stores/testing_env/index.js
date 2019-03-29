@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { providers as providersConf, CLUSTER_TYPE } from 'config/runtimes';
@@ -6,24 +6,30 @@ import { isHelm } from 'utils';
 import Store from '../Store';
 
 export default class TestingEnvStore extends Store {
-  // runtime provider
-  @observable platform = _.get(providersConf, '[0].key', '');
+  constructor(...args) {
+    super(...args);
 
-  @observable curTab = 'runtime';
+    this.defineObservables(function () {
+      // runtime provider
+      this.platform = _.get(providersConf, '[0].key', '');
 
-  @observable providerCounts = {};
+      this.curTab = 'runtime';
 
-  @observable isLoading = false;
+      this.providerCounts = {};
 
-  @observable isModalOpen = false;
+      this.isLoading = false;
 
-  @observable modalType = '';
+      this.isModalOpen = false;
 
-  @observable selectId = ''; // current handle runtime id
+      this.modalType = '';
 
-  @observable selectCredentialId = ''; // switch credential
+      this.selectId = ''; // current handle runtime id
 
-  @observable runtimeToShowInstances = {};
+      this.selectCredentialId = ''; // switch credential
+
+      this.runtimeToShowInstances = {};
+    });
+  }
 
   // register external store instance if you want access
   get clusterStore() {
@@ -48,7 +54,11 @@ export default class TestingEnvStore extends Store {
   }
 
   get platformName() {
-    return _.get(_.find(providersConf, { key: this.platform }), 'name', this.platform);
+    return _.get(
+      _.find(providersConf, { key: this.platform }),
+      'name',
+      this.platform
+    );
   }
 
   @action
@@ -78,12 +88,6 @@ export default class TestingEnvStore extends Store {
   };
 
   @action
-  reset = () => {
-    this.runtimeToShowInstances = {};
-    this.platform = _.get(providersConf, '[0].key', '');
-  };
-
-  @action
   handleOperation = async (e, formData) => {
     this.isLoading = true;
 
@@ -95,7 +99,9 @@ export default class TestingEnvStore extends Store {
     if (this.modalType === 'modify_runtime') {
       const pickKeys = ['name', 'description'];
       const data = _.pick(formData, pickKeys);
-      if (JSON.stringify(data) === JSON.stringify(_.pick(curHandleRt, pickKeys))) {
+      if (
+        JSON.stringify(data) === JSON.stringify(_.pick(curHandleRt, pickKeys))
+      ) {
         this.isLoading = false;
         return this.warn('Data not changed');
       }
@@ -150,7 +156,11 @@ export default class TestingEnvStore extends Store {
     // credential ops
     if (this.modalType === 'modify_auth_info') {
       const {
-        name, description, access_key, secret_key, credential
+        name,
+        description,
+        access_key,
+        secret_key,
+        credential
       } = formData;
       const params = {
         name,
@@ -175,7 +185,9 @@ export default class TestingEnvStore extends Store {
       }
 
       if (runtime_credential) {
-        Object.assign(params, { runtime_credential_content: runtime_credential });
+        Object.assign(params, {
+          runtime_credential_content: runtime_credential
+        });
       }
 
       const res = await this.request.patch(
@@ -218,7 +230,10 @@ export default class TestingEnvStore extends Store {
       owner: this.userId,
       noLimit: true
     });
-    this.providerCounts = _.mapValues(this.getProviderRuntimesMap(), v => v.length);
+    this.providerCounts = _.mapValues(
+      this.getProviderRuntimesMap(),
+      v => v.length
+    );
     this.isLoading = false;
   };
 

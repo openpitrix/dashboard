@@ -38,7 +38,8 @@ export default class AppAdd extends Component {
       name = 'add_app_version';
     }
 
-    appCreateStore.reset({ appId, type });
+    appCreateStore.load({ appId, type });
+
     this.state = {
       name,
       isCreateApp: !appId,

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
 import { useTableActions } from 'mixins';
@@ -20,97 +20,101 @@ class AppStore extends Store {
 
   defaultStatus = defaultStatus;
 
-  @observable apps = [];
-
-  @observable homeApps = [];
-
-  // menu apps
-  @observable menuApps = [];
-
-  // judje query menu apps
-  @observable hasMeunApps = false;
-
-  @observable
-  appDetail = {
-    name: '',
-    abstraction: '',
-    description: '',
-    category_id: '',
-    home: '',
-    readme: '',
-    tos: '',
-    icon: '',
-    screenshots: ''
-  };
-
-  @observable summaryInfo = {};
-
-  // replace original statistic
-  @observable categoryTitle = '';
-
-  @observable appId = '';
-
-  // current app_id
-  @observable isLoading = false;
-
-  @observable isProgressive = false;
-
-  @observable appCount = 0;
-
-  @observable repoId = '';
-
-  @observable categoryId = '';
-
-  @observable userId = '';
-
-  @observable isModalOpen = false;
-
-  @observable isDeleteOpen = false;
-
-  @observable operateType = '';
-
-  @observable appTitle = '';
-
-  @observable detailTab = '';
-
-  @observable currentPic = 1;
-
-  @observable viewType = 'list';
-
-  @observable createStep = 1;
-
-  @observable createReopId = '';
-
-  @observable uploadFile = '';
-
-  @observable createError = '';
-
-  @observable createResult = null;
-
-  @observable hasMore = false;
-
   isEdit = true;
 
   resetAppDetail = {};
 
-  @observable iconShow = '';
+  constructor(...args) {
+    super(...args);
 
-  // menu actions logic
-  @observable
-  handleApp = {
-    action: '', // delete, modify
-    selectedCategory: '' // category id
-  };
+    this.defineObservables(function () {
+      this.apps = [];
 
-  @observable unCategoriedApps = [];
+      this.homeApps = [];
 
-  @observable countStoreApps = 0;
+      // menu apps
+      this.menuApps = [];
 
-  @observable showActiveApps = false;
+      // judje query menu apps
+      this.hasMeunApps = false;
 
-  @observable checkResult = {};
+      this.appDetail = {
+        name: '',
+        abstraction: '',
+        description: '',
+        category_id: '',
+        home: '',
+        readme: '',
+        tos: '',
+        icon: '',
+        screenshots: ''
+      };
 
-  @observable appsDeployTotal = [];
+      this.summaryInfo = {};
+
+      // replace original statistic
+      this.categoryTitle = '';
+
+      this.appId = '';
+
+      // current app_id
+      this.isLoading = false;
+
+      this.isProgressive = false;
+
+      this.appCount = 0;
+
+      this.repoId = '';
+
+      this.categoryId = '';
+
+      this.userId = '';
+
+      this.isModalOpen = false;
+
+      this.isDeleteOpen = false;
+
+      this.operateType = '';
+
+      this.appTitle = '';
+
+      this.detailTab = '';
+
+      this.currentPic = 1;
+
+      this.viewType = 'list';
+
+      this.createStep = 1;
+
+      this.createReopId = '';
+
+      this.uploadFile = '';
+
+      this.createError = '';
+
+      this.createResult = null;
+
+      this.hasMore = false;
+
+      this.iconShow = '';
+
+      // menu actions logic
+      this.handleApp = {
+        action: '', // delete, modify
+        selectedCategory: '' // category id
+      };
+
+      this.unCategoriedApps = [];
+
+      this.countStoreApps = 0;
+
+      this.showActiveApps = false;
+
+      this.checkResult = {};
+
+      this.appsDeployTotal = [];
+    });
+  }
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -277,7 +281,9 @@ class AppStore extends Store {
           app_id: app.app_id,
           display_columns: ['']
         });
-        this.apps.push(_.extend(app, { deploy_total: clusterStore.totalCount }));
+        this.apps.push(
+          _.extend(app, { deploy_total: clusterStore.totalCount })
+        );
       }
     }
 
@@ -370,7 +376,13 @@ class AppStore extends Store {
       event.preventDefault();
     }
 
-    const data = _.pick(this.appDetail, ['name', 'abstraction', 'description', 'home', 'icon']);
+    const data = _.pick(this.appDetail, [
+      'name',
+      'abstraction',
+      'description',
+      'home',
+      'icon'
+    ]);
 
     this.checkResult = _.assign({}, formCheck('app', data));
 
@@ -404,7 +416,10 @@ class AppStore extends Store {
     if (isFocus) {
       this.checkResult = _.assign(this.checkResult, { [field]: '' });
     } else {
-      this.checkResult = _.assign(this.checkResult, fieldCheck('app', field, event.target.value));
+      this.checkResult = _.assign(
+        this.checkResult,
+        fieldCheck('app', field, event.target.value)
+      );
     }
   };
 
@@ -591,26 +606,16 @@ class AppStore extends Store {
     if ('toJSON' in category_set) {
       category_set = category_set.toJSON();
     }
-    const availableCate = category_set.find(cate => cate.category_id && cate.status === 'enabled');
+    const availableCate = category_set.find(
+      cate => cate.category_id && cate.status === 'enabled'
+    );
     this.handleApp.selectedCategory = get(availableCate, 'category_id', '');
     this.isModalOpen = true;
   };
 
   reset = () => {
-    this.categoryId = '';
-    this.repoId = '';
-    this.userId = '';
-    this.appId = '';
-
-    this.apps = [];
-    this.appDetail = {};
-    this.showActiveApps = false;
-    this.checkResult = {};
-    this.defaultStatus = defaultStatus;
-
     this.attchUser = false;
     this.attchDeployTotal = false;
-    this.resetTableParams();
   };
 
   @action

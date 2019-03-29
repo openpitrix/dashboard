@@ -14,7 +14,10 @@ export default class CategoryStore extends Store {
     // normal props
     this.initLoadNumber = 6;
 
-    this.defineObservables(() => {
+    /**
+     *  DO NOT use arrow function
+     */
+    this.defineObservables(function () {
       // init observables, also as reset method
       this.categories = [];
       this.totalCount = 0;
