@@ -2,8 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/openpitrix/dashboard/compare/v0.4.0...v0.4.1) (2019-03-29)
+
+
+### Bug Fixes
+
+* fix: Deploy app for vm ([#1090](https://github.com/openpitrix/dashboard/issues/1090)) ([2c4dd4d](https://github.com/openpitrix/dashboard/commit/2c4dd4d))
+* refactor: Admin provider page add loading status (#1091)
+* refactor: Runtime page form placeholder (#1092)
+* fix: Cluster update env with invalid config.json (#1093)
+
+
 <a name="0.4.0"></a>
-# [0.4.0](https://github.com/openpitrix/dashboard/compare/v0.3.5...v0.4.0) (2019-03-29)
+# [0.4.0](https://github.com/openpitrix/dashboard/compare/v0.3.6...v0.4.0) (2019-03-29)
 
 
 ### Bug Fixes
