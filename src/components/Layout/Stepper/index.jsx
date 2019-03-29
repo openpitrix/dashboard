@@ -23,6 +23,7 @@ export class Stepper extends Component {
     i18nObj: PropTypes.object,
     name: PropTypes.string,
     stepOption: PropTypes.shape({
+      linkUrl: PropTypes.string,
       activeStep: PropTypes.number,
       steps: PropTypes.number,
       stepBase: PropTypes.number,
@@ -145,7 +146,7 @@ export class Stepper extends Component {
   renderFooter() {
     const { stepOption, name } = this.props;
     const {
-      activeStep, steps, disableNextStep, btnText
+      activeStep, steps, disableNextStep, btnText, linkUrl
     } = stepOption;
 
     if (this.activeStep > steps) {
@@ -154,7 +155,7 @@ export class Stepper extends Component {
 
     const keyName = `STEPPER_FOOTER_${name.toLocaleUpperCase()}_${activeStep}`;
     const tipText = this.t(keyName);
-    const tipLink = <DocLink name={keyName} />;
+    const tipLink = <DocLink name={keyName} to={linkUrl} />;
 
     const buttonText = activeStep === steps ? this.t('Done') : this.t('Go on');
 

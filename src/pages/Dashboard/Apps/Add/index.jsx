@@ -13,6 +13,7 @@ import CheckFiles from 'components/CheckFiles';
 import UploadShow from 'components/UploadShow';
 import { getUrlParam } from 'utils';
 import routes, { toRoute } from 'routes';
+import externalLink from 'config/external-link';
 import Card from './Card';
 
 import styles from './index.scss';
@@ -273,8 +274,17 @@ export default class AppAdd extends Component {
   render() {
     const { name, isCreateApp, isAddVersion } = this.state;
     const { appCreateStore } = this.props;
-    const { activeStep } = appCreateStore;
-    const { disableNextStep } = appCreateStore;
+    const { activeStep, disableNextStep, attribute } = appCreateStore;
+
+    const step = isCreateApp ? 2 : 1;
+    if (activeStep === step) {
+      const linkUrl = isCreateApp
+        ? externalLink[`doc_${attribute.version_type}`]
+        : externalLink[`doc_${attribute.type}`];
+      Object.assign(appCreateStore, { linkUrl });
+    } else {
+      Object.assign(appCreateStore, { linkUrl: '' });
+    }
 
     if (isAddVersion) {
       return (
