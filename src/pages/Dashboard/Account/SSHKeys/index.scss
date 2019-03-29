@@ -169,10 +169,9 @@
   }
 
   li {
-    padding: 12px 20px;
+    padding: 11px 20px;
     line-height: 20px;
     font-size: 12px;
-    display: flex;
     align-items: center;
     cursor: pointer;
 
@@ -198,9 +197,8 @@
   }
 
   .total {
-    display: inline-block;
-    margin-left: 8px;
-    color: $N75;
+    float: right;
+    color: $N300;
     flex: 1;
   }
 }
@@ -236,5 +234,34 @@
   .word2 {
     @include note-font;
     margin: 8px 0 20px;
+  }
+}
+
+.keyPairContent {
+  &.hasBorder {
+    border: 1px solid $N10;
+  }
+
+  position: relative;
+  line-height: 20px;
+  font-family: Roboto;
+  font-size: 12px;
+
+  .name {
+    margin-bottom: 4px;
+    color: $N500;
+    font-weight: bold;
+  }
+
+  .pubKey {
+    color: $N75;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .operation {
+    position: absolute;
+    right: 24px;
+    top: 24px;
   }
 }
