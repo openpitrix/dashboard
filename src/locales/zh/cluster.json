@@ -27,5 +27,7 @@
   "DetachKeyPairs": "解绑密钥",
 
   "Private IP": "私网IP",
-  "Public IP": "公网IP"
+  "Public IP": "公网IP",
+
+  "Invalid config.json": "非法的 config.json"
 }
