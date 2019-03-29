@@ -40,9 +40,19 @@ export default class RoleModalActions extends Component {
     const { setBindAction } = roleStore;
 
     return (
-      <Dialog noActions title={t('Tips')} width={744} isOpen={isOpen} onCancel={hide}>
+      <Dialog
+        noActions
+        title={t('Tips')}
+        width={744}
+        isOpen={isOpen}
+        onCancel={hide}
+      >
         <div className={styles.roleSuccess}>
-          <Icon className={styles.checkedIcon} name="checked-circle" size={48} />
+          <Icon
+            className={styles.checkedIcon}
+            name="checked-circle"
+            size={48}
+          />
           <h3>{t('Create role success')}</h3>
           <div>{t('Create_Role_Success_Tip')}</div>
           <div>
@@ -73,13 +83,19 @@ export default class RoleModalActions extends Component {
       >
         <div className={styles.fmCtrl}>
           <label>{t('Role Name')}</label>
-          <Input className={styles.input} name="role_name" defaultValue={item.role_name} />
+          <Input
+            className={styles.input}
+            name="role_name"
+            defaultValue={item.role_name}
+          />
         </div>
         <div className={styles.textareaItem}>
           <label>{t('Description')}</label>
           <textarea name="description" defaultValue={item.description} />
         </div>
-        {handleType === 'edit' && <Input name="role_id" value={item.role_id} type="hidden" />}
+        {handleType === 'edit' && (
+          <Input name="role_id" value={item.role_id} type="hidden" />
+        )}
         <Input name="portal" value={AdminPortal} type="hidden" />
       </Dialog>
     );

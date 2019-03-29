@@ -55,7 +55,12 @@ export default class AppDeploy extends Component {
 
   async componentDidMount() {
     const {
-      appStore, appVersionStore, appDeployStore, match, user, cloudEnv
+      appStore,
+      appVersionStore,
+      appDeployStore,
+      match,
+      user,
+      cloudEnv
     } = this.props;
     const { appId } = match.params;
 
@@ -184,7 +189,11 @@ export default class AppDeploy extends Component {
       conf = [`Name: ${name}`, yamlStr].join('\n').replace(/#.*|\r/g, '');
     } else {
       conf = JSON.stringify({
-        cluster: _.extend({}, this.getFormDataByKey('cluster'), this.getConfByKey()),
+        cluster: _.extend(
+          {},
+          this.getFormDataByKey('cluster'),
+          this.getConfByKey()
+        ),
         env: this.getConfByKey('env')
       });
     }
@@ -223,7 +232,10 @@ export default class AppDeploy extends Component {
       keyPrefix += '.';
     }
 
-    const dataByPrefix = _.pickBy(formData, (val, key) => key.indexOf(keyPrefix) === 0);
+    const dataByPrefix = _.pickBy(
+      formData,
+      (val, key) => key.indexOf(keyPrefix) === 0
+    );
 
     return _.mapKeys(dataByPrefix, (val, key) => key.substring(keyPrefix.length));
   };
@@ -312,7 +324,12 @@ export default class AppDeploy extends Component {
         }}
       >
         {groups.map((group, idx) => (
-          <DeployGroup detail={group} seq={idx} key={idx} onEmpty={this.renderForEmptyItem} />
+          <DeployGroup
+            detail={group}
+            seq={idx}
+            key={idx}
+            onEmpty={this.renderForEmptyItem}
+          />
         ))}
       </form>
     );
@@ -329,7 +346,9 @@ export default class AppDeploy extends Component {
           <NoteLink
             className={styles.auditNote}
             noteWord={t('NO_RUNTIME_TO_DEPLOY', { instance: instanceName })}
-            linkWord={user.isUserPortal ? 'Create Runtime' : 'Create test runtime'}
+            linkWord={
+              user.isUserPortal ? 'Create Runtime' : 'Create test runtime'
+            }
             link={this.runtimeLink}
           />
         </Card>
@@ -392,7 +411,11 @@ export default class AppDeploy extends Component {
           })}
         >
           <span className={styles.icon}>
-            <Image src={appDetail.icon} iconSize={48} iconLetter={appDetail.name} />
+            <Image
+              src={appDetail.icon}
+              iconSize={48}
+              iconLetter={appDetail.name}
+            />
           </span>
           <div className={styles.name}>{appDetail.name}</div>
         </div>

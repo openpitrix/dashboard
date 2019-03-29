@@ -36,6 +36,12 @@ export default class UserSandbox extends React.Component {
   render() {
     const { t } = this.props;
 
-    return <Clusters fetchData={this.fetchData} title={t('Sandbox-Instances')} {...this.props} />;
+    return (
+      <Clusters
+        fetchData={this.fetchData}
+        title={t('Sandbox-Instances')}
+        {...this.props}
+      />
+    );
   }
 }

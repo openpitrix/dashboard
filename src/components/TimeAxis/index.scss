@@ -2,27 +2,27 @@
 
 .timeAxis {
   margin-left: 4px;
-  .axis{
-    li{
+  .axis {
+    li {
       position: relative;
       padding-left: 18px;
       padding-bottom: 24px;
       border-left: 2px solid $N10;
     }
-    .title{
+    .title {
       margin-bottom: 2px;
       height: 20px;
       font-family: 'PingFangSC';
       font-size: 12px;
       color: $N300;
     }
-    .time{
+    .time {
       line-height: 20px;
       font-size: 12px;
       color: $N65;
     }
 
-    .dot{
+    .dot {
       display: inline-block;
       box-sizing: border-box;
       position: absolute;

@@ -1,4 +1,4 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .select {
   display: inline-block;
@@ -12,10 +12,9 @@
     top: 50%;
     transform: translateY(-50%);
   }
-
 }
-.select[disabled]{
-  .control{
+.select[disabled] {
+  .control {
     opacity: 0.5;
     cursor: not-allowed;
   }
@@ -39,7 +38,7 @@
   background-color: $N0;
   border: solid 1px $N30;
   cursor: pointer;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   word-break: break-all;
   overflow: hidden;
   .controlLabel {
@@ -58,7 +57,7 @@
     background-color: $N10;
     border: solid 1px $N30;
   }
-  &:active{
+  &:active {
     background-color: $N45 !important;
     border: solid 1px $N45 !important;
   }
@@ -81,7 +80,8 @@
   padding: 8px 0;
   border-radius: 2px;
   background-color: $N0;
-  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1), 0 4px 8px 0 rgba(35, 35, 36, 0.08);
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.1),
+    0 4px 8px 0 rgba(35, 35, 36, 0.08);
   border: solid 1px $N30;
   overflow-y: auto;
   .option {
@@ -98,7 +98,7 @@
       color: $N500;
       background-color: $N10;
     }
-    :global{
+    :global {
       .icon:first-child {
         float: left;
         margin: 2px 4px 2px 0;

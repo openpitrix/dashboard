@@ -17,13 +17,11 @@ export default class Progress extends PureComponent {
     for (let i = 0; i < index; i++) {
       sum += progress[i].number;
     }
-    return sum * 100.0 / total;
+    return (sum * 100.0) / total;
   };
 
   render() {
-    const {
-      progress, total, objs, type
-    } = this.props;
+    const { progress, total, objs, type } = this.props;
 
     return (
       <div className={styles.progress}>
@@ -32,7 +30,7 @@ export default class Progress extends PureComponent {
             key={data.id}
             className={styles.inner}
             style={{
-              width: `${data.number * 100.0 / total}%`,
+              width: `${(data.number * 100.0) / total}%`,
               left: `${this.calLeft(index, progress, total)}%`
             }}
           >
@@ -40,10 +38,10 @@ export default class Progress extends PureComponent {
               <span className={styles.arrow} />
               <div className={styles.number}>{data.number}</div>
               <div className={styles.name}>
-                {type === 'Apps'
-                  && getObjName(objs, 'repo_id', data.id, 'name')}
-                {type === 'Clusters'
-                  && getObjName(objs, 'runtime_id', data.id, 'name')}
+                {type === 'Apps' &&
+                  getObjName(objs, 'repo_id', data.id, 'name')}
+                {type === 'Clusters' &&
+                  getObjName(objs, 'runtime_id', data.id, 'name')}
                 {type === 'Runtimes' && data.id}
               </div>
             </div>

@@ -1,9 +1,9 @@
 @charset "utf-8";
 
 // basic variables
-@import "vars";
+@import 'vars';
 
-@import "markdown";
+@import 'markdown';
 
 %active-dropdown-btn {
   color: $third-text-color !important;
@@ -23,17 +23,45 @@
   li {
     list-style: none;
   }
-  div, form, img, ul, ol, li, dl, dt, dd, option, td, th, video, h1, h2, h3, h4, h5, h6, p, blockquote, input, select, textarea {
+  div,
+  form,
+  img,
+  ul,
+  ol,
+  li,
+  dl,
+  dt,
+  dd,
+  option,
+  td,
+  th,
+  video,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  input,
+  select,
+  textarea {
     margin: 0;
     padding: 0;
     border: 0;
     list-style: none outside none;
   }
 
-  a,a:hover{
+  a,
+  a:hover {
     color: $P75;
   }
-  a, a:hover, a:focus, a:active, a:visited {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a:visited {
     text-decoration: none;
   }
 
@@ -42,7 +70,7 @@
   }
 
   .container {
-     margin: 0 $layout-margin;
+    margin: 0 $layout-margin;
   }
 
   .main {
@@ -54,25 +82,27 @@
     margin: 0 auto;
   }
   .id {
-    font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-family: 'PT Mono', Monaco, Menlo, Consolas, 'Courier New', monospace;
   }
   .id-link {
-    font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-family: 'PT Mono', Monaco, Menlo, Consolas, 'Courier New', monospace;
     color: $id-color;
   }
 
   .dropdown-item {
-    &.active, &:active {
+    &.active,
+    &:active {
       background: none;
     }
-    a{
+    a {
       color: rgba(48, 14, 86, 0.8) !important;
     }
   }
 
   .btn-secondary {
-    &.active, &:active {
-     @extend %active-dropdown-btn
+    &.active,
+    &:active {
+      @extend %active-dropdown-btn;
     }
     &:hover {
       background: rgba(#fff, 0.5);
@@ -81,7 +111,7 @@
     }
   }
 
-  .show>.btn-secondary.dropdown-toggle {
+  .show > .btn-secondary.dropdown-toggle {
     @extend %active-dropdown-btn;
   }
 
@@ -148,24 +178,25 @@
     outline: none;
     //resize: none;
 
-    &:hover{
+    &:hover {
       border-color: $N45;
     }
 
-    &:focus{
-      box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
+    &:focus {
+      box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05),
+        0 2px 2px 0 rgba(73, 33, 173, 0.1);
       border-color: $P75;
     }
   }
 
-  textarea[disabled]{
+  textarea[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
   }
 
   .CodeMirror {
-    font-family: "roboto monospace", monospace, sans-serif;
+    font-family: 'roboto monospace', monospace, sans-serif;
   }
 
   pre {

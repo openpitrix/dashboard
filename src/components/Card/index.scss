@@ -4,20 +4,21 @@ $card-width: 303px;
 $card-height: 208px;
 
 .card {
-   float: left;
-   display: inline-block;
-   position: relative;
-   width: calc(33.3% - 13.3px);
-   height: $card-height;
-   padding: 24px;
-   margin: 0 20px 20px 0;
-   border-radius: 2px;
-   border: 1px solid $N0;
-   background-color: $N0;
-   transition: all .3s ease-in-out;
-   box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
-   cursor: pointer;
-   overflow: hidden;
+  float: left;
+  display: inline-block;
+  position: relative;
+  width: calc(33.3% - 13.3px);
+  height: $card-height;
+  padding: 24px;
+  margin: 0 20px 20px 0;
+  border-radius: 2px;
+  border: 1px solid $N0;
+  background-color: $N0;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+    0 4px 8px 0 rgba(35, 35, 36, 0.04);
+  cursor: pointer;
+  overflow: hidden;
 
   .icon {
     width: 48px;
@@ -25,7 +26,7 @@ $card-height: 208px;
     top: 20px;
     left: 104px;
     margin-bottom: 12px;
-    transition:all 0.3s ease;
+    transition: all 0.3s ease;
     position: relative;
 
     img {
@@ -40,7 +41,7 @@ $card-height: 208px;
     line-height: 28px;
     margin-bottom: 8px;
     transition-delay: 1s;
-    transition:all 0.3s ease;
+    transition: all 0.3s ease;
     position: relative;
     left: 0;
     width: 100%;
@@ -49,7 +50,7 @@ $card-height: 208px;
   }
   .desc {
     font-size: $size-small;
-    color: #8C96AD;
+    color: #8c96ad;
     text-align: center;
     line-height: 20px;
     position: relative;
@@ -63,10 +64,10 @@ $card-height: 208px;
     opacity: 0;
     position: relative;
     bottom: -50px;
-    transition:all 0.3s ease;
+    transition: all 0.3s ease;
     dt {
       font-size: 12px;
-      color: #8C96AD;
+      color: #8c96ad;
       line-height: 20px;
       display: inline-block;
     }
@@ -86,12 +87,12 @@ $card-height: 208px;
     }
   }
 
-
   &:hover {
     background: $N0;
     border: 1px solid $P45;
     border-position: inside;
-    box-shadow: 0 3px 4px 0 rgba(134,145,156,0.04), 0 0 8px 0 rgba(119,133,146,0.04);
+    box-shadow: 0 3px 4px 0 rgba(134, 145, 156, 0.04),
+      0 0 8px 0 rgba(119, 133, 146, 0.04);
     cursor: pointer;
     text-align: left;
     padding: 28px 24px;
@@ -116,7 +117,7 @@ $card-height: 208px;
       height: 28px;
     }
     .desc {
-      color: #8C96AD;
+      color: #8c96ad;
       line-height: 20px;
       text-align: left;
       margin-top: 4px;
@@ -129,6 +130,4 @@ $card-height: 208px;
       opacity: 1;
     }
   }
- }
-
-
+}

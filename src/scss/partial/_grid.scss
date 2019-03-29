@@ -14,8 +14,8 @@ $min-center-page-margin: 30px;
 
 $card-padding: 24px;
 $card-bottom: 24px;
-$grid-gap: 20px;  // gap for normal layout
-$grid-gap-dev: 20px;  // gap for dev/admin layout
+$grid-gap: 20px; // gap for normal layout
+$grid-gap-dev: 20px; // gap for dev/admin layout
 //$grid-width: 72px;
 $grid-width: calc(100% + #{$grid-gap}) / 12;
 $grid-width-dev: calc(100% + #{$grid-gap-dev}) / 12;
@@ -39,7 +39,6 @@ $create-content-width: 1128px;
 
 $main-height: calc(100vh);
 $main-min-height: 650px;
-
 
 // card
 $app-card-width: 264px;

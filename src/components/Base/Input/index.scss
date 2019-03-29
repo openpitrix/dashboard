@@ -13,23 +13,24 @@
   border: solid 1px $N30;
   box-shadow: none;
   caret-color: #979797;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   &::placeholder {
     color: $N45;
   }
-  &:hover{
+  &:hover {
     border-color: $N45;
   }
   &:focus {
     outline: none;
-    border-color:  $P75;
-    box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05), 0 2px 2px 0 rgba(73, 33, 173, 0.1);
+    border-color: $P75;
+    box-shadow: 0 4px 8px 0 rgba(52, 57, 69, 0.05),
+      0 2px 2px 0 rgba(73, 33, 173, 0.1);
   }
-  &.error{
+  &.error {
     border: solid 1px $R100;
   }
 }
-.input[disabled]{
+.input[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
   color: $N300;

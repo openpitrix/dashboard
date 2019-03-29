@@ -21,14 +21,18 @@ export default class RoleItem extends Component {
     const {
       t, description, isAdmin, role_id
     } = this.props;
-    const text = this.isGlobalAdmin ? t('Global Admin Role description') : description;
+    const text = this.isGlobalAdmin
+      ? t('Global Admin Role description')
+      : description;
     return (
       <span>
         {text}
         {!isAdmin && (
           <Fragment>
             {t(`Normal_Role_Description_${role_id}`)}
-            <span className={styles.normalPermission}>{t("Can't delete and edit")}</span>
+            <span className={styles.normalPermission}>
+              {t("Can't delete and edit")}
+            </span>
           </Fragment>
         )}
       </span>
@@ -58,7 +62,9 @@ export default class RoleItem extends Component {
       <span className={styles.roleItem}>
         <strong>
           {t(title)}
-          {this.hasLock && <Icon className={styles.lockIcon} type="dark" name="lock" />}
+          {this.hasLock && (
+            <Icon className={styles.lockIcon} type="dark" name="lock" />
+          )}
         </strong>
         <br />
         <p className={styles.description}>{this.description}</p>

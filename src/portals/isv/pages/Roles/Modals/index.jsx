@@ -94,13 +94,23 @@ export default class RoleModalActions extends Component {
         <Loading isLoading={isLoading}>
           <div className={styles.fmCtrl}>
             <label>{t('Name')}</label>
-            <Input className={styles.input} name="role_name" defaultValue={item.role_name} />
+            <Input
+              className={styles.input}
+              name="role_name"
+              defaultValue={item.role_name}
+            />
           </div>
           <div className={styles.fmCtrl}>
             <label>{t('Backlog')}</label>
-            <Input className={styles.input} name="description" defaultValue={item.description} />
+            <Input
+              className={styles.input}
+              name="description"
+              defaultValue={item.description}
+            />
           </div>
-          {isEdit && <Input name="role_id" value={item.role_id} type="hidden" />}
+          {isEdit && (
+            <Input name="role_id" value={item.role_id} type="hidden" />
+          )}
           <Input name="portal" value="isv" type="hidden" />
           {this.renderEditPermission(isEdit)}
           <div className={classnames(styles.fmCtrl, styles.selectCtrl)}>

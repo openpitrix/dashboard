@@ -1,19 +1,19 @@
 @import '~scss/vars';
 
-.appList{
-  li{
+.appList {
+  li {
     box-sizing: border-box;
     padding: 12px 18px 12px 16px;
     height: 60px;
     border-bottom: 1px solid $N10;
-    &:hover{
+    &:hover {
       background-color: $li-hover-bg;
-      [class*="tdName"] a{
+      [class*='tdName'] a {
         color: $link-hover;
       }
     }
   }
-  .order{
+  .order {
     display: inline-block;
     float: left;
     margin-top: 8px;
@@ -23,14 +23,14 @@
     line-height: 20px;
     color: $N500;
   }
-  .total{
+  .total {
     display: inline-block;
     float: right;
     margin-top: 10px;
     font-size: 12px;
     text-align: left;
     color: $grey-word;
-    .number{
+    .number {
       display: inline-block;
       margin-right: 4px;
       width: 30px;

@@ -10,12 +10,12 @@
     border-radius: 16px;
     border: 1px solid transparent;
     background-color: $N10;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     &::placeholder {
       font-size: 14px;
       color: $N45;
-      line-height: 1.0;
+      line-height: 1;
       letter-spacing: 0;
     }
     &:focus {
@@ -30,7 +30,8 @@
     .icon {
       color: $N65;
       opacity: 0.5;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         opacity: 1;
       }
     }

@@ -1,8 +1,8 @@
 @import '~scss/vars';
 
-.reposList{
+.reposList {
   margin-bottom: 16px;
-  li{
+  li {
     box-sizing: border-box;
     margin-bottom: 8px;
     height: 60px;
@@ -10,15 +10,15 @@
     border-radius: 2px;
     background-color: $N0;
     border: 1px solid $N10;
-    a{
+    a {
       display: block;
       padding: 17px 16px;
     }
-    .icon{
+    .icon {
       float: left;
       margin-right: 12px;
     }
-    .name{
+    .name {
       display: inline-block;
       max-width: calc(100% - 96px);
       font-weight: 500;
@@ -26,12 +26,12 @@
       color: $N500;
       @include textCut;
     }
-    .total{
+    .total {
       display: inline-block;
       float: right;
       font-size: $font12;
       color: $N100;
-      .number{
+      .number {
         float: left;
         margin-right: 8px;
         font-size: $font14;
@@ -47,7 +47,7 @@
   line-height: 1.67;
   color: $N100;
 }
-.reposBg{
+.reposBg {
   li {
     background-color: $N10;
     border-color: $N30;

@@ -68,7 +68,9 @@ export default class Section extends React.Component {
 
     if (!defaultValue) {
       if (Array.isArray(rest.range)) {
-        return _.isObject(rest.range[0]) ? _.get(rest.range[0], 'value') : rest.range[0];
+        return _.isObject(rest.range[0])
+          ? _.get(rest.range[0], 'value')
+          : rest.range[0];
       }
       if (Array.isArray(rest.items)) {
         return _.get(rest.items[0], 'value');
@@ -194,7 +196,9 @@ export default class Section extends React.Component {
               } else {
                 value = item;
               }
-              const name = keyName === 'cluster.runtime' ? item.name : this.formatLabel(value, originKey);
+              const name = keyName === 'cluster.runtime'
+                ? item.name
+                : this.formatLabel(value, originKey);
 
               return (
                 <Radio value={value} key={idx}>
@@ -260,7 +264,9 @@ export default class Section extends React.Component {
               GB
             </span>
             <p className={styles.tips}>
-              {`${rest.min}GB - ${rest.max}GB, The volume size for each instance`}
+              {`${rest.min}GB - ${
+                rest.max
+              }GB, The volume size for each instance`}
             </p>
           </Fragment>
         );
@@ -268,7 +274,11 @@ export default class Section extends React.Component {
 
       case 'yaml':
         content = rest.yaml && (
-          <CodeMirror code={rest.yaml} onChange={this.handleChange} name={keyName} />
+          <CodeMirror
+            code={rest.yaml}
+            onChange={this.handleChange}
+            name={keyName}
+          />
         );
         break;
 

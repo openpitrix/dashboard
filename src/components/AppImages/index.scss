@@ -1,14 +1,14 @@
-@import "~scss/vars";
+@import '~scss/vars';
 
 .appImages {
-  .name{
+  .name {
     margin-bottom: 4px;
     font-size: 12px;
     line-height: 24px;
     color: $grey-word;
   }
-  .images{
-    .image{
+  .images {
+    .image {
       display: inline-block;
       float: left;
       margin-right: -8px;
@@ -18,11 +18,11 @@
       background-color: $N0;
       border: 1px solid #8454cd;
 
-      &:hover{
+      &:hover {
         border-radius: 50%;
         transform: scale(1.3);
       }
-      img{
+      img {
         max-width: 100%;
         max-height: 100%;
         border-radius: 50%;
@@ -33,18 +33,18 @@
       }
     }
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-left: -10px;
       }
-      .icon:hover{
+      .icon:hover {
         background-color: $tr-hover-bg;
         border-radius: 50%;
         transform: scale(1.2);
       }
     }
-    .totalNum{
+    .totalNum {
       display: inline-block;
       margin-left: 12px;
       font-size: 14px;
@@ -52,6 +52,5 @@
       line-height: 24px;
       color: $title-color;
     }
-
   }
 }

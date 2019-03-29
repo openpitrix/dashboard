@@ -51,7 +51,14 @@ export default class Checkbox extends Component {
 
   render() {
     const {
-      style, className, disabled, children, isFold, fold, name, value
+      style,
+      className,
+      disabled,
+      children,
+      isFold,
+      fold,
+      name,
+      value
     } = this.props;
     const { isChecked } = this.state;
     const labelClass = isFold ? styles.foldCheckbox : styles.checkbox;

@@ -48,7 +48,9 @@
   > li > ul > li:global(.op-tree-treenode-switcher-open) {
     display: flex;
   }
-  > li > ul > li:global(.op-tree-treenode-switcher-open .op-tree-node-content-wrapper) {
+  > li
+    > ul
+    > li:global(.op-tree-treenode-switcher-open .op-tree-node-content-wrapper) {
     width: auto;
   }
 

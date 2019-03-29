@@ -1,10 +1,10 @@
 @import '~scss/vars';
 
-.histogram{
+.histogram {
   float: right;
   display: inline-block;
   margin-right: 12px;
-  .column{
+  .column {
     position: relative;
     display: inline-block;
     height: 60px;
@@ -13,13 +13,13 @@
     margin-right: 8px;
     background: $N10;
     cursor: pointer;
-    &:last-child{
+    &:last-child {
       margin-right: 0;
     }
-    &:hover .tips{
+    &:hover .tips {
       display: inline-block;
     }
-    .inner{
+    .inner {
       position: absolute;
       bottom: 0;
       left: 0;
@@ -27,7 +27,7 @@
       height: 0;
       background-color: $P75;
     }
-    .tips{
+    .tips {
       position: absolute;
       bottom: 25px;
       z-index: 2;
@@ -39,7 +39,7 @@
       border-radius: 2px;
       background-color: $N500;
       box-shadow: 0 2px 4px 0 rgba(71, 78, 93, 0.2);
-      .arrow{
+      .arrow {
         position: absolute;
         bottom: -3px;
         left: 10px;
@@ -47,14 +47,14 @@
         border-left: 3px solid transparent;
         border-right: 3px solid transparent;
       }
-      .number{
+      .number {
         margin-bottom: 4px;
         line-height: 14px;
         font-size: 12px;
         font-weight: 500;
         color: $N0;
       }
-      .date{
+      .date {
         max-width: 90px;
         line-height: 14px;
         font-size: 12px;

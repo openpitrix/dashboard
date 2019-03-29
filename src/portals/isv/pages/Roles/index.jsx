@@ -56,10 +56,15 @@ export default class TeamRole extends Component {
     }
     return (
       <div className={styles.actions}>
-        <Button type="delete" onClick={() => this.handleAction('renderModalDeleteRole', role)}>
+        <Button
+          type="delete"
+          onClick={() => this.handleAction('renderModalDeleteRole', role)}
+        >
           {t('Delete')}
         </Button>
-        <Button onClick={() => this.handleAction('renderModalCreateRole', role)}>
+        <Button
+          onClick={() => this.handleAction('renderModalCreateRole', role)}
+        >
           {t('Edit')}
         </Button>
       </div>
@@ -77,7 +82,9 @@ export default class TeamRole extends Component {
               <Icon className={styles.lockIcon} type="dark" name="lock" />
             )}
           </h3>
-          <div className={styles.describtion}>{t(getRoleDescription(role, 'isv'))}</div>
+          <div className={styles.describtion}>
+            {t(getRoleDescription(role, 'isv'))}
+          </div>
         </div>
         {this.renderMenu(role)}
       </Fragment>

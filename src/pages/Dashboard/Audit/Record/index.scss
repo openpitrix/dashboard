@@ -39,7 +39,6 @@
         font-weight: 500;
         color: $N500;
       }
-
     }
 
     .secondary {
@@ -54,12 +53,12 @@
           margin-bottom: 8px;
         }
       }
-
     }
   }
 
   .moduleOuter {
-    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    box-shadow: 0 1px 4px 0 rgba(73, 33, 173, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
     background-color: $N0;
   }
 
@@ -74,7 +73,7 @@
 
     .status {
       margin-bottom: 20px;
-      >label{
+      > label {
         display: inline-block;
         line-height: 20px;
         padding: 4px;
@@ -104,7 +103,7 @@
       margin-bottom: 72px;
       height: 156px;
 
-      >li {
+      > li {
         margin-bottom: 20px;
         line-height: 24px;
         font-size: 14px;
@@ -148,7 +147,7 @@
 
     .info {
       height: 48px;
-      >p {
+      > p {
         margin-bottom: 8px;
         line-height: 20px;
         font-size: 12px;
@@ -162,7 +161,7 @@
 
     &.notStarted {
       .status {
-        label{
+        label {
           background-color: $N10;
           color: $N45;
         }
@@ -178,14 +177,14 @@
         }
 
         .arrow {
-         display: none;
+          display: none;
         }
       }
     }
 
     &.passed {
       .status {
-        label{
+        label {
           background-color: $G30;
           color: $G100;
         }
@@ -205,7 +204,7 @@
 
     &.notPassed {
       .status {
-        label{
+        label {
           background-color: $G30;
           color: $G100;
         }
@@ -220,7 +219,7 @@
         margin-top: 130px;
       }
 
-      :global{
+      :global {
         .icon {
           margin-bottom: 20px;
         }
@@ -243,8 +242,6 @@
       .view {
         color: $N300;
       }
-
     }
-
   }
 }

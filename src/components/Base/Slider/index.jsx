@@ -50,7 +50,7 @@ export default class Slider extends React.Component {
     if (!maxPos) return 0;
 
     const percent = clamp(pos, 0, maxPos) / maxPos;
-    const value = Math.round(percent * (max - min) / step) * step + min;
+    const value = Math.round((percent * (max - min)) / step) * step + min;
 
     return value;
   };
@@ -59,7 +59,7 @@ export default class Slider extends React.Component {
     const { maxPos } = this.state;
     const { min, max } = this.props;
 
-    return Math.round((value - min) / (max - min) * maxPos);
+    return Math.round(((value - min) / (max - min)) * maxPos);
   };
 
   handleStart = () => {

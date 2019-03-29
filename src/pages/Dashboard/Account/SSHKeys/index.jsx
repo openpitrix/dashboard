@@ -34,7 +34,9 @@ export default class SSHKeys extends Component {
     sshKeyStore.userId = user.user_id;
     await sshKeyStore.fetchKeyPairs();
 
-    const nodeIds = get(sshKeyStore.keyPairs.slice(), '[0].node_id', '') || ['0'];
+    const nodeIds = get(sshKeyStore.keyPairs.slice(), '[0].node_id', '') || [
+      '0'
+    ];
     clusterDetailStore.nodeIds = nodeIds;
     if (nodeIds) {
       await clusterStore.fetchAll({
@@ -77,7 +79,11 @@ export default class SSHKeys extends Component {
   detachKeyPairs = async () => {
     const { clusterDetailStore, sshKeyStore, user } = this.props;
     const { detachKeyPairs, currentPairId } = sshKeyStore;
-    const { selectedNodeIds, cancelSelectNodes, fetchNodes } = clusterDetailStore;
+    const {
+      selectedNodeIds,
+      cancelSelectNodes,
+      fetchNodes
+    } = clusterDetailStore;
 
     const result = await detachKeyPairs([currentPairId], selectedNodeIds);
     if (!(result && result.err)) {
@@ -85,7 +91,9 @@ export default class SSHKeys extends Component {
       // fix api refresh data has delay
       setTimeout(async () => {
         await sshKeyStore.fetchKeyPairs({ owner: user.user_id });
-        const keyPairs = sshKeyStore.keyPairs.filter(item => item.key_pair_id === currentPairId);
+        const keyPairs = sshKeyStore.keyPairs.filter(
+          item => item.key_pair_id === currentPairId
+        );
         const nodeIds = get(keyPairs.slice(), '[0].node_id', '');
         await fetchNodes({ node_id: nodeIds || 0 });
       }, 3000);
@@ -135,12 +143,19 @@ export default class SSHKeys extends Component {
       submit = removeKeyPairs;
     if (['detachKey', 'detachAllKey'].includes(modalType)) {
       title = t('Detach SSH Key');
-      desc = modalType === 'detachAllKey' ? t('detach_all_key_desc') : t('detach_key_desc');
+      desc = modalType === 'detachAllKey'
+        ? t('detach_all_key_desc')
+        : t('detach_key_desc');
       submit = this.detachKeyPairs;
     }
 
     return (
-      <Dialog title={title} visible={isModalOpen} onSubmit={submit} onCancel={hideModal}>
+      <Dialog
+        title={title}
+        visible={isModalOpen}
+        onSubmit={submit}
+        onCancel={hideModal}
+      >
         {desc}
       </Dialog>
     );
@@ -172,7 +187,12 @@ export default class SSHKeys extends Component {
         <div className={styles.createForm}>
           <div>
             <label className={styles.name}>{t('Name')}</label>
-            <Input name="name" value={name} onChange={changeName} maxLength="50" />
+            <Input
+              name="name"
+              value={name}
+              onChange={changeName}
+              maxLength="50"
+            />
           </div>
           <div className={styles.textareaItem}>
             <label className={styles.name}>{t('Public Key')}</label>
@@ -183,7 +203,11 @@ export default class SSHKeys extends Component {
           </div>
           <div className={styles.textareaItem}>
             <label className={styles.name}>{t('Description')}</label>
-            <textarea name="description" value={description} onChange={changeDescription} />
+            <textarea
+              name="description"
+              value={description}
+              onChange={changeDescription}
+            />
           </div>
         </div>
       </Dialog>
@@ -202,8 +226,8 @@ export default class SSHKeys extends Component {
         hideFooter
       >
         <p className={styles.downloadWord}>
-          Click "Download" button to get the private key. Its download link will be kept for 10
-          minutes.
+          Click "Download" button to get the private key. Its download link will
+          be kept for 10 minutes.
         </p>
         <Button type="primary">{t('Download')}</Button>
       </Dialog>
@@ -231,12 +255,21 @@ export default class SSHKeys extends Component {
               })}
             >
               {pair.name}
-              <span className={styles.total}>({(pair.nodeIds && pair.nodeIds.length) || 0})</span>
-              <PopoverIcon className={styles.operation} content={this.renderOperateMenu(pair)} />
+              <span className={styles.total}>
+                ({(pair.nodeIds && pair.nodeIds.length) || 0})
+              </span>
+              <PopoverIcon
+                className={styles.operation}
+                content={this.renderOperateMenu(pair)}
+              />
             </li>
           ))}
         </ul>
-        <div onClick={() => this.showCreateModal()} className={styles.addKey} type="primary">
+        <div
+          onClick={() => this.showCreateModal()}
+          className={styles.addKey}
+          type="primary"
+        >
           <Icon name="add" size={16} className={styles.icon} />
           <span>{t('Create SSH Key')}</span>
         </div>
@@ -257,7 +290,10 @@ export default class SSHKeys extends Component {
     if (selectedNodeIds.length) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button onClick={() => sshKeyStore.showModal('detachKey')} className="btn-handle">
+          <Button
+            onClick={() => sshKeyStore.showModal('detachKey')}
+            className="btn-handle"
+          >
             {t('Detach')}
           </Button>
         </Toolbar>
@@ -364,7 +400,9 @@ export default class SSHKeys extends Component {
         <div className={styles.nullKeys}>
           <Icon name="ssh" size={84} type="dark" />
           <p className={styles.word1}>{t('No SSH key is available')}</p>
-          <p className={styles.word2}>{t('Please click the create button below to add')}</p>
+          <p className={styles.word2}>
+            {t('Please click the create button below to add')}
+          </p>
           <Button type="primary" onClick={() => this.showCreateModal()}>
             <Icon name="add" size={20} type="white" />
             {t('Create')}

@@ -17,7 +17,7 @@ $input-item-height: 48px;
   background-image: $login-bg;
 }
 
-.loginContent{
+.loginContent {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -44,7 +44,7 @@ $input-item-height: 48px;
 .loginTitle {
   display: block;
   text-align: center;
- // padding-top: 249.6px;
+  // padding-top: 249.6px;
 }
 
 .loginForm {
@@ -57,11 +57,11 @@ $input-item-height: 48px;
   background-color: $login-form-bg;
   box-shadow: $login-form-shadow;
 
-  .notify{
+  .notify {
     position: absolute;
     top: -20px;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     text-align: left;
 
     .notifyItem {
@@ -100,10 +100,10 @@ $input-item-height: 48px;
     //}
     :global {
       .icon {
-       /* position: relative;
+        /* position: relative;
         left: 20px;
         top: 40px;*/
-        opacity: .5;
+        opacity: 0.5;
         left: 24px;
       }
 
@@ -115,11 +115,9 @@ $input-item-height: 48px;
         font-size: $size-medium;
         opacity: 1;
         color: $N500;
-        transition: all .3s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
-
     }
-
   }
   .checkbox {
     &::before {
@@ -153,4 +151,3 @@ $input-item-height: 48px;
     font-weight: 500;
   }
 }
-

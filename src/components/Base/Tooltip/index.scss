@@ -21,8 +21,8 @@ $bgcolor: $text-color;
     box-shadow: 0 1px 3px 0 #474e5d11;
     border: solid 1px $N30;
   }
-  :global{
-    .icon-more{
+  :global {
+    .icon-more {
       position: relative;
     }
   }
@@ -53,7 +53,7 @@ $bgcolor: $text-color;
     height: 12px;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       width: 0;
       height: 0;
@@ -62,7 +62,7 @@ $bgcolor: $text-color;
     }
   }
 
-  &[data-placement^="top"] {
+  &[data-placement^='top'] {
     margin-bottom: 10px;
 
     .arrow {
@@ -77,7 +77,7 @@ $bgcolor: $text-color;
       }
     }
   }
-  &[data-placement^="bottom"] {
+  &[data-placement^='bottom'] {
     margin-top: 10px;
     //transform: translate3d(362px, 220px, 0px) !important;
 
@@ -93,7 +93,7 @@ $bgcolor: $text-color;
       }
     }
   }
-  &[data-placement^="left"] {
+  &[data-placement^='left'] {
     margin-right: 10px;
 
     .arrow {
@@ -107,7 +107,7 @@ $bgcolor: $text-color;
       }
     }
   }
-  &[data-placement^="right"] {
+  &[data-placement^='right'] {
     margin-left: 10px;
 
     .arrow {

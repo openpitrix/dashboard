@@ -237,10 +237,14 @@ export default class ReviewDetail extends Component {
       const isReject = status === rejectStatus[type];
 
       return (
-        <Card className={classnames(styles.passed, { [styles.rejectd]: isReject })}>
+        <Card
+          className={classnames(styles.passed, { [styles.rejectd]: isReject })}
+        >
           <div className={styles.name}>
             {t(reviewTitle[type])}
-            <label className={styles.status}>{isReject ? t('Rejected') : t('Passed')}</label>
+            <label className={styles.status}>
+              {isReject ? t('Rejected') : t('Passed')}
+            </label>
           </div>
           <div className={styles.reviewInfo}>
             <dl>
@@ -293,12 +297,17 @@ export default class ReviewDetail extends Component {
           <Card className={styles.submit}>
             <span className={styles.name}>{t('Submit')}</span>
             <label className={styles.time}>
-              {formatTime(_.get(phase, 'developer.review_time'), 'YYYY/MM/DD HH:mm:ss')}
+              {formatTime(
+                _.get(phase, 'developer.review_time'),
+                'YYYY/MM/DD HH:mm:ss'
+              )}
             </label>
           </Card>
 
           {reviewDetail.status
-            && reviewRoles.map(type => <div key={type}>{this.renderReviewCard(type)}</div>)}
+            && reviewRoles.map(type => (
+              <div key={type}>{this.renderReviewCard(type)}</div>
+            ))}
         </div>
       </div>
     );
@@ -329,7 +338,10 @@ export default class ReviewDetail extends Component {
           <dl>
             <dt>{t('Current status')}:</dt>
             <dd>
-              <Status type={version.status} name={mappingStatus(version.status)} />
+              <Status
+                type={version.status}
+                name={mappingStatus(version.status)}
+              />
             </dd>
           </dl>
         </div>
@@ -355,11 +367,19 @@ export default class ReviewDetail extends Component {
         <div className={styles.fileInfo}>
           <div className={styles.name}>{pkgName}</div>
           <div className={styles.time}>
-            {t('Upload time')}：{formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
-            <PopoverIcon className={styles.operation} content={this.renderHandleMenu(pkgName)} />
+            {t('Upload time')}：
+            {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
+            <PopoverIcon
+              className={styles.operation}
+              content={this.renderHandleMenu(pkgName)}
+            />
           </div>
         </div>
-        <CheckFiles className={styles.checkFile} type={version.type} isShowNote />
+        <CheckFiles
+          className={styles.checkFile}
+          type={version.type}
+          isShowNote
+        />
       </div>
     );
   }
@@ -417,7 +437,11 @@ export default class ReviewDetail extends Component {
         <dl>
           <dt>{t('Icon')}</dt>
           <dd className={styles.imageOuter}>
-            <Image src={appDetail.icon} iconLetter={appDetail.name} iconSize={96} />
+            <Image
+              src={appDetail.icon}
+              iconLetter={appDetail.name}
+              iconSize={96}
+            />
           </dd>
         </dl>
         <dl>

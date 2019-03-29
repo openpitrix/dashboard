@@ -21,7 +21,10 @@ const isCheckAll = (module, feature) => {
   if (module.is_check_all) {
     return true;
   }
-  const getUniqActions = () => _.flatMap(_.uniqBy(feature.action_bundle, 'action_bundle_id'), 'action_bundle_id');
+  const getUniqActions = () => _.flatMap(
+    _.uniqBy(feature.action_bundle, 'action_bundle_id'),
+    'action_bundle_id'
+  );
 
   const total = getUniqActions(feature).length;
   const selectedCount = _.uniq(feature.checked_action_id).length;
@@ -51,16 +54,20 @@ export default class ModuleFeatures extends Component {
                   >
                     {feature.feature_name}
                   </div>
-                  {getArray(feature.action_bundle_set, 'action_bundle_id').map(action => (
-                    <div
-                      key={action.action_bundle_id}
-                      className={classnames(styles.item, styles.gray)}
-                    >
-                      {feature.checked_action_bundle_id_set.includes(action.action_bundle_id)
-                        ? action.action_bundle_name
-                        : null}
-                    </div>
-                  ))}
+                  {getArray(feature.action_bundle_set, 'action_bundle_id').map(
+                    action => (
+                      <div
+                        key={action.action_bundle_id}
+                        className={classnames(styles.item, styles.gray)}
+                      >
+                        {feature.checked_action_bundle_id_set.includes(
+                          action.action_bundle_id
+                        )
+                          ? action.action_bundle_name
+                          : null}
+                      </div>
+                    )
+                  )}
                 </Fragment>
             ) : null))}
           </div>

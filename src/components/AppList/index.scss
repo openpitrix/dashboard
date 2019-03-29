@@ -4,7 +4,7 @@
   _zoom: 1;
 
   > div {
-    &:nth-child(3n+4) {
+    &:nth-child(3n + 4) {
       margin-right: 0;
     }
   }

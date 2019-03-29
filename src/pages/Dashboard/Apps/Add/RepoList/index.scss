@@ -1,23 +1,23 @@
 @import '~scss/vars';
 
-.repoList{
+.repoList {
   display: inline-block;
   margin: 0 12px;
   width: 312px;
   text-align: left;
 
-  .title{
+  .title {
     margin-bottom: 8px;
     font-size: 12px;
     color: $N100;
   }
 
-  ul{
+  ul {
     height: 272px;
     overflow-y: auto;
   }
 
-  li{
+  li {
     box-sizing: border-box;
     margin-bottom: 8px;
     width: 312px;
@@ -28,7 +28,7 @@
     border: solid 1px $N30;
     cursor: pointer;
 
-    .word{
+    .word {
       display: inline-block;
       margin: 4px 0;
       font-size: 14px;
@@ -37,26 +37,26 @@
       color: $N500;
     }
 
-    :global{
-      .icon{
+    :global {
+      .icon {
         float: left;
         margin-right: 12px;
       }
     }
 
-    &.active{
+    &.active {
       border-color: $P75;
     }
   }
 
-  .explain{
+  .explain {
     font-size: 12px;
-    line-height:20px;
+    line-height: 20px;
     color: $N100;
   }
 }
 
-.publicBg{
+.publicBg {
   li {
     background-color: $N0;
   }

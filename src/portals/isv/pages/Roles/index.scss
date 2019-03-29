@@ -35,7 +35,8 @@
   padding: 24px;
   &:hover {
     border-color: $P45;
-    box-shadow: 0 1px 4px 0 rgba($P400, 0.06), 0 4px 8px 0 rgba(35, 35, 36, 0.04);
+    box-shadow: 0 1px 4px 0 rgba($P400, 0.06),
+      0 4px 8px 0 rgba(35, 35, 36, 0.04);
     background: $N0;
 
     .actions {

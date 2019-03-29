@@ -48,7 +48,11 @@ export default class UserModalActions extends Component {
         okText={t('Add')}
         onCancel={hide}
       >
-        <Input name="parent_group_id" type="hidden" value={_.first(this.selectedGroupIds)} />
+        <Input
+          name="parent_group_id"
+          type="hidden"
+          value={_.first(this.selectedGroupIds)}
+        />
         <div className={styles.formItem}>
           {t('GROUP_POSITION', {
             position: groupStore.position
@@ -85,7 +89,11 @@ export default class UserModalActions extends Component {
           <strong>{groupName}</strong>
         </div>
         <div className={styles.tips}>{t('DELETE_GROUP_TIP')}</div>
-        <Input name="group_id" type="hidden" defaultValue={_.first(this.selectedGroupIds)} />
+        <Input
+          name="group_id"
+          type="hidden"
+          defaultValue={_.first(this.selectedGroupIds)}
+        />
       </Dialog>
     );
   }
@@ -102,7 +110,11 @@ export default class UserModalActions extends Component {
         onSubmit={renameGroup}
         onCancel={hide}
       >
-        <Input name="group_id" type="hidden" defaultValue={_.first(this.selectedGroupIds)} />
+        <Input
+          name="group_id"
+          type="hidden"
+          defaultValue={_.first(this.selectedGroupIds)}
+        />
         <div className={styles.formItem}>
           {t('GROUP_POSITION', {
             position: groupStore.parentPosition
@@ -182,8 +194,10 @@ export default class UserModalActions extends Component {
     ) : (
       <Trans i18nKey="Set_Role_Title_For_Multi_User" {...i18nObj}>
         Please set a new role for{' '}
-        <strong className={i18nObj.className}>{{ count: i18nObj.count }}</strong> accounts, such as
-        selected {{ names: i18nObj.names }}, etc.
+        <strong className={i18nObj.className}>
+          {{ count: i18nObj.count }}
+        </strong>{' '}
+        accounts, such as selected {{ names: i18nObj.names }}, etc.
       </Trans>
     );
     const defaultRole = _.get(item, 'role', {});
@@ -203,7 +217,12 @@ export default class UserModalActions extends Component {
         <div className={styles.formTitle}>{text}</div>
         <div>
           <input name="user_id" value={userId} type="hidden" />
-          <Select positionFixed defaultValue={roleId} onChange={this.onChangeRole} name="role_id">
+          <Select
+            positionFixed
+            defaultValue={roleId}
+            onChange={this.onChangeRole}
+            name="role_id"
+          >
             {roles.map(role => (
               <Select.Option key={role.role_id} value={role.role_id}>
                 {t(getRoleName(role, this.roleProtal))}
@@ -211,7 +230,9 @@ export default class UserModalActions extends Component {
             ))}
           </Select>
           <div className={styles.description}>
-            {t(getRoleDescription(selectedRole || defaultRole, this.roleProtal))}
+            {t(
+              getRoleDescription(selectedRole || defaultRole, this.roleProtal)
+            )}
           </div>
         </div>
       </Dialog>
@@ -248,7 +269,12 @@ export default class UserModalActions extends Component {
         {user_id && (
           <div className={styles.formItem}>
             <label>{t('Name')}</label>
-            <Input name="username" maxLength="50" defaultValue={username} required />
+            <Input
+              name="username"
+              maxLength="50"
+              defaultValue={username}
+              required
+            />
             <Input name="user_id" type="hidden" defaultValue={user_id} />
           </div>
         )}
@@ -282,7 +308,12 @@ export default class UserModalActions extends Component {
             <div className={styles.formItem}>
               <label />
               <div className={styles.description}>
-                {t(getRoleDescription(selectedRole || defaultRole, this.roleProtal))}
+                {t(
+                  getRoleDescription(
+                    selectedRole || defaultRole,
+                    this.roleProtal
+                  )
+                )}
               </div>
             </div>
             <div className={styles.formItem}>
@@ -293,7 +324,11 @@ export default class UserModalActions extends Component {
         )}
         <div className={styles.formItemText}>
           <label>{t('Description')}</label>
-          <textarea name="description" maxLength={500} defaultValue={description} />
+          <textarea
+            name="description"
+            maxLength={500}
+            defaultValue={description}
+          />
         </div>
       </Dialog>
     );
@@ -314,14 +349,20 @@ export default class UserModalActions extends Component {
       >
         <div className={styles.formTitle}>
           <Trans i18nKey="Change password for user" {...item}>
-            Please change the password for user <strong>{{ username: item.username }}</strong>
+            Please change the password for user{' '}
+            <strong>{{ username: item.username }}</strong>
           </Trans>
         </div>
 
         <div className={styles.formItem}>
           <Input name="user_id" type="hidden" defaultValue={item.user_id} />
           <Input name="password" type="password" maxLength={50} />
-          <Input name="email" type="hidden" defaultValue={item.email} required />
+          <Input
+            name="email"
+            type="hidden"
+            defaultValue={item.email}
+            required
+          />
         </div>
       </Dialog>
     );
@@ -343,7 +384,8 @@ export default class UserModalActions extends Component {
         okText={t('Delete')}
       >
         <Trans i18nKey="DELETE_USER_DESC" {...item}>
-          Are you sure you want to delete user <strong>{{ username: item.username }}</strong>
+          Are you sure you want to delete user{' '}
+          <strong>{{ username: item.username }}</strong>
         </Trans>
       </Dialog>
     );

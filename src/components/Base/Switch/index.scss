@@ -21,7 +21,7 @@
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 2px;
     top: 2px;
@@ -29,7 +29,8 @@
     height: 10px;
     border-radius: 50%;
     background-color: #ffffff;
-    box-shadow: 0 1px 2px 0 rgba(33, 42, 51, 0.04), 0 1px 1px 0 rgba(33, 42, 51, 0.04);
+    box-shadow: 0 1px 2px 0 rgba(33, 42, 51, 0.04),
+      0 1px 1px 0 rgba(33, 42, 51, 0.04);
     transition: all $transition-speed cubic-bezier(0.78, 0.14, 0.15, 0.86);
   }
 
