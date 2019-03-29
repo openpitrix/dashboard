@@ -21,6 +21,12 @@ import styles from './index.scss';
 }))
 @observer
 export default class RuntimeInstances extends React.Component {
+  componentDidMount() {
+    if (!this.hasTab) {
+      this.fetchInstances();
+    }
+  }
+
   get hasTab() {
     return this.props.envStore.platform !== PLATFORM.kubernetes;
   }
@@ -54,11 +60,7 @@ export default class RuntimeInstances extends React.Component {
         <Card {...runtime} />
 
         {this.hasTab && (
-          <Tabs
-            className={styles.tabs}
-            tabs={runtimeTabs}
-            changeTab={this.handleChangeTab}
-          />
+          <Tabs className={styles.tabs} tabs={runtimeTabs} changeTab={this.handleChangeTab} />
         )}
 
         <InstanceList
