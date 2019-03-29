@@ -338,7 +338,7 @@ export default class CreateTestingEnv extends React.Component {
         <div className={styles.fieldSetName}>
           <Input
             className={styles.input}
-            placeholder={t('Set name')}
+            placeholder={t('Set runtime credential name')}
             value={credentialName}
             onChange={changeCredentialName}
           />
@@ -476,6 +476,7 @@ export default class CreateTestingEnv extends React.Component {
                 className={styles.input}
                 value={name}
                 onChange={changeRuntimeName}
+                placeholder={t('Runtime Name')}
               />
             </div>
             <div className={styles.formCtrl}>
