@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import TitleSearch from 'components/TitleSearch';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
+import { setPage } from 'mixins';
 
 import styles from './index.scss';
 
@@ -17,6 +18,7 @@ import styles from './index.scss';
   rootStore,
   vendorStore: rootStore.vendorStore
 }))
+@setPage('vendorStore')
 @observer
 export default class Providers extends Component {
   async componentDidMount() {
