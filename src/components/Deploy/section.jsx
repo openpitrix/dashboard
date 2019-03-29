@@ -52,12 +52,13 @@ export default class Section extends React.Component {
   };
 
   handleChange = val => {
-    const { keyName } = this.props.detail;
-
+    const { keyName, matchRegex } = this.props.detail;
     if (typeof val === 'object' && val.nativeEvent) {
       val = val.currentTarget.value;
     }
-
+    if (val !== '' && matchRegex && !matchRegex.test(val)) {
+      return;
+    }
     this.setState({ value: val });
 
     this.props.onChange(keyName, val);
@@ -131,6 +132,8 @@ export default class Section extends React.Component {
       originKey,
       items,
       required,
+      reg,
+      matchRegex,
       ...rest
     } = this.props.detail;
 
@@ -140,6 +143,12 @@ export default class Section extends React.Component {
     }
 
     let content = null;
+    const prop = {};
+    if (matchRegex) {
+      prop.value = this.getValue();
+    } else {
+      prop.defaultValue = defaultValue;
+    }
 
     switch (renderType) {
       case 'input':
@@ -149,9 +158,9 @@ export default class Section extends React.Component {
               className={styles.input}
               name={keyName}
               type="text"
-              defaultValue={defaultValue}
               maxLength={50}
               onChange={this.handleChange}
+              {...prop}
               required={required}
             />
             <p className={styles.tips}>{description}</p>
@@ -166,7 +175,7 @@ export default class Section extends React.Component {
               className={styles.input}
               name={keyName}
               type="number"
-              defaultValue={defaultValue}
+              {...prop}
               onChange={this.handleChange}
               min={rest.min}
               max={rest.max}
@@ -229,7 +238,7 @@ export default class Section extends React.Component {
           <textarea
             className={styles.text}
             name={keyName}
-            defaultValue={defaultValue}
+            {...prop}
             maxLength={1000}
             onChange={this.handleChange}
           />
