@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import classnames from 'classnames';
 import { withTranslation } from 'react-i18next';
-import { get } from 'lodash';
+import _, { get } from 'lodash';
 
 import {
   Table, PopoverIcon, Button, Input, Icon
 } from 'components/Base';
-import { Dialog, Grid, Section } from 'components/Layout';
+import {
+  Dialog, Grid, Section, Card
+} from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import Loading from 'components/Loading';
 
@@ -258,12 +260,8 @@ export default class SSHKeys extends Component {
                 {pair.name}
               </label>
               <span className={styles.total}>
-                ({(pair.nodeIds && pair.nodeIds.length) || 0})
+                {(pair.nodeIds && pair.nodeIds.length) || '-'}
               </span>
-              <PopoverIcon
-                className={styles.operation}
-                content={this.renderOperateMenu(pair)}
-              />
             </li>
           ))}
         </ul>
@@ -314,7 +312,13 @@ export default class SSHKeys extends Component {
   }
 
   renderDetail() {
-    const { clusterStore, clusterDetailStore, t } = this.props;
+    const {
+      clusterStore,
+      clusterDetailStore,
+      sshKeyStore,
+      user,
+      t
+    } = this.props;
     const {
       isLoading,
       onChangeNodeStatus,
@@ -327,6 +331,8 @@ export default class SSHKeys extends Component {
     } = clusterDetailStore;
 
     const { clusters } = clusterStore;
+    const { keyPairs, currentPairId } = sshKeyStore;
+    const currentPair = _.find(keyPairs, { key_pair_id: currentPairId }) || {};
 
     const filterList = [
       {
@@ -364,6 +370,18 @@ export default class SSHKeys extends Component {
         {this.renderKeyPairs()}
 
         <Section size={9}>
+          <Card
+            className={classnames(styles.keyPairContent, {
+              [styles.hasBorder]: !user.isUserPortal
+            })}
+          >
+            <p className={styles.name}>{currentPair.name}</p>
+            <p className={styles.pubKey}>{currentPair.pub_key}</p>
+            <PopoverIcon
+              className={styles.operation}
+              content={this.renderOperateMenu(currentPair)}
+            />
+          </Card>
           {this.renderToolbar()}
 
           <Table
