@@ -31,6 +31,7 @@ const keysShouldBeNumber = [
   'instance_class',
   'count'
 ];
+const appNameRegex = /^[a-z][a-z0-9-]{0,13}$/;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -178,6 +179,9 @@ export default class AppDeploy extends Component {
     const name = _.get(formData, 'cluster.name', '');
     if (!name) {
       return appDeployStore.error(t('Name should not be empty'));
+    }
+    if (!appNameRegex.test(name)) {
+      return appDeployStore.error(t('HELM_APP_NAME_ERROR'));
     }
 
     let conf;
