@@ -53,7 +53,7 @@ export default class Applications extends Component {
 
   render() {
     const { vendorStore, userStore, t } = this.props;
-    const { vendors, activeType } = vendorStore;
+    const { vendors, activeType, isLoading } = vendorStore;
     const { users } = userStore;
     const isUnreviewed = activeType === 'unreviewed';
 
@@ -144,6 +144,7 @@ export default class Applications extends Component {
         />
 
         <Table
+          isLoading={isLoading}
           columns={columns}
           dataSource={vendors.toJSON()}
           pagination={pagination}

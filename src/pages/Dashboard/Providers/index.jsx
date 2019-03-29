@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
-import { Table } from 'components/Base';
+import Table from 'components/EnhanceTable';
 import Layout from 'components/Layout';
 import TitleSearch from 'components/TitleSearch';
 import { formatTime } from 'utils';
@@ -34,13 +34,15 @@ export default class Providers extends Component {
 
   render() {
     const { vendorStore, t } = this.props;
-
     const {
-      vendors, statistics, searchWord, onSearch, onClear
+      vendors,
+      statistics,
+      searchWord,
+      onSearch,
+      onClear,
+      isLoading
     } = vendorStore;
-
     const linkUrl = id => toRoute(routes.portal._admin.providerDetail, { providerId: id });
-
     const columns = [
       {
         title: t('Number'),
@@ -102,13 +104,6 @@ export default class Providers extends Component {
       }
     ];
 
-    const pagination = {
-      tableType: 'shield',
-      total: vendorStore.totalCount,
-      current: vendorStore.currentPage,
-      onChange: vendorStore.changePagination
-    };
-
     return (
       <Layout>
         <TitleSearch
@@ -120,9 +115,11 @@ export default class Providers extends Component {
         />
 
         <Table
+          tableType="shield"
+          store={vendorStore}
+          data={vendors}
+          isLoading={isLoading}
           columns={columns}
-          dataSource={vendors.toJSON()}
-          pagination={pagination}
         />
       </Layout>
     );
