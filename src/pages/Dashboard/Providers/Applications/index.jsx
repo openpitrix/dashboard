@@ -11,6 +11,7 @@ import TableTypes from 'components/TableTypes';
 import TdUser from 'components/TdUser';
 import { formatTime } from 'utils';
 import routes, { toRoute } from 'routes';
+import { setPage } from 'mixins';
 
 import styles from './index.scss';
 
@@ -26,6 +27,7 @@ const types = [
   userStore: rootStore.userStore,
   vendorStore: rootStore.vendorStore
 }))
+@setPage('vendorStore')
 @observer
 export default class Applications extends Component {
   async componentDidMount() {
@@ -45,6 +47,7 @@ export default class Applications extends Component {
       vendorStore.activeType = type;
       const typeMap = _.find(types, { value: type });
       await vendorStore.fetchAll({ status: typeMap.status });
+      vendorStore.changeActiveType(type);
     }
   };
 

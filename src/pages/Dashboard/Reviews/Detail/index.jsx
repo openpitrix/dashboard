@@ -32,7 +32,7 @@ import styles from './index.scss';
 
 const tabs = [
   { name: 'Base Info', value: 'baseInfo' },
-  { name: 'Instructions', value: 'readme', disabled: true },
+  { name: 'Instructions', value: 'readme' },
   { name: 'Terms of service', value: 'service', disabled: true },
   { name: 'Config File', value: 'configFile' },
   { name: 'Set Price', value: 'price', disabled: true },

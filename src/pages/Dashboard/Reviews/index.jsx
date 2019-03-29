@@ -13,6 +13,7 @@ import TdUser from 'components/TdUser';
 import { formatTime, getObjName } from 'utils';
 import { reviewShowStatus } from 'config/version';
 import routes, { toRoute } from 'routes';
+import { setPage } from 'mixins';
 
 import styles from './index.scss';
 
@@ -30,6 +31,7 @@ const types = [
   userStore: rootStore.userStore,
   user: rootStore.user
 }))
+@setPage('appVersionStore')
 @observer
 export default class Reviews extends Component {
   async componentDidMount() {
@@ -50,6 +52,7 @@ export default class Reviews extends Component {
     if (type !== appVersionStore.activeType) {
       appVersionStore.activeType = type;
       appVersionStore.fetchReviews();
+      appVersionStore.changeActiveType(type);
     }
   };
 

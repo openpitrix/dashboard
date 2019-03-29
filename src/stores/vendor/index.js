@@ -1,12 +1,14 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
+import { useTableActions } from 'mixins';
 import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
 
 const defaultStatus = ['submitted', 'passed', 'rejected'];
 
+@useTableActions
 export default class VendorStore extends Store {
   @observable checkedProtocol = false;
 
@@ -15,12 +17,6 @@ export default class VendorStore extends Store {
   @observable disableNextStep = true;
 
   @observable isLoading = false;
-
-  @observable totalCount = 0;
-
-  @observable currentPage = 1;
-
-  @observable searchWord = '';
 
   @observable vendors = [];
 
@@ -231,24 +227,6 @@ export default class VendorStore extends Store {
   };
 
   @action
-  onSearch = async word => {
-    this.searchWord = word;
-    this.currentPage = 1;
-    await this.fetchAll();
-  };
-
-  @action
-  onClear = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
   changeApplyPagination = async page => {
     this.currentPage = page;
     const status = this.activeType === 'unreviewed' ? ['submitted'] : ['rejected', 'passed'];
@@ -256,8 +234,8 @@ export default class VendorStore extends Store {
   };
 
   reset = () => {
-    this.currentPage = 1;
-    this.searchWord = '';
+    this.resetTableParams();
+
     this.userId = '';
     this.activeType = 'unreviewed';
     this.checkedProtocol = true;

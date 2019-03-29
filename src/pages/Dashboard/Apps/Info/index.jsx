@@ -16,7 +16,11 @@ import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
-const tags = ['Base Info', 'Instructions', 'Terms of service'];
+const tabs = [
+  { name: 'Base Info', value: 'baseInfo' },
+  { name: 'Instructions', value: 'readme' },
+  { name: 'Terms of service', value: 'service', disabled: true }
+];
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -406,10 +410,10 @@ export default class Info extends Component {
     return (
       <Fragment>
         <Card>
-          <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-          {detailTab === 'Base Info' && this.renderBaseInfo()}
-          {detailTab === 'Instructions' && this.renderInstructions()}
-          {detailTab === 'Terms of service' && this.renderService()}
+          <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
+          {detailTab === 'baseInfo' && this.renderBaseInfo()}
+          {detailTab === 'readme' && this.renderInstructions()}
+          {detailTab === 'service' && this.renderService()}
         </Card>
       </Fragment>
     );

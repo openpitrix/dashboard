@@ -9,7 +9,7 @@ function createSetPage(storeName, WrapComponent) {
     || 'unkown'}`;
 
   const originSource = {};
-  const keys = ['currentPage', 'keyword', 'defaultStatus'];
+  const keys = ['currentPage', 'keyword', 'defaultStatus', 'activeType'];
   @withRouter
   class Injector extends Component {
     static displayName = displayName;
@@ -23,12 +23,17 @@ function createSetPage(storeName, WrapComponent) {
       if (!_.isNaN(currentPage)) {
         store.currentPage = currentPage;
       }
-      const { keyword } = values;
+      const { keyword, status, activeType } = values;
       if (keyword) {
         store.searchWord = keyword;
       }
-      if (values.status) {
-        store.defaultStatus = values.status;
+
+      if (status) {
+        // store.defaultStatus = status; // todo: temporary remove
+      }
+
+      if (activeType) {
+        store.activeType = activeType;
       }
     }
 

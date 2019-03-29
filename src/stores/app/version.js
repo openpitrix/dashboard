@@ -3,6 +3,7 @@ import _, { get, assign, assignIn } from 'lodash';
 import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
 
+import { useTableActions } from 'mixins';
 import { getReviewType, getFilterStatus } from 'config/version';
 import { formCheck, fieldCheck } from 'config/form-check';
 import ACTION from 'config/action-id';
@@ -11,8 +12,17 @@ import Store from '../Store';
 
 const maxSize = 2 * 1024 * 1024;
 
+@useTableActions
 export default class AppVersionStore extends Store {
-  defaultStatus = ['draft', 'submitted', 'in-review', 'passed', 'rejected', 'active', 'suspended'];
+  defaultStatus = [
+    'draft',
+    'submitted',
+    'in-review',
+    'passed',
+    'rejected',
+    'active',
+    'suspended'
+  ];
 
   @observable versions = [];
 
@@ -36,15 +46,6 @@ export default class AppVersionStore extends Store {
 
   // delete, show_all
   @observable readme = '';
-
-  @observable totalCount = 0;
-
-  @observable currentPage = 1;
-
-  // version table query params
-  @observable searchWord = '';
-
-  @observable selectStatus = '';
 
   @observable appId = '';
 
@@ -164,8 +165,12 @@ export default class AppVersionStore extends Store {
   @action
   setReviewTypes = async () => {
     const hasISVReview = this.roleStore.checkAction(ACTION.isv_review);
-    const hasBussinessReview = this.roleStore.checkAction(ACTION.business_review);
-    const hasDevelopReview = this.roleStore.checkAction(ACTION.technical_review);
+    const hasBussinessReview = this.roleStore.checkAction(
+      ACTION.business_review
+    );
+    const hasDevelopReview = this.roleStore.checkAction(
+      ACTION.technical_review
+    );
 
     this.reveiwTypes = [];
     if (hasISVReview) {
@@ -198,7 +203,10 @@ export default class AppVersionStore extends Store {
     }
 
     this.isLoading = true;
-    const result = await this.request.get('app_version_reviews', assign(defaultParams, params));
+    const result = await this.request.get(
+      'app_version_reviews',
+      assign(defaultParams, params)
+    );
 
     this.reviews = get(result, 'app_version_review_set', []);
     this.totalCount = get(result, 'total_count', 0);
@@ -331,7 +339,10 @@ export default class AppVersionStore extends Store {
 
     this.isLoading = true;
     const reviewType = getReviewType(currentStatus);
-    const result = await this.request.post(`app_version/action/${handleType}/${reviewType}`, data);
+    const result = await this.request.post(
+      `app_version/action/${handleType}/${reviewType}`,
+      data
+    );
 
     if (get(result, 'version_id')) {
       if (!noTips) {
@@ -396,7 +407,10 @@ export default class AppVersionStore extends Store {
       delete params.noLimit;
     }
 
-    const result = await this.request.get('app_version_audits', _.extend(defaultParams, params));
+    const result = await this.request.get(
+      'app_version_audits',
+      _.extend(defaultParams, params)
+    );
 
     const audits = get(result, 'app_version_audit_set', []);
     assignIn(this.audits, { [params.version_id]: audits });
@@ -614,35 +628,6 @@ export default class AppVersionStore extends Store {
     });
   };
 
-  onSearch = async word => {
-    this.currentPage = 1;
-    this.searchWord = word;
-    await this.fetchAll();
-  };
-
-  @action
-  onClearSearch = async () => {
-    await this.onSearch('');
-  };
-
-  @action
-  onRefresh = async () => {
-    await this.fetchAll();
-  };
-
-  @action
-  changePagination = async page => {
-    this.currentPage = page;
-    await this.fetchAll();
-  };
-
-  @action
-  onChangeStatus = async status => {
-    this.currentPage = 1;
-    this.selectStatus = this.selectStatus === status ? '' : status;
-    await this.fetchAll();
-  };
-
   @action
   changeReason = event => {
     this.reason = event.target.value;
@@ -731,9 +716,8 @@ export default class AppVersionStore extends Store {
   };
 
   reset = () => {
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
+    this.resetTableParams();
+
     this.appId = '';
     this.versionId = '';
 

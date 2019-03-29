@@ -36,7 +36,7 @@ export default {
     this.currentPage = 1;
     const status = this.selectStatus === nextStatus ? '' : nextStatus;
     this.selectStatus = status;
-    this.appendQuery({ status });
+    // this.appendQuery({ status }); // todo: temporary remove
     await this.fetchAll();
   },
 
@@ -63,6 +63,10 @@ export default {
 
   async onRefresh() {
     await this.fetchAll();
+  },
+
+  changeActiveType(activeType) {
+    this.appendQuery({ activeType });
   },
 
   resetTableParams() {
