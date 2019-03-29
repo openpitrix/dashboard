@@ -1,3 +1,5 @@
+import externalLink from 'config/external-link';
+
 export const providers = [
   { name: 'QingCloud', icon: 'qingcloud', key: 'qingcloud' },
   { name: 'Aliyun', icon: 'aliyun', key: 'aliyun' },
@@ -57,18 +59,4 @@ export const CLUSTER_TYPE = {
 
 export const regExpNamespace = /^[a-z0-9]([a-z0-9]*[a-z0-9])?$/;
 
-export const platformUrl = {
-  qingcloud: {
-    console: 'https://console.qingcloud.com/',
-    accessKey: 'https://console.qingcloud.com/access_keys/'
-  },
-  aws: {
-    console: 'https://console.aws.amazon.com/',
-    accessKey:
-      'https://console.aws.amazon.com/iam/home?region=us-east-2#/security_credentials/'
-  },
-  aliyun: {
-    console: 'https://home.console.aliyun.com/',
-    accessKey: 'https://usercenter.console.aliyun.com/#/manage/ak/'
-  }
-};
+export const platformUrl = externalLink.platformUrl;
