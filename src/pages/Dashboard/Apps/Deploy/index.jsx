@@ -180,7 +180,7 @@ export default class AppDeploy extends Component {
     if (!name) {
       return appDeployStore.error(t('Name should not be empty'));
     }
-    if (!appNameRegex.test(name)) {
+    if (appDeployStore.isK8s && !appNameRegex.test(name)) {
       return appDeployStore.error(t('HELM_APP_NAME_ERROR'));
     }
 
