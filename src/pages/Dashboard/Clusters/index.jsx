@@ -34,12 +34,14 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static propTypes = {
     fetchData: PropTypes.func,
+    isK8S: PropTypes.bool,
     runtimeId: PropTypes.string,
     title: PropTypes.string
   };
 
   static defaultProps = {
     runtimeId: '',
+    isK8S: false,
     title: ''
   };
 
@@ -318,7 +320,7 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, runtimeId, t
+      clusterStore, userStore, user, runtimeId, isK8S, t
     } = this.props;
     const { isLoading, onlyView, isAgent } = clusterStore;
 
@@ -327,13 +329,15 @@ export default class Clusters extends Component {
 
     return (
       <Fragment>
-        <Tabs
-          tabs={runtimeTabs}
-          className={styles.tabs}
-          changeTab={this.handleChangeTab}
-          noFirstChange
-          isCardTab
-        />
+        {!isK8S && (
+          <Tabs
+            tabs={runtimeTabs}
+            className={styles.tabs}
+            changeTab={this.handleChangeTab}
+            noFirstChange
+            isCardTab
+          />
+        )}
         {this.renderToolbar()}
         <Table
           tableType="Clusters"

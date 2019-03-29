@@ -41,7 +41,7 @@ export default class RuntimeInstances extends React.Component {
   };
 
   render() {
-    const { runtime, t } = this.props;
+    const { runtime, envStore, t } = this.props;
 
     return (
       <div>
@@ -50,7 +50,10 @@ export default class RuntimeInstances extends React.Component {
           <span className={styles.backTxt}>{t('Back')}</span>
         </div>
         <Card {...runtime} />
-        <Clusters runtimeId={runtime.runtime_id} />
+        <Clusters
+          runtimeId={runtime.runtime_id}
+          isK8S={envStore.platform === PLATFORM.kubernetes}
+        />
         {/* {this.hasTab && (
           <Tabs
             className={styles.tabs}
