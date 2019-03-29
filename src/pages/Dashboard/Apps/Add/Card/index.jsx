@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { withTranslation } from 'react-i18next';
 
 import { Icon, DocLink } from 'components/Base';
+import externalLink from 'config/external-link';
 
 import styles from './index.scss';
 
@@ -57,7 +58,10 @@ export default class CreateAppCard extends Component {
         <Icon name={icon} size={48} className={styles.icon} type="light" />
         <div className={styles.name}>{name}</div>
         <div className={styles.intro}>{t(intro)}</div>
-        <DocLink name={'Create_App_Linkto_Intro_App'}>
+        <DocLink
+          name={'Create_App_Linkto_Intro_App'}
+          to={externalLink[`doc_${value}`]}
+        >
           {t('Linkto_Intro_App')}
         </DocLink>
       </div>

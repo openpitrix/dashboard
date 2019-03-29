@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 
 import { versionTypes } from 'config/version-types';
+import externalLink from 'config/external-link';
 import typeFiles from './files';
 
 import styles from './index.scss';
@@ -62,7 +63,7 @@ export default class CheckFiles extends PureComponent {
           <div className={styles.document}>
             <span className={styles.note}>{t('Note')}</span>
             {t('See the complete app development specification')}
-            <a to="#">
+            <a href={externalLink[`doc_${type}`]} target="blank">
               《{linkType}
               {t('specification and application development')}》
             </a>

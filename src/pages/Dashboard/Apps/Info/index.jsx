@@ -13,6 +13,7 @@ import Layout, { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
 import NoteLink from 'components/NoteLink';
 import routes, { toRoute } from 'routes';
+import externalLink from 'config/external-link';
 
 import styles from './index.scss';
 
@@ -167,7 +168,7 @@ export default class Info extends Component {
     return (
       <div className={styles.markdownNote}>
         {t('The following content editing support ')}
-        <a href="http://markdownpad.com" target="blank">
+        <a href={externalLink.markdown} target="blank">
           Markdown
         </a>
         {t(' grammar')}
@@ -189,7 +190,7 @@ export default class Info extends Component {
             {t(isPreview ? 'Edit' : 'Preview')}
           </Button>
           {type === 'readme' && (
-            <a href="#" target="_blank">
+            <a href={externalLink.readme_example} target="blank">
               <Button>
                 <Icon
                   name="documentation"

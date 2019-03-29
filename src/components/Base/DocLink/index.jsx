@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 
-import links from 'config/doc-link';
+import links from 'config/external-link';
 
 @withTranslation()
 export default class DocLink extends Component {
@@ -40,7 +40,7 @@ export default class DocLink extends Component {
     if (isExternal) {
       if (!linkTo) {
         throw new Error(
-          `You should edit a link url in the file of 'config/doc-links'. name:${name}`
+          `You should edit a link url in the file of 'config/external-links'. name:${name}`
         );
       }
       return (
