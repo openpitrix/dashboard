@@ -24,6 +24,7 @@ export default ({
   onlyView,
   isAgent,
   isRuntimeDetail,
+  isAppDetail,
   t
 }) => [
   {
@@ -51,7 +52,7 @@ export default ({
   },
   {
     title:
-      user.isUserPortal || isRuntimeDetail
+      (user.isUserPortal || isRuntimeDetail) && !isAppDetail
         ? 'App / Delivery type / Version'
         : 'Version',
     key: 'app_id',
