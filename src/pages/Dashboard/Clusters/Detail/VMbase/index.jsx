@@ -362,13 +362,21 @@ export default class VMbasedCluster extends React.Component {
     }
 
     if (modalType === 'update_env') {
-      this.vmParser.setConfig(env);
-      let envSettings = this.vmParser.getEnvSetting();
-      if (!Array.isArray(envSettings)) {
-        envSettings = [envSettings];
-      }
+      let envSettings = [];
+      let validEnv = false;
 
-      this.origEnvParams = this.vmParser.getEnvDefaultParams(envSettings);
+      try {
+        this.vmParser.setConfig(env);
+        envSettings = this.vmParser.getEnvSetting();
+        if (!Array.isArray(envSettings)) {
+          envSettings = [envSettings];
+        }
+
+        this.origEnvParams = this.vmParser.getEnvDefaultParams(envSettings);
+        validEnv = true;
+      } catch (err) {
+        this.origEnvParams = {};
+      }
 
       return (
         <Dialog
@@ -378,9 +386,11 @@ export default class VMbasedCluster extends React.Component {
           onCancel={hideModal}
           onSubmit={this.handleUpdateEnv}
         >
-          {envSettings.map((group, idx) => (
-            <DeployGroup detail={group} seq={idx} key={idx} />
-          ))}
+          {validEnv
+            && envSettings.map((group, idx) => (
+              <DeployGroup detail={group} seq={idx} key={idx} />
+            ))}
+          {!validEnv && t('Invalid config.json')}
         </Dialog>
       );
     }
