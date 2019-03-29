@@ -3,10 +3,9 @@ import { withTranslation } from 'react-i18next';
 import { inject, observer } from 'mobx-react';
 
 import { Icon } from 'components/Base';
-import Tabs from 'components/DetailTabs';
-import { PLATFORM, runtimeTabs } from 'config/runtimes';
+import { PLATFORM } from 'config/runtimes';
+import { Clusters } from 'pages/Dashboard';
 import Card from '../Card';
-import InstanceList from '../InstanceList';
 
 import styles from './index.scss';
 
@@ -50,10 +49,9 @@ export default class RuntimeInstances extends React.Component {
           <Icon name="previous" size={24} type="dark" />
           <span className={styles.backTxt}>{t('Back')}</span>
         </div>
-
         <Card {...runtime} />
-
-        {this.hasTab && (
+        <Clusters runtimeId={runtime.runtime_id} />
+        {/* {this.hasTab && (
           <Tabs
             className={styles.tabs}
             tabs={runtimeTabs}
@@ -65,7 +63,7 @@ export default class RuntimeInstances extends React.Component {
           {...this.props}
           store={this.props.runtimeClusterStore}
           fetchAll={this.fetchInstances}
-        />
+        /> */}
       </div>
     );
   }

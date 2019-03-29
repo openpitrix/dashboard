@@ -34,10 +34,12 @@ import styles from './index.scss';
 export default class Clusters extends Component {
   static propTypes = {
     fetchData: PropTypes.func,
+    runtimeId: PropTypes.string,
     title: PropTypes.string
   };
 
   static defaultProps = {
+    runtimeId: '',
     title: ''
   };
 
@@ -47,6 +49,7 @@ export default class Clusters extends Component {
       clusterStore,
       runtimeStore,
       user,
+      runtimeId,
       fetchData
     } = this.props;
 
@@ -56,6 +59,7 @@ export default class Clusters extends Component {
       const { cluster_type } = clusterStore;
 
       Object.assign(clusterStore, {
+        runtimeId,
         attachUsers: !user.isUserPortal,
         attachVersions: cluster_type === CLUSTER_TYPE.instance,
         attachApps: !user.isDevPortal,
@@ -66,10 +70,12 @@ export default class Clusters extends Component {
 
       await clusterStore.fetchAll();
 
-      await runtimeStore.fetchAll({
-        status: ['active', 'deleted'],
-        noLimit: true
-      });
+      if (!runtimeId) {
+        await runtimeStore.fetchAll({
+          status: ['active', 'deleted'],
+          noLimit: true
+        });
+      }
     }
 
     rootStore.sock.listenToJob(this.handleJobs);
@@ -312,7 +318,7 @@ export default class Clusters extends Component {
 
   renderMain() {
     const {
-      clusterStore, userStore, user, t
+      clusterStore, userStore, user, runtimeId, t
     } = this.props;
     const { isLoading, onlyView, isAgent } = clusterStore;
 
@@ -341,11 +347,16 @@ export default class Clusters extends Component {
                 item => item.key !== 'app_id' && item.key !== 'actions'
               );
             }
+            if (runtimeId) {
+              cols = cols.filter(
+                item => item.key !== 'actions' && item.key !== 'runtime_id'
+              );
+            }
             return cols;
           }}
           store={clusterStore}
           data={clusterStore.clusters}
-          hasRowSelection={!(onlyView || isAgent)}
+          hasRowSelection={!(onlyView || isAgent || runtimeId)}
           isLoading={isLoading}
           replaceFilterConditions={[
             { name: t('Pending'), value: 'pending' },
@@ -374,9 +385,11 @@ export default class Clusters extends Component {
   }
 
   render() {
-    const { user, title, t } = this.props;
+    const {
+      user, title, runtimeId, t
+    } = this.props;
 
-    if (user.isUserPortal) {
+    if (user.isUserPortal || runtimeId) {
       return this.renderMain();
     }
 

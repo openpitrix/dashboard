@@ -254,7 +254,9 @@ export default class SSHKeys extends Component {
                 [styles.active]: pair.key_pair_id === currentPairId
               })}
             >
-              {pair.name}
+              <label className={styles.name} title={pair.name}>
+                {pair.name}
+              </label>
               <span className={styles.total}>
                 ({(pair.nodeIds && pair.nodeIds.length) || 0})
               </span>
