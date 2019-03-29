@@ -1,21 +1,27 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import Store from '../Store';
 
 export default class RuntimeCredentialStore extends Store {
-  defaultStatus = ['active'];
+  constructor(...args) {
+    super(...args);
 
-  @observable isLoading = false;
+    this.defaultStatus = ['active'];
 
-  @observable credentials = [];
+    this.defineObservables(function () {
+      this.isLoading = false;
 
-  // last created resource
-  @observable credential = {};
+      this.credentials = [];
 
-  @observable runtimeZones = [];
+      // last created resource
+      this.credential = {};
 
-  @observable credentialCount = 0;
+      this.runtimeZones = [];
+
+      this.credentialCount = 0;
+    });
+  }
 
   get actionName() {
     return this.getUser().isUserPortal
@@ -76,12 +82,5 @@ export default class RuntimeCredentialStore extends Store {
     this.runtimeZones = _.get(res, 'zone', []);
     this.isLoading = false;
     return this.runtimeZones;
-  };
-
-  reset = () => {
-    this.credentials = [];
-    this.credential = {};
-    this.runtimeZones = [];
-    this.credentialCount = 0;
   };
 }

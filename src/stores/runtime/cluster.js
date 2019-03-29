@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { useTableActions } from 'mixins';
@@ -8,15 +8,21 @@ import Store from '../Store';
 
 @useTableActions
 export default class RuntimeClusterStore extends Store {
-  idKey = 'cluster_id';
+  constructor(...args) {
+    super(...args);
 
-  @observable clusters = [];
+    this.idKey = 'cluster_id';
 
-  @observable isLoading = false;
+    this.defineObservables(function () {
+      this.clusters = [];
 
-  @observable countInstance = 0;
+      this.isLoading = false;
 
-  @observable countProxy = 0; // frontgate
+      this.countInstance = 0;
+
+      this.countProxy = 0; // frontgate
+    });
+  }
 
   get clusterIds() {
     return this.selectIds;
@@ -91,10 +97,5 @@ export default class RuntimeClusterStore extends Store {
     const prop = clusterType === CLUSTER_TYPE.instance ? 'countInstance' : 'countProxy';
     this[prop] = _.get(result, 'total_count', 0);
     this.isLoading = false;
-  };
-
-  @action
-  reset = () => {
-    this.clusters = [];
   };
 }

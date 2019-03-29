@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 import { useTableActions } from 'mixins';
 
@@ -11,11 +11,16 @@ const defaultStatus = ['active'];
 
 @useTableActions
 export default class UserDetailStore extends Store {
-  idKey = 'user_id';
+  constructor(...args) {
+    super(...args);
 
-  @observable isLoading = false;
+    this.idKey = 'user_id';
 
-  @observable users = [];
+    this.defineObservables(function () {
+      this.isLoading = false;
+      this.users = [];
+    });
+  }
 
   get formatUserDetail() {
     return this.getStore('user').formatUserDetail;
@@ -94,13 +99,6 @@ export default class UserDetailStore extends Store {
     this.users = this.formatUserDetail(_.get(result, 'user_detail_set', []));
     this.totalCount = _.get(result, 'total_count', 0);
     this.isLoading = false;
-  };
-
-  reset = () => {
-    this.users = [];
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
   };
 
   @action

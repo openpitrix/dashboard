@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 import { Base64 } from 'js-base64';
 import yamlJs from 'js-yaml';
@@ -8,31 +8,36 @@ import { flattenObject } from 'utils';
 import Store from '../Store';
 
 export default class AppDeployStore extends Store {
-  @observable versions = [];
+  constructor(...args) {
+    super(...args);
 
-  @observable runtimes = [];
+    this.steps = 1;
+    this.configJson = {};
 
-  @observable subnets = [];
+    this.defineObservables(function () {
+      this.versions = [];
 
-  @observable versionId = '';
+      this.runtimes = [];
 
-  @observable runtimeId = '';
+      this.subnets = [];
 
-  @observable isLoading = false;
+      this.versionId = '';
 
-  @observable isK8s = false;
+      this.runtimeId = '';
 
-  @observable errMsg = '';
+      this.isLoading = false;
 
-  @observable yamlStr = '';
+      this.isK8s = false;
 
-  @observable activeStep = 1;
+      this.errMsg = '';
 
-  @observable disableNextStep = false;
+      this.yamlStr = '';
 
-  steps = 1;
+      this.activeStep = 1;
 
-  configJson = {};
+      this.disableNextStep = false;
+    });
+  }
 
   get appStore() {
     return this.getStore('app');
@@ -46,18 +51,6 @@ export default class AppDeployStore extends Store {
     return this.getUser().isUserPortal
       ? 'clusters/create'
       : 'debug_clusters/create';
-  }
-
-  reset() {
-    this.versions = [];
-    this.runtimes = [];
-    this.subnets = [];
-    this.runtimeId = '';
-    this.versionId = '';
-    this.errMsg = '';
-    this.configJson = {};
-    this.yamlStr = '';
-    this.isK8s = false;
   }
 
   normalizeSubnets = () => this.subnets.map(({ subnet_id }) => ({
@@ -153,8 +146,5 @@ export default class AppDeployStore extends Store {
   };
 
   @action
-  create = async (params = {}) => {
-    const res = await this.request.post(this.createActionName, params);
-    return res;
-  };
+  create = async (params = {}) => await this.request.post(this.createActionName, params);
 }

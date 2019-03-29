@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 
 import { getFormData } from 'utils';
@@ -14,49 +14,54 @@ const defaultStatus = ['active'];
 export default class UserStore extends Store {
   idKey = 'user_id';
 
-  @observable users = [];
+  constructor(...args) {
+    super(...args);
 
-  @observable roles = [];
+    this.defineObservables(function () {
+      this.users = [];
 
-  @observable authorities = [];
+      this.roles = [];
 
-  @observable currentTag = '';
+      this.authorities = [];
 
-  @observable isLoading = false;
+      this.currentTag = '';
 
-  @observable currentPage = 1;
+      this.isLoading = false;
 
-  @observable selectRoleId = '';
+      this.currentPage = 1;
 
-  @observable selectName = '';
+      this.selectRoleId = '';
 
-  @observable selectValue = 'roles';
+      this.selectName = '';
 
-  @observable showAuthorityModal = false;
+      this.selectValue = 'roles';
 
-  @observable treeFlag = false;
+      this.showAuthorityModal = false;
 
-  @observable summaryInfo = {};
+      this.treeFlag = false;
 
-  @observable operateType = '';
+      this.summaryInfo = {};
 
-  @observable cookieTime = 2 * 60 * 60 * 1000;
+      this.operateType = '';
 
-  @observable rememberMe = false;
+      this.cookieTime = 2 * 60 * 60 * 1000;
 
-  @observable
-  userDetail = {
-    user_id: '',
-    username: '',
-    email: '',
-    password: '',
-    role_id: '',
-    description: ''
-  };
+      this.rememberMe = false;
 
-  @observable userId = '';
+      this.userDetail = {
+        user_id: '',
+        username: '',
+        email: '',
+        password: '',
+        role_id: '',
+        description: ''
+      };
 
-  @observable operateResult = null;
+      this.userId = '';
+
+      this.operateResult = null;
+    });
+  }
 
   get modal() {
     return this.getStore('modal');
@@ -412,21 +417,6 @@ export default class UserStore extends Store {
   @action
   toggleRememberMe = () => {
     this.rememberMe = !this.rememberMe;
-  };
-
-  @action
-  reset = () => {
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
-    this.selectRoleId = '';
-    this.userDetail = {
-      username: '',
-      email: '',
-      password: '',
-      role: '',
-      description: ''
-    };
   };
 }
 

@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import { get } from 'lodash';
 
 import { useTableActions } from 'mixins';
@@ -9,39 +9,45 @@ import Store from '../Store';
 
 @useTableActions
 export default class RuntimeStore extends Store {
-  idKey = 'runtime_id';
+  constructor(...args) {
+    super(...args);
 
-  sortKey = 'status_time';
+    this.idKey = 'runtime_id';
 
-  defaultStatus = ['active'];
+    this.sortKey = 'status_time';
 
-  @observable runtimes = [];
+    this.defaultStatus = ['active'];
 
-  // current runtimes
-  @observable runtimeDetail = {};
+    this.defineObservables(function () {
+      this.runtimes = [];
 
-  @observable summaryInfo = {};
+      // current runtimes
+      this.runtimeDetail = {};
 
-  // replace original statistic
-  @observable statistics = {};
+      this.summaryInfo = {};
 
-  @observable isLoading = false;
+      // replace original statistic
+      this.statistics = {};
 
-  @observable runtimeId = '';
+      this.isLoading = false;
 
-  @observable isModalOpen = false;
+      this.runtimeId = '';
 
-  @observable modalType = '';
+      this.isModalOpen = false;
 
-  @observable isK8s = false;
+      this.modalType = '';
 
-  @observable userId = '';
+      this.isK8s = false;
 
-  @observable operateType = '';
+      this.userId = '';
 
-  @observable runtimeDeleted = null;
+      this.operateType = '';
 
-  @observable clusterTab = CLUSTER_TYPE.instance;
+      this.runtimeDeleted = null;
+
+      this.clusterTab = CLUSTER_TYPE.instance;
+    });
+  }
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -104,15 +110,6 @@ export default class RuntimeStore extends Store {
     this.runtimeDetail = get(result, 'runtime_set[0]', {});
     this.isK8s = get(this.runtimeDetail, 'provider') === 'kubernetes';
     this.isLoading = false;
-  };
-
-  reset = () => {
-    this.resetTableParams();
-    this.userId = '';
-    this.runtimeDeleted = null;
-    this.runtimes = [];
-    this.runtimeDetail = {};
-    this.clusterTab = CLUSTER_TYPE.instance;
   };
 
   @action

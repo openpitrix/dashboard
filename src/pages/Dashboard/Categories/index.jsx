@@ -39,7 +39,6 @@ export default class Categories extends Component {
     const { categoryStore, appStore, uncateAppStore } = this.props;
     categoryStore.reset();
     appStore.reset();
-    appStore.defaultStatus = [];
     uncateAppStore.reset();
   }
 
@@ -49,7 +48,10 @@ export default class Categories extends Component {
     showModal(type);
 
     if (type === 'edit') {
-      Object.assign(createdCate, _.pick({ ...selectedCategory }, ['name', 'description']));
+      Object.assign(
+        createdCate,
+        _.pick({ ...selectedCategory }, ['name', 'description'])
+      );
     }
 
     if (type === 'customize') {
@@ -83,14 +85,21 @@ export default class Categories extends Component {
     }
 
     const { apps, selectIds } = appStore;
-    const appNames = _.map(selectIds, id => (_.find(apps, { app_id: id }) || {}).name || '');
+    const appNames = _.map(
+      selectIds,
+      id => (_.find(apps, { app_id: id }) || {}).name || ''
+    );
 
     if (['edit', 'customize'].includes(modalType)) {
       const isEdit = modalType === 'edit';
       const title = isEdit ? t('Modify category') : t('Create Category');
       const okText = isEdit ? t('Submit') : t('Create');
 
-      const { createdCate, changeCreatedCateName, changeCreatedCateDesc } = categoryStore;
+      const {
+        createdCate,
+        changeCreatedCateName,
+        changeCreatedCateDesc
+      } = categoryStore;
       const { name, description } = createdCate;
       const icons = getIconList();
 
@@ -108,7 +117,11 @@ export default class Categories extends Component {
               {t('Name')}
             </label>
             <div>
-              <Input className={styles.name} value={name} onChange={changeCreatedCateName} />
+              <Input
+                className={styles.name}
+                value={name}
+                onChange={changeCreatedCateName}
+              />
             </div>
           </div>
           <div className={styles.fmCtrl}>
@@ -135,7 +148,9 @@ export default class Categories extends Component {
     }
 
     if (modalType === 'delete') {
-      const cateAppsNames = filterApps(selectedCategory.category_id).map(app => app.name);
+      const cateAppsNames = filterApps(selectedCategory.category_id).map(
+        app => app.name
+      );
 
       return (
         <Dialog
@@ -202,7 +217,8 @@ export default class Categories extends Component {
             store={uncateAppStore}
             data={uncateAppStore.apps}
             hasRowSelection
-            columnsFilter={cols => cols.filter(item => ['name', 'intro'].includes(item.key))}
+            columnsFilter={cols => cols.filter(item => ['name', 'intro'].includes(item.key))
+            }
           />
         </Dialog>
       );
@@ -212,10 +228,15 @@ export default class Categories extends Component {
   renderMenu() {
     const { categoryStore, t } = this.props;
     const {
-      categories, selectedCategory, changeCategory, cateAppsCount
+      categories,
+      selectedCategory,
+      changeCategory,
+      cateAppsCount
     } = categoryStore;
 
-    const normalizeCates = categories.filter(cate => cate.category_id !== 'ctg-uncategorized');
+    const normalizeCates = categories.filter(
+      cate => cate.category_id !== 'ctg-uncategorized'
+    );
     const uncategorized = _.find(categories, {
       category_id: 'ctg-uncategorized'
     });
@@ -225,22 +246,30 @@ export default class Categories extends Component {
 
     return (
       <ul className={styles.cates}>
-        {_.map(normalizeCates, ({
-          name, description, category_id, icon = ''
-        }) => (
-          <li
-            key={category_id}
-            className={classnames(styles.item, {
-              [styles.active]: selectedCategory.category_id === category_id
-            })}
-            onClick={() => changeCategory({ name, description, category_id })}
-          >
-            <Icon name={icon || description} type="dark" />
-            <span className={styles.name}>{t(name)}</span>
-            <span className={styles.count}>{cateAppsCount[category_id] || 0}</span>
-          </li>
-        ))}
-        <li className={styles.btnAdd} onClick={() => this.showOperation('customize')}>
+        {_.map(
+          normalizeCates,
+          ({
+            name, description, category_id, icon = ''
+          }) => (
+            <li
+              key={category_id}
+              className={classnames(styles.item, {
+                [styles.active]: selectedCategory.category_id === category_id
+              })}
+              onClick={() => changeCategory({ name, description, category_id })}
+            >
+              <Icon name={icon || description} type="dark" />
+              <span className={styles.name}>{t(name)}</span>
+              <span className={styles.count}>
+                {cateAppsCount[category_id] || 0}
+              </span>
+            </li>
+          )
+        )}
+        <li
+          className={styles.btnAdd}
+          onClick={() => this.showOperation('customize')}
+        >
           <Icon name="add" type="dark" />
           {t('Customize')}
         </li>
@@ -251,14 +280,21 @@ export default class Categories extends Component {
   renderToolbar() {
     const { appStore, categoryStore, t } = this.props;
     const {
-      searchWord, onSearch, onClearSearch, onRefresh, selectIds
+      searchWord,
+      onSearch,
+      onClearSearch,
+      onRefresh,
+      selectIds
     } = appStore;
     const { isModalOpen, inReserveCategory } = categoryStore;
 
     if (selectIds.length && !isModalOpen) {
       return (
         <Toolbar noRefreshBtn noSearchBox>
-          <Button onClick={() => this.showOperation('adjust-cate')} className="btn-handle">
+          <Button
+            onClick={() => this.showOperation('adjust-cate')}
+            className="btn-handle"
+          >
             {t('Adjust category')}
           </Button>
         </Toolbar>
@@ -274,7 +310,9 @@ export default class Categories extends Component {
         onRefresh={onRefresh}
         withCreateBtn={{
           name: t('Add'),
-          onClick: inReserveCategory ? null : () => this.showOperation('add-app')
+          onClick: inReserveCategory
+            ? null
+            : () => this.showOperation('add-app')
         }}
       />
     );
@@ -284,7 +322,13 @@ export default class Categories extends Component {
     const { appStore, categoryStore } = this.props;
     const { apps, isLoading } = appStore;
     const { selectedCategory } = categoryStore;
-    const displayCols = ['name', 'delivery_type', 'cnt_deploy', 'maintainers', 'status_time'];
+    const displayCols = [
+      'name',
+      'delivery_type',
+      'cnt_deploy',
+      'maintainers',
+      'status_time'
+    ];
 
     if (!selectedCategory) {
       return null;
@@ -298,7 +342,8 @@ export default class Categories extends Component {
           data={apps}
           isLoading={isLoading}
           hasRowSelection
-          columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))}
+          columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
+          }
         />
       </Fragment>
     );
@@ -309,7 +354,11 @@ export default class Categories extends Component {
     const { categories, isLoading, selectedCategory } = categoryStore;
 
     return (
-      <Layout isLoading={isLoading} pageTitle="App category" className={styles.categoryPage}>
+      <Layout
+        isLoading={isLoading}
+        pageTitle="App category"
+        className={styles.categoryPage}
+      >
         <Grid>
           <Section size={3} className={styles.leftPanel}>
             <p className={styles.summary}>
@@ -323,8 +372,12 @@ export default class Categories extends Component {
                 <span className={styles.choosen}>{t('Chosen category')}: </span>
                 <span className={styles.name}>{t(selectedCategory.name)}</span>
                 <div className={styles.actions}>
-                  <span onClick={() => this.showOperation('edit')}>{t('Edit')}</span>
-                  <span onClick={() => this.showOperation('delete')}>{t('Delete')}</span>
+                  <span onClick={() => this.showOperation('edit')}>
+                    {t('Edit')}
+                  </span>
+                  <span onClick={() => this.showOperation('delete')}>
+                    {t('Delete')}
+                  </span>
                 </div>
               </div>
               {this.renderContent()}

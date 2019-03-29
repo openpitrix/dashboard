@@ -1,53 +1,57 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import { get, assign, orderBy } from 'lodash';
 
 import Store from '../Store';
 
 export default class RepoStore extends Store {
-  @observable repos = [];
+  constructor(...args) {
+    super(...args);
 
-  @observable repoEvents = [];
+    this.initLoadNumber = 3;
+    this.defaultStatus = ['active'];
 
-  @observable repoDetail = {};
+    this.defineObservables(function () {
+      this.repos = [];
 
-  @observable isLoading = false;
+      this.repoEvents = [];
 
-  @observable repoId = '';
+      this.repoDetail = {};
 
-  @observable showDeleteRepo = false;
+      this.isLoading = false;
 
-  @observable curTagName = 'Apps';
+      this.repoId = '';
 
-  @observable queryProviders = '';
+      this.showDeleteRepo = false;
 
-  @observable querySelector = '';
+      this.curTagName = 'Apps';
 
-  @observable currentPage = 1;
+      this.queryProviders = '';
 
-  // app table query params
-  @observable searchWord = '';
+      this.querySelector = '';
 
-  defaultStatus = ['active'];
+      this.currentPage = 1;
 
-  @observable selectStatus = '';
+      // app table query params
+      this.searchWord = '';
 
-  @observable userId = '';
+      this.selectStatus = '';
 
-  @observable totalCount = 0;
+      this.userId = '';
 
-  @observable currentEventPage = 1;
+      this.totalCount = 0;
 
-  // events table query params
-  @observable totalEventCount = 0;
+      this.currentEventPage = 1;
 
-  initLoadNumber = 3;
+      // events table query params
+      this.totalEventCount = 0;
 
-  @observable appStore = null;
+      this.appStore = null;
 
-  @observable
-  jobs = {
-    // repo_id=> {repo_event, repo_status}
-  };
+      this.jobs = {
+        // repo_id=> {repo_event, repo_status}
+      };
+    });
+  }
 
   @action
   fetchAll = async (params = {}, appStore) => {
@@ -220,22 +224,6 @@ export default class RepoStore extends Store {
     } else {
       this.error(`${'Start repo indexer failed:'} ${repoEvent.errDetail}`);
     }
-  };
-
-  @action
-  reset = () => {
-    this.queryProviders = '';
-    this.querySelector = '';
-
-    this.currentPage = 1;
-    this.selectStatus = '';
-    this.searchWord = '';
-    this.userId = '';
-
-    this.appStore = null;
-
-    this.repos = [];
-    this.repoDetail = {};
   };
 
   @action

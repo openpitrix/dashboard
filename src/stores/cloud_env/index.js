@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { action, computed } from 'mobx';
 import _ from 'lodash';
 
 import { providers, providerMap } from 'config/runtimes';
@@ -6,15 +6,21 @@ import { providers, providerMap } from 'config/runtimes';
 import Store from '../Store';
 
 export default class CloudEnvironmentStore extends Store {
-  @observable environment = [];
+  constructor(...args) {
+    super(...args);
 
-  @observable config_set = [];
+    this.defineObservables(function () {
+      this.environment = [];
 
-  @observable versionType = '';
+      this.config_set = [];
 
-  @observable handleType = '';
+      this.versionType = '';
 
-  @observable cloudInfo = {};
+      this.handleType = '';
+
+      this.cloudInfo = {};
+    });
+  }
 
   @computed
   get activeEnv() {
@@ -96,15 +102,6 @@ export default class CloudEnvironmentStore extends Store {
 
   @action
   getActiveKey = versionType => this.getActiveEnv(versionType).map(item => item.key);
-
-  @action
-  reset = () => {
-    this.environment = [];
-    this.config_set = [];
-    this.cloudInfo = {};
-    this.versionType = '';
-    this.handleType = '';
-  };
 
   @action
   changeHandleType = async type => {

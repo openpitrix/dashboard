@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _, { get, assign, assignIn } from 'lodash';
 import { Base64 } from 'js-base64';
 import { downloadFileFromBase64 } from 'utils';
@@ -14,88 +14,91 @@ const maxSize = 2 * 1024 * 1024;
 
 @useTableActions
 export default class AppVersionStore extends Store {
-  defaultStatus = [
-    'draft',
-    'submitted',
-    'in-review',
-    'passed',
-    'rejected',
-    'active',
-    'suspended'
-  ];
+  constructor(...args) {
+    super(...args);
+    this.defaultStatus = [
+      'draft',
+      'submitted',
+      'in-review',
+      'passed',
+      'rejected',
+      'active',
+      'suspended'
+    ];
+    this.steps = 3;
 
-  @observable versions = [];
+    this.defineObservables(function () {
+      this.versions = [];
 
-  @observable reviews = [];
+      this.reviews = [];
 
-  @observable
-  version = {
-    name: '',
-    description: ''
-  };
+      this.version = {
+        name: '',
+        description: ''
+      };
 
-  @observable isLoading = false;
+      this.isLoading = false;
 
-  @observable isModalOpen = false;
+      this.isModalOpen = false;
 
-  @observable isDialogOpen = false;
+      this.isDialogOpen = false;
 
-  @observable isTipsOpen = false;
+      this.isTipsOpen = false;
 
-  @observable dialogType = '';
+      this.dialogType = '';
 
-  // delete, show_all
-  @observable readme = '';
+      // delete, show_all
+      this.readme = '';
 
-  @observable appId = '';
+      this.appId = '';
 
-  @observable name = '';
+      this.name = '';
 
-  @observable packageName = '';
+      this.packageName = '';
 
-  @observable description = '';
+      this.description = '';
 
-  @observable currentVersion = {};
+      this.currentVersion = {};
 
-  @observable uploadFile = '';
+      this.uploadFile = '';
 
-  @observable createStep = 1;
+      this.createStep = 1;
 
-  @observable createError = '';
+      this.createError = '';
 
-  @observable uploadError = {};
+      this.uploadError = {};
 
-  @observable createResult = null;
+      this.createResult = null;
 
-  @observable activeType = 'unprocessed';
+      this.activeType = 'unprocessed';
 
-  @observable reason = ''; // version reject reason
+      this.reason = ''; // version reject reason
 
-  @observable store = {};
+      this.store = {};
 
-  @observable audits = {}; // define object for not repeat query of the same version
+      this.audits = {}; // define object for not repeat query of the same version
 
-  @observable auditRecord = [];
+      this.auditRecord = [];
 
-  @observable currentAuditPage = 1;
+      this.currentAuditPage = 1;
 
-  @observable totalAuditCount = 0;
+      this.totalAuditCount = 0;
 
-  @observable typeVersions = [];
+      this.typeVersions = [];
 
-  @observable reviewDetail = {};
+      this.reviewDetail = {};
 
-  @observable isSubmitCheck = false;
+      this.isSubmitCheck = false;
 
-  @observable activeStep = 1;
+      this.activeStep = 1;
 
-  @observable disableNextStep = false;
+      this.disableNextStep = false;
 
-  @observable checkResult = {};
+      this.checkResult = {};
 
-  @observable reveiwTypes = [];
-
-  steps = 3;
+      this.reveiwTypes = [];
+    });
+  }
 
   get appStore() {
     return this.getStore('app');
@@ -713,32 +716,5 @@ export default class AppVersionStore extends Store {
     if (isActionSuccess) {
       this.activeStep++;
     }
-  };
-
-  reset = () => {
-    this.resetTableParams();
-
-    this.appId = '';
-    this.versionId = '';
-
-    this.createError = '';
-    this.createResult = null;
-
-    this.uploadFile = '';
-    this.store = {};
-    this.isReviewTable = false;
-
-    this.versions = [];
-    this.currentVersion = {};
-    this.packageName = '';
-
-    this.reviews = [];
-    this.activeType = 'unprocessed';
-
-    this.checkResult = {};
-
-    this.auditRecord = [];
-    this.currentAuditPage = 1;
-    this.totalAuditCount = 0;
   };
 }

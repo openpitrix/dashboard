@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action } from 'mobx';
 import _ from 'lodash';
 import yaml from 'js-yaml';
 
@@ -8,44 +8,55 @@ import Store from 'stores/Store';
 
 // separate cluster detail operation in this store
 export default class ClusterDetailStore extends Store {
-  defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+  constructor(...args) {
+    super(...args);
+    this.defaultStatus = [
+      'active',
+      'stopped',
+      'ceased',
+      'pending',
+      'suspended'
+    ];
 
-  @observable currentPage = 1;
+    this.defineObservables(function () {
+      this.currentPage = 1;
 
-  @observable isLoading = false;
+      this.isLoading = false;
 
-  @observable cluster = {};
+      this.cluster = {};
 
-  // vmbase
-  @observable clusterNodes = [];
+      // vmbase
+      this.clusterNodes = [];
 
-  // helm
-  @observable helmClusterNodes = [];
+      // helm
+      this.helmClusterNodes = [];
 
-  @observable clusterJobs = [];
+      this.clusterJobs = [];
 
-  @observable extendedRowKeys = [];
+      this.extendedRowKeys = [];
 
-  @observable nodeType = '';
+      this.nodeType = '';
 
-  @observable selectedNodeKeys = [];
+      this.selectedNodeKeys = [];
 
-  @observable selectedNodeIds = [];
+      this.selectedNodeIds = [];
 
-  @observable selectedNodeRole = '';
+      this.selectedNodeRole = '';
 
-  @observable currentNodePage = 1;
+      this.currentNodePage = 1;
 
-  @observable totalNodeCount = 0;
+      this.totalNodeCount = 0;
 
-  @observable searchNode = '';
+      this.searchNode = '';
 
-  @observable selectNodeStatus = '';
+      this.selectNodeStatus = '';
 
-  @observable env = '';
+      this.env = '';
 
-  // json string for current cluster env
-  @observable changedEnv = ''; // string for changed env
+      // json string for current cluster env
+      this.changedEnv = ''; // string for changed env
+    });
+  }
 
   get clusterStore() {
     return this.getStore('cluster');
@@ -327,21 +338,5 @@ export default class ClusterDetailStore extends Store {
   cancelChangeEnv = () => {
     this.changedEnv = '';
     this.getStore('cluster').hideModal();
-  };
-
-  @action
-  reset = () => {
-    this.currentNodePage = 1;
-    this.selectNodeStatus = '';
-    this.searchNode = '';
-    this.selectedRowKeys = [];
-    this.nodeIds = [];
-
-    this.cluster = {};
-    this.helmClusterNodes = [];
-    this.clusterNodes = [];
-
-    this.env = '';
-    this.changedEnv = '';
   };
 }
