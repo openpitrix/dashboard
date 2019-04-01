@@ -30,7 +30,11 @@ const Action = {
 
 export default {
   ...Action,
-  NavAppReview: [Action.TechnicalReview, Action.BusinessReview],
+  NavAppReview: [
+    Action.ISVReview,
+    Action.TechnicalReview,
+    Action.BusinessReview
+  ],
   NavAppCategory: [
     Action.AppCategoriesCreate,
     Action.AppCategoriesModify,
