@@ -251,7 +251,7 @@ export default class AppAdd extends Component {
                       })
                     );
                   }
-                  appCreateStore.reload({ isCreateApp: false, appId });
+                  appCreateStore.load({ isCreateApp: false, appId });
                 }}
                 className={styles.addBtn}
               >
