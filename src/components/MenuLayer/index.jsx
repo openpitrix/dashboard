@@ -6,6 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 
 import { Icon } from 'components/Base';
+import Can from 'components/Can';
 import { userMenus } from 'components/Layout/SideNav/navMap';
 import routes, { toRoute } from 'routes';
 import { PORTAL_NAME } from 'config/roles';
@@ -98,7 +99,7 @@ export class MenuLayer extends Component {
           </li>
         )}
 
-        {userMenus(this.props.user.defaultPortal).map((item, idx) => {
+        {userMenus(this.props.user.defaultPortal).map(item => {
           if (Array.isArray(item.only) && !item.only.includes(user.portal)) {
             return null;
           }
@@ -112,23 +113,29 @@ export class MenuLayer extends Component {
           }
 
           return (
-            <li
-              key={idx}
-              className={classnames({
-                [styles.divider]: Boolean(item.divider),
-                [styles.disabled]: Boolean(item.disabled)
-              })}
+            <Can
+              do="show"
+              action={item.actionId}
+              condition={item.condition}
+              key={item.name}
             >
-              <NavLink to={item.link} exact activeClassName={styles.active}>
-                <Icon
-                  name={item.iconName}
-                  type="dark"
-                  size={16}
-                  className={styles.icon}
-                />
-                <span className={styles.label}>{t(item.name)}</span>
-              </NavLink>
-            </li>
+              <li
+                className={classnames({
+                  [styles.divider]: Boolean(item.divider),
+                  [styles.disabled]: Boolean(item.disabled)
+                })}
+              >
+                <NavLink to={item.link} exact activeClassName={styles.active}>
+                  <Icon
+                    name={item.iconName}
+                    type="dark"
+                    size={16}
+                    className={styles.icon}
+                  />
+                  <span className={styles.label}>{t(item.name)}</span>
+                </NavLink>
+              </li>
+            </Can>
           );
         })}
 

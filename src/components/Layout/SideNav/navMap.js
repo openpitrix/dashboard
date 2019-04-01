@@ -42,11 +42,14 @@ export const getNavs = {
     {
       link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
       iconName: 'group',
+      actionId: ACTION.NavPermission,
+      condition: CONDITION.or,
       title: 'Users and Permission'
     },
     {
       link: toRoute(routes.portal._admin.cloudInfo, { portal: 'admin' }),
       iconName: 'cogwheel',
+      actionId: ACTION.ServerConfigModify,
       title: 'Settings'
     }
   ],
@@ -82,6 +85,8 @@ export const getNavs = {
     {
       link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
       iconName: 'group',
+      actionId: ACTION.NavPermission,
+      condition: CONDITION.or,
       title: 'Team Members'
     },
     {
@@ -150,12 +155,14 @@ export const subNavMap = {
         {
           name: 'App Reviews',
           link: toRoute(routes.portal.appsReview, { portal: 'admin' }),
-          actionId: [ACTION.technical_review, ACTION.business_review],
+          actionId: ACTION.NavAppReview,
           condition: CONDITION.or
         },
         {
           name: 'App Category',
-          link: toRoute(routes.portal._admin.categories, { portal: 'admin' })
+          link: toRoute(routes.portal._admin.categories, { portal: 'admin' }),
+          actionId: ACTION.NavAppCategory,
+          condition: CONDITION.or
         },
         {
           name: 'Store Appearance',
@@ -176,7 +183,7 @@ export const subNavMap = {
           link: toRoute(routes.portal._admin.providerApply, {
             portal: 'admin'
           }),
-          actionId: ACTION.isv_auth
+          actionId: ACTION.ISVAuth
         },
         {
           name: 'Contract',
@@ -195,11 +202,15 @@ export const subNavMap = {
       links: [
         {
           name: 'All Users',
-          link: toRoute(routes.portal._admin.users, { portal: 'admin' })
+          link: toRoute(routes.portal._admin.users, { portal: 'admin' }),
+          actionId: ACTION.NavUser,
+          condition: CONDITION.or
         },
         {
           name: 'Roles',
-          link: toRoute(routes.portal._admin.roles, { portal: 'admin' })
+          link: toRoute(routes.portal._admin.roles, { portal: 'admin' }),
+          actionId: ACTION.NavRole,
+          condition: CONDITION.or
         }
       ]
     },
@@ -208,7 +219,8 @@ export const subNavMap = {
       links: [
         {
           name: 'Basic info',
-          link: toRoute(routes.portal._admin.cloudInfo, { portal: 'admin' })
+          link: toRoute(routes.portal._admin.cloudInfo, { portal: 'admin' }),
+          actionId: ACTION.ServerConfigModify
         },
         {
           name: 'User authentication',
@@ -217,13 +229,15 @@ export const subNavMap = {
         },
         {
           name: 'Cloud environment',
-          link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' })
+          link: toRoute(routes.portal._admin.cloudEnv, { portal: 'admin' }),
+          actionId: ACTION.ServerConfigModify
         },
         {
           name: 'Notification server',
           link: toRoute(routes.portal._admin.notificationServer, {
             portal: 'admin'
-          })
+          }),
+          actionId: ACTION.ServerConfigModify
         }
       ]
     }
@@ -238,7 +252,9 @@ export const subNavMap = {
         },
         {
           name: 'App Reviews',
-          link: toRoute(routes.portal.appsReview, { portal: 'isv' })
+          link: toRoute(routes.portal.appsReview, { portal: 'isv' }),
+          actionId: ACTION.NavAppReview,
+          condition: CONDITION.or
         }
       ]
     },
@@ -247,11 +263,15 @@ export const subNavMap = {
       links: [
         {
           name: 'All members',
-          link: toRoute(routes.portal._isv.users, { portal: 'isv' })
+          link: toRoute(routes.portal._isv.users, { portal: 'isv' }),
+          actionId: ACTION.NavUser,
+          condition: CONDITION.or
         },
         {
           name: 'Roles',
-          link: toRoute(routes.portal._isv.roles, { portal: 'isv' })
+          link: toRoute(routes.portal._isv.roles, { portal: 'isv' }),
+          actionId: ACTION.NavRole,
+          condition: CONDITION.or
         }
       ]
     }
@@ -353,6 +373,7 @@ export const userMenus = portal => [
     name: 'SSH Keys',
     link: toRoute(routes.portal.profile, { type: 'ssh' }),
     iconName: 'ssh',
+    actionId: ACTION.UserSSHGet,
     divider: true
   }
 ];

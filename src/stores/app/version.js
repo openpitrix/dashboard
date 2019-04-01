@@ -167,13 +167,11 @@ export default class AppVersionStore extends Store {
 
   @action
   setReviewTypes = async () => {
-    const hasISVReview = this.roleStore.checkAction(ACTION.isv_review);
+    const hasISVReview = this.roleStore.checkAction(ACTION.ISVReview);
     const hasBussinessReview = this.roleStore.checkAction(
-      ACTION.business_review
+      ACTION.BusinessReview
     );
-    const hasDevelopReview = this.roleStore.checkAction(
-      ACTION.technical_review
-    );
+    const hasDevelopReview = this.roleStore.checkAction(ACTION.TechnicalReview);
 
     this.reveiwTypes = [];
     if (hasISVReview) {
