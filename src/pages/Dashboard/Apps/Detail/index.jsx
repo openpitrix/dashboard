@@ -53,7 +53,10 @@ export default class AppDetail extends Component {
       noLimit: true
     });
 
-    clusterStore.appId = appId;
+    Object.assign(clusterStore, {
+      onlyView: true,
+      appId
+    });
     // get month deploy total
     await clusterStore.fetchAll({
       app_id: appId,

@@ -45,7 +45,7 @@ export default ({
       <TdName
         name={cl.name}
         description={cl.cluster_id}
-        linkUrl={isAgent ? '' : getDetailLink(cl.cluster_id)}
+        linkUrl={isAgent ? '' : getDetailLink(cl.cluster_id, cl.app_id)}
         noIcon
       />
     )

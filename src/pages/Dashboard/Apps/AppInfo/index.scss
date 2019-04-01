@@ -1,0 +1,26 @@
+@import '~scss/vars';
+
+.appInfo {
+  .note {
+    margin-bottom: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: $N75;
+
+    label {
+      float: left;
+      display: inline-block;
+      box-sizing: border-box;
+      margin-right: 4px;
+      height: 20px;
+      padding: 4px;
+      line-height: 12px;
+      background: $N30;
+      vertical-align: middle;
+    }
+  }
+
+  .auditNote {
+    margin-bottom: 8px;
+  }
+}

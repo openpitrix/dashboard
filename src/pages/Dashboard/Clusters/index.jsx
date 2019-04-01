@@ -127,15 +127,15 @@ export default class Clusters extends Component {
     }
   };
 
-  getDetailLink = clusterId => {
-    const { match } = this.props;
-    const { appId } = match.params;
+  getDetailLink = (clusterId, appId) => {
+    const { clusterStore, user } = this.props;
+    const { onlyView } = clusterStore;
 
     let route;
-    if (match.path.endsWith('/:appId/instances')) {
-      route = routes.portal._dev.userInstanceDetail;
-    } else if (match.path.endsWith('/:appId/sandbox-instances')) {
-      route = routes.portal._dev.sandboxInstanceDetail;
+    if (user.isDevPortal || user.isISVPortal) {
+      route = onlyView
+        ? routes.portal._dev.userInstanceDetail
+        : routes.portal._dev.sandboxInstanceDetail;
     } else {
       route = routes.portal.clusterDetail;
     }
@@ -238,7 +238,7 @@ export default class Clusters extends Component {
             <Image src={app.icon} iconLetter={app.name} iconSize={20} />
           </label>
           <Link
-            to={toRoute(routes.appDetail, { appId: app.app_id })}
+            to={toRoute(routes.portal.appDetail, { appId: app.app_id })}
             className={styles.appName}
           >
             {app.name}
@@ -277,7 +277,7 @@ export default class Clusters extends Component {
 
   renderToolbar() {
     const {
-      clusterStore, user, appId, match, t
+      clusterStore, user, appId, runtimeId, match, t
     } = this.props;
     const {
       searchWord,
@@ -288,7 +288,7 @@ export default class Clusters extends Component {
       onlyView,
       isAgent
     } = clusterStore;
-    const hasDeployButton = (user.isDevPortal && !onlyView) || appId;
+    const hasDeployButton = (user.isDevPortal && !onlyView && !runtimeId) || appId;
     const app_id = appId || _.get(match, 'params.appId', '');
 
     if (!(onlyView || isAgent) && clusterIds.length) {
