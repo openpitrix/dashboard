@@ -273,11 +273,11 @@ class AppStore extends Store {
     // query app deploy total
     if (this.attchDeployTotal && apps.length > 0) {
       const clusterStore = this.clusterStore;
+      clusterStore.onlyView = true;
       this.apps = [];
       for (let i = 0; i < apps.length; i++) {
         const app = apps[i];
         await clusterStore.fetchAll({
-          onlyView: true,
           app_id: app.app_id,
           display_columns: ['']
         });
@@ -616,6 +616,7 @@ class AppStore extends Store {
   reset = () => {
     this.attchUser = false;
     this.attchDeployTotal = false;
+    this.defaultStatus = defaultStatus;
   };
 
   @action

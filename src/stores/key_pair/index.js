@@ -136,4 +136,11 @@ export default class KeyPairStore extends Store {
   changeDescription = e => {
     this.description = e.target.value;
   };
+
+  @action
+  resetKeyPair = () => {
+    this.name = '';
+    this.pub_key = '';
+    this.description = '';
+  };
 }

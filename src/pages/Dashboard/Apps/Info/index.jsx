@@ -9,10 +9,8 @@ import _ from 'lodash';
 import {
   Input, Select, Icon, Button, Upload, Image
 } from 'components/Base';
-import Layout, { Card } from 'components/Layout';
+import { Card } from 'components/Layout';
 import DetailTabs from 'components/DetailTabs';
-import NoteLink from 'components/NoteLink';
-import routes, { toRoute } from 'routes';
 import externalLink from 'config/external-link';
 
 import styles from './index.scss';
@@ -39,32 +37,6 @@ export default class Info extends Component {
   static defaultProps = {
     isCheckInfo: false
   };
-
-  async componentDidMount() {
-    const {
-      appStore, appVersionStore, categoryStore, match
-    } = this.props;
-    const appId = _.get(match, 'params.appId', '');
-
-    if (appId) {
-      // query this version relatived app info
-      await appVersionStore.fetchAll({ app_id: appId });
-
-      // query categories data for category select
-      await categoryStore.fetchAll();
-
-      // judge you can edit app info
-      const { versions } = appVersionStore;
-      const { appDetail } = appStore;
-      appStore.isEdit = !_.find(versions, { status: 'in-review' })
-        && appDetail.status !== 'deleted';
-    }
-  }
-
-  componentWillUnmount() {
-    const { appVersionStore } = this.props;
-    appVersionStore.reset();
-  }
 
   changeTab = tab => {
     const { appStore } = this.props;
@@ -405,50 +377,17 @@ export default class Info extends Component {
     );
   }
 
-  renderContent() {
-    const { detailTab } = this.props.appStore;
-
-    return (
-      <Fragment>
-        <Card>
-          <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
-          {detailTab === 'baseInfo' && this.renderBaseInfo()}
-          {detailTab === 'readme' && this.renderInstructions()}
-          {detailTab === 'service' && this.renderService()}
-        </Card>
-      </Fragment>
-    );
-  }
-
   render() {
-    const {
-      appStore, isCheckInfo, match, t
-    } = this.props;
-    const { isEdit } = appStore;
-    const appId = _.get(match, 'params.appId', '');
-
-    if (isCheckInfo) {
-      return this.renderContent();
-    }
+    const { appStore } = this.props;
+    const { detailTab } = appStore;
 
     return (
-      <Layout className={styles.appInfo} pageTitle={t('App Info')} isCenterPage>
-        {isEdit ? (
-          <div className={styles.note}>
-            <label>{t('Note')}</label>
-            {t('MODIFY_VERSION_TIPS')}
-          </div>
-        ) : (
-          <NoteLink
-            className={styles.auditNote}
-            noteWord="UNDER_REVIEW_TIPS"
-            linkWord="View version record"
-            link={toRoute(routes.portal._dev.versions, { appId })}
-          />
-        )}
-
-        {this.renderContent()}
-      </Layout>
+      <Card>
+        <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
+        {detailTab === 'baseInfo' && this.renderBaseInfo()}
+        {detailTab === 'readme' && this.renderInstructions()}
+        {detailTab === 'service' && this.renderService()}
+      </Card>
     );
   }
 }

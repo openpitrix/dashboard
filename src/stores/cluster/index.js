@@ -51,7 +51,7 @@ export default class ClusterStore extends Store {
 
       this.versionId = '';
 
-      this.onlyView = false; // user-instances only view, can't operate
+      this.onlyView = false; // user-instances only view and query user data
 
       this.cluster_type = CLUSTER_TYPE.instance;
 
