@@ -29,32 +29,31 @@ import styles from './index.scss';
 export default class AppAdd extends Component {
   constructor(props) {
     super(props);
-
-    const { match, appCreateStore } = props;
-    const appId = _.get(match, 'params.appId');
-    const type = getUrlParam('type');
-    let name = !appId ? 'create_app' : 'create_app_version';
-    if (type) {
-      appCreateStore.modifyVersionType = type;
-      name = 'add_app_version';
-    }
-
-    appCreateStore.load({ appId, type });
-
-    this.state = {
-      name,
-      isCreateApp: !appId,
-      isAddVersion: Boolean(type),
-      appId
-    };
+    props.appCreateStore.load({ appId: this.appId, type: this.type });
   }
 
   async componentDidMount() {
-    const { appCreateStore } = this.props;
-    const app_id = this.state.appId;
-    if (app_id) {
-      await appCreateStore.fetchOneApp({ app_id });
+    if (this.appId) {
+      await this.props.appCreateStore.fetchOneApp({ app_id: this.appId });
     }
+  }
+
+  get appId() {
+    return _.get(this.props.match, 'params.appId', '');
+  }
+
+  get type() {
+    return getUrlParam('type');
+  }
+
+  get stepName() {
+    if (!this.appId) {
+      return 'create_app';
+    }
+    if (this.type) {
+      return 'add_app_version';
+    }
+    return 'create_app_version';
   }
 
   get appName() {
@@ -71,8 +70,29 @@ export default class AppAdd extends Component {
     };
   }
 
+  get canAddVersionType() {
+    // only two versionTypes
+    const appTypes = _.get(
+      this.props.appCreateStore,
+      'appDetail.app_version_types',
+      ''
+    );
+    return appTypes.split(',').length < 2;
+  }
+
   onUploadClick = () => {
     this.uploadRef.onClick();
+  };
+
+  handAddVersionType = () => {
+    const { appCreateStore, history } = this.props;
+    const appId = _.get(appCreateStore, 'appDetail.app_id', '');
+    history.replace(
+      toRoute(routes.portal._dev.versionCreate, {
+        appId
+      })
+    );
+    appCreateStore.load({ appId }, true);
   };
 
   renderVersionTypes() {
@@ -141,6 +161,7 @@ export default class AppAdd extends Component {
   renderConfirmMsg() {
     const { t, appCreateStore } = this.props;
     const {
+      isCreateApp,
       iconBase64,
       attribute,
       checkIconFile,
@@ -148,7 +169,6 @@ export default class AppAdd extends Component {
       errorMessage,
       valueChange
     } = appCreateStore;
-    const { isCreateApp } = this.state;
 
     return (
       <Fragment>
@@ -211,8 +231,7 @@ export default class AppAdd extends Component {
     const {
       appCreateStore, t, rootStore, history
     } = this.props;
-    const { isCreateApp, isAddVersion } = this.state;
-    const { appDetail } = appCreateStore;
+    const { appDetail, isAddVersion } = appCreateStore;
     const successInfo = isAddVersion
       ? 'New version has been created successfully'
       : 'Your app has been created successfully';
@@ -240,19 +259,9 @@ export default class AppAdd extends Component {
             >
               {t('Deploy Test')}
             </Button>
-            {!isAddVersion && (
+            {this.canAddVersionType && (
               <Button
-                onClick={() => {
-                  const appId = appDetail.app_id;
-                  if (isCreateApp) {
-                    history.replace(
-                      toRoute(routes.portal._dev.versionCreate, {
-                        appId
-                      })
-                    );
-                  }
-                  appCreateStore.load({ isCreateApp: false, appId });
-                }}
+                onClick={this.handAddVersionType}
                 className={styles.addBtn}
               >
                 {t('Add delivery type')}
@@ -273,12 +282,17 @@ export default class AppAdd extends Component {
   }
 
   render() {
-    const { name, isCreateApp, isAddVersion } = this.state;
     const { appCreateStore } = this.props;
-    const { activeStep, disableNextStep, attribute } = appCreateStore;
+    const {
+      activeStep,
+      disableNextStep,
+      attribute,
+      isAddVersion,
+      isCreateApp
+    } = appCreateStore;
 
     const step = isCreateApp ? 2 : 1;
-    if (activeStep === step) {
+    if (activeStep === step && activeStep > 1) {
       const linkUrl = isCreateApp
         ? externalLink[`doc_${attribute.version_type}`]
         : externalLink[`doc_${attribute.type}`];
@@ -291,7 +305,7 @@ export default class AppAdd extends Component {
       return (
         <Stepper
           className={styles.createApp}
-          name={name}
+          name={this.stepName}
           stepOption={appCreateStore}
           disableNextStep={disableNextStep}
           i18nObj={this.i18nObj}
@@ -306,7 +320,7 @@ export default class AppAdd extends Component {
     return (
       <Stepper
         className={styles.createApp}
-        name={name}
+        name={this.stepName}
         stepOption={appCreateStore}
         disableNextStep={disableNextStep}
         i18nObj={this.i18nObj}

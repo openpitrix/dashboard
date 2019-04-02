@@ -115,25 +115,39 @@ export default class AppCreateStore extends Store {
   checkSelectedVersionType = name => this.getVersionType() === name;
 
   @action
-  load = ({ appId, type }) => {
+  load = ({ appId, type }, unsetDetail = false) => {
     this.isCreateApp = !appId;
     this.isAddVersion = Boolean(type);
     this.activeStep = 1;
 
     if (!appId) {
       this.steps = 3;
-      this.attribute = _.assign({}, appModel);
     } else {
       this.steps = type ? 1 : 2;
-      this.attribute = _.assign({ appId }, appVersionModel);
-      this.attribute.type = type;
     }
 
     this.iconBase64 = '';
     this.errorMessage = '';
     this.uploadStatus = 'init';
     this.disableNextStep = true;
-    this.appDetail = {};
+    this.setAttribute({ appId, type }, unsetDetail);
+  };
+
+  @action
+  setAttribute = ({ appId, type }, unsetDetail) => {
+    if (!appId) {
+      this.attribute = _.assign({}, appModel);
+    } else {
+      this.attribute = _.assign({}, appVersionModel, {
+        app_id: appId
+      });
+    }
+    if (!unsetDetail) {
+      this.appDetail = {};
+    }
+    if (type) {
+      this.selectVersionType(type);
+    }
   };
 
   @action
