@@ -20,7 +20,7 @@ import { CLUSTER_TYPE, runtimeTabs } from 'config/runtimes';
 import columns from './columns';
 import styles from './index.scss';
 
-const appTabs = [{ name: 'Agent', value: 1 }];
+const appTabs = [{ name: 'Instance', value: 0 }];
 
 @withTranslation()
 @inject(({ rootStore }) => ({
