@@ -23,11 +23,16 @@ import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
+const transMap = {
+  active: 'normal'
+};
+
 const tags = [
   { name: 'User instances', value: 'instance' },
   { name: 'Online version', value: 'online' },
   { name: 'Audit record', value: 'record' }
 ];
+
 @withTranslation()
 @inject(({ rootStore }) => ({
   rootStore,
@@ -57,6 +62,9 @@ export default class AppDetail extends Component {
       onlyView: true,
       appId
     });
+
+    const { defaultStatus } = clusterStore;
+    clusterStore.defaultStatus = _.concat(defaultStatus, 'deleted');
     // get month deploy total
     await clusterStore.fetchAll({
       app_id: appId,
@@ -342,7 +350,11 @@ export default class AppDetail extends Component {
         title: t('Status'),
         key: 'status',
         render: item => (
-          <Status type={item.status} transition={item.transition_status} />
+          <Status
+            type={item.status}
+            transition={item.transition_status}
+            transMap={transMap}
+          />
         )
       },
       {
@@ -383,6 +395,20 @@ export default class AppDetail extends Component {
       noCancel: false
     };
 
+    const filterList = [
+      {
+        key: 'status',
+        conditions: [
+          { name: t('Pending'), value: 'pending' },
+          { name: t('Normal'), value: 'active' },
+          { name: t('Deleted'), value: 'deleted' },
+          { name: t('Ceased'), value: 'ceased' }
+        ],
+        onChangeFilter: clusterStore.onChangeStatus,
+        selectValue: clusterStore.selectStatus
+      }
+    ];
+
     return (
       <Fragment>
         <div className={styles.searchOuter}>
@@ -401,6 +427,7 @@ export default class AppDetail extends Component {
           columns={columns}
           dataSource={clusters.toJSON()}
           pagination={pagination}
+          filterList={filterList}
         />
       </Fragment>
     );

@@ -274,6 +274,10 @@ class AppStore extends Store {
     if (this.attchDeployTotal && apps.length > 0) {
       const clusterStore = this.clusterStore;
       clusterStore.onlyView = true;
+      clusterStore.defaultStatus = _.concat(
+        clusterStore.defaultStatus,
+        'deleted'
+      );
       this.apps = [];
       for (let i = 0; i < apps.length; i++) {
         const app = apps[i];
