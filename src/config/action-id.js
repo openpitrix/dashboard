@@ -13,13 +13,13 @@ const Action = {
   CreateAdminUser: 'm4.f1.a1',
   CreateISVUser: 'm4.f1.a2',
   DeleteUser: 'm4.f1.a6',
-  UserRoleModify: 'm4.f1.a5',
+  BindUserRole: 'm4.f1.a5',
 
   CreateGroup: 'm4.f3.a1',
   ModifyGroup: 'm4.f3.a3',
   DeleteGroup: 'm4.f3.a4',
   JoinGroup: 'm4.f3.a5',
-  UserGroupLeave: 'm4.f3.a6',
+  LeaveGroup: 'm4.f3.a6',
 
   GetSSH: 'm2.f1.a2',
   CreateSSH: 'm2.f1.a1',
@@ -64,10 +64,10 @@ export default {
     Action.ModifyRoleModule
   ],
 
-  TableAdminToolbar: [Action.UserGroupJoin, Action.RoleModuleModify],
+  TableAdminToolbar: [Action.JoinGroup, Action.BindUserRole],
   TableAdminUserToolbar: [Action.UserModify],
   TableAdminUserPopover: [
-    Action.UserGroupJoin,
+    Action.JoinGroup,
     Action.UserModify,
     Action.RoleModuleModify
   ],
@@ -76,7 +76,7 @@ export default {
     Action.ModifyRoleModule,
     Action.DeleteRole
   ],
-  SetRole: [Action.UserRoleModify, Action.RoleModify]
+  SetRole: [Action.BindUserRole, Action.ModifyRoleModule]
 };
 
 export const CONDITION = {

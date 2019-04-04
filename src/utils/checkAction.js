@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { CONDITION } from 'config/action-id';
 
-export const getModuleSeesion = () => {
+export const getModuleSession = () => {
   let modules = sessionStorage.getItem('module_elem_set');
   if (!modules) {
     return null;
@@ -18,7 +18,7 @@ export const getModuleSeesion = () => {
 
 const checkActionOnce = action_bundle_id => {
   let canDo = false;
-  _.some(getModuleSeesion(), module => {
+  _.some(getModuleSession(), module => {
     const checkAll = module.is_check_all;
     return _.some(module.feature_set, feature => {
       const actionSet = _.find(feature.action_bundle_set, {

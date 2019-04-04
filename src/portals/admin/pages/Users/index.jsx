@@ -203,7 +203,7 @@ export default class Users extends Component {
         <Toolbar noRefreshBtn noSearchBox>
           {!_.isEmpty(selectedGroupIds) && (
             <ButtonWithAction
-              action={ACTION.UserGroupJoin}
+              action={ACTION.JoinGroup}
               onClick={e => this.handleAction('renderModalSetGroup', e)}
             >
               {t('Set group')}

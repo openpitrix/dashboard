@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import checkAction, { getModuleSeesion } from 'utils/checkAction';
+import checkAction, { getModuleSession } from 'utils/checkAction';
 
 export default class Can extends React.Component {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class Can extends React.Component {
     }
     let allowed;
     if (typeof condition === 'function') {
-      allowed = condition(action, getModuleSeesion());
+      allowed = condition(action, getModuleSession());
     } else {
       allowed = checkAction(action, condition);
     }

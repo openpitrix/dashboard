@@ -290,4 +290,4 @@ export const downloadFileFromBase64 = (base64_str = '', filename) => {
   // document.location.href = window.URL.createObjectURL(blob);
 };
 
-export checkAction, { getModuleSeesion, canRender } from './checkAction';
+export checkAction, { getModuleSession, canRender } from './checkAction';

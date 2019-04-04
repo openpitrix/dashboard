@@ -1,6 +1,6 @@
 import { action } from 'mobx';
 import _ from 'lodash';
-import { sleep, checkAction, getModuleSeesion } from 'utils';
+import { sleep, checkAction, getModuleSession } from 'utils';
 import { PORTAL_NAME, DATA_LEVEL } from 'config/roles';
 
 import Store from '../Store';
@@ -119,7 +119,7 @@ export default class RoleStore extends Store {
   }
 
   get moduleSession() {
-    return getModuleSeesion();
+    return getModuleSession();
   }
 
   @action
