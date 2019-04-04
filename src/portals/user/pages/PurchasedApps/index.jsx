@@ -34,7 +34,7 @@ export default class Purchased extends Component {
     });
     const appIds = clusterStore.clusters.map(cluster => cluster.app_id);
     if (appIds.length > 0) {
-      await appStore.fetchActiveApps({ app_id: appIds });
+      await appStore.fetchActiveApps({ app_id: appIds, noLimit: true });
     } else {
       appStore.apps = [];
     }
@@ -134,7 +134,7 @@ export default class Purchased extends Component {
           />
         }
       >
-        {this.renderToolbar()}
+        {/* {this.renderToolbar()} */}
         <Table
           columns={columns}
           dataSource={apps.toJSON()}

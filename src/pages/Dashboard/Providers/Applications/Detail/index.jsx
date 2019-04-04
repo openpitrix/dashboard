@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next';
 
 import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
+import Loading from 'components/Loading';
 import Status from 'components/Status';
 import TdUser from 'components/TdUser';
 import { formatTime } from 'utils';
@@ -172,7 +173,7 @@ export default class Applications extends Component {
   }
 
   render() {
-    const { user, t } = this.props;
+    const { user, vendorStore, t } = this.props;
     const { isISV } = user;
     const pagetTitle = isISV
       ? t('Service Provider Detail')
@@ -186,11 +187,13 @@ export default class Applications extends Component {
         noSubMenu
         centerWidth={760}
       >
-        {this.renderBaseInfo()}
+        <Loading isLoading={vendorStore.isLoading}>
+          {this.renderBaseInfo()}
 
-        <Card>
-          <CertificateInfo />
-        </Card>
+          <Card>
+            <CertificateInfo />
+          </Card>
+        </Loading>
 
         {this.renderMessageDialog()}
       </Layout>

@@ -200,27 +200,29 @@ export default class ProviderDetail extends Component {
 
   render() {
     const { t, vendorStore } = this.props;
-    const { statistics, detailTab } = vendorStore;
+    const { statistics, detailTab, isLoading } = vendorStore;
     const totalMap = _.get(statistics, '[0]', {});
 
     return (
       <Layout pageTitle={t('App Service Provider Detail')} hasBack>
-        <Grid>
-          <Section size={4}>{this.renderProviderInfo()}</Section>
-          <Section size={8}>
-            <AppStatistics
-              appTotal={totalMap.active_app_count}
-              totalDepoly={totalMap.cluster_count_month}
-              monthDepoly={totalMap.cluster_count_total}
-            />
-            <Card>
-              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-              {detailTab === 'app' && this.renderApps()}
-              {detailTab === 'certificationInfo' && <CertificateInfo />}
-              {detailTab === 'margin' && this.renderMargin()}
-            </Card>
-          </Section>
-        </Grid>
+        <Loading isLoading={isLoading}>
+          <Grid>
+            <Section size={4}>{this.renderProviderInfo()}</Section>
+            <Section size={8}>
+              <AppStatistics
+                appTotal={totalMap.active_app_count}
+                totalDepoly={totalMap.cluster_count_month}
+                monthDepoly={totalMap.cluster_count_total}
+              />
+              <Card>
+                <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+                {detailTab === 'app' && this.renderApps()}
+                {detailTab === 'certificationInfo' && <CertificateInfo />}
+                {detailTab === 'margin' && this.renderMargin()}
+              </Card>
+            </Section>
+          </Grid>
+        </Loading>
       </Layout>
     );
   }

@@ -446,6 +446,7 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchReviewDetail = async (reviewId = '') => {
+    this.isLoading = true;
     const result = await this.request.get('app_version_reviews', {
       review_id: reviewId
     });
@@ -454,6 +455,7 @@ export default class AppVersionStore extends Store {
     const { phase } = this.reviewDetail;
     const userIds = _.uniq(_.map(phase, o => o.operator));
     await this.userStore.fetchAll({ user_id: userIds });
+    this.isLoading = false;
   };
 
   // todo

@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 import { Table, Icon } from 'components/Base';
 import Layout from 'components/Layout';
+import Loading from 'components/Loading';
 import Status from 'components/Status';
 import { versionTypes } from 'config/version-types';
 import { formatTime, mappingStatus } from 'utils';
@@ -26,6 +27,7 @@ export default class Audits extends Component {
     super(props);
 
     this.state = {
+      queryVersionId: '',
       currentType: ''
     };
   }
@@ -43,6 +45,7 @@ export default class Audits extends Component {
     // default show last version audit records
     const { versions } = appVersionStore;
     const versionId = _.get(versions, '[0].version_id');
+    this.setState({ queryVersionId: versionId });
     await appVersionStore.fetchAudits({
       app_id: appId,
       version_id: versionId,
@@ -79,6 +82,7 @@ export default class Audits extends Component {
 
     // judge need query audits again
     if (!audits[versionId]) {
+      this.setState({ queryVersionId: versionId });
       await fetchAudits({
         app_id: version.app_id,
         version_id: versionId,
@@ -120,9 +124,10 @@ export default class Audits extends Component {
 
   renderAudits(versionId) {
     const { appVersionStore, userStore, t } = this.props;
-    const { audits } = appVersionStore;
+    const { audits, isLoading } = appVersionStore;
     const { users } = userStore;
     const auditRecords = audits[versionId];
+    const isQuery = this.state.queryVersionId === versionId;
 
     if (!_.isArray(auditRecords)) {
       return null;
@@ -167,6 +172,7 @@ export default class Audits extends Component {
         columns={columns}
         dataSource={auditRecords}
         pagination={pagination}
+        isLoading={isLoading && isQuery}
       />
     );
   }

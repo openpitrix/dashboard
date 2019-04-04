@@ -11,6 +11,7 @@ import {
 import Layout, {
   Grid, Section, Card, Dialog
 } from 'components/Layout';
+import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
@@ -274,7 +275,7 @@ export default class AppDetail extends Component {
 
   renderVersions() {
     const { appVersionStore, user, t } = this.props;
-    const { versions } = appVersionStore;
+    const { versions, isLoading } = appVersionStore;
 
     let columns = [
       {
@@ -334,6 +335,7 @@ export default class AppDetail extends Component {
         columns={columns}
         dataSource={versions.toJSON()}
         pagination={pagination}
+        isLoading={isLoading}
       />
     );
   }
@@ -341,7 +343,11 @@ export default class AppDetail extends Component {
   renderInstance() {
     const { clusterStore, userStore, t } = this.props;
     const {
-      clusters, onSearch, onClearSearch, searchWord
+      clusters,
+      onSearch,
+      onClearSearch,
+      searchWord,
+      isLoading
     } = clusterStore;
     const { users } = userStore;
 
@@ -428,6 +434,7 @@ export default class AppDetail extends Component {
           dataSource={clusters.toJSON()}
           pagination={pagination}
           filterList={filterList}
+          isLoading={isLoading}
         />
       </Fragment>
     );
@@ -512,28 +519,30 @@ export default class AppDetail extends Component {
     const {
       appVersionStore, appStore, clusterStore, t
     } = this.props;
-    const { detailTab } = appStore;
+    const { detailTab, isLoading } = appStore;
     const { versions } = appVersionStore;
 
     return (
       <Layout pageTitle={t('App Detail')} hasBack>
-        <Grid>
-          <Section size={4}>{this.renderAppBase()}</Section>
-          <Section size={8}>
-            <AppStatistics
-              isAppDetail
-              versionTotal={versions.length}
-              totalDepoly={clusterStore.totalCount}
-              monthDepoly={clusterStore.monthCount}
-            />
-            <Card>
-              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-              {detailTab === 'instance' && this.renderInstance()}
-              {detailTab === 'online' && this.renderVersions()}
-              {detailTab === 'record' && this.renderRecord()}
-            </Card>
-          </Section>
-        </Grid>
+        <Loading isLoading={isLoading}>
+          <Grid>
+            <Section size={4}>{this.renderAppBase()}</Section>
+            <Section size={8}>
+              <AppStatistics
+                isAppDetail
+                versionTotal={versions.length}
+                totalDepoly={clusterStore.totalCount}
+                monthDepoly={clusterStore.monthCount}
+              />
+              <Card>
+                <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+                {detailTab === 'instance' && this.renderInstance()}
+                {detailTab === 'online' && this.renderVersions()}
+                {detailTab === 'record' && this.renderRecord()}
+              </Card>
+            </Section>
+          </Grid>
+        </Loading>
         {this.renderSuspendDialog()}
       </Layout>
     );

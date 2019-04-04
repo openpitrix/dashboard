@@ -10,6 +10,7 @@ import {
   Input, Select, Icon, Button, Upload, Image
 } from 'components/Base';
 import { Card } from 'components/Layout';
+import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import externalLink from 'config/external-link';
 
@@ -335,7 +336,7 @@ export default class Info extends Component {
           >
             {categories.map(item => (
               <Select.Option key={item.category_id} value={item.category_id}>
-                {item.name}
+                {t(item.name)}
               </Select.Option>
             ))}
           </Select>
@@ -379,15 +380,17 @@ export default class Info extends Component {
 
   render() {
     const { appStore } = this.props;
-    const { detailTab } = appStore;
+    const { detailTab, isLoading } = appStore;
 
     return (
-      <Card>
-        <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
-        {detailTab === 'baseInfo' && this.renderBaseInfo()}
-        {detailTab === 'readme' && this.renderInstructions()}
-        {detailTab === 'service' && this.renderService()}
-      </Card>
+      <Loading isLoading={isLoading}>
+        <Card>
+          <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
+          {detailTab === 'baseInfo' && this.renderBaseInfo()}
+          {detailTab === 'readme' && this.renderInstructions()}
+          {detailTab === 'service' && this.renderService()}
+        </Card>
+      </Loading>
     );
   }
 }

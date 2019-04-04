@@ -169,6 +169,8 @@
   }
 
   li {
+    box-sizing: border-box;
+    height: 44px;
     padding: 11px 20px;
     line-height: 20px;
     font-size: 12px;
@@ -192,7 +194,7 @@
     .name {
       @include textCut;
       display: inline-block;
-      max-width: 180px;
+      max-width: 200px;
     }
   }
 

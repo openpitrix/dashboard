@@ -15,6 +15,7 @@ import Layout, {
   Dialog,
   Stepper
 } from 'components/Layout';
+import Loading from 'components/Loading';
 import Status from 'components/Status';
 import DetailTabs from 'components/DetailTabs';
 import CheckFiles from 'components/CheckFiles';
@@ -657,21 +658,23 @@ export default class VersionDetail extends Component {
         pageTitle={t('Version detail')}
         hasBack
       >
-        {this.renderTopInfo()}
-        <Grid>
-          <Section size={8}>
-            <Card>
-              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-              {detailTab === 'configFile' && this.renderFileConfig()}
-              {detailTab === 'updateLog' && this.renderUpdateLog()}
-            </Card>
-          </Section>
+        <Loading isLoading={this.state.isLoading}>
+          {this.renderTopInfo()}
+          <Grid>
+            <Section size={8}>
+              <Card>
+                <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+                {detailTab === 'configFile' && this.renderFileConfig()}
+                {detailTab === 'updateLog' && this.renderUpdateLog()}
+              </Card>
+            </Section>
 
-          <Section>
-            {this.renderLatestRecord()}
-            {this.renderTestInstance()}
-          </Section>
-        </Grid>
+            <Section>
+              {this.renderLatestRecord()}
+              {this.renderTestInstance()}
+            </Section>
+          </Grid>
+        </Loading>
 
         {dialogType === 'delete' && this.renderDeleteDialog()}
         {dialogType === 'submit' && this.renderNoteDialog()}

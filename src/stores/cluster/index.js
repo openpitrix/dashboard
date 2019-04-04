@@ -7,6 +7,8 @@ import { CLUSTER_TYPE } from 'config/runtimes';
 
 import Store from '../Store';
 
+const defaultStatus = ['active', 'stopped', 'ceased', 'pending', 'suspended'];
+
 @useTableActions
 export default class ClusterStore extends Store {
   constructor(...args) {
@@ -18,13 +20,7 @@ export default class ClusterStore extends Store {
      */
     this.idKey = 'cluster_id';
 
-    this.defaultStatus = [
-      'active',
-      'stopped',
-      'ceased',
-      'pending',
-      'suspended'
-    ];
+    this.defaultStatus = defaultStatus;
 
     this.defineObservables(function () {
       this.clusters = [];
@@ -351,6 +347,10 @@ export default class ClusterStore extends Store {
     } else {
       await method(ids);
     }
+  };
+
+  reset = () => {
+    this.defaultStatus = defaultStatus;
   };
 }
 

@@ -200,7 +200,7 @@ class AppStore extends Store {
   fetchAll = async (params = {}) => {
     // dont mutate observables, just return results
     const noMutate = Boolean(params.noMutate);
-    const fetchAction = params.action || 'apps';
+    const fetchAction = params.action || this.describeAppsAction;
 
     params = this.normalizeParams(_.omit(params, ['noMutate', 'action']));
 

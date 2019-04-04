@@ -12,6 +12,7 @@ import {
 import Layout, {
   Card, Dialog, Grid, Section
 } from 'components/Layout';
+import Loading from 'components/Loading';
 import Status from 'components/Status';
 import AppName from 'components/AppName';
 import DetailTabs from 'components/DetailTabs';
@@ -58,8 +59,8 @@ export default class ReviewDetail extends Component {
 
     await appVersionStore.fetchReviewDetail(reviewId);
     const { reviewDetail } = appVersionStore;
-    await appStore.fetch(reviewDetail.app_id);
     await appVersionStore.fetch(reviewDetail.version_id);
+    await appStore.fetch(reviewDetail.app_id);
   }
 
   changeTab = tab => {
@@ -485,40 +486,42 @@ export default class ReviewDetail extends Component {
   }
 
   render() {
-    const { appStore, t } = this.props;
+    const { appStore, appVersionStore, t } = this.props;
     const { detailTab } = appStore;
 
     return (
       <Layout pageTitle={t('App review detail')} hasBack>
-        <Grid>
-          <Section size={8}>
-            <Card>
-              <div className={styles.reviewTitle}>
-                <div className={styles.name}>{t('Audit content')}</div>
-                <div className={styles.note}>
-                  {t('AUDIT_CONTENT_INTRODUCE')}
-                  {/* <a href="#" target="_blank">
+        <Loading isLoading={appVersionStore.isLoading}>
+          <Grid>
+            <Section size={8}>
+              <Card>
+                <div className={styles.reviewTitle}>
+                  <div className={styles.name}>{t('Audit content')}</div>
+                  <div className={styles.note}>
+                    {t('AUDIT_CONTENT_INTRODUCE')}
+                    {/* <a href="#" target="_blank">
                     {t('view detail standard')} →
                   </a> */}
+                  </div>
                 </div>
-              </div>
-              <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
-              {detailTab === 'baseInfo' && this.renderBaseInfo()}
-              {detailTab === 'readme' && this.renderReadme()}
-              {detailTab === 'service' && this.renderService()}
-              {detailTab === 'configFile' && this.renderConfigFile()}
-              {detailTab === 'updateLog' && this.renderUpdateLog()}
-            </Card>
-          </Section>
+                <DetailTabs tabs={tabs} changeTab={this.changeTab} isCardTab />
+                {detailTab === 'baseInfo' && this.renderBaseInfo()}
+                {detailTab === 'readme' && this.renderReadme()}
+                {detailTab === 'service' && this.renderService()}
+                {detailTab === 'configFile' && this.renderConfigFile()}
+                {detailTab === 'updateLog' && this.renderUpdateLog()}
+              </Card>
+            </Section>
 
-          <Section size={4}>
-            {this.renderReviewBase()}
-            {this.renderVersionReview()}
-          </Section>
-        </Grid>
+            <Section size={4}>
+              {this.renderReviewBase()}
+              {this.renderVersionReview()}
+            </Section>
+          </Grid>
 
-        {this.renderReasonDialog()}
-        {this.renderReviewNoteDialog()}
+          {this.renderReasonDialog()}
+          {this.renderReviewNoteDialog()}
+        </Loading>
       </Layout>
     );
   }
