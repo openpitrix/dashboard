@@ -1,20 +1,7 @@
 import _ from 'lodash';
 import { CONDITION } from 'config/action-id';
 
-export const getModuleSession = () => {
-  let modules = sessionStorage.getItem('module_elem_set');
-  if (!modules) {
-    return null;
-  }
-
-  try {
-    modules = JSON.parse(modules);
-    return modules;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
+export const getModuleSession = () => JSON.parse(sessionStorage.getItem('module_elem_set'));
 
 const checkActionOnce = action_bundle_id => {
   let canDo = false;
