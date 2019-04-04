@@ -320,7 +320,7 @@ export default class Categories extends Component {
 
   renderContent() {
     const { appStore, categoryStore } = this.props;
-    const { apps, isLoading } = appStore;
+    const { apps, appsDeployTotal, isLoading } = appStore;
     const { selectedCategory } = categoryStore;
     const displayCols = [
       'name',
@@ -344,6 +344,9 @@ export default class Categories extends Component {
           hasRowSelection
           columnsFilter={cols => cols.filter(item => displayCols.includes(item.key))
           }
+          inject={{
+            appsDeployTotal
+          }}
         />
       </Fragment>
     );

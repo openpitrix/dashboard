@@ -11,7 +11,7 @@ import {
 import DetailTabs from 'components/DetailTabs';
 import AppStatistics from 'components/AppStatistics';
 import { formatTime, getPastTime } from 'utils';
-import { getVersionTypesName } from 'config/version-types';
+import VersionType from 'components/VersionType';
 import routes, { toRoute } from 'routes';
 import CertificateInfo from '../CertificateInfo';
 
@@ -45,6 +45,12 @@ export default class ProviderDetail extends Component {
       status: 'active',
       noLimit: true
     });
+  }
+
+  componentWillUnmount() {
+    const { vendorStore, appStore } = this.props;
+    vendorStore.reset();
+    appStore.reset();
   }
 
   changeTab = tab => {
@@ -95,10 +101,12 @@ export default class ProviderDetail extends Component {
 
   renderApps() {
     const { appStore, t } = this.props;
-    const { apps, totalCount, isLoading } = appStore;
+    const {
+      apps, totalCount, appsDeployTotal, isLoading
+    } = appStore;
     const linkUrl = id => toRoute(routes.portal.appDetail, { appId: id });
 
-    if (apps.length === 0) {
+    if (apps.length === 0 && !isLoading) {
       return <NoData type="appcenter" />;
     }
 
@@ -126,14 +134,13 @@ export default class ProviderDetail extends Component {
               <div>
                 {t('Delivery type')}:&nbsp;
                 <label className={styles.types}>
-                  {(getVersionTypesName(item.app_version_types) || []).join(
-                    ' '
-                  )}
+                  <VersionType types={item.app_version_types} />
                 </label>
                 <br />
                 {t('Total of deploy')}:&nbsp;
                 <label className={styles.deployNumber}>
-                  {item.deploy_total || 0}
+                  {(_.find(appsDeployTotal, { app_id: item.app_id }) || {})
+                    .deploy_total || 0}
                 </label>
               </div>
               <div>
