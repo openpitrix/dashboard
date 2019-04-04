@@ -84,15 +84,15 @@ export default class AppAdd extends Component {
     this.uploadRef.onClick();
   };
 
-  handAddVersionType = () => {
+  handleAddVersionType = () => {
     const { appCreateStore, history } = this.props;
     const appId = _.get(appCreateStore, 'appDetail.app_id', '');
+    appCreateStore.load({ appId }, true);
     history.replace(
       toRoute(routes.portal._dev.versionCreate, {
         appId
       })
     );
-    appCreateStore.load({ appId }, true);
   };
 
   renderVersionTypes() {
@@ -261,7 +261,7 @@ export default class AppAdd extends Component {
             </Button>
             {this.canAddVersionType && (
               <Button
-                onClick={this.handAddVersionType}
+                onClick={this.handleAddVersionType}
                 className={styles.addBtn}
               >
                 {t('Add delivery type')}
