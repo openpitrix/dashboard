@@ -6,7 +6,6 @@ import { withTranslation } from 'react-i18next';
 
 import { Button } from 'components/Base';
 import Layout, { Card, Dialog } from 'components/Layout';
-import Loading from 'components/Loading';
 import Status from 'components/Status';
 import TdUser from 'components/TdUser';
 import { formatTime } from 'utils';
@@ -181,19 +180,18 @@ export default class Applications extends Component {
 
     return (
       <Layout
+        isLoading={vendorStore.isLoading}
         pageTitle={pagetTitle}
         hasBack={!isISV}
         isCenterPage
         noSubMenu
         centerWidth={760}
       >
-        <Loading isLoading={vendorStore.isLoading}>
-          {this.renderBaseInfo()}
+        {this.renderBaseInfo()}
 
-          <Card>
-            <CertificateInfo />
-          </Card>
-        </Loading>
+        <Card>
+          <CertificateInfo />
+        </Card>
 
         {this.renderMessageDialog()}
       </Layout>

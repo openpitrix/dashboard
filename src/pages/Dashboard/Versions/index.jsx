@@ -8,7 +8,6 @@ import _ from 'lodash';
 
 import { Icon, Button } from 'components/Base';
 import Layout from 'components/Layout';
-import Loading from 'components/Loading';
 import Status from 'components/Status';
 import { formatTime, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
@@ -218,38 +217,37 @@ export default class Versions extends Component {
 
     return (
       <Layout
+        isLoading={isLoading}
         className={styles.versions}
         pageTitle={t('Version manage')}
         isCenterPage
       >
-        <Loading isLoading={isLoading}>
-          <div className={styles.noteWords}>
-            {t('APP_DELIVERY_MODES_EXPLAIN')}
-          </div>
+        <div className={styles.noteWords}>
+          {t('APP_DELIVERY_MODES_EXPLAIN')}
+        </div>
 
-          <div className={styles.typeTitle}>{t('Added')}</div>
-          {typeVersions.map(item => (
-            <div key={item.type} className={styles.addedVersion}>
-              <div className={styles.title}>
-                {(_.find(versionTypes, { value: item.type }) || {}).name}
-                <Link to={`${createUrl}?type=${item.type}&appId=${this.appId}`}>
-                  <Button className={styles.button} type="default">
-                    <Icon name="add" type="dark" />
-                    {t('New version')}
-                  </Button>
-                </Link>
-              </div>
-              {this.renderActiveVersions(item)}
+        <div className={styles.typeTitle}>{t('Added')}</div>
+        {typeVersions.map(item => (
+          <div key={item.type} className={styles.addedVersion}>
+            <div className={styles.title}>
+              {(_.find(versionTypes, { value: item.type }) || {}).name}
+              <Link to={`${createUrl}?type=${item.type}&appId=${this.appId}`}>
+                <Button className={styles.button} type="default">
+                  <Icon name="add" type="dark" />
+                  {t('New version')}
+                </Button>
+              </Link>
             </div>
-          ))}
+            {this.renderActiveVersions(item)}
+          </div>
+        ))}
 
-          {types.length < 6 && (
-            <Fragment>
-              <div className={styles.typeTitle}>{t('Not added')}</div>
-              {this.renderTypes(types)}
-            </Fragment>
-          )}
-        </Loading>
+        {types.length < 6 && (
+          <Fragment>
+            <div className={styles.typeTitle}>{t('Not added')}</div>
+            {this.renderTypes(types)}
+          </Fragment>
+        )}
       </Layout>
     );
   }

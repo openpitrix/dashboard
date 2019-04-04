@@ -11,7 +11,6 @@ import {
 import Layout, {
   Grid, Section, Card, Dialog
 } from 'components/Layout';
-import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Status from 'components/Status';
 import TdName from 'components/TdName';
@@ -523,26 +522,24 @@ export default class AppDetail extends Component {
     const { versions } = appVersionStore;
 
     return (
-      <Layout pageTitle={t('App Detail')} hasBack>
-        <Loading isLoading={isLoading}>
-          <Grid>
-            <Section size={4}>{this.renderAppBase()}</Section>
-            <Section size={8}>
-              <AppStatistics
-                isAppDetail
-                versionTotal={versions.length}
-                totalDepoly={clusterStore.totalCount}
-                monthDepoly={clusterStore.monthCount}
-              />
-              <Card>
-                <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-                {detailTab === 'instance' && this.renderInstance()}
-                {detailTab === 'online' && this.renderVersions()}
-                {detailTab === 'record' && this.renderRecord()}
-              </Card>
-            </Section>
-          </Grid>
-        </Loading>
+      <Layout isLoading={isLoading} pageTitle={t('App Detail')} hasBack>
+        <Grid>
+          <Section size={4}>{this.renderAppBase()}</Section>
+          <Section size={8}>
+            <AppStatistics
+              isAppDetail
+              versionTotal={versions.length}
+              totalDepoly={clusterStore.totalCount}
+              monthDepoly={clusterStore.monthCount}
+            />
+            <Card>
+              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+              {detailTab === 'instance' && this.renderInstance()}
+              {detailTab === 'online' && this.renderVersions()}
+              {detailTab === 'record' && this.renderRecord()}
+            </Card>
+          </Section>
+        </Grid>
         {this.renderSuspendDialog()}
       </Layout>
     );

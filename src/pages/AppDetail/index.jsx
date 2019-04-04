@@ -11,7 +11,6 @@ import Layout from 'portals/user/Layout';
 import { Grid, Section, Card } from 'components/Layout';
 import { Button, Image } from 'components/Base';
 import Banner from 'components/Banner';
-import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import Stars from 'components/Stars';
 import TypeVersions from 'components/TypeVersions';
@@ -263,6 +262,7 @@ export default class AppDetail extends Component {
 
     return (
       <Layout
+        isLoading={isLoading}
         hideFooter={isCreate}
         className={classnames({ [styles.createOuter]: isCreate })}
         banner={
@@ -276,19 +276,17 @@ export default class AppDetail extends Component {
       >
         <Grid>
           <Section size={8}>
-            <Loading isLoading={isLoading}>
-              <Card>
-                {this.renderAppBase()}
-                {this.renderTypeVersions()}
-                <DetailTabs
-                  className={styles.detailTabs}
-                  tabs={tabs}
-                  changeTab={this.changeTab}
-                />
-                {detailTab === 'appDetail' && this.renderAppDetail()}
-                {detailTab === 'instructions' && this.renderInstructions()}
-              </Card>
-            </Loading>
+            <Card>
+              {this.renderAppBase()}
+              {this.renderTypeVersions()}
+              <DetailTabs
+                className={styles.detailTabs}
+                tabs={tabs}
+                changeTab={this.changeTab}
+              />
+              {detailTab === 'appDetail' && this.renderAppDetail()}
+              {detailTab === 'instructions' && this.renderInstructions()}
+            </Card>
           </Section>
 
           <Section size={4}>{this.renderProviderInfo()}</Section>

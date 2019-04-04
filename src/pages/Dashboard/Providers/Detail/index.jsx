@@ -8,7 +8,6 @@ import Layout, { Grid, Section, Card } from 'components/Layout';
 import {
   Button, Icon, Image, NoData
 } from 'components/Base';
-import Loading from 'components/Loading';
 import DetailTabs from 'components/DetailTabs';
 import AppStatistics from 'components/AppStatistics';
 import { formatTime, getPastTime } from 'utils';
@@ -105,55 +104,49 @@ export default class ProviderDetail extends Component {
 
     return (
       <div className={styles.appsInfo}>
-        <Loading isLoading={isLoading}>
-          <div className={styles.total}>
-            {t('SHELF_APP_TOTAL', { total: totalCount })}
-          </div>
-          <ul>
-            {apps.map(item => (
-              <li key={item.app_id}>
-                <div className={styles.appName}>
-                  <span className={styles.image}>
-                    <Image
-                      src={item.icon}
-                      iconLetter={item.name}
-                      iconSize={36}
-                    />
-                  </span>
-                  <span className={styles.info}>
-                    <Link to={linkUrl(item.app_id)} className={styles.name}>
-                      {item.name}
-                    </Link>
-                    <div className={styles.description}>
-                      {item.abstraction || t('None')}
-                    </div>
-                  </span>
-                </div>
-                <div>
-                  {t('Delivery type')}:&nbsp;
-                  <label className={styles.types}>
-                    {(getVersionTypesName(item.app_version_types) || []).join(
-                      ' '
-                    )}
-                  </label>
-                  <br />
-                  {t('Total of deploy')}:&nbsp;
-                  <label className={styles.deployNumber}>
-                    {item.deploy_total || 0}
-                  </label>
-                </div>
-                <div>
-                  <label className={styles.time}>
-                    {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
-                  </label>
-                  <Link to={linkUrl(item.app_id)} className={styles.link}>
-                    {t('View detail')} →
+        <div className={styles.total}>
+          {t('SHELF_APP_TOTAL', { total: totalCount })}
+        </div>
+        <ul>
+          {apps.map(item => (
+            <li key={item.app_id}>
+              <div className={styles.appName}>
+                <span className={styles.image}>
+                  <Image src={item.icon} iconLetter={item.name} iconSize={36} />
+                </span>
+                <span className={styles.info}>
+                  <Link to={linkUrl(item.app_id)} className={styles.name}>
+                    {item.name}
                   </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Loading>
+                  <div className={styles.description}>
+                    {item.abstraction || t('None')}
+                  </div>
+                </span>
+              </div>
+              <div>
+                {t('Delivery type')}:&nbsp;
+                <label className={styles.types}>
+                  {(getVersionTypesName(item.app_version_types) || []).join(
+                    ' '
+                  )}
+                </label>
+                <br />
+                {t('Total of deploy')}:&nbsp;
+                <label className={styles.deployNumber}>
+                  {item.deploy_total || 0}
+                </label>
+              </div>
+              <div>
+                <label className={styles.time}>
+                  {t('Publish time')}:&nbsp; {getPastTime(item.status_time)}
+                </label>
+                <Link to={linkUrl(item.app_id)} className={styles.link}>
+                  {t('View detail')} →
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
@@ -204,25 +197,27 @@ export default class ProviderDetail extends Component {
     const totalMap = _.get(statistics, '[0]', {});
 
     return (
-      <Layout pageTitle={t('App Service Provider Detail')} hasBack>
-        <Loading isLoading={isLoading}>
-          <Grid>
-            <Section size={4}>{this.renderProviderInfo()}</Section>
-            <Section size={8}>
-              <AppStatistics
-                appTotal={totalMap.active_app_count}
-                totalDepoly={totalMap.cluster_count_month}
-                monthDepoly={totalMap.cluster_count_total}
-              />
-              <Card>
-                <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
-                {detailTab === 'app' && this.renderApps()}
-                {detailTab === 'certificationInfo' && <CertificateInfo />}
-                {detailTab === 'margin' && this.renderMargin()}
-              </Card>
-            </Section>
-          </Grid>
-        </Loading>
+      <Layout
+        isLoading={isLoading}
+        pageTitle={t('App Service Provider Detail')}
+        hasBack
+      >
+        <Grid>
+          <Section size={4}>{this.renderProviderInfo()}</Section>
+          <Section size={8}>
+            <AppStatistics
+              appTotal={totalMap.active_app_count}
+              totalDepoly={totalMap.cluster_count_month}
+              monthDepoly={totalMap.cluster_count_total}
+            />
+            <Card>
+              <DetailTabs tabs={tags} changeTab={this.changeTab} isCardTab />
+              {detailTab === 'app' && this.renderApps()}
+              {detailTab === 'certificationInfo' && <CertificateInfo />}
+              {detailTab === 'margin' && this.renderMargin()}
+            </Card>
+          </Section>
+        </Grid>
       </Layout>
     );
   }
