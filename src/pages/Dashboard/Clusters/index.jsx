@@ -91,9 +91,10 @@ export default class Clusters extends Component {
   }
 
   componentWillUnmount() {
-    const { rootStore, clusterStore } = this.props;
+    const { rootStore, clusterStore, appStore } = this.props;
     rootStore.sock.unlisten(this.handleJobs);
     clusterStore.reset();
+    appStore.reset();
   }
 
   handleJobs = async ({ type = '', resource = {} }) => {

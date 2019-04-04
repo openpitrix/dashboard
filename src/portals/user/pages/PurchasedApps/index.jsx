@@ -138,7 +138,7 @@ export default class Purchased extends Component {
         <Table
           columns={columns}
           dataSource={apps.toJSON()}
-          isLoading={isLoading}
+          isLoading={isLoading || clusterStore.isLoading}
           pagination={pagination}
         />
       </Layout>

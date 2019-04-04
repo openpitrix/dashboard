@@ -103,12 +103,18 @@ export default class VersionDetail extends Component {
     await categoryStore.fetchAll();
 
     // query deploy test instances
-    await clusterStore.fetchAll({ app_id: appId, noLimit: true });
+    await clusterStore.fetchAll({
+      app_id: appId,
+      version_id: versionId,
+      noLimit: true
+    });
   }
 
   componentWillUnmount() {
-    const { appVersionStore } = this.props;
+    const { appStore, appVersionStore, clusterStore } = this.props;
+    appStore.reset();
     appVersionStore.reset();
+    clusterStore.reset();
   }
 
   onUploadClick = () => {
