@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 import { Table, Icon } from 'components/Base';
 import Layout from 'components/Layout';
-import Loading from 'components/Loading';
 import Status from 'components/Status';
 import { versionTypes } from 'config/version-types';
 import { formatTime, mappingStatus } from 'utils';

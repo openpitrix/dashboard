@@ -65,12 +65,12 @@ export default class AppDetail extends Component {
 
       rootStore.setNavFix(true);
       await appStore.fetch(appId);
+      this.setState({ isLoading: false });
+
       await appVersionStore.fetchTypeVersions(appId);
 
       // for statistics app number
       await appStore.fetchActiveApps({ status: 'active' });
-
-      this.setState({ isLoading: false });
     }
   }
 
