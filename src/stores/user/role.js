@@ -476,7 +476,6 @@ export default class RoleStore extends Store {
       this.selectedActionKeys[index],
       key => _.startsWith(key, 'f_') || key === 'all'
     );
-    debugger;
     const featureActions = _.flatMap(
       feature.action_bundle_set || [],
       'action_bundle_id'
@@ -521,7 +520,15 @@ export default class RoleStore extends Store {
         item.feature_set.forEach(f => {
           if (type === KeyFeatureAll) {
             this.getCheckedAction(f, index);
-          } else if (this.selectedModuleId === item.module_id) {
+          } else if (
+            type === TypeModule
+            && this.selectedModuleId === item.module_id
+          ) {
+            this.getCheckedAction(f);
+          } else if (
+            type === TypeFeature
+            && f.feature_id === _.get(this.features, '[0].feature_id')
+          ) {
             this.getCheckedAction(f);
           }
         });
