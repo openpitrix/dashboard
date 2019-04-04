@@ -136,6 +136,26 @@
         --primary-color: #fff;
       }
     }
+    .op-tree-checkbox-indeterminate {
+      span.checkbox-inner {
+        position: relative;
+        background-color: $P75;
+        border-color: $P75;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        .qicon {
+          display: none;
+        }
+        &:before {
+          content: '';
+          position: absolute;
+          width: 57%;
+          height: 2px;
+          background: #fff;
+        }
+      }
+    }
     *,
     *:before,
     *:after {
