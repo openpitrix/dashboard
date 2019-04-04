@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { inject } from 'mobx-react';
 
-@inject(({ rootStore }) => ({
-  roleStore: rootStore.roleStore
-}))
+import checkAction, { getModuleSeesion } from 'utils/checkAction';
+
 export default class Can extends React.Component {
   static propTypes = {
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
@@ -27,17 +25,15 @@ export default class Can extends React.Component {
   }
 
   get allowed() {
-    const {
-      action, not, roleStore, condition
-    } = this.props;
+    const { action, not, condition } = this.props;
     if (!this.defaultHide) {
       return true;
     }
     let allowed;
     if (typeof condition === 'function') {
-      allowed = condition(action, roleStore.muduleSession);
+      allowed = condition(action, getModuleSeesion());
     } else {
-      allowed = roleStore.checkAction(action, condition);
+      allowed = checkAction(action, condition);
     }
     if (not) {
       allowed = !allowed;

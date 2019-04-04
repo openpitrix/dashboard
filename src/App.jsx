@@ -29,10 +29,7 @@ export default class App extends React.Component {
   };
 
   async componentDidMount() {
-    const { roleStore } = this.props;
-    if (!roleStore.moduleSession) {
-      await roleStore.setRoleSession();
-    }
+    await this.props.roleStore.setRoleSession();
     this.setState({
       isLoading: false
     });

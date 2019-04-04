@@ -373,7 +373,7 @@ export const userMenus = portal => [
     name: 'SSH Keys',
     link: toRoute(routes.portal.profile, { type: 'ssh' }),
     iconName: 'ssh',
-    actionId: ACTION.UserSSHGet,
+    actionId: ACTION.GetSSH,
     divider: true
   }
 ];

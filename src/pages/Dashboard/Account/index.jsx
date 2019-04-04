@@ -38,7 +38,7 @@ export default class Account extends Component {
     super(props);
 
     const language = props.i18n.language || 'zh';
-    const hasSSH = props.checkAction(ACTION.UserSSHGet);
+    const hasSSH = props.checkAction(ACTION.GetSSH);
     const sshTab = _.find(tabs, { value: 'ssh' }) || {};
     sshTab.disabled = !hasSSH;
 

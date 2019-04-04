@@ -289,3 +289,5 @@ export const downloadFileFromBase64 = (base64_str = '', filename) => {
   // Alternatively, you could redirect to the blob to open it in the browser.
   // document.location.href = window.URL.createObjectURL(blob);
 };
+
+export checkAction, { getModuleSeesion, canRender } from './checkAction';

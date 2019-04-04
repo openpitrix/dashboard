@@ -4,6 +4,7 @@ import { withTranslation } from 'react-i18next';
 
 import { Tree } from 'components/Base';
 import { getRoleName, CannotEditController, AdminPortal } from 'config/roles';
+import ACTION from 'config/action-id';
 
 import Item from './item';
 
@@ -14,7 +15,7 @@ import styles from './index.scss';
 export default class RoleTree extends Component {
   getTreeData({ roleStore, modalStore }) {
     const { t } = this.props;
-    const { sortRole } = roleStore;
+    const { sortRole, checkAction } = roleStore;
     const normalPortal = ['user', 'isv'];
     const adminRoles = roleStore.roles
       .filter(({ portal }) => portal === AdminPortal)
@@ -53,19 +54,22 @@ export default class RoleTree extends Component {
         />
       )
     }));
-    navData[0].children.push({
-      key: 'create_role',
-      disabled: true,
-      title: (
-        <Item
-          key={`title_create_role`}
-          type="create_btn"
-          title="自定义"
-          roleStore={roleStore}
-          modalStore={modalStore}
-        />
-      )
-    });
+
+    if (checkAction(ACTION.CreateRole)) {
+      navData[0].children.push({
+        key: 'create_role',
+        disabled: true,
+        title: (
+          <Item
+            key={`title_create_role`}
+            type="create_btn"
+            title="自定义"
+            roleStore={roleStore}
+            modalStore={modalStore}
+          />
+        )
+      });
+    }
     navData[1].children = normalRoles.map(role => ({
       key: role.role_id,
       title: (
