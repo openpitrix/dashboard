@@ -234,8 +234,8 @@ export default class VersionDetail extends Component {
   };
 
   renderDeleteDialog = () => {
-    const { appVersionStore, t } = this.props;
-    const { isDialogOpen, hideModal } = appVersionStore;
+    const { appStore, appVersionStore, t } = this.props;
+    const { isDialogOpen, hideModal, version } = appVersionStore;
 
     return (
       <Dialog
@@ -243,8 +243,13 @@ export default class VersionDetail extends Component {
         isOpen={isDialogOpen}
         onSubmit={this.deleteVersion}
         onCancel={hideModal}
+        okText={t('Delete')}
+        btnType="delete"
       >
-        {t('Delete Version desc')}
+        {t('Delete Version desc', {
+          appName: _.get(appStore, 'appDetail.name'),
+          versionName: version.name
+        })}
       </Dialog>
     );
   };

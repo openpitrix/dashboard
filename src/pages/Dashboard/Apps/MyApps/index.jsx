@@ -113,6 +113,8 @@ export default class Apps extends Component {
         isOpen={isModalOpen}
         onSubmit={remove}
         onCancel={hideModal}
+        okText={t('Delete')}
+        btnType="delete"
       >
         {t('DELETE_APP_DESCRIPTION', { appName: appTitle })}
       </Dialog>

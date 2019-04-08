@@ -83,7 +83,7 @@
   "Package address": "程序包地址",
   "Description": "描述",
   "Delete Version": "删除版本",
-  "Delete Version desc": "您确定要删除该版本吗?",
+  "Delete Version desc": "您确定要删除应用 {{ appName }} 的版本 {{versionName}} 吗?",
   "Search Clusters": "搜索集群",
   "Search Instances": "搜索实例",
   "Search Version": "搜索版本",
