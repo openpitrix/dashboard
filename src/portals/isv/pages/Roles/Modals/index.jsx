@@ -29,7 +29,7 @@ export default class RoleModalActions extends Component {
     return idx < selectedActionKeys.length ? selectedActionKeys[idx] : [];
   }
 
-  renderEditPermission(isEdit) {
+  renderEditPermission() {
     const { roleStore, t } = this.props;
     const { moduleTreeData, bindActions } = roleStore;
     if (_.isEmpty(bindActions)) {
@@ -42,29 +42,32 @@ export default class RoleModalActions extends Component {
       <div className={styles.fmPermission}>
         <div className={styles.label}>{t('Permission')}</div>
         <div className={styles.permissions}>
-          {modules.map((m, index) => (
-            <Collapse
-              key={m.key}
-              className={styles.roleContainer}
-              header={m.title}
-              onChange={isCheck => this.onChange(m, isCheck)}
-              checked={isEdit}
-              iconType="switch"
-              iconPosition="right"
-            >
-              <div>
-                <ActionGroup
-                  hideHeader
-                  hideDataLevel
-                  t={t}
-                  data={bindActions[index]}
-                  index={index}
-                  roleStore={roleStore}
-                  keys={this.getActionKeys(index)}
-                />
-              </div>
-            </Collapse>
-          ))}
+          {modules.map((m, index) => {
+            const keys = this.getActionKeys(index);
+            return (
+              <Collapse
+                key={m.key}
+                className={styles.roleContainer}
+                header={m.title}
+                onChange={isCheck => this.onChange(m, isCheck)}
+                defaultCheck={keys.length > 0}
+                iconType="switch"
+                iconPosition="right"
+              >
+                <div>
+                  <ActionGroup
+                    hideHeader
+                    hideDataLevel
+                    t={t}
+                    data={bindActions[index]}
+                    index={index}
+                    roleStore={roleStore}
+                    keys={keys}
+                  />
+                </div>
+              </Collapse>
+            );
+          })}
         </div>
       </div>
     );
@@ -74,7 +77,10 @@ export default class RoleModalActions extends Component {
     const { modalStore, roleStore, t } = this.props;
     const { hide, item } = modalStore;
     const {
-      createISVRole, changeDataLevel, isLoading, dataLevel
+      createISVRole,
+      changeDataLevel,
+      modalLoading,
+      dataLevel
     } = roleStore;
     const { handleType } = item;
     const isEdit = handleType === 'edit';
@@ -87,11 +93,11 @@ export default class RoleModalActions extends Component {
         footerCls={styles.footer}
         title={title}
         width={744}
-        hideFooter={isLoading}
+        hideFooter={modalLoading}
         onCancel={hide}
         onSubmit={createISVRole}
       >
-        <Loading isLoading={isLoading}>
+        <Loading isLoading={modalLoading}>
           <div className={styles.fmCtrl}>
             <label>{t('Name')}</label>
             <Input
@@ -112,7 +118,7 @@ export default class RoleModalActions extends Component {
             <Input name="role_id" value={item.role_id} type="hidden" />
           )}
           <Input name="portal" value="isv" type="hidden" />
-          {this.renderEditPermission(isEdit)}
+          {this.renderEditPermission()}
           <div className={classnames(styles.fmCtrl, styles.selectCtrl)}>
             <label>{t('Data range')}</label>
             <Select

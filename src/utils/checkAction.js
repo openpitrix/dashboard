@@ -22,9 +22,9 @@ const checkActionOnce = action_bundle_id => {
   return canDo;
 };
 
-const checkAction = (actionId, condiction = CONDITION.or) => {
+const checkAction = (actionId, condition = CONDITION.or) => {
   if (_.isArray(actionId)) {
-    if (condiction === CONDITION.and) {
+    if (condition === CONDITION.and) {
       return _.every(actionId, id => checkActionOnce(id));
     }
     return _.some(actionId, id => checkActionOnce(id));
