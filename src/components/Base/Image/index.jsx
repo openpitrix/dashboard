@@ -76,8 +76,10 @@ export default class Image extends React.Component {
       const letter = iconLetter.substr(0, 1).toLocaleUpperCase();
 
       if (letter) {
-        style.fontSize = `${iconSize / 2}px`;
+        const size = iconSize / 2;
+        style.fontSize = `${size}px`;
         style.padding = `${iconSize / 4 - 1}px`;
+        style.lineHeight = `${size > 12 ? size : 12}px`;
 
         return (
           <span

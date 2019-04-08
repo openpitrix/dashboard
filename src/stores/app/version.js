@@ -212,6 +212,8 @@ export default class AppVersionStore extends Store {
     this.reviews = get(result, 'app_version_review_set', []);
     this.totalCount = get(result, 'total_count', 0);
 
+    this.isLoading = false;
+
     // query app review table relative data
     const appIds = this.reviews.map(item => item.app_id);
     if (appIds.length > 0) {
@@ -226,8 +228,6 @@ export default class AppVersionStore extends Store {
         user_id: _.uniq(_.concat(userIds, reviewers))
       });
     }
-
-    this.isLoading = false;
   };
 
   @action
@@ -444,6 +444,7 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchReviewDetail = async (reviewId = '') => {
+    this.isLoading = true;
     const result = await this.request.get('app_version_reviews', {
       review_id: reviewId
     });
@@ -452,6 +453,7 @@ export default class AppVersionStore extends Store {
     const { phase } = this.reviewDetail;
     const userIds = _.uniq(_.map(phase, o => o.operator));
     await this.userStore.fetchAll({ user_id: userIds });
+    this.isLoading = false;
   };
 
   // todo

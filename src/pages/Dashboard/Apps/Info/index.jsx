@@ -335,7 +335,7 @@ export default class Info extends Component {
           >
             {categories.map(item => (
               <Select.Option key={item.category_id} value={item.category_id}>
-                {item.name}
+                {t(item.name)}
               </Select.Option>
             ))}
           </Select>

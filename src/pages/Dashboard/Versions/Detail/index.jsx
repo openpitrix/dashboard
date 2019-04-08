@@ -85,12 +85,13 @@ export default class VersionDetail extends Component {
     // query this version relatived app info
     await appStore.fetch(appId);
 
+    this.setState({ isLoading: false });
+
     // query this version submit record
     await appVersionStore.fetchAudits({
       app_id: appId,
       version_id: versionId
     });
-    this.setState({ isLoading: false });
 
     // query record relative operators name
     const userIds = _.get(appVersionStore.audits, versionId, []).map(
@@ -102,12 +103,18 @@ export default class VersionDetail extends Component {
     await categoryStore.fetchAll();
 
     // query deploy test instances
-    await clusterStore.fetchAll({ app_id: appId, noLimit: true });
+    await clusterStore.fetchAll({
+      app_id: appId,
+      version_id: versionId,
+      noLimit: true
+    });
   }
 
   componentWillUnmount() {
-    const { appVersionStore } = this.props;
+    const { appStore, appVersionStore, clusterStore } = this.props;
+    appStore.reset();
     appVersionStore.reset();
+    clusterStore.reset();
   }
 
   onUploadClick = () => {
@@ -653,6 +660,7 @@ export default class VersionDetail extends Component {
 
     return (
       <Layout
+        isLoading={this.state.isLoading}
         className={styles.versionDetail}
         pageTitle={t('Version detail')}
         hasBack

@@ -25,7 +25,6 @@ router.get('/logout', ctx => {
     'portal',
     'email',
     'login_time',
-    'changedRole',
 
     'access_token',
     'token_type',
@@ -33,7 +32,9 @@ router.get('/logout', ctx => {
 
     'no_auth_access_token',
     'no_auth_expires_in',
-    'no_auth_token_type'
+    'no_auth_token_type',
+
+    'is_fetch_menu_apps'
   ];
   names.forEach(name => ctx.cookies.set(name, '', cookieOptions));
   ctx.redirect('/login');

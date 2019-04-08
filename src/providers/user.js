@@ -17,7 +17,6 @@ class UserProvider {
     this.username = getCookie('username');
     this.user_id = getCookie('user_id');
     this.email = getCookie('email');
-    this.changedRole = getCookie('changedRole');
     this.accessToken = getCookie('access_token');
     this.loginTime = getCookie('login_time');
     // this.fixAdminPortal();

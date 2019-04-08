@@ -50,14 +50,14 @@ export default class NotificationItem extends React.Component {
     ts: Date.now()
   };
 
-  state = {
-    hidden: false
-  };
-
   constructor(props) {
     super(props);
     this.timer = setTimeout(this.hideNotify, props.timeOut);
   }
+
+  state = {
+    hidden: false
+  };
 
   componentWillUnmount() {
     clearTimeout(this.timer);

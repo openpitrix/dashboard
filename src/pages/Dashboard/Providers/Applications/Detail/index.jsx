@@ -172,7 +172,7 @@ export default class Applications extends Component {
   }
 
   render() {
-    const { user, t } = this.props;
+    const { user, vendorStore, t } = this.props;
     const { isISV } = user;
     const pagetTitle = isISV
       ? t('Service Provider Detail')
@@ -180,6 +180,7 @@ export default class Applications extends Component {
 
     return (
       <Layout
+        isLoading={vendorStore.isLoading}
         pageTitle={pagetTitle}
         hasBack={!isISV}
         isCenterPage

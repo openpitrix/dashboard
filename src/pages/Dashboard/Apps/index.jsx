@@ -44,6 +44,7 @@ export default class Apps extends Component {
     } = this.props;
     const {
       apps,
+      appsDeployTotal,
       isLoading,
       searchWord,
       onSearch,
@@ -56,7 +57,6 @@ export default class Apps extends Component {
       const excludeKeys = isAdmin ? 'owner' : 'maintainers';
       return columns.filter(item => item.key !== excludeKeys);
     };
-
     return (
       <Layout pageTitle={t('All Apps')} className={styles.appList}>
         <Toolbar
@@ -73,8 +73,8 @@ export default class Apps extends Component {
           data={apps}
           columnsFilter={columnsFilter}
           inject={{
-            users,
-            isAdmin
+            appsDeployTotal,
+            users
           }}
         />
       </Layout>

@@ -2,7 +2,9 @@ import { action } from 'mobx';
 import _, { get, assign } from 'lodash';
 
 import { useTableActions } from 'mixins';
-import { getProgress, getCookie, sleep } from 'utils';
+import {
+  getProgress, getCookie, setCookie, sleep
+} from 'utils';
 import { formCheck, fieldCheck } from 'config/form-check';
 
 import Store from '../Store';
@@ -142,6 +144,7 @@ class AppStore extends Store {
   fetchMenuApps = async () => {
     const userId = getCookie('user_id');
     const menuApps = localStorage.getItem(`${userId}-apps`);
+    const apps = JSON.parse(menuApps) || [];
 
     const params = {
       sort_key: 'status_time',
@@ -149,13 +152,18 @@ class AppStore extends Store {
       status: this.defaultStatus
     };
     if (menuApps) {
-      const apps = JSON.parse(menuApps) || [];
       params.app_id = apps.map(item => item.app_id);
     }
-    const result = await this.request.get('apps', params);
 
-    this.menuApps = get(result, 'app_set', []);
-    localStorage.setItem(`${userId}-apps`, JSON.stringify(this.menuApps));
+    const isFetchMenuApps = getCookie('is_fetch_menu_apps');
+    if (!isFetchMenuApps) {
+      const result = await this.request.get('apps', params);
+      this.menuApps = get(result, 'app_set', []);
+      localStorage.setItem(`${userId}-apps`, JSON.stringify(this.menuApps));
+      setCookie('is_fetch_menu_apps', true);
+    } else {
+      this.menuApps = apps;
+    }
   };
 
   @action
@@ -200,7 +208,7 @@ class AppStore extends Store {
   fetchAll = async (params = {}) => {
     // dont mutate observables, just return results
     const noMutate = Boolean(params.noMutate);
-    const fetchAction = params.action || 'apps';
+    const fetchAction = params.action || this.describeAppsAction;
 
     params = this.normalizeParams(_.omit(params, ['noMutate', 'action']));
 
@@ -262,6 +270,9 @@ class AppStore extends Store {
       this.appCount = this.totalCount;
     }
 
+    this.isLoading = false;
+    this.isProgressive = false;
+
     // query developer name and email
     if (this.attchUser && apps.length > 0) {
       const userIds = this.apps.map(item => item.owner);
@@ -278,21 +289,20 @@ class AppStore extends Store {
         clusterStore.defaultStatus,
         'deleted'
       );
-      this.apps = [];
-      for (let i = 0; i < apps.length; i++) {
-        const app = apps[i];
+      const appsDeployTotal = [];
+      for (const app of apps) {
         await clusterStore.fetchAll({
           app_id: app.app_id,
+          limit: 1,
           display_columns: ['']
         });
-        this.apps.push(
-          _.extend(app, { deploy_total: clusterStore.totalCount })
-        );
+        appsDeployTotal.push({
+          app_id: app.app_id,
+          deploy_total: clusterStore.totalCount
+        });
+        this.appsDeployTotal = { ...appsDeployTotal };
       }
     }
-
-    this.isLoading = false;
-    this.isProgressive = false;
   };
 
   @action

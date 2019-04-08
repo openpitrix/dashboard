@@ -58,8 +58,8 @@ export default class ReviewDetail extends Component {
 
     await appVersionStore.fetchReviewDetail(reviewId);
     const { reviewDetail } = appVersionStore;
-    await appStore.fetch(reviewDetail.app_id);
     await appVersionStore.fetch(reviewDetail.version_id);
+    await appStore.fetch(reviewDetail.app_id);
   }
 
   changeTab = tab => {
@@ -485,11 +485,12 @@ export default class ReviewDetail extends Component {
   }
 
   render() {
-    const { appStore, t } = this.props;
+    const { appStore, appVersionStore, t } = this.props;
     const { detailTab } = appStore;
+    const { isLoading } = appVersionStore;
 
     return (
-      <Layout pageTitle={t('App review detail')} hasBack>
+      <Layout isLoading={isLoading} pageTitle={t('App review detail')} hasBack>
         <Grid>
           <Section size={8}>
             <Card>

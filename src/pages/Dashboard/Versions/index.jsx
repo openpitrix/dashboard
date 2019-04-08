@@ -191,7 +191,7 @@ export default class Versions extends Component {
     const {
       appVersionStore, appStore, match, t
     } = this.props;
-    const { typeVersions } = appVersionStore;
+    const { typeVersions, isLoading } = appVersionStore;
     const { appDetail } = appStore;
     const types = typeVersions.map(item => item.type);
 
@@ -217,6 +217,7 @@ export default class Versions extends Component {
 
     return (
       <Layout
+        isLoading={isLoading}
         className={styles.versions}
         pageTitle={t('Version manage')}
         isCenterPage

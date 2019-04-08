@@ -45,11 +45,16 @@ export default class AppInfo extends Component {
 
   render() {
     const { appStore, match, t } = this.props;
-    const { isEdit } = appStore;
+    const { isEdit, isLoading } = appStore;
     const { appId } = match.params;
 
     return (
-      <Layout className={styles.appInfo} pageTitle={t('App Info')} isCenterPage>
+      <Layout
+        isLoading={isLoading}
+        className={styles.appInfo}
+        pageTitle={t('App Info')}
+        isCenterPage
+      >
         {isEdit ? (
           <div className={styles.note}>
             <label>{t('Note')}</label>

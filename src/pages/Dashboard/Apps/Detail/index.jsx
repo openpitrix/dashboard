@@ -274,7 +274,7 @@ export default class AppDetail extends Component {
 
   renderVersions() {
     const { appVersionStore, user, t } = this.props;
-    const { versions } = appVersionStore;
+    const { versions, isLoading } = appVersionStore;
 
     let columns = [
       {
@@ -334,6 +334,7 @@ export default class AppDetail extends Component {
         columns={columns}
         dataSource={versions.toJSON()}
         pagination={pagination}
+        isLoading={isLoading}
       />
     );
   }
@@ -341,7 +342,11 @@ export default class AppDetail extends Component {
   renderInstance() {
     const { clusterStore, userStore, t } = this.props;
     const {
-      clusters, onSearch, onClearSearch, searchWord
+      clusters,
+      onSearch,
+      onClearSearch,
+      searchWord,
+      isLoading
     } = clusterStore;
     const { users } = userStore;
 
@@ -428,6 +433,7 @@ export default class AppDetail extends Component {
           dataSource={clusters.toJSON()}
           pagination={pagination}
           filterList={filterList}
+          isLoading={isLoading}
         />
       </Fragment>
     );
@@ -512,11 +518,11 @@ export default class AppDetail extends Component {
     const {
       appVersionStore, appStore, clusterStore, t
     } = this.props;
-    const { detailTab } = appStore;
+    const { detailTab, isLoading } = appStore;
     const { versions } = appVersionStore;
 
     return (
-      <Layout pageTitle={t('App Detail')} hasBack>
+      <Layout isLoading={isLoading} pageTitle={t('App Detail')} hasBack>
         <Grid>
           <Section size={4}>{this.renderAppBase()}</Section>
           <Section size={8}>
