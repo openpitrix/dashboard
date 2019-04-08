@@ -12,6 +12,13 @@ export const FRONT_END_PORTAL = {
   [PORTAL_NAME.user]: 'user'
 };
 
+export const ADMIN_ID = {
+  admin: 'global_admin',
+  isv: 'isv',
+  dev: 'developer',
+  user: 'user'
+};
+
 export const transferPortal = portal => FRONT_END_PORTAL[portal] || portal;
 
 const roles = [
@@ -53,7 +60,11 @@ export const DATA_LEVEL = {
   all: 'all'
 };
 
-export const moduleDataLevels = [DATA_LEVEL.self, DATA_LEVEL.group, DATA_LEVEL.all];
+export const moduleDataLevels = [
+  DATA_LEVEL.self,
+  DATA_LEVEL.group,
+  DATA_LEVEL.all
+];
 
 export const isvDataLevels = [DATA_LEVEL.self, DATA_LEVEL.group];
 
@@ -74,7 +85,8 @@ export const adminRoleDesMap = {
 
 export const isvRoleDesMap = {
   isv: 'Global Admin Role description',
-  developer: 'Responsible for development, testing, operation and maintenance applications'
+  developer:
+    'Responsible for development, testing, operation and maintenance applications'
 };
 
 export default roles;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import routes, { toRoute } from 'routes';
 import {
@@ -11,6 +12,7 @@ import Layout, { Card } from 'components/Layout';
 import UserLayout from 'portals/user/Layout';
 import DetailTabs from 'components/DetailTabs';
 import { getLoginDate, getFormData } from 'utils';
+import ACTION from 'config/action-id';
 import SSHKeys from './SSHKeys';
 
 import styles from './index.scss';
@@ -27,6 +29,7 @@ const tabs = [
 @inject(({ rootStore }) => ({
   rootStore,
   userStore: rootStore.userStore,
+  checkAction: rootStore.roleStore.checkAction,
   user: rootStore.user
 }))
 @observer
@@ -35,6 +38,9 @@ export default class Account extends Component {
     super(props);
 
     const language = props.i18n.language || 'zh';
+    const hasSSH = props.checkAction(ACTION.GetSSH);
+    const sshTab = _.find(tabs, { value: 'ssh' }) || {};
+    sshTab.disabled = !hasSSH;
 
     this.state = {
       language

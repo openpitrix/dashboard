@@ -9,16 +9,23 @@ import Layout, {
   Grid, Section, Panel, Card
 } from 'components/Layout';
 import EnhanceTable from 'components/EnhanceTable';
+import Can, { withCheckAction } from 'components/Can';
 import Toolbar from 'components/Toolbar';
+import ACTION, { CONDITION } from 'config/action-id';
+
 import Modals from './Modals';
 import columns, { filterList } from './columns';
 
 import styles from './index.scss';
 
+const ButtonWithAction = withCheckAction(Button);
+const MenuItem = withCheckAction('span');
+
 @withTranslation()
 @inject(({ rootStore }) => ({
   userStore: rootStore.userStore,
   userDetailStore: rootStore.userDetailStore,
+  checkAction: rootStore.roleStore.checkAction,
   groupStore: rootStore.groupStore,
   modalStore: rootStore.modalStore
 }))
@@ -47,6 +54,14 @@ export default class Users extends Component {
     return this.props.groupStore.isAdmin;
   }
 
+  get hasRowSelection() {
+    if (this.isAdmin) {
+      return this.props.checkAction(ACTION.TableAdminToolbar, CONDITION.or);
+    }
+
+    return this.props.checkAction(ACTION.TableAdminUserToolbar, CONDITION.or);
+  }
+
   handleAction(type, e) {
     e.stopPropagation();
     e.preventDefault();
@@ -66,18 +81,20 @@ export default class Users extends Component {
 
   renderHandleGroupNode = ({ key, t }) => (
     <div key={`${key}-operates`} className="operate-menu">
-      <span
+      <MenuItem
         key={`${key}-rename`}
+        action={ACTION.ModifyGroup}
         onClick={e => this.handleAction('renderModalRenameGroup', e)}
       >
         {t('Rename')}
-      </span>
-      <span
+      </MenuItem>
+      <MenuItem
         key={`${key}-delete`}
         onClick={e => this.handleAction('renderModalDeleteGroup', e)}
+        action={ACTION.DeleteGroup}
       >
         {t('Delete')}
-      </span>
+      </MenuItem>
     </div>
   );
 
@@ -92,30 +109,34 @@ export default class Users extends Component {
         {modifiable && (
           <Fragment>
             {canEidt && (
+              <Can action={[ACTION.ModifyGroup, ACTION.DeleteGroup]}>
+                <PopoverIcon
+                  portal
+                  trigger="hover"
+                  size="Small"
+                  key={`${key}-operate`}
+                  content={this.renderHandleGroupNode({ key, t })}
+                  className={classnames(styles.groupPopver, styles.popIcon)}
+                  targetCls={classnames(styles.groupPopverTarget)}
+                />
+              </Can>
+            )}
+            <Can action={ACTION.CreateGroup}>
               <PopoverIcon
                 portal
+                isShowArrow
                 trigger="hover"
-                size="Small"
-                key={`${key}-operate`}
-                content={this.renderHandleGroupNode({ key, t })}
-                className={classnames(styles.groupPopver, styles.iconMore)}
-                targetCls={classnames(styles.groupPopverTarget)}
+                icon="add"
+                placement="top"
+                prefixCls="add"
+                key={`${key}-operate-add`}
+                iconCls={styles.titleEventIcon}
+                targetCls={classnames(styles.tooltip)}
+                className={classnames(styles.popIcon)}
+                onClick={e => this.handleAction('renderModalCreateGroup', e)}
+                content={t('Add the child node')}
               />
-            )}
-            <PopoverIcon
-              portal
-              isShowArrow
-              trigger="hover"
-              icon="add"
-              placement="top"
-              prefixCls="add"
-              key={`${key}-operate-add`}
-              iconCls={styles.titleEventIcon}
-              targetCls={classnames(styles.tooltip)}
-              className={classnames(styles.iconCreate)}
-              onClick={e => this.handleAction('renderModalCreateGroup', e)}
-              content={t('Add the child node')}
-            />
+            </Can>
           </Fragment>
         )}
       </span>
@@ -142,12 +163,18 @@ export default class Users extends Component {
         </span>
         {this.isAdmin && (
           <Fragment>
-            <span onClick={() => modalStore.show('renderModalSetGroup', user)}>
+            <MenuItem
+              action={ACTION.JoinGroup}
+              onClick={() => modalStore.show('renderModalSetGroup', user)}
+            >
               {t('Set group')}
-            </span>
-            <span onClick={() => modalStore.show('renderModalSetRole', user)}>
+            </MenuItem>
+            <MenuItem
+              action={ACTION.SetRole}
+              onClick={() => modalStore.show('renderModalSetRole', user)}
+            >
               {t('Set role')}
-            </span>
+            </MenuItem>
           </Fragment>
         )}
         <span onClick={() => modalStore.show('renderModalResetPassword', user)}>
@@ -175,13 +202,19 @@ export default class Users extends Component {
       return (
         <Toolbar noRefreshBtn noSearchBox>
           {!_.isEmpty(selectedGroupIds) && (
-            <Button onClick={e => this.handleAction('renderModalSetGroup', e)}>
+            <ButtonWithAction
+              action={ACTION.JoinGroup}
+              onClick={e => this.handleAction('renderModalSetGroup', e)}
+            >
               {t('Set group')}
-            </Button>
+            </ButtonWithAction>
           )}
-          <Button onClick={e => this.handleAction('renderModalSetRole', e)}>
+          <ButtonWithAction
+            action={ACTION.SetRole}
+            onClick={e => this.handleAction('renderModalSetRole', e)}
+          >
             {t('Set role')}
-          </Button>
+          </ButtonWithAction>
         </Toolbar>
       );
     }
@@ -189,6 +222,7 @@ export default class Users extends Component {
     const withCreateBtn = groupStore.canCreateUser
       ? {
         name: t('Add'),
+        action: this.isAdmin ? ACTION.CreateAdminUser : '',
         onClick: e => this.handleAction('renderModalCreateUser', e)
       }
       : {};
@@ -282,7 +316,7 @@ export default class Users extends Component {
                 {this.renderToolbar()}
 
                 <EnhanceTable
-                  hasRowSelection
+                  hasRowSelection={this.hasRowSelection}
                   rowKey="user_id"
                   isLoading={userDetailStore.isLoading}
                   store={userDetailStore}

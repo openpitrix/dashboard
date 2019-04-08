@@ -5,6 +5,7 @@ import _, { noop } from 'lodash';
 import { Link, withRouter } from 'react-router-dom';
 
 import { Icon, Button, Input } from 'components/Base';
+import Can from 'components/Can';
 
 import styles from './index.scss';
 
@@ -95,22 +96,28 @@ export class Toolbar extends React.Component {
             maxLength={inputMaxLen}
           />
         )}
-        {withCreateBtn.linkTo && (
-          <Link to={withCreateBtn.linkTo}>
-            <Button className={styles.btnRight} type="primary">
+        <Can
+          do="show"
+          action={withCreateBtn.action}
+          condition={withCreateBtn.condition}
+        >
+          {withCreateBtn.linkTo && (
+            <Link to={withCreateBtn.linkTo}>
+              <Button className={styles.btnRight} type="primary">
+                {withCreateBtn.name || 'Create'}
+              </Button>
+            </Link>
+          )}
+          {withCreateBtn.onClick && (
+            <Button
+              className={styles.btnRight}
+              type="primary"
+              onClick={withCreateBtn.onClick}
+            >
               {withCreateBtn.name || 'Create'}
             </Button>
-          </Link>
-        )}
-        {withCreateBtn.onClick && (
-          <Button
-            className={styles.btnRight}
-            type="primary"
-            onClick={withCreateBtn.onClick}
-          >
-            {withCreateBtn.name || 'Create'}
-          </Button>
-        )}
+          )}
+        </Can>
         {viewType && (
           <Fragment>
             <Icon

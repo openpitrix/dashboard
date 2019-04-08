@@ -158,7 +158,12 @@ export class SideNav extends React.Component {
           <div key={nav.title} className={styles.subContent}>
             <div className={styles.subTitle}>{t(nav.title)}</div>
             {nav.items.map(item => (
-              <Can do="show" action={item.actionId} key={item.name}>
+              <Can
+                do="show"
+                action={item.actionId}
+                condition={item.condition}
+                key={item.name}
+              >
                 <NavLink
                   exact
                   activeClassName={styles.active}
@@ -363,21 +368,27 @@ export class SideNav extends React.Component {
     return (
       <Fragment>
         {this.renderPlatformLogo()}
-        {navs.map((nav, idx) => (
-          <NavItem
-            key={idx}
-            className={classnames({
-              [styles.disabled]: nav.disabled,
-              [styles.active]: this.isActiveLink(nav.link)
-            })}
-            iconProps={{
-              name: nav.iconName,
-              type: this.isActiveLink(nav.link) ? 'light' : 'dark'
-            }}
-            wrapLabelInLink
-            label={t(nav.title)}
-            to={nav.link}
-          />
+        {navs.map(nav => (
+          <Can
+            key={`${nav.title}-${nav.link}`}
+            do="show"
+            action={nav.actionId}
+            condition={nav.condition}
+          >
+            <NavItem
+              className={classnames({
+                [styles.disabled]: nav.disabled,
+                [styles.active]: this.isActiveLink(nav.link)
+              })}
+              iconProps={{
+                name: nav.iconName,
+                type: this.isActiveLink(nav.link) ? 'light' : 'dark'
+              }}
+              wrapLabelInLink
+              label={t(nav.title)}
+              to={nav.link}
+            />
+          </Can>
         ))}
       </Fragment>
     );

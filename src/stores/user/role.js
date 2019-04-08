@@ -1,8 +1,7 @@
 import { action } from 'mobx';
 import _ from 'lodash';
-import { sleep } from 'utils';
+import { sleep, checkAction, getModuleSession } from 'utils';
 import { PORTAL_NAME, DATA_LEVEL } from 'config/roles';
-import { CONDITION } from 'config/action-id';
 
 import Store from '../Store';
 
@@ -120,18 +119,7 @@ export default class RoleStore extends Store {
   }
 
   get moduleSession() {
-    let modules = sessionStorage.getItem('module_elem_set');
-    if (_.isEmpty(modules)) {
-      return null;
-    }
-
-    try {
-      modules = JSON.parse(modules);
-      return modules;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+    return getModuleSession();
   }
 
   @action
@@ -532,7 +520,15 @@ export default class RoleStore extends Store {
         item.feature_set.forEach(f => {
           if (type === KeyFeatureAll) {
             this.getCheckedAction(f, index);
-          } else if (this.selectedModuleId === item.module_id) {
+          } else if (
+            type === TypeModule
+            && this.selectedModuleId === item.module_id
+          ) {
+            this.getCheckedAction(f);
+          } else if (
+            type === TypeFeature
+            && f.feature_id === _.get(this.features, '[0].feature_id')
+          ) {
             this.getCheckedAction(f);
           }
         });
@@ -550,7 +546,7 @@ export default class RoleStore extends Store {
     const result = await this.request.post(`roles:module`, data);
     await sleep(300);
     if (_.get(result, 'role_id')) {
-      this.onSelectModule([]);
+      this.onSelectModule(this.selectedModuleKeys);
       await this.fetchRoleModule(_.first(this.selectedRoleKeys));
     }
     this.isLoading = false;
@@ -686,34 +682,7 @@ export default class RoleStore extends Store {
     return modules;
   };
 
-  checkActionOnce = action_bundle_id => {
-    let canDo = false;
-    _.some(this.moduleSession, module => {
-      const checkAll = module.is_check_all;
-      return _.some(module.feature_set, feature => {
-        const actionSet = _.find(feature.action_bundle_set, {
-          action_bundle_id
-        });
-        if (actionSet) {
-          const checkedAction = feature.checked_action_bundle_id_set || [];
-          canDo = checkAll || checkedAction.includes(actionSet.action_bundle_id);
-          return true;
-        }
-      });
-    });
-
-    return canDo;
-  };
-
-  checkAction = (actionId, condiction = CONDITION.and) => {
-    if (_.isArray(actionId)) {
-      if (condiction === CONDITION.and) {
-        return _.every(actionId, id => this.checkActionOnce(id));
-      }
-      return _.some(actionId, id => this.checkActionOnce(id));
-    }
-    return this.checkActionOnce(actionId);
-  };
+  checkAction = checkAction;
 
   hasFeatureAction = (id, type = 'feature') => {
     if (type === 'feature' && !regFeatureId.test(id)) {

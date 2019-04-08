@@ -3,9 +3,12 @@ import { observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { PopoverIcon, Button } from 'components/Base';
+import { withCheckAction } from 'components/Can';
 
 import { CannotEditController } from 'config/roles';
+import ACTION from 'config/action-id';
 
+const MenuItem = withCheckAction('span');
 const createEditRole = 'renderModalCreateRole';
 
 @observer
@@ -70,20 +73,25 @@ export default class RolePopover extends Component {
 
     return (
       <div className="operate-menu">
-        <span onClickCapture={e => this.handleAction(createEditRole, e)}>
-          {/* <Icon name="pen" /> */}
+        <MenuItem
+          action={ACTION.ModifyRole}
+          onClickCapture={e => this.handleAction(createEditRole, e)}
+        >
           {t('Edit info')}
-        </span>
-        <span onClickCapture={e => this.handleAction('setBindAction', e)}>
-          {/* <Icon name="listview" /> */}
+        </MenuItem>
+        <MenuItem
+          action={ACTION.ModifyRoleModule}
+          onClickCapture={e => this.handleAction('setBindAction', e)}
+        >
           {t('Set permission')}
-        </span>
+        </MenuItem>
         {!isSystem && (
-          <span
+          <MenuItem
+            action={ACTION.DeleteRole}
             onClickCapture={e => this.handleAction('renderModalDeleteRole', e)}
           >
             {t('Delete')}
-          </span>
+          </MenuItem>
         )}
       </div>
     );
@@ -93,6 +101,9 @@ export default class RolePopover extends Component {
     const { roleStore } = this.props;
     const { handelType } = roleStore;
     if (!this.canEdit) {
+      return null;
+    }
+    if (!roleStore.checkAction(ACTION.TableAdminRolePopover)) {
       return null;
     }
 
