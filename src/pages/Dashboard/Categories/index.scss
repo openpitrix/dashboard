@@ -69,8 +69,11 @@
       text-align: center;
       margin-top: 10px;
       cursor: pointer;
+      & > .txt {
+        position: relative;
+        top: -3px;
+      }
       svg {
-        vertical-align: bottom;
         --primary-color: #{$P75};
         --secondary-color: #{$P75};
       }
@@ -100,6 +103,10 @@
   padding-left: 35px;
   margin-bottom: 30px;
   font-size: $size-small;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   .label {
     display: inline-block;
     margin-right: 20px;
@@ -118,14 +125,14 @@
     margin-top: -15px;
     .icon {
       margin-right: 12px;
+      margin-bottom: 12px;
       cursor: pointer;
       opacity: 0.5;
 
       &:hover,
       &.active {
         opacity: 1;
-        border: 1px dashed $N300;
-        border-radius: 50%;
+        background: #{$P10};
         svg {
           --primary-color: #{$P300};
           --secondary-color: #{$P45};

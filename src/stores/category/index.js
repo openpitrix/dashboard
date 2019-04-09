@@ -81,7 +81,7 @@ export default class CategoryStore extends Store {
   };
 
   @action
-  changeCategory = async category => {
+  changeCategory = async (category = {}) => {
     const { category_id } = category;
     if (category_id !== this.selectedCategory.category_id) {
       this.selectedCategory = category;

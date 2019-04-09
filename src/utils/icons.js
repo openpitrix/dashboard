@@ -1,3 +1,5 @@
+import intersection from 'lodash/intersection';
+
 const svgSprites = `
 <svg
   id="__SVG_SPRITE_NODE__"
@@ -1007,11 +1009,53 @@ const svgSprites = `
    <path fill="#576075" d="M12 17.564l-9-6.287 9-6.267z"/>
   </g>
 </symbol>
+<symbol id="qui-video" viewBox="0 0 24 24">
+  <g style="fill: var(--primary-color); opacity: var(--primary-opacity);" fill-rule="evenodd">
+        <path fill="#BCC2D1" d="M16 16v-6a2 2 0 0 0-2-2H8V4.5A1.5 1.5 0 0 1 9.5 3h10A1.5 1.5 0 0 1 21 4.5v10a1.5 1.5 0 0 1-1.5 1.5H16z"/>
+        <path fill="#576075" d="M5 8h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zm7.196 6.5L7 11.5v6l5.196-3z"/>
+    </g>
+</symbol>
 </svg>`;
 
-export const getIconList = () => {
+const categoryIcons = [
+  'documentation',
+  'mail',
+  'calendar',
+  'column',
+  'earth',
+  'picture',
+  'firewall',
+  'ai',
+  'camera',
+  'image',
+  'increase',
+  'network',
+  'router',
+  'storage',
+  'scissors',
+  'loadbalancer',
+  'ip',
+  'blockchain',
+  'car',
+  'nodes',
+  'redirection',
+  'coding',
+  'cdn',
+  'ssh',
+  'linechart',
+  'cart',
+  'cluster',
+  'role',
+  'wrench',
+  'video'
+];
+
+export const getCategoryIcons = () => {
   const ids = svgSprites.match(/id="qui-(\w+)"/g) || [];
-  return ids.map(id => id.substring(8, id.length - 1));
+  return intersection(
+    categoryIcons,
+    ids.map(id => id.substring(8, id.length - 1))
+  );
 };
 
 export default svgSprites;
