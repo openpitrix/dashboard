@@ -24,6 +24,8 @@
 .content {
   height: 0;
   opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top center;
   transition: all 0.3s ease;
   pointer-events: none;
 }
@@ -32,6 +34,7 @@
   .content {
     opacity: 1;
     height: auto;
+    transform: scaleY(1);
     pointer-events: auto;
   }
 }

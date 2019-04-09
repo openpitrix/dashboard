@@ -11,8 +11,8 @@ export default function withCheckAction(WrappedComponent) {
     static displayName = displayName;
 
     render() {
-      const { action, condiction, ...restProps } = this.props;
-      if (!checkAction(action, condiction)) {
+      const { action, condition, ...restProps } = this.props;
+      if (!checkAction(action, condition)) {
         return null;
       }
 

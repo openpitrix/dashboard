@@ -10,6 +10,7 @@ import styles from './index.scss';
 export default class SingleCollapse extends Component {
   static propTypes = {
     checked: PropTypes.bool,
+    defaultCheck: PropTypes.bool,
     disabled: PropTypes.bool,
     iconPosition: PropTypes.oneOf(['left', 'right']),
     iconType: PropTypes.oneOf(['switch', 'chevron-right', 'chevron-up']),
@@ -18,7 +19,7 @@ export default class SingleCollapse extends Component {
   };
 
   static defaultProps = {
-    checked: false,
+    defaultCheck: false,
     disabled: false,
     iconPosition: 'left',
     iconType: 'chevron-right',
@@ -27,8 +28,18 @@ export default class SingleCollapse extends Component {
   };
 
   state = {
-    isCheck: this.props.checked
+    isCheck: this.props.defaultCheck || !!this.props.checked
   };
+
+  static getDerivedStateFromProps(props, state) {
+    if ('checked' in props && state.prevChecked !== props.checked) {
+      return {
+        isCheck: props.checked,
+        prevChecked: state.isCheck
+      };
+    }
+    return null;
+  }
 
   renderIcon() {
     const { iconType, toggleType } = this.props;

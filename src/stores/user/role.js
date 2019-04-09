@@ -46,6 +46,8 @@ export default class RoleStore extends Store {
 
       this.isLoading = false;
 
+      this.modalLoading = false;
+
       this.bindActions = [];
 
       this.moduleTreeData = [];
@@ -602,6 +604,7 @@ export default class RoleStore extends Store {
 
   @action
   initIsv = async roleId => {
+    this.modalLoading = true;
     await this.fetchRoleModule(roleId);
     if (roleId === PORTAL_NAME.isv) {
       this.emptyCheckAction();
@@ -609,6 +612,7 @@ export default class RoleStore extends Store {
     }
     this.onSelectModule([KeyFeatureAll]);
     this.setHandleType('setBindAction');
+    this.modalLoading = false;
   };
 
   @action
@@ -666,7 +670,26 @@ export default class RoleStore extends Store {
   };
 
   changeOpenModuleMap = (id, value) => {
+    const modules = this.modules.slice().sort(sortModule('module_id'));
+    const index = _.findIndex(modules, { module_id: id });
+    if (value) {
+      const { treeData } = this.bindActions[index];
+      const keys = [];
+      this.getAllModuleActionIds(treeData, keys);
+      this.selectAction(index)(keys);
+    } else {
+      this.selectAction(index)([]);
+    }
     this.openModuleMap[id] = value;
+  };
+
+  getAllModuleActionIds = (array, keys = []) => {
+    _.forEach(array, item => {
+      if (!regNotAction.test(item.key)) {
+        keys.push(item.key);
+      }
+      this.getAllModuleActionIds(item.children, keys);
+    });
   };
 
   setRoleSession = async () => {
