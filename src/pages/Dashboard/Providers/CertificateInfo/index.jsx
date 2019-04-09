@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
-import classnames from 'classnames';
 
 import { Card } from 'components/Layout';
 import { Icon } from 'components/Base';
@@ -21,12 +20,9 @@ const tags = [
 @observer
 export default class CertificateInfo extends Component {
   render() {
-    const {
-      user, vendorStore, i18n, t
-    } = this.props;
+    const { user, vendorStore, t } = this.props;
     const { isISV } = user;
     const { vendorDetail } = vendorStore;
-    const language = i18n.language || 'zh';
 
     if (isISV && !vendorDetail.company_name) {
       return (
@@ -45,11 +41,7 @@ export default class CertificateInfo extends Component {
     return (
       <Fragment>
         {isISV && <DetailTabs tabs={tags} isCardTab />}
-        <div
-          className={classnames(styles.certificateInfo, {
-            [styles.enInfo]: language === 'en'
-          })}
-        >
+        <div className={styles.certificateInfo}>
           {!isISV && (
             <div className={styles.title}>{t('Auth Information')}</div>
           )}

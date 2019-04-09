@@ -33,13 +33,17 @@
       margin-bottom: 16px;
     }
   }
+}
 
-  &.enInfo {
-    dt {
-      width: 118px;
-    }
-    dd {
-      margin-left: 138px;
+:lang(en) {
+  .certificateInfo {
+    dl {
+      dt {
+        width: 130px;
+      }
+      dd {
+        margin-left: 150px;
+      }
     }
   }
 }

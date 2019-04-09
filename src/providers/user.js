@@ -19,7 +19,7 @@ class UserProvider {
     this.email = getCookie('email');
     this.accessToken = getCookie('access_token');
     this.loginTime = getCookie('login_time');
-    // this.fixAdminPortal();
+    this.lang = getCookie('lang');
   }
 
   isLoggedIn() {
@@ -87,6 +87,10 @@ class UserProvider {
       return PORTAL_NAME.dev;
     }
     return PORTAL_NAME.user;
+  }
+
+  get isEnglish() {
+    return this.lang === 'en';
   }
 }
 

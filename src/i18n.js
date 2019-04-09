@@ -34,4 +34,7 @@ i18n
     })
   );
 
+i18n.on('languageChanged', lang => {
+  document.querySelector('html').setAttribute('lang', lang);
+});
 export default i18n;

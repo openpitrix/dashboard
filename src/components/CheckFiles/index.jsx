@@ -64,8 +64,7 @@ export default class CheckFiles extends PureComponent {
             <span className={styles.note}>{t('Note')}</span>
             {t('See the complete app development specification')}
             <a href={externalLink[`doc_${type}`]} target="blank">
-              《{linkType}
-              {t('specification and application development')}》
+              《{t('SPECIFICATION_LINK_TITLE', { type: linkType })}》
             </a>
             。
           </div>

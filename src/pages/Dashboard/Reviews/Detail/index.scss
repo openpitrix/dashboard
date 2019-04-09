@@ -122,6 +122,23 @@
       }
     }
   }
+
+  &.reviewBaseEn {
+  }
+}
+
+:lang(en) {
+  .reviewInfo {
+    dl {
+      dt {
+        width: 90px;
+      }
+
+      dd {
+        width: 242px;
+      }
+    }
+  }
 }
 
 .versionReview {
