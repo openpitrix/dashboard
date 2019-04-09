@@ -186,5 +186,7 @@
 
   "DELETE_APP_DESCRIPTION": "Are you sure delete the app \"{{appName}}\"?",
   "DEPLOYED_APP_DESCRIPTION": "All the applications you have deployed will be shown here.",
-  "MY_INSTANCES_DESCRIPTION": "List of instances created based on the application."
+  "MY_INSTANCES_DESCRIPTION": "List of instances created based on the application.",
+
+  "SPECIFICATION_LINK_TITLE": "{{type}} specification and application development"
 }

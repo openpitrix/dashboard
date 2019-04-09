@@ -78,7 +78,6 @@
   "TEMPLATES_FILE_DESC": "部署文件模版目录，模版填入 values.yaml 中相应值，生成最终的 kubernetes 配置文件",
   "NOTES_FILE_DESC": "使用指南",
 
-  "specification and application development": "规范和应用程序开发",
   "Suspend app": "下架应用",
   "Recover app": "重新上架应用",
   "Suspend successfully": "下架操作成功",

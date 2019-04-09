@@ -101,7 +101,7 @@
   "Done": "完成",
   "Note": "提示",
   "See the complete app development specification": "完整的应用开发规范请参看",
-  "specification and app development": "规范及应用开发",
+  "SPECIFICATION_LINK_TITLE": "{{type}}规范及应用开发",
   "Update log successful": "更新日志成功",
   "Update time": "更新时间",
   "Submit review": "提交审核",
