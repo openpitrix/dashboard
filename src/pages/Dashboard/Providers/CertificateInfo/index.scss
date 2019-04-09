@@ -33,8 +33,10 @@
       margin-bottom: 16px;
     }
   }
+}
 
-  &.certificateInfoEn {
+:lang(en) {
+  .certificateInfo {
     dl {
       dt {
         width: 130px;

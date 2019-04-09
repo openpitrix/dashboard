@@ -124,6 +124,11 @@
   }
 
   &.reviewBaseEn {
+  }
+}
+
+:lang(en) {
+  .reviewInfo {
     dl {
       dt {
         width: 90px;
@@ -131,18 +136,6 @@
 
       dd {
         width: 242px;
-      }
-    }
-  }
-
-  &.reviewInfoEn {
-    dl {
-      dt {
-        width: 80px;
-      }
-
-      dd {
-        width: 250px;
       }
     }
   }

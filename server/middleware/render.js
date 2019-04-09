@@ -15,6 +15,7 @@ module.exports = async (ctx, next) => {
     ctx.body = renderPage({
       isProd: process.env.NODE_ENV === 'production',
       title: get(ctx.store, 'config.app.title'),
+      lang: ctx.cookies.get('lang'),
       children: null,
       state: JSON.stringify(ctx.store)
     });
