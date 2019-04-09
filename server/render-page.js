@@ -65,7 +65,7 @@ const renderPage = (options = {}) => {
     return files
       .map(file => {
         file = !isProd ? `${bundlePrefix}/${file}` : manifest[file];
-        return `<script defer src="${file}"></script>`;
+        return `<script src="${file}"></script>`;
       })
       .join('\n');
   };
