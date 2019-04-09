@@ -6,14 +6,14 @@
   "verbose": true,
   "transform": {
     "^.+\\.jsx?$": "babel-jest"
-  }, 
+  },
   "moduleNameMapper": {
     "\\.(png|svg)$": "<rootDir>/config/assets.transform.js",
     "\\.(css|scss)$": "identity-obj-proxy"
   },
   "coverageDirectory": "./coverage/",
   "collectCoverageFrom": [
-    "src/{components}/**/*.{js,jsx}"
+    "src/components/**/*.jsx"
   ],
   "testPathIgnorePatterns": [
     "/node_modules/"
