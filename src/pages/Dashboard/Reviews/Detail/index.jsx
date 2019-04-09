@@ -159,7 +159,9 @@ export default class ReviewDetail extends Component {
   };
 
   renderReviewCard(type) {
-    const { appVersionStore, userStore, t } = this.props;
+    const {
+      appVersionStore, userStore, user, t
+    } = this.props;
     const { users } = userStore;
     const { reviewDetail, reveiwTypes } = appVersionStore;
     const { status, phase } = reviewDetail;
@@ -198,7 +200,11 @@ export default class ReviewDetail extends Component {
             {t(reviewTitle[type])}
             <label className={styles.status}>{t('In-review')}</label>
           </div>
-          <div className={styles.reviewInfo}>
+          <div
+            className={classnames(styles.reviewInfo, {
+              [styles.reviewInfoEn]: user.isEnglish
+            })}
+          >
             <dl>
               <dt>{t('Auditor')}:</dt>
               <dd>
@@ -246,7 +252,11 @@ export default class ReviewDetail extends Component {
               {isReject ? t('Rejected') : t('Passed')}
             </label>
           </div>
-          <div className={styles.reviewInfo}>
+          <div
+            className={classnames(styles.reviewInfo, {
+              [styles.reviewInfoEn]: user.isEnglish
+            })}
+          >
             <dl>
               <dt>{t('Auditor')}:</dt>
               <dd>
@@ -314,12 +324,18 @@ export default class ReviewDetail extends Component {
   }
 
   renderReviewBase() {
-    const { appStore, appVersionStore, t } = this.props;
+    const {
+      appStore, appVersionStore, user, t
+    } = this.props;
     const { appDetail } = appStore;
     const { version } = appVersionStore;
 
     return (
-      <Card className={styles.reviewInfo}>
+      <Card
+        className={classnames(styles.reviewInfo, {
+          [styles.reviewBaseEn]: user.isEnglish
+        })}
+      >
         <AppName
           icon={appDetail.icon}
           name={appDetail.name}

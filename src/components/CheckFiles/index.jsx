@@ -65,7 +65,7 @@ export default class CheckFiles extends PureComponent {
             {t('See the complete app development specification')}
             <a href={externalLink[`doc_${type}`]} target="blank">
               《{linkType}
-              {t('specification and application development')}》
+              {t(' specification and application development')}》
             </a>
             。
           </div>

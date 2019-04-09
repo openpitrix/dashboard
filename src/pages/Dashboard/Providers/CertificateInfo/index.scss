@@ -34,12 +34,14 @@
     }
   }
 
-  &.enInfo {
-    dt {
-      width: 118px;
-    }
-    dd {
-      margin-left: 138px;
+  &.certificateInfoEn {
+    dl {
+      dt {
+        width: 130px;
+      }
+      dd {
+        margin-left: 150px;
+      }
     }
   }
 }

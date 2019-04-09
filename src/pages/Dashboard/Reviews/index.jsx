@@ -167,7 +167,7 @@ export default class Reviews extends Component {
       {
         title: isUnprocessed ? t('Actions') : '',
         key: 'actions',
-        width: '110px',
+        width: user.isEnglish ? '136px' : '110px',
         className: 'actions',
         render: item => (
           <div>

@@ -52,7 +52,9 @@ export default class Applications extends Component {
   };
 
   render() {
-    const { vendorStore, userStore, t } = this.props;
+    const {
+      vendorStore, userStore, user, t
+    } = this.props;
     const { vendors, activeType, isLoading } = vendorStore;
     const { users } = userStore;
     const isUnreviewed = activeType === 'unreviewed';
@@ -108,7 +110,7 @@ export default class Applications extends Component {
       {
         title: isUnreviewed ? t('Auditor') : '',
         key: 'actions',
-        width: '80px',
+        width: user.isEnglish ? '110px' : '80px',
         className: 'actions',
         render: item => (
           <div>

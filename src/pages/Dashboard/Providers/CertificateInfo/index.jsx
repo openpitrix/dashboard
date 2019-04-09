@@ -26,7 +26,6 @@ export default class CertificateInfo extends Component {
     } = this.props;
     const { isISV } = user;
     const { vendorDetail } = vendorStore;
-    const language = i18n.language || 'zh';
 
     if (isISV && !vendorDetail.company_name) {
       return (
@@ -47,7 +46,7 @@ export default class CertificateInfo extends Component {
         {isISV && <DetailTabs tabs={tags} isCardTab />}
         <div
           className={classnames(styles.certificateInfo, {
-            [styles.enInfo]: language === 'en'
+            [styles.certificateInfoEn]: user.isEnglish
           })}
         >
           {!isISV && (
