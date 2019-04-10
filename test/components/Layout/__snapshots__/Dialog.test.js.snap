@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/Card basic render 1`] = `
+<div
+  class="panel card test"
+>
+  <div
+    class="panel"
+  >
+    <div>
+      test
+    </div>
+  </div>
+</div>
+`;
