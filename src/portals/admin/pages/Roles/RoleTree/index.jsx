@@ -63,7 +63,7 @@ export default class RoleTree extends Component {
           <Item
             key={`title_create_role`}
             type="create_btn"
-            title="自定义"
+            title={t('Customize')}
             roleStore={roleStore}
             modalStore={modalStore}
           />

@@ -60,10 +60,6 @@
   "Modify user successful": "修改用户信息成功。",
   "New password is different entered twice": "新密码两次的输入不一样。",
   "Change password successful": "修改密码成功。",
-  "The file size cannot exceed 2M": "上传的文件不能超过2M",
-  "Upload_Package_Error": "部分文件有报错，请检查后",
-  "file_format_note": "文件格式支持 TAR, TAR.GZ, TAR.BZ 和 ZIP",
-  "APP_SHELF_AND_SELL": "你的应用已经上架到官方商店，开始售卖了~",
 
   "PACKAGE_FILE_DESC": "Package.json文件，用于描述应用或版本的基本信息，包括名称版本号等",
   "CONFIG_FILE_DESC": "应用的默认值配置文件",

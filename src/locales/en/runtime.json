@@ -1,0 +1,22 @@
+{
+  "STEPPER_NAME_CREATE_RUNTIME_HEADER": "Add {{env_name}} {{activeStep}}/{{steps}}",
+  "STEPPER_TITLE_CREATE_RUNTIME_0": "Please select a platform",
+  "STEPPER_TITLE_CREATE_RUNTIME_1": "Provide {{runtime_name}} environment authorization information",
+  "STEPPER_TITLE_CREATE_RUNTIME_2": "Set environment information",
+  "STEPPER_HEADER_CREATE_RUNTIME_2": "「Provide environmental authorization information」",
+  "STEPPER_FOOTER_CREATE_RUNTIME_0": "Please refer to the confidentiality and security of the authorization information.",
+  "STEPPER_FOOTER_CREATE_RUNTIME_1": "Please refer to the confidentiality and security of the authorization information.",
+  "STEPPER_HEADER_CREATE_RUNTIME_1": "「Please select a platform」",
+  "LINK_STEPPER_FOOTER_CREATE_RUNTIME_0": "《Platform Terms of Service》",
+  "LINK_STEPPER_FOOTER_CREATE_RUNTIME_1": "《Platform Terms of Service》",
+  "STEPPER_FOOTER_CREATE_RUNTIME_2": "Please refer to the confidentiality and security of the authorization information.",
+  "LINK_STEPPER_FOOTER_CREATE_RUNTIME_2": "《Platform Terms of Service》",
+  "STEPPER_NAME_CREATE_CREDENTIAL_HEADER": "Add authorization information {{activeStep}}/{{steps}}",
+  "STEPPER_TITLE_CREATE_CREDENTIAL_1": "Provide {{runtime_name}} environment authorization information",
+  "STEPPER_TITLE_CREATE_CREDENTIAL_2": "Set name, note",
+  "STEPPER_HEADER_CREATE_CREDENTIAL_2": "「Provide environmental authorization information」",
+  "STEPPER_FOOTER_CREATE_CREDENTIAL_1": "Please refer to the confidentiality and security of the authorization information.",
+  "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_1": "《Platform Terms of Service》",
+  "STEPPER_FOOTER_CREATE_CREDENTIAL_2": "Please refer to the confidentiality and security of the authorization information.",
+  "LINK_STEPPER_FOOTER_CREATE_CREDENTIAL_2": "《Platform Terms of Service》"
+}

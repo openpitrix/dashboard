@@ -1,5 +1,15 @@
 {
+  "GROUP_POSITION": "Position: {{ position }}",
+  "SELECT_GROUP": "You have chosen an organization: {{ position }}",
+  "BIND_ACTION_COUNT_ALL": "{{total}} items in total, all open",
+  "BIND_ACTION_COUNT": "{{total}} items, open {{selectedCount}} items",
+  "DELETE_ROLE": "Do you sure to delete the role {{roleName}} ？",
   "ISV_ROLE_CREATE_TIP": "If the above roles do not meet the management requirements, you can",
   "Global Admin Role description": "Maximum privilege administrator, cannot delete and modify",
+  "data_level_all": "All data",
+  "data_level_group": "Within the department",
+  "data_level_self": "self",
+  "Normal_Role_Description_isv": "ISV center",
+  "Normal_Role_Description_user": "Application center",
   "DELETE_GROUP_TIP": "TIPS: Organizations with bound users and organizations with children cannot be deleted"
 }

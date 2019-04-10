@@ -75,7 +75,7 @@
   "icon_format_note": "图标最佳格式为 png，请重新上传",
   "screenshot_format_note": "界面截图最佳格式为 png/jpg ，请重新上传",
   "Search result is empty": "搜索结果为空",
-  "No result for search word": "没有找到与关键字 「{{searchWord}}」 相关的应用",
+  "NO_RESULT_FOR_SEARCH_WORD": "没有找到与关键字 「{{searchWord}}」 相关的应用",
   "File": "文件",
   "Successful upload": "上传成功",
   "Upload configuration file": "上传配置文件",

@@ -114,4 +114,5 @@
 
 .description {
   min-height: 14px;
+  @include textCut;
 }
