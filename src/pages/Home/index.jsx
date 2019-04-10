@@ -239,7 +239,7 @@ export default class Home extends Component {
                 pageStart={currentPage}
                 loadMore={loadMore}
                 isLoading={isLoading}
-                hasMore={Boolean(this.category || this.searchWord) && hasMore}
+                hasMore={hasMore}
               >
                 <AppList
                   apps={apps}
