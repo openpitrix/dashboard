@@ -231,7 +231,10 @@ export default class Home extends Component {
         <Grid>
           <Section size={3}>{this.renderCateMenu()}</Section>
           <Section size={9}>
-            <Loading isLoading={appStore.isLoading} className={styles.homeLoad}>
+            <Loading
+              isLoading={appStore.isLoading && currentPage === 1}
+              className={styles.homeLoad}
+            >
               <InfiniteScroll
                 pageStart={currentPage}
                 loadMore={loadMore}

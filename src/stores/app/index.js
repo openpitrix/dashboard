@@ -247,8 +247,6 @@ class AppStore extends Store {
     const apps = get(result, 'app_set', []);
     const totalCount = get(result, 'total_count', 0);
 
-    this.hasMore = totalCount > apps.length;
-
     if (noMutate) {
       this.isLoading = false;
       return {
@@ -262,6 +260,7 @@ class AppStore extends Store {
     } else {
       this.apps = apps;
     }
+    this.hasMore = totalCount > this.apps.length;
 
     this.totalCount = totalCount;
 

@@ -64,6 +64,7 @@ export default class AppList extends PureComponent {
             idx
           ) => (
             <Card
+              className={styles.card}
               icon={icon}
               name={name}
               desc={abstraction || description}
