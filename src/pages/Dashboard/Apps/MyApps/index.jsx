@@ -155,7 +155,7 @@ export default class Apps extends Component {
     return (
       <div className={styles.searchEmpty}>
         <h4>{t('Search result is empty')}</h4>
-        {t('No result for search word', { searchWord })}
+        {t('NO_RESULT_FOR_SEARCH_WORD', { searchWord })}
       </div>
     );
   }

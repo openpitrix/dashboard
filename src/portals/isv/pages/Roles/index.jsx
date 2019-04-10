@@ -63,6 +63,7 @@ export default class TeamRole extends Component {
           {t('Delete')}
         </Button>
         <Button
+          type="primary"
           onClick={() => this.handleAction('renderModalCreateRole', role)}
         >
           {t('Edit')}

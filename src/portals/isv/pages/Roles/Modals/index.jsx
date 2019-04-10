@@ -157,7 +157,7 @@ export default class RoleModalActions extends Component {
       >
         <div>
           <h3>
-            {t('Do you sure to delete roleName', {
+            {t('DELETE_ROLE', {
               roleName
             })}
           </h3>
