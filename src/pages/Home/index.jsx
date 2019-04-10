@@ -42,7 +42,7 @@ export default class Home extends Component {
       rootStore.setNavFix(true);
     }
 
-    window.scroll({ top: 0 });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     await categoryStore.fetchAll({ noLimit: true });
     await appStore.fetchStoreAppsCount();
@@ -134,6 +134,7 @@ export default class Home extends Component {
 
     rootStore.setNavFix(true);
     history.push(`/?cate=${cate}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   renderCateMenu() {

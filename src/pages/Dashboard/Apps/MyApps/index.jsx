@@ -40,7 +40,7 @@ export default class Apps extends Component {
     this.setState({
       pageLoading: false
     });
-    window.scroll({ top: 0 });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   componentWillUnmount() {

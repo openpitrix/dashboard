@@ -10,7 +10,7 @@ import styles from './index.scss';
 @withTranslation()
 export default class UserInfo extends PureComponent {
   static propTypes = {
-    loginInfo: PropTypes.number,
+    loginInfo: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     role: PropTypes.string,
     username: PropTypes.string
   };

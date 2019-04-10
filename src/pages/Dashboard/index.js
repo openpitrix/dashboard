@@ -20,8 +20,6 @@ export ProviderCreate from './Providers/Create';
 export Clusters from './Clusters';
 export ClusterDetail from './Clusters/Detail';
 
-export Repos from './Repos';
-
 export Overview from './Overview';
 
 export Categories from './Categories';
