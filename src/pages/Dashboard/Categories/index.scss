@@ -132,7 +132,7 @@
       &:hover,
       &.active {
         opacity: 1;
-        background: #{$P10};
+        background: $P10;
         svg {
           --primary-color: #{$P300};
           --secondary-color: #{$P45};
