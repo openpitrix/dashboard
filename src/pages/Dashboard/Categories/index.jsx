@@ -11,7 +11,7 @@ import Layout, { Dialog, Grid, Section } from 'components/Layout';
 import Toolbar from 'components/Toolbar';
 import EnhanceTable from 'components/EnhanceTable';
 import Loading from 'components/Loading';
-import { getIconList } from 'utils/icons';
+import { getCategoryIcons } from 'utils/icons';
 
 import styles from './index.scss';
 
@@ -101,7 +101,7 @@ export default class Categories extends Component {
         changeCreatedCateDesc
       } = categoryStore;
       const { name, description } = createdCate;
-      const icons = getIconList();
+      const icons = getCategoryIcons();
 
       return (
         <Dialog
@@ -126,7 +126,7 @@ export default class Categories extends Component {
           </div>
           <div className={styles.fmCtrl}>
             <label htmlFor="desc" className={styles.label}>
-              {t('图标')}
+              {t('Icon')}
             </label>
             <div className={styles.icons}>
               {icons.map((icon, idx) => (
@@ -135,6 +135,7 @@ export default class Categories extends Component {
                     [styles.active]: description === icon
                   })}
                   name={icon}
+                  title={icon}
                   size={24}
                   type="dark"
                   key={idx}
@@ -271,7 +272,7 @@ export default class Categories extends Component {
           onClick={() => this.showOperation('customize')}
         >
           <Icon name="add" type="dark" />
-          {t('Customize')}
+          <span className={styles.txt}>{t('Customize')}</span>
         </li>
       </ul>
     );
