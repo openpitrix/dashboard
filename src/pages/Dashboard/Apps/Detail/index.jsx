@@ -406,8 +406,8 @@ export default class AppDetail extends Component {
         conditions: [
           { name: t('Pending'), value: 'pending' },
           { name: t('Normal'), value: 'active' },
-          { name: t('Deleted'), value: 'deleted' },
-          { name: t('Ceased'), value: 'ceased' }
+          { name: t('Stopped'), value: 'stopped' },
+          { name: t('Deleted'), value: 'deleted' }
         ],
         onChangeFilter: clusterStore.onChangeStatus,
         selectValue: clusterStore.selectStatus

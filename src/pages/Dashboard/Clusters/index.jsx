@@ -384,10 +384,8 @@ export default class Clusters extends Component {
           replaceFilterConditions={[
             { name: t('Pending'), value: 'pending' },
             { name: t('Normal'), value: 'active' },
-            /* { name: t('Stopped'), value: 'stopped' },
-            { name: t('Suspended'), value: 'suspended' }, */
-            { name: t('Deleted'), value: 'deleted' },
-            { name: t('Ceased'), value: 'ceased' }
+            { name: t('Stopped'), value: 'stopped' },
+            { name: t('Deleted'), value: 'deleted' }
           ]}
           inject={{
             getDetailLink: this.getDetailLink,

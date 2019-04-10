@@ -114,5 +114,7 @@
   "DEPLOYED_APP_DESCRIPTION": "All the apps you have deployed will be shown here.",
   "HELM_APP_NAME_ERROR": "The instance name must be $t(HELM_APP_NAME_TIP)",
   "HELM_APP_NAME_TIP": "Beginning with a lowercase letter, up to 14 characters long (supports numbers/lowercase letters/hyphens)",
-  "MY_INSTANCES_DESCRIPTION": "A list of instances created based on the application."
+  "MY_INSTANCES_DESCRIPTION": "A list of instances created based on the application.",
+
+  "TIPS_DELETE_CATE": "After「{{cateName}}」is deleted, applications such as {{appNames}} will be automatically classified into 「uncategorized」"
 }

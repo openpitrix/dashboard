@@ -22,8 +22,6 @@ class AppStore extends Store {
 
   defaultStatus = defaultStatus;
 
-  isEdit = true;
-
   resetAppDetail = {};
 
   constructor(...args) {
@@ -115,6 +113,8 @@ class AppStore extends Store {
       this.checkResult = {};
 
       this.appsDeployTotal = [];
+
+      this.isEdit = true;
     });
   }
 
