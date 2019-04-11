@@ -1,4 +1,3 @@
-export CreateResource from './CreateResource';
 export Dialog from './Dialog';
 export BackBtn from './BackBtn';
 

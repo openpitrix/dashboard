@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/Stepper basic render 1`] = `
+<div
+  class="stepper"
+>
+  <div
+    class="headerStep headerStepNotFinished"
+    style="width:33.333333333333336%;transition:width 500ms ease"
+  />
+  <div
+    class="operate"
+  >
+    <label
+      class="pull-right"
+    >
+       
+      <span
+        class="icon icon-close"
+        style="width:20px;height:20px"
+      >
+        <svg
+          class="qicon qicon-close qicon-dark"
+        >
+          <use
+            href="#qui-close"
+          />
+        </svg>
+      </span>
+    </label>
+  </div>
+  <div
+    class="stepContent"
+  >
+    <div
+      class="stepName"
+    />
+    <div
+      class="stepExplain"
+    />
+  </div>
+  <div
+    class="mainContent"
+  >
+    <div>
+      test
+    </div>
+  </div>
+  <div
+    class="footer"
+  >
+    <span
+      class="footerTips"
+    >
+      <span
+        class="footerTipsButton"
+      />
+    </span>
+    <button
+      class="button"
+      type="primary"
+    >
+      <span />
+      <span
+        class="icon icon-next-icon icon"
+        style="width:20px;height:20px"
+      >
+        <svg
+          class="qicon qicon-next-icon qicon-light"
+        >
+          <use
+            href="#qui-next-icon"
+          />
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Layout/Stepper basic render activeStep more than the steps 1`] = `
+<div
+  class="stepper"
+>
+  <div
+    class="headerStep headerStepFinished"
+    style="width:133.33333333333334%;transition:width 500ms ease"
+  />
+  <div
+    class="mainContent"
+  >
+    <div>
+      test
+    </div>
+  </div>
+</div>
+`;

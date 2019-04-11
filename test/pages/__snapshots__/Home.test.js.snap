@@ -98,7 +98,7 @@ Array [
       class="container"
     >
       <div
-        class="section section-size-dev-3 section-offset-dev-0"
+        class="section section-size-3 section-offset-0}"
       >
         <div
           class="nav"
@@ -146,7 +146,7 @@ Array [
         </div>
       </div>
       <div
-        class="section section-size-dev-9 section-offset-dev-0"
+        class="section section-size-9 section-offset-0}"
       >
         <div
           class=""
