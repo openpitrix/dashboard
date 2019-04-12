@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component VersionType basic render 1`] = `
+<div
+  class="versionType"
+/>
+`;
+
+exports[`Component VersionType has types 1`] = `
+<div
+  class="versionType"
+>
+  <label>
+    Helm
+  </label>
+</div>
+`;

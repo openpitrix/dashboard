@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TitleSearch basic render 1`] = `
+<div
+  class="titleSearch"
+>
+  <div
+    class="inputGroup search"
+  >
+    <span
+      class="icon icon-search"
+      style="width:16px;height:16px"
+    >
+      <svg
+        class="qicon qicon-magnifier qicon-dark"
+      >
+        <use
+          href="#qui-magnifier"
+        />
+      </svg>
+    </span>
+    <input
+      class="input"
+      placeholder=""
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;

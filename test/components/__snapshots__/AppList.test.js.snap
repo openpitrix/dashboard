@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppList basic render 1`] = `
+<div
+  class="appList"
+>
+  <div
+    class="title"
+  />
+  <div
+    class="card card"
+  >
+    <div
+      class="icon"
+    >
+      <img
+        alt="Icon"
+        class="img"
+        data-origin-url=""
+        src=""
+      />
+    </div>
+    <div
+      class="name"
+    >
+      Wordpress
+    </div>
+    <pre
+      class="desc"
+      title="test"
+    >
+      test
+    </pre>
+    <div
+      class="attrs"
+    >
+      <dl>
+        <dt
+          class="label"
+        >
+          :
+        </dt>
+        <dd
+          class="val"
+        >
+          QingClound
+        </dd>
+      </dl>
+      <dl>
+        <dt
+          class="label"
+        >
+          :
+        </dt>
+        <dd
+          class="val"
+        >
+          <div
+            class="versionType"
+          >
+            <label>
+              VM
+            </label>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppList has search 1`] = `
+<div
+  class="appList"
+>
+  <div
+    class="title"
+  />
+  <div
+    class="noData"
+  />
+</div>
+`;

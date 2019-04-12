@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TdUser basic render 1`] = `
+<div
+  class="userShow"
+>
+  <label
+    class="name"
+  />
+</div>
+`;
+
+exports[`Component TdUser has find user 1`] = `
+<div
+  class="userShow"
+>
+  <label
+    class="name"
+  >
+    user123
+  </label>
+</div>
+`;

@@ -8,7 +8,7 @@ import { Input } from 'components/Base';
 import styles from './index.scss';
 
 @withTranslation()
-export default class AppStatistics extends Component {
+export default class TitleSearch extends Component {
   static propTypes = {
     onClear: PropTypes.func,
     onSearch: PropTypes.func,

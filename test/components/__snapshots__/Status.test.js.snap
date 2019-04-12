@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Status basic render 1`] = `
+<span
+  class="status"
+>
+  <i
+    class="icon active"
+  />
+  <span
+    class="name"
+  />
+</span>
+`;
+
+exports[`Component Status has transition 1`] = `
+<span
+  class="status"
+>
+  <i
+    class="icon starting"
+  />
+  <span
+    class="name"
+  />
+</span>
+`;

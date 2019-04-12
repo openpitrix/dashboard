@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TimeAxis basic render 1`] = `
+<div
+  class="timeAxis"
+>
+  <ul
+    class="axis"
+  >
+    <li>
+      <div
+        class="title"
+      />
+      <div
+        class="time"
+      >
+        2019/04/08 10:39:28
+      </div>
+      <span
+        class="dot successful"
+      />
+    </li>
+    <li>
+      <div
+        class="title"
+      />
+      <div
+        class="time"
+      >
+        2019/04/09 10:39:28
+      </div>
+      <span
+        class="dot working"
+      />
+    </li>
+    <li>
+      <div
+        class="title"
+      />
+      <div
+        class="time"
+      >
+        2019/04/09 11:39:28
+      </div>
+      <span
+        class="dot failed"
+      />
+    </li>
+  </ul>
+</div>
+`;

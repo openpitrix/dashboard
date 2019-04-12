@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card basic render 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="icon"
+  >
+    <img
+      alt="Icon"
+      class="img"
+      data-origin-url=""
+      src=""
+    />
+  </div>
+  <div
+    class="name"
+  />
+  <pre
+    class="desc"
+  />
+  <div
+    class="attrs"
+  >
+    <dl>
+      <dt
+        class="label"
+      >
+        :
+      </dt>
+      <dd
+        class="val"
+      />
+    </dl>
+    <dl>
+      <dt
+        class="label"
+      >
+        :
+      </dt>
+      <dd
+        class="val"
+      >
+        <div
+          class="versionType"
+        />
+      </dd>
+    </dl>
+  </div>
+</div>
+`;

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component UploadShow Upload Ok 1`] = `
+<div
+  class="uploadShow"
+>
+  <div
+    class="uploadSuccess"
+  >
+    <span
+      class="icon icon-checked-circle icon"
+      style="width:48px;height:48px"
+    >
+      <svg
+        class="qicon qicon-checked-circle qicon-light"
+      >
+        <use
+          href="#qui-checked-circle"
+        />
+      </svg>
+    </span>
+    <p
+      class="successText"
+    >
+      <span
+        class="uploadFileName"
+      />
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component UploadShow Upload error 1`] = `
+<div
+  class="uploadShow bodyBg"
+>
+  <div
+    class="uploadError"
+  >
+    <span
+      class="icon icon-error icon"
+      style="width:48px;height:48px"
+    >
+      <svg
+        class="qicon qicon-error qicon-light"
+      >
+        <use
+          href="#qui-error"
+        />
+      </svg>
+    </span>
+    <p>
+      Upload error
+      <span
+        class="errorLink"
+      >
+        「」
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component UploadShow Upload isLoading 1`] = `
+<div
+  class="uploading"
+>
+  <span
+    class="icon icon-loading icon"
+    style="width:48px;height:48px"
+  >
+    <svg
+      class="qicon qicon-loading qicon-dark"
+    >
+      <use
+        href="#qui-loading"
+      />
+    </svg>
+  </span>
+  <p
+    class="note"
+  />
+</div>
+`;
+
+exports[`Component UploadShow basic render 1`] = `
+<div
+  class="uploadShow"
+>
+  <div>
+    <span
+      class="icon icon-upload icon"
+      style="width:48px;height:48px"
+    >
+      <svg
+        class="qicon qicon-upload qicon-dark"
+      >
+        <use
+          href="#qui-upload"
+        />
+      </svg>
+    </span>
+    <p
+      class="note"
+    />
+  </div>
+</div>
+`;

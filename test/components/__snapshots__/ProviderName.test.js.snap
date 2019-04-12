@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component ProviderName basic render 1`] = `
+<div
+  class="repoName"
+>
+  <span
+    class="icon icon-qingcloud icon"
+    style="width:20px;height:20px"
+  >
+    <svg
+      class="qicon qicon-qingcloud qicon-dark"
+    >
+      <use
+        href="#qui-qingcloud"
+      />
+    </svg>
+  </span>
+</div>
+`;
+
+exports[`Component ProviderName has find provider 1`] = `
+<div
+  class="repoName"
+  title="qingcloud"
+>
+  <span
+    class="icon icon-qingcloud icon"
+    style="width:20px;height:20px"
+  >
+    <svg
+      class="qicon qicon-qingcloud qicon-dark"
+    >
+      <use
+        href="#qui-qingcloud"
+      />
+    </svg>
+  </span>
+  QingCloud
+</div>
+`;

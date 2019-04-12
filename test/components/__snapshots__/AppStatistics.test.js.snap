@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppStatistics app detail statistics 1`] = `
+<div
+  class="panel card appStatistics"
+>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+</div>
+`;
+
+exports[`AppStatistics basic render 1`] = `
+<div
+  class="panel card appStatistics"
+>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+  <dl>
+    <dt />
+    <dd>
+      0
+    </dd>
+  </dl>
+</div>
+`;

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TypeVersions basic render 1`] = `
+<div
+  class="typeVersions"
+>
+  <dl>
+    <dt>
+      :
+    </dt>
+    <dd>
+      <div
+        class="types"
+      >
+        <label
+          class="active"
+        >
+          Helm
+        </label>
+      </div>
+    </dd>
+  </dl>
+  <dl>
+    <dt>
+      :
+    </dt>
+    <dd>
+      <div
+        class="types"
+      >
+        <label
+          class=""
+        >
+          1.0.0
+        </label>
+      </div>
+    </dd>
+  </dl>
+</div>
+`;

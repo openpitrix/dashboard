@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 
-import Layout, {
-  Grid, Section, Row, BreadCrumb
-} from 'components/Layout';
+import Layout, { Grid, Section, Row } from 'components/Layout';
 import UserLayout from 'portals/user/Layout';
 import Status from 'components/Status';
 import TdName, { ProviderName } from 'components/TdName';
@@ -132,8 +130,6 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading} className={styles.overview}>
-        <BreadCrumb linkPath="Dashboard>Overview" />
-
         <Row>
           <Grid>
             <Section>
@@ -337,8 +333,6 @@ export default class Overview extends React.Component {
 
     return (
       <Layout isLoading={isLoading} className={styles.overview}>
-        <BreadCrumb linkPath="Dashboard>Overview" />
-
         <Row>
           <Grid>
             <Section>

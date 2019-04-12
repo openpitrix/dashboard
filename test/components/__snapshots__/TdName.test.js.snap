@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TdName basic render 1`] = `
+<span
+  class="tdName"
+>
+  <span
+    class="image"
+  >
+    <img
+      class="img"
+      data-origin-url=""
+      src=""
+    />
+  </span>
+  <label
+    class="foldCheckbox"
+  >
+    <span
+      class="icon icon-check-unfold"
+      style="width:28px;height:28px"
+    >
+      <svg
+        class="qicon qicon-check-unfold qicon-light"
+      >
+        <use
+          href="#qui-check-unfold"
+        />
+      </svg>
+    </span>
+    <input
+      type="checkbox"
+    />
+  </label>
+  <span
+    class="info"
+  >
+    <span
+      class="foldName"
+      title="name"
+    >
+      name 
+    </span>
+    <span
+      class="description"
+      title="test"
+    >
+      test 
+    </span>
+    <span
+      class="copy"
+      data-clipboard-text="test"
+    >
+      <span
+        class="icon icon-copy"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-copy qicon-dark"
+        >
+          <use
+            href="#qui-copy"
+          />
+        </svg>
+      </span>
+    </span>
+  </span>
+</span>
+`;
