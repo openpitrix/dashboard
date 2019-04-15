@@ -2,7 +2,7 @@
 
 exports[`Layout/Panel basic render 1`] = `
 <div
-  class="row test"
+  class="panel test"
 >
   <div>
     test

@@ -1,4 +1,4 @@
-import Section from 'components/Layout/Grid/Section';
+import Section from 'components/Layout/Grid/section';
 
 describe('Layout/Section', () => {
   it('basic render', () => {

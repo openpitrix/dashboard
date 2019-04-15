@@ -1,4 +1,4 @@
-import Panel from 'components/Layout/Grid/Row';
+import Panel from 'components/Layout/Panel';
 
 describe('Layout/Panel', () => {
   it('basic render', () => {

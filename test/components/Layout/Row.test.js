@@ -1,4 +1,4 @@
-import Row from 'components/Layout/Grid/Row';
+import Row from 'components/Layout/Grid/row';
 
 describe('Layout/Row', () => {
   it('basic render', () => {
