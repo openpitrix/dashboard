@@ -1,5 +1,3 @@
-import { BrowserRouter } from 'react-router-dom';
-
 import NoteLink from 'components/NoteLink';
 
 describe('Component NoteLink', () => {

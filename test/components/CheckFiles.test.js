@@ -1,5 +1,3 @@
-import { BrowserRouter } from 'react-router-dom';
-
 import CheckFiles from 'components/CheckFiles';
 
 describe('Component CheckFiles', () => {

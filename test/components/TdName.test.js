@@ -9,7 +9,7 @@ describe('Component TdName', () => {
     name: 'name',
     description: 'test',
     isFold: true
-  }
+  };
 
   it('basic render', () => {
     const wrapper = render(

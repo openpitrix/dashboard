@@ -1,5 +1,5 @@
 import TypeVersions from 'components/TypeVersions';
-import { mount } from "enzyme";
+import { mount } from 'enzyme';
 
 const props = {
   types: ['helm'],
