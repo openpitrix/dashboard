@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -128,10 +128,11 @@ export default class Swipe extends React.Component {
   };
 
   renderDots() {
-    if (!this.props.showDots) return null;
+    const { showDots, dotsOuter } = this.props;
+    if (!showDots) return null;
 
     return (
-      <Fragment>
+      <div className={classnames(styles.dotsOuter, dotsOuter)}>
         {_.range(this.total).map(index => (
           <span
             key={index}
@@ -145,7 +146,7 @@ export default class Swipe extends React.Component {
             )}
           />
         ))}
-      </Fragment>
+      </div>
     );
   }
 
@@ -174,7 +175,7 @@ export default class Swipe extends React.Component {
 
   render() {
     const {
-      className, hoverStop, contentOuter, dotsOuter
+      className, autoPlay, hoverStop, contentOuter
     } = this.props;
     const { hasTransition } = this.state;
 
@@ -184,8 +185,8 @@ export default class Swipe extends React.Component {
     return (
       <div
         className={classnames(styles.container, className)}
-        onMouseEnter={hoverStop ? this.pause : _.noop}
-        onMouseLeave={hoverStop ? this.play : _.noop}
+        onMouseEnter={autoPlay && hoverStop ? this.pause : _.noop}
+        onMouseLeave={autoPlay && hoverStop ? this.play : _.noop}
         style={{ height: this.height }}
       >
         <div
@@ -203,9 +204,7 @@ export default class Swipe extends React.Component {
         >
           {this.renderContent()}
         </div>
-        <div className={classnames(styles.dotsOuter, dotsOuter)}>
-          {this.renderDots()}
-        </div>
+        {this.renderDots()}
       </div>
     );
   }

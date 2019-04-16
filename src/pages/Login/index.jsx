@@ -85,9 +85,11 @@ export default class Login extends Component {
   }
 
   resetInputError = () => {
-    this.setState({
-      showInputError: false
-    });
+    if (this.state.showInputError) {
+      this.setState({
+        showInputError: false
+      });
+    }
   };
 
   handleSubmit = async params => {
