@@ -47,8 +47,11 @@ describe('Base/Swipe', () => {
       </Swipe>
     );
     const dotsComponent = wrapper.find('.dotsOuter');
-    dotsComponent.childAt(2).simulate('click');
-    const { current } = wrapper.state();
-    expect(current).toBe(3);
+    dotsComponent.childAt(3).simulate('click');
+    expect(wrapper.state().current).toBe(4);
+
+    dotsComponent.childAt(0).simulate('click');
+    expect(wrapper.state().current).toBe(1);
+    wrapper.unmount();
   });
 });
