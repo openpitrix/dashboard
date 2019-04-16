@@ -1,11 +1,11 @@
 @import '~scss/vars';
 
-$login-bg: linear-gradient(305deg, $P75, #854fb9 32%, #484999);
+$login-bg: radial-gradient(circle at 13% 0, $P75, #343945);
 $login-form-bg: #ffffff;
 $login-form-shadow: 0 4px 35px 0 rgba(35, 35, 36, 0.4);
-$login-submit-bg: linear-gradient(to left, #f1ac0e, #e68c22);
-$login-submit-hover-bg: linear-gradient(to left, #f0b40e, #e69122);
-$login-submit-active-bg: linear-gradient(to left, #f0b40e, #e69122);
+$login-submit-bg: $P75;
+$login-submit-hover-bg: $P75;
+$login-submit-active-bg: $P75;
 $login-placeholder: #c9bed6;
 
 $input-item-width: 320px;
@@ -13,102 +13,87 @@ $input-item-height: 48px;
 
 .login {
   min-height: 100vh;
-  padding-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgContainer {
   background-image: $login-bg;
+  flex: 1;
+  min-height: 100vh;
+  color: $N0;
+}
+.logo {
+  padding: 16px 48px;
 }
 
 .loginContent {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
+  flex: 1;
   .submitBtn {
     width: $input-item-width;
     height: $input-item-height;
     padding: 14px 0;
-    border-radius: 24px;
+    border-radius: 2px;
     border: none !important;
     color: #fff !important;
     font-size: 18px;
     font-weight: 500;
-    background-image: $login-submit-bg;
-    &:hover {
-      background-image: $login-submit-hover-bg;
-    }
-    &:active {
-      background-image: $login-submit-active-bg;
-    }
   }
 }
 .loginTitle {
   display: block;
   text-align: center;
-  // padding-top: 249.6px;
 }
 
 .loginForm {
-  position: relative;
-  width: 410px;
-  margin: 40px auto 0;
-  padding: 48px 45px;
-  text-align: center;
-  border-radius: 8px;
-  background-color: $login-form-bg;
-  box-shadow: $login-form-shadow;
-
-  .notify {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    text-align: left;
-
-    .notifyItem {
-      //width: 240px;
-      min-width: 240px;
-    }
+  max-width: 410px;
+  margin: 0 auto;
+  .welcome {
+    color: $N75;
   }
 
   h1 {
-    margin-bottom: 24px;
+    margin-top: 16px;
+    margin-bottom: 32px;
     color: $title-color;
-    font-size: 24px;
-    font-weight: 500;
+    @include title-font(36px, 32px);
   }
   .formInput {
     :global {
       .icon {
-        opacity: 0.5;
-        left: 24px;
+        left: 16px;
       }
 
       input {
         width: $input-item-width;
         height: $input-item-height;
-        padding: 15px 15px 15px 52px;
-        border-radius: 24px;
+        padding: 15px 15px 15px 44px;
+        border-radius: 3px;
         font-size: $size-medium;
         opacity: 1;
         color: $N500;
         transition: all 0.3s ease-in-out;
       }
+      input:-webkit-autofill {
+        -webkit-box-shadow: inset 0 0 0px 9999px $N0;
+      }
     }
-  }
-}
-
-.tip {
-  margin-top: 24px;
-  text-align: center;
-  span {
-    color: #fff;
-    opacity: 0.6;
-    font-size: 16px;
-  }
-  a {
-    margin-left: 8px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
+    &.error {
+      input {
+        background: $R10;
+        color: $R300;
+      }
+      input:-webkit-autofill {
+        -webkit-text-fill-color: $R300;
+        -webkit-box-shadow: inset 0 0 0px 9999px $R10;
+      }
+      :global {
+        .qicon {
+          --primary-color: #{$R300};
+          --secondary-color: #{$R45};
+        }
+      }
+    }
   }
 }

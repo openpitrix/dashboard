@@ -21,7 +21,7 @@ const Login = lazy(() => import('./pages/Login'));
 const AppDetail = lazy(() => import('./pages/AppDetail'));
 
 @inject(({ rootStore }) => ({
-  roleStore: rootStore.roleStore
+  rootStore
 }))
 export default class App extends React.Component {
   state = {
@@ -29,7 +29,7 @@ export default class App extends React.Component {
   };
 
   async componentDidMount() {
-    await this.props.roleStore.setRoleSession();
+    await this.props.rootStore.setSession();
     this.setState({
       isLoading: false
     });

@@ -1,0 +1,56 @@
+@import '~scss/vars';
+
+.container {
+  width: 33.5vw;
+  margin: 0 auto;
+  a {
+    border-radius: 2px;
+    border: solid 1px $Y200;
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: $Y200;
+    :global(.icon) {
+      margin-left: 5px;
+    }
+    :global(.qicon) {
+      --primary-color: #{$Y200};
+    }
+    &:hover {
+      background: $Y200;
+      color: $N0;
+      :global(.qicon) {
+        --primary-color: #{$N0};
+      }
+    }
+  }
+}
+
+.img {
+  height: 30vh;
+}
+
+.imgContainer {
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+  text-align: center;
+}
+
+.name {
+  color: $Y200;
+  border-bottom: 2px solid $Y200;
+  display: inline-block;
+  padding-bottom: 1.3vh;
+  margin-bottom: 2.2vh;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 1.3vh;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 2;
+  margin-bottom: 2.2vh;
+}

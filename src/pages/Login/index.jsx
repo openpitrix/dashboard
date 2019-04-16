@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { throttle } from 'lodash';
 import { withTranslation } from 'react-i18next';
+import classnames from 'classnames';
 
 import Logo from 'components/Logo';
 import {
-  Form, Button, Checkbox, Notification
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Notification,
+  Swipe
 } from 'components/Base';
 import { getUrlParam } from 'utils';
 import routes, { toRoute } from 'routes';
+import { itemProps } from 'config/login';
+import Item from './Item';
 
 import styles from './index.scss';
 
@@ -29,10 +37,60 @@ export default class Login extends Component {
     if (props.rootStore.user.isLoggedIn()) {
       props.history.replace('/');
     }
-    sessionStorage.removeItem('module_elem_set');
+    props.rootStore.clearSession();
+    this.handleSubmit = throttle(this.handleSubmit, 1000);
   }
 
-  handleSubmit = async (e, params) => {
+  state = {
+    hasError: false,
+    showInputError: false
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.showInputError === this.state.showInputError) {
+      return false;
+    }
+    return true;
+  }
+
+  get slideSetting() {
+    return {
+      width: '50vw',
+      height: '88vh'
+    };
+  }
+
+  get welcomeTxt() {
+    const { t } = this.props;
+    if (this.state.hasError) {
+      return `${t('Sorry, login failure')}...`;
+    }
+
+    return t('Welcome back');
+  }
+
+  get title() {
+    const { t } = this.props;
+    if (this.state.hasError) {
+      return t('Information error, please try again');
+    }
+
+    return t('Login you account');
+  }
+
+  get formInputCls() {
+    return classnames(styles.formInput, {
+      [styles.error]: this.state.showInputError
+    });
+  }
+
+  resetInputError = () => {
+    this.setState({
+      showInputError: false
+    });
+  };
+
+  handleSubmit = async params => {
     const { store, user } = this.props;
     const res = await store.oauth2Check(params);
 
@@ -43,8 +101,12 @@ export default class Login extends Component {
     const defaultUrl = toRoute(routes.portal.apps, user.defaultPortal);
 
     if (!(res && res.err)) {
-      localStorage.removeItem('menuApps'); // clear newest visited menu apps
       location.href = getUrlParam('redirect_url') || defaultUrl;
+    } else {
+      this.setState({
+        hasError: true,
+        showInputError: true
+      });
     }
   };
 
@@ -54,46 +116,65 @@ export default class Login extends Component {
 
     return (
       <div className={styles.login}>
-        <div className={styles.loginContent}>
-          <div className={styles.loginTitle}>
-            <Logo url="/logo_light.svg" />
+        <div className={styles.bgContainer}>
+          <Logo className={styles.logo} hasTitle />
+          <div>
+            <Swipe {...this.slideSetting}>
+              {itemProps.map(item => (
+                <Item key={item.name} t={t} {...item} />
+              ))}
+            </Swipe>
           </div>
+        </div>
+        <div className={styles.loginContent}>
           <div className={styles.loginForm}>
-            <h1>{t('Login OpenPitrix')}</h1>
-            <Notification
-              className={styles.notify}
-              itemClass={styles.notifyItem}
-            />
-            <Form noPadding onSubmit={throttle(this.handleSubmit, 1000)}>
-              <TextField
-                className={styles.formInput}
-                icon="human"
-                iconType="dark"
-                name="email"
-                iconSize={24}
-                placeholder="username@example.com"
-              />
-              <TextField
-                className={styles.formInput}
-                type="password"
-                icon="lock"
-                iconType="dark"
-                name="password"
-                iconSize={24}
-                placeholder={t('Password')}
-              />
-              <Checkbox
-                checked={rememberMe}
-                onChange={toggleRememberMe}
-                className={styles.checkbox}
-              >
-                {t('Remember me')}
-              </Checkbox>
-              <Button htmlType="submit" className={styles.submitBtn}>
-                {t('Login')}
-              </Button>
+            <div className={styles.welcome}>{this.welcomeTxt}</div>
+            <h1>{this.title}</h1>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Item className={styles.formItem} noLabel>
+                <Input
+                  className={this.formInputCls}
+                  icon="human"
+                  iconType="dark"
+                  name="email"
+                  iconSize={24}
+                  onChange={this.resetInputError}
+                  placeholder="username@example.com"
+                />
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Input
+                  className={this.formInputCls}
+                  type="password"
+                  icon="lock"
+                  iconType="dark"
+                  name="password"
+                  iconSize={24}
+                  onChange={this.resetInputError}
+                  placeholder={t('Password')}
+                />
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={toggleRememberMe}
+                  className={styles.checkbox}
+                >
+                  {t('Remember me')}
+                </Checkbox>
+              </Form.Item>
+              <Form.Item className={styles.formItem} noLabel>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className={styles.submitBtn}
+                >
+                  {t('Login')}
+                </Button>
+              </Form.Item>
             </Form>
           </div>
+          <Notification />
         </div>
       </div>
     );

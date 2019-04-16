@@ -107,4 +107,10 @@ export default class CloudEnvironmentStore extends Store {
   changeHandleType = async type => {
     this.handleType = type;
   };
+
+  @action
+  setBasicSession = async () => {
+    await this.fetchCloudInfo();
+    sessionStorage.setItem('cloudInfo', JSON.stringify(this.cloudInfo));
+  };
 }
