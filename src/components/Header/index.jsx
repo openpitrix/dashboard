@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter, Link, NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
@@ -7,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 
 import { Popover, Icon } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
-import routes, { toRoute, pathWithoutHeader } from 'routes';
+import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
 
@@ -33,14 +32,6 @@ const LinkItem = ({ to, title, path }) => {
 }))
 @observer
 export class Header extends Component {
-  static propTypes = {
-    alwaysShow: PropTypes.bool
-  };
-
-  static defaultProps = {
-    alwaysShow: false
-  };
-
   renderMenus = () => {
     const { t, user, match } = this.props;
     const { path } = match;
@@ -98,13 +89,7 @@ export class Header extends Component {
   }
 
   render() {
-    const {
-      t, user, match, alwaysShow
-    } = this.props;
-
-    if (!alwaysShow && pathWithoutHeader(match.path)) {
-      return null;
-    }
+    const { t, user } = this.props;
 
     return (
       <div className={classnames('header', styles.header, styles.menusHeader)}>

@@ -5,10 +5,6 @@ import user from 'providers/user';
 import { FRONT_END_PORTAL, transferPortal } from 'config/roles';
 import routeNames from './names';
 
-const noHeaderPaths = ['/login', '/user/provider/apply'];
-
-const noFooterPaths = ['/login', '/user/provider/apply'];
-
 const commonRoutes = ['', 'apps', 'login', 'logout', 'profile'];
 
 const portals = _.map(FRONT_END_PORTAL, value => value);
@@ -73,13 +69,6 @@ export const getPortalFromPath = (path = location.pathname) => {
 };
 
 export const needAuth = (path, portal) => portals.includes(portal) || path.startsWith('/profile');
-
-export const pathWithoutHeader = path => {
-  const portal = getPortalFromPath();
-  return noHeaderPaths.includes(path) || (portal && portal !== 'user');
-};
-
-export const pathWithoutFooter = path => noFooterPaths.includes(path);
 
 export const withPrefix = (url, prefix = '') => {
   if (prefix) {

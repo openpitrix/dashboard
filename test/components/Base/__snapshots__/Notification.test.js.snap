@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Notification basic render 1`] = `
+<div
+  class="wrapper"
+>
+  <div>
+    <div
+      class="notification notification-info"
+    >
+      <span
+        class="icon icon-information"
+        style="width:18px;height:18px"
+      >
+        <svg
+          class="qicon qicon-information qicon-light"
+          style="--primary-color:#fff;--secondary-color:#1e6eeb"
+        >
+          <use
+            href="#qui-information"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      class="notification notification-info"
+    >
+      <span
+        class="icon icon-information"
+        style="width:18px;height:18px"
+      >
+        <svg
+          class="qicon qicon-information qicon-light"
+          style="--primary-color:#fff;--secondary-color:#1e6eeb"
+        >
+          <use
+            href="#qui-information"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+</div>
+`;

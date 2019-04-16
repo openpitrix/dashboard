@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Deploy  basic render 1`] = `
+<div
+  class="row"
+>
+  <label
+    class="label"
+  />
+  <div
+    class="item"
+  />
+</div>
+`;

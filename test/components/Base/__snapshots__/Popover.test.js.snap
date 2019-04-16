@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Base/Tooltip basic render 1`] = `
+exports[`Base/PopoverIcon basic render 1`] = `
 <div
   class="tooltip popover test"
 >

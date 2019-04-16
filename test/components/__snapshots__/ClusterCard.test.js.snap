@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component ClusterCard  basic render 1`] = `
+<div
+  class="detailCard"
+>
+  <div
+    class="title noImg"
+  >
+    <div
+      class="name"
+    />
+    <div
+      class="copyOuter"
+    >
+      id: 
+      <span
+        class="copyId"
+      >
+        <span
+          class="icon icon-copy"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-copy qicon-dark"
+          >
+            <use
+              href="#qui-copy"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+  </div>
+  <ul
+    class="detail"
+  >
+    <li>
+      <span
+        class="name"
+      />
+      <span
+        class="status"
+      >
+        <i
+          class="icon pending"
+        />
+        <span
+          class="name"
+        />
+      </span>
+    </li>
+    <li>
+      <span
+        class="name"
+      />
+      <label
+        class="appShow"
+      >
+        <label
+          class="appImage"
+        >
+          <img
+            class="img"
+            data-origin-url=""
+            src=""
+          />
+        </label>
+        <a
+          class="appName"
+          href="/user/apps/undefined"
+        />
+      </label>
+    </li>
+    <li>
+      <span
+        class="name"
+      />
+      <label
+        class="value"
+      >
+        <div
+          class="versionType"
+        />
+        <span
+          class="versionName"
+        />
+      </label>
+    </li>
+    <li
+      class="setHeight"
+    >
+      <span
+        class="name"
+      />
+      <div
+        class="repoName value"
+        title=""
+      >
+        <span
+          class="icon icon- icon"
+          style="width:20px;height:20px"
+        >
+          <svg
+            class="qicon qicon- qicon-dark"
+          >
+            <use
+              href="#qui-"
+            />
+          </svg>
+        </span>
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      />
+      <div
+        class="userShow value"
+      >
+        <label
+          class="name"
+        />
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      />
+      <div
+        class="detailTime"
+      >
+        2019/04/16 18:43:34
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      />
+      <div
+        class="detailTime"
+      >
+        2019/04/16 18:43:34
+      </div>
+    </li>
+  </ul>
+</div>
+`;

@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 
 import Popover from 'components/Base/Popover';
 
-describe('Base/Tooltip', () => {
+describe('Base/PopoverIcon', () => {
   it('basic render', () => {
     const wrapper = render(
       <Popover className="test" content="test">

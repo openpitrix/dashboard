@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Collapse  basic render 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="headerContainer cursorPointer"
+  >
+    <span
+      class="icon icon-chevron-right"
+      style="width:16px;height:16px"
+    >
+      <svg
+        class="qicon qicon-chevron-right qicon-dark"
+      >
+        <use
+          href="#qui-chevron-right"
+        />
+      </svg>
+    </span>
+    <span
+      class="header"
+    />
+  </div>
+  <div
+    class="content"
+  />
+</div>
+`;

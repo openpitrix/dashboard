@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Footer basic render 1`] = `
+<div
+  class="footer"
+>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="inner"
+    >
+      <span
+        class="logo"
+      >
+        <img
+          alt="logo"
+          height="100%"
+          src="/logo_grey.svg"
+        />
+      </span>
+      <ul
+        class="terms"
+      >
+        <li>
+          <a
+            href="https://docs.openpitrix.io/home/"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        </li>
+        <li>
+          <a
+            href="/user/provider/apply"
+          />
+        </li>
+        <li>
+          <a
+            href="https://openpitrix.io"
+            rel="noopener noreferrer"
+            target="_blank"
+          />
+        </li>
+        <li>
+          OpenPitrix © 2019
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

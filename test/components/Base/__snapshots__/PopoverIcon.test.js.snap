@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/PopoverIcon basic render 1`] = `
+<div
+  class="tooltip popover container"
+>
+  <div
+    class="target target targetNormal"
+  >
+    view
+    <span
+      class="icon icon-eye icon targetNormal"
+      style="width:16px;height:16px"
+    >
+      <svg
+        class="qicon qicon-eye qicon-dark"
+      >
+        <use
+          href="#qui-eye"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    class="popper popover pi-popover-popper"
+    style="position:absolute;pointer-events:none;opacity:0"
+  >
+    <div>
+      <div
+        class="pi-popover-content"
+      />
+    </div>
+  </div>
+</div>
+`;

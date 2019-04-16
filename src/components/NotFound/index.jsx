@@ -11,7 +11,7 @@ const NotFound = () => (
   <Translation>
     {t => (
       <Fragment>
-        <Header alwaysShow />
+        <Header />
         <div className={styles.notFound}>
           <div className={styles.content}>
             <h1>404</h1>

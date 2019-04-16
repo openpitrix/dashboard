@@ -1,0 +1,304 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/Header basic render: login 1`] = `
+<div
+  class="header header menusHeader"
+>
+  <div
+    class="wrapper"
+  >
+    <a
+      href="/"
+    >
+      <label
+        class="logoIcon"
+      >
+        <img
+          class="logo"
+          src="/op-logo.svg"
+        />
+      </label>
+    </a>
+    <div
+      class="menus"
+    >
+      <a
+        aria-current="page"
+        class="active active"
+        href="/"
+      />
+      <a
+        class=""
+        href="/user/apps"
+      />
+      <a
+        class=""
+        href="/user/clusters"
+      />
+      <a
+        class=""
+        href="/user/runtimes"
+      />
+    </div>
+    <div
+      class="user"
+    >
+      <div
+        class="tooltip popover"
+      >
+        <div
+          class="target"
+        >
+          <span
+            class="icon icon-caret-down icon"
+            style="width:12px;height:12px"
+          >
+            <svg
+              class="qicon qicon-caret-down qicon-dark"
+            >
+              <use
+                href="#qui-caret-down"
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          class="popper pi-popover-popper"
+          style="position:absolute;pointer-events:none;opacity:0"
+        >
+          <div>
+            <div
+              class="pi-popover-content"
+            >
+              <ul
+                class="menuLayer"
+              >
+                <li>
+                  <span
+                    class="userIcon"
+                  >
+                    <span
+                      class="icon icon-human iconImg"
+                      style="width:20px;height:20px"
+                    >
+                      <svg
+                        class="qicon qicon-human qicon-dark"
+                      >
+                        <use
+                          href="#qui-human"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                  <span
+                    class="username"
+                  />
+                  <span
+                    class="devIconOuter undefined"
+                  >
+                    <span
+                      class="icon icon-enterprise devIcon"
+                      style="width:8px;height:8px"
+                    >
+                      <svg
+                        class="qicon qicon-enterprise qicon-white"
+                      >
+                        <use
+                          href="#qui-enterprise"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </li>
+                <li
+                  class="dev"
+                >
+                  <a
+                    href="/"
+                  >
+                    <span
+                      class="icon icon-appcenter icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-appcenter qicon-dark"
+                      >
+                        <use
+                          href="#qui-appcenter"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="label"
+                    />
+                  </a>
+                </li>
+                <li
+                  class=""
+                >
+                  <a
+                    href="/user/profile/account"
+                  >
+                    <span
+                      class="icon icon-folder icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-folder qicon-dark"
+                      >
+                        <use
+                          href="#qui-folder"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="label"
+                    />
+                  </a>
+                </li>
+                <li
+                  class=""
+                >
+                  <a
+                    href="/user/profile/password"
+                  >
+                    <span
+                      class="icon icon-lock icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-lock qicon-dark"
+                      >
+                        <use
+                          href="#qui-lock"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="label"
+                    />
+                  </a>
+                </li>
+                <li
+                  class="disabled"
+                >
+                  <a
+                    href="/"
+                  >
+                    <span
+                      class="icon icon-loudspeaker icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-loudspeaker qicon-dark"
+                      >
+                        <use
+                          href="#qui-loudspeaker"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="label"
+                    />
+                  </a>
+                </li>
+                <li
+                  class="disabled"
+                >
+                  <a
+                    href="/"
+                  >
+                    <span
+                      class="icon icon-creditcard icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-creditcard qicon-dark"
+                      >
+                        <use
+                          href="#qui-creditcard"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      class="label"
+                    />
+                  </a>
+                </li>
+                <li
+                  class="divider"
+                >
+                  <a
+                    href="/logout"
+                  >
+                    <span
+                      class="icon icon-previous icon"
+                      style="width:16px;height:16px"
+                    >
+                      <svg
+                        class="qicon qicon-previous qicon-dark"
+                      >
+                        <use
+                          href="#qui-previous"
+                        />
+                      </svg>
+                    </span>
+                    <span />
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Layout/Header no login 1`] = `
+<div
+  class="header header menusHeader"
+>
+  <div
+    class="wrapper"
+  >
+    <a
+      href="/"
+    >
+      <label
+        class="logoIcon"
+      >
+        <img
+          class="logo"
+          src="/op-logo.svg"
+        />
+      </label>
+      <label
+        class="logoName"
+      />
+    </a>
+    <a
+      class="login"
+      href="/login"
+    />
+    <a
+      class="upgrade"
+      href="/user/provider/apply"
+    >
+      <span
+        class="icon icon-shield shield"
+        style="width:16px;height:16px"
+      >
+        <svg
+          class="qicon qicon-shield qicon-white"
+        >
+          <use
+            href="#qui-shield"
+          />
+        </svg>
+      </span>
+    </a>
+  </div>
+</div>
+`;
