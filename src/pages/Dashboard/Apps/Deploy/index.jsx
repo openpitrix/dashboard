@@ -166,6 +166,12 @@ export default class AppDeploy extends Component {
     return !_.isEmpty(configJson) || `${yamlStr}`;
   }
 
+  handleChangeFormField = (fieldKey, val) => {
+    if (fieldKey === 'values.yaml') {
+      this.props.appDeployStore.changeHelmYaml(val);
+    }
+  };
+
   handleSubmit = async () => {
     const {
       appDeployStore, user, history, match, t
@@ -186,7 +192,7 @@ export default class AppDeploy extends Component {
 
     let conf;
     if (isK8s) {
-      const yamlStr = _.get(formData, 'values.yaml', '');
+      const { yamlStr } = appDeployStore;
       if (!yamlStr) {
         return appDeployStore.error(t('Invalid yaml'));
       }
@@ -333,6 +339,7 @@ export default class AppDeploy extends Component {
             seq={idx}
             key={idx}
             onEmpty={this.renderForEmptyItem}
+            onChange={this.handleChangeFormField}
           />
         ))}
       </form>

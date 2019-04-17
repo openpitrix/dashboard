@@ -80,6 +80,11 @@ export default class AppDeployStore extends Store {
   yaml2Json = yaml_str => flattenObject(yamlJs.safeLoad(yaml_str));
 
   @action
+  changeHelmYaml = (str = '') => {
+    this.yamlStr = str;
+  };
+
+  @action
   fetchVersions = async (params = {}) => {
     this.isLoading = true;
     if (!params.status) {
