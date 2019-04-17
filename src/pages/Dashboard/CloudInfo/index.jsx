@@ -3,10 +3,12 @@ import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 
 import Layout, { Panel } from 'components/Layout';
-import { Button, Input } from 'components/Base';
+import { Button, Form } from 'components/Base';
 import { getFormData } from 'utils';
 
 import styles from './index.scss';
+
+const { TextField } = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -82,26 +84,24 @@ export default class CloudEnvironment extends Component {
           this.form = node;
         }}
       >
-        <div>
-          <label>{t('Name')}</label>
-          <Input
-            disabled={!handleType}
-            className={styles.normalWidth}
-            name="platform_name"
-            placeholder={t('Platform Name')}
-            defaultValue={cloudInfo.platform_name}
-          />
-        </div>
-        <div>
-          <label>{t('Visit address')}</label>
-          <Input
-            disabled={!handleType}
-            className={styles.largeWidth}
-            name="platform_url"
-            placeholder="https://lab.openpitrix.io"
-            defaultValue={cloudInfo.platform_url}
-          />
-        </div>
+        <TextField
+          label={t('Name')}
+          layout="vertical"
+          disabled={!handleType}
+          name="platform_name"
+          placeholder={t('Platform Name')}
+          defaultValue={cloudInfo.platform_name}
+        />
+
+        <TextField
+          label={t('Visit address')}
+          layout="vertical"
+          disabled={!handleType}
+          className={styles.largeWidth}
+          name="platform_url"
+          placeholder="https://lab.openpitrix.io"
+          defaultValue={cloudInfo.platform_url}
+        />
       </form>
     );
   }

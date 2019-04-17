@@ -13,6 +13,7 @@ export default class Input extends React.Component {
     icon: PropTypes.string,
     iconSize: PropTypes.number,
     iconType: PropTypes.string,
+    size: PropTypes.oneOf(['normal', 'large', 'small']),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
@@ -21,23 +22,29 @@ export default class Input extends React.Component {
     icon: '',
     iconType: 'light',
     iconSize: 16,
+    size: 'normal',
     disabled: false
   };
 
   render() {
     const {
-      className, icon, iconType, iconSize, ...rest
+      className, icon, iconType, iconSize, size, ...rest
     } = this.props;
 
     if (icon) {
       return (
-        <div className={classnames(styles.inputGroup, className)}>
+        <div className={classnames(styles.inputGroup, styles[size], className)}>
           <Icon name={icon} type={iconType} size={iconSize} />
           <input className={styles.input} {...rest} />
         </div>
       );
     }
 
-    return <input className={classnames(styles.input, className)} {...rest} />;
+    return (
+      <input
+        className={classnames(styles.input, styles[size], className)}
+        {...rest}
+      />
+    );
   }
 }

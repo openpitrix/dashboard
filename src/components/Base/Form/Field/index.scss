@@ -1,0 +1,32 @@
+@import '~scss/vars';
+
+.field {
+  display: block;
+  margin-bottom: 1.25rem;
+  label {
+    line-height: 1.29;
+  }
+  label:not(:last-child) {
+    margin-bottom: 0.5em;
+  }
+}
+
+.horizon {
+  width: 100%;
+  label {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: $form-label-width;
+    padding-right: 1rem;
+  }
+}
+.vertical {
+  label {
+    display: block;
+  }
+}
+
+.vertical + .vertical {
+  margin-left: 1.25rem;
+}

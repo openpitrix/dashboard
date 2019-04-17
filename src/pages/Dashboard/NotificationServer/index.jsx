@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import {
-  Button, Input, Select, Checkbox, Icon
+  Button, Select, Checkbox, Icon, Form
 } from 'components/Base';
 import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
@@ -12,6 +12,8 @@ import Loading from 'components/Loading';
 import { TEST_STATUS } from 'config/cloud-env';
 
 import styles from './index.scss';
+
+const { TextField, SelectField } = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -106,50 +108,59 @@ export default class NotificationServer extends Component {
             <Loading isLoading={isLoading}>
               <form className={styles.form}>
                 <div>
-                  <div>
-                    <label>{t('Server protocol')}</label>
-                    <Select
-                      disabled={disabled}
-                      onChange={onChangeSelect}
-                      name="protocol"
-                      value={formData.protocol}
-                    >
-                      <Select.Option value="smtp">SMTP</Select.Option>
-                      <Select.Option value="pop3">POP3</Select.Option>
-                      <Select.Option value="imap">IMAP</Select.Option>
-                    </Select>
-                  </div>
+                  <SelectField
+                    label={t('Server protocol')}
+                    layout="vertical"
+                    disabled={disabled}
+                    onChange={onChangeSelect}
+                    name="protocol"
+                    value={formData.protocol}
+                    options={[
+                      {
+                        value: 'smtp',
+                        label: 'SMTP'
+                      },
+                      {
+                        value: 'pop3',
+                        label: 'POP3'
+                      },
+                      {
+                        value: 'imap',
+                        label: 'IMAP'
+                      }
+                    ]}
+                  />
                 </div>
 
                 <div>
-                  <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                  <TextField
+                    label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host name'
-                    )}`}</label>
-                    <Input
-                      disabled={disabled}
-                      name="email_host"
-                      placeholder="server name"
-                      onChange={onChangeFormItem}
-                      value={formData.email_host}
-                    />
-                  </div>
+                    )}`}
+                    layout="vertical"
+                    disabled={disabled}
+                    name="email_host"
+                    placeholder="server name"
+                    onChange={onChangeFormItem}
+                    value={formData.email_host}
+                  />
 
-                  <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                  <TextField
+                    label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host port'
-                    )}`}</label>
-                    <Input
-                      disabled={disabled}
-                      name="port"
-                      placeholder="1000"
-                      type="number"
-                      className={styles.smallInput}
-                      onChange={onChangeFormItem}
-                      value={formData.port}
-                    />
-                  </div>
-                  <div className={styles.paddingTop}>
+                    )}`}
+                    disabled={disabled}
+                    layout="vertical"
+                    name="port"
+                    placeholder="1000"
+                    type="number"
+                    size="small"
+                    className={styles.smallInput}
+                    onChange={onChangeFormItem}
+                    value={formData.port}
+                  />
+
+                  <div className={styles.checkbox}>
                     <Checkbox
                       disabled={disabled}
                       name="ssl_enable"
@@ -162,40 +173,37 @@ export default class NotificationServer extends Component {
                 </div>
 
                 <div>
-                  <div>
-                    <label>{t('Sender nickname')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="display_sender"
-                      value={formData.display_sender}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
+                  <TextField
+                    label={t('Sender nickname')}
+                    layout="vertical"
+                    disabled={disabled}
+                    name="display_sender"
+                    value={formData.display_sender}
+                    onChange={onChangeFormItem}
+                  />
                 </div>
 
                 <div>
-                  <div>
-                    <label>{t('Server username')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="email"
-                      placeholder={`${t('for example')}：name@example.com`}
-                      value={formData.email}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
+                  <TextField
+                    label={t('Server username')}
+                    layout="vertical"
+                    disabled={disabled}
+                    name="email"
+                    placeholder={`${t('for example')}：name@example.com`}
+                    value={formData.email}
+                    onChange={onChangeFormItem}
+                  />
 
-                  <div>
-                    <label>{t('Server password')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="password"
-                      type="password"
-                      placeholder="**********"
-                      value={formData.password}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
+                  <TextField
+                    label={t('Server password')}
+                    layout="vertical"
+                    disabled={disabled}
+                    name="password"
+                    type="password"
+                    placeholder="**********"
+                    value={formData.password}
+                    onChange={onChangeFormItem}
+                  />
                 </div>
                 <div>
                   <Button
