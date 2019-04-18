@@ -2,7 +2,6 @@ import { Provider } from 'mobx-react';
 import { BrowserRouter } from 'react-router-dom';
 import { observable } from 'mobx';
 
-import SideNav from 'components/Layout/SideNav';
 import ClusterCard from 'components/DetailCard/ClusterCard';
 
 describe('Component ClusterCard ', () => {

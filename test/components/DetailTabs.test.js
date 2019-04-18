@@ -1,4 +1,4 @@
-import SideNav from 'components/Layout/SideNav';
+
 import DetailTabs from 'components/DetailTabs';
 
 describe('Component DetailTabs ', () => {

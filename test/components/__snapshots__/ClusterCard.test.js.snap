@@ -130,7 +130,7 @@ exports[`Component ClusterCard  basic render 1`] = `
       <div
         class="detailTime"
       >
-        2019/04/16 18:43:34
+        2019/04/18 15:43:00
       </div>
     </li>
     <li>
@@ -140,7 +140,7 @@ exports[`Component ClusterCard  basic render 1`] = `
       <div
         class="detailTime"
       >
-        2019/04/16 18:43:34
+        2019/04/18 15:43:00
       </div>
     </li>
   </ul>

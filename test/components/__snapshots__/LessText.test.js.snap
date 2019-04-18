@@ -1,7 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component LessText basic render 1`] = `
-<UNDEFINED>
-  [Function]
-</UNDEFINED>
-`;
+exports[`Component LessText basic render test 1`] = `undefined`;

@@ -17,7 +17,7 @@ export const getRouteByName = name => {
   return route;
 };
 
-export const toRoute = (route = '', params = {}) => {
+export function toRoute(route = '', params = {}) {
   if (typeof params === 'string') {
     params = {
       portal: params
@@ -54,19 +54,18 @@ export const toRoute = (route = '', params = {}) => {
     val => `${val}`
   );
   return compile(route)(params);
-};
+}
 
-export const getPortalFromPath = (path = location.pathname) => {
+export function getPortalFromPath(path = location.pathname) {
   const p = path.split('/')[1];
-  if (commonRoutes.includes(p)) {
+  if (commonRoutes && commonRoutes.includes(p)) {
     return '';
   }
-  if (portals.includes(p)) {
+  if (portals && portals.includes(p)) {
     return p;
   }
-  // console.warn(`invalid portal ${p}`);
   return '';
-};
+}
 
 export const needAuth = (path, portal) => portals.includes(portal) || path.startsWith('/profile');
 
@@ -89,4 +88,4 @@ export DevRoutes from './portals/dev';
 export IsvRoutes from './portals/isv';
 export AdminRoutes from './portals/admin';
 
-export default routeNames;
+export default from './names';
