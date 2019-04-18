@@ -1,32 +1,84 @@
 @import '~scss/vars';
 
 .field {
-  display: block;
-  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
   label {
-    line-height: 1.29;
+    box-sizing: border-box;
   }
-  label:not(:last-child) {
-    margin-bottom: 0.5em;
+  label.normal {
+    @include normal-font(
+      $form-field-label-line-height,
+      $form-field-label-font-size
+    );
   }
+  label.title {
+    @include title-font(
+      $form-field-label-line-height,
+      $form-field-label-font-size
+    );
+  }
+}
+.field + .field {
+  margin-top: $form-field-gap;
 }
 
 .horizon {
-  width: 100%;
+  flex-flow: row wrap;
+  .control {
+    width: 100% - $form-label-width;
+  }
+  .help {
+    margin-left: $form-label-width;
+    margin-top: $form-field-secondary-gap;
+  }
+}
+.vertical {
+  flex-flow: column;
+  align-items: flex-start;
+  label:not(:last-child) {
+    margin-bottom: $form-field-secondary-gap;
+  }
+  label {
+    display: block;
+  }
+  .help {
+    margin-top: $form-field-secondary-gap;
+  }
+}
+.horizon,
+.inline {
   label {
     display: inline-flex;
     justify-content: flex-end;
     align-items: center;
-    min-width: $form-label-width;
-    padding-right: 1rem;
+    width: $form-label-width;
+    padding-right: $form-field-main-gap;
+  }
+  &.textareaField {
+    align-items: flex-start;
+    label {
+      margin-top: $form-field-secondary-gap;
+    }
   }
 }
-.vertical {
-  label {
-    display: block;
+.inline {
+  .help {
+    margin-left: $form-field-secondary-gap;
   }
 }
 
-.vertical + .vertical {
-  margin-left: 1.25rem;
+.fieldGroup {
+  display: flex;
+
+  .vertical + .vertical {
+    margin-left: $form-field-gap;
+  }
+}
+
+.help {
+  @include note-font();
+}
+
+.textareaField {
 }

@@ -4,8 +4,9 @@ import classnames from 'classnames';
 
 import styles from './index.scss';
 
-export default function WarpField(WrappedComponent) {
+export default function warpField(WrappedComponent) {
   if (!WrappedComponent) return null;
+
   const displayName = `Filed-${WrappedComponent.displayName
     || WrappedComponent.name
     || 'unkown'}`;
@@ -16,34 +17,47 @@ export default function WarpField(WrappedComponent) {
     static propTypes = {
       className: PropTypes.string,
       label: PropTypes.string,
+      labelType: PropTypes.oneOf(['normal', 'title']),
       layout: PropTypes.oneOf(['horizon', 'vertical', 'inline'])
     };
 
     static defaultProps = {
+      labelType: 'normal',
       layout: 'horizon'
     };
 
+    get isTextArea() {
+      return displayName === 'Filed-TextArea';
+    }
+
     renderLabel() {
-      const { label, name } = this.props;
+      const { label, labelType, name } = this.props;
       if (!label) {
         return null;
       }
 
-      return <label htmlFor={name}>{label}</label>;
+      return (
+        <label htmlFor={name} className={styles[labelType]}>
+          {label}
+        </label>
+      );
     }
 
     renderContent() {
       const {
         name,
         label,
+        labelType,
         iconLeft,
         iconRight,
-        validateStatus,
-        validateIcon,
         ...restProps
       } = this.props;
 
-      return <WrappedComponent {...restProps} name={name} id={name} />;
+      return (
+        <div className={styles.control}>
+          <WrappedComponent {...restProps} name={name} id={name} />
+        </div>
+      );
     }
 
     renderHelp() {
@@ -61,7 +75,11 @@ export default function WarpField(WrappedComponent) {
       }
 
       return (
-        <div className={classnames(styles.field, styles[layout])}>
+        <div
+          className={classnames(styles.field, styles[layout], {
+            [styles.textareaField]: this.isTextArea
+          })}
+        >
           {this.renderLabel()}
           {this.renderContent()}
           {this.renderHelp()}

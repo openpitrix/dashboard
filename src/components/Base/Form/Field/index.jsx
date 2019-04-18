@@ -1,7 +1,13 @@
+import React from 'react';
 import { Input, Select } from 'components/Base';
-import WrapField from './WrapField';
+import wrapField from './WrapField';
+import FieldGroup from './FieldGroup';
+
+const TextArea = prpos => <textarea {...prpos} />;
 
 export default {
-  TextField: WrapField(Input),
-  SelectField: WrapField(Select)
+  FieldGroup,
+  TextField: wrapField(Input),
+  TextareaField: wrapField(TextArea),
+  SelectField: wrapField(Select)
 };

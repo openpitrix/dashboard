@@ -51,12 +51,9 @@
 
 .form {
   padding: 24px;
-  > div {
-    display: flex;
-  }
   .checkbox {
-    padding-top: 30px;
-    margin-left: $form-item-margin-left;
+    margin-top: 1.625rem;
+    margin-left: $form-field-gap;
   }
 }
 

@@ -95,7 +95,7 @@ export default class Select extends React.Component {
 
     this.currentLabel = '';
     if (children) {
-      this.childNodes = React.Children.map(children || options, child => {
+      this.childNodes = React.Children.map(children, child => {
         const checked = String(value) === child.props.value;
 
         if (checked) {
@@ -109,9 +109,21 @@ export default class Select extends React.Component {
         });
       });
     } else if (options) {
-      this.childNodes = options.map(item => (
-        <Option key={item.value} {...item} />
-      ));
+      this.childNodes = options.map(item => {
+        const checked = String(value) === item.value;
+        if (checked) {
+          this.currentLabel = item.label || item.value;
+        }
+
+        return (
+          <Option
+            key={item.value}
+            onClick={this.handleOptionClick}
+            isSelected={checked}
+            {...item}
+          />
+        );
+      });
     }
 
     if (this.state.noValue) {
@@ -189,7 +201,6 @@ export default class Select extends React.Component {
   render() {
     const { className, disabled, name } = this.props;
     const { value } = this;
-
     this.setChildNodes();
 
     return (

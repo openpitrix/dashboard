@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import {
-  Button, Select, Checkbox, Icon, Form
+  Button, Checkbox, Icon, Form
 } from 'components/Base';
 import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
@@ -13,7 +13,7 @@ import { TEST_STATUS } from 'config/cloud-env';
 
 import styles from './index.scss';
 
-const { TextField, SelectField } = Form;
+const { TextField, SelectField, FieldGroup } = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -107,7 +107,7 @@ export default class NotificationServer extends Component {
 
             <Loading isLoading={isLoading}>
               <form className={styles.form}>
-                <div>
+                <FieldGroup>
                   <SelectField
                     label={t('Server protocol')}
                     layout="vertical"
@@ -130,9 +130,9 @@ export default class NotificationServer extends Component {
                       }
                     ]}
                   />
-                </div>
+                </FieldGroup>
 
-                <div>
+                <FieldGroup>
                   <TextField
                     label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host name'
@@ -170,9 +170,9 @@ export default class NotificationServer extends Component {
                       {t('SSL 安全连接')}
                     </Checkbox>
                   </div>
-                </div>
+                </FieldGroup>
 
-                <div>
+                <FieldGroup>
                   <TextField
                     label={t('Sender nickname')}
                     layout="vertical"
@@ -181,9 +181,9 @@ export default class NotificationServer extends Component {
                     value={formData.display_sender}
                     onChange={onChangeFormItem}
                   />
-                </div>
+                </FieldGroup>
 
-                <div>
+                <FieldGroup>
                   <TextField
                     label={t('Server username')}
                     layout="vertical"
@@ -204,8 +204,8 @@ export default class NotificationServer extends Component {
                     value={formData.password}
                     onChange={onChangeFormItem}
                   />
-                </div>
-                <div>
+                </FieldGroup>
+                <FieldGroup>
                   <Button
                     className={classnames({
                       [styles.btnLoading]: testStatus === TEST_STATUS.loading
@@ -215,7 +215,7 @@ export default class NotificationServer extends Component {
                     {t('Connect test')}
                   </Button>
                   {this.renderConnectStatus()}
-                </div>
+                </FieldGroup>
               </form>
             </Loading>
           </Panel>
