@@ -14,7 +14,7 @@ import { TEST_STATUS } from 'config/cloud-env';
 import styles from './index.scss';
 
 const {
-  ButtonField, TextField, SelectField, FieldGroup
+  CheckboxField, ButtonField, TextField, SelectField, FieldGroup
 } = Form;
 
 @withTranslation()
@@ -159,16 +159,15 @@ export default class NotificationServer extends Component {
                     value={formData.port}
                   />
 
-                  <div className={styles.checkbox}>
-                    <Checkbox
-                      disabled={disabled}
-                      name="ssl_enable"
-                      checked={formData.ssl_enable}
-                      onChange={onChangeFormItem}
-                    >
-                      {t('SSL 安全连接')}
-                    </Checkbox>
-                  </div>
+                  <CheckboxField
+                    className={styles.checkbox}
+                    disabled={disabled}
+                    name="ssl_enable"
+                    checked={formData.ssl_enable}
+                    onChange={onChangeFormItem}
+                  >
+                    {t('SSL 安全连接')}
+                  </CheckboxField>
                 </FieldGroup>
 
                 <FieldGroup>

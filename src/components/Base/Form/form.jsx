@@ -41,7 +41,6 @@ export default class Form extends React.Component {
       children, layout, labelType, ...restProps
     } = this.props;
 
-    console.log('form', layout, labelType);
     const childNodes = React.Children.map(children, child => {
       const isField = _.invoke(child, 'type.displayName.includes', 'Field');
       const props = {

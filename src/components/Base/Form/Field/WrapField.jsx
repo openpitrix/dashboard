@@ -22,7 +22,11 @@ export default function warpField(WrappedComponent) {
     };
 
     get isTextArea() {
-      return displayName === 'Filed-TextArea';
+      return displayName.includes('Filed-TextArea');
+    }
+
+    get isCheckbox() {
+      return displayName.includes('Checkbox');
     }
 
     get layout() {
@@ -80,6 +84,7 @@ export default function warpField(WrappedComponent) {
             styles.field,
             styles[this.layout],
             {
+              [styles.checkboxField]: this.isCheckbox,
               [styles.textareaField]: this.isTextArea
             },
             className

@@ -88,6 +88,12 @@ label.formItem {
     margin-left: $form-field-gap;
     margin-top: 0;
   }
+
+  .vertical {
+    &.checkboxField {
+      margin-top: $form-field-label-height;
+    }
+  }
 }
 .fieldGroup + .fieldGroup {
   margin-top: $form-field-main-gap;
