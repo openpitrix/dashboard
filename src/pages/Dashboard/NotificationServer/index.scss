@@ -52,7 +52,7 @@
 .form {
   padding: 24px;
   .checkbox {
-    margin-top: 1.625rem;
+    margin-top: 2rem;
     margin-left: $form-field-gap;
   }
 }
@@ -65,6 +65,7 @@
   justify-content: center;
   align-items: center;
   margin-left: 5px;
+  color: $N300;
   :global(.icon) {
     margin-right: 4px;
   }

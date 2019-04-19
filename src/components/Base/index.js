@@ -20,4 +20,3 @@ export Image from './Image';
 export Upload from './Upload';
 export DocLink from './DocLink';
 export Form from './Form';
-export * from './Form/Field';

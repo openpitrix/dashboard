@@ -4,7 +4,6 @@ import { withTranslation } from 'react-i18next';
 
 import Layout, { Panel } from 'components/Layout';
 import { Button, Form } from 'components/Base';
-import { getFormData } from 'utils';
 
 import styles from './index.scss';
 
@@ -29,13 +28,24 @@ export default class CloudEnvironment extends Component {
     this.props.cloudEnvStore.reset();
   }
 
-  handleAction = type => {
-    const { changeHandleType, saveCloudInfo } = this.props.cloudEnvStore;
-    if (type === 'edit') {
-      changeHandleType(type);
-    } else if (type === 'save') {
-      saveCloudInfo(getFormData(this.form));
-    }
+  handleEdit = e => {
+    e.preventDefault();
+    this.props.cloudEnvStore.changeHandleType('edit');
+  };
+
+  handleCancelEdit = e => {
+    e.preventDefault();
+    this.props.cloudEnvStore.changeHandleType('');
+    this.setState({ hide: true }, () => {
+      this.setState({
+        hide: false
+      });
+    });
+  };
+
+  handleSubmit = (e, data) => {
+    e.preventDefault();
+    this.props.cloudEnvStore.saveCloudInfo(data);
   };
 
   renderToolbar() {
@@ -44,31 +54,20 @@ export default class CloudEnvironment extends Component {
     if (!handleType) {
       return (
         <Fragment>
-          <Button onClick={e => this.handleAction('edit', e)}>
-            {t('Edit')}
-          </Button>
+          <Button onClick={this.handleEdit}>{t('Edit')}</Button>
         </Fragment>
       );
     }
 
     return (
       <Fragment>
-        <Button type="primary" onClick={e => this.handleAction('save', e)}>
+        <Button htmlType="submit" type="primary" form="cloudInfoForm">
           {t('Save')}
         </Button>
-        <Button onClick={this.cancelEdit}>{t('Cancel')}</Button>
+        <Button onClick={this.handleCancelEdit}>{t('Cancel')}</Button>
       </Fragment>
     );
   }
-
-  cancelEdit = () => {
-    this.props.cloudEnvStore.changeHandleType('');
-    this.setState({ hide: true }, () => {
-      this.setState({
-        hide: false
-      });
-    });
-  };
 
   renderForm() {
     const { t, cloudEnvStore } = this.props;
@@ -78,31 +77,30 @@ export default class CloudEnvironment extends Component {
     }
 
     return (
-      <form
+      <Form
         className={styles.form}
-        ref={node => {
-          this.form = node;
-        }}
+        id="cloudInfoForm"
+        layout="vertical"
+        onSubmit={this.handleSubmit}
       >
         <TextField
           label={t('Name')}
-          layout="vertical"
           disabled={!handleType}
           name="platform_name"
+          layout="vertical"
           placeholder={t('Platform Name')}
           defaultValue={cloudInfo.platform_name}
         />
 
         <TextField
           label={t('Visit address')}
-          layout="vertical"
           disabled={!handleType}
           className={styles.largeWidth}
           name="platform_url"
           placeholder="https://lab.openpitrix.io"
           defaultValue={cloudInfo.platform_url}
         />
-      </form>
+      </Form>
     );
   }
 

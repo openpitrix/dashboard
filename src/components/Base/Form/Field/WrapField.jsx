@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import styles from './index.scss';
+import styles from '../index.scss';
 
 export default function warpField(WrappedComponent) {
   if (!WrappedComponent) return null;
 
-  const displayName = `Filed-${WrappedComponent.displayName
+  const displayName = `Field-${WrappedComponent.displayName
     || WrappedComponent.name
     || 'unkown'}`;
 
@@ -21,23 +21,26 @@ export default function warpField(WrappedComponent) {
       layout: PropTypes.oneOf(['horizon', 'vertical', 'inline'])
     };
 
-    static defaultProps = {
-      labelType: 'normal',
-      layout: 'horizon'
-    };
-
     get isTextArea() {
       return displayName === 'Filed-TextArea';
     }
 
+    get layout() {
+      return this.props.layout || 'horizon';
+    }
+
+    get labelType() {
+      return this.props.labelType || 'normal';
+    }
+
     renderLabel() {
-      const { label, labelType, name } = this.props;
+      const { label, name } = this.props;
       if (!label) {
         return null;
       }
 
       return (
-        <label htmlFor={name} className={styles[labelType]}>
+        <label htmlFor={name} className={styles[this.labelType]}>
           {label}
         </label>
       );
@@ -69,16 +72,18 @@ export default function warpField(WrappedComponent) {
     }
 
     render() {
-      const { layout, name } = this.props;
-      if (!name) {
-        return null;
-      }
+      const { className } = this.props;
 
       return (
         <div
-          className={classnames(styles.field, styles[layout], {
-            [styles.textareaField]: this.isTextArea
-          })}
+          className={classnames(
+            styles.field,
+            styles[this.layout],
+            {
+              [styles.textareaField]: this.isTextArea
+            },
+            className
+          )}
         >
           {this.renderLabel()}
           {this.renderContent()}

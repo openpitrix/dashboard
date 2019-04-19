@@ -1,36 +1,98 @@
 @import '~scss/vars';
 
-.item {
-  margin-bottom: $base-margin + 18;
-  .label {
-    width: 150px;
-    line-height: 16px;
-    font-weight: bold;
-    text-align: right;
-    color: $title-color;
+.form {
+  padding: 24px 24px 32px;
+}
+
+.formItem + .formItem {
+  margin-top: $form-field-gap;
+}
+
+label.formItem {
+  width: 100%;
+  text-align: left;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  label {
+    box-sizing: border-box;
   }
-  .wrapper {
-    display: inline-block;
-    position: relative;
-    min-width: 276px;
+  label.normal {
+    @include normal-font(
+      $form-field-label-line-height,
+      $form-field-label-font-size
+    );
+  }
+  label.title {
+    @include title-font(
+      $form-field-label-line-height,
+      $form-field-label-font-size
+    );
+  }
+}
+.field + .field {
+  margin-top: $form-field-gap;
+}
+
+.horizon {
+  flex-flow: row wrap;
+  .control {
+    width: 100% - $form-label-width;
   }
   .help {
-    position: absolute;
-    left: 0;
-    bottom: -18px;
-    font-size: 12px;
-    color: $second-text-color;
+    margin-left: $form-label-width;
+    margin-top: $form-field-secondary-gap;
+  }
+}
+.vertical {
+  flex-flow: column;
+  align-items: flex-start;
+  label:not(:last-child) {
+    margin-bottom: $form-field-secondary-gap;
+  }
+  label {
+    display: block;
+  }
+  .help {
+    margin-top: $form-field-secondary-gap;
+  }
+}
+.horizon,
+.inline {
+  label {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: $form-label-width;
+    padding-right: $form-field-main-gap;
+  }
+  &.textareaField {
+    align-items: flex-start;
+    label {
+      margin-top: $form-field-secondary-gap;
+    }
+  }
+}
+.inline {
+  .help {
+    margin-left: $form-field-secondary-gap;
   }
 }
 
-.section {
-  margin: $base-margin;
+.fieldGroup {
+  display: flex;
+
+  .vertical + .vertical {
+    margin-left: $form-field-gap;
+    margin-top: 0;
+  }
+}
+.fieldGroup + .fieldGroup {
+  margin-top: $form-field-main-gap;
 }
 
-.sectionTitle {
-  margin-bottom: 32px;
-  line-height: 19px;
-  font-size: 16px;
-  font-weight: bold;
-  color: $title-color;
+.help {
+  @include note-font();
 }

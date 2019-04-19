@@ -13,7 +13,9 @@ import { TEST_STATUS } from 'config/cloud-env';
 
 import styles from './index.scss';
 
-const { TextField, SelectField, FieldGroup } = Form;
+const {
+  ButtonField, TextField, SelectField, FieldGroup
+} = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -106,11 +108,10 @@ export default class NotificationServer extends Component {
             </h3>
 
             <Loading isLoading={isLoading}>
-              <form className={styles.form}>
+              <Form layout="vertical" className={styles.form}>
                 <FieldGroup>
                   <SelectField
                     label={t('Server protocol')}
-                    layout="vertical"
                     disabled={disabled}
                     onChange={onChangeSelect}
                     name="protocol"
@@ -137,7 +138,6 @@ export default class NotificationServer extends Component {
                     label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host name'
                     )}`}
-                    layout="vertical"
                     disabled={disabled}
                     name="email_host"
                     placeholder="server name"
@@ -150,7 +150,6 @@ export default class NotificationServer extends Component {
                       'Server host port'
                     )}`}
                     disabled={disabled}
-                    layout="vertical"
                     name="port"
                     placeholder="1000"
                     type="number"
@@ -175,7 +174,6 @@ export default class NotificationServer extends Component {
                 <FieldGroup>
                   <TextField
                     label={t('Sender nickname')}
-                    layout="vertical"
                     disabled={disabled}
                     name="display_sender"
                     value={formData.display_sender}
@@ -186,7 +184,6 @@ export default class NotificationServer extends Component {
                 <FieldGroup>
                   <TextField
                     label={t('Server username')}
-                    layout="vertical"
                     disabled={disabled}
                     name="email"
                     placeholder={`${t('for example')}：name@example.com`}
@@ -196,7 +193,6 @@ export default class NotificationServer extends Component {
 
                   <TextField
                     label={t('Server password')}
-                    layout="vertical"
                     disabled={disabled}
                     name="password"
                     type="password"
@@ -206,17 +202,18 @@ export default class NotificationServer extends Component {
                   />
                 </FieldGroup>
                 <FieldGroup>
-                  <Button
+                  <ButtonField
+                    layout="inline"
                     className={classnames({
                       [styles.btnLoading]: testStatus === TEST_STATUS.loading
                     })}
                     onClick={testConnect}
+                    help={this.renderConnectStatus()}
                   >
                     {t('Connect test')}
-                  </Button>
-                  {this.renderConnectStatus()}
+                  </ButtonField>
                 </FieldGroup>
-              </form>
+              </Form>
             </Loading>
           </Panel>
         </div>
