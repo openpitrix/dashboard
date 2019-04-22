@@ -15,7 +15,16 @@ describe('Component ClusterCard ', () => {
     const wrapper = render(
       <Provider rootStore={store}>
         <BrowserRouter>
-          <ClusterCard />
+          <ClusterCard
+            detail={{
+              name: 'test cluster',
+              cluster_id: 'cl_xxxxxx',
+              status: 'active',
+              owner: 'system',
+              create_time: '2019-04-09T03:39:28Z',
+              upgrade_time: '2019-04-19T03:39:28Z'
+            }}
+          />
         </BrowserRouter>
       </Provider>
     );

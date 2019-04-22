@@ -10,10 +10,7 @@ const formatMap = {
 };
 
 export function formatTime(time, format = 'YYYY/MM/DD') {
-  if (!time) {
-    return '';
-  }
-
+  time = time || new Date();
   if (getCookie('lang') === 'zh') {
     format = formatMap[format] || format;
   }

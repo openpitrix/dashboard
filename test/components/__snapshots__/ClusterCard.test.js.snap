@@ -10,14 +10,15 @@ exports[`Component ClusterCard  basic render 1`] = `
     <div
       class="name"
     >
-      None
+      test cluster
     </div>
     <div
       class="copyOuter"
     >
-      id: 
+      id: cl_xxxxxx
       <span
         class="copyId"
+        data-clipboard-text="cl_xxxxxx"
       >
         <span
           class="icon icon-copy"
@@ -47,12 +48,12 @@ exports[`Component ClusterCard  basic render 1`] = `
         class="status"
       >
         <i
-          class="icon pending"
+          class="icon active"
         />
         <span
           class="name"
         >
-          Pending
+          Active
         </span>
       </span>
     </li>
@@ -134,7 +135,9 @@ exports[`Component ClusterCard  basic render 1`] = `
       >
         <label
           class="name"
-        />
+        >
+          system
+        </label>
       </div>
     </li>
     <li>
@@ -145,7 +148,9 @@ exports[`Component ClusterCard  basic render 1`] = `
       </span>
       <div
         class="detailTime"
-      />
+      >
+        2019/04/09 11:39:28
+      </div>
     </li>
     <li>
       <span
@@ -155,7 +160,9 @@ exports[`Component ClusterCard  basic render 1`] = `
       </span>
       <div
         class="detailTime"
-      />
+      >
+        2019/04/19 11:39:28
+      </div>
     </li>
   </ul>
 </div>
