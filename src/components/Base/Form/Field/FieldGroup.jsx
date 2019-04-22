@@ -13,12 +13,13 @@ function FieldGroup(props) {
       return null;
     }
 
-    let childProps = {
+    const childProps = {
       ...child.props,
       className: classnames(styles.formItem, className)
     };
     if (isField) {
-      childProps = Object.assign(
+      Object.assign(
+        childProps,
         {
           layout,
           labelType

@@ -41,17 +41,25 @@ export default class Form extends React.Component {
       children, layout, labelType, ...restProps
     } = this.props;
 
-    const childNodes = React.Children.map(children, child => {
+    const childNodes = React.Children.map(children, (child = {}) => {
       const isField = _.invoke(child, 'type.displayName.includes', 'Field');
+      const className = classnames(
+        styles.formItem,
+        _.get(child, 'props.className')
+      );
       const props = {
         ...child.props,
-        className: classnames(styles.formItem, child.props.className)
+        className
       };
       if (isField) {
-        Object.assign(props, {
-          layout,
-          labelType
-        });
+        Object.assign(
+          props,
+          {
+            layout,
+            labelType
+          },
+          props
+        );
       }
       return React.cloneElement(child, props);
     });

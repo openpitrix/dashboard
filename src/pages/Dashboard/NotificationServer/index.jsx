@@ -166,7 +166,7 @@ export default class NotificationServer extends Component {
                     checked={formData.ssl_enable}
                     onChange={onChangeFormItem}
                   >
-                    {t('SSL 安全连接')}
+                    {t('SSL secure connection')}
                   </CheckboxField>
                 </FieldGroup>
 

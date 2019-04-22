@@ -22,7 +22,7 @@ export default function warpField(WrappedComponent) {
     };
 
     get isTextArea() {
-      return displayName.includes('Filed-TextArea');
+      return displayName.includes('TextArea');
     }
 
     get isCheckbox() {
