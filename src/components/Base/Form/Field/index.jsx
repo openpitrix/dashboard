@@ -5,7 +5,7 @@ import {
 import wrapField from './WrapField';
 import FieldGroup from './FieldGroup';
 
-const TextArea = prpos => <textarea {...prpos} />;
+const TextArea = props => <textarea {...props} />;
 
 export default {
   FieldGroup,
