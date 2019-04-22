@@ -7,7 +7,7 @@ exports[`Base/Pagination basic render 1`] = `
   <div
     class="total"
   >
-    : 100
+    Total: 100
   </div>
   <div
     class="pageItems"

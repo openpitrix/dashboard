@@ -27,19 +27,25 @@ exports[`Base/Footer basic render 1`] = `
             href="https://docs.openpitrix.io/home/"
             rel="noopener noreferrer"
             target="_blank"
-          />
+          >
+            Document
+          </a>
         </li>
         <li>
           <a
             href="/user/provider/apply"
-          />
+          >
+            Become App Provider
+          </a>
         </li>
         <li>
           <a
             href="https://openpitrix.io"
             rel="noopener noreferrer"
             target="_blank"
-          />
+          >
+            About
+          </a>
         </li>
         <li>
           OpenPitrix © 2019

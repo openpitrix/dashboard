@@ -9,7 +9,9 @@ exports[`Component ClusterCard  basic render 1`] = `
   >
     <div
       class="name"
-    />
+    >
+      None
+    </div>
     <div
       class="copyOuter"
     >
@@ -38,7 +40,9 @@ exports[`Component ClusterCard  basic render 1`] = `
     <li>
       <span
         class="name"
-      />
+      >
+        Status
+      </span>
       <span
         class="status"
       >
@@ -47,13 +51,17 @@ exports[`Component ClusterCard  basic render 1`] = `
         />
         <span
           class="name"
-        />
+        >
+          Pending
+        </span>
       </span>
     </li>
     <li>
       <span
         class="name"
-      />
+      >
+        App
+      </span>
       <label
         class="appShow"
       >
@@ -75,7 +83,9 @@ exports[`Component ClusterCard  basic render 1`] = `
     <li>
       <span
         class="name"
-      />
+      >
+        Version
+      </span>
       <label
         class="value"
       >
@@ -92,7 +102,9 @@ exports[`Component ClusterCard  basic render 1`] = `
     >
       <span
         class="name"
-      />
+      >
+        Runtime
+      </span>
       <div
         class="repoName value"
         title=""
@@ -114,7 +126,9 @@ exports[`Component ClusterCard  basic render 1`] = `
     <li>
       <span
         class="name"
-      />
+      >
+        Creator
+      </span>
       <div
         class="userShow value"
       >
@@ -126,21 +140,25 @@ exports[`Component ClusterCard  basic render 1`] = `
     <li>
       <span
         class="name"
-      />
+      >
+        Create Time
+      </span>
       <div
         class="detailTime"
       >
-        2019/04/22 14:52:47
+        2019/04/22 16:24:54
       </div>
     </li>
     <li>
       <span
         class="name"
-      />
+      >
+        Date Updated
+      </span>
       <div
         class="detailTime"
       >
-        2019/04/22 14:52:47
+        2019/04/22 16:24:54
       </div>
     </li>
   </ul>

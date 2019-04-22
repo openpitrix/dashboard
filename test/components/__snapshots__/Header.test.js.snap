@@ -26,19 +26,27 @@ exports[`Layout/Header basic render: login 1`] = `
         aria-current="page"
         class="active active"
         href="/"
-      />
+      >
+        App Store
+      </a>
       <a
         class=""
         href="/user/apps"
-      />
+      >
+        Purchased
+      </a>
       <a
         class=""
         href="/user/clusters"
-      />
+      >
+        My Instances
+      </a>
       <a
         class=""
         href="/user/runtimes"
-      />
+      >
+        My Runtimes
+      </a>
     </div>
     <div
       class="user"
@@ -130,7 +138,9 @@ exports[`Layout/Header basic render: login 1`] = `
                     </span>
                     <span
                       class="label"
-                    />
+                    >
+                      App Center
+                    </span>
                   </a>
                 </li>
                 <li
@@ -153,7 +163,9 @@ exports[`Layout/Header basic render: login 1`] = `
                     </span>
                     <span
                       class="label"
-                    />
+                    >
+                      Account Info
+                    </span>
                   </a>
                 </li>
                 <li
@@ -176,7 +188,9 @@ exports[`Layout/Header basic render: login 1`] = `
                     </span>
                     <span
                       class="label"
-                    />
+                    >
+                      Change Password
+                    </span>
                   </a>
                 </li>
                 <li
@@ -199,7 +213,9 @@ exports[`Layout/Header basic render: login 1`] = `
                     </span>
                     <span
                       class="label"
-                    />
+                    >
+                      Notice settings
+                    </span>
                   </a>
                 </li>
                 <li
@@ -222,7 +238,9 @@ exports[`Layout/Header basic render: login 1`] = `
                     </span>
                     <span
                       class="label"
-                    />
+                    >
+                      Payment
+                    </span>
                   </a>
                 </li>
                 <li
@@ -243,7 +261,9 @@ exports[`Layout/Header basic render: login 1`] = `
                         />
                       </svg>
                     </span>
-                    <span />
+                    <span>
+                      Log out
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -276,12 +296,16 @@ exports[`Layout/Header no login 1`] = `
       </label>
       <label
         class="logoName"
-      />
+      >
+        QingCloud App Center
+      </label>
     </a>
     <a
       class="login"
       href="/login"
-    />
+    >
+      Sign In
+    </a>
     <a
       class="upgrade"
       href="/user/provider/apply"
@@ -298,6 +322,7 @@ exports[`Layout/Header no login 1`] = `
           />
         </svg>
       </span>
+      UPGRADE_PROVIDER
     </a>
   </div>
 </div>

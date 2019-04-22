@@ -32,11 +32,11 @@ global.window.scroll = () => {};
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate HoC receive the t function as a prop
   withTranslation: () => Component => {
-    Component.defaultProps = { ...Component.defaultProps, t: () => '' };
+    Component.defaultProps = { ...Component.defaultProps, t: x => x };
     return Component;
   },
   Translation: () => Component => {
-    Component.defaultProps = { ...Component.defaultProps, t: () => '' };
+    Component.defaultProps = { ...Component.defaultProps, t: x => x };
     return Component;
   }
 }));
@@ -45,7 +45,6 @@ jest.mock('i18next', () => ({
   t: () => '',
   exists: () => false
 }));
-
 
 // attach helpers to global
 global.React = React;

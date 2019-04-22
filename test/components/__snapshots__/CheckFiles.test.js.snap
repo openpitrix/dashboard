@@ -16,7 +16,7 @@ exports[`Component CheckFiles basic render 1`] = `
       <div
         class="description"
       >
-        #  
+        #  PACKAGE_FILE_DESC
       </div>
     </li>
     <li
@@ -30,7 +30,7 @@ exports[`Component CheckFiles basic render 1`] = `
       <div
         class="description"
       >
-        #  
+        #  CONFIG_FILE_DESC
       </div>
     </li>
     <li
@@ -44,7 +44,7 @@ exports[`Component CheckFiles basic render 1`] = `
       <div
         class="description"
       >
-        #  
+        #  LICENSE_FILE_DESC
       </div>
     </li>
     <li
@@ -60,8 +60,9 @@ exports[`Component CheckFiles basic render 1`] = `
       >
         #  
         <span>
-          []  
+          [optional]  
         </span>
+        LOCALE_EN__FILE_DESC
       </div>
     </li>
     <li
@@ -77,8 +78,9 @@ exports[`Component CheckFiles basic render 1`] = `
       >
         #  
         <span>
-          []  
+          [optional]  
         </span>
+        LOCALE_ZH_FILE_DESC
       </div>
     </li>
   </ul>
@@ -90,12 +92,15 @@ exports[`Component CheckFiles basic render 1`] = `
   >
     <span
       class="note"
-    />
+    >
+      Note
+    </span>
+    See the complete app development specification
     <a
       href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/openpitrix-developer-guide/"
       target="blank"
     >
-      《》
+      《SPECIFICATION_LINK_TITLE》
     </a>
     。
   </div>

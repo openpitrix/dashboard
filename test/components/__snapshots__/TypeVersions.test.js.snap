@@ -6,7 +6,7 @@ exports[`Component TypeVersions basic render 1`] = `
 >
   <dl>
     <dt>
-      :
+      Delivery type:
     </dt>
     <dd>
       <div
@@ -22,7 +22,7 @@ exports[`Component TypeVersions basic render 1`] = `
   </dl>
   <dl>
     <dt>
-      :
+      Version No:
     </dt>
     <dd>
       <div

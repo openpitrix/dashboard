@@ -21,6 +21,7 @@ exports[`Base/Notification basic render 1`] = `
           />
         </svg>
       </span>
+      note1
     </div>
     <div
       class="notification notification-info"
@@ -38,6 +39,7 @@ exports[`Base/Notification basic render 1`] = `
           />
         </svg>
       </span>
+      note2
     </div>
   </div>
 </div>

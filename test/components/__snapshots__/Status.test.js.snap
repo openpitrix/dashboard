@@ -9,7 +9,9 @@ exports[`Component Status basic render 1`] = `
   />
   <span
     class="name"
-  />
+  >
+    Active
+  </span>
 </span>
 `;
 
@@ -22,6 +24,8 @@ exports[`Component Status has transition 1`] = `
   />
   <span
     class="name"
-  />
+  >
+    Starting
+  </span>
 </span>
 `;

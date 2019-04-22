@@ -5,19 +5,25 @@ exports[`AppStatistics app detail statistics 1`] = `
   class="panel card appStatistics"
 >
   <dl>
-    <dt />
+    <dt>
+      Online version
+    </dt>
     <dd>
       0
     </dd>
   </dl>
   <dl>
-    <dt />
+    <dt>
+      Deploy times this month
+    </dt>
     <dd>
       0
     </dd>
   </dl>
   <dl>
-    <dt />
+    <dt>
+      Total of deploy
+    </dt>
     <dd>
       0
     </dd>
@@ -30,19 +36,25 @@ exports[`AppStatistics basic render 1`] = `
   class="panel card appStatistics"
 >
   <dl>
-    <dt />
+    <dt>
+      On the shelf apps
+    </dt>
     <dd>
       0
     </dd>
   </dl>
   <dl>
-    <dt />
+    <dt>
+      Deploy times this month
+    </dt>
     <dd>
       0
     </dd>
   </dl>
   <dl>
-    <dt />
+    <dt>
+      Total of deploy
+    </dt>
     <dd>
       0
     </dd>

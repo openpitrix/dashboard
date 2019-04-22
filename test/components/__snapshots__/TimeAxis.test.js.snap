@@ -10,7 +10,9 @@ exports[`Component TimeAxis basic render 1`] = `
     <li>
       <div
         class="title"
-      />
+      >
+        CreateCluster
+      </div>
       <div
         class="time"
       >
@@ -23,7 +25,9 @@ exports[`Component TimeAxis basic render 1`] = `
     <li>
       <div
         class="title"
-      />
+      >
+        UpgradeCluster
+      </div>
       <div
         class="time"
       >
@@ -36,7 +40,9 @@ exports[`Component TimeAxis basic render 1`] = `
     <li>
       <div
         class="title"
-      />
+      >
+        RollbackCluster
+      </div>
       <div
         class="time"
       >

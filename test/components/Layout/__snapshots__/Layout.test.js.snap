@@ -26,7 +26,9 @@ exports[`Layout basic render 1`] = `
         >
           <label
             class="title"
-          />
+          >
+            QingCloud App Center
+          </label>
         </a>
       </li>
     </ul>
@@ -54,7 +56,9 @@ exports[`Layout basic render 1`] = `
             </span>
             <label
               class="title"
-            />
+            >
+              My account
+            </label>
           </div>
           <div
             class="popper pi-popover-popper"
@@ -124,7 +128,9 @@ exports[`Layout basic render 1`] = `
                       </span>
                       <span
                         class="label"
-                      />
+                      >
+                        App Center
+                      </span>
                     </a>
                   </li>
                   <li
@@ -147,7 +153,9 @@ exports[`Layout basic render 1`] = `
                       </span>
                       <span
                         class="label"
-                      />
+                      >
+                        Account Info
+                      </span>
                     </a>
                   </li>
                   <li
@@ -170,7 +178,9 @@ exports[`Layout basic render 1`] = `
                       </span>
                       <span
                         class="label"
-                      />
+                      >
+                        Change Password
+                      </span>
                     </a>
                   </li>
                   <li
@@ -193,7 +203,9 @@ exports[`Layout basic render 1`] = `
                       </span>
                       <span
                         class="label"
-                      />
+                      >
+                        Notice settings
+                      </span>
                     </a>
                   </li>
                   <li
@@ -216,7 +228,9 @@ exports[`Layout basic render 1`] = `
                       </span>
                       <span
                         class="label"
-                      />
+                      >
+                        Payment
+                      </span>
                     </a>
                   </li>
                   <li
@@ -237,7 +251,9 @@ exports[`Layout basic render 1`] = `
                           />
                         </svg>
                       </span>
-                      <span />
+                      <span>
+                        Log out
+                      </span>
                     </a>
                   </li>
                 </ul>

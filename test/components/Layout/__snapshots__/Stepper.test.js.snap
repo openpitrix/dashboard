@@ -14,7 +14,7 @@ exports[`Layout/Stepper basic render 1`] = `
     <label
       class="pull-right"
     >
-       
+      Esc 
       <span
         class="icon icon-close"
         style="width:20px;height:20px"
@@ -34,10 +34,14 @@ exports[`Layout/Stepper basic render 1`] = `
   >
     <div
       class="stepName"
-    />
+    >
+      STEPPER_NAME_CREATE_APP_HEADER
+    </div>
     <div
       class="stepExplain"
-    />
+    >
+      STEPPER_TITLE_CREATE_APP_1
+    </div>
   </div>
   <div
     class="mainContent"
@@ -54,13 +58,18 @@ exports[`Layout/Stepper basic render 1`] = `
     >
       <span
         class="footerTipsButton"
-      />
+      >
+        Tips
+      </span>
+      STEPPER_FOOTER_CREATE_APP_1
     </span>
     <button
       class="button"
       type="primary"
     >
-      <span />
+      <span>
+        Go on
+      </span>
       <span
         class="icon icon-next-icon icon"
         style="width:20px;height:20px"

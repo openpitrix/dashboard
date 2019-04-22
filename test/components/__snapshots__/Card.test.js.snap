@@ -27,17 +27,19 @@ exports[`Card basic render 1`] = `
       <dt
         class="label"
       >
-        :
+        Service provider:
       </dt>
       <dd
         class="val"
-      />
+      >
+        unknown
+      </dd>
     </dl>
     <dl>
       <dt
         class="label"
       >
-        :
+        Delivery type:
       </dt>
       <dd
         class="val"

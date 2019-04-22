@@ -6,7 +6,9 @@ exports[`AppList basic render 1`] = `
 >
   <div
     class="title"
-  />
+  >
+    Newest
+  </div>
   <div
     class="card card"
   >
@@ -38,7 +40,7 @@ exports[`AppList basic render 1`] = `
         <dt
           class="label"
         >
-          :
+          Service provider:
         </dt>
         <dd
           class="val"
@@ -50,7 +52,7 @@ exports[`AppList basic render 1`] = `
         <dt
           class="label"
         >
-          :
+          Delivery type:
         </dt>
         <dd
           class="val"
@@ -75,9 +77,13 @@ exports[`AppList has search 1`] = `
 >
   <div
     class="title"
-  />
+  >
+    search_results
+  </div>
   <div
     class="noData"
-  />
+  >
+    NO_SEARCH_DATA
+  </div>
 </div>
 `;
