@@ -5,7 +5,7 @@ import Radio from 'components/Base/Radio';
 describe('Base/Radio', () => {
   it('basic render', () => {
     const wrapper = render(
-      <Radio className="test" name="test" disabled>
+      <Radio value="1" className="test" name="test" disabled>
         option1
       </Radio>
     );
@@ -15,7 +15,7 @@ describe('Base/Radio', () => {
 
   it('group render', () => {
     const wrapper = render(
-      <Radio.Group name="test" values='1'>
+      <Radio.Group name="test" values="1">
         <Radio value="1">option1</Radio>
         <Radio value="2">option2</Radio>
         <Radio value="3">option3</Radio>
