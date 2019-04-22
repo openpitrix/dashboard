@@ -145,9 +145,7 @@ exports[`Component ClusterCard  basic render 1`] = `
       </span>
       <div
         class="detailTime"
-      >
-        2019/04/22 16:24:54
-      </div>
+      />
     </li>
     <li>
       <span
@@ -157,9 +155,7 @@ exports[`Component ClusterCard  basic render 1`] = `
       </span>
       <div
         class="detailTime"
-      >
-        2019/04/22 16:24:54
-      </div>
+      />
     </li>
   </ul>
 </div>
