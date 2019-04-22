@@ -47,13 +47,12 @@ export default class Form extends React.Component {
         styles.formItem,
         _.get(child, 'props.className')
       );
-      const props = {
+      let props = {
         ...child.props,
         className
       };
       if (isField) {
-        Object.assign(
-          props,
+        props = Object.assign(
           {
             layout,
             labelType

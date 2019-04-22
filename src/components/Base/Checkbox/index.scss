@@ -15,6 +15,7 @@
   padding-left: 22px;
   color: $N300;
   transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  cursor: pointer;
 
   input[type='checkbox'] {
     width: 0;
@@ -50,7 +51,6 @@
     box-shadow: 0 2px 4px 0 rgba(48, 14, 86, 0.04);
     box-sizing: border-box;
     transform: translate(0, -50%);
-    cursor: pointer;
   }
   &:hover {
     &::before {
@@ -93,9 +93,9 @@
 }
 .checkbox[disabled] {
   opacity: 0.5;
+  cursor: not-allowed;
   &::before {
     opacity: 0.5;
-    cursor: not-allowed;
   }
   &:hover {
     &::before {
