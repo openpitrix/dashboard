@@ -3,9 +3,7 @@ import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
-import {
-  Button, Checkbox, Icon, Form
-} from 'components/Base';
+import { Button, Icon, Form } from 'components/Base';
 import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
 
