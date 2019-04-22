@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
 import { Icon, Tooltip } from 'components/Base';
-import Layout, { Grid, Section, BreadCrumb } from 'components/Layout';
+import Layout, { Grid, Section } from 'components/Layout';
 import Loading from 'components/Loading';
 import Tabs from 'components/DetailTabs';
 import { userTabs, nonUserTabs } from 'config/runtimes';
@@ -158,9 +158,12 @@ export default class Runtimes extends React.Component {
   }
 
   renderMain() {
+    const { t } = this.props;
     return (
       <div className={styles.page}>
-        <BreadCrumb linkPath="Cloud Provider > Platform" />
+        <div className={styles.breadCrumb}>
+          {t('Cloud Provider')} / {t('Platform')}
+        </div>
 
         <Grid>
           <Section size={3} className={styles.leftPanel}>

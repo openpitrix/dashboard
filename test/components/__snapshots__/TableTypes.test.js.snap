@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component TableTypes basic render 1`] = `
+<div
+  class="tableTypes"
+>
+  <label
+    class=""
+  >
+    Unreviewed
+  </label>
+  <label
+    class="active"
+  >
+    Reviewed
+  </label>
+</div>
+`;

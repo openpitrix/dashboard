@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  configure, mount, shallow, render
-} from 'enzyme';
+import { configure, mount, shallow, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 
@@ -31,11 +29,14 @@ global.document.createRange = () => ({
 
 global.window.scroll = () => {};
 
-jest.mock('react-codemirror', () => <div />);
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate HoC receive the t function as a prop
   withTranslation: () => Component => {
-    Component.defaultProps = { ...Component.defaultProps, t: () => '' };
+    Component.defaultProps = { ...Component.defaultProps, t: x => x };
+    return Component;
+  },
+  Translation: () => Component => {
+    Component.defaultProps = { ...Component.defaultProps, t: x => x };
     return Component;
   }
 }));

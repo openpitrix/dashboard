@@ -44,7 +44,7 @@ $bgcolor: $text-color;
   &.active {
     opacity: 1;
     pointer-events: auto;
-    z-index: 3;
+    z-index: 4;
   }
 
   .arrow {

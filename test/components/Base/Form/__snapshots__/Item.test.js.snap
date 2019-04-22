@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Form Item basic render 1`] = `
+<div
+  class="item"
+>
+  <label
+    class="label"
+    for="name"
+  />
+  <div
+    class="wrapper"
+  >
+    <input
+      class="input"
+      id="name"
+      name="name"
+      value="test"
+    />
+  </div>
+</div>
+`;

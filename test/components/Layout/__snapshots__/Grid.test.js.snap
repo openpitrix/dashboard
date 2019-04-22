@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/Grid basic render 1`] = `
+<div
+  class="container test"
+>
+  <div>
+    test
+  </div>
+</div>
+`;

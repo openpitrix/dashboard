@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppName basic render 1`] = `
+<div
+  class="appName"
+>
+  <span
+    class="image"
+  >
+    <img
+      class="img"
+      data-origin-url="icon"
+      src="icon"
+    />
+  </span>
+  <span
+    class="info"
+  >
+    <div
+      class="name"
+      title="Wordpreww"
+    >
+      Wordpreww
+    </div>
+    <div
+      class="description"
+    >
+      <span
+        class="type"
+      >
+        <div
+          class="versionType"
+        />
+      </span>
+       / 
+      <span
+        class="versionName"
+      >
+        1.0.0
+      </span>
+    </div>
+  </span>
+</div>
+`;
+
+exports[`AppName has link url 1`] = `
+<div
+  class="appName"
+>
+  <span
+    class="image"
+  >
+    <img
+      class="img"
+      data-origin-url="icon"
+      src="icon"
+    />
+  </span>
+  <span
+    class="info"
+  >
+    <a
+      class="name"
+      href="/app/app-id"
+      title="Wordpreww"
+    >
+      Wordpreww
+    </a>
+    <div
+      class="description"
+    >
+      <span
+        class="type"
+      >
+        <div
+          class="versionType"
+        >
+          <label>
+            vm
+          </label>
+        </div>
+      </span>
+       / 
+      <span
+        class="versionName"
+      >
+        1.0.0
+      </span>
+    </div>
+  </span>
+</div>
+`;

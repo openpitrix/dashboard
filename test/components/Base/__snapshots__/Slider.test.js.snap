@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Slider basic render 1`] = `
+<div
+  class="slider"
+>
+  <div
+    class="bar"
+    style="width:0"
+  />
+  <div
+    class="block"
+    style="left:0"
+  />
+</div>
+`;

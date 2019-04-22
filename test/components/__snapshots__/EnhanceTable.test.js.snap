@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component EnhanceTable  basic render 1`] = `
+<div
+  class="table"
+>
+  <div
+    class="pi-table pi-table-scroll-position-left"
+  >
+    <div
+      class="pi-table-content"
+    >
+      <div
+        class="pi-table-body"
+      >
+        <table
+          class=""
+        >
+          <colgroup>
+            <col
+              style="width:150px;min-width:150px"
+            />
+            <col
+              style="width:150px;min-width:150px"
+            />
+            <col
+              style="width:100px;min-width:100px"
+            />
+            <col
+              style="width:80px;min-width:80px"
+            />
+            <col
+              style="width:80px;min-width:80px"
+            />
+            <col
+              style="width:120px;min-width:120px"
+            />
+            <col
+              style="width:120px;min-width:120px"
+            />
+            <col
+              style="width:130px;min-width:130px"
+            />
+          </colgroup>
+          <thead
+            class="pi-table-thead"
+          >
+            <tr>
+              <th
+                class=""
+              >
+                App Name
+              </th>
+              <th
+                class=""
+              >
+                App intro
+              </th>
+              <th
+                class=""
+              >
+                Categories
+              </th>
+              <th
+                class=""
+              >
+                Delivery type
+              </th>
+              <th
+                class=""
+              >
+                Count deploy
+              </th>
+              <th
+                class=""
+              >
+                Developer
+              </th>
+              <th
+                class="boldFont"
+              >
+                App service provider
+              </th>
+              <th
+                class=""
+              >
+                Publish time
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="pi-table-tbody"
+          />
+        </table>
+      </div>
+      <div
+        class="pi-table-placeholder"
+      >
+        <div
+          class="noData"
+        >
+          <span
+            class="icon icon-appcenter"
+            style="width:84px;height:84px"
+          >
+            <svg
+              class="qicon qicon-appcenter qicon-dark"
+            >
+              <use
+                href="#qui-appcenter"
+              />
+            </svg>
+          </span>
+          <div
+            class="word"
+          >
+            No data!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

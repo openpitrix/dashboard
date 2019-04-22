@@ -48,6 +48,7 @@ exports[`Base/Table basic render 1`] = `
                 <span
                   class="sortOuter"
                 >
+                  Name
                   <span
                     class="icon icon-sort-descending"
                     style="width:16px;height:16px"
@@ -64,7 +65,9 @@ exports[`Base/Table basic render 1`] = `
               </th>
               <th
                 class=""
-              />
+              >
+                Age
+              </th>
             </tr>
           </thead>
           <tbody
@@ -141,7 +144,7 @@ exports[`Base/Table basic render 1`] = `
     <div
       class="total"
     >
-      : 2
+      Total: 2
     </div>
     <div
       class="pageItems"
@@ -238,6 +241,7 @@ exports[`Base/Table render emptyText 1`] = `
                 <span
                   class="sortOuter"
                 >
+                  Name
                   <span
                     class="icon icon-sort-descending"
                     style="width:16px;height:16px"
@@ -254,7 +258,9 @@ exports[`Base/Table render emptyText 1`] = `
               </th>
               <th
                 class=""
-              />
+              >
+                Age
+              </th>
             </tr>
           </thead>
           <tbody
@@ -283,7 +289,7 @@ exports[`Base/Table render emptyText 1`] = `
           <div
             class="word"
           >
-            !
+            No data!
           </div>
         </div>
       </div>
@@ -295,7 +301,7 @@ exports[`Base/Table render emptyText 1`] = `
     <div
       class="total"
     >
-      : 2
+      Total: 2
     </div>
     <div
       class="pageItems"

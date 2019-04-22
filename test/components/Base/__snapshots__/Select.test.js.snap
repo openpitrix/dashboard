@@ -13,7 +13,9 @@ exports[`Base/Select basic render 1`] = `
   >
     <div
       class="controlLabel"
-    />
+    >
+      Please select
+    </div>
     <span
       class="icon icon-caret-down"
       style="width:16px;height:16px"
@@ -35,6 +37,7 @@ exports[`Base/Select basic render 1`] = `
       class="option"
       disabled=""
     >
+      Please select
       <span
         class="icon icon-check"
         style="width:16px;height:16px"
@@ -81,7 +84,9 @@ exports[`Base/Select disabled render 1`] = `
   >
     <div
       class="controlLabel"
-    />
+    >
+      Please select
+    </div>
     <span
       class="icon icon-caret-down"
       style="width:16px;height:16px"
@@ -103,6 +108,7 @@ exports[`Base/Select disabled render 1`] = `
       class="option"
       disabled=""
     >
+      Please select
       <span
         class="icon icon-check"
         style="width:16px;height:16px"

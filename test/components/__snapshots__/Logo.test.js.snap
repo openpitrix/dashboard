@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Logo basic render 1`] = `
+<a
+  aria-current="page"
+  class="active"
+  href="/"
+>
+  <img
+    alt="logo"
+    height="100%"
+    src="/"
+  />
+</a>
+`;

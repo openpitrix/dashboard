@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Radio basic render 1`] = `
+<label
+  class="radio test"
+  disabled=""
+>
+  <span
+    class="circle"
+  />
+  <span
+    class="text"
+  >
+    option1
+  </span>
+</label>
+`;
+
+exports[`Base/Radio group render 1`] = `
+<div
+  class="group"
+  values="1"
+>
+  <input
+    name="test"
+    type="hidden"
+  />
+  <label
+    class="radio"
+  >
+    <span
+      class="circle"
+    />
+    <span
+      class="text"
+    >
+      option1
+    </span>
+  </label>
+  <label
+    class="radio"
+  >
+    <span
+      class="circle"
+    />
+    <span
+      class="text"
+    >
+      option2
+    </span>
+  </label>
+  <label
+    class="radio"
+  >
+    <span
+      class="circle"
+    />
+    <span
+      class="text"
+    >
+      option3
+    </span>
+  </label>
+</div>
+`;

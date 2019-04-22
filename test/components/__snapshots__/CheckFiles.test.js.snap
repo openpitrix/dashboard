@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component CheckFiles basic render 1`] = `
+<div
+  class="checkFiles test"
+>
+  <ul>
+    <li
+      class=""
+    >
+      <span
+        class="name"
+      >
+        package.json
+      </span>
+      <div
+        class="description"
+      >
+        #  PACKAGE_FILE_DESC
+      </div>
+    </li>
+    <li
+      class=""
+    >
+      <span
+        class="name"
+      >
+        config.json
+      </span>
+      <div
+        class="description"
+      >
+        #  CONFIG_FILE_DESC
+      </div>
+    </li>
+    <li
+      class=""
+    >
+      <span
+        class="name"
+      >
+        LICENSE
+      </span>
+      <div
+        class="description"
+      >
+        #  LICENSE_FILE_DESC
+      </div>
+    </li>
+    <li
+      class=""
+    >
+      <span
+        class="name"
+      >
+        locale/en.json
+      </span>
+      <div
+        class="description"
+      >
+        #  
+        <span>
+          [optional]  
+        </span>
+        LOCALE_EN__FILE_DESC
+      </div>
+    </li>
+    <li
+      class=""
+    >
+      <span
+        class="name"
+      >
+        locale/zh-en.json
+      </span>
+      <div
+        class="description"
+      >
+        #  
+        <span>
+          [optional]  
+        </span>
+        LOCALE_ZH_FILE_DESC
+      </div>
+    </li>
+  </ul>
+  <div
+    class="configMask"
+  />
+  <div
+    class="document"
+  >
+    <span
+      class="note"
+    >
+      Note
+    </span>
+    See the complete app development specification
+    <a
+      href="https://docs.openpitrix.io/v0.3/zh-CN/developer-guide/openpitrix-developer-guide/"
+      target="blank"
+    >
+      《SPECIFICATION_LINK_TITLE》
+    </a>
+    。
+  </div>
+</div>
+`;

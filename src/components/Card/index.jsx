@@ -69,11 +69,9 @@ export class Card extends PureComponent {
           <Image src={icon} alt="Icon" iconSize={iconSize} iconLetter={name} />
         </div>
         <div className={styles.name}>{name}</div>
-        <div className={styles.desc} title={desc}>
-          {desc.split('\n').map((line, idx) => (
-            <p key={idx}>{line}</p>
-          ))}
-        </div>
+        <pre className={styles.desc} title={desc}>
+         {desc}
+        </pre>
         <div className={styles.attrs}>
           <dl>
             <dt className={styles.label}>{t('Service provider')}:</dt>

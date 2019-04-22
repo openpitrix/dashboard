@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Stars basic render 1`] = `
+<div
+  class="stars"
+>
+  <span
+    class="icon icon-star yellow"
+    style="width:16px;height:16px"
+  >
+    <svg
+      class="qicon qicon-star qicon-dark"
+    >
+      <use
+        href="#qui-star"
+      />
+    </svg>
+  </span>
+  <span
+    class="icon icon-star yellow"
+    style="width:16px;height:16px"
+  >
+    <svg
+      class="qicon qicon-star qicon-dark"
+    >
+      <use
+        href="#qui-star"
+      />
+    </svg>
+  </span>
+  <span
+    class="icon icon-star yellow"
+    style="width:16px;height:16px"
+  >
+    <svg
+      class="qicon qicon-star qicon-dark"
+    >
+      <use
+        href="#qui-star"
+      />
+    </svg>
+  </span>
+  <span
+    class="icon icon-star yellow"
+    style="width:16px;height:16px"
+  >
+    <svg
+      class="qicon qicon-star qicon-dark"
+    >
+      <use
+        href="#qui-star"
+      />
+    </svg>
+  </span>
+  <span
+    class="icon icon-star yellow"
+    style="width:16px;height:16px"
+  >
+    <svg
+      class="qicon qicon-star qicon-dark"
+    >
+      <use
+        href="#qui-star"
+      />
+    </svg>
+  </span>
+</div>
+`;

@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component ClusterCard  basic render 1`] = `
+<div
+  class="detailCard"
+>
+  <div
+    class="title noImg"
+  >
+    <div
+      class="name"
+    >
+      test cluster
+    </div>
+    <div
+      class="copyOuter"
+    >
+      id: cl_xxxxxx
+      <span
+        class="copyId"
+        data-clipboard-text="cl_xxxxxx"
+      >
+        <span
+          class="icon icon-copy"
+          style="width:16px;height:16px"
+        >
+          <svg
+            class="qicon qicon-copy qicon-dark"
+          >
+            <use
+              href="#qui-copy"
+            />
+          </svg>
+        </span>
+      </span>
+    </div>
+  </div>
+  <ul
+    class="detail"
+  >
+    <li>
+      <span
+        class="name"
+      >
+        Status
+      </span>
+      <span
+        class="status"
+      >
+        <i
+          class="icon active"
+        />
+        <span
+          class="name"
+        >
+          Active
+        </span>
+      </span>
+    </li>
+    <li>
+      <span
+        class="name"
+      >
+        App
+      </span>
+      <label
+        class="appShow"
+      >
+        <label
+          class="appImage"
+        >
+          <img
+            class="img"
+            data-origin-url=""
+            src=""
+          />
+        </label>
+        <a
+          class="appName"
+          href="/user/apps/undefined"
+        />
+      </label>
+    </li>
+    <li>
+      <span
+        class="name"
+      >
+        Version
+      </span>
+      <label
+        class="value"
+      >
+        <div
+          class="versionType"
+        />
+        <span
+          class="versionName"
+        />
+      </label>
+    </li>
+    <li
+      class="setHeight"
+    >
+      <span
+        class="name"
+      >
+        Runtime
+      </span>
+      <div
+        class="repoName value"
+        title=""
+      >
+        <span
+          class="icon icon- icon"
+          style="width:20px;height:20px"
+        >
+          <svg
+            class="qicon qicon- qicon-dark"
+          >
+            <use
+              href="#qui-"
+            />
+          </svg>
+        </span>
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      >
+        Creator
+      </span>
+      <div
+        class="userShow value"
+      >
+        <label
+          class="name"
+        >
+          system
+        </label>
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      >
+        Create Time
+      </span>
+      <div
+        class="detailTime"
+      >
+        2019/04/09 11:39:28
+      </div>
+    </li>
+    <li>
+      <span
+        class="name"
+      >
+        Date Updated
+      </span>
+      <div
+        class="detailTime"
+      >
+        2019/04/19 11:39:28
+      </div>
+    </li>
+  </ul>
+</div>
+`;

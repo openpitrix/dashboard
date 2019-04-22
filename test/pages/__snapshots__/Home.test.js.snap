@@ -26,12 +26,16 @@ Array [
         </label>
         <label
           class="logoName"
-        />
+        >
+          QingCloud App Center
+        </label>
       </a>
       <a
         class="login"
         href="/login"
-      />
+      >
+        Sign In
+      </a>
       <a
         class="upgrade"
         href="/user/provider/apply"
@@ -48,6 +52,7 @@ Array [
             />
           </svg>
         </span>
+        UPGRADE_PROVIDER
       </a>
     </div>
   </div>,
@@ -62,10 +67,14 @@ Array [
       >
         <div
           class="name"
-        />
+        >
+          App Store
+        </div>
         <div
           class="description"
-        />
+        >
+          APP_STORE_DESC
+        </div>
       </div>
       <div
         class="inputGroup search search"
@@ -84,7 +93,7 @@ Array [
         </span>
         <input
           class="input"
-          placeholder=""
+          placeholder="search.placeholder"
           type="text"
           value=""
         />
@@ -98,7 +107,7 @@ Array [
       class="container"
     >
       <div
-        class="section section-size-dev-3 section-offset-dev-0"
+        class="section section-size-3 section-offset-0}"
       >
         <div
           class="nav"
@@ -108,7 +117,9 @@ Array [
           >
             <p
               class="caption"
-            />
+            >
+              Discoveries
+            </p>
             <ul
               class="menu"
             >
@@ -129,7 +140,9 @@ Array [
                 </span>
                 <span
                   class="name"
-                />
+                >
+                  New Arrival
+                </span>
               </li>
             </ul>
           </div>
@@ -138,7 +151,9 @@ Array [
           >
             <p
               class="caption"
-            />
+            >
+              Categories
+            </p>
             <ul
               class="menu"
             />
@@ -146,7 +161,7 @@ Array [
         </div>
       </div>
       <div
-        class="section section-size-dev-9 section-offset-dev-0"
+        class="section section-size-9 section-offset-0}"
       >
         <div
           class=""
@@ -156,7 +171,9 @@ Array [
           >
             <div
               class="title"
-            />
+            >
+              Newest
+            </div>
           </div>
         </div>
       </div>
@@ -188,19 +205,25 @@ Array [
               href="https://docs.openpitrix.io/home/"
               rel="noopener noreferrer"
               target="_blank"
-            />
+            >
+              Document
+            </a>
           </li>
           <li>
             <a
               href="/user/provider/apply"
-            />
+            >
+              Become App Provider
+            </a>
           </li>
           <li>
             <a
               href="https://openpitrix.io"
               rel="noopener noreferrer"
               target="_blank"
-            />
+            >
+              About
+            </a>
           </li>
           <li>
             OpenPitrix © 2019

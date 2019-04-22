@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/Section basic render 1`] = `
+<div
+  class="section section-size-8 section-offset-4} test"
+>
+  <div>
+    test
+  </div>
+</div>
+`;

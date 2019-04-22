@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Form Setion basic render 1`] = `
+<div
+  class="section"
+>
+  <p
+    class="sectionTitle"
+  />
+</div>
+`;
