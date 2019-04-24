@@ -33,7 +33,13 @@ export default class Form extends React.Component {
   };
 
   get formClass() {
-    return classnames(styles.form, this.props.className);
+    return classnames(
+      styles.form,
+      {
+        [styles.noPaddingForm]: this.props.noPadding
+      },
+      this.props.className
+    );
   }
 
   render() {

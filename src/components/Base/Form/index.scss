@@ -3,6 +3,9 @@
 .form {
   padding: 24px 24px 32px;
 }
+.noPaddingForm {
+  padding: 0;
+}
 
 .formItem + .formItem {
   margin-top: $form-field-gap;

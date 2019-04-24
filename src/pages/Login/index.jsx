@@ -64,10 +64,7 @@ export default class Login extends Component {
               className={styles.notify}
               itemClass={styles.notifyItem}
             />
-            <Form
-              className={styles.formItem}
-              onSubmit={throttle(this.handleSubmit, 1000)}
-            >
+            <Form noPadding onSubmit={throttle(this.handleSubmit, 1000)}>
               <TextField
                 className={styles.formInput}
                 icon="human"
