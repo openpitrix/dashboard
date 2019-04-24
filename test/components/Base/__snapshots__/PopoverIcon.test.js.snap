@@ -3,6 +3,7 @@
 exports[`Base/PopoverIcon basic render 1`] = `
 <div
   class="tooltip popover container"
+  data-cy="popoverBtn"
 >
   <div
     class="target target targetNormal"

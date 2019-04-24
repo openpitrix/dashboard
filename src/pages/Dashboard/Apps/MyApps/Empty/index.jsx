@@ -19,7 +19,9 @@ export default class Loading extends PureComponent {
           <div className={styles.description}>{t('APPS_EMPTY_DESCRIBER')}</div>
           <div className={styles.btn}>
             <Link to={toRoute(routes.portal._dev.appCreate)}>
-              <Button type="primary">{t('Create the first app')}</Button>
+              <Button data-cy="createApp" type="primary">
+                {t('Create the first app')}
+              </Button>
             </Link>
           </div>
           <div className={styles.tips}>

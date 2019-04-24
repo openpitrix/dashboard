@@ -102,7 +102,7 @@ export class Toolbar extends React.Component {
           condition={withCreateBtn.condition}
         >
           {withCreateBtn.linkTo && (
-            <Link to={withCreateBtn.linkTo}>
+            <Link data-cy={withCreateBtn.dataTestID} to={withCreateBtn.linkTo}>
               <Button className={styles.btnRight} type="primary">
                 {withCreateBtn.name || 'Create'}
               </Button>
@@ -113,6 +113,7 @@ export class Toolbar extends React.Component {
               className={styles.btnRight}
               type="primary"
               onClick={withCreateBtn.onClick}
+              data-cy={withCreateBtn.dataTestID}
             >
               {withCreateBtn.name || 'Create'}
             </Button>

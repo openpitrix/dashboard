@@ -3,9 +3,11 @@
 exports[`Base/Upload basic render 1`] = `
 <span
   class="upload"
+  data-cy="uploadFile"
   role="button"
 >
   <input
+    data-cy="inputUpload"
     style="display:none"
     type="file"
   />

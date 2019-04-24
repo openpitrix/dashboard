@@ -3,6 +3,7 @@
 exports[`Base/Tooltip basic render 1`] = `
 <div
   class="tooltip test"
+  data-cy="popoverBtn"
 >
   <div
     class="target"

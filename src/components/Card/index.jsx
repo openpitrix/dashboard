@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
 import { withTranslation } from 'react-i18next';
+import _ from 'lodash';
 
 import { Image } from 'components/Base';
 import VersionType from 'components/VersionType';
@@ -63,6 +64,8 @@ export class Card extends PureComponent {
     return (
       <div
         className={classnames(styles.card, className)}
+        data-vmbased={_.invoke(type, 'includes', 'vmbased')}
+        data-helm={_.invoke(type, 'includes', 'helm')}
         onClick={this.handleClick}
       >
         <div className={styles.icon}>
@@ -70,7 +73,7 @@ export class Card extends PureComponent {
         </div>
         <div className={styles.name}>{name}</div>
         <pre className={styles.desc} title={desc}>
-         {desc}
+          {desc}
         </pre>
         <div className={styles.attrs}>
           <dl>

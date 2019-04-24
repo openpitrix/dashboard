@@ -38,6 +38,7 @@ exports[`Layout basic render 1`] = `
       <li>
         <div
           class="tooltip popover iconOuter"
+          data-cy="popoverBtn"
         >
           <div
             class="target"

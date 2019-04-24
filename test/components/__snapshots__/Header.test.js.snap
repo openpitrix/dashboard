@@ -53,6 +53,7 @@ exports[`Layout/Header basic render: login 1`] = `
     >
       <div
         class="tooltip popover"
+        data-cy="popoverBtn"
       >
         <div
           class="target"

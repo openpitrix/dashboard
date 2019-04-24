@@ -179,6 +179,7 @@ export default class Upload extends Component {
           },
           className
         )}
+        data-cy="uploadFile"
         role="button"
         style={style}
       >
@@ -187,6 +188,7 @@ export default class Upload extends Component {
           ref={n => {
             this.fileInput = n;
           }}
+          data-cy="inputUpload"
           key={this.state.uid}
           style={{ display: 'none' }}
           accept={accept}

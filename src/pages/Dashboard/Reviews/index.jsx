@@ -108,7 +108,11 @@ export default class Reviews extends Component {
         render: item => (
           <div>
             {isUnprocessed ? (
-              <Link onClick={() => this.handleReview(item)} to="#">
+              <Link
+                data-version_id={item.version_id}
+                onClick={() => this.handleReview(item)}
+                to="#"
+              >
                 {item.review_id}
               </Link>
             ) : (

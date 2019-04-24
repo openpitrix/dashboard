@@ -85,8 +85,6 @@ export default class VersionDetail extends Component {
     // query this version relatived app info
     await appStore.fetch(appId);
 
-    this.setState({ isLoading: false });
-
     // query this version submit record
     await appVersionStore.fetchAudits({
       app_id: appId,
@@ -108,6 +106,7 @@ export default class VersionDetail extends Component {
       version_id: versionId,
       noLimit: true
     });
+    this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {
@@ -225,7 +224,10 @@ export default class VersionDetail extends Component {
           </span>
         )}
         {hasDeleteBtn && (
-          <span onClick={() => showTypeDialog('delete')}>
+          <span
+            data-cy="deleteAppVersionBtn"
+            onClick={() => showTypeDialog('delete')}
+          >
             <Icon name="trash" type="dark" /> {t('Delete')}
           </span>
         )}
@@ -335,7 +337,9 @@ export default class VersionDetail extends Component {
               appId
             })}
           >
-            <Button type="primary">{t('View in store')}</Button>
+            <Button data-cy="appLink" type="primary">
+              {t('View in store')}
+            </Button>
           </Link>
         </div>
       </Dialog>
@@ -570,7 +574,7 @@ export default class VersionDetail extends Component {
     const hasOperate = version.status !== 'deleted';
 
     return (
-      <Card>
+      <Card data-cy="appVersionInfo">
         <div className={styles.topInfo}>
           <div className={styles.main}>
             {(_.find(versionTypes, { value: version.type }) || {}).name}
@@ -607,6 +611,7 @@ export default class VersionDetail extends Component {
               <Button
                 disabled={['submitted', 'in-review'].includes(version.status)}
                 type="primary"
+                data-cy="releaseAppBtn"
                 onClick={() => this.handleVersion(handleType)}
               >
                 {t(actionName[handleType] || version.status)}

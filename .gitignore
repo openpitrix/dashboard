@@ -33,3 +33,6 @@ src/locales/**/translation.json
 logs/
 
 tmp/
+
+cypress/videos/
+cypress/screenshots/

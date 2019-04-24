@@ -23,11 +23,13 @@ const rootGroup = [
       {
         group_id: normalUserID,
         key: normalUserID,
+        dataTestID: normalUserID,
         title: normalUserName
       },
       {
         group_id: ISVID,
         key: ISVID,
+        dataTestID: ISVID,
         title: ISVName
       }
     ]

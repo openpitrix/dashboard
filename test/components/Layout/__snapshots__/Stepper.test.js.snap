@@ -65,6 +65,8 @@ exports[`Layout/Stepper basic render 1`] = `
     </span>
     <button
       class="button"
+      data-cy="nextStep"
+      data-disable="true"
       type="primary"
     >
       <span>

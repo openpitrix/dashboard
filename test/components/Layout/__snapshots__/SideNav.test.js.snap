@@ -180,6 +180,7 @@ exports[`Layout/SideNav admin portal nav 1`] = `
     <li>
       <div
         class="tooltip popover iconOuter"
+        data-cy="popoverBtn"
       >
         <div
           class="target"
@@ -493,6 +494,7 @@ exports[`Layout/SideNav basic render 1`] = `
     <li>
       <div
         class="tooltip popover iconOuter"
+        data-cy="popoverBtn"
       >
         <div
           class="target"
@@ -930,6 +932,7 @@ exports[`Layout/SideNav basic render ISV portal 1`] = `
     <li>
       <div
         class="tooltip popover iconOuter"
+        data-cy="popoverBtn"
       >
         <div
           class="target"
@@ -1300,6 +1303,7 @@ Array [
       <li>
         <div
           class="tooltip popover iconOuter"
+          data-cy="popoverBtn"
         >
           <div
             class="target"

@@ -37,6 +37,8 @@ export class AppCard extends Component {
     return (
       <div
         className={classnames(styles.container, className)}
+        data-cy="appDetailLink"
+        data-app_id={app_id}
         onClick={() => {
           this.props.history.push(
             toRoute(routes.portal._dev.versions, {

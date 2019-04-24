@@ -18,13 +18,22 @@ env:
 cache:
   yarn: true
   directories:
-    - node_modules
+    - ~/.npm
+    - ./node_modules
+    - ~/.cache
+  override:
+    - npm run cy:verify
+
 
 install:
   - yarn
+  - yarn locale
+  - yarn dev:client
 
 script:
   - yarn test -- --coverage
+  - yarn cy:verify
+  - yarn e2e:test:run
 
 after_success:
   - yarn report-cov

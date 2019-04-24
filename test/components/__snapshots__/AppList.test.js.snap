@@ -11,6 +11,8 @@ exports[`AppList basic render 1`] = `
   </div>
   <div
     class="card card"
+    data-helm="false"
+    data-vmbased="true"
   >
     <div
       class="icon"

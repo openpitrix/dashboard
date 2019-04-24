@@ -30,6 +30,7 @@ export default class Loading extends Component {
         <Fragment>
           <div className={classnames(styles.loading, className)}>
             <Icon
+              data-cy="loading"
               name="loading"
               size={size}
               type="dark"
