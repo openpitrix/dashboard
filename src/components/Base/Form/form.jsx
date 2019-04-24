@@ -32,20 +32,18 @@ export default class Form extends React.Component {
     this.props.onSubmit(e, getFormData(this.formRef.current));
   };
 
-  get formClass() {
-    return classnames(
+  render() {
+    const {
+      children, layout, labelType, ...restProps
+    } = this.props;
+
+    const formClass = classnames(
       styles.form,
       {
         [styles.noPaddingForm]: this.props.noPadding
       },
       this.props.className
     );
-  }
-
-  render() {
-    const {
-      children, layout, labelType, ...restProps
-    } = this.props;
 
     const childNodes = React.Children.map(children, (child = {}) => {
       const isField = _.invoke(child, 'type.displayName.includes', 'Field');
@@ -72,7 +70,7 @@ export default class Form extends React.Component {
     return (
       <form
         {...restProps}
-        className={this.formClass}
+        className={formClass}
         ref={this.formRef}
         onSubmit={this.handleSubmit}
       >

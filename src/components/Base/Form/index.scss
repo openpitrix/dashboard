@@ -87,14 +87,14 @@ label.formItem {
 .fieldGroup {
   display: flex;
 
-  .vertical + .vertical {
-    margin-left: $form-field-gap;
-    margin-top: 0;
-  }
-
   .vertical {
     &.checkboxField {
       margin-top: $form-field-label-height;
+    }
+
+    & + .vertical {
+      margin-left: $form-field-gap;
+      margin-top: 0;
     }
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Checkbox, Button, Input, Select
 } from 'components/Base';
-import wrapField from './WrapField';
+import wrapField from './wrapField';
 import FieldGroup from './FieldGroup';
 
 const TextArea = props => <textarea {...props} />;
