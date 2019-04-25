@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import { observer } from 'mobx-react';
 import _ from 'lodash';
-import classnames from 'classnames';
 import { Trans } from 'react-i18next';
 
-import { Input, Select, Tree } from 'components/Base';
+import {
+  Form, Input, Select, Tree
+} from 'components/Base';
 
 import { Dialog } from 'components/Layout';
 import { PORTAL_NAME, getRoleName, getRoleDescription } from 'config/roles';
 
 import styles from '../index.scss';
+
+const { TextField, SelectField, TextareaField } = Form;
 
 const emailRegexp = '^[A-Za-z0-9._%-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$';
 
@@ -265,71 +268,64 @@ export default class UserModalActions extends Component {
           hideModifyUser();
         }}
         onSubmit={(e, data) => createOrModify(e, data, isISV)}
+        okText={t('Create')}
       >
         {user_id && (
-          <div className={styles.formItem}>
-            <label>{t('Name')}</label>
-            <Input
+          <Fragment>
+            <Input name="user_id" type="hidden" defaultValue={user_id} />
+            <TextField
+              label={t('Name')}
+              labelType="title"
               name="username"
               maxLength="50"
               defaultValue={username}
               required
             />
-            <Input name="user_id" type="hidden" defaultValue={user_id} />
-          </div>
-        )}
-        <div className={styles.formItem}>
-          <label>{t('Email')}</label>
-          <Input
-            name="email"
-            maxLength={50}
-            placeholer="username@example.com"
-            defaultValue={email}
-            pattern={emailRegexp}
-            required
-          />
-        </div>
-        {!user_id && (
-          <Fragment>
-            <div className={classnames(styles.formItem, styles.setRoleFrom)}>
-              <label>{t('Role')}</label>
-              <Select
-                defaultValue={_.get(roles, '[0].role_id')}
-                name="role_id"
-                onChange={this.onChangeRole}
-              >
-                {roles.map(role => (
-                  <Select.Option key={role.role_id} value={role.role_id}>
-                    {t(getRoleName(role, this.roleProtal))}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
-            <div className={styles.formItem}>
-              <label />
-              <div className={styles.description}>
-                {t(
-                  getRoleDescription(
-                    selectedRole || defaultRole,
-                    this.roleProtal
-                  )
-                )}
-              </div>
-            </div>
-            <div className={styles.formItem}>
-              <label>{t('Password')}</label>
-              <Input name="password" type="password" maxLength={50} />
-            </div>
           </Fragment>
         )}
-        <div className={styles.formItemText}>
-          <label>{t('Description')}</label>
-          <textarea
-            name="description"
-            maxLength={500}
-            defaultValue={description}
-          />
-        </div>
+        <TextField
+          label={t('Email')}
+          labelType="title"
+          name="email"
+          maxLength={50}
+          placeholer="username@example.com"
+          defaultValue={email}
+          pattern={emailRegexp}
+          required
+        />
+        {!user_id && (
+          <Fragment>
+            <SelectField
+              label={t('Role')}
+              labelType="title"
+              defaultValue={_.get(roles, '[0].role_id')}
+              name="role_id"
+              onChange={this.onChangeRole}
+              options={roles.map(role => ({
+                value: role.role_id,
+                label: t(getRoleName(role, this.roleProtal))
+              }))}
+              help={t(
+                getRoleDescription(selectedRole || defaultRole, this.roleProtal)
+              )}
+            />
+            <TextField
+              label={t('Password')}
+              labelType="title"
+              name="password"
+              type="password"
+              maxLength={50}
+              required
+            />
+          </Fragment>
+        )}
+        <TextareaField
+          label={t('Description')}
+          labelType="title"
+          name="description"
+          maxLength={500}
+          defaultValue={description}
+        />
       </Dialog>
     );
   }
@@ -354,16 +350,9 @@ export default class UserModalActions extends Component {
           </Trans>
         </div>
 
-        <div className={styles.formItem}>
-          <Input name="user_id" type="hidden" defaultValue={item.user_id} />
-          <Input name="password" type="password" maxLength={50} />
-          <Input
-            name="email"
-            type="hidden"
-            defaultValue={item.email}
-            required
-          />
-        </div>
+        <Input name="user_id" type="hidden" defaultValue={item.user_id} />
+        <Input name="email" type="hidden" defaultValue={item.email} required />
+        <TextField name="password" type="password" maxLength={50} />
       </Dialog>
     );
   }

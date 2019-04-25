@@ -76,33 +76,9 @@ $input-item-height: 48px;
     font-size: 24px;
     font-weight: 500;
   }
-  .formItem {
-    text-align: left;
-    &:nth-of-type(1) {
-      margin-bottom: 12px;
-    }
-    &:nth-of-type(2) {
-      margin-bottom: 22px;
-    }
-    &:nth-of-type(3) {
-      margin-bottom: 24px;
-    }
-    &:nth-of-type(4) {
-      margin-bottom: 0;
-    }
-  }
-
   .formInput {
-    //i {
-    //  font-size: 18px;
-    //  left: 28px;
-    //  color: $login-placeholder;
-    //}
     :global {
       .icon {
-        /* position: relative;
-        left: 20px;
-        top: 40px;*/
         opacity: 0.5;
         left: 24px;
       }
@@ -117,21 +93,6 @@ $input-item-height: 48px;
         color: $N500;
         transition: all 0.3s ease-in-out;
       }
-    }
-  }
-  .checkbox {
-    &::before {
-      //box-shadow: none;
-      //border-radius: 2px;
-      //background-color: $N0;
-      //border: solid 1px $N30;
-
-      //&:hover {
-      //  background-color: $N10;
-      //}
-      //&:focus {
-      //  background-color: $P75;
-      //}
     }
   }
 }

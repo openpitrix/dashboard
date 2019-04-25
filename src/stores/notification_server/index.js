@@ -108,7 +108,8 @@ export default class NotificationServerStore extends Store {
   };
 
   @action
-  changeTypeEdit = () => {
+  changeTypeEdit = e => {
+    e.preventDefault();
     this.handleType = 'edit';
   };
 }

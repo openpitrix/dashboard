@@ -5,12 +5,14 @@ import { withTranslation } from 'react-i18next';
 
 import Logo from 'components/Logo';
 import {
-  Form, Input, Button, Checkbox, Notification
+  Form, Button, Checkbox, Notification
 } from 'components/Base';
 import { getUrlParam } from 'utils';
 import routes, { toRoute } from 'routes';
 
 import styles from './index.scss';
+
+const { TextField } = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -30,7 +32,7 @@ export default class Login extends Component {
     sessionStorage.removeItem('module_elem_set');
   }
 
-  handleSubmit = async params => {
+  handleSubmit = async (e, params) => {
     const { store, user } = this.props;
     const res = await store.oauth2Check(params);
 
@@ -62,42 +64,34 @@ export default class Login extends Component {
               className={styles.notify}
               itemClass={styles.notifyItem}
             />
-            <Form onSubmit={throttle(this.handleSubmit, 1000)}>
-              <Form.Item className={styles.formItem} noLabel>
-                <Input
-                  className={styles.formInput}
-                  icon="human"
-                  iconType="dark"
-                  name="email"
-                  iconSize={24}
-                  placeholder="username@example.com"
-                />
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Input
-                  className={styles.formInput}
-                  type="password"
-                  icon="lock"
-                  iconType="dark"
-                  name="password"
-                  iconSize={24}
-                  placeholder={t('Password')}
-                />
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Checkbox
-                  checked={rememberMe}
-                  onChange={toggleRememberMe}
-                  className={styles.checkbox}
-                >
-                  {t('Remember me')}
-                </Checkbox>
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Button htmlType="submit" className={styles.submitBtn}>
-                  {t('Login')}
-                </Button>
-              </Form.Item>
+            <Form noPadding onSubmit={throttle(this.handleSubmit, 1000)}>
+              <TextField
+                className={styles.formInput}
+                icon="human"
+                iconType="dark"
+                name="email"
+                iconSize={24}
+                placeholder="username@example.com"
+              />
+              <TextField
+                className={styles.formInput}
+                type="password"
+                icon="lock"
+                iconType="dark"
+                name="password"
+                iconSize={24}
+                placeholder={t('Password')}
+              />
+              <Checkbox
+                checked={rememberMe}
+                onChange={toggleRememberMe}
+                className={styles.checkbox}
+              >
+                {t('Remember me')}
+              </Checkbox>
+              <Button htmlType="submit" className={styles.submitBtn}>
+                {t('Login')}
+              </Button>
             </Form>
           </div>
         </div>

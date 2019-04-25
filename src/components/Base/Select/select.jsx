@@ -90,23 +90,41 @@ export default class Select extends React.Component {
   };
 
   setChildNodes = () => {
-    const { children, t } = this.props;
+    const { children, options, t } = this.props;
     const value = this.props.value || this.state.value;
 
     this.currentLabel = '';
-    this.childNodes = React.Children.map(children, child => {
-      const checked = String(value) === child.props.value;
+    if (children) {
+      this.childNodes = React.Children.map(children, child => {
+        const checked = String(value) === child.props.value;
 
-      if (checked) {
-        this.currentLabel = child.props.children;
-      }
+        if (checked) {
+          this.currentLabel = child.props.children;
+        }
 
-      return React.cloneElement(child, {
-        ...child.props,
-        onClick: this.handleOptionClick,
-        isSelected: checked
+        return React.cloneElement(child, {
+          ...child.props,
+          onClick: this.handleOptionClick,
+          isSelected: checked
+        });
       });
-    });
+    } else if (options) {
+      this.childNodes = options.map(item => {
+        const checked = String(value) === item.value;
+        if (checked) {
+          this.currentLabel = item.label || item.value;
+        }
+
+        return (
+          <Option
+            key={item.value}
+            onClick={this.handleOptionClick}
+            isSelected={checked}
+            {...item}
+          />
+        );
+      });
+    }
 
     if (this.state.noValue) {
       const txt = t('Please select');
@@ -183,7 +201,6 @@ export default class Select extends React.Component {
   render() {
     const { className, disabled, name } = this.props;
     const { value } = this;
-
     this.setChildNodes();
 
     return (

@@ -59,3 +59,13 @@
     padding: 8px 8px 8px 36px;
   }
 }
+
+.normal {
+  width: $form-input-normal;
+}
+.layge {
+  width: $form-input-large;
+}
+.small {
+  width: $form-input-small;
+}

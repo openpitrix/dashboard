@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import _ from 'lodash';
+
+import { getFormData } from 'utils';
 
 import styles from './index.scss';
 
@@ -8,47 +11,64 @@ export default class Form extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     data: PropTypes.object,
+    labelType: PropTypes.oneOf(['normal', 'title']),
+    layout: PropTypes.oneOf(['horizon', 'vertical', 'inline']),
     onSubmit: PropTypes.func
   };
 
   static defaultProps = {
-    className: ''
+    className: '',
+    labelType: 'normal',
+    layout: 'horizon'
   };
 
   constructor(props) {
     super(props);
-    this._formData = props.data || {};
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if ('data' in nextProps) {
-      this._formData = nextProps.data || {};
-    }
+    this.formRef = React.createRef();
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    // validator
-
-    this.props.onSubmit(this._formData);
+    this.props.onSubmit(e, getFormData(this.formRef.current));
   };
 
-  getData() {
-    return this._formData;
-  }
-
   render() {
-    const { className, children } = this.props;
+    const {
+      children, layout, labelType, noPadding, ...restProps
+    } = this.props;
 
-    const classNames = classnames(styles.form, className);
+    const formClass = classnames(
+      styles.form,
+      {
+        [styles.noPaddingForm]: noPadding
+      },
+      this.props.className
+    );
 
-    const childNodes = React.Children.map(children, child => React.cloneElement(child, {
-      ...child.props,
-      formData: this._formData
-    }));
+    const childNodes = React.Children.map(children, (child = {}) => {
+      const isField = _.invoke(child, 'type.displayName.includes', 'Field');
+      const className = classnames(
+        styles.formItem,
+        _.get(child, 'props.className')
+      );
+      const props = {
+        ...child.props,
+        className
+      };
+      if (isField) {
+        props.layout = props.layout || layout;
+        props.labelType = props.labelType || labelType;
+      }
+      return React.cloneElement(child, props);
+    });
 
     return (
-      <form className={classNames} onSubmit={this.handleSubmit}>
+      <form
+        {...restProps}
+        className={formClass}
+        ref={this.formRef}
+        onSubmit={this.handleSubmit}
+      >
         {childNodes}
       </form>
     );

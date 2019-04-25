@@ -45,6 +45,7 @@ export default class Modal extends React.Component {
     hideFooter: PropTypes.bool,
     hideHeader: PropTypes.bool,
     isDialog: PropTypes.bool,
+    layout: PropTypes.oneOf(['horizon', 'vertical']),
     okText: PropTypes.string,
     onCancel: PropTypes.func,
     onOk: PropTypes.func,

@@ -20,23 +20,4 @@
   button + button {
     margin-left: 12px;
   }
-
-  .form {
-    padding: 24px 24px 32px;
-
-    label {
-      margin-bottom: 8px;
-      display: block;
-    }
-    > div + div {
-      margin-top: 20px;
-    }
-
-    .normalWidth {
-      width: $form-input-normal;
-    }
-    .largeWidth {
-      width: $form-input-large;
-    }
-  }
 }

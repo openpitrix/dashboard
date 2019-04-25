@@ -1,6 +1,5 @@
 export Button from './Button';
 export Checkbox from './Checkbox';
-export Form from './Form';
 export Icon from './Icon';
 export Input from './Input';
 export Modal from './Modal';
@@ -20,3 +19,4 @@ export Tooltip from './Tooltip';
 export Image from './Image';
 export Upload from './Upload';
 export DocLink from './DocLink';
+export Form from './Form';

@@ -52,3 +52,6 @@ global.mount = mount;
 global.shallow = shallow;
 global.render = render;
 global.toJson = toJson;
+
+function FormDataMock() {}
+global.FormData = FormDataMock;

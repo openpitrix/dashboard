@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Form basic render 1`] = `
+<form
+  className="form"
+  onSubmit={[Function]}
+>
+  <FieldGroup
+    className="formItem"
+    key=".0"
+    labelType="normal"
+    layout="horizon"
+  >
+    <Field-Select
+      label="Server protocol"
+      name="protocol"
+      options={
+        Array [
+          Object {
+            "label": "SMTP",
+            "value": "smtp",
+          },
+          Object {
+            "label": "POP3",
+            "value": "pop3",
+          },
+          Object {
+            "label": "IMAP",
+            "value": "imap",
+          },
+        ]
+      }
+    />
+  </FieldGroup>
+  <FieldGroup
+    className="formItem"
+    key=".1"
+    labelType="normal"
+    layout="horizon"
+  >
+    <Field-Input
+      name="email_host"
+      placeholder="server name"
+    />
+    <Field-Input
+      name="port"
+      placeholder="1000"
+      size="small"
+      type="number"
+    />
+    <Field-Checkbox
+      name="ssl_enable"
+    >
+      SSL secure connection
+    </Field-Checkbox>
+  </FieldGroup>
+  <FieldGroup
+    className="formItem"
+    key=".2"
+    labelType="normal"
+    layout="horizon"
+  >
+    <Field-Input
+      label="Sender nickname"
+      name="display_sender"
+    />
+  </FieldGroup>
+  <FieldGroup
+    className="formItem"
+    key=".3"
+    labelType="normal"
+    layout="horizon"
+  >
+    <Field-Input
+      name="email"
+    />
+    <Field-Input
+      label="Server password"
+      name="password"
+      placeholder="**********"
+      type="password"
+    />
+  </FieldGroup>
+  <FieldGroup
+    className="formItem"
+    key=".4"
+    labelType="normal"
+    layout="horizon"
+  >
+    <Field-Button
+      htmlType="submit"
+      layout="inline"
+    >
+      submit
+    </Field-Button>
+  </FieldGroup>
+</form>
+`;

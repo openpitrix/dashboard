@@ -3,15 +3,17 @@ import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
-import {
-  Button, Input, Select, Checkbox, Icon
-} from 'components/Base';
+import { Button, Icon, Form } from 'components/Base';
 import Layout, { Panel } from 'components/Layout';
 import Loading from 'components/Loading';
 
 import { TEST_STATUS } from 'config/cloud-env';
 
 import styles from './index.scss';
+
+const {
+  CheckboxField, ButtonField, TextField, SelectField, FieldGroup
+} = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -104,111 +106,111 @@ export default class NotificationServer extends Component {
             </h3>
 
             <Loading isLoading={isLoading}>
-              <form className={styles.form}>
-                <div>
-                  <div>
-                    <label>{t('Server protocol')}</label>
-                    <Select
-                      disabled={disabled}
-                      onChange={onChangeSelect}
-                      name="protocol"
-                      value={formData.protocol}
-                    >
-                      <Select.Option value="smtp">SMTP</Select.Option>
-                      <Select.Option value="pop3">POP3</Select.Option>
-                      <Select.Option value="imap">IMAP</Select.Option>
-                    </Select>
-                  </div>
-                </div>
+              <Form layout="vertical" className={styles.form}>
+                <FieldGroup>
+                  <SelectField
+                    label={t('Server protocol')}
+                    disabled={disabled}
+                    onChange={onChangeSelect}
+                    name="protocol"
+                    value={formData.protocol}
+                    options={[
+                      {
+                        value: 'smtp',
+                        label: 'SMTP'
+                      },
+                      {
+                        value: 'pop3',
+                        label: 'POP3'
+                      },
+                      {
+                        value: 'imap',
+                        label: 'IMAP'
+                      }
+                    ]}
+                  />
+                </FieldGroup>
 
-                <div>
-                  <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                <FieldGroup>
+                  <TextField
+                    label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host name'
-                    )}`}</label>
-                    <Input
-                      disabled={disabled}
-                      name="email_host"
-                      placeholder="server name"
-                      onChange={onChangeFormItem}
-                      value={formData.email_host}
-                    />
-                  </div>
+                    )}`}
+                    disabled={disabled}
+                    name="email_host"
+                    placeholder="server name"
+                    onChange={onChangeFormItem}
+                    value={formData.email_host}
+                  />
 
-                  <div>
-                    <label>{`${formData.protocol.toUpperCase()} ${t(
+                  <TextField
+                    label={`${formData.protocol.toUpperCase()} ${t(
                       'Server host port'
-                    )}`}</label>
-                    <Input
-                      disabled={disabled}
-                      name="port"
-                      placeholder="1000"
-                      type="number"
-                      className={styles.smallInput}
-                      onChange={onChangeFormItem}
-                      value={formData.port}
-                    />
-                  </div>
-                  <div className={styles.paddingTop}>
-                    <Checkbox
-                      disabled={disabled}
-                      name="ssl_enable"
-                      checked={formData.ssl_enable}
-                      onChange={onChangeFormItem}
-                    >
-                      {t('SSL 安全连接')}
-                    </Checkbox>
-                  </div>
-                </div>
+                    )}`}
+                    disabled={disabled}
+                    name="port"
+                    placeholder="1000"
+                    type="number"
+                    size="small"
+                    className={styles.smallInput}
+                    onChange={onChangeFormItem}
+                    value={formData.port}
+                  />
 
-                <div>
-                  <div>
-                    <label>{t('Sender nickname')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="display_sender"
-                      value={formData.display_sender}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
-                </div>
+                  <CheckboxField
+                    className={styles.checkbox}
+                    disabled={disabled}
+                    name="ssl_enable"
+                    checked={formData.ssl_enable}
+                    onChange={onChangeFormItem}
+                  >
+                    {t('SSL secure connection')}
+                  </CheckboxField>
+                </FieldGroup>
 
-                <div>
-                  <div>
-                    <label>{t('Server username')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="email"
-                      placeholder={`${t('for example')}：name@example.com`}
-                      value={formData.email}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
+                <FieldGroup>
+                  <TextField
+                    label={t('Sender nickname')}
+                    disabled={disabled}
+                    name="display_sender"
+                    value={formData.display_sender}
+                    onChange={onChangeFormItem}
+                  />
+                </FieldGroup>
 
-                  <div>
-                    <label>{t('Server password')}</label>
-                    <Input
-                      disabled={disabled}
-                      name="password"
-                      type="password"
-                      placeholder="**********"
-                      value={formData.password}
-                      onChange={onChangeFormItem}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <Button
+                <FieldGroup>
+                  <TextField
+                    label={t('Server username')}
+                    disabled={disabled}
+                    name="email"
+                    placeholder={`${t('for example')}：name@example.com`}
+                    value={formData.email}
+                    onChange={onChangeFormItem}
+                  />
+
+                  <TextField
+                    label={t('Server password')}
+                    disabled={disabled}
+                    name="password"
+                    type="password"
+                    placeholder="**********"
+                    value={formData.password}
+                    onChange={onChangeFormItem}
+                  />
+                </FieldGroup>
+                <FieldGroup>
+                  <ButtonField
+                    layout="inline"
                     className={classnames({
                       [styles.btnLoading]: testStatus === TEST_STATUS.loading
                     })}
                     onClick={testConnect}
+                    help={this.renderConnectStatus()}
                   >
                     {t('Connect test')}
-                  </Button>
-                  {this.renderConnectStatus()}
-                </div>
-              </form>
+                  </ButtonField>
+                </FieldGroup>
+              </Form>
             </Loading>
           </Panel>
         </div>
