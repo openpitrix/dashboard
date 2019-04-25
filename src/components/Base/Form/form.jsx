@@ -51,18 +51,13 @@ export default class Form extends React.Component {
         styles.formItem,
         _.get(child, 'props.className')
       );
-      let props = {
+      const props = {
         ...child.props,
         className
       };
       if (isField) {
-        props = Object.assign(
-          {
-            layout,
-            labelType
-          },
-          props
-        );
+        props.layout = props.layout || layout;
+        props.labelType = props.labelType || labelType;
       }
       return React.cloneElement(child, props);
     });

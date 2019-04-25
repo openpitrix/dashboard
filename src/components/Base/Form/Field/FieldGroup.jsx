@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import styles from '../index.scss';
 
-function FieldGroup(props) {
+const FieldGroup = props => {
   const { layout, labelType, children } = props;
   const childNodes = React.Children.map(children, child => {
     const isField = _.invoke(child, 'type.displayName.includes', 'Field');
@@ -13,18 +13,13 @@ function FieldGroup(props) {
       return null;
     }
 
-    let childProps = {
+    const childProps = {
       ...child.props,
       className: classnames(styles.formItem, className)
     };
     if (isField) {
-      childProps = Object.assign(
-        {
-          layout,
-          labelType
-        },
-        childProps
-      );
+      childProps.layout = childProps.layout || layout;
+      childProps.labelType = childProps.labelType || labelType;
     }
 
     return React.cloneElement(child, childProps);
@@ -35,7 +30,7 @@ function FieldGroup(props) {
       {childNodes}
     </div>
   );
-}
+};
 
 FieldGroup.displayName = 'FieldGroup';
 
