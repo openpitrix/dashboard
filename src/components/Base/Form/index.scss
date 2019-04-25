@@ -88,13 +88,13 @@ label.formItem {
   display: flex;
 
   .vertical {
-    &.checkboxField {
-      margin-top: $form-field-label-height;
-    }
-
     & + .vertical {
       margin-left: $form-field-gap;
       margin-top: 0;
+    }
+
+    &.checkboxField {
+      margin-top: $form-field-label-height;
     }
   }
 }

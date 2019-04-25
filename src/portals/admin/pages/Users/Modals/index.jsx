@@ -272,6 +272,7 @@ export default class UserModalActions extends Component {
       >
         {user_id && (
           <Fragment>
+            <Input name="user_id" type="hidden" defaultValue={user_id} />
             <TextField
               label={t('Name')}
               labelType="title"
@@ -280,7 +281,6 @@ export default class UserModalActions extends Component {
               defaultValue={username}
               required
             />
-            <Input name="user_id" type="hidden" defaultValue={user_id} />
           </Fragment>
         )}
         <TextField
