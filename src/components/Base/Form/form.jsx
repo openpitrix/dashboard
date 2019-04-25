@@ -34,13 +34,13 @@ export default class Form extends React.Component {
 
   render() {
     const {
-      children, layout, labelType, ...restProps
+      children, layout, labelType, noPadding, ...restProps
     } = this.props;
 
     const formClass = classnames(
       styles.form,
       {
-        [styles.noPaddingForm]: this.props.noPadding
+        [styles.noPaddingForm]: noPadding
       },
       this.props.className
     );
