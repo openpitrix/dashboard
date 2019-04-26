@@ -132,19 +132,21 @@ export default class Clusters extends Component {
     const { clusterStore, user } = this.props;
     const { onlyView } = clusterStore;
 
-    let route;
+    let route,
+      params = {
+        appId,
+        clusterId
+      };
     if (user.isDevPortal || user.isISVPortal) {
       route = onlyView
         ? routes.portal._dev.userInstanceDetail
         : routes.portal._dev.sandboxInstanceDetail;
+      params.portal = 'dev';
     } else {
       route = routes.portal.clusterDetail;
     }
 
-    return toRoute(route, {
-      appId,
-      clusterId
-    });
+    return toRoute(route, params);
   };
 
   handleSubmit = () => {
