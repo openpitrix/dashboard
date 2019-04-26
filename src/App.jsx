@@ -10,7 +10,7 @@ import NotFound from 'components/NotFound';
 import Home from 'pages/Home';
 import {
   UserRoutes, DevRoutes, IsvRoutes, AdminRoutes
-} from 'routes';
+} from 'routes/portals';
 import WrapRoute from 'routes/WrapRoute';
 
 import history from './createHistory';
