@@ -3,9 +3,6 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
-
 # development
 /build
 
@@ -23,10 +20,6 @@ yarn-error.log*
 
 # local config
 /server/local_config.yml
-
-reports/
-
-.cache/
 
 *.tgz
 

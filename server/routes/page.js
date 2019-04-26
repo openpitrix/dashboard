@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const agent = require('lib/request').default;
+const agent = require('../../lib/request').default;
 const auth = require('../middleware/auth');
 const gzip = require('../middleware/gzip');
 

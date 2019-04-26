@@ -7,14 +7,13 @@ yarn-debug.log
 npm-debug.log
 
 build/
-coverage/
 docs/
 dist/
 
 yarn-offline-cache.tgz
 
-reports/
-tests/
+test/
+tmp/
 
 .eslintignore
 .eslintrc.js

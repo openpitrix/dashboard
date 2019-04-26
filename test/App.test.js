@@ -3,7 +3,7 @@ import { Provider } from 'mobx-react';
 // import { withRouter } from 'react-router';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import App from 'src/App';
+import App from 'App';
 // import routes from 'src/routes';
 import Home from 'pages/Home';
 import Login from 'pages/Login';

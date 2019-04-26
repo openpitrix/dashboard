@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const program = require('commander');
 const chokidar = require('chokidar');
-const debug = require('debug')('app');
+const debug = require('debug')('locale');
 const { root } = require('../../lib/utils');
 
 const baseDir = 'src/locales';
@@ -28,7 +28,7 @@ const writeFileAsJson = (file, data) => {
   }
   try {
     fs.writeFileSync(file, data, 'utf8');
-    debug(`%s saved\n`, file);
+    debug(`Saved file: %s`, file);
   } catch (err) {
     throw err;
   }
@@ -45,8 +45,7 @@ const stripDupKeys = (file, write = true) => {
 };
 
 const mergeLocaleDir = (dir, write = true) => {
-  // fixme: only handle first level files in src/locales
-  debug(`Merging locale files in %s`, dir);
+  // debug(`Merge locale files in %s`, dir);
 
   const files = fs.readdirSync(dir);
   const merged = files
@@ -125,7 +124,7 @@ if (curCmd === 'merge') {
       });
 
       watcher.on('change', file => {
-        debug('[watch locale]: %s', file);
+        debug('[watch]: %s', file);
         if (file.endsWith('.json')) {
           mergeLocaleDir(path.dirname(file));
         }

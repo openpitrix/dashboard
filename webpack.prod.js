@@ -29,9 +29,6 @@ const clientConfig = merge.smart(baseConfig, {
     chunkFilename: '[name].[chunkhash:6].js',
     publicPath: '/dist/'
   },
-  performance: {
-    hints: false
-  },
   module: {
     rules: [
       { ...staticFileRule },
@@ -96,14 +93,7 @@ const serverConfig = merge.smartStrategy({
     rules: [
       {
         test: /\.jsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: '.cache/babel-loader'
-            }
-          }
-        ],
+        loader: 'babel-loader',
         exclude: /(node_modules)/
       },
       merge(staticFileRule, {
