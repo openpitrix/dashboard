@@ -5,7 +5,9 @@ import _ from 'lodash';
 import styles from '../index.scss';
 
 const FieldGroup = props => {
-  const { layout, labelType, children } = props;
+  const {
+    layout, labelType, size, children
+  } = props;
   const childNodes = React.Children.map(children, child => {
     const isField = _.invoke(child, 'type.displayName.includes', 'Field');
     const className = _.get(child, 'props.className');
@@ -20,6 +22,7 @@ const FieldGroup = props => {
     if (isField) {
       childProps.layout = childProps.layout || layout;
       childProps.labelType = childProps.labelType || labelType;
+      childProps.size = childProps.size || size;
     }
 
     return React.cloneElement(child, childProps);

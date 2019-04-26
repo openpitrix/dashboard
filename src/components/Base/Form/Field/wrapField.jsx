@@ -18,7 +18,8 @@ export default function warpField(WrappedComponent) {
       className: PropTypes.string,
       label: PropTypes.string,
       labelType: PropTypes.oneOf(['normal', 'title']),
-      layout: PropTypes.oneOf(['horizon', 'vertical', 'inline'])
+      layout: PropTypes.oneOf(['horizon', 'vertical', 'inline']),
+      size: PropTypes.oneOf(['normal', 'large', 'small'])
     };
 
     get isTextArea() {
@@ -59,6 +60,7 @@ export default function warpField(WrappedComponent) {
         iconRight,
         ...restProps
       } = this.props;
+      restProps.size = restProps.size || 'normal';
 
       return (
         <div className={styles.control}>
