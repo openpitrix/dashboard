@@ -4,12 +4,14 @@ exports[`Base/Form basic render 1`] = `
 <form
   className="form"
   onSubmit={[Function]}
+  size="normal"
 >
   <FieldGroup
     className="formItem"
     key=".0"
     labelType="normal"
     layout="horizon"
+    size="normal"
   >
     <Field-Select
       label="Server protocol"
@@ -37,6 +39,7 @@ exports[`Base/Form basic render 1`] = `
     key=".1"
     labelType="normal"
     layout="horizon"
+    size="normal"
   >
     <Field-Input
       name="email_host"
@@ -59,6 +62,7 @@ exports[`Base/Form basic render 1`] = `
     key=".2"
     labelType="normal"
     layout="horizon"
+    size="normal"
   >
     <Field-Input
       label="Sender nickname"
@@ -70,6 +74,7 @@ exports[`Base/Form basic render 1`] = `
     key=".3"
     labelType="normal"
     layout="horizon"
+    size="normal"
   >
     <Field-Input
       name="email"
@@ -86,6 +91,7 @@ exports[`Base/Form basic render 1`] = `
     key=".4"
     labelType="normal"
     layout="horizon"
+    size="normal"
   >
     <Field-Button
       htmlType="submit"

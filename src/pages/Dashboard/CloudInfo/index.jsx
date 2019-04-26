@@ -96,6 +96,7 @@ export default class CloudEnvironment extends Component {
           label={t('Visit address')}
           disabled={!handleType}
           className={styles.largeWidth}
+          size="large"
           name="platform_url"
           placeholder="https://lab.openpitrix.io"
           defaultValue={cloudInfo.platform_url}

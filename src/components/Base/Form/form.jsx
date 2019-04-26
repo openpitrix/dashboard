@@ -18,6 +18,7 @@ export default class Form extends React.Component {
 
   static defaultProps = {
     className: '',
+    size: 'normal',
     labelType: 'normal',
     layout: 'horizon'
   };
@@ -45,7 +46,11 @@ export default class Form extends React.Component {
       this.props.className
     );
 
-    const childNodes = React.Children.map(children, (child = {}) => {
+    const childNodes = React.Children.map(children, child => {
+      if (!child) {
+        return null;
+      }
+
       const isField = _.invoke(child, 'type.displayName.includes', 'Field');
       const className = classnames(
         styles.formItem,
@@ -58,6 +63,7 @@ export default class Form extends React.Component {
       if (isField) {
         props.layout = props.layout || layout;
         props.labelType = props.labelType || labelType;
+        props.size = props.size || this.props.size;
       }
       return React.cloneElement(child, props);
     });
