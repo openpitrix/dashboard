@@ -2,7 +2,7 @@ import _, { get, filter, set } from 'lodash';
 import day from 'dayjs';
 import { t } from 'i18next';
 import { saveAs } from 'file-saver';
-import FormSerializer from '@lib/form-serializer';
+import FormSerializer from 'lib/form-serializer';
 
 const formatMap = {
   'YYYY/MM/DD': 'YYYY年MM月DD日',

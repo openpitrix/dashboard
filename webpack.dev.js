@@ -16,9 +16,6 @@ module.exports = merge(baseConfig, {
     path: resolve(__dirname, 'build/'),
     publicPath: '/build/'
   },
-  performance: {
-    hints: 'warning'
-  },
   module: {
     rules: [
       {
@@ -33,6 +30,7 @@ module.exports = merge(baseConfig, {
       {
         test: /\.scss$/,
         use: [
+          'cache-loader',
           'style-loader',
           {
             loader: 'css-loader',

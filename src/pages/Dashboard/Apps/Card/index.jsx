@@ -8,7 +8,7 @@ import { Image } from 'components/Base';
 import Status from 'components/Status';
 import VersionType from 'components/VersionType';
 
-import { getPastTime, mappingStatus } from 'src/utils';
+import { getPastTime, mappingStatus } from 'utils';
 
 import styles from './index.scss';
 

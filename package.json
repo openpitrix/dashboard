@@ -50,25 +50,20 @@
     "winston": "^3.1.0"
   },
   "scripts": {
-    "dev:client": "cross-env DEBUG=app NODE_ENV=development npm run locale && webpack --config webpack.dev.js --progress",
+    "dev:client": "cross-env DEBUG=app NODE_ENV=development webpack --config webpack.dev.js --progress",
     "dev:serve": "cross-env DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
     "dev": "cross-env npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
-    "clean:dev": "rimraf build",
-    "clean:prod": "rimraf dist",
-    "prod:build": "npm run clean:prod && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
+    "prod:build": "rimraf dist && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js --progress",
     "prod:serve": "NODE_ENV=production node dist/server.js",
     "prod": "npm run prod:build && npm run prod:serve",
-    "build:prod-client": "node build.js --prod-client",
-    "build:prod-server": "node build.js --prod-server",
     "lint-fix": "eslint --fix --ext js,jsx .",
-    "test": "jest --config jest.config.json -u",
-    "precommit": "npm test && lint-staged",
-    "viz": "webpack --config webpack.dev.js --profile --progress --json > reports/stats.json && webpack-bundle-analyzer reports/stats.json",
-    "report-cov": "cat ./coverage/lcov.info | codecov",
-    "dbg": "cross-env BABEL_ENV=server NODE_ENV=development node --inspect-brk server/server.js",
+    "test": "jest -u",
+    "precommit": "lint-staged",
+    "viz:bundle": "webpack --config webpack.dev.js --profile --json > build/stats.json && webpack-bundle-analyzer build/stats.json",
+    "report-cov": "cat ./build/coverage/lcov.info | codecov",
     "commitmsg": "commitlint --config ./config/commitlint.config.js -E GIT_PARAMS",
     "release": "standard-version -i CHANGELOG.md -n",
-    "locale": "node ./src/bin/locale.js merge all",
+    "locale": "DEBUG=locale ./src/bin/locale.js merge all",
     "watch:locale": "cross-env npm run locale -- --watch"
   },
   "lint-staged": {
@@ -76,6 +71,27 @@
       "prettier --write",
       "eslint --fix",
       "git add"
+    ]
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/setup.js"
+    ],
+    "bail": true,
+    "verbose": true,
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(png|svg)$": "<rootDir>/config/assets.transform.js",
+      "\\.(css|scss)$": "identity-obj-proxy"
+    },
+    "coverageDirectory": "./build/coverage/",
+    "collectCoverageFrom": [
+      "src/components/**/*.jsx"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ]
   },
   "devDependencies": {
@@ -98,6 +114,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
+    "cache-loader": "^3.0.0",
     "codecov": "^3.0.2",
     "commander": "^2.19.0",
     "compression-webpack-plugin": "^1.1.11",

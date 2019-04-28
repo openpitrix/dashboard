@@ -1,22 +1,21 @@
-const { resolve } = require('path');
+const path = require('path');
 
 module.exports = {
   output: {
     pathinfo: false
   },
+  performance: {
+    hints: process.env.NODE_ENV === 'development' ? 'warning' : false
+  },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: '.cache/babel-loader'
-            }
-          }
-        ],
-        include: [resolve(__dirname, 'src'), resolve(__dirname, 'lib')]
+        use: ['cache-loader', 'babel-loader'],
+        include: [
+          path.resolve(__dirname, 'src'),
+          path.resolve(__dirname, 'lib')
+        ]
       },
       {
         test: /\.css$/,
@@ -25,24 +24,19 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.scss', '.css'],
+    extensions: ['.js', '.jsx', '.mjs', '.json', '.scss', '.css'],
     alias: {
-      scss: resolve(__dirname, 'src/scss')
+      lib: path.resolve(__dirname, 'lib')
     },
-    modules: [
-      resolve(__dirname, 'src'),
-      resolve(__dirname, 'lib'),
-      'node_modules'
-    ]
+    modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   optimization: {
     splitChunks: {
       cacheGroups: {
-        vendor_js: {
+        vendors: {
           name: 'vendors',
-          chunks: 'initial',
-          test: /\/node_modules\//,
-          priority: -10
+          chunks: 'all',
+          test: /\/node_modules\//
         }
       }
     }

@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const debug = require('debug')('app');
 
-const agent = require('lib/request').default;
+const agent = require('../../lib/request').default;
 const logger = require('../logger');
 const utils = require('../utils');
 
