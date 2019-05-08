@@ -1,6 +1,37 @@
-# Change Log
+#### 0.4.2 (2019-05-08)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+##### Chores
+
+*  standard-version cant generate changelog from commit range ([a3e65fbc](https://github.com/openpitrix/dashboard/commit/a3e65fbc1d60af21ad84a485207e28bb15a80116))
+*  Speed up webpack build ([#1114](https://github.com/openpitrix/dashboard/pull/1114)) ([ac935e38](https://github.com/openpitrix/dashboard/commit/ac935e380ffbb6bf0c7f6bf09f1f5a58190b61c9))
+*  Add English i18n ([#1105](https://github.com/openpitrix/dashboard/pull/1105)) ([cf9ecb5c](https://github.com/openpitrix/dashboard/commit/cf9ecb5c9c4ee9f743221ab175fc1bd50326e900))
+*  Remove repo related files ([#1103](https://github.com/openpitrix/dashboard/pull/1103)) ([aeee8eb9](https://github.com/openpitrix/dashboard/commit/aeee8eb9f11f4c4b4b855fcbbb2d0562ca3ad068))
+*  Click switch button trigger select all actions in ISV role page ([#1100](https://github.com/openpitrix/dashboard/pull/1100)) ([fa48b5cf](https://github.com/openpitrix/dashboard/commit/fa48b5cfba0942e91f4115bf1a22322096e6bf8b))
+*  Set navigation menu according to permissions ([#1094](https://github.com/openpitrix/dashboard/pull/1094)) ([cd635608](https://github.com/openpitrix/dashboard/commit/cd63560861350214eb25aee37019f2964c83b315))
+* **release:**  0.4.1 ([5cde15cd](https://github.com/openpitrix/dashboard/commit/5cde15cd68bc39f3e994dfbfa6b18d747055bc1c))
+
+##### Bug Fixes
+
+*  Form input width ([#1113](https://github.com/openpitrix/dashboard/pull/1113)) ([f0230f39](https://github.com/openpitrix/dashboard/commit/f0230f3943be8cd0fb8f119964c84b63ba71bf2d))
+*  Cyclic dependency in routes module ([#1112](https://github.com/openpitrix/dashboard/pull/1112)) ([d7550e5f](https://github.com/openpitrix/dashboard/commit/d7550e5fd8530cdf70a2ed5333d25f4d3e8028b0))
+*  Deploy helm app, changed values.yaml not updated ([#1109](https://github.com/openpitrix/dashboard/pull/1109)) ([67e4beef](https://github.com/openpitrix/dashboard/commit/67e4beefdb0b4ce699bfa2c374a78a4f92433ed1))
+*  Home page infinite scroll ([#1104](https://github.com/openpitrix/dashboard/pull/1104)) ([bd70a2fd](https://github.com/openpitrix/dashboard/commit/bd70a2fdfb2d7b1d61ab82a9765ab3ff0e35e19a))
+*  Developer navigation app icon style ([#1099](https://github.com/openpitrix/dashboard/pull/1099)) ([619644e5](https://github.com/openpitrix/dashboard/commit/619644e51313768a6cf80f9fd18b0f6e4f3cd867))
+*  Create app when add delivery type ([#1096](https://github.com/openpitrix/dashboard/pull/1096)) ([a183d5fd](https://github.com/openpitrix/dashboard/commit/a183d5fd7c75e54f8aa0da79898f0cdb175a1e9a))
+*  Query deploy statistics add deleted status ([#1097](https://github.com/openpitrix/dashboard/pull/1097)) ([7d9e5d89](https://github.com/openpitrix/dashboard/commit/7d9e5d892960fcb1326c70e5d92180568cc7724b))
+*  My apps query status param ([#1095](https://github.com/openpitrix/dashboard/pull/1095)) ([5a859d2b](https://github.com/openpitrix/dashboard/commit/5a859d2b4e34bc3368801a639d63741a90644cb3))
+
+##### Refactors
+
+*  Unified management for form sub-components ([#1110](https://github.com/openpitrix/dashboard/pull/1110)) ([07218c75](https://github.com/openpitrix/dashboard/commit/07218c75cd156e0c562e30fd9433b6373f80aaf1))
+*  Category mgmt icon list ([#1102](https://github.com/openpitrix/dashboard/pull/1102)) ([af267aa4](https://github.com/openpitrix/dashboard/commit/af267aa49cd4e65018b4f6185453fa8df720359a))
+*  Jest config not show coverage files ([#1101](https://github.com/openpitrix/dashboard/pull/1101)) ([4d9e96fd](https://github.com/openpitrix/dashboard/commit/4d9e96fda1562d3297397b6c4cbe6f8f531e0387))
+*  Detail pages loading style ([#1098](https://github.com/openpitrix/dashboard/pull/1098)) ([0f9a0bb5](https://github.com/openpitrix/dashboard/commit/0f9a0bb5f94ce8da80f2a1fea53516d848e73b21))
+
+##### Tests
+
+*  Add unit test for components ([#1107](https://github.com/openpitrix/dashboard/pull/1107)) ([280cb6a3](https://github.com/openpitrix/dashboard/commit/280cb6a3556600db4b6a2a8cb28895677afb4749))
+
 
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/openpitrix/dashboard/compare/v0.4.0...v0.4.1) (2019-03-29)
