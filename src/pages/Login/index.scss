@@ -59,6 +59,10 @@ $input-item-height: 48px;
     color: $title-color;
     @include title-font(36px, 32px);
   }
+  .checkbox {
+    width: 100%;
+    justify-content: flex-start;
+  }
   .formInput {
     :global {
       .icon {

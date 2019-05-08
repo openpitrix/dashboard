@@ -20,7 +20,7 @@ import Item from './Item';
 
 import styles from './index.scss';
 
-const { TextField } = Form;
+const { ButtonField, CheckboxField, TextField } = Form;
 
 @withTranslation()
 @inject(({ rootStore }) => ({
@@ -92,7 +92,8 @@ export default class Login extends Component {
     }
   };
 
-  handleSubmit = async params => {
+  handleSubmit = async (e, params) => {
+    console.log(params);
     const { store, user } = this.props;
     const res = await store.oauth2Check(params);
 
@@ -133,47 +134,39 @@ export default class Login extends Component {
             <div className={styles.welcome}>{this.welcomeTxt}</div>
             <h1>{this.title}</h1>
             <Form onSubmit={this.handleSubmit}>
-              <Form.Item className={styles.formItem} noLabel>
-                <Input
-                  className={this.formInputCls}
-                  icon="human"
-                  iconType="dark"
-                  name="email"
-                  iconSize={24}
-                  onChange={this.resetInputError}
-                  placeholder="username@example.com"
-                />
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Input
-                  className={this.formInputCls}
-                  type="password"
-                  icon="lock"
-                  iconType="dark"
-                  name="password"
-                  iconSize={24}
-                  onChange={this.resetInputError}
-                  placeholder={t('Password')}
-                />
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Checkbox
-                  checked={rememberMe}
-                  onChange={toggleRememberMe}
-                  className={styles.checkbox}
-                >
-                  {t('Remember me')}
-                </Checkbox>
-              </Form.Item>
-              <Form.Item className={styles.formItem} noLabel>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className={styles.submitBtn}
-                >
-                  {t('Login')}
-                </Button>
-              </Form.Item>
+              <TextField
+                className={this.formInputCls}
+                icon="human"
+                iconType="dark"
+                name="email"
+                iconSize={24}
+                onChange={this.resetInputError}
+                placeholder="username@example.com"
+              />
+              <TextField
+                className={this.formInputCls}
+                type="password"
+                icon="lock"
+                iconType="dark"
+                name="password"
+                iconSize={24}
+                onChange={this.resetInputError}
+                placeholder={t('Password')}
+              />
+              <CheckboxField
+                checked={rememberMe}
+                onChange={toggleRememberMe}
+                className={styles.checkbox}
+              >
+                {t('Remember me')}
+              </CheckboxField>
+              <ButtonField
+                type="primary"
+                htmlType="submit"
+                className={styles.submitBtn}
+              >
+                {t('Login')}
+              </ButtonField>
             </Form>
           </div>
           <Notification />
