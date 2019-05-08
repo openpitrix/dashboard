@@ -1,6 +1,6 @@
 {
   "name": "openpitrix-dashboard",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.1.5",
