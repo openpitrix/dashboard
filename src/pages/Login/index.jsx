@@ -5,14 +5,7 @@ import { withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 
 import Logo from 'components/Logo';
-import {
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  Notification,
-  Swipe
-} from 'components/Base';
+import { Form, Notification, Swipe } from 'components/Base';
 import { getUrlParam } from 'utils';
 import routes, { toRoute } from 'routes';
 import { itemProps } from 'config/login';
