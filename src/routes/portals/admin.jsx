@@ -20,6 +20,7 @@ import {
   Reviews,
   ReviewDetail,
   AppDeploy,
+  VersionFiles,
   CloudEnv,
   CloudInfo,
   NotificationServer
@@ -41,6 +42,10 @@ export default ({ prefix }) => (
     <WrapRoute
       path={`${prefix}/apps/:appId/deploy/:versionId?`}
       component={AppDeploy}
+    />
+    <WrapRoute
+      path={`${prefix}/apps/:appId/versionFiles/:versionId`}
+      component={VersionFiles}
     />
     <WrapRoute path={`${prefix}/apps/:appId`} component={AppDetail} />
 

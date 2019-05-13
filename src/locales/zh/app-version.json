@@ -90,5 +90,11 @@
   "Used to describe in detail the specific content of this update": "用于详细描述此次更新的具体内容",
   "Pricing information": "定价信息",
   "App pricing is not supported for the time being": "暂时不支持应用定价",
-  "VERSION_NO_FORMAT_INFO": "输入格式错误，正确格式为小数点和数字组成"
+  "VERSION_NO_FORMAT_INFO": "输入格式错误，正确格式为小数点和数字组成",
+
+  "View version": "查看版本",
+  "VERSION_REVIEW_SUBMIT": "你的审核已提交成功",
+  "VERSION_REVIEW_DESC": "整个审核包括应用服务商审核和平台审核两个环节，请留意审核通知。",
+  "View version package": "查看版本包",
+  "Version Files": "版本文件"
 }

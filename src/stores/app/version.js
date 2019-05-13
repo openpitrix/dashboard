@@ -68,7 +68,7 @@ export default class AppVersionStore extends Store {
 
       this.uploadError = {};
 
-      this.createResult = null;
+      this.requestResult = null;
 
       this.activeType = 'unprocessed';
 
@@ -97,6 +97,8 @@ export default class AppVersionStore extends Store {
       this.checkResult = {};
 
       this.reveiwTypes = [];
+
+      this.allFiles = [];
     });
   }
 
@@ -258,14 +260,14 @@ export default class AppVersionStore extends Store {
       await this.create(assign(defaultParams, params));
     }
 
-    if (get(this.createResult, 'version_id')) {
+    if (get(this.requestResult, 'version_id')) {
       if (!versionId) {
         await this.fetchAll();
         this.createStep = 2; // show application has been created page
       }
       return true;
     }
-    const { err, errDetail } = this.createResult;
+    const { err, errDetail } = this.requestResult;
     this.createError = errDetail || err;
     return false;
   };
@@ -273,14 +275,14 @@ export default class AppVersionStore extends Store {
   @action
   create = async (params = {}) => {
     this.isLoading = true;
-    this.createResult = await this.request.post('app_versions', params);
+    this.requestResult = await this.request.post('app_versions', params);
     this.isLoading = false;
   };
 
   @action
   modify = async (params = {}) => {
     this.isLoading = true;
-    this.createResult = await this.request.patch('app_versions', params);
+    this.requestResult = await this.request.patch('app_versions', params);
     this.isLoading = false;
   };
 
@@ -540,15 +542,27 @@ export default class AppVersionStore extends Store {
 
   @action
   fetchPackageFiles = async versionId => {
-    const result = await this.request.get(`app_version/package/files`, {
-      version_id: versionId,
-      files: ['README.md']
+    const result = await this.request.get('app_version/package/files', {
+      version_id: versionId
     });
     const files = get(result, 'files', {});
-    if (files['README.md']) {
-      this.readme = Base64.decode(files['README.md']);
-    } else {
-      this.readme = '';
+
+    this.allFiles = _.map(files, (item, key) => ({
+      name: key,
+      content: Base64.decode(item)
+    })).filter(item => !item.name.includes('._') && !item.name.startsWith('.'));
+  };
+
+  @action
+  modifyPackageFiles = async (versionId, packageFiles) => {
+    const data = {
+      version_id: versionId,
+      package_files: packageFiles
+    };
+    await this.modify(data);
+
+    if (get(this.requestResult, 'version_id')) {
+      this.success('Save successful');
     }
   };
 

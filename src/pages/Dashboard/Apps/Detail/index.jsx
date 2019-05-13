@@ -151,7 +151,7 @@ export default class AppDetail extends Component {
   };
 
   renderVersionHandleMenu = item => {
-    const { match, t } = this.props;
+    const { user, match, t } = this.props;
     const { appId } = match.params;
 
     return (
@@ -164,7 +164,7 @@ export default class AppDetail extends Component {
         >
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
-        {item.status === 'active' && (
+        {item.status === 'active' && user.isAdmin && (
           <span
             onClick={() => this.openSuspendDialog(item.version_id, 'suspend-version')
             }
@@ -172,7 +172,7 @@ export default class AppDetail extends Component {
             <Icon name="sort-descending" type="dark" /> {t('Suspend version')}
           </span>
         )}
-        {item.status === 'suspended' && (
+        {item.status === 'suspended' && user.isAdmin && (
           <span
             onClick={() => this.openSuspendDialog(item.version_id, 'recover-version')
             }
@@ -180,6 +180,14 @@ export default class AppDetail extends Component {
             <Icon name="sort-ascending" type="dark" /> {t('Recover version')}
           </span>
         )}
+        <Link
+          to={toRoute(routes.portal.versionFiles, {
+            appId,
+            versionId: item.version_id
+          })}
+        >
+          <Icon name="eye" type="dark" /> {t('View version package')}
+        </Link>
       </div>
     );
   };
@@ -273,10 +281,10 @@ export default class AppDetail extends Component {
   }
 
   renderVersions() {
-    const { appVersionStore, user, t } = this.props;
+    const { appVersionStore, t } = this.props;
     const { versions, isLoading } = appVersionStore;
 
-    let columns = [
+    const columns = [
       {
         title: t('Version No'),
         key: 'name',
@@ -317,9 +325,6 @@ export default class AppDetail extends Component {
         )
       }
     ];
-    if (!user.isAdmin) {
-      columns = columns.filter(item => item.key !== 'actions');
-    }
 
     const pagination = {
       tableType: 'application',

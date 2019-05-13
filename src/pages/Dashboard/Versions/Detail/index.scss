@@ -110,6 +110,16 @@
       box-shadow: 0 1px 0 0 $N10;
     }
   }
+
+  .operation {
+    margin-left: 12px;
+  }
+
+  :global {
+    .operate-menu {
+      text-align: left;
+    }
+  }
 }
 
 .updateLog {
