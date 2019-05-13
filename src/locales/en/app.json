@@ -116,5 +116,8 @@
   "HELM_APP_NAME_TIP": "Beginning with a lowercase letter, up to 14 characters long (supports numbers/lowercase letters/hyphens)",
   "MY_INSTANCES_DESCRIPTION": "A list of instances created based on the application.",
 
+  "VERSION_REVIEW_SUBMIT": "Your review has been submitted successfully.",
+  "VERSION_REVIEW_DESC": "  The review includes application service review and platform review. Please pay attention to the review notice.",
+
   "TIPS_DELETE_CATE": "After「{{cateName}}」is deleted, applications such as {{appNames}} will be automatically classified into 「uncategorized」"
 }

@@ -15,7 +15,8 @@ import {
   Runtimes,
   CreateRuntime,
   ClusterDetail,
-  AppDeploy
+  AppDeploy,
+  VersionFiles
 } from 'pages/Dashboard';
 
 import { Users, Roles } from 'portals/isv/pages';
@@ -48,6 +49,11 @@ export default ({ prefix }) => (
     <WrapRoute
       path={`${prefix}/apps/:appId/deploy/:versionId?`}
       component={AppDeploy}
+    />
+
+    <WrapRoute
+      path={`${prefix}/apps/:appId/versionFiles/:versionId`}
+      component={VersionFiles}
     />
 
     <WrapRoute component={NotFound} />

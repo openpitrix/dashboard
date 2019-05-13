@@ -124,3 +124,5 @@ export const DELETE_VERSION_STATUS = [
   'rejected',
   'suspended'
 ];
+
+export const EDIT_VERSION_STATUS = ['draft', 'rejected'];

@@ -18,6 +18,7 @@ export default {
     runtimes: '/:portal/runtimes',
     runtimeCreate: '/:portal/runtimes/create',
     deploy: '/:portal/apps/:appId/deploy/:versionId?',
+    versionFiles: '/:portal/apps/:appId/versionFiles/:versionId',
 
     // partial common routes
     clusters: '/:portal/clusters',

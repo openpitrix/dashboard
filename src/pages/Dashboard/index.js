@@ -6,6 +6,7 @@ export MyApps from './Apps/MyApps';
 export Audits from './Apps/Audits';
 export Versions from './Versions';
 export VersionDetail from './Versions/Detail';
+export VersionFiles from './Versions/Files';
 export AppInfo from './Apps/AppInfo';
 
 export Reviews from './Reviews';

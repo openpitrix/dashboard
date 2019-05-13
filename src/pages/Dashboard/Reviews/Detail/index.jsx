@@ -97,6 +97,14 @@ export default class ReviewDetail extends Component {
     return (
       <div className="operate-menu">
         <Link
+          to={toRoute(routes.portal.versionFiles, {
+            appId: reviewDetail.app_id,
+            versionId: reviewDetail.version_id
+          })}
+        >
+          <Icon name="eye" type="dark" /> {t('View version package')}
+        </Link>
+        <Link
           to={toRoute(routes.portal.deploy, {
             appId: reviewDetail.app_id,
             versionId: reviewDetail.version_id

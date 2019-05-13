@@ -23,7 +23,7 @@ import { versionTypes } from 'config/version-types';
 import AppDetail from 'pages/AppDetail';
 import { formatTime, sleep, mappingStatus } from 'utils';
 import routes, { toRoute } from 'routes';
-import { DELETE_VERSION_STATUS } from 'config/version.js';
+import { DELETE_VERSION_STATUS, EDIT_VERSION_STATUS } from 'config/version.js';
 import Info from '../../Apps/Info';
 import VersionEdit from '../VersionEdit';
 
@@ -55,6 +55,7 @@ const tags = [
   rootStore,
   appVersionStore: rootStore.appVersionStore,
   appStore: rootStore.appStore,
+  appDeployStore: rootStore.appDeployStore,
   clusterStore: rootStore.clusterStore,
   appCreateStore: rootStore.appCreateStore,
   categoryStore: rootStore.categoryStore,
@@ -70,6 +71,7 @@ export default class VersionDetail extends Component {
     const {
       appVersionStore,
       appStore,
+      appDeployStore,
       categoryStore,
       userStore,
       clusterStore,
@@ -108,6 +110,8 @@ export default class VersionDetail extends Component {
       version_id: versionId,
       noLimit: true
     });
+
+    await appDeployStore.fetchFilesByVersion(versionId);
   }
 
   componentWillUnmount() {
@@ -229,6 +233,39 @@ export default class VersionDetail extends Component {
             <Icon name="trash" type="dark" /> {t('Delete')}
           </span>
         )}
+      </div>
+    );
+  };
+
+  rederPkgHandleMenu = () => {
+    const {
+      appStore, appVersionStore, match, t
+    } = this.props;
+    const { appId, versionId } = match.params;
+    const { version, packageName, downloadPackage } = appVersionStore;
+    const { appDetail } = appStore;
+    const { status } = version;
+    const isEdit = EDIT_VERSION_STATUS.includes(status);
+    const pkgName = packageName || `${appDetail.name}-${version.name}`;
+
+    return (
+      <div className="operate-menu">
+        {isEdit && (
+          <span onClick={this.onUploadClick}>
+            <Icon name="pen" type="dark" /> {t('Modify')}
+          </span>
+        )}
+        <span onClick={() => downloadPackage(version.version_id, pkgName)}>
+          <Icon name="download" type="dark" /> {t('Download')}
+        </span>
+        <Link
+          to={toRoute(routes.portal.versionFiles, {
+            appId,
+            versionId
+          })}
+        >
+          <Icon name="eye" type="dark" /> {t('Package')}
+        </Link>
       </div>
     );
   };
@@ -502,15 +539,12 @@ export default class VersionDetail extends Component {
       uploadError,
       packageName,
       checkPackageFile,
-      uploadPackage,
-      downloadPackage
+      uploadPackage
     } = appVersionStore;
 
     const { appDetail } = appStore;
     const isShowUpload = isLoading || Boolean(createError);
     const errorFiles = _.keys(uploadError);
-
-    const isEdit = version.status === 'draft' || version.status === 'rejected';
     const pkgName = packageName || `${appDetail.name}-${version.name}`;
 
     return (
@@ -521,20 +555,11 @@ export default class VersionDetail extends Component {
             <div className={styles.time}>
               {t('Upload time')}:&nbsp;
               {formatTime(version.status_time, 'YYYY/MM/DD HH:mm:ss')}
-              <span
-                className={styles.link}
-                onClick={() => downloadPackage(version.version_id, pkgName)}
-              >
-                {t('Download')}
-              </span>
-              {isEdit && (
-                <span
-                  className={styles.link}
-                  onClick={() => this.onUploadClick()}
-                >
-                  {t('Modify')}
-                </span>
-              )}
+              <PopoverIcon
+                showBorder
+                className={styles.operation}
+                content={this.rederPkgHandleMenu()}
+              />
             </div>
           </div>
         )}
@@ -631,13 +656,13 @@ export default class VersionDetail extends Component {
     return (
       <div className={styles.successMesage}>
         <Icon className={styles.icon} name="checked-circle" size={48} />
-        <div className={styles.textHeader}>{t('你的应用已提交成功')}</div>
+        <div className={styles.textHeader}>{t('VERSION_REVIEW_SUBMIT')}</div>
         <Button type="primary" onClick={changeSubmitCheck}>
-          {t('查看版本')}
+          {t('View version')}
         </Button>
         <div className={styles.note}>
           <label>{t('Note')}</label>
-          {t('整个审核包括应用服务商审核和平台审核两个环节，请留意审核通知。')}
+          {t('VERSION_REVIEW_DESC')}
         </div>
       </div>
     );

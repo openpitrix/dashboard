@@ -1,0 +1,94 @@
+@import '~scss/vars';
+
+.versionFiles {
+  .container {
+    border: 1px solid $N10;
+  }
+
+  .header {
+    padding: 10px 20px;
+    line-height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $N500;
+    background-color: $N0;
+    border: 1px solid $N10;
+    border-bottom: 0 none;
+
+    .name {
+      @include title-font;
+      margin-bottom: 24px;
+    }
+
+    .image {
+      display: inline-block;
+      margin-right: 12px;
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+    }
+  }
+}
+
+.fileNames {
+  width: calc(calc(100% + 20px) / 12 * 3 + 20px) !important;
+  border-right: 1px solid $N10;
+
+  li {
+    box-sizing: border-box;
+    height: 44px;
+    padding: 11px 20px;
+    line-height: 20px;
+    font-size: 12px;
+    align-items: center;
+    cursor: pointer;
+
+    &.active {
+      margin-right: -2px;
+      background-color: $N0;
+      box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+      color: $N500;
+      font-weight: 500;
+    }
+
+    &:hover {
+      background-color: $N0;
+      box-shadow: 0 1px 0 0 $N10, 0 -1px 0 0 $N10;
+    }
+
+    .name {
+      @include textCut;
+      display: inline-block;
+      max-width: 200px;
+    }
+  }
+
+  .total {
+    float: right;
+    color: $N300;
+    flex: 1;
+  }
+}
+
+.fileContent {
+  background-color: $N0;
+  textarea,
+  .code {
+    padding: 20px;
+    width: 100%;
+    height: calc(100vh - 100px);
+    min-height: 500px;
+    line-height: 24px;
+    border: 0 none;
+    color: $N300;
+
+    &:focus {
+      color: $N500;
+    }
+  }
+
+  .readOnly:focus {
+    box-shadow: none;
+    color: $N300;
+  }
+}
