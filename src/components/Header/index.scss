@@ -179,9 +179,11 @@ $profile-hover-color: #efe6f8;
 
 .menusHeader {
   .menus {
+    position: relative;
     display: inline-block;
     margin-left: 8px;
     a {
+      position: relative;
       display: inline-block;
       margin: 0 8px;
       padding: 16px 0;
