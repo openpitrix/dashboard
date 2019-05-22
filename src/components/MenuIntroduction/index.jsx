@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { withTranslation } from 'react-i18next';
 
 import { Button } from 'components/Base';
 import styles from './index.scss';
 
+@withTranslation()
 export default class MenuIntroduction extends PureComponent {
   static propTypes = {
     activeIndex: PropTypes.number,
@@ -24,7 +26,8 @@ export default class MenuIntroduction extends PureComponent {
       image,
       activeIndex,
       total,
-      changeIntroduction
+      changeIntroduction,
+      t
     } = this.props;
     const dots = Array.from(Array(total).keys());
     const left = (activeIndex - 1) * 75;
@@ -53,18 +56,17 @@ export default class MenuIntroduction extends PureComponent {
                 key={index}
               />
             ))}
-
             <div className="pull-right">
               {activeIndex !== total && (
                 <label
                   className={styles.skip}
                   onClick={() => changeIntroduction(true)}
                 >
-                  跳过
+                  {t('Skip')}
                 </label>
               )}
               <Button type="primary" onClick={() => changeIntroduction()}>
-                {activeIndex === total ? '全部了解' : '了解'}
+                {activeIndex === total ? t('Learn all') : t('To understanding')}
               </Button>
             </div>
           </div>

@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/MenuIntroduction basic render 1`] = `
+<div>
+  <div
+    class="menuIntroduction"
+    style="left:0px"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="word"
+      >
+        <div
+          class="title"
+        >
+          title
+        </div>
+        <div
+          class="description"
+        >
+          test
+        </div>
+      </div>
+      <img
+        class="image"
+      />
+    </div>
+    <div
+      class="footer"
+    >
+      <label
+        class="dot active"
+      />
+      <label
+        class="dot"
+      />
+      <label
+        class="dot"
+      />
+      <label
+        class="dot"
+      />
+      <div
+        class="pull-right"
+      >
+        <label
+          class="skip"
+        >
+          Skip
+        </label>
+        <button
+          class="button primary"
+          type="button"
+        >
+          To understanding
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="shadow"
+  />
+</div>
+`;

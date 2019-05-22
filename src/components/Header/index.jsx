@@ -4,7 +4,7 @@ import { withRouter, Link, NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 
-import { Popover, Icon } from 'components/Base';
+import { Popover, Icon, Button } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
 import MenuIntroduction from 'components/MenuIntroduction';
@@ -14,14 +14,17 @@ import menus from './menus';
 import styles from './index.scss';
 
 const LinkItem = ({
-  to, title, path, index
+  to, title, path, isIntroduction
 }) => {
   const isActive = to === '/' ? ['/', '/apps/:appId'].includes(path) : path.startsWith(to);
   return (
     <NavLink
       to={to}
       exact
-      className={classnames({ [styles.active]: isActive })}
+      className={classnames({
+        [styles.active]: isActive,
+        [styles.introduction]: isIntroduction
+      })}
     >
       {title}
     </NavLink>
@@ -37,7 +40,7 @@ const LinkItem = ({
 @observer
 export class Header extends Component {
   state = {
-    activeIndex: 1
+    activeIndex: 0
   };
 
   changeIntroduction = isKnow => {
@@ -51,14 +54,47 @@ export class Header extends Component {
     }
   };
 
-  renderMenus = () => {
+  rederStartModal() {
+    const { t } = this.props;
+
+    return (
+      <div>
+        <div className={styles.startModal}>
+          <div className={styles.banner}>
+            <Icon
+              onClick={() => this.changeIntroduction(true)}
+              className={styles.close}
+              name="close"
+              size={36}
+              type="white"
+            />
+          </div>
+          <div className={styles.word}>
+            <div className={styles.title}>{t('WELCOME_TO_OPENPITRIX')}</div>
+            <div className={styles.description}>
+              {t('WELCOME_TO_OPENPITRIX_DESC')}
+            </div>
+            <Button
+              onClick={() => this.changeIntroduction()}
+              type="primary"
+              className={styles.startButton}
+            >
+              {t("Let's start")}
+            </Button>
+          </div>
+        </div>
+        <div className={styles.modalShadow} />
+      </div>
+    );
+  }
+
+  renderMenus() {
     const { t, user, match } = this.props;
     const { path } = match;
     const { activeIndex } = this.state;
     const introduction = (menus[activeIndex - 1] || {}).introduction;
     const len = menus.length;
     const noIntroduction = getCookie(`${user.user_id}_no_introduction`);
-    console.log(noIntroduction, activeIndex);
 
     if (!user.isLoggedIn()) {
       return null;
@@ -73,10 +109,14 @@ export class Header extends Component {
             title={t(item.name)}
             path={path}
             index={index}
+            isIntroduction={index === activeIndex - 1}
             changeIntroduction={this.changeIntroduction}
           />
         ))}
-        {!noIntroduction && (
+
+        {!noIntroduction && activeIndex === 0 && this.rederStartModal()}
+
+        {!noIntroduction && activeIndex > 0 && (
           <MenuIntroduction
             title={t(introduction.title)}
             description={t(introduction.description)}
@@ -88,7 +128,7 @@ export class Header extends Component {
         )}
       </div>
     );
-  };
+  }
 
   renderMenuBtns() {
     const { t, user } = this.props;
