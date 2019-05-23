@@ -148,7 +148,7 @@
     "style-loader": "^0.19.1",
     "url-loader": "^1.1.2",
     "webpack": "4.29.5",
-    "webpack-bundle-analyzer": "^2.11.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "3.2.3",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1",
