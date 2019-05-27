@@ -166,6 +166,7 @@ export default class Tooltip extends React.Component {
     return (
       <Manager
         className={classNames(styles.tooltip, className)}
+        data-cy="popoverBtn"
         ref={c => {
           this.rootNode = c;
         }}

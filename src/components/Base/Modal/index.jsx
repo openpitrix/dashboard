@@ -108,7 +108,7 @@ export default class Modal extends React.Component {
         {!hideFooter && (
           <div className={classnames(styles.footer, footerCls)}>
             <div className={classnames({ [styles.operationBtn]: !isDialog })}>
-              <Button type={btnType} onClick={onOk}>
+              <Button htmlType="submit" type={btnType} onClick={onOk}>
                 {okText || t('Confirm')}
               </Button>
               <Button onClick={onCancel}>{cancelText || t('Cancel')}</Button>

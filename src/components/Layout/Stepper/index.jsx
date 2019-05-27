@@ -101,7 +101,7 @@ export class Stepper extends Component {
         })}
       >
         {this.activeStep > 1 && (
-          <label onClick={prevStep}>
+          <label data-cy="prevStep" onClick={prevStep}>
             <Icon name="previous" size={20} type="dark" />
             {this.t('Back')}&nbsp;
             <span className={styles.operateText}>{text}</span>
@@ -171,6 +171,8 @@ export class Stepper extends Component {
             [styles.buttonActived]: !disableNextStep
           })}
           type="primary"
+          data-cy="nextStep"
+          data-disable={disableNextStep}
           onClick={this.nextStep}
         >
           {!btnText && activeStep === steps && (

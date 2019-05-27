@@ -137,12 +137,18 @@ export default class AppDetail extends Component {
           <Icon name="stateful-set" type="dark" /> {t('Deploy Instance')}
         </Link>
         {appDetail.status === 'active' && (
-          <span onClick={() => appStore.showModal('suspend-app')}>
+          <span
+            data-cy="suspendAppBtn"
+            onClick={() => appStore.showModal('suspend-app')}
+          >
             <Icon name="sort-descending" type="dark" /> {t('Suspend app')}
           </span>
         )}
         {appDetail.status === 'suspended' && (
-          <span onClick={() => appStore.showModal('recover-app')}>
+          <span
+            data-cy="suspendAppBtn"
+            onClick={() => appStore.showModal('recover-app')}
+          >
             <Icon name="sort-ascending" type="dark" /> {t('Recover app')}
           </span>
         )}
@@ -166,6 +172,7 @@ export default class AppDetail extends Component {
         </Link>
         {item.status === 'active' && (
           <span
+            data-cy="suspendAppBtn"
             onClick={() => this.openSuspendDialog(item.version_id, 'suspend-version')
             }
           >
@@ -458,7 +465,7 @@ export default class AppDetail extends Component {
           </span>
           <span className={styles.appName}>{appDetail.name}</span>
         </div>
-        <div className={styles.info}>
+        <div data-cy="appBaseInfo" className={styles.info}>
           <dl>
             <dt>{t('App No')}</dt>
             <dd>{appDetail.app_id}</dd>

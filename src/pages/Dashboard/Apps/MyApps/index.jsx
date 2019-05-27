@@ -93,7 +93,10 @@ export default class Apps extends Component {
           <Icon name="pen" type="dark" /> {t('Edit')}
         </span>
         {item.status !== 'active' && (
-          <span onClick={event => this.showDeleteApp(event, item)}>
+          <span
+            data-cy="deleteAppBtn"
+            onClick={event => this.showDeleteApp(event, item)}
+          >
             <Icon name="trash" type="dark" /> {t('Delete')}
           </span>
         )}
@@ -137,7 +140,11 @@ export default class Apps extends Component {
           onClear={onClear}
         />
         <Link to={toRoute(routes.portal._dev.appCreate)}>
-          <Button className={styles.btnCreate} type="primary">
+          <Button
+            data-cy="createApp"
+            className={styles.btnCreate}
+            type="primary"
+          >
             <Icon name="add" size={20} type="white" />
             <span className={styles.btnText}>{t('Create')} </span>
           </Button>

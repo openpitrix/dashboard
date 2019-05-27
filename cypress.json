@@ -1,0 +1,25 @@
+{
+  "baseUrl": "http://localhost:8000",
+  "projectId": "z6pq6h",
+  "env": {
+    "apiHosts": "http://localhost:8000, http://139.198.4.179:9100",
+    "stubAPIPatterns": "/api/.*",
+    "apiMaxWaitingTime": 60000,
+    "admin": {
+      "username": "CYPRESS-TEST-ADMIN@op.com",
+      "password": "TEST"
+    },
+    "user": {
+      "username": "CYPRESS-TEST-USER@op.com",
+      "password": "TEST",
+      "groupID": "gid-user"
+    },
+    "isv": {
+      "username": "CYPRESS-TEST-ISV@op.com",
+      "password": "TEST",
+      "groupID": "gid-isv"
+    },
+    "WAIT_A_MOMENT": 300,
+    "WAIT_A_Second": 1000
+  }
+}

@@ -123,6 +123,7 @@ export default class Versions extends Component {
             {historyVersions.map(item => (
               <li key={item.version_id}>
                 <Link
+                  data-cy="appVersionDetailLink"
                   to={toRoute(routes.portal._dev.versionDetail, {
                     appId: appDetail.app_id,
                     versionId: item.version_id
@@ -172,6 +173,7 @@ export default class Versions extends Component {
                 appId: appDetail.app_id,
                 versionId: item.version_id
               })}
+              data-cy="appVersionDetailLink"
             >
               <Status
                 type={mappingStatus(item.status)}

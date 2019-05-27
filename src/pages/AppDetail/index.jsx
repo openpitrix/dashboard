@@ -209,7 +209,9 @@ export default class AppDetail extends Component {
           <dd>
             {user.user_id ? (
               <Link to={deployUrl}>
-                <Button type="primary">{t('Deploy now')}</Button>
+                <Button data-cy="deploy" type="primary">
+                  {t('Deploy now')}
+                </Button>
               </Link>
             ) : (
               <Link to={`/login?redirect_url=${deployUrl}`}>

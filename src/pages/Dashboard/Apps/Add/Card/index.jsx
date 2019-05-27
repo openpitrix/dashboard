@@ -41,6 +41,7 @@ export default class CreateAppCard extends Component {
     return (
       <div
         onClick={() => !isAdded && !disable && selectVersionType(value)}
+        data-cy={name}
         className={classNames(styles.container, className, {
           [styles.addedContainer]: isAdded,
           [styles.selected]: isSelected,

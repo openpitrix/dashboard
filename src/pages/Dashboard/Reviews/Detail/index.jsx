@@ -221,10 +221,18 @@ export default class ReviewDetail extends Component {
                 <Button>{t('Deploy Test')}</Button>
               </Link>
             )}
-            <Button type="primary" onClick={() => this.handleReview('review')}>
+            <Button
+              data-cy="passBtn"
+              type="primary"
+              onClick={() => this.handleReview('review')}
+            >
               {t('Pass')}
             </Button>
-            <Button type="delete" onClick={this.showReasonDialog}>
+            <Button
+              data-cy="rejectBtn"
+              type="delete"
+              onClick={this.showReasonDialog}
+            >
               {t('Reject')}
             </Button>
           </div>

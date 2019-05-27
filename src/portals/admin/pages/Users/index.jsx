@@ -98,11 +98,15 @@ export default class Users extends Component {
     </div>
   );
 
-  renderGroupTitle = ({ title, key }, t, modifiable) => {
+  renderGroupTitle = ({ title, key, dataTestID = null }, t, modifiable) => {
     const { groupStore } = this.props;
     const canEidt = key !== _.get(groupStore, 'rootGroup.group_id');
     return (
-      <span key={`${key}-${title}`} className={styles.groupTitleContainer}>
+      <span
+        data-cy={dataTestID}
+        key={`${key}-${title}`}
+        className={styles.groupTitleContainer}
+      >
         <span key={`title-${key}-${title}`} className={styles.groupTitle}>
           {t(title)}
         </span>
@@ -223,6 +227,7 @@ export default class Users extends Component {
       ? {
         name: t('Add'),
         action: this.isAdmin ? ACTION.CreateAdminUser : '',
+        dataTestID: 'createUser',
         onClick: e => this.handleAction('renderModalCreateUser', e)
       }
       : {};
@@ -276,7 +281,9 @@ export default class Users extends Component {
         className={styles.usersContent}
         isLoading={isLoading}
       >
-        <h2 className={styles.header}>{t('All Accounts')}</h2>
+        <h2 data-test="test" className={styles.header}>
+          {t('All Accounts')}
+        </h2>
         <Panel className={classnames(styles.noShadow, styles.noPadding)}>
           <Grid>
             <Section size={3}>
@@ -288,6 +295,7 @@ export default class Users extends Component {
                 )}
               >
                 <Tree
+                  id="userGroupTree"
                   defaultExpandAll
                   showLine
                   hoverLine
