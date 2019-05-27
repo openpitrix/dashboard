@@ -40,10 +40,7 @@ export default class Login extends Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.showInputError === this.state.showInputError) {
-      return false;
-    }
-    return true;
+    return nextState.showInputErro !== this.state.showInputError;
   }
 
   get slideSetting() {
@@ -86,7 +83,6 @@ export default class Login extends Component {
   };
 
   handleSubmit = async (e, params) => {
-    console.log(params);
     const { store, user } = this.props;
     const res = await store.oauth2Check(params);
 
