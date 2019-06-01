@@ -62,6 +62,18 @@ export default class RootStore extends Store {
   };
 
   @action
+  setSession = async () => {
+    const setRole = this.getRegisteredStore('role').setRoleSession();
+    const setCloudInfo = this.getRegisteredStore('cloudEnv').setBasicSession();
+    await Promise.all([setRole, setCloudInfo]);
+  };
+
+  clearSession = () => {
+    localStorage.removeItem('menuApps'); // clear newest visited menu apps
+    sessionStorage.removeItem('module_elem_set');
+  };
+
+  @action
   notify = (...msg) => {
     let notification = {};
 

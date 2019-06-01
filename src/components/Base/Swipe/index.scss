@@ -1,0 +1,43 @@
+@import '~scss/vars';
+
+.container {
+  position: relative;
+  overflow: hidden;
+}
+.contentOuter {
+  position: absolute;
+}
+.content {
+  display: inline-flex;
+}
+
+.contentTransition {
+  transition: all 0.5s ease-in-out;
+}
+.dotsOuter {
+  position: absolute;
+  bottom: 3vh;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .dot + .dot {
+    margin-left: 20px;
+  }
+}
+.dot {
+  width: 40px;
+  height: 20px;
+  background: linear-gradient(
+    transparent 0%,
+    transparent 40%,
+    $Y75 40%,
+    $Y75 60%,
+    transparent 60%,
+    transparent
+  );
+  opacity: 0.12;
+  cursor: pointer;
+  &.active {
+    opacity: 1;
+  }
+}

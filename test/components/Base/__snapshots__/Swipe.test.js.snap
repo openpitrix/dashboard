@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Base/Swipe basic render 1`] = `
+<div
+  class="container"
+  style="height:100vh"
+>
+  <div
+    class="contentOuter"
+    style="width:600w;transform:translateX(-100w)"
+  >
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        4
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        1
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        2
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        3
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        4
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:100w"
+    >
+      <div>
+        1
+      </div>
+    </div>
+  </div>
+  <div
+    class="dotsOuter"
+  >
+    <span
+      class="dot active"
+    />
+    <span
+      class="dot"
+    />
+    <span
+      class="dot"
+    />
+    <span
+      class="dot"
+    />
+  </div>
+</div>
+`;
+
+exports[`Base/Swipe no render 1`] = `null`;
+
+exports[`Base/Swipe render no dots 1`] = `
+<div
+  class="container"
+  style="height:500px"
+>
+  <div
+    class="contentOuter"
+    style="width:3000px;transform:translateX(-500px)"
+  >
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        4
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        1
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        2
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        3
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        4
+      </div>
+    </div>
+    <div
+      class="content"
+      style="width:500px"
+    >
+      <div>
+        1
+      </div>
+    </div>
+  </div>
+</div>
+`;

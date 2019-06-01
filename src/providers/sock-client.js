@@ -49,6 +49,7 @@ export default class SockClient {
   }
 
   attachEvents() {
+    // eslint-disable-next-line
     this.client.onopen = () => console.log('open socket: ', this);
 
     this.client.onmessage = message => {
@@ -68,6 +69,7 @@ export default class SockClient {
       }
     };
 
+    // eslint-disable-next-line
     this.client.onerror = ev => console.error('sock err: ', ev);
   }
 

@@ -1,0 +1,16 @@
+@import '~scss/vars';
+
+.logo {
+  color: $N0;
+  display: inline-flex;
+  align-items: center;
+  &:hover {
+    color: $N0;
+  }
+}
+
+.icon {
+  padding: 8px;
+  background: $P100;
+  margin-right: 8px;
+}
