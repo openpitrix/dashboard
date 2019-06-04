@@ -1,4 +1,3 @@
-import superagent from 'superagent';
 import _ from 'lodash';
 
 function getFixtureName(spec) {
@@ -9,7 +8,7 @@ function getFixtureName(spec) {
 }
 
 // do not use arrow function because we need to use `this` inside
-beforeEach(function() {
+beforeEach(function () {
   const forceAPIRecording = Cypress.env('forceAPIRecording');
   /**
    * Recording mode is on when:
@@ -44,9 +43,8 @@ beforeEach(function() {
 
         // check if there is a key whose name is the same as this test case
         return cy.readFile(fixturePath, { log: false }).then(
-          apiRecords =>
-            // turn on recording if fixture for this test case is not existed
-            !apiRecords[testCaseTitle]
+          // turn on recording if fixture for this test case is not existed
+          apiRecords => !apiRecords[testCaseTitle]
         );
       });
   }
@@ -121,7 +119,7 @@ beforeEach(function() {
 });
 
 // do not use arrow function because we need to use `this` inside
-afterEach(function() {
+afterEach(function () {
   // only save api data to fixture when test is passed
   if (this.currentTest.state === 'passed' && cy._isInRecordingMode) {
     const testFileInfo = Cypress.spec;

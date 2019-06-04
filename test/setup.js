@@ -14,6 +14,7 @@ global.requestAnimationFrame = global.requestAnimationFrame || process.nextTick;
 @see https://github.com/facebook/jest/issues/3251
  */
 process.on('unhandledRejection', reason => {
+  // eslint-disable-next-line
   console.log('REJECTION', reason);
 });
 

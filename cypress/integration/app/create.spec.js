@@ -1,9 +1,8 @@
 import day from 'dayjs';
 
-const uniqueID = () =>
-  `${day(new Date()).format('MM-DD')}_${Math.random()
-    .toString(36)
-    .substr(2)}`;
+const uniqueID = () => `${day(new Date()).format('MM-DD')}_${Math.random()
+  .toString(36)
+  .substr(2)}`;
 
 describe('Deploy app', () => {
   const fileName = 'files/nginx-vm.tar.gz';

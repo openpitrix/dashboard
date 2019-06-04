@@ -3,8 +3,9 @@
   "version": "0.4.2",
   "private": true,
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "app-root-path": "^2.2.1",
+    "@babel/runtime": "^7.1.5",
+    "app-root-path": "^2.0.1",
+    "axios": "^0.18.0",
     "chokidar": "^2.0.4",
     "classnames": "^2.2.5",
     "clipboard": "^2.0.1",

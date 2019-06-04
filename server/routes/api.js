@@ -108,7 +108,7 @@ router.post('/api/*', async ctx => {
   }
 
   ctx.body = await agent.send(method, url, body, {
-    header: {
+    headers: {
       Authorization: `${authInfo.token_type} ${authInfo.access_token}`
     }
   });
