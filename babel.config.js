@@ -55,6 +55,7 @@ module.exports = {
     },
     server: {
       plugins: [
+        'dynamic-import-node',
         [
           'css-modules-transform',
           {

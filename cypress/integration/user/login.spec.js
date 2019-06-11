@@ -1,9 +1,7 @@
 describe('Dashboard Page login', () => {
   const username = 'admin@op.com';
   const password = 'passw0rd';
-
   it('Login admin account', () => {
-    cy.visit('login');
     cy.visit('login');
     cy.get('input[name="email"]')
       .type(username)

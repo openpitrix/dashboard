@@ -52,9 +52,10 @@
     "winston": "^3.1.0"
   },
   "scripts": {
-    "dev:client": "cross-env DEBUG=app NODE_ENV=development webpack --config webpack.dev.js --progress",
-    "dev:serve": "cross-env DEBUG_DEPTH=5 DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "test:serve": "cross-env DEBUG_DEPTH=5 DEBUG=test BABEL_ENV=server NODE_ENV=development MOCKAPI=1 nodemon -w lib -w server server/server.js",
+    "dev:client": "cross-env DEBUG=ap* NODE_ENV=development webpack --config webpack.dev.js --progress",
+    "dev:serve": "cross-env DEBUG_DEPTH=5 DEBUG=ap* BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
+    "test:serve": "cross-env DEBUG_DEPTH=5 DEBUG=ap*,mock* BABEL_ENV=server NODE_ENV=development MOCKAPI=1 nodemon -w lib -w server -w cypress server/server.js",
+    "test:watch": "cross-env npm-run-all -p watch:locale test:serve 'dev:client -- --watch'",
     "dev": "cross-env npm-run-all -p watch:locale dev:serve 'dev:client -- --watch'",
     "prod:build": "rimraf dist && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js --progress",
     "prod:serve": "NODE_ENV=production node dist/server.js",
