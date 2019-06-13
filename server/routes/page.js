@@ -9,7 +9,7 @@ router.get('/attachments/:id', async ctx => {
   const { apiServer } = ctx.store;
   const apiUrl = `${apiServer.split('/v')[0]}/attachments/${ctx.params.id}/raw`;
 
-  ctx.body = await agent.send('get', apiUrl);
+  ctx.body = await agent.get(apiUrl, '', { responseType: 'stream' });
 });
 
 router.get('/logout', ctx => {
