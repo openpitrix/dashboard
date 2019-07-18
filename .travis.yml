@@ -23,18 +23,14 @@ cache:
   override:
     - npm run cy:verify
 
-
 install:
   - yarn
-
-before_script:
-  - yarn e2e:serve
 
 script:
   - $(npm bin)/print-env CYPRESS
   - yarn test -- --coverage
+  - yarn e2e:serve
   - if [ $TRAVIS_BRANCH = 'master' ]; then yarn cy:verify && yarn cy:run; fi
-  - kill $(jobs -p) || true
 
 after_success:
   - yarn report-cov
