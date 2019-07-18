@@ -1,5 +1,11 @@
 describe('Login page', () => {
-  const { username, password } = Cypress.env('user');
+  let { username, password } = Cypress.env('user') || {};
+
+  // compat with ci mode
+  if (!username || !password) {
+    username = Cypress.env('user_username');
+    password = Cypress.env('user_password');
+  }
 
   before(() => {
     // disable stub api

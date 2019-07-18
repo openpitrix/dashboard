@@ -59,7 +59,7 @@
     "lint-fix": "eslint --fix --ext js,jsx .",
     "test": "jest -u",
     "e2e:client": "cross-env DEBUG=app NODE_ENV=development webpack --config webpack.dev.js --progress --define process.env.MOCKAPI=1",
-    "e2e:serve": "cross-env MOCKAPI=1 npm-run-all -p dev:serve e2e:client",
+    "e2e:serve": "cross-env MOCKAPI=1 npm-run-all -p locale dev:serve e2e:client",
     "e2e:fetch": "start-server-and-test e2e:serve 8000 cy:record",
     "e2e:open": "start-server-and-test e2e:serve 8000 cy:open",
     "e2e:run": "start-server-and-test e2e:serve 8000 cy:run",

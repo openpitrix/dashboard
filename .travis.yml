@@ -1,5 +1,4 @@
 sudo: required
-
 dist: trusty
 
 services:
@@ -8,8 +7,8 @@ services:
 language: node_js
 
 node_js:
-  - "8"
-  - "10"
+  - 8
+  - 10
 
 env:
   SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
@@ -27,13 +26,10 @@ cache:
 
 install:
   - yarn
-  - yarn locale
-  - yarn dev:client
 
 script:
   - yarn test -- --coverage
-  - yarn cy:verify
-  - yarn e2e:run
+  - if [ $TRAVIS_BRANCH = 'master' ]; then yarn cy:verify && yarn e2e:run; fi
 
 after_success:
   - yarn report-cov
@@ -41,7 +37,7 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: chmod +x ./deploy-docker.sh && ./deploy-docker.sh
+  script: bash ./deploy-docker.sh
   on:
     branch: master
 
