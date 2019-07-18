@@ -107,7 +107,7 @@ export default class NotificationItem extends React.Component {
         }}
       >
         <Icon name={iconMap[type]} size={18} color={colorStyles} />
-        {t(message)}
+        <pre>{t(message)}</pre>
       </div>
     );
   }

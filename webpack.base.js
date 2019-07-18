@@ -4,9 +4,9 @@ module.exports = {
   output: {
     pathinfo: false
   },
-  performance: {
-    hints: process.env.NODE_ENV === 'development' ? 'warning' : false
-  },
+  // performance: {
+  //   hints: process.env.NODE_ENV === 'development' ? 'warning' : false
+  // },
   module: {
     rules: [
       {
@@ -19,12 +19,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['cache-loader', 'style-loader', 'css-loader']
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.mjs', '.json', '.scss', '.css'],
+    extensions: ['.js', '.jsx', '.json', '.scss', '.css'],
     alias: {
       lib: path.resolve(__dirname, 'lib')
     },

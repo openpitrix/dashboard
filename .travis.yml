@@ -1,5 +1,4 @@
 sudo: required
-
 dist: trusty
 
 services:
@@ -24,16 +23,12 @@ cache:
   override:
     - npm run cy:verify
 
-
 install:
   - yarn
-  - yarn locale
-  - yarn dev:client
 
 script:
   - yarn test -- --coverage
-  - yarn cy:verify
-  - yarn e2e:test:run
+  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then yarn e2e:run; fi
 
 after_success:
   - yarn report-cov
@@ -41,7 +36,7 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: chmod +x ./deploy-docker.sh && ./deploy-docker.sh
+  script: bash ./deploy-docker.sh
   on:
     branch: master
 

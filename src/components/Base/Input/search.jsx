@@ -53,6 +53,7 @@ export default class Search extends React.Component {
           value={value}
           onChange={this.handleInputChange}
           onKeyDown={this.handleOnKeyDown}
+          data-cy="search-box"
         />
         {value && (
           <Icon

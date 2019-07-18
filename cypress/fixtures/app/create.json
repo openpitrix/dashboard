@@ -1,0 +1,1272 @@
+{
+  "Create app Create VM app": {
+    "records": [
+      {
+        "url": "/api/roles:module",
+        "method": "POST",
+        "_sid": "c27f3ac48ec0b7c55731dfd1875e87d2",
+        "data": {
+          "method": "get",
+          "role_id": "isv"
+        },
+        "response": {
+          "role_id": "isv",
+          "module": {
+            "module_elem_set": [
+              {
+                "module_id": "m4",
+                "module_name": "账户与权限",
+                "feature_set": [
+                  {
+                    "feature_id": "m4.f1",
+                    "feature_name": "用户管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m4.f1.a2",
+                        "action_bundle_name": "服务商创建用户",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f1.a2.api1",
+                            "api_method": "IsvCreateUser",
+                            "url_method": "post",
+                            "url": "/v1/isv_users"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f1.a5",
+                        "action_bundle_name": "修改用户角色",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f1.a5.api1",
+                            "api_method": "BindUserRole",
+                            "url_method": "post",
+                            "url": "/v1/user:role"
+                          },
+                          {
+                            "api_id": "m4.f1.a5.api2",
+                            "api_method": "UnbindUserRole",
+                            "url_method": "delete",
+                            "url": "/v1/user:role"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f1.a6",
+                        "action_bundle_name": "删除用户",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f1.a6.api1",
+                            "api_method": "DeleteUsers",
+                            "url_method": "delete",
+                            "url": "/v1/users"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m4.f1.a5",
+                      "m4.f1.a2",
+                      "m4.f1.a6"
+                    ]
+                  },
+                  {
+                    "feature_id": "m4.f2",
+                    "feature_name": "角色管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m4.f2.a5",
+                        "action_bundle_name": "修改角色权限",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f2.a5.api1",
+                            "api_method": "ModifyRoleModule",
+                            "url_method": "post",
+                            "url": "/v1/roles:module"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f2.a2",
+                        "action_bundle_name": "删除角色",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f2.a2.api1",
+                            "api_method": "DeleteRoles",
+                            "url_method": "delete",
+                            "url": "/v1/roles"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f2.a3",
+                        "action_bundle_name": "创建角色",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f2.a3.api1",
+                            "api_method": "CreateRole",
+                            "url_method": "post",
+                            "url": "/v1/roles"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f2.a4",
+                        "action_bundle_name": "修改角色",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f2.a4.api1",
+                            "api_method": "ModifyRole",
+                            "url_method": "patch",
+                            "url": "/v1/roles"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m4.f2.a5",
+                      "m4.f2.a2",
+                      "m4.f2.a4",
+                      "m4.f2.a3"
+                    ]
+                  },
+                  {
+                    "feature_id": "m4.f3",
+                    "feature_name": "用户组管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m4.f3.a1",
+                        "action_bundle_name": "创建用户组",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f3.a1.api1",
+                            "api_method": "CreateGroup",
+                            "url_method": "post",
+                            "url": "/v1/groups"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f3.a3",
+                        "action_bundle_name": "修改用户组",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f3.a3.api1",
+                            "api_method": "ModifyGroup",
+                            "url_method": "patch",
+                            "url": "/v1/groups"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f3.a4",
+                        "action_bundle_name": "删除用户组",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f3.a4.api1",
+                            "api_method": "DeleteGroups",
+                            "url_method": "delete",
+                            "url": "/v1/groups"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f3.a5",
+                        "action_bundle_name": "加入用户组",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f3.a5.api1",
+                            "api_method": "JoinGroup",
+                            "url_method": "post",
+                            "url": "/v1/groups:join"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m4.f3.a6",
+                        "action_bundle_name": "离开用户组",
+                        "api_set": [
+                          {
+                            "api_id": "m4.f3.a6.api1",
+                            "api_method": "LeaveGroup",
+                            "url_method": "post",
+                            "url": "/v1/groups:leave"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m4.f3.a4",
+                      "m4.f3.a3",
+                      "m4.f3.a6",
+                      "m4.f3.a1",
+                      "m4.f3.a5"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              },
+              {
+                "module_id": "m6",
+                "module_name": "我的环境/个人中心-测试环境",
+                "feature_set": [
+                  {
+                    "feature_id": "m6.f1",
+                    "feature_name": "环境管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m6.f1.a3",
+                        "action_bundle_name": "修改环境",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f1.a3.api1",
+                            "api_method": "ModifyRuntime",
+                            "url_method": "patch",
+                            "url": "/v1/runtimes"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m6.f1.a4",
+                        "action_bundle_name": "删除环境",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f1.a4.api1",
+                            "api_method": "DeleteRuntimes",
+                            "url_method": "delete",
+                            "url": "/v1/runtimes"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m6.f1.a1",
+                        "action_bundle_name": "创建环境",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f1.a1.api1",
+                            "api_method": "CreateRuntime",
+                            "url_method": "post",
+                            "url": "/v1/runtimes"
+                          },
+                          {
+                            "api_id": "m6.f1.a1.api2",
+                            "api_method": "DescribeRuntimeProviderZones",
+                            "url_method": "get",
+                            "url": "/v1/runtimes/zones"
+                          },
+                          {
+                            "api_id": "m6.f1.a1.api3",
+                            "api_method": "CreateDebugRuntime",
+                            "url_method": "post",
+                            "url": "/v1/debug_runtimes"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m6.f1.a2",
+                        "action_bundle_name": "查看环境统计信息",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f1.a2.api1",
+                            "api_method": "GetRuntimeStatistics",
+                            "url_method": "get",
+                            "url": "/v1/runtimes/statistics"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m6.f1.a1",
+                      "m6.f1.a3",
+                      "m6.f1.a2",
+                      "m6.f1.a4"
+                    ]
+                  },
+                  {
+                    "feature_id": "m6.f2",
+                    "feature_name": "授权信息管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m6.f2.a1",
+                        "action_bundle_name": "创建授权信息",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f2.a1.api1",
+                            "api_method": "CreateRuntimeCredential",
+                            "url_method": "post",
+                            "url": "/v1/runtimes/credentials"
+                          },
+                          {
+                            "api_id": "m6.f2.a1.api2",
+                            "api_method": "ValidateRuntimeCredential",
+                            "url_method": "post",
+                            "url": "/v1/runtimes/credentials:validate"
+                          },
+                          {
+                            "api_id": "m6.f2.a1.api3",
+                            "api_method": "CreateDebugRuntimeCredential",
+                            "url_method": "post",
+                            "url": "/v1/debug_runtimes/credentials"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m6.f2.a3",
+                        "action_bundle_name": "修改授权信息",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f2.a2.api1",
+                            "api_method": "ModifyRuntimeCredential",
+                            "url_method": "patch",
+                            "url": "/v1/runtimes/credentials"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m6.f2.a4",
+                        "action_bundle_name": "删除授权信息",
+                        "api_set": [
+                          {
+                            "api_id": "m6.f2.a3.api1",
+                            "api_method": "DeleteRuntimeCredentials",
+                            "url_method": "delete",
+                            "url": "/v1/runtimes/credentials"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m6.f2.a3",
+                      "m6.f2.a4",
+                      "m6.f2.a1"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              },
+              {
+                "module_id": "m7",
+                "module_name": "应用服务商管理",
+                "feature_set": [
+                  {
+                    "feature_id": "m7.f1",
+                    "feature_name": "服务商认证",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "isv_apply",
+                        "action_bundle_name": "服务商申请",
+                        "api_set": [
+                          {
+                            "api_id": "isv_apply.api1",
+                            "api_method": "SubmitVendorVerifyInfo",
+                            "url_method": "post",
+                            "url": "/v1/app_vendors"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "isv_apply"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              },
+              {
+                "module_id": "m1",
+                "module_name": "商店管理",
+                "feature_set": [
+                  {
+                    "feature_id": "m1.f2",
+                    "feature_name": "应用审核",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m1.f2.a1",
+                        "action_bundle_name": "提交审核",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f2.a1.api1",
+                            "api_method": "SubmitAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/submit"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m1.f2.a2",
+                        "action_bundle_name": "撤销审核",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f2.a2.api1",
+                            "api_method": "CancelAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/cancel"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "isv_review",
+                        "action_bundle_name": "服务商审核",
+                        "api_set": [
+                          {
+                            "api_id": "isv_review.api1",
+                            "api_method": "IsvRejectAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/reject/isv"
+                          },
+                          {
+                            "api_id": "isv_review.api2",
+                            "api_method": "IsvReviewAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/review/isv"
+                          },
+                          {
+                            "api_id": "isv_review.api3",
+                            "api_method": "IsvPassAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/pass/isv"
+                          },
+                          {
+                            "api_id": "isv_review.api4",
+                            "api_method": "DescribeAppVersionReviews",
+                            "url_method": "get",
+                            "url": "/v1/app_version_reviews"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "isv_review",
+                      "m1.f2.a2",
+                      "m1.f2.a1"
+                    ]
+                  },
+                  {
+                    "feature_id": "m1.f1",
+                    "feature_name": "应用管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m1.f1.a1",
+                        "action_bundle_name": "查看应用统计信息",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f1.a1.api2",
+                            "api_method": "GetAppStatistics",
+                            "url_method": "get",
+                            "url": "/v1/apps/statistics"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m1.f1.a2",
+                        "action_bundle_name": "创建应用",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f1.a2.api1",
+                            "api_method": "CreateApp",
+                            "url_method": "post",
+                            "url": "/v1/apps"
+                          },
+                          {
+                            "api_id": "m1.f1.a2.api2",
+                            "api_method": "CreateAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_versions"
+                          },
+                          {
+                            "api_id": "m1.f1.a2.api3",
+                            "api_method": "ValidatePackage",
+                            "url_method": "post",
+                            "url": "/v1/apps/validate_package"
+                          },
+                          {
+                            "api_id": "m1.f1.a2.api4",
+                            "api_method": "UploadAppAttachment",
+                            "url_method": "patch",
+                            "url": "/v1/app/attachment"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m1.f1.a3",
+                        "action_bundle_name": "修改应用",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f1.a3.api1",
+                            "api_method": "ModifyApp",
+                            "url_method": "patch",
+                            "url": "/v1/apps"
+                          },
+                          {
+                            "api_id": "m1.f1.a3.api3",
+                            "api_method": "ModifyAppVersion",
+                            "url_method": "patch",
+                            "url": "/v1/app_versions"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m1.f1.a4",
+                        "action_bundle_name": "删除应用",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f1.a4.api1",
+                            "api_method": "DeleteApps",
+                            "url_method": "delete",
+                            "url": "/v1/apps"
+                          },
+                          {
+                            "api_id": "m1.f1.a4.api2",
+                            "api_method": "DeleteAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/delete"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m1.f1.a5",
+                        "action_bundle_name": "发布应用",
+                        "api_set": [
+                          {
+                            "api_id": "m1.f1.a5.api1",
+                            "api_method": "ReleaseAppVersion",
+                            "url_method": "post",
+                            "url": "/v1/app_version/action/release"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m1.f1.a2",
+                      "m1.f1.a5",
+                      "m1.f1.a4",
+                      "m1.f1.a1",
+                      "m1.f1.a3"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              },
+              {
+                "module_id": "m2",
+                "module_name": "个人中心",
+                "feature_set": [
+                  {
+                    "feature_id": "m2.f1",
+                    "feature_name": "ssh key管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m2.f1.a2",
+                        "action_bundle_name": "查看ssh key",
+                        "api_set": [
+                          {
+                            "api_id": "m2.f1.a2.api1",
+                            "api_method": "DescribeKeyPairs",
+                            "url_method": "get",
+                            "url": "/v1/clusters/key_pairs"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m2.f1.a3",
+                        "action_bundle_name": "删除ssh key",
+                        "api_set": [
+                          {
+                            "api_id": "m2.f1.a3.api1",
+                            "api_method": "DeleteKeyPairs",
+                            "url_method": "delete",
+                            "url": "/v1/clusters/key_pairs"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m2.f1.a4",
+                        "action_bundle_name": "绑定ssh key",
+                        "api_set": [
+                          {
+                            "api_id": "m2.f1.a4.api1",
+                            "api_method": "AttachKeyPairs",
+                            "url_method": "post",
+                            "url": "/v1/clusters/key_pair/attach"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m2.f1.a5",
+                        "action_bundle_name": "解绑ssh key",
+                        "api_set": [
+                          {
+                            "api_id": "m2.f1.a5.api1",
+                            "api_method": "DetachKeyPairs",
+                            "url_method": "post",
+                            "url": "/v1/clusters/key_pair/detach"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m2.f1.a1",
+                        "action_bundle_name": "创建ssh key",
+                        "api_set": [
+                          {
+                            "api_id": "m2.f1.a1.api1",
+                            "api_method": "CreateKeyPair",
+                            "url_method": "post",
+                            "url": "/v1/clusters/key_pairs"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m2.f1.a2",
+                      "m2.f1.a5",
+                      "m2.f1.a3",
+                      "m2.f1.a4",
+                      "m2.f1.a1"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              },
+              {
+                "module_id": "m3",
+                "module_name": "我的实例",
+                "feature_set": [
+                  {
+                    "feature_id": "m3.f1",
+                    "feature_name": "应用实例管理",
+                    "action_bundle_set": [
+                      {
+                        "action_bundle_id": "m3.f1.a1",
+                        "action_bundle_name": "创建应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a1.api1",
+                            "api_method": "CreateCluster",
+                            "url_method": "post",
+                            "url": "/v1/clusters/create"
+                          },
+                          {
+                            "api_id": "m3.f1.a1.api2",
+                            "api_method": "CreateDebugCluster",
+                            "url_method": "post",
+                            "url": "/v1/debug_clusters/create"
+                          },
+                          {
+                            "api_id": "m3.f1.a1.api3",
+                            "api_method": "DescribeSubnets",
+                            "url_method": "get",
+                            "url": "/v1/clusters/subnets"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a10",
+                        "action_bundle_name": "关闭应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a10.api1",
+                            "api_method": "StopClusters",
+                            "url_method": "post",
+                            "url": "/v1/clusters/stop"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a13",
+                        "action_bundle_name": "恢复应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a13.api1",
+                            "api_method": "RecoverClusters",
+                            "url_method": "post",
+                            "url": "/v1/clusters/recover"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a5",
+                        "action_bundle_name": "回滚应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a5.api1",
+                            "api_method": "RollbackCluster",
+                            "url_method": "post",
+                            "url": "/v1/clusters/rollback"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a7",
+                        "action_bundle_name": "横向伸缩应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a7.api1",
+                            "api_method": "AddClusterNodes",
+                            "url_method": "post",
+                            "url": "/v1/clusters/add_nodes"
+                          },
+                          {
+                            "api_id": "m3.f1.a7.api2",
+                            "api_method": "DeleteClusterNodes",
+                            "url_method": "post",
+                            "url": "/v1/clusters/delete_nodes"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a11",
+                        "action_bundle_name": "启动应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a11.api1",
+                            "api_method": "StartClusters",
+                            "url_method": "post",
+                            "url": "/v1/clusters/start"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a12",
+                        "action_bundle_name": "销毁应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a12.api1",
+                            "api_method": "CeaseClusters",
+                            "url_method": "post",
+                            "url": "/v1/clusters/cease"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a2",
+                        "action_bundle_name": "修改应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a2.api1",
+                            "api_method": "ModifyClusterAttributes",
+                            "url_method": "post",
+                            "url": "/v1/clusters/modify"
+                          },
+                          {
+                            "api_id": "m3.f1.a2.api2",
+                            "api_method": "ModifyClusterNodeAttributes",
+                            "url_method": "post",
+                            "url": "/v1/clusters/modify_nodes"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a3",
+                        "action_bundle_name": "删除应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a3.api1",
+                            "api_method": "DeleteClusters",
+                            "url_method": "post",
+                            "url": "/v1/clusters/delete"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a4",
+                        "action_bundle_name": "升级应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a4.api1",
+                            "api_method": "UpgradeCluster",
+                            "url_method": "post",
+                            "url": "/v1/clusters/upgrade"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a6",
+                        "action_bundle_name": "纵向伸缩应用实例",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a6.api1",
+                            "api_method": "ResizeCluster",
+                            "url_method": "post",
+                            "url": "/v1/clusters/resize"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a8",
+                        "action_bundle_name": "更新环境变量",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a8.api1",
+                            "api_method": "UpdateClusterEnv",
+                            "url_method": "patch",
+                            "url": "/v1/clusters/update_env"
+                          }
+                        ]
+                      },
+                      {
+                        "action_bundle_id": "m3.f1.a9",
+                        "action_bundle_name": "查看应用实例统计信息",
+                        "api_set": [
+                          {
+                            "api_id": "m3.f1.a9.api4",
+                            "api_method": "GetClusterStatistics",
+                            "url_method": "get",
+                            "url": "/v1/clusters/statistics"
+                          }
+                        ]
+                      }
+                    ],
+                    "checked_action_bundle_id_set": [
+                      "m3.f1.a6",
+                      "m3.f1.a2",
+                      "m3.f1.a13",
+                      "m3.f1.a8",
+                      "m3.f1.a1",
+                      "m3.f1.a3",
+                      "m3.f1.a10",
+                      "m3.f1.a7",
+                      "m3.f1.a4",
+                      "m3.f1.a12",
+                      "m3.f1.a9",
+                      "m3.f1.a11",
+                      "m3.f1.a5"
+                    ]
+                  }
+                ],
+                "data_level": "group",
+                "is_check_all": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "url": "/api/apps",
+        "method": "POST",
+        "_sid": "5b90e989822af29c539545feef3aa9a1",
+        "data": {
+          "method": "get",
+          "sort_key": "status_time",
+          "limit": 5,
+          "status": [
+            "draft",
+            "active",
+            "suspended"
+          ]
+        },
+        "response": {
+          "total_count": 2,
+          "app_set": [
+            {
+              "app_id": "app-5EXo8B0z3kYv",
+              "active": false,
+              "name": "mock-app-001",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:55:16Z",
+              "status_time": "2019-07-18T07:55:16Z",
+              "latest_app_version": {
+                "version_id": "appv-Y438rnvl3Pwk",
+                "active": false,
+                "app_id": "app-5EXo8B0z3kYv",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-xSck7Gxac3NAefxyoENDfVRCbo9I9B-2VMgorDv36Er",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:55:16Z",
+                "status_time": "2019-07-18T07:55:16Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            },
+            {
+              "app_id": "app-mEzg43JY3oBz",
+              "active": false,
+              "name": "CYPRESS-TEST-VM-001",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:36:06Z",
+              "status_time": "2019-07-18T07:36:06Z",
+              "latest_app_version": {
+                "version_id": "appv-k88Bn5rX5Pvo",
+                "active": false,
+                "app_id": "app-mEzg43JY3oBz",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-jMcBwUpjYZZLr8bpiVxE6paqn7RPiy-ERLjEjG23n6y",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:36:06Z",
+                "status_time": "2019-07-18T07:36:06Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/api/apps",
+        "method": "POST",
+        "_sid": "2a4549fafa9e47e5f2e57411530bb758",
+        "data": {
+          "method": "get",
+          "sort_key": "status_time",
+          "limit": 48,
+          "offset": 0,
+          "status": [
+            "draft",
+            "active",
+            "suspended"
+          ]
+        },
+        "response": {
+          "total_count": 2,
+          "app_set": [
+            {
+              "app_id": "app-5EXo8B0z3kYv",
+              "active": false,
+              "name": "mock-app-001",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:55:16Z",
+              "status_time": "2019-07-18T07:55:16Z",
+              "latest_app_version": {
+                "version_id": "appv-Y438rnvl3Pwk",
+                "active": false,
+                "app_id": "app-5EXo8B0z3kYv",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-xSck7Gxac3NAefxyoENDfVRCbo9I9B-2VMgorDv36Er",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:55:16Z",
+                "status_time": "2019-07-18T07:55:16Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            },
+            {
+              "app_id": "app-mEzg43JY3oBz",
+              "active": false,
+              "name": "CYPRESS-TEST-VM-001",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:36:06Z",
+              "status_time": "2019-07-18T07:36:06Z",
+              "latest_app_version": {
+                "version_id": "appv-k88Bn5rX5Pvo",
+                "active": false,
+                "app_id": "app-mEzg43JY3oBz",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-jMcBwUpjYZZLr8bpiVxE6paqn7RPiy-ERLjEjG23n6y",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:36:06Z",
+                "status_time": "2019-07-18T07:36:06Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/api/apps/validate_package",
+        "method": "POST",
+        "_sid": "5bdb2d0bfddb64624856247e942ac2b4",
+        "data": {
+          "method": "post",
+          "version_type": "vmbased",
+          "version_package": "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"
+        },
+        "response": {
+          "name": "mock-app-01",
+          "version_name": "1.1.0 [1.0.0]"
+        }
+      },
+      {
+        "url": "/api/apps",
+        "method": "POST",
+        "_sid": "8eb28675b7754657354f80af503daf5e",
+        "data": {
+          "method": "post",
+          "name": "mock-app-01",
+          "version_name": "1.1.0 [1.0.0]",
+          "version_type": "vmbased",
+          "version_package": "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"
+        },
+        "response": {
+          "app_id": "app-49Oqy2k8x8MP",
+          "version_id": "appv-Dj080xomKmp9"
+        }
+      },
+      {
+        "url": "/api/apps",
+        "method": "POST",
+        "_sid": "de5f1d5518ea00ce00c0921229b61b3f",
+        "data": {
+          "method": "get",
+          "limit": 1,
+          "app_id": "app-49Oqy2k8x8MP"
+        },
+        "response": {
+          "total_count": 1,
+          "app_set": [
+            {
+              "app_id": "app-49Oqy2k8x8MP",
+              "active": false,
+              "name": "mock-app-01",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:58:15Z",
+              "status_time": "2019-07-18T07:58:15Z",
+              "latest_app_version": {
+                "version_id": "appv-Dj080xomKmp9",
+                "active": false,
+                "app_id": "app-49Oqy2k8x8MP",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-OuKekXhcrK2yU0nscXeg3mjO1ulGIc-20YMyKr636Er",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:58:15Z",
+                "status_time": "2019-07-18T07:58:15Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/api/app_versions",
+        "method": "POST",
+        "_sid": "96e1fcf3f475386f0a705cd79ce079d8",
+        "data": {
+          "method": "get",
+          "sort_key": "create_time",
+          "limit": 200,
+          "offset": 0,
+          "status": [
+            "draft",
+            "submitted",
+            "in-review",
+            "passed",
+            "rejected",
+            "active",
+            "suspended"
+          ],
+          "app_id": "app-49Oqy2k8x8MP"
+        },
+        "response": {
+          "total_count": 1,
+          "app_version_set": [
+            {
+              "version_id": "appv-Dj080xomKmp9",
+              "active": false,
+              "app_id": "app-49Oqy2k8x8MP",
+              "owner": "uid-ozEXn41z8W5V",
+              "name": "1.1.0 [1.0.0]",
+              "description": "",
+              "package_name": "att-OuKekXhcrK2yU0nscXeg3mjO1ulGIc-20YMyKr636Er",
+              "status": "draft",
+              "review_id": "",
+              "create_time": "2019-07-18T07:58:15Z",
+              "status_time": "2019-07-18T07:58:15Z",
+              "sequence": 0,
+              "message": "",
+              "type": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/api/apps",
+        "method": "POST",
+        "_sid": "f8ab9cb557fcb617faa852846dd14e15",
+        "data": {
+          "method": "get",
+          "app_id": "app-49Oqy2k8x8MP",
+          "bypass_auth": true
+        },
+        "response": {
+          "total_count": 1,
+          "app_set": [
+            {
+              "app_id": "app-49Oqy2k8x8MP",
+              "active": false,
+              "name": "mock-app-01",
+              "repo_id": "",
+              "description": "",
+              "status": "draft",
+              "home": "",
+              "icon": "",
+              "screenshots": "",
+              "maintainers": "",
+              "keywords": "",
+              "sources": "",
+              "readme": "",
+              "chart_name": "",
+              "abstraction": "",
+              "tos": "",
+              "owner": "uid-ozEXn41z8W5V",
+              "create_time": "2019-07-18T07:58:15Z",
+              "status_time": "2019-07-18T07:58:15Z",
+              "latest_app_version": {
+                "version_id": "appv-Dj080xomKmp9",
+                "active": false,
+                "app_id": "app-49Oqy2k8x8MP",
+                "owner": "uid-ozEXn41z8W5V",
+                "name": "1.1.0 [1.0.0]",
+                "description": "",
+                "package_name": "att-OuKekXhcrK2yU0nscXeg3mjO1ulGIc-20YMyKr636Er",
+                "status": "draft",
+                "review_id": "",
+                "create_time": "2019-07-18T07:58:15Z",
+                "status_time": "2019-07-18T07:58:15Z",
+                "sequence": 0,
+                "message": "",
+                "type": "vmbased",
+                "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+              },
+              "app_version_types": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V",
+              "isv": "uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      },
+      {
+        "url": "/api/app_versions",
+        "method": "POST",
+        "_sid": "4933aa55dc9fdf892130f3f9d05a0c89",
+        "data": {
+          "method": "get",
+          "version_id": "appv-Dj080xomKmp9"
+        },
+        "response": {
+          "total_count": 1,
+          "app_version_set": [
+            {
+              "version_id": "appv-Dj080xomKmp9",
+              "active": false,
+              "app_id": "app-49Oqy2k8x8MP",
+              "owner": "uid-ozEXn41z8W5V",
+              "name": "1.1.0 [1.0.0]",
+              "description": "",
+              "package_name": "att-OuKekXhcrK2yU0nscXeg3mjO1ulGIc-20YMyKr636Er",
+              "status": "draft",
+              "review_id": "",
+              "create_time": "2019-07-18T07:58:15Z",
+              "status_time": "2019-07-18T07:58:15Z",
+              "sequence": 0,
+              "message": "",
+              "type": "vmbased",
+              "owner_path": "gid-v0gk8Y1z8W5V:uid-ozEXn41z8W5V"
+            }
+          ]
+        }
+      }
+    ],
+    "timestamp": "2019-07-18T07:58:17.974Z"
+  }
+}

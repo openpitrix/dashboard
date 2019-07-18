@@ -1,9 +1,9 @@
 const Router = require('koa-router');
 const debug = require('debug')('app');
-
 const agent = require('../../lib/request').default;
 const logger = require('../logger');
 const utils = require('../utils');
+const { getHashByParams } = require('../../lib/mock');
 
 const router = new Router();
 const authEndpoint = 'oauth2/token';
@@ -14,6 +14,8 @@ const resourcesBypassAuth = [
   'attachment'
 ];
 
+const needMockApi = !!process.env.MOCKAPI;
+
 router.post('/api/*', async ctx => {
   let endpoint = ctx.path.replace(/^\/?api\//, '');
 
@@ -23,10 +25,10 @@ router.post('/api/*', async ctx => {
 
   const { apiServer, clientId, clientSecret } = ctx.store;
   const { body } = ctx.request;
-  const { method } = body;
-  const url = [apiServer, endpoint].join('/');
+  const { method = 'get' } = body;
+  let url = [apiServer, endpoint].join('/');
 
-  logger.info(`%s: %s, %O`, method.toUpperCase(), url, body);
+  logger.info(`[api route] %s: %s, %O`, method.toUpperCase(), url, body);
 
   delete body.method;
 
@@ -107,9 +109,15 @@ router.post('/api/*', async ctx => {
     ctx.throw(401, 'Unauthorized: invalid access token');
   }
 
+  if (needMockApi) {
+    url += `?_sid=${getHashByParams(body)}`;
+  }
+
   ctx.body = await agent.send(method, url, body, {
-    header: {
-      Authorization: `${authInfo.token_type} ${authInfo.access_token}`
+    headers: {
+      Authorization: `${authInfo.token_type || 'Bearer'} ${
+        authInfo.access_token
+      }`
     }
   });
 });

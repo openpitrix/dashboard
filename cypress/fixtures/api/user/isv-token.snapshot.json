@@ -1,7 +1,0 @@
-{
-  "token_type": "Bearer",
-  "expires_in": 7200,
-  "access_token": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1NTc4MDU0MzMsImlhdCI6MTU1Nzc5ODIzMywic3ViIjoidWlkLXJPd0xLTDQ1QU9ZSyJ9.1jJ3443bU063qMbuUfaLUK8p5mnyD2t-qWDdV6MMnX8dzDDoTTjAL5GsHbM4AaieqRC851CCId-sQ_4EbTnMBw",
-  "refresh_token": "rY93k5MFEkYIfTy9zRU8y1qAbaM7D5NfSHK8tbqg2A4HkbgEfj",
-  "id_token": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1NTc4MDU0MzMsImlhdCI6MTU1Nzc5ODIzMywic3ViIjoidWlkLXJPd0xLTDQ1QU9ZSyJ9.S23f2fOQs6m2MHcJIk0rpnJ4i3SafLky6zmpYro6_uR67k4J2saNFKQnrO9fOWMEr9_ginbT1vkpsVTuPyFbew"
-}
