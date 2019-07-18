@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="511" height="302" viewBox="0 0 511 302">
+    <defs>
+        <linearGradient id="a" x1="50%" x2="50%" y1="-350.031%" y2="81.715%">
+            <stop offset="0%" stop-color="#343945"/>
+            <stop offset="100%" stop-color="#343945" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="b" x1="39.958%" x2="43.058%" y1="-34.661%" y2="94.649%">
+            <stop offset="0%" stop-color="#F7B236"/>
+            <stop offset="100%" stop-color="#FCD966" stop-opacity="0"/>
+        </linearGradient>
+        <rect id="d" width="176" height="97" x="131" y="72" rx="2"/>
+        <filter id="c" width="115.9%" height="128.9%" x="-8%" y="-10.3%" filterUnits="objectBoundingBox">
+            <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.28627451 0 0 0 0 0.129411765 0 0 0 0 0.678431373 0 0 0 0.06 0"/>
+            <feOffset dy="4" in="SourceAlpha" result="shadowOffsetOuter2"/>
+            <feGaussianBlur in="shadowOffsetOuter2" result="shadowBlurOuter2" stdDeviation="4"/>
+            <feColorMatrix in="shadowBlurOuter2" result="shadowMatrixOuter2" values="0 0 0 0 0.137254902 0 0 0 0 0.137254902 0 0 0 0 0.141176471 0 0 0 0.04 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="shadowMatrixOuter2"/>
+            </feMerge>
+        </filter>
+        <rect id="f" width="176" height="97" x="327" y="72" rx="2"/>
+        <filter id="e" width="115.9%" height="128.9%" x="-8%" y="-10.3%" filterUnits="objectBoundingBox">
+            <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.28627451 0 0 0 0 0.129411765 0 0 0 0 0.678431373 0 0 0 0.06 0"/>
+            <feOffset dy="4" in="SourceAlpha" result="shadowOffsetOuter2"/>
+            <feGaussianBlur in="shadowOffsetOuter2" result="shadowBlurOuter2" stdDeviation="4"/>
+            <feColorMatrix in="shadowBlurOuter2" result="shadowMatrixOuter2" values="0 0 0 0 0.137254902 0 0 0 0 0.137254902 0 0 0 0 0.141176471 0 0 0 0.04 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="shadowMatrixOuter2"/>
+            </feMerge>
+        </filter>
+        <rect id="h" width="176" height="97" x="131" y="189" rx="2"/>
+        <filter id="g" width="115.9%" height="128.9%" x="-8%" y="-10.3%" filterUnits="objectBoundingBox">
+            <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.28627451 0 0 0 0 0.129411765 0 0 0 0 0.678431373 0 0 0 0.06 0"/>
+            <feOffset dy="4" in="SourceAlpha" result="shadowOffsetOuter2"/>
+            <feGaussianBlur in="shadowOffsetOuter2" result="shadowBlurOuter2" stdDeviation="4"/>
+            <feColorMatrix in="shadowBlurOuter2" result="shadowMatrixOuter2" values="0 0 0 0 0.137254902 0 0 0 0 0.137254902 0 0 0 0 0.141176471 0 0 0 0.04 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="shadowMatrixOuter2"/>
+            </feMerge>
+        </filter>
+        <rect id="j" width="176" height="97" x="327" y="189" rx="2"/>
+        <filter id="i" width="115.9%" height="128.9%" x="-8%" y="-10.3%" filterUnits="objectBoundingBox">
+            <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.28627451 0 0 0 0 0.129411765 0 0 0 0 0.678431373 0 0 0 0.06 0"/>
+            <feOffset dy="4" in="SourceAlpha" result="shadowOffsetOuter2"/>
+            <feGaussianBlur in="shadowOffsetOuter2" result="shadowBlurOuter2" stdDeviation="4"/>
+            <feColorMatrix in="shadowBlurOuter2" result="shadowMatrixOuter2" values="0 0 0 0 0.137254902 0 0 0 0 0.137254902 0 0 0 0 0.141176471 0 0 0 0.04 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="shadowMatrixOuter2"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="url(#a)" fill-rule="nonzero" d="M0 199.74h36.833l59.43-19 59.43-59 59.43-60L274.032 36l59.95 5.74 59.43-17L452.842 0v290.74L0 287.74v-88z"/>
+        <path fill="url(#b)" fill-rule="nonzero" d="M0 249.74l36.833-30 59.43 11 59.43-89 59.43-30 59.43 32 59.43-72 59.43-17L452.842 10v300.74L0 307.74v-58z"/>
+        <use fill="#000" filter="url(#c)" xlink:href="#d"/>
+        <use fill="#FFF" xlink:href="#d"/>
+        <use fill="#000" filter="url(#e)" xlink:href="#f"/>
+        <use fill="#FFF" xlink:href="#f"/>
+        <use fill="#000" filter="url(#g)" xlink:href="#h"/>
+        <use fill="#FFF" xlink:href="#h"/>
+        <use fill="#000" filter="url(#i)" xlink:href="#j"/>
+        <use fill="#FFF" xlink:href="#j"/>
+        <circle cx="159" cy="100" r="12" fill="#B79DE2" fill-rule="nonzero"/>
+        <rect width="35" height="12" x="179" y="94" fill="#78839E" fill-rule="nonzero" rx="2"/>
+        <rect width="144" height="12" x="147" y="124" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <rect width="117" height="12" x="147" y="141" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <circle cx="355" cy="100" r="12" fill="#EC9D9E" fill-rule="nonzero"/>
+        <rect width="60" height="12" x="375" y="94" fill="#78839E" fill-rule="nonzero" rx="2"/>
+        <rect width="144" height="12" x="343" y="124" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <rect width="24" height="12" x="343" y="141" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <circle cx="159" cy="217" r="12" fill="#9BDAB2" fill-rule="nonzero"/>
+        <rect width="65" height="12" x="179" y="211" fill="#78839E" fill-rule="nonzero" rx="2"/>
+        <rect width="144" height="12" x="147" y="241" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <rect width="47" height="12" x="147" y="258" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <circle cx="355" cy="217" r="12" fill="#FCDF8C" fill-rule="nonzero"/>
+        <rect width="100" height="12" x="375" y="211" fill="#78839E" fill-rule="nonzero" rx="2"/>
+        <rect width="144" height="12" x="343" y="241" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+        <rect width="84" height="12" x="343" y="258" fill="#D5DAE5" fill-rule="nonzero" rx="2"/>
+    </g>
+</svg>

@@ -83,7 +83,7 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'global-require': 'off',
-    'no-console': 'off',
+    'no-console': 'error',
     'dot-notation': 'off',
     'no-underscore-dangle': 'off',
     'no-param-reassign': 'off',

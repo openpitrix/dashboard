@@ -1,0 +1,10 @@
+{
+  "APP_STORE_TITLE": "Easily manage any application under cloudy conditions",
+  "APP_STORE_DESCRIPTION": "The runtime environment in OpenPitrix can be based on any platform of any type. For different runtime environment providers, OpenPitrix provides a corresponding ProviderPlugin plugin that calls the appropriate API to manage the applications running on it.",
+  "APP_DEVELOPER_CENTER_TITLE": "Accelerate application development efficiency",
+  "APP_DEVELOPER_CENTER_DESCRIPTION": "OpenPitrix will support legacy applications and increasingly popular application types, and support multiple application packaging specifications, the system will automatically identify the type of application you are deploying and select the appropriate plug-in to create an application cluster.",
+  "APP_MANAGEMENT_TITLE": "From development to update full cycle management applications",
+  "APP_MANAGEMENT_DESCRIPTION": "OpenPitrix will support legacy applications and increasingly popular application types, and support multiple application packaging specifications, the system will automatically identify the type of application you are deploying and select the appropriate plug-in to create an application cluster.",
+  "STORE_OPERATIONS_MANAGEMENT_TITLE": "Professional operation application products",
+  "STORE_OPERATIONS_MANAGEMENT_DESCRIPTION": "Any OpenPitrix-based application can be traded in any OpenPitrix-based app store, and users can deploy store apps to any cloud runtime environment."
+}

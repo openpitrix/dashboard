@@ -11,6 +11,7 @@ const resourcesBypassAuth = [
   'active_apps',
   'active_app_versions',
   'categories',
+  'service_configs/get',
   'attachment'
 ];
 

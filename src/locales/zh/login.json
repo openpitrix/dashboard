@@ -1,0 +1,19 @@
+{
+  "Welcome back": "欢迎回来",
+  "Login you account": "登录你的账号",
+  "Sorry, login failure": "抱歉，登录失败",
+  "Information error, please try again": "信息错误，请再试一次",
+  "Read more": "了解更多",
+  "App Store": "应用商店",
+  "APP_STORE_TITLE": "轻松管理多云环境的下任意应用",
+  "APP_STORE_DESCRIPTION": "OpenPitrix 中的运行环境可以是基于做任意类型任意平台。针对不同的运行环境提供商，OpenPitrix 会提供相应的 ProviderPlugin 插件，调用相应的 API 来管理运行在其上的应用。",
+  "App Developer Center": "应用开发中心",
+  "APP_DEVELOPER_CENTER_TITLE": "加速应用开发效率",
+  "APP_DEVELOPER_CENTER_DESCRIPTION": "OpenPitrix 将支持传统应用和日益流行的应用类型，并支持多种应用打包规范，系统将自动识别您部署的应用类型并选择相应的插件去创建应用集群。",
+  "App Management": "应用管理",
+  "APP_MANAGEMENT_TITLE": "从开发到更新全周期管理应用",
+  "APP_MANAGEMENT_DESCRIPTION": "OpenPitrix 将支持传统应用和日益流行的应用类型，并支持多种应用打包规范，系统将自动识别您部署的应用类型并选择相应的插件去创建应用集群。",
+  "Store Operations Management": "商店运营管理",
+  "STORE_OPERATIONS_MANAGEMENT_TITLE": "专业运营应用产品",
+  "STORE_OPERATIONS_MANAGEMENT_DESCRIPTION": "任何基于 OpenPitrix 开发的应用， 都可以在任何基于 OpenPitrix 的应用商店交易，用户可以部署商店的应用到任何云运行环境。"
+}
