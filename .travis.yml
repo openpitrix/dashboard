@@ -11,11 +11,11 @@ node_js:
   - "10"
 
 env:
-  - SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
-  - SKIP_NODE_SASS_TESTS=true
-  - serverUrl=http://139.198.4.179:9100
-  - clientId=x
-  - clientSecret=y
+  SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
+  SKIP_NODE_SASS_TESTS=true
+  serverUrl=http://139.198.4.179:9100
+  clientId=x
+  clientSecret=y
 
 cache:
   yarn: true
