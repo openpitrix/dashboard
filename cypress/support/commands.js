@@ -12,9 +12,11 @@ const login = (role = 'user', data = {}) => {
       },
       data
     )
-  }).then(res => {
-    cy.getCookie('access_token').should('exist');
+  }).then(({ body }) => {
+    cy.setCookie('access_token', body.access_token);
     cy.setCookie('lang', 'en');
+
+    cy.getCookie('access_token').should('exist');
 
     if (role === 'admin') {
       cy.setCookie('portal', 'global_admin');
