@@ -13,9 +13,6 @@ node_js:
 env:
   SKIP_SASS_BINARY_DOWNLOAD_FOR_CI=true
   SKIP_NODE_SASS_TESTS=true
-  serverUrl=http://139.198.4.179:9100
-  clientId=x
-  clientSecret=y
 
 cache:
   yarn: true
@@ -31,7 +28,7 @@ install:
 
 script:
   - yarn test -- --coverage
-  - if [ $TRAVIS_BRANCH = 'master' ]; then yarn e2e:run; fi
+  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then yarn e2e:run; fi
 
 after_success:
   - yarn report-cov
