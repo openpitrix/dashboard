@@ -27,10 +27,8 @@ install:
   - yarn
 
 script:
-  - $(npm bin)/print-env CYPRESS
   - yarn test -- --coverage
-  - yarn e2e:env
-  - if [ $TRAVIS_BRANCH = 'master' ]; then yarn cy:verify && yarn cy:run; fi
+  - if [ $TRAVIS_BRANCH = 'master' ]; then yarn e2e:run; fi
 
 after_success:
   - yarn report-cov

@@ -4,9 +4,9 @@ module.exports = {
   output: {
     pathinfo: false
   },
-  performance: {
-    hints: process.env.NODE_ENV === 'development' ? 'warning' : false
-  },
+  // performance: {
+  //   hints: process.env.NODE_ENV === 'development' ? 'warning' : false
+  // },
   module: {
     rules: [
       {
