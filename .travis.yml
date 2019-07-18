@@ -28,8 +28,10 @@ install:
   - yarn
 
 script:
+  - $(npm bin)/print-env TRAVIS
   - yarn test -- --coverage
   - if [ $TRAVIS_BRANCH = 'master' ]; then yarn cy:verify && yarn e2e:run; fi
+  - kill $(jobs -p) || true
 
 after_success:
   - yarn report-cov

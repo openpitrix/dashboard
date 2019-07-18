@@ -1278,6 +1278,11 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@bahmutov/print-env@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@bahmutov/print-env/-/print-env-1.2.0.tgz#d331e44388a622e6c7ca333e7a48a69d82fdb2f1"
+  integrity sha512-Vf4AX+maJYV6f0RCUjmCsv6dcJPdPp33By8orMU1enb3t867xTGERhfn7aBdeisSKYJ3Dau5nwCiR2sGPSoS+w==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"
