@@ -4,6 +4,7 @@ if (require('semver').lt(process.version, '7.6.0')) {
 }
 
 const env = process.env.NODE_ENV || 'development';
+const mockMode = !!process.env.MOCKAPI;
 
 if (env === 'development') {
   require('@babel/register');
@@ -84,12 +85,14 @@ app.listen(PORT, err => {
   logger.info(`OpenPitrix Dashboard running at %s`, `${HOSTNAME}:${PORT}`);
 });
 
-watchConfig(() => {
-  app.config = getServerConfig();
-});
+if (!mockMode) {
+  watchConfig(() => {
+    app.config = getServerConfig();
+  });
 
-// setup websocket proxy server
-const socketUrl = process.env.socketUrl || config.socketUrl;
-const socketProxyPort = process.env.socketProxyPort || config.socketProxyPort;
+  // setup websocket proxy server
+  const socketUrl = process.env.socketUrl || config.socketUrl;
+  const socketProxyPort = process.env.socketProxyPort || config.socketProxyPort;
 
-proxyServer.run(socketUrl, socketProxyPort);
+  proxyServer.run(socketUrl, socketProxyPort);
+}
