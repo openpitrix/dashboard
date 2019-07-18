@@ -30,13 +30,13 @@ const login = (role = 'user', data = {}) => {
 };
 
 Cypress.Commands.add('login', (role = 'user') => {
-  const roleConf = Cypress.env(role);
+  let roleConf = Cypress.env(role);
   if (!roleConf) {
-    // fallback, can compact with ci mode
-    Object.assign(roleConf, {
+    // fallback, compact with ci mode
+    roleConf = {
       username: Cypress.env(`${role}_username`),
       password: Cypress.env(`${role}_password`)
-    });
+    };
   }
   login(role, roleConf);
 });
