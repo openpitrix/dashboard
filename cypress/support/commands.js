@@ -1,4 +1,6 @@
-const login = (data, type = 'admin') => {
+import { base64toBlob } from '../utils';
+
+const login = (role = 'user', data = {}) => {
   cy.request({
     url: '/api/oauth2/token', // assuming you've exposed a seeds route
     method: 'post',
@@ -10,14 +12,14 @@ const login = (data, type = 'admin') => {
       },
       data
     )
-  }).then(() => {
+  }).then(res => {
     cy.getCookie('access_token').should('exist');
     cy.setCookie('lang', 'en');
 
-    if (type === 'admin') {
+    if (role === 'admin') {
       cy.setCookie('portal', 'global_admin');
       cy.setCookie('role', 'global_admin');
-    } else if (type === 'isv') {
+    } else if (role === 'isv') {
       cy.setCookie('portal', 'isv');
       cy.setCookie('role', 'isv');
     } else {
@@ -27,31 +29,9 @@ const login = (data, type = 'admin') => {
   });
 };
 
-Cypress.Commands.add('login', (userType = 'admin') => {
-  const data = Cypress.env(userType);
-  login(data, userType);
+Cypress.Commands.add('login', (role = 'user') => {
+  login(role, Cypress.env(role));
 });
-
-function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-  const byteCharacters = atob(b64Data);
-  const byteArrays = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-
-    byteArrays.push(byteArray);
-  }
-
-  const blob = new Blob(byteArrays, { type: contentType });
-  return blob;
-}
 
 Cypress.Commands.add(
   'upload',
@@ -61,7 +41,7 @@ Cypress.Commands.add(
   (subject, file, fileName) => {
     // we need access window to create a file below
     cy.window().then(window => {
-      const blob = b64toBlob(file, '', 512);
+      const blob = base64toBlob(file, '', 512);
       const testFile = new window.File([blob], fileName);
       cy.wrap(subject).trigger('drop', {
         dataTransfer: { files: [testFile] }
@@ -70,27 +50,43 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('waitAMoment', () => {
-  cy.wait(Cypress.env('WAIT_A_MOMENT'));
-});
+// load fixture for certain test case
+// default is current test
+Cypress.Commands.add(
+  'loadFixtureByTest',
+  (testCase = cy._testCaseTitle, handleRecords = x => x) => {
+    const fixture = Cypress.spec.name.replace('.spec.js', '');
 
-Cypress.Commands.add('waitASecond', () => {
-  cy.wait(Cypress.env('WAIT_A_Second'));
-});
+    // dont rely on arguments
+    if (typeof testCase === 'function') {
+      handleRecords = testCase;
+      testCase = cy._testCaseTitle;
+    }
 
-Cypress.Commands.add('waitLoading', () => {
-  cy.get('[data-cy="loading"]').should('exist');
-  cy.get('[data-cy="loading"]').should('not.exist');
-});
+    if (cy._cachedFixtures[testCase]) {
+      // load from cache
+      handleRecords(cy._cachedFixtures[testCase]);
+      return;
+    }
 
-Cypress.Commands.add('loadingExit', () => {
-  cy.get('[data-cy="loading"]').should('not.exist');
-});
+    cy.task('existsFixture', fixture).then(exist => {
+      if (exist) {
+        cy.fixture(fixture).then(data => {
+          if (data[testCase]) {
+            handleRecords(
+              (cy._cachedFixtures[testCase] = data[testCase].records)
+            );
+          }
+        });
+      }
+    });
+  }
+);
 
-Cypress.Commands.add('waitUntilAllAPIFinished', () => {
-  const timeout = Cypress.env('apiMaxWaitingTime') || 60 * 1000;
-  cy.log('Waiting for pending API requests:');
-  cy.get('body', { timeout, log: false }).should(() => {
-    expect(cy._apiCount).to.eq(0);
+Cypress.Commands.add('mockRecords', (records = []) => {
+  records.forEach(({ method, url, _sid, response }) => {
+    // automatically stub request without alias
+    // if you need alias, do it manually
+    cy.route(method, `${url}?_sid=${_sid}`, response);
   });
 });

@@ -33,7 +33,7 @@ install:
 script:
   - yarn test -- --coverage
   - yarn cy:verify
-  - yarn e2e:test:run
+  - yarn e2e:run
 
 after_success:
   - yarn report-cov

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const wp = require('@cypress/webpack-preprocessor');
 
 module.exports = on => {
@@ -9,7 +10,13 @@ module.exports = on => {
   // };
   on('file:preprocessor', wp());
   on('task', {
-    isFixtureExisted(filePath) {
+    existsFixture(filePath) {
+      if (!filePath.startsWith('cypress/fixtures/')) {
+        filePath = `cypress/fixtures/${filePath}`;
+      }
+      if (path.extname(filePath) !== '.json') {
+        filePath += '.json';
+      }
       return fs.existsSync(filePath);
     }
   });
