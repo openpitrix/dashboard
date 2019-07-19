@@ -6,17 +6,15 @@ import { inject } from 'mobx-react';
 
 import LazyLoad from 'components/LazyLoad';
 import NotFound from 'components/NotFound';
-
-import Home from 'pages/Home';
 import {
   UserRoutes, DevRoutes, IsvRoutes, AdminRoutes
 } from 'routes/portals';
 import WrapRoute from 'routes/WrapRoute';
-
 import history from './createHistory';
 
 import './scss/index.scss';
 
+const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const AppDetail = lazy(() => import('./pages/AppDetail'));
 

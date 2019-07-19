@@ -52,10 +52,10 @@
   "scripts": {
     "dev:client": "cross-env DEBUG=app NODE_ENV=development webpack --config webpack.dev.js --progress",
     "dev:serve": "cross-env DEBUG=app BABEL_ENV=server NODE_ENV=development nodemon -w lib -w server server/server.js",
-    "dev": "cross-env run-p watch:locale dev:serve 'dev:client -- --watch'",
-    "prod:build": "rimraf dist && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js --progress",
+    "dev": "cross-env rimraf build && run-p watch:locale dev:serve 'dev:client -- --watch'",
+    "prod:build": "rimraf dist && npm run locale && NODE_ENV=production webpack -p --config webpack.prod.js",
     "prod:serve": "NODE_ENV=production node dist/server.js",
-    "prod": "npm run prod:build && npm run prod:serve",
+    "prod": "cross-env run-s prod:build prod:serve",
     "lint-fix": "eslint --fix --ext js,jsx .",
     "test": "jest -u",
     "e2e:client": "cross-env DEBUG=app NODE_ENV=development webpack --config webpack.dev.js --define process.env.MOCKAPI=1",

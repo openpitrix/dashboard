@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const webpackNotifier = require('webpack-notifier');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const postCssOptions = require('./config/postcss.options');
 const baseConfig = require('./webpack.base');
 
@@ -52,6 +53,12 @@ module.exports = merge(baseConfig, {
       }
     ]
   },
+  // optimization: {
+  //   splitChunks: {
+  //     minSize: 60 * 1000,
+  //     maxSize: 3000 * 1000,
+  //   }
+  // },
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     new webpackNotifier({
@@ -62,5 +69,6 @@ module.exports = merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
+    // new BundleAnalyzerPlugin()
   ]
 });

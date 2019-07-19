@@ -1,37 +1,39 @@
-export Apps from './Apps';
-export AppAdd from './Apps/Add';
-export AppDetail from './Apps/Detail';
-export AppDeploy from './Apps/Deploy';
-export MyApps from './Apps/MyApps';
-export Audits from './Apps/Audits';
-export Versions from './Versions';
-export VersionDetail from './Versions/Detail';
-export AppInfo from './Apps/AppInfo';
+import { lazy } from 'react';
 
-export Reviews from './Reviews';
-export ReviewDetail from './Reviews/Detail';
+export const Apps = lazy(() => import('./Apps'));
+export const AppAdd = lazy(() => import('./Apps/Add'));
+export const AppDetail = lazy(() => import('./Apps/Detail'));
+export const AppDeploy = lazy(() => import('./Apps/Deploy'));
+export const MyApps = lazy(() => import('./Apps/MyApps'));
+export const Audits = lazy(() => import('./Apps/Audits'));
+export const Versions = lazy(() => import('./Versions'));
+export const VersionDetail = lazy(() => import('./Versions/Detail'));
+export const AppInfo = lazy(() => import('./Apps/AppInfo'));
 
-export Providers from './Providers';
-export ProviderDetail from './Providers/Detail';
-export Applications from './Providers/Applications';
-export ApplicationDetail from './Providers/Applications/Detail';
-export ProviderCreate from './Providers/Create';
+export const Reviews = lazy(() => import('./Reviews'));
+export const ReviewDetail = lazy(() => import('./Reviews/Detail'));
 
-export Clusters from './Clusters';
-export ClusterDetail from './Clusters/Detail';
+export const Providers = lazy(() => import('./Providers'));
+export const ProviderDetail = lazy(() => import('./Providers/Detail'));
+export const Applications = lazy(() => import('./Providers/Applications'));
+export const ApplicationDetail = lazy(() => import('./Providers/Applications/Detail'));
+export const ProviderCreate = lazy(() => import('./Providers/Create'));
 
-export Overview from './Overview';
+export const Clusters = lazy(() => import('./Clusters'));
+export const ClusterDetail = lazy(() => import('./Clusters/Detail'));
 
-export Categories from './Categories';
+export const Overview = lazy(() => import('./Overview'));
 
-export Runtimes from './Runtimes';
-export CreateRuntime from './Runtimes/Create';
+export const Categories = lazy(() => import('./Categories'));
 
-export CloudEnv from './CloudEnv';
-export CloudInfo from './CloudInfo';
-export NotificationServer from './NotificationServer';
+export const Runtimes = lazy(() => import('./Runtimes'));
+export const CreateRuntime = lazy(() => import('./Runtimes/Create'));
 
-export Account from './Account';
+export const CloudEnv = lazy(() => import('./CloudEnv'));
+export const CloudInfo = lazy(() => import('./CloudInfo'));
+export const NotificationServer = lazy(() => import('./NotificationServer'));
 
-export UserInstance from './UserInstance';
-export UserSandbox from './UserSandbox';
+export const Account = lazy(() => import('./Account'));
+
+export const UserInstance = lazy(() => import('./UserInstance'));
+export const UserSandbox = lazy(() => import('./UserSandbox'));
