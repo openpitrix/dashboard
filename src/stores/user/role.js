@@ -697,10 +697,14 @@ export default class RoleStore extends Store {
     if (!roleId) {
       return [];
     }
+    let modules = sessionStorage.getItem('module_elem_set');
+    if (modules) {
+      return modules;
+    }
     const result = await this.request.get(`roles:module`, {
       role_id: roleId
     });
-    const modules = _.get(result, 'module.module_elem_set', []);
+    modules = _.get(result, 'module.module_elem_set', []);
     sessionStorage.setItem('module_elem_set', JSON.stringify(modules));
     return modules;
   };

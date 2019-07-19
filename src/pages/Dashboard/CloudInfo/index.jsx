@@ -20,6 +20,10 @@ export default class CloudEnvironment extends Component {
     hide: false
   };
 
+  componentDidMount() {
+    this.props.cloudEnvStore.fetchCloudInfo();
+  }
+
   componentWillUnmount() {
     this.props.cloudEnvStore.reset();
   }

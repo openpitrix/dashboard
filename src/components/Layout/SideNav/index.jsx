@@ -50,7 +50,8 @@ const changeKey = {
 @inject(({ rootStore }) => ({
   rootStore,
   appStore: rootStore.appStore,
-  user: rootStore.user
+  user: rootStore.user,
+  roleStore: rootStore.roleStore
 }))
 @observer
 export class SideNav extends React.Component {
@@ -62,6 +63,7 @@ export class SideNav extends React.Component {
   static defaultProps = {};
 
   state = {
+    isLoading: true,
     subNavChildLinks: []
   };
 
@@ -78,11 +80,15 @@ export class SideNav extends React.Component {
 
   async componentDidMount() {
     const {
-      appStore, user, match, hasSubNav
+      appStore, user, match, hasSubNav, roleStore
     } = this.props;
     const { fetchMenuApps, fetchMeunApp } = appStore;
-
     const { appId } = match.params;
+
+    await roleStore.setRoleSession();
+    this.setState({
+      isLoading: false
+    });
 
     if (user.isDevPortal) {
       await fetchMenuApps();
@@ -396,6 +402,9 @@ export class SideNav extends React.Component {
 
   render() {
     const { hasSubNav, user } = this.props;
+    if (this.state.isLoading) {
+      return null;
+    }
 
     return (
       <Fragment>

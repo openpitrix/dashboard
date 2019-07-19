@@ -63,9 +63,7 @@ export default class RootStore extends Store {
 
   @action
   setSession = async () => {
-    const setRole = this.getRegisteredStore('role').setRoleSession();
-    const setCloudInfo = this.getRegisteredStore('cloudEnv').setBasicSession();
-    await Promise.all([setRole, setCloudInfo]);
+    await this.getRegisteredStore('role').setRoleSession();
   };
 
   clearSession = () => {

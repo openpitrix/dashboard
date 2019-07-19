@@ -22,22 +22,7 @@ const AppDetail = lazy(() => import('./pages/AppDetail'));
   rootStore
 }))
 export default class App extends React.Component {
-  state = {
-    isLoading: true
-  };
-
-  async componentDidMount() {
-    await this.props.rootStore.setSession();
-    this.setState({
-      isLoading: false
-    });
-  }
-
   render() {
-    if (this.state.isLoading) {
-      return null;
-    }
-
     return (
       <Router history={history}>
         <LazyLoad>
