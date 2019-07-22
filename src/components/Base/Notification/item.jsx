@@ -42,7 +42,7 @@ export default class NotificationItem extends React.Component {
     type: 'info',
     title: 'Notification',
     message: null,
-    timeOut: 3000,
+    timeOut: 10000,
     onClick: noop,
     onHide: noop,
     onClosed: noop,
@@ -77,7 +77,7 @@ export default class NotificationItem extends React.Component {
   };
 
   handleClick = () => {
-    // this.hideNotify();
+    this.hideNotify();
   };
 
   render() {

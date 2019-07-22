@@ -50,7 +50,7 @@ export default class SockClient {
 
   attachEvents() {
     // eslint-disable-next-line
-    this.client.onopen = () => console.log('open socket: ', this);
+    // this.client.onopen = () => console.log('open socket: ', this);
 
     this.client.onmessage = message => {
       let data = message.data || {};
