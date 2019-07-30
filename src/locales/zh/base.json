@@ -499,5 +499,16 @@
 
   "Back home": " 返回首页",
   "Sorry, the page you visited does not exist": "抱歉，您访问的页面不存在。",
-  "Invalid operation": "非法操作"
+  "Invalid operation": "非法操作",
+
+  "WELCOME_TO_OPENPITRIX": "欢迎进入 OpenPitrix 应用中心",
+  "WELCOME_TO_OPENPITRIX_DESC": "你刚刚创建了账户，接下来让我们来为你介绍一下如何快速找到你需要的应用并部署和管理。",
+  "Let's start": "开始吧",
+  "MENU_APP_INTRO": "包含 SaaS 类，容器器，VM 类等众多类型的应用，超过 1200 款，可以随时购买与部署。",
+  "MENU_PURCHASED_INTRO": "所有部署或购买过的应用都可以在此统一查看和管理。",
+  "MENU_CLUSTER_INTRO": "包括所有部署的实例以及实例的重要监控信息，支持不同维度的搜索和过滤。",
+  "MENU_RUNTIME_INTRO": "支持多种云平台的环境接入，统一管理，全面监控。",
+  "Skip": "跳过",
+  "Learn all": "全部了解",
+  "To understanding": "了解"
 }

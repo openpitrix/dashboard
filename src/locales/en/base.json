@@ -191,5 +191,12 @@
   "TIP_HELM_NAMESPACE": "The input characters for the namespace contain only lowercase letters and numbers",
   "MY_INSTANCES_DESCRIPTION": "List of instances created based on the application.",
 
-  "SPECIFICATION_LINK_TITLE": "{{type}} specification and application development"
+  "SPECIFICATION_LINK_TITLE": "{{type}} specification and application development",
+
+  "WELCOME_TO_OPENPITRIX": "Welcome to the OpenPitrix App Center",
+  "WELCOME_TO_OPENPITRIX_DESC": "You just created an account, let us introduce you how to quickly find the application you need and deploy and manage it.",
+  "MENU_APP_INTRO": "There are many types of applications including SaaS class, container, VM class, etc., more than 1200 models, you can purchase and deploy at any time.",
+  "MENU_PURCHASED_INTRO": "All deployed or purchased apps can be viewed and managed here.",
+  "MENU_CLUSTER_INTRO": "Includes all deployed instances and important monitoring information for the instances, supporting different dimensions of search and filtering.",
+  "MENU_RUNTIME_INTRO": "Supports environment access, unified management, and comprehensive monitoring of multiple cloud platforms."
 }

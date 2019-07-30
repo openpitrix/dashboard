@@ -4,20 +4,27 @@ import { withRouter, Link, NavLink } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { withTranslation } from 'react-i18next';
 
-import { Popover, Icon } from 'components/Base';
+import { Popover, Icon, Button } from 'components/Base';
 import MenuLayer from 'components/MenuLayer';
 import routes, { toRoute } from 'routes';
+import MenuIntroduction from 'components/MenuIntroduction';
+import { getCookie, setCookie } from 'utils';
+import menus from './menus';
 
 import styles from './index.scss';
 
-const LinkItem = ({ to, title, path }) => {
+const LinkItem = ({
+  to, title, path, isIntroduction
+}) => {
   const isActive = to === '/' ? ['/', '/apps/:appId'].includes(path) : path.startsWith(to);
-
   return (
     <NavLink
       to={to}
       exact
-      className={classnames({ [styles.active]: isActive })}
+      className={classnames({
+        [styles.active]: isActive,
+        [styles.introduction]: isIntroduction
+      })}
     >
       {title}
     </NavLink>
@@ -32,9 +39,62 @@ const LinkItem = ({ to, title, path }) => {
 }))
 @observer
 export class Header extends Component {
-  renderMenus = () => {
+  state = {
+    activeIndex: 0
+  };
+
+  changeIntroduction = isKnow => {
+    const index = this.state.activeIndex;
+    this.setState({
+      activeIndex: this.state.activeIndex + 1
+    });
+    if (index >= menus.length || isKnow) {
+      const { user } = this.props;
+      setCookie(`${user.user_id}_no_introduction`, true);
+    }
+  };
+
+  rederStartModal() {
+    const { t } = this.props;
+
+    return (
+      <div>
+        <div className={styles.startModal}>
+          <div className={styles.banner}>
+            <Icon
+              onClick={() => this.changeIntroduction(true)}
+              className={styles.close}
+              name="close"
+              size={36}
+              type="white"
+            />
+          </div>
+          <div className={styles.word}>
+            <div className={styles.title}>{t('WELCOME_TO_OPENPITRIX')}</div>
+            <div className={styles.description}>
+              {t('WELCOME_TO_OPENPITRIX_DESC')}
+            </div>
+            <Button
+              onClick={() => this.changeIntroduction()}
+              type="primary"
+              className={styles.startButton}
+            >
+              {t("Let's start")}
+            </Button>
+          </div>
+        </div>
+        <div className={styles.modalShadow} />
+      </div>
+    );
+  }
+
+  renderMenus() {
     const { t, user, match } = this.props;
     const { path } = match;
+    const { activeIndex } = this.state;
+    const introduction = (menus[activeIndex - 1] || {}).introduction;
+    const len = menus.length;
+    const noIntroduction = getCookie(`${user.user_id}_no_introduction`);
 
     if (!user.isLoggedIn()) {
       return null;
@@ -42,25 +102,33 @@ export class Header extends Component {
 
     return (
       <div className={styles.menus}>
-        <LinkItem to="/" title={t('App Store')} path={path} />
-        <LinkItem
-          to={toRoute(routes.portal.apps)}
-          title={t('Purchased')}
-          path={path}
-        />
-        <LinkItem
-          to={toRoute(routes.portal.clusters)}
-          title={t('My Instances')}
-          path={path}
-        />
-        <LinkItem
-          to={toRoute(routes.portal.runtimes)}
-          title={t('My Runtimes')}
-          path={path}
-        />
+        {menus.map((item, index) => (
+          <LinkItem
+            key={item.name}
+            to={toRoute(routes.portal[item.link])}
+            title={t(item.name)}
+            path={path}
+            index={index}
+            isIntroduction={index === activeIndex - 1}
+            changeIntroduction={this.changeIntroduction}
+          />
+        ))}
+
+        {!noIntroduction && activeIndex === 0 && this.rederStartModal()}
+
+        {!noIntroduction && activeIndex > 0 && (
+          <MenuIntroduction
+            title={t(introduction.title)}
+            description={t(introduction.description)}
+            image={introduction.image}
+            total={len}
+            changeIntroduction={this.changeIntroduction}
+            activeIndex={activeIndex}
+          />
+        )}
       </div>
     );
-  };
+  }
 
   renderMenuBtns() {
     const { t, user } = this.props;
