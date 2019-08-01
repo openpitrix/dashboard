@@ -2,14 +2,14 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const webpackNotifier = require('webpack-notifier');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const postCssOptions = require('./config/postcss.options');
 const baseConfig = require('./webpack.base');
 
 module.exports = merge(baseConfig, {
   mode: 'development',
   entry: [
-    // 'webpack-hot-middleware/client',
+    // 'webpack-hot-client/client',
     './src/index.js'
   ],
   output: {
@@ -19,27 +19,26 @@ module.exports = merge(baseConfig, {
   },
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {
-          fix: true
-        }
-      },
+      // {
+      //   test: /\.jsx?$/,
+      //   enforce: 'pre',
+      //   exclude: /node_modules/,
+      //   loader: 'eslint-loader',
+      //   options: {
+      //     fix: true
+      //   }
+      // },
       {
         test: /\.scss$/,
         use: [
-          'cache-loader',
           'style-loader',
           {
             loader: 'css-loader',
             options: {
-              minimize: false,
               importLoaders: 2,
-              localIdentName: '[folder]__[local]--[hash:base64:5]',
-              modules: true
+              modules: {
+                localIdentName: '[folder]__[local]--[hash:base64:5]'
+              }
             }
           },
           {
@@ -60,7 +59,9 @@ module.exports = merge(baseConfig, {
   //   }
   // },
   plugins: [
+    // new webpack.NamedModulesPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
+
     new webpackNotifier({
       title: `Openpitrix dashboard`,
       alwaysNotify: true,
@@ -69,6 +70,7 @@ module.exports = merge(baseConfig, {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
+    // new webpack.ProgressPlugin(),
     // new BundleAnalyzerPlugin()
   ]
 });

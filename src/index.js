@@ -1,11 +1,8 @@
 // polyfills
 import 'promise-polyfill/src/polyfill';
 import '../lib/blob/Blob';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { I18nextProvider } from 'react-i18next';
-import { Provider as MobxProvider } from 'mobx-react';
 
 import SockClient, { getEndpoint } from 'providers/sock-client';
 import App from './App';
@@ -26,11 +23,12 @@ if (typeof window !== 'undefined') {
     : null;
 
   ReactDOM.render(
-    <I18nextProvider i18n={i18n}>
-      <MobxProvider rootStore={store}>
-        <App />
-      </MobxProvider>
-    </I18nextProvider>,
+    <App i18n={i18n} store={store} />,
     document.getElementById('root')
   );
+}
+
+// hmr
+if (module.hot) {
+  module.hot.accept();
 }
