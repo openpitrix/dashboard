@@ -53,17 +53,6 @@ module.exports = {
         ]
       ]
     },
-    server: {
-      plugins: [
-        [
-          'css-modules-transform',
-          {
-            generateScopedName: '[folder]__[local]--[hash:base64:5]',
-            extensions: ['.css', '.scss']
-          }
-        ]
-      ]
-    },
     test: {
       plugins: ['dynamic-import-node']
     }

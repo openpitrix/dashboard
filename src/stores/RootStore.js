@@ -35,6 +35,14 @@ export default class RootStore extends Store {
   lastSetFixStamp = Date.now();
 
   constructor(initialState) {
+    if (typeof initialState === 'string') {
+      try {
+        initialState = JSON.parse(initialState);
+      } catch (e) {
+        initialState={};
+      }
+    }
+
     super(initialState);
     this.state = initialState;
   }
@@ -141,7 +149,7 @@ export default class RootStore extends Store {
     }
 
     if (!(this[name] instanceof Store)) {
-      throw Error(`Unregisterd store: ${name}`);
+      throw Error(`Unregistered store: ${name}`);
     }
 
     return this[name];

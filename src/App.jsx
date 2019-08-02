@@ -2,7 +2,9 @@ import React, { lazy } from 'react';
 import {
   Router, Switch, Route, Redirect
 } from 'react-router-dom';
-import { inject } from 'mobx-react';
+
+import { I18nextProvider } from 'react-i18next';
+import { Provider as MobxProvider } from 'mobx-react';
 
 import LazyLoad from 'components/LazyLoad';
 import NotFound from 'components/NotFound';
@@ -18,10 +20,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const AppDetail = lazy(() => import('./pages/AppDetail'));
 
-@inject(({ rootStore }) => ({
-  rootStore
-}))
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <Router history={history}>
@@ -61,3 +60,13 @@ export default class App extends React.Component {
     );
   }
 }
+
+const AppContainer = ({ i18n, store }) => (
+  <I18nextProvider i18n={i18n}>
+    <MobxProvider rootStore={store}>
+      <App />
+    </MobxProvider>
+  </I18nextProvider>
+);
+
+export default AppContainer;

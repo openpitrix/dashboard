@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="<%= lang %>">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="Description" content="OpenPitrix: Application Management Platform on Multi-Cloud Environment">
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/normalize.min.css" />
+    <link rel="stylesheet" href="/fonts/roboto/roboto.css" />
+    <%= styles %>
+</head>
+<body>
+<div id="root">
+    <%= children %>
+</div>
+
+<script>
+    window.__INITIAL_STATE__ = '<%= state %>'
+</script>
+<%= scripts %>
+</body>
+</html>
