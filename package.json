@@ -68,7 +68,7 @@
     "e2e:run:local": "start-test e2e:env 8000 'cypress run'",
     "cy:open": "cypress open",
     "cy:record": "cypress open --env recordApi=1",
-    "cy:run": "cypress run --record --key 2a1d655c-7a4d-4a3a-8a31-0683b816f7e6 --parallel",
+    "cy:run": "cypress run --record --key 2a1d655c-7a4d-4a3a-8a31-0683b816f7e6",
     "cy:verify": "cypress verify",
     "precommit": "lint-staged",
     "report-cov": "cat ./build/coverage/lcov.info | codecov",
