@@ -34,12 +34,12 @@ export default class RootStore extends Store {
 
   lastSetFixStamp = Date.now();
 
-  constructor(initialState) {
+  constructor(initialState = {}) {
     if (typeof initialState === 'string') {
       try {
         initialState = JSON.parse(initialState);
       } catch (e) {
-        initialState={};
+        initialState = {};
       }
     }
 
