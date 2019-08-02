@@ -40,10 +40,10 @@ const clientConfig = merge.smart(baseConfig, {
           {
             loader: 'css-loader',
             options: {
-              minimize: true,
               importLoaders: 2,
-              localIdentName: '[folder]__[local]--[hash:base64:5]',
-              modules: true
+              modules: {
+                localIdentName: '[folder]__[local]--[hash:base64:5]'
+              }
             }
           },
           {
@@ -113,8 +113,9 @@ const serverConfig = merge.smartStrategy({
             loader: 'css-loader/locals',
             options: {
               importLoaders: 1,
-              localIdentName: '[folder]__[local]--[hash:base64:5]',
-              modules: true
+              modules: {
+                localIdentName: '[folder]__[local]--[hash:base64:5]'
+              }
             }
           },
           { loader: 'sass-loader' }
