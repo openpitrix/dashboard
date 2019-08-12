@@ -222,11 +222,19 @@ export default class RoleStore extends Store {
     }
     const roleKey = _.first(keys);
 
+    // 不给 treeData 置空直接赋予新的值会造成渲染 bug
+    this.emptyTreeData();
     await this.fetchRoleModule(roleKey);
     this.onSelectModule([KeyFeatureAll]);
     this.selectedRoleKeys = keys;
     this.setSelectedRole();
     this.handelType = '';
+  };
+
+  @action
+  emptyTreeData = () => {
+    this.moduleTreeData = [];
+    this.bindActions = [];
   };
 
   @action
