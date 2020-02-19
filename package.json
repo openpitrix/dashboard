@@ -128,7 +128,7 @@
     "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
     "cache-loader": "^3.0.0",
-    "codecov": "^3.5.0",
+    "codecov": "^3.6.5",
     "commander": "^2.20.0",
     "compression-webpack-plugin": "^1.1.11",
     "cross-env": "^5.2.0",
