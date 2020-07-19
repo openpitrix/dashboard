@@ -1,5 +1,5 @@
 FROM node:12-alpine as builder
-MAINTAINER wangxi <sunnywang@yunify.com>
+MAINTAINER sunnyw <sunnywang@yunify.com>
 
 ENV SASS_BINARY_SITE=https://npm.taobao.org/mirrors/node-sass
 ENV PATH=$PATH:/home/node_modules/.bin

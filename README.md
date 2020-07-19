@@ -14,25 +14,50 @@
 ```
 git clone https://github.com/openpitrix/dashboard.git
 cd dashboard
-yarn 
+yarn
 yarn dev
 ```
 
-Or you can running dashboard in `docker`:
+## Docker
+
+You can run dashboard in `docker`:
 
 ```
 docker pull openpitrix/dashboard
-docker run -d --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
+docker run -d --rm --name openpitrix-dashborad -p 8000:8000 openpitrix/dashboard
 ```
-Then open your browser: `http://localhost:8000`
+
+Then open your favorite browser: `http://localhost:8000`
+
+## Build for ARM platform
+
+We also support running `openpitrix/dashboard` in ARM platform using docker
+
+See build steps in `Dockerfile.arm`
+
+If you want try local build for ARM:
+
+```
+make build-arm
+make run-arm
+```
+
+Or running our official arm64 image from docker hub:
+
+```
+docker pull openpitrix/dashboard:min-arm64
+docker run -d --rm --name openpitrix-dashborad-arm -p 8000:8000 openpitrix/dashboard:min-arm64
+```
 
 ## Develop
+
 ```
-yarn 
+yarn
 yarn dev
 ```
 
 We prefer `yarn` as our package manager, if you like `npm`:
+
 ```
 npm i
 npm run dev
@@ -41,6 +66,7 @@ npm run dev
 See [How to install requsites](./docs/install.md)
 
 ## Test
+
 ```
 yarn test
 ```
@@ -48,19 +74,14 @@ yarn test
 ## Build
 
 For production build:
+
 ```
 yarn prod:build
 ```
-Or using `npm`:
-```
-npm run prod:build
-```
-
 
 ## Quick start
 
-* [Deploy wordpress on QingCloud using openpitrix](./docs/quick-start.md)
-
+- [Deploy wordpress on QingCloud using openpitrix](./docs/quick-start.md)
 
 ## License
 
