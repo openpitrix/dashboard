@@ -49,3 +49,12 @@ docker-tag:
 	docker build --cache-from ${repo}:latest -t ${repo}:${tag} .
 	docker push ${repo}:${tag}
 
+build-arm: Dockerfile.arm
+	@echo building image for ARM platform
+	docker build -f Dockerfile.arm -t op/web-app-arm .
+
+run-arm:
+	@echo up and running openpitrix-dashboard in ARM platform
+	docker run -p 8000:8000 --rm \
+	--name openpitrix-dashboard-arm \
+	-v "$(cwd)"/server/local_config.yml:/home/app/server/local_config.yml op/web-app-arm
