@@ -2970,10 +2970,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.npm.taobao.org/code-point-at/download/code-point-at-1.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcode-point-at%2Fdownload%2Fcode-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codecov@^3.5.0:
-  version "3.7.0"
-  resolved "https://registry.npm.taobao.org/codecov/download/codecov-3.7.0.tgz#4a09939cde24447a43f36d068e8b4e0188dc3f27"
-  integrity sha1-SgmTnN4kRHpD820GjotOAYjcPyc=
+codecov@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.npm.taobao.org/codecov/download/codecov-3.7.1.tgz#434cb8d55f18ef01672e5739d3d266696bebc202"
+  integrity sha1-Q0y41V8Y7wFnLlc509JmaWvrwgI=
   dependencies:
     argv "0.0.2"
     ignore-walk "3.0.3"
