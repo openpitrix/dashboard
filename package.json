@@ -33,7 +33,7 @@
     "path-to-regexp": "^3.0.0",
     "promise-polyfill": "^7.0.0",
     "prop-types": "^15.6.0",
-    "qs": "^6.7.0",
+    "qs": "^6.9.7",
     "rc-table": "^6.6.0",
     "rc-tree": "^1.14.8",
     "react": "^16.8.6",
