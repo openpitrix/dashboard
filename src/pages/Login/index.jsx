@@ -90,7 +90,9 @@ export default class Login extends Component {
       await store.fetchDetail(res.user.sub, true);
     }
 
-    const defaultUrl = toRoute(routes.portal.apps, user.defaultPortal);
+    const defaultUrl = user.isNormal
+      ? toRoute(routes.home)
+      : toRoute(routes.portal.apps, user.defaultPortal);
 
     if (!(res && res.err)) {
       location.href = getUrlParam('redirect_url') || defaultUrl;
